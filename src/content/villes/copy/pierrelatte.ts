@@ -49,7 +49,7 @@ export const PIERRELATTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pierrelatte et bassin Tricastin ?",
-      a: "Oui, Axion-IA intervient à Pierrelatte et tout le bassin Tricastin sud-Drôme (Saint-Paul-Trois-Châteaux, Bollène à 10 min, Donzère, Grignan). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Pierrelatte et dans tout le bassin Tricastin sud-Drôme (Saint-Paul-Trois-Châteaux, Bollène, Donzère, Grignan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants techniques du Tricastin ?",
@@ -65,7 +65,7 @@ export const PIERRELATTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pierrelatte ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pierrelatte, comme partout en France, ou à distance.",
     },
   ],
 };

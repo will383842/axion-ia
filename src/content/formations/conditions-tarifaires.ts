@@ -21,7 +21,7 @@
 import { EFFECTIF_PLAGE_FR } from "./effectif";
 
 /** Ligne unique, pour une description de section ou une méta. */
-export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Paiement, annulation et prise en charge OPCO : conditions ci-dessous et conditions générales de vente.`;
+export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Paiement, annulation et report : conditions ci-dessous et conditions générales de vente.`;
 
 /** Les conditions réelles, dans l'ordre où le client les rencontre. */
 export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: string }> = [
@@ -32,19 +32,25 @@ export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: str
   {
     titre: "Paiement",
     texte:
-      "Par virement bancaire. Pour une prestation inférieure à 5 000 € HT, le paiement intervient à la commande ; au-delà, un échelonnement peut être convenu au devis. Aucun escompte en cas de paiement anticipé.",
+      "Par virement, selon les phases et l'échéancier fixés au devis. Aucun escompte en cas de paiement anticipé.",
   },
   {
     titre: "Annulation et report",
     texte:
-      "À plus de 15 jours ouvrés avant le début, aucune somme n'est due. Entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité. La formation est reportable une fois sans frais, à une date convenue ensemble.",
-  },
-  {
-    titre: "Prise en charge OPCO",
-    texte:
-      "Vous déposez la demande auprès de votre OPCO avant le début de la formation. En cas de refus ou de prise en charge partielle, les sommes non prises en charge restent dues par l'entreprise.",
+      "Pour les clients professionnels et les personnes morales non professionnelles, dès qu'il est versé, l'acompte prévu au devis reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à l'initiative d'Axion-IA et force majeure ; voir CGV, articles 6.5 et 46.4). À plus de 15 jours ouvrés avant le début, aucune somme n'est due en plus de l'acompte. Entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité ; la somme due n'est jamais inférieure à l'acompte versé. Ces sommes sont un dédit facturé à part, non imputable sur les fonds de la formation professionnelle. La formation est reportable une fois sans frais, à une date convenue ensemble dans les 3 mois. Si Axion-IA ne peut pas tenir la date convenue, elle reporte sans frais : au moins 2 nouvelles dates proposées par écrit dans les 30 jours suivant l'information du client, dans les 6 mois suivant la date initiale ; sans réponse sous au moins 10 jours ouvrés, la première date est retenue ; acompte et sommes versées reportés, ou bon d'achat de même montant valable 12 mois (reste rendu à l'expiration) si le client le préfère ; jamais de bon d'achat sur les sommes réglées par un tiers ; personne physique payant elle-même : accord exprès, à défaut remboursement sous 14 jours ; les sommes versées ne sont rendues qu'en dernier recours, si aucune date n'a pu être convenue dans les 6 mois et que le bon d'achat n'a pas été choisi, ou si les dates ne sont pas proposées dans les 30 jours ; la personne morale non professionnelle reçoit alors en outre, hors force majeure et hors faute de sa part, une indemnité égale à l'acompte (CGV, articles 46.4 et 53.3).",
   },
 ];
+
+/**
+ * Ligne « Financement » : EN SOMMEIL. Elle parle de solutions de financement, que les CGV ne
+ * citent qu'une fois la certification obtenue : la page des tarifs ne l'affiche que si
+ * `isQualiopiCertificationObtenue()`.
+ */
+export const CONDITION_TARIFAIRE_FINANCEMENT_EN_SOMMEIL_FR: { titre: string; texte: string } = {
+  titre: "Financement",
+  texte:
+    "Nous vous indiquons les solutions de financement possibles lors du premier échange. La formation reste due par l'entreprise dans les conditions prévues au devis.",
+};
 
 /**
  * Slogans retirés, que le contenu public des formations ne doit plus porter.

@@ -65,9 +65,9 @@ export const MONTREUIL_COPY: VilleCopy = {
   ],
 
   distancesFr:
-    "Métro ligne 9 : stations Croix de Chavaux, Robespierre et Mairie de Montreuil desservent le cœur de ville et le Bas-Montreuil. Paris Gare de Lyon (TGV) accessible via métro (~25 min). Aéroport Paris-Charles de Gaulle à 22 km. Limitrophe Paris 20e (Porte de Bagnolet, Porte de Montreuil).",
+    "Axion IA intervient partout en France, sur site ou à distance, y compris à Montreuil, dans le cœur de ville, le Bas-Montreuil et aux portes de Paris 20e.",
   distancesEn:
-    "Metro line 9: Croix de Chavaux, Robespierre and Mairie de Montreuil stations serve the town centre and Bas-Montreuil. Paris Gare de Lyon (TGV) accessible via metro (~25 min). Paris-Charles de Gaulle Airport 22 km away. Adjacent to Paris 20th arrondissement (Porte de Bagnolet, Porte de Montreuil).",
+    "Axion-IA works anywhere in France, on site or remotely, including in Montreuil, the town centre, Bas-Montreuil and the edge of Paris 20th arrondissement.",
 
   ecosystemFr:
     "Tissu B2B sectorisé sur un périmètre dense — 4e ville d'Île-de-France (~111 000 hab). Bas-Montreuil : siège mondial Ubisoft (2 200+ employés), siège AFD, siège BNP Paribas Personal Finance, site majeur Capgemini. Écosystème numérique Cap Digital Paris-Région. Incubateur La Pousse (ESS). IUT Montreuil (Sorbonne Paris Nord). ZAC Boissière-Acacia en développement.",
@@ -77,7 +77,7 @@ export const MONTREUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Montreuil ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Montreuil et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des références dans le secteur numérique ou jeu vidéo à Montreuil ?",
@@ -88,8 +88,8 @@ export const MONTREUIL_COPY: VilleCopy = {
       a: "Oui. Les directions financières, équipes crédit, compliance et gestion des risques figurent parmi nos profils d'intervention récurrents. Nos démos s'appuient sur vos données réelles (reporting, scoring, contrats) pour montrer l'IA appliquée à vos vrais workflows.",
     },
     {
-      q: "Comment rejoindre Montreuil pour une intervention depuis Paris ou la banlieue ?",
-      a: "Le centre-ville et le Bas-Montreuil sont directement desservis par le métro ligne 9 (Croix de Chavaux, Robespierre, Mairie de Montreuil). Depuis Paris intra-muros, le trajet est court. Nos consultants gèrent leur déplacement",
+      q: "Intervenez-vous à Montreuil ?",
+      a: "Oui. Nous intervenons sur place à Montreuil, comme partout en France, ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Montreuil ?",
@@ -188,7 +188,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi à Bagnolet, Vincennes ou Rosny-sous-Bois ?",
-            a: "Oui. L'ensemble du bassin d'emploi montreuillois est notre zone d'intervention : Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais. Aucun supplément de zone.",
+            a: "Oui. L'ensemble du bassin d'emploi montreuillois est notre zone d'intervention : Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -203,7 +203,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil packs an exceptional sectorised B2B fabric for its size: digital (Ubisoft, Capgemini), finance (AFD, BNP Paribas Personal Finance), IT consulting and social economy — all sectors where operational AI delivers measurable ROI fast.",
           "Bas-Montreuil is our primary intervention zone in Seine-Saint-Denis: our consultants are familiar with the constraints of creative teams (gaming, media), IT departments and financial back-offices present in this district.",
-          "Our consultants travel across the full commune and neighbouring areas: Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil, Bagnolet, Vincennes, Rosny-sous-Bois, Fontenay-sous-Bois.",
+          "We work across the full commune and neighbouring areas: Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil, Bagnolet, Vincennes, Rosny-sous-Bois, Fontenay-sous-Bois.",
           "Read-outs always in person: ideation workshops at your Montreuil offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "You keep control: your action plan is executable with any vendor or in-house after our audit — no Axion-IA lock-in.",
@@ -280,7 +280,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Bagnolet, Vincennes or Rosny-sous-Bois?",
-            a: "Yes. The full Montreuil employment basin is our territory: Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais. No zone surcharge.",
+            a: "Yes. The full Montreuil employment basin is our territory: Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois, Le Pré-Saint-Gervais.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -378,7 +378,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -470,7 +470,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -508,11 +508,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             step: "Recette + formation",
             detail:
               "Sur site Montreuil : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring post-déploiement.",
-          },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
           },
         ],
         pricing: [
@@ -601,11 +596,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             detail:
               "On site Montreuil: user acceptance tests, training of internal ambassadors, runbook documentation delivery, post-deployment monitoring plan.",
           },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
-          },
         ],
         pricing: [
           {
@@ -669,7 +659,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil concentre des profils dirigeants et managers aux profils très variés — studio jeu vidéo, direction financière, équipe IT, ESS — pour lesquels un format individuel est souvent plus efficace qu'un collectif.",
           "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. Confidentialité stricte avant chaque accompagnement.",
-          "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
+          "Le rythme est le vôtre : sessions ponctuelles à la demande, coaching régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
           "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence.",
           "Tarif d'entrée accessible aux profils indépendants et TPE — pas réservé aux grandes structures.",
@@ -734,7 +724,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Combien de sessions sont nécessaires pour être autonome sur l'IA ?",
-            a: "Cela dépend de votre objectif et de votre niveau de départ. Certains profils atteignent une autonomie opérationnelle en une poignée de sessions, d'autres préfèrent un suivi régulier sur plusieurs mois. Nous calons le rythme ensemble au diagnostic initial.",
+            a: "Cela dépend de votre objectif et de votre niveau de départ. Certains profils atteignent une autonomie opérationnelle en une poignée de sessions, d'autres préfèrent un coaching régulier sur plusieurs mois. Nous calons le rythme ensemble au diagnostic initial.",
           },
           {
             q: "Les sessions sont-elles confidentielles ?",
@@ -757,7 +747,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil concentrates executives and managers with very diverse profiles — gaming studio, financial directorate, IT team, social economy — for whom an individual format is often more effective than a group one.",
           "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. Strict confidentiality before each engagement.",
-          "The pace is yours: ad-hoc sessions on demand, regular monthly follow-up or intensive over a few weeks depending on your goal.",
+          "The pace is yours: ad-hoc sessions on demand, regular monthly coaching or intensive over a few weeks depending on your goal.",
           "Each session starts from your real documents and your real workflows — no fictional exercises. You leave with operational tools and practices.",
           "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference.",
           "Entry price accessible to freelancers and micro-businesses — not reserved for large organisations.",
@@ -822,7 +812,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "How many sessions are needed to become autonomous on AI?",
-            a: "It depends on your goal and starting level. Some profiles reach operational autonomy in a handful of sessions; others prefer regular follow-up over several months. We agree on the pace together at the initial diagnostic.",
+            a: "It depends on your goal and starting level. Some profiles reach operational autonomy in a handful of sessions; others prefer regular coaching over several months. We agree on the pace together at the initial diagnostic.",
           },
           {
             q: "Are sessions confidential?",

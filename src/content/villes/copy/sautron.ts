@@ -49,7 +49,7 @@ export const SAUTRON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sautron ?",
-      a: "Oui, Axion-IA intervient à Sautron et toute Nantes Métropole (Orvault, Saint-Herblain, Nantes centre, Couëron). Couverture complète Loire-Atlantique, accès TGV Paris (2h15).",
+      a: "Oui, Axion-IA intervient à Sautron et toute Nantes Métropole (Orvault, Saint-Herblain, Nantes centre, Couëron).",
     },
     {
       q: "Accompagnez-vous les TPE et professions libérales de Sautron ?",
@@ -61,7 +61,7 @@ export const SAUTRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sautron ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Sautron, comme partout en France, ou à distance.",
     },
     {
       q: "L'audit sur place {{price:audit-flash|flat}} est-il adapté aux indépendants ?",

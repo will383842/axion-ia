@@ -7,21 +7,16 @@ import { LegalPageTemplate } from "@/components/sections/LegalPageTemplate";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
-import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
+import { CGV_DATE_ISO, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 import { buildProductMetadata } from "@/lib/seo";
-import { buildDeclarationActiviteSection } from "@/components/qualiopi/certifications-section";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
 
 const SLUG = "conditions-generales" as const;
-// ISR — 2026-08-17. La page était intégralement figée au build. Elle porte
-// désormais la section « Déclaration d'activité », dont le numéro est lu au
-// runtime : sans revalidation, la mention serait absente du HTML jusqu'au
-// déploiement suivant (au build, la base est le stub `stub.invalid` et le
-// drapeau de divulgation n'est pas un build-arg). Même valeur et même motif que
-// `/mentions-legales`.
+// ISR conservé (2026-08-17 : la page lisait alors le numéro de déclaration d'activité en base ;
+// depuis la v3, l'article 1.2 le porte en dur). Même valeur que `/mentions-legales`.
 export const revalidate = 3600;
 // Date de dernière révision de FOND de cette page — à tenir à jour, les CGV
 // renvoyant elles-mêmes à cette date pour déterminer la version applicable.
@@ -46,7 +41,36 @@ export const revalidate = 3600;
 // 2026-10-04 : ajout de l'article « Financement par un opérateur de
 // compétences (OPCO) » (FR + EN) — dépôt de la demande, subrogation, refus,
 // heures d'absence, non-paiement par l'OPCO. Le texte rendu change, la date suit.
+//
+// 2026-11-19 : CGV v3 (60 articles, annexes) en remplacement du texte du 18 novembre 2026,
+// archivé. Les passages relatifs au financement et à la certification restent cachés tant que
+// `QUALIOPI_CERTIFICATION_OBTENUE` n'est pas « true » (`@/content/cgv-passages-financement`).
 // La date elle-même vit dans `@/content/cgv-version` (source unique, enregistrée à la signature).
+//
+// 2026-11-21 : articles 6.5 et 12.1 : l'acompte n'est exigé que s'il est prévu au devis (défaut : aucun).
+// Le texte du 19 novembre 2026 est archivé à l'identique (@/content/cgv-archives).
+//
+// 2026-11-26 : articles 16.2, 47.5, 47.6, 47.7, 47.10 et 48.3 (garantie de remboursement de la
+// Journée IA, seuil de déduction, coût horaire plancher). Le texte du 21/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-27 : articles 47.5 (déplacement compris en Auvergne-Rhône-Alpes), 47.6 (acompte acquis en cas
+// d'annulation par le Client) et 47.10 (e) (vérification par Axion-IA, plus de déclaration du Client).
+// Le texte du 26/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-28 : décision du dirigeant — l'acompte versé reste acquis en cas d'annulation par le Client,
+// SANS condition de délai, pour tout ce qui est vendu (articles 6.5, 42.1, 46.2, 47.6, 49.5, 49.6) ; la
+// règle « annulée à plus de 15 jours ouvrés, acomptes remboursés » est supprimée. Rétractation légale
+// réservée (49.2, 53.2). Le texte du 27/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-29 : décision du dirigeant (26/11) — la personne morale non professionnelle (53.3) perd aussi son
+// acompte si elle annule, comme le Client professionnel, avec la clause RÉCIPROQUE exigée par R.212-2 2° (applicable aux non-professionnels par R.212-5) du code
+// de la consommation (annulation par Axion-IA hors force majeure : acompte rendu + indemnité égale). La personne
+// physique de l'article 49.2 reste remboursée en totalité. Le texte du 28/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-30 : décision du dirigeant (26/11) — Axion-IA n'annule jamais, elle REPORTE : si elle ne peut pas tenir une date,
+// report sans frais avec au moins 2 nouvelles dates sous 6 mois (première date réputée acceptée sans réponse, bon d'achat possible) (article 46.4, clause unique à laquelle
+// renvoient 6.5, 17.4, 49, 50.2 et 53.3). Remboursement (et indemnité égale, personne morale non professionnelle seule)
+// uniquement en dernier recours (aucune date convenue sous 6 mois et bon d'achat non choisi). Le texte du 29/11 est archivé (@/content/cgv-archives).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -70,14 +94,8 @@ export default async function ConditionsGenerales({ params }: Props) {
   const isFr = loc === "fr";
   const p = getLegal(SLUG);
   const copy = p[loc];
-  // Section « Déclaration d'activité » — le NDA est une mention due sur les
-  // documents contractuels et publicitaires (art. L.6352-4), et les CGV sont les
-  // deux à la fois. Ajoutée en fin de sections plutôt qu'insérée dans le corps
-  // de « Dispositions propres à la formation professionnelle » : y injecter du
-  // texte de configuration mêlerait une donnée runtime à une clause figée, et la
-  // clause resterait juste à sa place. `null` si le numéro n'est pas disponible.
-  const declaration = await buildDeclarationActiviteSection(isFr);
-  const sections = [...copy.sections, ...(declaration ? [declaration] : [])];
+  // La déclaration d'activité figure à l'article 1.2 : plus de section ajoutée au runtime.
+  const sections = copy.sections;
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: isFr ? p.pathFr : p.pathEn, label: copy.title }];
@@ -95,7 +113,8 @@ export default async function ConditionsGenerales({ params }: Props) {
         intro={copy.intro}
         sections={sections}
         lastUpdated={isFr ? CGV_VERSION_LIBELLE : CGV_VERSION_LIBELLE_EN}
-        lastUpdatedIso={CGV_VERSION}
+        lastUpdatedIso={CGV_DATE_ISO}
+        preserveLineBreaks
         relatedLinks={[
           { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
           {

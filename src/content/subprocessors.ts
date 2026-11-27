@@ -38,9 +38,10 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-11-14" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-11-19" as const;
 
-export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
+export type TransferFramework =
+  "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu" | "sans_donnee_personnelle";
 
 export interface Subprocessor {
   /** Nom commercial. */
@@ -279,28 +280,30 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     sansSousTraitant: true,
   },
   {
+    // Autorité désignée le 19/11/2026 : FreeTSA ; seule une empreinte SHA-256 est transmise.
     // Lot 4 bis (2026-11-07) — horodatage RFC 3161 des signatures de devis. Service GRATUIT : aucun
     // contrat payant, aucun compte. Ce qui part : UNE empreinte SHA-256 (64 caractères) et un nombre
     // aléatoire — ni nom, ni adresse, ni montant. L'autorité est CONFIGURABLE (`HORODATAGE_TSA_URL`, HTTPS
     // obligatoire en production) et il n'y en a AUCUNE par défaut (audit sécurité, 2026-11-07) : l'horodatage
     // reste coupé tant que l'exploitant n'en a pas choisi une. Au choix, cette entrée (nom, localisation,
     // cadre de transfert) est à compléter dans la même PR, et le statut à repasser à « active ».
-    name: "Autorité d'horodatage RFC 3161 (service gratuit, à désigner)",
-    location: "À préciser à la désignation de l'autorité",
-    serversLocation: "À préciser à la désignation de l'autorité",
+    name: "FreeTSA (freetsa.org) — autorité d'horodatage RFC 3161 (service gratuit)",
+    location: "Wurtzbourg, Allemagne",
+    serversLocation: "États-Unis (Los Angeles, relevé du 19/11/2026)",
     purposeFr:
-      "Horodatage certifié (norme RFC 3161) du sceau d'une signature de devis : l'autorité atteste que l'empreinte du sceau existait à l'instant indiqué. Service public gratuit, sans contrat. Si l'autorité est injoignable, la signature reste valable et le jeton est redemandé plus tard.",
+      "Horodatage (norme RFC 3161) du sceau d'une signature de devis : l'autorité atteste que l'empreinte du sceau existait à l'instant indiqué. Service gratuit, sans contrat. Si l'autorité est injoignable, la signature reste valable et le jeton est redemandé plus tard.",
     purposeEn:
-      "Certified time-stamping (RFC 3161) of a quote signature's seal: the authority attests that the seal's fingerprint existed at the stated time. Free public service, no contract. If the authority is unreachable, the signature stays valid and the token is requested again later.",
+      "Timestamping (RFC 3161 standard) of a quote signature's seal: the authority attests that the seal's fingerprint existed at the stated time. Free service, no contract. If the authority is unreachable, the signature stays valid and the token is requested again later.",
     dataCategoriesFr:
       "Une empreinte numérique SHA-256 du sceau de la signature (64 caractères hexadécimaux, non réversible) et un nombre aléatoire à usage unique. Aucun nom, aucune adresse électronique, aucun montant ni document n'est transmis.",
     dataCategoriesEn:
       "A SHA-256 digital fingerprint of the signature seal (64 hexadecimal characters, not reversible) and a one-time random number. No name, email address, amount or document is transmitted.",
     legalBasis: "6.1.b_contract",
     dpaStatus: "not_required",
-    transferFramework: "intra_eu",
+    transferFramework: "sans_donnee_personnelle",
     category: "core_infra",
-    activationStatus: "pending_activation",
+    activationStatus: "active",
+    documentationUrl: "https://freetsa.org/index_en.php",
   },
   // ───────────────────────────── communications & géo
   {

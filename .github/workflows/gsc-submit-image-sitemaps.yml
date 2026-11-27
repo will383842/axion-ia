@@ -69,8 +69,6 @@ jobs:
           echo "::notice::DRY_RUN — sitemaps qui seraient soumis :"
           echo "  https://axion-ia.com/sitemap-images-services.xml"
           echo "  https://axion-ia.com/sitemap-images-villes-t1.xml"
-          echo "  https://axion-ia.com/sitemap-images-villes-t2.xml"
-          echo "  https://axion-ia.com/sitemap-images-villes-t3-t4.xml"
 
       - name: Add URL-prefix property + submit sitemaps
         if: inputs.dry_run != 'true'
@@ -99,12 +97,10 @@ jobs:
             echo "::warning::Add property HTTP $HTTP_ADD — on tente quand même"
           fi
 
-          # Étape 2 : soumettre les 4 sitemaps
+          # Étape 2 : soumettre les 2 sitemaps
           SITEMAPS=(
             "https://axion-ia.com/sitemap-images-services.xml"
             "https://axion-ia.com/sitemap-images-villes-t1.xml"
-            "https://axion-ia.com/sitemap-images-villes-t2.xml"
-            "https://axion-ia.com/sitemap-images-villes-t3-t4.xml"
           )
 
           ALL_OK=true

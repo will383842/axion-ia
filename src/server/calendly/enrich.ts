@@ -39,6 +39,10 @@
 // passée depuis N heures ⇒ honoré ») affirmerait au CRM un fait commercial que
 // personne n'a constaté — et un rendez-vous passé n'a pas forcément eu lieu.
 
+import {
+  erreurRapprochement,
+  proposerPourRendezVous,
+} from "@/features/apporteurs-reseau/rapprochement-rendez-vous";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { notifierSelonMode, type OptionsNotifier } from "@/server/notifications/mode-envoi";
@@ -132,6 +136,11 @@ function mapCalendlyStatus(
   return null;
 }
 
+interface OptionsEnrich extends OptionsNotifier {
+  /** L'annulation vient d'être faite par la page `/appel/annuler` (lien de la personne). */
+  readonly annuleDepuisLeSite?: boolean;
+}
+
 /**
  * Enrichit une ligne `calendly_events` à partir de ses URI stockées.
  *
@@ -141,7 +150,7 @@ function mapCalendlyStatus(
  */
 export async function enrichCalendlyEvent(
   eventId: string,
-  options: OptionsNotifier = {},
+  options: OptionsEnrich = {},
 ): Promise<EnrichOutcome> {
   if (!isCalendlyApiConfigured()) return { ok: false, reason: "not_configured" };
 
@@ -404,6 +413,18 @@ export async function enrichCalendlyEvent(
   } catch (e) {
     Sentry.captureException(e);
     return { ok: false, reason: "db_write_failed" };
+  }
+
+  // ── Proposition de rapprochement avec une entreprise présentée (lot 5, 2026-11-25) ──
+  // APRÈS l'écriture réussie (`enrichedAt` posé). L'outil PROPOSE, le dirigeant valide : rien
+  // n'est validé ni envoyé ici. Interrupteur éteint : la fonction rend 0 sans lire la base.
+  // Best-effort strict : un échec du rapprochement ne casse jamais l'enrichissement.
+  try {
+    await proposerPourRendezVous({ calendlyEventId: eventId, invitee: brutFrais?.invitee });
+  } catch (e) {
+    Sentry.captureException(erreurRapprochement(e), {
+      tags: { service: "apporteurs-rapprochement-rdv" },
+    });
   }
 
   // 🔴 SEULE L'ADRESSE QUE CALENDLY CONFIRME DECIDE D'UN RATTACHEMENT, et ce
@@ -687,6 +708,7 @@ export async function enrichCalendlyEvent(
               ...(annulation?.reason ? { reason: annulation.reason } : {}),
               ...(annulation?.canceledBy ? { canceledBy: annulation.canceledBy } : {}),
               ...(annulation?.cancelerType ? { cancelerType: annulation.cancelerType } : {}),
+              ...(options.annuleDepuisLeSite ? { annuleDepuisLeSite: true } : {}),
               ...(inviteeName ? { inviteeName } : {}),
               ...(eventName ? { eventName } : {}),
               ...(telephone ? { inviteePhone: telephone } : {}),

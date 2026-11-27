@@ -49,7 +49,7 @@ export const WASSELONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wasselonne et dans le piémont des Vosges ?",
-      a: "Oui, Axion-IA intervient à Wasselonne et dans tout le canton (Marlenheim, Westhoffen, Marmoutier, Romanswiller) ainsi que dans le Bas-Rhin. Strasbourg à 30 min, Paris à 2h30 (TGV Strasbourg + route).",
+      a: "Oui, Axion-IA intervient à Wasselonne et dans tout le canton (Marlenheim, Westhoffen, Marmoutier, Romanswiller) ainsi que dans le Bas-Rhin.",
     },
     {
       q: "Quel est le tarif d''un audit IA à Wasselonne ?",

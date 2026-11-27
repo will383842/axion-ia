@@ -49,7 +49,7 @@ export const ANNONAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Annonay et nord-Ardèche ?",
-      a: "Oui, Axion-IA intervient à Annonay et tout le nord-Ardèche (Davézieux, Tournon-sur-Rhône à 30 min, Saint-Marcel-lès-Annonay). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Annonay et dans tout le nord-Ardèche : Davézieux, Tournon-sur-Rhône et Saint-Marcel-lès-Annonay. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles nord-Ardèche ?",
@@ -65,7 +65,7 @@ export const ANNONAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Annonay ?",
-      a: "Lyon (1h15) ou Saint-Étienne (45 min). Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Annonay, comme partout en France, ou à distance.",
     },
   ],
 };

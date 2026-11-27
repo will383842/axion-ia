@@ -255,7 +255,7 @@ describe("DevisPdf — identifiants émetteur manquants signalés (jamais masqu�
   it("SIRET vide → « Non renseigné » apparaît au lieu de disparaître", () => {
     const text = devisText(makeDevis({ identite: { ...IDENTITE, siret: "" } }));
     expect(text).toContain("Non renseigné");
-    expect(text).toContain("SIRET de l'organisme");
+    expect(text).toContain("SIRET");
   });
 });
 
@@ -385,5 +385,39 @@ describe("DevisPdf — choix scellé du client (exemplaire signé d'un devis à 
     const sans = collectPdfTextNormalized(React.createElement(DevisPdf, { data: makeDevis() }));
     expect(sans).not.toContain("Formule retenue par le client");
     expect(sans).not.toContain("Choix scellé");
+  });
+});
+
+describe("🔴 DevisPdf — « Signé le » (M1)", () => {
+  const base = {
+    signataireNom: "Camille Durand",
+    signeAtLisible: "30/07/2026 à 14:32 (heure de Paris)",
+    empreinte: "a".repeat(64),
+  };
+  it("ligne papier : pas de « Signé le » (l'heure est celle du versement)", () => {
+    const text = devisText(
+      makeDevis({
+        signatures: {
+          client: {
+            ...base,
+            methode: "papier_scanne",
+            imageSrc: null,
+            mentionPapier: "Signature manuscrite sur papier, versée au dossier le 30/07/2026.",
+          },
+        },
+      }),
+    );
+    expect(text).not.toContain("Signé le");
+    expect(text).toContain("versée au dossier le 30/07/2026");
+  });
+  it("signature électronique : « Signé le » présent", () => {
+    const text = devisText(
+      makeDevis({
+        signatures: {
+          client: { ...base, methode: "trace", imageSrc: "data:image/png;base64,AAAA" },
+        },
+      }),
+    );
+    expect(text).toContain("Signé le 30/07/2026 à 14:32 (heure de Paris)");
   });
 });

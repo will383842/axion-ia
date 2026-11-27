@@ -41,10 +41,20 @@
  * garde Plausible (anonyme, sans cookie, toujours actif) et on renonce à
  * Clarity ICI — pas ailleurs.
  *
+ * 2026-11-20 — `/diagnostic` n'est plus une page publicitaire : elle porte le Score IA TPE-PME,
+ * questionnaire INDEXÉ dont les réponses ne doivent jamais être vues par un outil d'enregistrement
+ * de session. On la GARDE donc ici : pas de Clarity (ni de bannière) sur ce parcours.
+ *
  * ⚠️ Reste vrai : la bannière disparaît parce qu'AUCUN script tiers n'est
  * chargé, jamais parce qu'on la masque. La distinction est tout.
  */
-const AD_LANDING_SEGMENTS = ["/diagnostic", "/simulateur", "/roi"] as const;
+const AD_LANDING_SEGMENTS = [
+  "/diagnostic",
+  "/simulateur",
+  "/roi",
+  // Questionnaire du Baromètre 2027 : réponses libres, aucun outil d'enregistrement de session.
+  "/questionnaire-barometre-ia-2027",
+] as const;
 
 /**
  * True si le chemin est une page d'atterrissage publicitaire.

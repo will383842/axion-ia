@@ -35,6 +35,8 @@ import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { CATALOGUE, LIBELLE_CATEGORIE } from "@/server/email/apercu/catalogue";
 import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import { renderEmailTemplate } from "@/lib/email/templates";
+import { enveloppeExpedition } from "@/lib/email/enveloppe";
+import { extrairePreEntete } from "@/lib/email/apercu-lecteur";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import {
   empreinteDuTexte,
@@ -97,6 +99,9 @@ export default async function ApercuGabaritPage({
     erreur = e instanceof Error ? e.message : String(e);
   }
 
+  // Nature : `enqueueEmail` ne la fixe que par l'option `marketing` de l'appelant ;
+  // aucun gabarit ne la porte en propre, donc l'aperçu part du transactionnel.
+  const enveloppe = enveloppeExpedition({ marketing: false });
   const dormant = fiche.source === null;
 
   const aValider = estTexteFormateurAValider(nom, variante ?? undefined);
@@ -156,23 +161,17 @@ export default async function ApercuGabaritPage({
             </div>
           ) : (
             <>
-              {/* La ligne d'objet, telle qu'elle s'affiche dans une boîte. */}
-              <div className="border-border bg-sand/30 mb-4 rounded-lg border px-4 py-3">
-                <p className="text-fg-muted text-[11px] font-medium tracking-wide uppercase">
-                  Objet
-                </p>
-                <p className="text-fg mt-1 text-sm leading-snug font-semibold">{rendu?.subject}</p>
-              </div>
-
-              {/*
-                Cadré à 680 px sur un fond neutre : c'est la largeur à laquelle
-                une boîte mail rend un e-mail. L'afficher pleine page donnerait
-                une idée fausse de ce que reçoit le destinataire.
-              */}
               <LecteurEmail
                 html={rendu?.html ?? ""}
                 texte={rendu?.text ?? null}
                 titre={`Aperçu de ${nom}`}
+                objet={rendu?.subject}
+                de={enveloppe.from}
+                repondreA={enveloppe.replyTo}
+                preEntete={extrairePreEntete(rendu?.html ?? "")}
+                pleinEcranHref={`/fr/${adminPrefix}/emails/lecture/gabarit/${encodeURIComponent(nom)}${
+                  variante !== null ? `?variante=${encodeURIComponent(variante)}` : ""
+                }`}
               />
             </>
           )}

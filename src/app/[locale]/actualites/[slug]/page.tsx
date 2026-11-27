@@ -52,7 +52,8 @@ import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { compterMotsTexte, unSeulBlocSources } from "@/server/content-gen/shared/sources-et-chapo";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
@@ -267,7 +268,7 @@ export default async function NewsArticlePage({ params }: Props) {
   }
 
   const article = t.article;
-  const wordCount = (t.bodyText ?? t.body).trim().split(/\s+/).length;
+  const wordCount = compterMotsTexte(t.bodyText ?? t.body);
   const sourceUrl = article.newsSourceUrl;
   const sourceName = article.newsSourceName;
 
@@ -363,7 +364,15 @@ export default async function NewsArticlePage({ params }: Props) {
   // fallback pour un `body` réellement dépourvu de HTML (ancien contenu legacy).
   const hasHtmlBody =
     typeof t.body === "string" && /<(h[1-6]|p|ul|ol|blockquote|table|figure|div)\b/i.test(t.body);
-  const newsBodyToc = hasHtmlBody ? buildToc(sanitizeContentGenHtml(t.body)) : null;
+  // Audit B (2026-11-26) — un seul bloc « Sources » : avant `buildToc` (sommaire).
+  const newsBodyToc = hasHtmlBody
+    ? buildToc(
+        unSeulBlocSources(
+          sanitizeContentGenHtml(t.body),
+          aDesSourcesAffichables(citations.map((c) => ({ name: c.title, url: c.url }))),
+        ),
+      )
+    : null;
   // GEO-079/081 — voir `@/lib/content/liens-internes` : les liens internes des
   // corps persistes sont ecrits sans prefixe de langue et redirigent chacun.
   const bodyHtmlFallback = newsBodyToc ? prefixerLiensInternes(newsBodyToc.html, locale) : null;
@@ -391,9 +400,8 @@ export default async function NewsArticlePage({ params }: Props) {
   // Accent éditorial du titre (parité /blog) — la queue rend en serif italique
   // terracotta via `titleEm` du <Section spacing="compact">.
   const titleParts = splitTitleEm(t.title);
-  // Bannière « Dernière révision » (parité /blog) — signal de fraîcheur E-E-A-T.
-  // Date de référence = updatedAt sinon publishedAt.
-  const lastReviewed = article.updatedAt ?? article.publishedAt;
+  // Un seul « Mis à jour le » visible : celui de l'en-tête (près du titre).
+  // Pas de bannière ni de date dans AuthorByline (doublons retirés).
 
   return (
     <>
@@ -456,7 +464,7 @@ export default async function NewsArticlePage({ params }: Props) {
             <>
               <span aria-hidden="true">·</span>
               <time dateTime={article.publishedAt.toISOString()} className="tabular-nums">
-                Publié le {article.publishedAt.toLocaleDateString("fr-FR")}
+                Publié le {article.publishedAt.toLocaleDateString("fr-FR", { timeZone: "UTC" })}
               </time>
             </>
           ) : null}
@@ -464,7 +472,7 @@ export default async function NewsArticlePage({ params }: Props) {
             <>
               <span aria-hidden="true">·</span>
               <time dateTime={article.updatedAt.toISOString()} className="tabular-nums">
-                Mis à jour le {article.updatedAt.toLocaleDateString("fr-FR")}
+                Mis à jour le {article.updatedAt.toLocaleDateString("fr-FR", { timeZone: "UTC" })}
               </time>
             </>
           ) : null}
@@ -489,34 +497,6 @@ export default async function NewsArticlePage({ params }: Props) {
             </>
           ) : null}
         </Container>
-        {/* Bannière « Dernière révision » (parité /blog) — signal de fraîcheur
-            E-E-A-T visible (Article.dateModified déjà émis côté JSON-LD).
-            Toujours affichée dès qu'une date de référence existe. */}
-        {lastReviewed ? (
-          <Container className="mt-4 max-w-3xl">
-            <div className="border-border bg-sand-50 text-fg-muted flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
-              <svg
-                aria-hidden="true"
-                className="text-terracotta-deep h-4 w-4 shrink-0"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.477-9.817a.75.75 0 0 1 1.053-.143Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>
-                Dernière révision :{" "}
-                <time dateTime={lastReviewed.toISOString()} className="tabular-nums">
-                  {lastReviewed.toLocaleDateString("fr-FR")}
-                </time>
-                {showUpdated ? <span className="text-fg-muted ml-1">(mis à jour)</span> : null}
-              </span>
-            </div>
-          </Container>
-        ) : null}
       </Section>
 
       {/* Layout 2 colonnes (parité blog 2026-06-25) : rail SOMMAIRE sticky à
@@ -577,7 +557,6 @@ export default async function NewsArticlePage({ params }: Props) {
                   ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
                   : {})}
                 publishedAt={article.publishedAt ?? null}
-                lastReviewedAt={article.updatedAt ?? null}
                 emitJsonLd={false}
                 locale="fr"
               />

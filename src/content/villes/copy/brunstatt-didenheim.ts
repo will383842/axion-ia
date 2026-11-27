@@ -49,7 +49,7 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brunstatt-Didenheim et autour de Mulhouse ?",
-      a: "Oui, Axion-IA intervient à Brunstatt-Didenheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Riedisheim, Rixheim, Illzach, Habsheim). Accès direct via A35/A36 et gare TGV Mulhouse-Ville (Paris à 2h40).",
+      a: "Oui, Axion-IA intervient à Brunstatt-Didenheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Riedisheim, Rixheim, Illzach, Habsheim).",
     },
     {
       q: "Combien coûte un audit IA à Brunstatt-Didenheim  ?",

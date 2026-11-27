@@ -22,6 +22,7 @@ import { Container } from "@/components/layout/Container";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { VisibiliteCallout } from "@/components/visibilite/VisibiliteCallout";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { MisAJourLe } from "@/components/marketing/MisAJourLe";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import {
   buildProductMetadata,
@@ -172,10 +173,10 @@ export default async function ImplementationListing({ params }: Props) {
           : "Build in short sprints with regular demos and business validation at each step. You watch the solution take shape on your real data, with no tunnel effect.",
       },
       {
-        name: isFr ? "Mise en production et suivi" : "Go-live and follow-up",
+        name: isFr ? "Mise en production" : "Go-live",
         text: isFr
-          ? "Recette, mise en production sur vos outils, monitoring et formation des équipes. Le code et la documentation vous sont livrés ; vous faites évoluer à la demande, sans abonnement imposé."
-          : "QA, go-live on your tools, monitoring and team training. Code and docs are delivered to you; you evolve on demand, with no imposed subscription.",
+          ? "Recette, mise en production sur vos outils et formation des équipes. Le code et la documentation vous sont livrés ; vous faites évoluer à la demande, sans abonnement imposé."
+          : "QA, go-live on your tools and team training. Code and docs are delivered to you; you evolve on demand, with no imposed subscription.",
       },
     ],
   });
@@ -285,6 +286,8 @@ export default async function ImplementationListing({ params }: Props) {
       <VisibiliteCallout isFr={isFr} />
 
       <ImplementationContactBand isFr={isFr} trackSuffix="-final" finale />
+
+      <MisAJourLe locale={loc} chemin="/implementation" />
 
       {/* CTA flottant mobile — visible < lg */}
       <StickyMobileCta

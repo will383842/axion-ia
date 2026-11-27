@@ -41,7 +41,8 @@ describe("buildServiceJsonLd : sortie inchangée sans les nouveaux paramètres",
       description: "Description de test.",
       url: `${SITE_URL}/fr/audit`,
       dateModified: "2026-01-02",
-      provider: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+      // V1-11 : le fournisseur par défaut cite l'entité unique par son @id.
+      provider: { "@id": `${SITE_URL}/#organization` },
       serviceType: "Audit",
       areaServed: [{ "@type": "Country", name: "France" }],
       availableChannel: [
@@ -124,7 +125,7 @@ describe("buildJourneeIaServiceJsonLd : le nœud partagé", () => {
     expect(noeud.audience).toStrictEqual({
       "@type": "BusinessAudience",
       audienceType: "PME et TPE",
-      numberOfEmployees: { "@type": "QuantitativeValue", minValue: 5, maxValue: 249 },
+      numberOfEmployees: { "@type": "QuantitativeValue", minValue: 2, maxValue: 250 },
     });
     expect(noeud.availableChannel).toStrictEqual([
       { "@type": "ServiceChannel", name: "Dans les locaux du client, partout en France" },

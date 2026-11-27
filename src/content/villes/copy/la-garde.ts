@@ -229,8 +229,8 @@ export const LA_GARDE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à La Garde ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à La Garde et dans la métropole toulonnaise, généralement sous cinq jours ouvrés après validation de la mission.",
+      q: "Intervenez-vous sur site à La Garde ?",
+      a: "Oui. Notre cabinet d'experts IA intervient directement dans vos locaux à La Garde et dans la métropole toulonnaise, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services de La Garde ?",
@@ -242,7 +242,7 @@ export const LA_GARDE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de La Garde ?",
-      a: "Oui. Nous nous déplaçons également à Toulon, Hyères, Le Pradet, La Valette-du-Var et dans le reste de la métropole pour des prestations sur site, sans surcoût caché.",
+      a: "Oui. Nous nous déplaçons également à Toulon, Hyères, Le Pradet, La Valette-du-Var et dans le reste de la métropole pour des prestations sur site.",
     },
     {
       q: "Vos solutions respectent-elles le RGPD à La Garde ?",

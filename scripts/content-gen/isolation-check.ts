@@ -73,6 +73,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // ci-dessus : consommateur, marqueur "content-gen" dans des commentaires
   // explicatifs uniquement (aucun code pipeline).
   /^src\/app\/sitemap-blog\.xml\/route\.ts$/,
+  // Retrait des mentions de financement (2026-11) : le workflow manuel et le seed d'offres
+  // nomment le script `scripts/content-gen/retrait-mentions-financement.ts` et le plan dans
+  // `src/server/content-gen/retrait-financement/` — chemins cités, aucun code de pipeline.
+  /^\.github\/workflows\/retrait-mentions-financement\.yml$/,
+  /^scripts\/seed-careers-offers\.ts$/,
+  /^tests\/unit\/ci\/offres-financement-archivees\.spec\.ts$/,
   // Script anti-siren : exclut content-gen (doctrine code détecte SIREN patterns)
   /^scripts\/check-anti-siren\.sh$/,
   // Queue manager + worker entry — orchestrent les queues content-gen
@@ -223,6 +229,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // consommateur non-éditorial devra rouvrir cette liste, et une liste qui
   // s'allonge à chaque usage légitime ne mesure plus rien.
   /^src\/server\/queue\/workers\/calendly-poll-worker\.ts$/,
+  // journee-ia-garantie-textes-publics.spec.ts (garantie Journée IA) : test qui
+  // LIT des textes publics pour vérifier la garantie. Le marqueur "content-gen"
+  // vient de chemins de fichiers cités en chaîne, pas d'un import du pipeline.
+  /^src\/app\/__tests__\/journee-ia-garantie-textes-publics\.spec\.ts$/,
   // prospection (feat/prospection 2026-07-04) — module autonome qui CONSOMME la
   // brique partagée `content-gen/_auth` (requireAdmin) via un import, et mentionne
   // "content-gen" dans un commentaire de contexte (robots.ts : « on ne réutilise
@@ -522,6 +532,17 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/seo\/job-posting\.ts$/,
   /^src\/server\/queue\/workers\/site-route-gsc-worker\.ts$/,
   /^src\/server\/site-explorer\/route-enumerator\.ts$/,
+  // Exceptions 2026-11-27 (pilotage SEO, P7 « opportunités »). CONSOMMATEURS LÉGITIMES
+  // en lecture seule de deux fonctions pures de content-gen, pas du code content-gen :
+  // - analyser.ts : `construireCarte` / `normaliserUrl`
+  //   (content-gen/strategie/carte-requetes) ;
+  // - detecteurs.ts : `normaliserUrl` seul (même module) ;
+  // - garde-fous.ts : `evaluerSujetCible` (content-gen/sujet-cible) + `normaliserUrl`.
+  // Trois fichiers NOMMÉS, volontairement : aucun autre fichier de seo-pilotage/ n'est
+  // exempté, un nouvel import de content-gen y reste donc signalé.
+  /^src\/server\/seo-pilotage\/opportunites\/analyser\.ts$/,
+  /^src\/server\/seo-pilotage\/opportunites\/detecteurs\.ts$/,
+  /^src\/server\/seo-pilotage\/opportunites\/garde-fous\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
   // secteurs). CONSOMMATEURS LÉGITIMES de la pain-matrix / KB content-gen (lecture
   // seule data) ou refs en commentaires — PAS du code content-gen core :
@@ -638,6 +659,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/visio\/openai\/(client|cout|erreurs|tarifs)\.ts$/,
   /^src\/server\/visio\/openai\/__tests__\/(chaque-modele-a-son-tarif|tout-appel-openai-passe-par-le-plafond-et-le-registre-des-couts|un-plafond-atteint-suspend-le-circuit-sans-toucher-au-kill-switch-de-content-gen|un-quota-epuise-suspend-toutes-les-etapes)\.spec\.ts$/,
   /^tests\/outils\/faux-openai-visio\.ts$/,
+  // GEO V2-11 (2026-11-19) — garde « un seul « Mis à jour le » par page article » : le
+  // marqueur est le CHEMIN du bloc de transparence (`src/components/content-gen/
+  // ArticleTransparencyBlock.tsx`), lu en texte pour compter ses étiquettes. Aucun import,
+  // aucun code du pipeline : même cas que `services-ssot.spec.ts` ci-dessus. Nominatif.
+  /^tests\/unit\/seo\/un-seul-mis-a-jour-par-article\.spec\.ts$/,
 ];
 
 /**

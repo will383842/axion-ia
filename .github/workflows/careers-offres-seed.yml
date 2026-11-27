@@ -26,7 +26,7 @@ on:
       slugs:
         description: "Slugs à écrire, séparés par des virgules (vide = refus)"
         required: true
-        default: "monteur-video-freelance-distance,monteur-video-motion,monteur-son-podcast,producteur-podcast,createur-ugc-reels,photographe-crea,business-developer-ia,charge-rd-ia,charge-subventions,developpeur-web,responsable-partenariats-evenements,responsable-reseau-commercial"
+        default: "monteur-video-freelance-distance,monteur-video-motion,monteur-son-podcast,producteur-podcast,createur-ugc-reels,photographe-crea,business-developer-ia,charge-rd-ia,developpeur-web,responsable-partenariats-evenements,responsable-reseau-commercial"
         type: string
       republish:
         description: "Rafraîchir publishedAt (date vue par Google for Jobs)"

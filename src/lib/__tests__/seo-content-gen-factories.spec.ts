@@ -7,6 +7,8 @@ import {
   buildPersonManonJsonLd,
   buildArticleJsonLd,
   buildBlogPostingJsonLd,
+  buildBlogPostingEquipeJsonLd,
+  dateModifieeHonnete,
   buildNewsArticleJsonLd,
   buildQAPageJsonLd,
   buildHowToJsonLd,
@@ -48,11 +50,11 @@ describe("truncateHeadline (VIS-13)", () => {
 });
 
 describe("buildPersonManonJsonLd", () => {
-  it("emits valid Person JSON-LD with @id and no sameAs", () => {
+  it("emits valid Organization JSON-LD (plume IA) with @id and no sameAs", () => {
     const ld = buildPersonManonJsonLd(MANON_FIXTURE);
-    expect(ld["@type"]).toBe("Person");
+    expect(ld["@type"]).toBe("Organization");
     expect(ld["@id"]).toMatch(/\/fr\/equipe\/manon#person$/);
-    expect(ld["name"]).toBe("Manon");
+    expect(ld["name"]).toBe("Plume IA d'Axion-IA");
     expect(ld["sameAs"]).toBeUndefined(); // doctrine v2.1 — zéro réseau social
   });
 
@@ -181,5 +183,59 @@ describe("buildSpeakableSpec / buildCitationArray / buildIndexNowPayload", () =>
     const payload = buildIndexNowPayload(urls);
     expect(payload.host).toBe("axion-ia.com");
     expect(payload.urlList).toHaveLength(10_000);
+  });
+});
+
+describe("BlogPosting équipe éditoriale (PR 9)", () => {
+  const base = {
+    title: "Audit IA pour PME",
+    description: "Description",
+    slug: "audit-ia",
+    locale: "fr" as const,
+    publishedAt: "2026-01-10T00:00:00.000Z",
+    updatedAt: "2026-02-01T00:00:00.000Z",
+    isBasedOn: [{ url: "https://exemple.fr/etude", name: "Étude" }],
+  };
+  const maintenant = new Date("2026-06-01T00:00:00.000Z");
+
+  it("interrupteur éteint : identique à buildBlogPostingJsonLd", () => {
+    expect(buildBlogPostingEquipeJsonLd(base, {})).toEqual(buildBlogPostingJsonLd(base));
+    expect(buildBlogPostingEquipeJsonLd(base, { CONTENT_EQUIPE_EDITORIALE: "1" })).toEqual(
+      buildBlogPostingJsonLd(base),
+    );
+  });
+
+  it("allumé : BlogPosting valide avec isBasedOn, JSON sérialisable, auteur inchangé", () => {
+    const on = { CONTENT_EQUIPE_EDITORIALE: "true" };
+    const ld = buildBlogPostingEquipeJsonLd({ ...base, maintenant }, on);
+    expect(ld["@type"]).toBe("BlogPosting");
+    expect(ld["@context"]).toBe("https://schema.org");
+    expect(ld["isBasedOn"]).toEqual([
+      { "@type": "CreativeWork", url: "https://exemple.fr/etude", name: "Étude" },
+    ]);
+    expect(ld["author"]).toEqual(buildBlogPostingJsonLd(base)["author"]);
+    expect(ld["reviewedBy"]).toBeUndefined();
+    expect(JSON.parse(JSON.stringify(ld))).toEqual(ld);
+  });
+
+  it("relecteur facultatif : émis seulement s'il est fourni", () => {
+    const on = { CONTENT_EQUIPE_EDITORIALE: "true" };
+    const ld = buildBlogPostingEquipeJsonLd({ ...base, relecteur: { name: "Alex Martin" } }, on);
+    expect(ld["reviewedBy"]).toEqual({ "@type": "Person", name: "Alex Martin" });
+  });
+
+  it("dateModified honnête : pas avant la publication, bornée à maintenant", () => {
+    expect(dateModifieeHonnete("2026-01-10", "2026-02-01", maintenant)).toBe(
+      "2026-02-01T00:00:00.000Z",
+    );
+    expect(dateModifieeHonnete("2026-01-10", "2025-12-01", maintenant)).toBe(
+      "2026-01-10T00:00:00.000Z",
+    );
+    expect(dateModifieeHonnete("2026-01-10", "2027-01-01", maintenant)).toBe(
+      "2026-06-01T00:00:00.000Z",
+    );
+    expect(dateModifieeHonnete("2026-01-10", "nimporte quoi", maintenant)).toBe(
+      "2026-01-10T00:00:00.000Z",
+    );
   });
 });

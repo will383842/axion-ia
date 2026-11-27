@@ -148,11 +148,14 @@ export function LivretAccueilPdf({
               alors que l'organisme ne l'est pas encore : fausse revendication de
               certification sur une pièce remise au stagiaire (et versée aux
               dossiers officiels). La mention ne sort que si le numéro Qualiopi
-              est réellement configuré. */}
+              est réellement configuré.
+              2026-11-18 — sans numéro (cas actuel), le fondateur interdit aussi
+              toute mention visible de Qualiopi ou de certification : la phrase
+              de repli est neutre. */}
           <Text style={[local.bodyText, { marginTop: 6 }]}>
             {identite.qualiopi
               ? "Notre organisme est certifié Qualiopi, gage de qualité de nos processus de formation. "
-              : "Notre organisme applique une démarche qualité alignée sur le référentiel national qualité (Qualiopi). "}
+              : "Notre organisme applique une démarche qualité exigeante dans ses processus de formation. "}
             Nous dispensons des formations professionnelles dans les domaines de l'intelligence
             artificielle, du numérique et des technologies émergentes.
           </Text>

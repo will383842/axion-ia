@@ -34,17 +34,26 @@ import {
   siretValide,
   type Etablissement,
 } from "./etablissement-presentation";
+import { apercu, type ApercuRendu } from "./apercu-envoi";
 import {
-  apercu,
   avecTexteLibre,
   envoyer,
-  type ApercuRendu,
   type EnvoiApporteur,
   type GabaritApporteur,
   type ResultatEnvoi,
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
+import { presentationOccupe, versReservationProvisoire } from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
+import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
+import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
+import {
+  enregistrerReservation,
+  lireIdsEnGrace,
+  lireReservations,
+  suitLaRegleRendezVous,
+} from "./reservation-presentation";
+import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -69,16 +78,8 @@ export function devisSigneNonFacture(d: {
   return facture < d.montantTotalHtCents;
 }
 
-/** Une présentation occupe-t-elle encore le SIREN à cette date ? */
-export function presentationOccupe(
-  p: { statut: StatutPresentation; protegeeJusquAt: Date | null },
-  maintenant: Date,
-): boolean {
-  if (p.statut === "reservee") return true;
-  if (p.statut === "confirmee")
-    return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
-  return false;
-}
+// `presentationOccupe` vit dans `regle-attribution.ts` (module pur, atteint par le worker) ; ré-exporté ici.
+export { presentationOccupe };
 
 const STATUTS_FACTURE_EMISE = ["emise", "partiellement_payee", "en_retard", "payee"] as const;
 
@@ -91,16 +92,22 @@ export async function lireSignalements(
   etablissement: Etablissement = { siret: null, entreprise: false, exclus: [] },
 ): Promise<Signalement[]> {
   const out: Signalement[] = [];
+  const enGrace = await lireIdsEnGrace(maintenant);
   const [presentations, tousClients] = await Promise.all([
     prisma.presentationEntreprise.findMany({
       where: {
         siren,
-        statut: { in: ["reservee", "confirmee"] },
+        // E1 : une réservation terminée sans validation occupe encore 30 jours.
+        OR: [
+          { statut: { in: ["reservee", "confirmee"] } },
+          { statut: "terminee", id: { in: enGrace } },
+        ],
         ...(saufId ? { id: { not: saufId } } : {}),
       },
       select: {
         id: true,
         statut: true,
+        recueAt: true,
         protegeeJusquAt: true,
         apporteur: { select: { prenom: true, nom: true } },
       },
@@ -114,13 +121,24 @@ export async function lireSignalements(
     etablissement.siret && !etablissement.entreprise
       ? tousClients.filter((c) => !c.siret || c.siret.replace(/\s+/g, "") === etablissement.siret)
       : tousClients;
+  const lignesGrace = await lireReservations(
+    presentations.filter((p) => p.statut === "terminee").map((p) => p.id),
+  );
   for (const p of presentations) {
-    if (!presentationOccupe(p, maintenant)) continue;
+    const enFenetre = p.statut === "terminee";
+    if (
+      !presentationOccupe(
+        p,
+        maintenant,
+        enFenetre ? versReservationProvisoire(p.recueAt, lignesGrace.get(p.id)) : undefined,
+      )
+    )
+      continue;
     if (!memePerimetre(etablissement, etabs.get(p.id)!)) continue;
     out.push({
       type: "deja_presentee",
       apporteur: nomComplet(p.apporteur.prenom, p.apporteur.nom),
-      statut: p.statut as "reservee" | "confirmee",
+      statut: enFenetre ? "reservee" : (p.statut as "reservee" | "confirmee"),
       jusquAu: p.protegeeJusquAt,
     });
   }
@@ -198,6 +216,16 @@ export function dateCourte(d: Date): string {
   });
 }
 
+/** « 24 janvier 2027 », heure de Paris (fin de réservation de l'accusé « rendez-vous »). */
+export function dateLongue(d: Date): string {
+  return d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
+}
+
 /** « lundi 5 octobre », en heure de Paris (format attendu par les gabarits). */
 export function dateGabarit(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
@@ -262,8 +290,14 @@ export async function creerPresentation(
   // son SIREN (réservée, ou protégée et non échue) n'est pas enregistrée une seconde fois — la
   // saisie console ne doit pas ouvrir une seconde réservation de 30 jours.
   const siennes = await prisma.presentationEntreprise.findMany({
-    where: { apporteurId: s.apporteurId, siren, statut: { in: ["reservee", "confirmee"] } },
-    select: { id: true, statut: true, protegeeJusquAt: true },
+    where: {
+      apporteurId: s.apporteurId,
+      siren,
+      // Contrat 2.8, art. 3.2 et 3.4 bis : les 30 jours après la fin d'une réservation ne bloquent
+      // que les AUTRES ; l'apporteur peut redéclarer, sans délai d'attente.
+      statut: { in: ["reservee", "confirmee"] },
+    },
+    select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   // Contrat 2.6 : par établissement — un AUTRE établissement de la même entreprise se déclare.
   const etabs = await lireEtablissements(siennes.map((p) => p.id));
@@ -271,8 +305,19 @@ export async function creerPresentation(
   // entière — la règle d'établissement ne lui est pas opposable sans avenant.
   const entiere = signeAvant26(apporteur.signatureApporteur);
   const moi: Etablissement = { siret, entreprise: entiere, exclus: [] };
+  // Règle par rendez-vous (contrat ≥ 2.8, interrupteur allumé) : une présentation dont la
+  // réservation est échue n'occupe plus rien, l'apporteur peut redéclarer. Aucune ligne
+  // (présentation d'avant, contrat 2.6) : la règle d'avant, inchangée.
+  const reservations = await lireReservations(siennes.map((p) => p.id));
   if (
-    siennes.some((p) => presentationOccupe(p, maintenant) && memePerimetre(moi, etabs.get(p.id)!))
+    siennes.some(
+      (p) =>
+        presentationOccupe(
+          p,
+          maintenant,
+          versReservationProvisoire(p.recueAt, reservations.get(p.id)),
+        ) && memePerimetre(moi, etabs.get(p.id)!),
+    )
   ) {
     return {
       ok: false,
@@ -290,6 +335,7 @@ export async function creerPresentation(
     s.dateEchange && /^\d{4}-\d{2}-\d{2}$/.test(s.dateEchange)
       ? new Date(`${s.dateEchange}T00:00:00Z`)
       : null;
+  const regle = regleDe(apporteur.signatureApporteur, validationParRendezVousActive());
   const cree = await prisma.$transaction(async (tx) => {
     const c = await tx.presentationEntreprise.create({
       data: {
@@ -311,6 +357,10 @@ export async function creerPresentation(
       select: { id: true },
     });
     await enregistrerEtablissement(c.id, siret, entiere, tx);
+    // Réservation de 60 jours à compter de la saisie. L'écriture ne rattrape RIEN (pas même la
+    // table absente) : la transaction s'annule et la création échoue, jamais de repli silencieux
+    // vers l'ancienne règle.
+    if (regle === "rendez_vous") await enregistrerReservation(c.id, finReservation(recueAt), tx);
     return c;
   });
   return { ok: true, id: cree.id };
@@ -477,6 +527,8 @@ export function existeDeclarationPlusAncienne(
     statut: StatutPresentation;
     protegeeJusquAt?: Date | null;
     recueAt?: Date | null;
+    /** Règle par rendez-vous : la réservation de la déclaration, si elle en a une. */
+    reservation?: { reserveeJusquAt: Date; rendezVousPrisAt?: Date | null } | null;
   }>,
   moi: { apporteurId: string; recueAt: Date },
   maintenant: Date,
@@ -489,6 +541,7 @@ export function existeDeclarationPlusAncienne(
       presentationOccupe(
         { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
         maintenant,
+        a.reservation && a.recueAt ? versReservationProvisoire(a.recueAt, a.reservation) : null,
       ),
   );
 }
@@ -560,6 +613,11 @@ interface DonneesEnvoi {
     personneEmail: string;
   };
   apporteur: { id: string; prenom: string; nom: string; email: string };
+  /**
+   * La règle de l'apporteur (`regleDe`, calculée au chargement). Absent ou `null` : la règle en
+   * vigueur (contrat 2.6, « 30 jours »), textes INCHANGÉS.
+   */
+  regle?: RegleAttribution;
 }
 
 const MOTIF_PAR_REPONSE = {
@@ -603,20 +661,34 @@ export function construireEnvoisReponse(
         ...commun,
         jobId: `entreprise-contact-apporteur-${d.presentation.id}`,
       },
-      {
-        gabarit: "apporteur-presentation-recue",
-        payload: avecTexteLibre(
-          {
-            contactName: nomApporteur,
-            entreprise: d.presentation.denomination,
-            datePresentation,
-            personnePresentee: d.presentation.personneNom,
+      d.regle === "rendez_vous"
+        ? {
+            // Validation par rendez-vous (contrat ≥ 2.8, interrupteur allumé) : l'accusé « 60 jours ».
+            // Pas de texte réécrit : le gabarit n'en porte pas (lot 7a, relu par le dirigeant).
+            gabarit: "apporteur-presentation-recue-rendez-vous",
+            payload: {
+              contactName: nomApporteur,
+              entreprise: d.presentation.denomination,
+              // `finReservation` est déjà la fin du 60e jour (jour 1 = la saisie, minuit Paris, N1).
+              dateFinReservation: dateLongue(finReservation(d.presentation.recueAt)),
+            },
+            ...versApporteur,
+            jobId: `apporteur-presentation-recue-${d.presentation.id}`,
+          }
+        : {
+            gabarit: "apporteur-presentation-recue",
+            payload: avecTexteLibre(
+              {
+                contactName: nomApporteur,
+                entreprise: d.presentation.denomination,
+                datePresentation,
+                personnePresentee: d.presentation.personneNom,
+              },
+              o.textes?.["apporteur-presentation-recue"],
+            ),
+            ...versApporteur,
+            jobId: `apporteur-presentation-recue-${d.presentation.id}`,
           },
-          o.textes?.["apporteur-presentation-recue"],
-        ),
-        ...versApporteur,
-        jobId: `apporteur-presentation-recue-${d.presentation.id}`,
-      },
     ];
   }
   return [
@@ -642,7 +714,11 @@ async function chargerDonneesEnvoi(
 ): Promise<(DonneesEnvoi & { statut: StatutPresentation; contactEnvoyeAt: Date | null }) | null> {
   const p = await prisma.presentationEntreprise.findUnique({
     where: { id },
-    include: { apporteur: { select: { id: true, prenom: true, nom: true, email: true } } },
+    include: {
+      apporteur: {
+        select: { id: true, prenom: true, nom: true, email: true, signatureApporteur: true },
+      },
+    },
   });
   if (!p) return null;
   return {
@@ -661,6 +737,7 @@ async function chargerDonneesEnvoi(
       nom: decryptPii(p.apporteur.nom) ?? "",
       email: decryptPii(p.apporteur.email) ?? "",
     },
+    regle: regleDe(p.apporteur.signatureApporteur, validationParRendezVousActive()),
   };
 }
 
@@ -787,6 +864,13 @@ export async function confirmerPresentation(
     select: { recueAt: true },
   });
   if (!p) return { ok: false, message: "Présentation introuvable." };
+  const ligne = (await lireReservations([id])).get(id);
+  if (suitLaRegleRendezVous(ligne))
+    return {
+      ok: false,
+      message:
+        "Cette présentation suit la règle par rendez-vous : elle se valide par un rendez-vous tenu ou une commande signée.",
+    };
   if (confirmeeAt.getTime() < p.recueAt.getTime() - 86_400_000) {
     return { ok: false, message: "La réponse ne peut pas précéder la présentation." };
   }
@@ -819,9 +903,10 @@ export async function dementirPresentation(
     where: { id, statut: { in: ["reservee", "confirmee"] } },
     data: { statut: "dementie" },
   });
-  return r.count === 1
-    ? { ok: true }
-    : { ok: false, message: "Cette présentation n'est plus en cours." };
+  if (r.count !== 1) return { ok: false, message: "Cette présentation n'est plus en cours." };
+  // Facultatif, éteint par défaut (APPORTEURS_EMAIL_REFUS) ; ne lève jamais.
+  await annoncerRefus(id, "dementie");
+  return { ok: true };
 }
 
 export async function noterPresentation(id: string, note: string): Promise<void> {

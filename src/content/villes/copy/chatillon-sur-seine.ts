@@ -49,7 +49,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtillon-sur-Seine et dans le Châtillonnais ?",
-      a: "Oui, Axion-IA intervient à Châtillon-sur-Seine et tout le Châtillonnais nord Côte-d'Or (Dijon à 1h10, Troyes à 1h, Paris à 2h30 par A5, Auxerre à 1h30).",
+      a: "Oui, Axion IA intervient partout en France, sur site ou à distance, y compris à Châtillon-sur-Seine et dans le Châtillonnais.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs et PME agroalimentaires du Châtillonnais ?",
@@ -65,7 +65,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Châtillon-sur-Seine ?",
-      a: "Dijon à 1h10 (TER). Paris à 2h30 par A5. Troyes à 1h.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Châtillon-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

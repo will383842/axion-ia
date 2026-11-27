@@ -254,6 +254,7 @@ ${sectionChiffresVerifies()}Rappel : 8-15 sections, output JSON strict (cf. syst
       jobId: input.jobId,
       contentType: "guide_pilier",
       role: "text",
+      blogClaudeRole: "ecriture",
       systemPrompt: SYSTEM_PROMPT_OUTLINE + getIntentPromptAddendum(input.targetSearchIntent),
       userPrompt: outlineUserPrompt,
       maxTokens: 2048,
@@ -297,6 +298,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
           jobId: input.jobId,
           contentType: "guide_pilier",
           role: "text",
+          blogClaudeRole: "ecriture",
           systemPrompt: SYSTEM_PROMPT_SECTION,
           userPrompt: sectionUserPrompt,
           maxTokens: 900,
@@ -378,6 +380,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       directAnswer: outline.directAnswer,
       bodyHtml: enrichedBody,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (outline.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       // faqJson conserve l'outline original pour audit trail + future re-gen
       // partielle d'une section donnée (V2 : admin /content-gen/jobs/[id] aurait

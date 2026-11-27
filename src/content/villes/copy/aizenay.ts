@@ -65,7 +65,7 @@ export const AIZENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aizenay ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation. Carrefour vendéen bien desservi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Nous travaillons dans vos locaux professionnels, atelier ou exploitation, à Aizenay comme dans le reste de la Vendée.",
     },
   ],
 };

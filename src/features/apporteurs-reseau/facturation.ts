@@ -50,6 +50,8 @@ import {
 } from "./commissions";
 import {
   aVirerPartielCents,
+  compensationDeclenchee,
+  jourParis,
   planCompensation,
   totalTtcPieceCents,
   dateFr,
@@ -62,7 +64,14 @@ import { lireEntrepriseParSiren, type ResultatRegistre } from "./annuaire";
 import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
 import { horsLitige, litigeDisponible } from "./litige";
-import { MESSAGE_EN_ATTENTE_DE_REALISATION, realisationDisponible } from "./realisation";
+import { paiementIntegralLe } from "./paiement-integral";
+import {
+  figerPiece,
+  piecesFigees,
+  piecesFigeesDisponible,
+  regimeApplicableAu,
+  regimesDesPieces,
+} from "./tva-pieces";
 import { signalerErreurReseau } from "./signaler";
 
 export function jobIdEmailAutofacture(numero: string): string {
@@ -151,6 +160,7 @@ function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown
     },
     select: {
       id: true,
+      factureId: true,
       statut: true,
       montantCents: true,
       palier: true,
@@ -221,45 +231,58 @@ export async function facturerApporteur(
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
   const annee = Number(moisParis(maintenant).slice(0, 4));
 
-  // Règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé avant que la prestation soit
-  // réalisée. Sans la colonne (worker avant la migration), on ne sait pas : rien n'est facturé.
-  if (!(await realisationDisponible())) {
-    return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
-  }
-  const hors = { ...(await horsLitige()), prestationRealiseeAt: { not: null } };
+  // Règle du 25/11 : la commission est due dès le paiement intégral du client, même si la
+  // prestation n'est pas livrée. Aucune condition « réalisée » (la colonne n'est plus lue).
+  const hors = await horsLitige();
   let avant = await lireAFacturer(prisma, apporteurId, hors);
   let dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
-  const total = avant.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  const paiementIntegral = await paiementIntegralLe(dues.map((c) => c.factureId));
+  // Régime de l'autofacture à ÉMETTRE : celui applicable aujourd'hui (changement daté, sinon fiche).
+  const regimeEmission = (await regimeApplicableAu(apporteurId, jourParis(maintenant))).regimeTva;
   // Art. 12.4 : les reprises dépassent les dues → COMPENSATION avec pièces. Les dues sont
   // facturées, les reprises imputées à hauteur exacte (la dernière scindée), le reste attend.
+  // Chaque reprise porte le régime de SA pièce d'avoir, donc de l'autofacture d'origine (figé).
+  const reprisesEnAttente = avant.filter((c) => c.statut === "reprise");
+  const originesCompensation = reprisesEnAttente.length
+    ? await originesDesReprises(reprisesEnAttente.filter((c) => !c.avoirNumero))
+    : new Map();
+  const regimesReprises = reprisesEnAttente.length
+    ? await regimesDesPieces(
+        reprisesEnAttente.map((c) =>
+          c.avoirNumero ? c.avoirNumero : (originesCompensation.get(c.id)?.numero ?? ""),
+        ),
+      )
+    : new Map();
+  const reprisesAvecRegime = [
+    // Un avoir déjà émis (reprise libérée) n'est jamais scindé, et passe en premier ; les autres
+    // sont regroupés comme leurs pièces (une par autofacture d'origine).
+    ...reprisesEnAttente.filter((c) => !!c.avoirNumero),
+    ...reprisesEnAttente.filter((c) => !c.avoirNumero),
+  ].map((c) => {
+    const numeroPiece = c.avoirNumero
+      ? c.avoirNumero
+      : (originesCompensation.get(c.id)?.numero ?? "");
+    const regime = regimesReprises.get(numeroPiece);
+    return {
+      ...c,
+      scindable: !c.avoirNumero,
+      piece: c.avoirNumero ? `avoir:${c.avoirNumero}` : numeroPiece || `?${c.id}`,
+      ...(regime !== undefined ? { regime } : {}),
+    };
+  });
   let compensation = false;
-  if (total <= 0) {
-    const regime =
-      (
-        await prisma.apporteurReseau.findUnique({
-          where: { id: apporteurId },
-          select: { regimeTva: true },
-        })
-      )?.regimeTva ?? null;
-    const originesCompensation = await originesDesReprises(
-      avant.filter((c) => c.statut === "reprise" && !c.avoirNumero),
-    );
-    const plan = planCompensation(
-      regime,
+  if (
+    compensationDeclenchee(
+      regimeEmission,
       dues.map((d) => d.montantCents ?? 0),
-      // Un avoir déjà émis (reprise libérée) n'est jamais scindé, et passe en premier ; les autres
-      // sont regroupés comme leurs pièces (une par autofacture d'origine).
-      [
-        ...avant.filter((c) => c.statut === "reprise" && !!c.avoirNumero),
-        ...avant.filter((c) => c.statut === "reprise" && !c.avoirNumero),
-      ].map((c) => ({
-        ...c,
-        scindable: !c.avoirNumero,
-        piece: c.avoirNumero
-          ? `avoir:${c.avoirNumero}`
-          : (originesCompensation.get(c.id)?.numero ?? `?${c.id}`),
-      })),
+      reprisesAvecRegime,
+    )
+  ) {
+    const plan = planCompensation(
+      regimeEmission,
+      dues.map((d) => d.montantCents ?? 0),
+      reprisesAvecRegime,
     );
     if (plan && "bloque" in plan) {
       await signalerSoldeNegatif(apporteurId, dues, avant, maintenant);
@@ -377,16 +400,13 @@ export async function facturerApporteur(
       ...(parAvoir.get(c.avoirNumero!) ?? []),
       Math.abs(c.montantCents ?? 0),
     ]);
-  const regimeTva =
-    dejaEmises.length > 0
-      ? ((
-          await prisma.apporteurReseau.findUnique({
-            where: { id: apporteurId },
-            select: { regimeTva: true },
-          })
-        )?.regimeTva ?? null)
-      : null;
-  const dejaTtc = [...parAvoir.values()].reduce((s, m) => s + totalTtcPieceCents(regimeTva, m), 0);
+  // Chaque avoir déjà émis compte à SON régime (figé sur sa pièce) ; sans pièce lue, celui d'émission.
+  const regimesDejaEmis = await regimesDesPieces([...parAvoir.keys()]);
+  const dejaTtc = [...parAvoir].reduce(
+    (s, [n, m]) =>
+      s + totalTtcPieceCents(regimesDejaEmis.has(n) ? regimesDejaEmis.get(n)! : regimeEmission, m),
+    0,
+  );
   const aVirer =
     pdf.totalTtcCents - avoirsPdf.reduce((s, a) => s + (a.pdf?.totalTtcCents ?? 0), 0) - dejaTtc;
   // Jamais de net négatif (il ferait perdre de l'argent) : la compensation l'empêche ; s'il
@@ -406,6 +426,9 @@ export async function facturerApporteur(
   // nul restée « due ») ; le relevé le dit (autofacture, avoir, net).
   const compense = compensation && aVirer === 0;
   const solde = compense ? { verseeAt: maintenant } : {};
+  // Si la table des pièces existe, le régime et les totaux de CHAQUE pièce sont figés dans la même
+  // transaction que l'émission : jamais de PDF sans pièce figée (une écriture en échec = rien d'émis).
+  const figer = await piecesFigeesDisponible();
 
   await prisma.$transaction(
     async (tx) => {
@@ -460,6 +483,32 @@ export async function facturerApporteur(
       }
       if (dues2.count + reprises !== avant.length)
         throw new Error("Les commissions ont changé pendant la facturation : réessai.");
+      if (figer) {
+        await figerPiece(tx, {
+          numero,
+          apporteurId,
+          genre: "facture",
+          regimeTva: pdf.regimeTva,
+          numeroTva: pdf.numeroTva,
+          totalHtCents: pdf.totalHtCents,
+          totalTvaCents: pdf.totalTvaCents,
+          totalTtcCents: pdf.totalTtcCents,
+          emiseAt: maintenant,
+        });
+        for (const a of avoirsPdf)
+          await figerPiece(tx, {
+            numero: a.numero,
+            apporteurId,
+            genre: "avoir",
+            regimeTva: a.pdf!.regimeTva,
+            numeroTva: a.pdf!.numeroTva,
+            totalHtCents: a.pdf!.totalHtCents,
+            totalTvaCents: a.pdf!.totalTvaCents,
+            totalTtcCents: a.pdf!.totalTtcCents,
+            factureRectifiee: a.origine || null,
+            emiseAt: maintenant,
+          });
+      }
     },
     { timeout: 15_000 },
   );
@@ -489,9 +538,10 @@ export async function facturerApporteur(
         contactName: nom,
         montant: euros(brut),
         numeroAutofacture: numero,
-        ...(compense ? {} : { echeance: dateFr(echeancePaiement(maintenant)) }),
+        ...(compense ? {} : { echeance: dateFr(echeancePaiement(maintenant, paiementIntegral)) }),
         ...(avoirs.length > 0 ? { avoirs } : {}),
         ...(montrerSomme ? { sommeVirement: euros(aVirer) } : {}),
+        regimeTva: pdf.regimeTva,
         ...(compense ? { compense: true } : {}),
       },
       entityType: "ApporteurReseau",
@@ -514,7 +564,15 @@ export async function facturerApporteur(
   }
   try {
     if (!compense)
-      await alerterAVirer({ apporteurId, nom, numero, totalCents: aVirer, emission: maintenant });
+      await alerterAVirer({
+        apporteurId,
+        nom,
+        numero,
+        totalCents: aVirer,
+        emission: maintenant,
+        paiementIntegral,
+        regimeTva: pdf.regimeTva,
+      });
   } catch (err) {
     signalerErreurReseau("autofacture : alerte interne", err);
   }
@@ -702,11 +760,15 @@ export async function alerterAVirer(e: {
   numero: string;
   totalCents: number;
   emission: Date;
+  /** Date du paiement intégral du client (le délai de 30 jours court de là). */
+  paiementIntegral?: Date | null;
+  /** Régime de TVA de la pièce : dit si la somme est « TVA comprise » ou « sans TVA ». */
+  regimeTva?: "assujetti" | "franchise_293b" | null;
 }): Promise<boolean> {
   const jobId = jobIdAlerteAutofacture(e.numero);
   if (await dejaEnvoye(jobId)) return false;
   const objectif = dateFr(objectifVirement(e.emission));
-  const echeance = dateFr(echeancePaiement(e.emission));
+  const echeance = dateFr(echeancePaiement(e.emission, e.paiementIntegral));
   const nom = e.nom || "un apporteur";
   const r = await enqueueEmail(
     "qualiopi-alerte-interne",
@@ -716,7 +778,7 @@ export async function alerterAVirer(e: {
       niveau: "important",
       code: "apporteur_autofacture_a_virer",
       titre: `À virer : ${euros(e.totalCents)} à ${nom}`,
-      message: `À virer : ${euros(e.totalCents)} à ${nom} (TVA comprise si l'apporteur la facture) avant le ${objectif} (objectif de virement). Échéance de paiement : ${echeance}. Autofacture ${e.numero} envoyée à l'apporteur ; une fois le virement fait, cliquez « Virement fait » dans les commissions.`,
+      message: `À virer : ${euros(e.totalCents)} à ${nom} (${e.regimeTva === "assujetti" ? "TVA comprise" : e.regimeTva === "franchise_293b" ? "sans TVA, franchise 293 B" : "TVA comprise si l'apporteur la facture"}) avant le ${objectif} (objectif de virement). Échéance de paiement : ${echeance}. Autofacture ${e.numero} envoyée à l'apporteur ; une fois le virement fait, cliquez « Virement fait » dans les commissions.`,
       cibleType: "ApporteurReseau",
       cibleId: e.apporteurId,
       createdAt: e.emission.toLocaleDateString("fr-FR"),
@@ -743,12 +805,9 @@ export async function facturerCommissionsDues(
   maintenant: Date = new Date(),
 ): Promise<BilanFacturation> {
   const bilan: BilanFacturation = { autofactures: 0, commissions: 0, ecartees: 0, erreurs: 0 };
-  // Sans la colonne « prestation réalisée », on ne facture rien (contrat 2.3, art. 4.2).
-  if (!(await realisationDisponible())) return bilan;
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
     where: {
-      prestationRealiseeAt: { not: null },
       statut: "due",
       autofactureNumero: null,
       montantCents: { not: null },
@@ -773,6 +832,35 @@ export async function facturerCommissionsDues(
 }
 
 // ── « Virement fait » ────────────────────────────────────────────────────
+
+const avoirsDe = (lignes: ReadonlyArray<{ avoirNumero: string | null }>): string[] => [
+  ...new Set(lignes.map((l) => l.avoirNumero).filter((n): n is string => !!n)),
+];
+
+/**
+ * Ce que dit le PDF : TTC de l'autofacture moins TTC de chaque avoir imputé, lus sur les pièces
+ * FIGÉES. `null` quand une pièce n'a pas de total figé (reprise à la migration, rattrapage) ou
+ * qu'une reprise sans avoir est comptée dans l'autofacture : la garde ne s'applique pas.
+ */
+function montantDesPdf(
+  numero: string,
+  lignes: ReadonlyArray<{ statut: string; avoirNumero: string | null }>,
+  figeesFactures: Awaited<ReturnType<typeof piecesFigees>>,
+  figeesAvoirs: Awaited<ReturnType<typeof piecesFigees>>,
+): number | null {
+  const f = figeesFactures.get(numero);
+  if (!f || f.totalTtcCents === null) return null;
+  let total = f.totalTtcCents;
+  for (const l of lignes) {
+    if (l.statut === "reprise" && !l.avoirNumero) return null;
+  }
+  for (const n of avoirsDe(lignes)) {
+    const a = figeesAvoirs.get(n);
+    if (!a || a.totalTtcCents === null) return null;
+    total -= a.totalTtcCents;
+  }
+  return total;
+}
 
 /**
  * « Virement fait » : confirme que le virement est parti. Les commissions facturées (statut `due`,
@@ -803,7 +891,6 @@ export async function marquerVerse(
         autofactureNumero: null,
         montantCents: { not: null },
         ...(await horsLitige()),
-        prestationRealiseeAt: { not: null },
       },
     });
     if (sansPiece > 0) {
@@ -836,21 +923,6 @@ export async function marquerVerse(
       orderBy: { creeAt: "asc" },
     });
 
-  // Prestation pas encore réalisée sur une commission de ce virement : rien n'est versé (4.2).
-  if (!(await realisationDisponible())) {
-    return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
-  }
-  const nonRealisees = await prisma.commissionApporteur.count({
-    where: {
-      apporteurId,
-      statut: "due",
-      autofactureNumero: numero ? numero : { not: null },
-      prestationRealiseeAt: null,
-      ...hors,
-    },
-  });
-  if (nonRealisees > 0) return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
-
   const avant = await lireAVerser(prisma);
   const dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) {
@@ -880,14 +952,47 @@ export async function marquerVerse(
     const k = c.autofactureNumero ?? "";
     parFacture.set(k, [...(parFacture.get(k) ?? []), c]);
   }
+  // Le régime de CHAQUE PIÈCE (figé à son émission) : le virement suit le PDF, jamais la fiche.
+  // Sans pièce lue (table absente, pièce d'avant), repli sur la fiche : le comportement d'avant.
+  const regimes = await regimesDesPieces(
+    avant.flatMap((c) => [c.autofactureNumero, c.avoirNumero]).filter((n): n is string => !!n),
+  );
+  const figees = await piecesFigees([...parFacture.keys()].filter((k) => k !== ""));
   let total = 0;
   for (const [k, lignes] of parFacture) {
-    const p = aVirerPartielCents(apporteur.regimeTva, lignes, suspendues.get(k) ?? []);
+    const regimeFacture = regimes.has(k) ? regimes.get(k)! : apporteur.regimeTva;
+    const p = aVirerPartielCents(
+      {
+        facture: regimeFacture,
+        avoir: (n) => (regimes.has(n) ? regimes.get(n)! : regimeFacture),
+      },
+      lignes,
+      suspendues.get(k) ?? [],
+    );
     if (!p.partielPossible) {
       return {
         ok: false,
         message:
           "Levez d'abord la suspension : les reprises dépassent les lignes à verser de cette autofacture.",
+      };
+    }
+    // Garde « le virement suit le PDF » : sans ligne suspendue, le montant recalculé DOIT être celui
+    // des pièces figées (autofacture moins avoirs). Jamais un virement différent du PDF.
+    // Seulement si TOUTES les lignes de la pièce sont à verser ici : après un versement partiel
+    // (une ligne suspendue puis levée), les lignes restantes ne valent plus le PDF entier.
+    const autres = await prisma.commissionApporteur.count({
+      where: { autofactureNumero: k, id: { notIn: lignes.map((l) => l.id) } },
+    });
+    const attendu =
+      autres === 0 ? montantDesPdf(k, lignes, figees, await piecesFigees(avoirsDe(lignes))) : null;
+    if ((suspendues.get(k) ?? []).length === 0 && attendu !== null && attendu !== p.totalCents) {
+      signalerErreurReseau(
+        "virement : le montant recalculé ne correspond pas au PDF",
+        new Error(`autofacture ${k} : ${p.totalCents} centimes recalculés, ${attendu} sur le PDF`),
+      );
+      return {
+        ok: false,
+        message: `Le montant recalculé ne correspond pas à l'autofacture N° ${k} : signalé, rien n'est confirmé.`,
       };
     }
     total += p.totalCents;
@@ -958,6 +1063,8 @@ export interface VirementAFaire {
   lignes: number;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli `majAt`). */
   emissionAt: Date;
+  /** Paiement intégral du client (le délai de 30 jours court de là), s'il est connu. */
+  paiementIntegralAt: Date | null;
 }
 
 /**
@@ -1005,6 +1112,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
     },
     select: {
       apporteurId: true,
+      factureId: true,
       autofactureNumero: true,
       avoirNumero: true,
       montantCents: true,
@@ -1032,6 +1140,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
         totalCents: 0,
         lignes: 1,
         emissionAt: emission,
+        paiementIntegralAt: null,
       });
     } else {
       cur.lignes += 1;
@@ -1039,8 +1148,23 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
     }
   }
   const suspendues = await suspenduesParNumero();
+  // Le régime de chaque PIÈCE (figé) ; sans pièce lue, celui de la fiche (comportement d'avant).
+  const regimes = await regimesDesPieces(
+    lignes.flatMap((l) => [l.autofactureNumero, l.avoirNumero]).filter((n): n is string => !!n),
+  );
   for (const [numero, ls] of parNumero) {
-    const p = aVirerPartielCents(ls[0]!.apporteur.regimeTva, ls, suspendues.get(numero) ?? []);
+    const v = m.get(numero);
+    if (v) v.paiementIntegralAt = await paiementIntegralLe(ls.map((x) => x.factureId));
+    const fiche = ls[0]!.apporteur.regimeTva;
+    const regimeFacture = regimes.has(numero) ? regimes.get(numero)! : fiche;
+    const p = aVirerPartielCents(
+      {
+        facture: regimeFacture,
+        avoir: (n) => (regimes.has(n) ? regimes.get(n)! : regimeFacture),
+      },
+      ls,
+      suspendues.get(numero) ?? [],
+    );
     // Rien à virer tant que la suspension dure (partiel refusé), ou total nul : pas affiché.
     if (!p.partielPossible || p.totalCents <= 0) m.delete(numero);
     else m.get(numero)!.totalCents = p.totalCents;

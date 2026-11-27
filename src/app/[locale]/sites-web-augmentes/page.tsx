@@ -26,6 +26,7 @@ import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { MisAJourLe } from "@/components/marketing/MisAJourLe";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
@@ -129,7 +130,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
         url: `${SITE_URL}/${loc}/sites-web-augmentes`,
         description: isFr
           ? "Assistant conversationnel ancré sur vos contenus, hébergé UE."
-          : "Conversational assistant grounded in your content, zero hallucination, EU-hosted.",
+          : "Conversational assistant grounded in your content, EU-hosted.",
       },
       {
         position: 2,
@@ -286,6 +287,8 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       <VisibiliteCallout isFr={isFr} />
 
       <SitesWebCtaBlock isFr={isFr} />
+
+      <MisAJourLe locale={loc} chemin="/sites-web-augmentes" />
 
       {/* STICKY CTA MOBILE */}
       <StickyMobileCta

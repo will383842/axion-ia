@@ -238,37 +238,8 @@ export default async function PressePage({ params, searchParams }: Props) {
     speakable: buildSpeakableSpecification({
       selectors: ["#press-pitch"],
     }),
-    about: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA",
-      legalName: legal.legalName,
-      url: SITE_URL,
-      address: {
-        "@type": "PostalAddress",
-        // Pays seulement (décision Williams 2026-11-08, n°19) : l'adresse du siège
-        // reste dans les mentions légales, pas dans les données structurées.
-        addressCountry: "FR",
-      },
-      contactPoint: [
-        {
-          "@type": "ContactPoint",
-          contactType: "customer service",
-          email: "contact@axion-ia.com",
-          availableLanguage: ["French", "English"],
-        },
-        {
-          "@type": "ContactPoint",
-          contactType: "media inquiry",
-          email: t("contactEmail"),
-          availableLanguage: ["French", "English"],
-        },
-      ],
-      sameAs: [
-        "https://www.linkedin.com/company/axion-ia-france",
-        "https://www.facebook.com/axioniacom",
-      ],
-    },
+    // Une seule fiche Organization (V1-11) : référence `@id`, la définition complète est dans le layout.
+    about: { "@id": `${SITE_URL}/#organization` },
   };
 
   const releasesItemList =

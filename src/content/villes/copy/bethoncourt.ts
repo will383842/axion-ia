@@ -49,7 +49,7 @@ export const BETHONCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Bethoncourt et dans le Pays de Montbeliard ?",
-      a: "Oui, Axion-IA intervient a Bethoncourt et dans tout le Pays de Montbeliard (Montbeliard, Sochaux, Audincourt, Grand-Charmont). Gare TGV Belfort-Montbeliard a 12 km.",
+      a: "Oui, Axion-IA intervient a Bethoncourt et dans tout le Pays de Montbeliard (Montbeliard, Sochaux, Audincourt, Grand-Charmont).",
     },
     {
       q: "Accompagnez-vous les prestataires de services a la personne ?",

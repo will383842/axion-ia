@@ -65,7 +65,7 @@ export const ARQUES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Arques ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Saint-Omer à 5 min, Lille à 1h15. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nos consultants se déplacent sur site.",
     },
   ],
 };

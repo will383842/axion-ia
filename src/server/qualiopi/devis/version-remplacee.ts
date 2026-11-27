@@ -4,8 +4,9 @@
  *
  * À appeler DANS la transaction qui pose la nouvelle version « envoye » : l'ancienne version
  * passe « expire » (jamais d'écrasement) et son lien de signature est révoqué, dans la MÊME
- * transaction. La révocation ne touche AUCUNE signature déjà apposée : elle ferme le lien, elle
- * n'efface pas une preuve.
+ * transaction. Sa ligne est verrouillée (`FOR NO KEY UPDATE`) et son statut relu sous ce verrou :
+ * la décision ne repose jamais sur un statut lu en début de transaction. La révocation ne touche
+ * AUCUNE signature déjà apposée : elle ferme le lien, elle n'efface pas une preuve.
  */
 
 import type { Prisma } from "../../../../prisma/generated/client";
@@ -54,22 +55,44 @@ export async function cloreVersionRemplacee(
     replacesDevisId: string | null;
     documentGenereIdRemplace: string | null | undefined;
     numero: string;
-    /** Statut de la version remplacée vu à la relecture (même transaction). Obligatoire. */
-    statutRemplace: string | null | undefined;
+    /**
+     * Facultatif et NON LU : le statut de début de transaction peut dater de 60 s. La décision
+     * se prend sur le statut relu SOUS le verrou de ligne (voir ci-dessous).
+     */
+    statutRemplace?: string | null | undefined;
   },
 ): Promise<void> {
-  const { replacesDevisId, documentGenereIdRemplace, numero, statutRemplace } = params;
-  // Révision : seule une version « envoye » et non signée par le client passe `expire`
-  // (jamais d'écrasement). Déjà « refuse » ou « expire » : laissée telle quelle.
-  if (replacesDevisId != null && statutRemplace === "envoye") {
-    const maj = await tx.devis.updateMany({
-      where: { id: replacesDevisId, statut: "envoye", ...pasSigneParLeClient },
-      data: { statut: "expire" as const },
-    });
-    // La relecture la voyait « envoye » : 0 ligne = une signature est arrivée entre-temps.
-    if (maj.count === 0) {
+  const { replacesDevisId, documentGenereIdRemplace, numero } = params;
+  if (replacesDevisId != null) {
+    // Verrou de LIGNE sur la version remplacée, tenu jusqu'à la fin de la transaction, et statut
+    // relu SOUS ce verrou. Le statut lu en début de transaction (`statutRemplace`) peut dater de
+    // 60 s : une prolongation ou une acceptation a pu passer entre-temps. Ne jamais retirer ce
+    // verrou : sans lui, deux versions du même devis peuvent rester ouvertes.
+    const [ligne] = await tx.$queryRaw<{ statut: string }[]>`
+      SELECT statut::text AS statut FROM devis WHERE id = ${replacesDevisId}::uuid FOR NO KEY UPDATE
+    `;
+    const statutFrais = ligne?.statut;
+    if (statutFrais === "accepte" || statutFrais === "transforme_convention") {
       throw new VersionRemplaceeSigneeEntreTempsError();
     }
+    if (statutFrais === "envoye") {
+      // Seule une version « envoye » et non signée par le client passe `expire`.
+      const maj = await tx.devis.updateMany({
+        where: { id: replacesDevisId, statut: "envoye", ...pasSigneParLeClient },
+        data: { statut: "expire" as const },
+      });
+      if (maj.count === 0) {
+        throw new VersionRemplaceeSigneeEntreTempsError();
+      }
+    } else if (statutFrais === "expire") {
+      // Aucune écriture de statut (ligne verrouillée jusqu'à la fin) ; mais un client qui a signé
+      // entre-temps (scan papier, par exemple) interdit l'émission.
+      const nonSigne = await tx.devis.count({
+        where: { id: replacesDevisId, ...pasSigneParLeClient },
+      });
+      if (nonSigne === 0) throw new VersionRemplaceeSigneeEntreTempsError();
+    }
+    // Absente, « refuse » ou « brouillon » : aucune écriture de statut.
   }
   // 🔴 …et son lien de signature est RÉVOQUÉ, dans la MÊME transaction : sinon le client
   // détiendrait deux liens vivants et pourrait signer la version périmée.

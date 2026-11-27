@@ -19,6 +19,7 @@ import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
 import { ABOUT_PHOTO_CREDITS } from "@/content/a-propos/about-photos";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { Link } from "@/i18n/navigation";
 import {
   buildProductMetadata,
   buildPersonJsonLd,
@@ -31,6 +32,8 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
 import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
+import { DESCRIPTION_ENTITE_FR } from "@/content/journee-ia-commun";
+import { faqItems } from "@/content/questions-reference";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
 // sont émises QUE si la Phase B est active (elles apparaîtront automatiquement
 // dès le passage du flag, sans retoucher le code). Doctrine financement respectée.
@@ -147,8 +150,7 @@ export default async function About({ params }: Props) {
         {
           id: "definition",
           question: "Qu'est-ce qu'Axion-IA ?",
-          answer:
-            "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle, basé en France. Il accompagne les PME et les TPE sur l'audit IA, la formation, l'implémentation de solutions IA en production, le coaching 1-à-1 et les sites web augmentés, avec une approche centrée sur des résultats concrets et mesurables.",
+          answer: DESCRIPTION_ENTITE_FR,
         },
         {
           id: "siege",
@@ -185,17 +187,16 @@ export default async function About({ params }: Props) {
           answer:
             "Chaque demande de devis ou de contact est lue et traitée par un membre de notre équipe, jamais par un robot, sans engagement.",
         },
-        {
-          id: "prix-formation-ia",
-          question: "Combien coûte une formation IA en entreprise ?",
-          answer:
-            "Les formations IA en entreprise sont établies sur devis, par groupe : le prix dépend de la durée (de 4 h à 2 jours), du format et du nombre de participants. Le devis précis se construit après un échange sur votre contexte, sous 48 h ouvrées.",
-        },
+        ...faqItems(["ref-formation-prix"]).map(({ id, question, answer }) => ({
+          id,
+          question,
+          answer,
+        })),
         {
           id: "contact",
           question: "Comment contacter Axion-IA ?",
           answer:
-            "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine. Vous pouvez aussi réserver directement un appel de découverte.",
+            "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine. Vous pouvez aussi réserver directement un Diagnostic IA de 45 minutes.",
         },
         // Q/R Qualiopi / financement — émises UNIQUEMENT en Phase B (flag OF).
         // Doctrine financement : jamais de CPF, jamais « 100 % / gratuit »,
@@ -447,12 +448,12 @@ export default async function About({ params }: Props) {
                   ? [
                       "Aucune intervention sans démonstration sur vos données réelles.",
                       "Aucun devis sans plan d'action chiffré et priorisé.",
-                      "Aucun déploiement sans support post-livraison inclus.",
+                      "Aucun déploiement sans code et documentation remis.",
                     ]
                   : [
                       "No engagement without a live demo on your real data.",
                       "No quote without a costed, prioritised action plan.",
-                      "No deployment without post-delivery support included.",
+                      "No deployment without code and documentation handed over.",
                     ]
                 ).map((item) => (
                   <li key={item} className="flex items-start gap-3.5">
@@ -480,7 +481,7 @@ export default async function About({ params }: Props) {
       {/* Proof — chiffres clés */}
       <Section eyebrow={isFr ? "Repères" : "Key figures"} tone="sand">
         <Container>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 figure: "2026",
@@ -502,13 +503,6 @@ export default async function About({ params }: Props) {
                 detail: isFr
                   ? "Chaque message est lu par un humain."
                   : "Every message is read by a human.",
-              },
-              {
-                figure: "30 j",
-                label: isFr ? "Support inclus" : "Support included",
-                detail: isFr
-                  ? "Maintenance corrective post-livraison incluse."
-                  : "Post-delivery corrective maintenance included.",
               },
             ].map((stat) => (
               <div
@@ -582,9 +576,7 @@ export default async function About({ params }: Props) {
               </p>
               <p>
                 <strong>{isFr ? "ROI mesurable." : "Measurable ROI."}</strong>{" "}
-                {isFr
-                  ? "Plan d'action chiffré priorisé, support post-livraison inclus."
-                  : "Costed prioritised action plan, post-delivery support included."}
+                {isFr ? "Plan d'action chiffré et priorisé." : "Costed, prioritised action plan."}
               </p>
               <p>
                 <strong>{isFr ? "Souveraineté." : "Sovereignty."}</strong>{" "}
@@ -616,6 +608,20 @@ export default async function About({ params }: Props) {
               />
             </div>
           </div>
+          <p className="text-fg-soft mt-10 text-base leading-relaxed">
+            {isFr
+              ? "Axion-IA s'appuie aussi sur un réseau d'indépendants qui présentent la Journée IA aux dirigeants qu'ils connaissent. "
+              : "Axion-IA also relies on a network of independents who introduce the AI Day to business owners they know. "}
+            <Link
+              href={"/devenir-commercial-ia" as never}
+              className="text-terracotta font-semibold underline underline-offset-4"
+            >
+              {isFr
+                ? "Devenir apporteur d'affaires indépendant"
+                : "Become an independent business referrer"}
+            </Link>
+            .
+          </p>
         </Container>
       </Section>
 
@@ -637,8 +643,8 @@ export default async function About({ params }: Props) {
           </h2>
           <p className="text-fg-soft mx-auto mt-4 max-w-2xl text-center text-lg leading-relaxed">
             {isFr
-              ? "Chaque mission suit le même fil : cadrage, démonstration sur vos données, déploiement et suivi. Vous voyez le résultat avant de vous engager."
-              : "Every engagement follows the same thread: scoping, a demo on your data, deployment and follow-up. You see the result before you commit."}
+              ? "Chaque mission suit le même fil : cadrage, démonstration sur vos données, déploiement. Vous voyez le résultat avant de vous engager."
+              : "Every engagement follows the same thread: scoping, a demo on your data, deployment. You see the result before you commit."}
           </p>
           <div className="mt-10">
             <Illustration

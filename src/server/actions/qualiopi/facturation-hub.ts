@@ -40,7 +40,10 @@ import {
   dateDepartDansLePasse,
   planifierFacturationDevis,
 } from "@/server/qualiopi/financements/facture-libre-pur";
-import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  factureCommissionneeParApporteur,
+  MESSAGE_AVOIR_COMMISSION,
+} from "@/server/qualiopi/financements/avoir-commission-apporteur";
 import { lirePalierSuivant } from "@/server/qualiopi/devis/palier-suivant";
 import { exigerIdccConfirme } from "@/server/qualiopi/financements/blocage-idcc";
 // SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
@@ -244,8 +247,8 @@ export async function genererFactureDepuisDevisAction(
 
   // Devis à formules (lot 5) — GARDE : une offre non NULL sans formule retenue n'a pas de
   // montant convenu (deux formules = lignes vides tant que le client n'a pas choisi). On
-  // refuse AVANT toute lecture des lignes. Inerte interrupteur éteint.
-  const devisAFormules = devis.offre != null && (await formulesActives());
+  // refuse AVANT toute lecture des lignes. Ne dépend PAS de l'interrupteur : l'argent suit l'offre figée, pas un réglage.
+  const devisAFormules = devis.offre != null;
   if (devisAFormules && devis.formuleRetenue === null) {
     return {
       error:
@@ -446,11 +449,15 @@ const GenererAvoirSchema = z.object({
   /** Absent = avoir TOTAL. Sinon montant HT partiel en centimes. */
   montantPartielHtCents: z.number().int().positive().optional(),
   motif: z.string().min(5).max(500),
+  /** Case cochée : vrai remboursement sur une facture commissionnée (la commission sera reprise). */
+  confirmerReprise: z.boolean().optional(),
 });
 
 export async function genererAvoirAction(
   rawInput: unknown,
-): Promise<{ data: { avoirId: string; numero: string } } | { error: string }> {
+): Promise<
+  { data: { avoirId: string; numero: string } } | { error: string; confirmationRequise?: true }
+> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
@@ -460,6 +467,12 @@ export async function genererAvoirAction(
   if (!parsed.success) return { error: "Entrée invalide (motif : 5 caractères minimum)." };
 
   try {
+    if (
+      parsed.data.confirmerReprise !== true &&
+      (await factureCommissionneeParApporteur(parsed.data.factureId))
+    ) {
+      return { error: MESSAGE_AVOIR_COMMISSION, confirmationRequise: true };
+    }
     const result = await genererAvoirFacture({
       factureId: parsed.data.factureId,
       motif: parsed.data.motif,
@@ -475,6 +488,7 @@ export async function genererAvoirAction(
         avoirNumero: result.numero,
         motif: parsed.data.motif,
         montantPartielHtCents: parsed.data.montantPartielHtCents ?? null,
+        confirmerReprise: parsed.data.confirmerReprise === true,
       },
       session,
     });

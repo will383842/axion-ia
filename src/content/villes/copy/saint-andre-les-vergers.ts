@@ -49,7 +49,7 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-les-Vergers et dans l'agglo Troyes ?",
-      a: "Oui, Axion-IA intervient à Saint-André-les-Vergers et dans toute l'agglomération de Troyes. Nous intervenons partout en France, sur place ou à distance. Saint-André-les-Vergers est à 10 min de Troyes centre et 5 min de l'A5.",
+      a: "Oui, Axion-IA intervient à Saint-André-les-Vergers et dans toute l'agglomération de Troyes. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Saint-André-les-Vergers  ?",
@@ -64,8 +64,8 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
       a: "Oui, gestion réservations, automatisation prises de commande, suivi stocks cuisine, planning équipes, fidélisation client, reporting ventes pour restaurateurs et hôteliers.",
     },
     {
-      q: "Comment accéder à Saint-André-les-Vergers ?",
-      a: "TGV Paris-Est à Troyes en 1 h 30, puis 10 min en voiture. Autoroute A5 directe en 1 h 45. Aéroport CDG à 1 h 45.",
+      q: "Comment se déroule une mission à Saint-André-les-Vergers ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-André-les-Vergers, comme partout en France, ou à distance.",
     },
   ],
 };

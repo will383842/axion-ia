@@ -71,6 +71,7 @@ import {
   restituerCodeSignature,
   verifierCodeSignature,
 } from "@/server/qualiopi/documents/signature/code-signature";
+import { signeParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { envoyerCodeDevis } from "@/server/qualiopi/devis/code-signature-devis";
 import { reinitialiserEchecsSignature } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { horodaterSignature } from "@/server/qualiopi/documents/signature/horodatage-signature";
@@ -84,6 +85,11 @@ import {
   CONSENTEMENT_VERSION_DOCUMENT_CODE,
   MENTION_VERSION_DOCUMENT,
 } from "@/server/qualiopi/documents/signature/mentions-document";
+import {
+  MENTION_VERSION_DEVIS,
+  consentementVersionDevis,
+  estSignatureClientDevis,
+} from "@/server/qualiopi/documents/signature/mentions-devis";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 import { objectionContresignatureContratCadre } from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
@@ -294,15 +300,28 @@ const REFUS_JETON: Record<
 async function objectionMetier(
   type: string,
   documentGenereId: string,
+  partie: PartieSignataire,
 ): Promise<{ message: string } | null> {
   if (type !== "devis") return null;
 
   const devis = await prisma.devis.findFirst({
     where: { documentGenereId },
-    select: { statut: true },
+    select: { id: true, statut: true },
   });
   if (devis === null) return { message: "Devis introuvable." };
   if (devis.statut === "envoye") return null;
+
+  // Devis `expire` : le CLIENT ne signe jamais (la date de validité fait foi pour lui). Mais
+  // l'ORGANISME doit pouvoir contresigner ce que le client a signé avant le passage du cron, sauf
+  // si une version plus récente a été émise (le devis est alors remplacé). Même règle que l'écran
+  // (`a-contresigner.ts`) et que l'acceptation (`apres-signature.ts`).
+  if (devis.statut === "expire" && partie === "axionia") {
+    const [signeParClient, successeursEmis] = await Promise.all([
+      prisma.devis.count({ where: { id: devis.id, ...signeParLeClient } }),
+      prisma.devis.count({ where: { replacesDevisId: devis.id, statut: { not: "brouillon" } } }),
+    ]);
+    if (signeParClient > 0 && successeursEmis === 0) return null;
+  }
 
   return {
     message:
@@ -442,7 +461,10 @@ export async function signerPieceParJetonAction(input: {
   // mise en ligne montre l'ancien texte, alors que le service scelle `MENTION_VERSION_DOCUMENT`.
   // Absente ou différente : refus, avant toute consommation de code, rien n'est écrit. Vaut pour
   // toutes les pièces qui passent par ce formulaire.
-  if (donnees.mentionVersionAffichee !== MENTION_VERSION_DOCUMENT) {
+  // Signature du CLIENT sur un DEVIS : la version attendue est `devis-v1` (mentions propres au devis).
+  const clientDevis = estSignatureClientDevis(piece.type, verif.partie);
+  const mentionAttendue = clientDevis ? MENTION_VERSION_DEVIS : MENTION_VERSION_DOCUMENT;
+  if (donnees.mentionVersionAffichee !== mentionAttendue) {
     return {
       ok: false,
       raison: "mention_perimee",
@@ -473,12 +495,12 @@ export async function signerPieceParJetonAction(input: {
   if (piece.type === "devis") {
     const devis = await prisma.devis.findFirst({
       where: { documentGenereId: verif.documentGenereId },
-      select: { numero: true, offre: true, offreSha256: true },
+      select: { numero: true, clientId: true, offre: true, offreSha256: true },
     });
     if (devis !== null && devis.offre != null && devis.offreSha256 != null) {
       // Interrupteur `qualiopi.devis_formules.actif` : éteint, un devis à formules ne se signe pas
       // (échec fermé). Rien n'est lu ni écrit de plus.
-      if (!(await formulesActives())) {
+      if (!(await formulesActives(undefined, { clientId: devis.clientId }))) {
         return {
           ok: false,
           raison: "piece_non_signable_maintenant",
@@ -612,9 +634,14 @@ export async function signerPieceParJetonAction(input: {
       methode: donnees.methode,
       partiesRequises: circuit.parties,
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
-      ...(avecCode || renforcee !== undefined
-        ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE }
-        : {}),
+      ...(clientDevis
+        ? {
+            mentionVersion: MENTION_VERSION_DEVIS,
+            consentementVersion: consentementVersionDevis(avecCode || renforcee !== undefined),
+          }
+        : avecCode || renforcee !== undefined
+          ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE }
+          : {}),
       ...(renforcee === undefined ? {} : { renforcee }),
       // Valeur SERVEUR, jamais celle du navigateur. Vide hors devis.
       ...(piece.type === "devis" ? { cgvVersion: CGV_VERSION } : {}),
@@ -714,7 +741,7 @@ export async function apercuChoixAction(input: {
   }
   const devis = await prisma.devis.findFirst({
     where: { documentGenereId: verif.documentGenereId },
-    select: { numero: true, offre: true, offreSha256: true },
+    select: { numero: true, clientId: true, offre: true, offreSha256: true },
   });
   if (devis === null || devis.offre == null || devis.offreSha256 == null) {
     return {
@@ -723,7 +750,7 @@ export async function apercuChoixAction(input: {
       message: "Ce devis ne propose pas de formule.",
     };
   }
-  if (!(await formulesActives())) {
+  if (!(await formulesActives(undefined, { clientId: devis.clientId }))) {
     return {
       ok: false,
       raison: "piece_non_signable_maintenant",
@@ -959,18 +986,18 @@ export async function demanderCodeDevisAction(input: {
   }
 
   // Devis refusé, retiré, remplacé ou déjà accepté : aucun code ne part.
-  const objection = await objectionMetier(piece.type, verif.documentGenereId);
+  const objection = await objectionMetier(piece.type, verif.documentGenereId, verif.partie);
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
   }
   const devis = await prisma.devis.findFirst({
     where: { documentGenereId: verif.documentGenereId },
-    select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+    select: { numero: true, clientId: true, offre: true, offreSha256: true, dateValidite: true },
   });
   if (devis === null || devis.offre == null || devis.offreSha256 == null) {
     return { ok: false, raison: "piece_non_signable", message: "Ce devis se signe sans code." };
   }
-  if (!(await formulesActives())) {
+  if (!(await formulesActives(undefined, { clientId: devis.clientId }))) {
     return {
       ok: false,
       raison: "piece_non_signable_maintenant",
@@ -1043,7 +1070,7 @@ async function objectionAvantSignature(input: {
   partie: PartieSignataire;
   adminId?: string;
 }): Promise<{ message: string } | null> {
-  const metier = await objectionMetier(input.type, input.documentGenereId);
+  const metier = await objectionMetier(input.type, input.documentGenereId, input.partie);
   if (metier !== null) return metier;
   // C4 — une lettre de mission périmée ne se signe plus, d'aucun côté.
   const perimee = await objectionLettreMissionPerimee(input);

@@ -806,6 +806,14 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       group: "apporteurs",
       navLevel: 0,
     },
+    // Challenges (invitation libre : jamais un objectif imposé). Écran éteint par interrupteur.
+    {
+      href: `${base}/apporteurs/challenges`,
+      label: "Challenges apporteurs",
+      icon: "Trophy",
+      group: "apporteurs",
+      navLevel: 0,
+    },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,
@@ -987,6 +995,15 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       href: `${base}/content-gen/observatoire`,
       label: "Observatoire IA 2026",
       icon: "Telescope",
+      group: "content_gen",
+      subGroup: "suivre",
+      tier: "advanced",
+    },
+    // Questionnaire du Baromètre 2027 : état de la collecte et export réservé à l'administrateur.
+    {
+      href: `${base}/barometre-questionnaire`,
+      label: "Questionnaire Baromètre 2027",
+      icon: "ClipboardCheck",
       group: "content_gen",
       subGroup: "suivre",
       tier: "advanced",
@@ -1224,6 +1241,16 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
+    },
+    // Demande de Williams du 20/11/2026 : un onglet qui ouvre la console de
+    // l'usine à contenu (le Studio) dans un nouvel onglet du navigateur.
+    // Aucun identifiant ici : ce dépôt est PUBLIC, la session est celle du navigateur.
+    {
+      href: "https://studio.axion-ia.com",
+      label: "Usine à contenu (Studio)",
+      icon: "ExternalLink",
+      group: "content",
+      external: true,
     },
     { href: `${base}/blog`, label: "Blog", icon: "PenLine", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "Tag", group: "content" },
@@ -1536,6 +1563,13 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       href: `${base}/qualiopi/financements`,
       label: "Alertes financement (sessions)",
       icon: "Siren",
+      group: "finances",
+    },
+    // Garantie Journée IA (CGV 47.10) : suivi des échéances de remboursement (PR 2/3, 2026-11-25).
+    {
+      href: `${base}/garanties-journee-ia`,
+      label: "Garantie Journée IA (remboursements)",
+      icon: "ShieldCheck",
       group: "finances",
     },
     // 🔴 2026-09-23 — DÉPLACÉ EN QUEUE DU GROUPE (cf. le commentaire en tête

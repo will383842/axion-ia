@@ -67,6 +67,8 @@ const BASCULES = [
 /** Les lecteurs d'`estAppelApporteur` qui SÉLECTIONNENT des apporteurs. */
 const SELECTION_APPORTEUR_PAR_NOM = [
   "src/app/[locale]/(admin)/[adminPrefix]/contacts/appels/[id]/page.tsx",
+  // Bouton « Trame d'échange » : affiché seulement pour un échange apporteur.
+  "src/components/admin/contacts/BoutonTrameEchange.tsx",
   "src/features/admin-rendezvous/issue-apporteur-envoi.ts",
   "src/features/commercial-application/archivage-auto-apporteurs.ts",
   "src/features/commercial-application/invitation-apporteur.ts",
@@ -84,6 +86,7 @@ const SELECTION_APPORTEUR = [
   "src/server/calendly/enrich.ts",
   "src/server/calendly/fiche-rendez-vous-apporteur.ts",
   "src/server/calendly/rattachement-apporteur.ts",
+  "src/server/calendly/rattachement-orphelins.ts",
   "src/server/calendly/type-effectif.ts",
 ].sort();
 

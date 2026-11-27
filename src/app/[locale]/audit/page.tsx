@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -93,8 +94,8 @@ export default async function AuditHub({ params }: Props) {
     path: "/audit",
     name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
     description: isFr
-      ? "Audit IA en entreprise, partout en France. Point de départ recommandé : La Journée IA, dans vos locaux (audit de 2 à 4 h le matin, 4 h de formation l'après-midi, rapport complet sous 3 jours ouvrés). Au-delà, l'audit approfondi est un autre cadrage, sur devis écrit : cartographie détaillée, gains chiffrés, feuille de route."
-      : "The rigorous, complete and meticulous enterprise AI audit — the French benchmark. 4 levels by company size (small business, SME, mid-cap, large enterprise). Detailed mapping, quantified ROI, actionable roadmap. Across France.",
+      ? `Audit IA en entreprise, partout en France. Point de départ recommandé : La Journée IA, dans vos locaux (audit le matin, 4 h de formation l'après-midi, rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés). Au-delà, l'audit approfondi est un autre cadrage, sur devis écrit : cartographie détaillée, gains chiffrés, feuille de route.`
+      : "The rigorous, complete and meticulous enterprise AI audit. 4 levels by company size (small business, SME, mid-cap, large enterprise). Detailed mapping, quantified ROI, actionable roadmap. Across France.",
     serviceType: "AI audit",
   });
 
@@ -119,13 +120,13 @@ export default async function AuditHub({ params }: Props) {
       {
         name: isFr ? "Niveau d'audit calibré" : "Calibrated audit tier",
         text: isFr
-          ? "Pour la plupart des PME et des TPE, nous recommandons La Journée IA : l'audit le matin, la formation de vos équipes l'après-midi, et votre rapport complet sous 3 jours ouvrés. Si votre situation demande un audit approfondi, nous vous remettons un devis écrit sous 48 h ouvrées."
+          ? `Pour la plupart des PME et des TPE, nous recommandons La Journée IA : l'audit le matin, la formation de vos équipes l'après-midi, et votre rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Si votre situation demande un audit approfondi, nous vous remettons un devis écrit sous 48 h ouvrées.`
           : "We recommend the optimal AI audit tier based on your size: On-site audit (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote from 24-48 business hours depending on complexity.",
       },
       {
         name: isFr ? "Kick-off et restitution" : "Kick-off and read-out",
         text: isFr
-          ? "La Journée IA se déroule en une journée dans vos locaux, rapport complet sous 3 jours ouvrés. Un audit approfondi, lui, se conduit sur 2 à 6 semaines selon le périmètre, avec une restitution finale : cartographie, gains chiffrés par cas d'usage prioritaire et feuille de route de mise en œuvre."
+          ? `La Journée IA se déroule en une journée dans vos locaux, rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Un audit approfondi, lui, se conduit sur 2 à 6 semaines selon le périmètre, avec une restitution finale : cartographie, gains chiffrés par cas d'usage prioritaire et feuille de route de mise en œuvre.`
           : "Audit conducted over 2 to 6 weeks depending on chosen tier. Final read-out with AI mapping, quantified ROI per priority use case, and 6-12 month implementation roadmap.",
       },
     ],

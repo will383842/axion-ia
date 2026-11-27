@@ -123,7 +123,7 @@ describe("lireDemandesDeLaFiche", () => {
     ]);
     // ET entre l'OR des types et le lien à la fiche : deux OR distincts, jamais fondus.
     expect(Array.isArray(where.OR)).toBe(true);
-    expect(where.OR).toHaveLength(6);
+    expect(where.OR).toHaveLength(7);
     expect(where.OR).not.toEqual(where.AND[0].OR);
   });
 

@@ -144,7 +144,8 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // « une entreprise est déclarée par un apporteur ». Ses champs sont tous facultatifs.
     // 🔴 2026-10-08 — RELEVÉ À 69 : `apporteur-attribution-confirmee`, l'e-mail à l'apporteur
     // « attribution confirmée / protection prolongée » (contrat 2.3, art. 3.2 et 3.4). Ses
-    // champs sont tous facultatifs.
+    // champs sont tous facultatifs. (2026-11-27 : `dateValidation`, facultatif lui aussi, ne
+    // change pas le compte : même gabarit.)
     // 🔴 2026-10-09 — RELEVÉ À 70 : `apporteur-lien-espace`, le lien de l'espace renvoyé à
     // l'apporteur depuis « Retrouver mon espace ». Ses champs sont tous facultatifs.
     // 🔴 2026-10-16 — RELEVÉ À 71 : `recueil-besoin` (chantier QNC, lot L03), le
@@ -176,7 +177,15 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // client (alertes clients, PR B). Champs tous facultatifs.
     // RELEVÉ À 88 (2026-11-15) : `recap-demandes-clients`, récap quotidien INTERNE des demandes de
     // clients (alertes clients, PR C). Champs tous facultatifs.
-    expect(tous.length).toBe(88);
+    // RELEVÉ À 90 (2026-11-25) : `entreprise-information-coordonnees` et
+    // `apporteur-presentation-recue-rendez-vous` (apporteurs, lot 7a) : deux fichiers NEUFS, NON
+    // BRANCHÉS (absents du registre et du catalogue). Champs tous facultatifs.
+    // RELEVÉ À 92 (2026-11-25) : `apporteur-resiliation-notifiee` et `apporteur-resiliation-effective`
+    // (lot L1a, sans émetteur). Champs tous facultatifs ; `fondement`, `notifieeLe`, `effetLe`
+    // et `miseEnDemeureLe` ont leur valeur d'exemple.
+    // RELEVÉ À 93 : `apporteur-presentation-non-retenue`, l'e-mail à l'apporteur « entreprise non
+    // retenue ». Champs tous facultatifs.
+    expect(tous.length).toBe(93);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
@@ -239,9 +248,17 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   it("n'expose AUCUNE donnée réelle", () => {
     // Un aperçu de console qui afficherait un vrai prospect, ou un lien vers la
     // production, transformerait une page de documentation en fuite.
-    const valeurs = Object.values(PAYLOAD_EXEMPLE)
+    // Exception unique : `signatureUrl`. Le gabarit n'affiche le bouton de signature que si le lien
+    // est sur l'hôte du site (`lienSignatureValide`, hôte de `SITE_URL`) ; l'exemple y porte donc le domaine du site
+    // avec un faux jeton lisible (`jeton-de-demonstration`), jamais un vrai jeton.
+    const valeurs = Object.entries(PAYLOAD_EXEMPLE)
+      .filter(([cle]) => cle !== "signatureUrl")
+      .map(([, v]) => v)
       .filter((v): v is string => typeof v === "string")
       .join(" ");
+    expect(String(PAYLOAD_EXEMPLE["signatureUrl"])).toMatch(
+      /\/portail\/signer\/jeton-de-demonstration$/,
+    );
     expect(valeurs, "un lien pointe vers la production").not.toMatch(/axion-ia\.com/);
     expect(valeurs, "une adresse e-mail réelle est utilisée").not.toMatch(
       /@(?!exemple\.invalid|example\.invalid)[\w.-]+\.(com|fr|net|org|eu)/,

@@ -62,7 +62,7 @@ export const PERONNAS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention sur site à Péronnas ?",
-      a: "Délai standard : 5 jours ouvrés après cadrage. Intervention rapide possible sous 48-72h en agglomération burgienne selon la disponibilité consultant Lyon.",
+      a: "Délai standard : 5 jours ouvrés après cadrage. Intervention rapide possible sous 48-72h en agglomération burgienne selon la disponibilité de nos consultants.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Péronnas ?",

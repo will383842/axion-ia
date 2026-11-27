@@ -32,7 +32,7 @@ import {
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const gestes = [
-  () => retirerDuReseauAction({ apporteurId: ID }),
+  () => retirerDuReseauAction({ apporteurId: ID, motif: "Sans suite." }),
   () => remettreDansLeReseauAction({ apporteurId: ID }),
   () => supprimerDefinitivementAction({ apporteurId: ID, nomTape: "Claire Durand" }),
 ];
@@ -58,7 +58,7 @@ describe("garde serveur", () => {
   it("administrateur : le métier reçoit l'identifiant et l'auteur", async () => {
     h.session = { user: { id: "adm-1", role: "admin" } };
     for (const g of gestes) expect((await g()).ok).toBe(true);
-    expect(h.retirer).toHaveBeenCalledWith(ID, "adm-1");
+    expect(h.retirer).toHaveBeenCalledWith(ID, "adm-1", "Sans suite.");
     expect(h.supprimer).toHaveBeenCalledWith(ID, "adm-1", "Claire Durand");
   });
 

@@ -106,7 +106,7 @@ describe("validerPlafondsBlog", () => {
     };
     expect(m({ jour: 21 })).toBe("Plafond du jour hors bornes de garde (0 < jour ≤ 20)");
     expect(m({ jour: 9, mois: 7 })).toBe(
-      "Plafond du jour ne peut pas dépasser Plafond mensuel du blog",
+      "Plafond du jour ne peut pas dépasser Plafond mensuel du contenu via Claude",
     );
     expect(m({ reserve: -1 })).toBe("Réserve Qualiopi doit être ≥ 0");
     expect(m({ jugeMax: 0 })).toBe("Relectures max par jour : entier entre 1 et 500");
@@ -143,5 +143,42 @@ describe("cohérence avec le registre", () => {
   it("mêmes bornes que le registre de coût", () => {
     expect(BORNE_JOUR_USD).toBe(BORNE_DURE_JOUR_USD);
     expect(BORNE_MOIS_USD).toBe(BORNE_DURE_MOIS_USD);
+  });
+});
+
+describe("plafonds par défaut de l'équipe éditoriale", () => {
+  it("clés absentes : 10 $/jour et 200 $/mois, bornes de garde inchangées", async () => {
+    const m = await import("../blog-claude-plafonds");
+    expect(m.PLAFOND_JOUR_DEFAUT_USD).toBe(10);
+    expect(m.PLAFOND_MOIS_DEFAUT_USD).toBe(200);
+    expect(m.BORNE_JOUR_USD).toBe(20);
+    expect(m.BORNE_MOIS_USD).toBe(300);
+    expect(m.lirePlafondsBlogEffectifs(undefined)).toMatchObject({ jour: 10, mois: 200 });
+    expect(m.lirePlafondsBlogEffectifs({ blog_claude_daily_cap_usd: 5 })).toMatchObject({
+      jour: 5,
+      mois: 200,
+    });
+  });
+
+  it("jour > mois : cohérence refusée, et les libellés sont en français", async () => {
+    const m = await import("../blog-claude-plafonds");
+    expect(m.plafondsCoherents(10, 200)).toBe(true);
+    expect(m.plafondsCoherents(20, 10)).toBe(false);
+    expect(
+      m.lirePlafondsBlogEffectifs({
+        blog_claude_daily_cap_usd: 20,
+        blog_claude_monthly_cap_usd: 10,
+      }),
+    ).toEqual({ jour: 10, mois: 10 });
+    // l'erreur va vers le plus strict : jamais d'assouplissement
+    expect(
+      m.lirePlafondsBlogEffectifs({
+        blog_claude_daily_cap_usd: 5,
+        blog_claude_monthly_cap_usd: 400,
+      }),
+    ).toEqual({ jour: 5, mois: 200 });
+    expect(m.plafondsCoherents(Number.NaN, 10)).toBe(false);
+    expect(m.plafondsCoherents(0, 10)).toBe(false);
+    expect(m.LIBELLES_ECRAN.jour).toBe("Plafond du jour");
   });
 });

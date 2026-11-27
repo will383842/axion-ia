@@ -5,7 +5,17 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
+import { offreFictive as offreFictiveBrute } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
+import {
+  MSG_FORMULES_PARTICULIER,
+  MSG_INDEMNITE_SORTIE,
+} from "@/server/qualiopi/devis/regles-commerciales";
+
+/** D4 : indemnité de sortie à zéro pour un nouveau devis (la fixture porte 5000, surchargée ici). */
+const offreFictive = () => {
+  const o = offreFictiveBrute();
+  return { ...o, abonnement: { ...o.abonnement!, indemniteSortieTauxBps: 0 } };
+};
 
 const findUnique = vi.fn();
 const txDevisUpdateMany = vi.fn();
@@ -48,16 +58,17 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: (...a: unknown[]) => logActivity(...a),
 }));
 vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
-  formulesActives: () => formulesActives(),
+  formulesActives: (...a: unknown[]) => formulesActives(...a),
 }));
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
-  lireContextePdfDevis: async () => ({
+  // Comme le vrai module : le booléen déjà calculé par l'envoi est repris tel quel.
+  lireContextePdfDevis: async (formules: boolean) => ({
     identite: { raisonSociale: "Axion", site: "https://axion-ia.com" },
     regimeTva: "assujetti",
     tauxStandard: 20,
     certificationObtenue: false,
-    formulesActives: await formulesActives(),
+    formulesActives: formules,
   }),
 }));
 vi.mock("@/server/qualiopi/documents/documents-service", () => ({
@@ -70,6 +81,9 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
     motif = "x";
   },
 }));
+// Ce fichier éprouve le chemin « auto » ; le mode « validation » est dans
+// `__tests__/devis-premier-envoi-a-l-approbation.spec.ts`.
+vi.mock("@/server/email/outbox-service", () => ({ resoudreMode: async () => "auto" }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),
 }));
@@ -232,13 +246,23 @@ describe("sendDevisAction — devis à formules : gardes complémentaires", () =
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 
-  it("formules absentes du PDF (interrupteur éteint à la 2e lecture) : refus", async () => {
-    formulesActives.mockReset();
-    formulesActives.mockResolvedValueOnce(true).mockResolvedValue(false);
+  it("l'interrupteur est lu UNE seule fois, pour le client du devis, et sa valeur sert au PDF", async () => {
+    const r = await sendDevisAction(ID);
+    expect("data" in r).toBe(true);
+    expect(formulesActives).toHaveBeenCalledTimes(1);
+    expect(formulesActives).toHaveBeenCalledWith(
+      undefined,
+      expect.objectContaining({ clientId: "c1" }),
+    );
+  });
+
+  it("garde refusée (essai, vrai client) : aucun PDF ni jeton, message « formules_eteintes »", async () => {
+    formulesActives.mockResolvedValue(false);
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
-    if ("error" in r) expect(r.error).toContain("n'ont pas pu être construites");
+    expect(formulesActives).toHaveBeenCalledTimes(1);
     expect(generateDocument).not.toHaveBeenCalled();
+    expect(creerToken).not.toHaveBeenCalled();
     expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 
@@ -306,16 +330,16 @@ describe("sendDevisAction — devis à formules : le courriel ne part pas", () =
     expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 
-  it("courriel garé puis erreur d'écriture : la ligne de corbeille passe à « refuse »", async () => {
+  it("courriel garé en mode auto (règle changée) : refus sans écriture, la ligne de corbeille passe à « refuse »", async () => {
     enqueueEmail.mockResolvedValue({
       enqueued: false,
       garePourValidation: true,
       outboxId: "ob-1",
     });
-    txDevisUpdateMany.mockResolvedValue({ count: 0 });
     const r = await sendDevisAction(ID);
     if (!("error" in r)) throw new Error("refus attendu");
-    expect(r.error).toContain("Ne le renvoyez pas");
+    expect(r.error).toContain("La règle d'envoi a changé");
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
     expect(outboxUpdateMany).toHaveBeenCalledWith({
       where: { id: "ob-1", statut: "a_valider" },
       data: expect.objectContaining({ statut: "refuse" }),
@@ -377,5 +401,29 @@ describe("sendDevisAction — la salutation de l'e-mail (B4)", () => {
     await sendDevisAction(ID);
     expect(payloadEnvoye()["clientNom"]).toBe("");
     expect(JSON.stringify(payloadEnvoye())).not.toContain("Camille");
+  });
+});
+
+describe("sendDevisAction — règles commerciales D4/D6 (refus avant PDF, jeton et courriel)", () => {
+  function rienNeSort() {
+    expect(generateDocument).not.toHaveBeenCalled();
+    expect(creerToken).not.toHaveBeenCalled();
+    expect(enqueueEmail).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
+  }
+
+  it("D6 : devis à formules d'un particulier refusé", async () => {
+    const d0 = devis();
+    findUnique.mockResolvedValue({ ...d0, client: { ...d0.client, type: "particulier" } });
+    const r = await sendDevisAction(ID);
+    expect(r).toEqual({ error: MSG_FORMULES_PARTICULIER });
+    rienNeSort();
+  });
+
+  it("D4 : taux d'indemnité 5000 refusé", async () => {
+    findUnique.mockResolvedValue(devis({ offre: offreFictiveBrute() }));
+    const r = await sendDevisAction(ID);
+    expect(r).toEqual({ error: MSG_INDEMNITE_SORTIE });
+    rienNeSort();
   });
 });

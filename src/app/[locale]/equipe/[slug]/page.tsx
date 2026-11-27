@@ -38,6 +38,7 @@ import {
 import { FounderProfile } from "@/components/sections/FounderProfile";
 import { buildWilliamsFaq, WILLIAMS_REVISION_DATE } from "@/content/equipe/williams";
 import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
+import { LIBELLE_PLUME_IA, SLUG_PLUME_IA } from "@/lib/seo/plume-ia";
 // Doctrine financement : les Q/R OPCO / France Travail ne sont émises que si la
 // certification Qualiopi est RÉELLEMENT obtenue. Le drapeau est la garde
 // primaire — cf. `server/qualiopi/config/flag.ts`.
@@ -82,13 +83,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const profile = await prisma.authorProfile.findUnique({ where: { slug } });
   if (!profile || !profile.isActive) return { robots: "noindex, nofollow" };
 
+  const libelleAuteur = profile.slug === SLUG_PLUME_IA ? LIBELLE_PLUME_IA : profile.jobTitle;
   return buildProductMetadata({
     locale,
     path: `/equipe/${slug}`,
-    title: `${profile.displayName} · ${profile.jobTitle} · Axion-IA`,
+    title: `${profile.displayName} · ${libelleAuteur} · Axion-IA`,
     description:
       profile.personaDisclaimer ??
-      `${profile.displayName}, ${profile.jobTitle} chez Axion-IA. Persona éditoriale transparente — portrait IA disclosed (doctrine v2.1).`,
+      `${profile.displayName}, ${libelleAuteur}. Persona éditoriale transparente — portrait IA disclosed (doctrine v2.1).`,
     alternates: { fr: `/equipe/${slug}` },
   });
 }
@@ -118,9 +120,8 @@ export default async function PublicAuthorPage({ params }: Props) {
   // `AuthorProfile` dégradé — c'est ce qui avait fini par lui donner la même
   // page pauvre qu'une persona.
   if (slug === "williams") {
-    // Les deux drapeaux, pas un seul : `/financement-opco-france-travail`
-    // exige la visibilité des pages OF **et** la certification réelle pour
-    // répondre autre chose qu'un 404.
+    // Les deux drapeaux, pas un seul : la visibilité des pages OF **et** la
+    // certification réelle conditionnent les Q/R de financement de la FAQ.
     const financementPublic =
       isQualiopiPublicDisclosureEnabled() && isQualiopiCertificationObtenue();
     const faq = buildWilliamsFaq({ certificationObtenue: financementPublic });
@@ -164,7 +165,7 @@ export default async function PublicAuthorPage({ params }: Props) {
             items={[{ href: `/equipe/williams`, label: FOUNDER.fullName }]}
           />
         </Container>
-        <FounderProfile faq={faq} financementPublic={financementPublic} />
+        <FounderProfile faq={faq} />
       </>
     );
   }
@@ -189,7 +190,9 @@ export default async function PublicAuthorPage({ params }: Props) {
           <header style={{ marginBottom: 32 }}>
             <h1>{profile.displayName}</h1>
             <p>
-              <strong>{profile.jobTitle}</strong>
+              <strong>
+                {profile.slug === SLUG_PLUME_IA ? LIBELLE_PLUME_IA : profile.jobTitle}
+              </strong>
             </p>
             {profile.isPersona && profile.aiGenerated ? (
               <p

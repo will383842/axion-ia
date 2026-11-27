@@ -228,7 +228,7 @@ export const SANNOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les délais d'intervention d'Axion-IA à Sannois ?",
-      a: "Williams se déplace sur site à Sannois dans les 5 jours ouvrés suivant la validation. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Williams intervient sur site à Sannois dans les 5 jours ouvrés suivant la validation, comme partout en France.",
     },
     {
       q: "Quels sont les tarifs des services d'Axion-IA à Sannois ?",

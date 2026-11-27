@@ -15,6 +15,7 @@
 
 "use server";
 
+import { rattacherOrphelinsDeLaFiche } from "@/server/calendly/rattachement-orphelins";
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
@@ -279,7 +280,7 @@ export async function submitCommercialApplicationAction(
       return {
         ok: false,
         error:
-          "Nous avons déjà reçu plusieurs candidatures avec cet email. Elle est bien enregistrée — inutile de la renvoyer.",
+          "Nous avons déjà reçu plusieurs demandes avec cet e-mail. La vôtre est bien enregistrée : inutile de la renvoyer.",
       };
     }
   }
@@ -405,6 +406,9 @@ export async function submitCommercialApplicationAction(
         userAgent,
       },
     });
+
+    // Rendez-vous déjà pris par cette personne (avant sa fiche) : rattachement rétroactif. Ne lève jamais.
+    await rattacherOrphelinsDeLaFiche(submission.id);
 
     // 5 bis (a). Tunnel Facebook (2026-09-03) — le dossier complet est arrivé :
     // les rappels « ton dossier t'attend » posés par le premier contact n'ont

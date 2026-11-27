@@ -11,6 +11,8 @@
 // Les espaces insécables (U+202F avant « ? : ; ! », U+00A0 avant « h », « % », « n° ») et les
 // apostrophes « ’ » sont ceux de la maquette : ne pas les « normaliser ».
 
+import { formatAmount } from "@/content/pricing";
+import { reponseReference } from "@/content/questions-reference";
 import {
   CONDITION_GARANTIE,
   EN_BREF_JOURNEE_IA,
@@ -19,7 +21,15 @@ import {
   JETON_PRIX,
   MENTION_DECLARATION_OF,
   RAPPORT_COMPLET,
+  DEDUCTION_JOURNEE_IA,
+  DELAI_RAPPORT_JOURS_OUVRES,
+  MAJORATION_PLANCHER_COUT_HORAIRE_PCT,
+  MULTIPLE_GARANTIE,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
+
+/** Seuil de la garantie, calculé depuis le prix de la journée (jamais tapé à la main). */
+const SEUIL = formatAmount(seuilGarantieEur(), "fr");
 
 // Le jeton de prix et la garantie vivent dans le module commun (partagés avec l'accueil, le
 // JSON-LD et llms*.txt) ; on les réexporte pour les importeurs actuels (`prix.ts`, les tests).
@@ -40,7 +50,7 @@ export const OG_IMAGE_ALT =
   "La Journée IA d’Axion-IA : audit et formation IA dans vos locaux, {{PRIX}}";
 
 /** Début de la promesse, mis en gras dans `GARANTIE_PHRASE`. */
-export const DEBUT_PROMESSE = "nous vous remboursons";
+export const DEBUT_PROMESSE = "vous êtes remboursé sur demande écrite";
 
 export const CONTENU = {
   accroche: {
@@ -49,11 +59,11 @@ export const CONTENU = {
       "La Journée IA\u202f: l’audit IA de votre PME le matin, vos équipes formées l’après-midi.",
     // Mots mis en terracotta dans le titre.
     titreAccent: "vos équipes formées l’après-midi.",
-    phrase:
-      "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
+    phrase: `Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains repérés et classés par priorité, puis chiffrés en heures et en euros dans le rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.`,
     cta: LIBELLE_CTA,
     lienDecide: "Déjà décidé\u202f? Fixons la date ensemble",
-    microTexte: "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
+    microTexte:
+      "Diagnostic IA gratuit et facultatif · 45 minutes · en visio ou par téléphone · sans engagement",
     tuiles: [
       { valeur: JETON_PRIX, legende: "une fois, sans remise" },
       // Tuile mise en valeur (filet terracotta) : l’attestation remise à chaque personne formée.
@@ -62,8 +72,15 @@ export const CONTENU = {
         legende: "formation + attestation par personne",
         attestation: true,
       },
-      { valeur: "Le soir même", legende: "vos priorités écrites" },
-      { valeur: "Garantie ×3", legende: "voir la condition →", ancre: "#garantie" },
+      {
+        valeur: `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
+        legende: "vos priorités, dans le rapport détaillé",
+      },
+      {
+        valeur: formatAmount(seuilGarantieEur(), "fr", { compact: true }),
+        legende: "de gains identifiés, ou remboursé sur demande →",
+        ancre: "#garantie",
+      },
     ],
     carteDesGains: {
       titre: "Votre entreprise, cartographiée",
@@ -86,14 +103,13 @@ export const CONTENU = {
         suite: "de temps payé par an",
       },
       prix: { avant: "La Journée IA\u202f:", montant: JETON_PRIX, apres: ", une fois." },
-      // Le ruban de la carte des gains : audit le matin, formation l'après-midi, priorités le soir.
+      // Le ruban de la carte des gains : audit le matin, formation l'après-midi, priorités dans le rapport détaillé.
       ruban: {
         audit: "Audit",
         formation: "Formation",
-        heures: ["9\u00a0h", "12\u00a0h", "13\u00a0h 30", "17\u00a0h 30"],
+        heures: ["2 à 4\u00a0h", "", "13\u00a0h 30", "17\u00a0h 30"],
       },
-      ariaLabelRuban:
-        "Déroulé\u202f: audit de 9\u00a0h à 12\u00a0h, formation de 13\u00a0h 30 à 17\u00a0h 30, priorités écrites à 17\u00a0h 30",
+      ariaLabelRuban: `Déroulé\u202f: audit de 2 à 4\u00a0h selon la structuration de l’entreprise, formation de 13\u00a0h 30 à 17\u00a0h 30, rapport détaillé avec vos priorités sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
     },
   },
   enBref: EN_BREF_JOURNEE_IA,
@@ -103,7 +119,7 @@ export const CONTENU = {
     titreOui: "C’est pour vous",
     titreNon: "Pas pour vous",
     pourVous: [
-      "PME ou TPE, de 5 à 249 salariés",
+      "PME ou TPE, de 2 à 250 salariés",
       "Des heures perdues sur des tâches qui reviennent",
       "Chacun utilise l’IA dans son coin",
     ],
@@ -154,7 +170,12 @@ export const CONTENU = {
       },
       {
         icone: "audit",
-        jalons: [{ moment: "9\u00a0h – 12\u00a0h", texte: "La cartographie, service par service" }],
+        jalons: [
+          {
+            moment: "De 2 à 4\u00a0h",
+            texte: "La cartographie, service par service, selon la structuration de l’entreprise",
+          },
+        ],
       },
       {
         icone: "formation",
@@ -165,8 +186,11 @@ export const CONTENU = {
       {
         icone: "plan",
         jalons: [
-          { moment: "17\u00a0h 30", texte: "Vos 3 à 5 priorités, écrites avant notre départ" },
-          { moment: "Sous 3 jours ouvrés", texte: "Le rapport complet" },
+          { moment: "17\u00a0h 30", texte: "Fin de la journée\u202f: le point final avec vous" },
+          {
+            moment: `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
+            texte: "Le rapport détaillé, avec vos 3 à 5 priorités",
+          },
         ],
       },
     ],
@@ -185,14 +209,14 @@ export const CONTENU = {
       { icone: "audit", titre: "La carte de vos services\u202f: où partent vos heures" },
       {
         icone: "calcul",
-        titre: "Vos 3 à 5 plus gros gains, chiffrés en heures et en euros le jour même",
+        titre: "Vos 3 à 5 plus gros gains, repérés et classés par priorité pendant la journée",
       },
       { icone: "formation", titre: "Formation sur vos dossiers" },
       { icone: "regles", titre: "Vos règles d’usage de l’IA" },
       {
         icone: "plan",
         titre: "Plan d’action à 90 jours",
-        delai: "Rapport complet sous 3 jours ouvrés",
+        delai: `Rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`,
       },
     ],
   },
@@ -211,8 +235,9 @@ export const CONTENU = {
     montant: JETON_PRIX,
     unite: "la journée",
     lignes: ["Dans vos locaux", "Sans remise", "Devis écrit, rien à payer en ligne"],
+    deduction: DEDUCTION_JOURNEE_IA,
     ancre: "Dans cet exemple type, la journée coûte moins de deux mois de ces heures.",
-    titreGarantie: "Pas 3 fois le prix en gains identifiés\u202f? Nous vous remboursons.",
+    titreGarantie: `Moins de ${SEUIL} de gains identifiés\u202f? Remboursement sur demande.`,
     garantie: GARANTIE_PHRASE,
     condition: CONDITION_GARANTIE,
     rapport: RAPPORT_COMPLET,
@@ -257,7 +282,7 @@ export const CONTENU = {
     phrase:
       "Les intervenants d’Axion-IA qui viennent chez vous sont nommés dans votre devis, avec leurs qualités.",
     citation:
-      "«\u202fDans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés.\u202f»",
+      "«\u202fDans chaque entreprise, des heures se perdent sans bruit. Nous les trouvons, nous les chiffrons dans le rapport et nous les rendons à votre productivité, à votre rentabilité et à votre chiffre d’affaires. Nous en sommes sûrs au point de garantir la journée sur les gains identifiés.\u202f»",
     auteur: "Williams Jullin, fondateur d’Axion-IA",
     lien: "Le parcours de Williams Jullin",
     lienHref: "/equipe/williams",
@@ -267,19 +292,23 @@ export const CONTENU = {
     {
       id: "faq-prix",
       question: "Combien coûte la Journée IA, et qu’est-ce qui est compris\u202f?",
-      reponse:
-        "{{PRIX}} la journée, dans vos locaux\u202f: un prix unique, sans remise. Il comprend l’audit, la formation, les attestations, le rapport et le plan d’action. Rien ne se paie en ligne\u202f: les modalités figurent dans votre devis.",
+      reponse: `{{PRIX}} la journée, dans vos locaux\u202f: un prix unique, sans remise. Il comprend l’audit, la formation, les attestations, le rapport et le plan d’action. Rien ne se paie en ligne\u202f: les modalités figurent dans votre devis. ${DEDUCTION_JOURNEE_IA}`,
     },
     {
       id: "faq-audit-cout",
       question: "Combien coûte un audit IA pour une PME\u202f?",
-      reponse:
-        "Chez Axion-IA, l’audit commence par la Journée IA\u202f: 2 à 4\u00a0h d’audit le matin, comprises dans {{PRIX}} avec la formation de l’après-midi. Un audit plus poussé, sur plusieurs sites ou services, se fait sur devis.",
+      reponse: reponseReference("ref-audit-prix"),
+      liens: [{ href: "/prix-audit-ia", libelle: "Le détail du prix" }],
     },
     {
       id: "faq-garantie",
       question: "Et si l’audit trouve peu de gains\u202f?",
       reponse: `${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
+    },
+    {
+      id: "faq-garantie-calcul",
+      question: "Comment calculez-vous les gains identifiés\u202f?",
+      reponse: `Dans votre rapport, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée, nous chiffrons ce que votre entreprise peut gagner en 12 mois en appliquant le plan\u202f: pour chaque tâche retenue, les heures gagnées par semaine × 45 semaines × le coût horaire charges comprises que vous nous indiquez, les dépenses évitées, et les erreurs, retards et pénalités évités. Ce coût n'est jamais retenu en dessous du salaire minimum horaire brut majoré de ${MAJORATION_PLANCHER_COUT_HORAIRE_PCT}\u00a0%. Nous retirons seulement le coût des abonnements et licences des outils nécessaires. Si le total n'atteint pas ${SEUIL}, soit ${MULTIPLE_GARANTIE} fois le prix HT de la journée, vous nous demandez le remboursement par écrit dans les 30 jours suivant la remise du rapport\u202f; nous vérifions et vous répondons par écrit sous 15 jours\u202f; si la demande est acceptée, le remboursement est fait par virement sous 30 jours. Le remboursement n'a lieu qu'une seule fois par entreprise ou par groupe et ne se cumule pas avec la déduction du prix de la journée sur un devis de mise en place.`,
     },
     {
       id: "faq-preparer",
@@ -291,20 +320,19 @@ export const CONTENU = {
       id: "faq-temps",
       question: "Combien de temps cela prend-il à nos équipes\u202f?",
       reponse:
-        "Le matin, de 9\u00a0h à 12\u00a0h (13\u00a0h dans les plus grandes entreprises), chaque service nous reçoit à son tour, puis le total et les 3 à 5 tâches prioritaires sont validés avec vous. L’après-midi, de 13\u00a0h 30 à 17\u00a0h 30, les personnes formées travaillent 4 heures sur leurs propres dossiers.",
+        "Le matin, de 2 à 4\u00a0h selon la structuration de l’entreprise (les horaires et la date sont fixés avec vous), chaque service nous reçoit à son tour, puis le total et les 3 à 5 tâches prioritaires sont validés avec vous. L’après-midi, de 13\u00a0h 30 à 17\u00a0h 30, les personnes formées travaillent 4 heures sur leurs propres dossiers.",
     },
     {
       id: "faq-rapport",
       question: "Quand recevons-nous le rapport\u202f?",
-      reponse:
-        "Le soir même, vous avez vos priorités écrites. Le rapport complet et le plan d’action sur 90 jours suivent sous 3 jours ouvrés\u00a0: ce délai nous permet de vérifier chaque chiffre.",
+      reponse: `Vos priorités sont écrites dans le rapport détaillé, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée, avec le plan d’action sur 90 jours\u00a0: ce délai nous permet de vérifier chaque chiffre.`,
     },
     {
       id: "faq-personnes",
       liens: [{ href: "/formations", libelle: "Nos formations IA" }],
       question: "Combien de personnes peuvent être formées\u202f?",
       reponse:
-        "Du dirigeant aux collaborateurs\u202f: jusqu’à 15 personnes. Pour d’autres équipes, ou pour des formations par métier, nous vous proposons une suite sur devis\u00a0: nos formations IA.",
+        "L’audit du matin convient aux entreprises de 2 à 250 salariés\u00a0; la formation de l’après-midi accueille, du dirigeant aux collaborateurs, jusqu’à 15 personnes. Pour d’autres équipes, ou pour des formations par métier, nous vous proposons une suite sur devis\u00a0: nos formations IA.",
     },
     {
       id: "faq-apres",
@@ -333,7 +361,7 @@ export const CONTENU = {
       liens: [{ href: "/secteurs", libelle: "L’IA par secteur" }],
       question: "Est-ce que ça marche dans notre secteur\u202f?",
       reponse:
-        "Nous intervenons dans tous les secteurs. Nous partons de vos tâches, pas d’un métier\u00a0: un atelier ne vit pas la même journée qu’un cabinet, et l’audit le montre dès le matin. Il y a toujours des heures à récupérer : l’audit les chiffre, et la garantie porte dessus. Voir l’IA par secteur.",
+        "Nous intervenons dans tous les secteurs. Nous partons de vos tâches, pas d’un métier\u00a0: un atelier ne vit pas la même journée qu’un cabinet, et l’audit le montre dès le matin. Il y a toujours des heures à récupérer : l’audit les repère, le rapport les chiffre, et la garantie porte dessus. Voir l’IA par secteur.",
     },
     {
       id: "faq-connaitre",
@@ -351,9 +379,9 @@ export const CONTENU = {
   ],
   rendezVous: {
     surtitre: "Prochaine étape",
-    titre: "Diagnostic IA gratuit\u202f: 45 minutes pour commencer",
+    titre: "Diagnostic IA gratuit et facultatif\u202f: 45 minutes pour commencer",
     etapes: [
-      "Diagnostic IA, 45 min\u202f: une première tâche chiffrée",
+      "Diagnostic IA, 45 min, gratuit et facultatif\u202f: une première tâche chiffrée",
       "Journée IA, chez vous",
       "Mise en place, seulement si vous le décidez",
     ],

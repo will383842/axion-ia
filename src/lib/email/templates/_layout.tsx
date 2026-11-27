@@ -132,6 +132,12 @@ export interface DonneesRenduEmail {
    * le lien d'opposition).
    */
   readonly lienEspace: string | null;
+  /**
+   * « Lien perdu ? » dans le pied (2026-11-25) : vrai seulement pour un e-mail adressé à un
+   * APPORTEUR dont l'espace est ouvert (gabarit `apporteur-*` qui porte son `lienEspace`).
+   * Absent = faux : les aperçus et les tests de gabarit seul n'ont pas la ligne.
+   */
+  readonly espaceApporteur?: boolean;
 }
 const RENDU_EN_COURS = new AsyncLocalStorage<DonneesRenduEmail>();
 export function avecDonneesRendu<T>(
@@ -142,7 +148,9 @@ export function avecDonneesRendu<T>(
 }
 
 const BRAND = "Axion-IA";
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+/** La page publique « Retrouver mon espace » des apporteurs (aucun jeton dans cette adresse). */
+export const URL_RETROUVER_ESPACE_APPORTEUR = `${BASE_URL}/apporteur/dossier/retrouver`;
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
 const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
 
@@ -823,6 +831,7 @@ export function EmailLayout({
   const donneesRendu = RENDU_EN_COURS.getStore();
   const oppositionHref = donneesRendu?.oppositionHref ?? null;
   const lienEspace = donneesRendu?.lienEspace ?? null;
+  const espaceApporteur = donneesRendu?.espaceApporteur === true;
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 
@@ -1164,6 +1173,16 @@ export function EmailLayout({
                   >
                     {t.opposition}
                   </Link>
+                </>
+              )}
+              {/* « Lien perdu ? » (2026-11-25) : sous tout e-mail adressé à un APPORTEUR,
+                  l'adresse où retrouver son espace. Elle est publique et sans jeton, donc
+                  écrite en clair ; en TEXTE et non en lien, pour ne rien prendre au budget
+                  de liens des familles (§5.4 — 2 en famille A). */}
+              {espaceApporteur && (
+                <>
+                  <br />
+                  Lien perdu ? Retrouvez votre espace : {URL_RETROUVER_ESPACE_APPORTEUR}
                 </>
               )}
             </Text>

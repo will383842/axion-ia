@@ -188,7 +188,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
       "A3 ouvert / A4 fermé · 420 × 297 mm à plat, 210 × 297 mm plié · pli central · " +
       "pages 2-3 conçues comme une seule double page, bandeau traversant le pli",
     resume:
-      "Les 21 formations et le séminaire sur une seule page, avec les prix publics et la prise en charge OPCO. Le format à laisser après un rendez-vous quand le catalogue 48 p. est trop lourd.",
+      "Les 21 formations et le séminaire sur une seule page, avec les prix publics. Le format à laisser après un rendez-vous quand le catalogue 48 p. est trop lourd.",
     fichiersPublics: [],
     fichiersHorsLigne: [
       {
@@ -212,7 +212,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     icon: "Newspaper",
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
-    resume: `La présentation courte d’Axion-IA : les cinq activités, la prise en charge OPCO jusqu’au reste à charge nul, et le coup de projecteur — podcast, interviews, page dédiée — affiché ${VALEUR_BARREE} barré puis ${GRATUIT}. À laisser après un rendez-vous ou à diffuser en salon.`,
+    resume: `La présentation courte d’Axion-IA : les cinq activités, le financement indiqué au premier échange, et le coup de projecteur — podcast, interviews, page dédiée — affiché ${VALEUR_BARREE} barré puis ${GRATUIT}. À laisser après un rendez-vous ou à diffuser en salon.`,
     fichiersPublics: [],
     fichiersHorsLigne: [
       {
@@ -260,7 +260,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
   {
     id: "trame-echange-apporteur",
     icon: "MessagesSquare",
-    nom: "Trame de l'échange découverte apporteur (15 min)",
+    nom: "Trame de l'entretien apporteur (15 min)",
     format: "A4 portrait · 8 pages · usage interne",
     resume:
       "La trame pour conduire et noter l'échange de 15 minutes avec un candidat apporteur d'affaires : déroulé minute par minute, questions sur des faits vécus, présentation du réseau, réponses aux questions fréquentes, mots à dire et à bannir, critères éliminatoires fixés avant l'appel, et une fiche de notes à grille qui débouche sur une décision structurée juste après l'échange.",
@@ -295,12 +295,12 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: `Guide IA entreprise · ${GUIDE_IA_PAGES} pages`,
     format: `A4 portrait · 210 × 297 mm · ${GUIDE_IA_PAGES} pages, lecture à l'écran`,
     resume:
-      "Le guide promis par la page /guide-ia : comprendre l'IA générative, les usages prouvés, les coûts réels, la gouvernance, le retour sur investissement et les écueils. Envoyé par e-mail dès la demande (page du guide ou encart de fin d'article), et proposé en lien dans la confirmation d'un appel de découverte.",
+      "Le guide promis par la page /guide-ia : comprendre l'IA générative, les usages prouvés, les coûts réels, la gouvernance, le retour sur investissement et les écueils. Envoyé par e-mail dès la demande (page du guide ou encart de fin d'article), et proposé en lien dans la confirmation d'un Diagnostic IA.",
     fichiersPublics: [
       {
         chemin: GUIDE_IA_CHEMIN,
         nom: `Le PDF, ${GUIDE_IA_PAGES} pages`,
-        role: "La cible du lien personnel de l'e-mail « Votre guide » (`/api/guide-ia/telecharger`, qui y redirige après le clic), de la page de confirmation de la lettre et de l'e-mail de confirmation d'un appel de découverte. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés. Une nouvelle édition remplace le fichier sous le même nom.",
+        role: "La cible du lien personnel de l'e-mail « Votre guide » (`/api/guide-ia/telecharger`, qui y redirige après le clic), de la page de confirmation de la lettre et de l'e-mail de confirmation d'un Diagnostic IA. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés. Une nouvelle édition remplace le fichier sous le même nom.",
       },
     ],
     fichiersHorsLigne: [

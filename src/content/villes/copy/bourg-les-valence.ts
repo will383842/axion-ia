@@ -65,7 +65,7 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bourg-lès-Valence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Valence).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bourg-lès-Valence, comme partout en France, ou à distance.",
     },
   ],
 };

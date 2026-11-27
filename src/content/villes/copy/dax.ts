@@ -74,7 +74,7 @@ export const DAX_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : moteur de réservation directe de cures et séjours, e-commerce de produits landais et thermaux, chatbot RAG multilingue, recherche sémantique, agents administratifs branchés sur votre SI. Démos hebdomadaires en visio depuis Dax.",
+              "Greffe IA sur l'existant ou build IA-native : moteur de réservation directe de cures et séjours, e-commerce de produits landais et thermaux, chatbot RAG multilingue, recherche sémantique, agents administratifs branchés sur votre SI. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const DAX_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : moteur de réservation directe de cures et séjours, e-commerce de produits landais et thermaux, chatbot RAG multilingue, recherche sémantique, agents administratifs branchés sur votre SI. Démos hebdomadaires en visio depuis Dax.",
+              "Greffe IA sur l'existant ou build IA-native : moteur de réservation directe de cures et séjours, e-commerce de produits landais et thermaux, chatbot RAG multilingue, recherche sémantique, agents administratifs branchés sur votre SI. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -246,7 +246,7 @@ export const DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dax ?",
-      a: "Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons sur site.",
+      a: "Nous intervenons sur site à Dax.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

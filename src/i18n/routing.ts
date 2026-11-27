@@ -100,6 +100,10 @@ export const routing = defineRouting({
     // R5a (08/11/2026) — offre phare. Même slug en FR et EN : pas de boucle 307 next-intl ;
     // la version EN est de toute façon redirigée vers le FR (proxy + permanentRedirect).
     "/journee-ia": { fr: "/journee-ia", en: "/journee-ia" },
+    // GEO V2-09 : la cartographie, étape du matin de la Journée IA (EN redirigée vers FR).
+    "/cartographie": { fr: "/cartographie", en: "/cartographie" },
+    // GEO V2-28 : combien coûte un audit IA (EN redirigée vers FR).
+    "/prix-audit-ia": { fr: "/prix-audit-ia", en: "/prix-audit-ia" },
     "/audit/tpe-1-jour": { fr: "/audit/tpe-1-jour", en: "/audit/tpe-1-jour" },
     // Sprint 14.10.8 (Will 2026-05-12) — /audit/cible remplace /audit/process.
     // Slug aligné sur pricing.ts AUDIT_TIERS id "audit-cible".
@@ -249,12 +253,6 @@ export const routing = defineRouting({
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
     "/certification-qualiopi": { fr: "/certification-qualiopi", en: "/certification-qualiopi" },
 
-    // Financement OPCO / France Travail — page dédiée (Phase B, gatée comme Qualiopi)
-    "/financement-opco-france-travail": {
-      fr: "/financement-opco-france-travail",
-      en: "/financement-opco-france-travail",
-    },
-
     // Transversales
     "/a-propos": { fr: "/a-propos", en: "/about" },
     "/contact": { fr: "/contact", en: "/contact" },
@@ -321,6 +319,7 @@ export const routing = defineRouting({
     // formation collective retirée le 2026-06-12 et redirigée 301 vers
     // `/formations` (cf. next.config.ts).
     "/diagnostic": "/diagnostic",
+    "/questionnaire-barometre-ia-2027": "/questionnaire-barometre-ia-2027",
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },
@@ -359,6 +358,12 @@ export const routing = defineRouting({
     // « slugs identiques » la couvre) et qui n'expose pas la route au bug de
     // boucle 307 de next-intl, lequel ne frappe que les mappings `fr ≠ en`.
     "/ressources": { fr: "/ressources", en: "/ressources" },
+    // Baromètre 2027 IA TPE/PME (FR seul). noindex + hors sitemap tant que
+    // BAROMETRE_PUBLIC === false (constante, cf. `sitemap.ts`). Slug identique en EN.
+    "/ressources/barometre-ia-tpe-pme-2027": {
+      fr: "/ressources/barometre-ia-tpe-pme-2027",
+      en: "/ressources/barometre-ia-tpe-pme-2027",
+    },
 
     // Banque d'images / Image bank (Sprint M? — axionia-image-bank skill v1.0).
     // CC BY 4.0, indexable Google Images / Bing / LLMs. Pages publiques uniquement

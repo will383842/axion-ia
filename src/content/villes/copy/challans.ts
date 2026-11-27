@@ -250,7 +250,7 @@ export const CHALLANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Challans ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 40 min de Nantes. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

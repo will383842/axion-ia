@@ -1,14 +1,16 @@
 /**
  * KB sectorielle — Verticale Audits IA (P4 Sprint P1 KB pilote 2026-05-21).
  *
- * 60 facts vérifiés sourcés sur l'audit IA en entreprise France.
- * Sources : INSEE, BPI France, DARES, France Num, Numeum (ex-Syntec Numérique), CGPME,
- *           ANSSI, CNIL, AI Act eur-lex.europa.eu, AFNOR, ISO.
+ * Fiches sourcées (60 avant le 26/11/2026) sur l'audit IA en entreprise France.
+ * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *
  * Usage : seed via `prisma/seeds/content-gen/seed-kb-facts.ts`
  * Indexation FTS Postgres déjà en place via KbEntry.content + tsvector.
+ *
+ * ⚠️ 26/11/2026 : les faits tiers chiffrés sans adresse profonde et les « retours terrain » chiffrés
+ * ont été retirés (docs/content-gen/KB-QUARANTAINE-2026-11-26.md). Le nombre de faits n'est plus un objectif.
  */
 
 export interface KbFact {
@@ -22,15 +24,6 @@ export interface KbFact {
 }
 
 export const KB_AUDITS: readonly KbFact[] = [
-  {
-    id: "audit-001",
-    text: "85 % des PME françaises n'ont pas effectué d'évaluation formelle de leur exposition aux risques IA avant d'adopter un outil (BPI France, rapport IA PME 2024).",
-    source: "BPI France — Rapport IA & PME 2024",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["audits"],
-    confidence: 0.85,
-  },
   {
     id: "audit-002",
     text: "Le règlement européen sur l'IA (AI Act, Règlement UE 2024/1689) prévoit des obligations renforcées pour les systèmes d'IA dits « à haut risque » (par exemple recrutement et gestion du personnel, évaluation de la solvabilité), avec une évaluation de conformité à la charge du fournisseur du système. Le règlement (UE) 2026/1744 (« omnibus IA », en vigueur le 27 juillet 2026) a reporté ces obligations au 2 décembre 2027 pour les systèmes de l'annexe III et au 2 août 2028 pour l'IA intégrée dans des produits réglementés (annexe I). Vérifier le texte consolidé sur EUR-Lex avant de s'y engager.",
@@ -60,15 +53,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     confidence: 0.98,
   },
   {
-    id: "audit-005",
-    text: "60 % des entreprises françaises ayant déployé une solution IA constatent des dérives par rapport aux objectifs initiaux dans les 12 premiers mois (Numeum, ex-Syntec Numérique, baromètre IA 2025).",
-    source: "Numeum (ex-Syntec Numérique) — Baromètre IA 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["audits"],
-    confidence: 0.8,
-  },
-  {
     id: "audit-006",
     text: "Un audit IA externe pour une PME (< 250 salariés) porte sur les cas d'usage IA déjà déployés ou envisagés ; sa durée dépend du périmètre.",
     source: "Axion-IA — Référentiel audit interne",
@@ -87,15 +71,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     confidence: 0.92,
   },
   {
-    id: "audit-008",
-    text: "Les PME françaises consacrent en moyenne 2,3 % de leur chiffre d'affaires au numérique, dont 0,4 % à l'IA — un écart signalé par France Num comme facteur de retard compétitif.",
-    source: "France Num — Baromètre France Num 2024",
-    sourceUrl: "https://www.francenum.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["audits", "interventions_formations"],
-    confidence: 0.82,
-  },
-  {
     id: "audit-009",
     text: "ISO/IEC 42001 (publiée déc. 2023) est la norme internationale de système de management de l'IA — premier référentiel certifiable au monde pour gouverner l'IA en entreprise.",
     source: "ISO — ISO/IEC 42001:2023",
@@ -103,15 +78,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["audits"],
     confidence: 0.98,
-  },
-  {
-    id: "audit-010",
-    text: "Un audit IA révèle en moyenne 3 à 7 non-conformités majeures dans les PME qui n'ont pas de politique IA formalisée, principalement sur la traçabilité des décisions automatisées.",
-    source: "Axion-IA — Retours terrain audits 2026",
-    sourceUrl: "https://axion-ia.com/audits",
-    verifiedAt: "2026-05-01",
-    verticales: ["audits"],
-    confidence: 0.88,
   },
   // ── Gouvernance des données ───────────────────────────────────────────────
   {
@@ -122,15 +88,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.95,
-  },
-  {
-    id: "audit-012",
-    text: "Selon l'OCDE, 67 % des entreprises ayant déployé une IA en production ne disposent pas d'inventaire formel des jeux de données utilisés pour l'entraînement, créant un risque majeur de non-conformité AI Act art. 10.",
-    source: "OCDE — AI Policy Observatory 2024",
-    sourceUrl: "https://oecd.ai",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.82,
   },
   {
     id: "audit-013",
@@ -149,15 +106,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.95,
-  },
-  {
-    id: "audit-015",
-    text: "Un audit de gouvernance données IA identifie en moyenne 12 à 18 jeux de données critiques non documentés dans les PME, principalement issus de scraping ou de partenariats commerciaux non encadrés.",
-    source: "Axion-IA — Retours terrain audits gouvernance 2026",
-    sourceUrl: "https://axion-ia.com/audits",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.85,
   },
   // ── Qualité du modèle et biais ────────────────────────────────────────────
   {
@@ -179,24 +127,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     confidence: 0.7,
   },
   {
-    id: "audit-018",
-    text: "L'audit de biais IA repose sur 3 métriques de référence : disparate impact ratio (>0.80), equalized odds (écart <5 %) et demographic parity (écart <10 %), conformément à la norme NIST AI RMF 1.0.",
-    source: "NIST — AI Risk Management Framework 1.0",
-    sourceUrl: "https://www.nist.gov/itl/ai-risk-management-framework",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.93,
-  },
-  {
-    id: "audit-019",
-    text: "Un modèle IA déployé en entreprise voit ses performances se dégrader de 5 à 15 % par an en l'absence de monitoring (concept drift), rendant les audits de réentraînement périodiques (tous les 6-12 mois) indispensables.",
-    source: "Gartner — Predicts 2024 AI Engineering",
-    sourceUrl: "https://www.gartner.com/en/research",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.85,
-  },
-  {
     id: "audit-020",
     text: "L'AI Act (art. 13) demande aux fournisseurs de systèmes d'IA à haut risque de concevoir ces systèmes de façon assez transparente pour que l'entreprise qui les utilise puisse interpréter leurs résultats et s'en servir correctement, avec une notice d'utilisation. Il ne crée pas à lui seul une obligation d'audit d'« explicabilité » pour toute entreprise.",
     source: "EUR-Lex — Règlement UE 2024/1689 art. 13",
@@ -214,15 +144,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.98,
-  },
-  {
-    id: "audit-022",
-    text: "Une DPIA (Data Protection Impact Assessment) IA doit être réalisée avant tout déploiement d'un système de profilage à grande échelle, de surveillance systématique ou de traitement de données sensibles (CNIL liste 14 cas obligatoires).",
-    source: "CNIL — Liste DPIA obligatoires 2018-2024",
-    sourceUrl: "https://www.cnil.fr/fr/intelligence-artificielle",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.97,
   },
   {
     id: "audit-023",
@@ -319,15 +240,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     confidence: 0.94,
   },
   {
-    id: "audit-033",
-    text: "Le MITRE ATLAS recense plus de 120 techniques d'attaque IA documentées (model inversion, membership inference, evasion) — l'audit sécurité IA doit cartographier l'exposition aux techniques pertinentes selon le contexte.",
-    source: "MITRE — ATLAS (Adversarial Threat Landscape for AI Systems)",
-    sourceUrl: "https://atlas.mitre.org",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.93,
-  },
-  {
     id: "audit-034",
     text: "Selon le Forum Économique Mondial (Global Cybersecurity Outlook 2024), 47 % des entreprises citent les attaques génératives par IA comme leur première préoccupation cyber 2024-2025 — sujet d'audit prioritaire.",
     source: "World Economic Forum — Global Cybersecurity Outlook 2024",
@@ -363,33 +275,6 @@ export const KB_AUDITS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.9,
-  },
-  {
-    id: "audit-038",
-    text: "Selon Gartner (Hype Cycle 2024), 30 % des projets IA générative devaient être abandonnés après la phase POC d'ici fin 2025, faute de ROI démontré (projection publiée en 2024) — l'audit early-stage évite l'écueil.",
-    source: "Gartner — Hype Cycle for Generative AI 2024",
-    sourceUrl: "https://www.gartner.com/en/research/methodologies/gartner-hype-cycle",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.85,
-  },
-  {
-    id: "audit-039",
-    text: "Le coût total de possession (TCO) d'un projet IA dépasse en moyenne 3× le coût initial du modèle, en raison des dépenses cachées : infrastructure GPU/cloud, monitoring, MLOps, formation et conformité (Forrester 2024).",
-    source: "Forrester — Total Economic Impact of AI 2024",
-    sourceUrl: "https://www.forrester.com/research/",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.84,
-  },
-  {
-    id: "audit-040",
-    text: "Selon IDC (Worldwide AI Spending Guide 2024), le marché français de l'IA atteindra 12,4 Md€ en 2027 — soit une croissance annuelle moyenne de +29 % sur 2024-2027, justifiant les audits de pertinence des investissements." /* price-exempt: stat marché tierce */,
-    source: "IDC — Worldwide AI Spending Guide 2024",
-    sourceUrl: "https://www.idc.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.83,
   },
   // ── Outils, méthodologies, frameworks d'audit ─────────────────────────────
   {
@@ -522,37 +407,7 @@ export const KB_AUDITS: readonly KbFact[] = [
     verticales: ["audits"],
     confidence: 0.92,
   },
-  {
-    // 2026-06-03 — remplace l'ancien audit-055 (dispositif Bpifrance Diag IA,
-    // retiré pour silence financement) par un fait marché neutre, afin de
-    // conserver le compte de 60 facts attendu par kb-facts.test.ts.
-    id: "audit-055",
-    text: "Selon McKinsey (State of AI 2024), les organisations qui cadrent leurs cas d'usage IA par un diagnostic préalable atteignent un taux de passage en production nettement supérieur à celles qui lancent des projets sans audit structuré.",
-    source: "McKinsey — The state of AI 2024",
-    sourceUrl: "https://www.mckinsey.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.78,
-  },
   // ── Statistiques générales d'adoption et marchés ──────────────────────────
-  {
-    id: "audit-056",
-    text: "Selon France Num (Baromètre 2024), 31 % des PME françaises utilisent au moins un outil IA en production en 2024, contre 16 % en 2023 — adoption doublée en 12 mois, créant un retard structurel d'audit.",
-    source: "France Num — Baromètre France Num 2024",
-    sourceUrl: "https://www.francenum.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.86,
-  },
-  {
-    id: "audit-057",
-    text: "Selon INSEE (enquête TIC 2024), 12 % des entreprises françaises de plus de 10 salariés utilisent l'IA.",
-    source: "INSEE — Enquête TIC 2024",
-    sourceUrl: "https://www.insee.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.88,
-  },
   {
     id: "audit-058",
     text: "Le Conseil d'État (étude IA & service public 2022) recommande l'audit systématique des systèmes IA déployés par les administrations publiques — pratique généralisée par la DINUM via la doctrine ALGORITHMES PUBLICS.",

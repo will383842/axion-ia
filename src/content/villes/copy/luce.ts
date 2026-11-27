@@ -49,7 +49,7 @@ export const LUCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lucé et agglomération Chartres ?",
-      a: "Oui, Axion-IA intervient à Lucé et toute l'agglomération de Chartres (Mainvilliers, Lèves, Luisant). Consultants depuis Chartres (5 min) ou Paris (1h15 TER).",
+      a: "Oui, Axion-IA intervient à Lucé et toute l'agglomération de Chartres (Mainvilliers, Lèves, Luisant). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE/PME tertiaires de Lucé ?",
@@ -64,8 +64,8 @@ export const LUCE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Optimisation tournées, classification colis, prévision demande.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Paris Montparnasse à Chartres en 1h15 (TER direct), Lucé à 5 min de Chartres.",
+      q: "Comment se déroule une mission Axion-IA à Lucé ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

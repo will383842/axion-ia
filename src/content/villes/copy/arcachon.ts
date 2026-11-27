@@ -65,7 +65,7 @@ export const ARCACHON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Arcachon ?",
-      a: "Nos consultants interviennent dans vos locaux à Arcachon ou en visio. TER direct Bordeaux 50 min. Missions adaptées aux saisonnalités touristiques du Bassin.",
+      a: "Nos consultants interviennent dans vos locaux à Arcachon ou en visio. Missions adaptées aux saisonnalités touristiques du Bassin.",
     },
   ],
 };

@@ -165,10 +165,6 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     why: "la page dédiée — notFound() tant que la certification n'est pas obtenue",
   },
   {
-    file: "app/[locale]/financement-opco-france-travail/page.tsx",
-    why: "le financement OPCO découle de la certification",
-  },
-  {
     file: "server/qualiopi/config/public-identity.ts",
     why: "identité publique OF exposée en JSON-LD et PDF",
   },
@@ -210,14 +206,6 @@ const EXEMPTIONS: ReadonlyArray<{
   jeton?: string;
   gardeChez?: { fichier: string; jeton: string };
 }> = [
-  {
-    chemin: "components/formations/FormationsLesPlus.tsx",
-    raison:
-      "Composant purement présentationnel : sa ligne assertive porte `on: ofPublic`, " +
-      "et son UNIQUE appelant (app/[locale]/formations/entreprise/page.tsx, au registre) " +
-      "dérive `ofPublic` de isQualiopiCertificationObtenue().",
-    jeton: "ofPublic",
-  },
   {
     chemin: "components/qualiopi/QualiopiBadge.tsx",
     raison:

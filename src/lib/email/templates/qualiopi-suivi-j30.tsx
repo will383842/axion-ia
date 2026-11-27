@@ -23,9 +23,9 @@ export const qualiopiSuiviJ30Subject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return objetCompose("Suivi J+30 —", p.titreFormation ?? "Formation");
+    return objetCompose("Questionnaire à froid —", p.titreFormation ?? "Formation");
   }
-  return objetCompose("30-day follow-up —", p.titreFormation ?? "Training");
+  return objetCompose("Cold questionnaire —", p.titreFormation ?? "Training");
 };
 
 export function QualiopiSuiviJ30Email({
@@ -38,14 +38,12 @@ export function QualiopiSuiviJ30Email({
   const p = payload as unknown as Payload;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const ctaHref = p.lienQuestionnaire ?? p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
-  const ctaLabel = p.lienQuestionnaire
-    ? "Répondre au questionnaire de suivi"
-    : "Accéder à mon espace";
+  const ctaLabel = p.lienQuestionnaire ? "Répondre au questionnaire" : "Accéder à mon espace";
   return (
     <EmailLayout
       famille="B"
-      preview="Un mois après votre formation — comment allez-vous ?"
-      title="Suivi post-formation — 30 jours déjà"
+      preview="Votre questionnaire, un mois après la fin de la formation"
+      title="Un mois après votre formation : votre avis"
       cta={{ label: ctaLabel, href: ctaHref }}
       locale={locale}
       trust
@@ -61,8 +59,7 @@ export function QualiopiSuiviJ30Email({
         <strong>{p.titreFormation}</strong> (fin le {p.dateFinFormation}).
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Bonjour {p.stagiairePrenomNom} — avez-vous pu mettre en pratique les acquis ? Des questions
-        ou besoins d&apos;accompagnement supplémentaire ? Notre équipe est à votre disposition.
+        Bonjour {p.stagiairePrenomNom} — avez-vous pu mettre en pratique les acquis ?
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Retrouvez également vos documents (attestation, supports) dans votre espace stagiaire.

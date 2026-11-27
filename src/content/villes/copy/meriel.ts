@@ -49,7 +49,7 @@ export const MERIEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mériel et vallée de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Mériel et toute la vallée de l'Oise (L'Isle-Adam à 5 min, Auvers-sur-Oise à 10 min, Cergy-Pontoise à 20 min, Paris à 40 min). Gare Transilien H Mériel.",
+      a: "Oui. Nous intervenons à Mériel et dans toute la vallée de l'Oise (L'Isle-Adam, Auvers-sur-Oise, Cergy-Pontoise), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Mériel ?",
@@ -64,8 +64,8 @@ export const MERIEL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",
-      a: "L'Isle-Adam (5 min). Auvers-sur-Oise (10 min). Cergy-Pontoise (20 min). Paris Gare du Nord (40 min). CDG (30 min).",
+      q: "Comment se déroule une mission Axion-IA à Mériel ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

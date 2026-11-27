@@ -162,6 +162,7 @@ test.describe("SEO endpoints", () => {
     expect(res.headers()["content-type"]).toContain("text/plain");
     const body = await res.text();
     expect(body).toContain("Axion-IA");
-    expect(body).toContain("Modules");
+    // Refonte du 20/11/2026 : la première section du fichier est « Par où commencer ».
+    expect(body).toContain("## Par où commencer");
   });
 });

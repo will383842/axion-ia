@@ -124,7 +124,7 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les sous-traitants aéronautiques de l'ouest toulousain ?",
-            a: "Oui. Tournefeuille concentre des cadres et bureaux d'études liés aux sites Airbus de Blagnac et Saint-Martin-du-Touch (à 10 min). Nous livrons des plateformes B2B sobres pour ces sous-traitants : espaces clients sécurisés, search documentaire technique par chatbot RAG, qualification automatique des demandes entrantes.",
+            a: "Oui. Nous livrons des plateformes B2B sobres pour ces sous-traitants : espaces clients sécurisés, search documentaire technique par chatbot RAG, qualification automatique des demandes entrantes.",
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
@@ -246,7 +246,7 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Tournefeuille ?",
-      a: "Le diagnostic et les sessions clés se font sur site ; le suivi se poursuit en visio. La proximité de Toulouse (15 min) permet des déplacements rapides, dont les frais sont indiqués séparément et en toute transparence.",
+      a: "Le diagnostic et les sessions clés se font sur site ; le suivi se poursuit en visio.",
     },
   ],
 };

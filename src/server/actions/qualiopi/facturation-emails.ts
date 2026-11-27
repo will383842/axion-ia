@@ -12,7 +12,8 @@
  *
  * Journal des envois : ActivityLog (SSOT audit existant) via
  * logQualiopiActivity — actions `facturation.email.devis` /
- * `facturation.email.facture` avec destinataire + numéro + hash du PDF.
+ * `facturation.email.facture` (numéro + hash du PDF, destinataire pour la facture ; jamais
+ * l'adresse pour le devis : le `targetId` suffit).
  */
 
 "use server";
@@ -24,6 +25,7 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { publicUrl } from "@/lib/public-url";
 import {
   creerTokenDocument,
+  revoquerJetonPrecis,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
 import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
@@ -32,7 +34,15 @@ import {
   nomPourSalutationDevis,
   payloadDevisEnvoi,
 } from "@/server/qualiopi/devis/email-devis-envoi";
+import { resoudreMode } from "@/server/email/outbox-service";
+import { devisRemisEnMainPropre } from "@/server/qualiopi/devis/canal-emission";
+import { CLE_MARQUEUR } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
+import { rendreLienPrecedent } from "@/server/qualiopi/documents/signature/lien-precedent";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  emailDevisEnAttente,
+  GABARIT_DEVIS_ENVOI,
+} from "@/server/qualiopi/devis/email-devis-en-attente";
 import {
   SELECT_SIGNATURES_PIECE,
   signatureClientDuDevis,
@@ -42,6 +52,50 @@ import { preparerEnvoiFactureEmail } from "@/server/qualiopi/financements/factur
 const eur = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR");
+
+const MSG_RENVOI_DEJA_GARE =
+  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page « E-mails envoyés » de la console. Rien n'a été renvoyé.";
+const MSG_RENVOI_MAIN_PROPRE =
+  "Ce devis a été remis en main propre : aucun e-mail n'est parti et aucun lien de signature n'existe. Pour l'envoyer par e-mail, créez une nouvelle version avec « Corriger et renvoyer ».";
+const MSG_ENVOI_EN_COURS = "Un envoi de ce devis est déjà en cours, réessayez dans un instant.";
+const NOTE_RENVOI_GARE =
+  "Renvoi garé dans Emails → À valider : le lien actuel reste valable jusqu'au départ réel ; le nouveau lien naît à l'approbation et remplace alors l'ancien.";
+
+const MSG_FILE_INDISPONIBLE = "File d'envoi indisponible — réessayer.";
+const MSG_ENFILAGE_EN_ERREUR =
+  "L'enfilage de l'e-mail a échoué : rien n'est parti, le lien de signature précédent a été conservé ou rendu. Réessayer.";
+const MSG_ENFILAGE_EN_ERREUR_SANS_LIEN =
+  "L'e-mail n'a pas pu être mis en file et le client n'a plus de lien de signature valable : renvoyez le devis.";
+
+/**
+ * Rien n'est parti ni garé alors qu'un jeton neuf a révoqué l'ancien lien : rendre l'ancien.
+ * S'il ne peut l'être (`false` ou exception), le jeton NEUF est révoqué par son identifiant :
+ * jamais deux liens vivants. Ne lève jamais ; ni URL, ni jeton, ni adresse en console.
+ * Rend `true` si l'ancien lien a été rendu, `false` sinon (le client n'a alors plus de lien valable).
+ */
+async function rendreAncienLienDuRenvoi(url: string, tokenId: string | null): Promise<boolean> {
+  const revoquerLeNeuf = async (): Promise<void> => {
+    if (tokenId === null) return;
+    try {
+      await revoquerJetonPrecis({ tokenId, motif: "Envoi annulé : rien n'est parti" });
+    } catch {
+      console.warn("[envoyerDevisEmailAction] jeton neuf non révoqué");
+    }
+  };
+  try {
+    const rendu = await rendreLienPrecedent(url, "revoquer");
+    if (rendu === false) {
+      console.warn("[envoyerDevisEmailAction] ancien lien de signature non rendu");
+      await revoquerLeNeuf();
+      return false;
+    }
+    return true;
+  } catch {
+    console.warn("[envoyerDevisEmailAction] ancien lien de signature non rendu");
+    await revoquerLeNeuf();
+    return false;
+  }
+}
 
 const EnvoyerDevisSchema = z.object({
   devisId: z.string().uuid(),
@@ -106,7 +160,11 @@ export async function envoyerDevisEmailAction(
   // Devis à formules : échec FERMÉ si l'interrupteur est éteint. Sinon un renvoi émettrait un
   // nouveau lien (qui révoque l'ancien) et enverrait un e-mail dont le lien serait refusé à la
   // signature. `offre` est un champ scalaire, déjà lu par `include`.
-  if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
+  if (
+    devis.offre !== null &&
+    devis.offre !== undefined &&
+    !(await formulesActives(undefined, { clientId: devis.clientId }))
+  ) {
     return {
       error:
         "Ce devis à formules ne peut pas être renvoyé tant que les devis à formules sont désactivés dans la configuration.",
@@ -163,73 +221,150 @@ export async function envoyerDevisEmailAction(
   //
   // ⚠️ Fail-soft : un devis doit pouvoir être renvoyé même si le lien échoue.
   // L'e-mail part alors SANS bouton de signature, et on le DIT.
-  let signatureUrl: string | null = null;
-  let signatureNote: string | null = null;
-  if (devis.documentGenereId !== null && devis.statut === "envoye") {
-    try {
-      // Calculée AVANT le jeton : si elle lève, aucun jeton n'est créé (créer le jeton révoque
-      // l'ancien lien, le client resterait sans lien valable).
-      const baseSignature = publicUrl("/fr/portail/signer/").toString();
-      const { token } = await creerTokenDocument({
-        documentGenereId: devis.documentGenereId,
-        partie: "client",
-        signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
-        signataireEmail: to,
-        signataireQualite: devis.client.contactFonction,
-        borneMetier: devis.dateValidite,
+  // 🔴 Verrou consultatif à la MISE EN ATTENTE (même clé et même forme que `premierEnvoi`) : il
+  // entoure la garde « déjà garé » ET l'enfilage. Sans lui, deux clics en parallèle (deux onglets)
+  // passent tous deux la garde avant que l'un des deux n'ait garé sa ligne : deux lignes à valider.
+  // Il tombe à la fin de la transaction, donc APRÈS l'enfilage.
+  // Capturée ici : le contrôle `fichierPdfUrl` ci-dessus ne survit pas dans le rappel.
+  const clePdf = devis.fichierPdfUrl;
+  const issue = await prisma.$transaction(
+    async (tx) => {
+      const [verrou] = await tx.$queryRaw<{ locked: boolean }[]>`
+        SELECT pg_try_advisory_xact_lock(hashtext(${"devis.envoi:" + devis.id})) AS locked
+      `;
+      if (!verrou?.locked) return { error: MSG_ENVOI_EN_COURS };
+      // Lot I1 : un devis remis en main propre n'a jamais eu d'e-mail ni de lien ; on ne le « renvoie » pas.
+      if (await devisRemisEnMainPropre(tx, devis.id)) return { error: MSG_RENVOI_MAIN_PROPRE };
+      let signatureUrl: string | null = null;
+      let tokenId: string | null = null;
+      let signatureNote: string | null = null;
+
+      // 🔴 B2, PR 4 — un e-mail de ce devis attend déjà (« à valider », ou « approuvé » depuis peu) :
+      // pas de second renvoi. Même règle que l'envoi et la remise en main propre (module partagé).
+      if (await emailDevisEnAttente(tx, devis.id)) return { error: MSG_RENVOI_DEJA_GARE };
+
+      const pieceId = devis.documentGenereId;
+      const renvoiAvecLien = pieceId !== null && devis.statut === "envoye";
+      // Mode d'envoi décidé AVANT tout jeton : créer le jeton révoque l'ancien lien.
+      //   - validation : AUCUN jeton ici. La ligne garée porte un marqueur ; le nouveau lien naît à
+      //     l'approbation (`lien-a-l-envoi`) et révoque l'ancien alors. D'ici là l'ancien reste vivant.
+      //   - auto : chemin d'origine, inchangé.
+      const parValidation =
+        renvoiAvecLien &&
+        (await resoudreMode(GABARIT_DEVIS_ENVOI, devis.clientId)) === "validation";
+      if (renvoiAvecLien && !parValidation) {
+        try {
+          // Calculée AVANT le jeton : si elle lève, aucun jeton n'est créé (créer le jeton révoque
+          // l'ancien lien, le client resterait sans lien valable).
+          const baseSignature = publicUrl("/fr/portail/signer/").toString();
+          const { token, tokenId: idNeuf } = await creerTokenDocument({
+            documentGenereId: pieceId,
+            partie: "client",
+            signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
+            signataireEmail: to,
+            signataireQualite: devis.client.contactFonction,
+            borneMetier: devis.dateValidite,
+          });
+          signatureUrl = `${baseSignature}${token}`;
+          tokenId = idNeuf;
+        } catch (err) {
+          if (aFormules) {
+            console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
+            return {
+              error:
+                "Le lien de signature n'a pas pu être créé : un devis à formules ne part jamais sans bouton « signer ». Réessayer.",
+            };
+          }
+          signatureNote =
+            err instanceof TokenDocumentError
+              ? `Lien de signature non émis (${err.motif}) : l'email part sans bouton « signer ».`
+              : "Lien de signature non émis : l'email part sans bouton « signer ».";
+          console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
+        }
+      }
+
+      const payloadCourriel = payloadDevisEnvoi({
+        clientNom: nomPourSalutationDevis(devis.client),
+        salutation: salutationPourPayload({
+          clientNom: nomPourSalutationDevis(devis.client),
+          contactCivilite: devis.client.contactCivilite,
+          contactPrenom: devis.client.contactPrenom,
+          contactNomFamille: devis.client.contactNomFamille,
+        }),
+        numero: devis.numero,
+        montantTotalHtCents: devis.montantTotalHtCents,
+        montantLabel: `${eur(devis.montantTotalHtCents)} HT`,
+        dateValiditeLabel: dateFr(devis.dateValidite),
+        // Formules figées dans la pièce déjà envoyée : l'e-mail décrit le PDF joint.
+        formules: formulesDepuisMetadata(pieceEnvoyee?.metadata),
+        // Même si les formules figées sont illisibles : un devis à formules n'annonce jamais de montant.
+        devisAFormules: aFormules,
+        signatureUrl,
+        messagePersonnalise: input.messagePersonnalise,
       });
-      signatureUrl = `${baseSignature}${token}`;
-    } catch (err) {
-      if (aFormules) {
-        console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
-        return {
-          error:
-            "Le lien de signature n'a pas pu être créé : un devis à formules ne part jamais sans bouton « signer ». Réessayer.",
+      if (parValidation) {
+        // Marqueur sans identité, sans URL, sans jeton : contrat v1 de `lien-a-l-envoi`.
+        payloadCourriel[CLE_MARQUEUR] = {
+          v: 1,
+          nature: "devis-renvoi",
+          documentGenereId: pieceId,
+          partie: "client",
+          devisId: devis.id,
         };
       }
-      signatureNote =
-        err instanceof TokenDocumentError
-          ? `Lien de signature non émis (${err.motif}) : l'email part sans bouton « signer ».`
-          : "Lien de signature non émis : l'email part sans bouton « signer ».";
-      console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
-    }
-  }
 
-  const { enqueued, garePourValidation = false } = await enqueueEmail(
-    "devis-envoi",
-    to,
-    "fr",
-    payloadDevisEnvoi({
-      clientNom: nomPourSalutationDevis(devis.client),
-      salutation: salutationPourPayload({
-        clientNom: nomPourSalutationDevis(devis.client),
-        contactCivilite: devis.client.contactCivilite,
-        contactPrenom: devis.client.contactPrenom,
-        contactNomFamille: devis.client.contactNomFamille,
-      }),
-      numero: devis.numero,
-      montantTotalHtCents: devis.montantTotalHtCents,
-      montantLabel: `${eur(devis.montantTotalHtCents)} HT`,
-      dateValiditeLabel: dateFr(devis.dateValidite),
-      // Formules figées dans la pièce déjà envoyée : l'e-mail décrit le PDF joint.
-      formules: formulesDepuisMetadata(pieceEnvoyee?.metadata),
-      // Même si les formules figées sont illisibles : un devis à formules n'annonce jamais de montant.
-      devisAFormules: aFormules,
-      signatureUrl,
-      messagePersonnalise: input.messagePersonnalise,
-    }),
-    {
-      attachments: [{ filename: `${devis.numero}.pdf`, r2Key: devis.fichierPdfUrl }],
-      entityType: "Devis",
-      entityId: devis.id,
-      // 🔴 Vérification E2E 2026-07-26. Sans `clientId`, aucune règle
-      // d'automatisation PAR CLIENT ne peut jamais s'appliquer : le `where` de
-      // `resoudreMode` se réduit aux règles globales. L'écran affichait donc des
-      // réglages par client structurellement inertes.
-      clientId: devis.clientId,
-      sujet: `Devis ${devis.numero} — Axion-IA`,
+      let enqueued = false;
+      let garePourValidation = false;
+      let enfilageEnErreur = false;
+      try {
+        const r = await enqueueEmail("devis-envoi", to, "fr", payloadCourriel, {
+          attachments: [{ filename: `${devis.numero}.pdf`, r2Key: clePdf }],
+          entityType: "Devis",
+          entityId: devis.id,
+          // 🔴 Vérification E2E 2026-07-26. Sans `clientId`, aucune règle
+          // d'automatisation PAR CLIENT ne peut jamais s'appliquer : le `where` de
+          // `resoudreMode` se réduit aux règles globales. L'écran affichait donc des
+          // réglages par client structurellement inertes.
+          clientId: devis.clientId,
+          sujet: `Devis ${devis.numero} — Axion-IA`,
+          ...(parValidation ? { exigerValidation: true } : {}),
+        });
+        enqueued = r.enqueued;
+        garePourValidation = r.garePourValidation ?? false;
+      } catch (err) {
+        // Cas limite : un délai de réponse Redis peut lever alors que le job a bien été ajouté.
+        // L'e-mail partirait alors avec un lien révoqué, mais le client garde son ancien lien
+        // rendu (cf. `rendreAncienLienDuRenvoi`) : jamais zéro lien, jamais deux.
+        // Journalisé sans adresse ni lien : seul le nom de l'erreur.
+        console.warn(
+          "[envoyerDevisEmailAction] enfilage de l'e-mail en erreur",
+          err instanceof Error ? err.name : "inconnue",
+        );
+        enfilageEnErreur = true;
+      }
+
+      return {
+        enqueued,
+        garePourValidation,
+        enfilageEnErreur,
+        signatureUrl,
+        tokenId,
+        signatureNote,
+        parValidation,
+      };
     },
+    { maxWait: 5_000, timeout: 60_000 },
   );
+  if ("error" in issue) return { error: issue.error };
+  const {
+    enqueued,
+    garePourValidation,
+    enfilageEnErreur,
+    signatureUrl,
+    tokenId,
+    signatureNote,
+    parValidation,
+  } = issue;
 
   // 🔴 `enqueued: false` ne signifie PAS un échec : c'est aussi ce que renvoie
   // un email correctement GARÉ en corbeille de validation. Le traiter comme une
@@ -237,7 +372,15 @@ export async function envoyerDevisEmailAction(
   // sautait la journalisation, et invitait l'admin à recliquer — chaque reclic
   // créant une ligne de plus en corbeille, sans déduplication.
   if (!enqueued && !garePourValidation) {
-    return { error: "File d'envoi indisponible — réessayer." };
+    // Un jeton créé au clic a révoqué l'ancien lien : rien n'est parti ni garé, le nouveau lien est
+    // perdu. On rend l'ancien ; s'il ne peut l'être, le jeton neuf est révoqué (jamais deux liens
+    // vivants). Jamais d'erreur remontée, ni URL ni adresse dans la console.
+    const rendu =
+      signatureUrl === null ? true : await rendreAncienLienDuRenvoi(signatureUrl, tokenId);
+    if (enfilageEnErreur) {
+      return { error: rendu ? MSG_ENFILAGE_EN_ERREUR : MSG_ENFILAGE_EN_ERREUR_SANS_LIEN };
+    }
+    return { error: MSG_FILE_INDISPONIBLE };
   }
 
   await logQualiopiActivity({
@@ -246,7 +389,8 @@ export async function envoyerDevisEmailAction(
     targetId: devis.id,
     // ⚠️ Le LIEN n'est jamais journalisé : il vaut signature. Seul le fait
     // qu'il ait été réémis l'est.
-    changes: { to, numero: devis.numero, lienSignatureReemis: signatureUrl !== null },
+    // ⚠️ Ni l'adresse : le `targetId` suffit à retrouver le devis.
+    changes: { numero: devis.numero, lienSignatureReemis: signatureUrl !== null },
     session,
   });
   return {
@@ -254,7 +398,11 @@ export async function envoyerDevisEmailAction(
       enqueued,
       garePourValidation,
       to,
-      ...(signatureNote !== null ? { note: signatureNote } : {}),
+      ...(parValidation
+        ? { note: NOTE_RENVOI_GARE }
+        : signatureNote !== null
+          ? { note: signatureNote }
+          : {}),
     },
   };
 }

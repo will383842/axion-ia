@@ -25,7 +25,13 @@ export interface PropsEtapeClientProjet {
   offres: readonly OffreCatalogue[];
   tvaStandardPct: number;
   lireBandeau: (clientId: string) => Promise<string | null>;
-  creerClient: (input: EntreeNouveauContact) => Promise<ResultatNouveauContact>;
+  /** Absent (mode essai) : l'étape ne propose pas de créer un contact. */
+  creerClient?: ((input: EntreeNouveauContact) => Promise<ResultatNouveauContact>) | undefined;
+  /**
+   * Si fourni, le PARENT tient la liste des contacts créés (`clients` les contient déjà) : ils
+   * survivent à la sortie de l'étape et les étapes suivantes (envoi) les voient.
+   */
+  onClientCree?: ((c: ClientOption) => void) | undefined;
   aujourdhui?: string | undefined;
   aide?: ReactNode;
 }
@@ -33,12 +39,12 @@ export interface PropsEtapeClientProjet {
 export function EtapeClientProjet(p: PropsEtapeClientProjet) {
   const { etat, dispatch } = p;
   const [crees, setCrees] = useState<ClientOption[]>([]);
-  const clients = [...p.clients, ...crees];
+  const clients = p.onClientCree ? p.clients : [...p.clients, ...crees];
   const client = clients.find((c) => c.id === etat.clientId);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
-      <div>
+    <div className="grid gap-[var(--space-admin-8,32px)] lg:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="flex min-w-0 flex-col gap-[var(--space-admin-8,32px)]">
         <ChoixModele etat={etat} dispatch={dispatch} />
         <BlocClient
           etat={etat}
@@ -47,18 +53,21 @@ export function EtapeClientProjet(p: PropsEtapeClientProjet) {
           lireBandeau={p.lireBandeau}
           creerClient={p.creerClient}
           aujourdhui={p.aujourdhui}
-          onClientCree={(c) => setCrees((a) => [...a, c])}
+          onClientCree={(c) => {
+            if (p.onClientCree) p.onClientCree(c);
+            else setCrees((a) => [...a, c]);
+          }}
         />
         <BlocMotsDuClient etat={etat} dispatch={dispatch} />
         <ListeLignes etat={etat} dispatch={dispatch} offres={p.offres} />
       </div>
-      <div className="lg:sticky lg:top-4 lg:self-start">
+      <div className="lg:sticky lg:top-4 lg:w-[22rem] lg:self-start">
         <ApercuDirect
           etat={etat}
           tvaStandardPct={p.tvaStandardPct}
           clientNom={client?.raisonSociale}
         />
-        {p.aide ? <div className="mt-4">{p.aide}</div> : null}
+        {p.aide ? <div className="mt-[var(--space-admin-6,16px)]">{p.aide}</div> : null}
       </div>
     </div>
   );

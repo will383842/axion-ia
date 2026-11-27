@@ -29,6 +29,7 @@
  * FR en dur, comme le reste du portail.
  */
 
+import { estEmailSimple } from "@/lib/email-simple";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { SignaturePad } from "@/components/portail/SignaturePad";
 
@@ -162,7 +163,14 @@ export interface PieceSignatureFormProps {
   numeroDevis?: string | null;
   /** Date de validité — un devis en a une, une convention non. */
   dateValiditeLisible: string | null;
+  /**
+   * Date de validité imprimée sur le PDF, quand elle diffère de la date en cours (validité
+   * prolongée après l'envoi). Absente ou identique : aucune mention.
+   */
+  dateValiditeImprimee?: string | null;
   organismeNom: string;
+  /** E-mail de contact de l'organisme (lien « Une question sur ce devis ? »). Vide = pas de lien. */
+  organismeEmail?: string;
   /**
    * Destinataire de la pièce. `null` quand aucun rattachement ne le résout —
    * la phrase se tait alors, plutôt que de nommer l'organisme lui-même comme
@@ -265,12 +273,18 @@ export interface PieceSignatureFormProps {
   }) => Promise<{ ok: true; destinataireMasque: string } | { ok: false; message: string }>;
 }
 
+/** Cellule chiffrée en mode carte : étiquette à gauche (attribut `data-label`), valeur à droite. */
+const CELLULE_CARTE =
+  "max-sm:flex max-sm:justify-between max-sm:py-1 max-sm:pr-0 max-sm:before:text-fg-soft max-sm:before:text-xs max-sm:before:content-[attr(data-label)]";
+
 export function PieceSignatureForm({
   token,
   numero,
   numeroDevis,
   dateValiditeLisible,
+  dateValiditeImprimee = null,
   organismeNom,
+  organismeEmail,
   clientRaisonSociale,
   signataireNom,
   signataireQualite,
@@ -316,6 +330,8 @@ export function PieceSignatureForm({
   const [fonctionSaisie, setFonctionSaisie] = useState("");
   const [pouvoirOk, setPouvoirOk] = useState(false);
   const [codeEnvoyeA, setCodeEnvoyeA] = useState<string | null>(null);
+  // Libellé UNIQUE du bouton qui envoie le code : l'aide sous « Signer » le reprend tel quel.
+  const libelleBoutonCode = codeEnvoyeA === null ? "Recevoir mon code" : "Recevoir un nouveau code";
   const [envoiCodeEnCours, startEnvoiCode] = useTransition();
 
   // ── Devis à formules : le choix et son récapitulatif (calculé par le serveur) ──
@@ -454,6 +470,18 @@ export function PieceSignatureForm({
         <p className="text-fg-soft mt-2 text-sm">
           {`${organismeNom} vous adressera l'exemplaire contresigné. Vous pouvez fermer cette page.`}
         </p>
+        {pdfUrl !== null && (
+          <p className="mt-4 text-sm">
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4"
+            >
+              Revoir le document que vous avez signé (PDF)
+            </a>
+          </p>
+        )}
       </div>
     );
   }
@@ -473,6 +501,13 @@ export function PieceSignatureForm({
           ? `Établie par ${organismeNom} à l'attention de ${clientRaisonSociale}.`
           : `Établie par ${organismeNom}.`}
         {dateValiditeLisible !== null ? ` Valable jusqu'au ${dateValiditeLisible}.` : ""}
+        {dateValiditeLisible !== null &&
+        dateValiditeImprimee !== null &&
+        dateValiditeImprimee !== dateValiditeLisible ? (
+          <span data-testid="validite-prolongee">
+            {` Validité prolongée par ${organismeNom} : le PDF ci-dessous indique la date d'origine (${dateValiditeImprimee}) ; ses autres conditions sont inchangées.`}
+          </span>
+        ) : null}
       </p>
 
       {/* ── Ce qui est signé, sous les yeux du signataire ── */}
@@ -485,40 +520,67 @@ export function PieceSignatureForm({
             <h2 id="recap-titre" className="text-fg text-sm font-semibold">
               Détail de la prestation
             </h2>
-            <div className="mt-3 overflow-x-auto">
-              <table className="w-full min-w-[32rem] border-collapse text-sm">
-                <thead>
-                  <tr className="border-border text-fg-soft border-b text-left text-xs uppercase">
-                    <th scope="col" className="py-2 pr-3 font-medium">
-                      Désignation
-                    </th>
-                    <th scope="col" className="py-2 pr-3 text-right font-medium">
-                      Qté
-                    </th>
-                    <th scope="col" className="py-2 pr-3 text-right font-medium">
-                      PU HT
-                    </th>
-                    <th scope="col" className="py-2 text-right font-medium">
-                      Total HT
-                    </th>
+            {/* Sous 640 px : cartes (une ligne = un bloc, étiquette devant chaque valeur). CSS seul
+                (variantes `max-sm:`), aucune bascule JS : pas de décalage de mise en page. */}
+            <table role="table" className="mt-3 w-full border-collapse text-sm max-sm:block">
+              <thead role="rowgroup" className="max-sm:sr-only">
+                <tr
+                  role="row"
+                  className="border-border text-fg-soft border-b text-left text-xs uppercase"
+                >
+                  <th role="columnheader" scope="col" className="py-2 pr-3 font-medium">
+                    Désignation
+                  </th>
+                  <th role="columnheader" scope="col" className="py-2 pr-3 text-right font-medium">
+                    Qté
+                  </th>
+                  <th role="columnheader" scope="col" className="py-2 pr-3 text-right font-medium">
+                    PU HT
+                  </th>
+                  <th role="columnheader" scope="col" className="py-2 text-right font-medium">
+                    Total HT
+                  </th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup" className="max-sm:block">
+                {lignes.map((l, i) => (
+                  <tr
+                    key={i}
+                    role="row"
+                    className="border-border border-b align-top max-sm:mb-3 max-sm:block max-sm:rounded max-sm:border max-sm:p-3"
+                  >
+                    <td
+                      role="cell"
+                      data-label="Désignation"
+                      className="text-fg py-2 pr-3 max-sm:block max-sm:py-1 max-sm:pr-0 max-sm:font-medium"
+                    >
+                      {l.designation}
+                    </td>
+                    <td
+                      role="cell"
+                      data-label="Qté"
+                      className={`${CELLULE_CARTE} text-fg-soft py-2 pr-3 text-right tabular-nums`}
+                    >
+                      {l.quantite}
+                    </td>
+                    <td
+                      role="cell"
+                      data-label="PU HT"
+                      className={`${CELLULE_CARTE} text-fg-soft py-2 pr-3 text-right tabular-nums`}
+                    >
+                      {l.prixUnitaireHtLisible}
+                    </td>
+                    <td
+                      role="cell"
+                      data-label="Total HT"
+                      className={`${CELLULE_CARTE} text-fg py-2 text-right tabular-nums`}
+                    >
+                      {l.totalHtLisible}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {lignes.map((l, i) => (
-                    <tr key={i} className="border-border border-b align-top">
-                      <td className="text-fg py-2 pr-3">{l.designation}</td>
-                      <td className="text-fg-soft py-2 pr-3 text-right tabular-nums">
-                        {l.quantite}
-                      </td>
-                      <td className="text-fg-soft py-2 pr-3 text-right tabular-nums">
-                        {l.prixUnitaireHtLisible}
-                      </td>
-                      <td className="text-fg py-2 text-right tabular-nums">{l.totalHtLisible}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
 
             <dl className="mt-4 space-y-1 text-sm">
               <div className="flex justify-between">
@@ -967,7 +1029,7 @@ export function PieceSignatureForm({
               disabled={envoiCodeEnCours || enCours}
               className="border-fg mt-3 min-h-12 rounded border px-4 text-sm font-medium disabled:opacity-40"
             >
-              {codeEnvoyeA === null ? "Recevoir mon code" : "Recevoir un nouveau code"}
+              {libelleBoutonCode}
             </button>
             {codeEnvoyeA !== null && (
               <p className="text-fg-soft mt-2 text-xs" aria-live="polite">
@@ -1020,9 +1082,23 @@ export function PieceSignatureForm({
               (avecDeclaration
                 ? " Renseignez votre nom et votre fonction, et cochez la déclaration de pouvoir."
                 : "") +
-              (avecCode ? " Saisissez ensuite le code reçu par e-mail." : "")}
+              (avecCode
+                ? ` Cliquez sur « ${libelleBoutonCode} », puis saisissez le code reçu par e-mail.`
+                : "")}
           </p>
         )}
+        {organismeEmail !== undefined &&
+          estEmailSimple(organismeEmail.trim()) &&
+          numeroDevis !== undefined && (
+            <p className="mt-6 text-sm">
+              <a
+                href={`mailto:${organismeEmail.trim()}?subject=${encodeURIComponent(`Question sur le devis ${numeroDevis}`)}`}
+                className="underline underline-offset-4"
+              >
+                Une question sur ce devis ?
+              </a>
+            </p>
+          )}
       </section>
     </div>
   );

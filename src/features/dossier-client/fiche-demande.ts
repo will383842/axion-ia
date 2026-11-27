@@ -132,6 +132,7 @@ export function borneEffective(depuis: Date, maintenant: Date): Date {
  * simulateur ROI (captcha passé). `autre` et le chatbot n'y sont PAS (voir `TYPES_A_CONFIRMER`).
  */
 export const TYPES_DEMANDE_AVEC_FICHE = [
+  "journee_ia",
   "audit",
   "implementation",
   "formation",

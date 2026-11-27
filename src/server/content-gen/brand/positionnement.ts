@@ -9,6 +9,8 @@
  * pour éviter que tous les articles commencent de la même façon.
  */
 
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
+
 /** Marqueur présent dans le bloc : sert à ne l'ajouter qu'une seule fois. */
 export const MARQUEUR_POSITIONNEMENT = "POSITIONNEMENT AXION-IA";
 
@@ -21,7 +23,7 @@ export const BLOC_POSITIONNEMENT = `## ${MARQUEUR_POSITIONNEMENT} — À FAIRE S
 Message principal d'Axion-IA, à faire sentir sans le réciter : « Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place. »
 Lecteur : dirigeant d'une petite ou moyenne entreprise française. Il entend parler d'IA partout et ne sait pas par où commencer. Il cherche du temps gagné, de la marge ou du chiffre d'affaires, pas de la théorie.
 Sujet de fond : le DÉPLOIEMENT concret de l'IA dans l'entreprise (quels usages, dans quel ordre, avec quel effort), jamais l'IA en général.
-La démarche d'Axion-IA, à faire comprendre par le fond de l'article et non par un encart publicitaire : un Diagnostic IA gratuit de 45 minutes, sans engagement, en visio ou par téléphone ; l'offre phare, « La Journée IA » : un audit de l'entreprise le matin (en général de deux à quatre heures), la formation des équipes l'après-midi, le rapport complet remis à la fin de la journée (jamais de prix en chiffres, ni d'acompte, ni de frais de déplacement) ; seules durées chiffrées autorisées : l'audit et le Diagnostic IA de 45 minutes ; une liste priorisée, d'abord ce qui apporte le plus de valeur pour l'effort et ce qui se met en place le plus vite ; puis un déploiement étendu étape par étape. Axion-IA s'occupe de la mise en place : ne suggère jamais au lecteur de le faire seul.
+La démarche d'Axion-IA, à faire comprendre par le fond de l'article et non par un encart publicitaire : un Diagnostic IA gratuit de 45 minutes, sans engagement, en visio ou par téléphone ; l'offre phare, « La Journée IA » : un audit de l'entreprise le matin (en général de deux à quatre heures), la formation des équipes l'après-midi, des gains repérés et classés par priorité pendant la journée, puis le rapport complet, qui les chiffre en heures et en euros, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés (jamais de prix en chiffres, ni d'acompte, ni de frais de déplacement) ; seules durées chiffrées autorisées : l'audit (deux à quatre heures), la formation de 4 heures l'après-midi, le rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés et le Diagnostic IA de 45 minutes ; une liste priorisée, d'abord ce qui apporte le plus de valeur pour l'effort et ce qui se met en place le plus vite ; puis un déploiement étendu étape par étape. Axion-IA s'occupe de la mise en place : ne suggère jamais au lecteur de le faire seul.
 Montre, n'annonce pas : un métier précis, une tâche réelle, un outil nommé, un ordre de grandeur honnête d'effort, un premier pas possible cette semaine.
 ${LIGNES_INTERDITS}
 Un seul appel à l'action, en fin d'article : proposer le Diagnostic IA gratuit de 45 minutes, sans engagement, avec un conseiller (page contact). Aucun lien de réservation ni de paiement.`;

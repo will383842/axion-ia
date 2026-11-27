@@ -49,12 +49,12 @@
  */
 
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { GABARITS_ARCHIVES } from "./archives";
+import { GABARITS_ARCHIVES, GABARITS_ARCHIVES_FORMATION } from "./archives";
 import { GABARIT_VERSIONS, type TypeGabaritSignable } from "./gabarit-versions";
 
 /** Fichier source de chaque pièce signable. Miroir de `COMPOSANTS`. */
@@ -69,6 +69,7 @@ const SOURCE: Readonly<Record<TypeGabaritSignable, string>> = {
   lettre_mission: "lettre-mission.tsx",
   mandat_opco: "mandat-opco.tsx",
   autorisation_captation: "autorisation-captation.tsx",
+  facture: "facture.tsx",
 };
 
 /**
@@ -105,24 +106,49 @@ const EMPREINTES: Readonly<
     // (v2 — 16/10/2026 : mention handicap, L15, NC12 ; v1 archivée.)
     // Mise en page seule (08/11/2026, texte rendu INCHANGÉ → version 4 conservée) : le bloc
     // « Formule retenue » sort du cadre insécable « Bon pour accord » (`choixBox`, sécable).
-    sha: "d6eb37c85d2826d7e4518ea54ec80b3ef5ac2908f87dd8c490d7201c2f72a141",
-    version: 5,
+    // v6 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), libellés simplifiés,
+    // phrases juridiques et montants repris mot pour mot ; v5 archivée (`archives/devis.v5.tsx`).
+    // (v5 — 17/11/2026 : bloc « Conditions particulières », sha d6eb37c8… : voir EMPREINTES_ARCHIVES.)
+    // Taux de TVA décimaux à la française (« 5,5 % », 18/11/2026) : v6 PAS ENCORE EN LIGNE,
+    // aucun exemplaire signé sous v6 → empreinte reportée SANS incrément (version 6 conservée).
+    sha: "7177c2a2e65e795710c5c7621ec55fcc1400801a93ccffcd5a3b8d18793d57e5",
+    version: 6,
   },
   convention: {
-    // v6 — 16/10/2026 : mention handicap (L15, NC12) ; v5 archivée.
-    // (v5 — 04/10/2026 : clause de condition suspensive OPCO, INT-T65-A.)
-    sha: "35a373df500c40867d21b308039019061a7aad97be0179ec799e17efd2b1fe85",
-    version: 6,
+    // v9 — 25/11/2026 : § 3, paragraphe de la garantie de remboursement de la Journée IA
+    // (`TEXTE_GARANTIE_JOURNEE_IA`, CGV 47.10), imprimé seulement si `data.journeeIa === true` ;
+    // v8 archivée.
+    // (v8 — 19/11/2026 : clause financeur (§ 5), clause 5 bis et ligne Qualiopi imprimées seulement
+    // si la certification est obtenue à la génération (`data.certificationObtenue`), texte des
+    // clauses inchangé et gardé ; v7 archivée.
+    // (v7 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), texte inchangé.
+    // v6 — 16/10/2026 : mention handicap, L15, NC12. v5 — 04/10/2026 : clause de condition suspensive OPCO.)
+    // v10 — 26/11/2026 : l'acompte versé reste acquis en cas d'annulation, sans condition de délai
+    // (§ 4) ; dédit formation facturé à part, ni imputable ni pris en charge par un OPCO ; v9 archivée.
+    // (v9 — 25/11/2026 : paragraphe de la garantie Journée IA, § 3.)
+    // v11 — 26/11/2026 : la personne morale non professionnelle perd aussi l'acompte (§ 4), avec
+    // clause réciproque (acompte rendu + indemnité égale si l'organisme annule hors force majeure) ;
+    // v10 archivée.
+    // v12 — 26/11/2026 : l'organisme REPORTE au lieu d'annuler (2 dates sous 3 mois, sans frais,
+    // acompte reporté ; CGV 46.4) ; v11 archivée.
+    sha: "ff4ae3be526a35f5360e37178656d29914ac5f8fd07050ceac3e4e099e4c3205",
+    version: 12,
   },
   convention_tripartite: {
-    // v6 — 16/10/2026 : même mention, mot pour mot (L15) ; v5 archivée.
-    sha: "a2b0b6933d0425a6cdfc5763e2981f75567996856fcce697aec02ab00301f9a6",
-    version: 6,
+    // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
+    // (v6 — 16/10/2026 : même mention handicap, mot pour mot.)
+    // v8 — 26/11/2026 : même règle de l'acompte acquis (§ 4), mot pour mot ; v7 archivée.
+    // v9 — 26/11/2026 : même règle de l'acompte et même clause réciproque (§ 4), mot pour mot ;
+    // v8 archivée.
+    // v10 — 26/11/2026 : même règle de report sans frais (§ 4), mot pour mot ; v9 archivée.
+    sha: "8c1f63fab6ba031dd249a8837d34f927844c80c733b94c35687464a36408d15f",
+    version: 10,
   },
   contrat_formation: {
-    // v2 — 30/09/2026 : citations juridiques corrigées ; v1 archivée.
-    sha: "d33ee1d4f4a602d05cedb86907ae56d380b995502655ee65c9df85cbaf8fbafa",
-    version: 2,
+    // v3 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v2 archivée.
+    // (v2 — 30/09/2026 : citations juridiques corrigées.)
+    sha: "9c2f344b57fa6ddcca856f1f60ac781a912e568cb3cdca178d8e1aeeb0dc1ac1",
+    version: 3,
   },
   contrat_sous_traitance: {
     sha: "826c87dd9c49c4d2424bfb8a9457e22bd6b99cbb8c14752e6588fb05a01136eb",
@@ -152,6 +178,12 @@ const EMPREINTES: Readonly<
     // v1 — 10/10/2026 (S6a) : entrée dans la table, texte d'origine relevé tel quel.
     sha: "6a15a48290dfd6fd336474e4148d41c46465b0a0c39a7b2523bb3e96e36bb687",
     version: 1,
+  },
+  facture: {
+    // v2 — 18/11/2026 : refonte au style de la charte 2027 (mise en page seule, intitulés,
+    // montants et mentions inchangés ; facture ET avoir) ; v1 archivée (`archives/facture.v1.tsx`).
+    sha: "1b610d823f1a3e64328eb021e61c698dcebccce5f5b4764d53c8181341d9ce6b",
+    version: 2,
   },
 };
 
@@ -322,8 +354,46 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   // 17/11/2026 : copie conforme du gabarit courant d'avant le bloc « Conditions particulières »
   // (empreinte identique à celle de l'ancienne v4 courante, 29aaf995…).
   "devis.v4.tsx": "29aaf995b338ad278f5fe8a739737f0c13e9121cd3cbfec782b384ba5cec146b",
+  // 18/11/2026 : copie conforme du gabarit courant d'avant la refonte charte 2027 (empreinte
+  // identique à celle de l'ancienne v5 courante, d6eb37c8…).
+  "devis.v5.tsx": "d6eb37c85d2826d7e4518ea54ec80b3ef5ac2908f87dd8c490d7201c2f72a141",
+  // 18/11/2026 : copie conforme du gabarit courant d'avant la refonte charte 2027.
+  "facture.v1.tsx": "457cd2272ed81f208e85388ba401a138dbb48a6b8454a817facdee3b91fc8d39",
+  // 18/11/2026 : copies conformes des gabarits courants d'avant la refonte charte 2027 (seule
+  // différence : la mention légale de tête est figée dans le fichier).
+  "convention.v6.tsx": "ecfd0277704317e97b34c135203f42f246f7fa932d4bb9887c7e9bb3a2bc5218",
+  // 19/11/2026 : copie conforme du gabarit courant du 18/11, mention figée.
+  "convention.v7.tsx": "73047fbf99819d59ed81b2a7523e1c960b51c80921a085d14a24983b8cd2bf1c",
+  // 25/11/2026 : copie conforme du gabarit courant du 19/11, mention figée.
+  "convention.v8.tsx": "6f5bccb9116ff3846249fba85bc95369ab8b1f236c4bf650262a5bc8e159c86c",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant la règle de l'acompte acquis
+  // (mention légale figée dans le fichier).
+  "convention.v9.tsx": "4bd0a3df6f9cedd1ff86000937058c9c97a33ed23524fe1122a553b42f1f8ce6",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant la réciprocité non-professionnel
+  // (mention légale figée dans le fichier).
+  "convention.v10.tsx": "58b6650ec812c0d8b6a2698fce9be4d4b889bef691ac8eba5bb3b6292ab0a903",
+  // 26/11/2026 : copies conformes des gabarits courants d'avant le report à l'initiative d'Axion-IA.
+  "convention.v11.tsx": "5bddc2825d427a17a5173504889e6a0ea6f983f99d1730934a07242b7b713526",
+  "convention-tripartite.v9.tsx":
+    "434bb7584074d52abb58151cc783fbcd9a6b58ddf3efdc8d690ccefbbc45ef21",
+  "convention-tripartite.v8.tsx":
+    "d972d3180bbcea219ae21c3aebb3398486a333e185c02eea2d621a5d06445081",
+  "convention-tripartite.v7.tsx":
+    "1c9a167628836c062e5af9a11cf1f52998325b65682ece4efe6fe231bbc11ac5",
+  "convention-tripartite.v6.tsx":
+    "e994a458883987781d2b3b4b4d2d2c00dc782ee8248fe75d6846b4544f4a7660",
+  "contrat-formation.v2.tsx": "50a48f4ac853f805ab112d463ae15a2a61c5548eb02231db18aee78b420b3fa3",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
+  // 18/11/2026 : copies conformes des cinq gabarits de formation d'avant la charte 2027
+  // (programme, convocation, attestations, certificat : pièces non signables, v1 archivées).
+  "programme-formation.v1.tsx": "b069b4582c5e5d697ffcc9e495a465a013aeb6cbfe0ca058710a66cfa07583c5",
+  "convocation.v1.tsx": "bd97002b7b8f1133a50451bb28b7e2b91466b808e942f29fde694210c06ce0b6",
+  "attestation.v1.tsx": "e4ea5ce69f7bd3e7dddd13df615544fd638c97202dd945dac5ec50c78de76e56",
+  "attestation-partielle.v1.tsx":
+    "1835ed08d7fda3ff9a19754ea6efcdafb9cae18302f81333a7bb45aca8c74aa8",
+  "certificat-realisation.v1.tsx":
+    "e6db1484b612ac9cf972b6e6f47e3552bcfd621d3ae3b13f7a73b7ea1ad5a107",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",
 };
 
@@ -354,7 +424,10 @@ describe("⛔ le texte d'une version ARCHIVÉE ne change jamais", () => {
     const inscrits = Object.values(GABARITS_ARCHIVES).flatMap((parVersion) =>
       Object.values(parVersion ?? {}).map((a) => a.fichier),
     );
-    expect([...inscrits, "mentions-figees.ts"].sort()).toEqual(
+    const inscritsFormation = Object.values(GABARITS_ARCHIVES_FORMATION).flatMap((parVersion) =>
+      Object.values(parVersion).map((a) => a.fichier),
+    );
+    expect([...inscrits, ...inscritsFormation, "mentions-figees.ts"].sort()).toEqual(
       Object.keys(EMPREINTES_ARCHIVES).sort(),
     );
   });
@@ -397,5 +470,52 @@ describe("⛔ le texte d'une version ARCHIVÉE ne change jamais", () => {
     expect(texteMesurable(source.replaceAll("L.6353-2", "D.6353-1"))).not.toBe(
       texteMesurable(source),
     );
+  });
+});
+
+/**
+ * 🔑 Module de style `charte/v1` — GELÉ.
+ *
+ * Les gabarits signables (le devis depuis la v6) s'appuient sur lui : changer une couleur, un
+ * espace ou un composant change le rendu d'une pièce, y compris au re-rendu d'un exemplaire
+ * courant. Même mesure que `EMPREINTES_ARCHIVES` (commentaires et espaces ignorés).
+ *
+ * ⛔ Ne jamais mettre à jour une empreinte de cette table. Une évolution de style crée un
+ * dossier `charte/v2` (et, pour chaque gabarit qui l'adopte, une nouvelle version archivée).
+ */
+const EMPREINTES_CHARTES: Readonly<Record<string, string>> = {
+  "composants.tsx": "3161ef5454705d13df3d8a584e858a4c803b1edc7b51b993ab409891214afc6c",
+  "couleurs.ts": "2bf575a228ce03d7bcf027a692b2d22a055956d4f0be7f9cc87ccd0a60e8c4e3",
+  "index.ts": "edcf9558e5c55aed54571c639ca78dbc097bc12bb171778fb6625c76a7ae9428",
+};
+
+describe("⛔ le module de style charte/v1 est gelé", () => {
+  const dossier = join(process.cwd(), "src", "server", "qualiopi", "documents", "charte", "v1");
+  const empreinteCharte = (fichier: string): string =>
+    createHash("sha256")
+      .update(texteMesurable(readFileSync(join(dossier, fichier), "utf8")), "utf8")
+      .digest("hex");
+
+  it("🔑 chaque fichier non-test du dossier a son empreinte, et réciproquement", () => {
+    const fichiers = readdirSync(dossier)
+      .filter((f) => /\.(ts|tsx)$/.test(f) && !/\.spec\.(ts|tsx)$/.test(f))
+      .sort();
+    expect(fichiers).toEqual(Object.keys(EMPREINTES_CHARTES).sort());
+  });
+
+  it("🔴 aucun fichier de charte/v1 n'a changé", () => {
+    const modifies = Object.entries(EMPREINTES_CHARTES)
+      .filter(([fichier, sha]) => empreinteCharte(fichier) !== sha)
+      .map(([fichier]) => `${fichier} → ${empreinteCharte(fichier)}`);
+    expect(
+      modifies,
+      "charte/v1 est GELÉ : annulez la modification, ou créez charte/v2 pour un nouveau style.",
+    ).toEqual([]);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : l'empreinte voit une couleur changée, pas un commentaire", () => {
+    const source = readFileSync(join(dossier, "couleurs.ts"), "utf8");
+    expect(texteMesurable(source.replace("#B23F16", "#B23F17"))).not.toBe(texteMesurable(source));
+    expect(texteMesurable(source.replace("FIGÉES", "figées"))).toBe(texteMesurable(source));
   });
 });

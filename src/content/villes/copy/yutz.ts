@@ -49,7 +49,7 @@ export const YUTZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Yutz et dans l'agglomération de Thionville ?",
-      a: "Oui, Axion-IA intervient à Yutz et sur toute l'agglomération Portes de France-Thionville (Thionville, Hayange, Florange, Manom, Basse-Ham). Luxembourg-ville à 25 min, Metz à 30 min.",
+      a: "Oui, Axion-IA intervient à Yutz et sur toute l'agglomération Portes de France-Thionville (Thionville, Hayange, Florange, Manom, Basse-Ham).",
     },
     {
       q: "Tarifs audit IA à Yutz  : quel budget prévoir ?",
@@ -61,7 +61,7 @@ export const YUTZ_COPY: VilleCopy = {
     },
     {
       q: "L'IA peut-elle aider les entreprises frontalières luxembourgeoises de Yutz ?",
-      a: "Oui, Yutz est à 25 min du Luxembourg. Nous accompagnons les TPE/PME servant les travailleurs frontaliers et les entreprises luxembourgeoises : agents conversationnels multilingues FR/DE/LU, automatisation administrative cross-border, CRM clients frontaliers et marketing digital ciblé.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Yutz. Nous accompagnons les TPE/PME servant les travailleurs frontaliers et les entreprises luxembourgeoises : agents conversationnels multilingues FR/DE/LU, automatisation administrative cross-border, CRM clients frontaliers et marketing digital ciblé.",
     },
     {
       q: "Proposez-vous des formations IA à Yutz ?",

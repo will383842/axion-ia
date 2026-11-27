@@ -47,6 +47,12 @@ vi.mock("@/features/apporteurs-reseau/solde-negatif", () => ({
   lireSoldeNegatif: async () => null,
 }));
 vi.mock("@/features/apporteurs-reseau/siret-apporteur", () => ({ siretDe: async () => null }));
+vi.mock("@/components/admin/apporteurs/fiche/ChangerRegimeTva", () => ({
+  ChangerRegimeTva: () => null,
+}));
+vi.mock("@/features/apporteurs-reseau/resiliation", () => ({
+  lireResiliationEnCours: async () => null,
+}));
 // Retirer / supprimer (2026-10-07) : hors du sujet de ce test, simulés.
 vi.mock("@/components/admin/apporteurs/fiche/RetraitDuReseau", () => ({
   RetraitDuReseau: () => null,
@@ -99,6 +105,8 @@ vi.mock("@/features/apporteurs-reseau/requetes-console", async () => {
     piecesPurgeesIds: ["aaaaaaaa-1111-4222-8333-444455556666"],
     aContratApporteur: true,
     aContratSigne: false,
+    submissionId: "99999999-1111-4222-8333-444455556666",
+    creeAt: new Date("2026-09-30T08:05:00Z"),
     filleuls: [],
     parrainsPossibles: [],
     parrainId: null,
@@ -110,6 +118,17 @@ vi.mock("@/features/apporteurs-reseau/requetes-console", async () => {
   return {
     LIBELLE_STATUT_APPORTEUR: { a_verifier: "À vérifier" },
     lireFicheApporteur: () => Promise.resolve(fiche),
+    lireChangementsRegimeTva: async () => [],
+    lireHistoriqueEmailsApporteur: async () => [
+      {
+        id: "eeeeeeee-1111-4222-8333-444455556666",
+        template: "apporteur-lien-espace",
+        objet: "Votre espace apporteur",
+        status: "sent",
+        date: new Date("2026-10-02T09:30:00Z"),
+        error: null,
+      },
+    ],
   };
 });
 
@@ -163,5 +182,21 @@ describe("fiche apporteur : données personnelles selon le rôle", () => {
     expect(html).not.toContain('aaaaaaaa-1111-4222-8333-444455556666"');
     expect(html).toContain("/pieces/bbbbbbbb-1111-4222-8333-444455556666");
     expect(html.match(/>Ouvrir</g)).toHaveLength(1);
+  });
+
+  it("un administrateur voit l'historique des e-mails, la date d'entrée et le lien vers la fiche contact", async () => {
+    const html = await rendre("admin");
+    expect(html).toContain("Historique des e-mails (1)");
+    expect(html).toContain("Votre espace apporteur");
+    expect(html).toContain("2 oct. 2026, 11:30"); // Europe/Paris (UTC+2)
+    expect(html).toContain("/fr/console/emails-envoyes/eeeeeeee-1111-4222-8333-444455556666");
+    expect(html).toContain("Date d&#x27;entrée");
+    expect(html).toContain("/fr/console/contacts/messages/99999999-1111-4222-8333-444455556666");
+  });
+
+  it("un compte lecteur ne voit pas l'historique des e-mails", async () => {
+    const html = await rendre("reader");
+    expect(html).not.toContain("Historique des e-mails");
+    expect(html).not.toContain("Votre espace apporteur");
   });
 });

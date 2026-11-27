@@ -24,12 +24,12 @@
 // Ils se lisent dans le SSOT (`content/pricing.ts`) : un taux recopié à la main
 // finit toujours par diverger de la page publique — c'est arrivé en août.
 
+import { phrasePiecesJointes } from "./_annexes-jointes";
 import { Text } from "@react-email/components";
 import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
-import { BlocKitApporteur } from "./_kit-apporteur";
-import { MENTION_BAREME_INDICATIF, ligneAPreparer, lignesBareme } from "./_bareme-apporteur";
+import { ligneAPreparer } from "./_bareme-apporteur";
 import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -40,6 +40,8 @@ interface Payload {
   calendlyUrl?: string;
   /** Retenu seulement : le lien personnel du dossier en ligne (démarrage manuel, 2026-10-05). */
   dossierUrl?: string;
+  /** Retenu seulement : annexes réellement jointes (facultatif, ignoré s'il est absent). */
+  annexesJointes?: string[];
   /** Retenu seulement : le dossier est déjà signé (à vérifier ou contresigné). */
   dossierSigne?: boolean;
   /** Absent seulement : « mardi 22 septembre », déjà formaté en heure de Paris. */
@@ -86,30 +88,51 @@ export const COPY_ISSUE_ECHANGE = {
       subject: "Bienvenue parmi les apporteurs d'Axion-IA",
       title: "Bienvenue dans le réseau",
       preview:
-        "Merci pour notre échange : voici comment fonctionne le réseau, votre commission et les prochaines étapes.",
+        "Merci pour notre échange : votre dossier à compléter et vos documents à jour, en un clic.",
       merci:
         "Merci pour notre échange. Nous sommes ravis de vous accueillir dans le réseau d'apporteurs d'affaires indépendants d'Axion-IA.",
       fonctionnementTitre: "Comment ça marche",
       fonctionnement: [
         "Vous nous mettez en relation avec une entreprise qui a un besoin : formation à l'IA, audit ou intégration.",
-        "Nous gérons tout le reste : rendez-vous, devis et réalisation.",
-        // JUR-T29 : envoyé AVANT la signature du contrat, le
-        // barème de cet e-mail est indicatif ; le contrat d'apporteur fait foi.
-        MENTION_BAREME_INDICATIF,
+        "L'entreprise vous est réservée 60 jours à partir de votre déclaration. Elle vous est attribuée dès son premier rendez-vous avec nous, s'il a été pris pendant ces 60 jours (même s'il a lieu après ; un rendez-vous annulé par Axion-IA compte comme tenu), ou dès qu'elle signe une commande pendant ces 60 jours ; elle est alors commissionnée pendant la durée prévue à compter de ce rendez-vous ou de cette commande. Nous gérons tout le reste : rendez-vous, devis et réalisation.",
+        // Seul le montant Journée IA est cité (décision de Will du 27/11/2026) ; le reste vit dans le contrat et la fiche des commissions.
+        "Vous touchez une commission quand l'entreprise a payé l'intégralité de sa commande. Pour une Journée IA, votre commission est, à titre indicatif, de 500 € HT par journée, au prorata du prix effectivement payé. Pour nos autres prestations, les montants sont dans votre contrat et dans la fiche des commissions ci-dessous ; votre contrat fait foi.",
       ],
-      commissionTitre: "Votre commission",
-      versement: () =>
-        "Elle vous est versée dès que la prestation est réalisée et que le client l'a entièrement payée.",
       statutTitre: "Votre statut",
       statut:
-        "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIREN (une micro-entreprise, par exemple).",
+        "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour signer votre contrat et facturer vos commissions, il vous faut un numéro SIREN (une micro-entreprise, par exemple).",
       suiteTitre: "La suite",
       // 2026-09-28 (Will) : pas de délai promis — le contrat v2 (prorata, paiement
       // à 100 %, confirmation par l'entreprise) est relu avant toute signature.
       contrat: "Nous vous enverrons votre contrat d'apporteur, à signer en ligne.",
       // 2026-10-05 (Will) : plus de date promise pour l'espace en ligne.
       espace:
-        "Dès votre contrat signé, vous pourrez nous présenter des entreprises depuis votre lien personnel, avec le formulaire « Déclarer une entreprise ».",
+        "Dès votre contrat signé, vous pourrez nous présenter des entreprises depuis votre espace, avec le formulaire « Déclarer une entreprise ».",
+      documentsTitre: "Vos documents, toujours à jour",
+      documentsIntro:
+        "Ces liens ouvrent toujours la dernière version. Ils vous sont personnels : gardez cet e-mail.",
+      documents: [
+        {
+          chemin: "/fiche-commissions",
+          libelle: "La fiche des commissions",
+          detail: "ce que vous touchez, prestation par prestation, et quand c'est versé",
+        },
+        {
+          chemin: "/livret",
+          libelle: "Le livret d'accueil",
+          detail: "le réseau et son fonctionnement",
+        },
+        {
+          chemin: "/guide",
+          libelle: "Le guide de démarrage",
+          detail: "des idées pour bien commencer, à votre rythme",
+        },
+        {
+          chemin: "/documents",
+          libelle: "Mon espace apporteur",
+          detail: "votre dossier, votre contrat et tous vos documents au même endroit",
+        },
+      ],
       // 2026-10-05 : quand la console ouvre le dossier en ligne, le lien part avec cet e-mail.
       dossier:
         "Première étape : complétez votre dossier et signez votre contrat en ligne avec le bouton ci-dessous (environ 10 minutes). Nous le contresignons ensuite, après vérification.",
@@ -118,7 +141,6 @@ export const COPY_ISSUE_ECHANGE = {
       dossierSigne:
         "Votre dossier et votre contrat signé nous sont déjà parvenus : nous les vérifions, et vous recevrez votre contrat contresigné par e-mail.",
       ctaDossierSigne: "Voir mon dossier",
-      kit: "Le catalogue de nos prestations reste à votre disposition :",
     },
     nonRetenu: {
       subject: "Suite à notre échange",
@@ -154,32 +176,53 @@ export const COPY_ISSUE_ECHANGE = {
       subject: "Welcome to Axion-IA's introducer network",
       title: "Welcome to the network",
       preview:
-        "Thank you for our call: here is how the network works, your commission and the next steps.",
+        "Thank you for our call: your file to complete and your up-to-date documents, in one click.",
       merci:
         "Thank you for our call. We are delighted to welcome you to Axion-IA's network of independent business introducers.",
       fonctionnementTitre: "How it works",
       fonctionnement: [
         "You put us in touch with a company that has a need: AI training, audit or integration.",
-        "We handle everything else: meetings, quote and delivery.",
-        "You earn a commission. The rates below are given as a guide: your introducer agreement prevails.",
+        "The company is reserved for you for 60 days from your declaration. It is attributed to you as soon as its first meeting with us is booked during those 60 days (even if it takes place later; a meeting cancelled by Axion-IA counts as held), or as soon as it signs an order during those 60 days; it is then commissioned for the agreed period from that meeting or that order. We handle everything else: meetings, quote and delivery.",
+        "You earn a commission once the company has paid its order in full. For an AI Day, your commission is, for information only, €500 excl. VAT per day, pro rata to the price actually paid. For our other services, the amounts are in your agreement and in the commission sheet below; your agreement prevails.",
       ],
-      commissionTitre: "Your commission",
-      versement: () =>
-        "It is paid once the service has been delivered and the client has paid for it in full.",
       statutTitre: "Your status",
       statut:
-        "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIREN number (a micro-enterprise, for example).",
+        "You remain independent, free to organise yourself, with no target and no exclusivity. To sign your agreement and invoice your commissions, you need a French SIREN number (a micro-enterprise, for example).",
       suiteTitre: "Next steps",
       contrat: "We will send you your introducer agreement to sign online.",
       espace:
-        "Once your agreement is signed, you can introduce companies to us from your personal link, with the “Declare a company” form.",
+        "Once your agreement is signed, you can introduce companies to us from your space, with the “Declare a company” form.",
+      documentsTitre: "Your documents, always up to date",
+      documentsIntro:
+        "These links always open the latest version. They are personal to you: keep this email.",
+      documents: [
+        {
+          chemin: "/fiche-commissions",
+          libelle: "The commission sheet",
+          detail: "what you earn, service by service, and when it is paid",
+        },
+        {
+          chemin: "/livret",
+          libelle: "The welcome booklet",
+          detail: "the network and how it works",
+        },
+        {
+          chemin: "/guide",
+          libelle: "The getting-started guide",
+          detail: "ideas to get going, at your own pace",
+        },
+        {
+          chemin: "/documents",
+          libelle: "My introducer space",
+          detail: "your file, your agreement and all your documents in one place",
+        },
+      ],
       dossier:
         "First step: complete your file and sign your agreement online with the button below (about 10 minutes). We countersign it after review.",
       ctaDossier: "Complete my file and sign my contract",
       dossierSigne:
         "Your file and signed contract have already reached us: we are reviewing them, and you will receive your countersigned contract by email.",
       ctaDossierSigne: "View my file",
-      kit: "Our catalogue of services remains at your disposal:",
     },
     nonRetenu: {
       subject: "Following our call",
@@ -266,6 +309,8 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
   const t = COPY_ISSUE_ECHANGE[l].retenu;
   const dossierUrl = texteOuNull(p.dossierUrl);
   const signe = p.dossierSigne === true;
+  // La phrase n'a de sens que pour un dossier à signer, en français (le texte des pièces l'est).
+  const piecesJointes = !signe && l === "fr" ? phrasePiecesJointes(p.annexesJointes) : null;
   return (
     <EmailLayout
       famille="B"
@@ -292,24 +337,33 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
         </Text>
       ))}
 
-      <Text style={intertitre}>{t.commissionTitre}</Text>
-      {/* Le MÊME barème que « contrat signé » et que le contrat v2 (`_bareme-apporteur`). */}
-      {lignesBareme(l).map((ligne) => (
-        <Text key={ligne} style={puce}>
-          • {ligne}
-        </Text>
-      ))}
-      <Text style={emailStyles.paragraphStyle}>{t.versement()}</Text>
-
       <Text style={intertitre}>{t.statutTitre}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.statut}</Text>
 
       <Text style={intertitre}>{t.suiteTitre}</Text>
       <Text style={puce}>• {signe ? t.dossierSigne : dossierUrl ? t.dossier : t.contrat}</Text>
       {dossierUrl && !signe ? <Text style={puce}>{ligneAPreparer(l)}</Text> : null}
+      {piecesJointes ? <Text style={puce}>• {piecesJointes}</Text> : null}
       <Text style={emailStyles.paragraphStyle}>• {t.espace}</Text>
 
-      <BlocKitApporteur locale={l} intro={t.kit} />
+      {dossierUrl ? (
+        <>
+          <Text style={intertitre}>{t.documentsTitre}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.documentsIntro}</Text>
+          {t.documents.map((d) => (
+            <Text key={d.chemin} style={puce}>
+              →{" "}
+              <a
+                href={`${dossierUrl.replace(/\/+$/, "")}${d.chemin}`}
+                style={{ color: emailStyles.COLORS.terracotta }}
+              >
+                {d.libelle}
+              </a>{" "}
+              {d.detail}
+            </Text>
+          ))}
+        </>
+      ) : null}
       {/* « Une question ? Répondez à cet e-mail. » : le châssis le dit déjà,
           juste au-dessus de la signature — le répéter ferait doublon. */}
     </EmailLayout>

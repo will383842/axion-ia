@@ -49,7 +49,7 @@ export const ITTEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Itteville et dans le sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Itteville et dans tout le sud Essonne : Mennecy à 5 min, La Ferté-Alais à 10 min, Corbeil-Essonnes à 15 min, Évry-Courcouronnes à 20 min.",
+      a: "Oui, Axion-IA intervient à Itteville et dans tout le sud Essonne : Mennecy, La Ferté-Alais, Corbeil-Essonnes, Évry-Courcouronnes.",
     },
     {
       q: "Accompagnez-vous les artisans BTP en zone rurale ?",
@@ -64,8 +64,8 @@ export const ITTEVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Évry-Courcouronnes (20 min). Corbeil-Essonnes (15 min). Paris centre (45 min par N104/A6). Coûts de déplacement à part, tarification transparente.",
+      q: "Comment se déroule une mission Axion-IA à Itteville ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

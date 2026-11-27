@@ -238,11 +238,11 @@ export const GAP_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Gap pour une TPE ou PME ?",
-      a: "Les tarifs publics d'Axion-IA sont affichés sur la page Pricing et identiques à Gap : pas de surfacturation géographique, ni de devis opaque. Les TPE et PME bénéficient d'un cadrage clair sur les cas d'usage prioritaires, les coûts annexes (LLM, hébergement, formation) et le ROI attendu avant tout engagement.",
+      a: "Les tarifs publics d'Axion-IA sont affichés sur la page Pricing : pas de devis opaque. Les TPE et PME bénéficient d'un cadrage clair sur les cas d'usage prioritaires, les coûts annexes (LLM, hébergement, formation) et le ROI attendu avant tout engagement.",
     },
     {
       q: "Axion-IA accompagne-t-il les hôtels et gîtes saisonniers à Gap ?",
-      a: "Oui, c'est même une priorité : Gap est la porte des stations de ski Orcières, Réallon, Champsaur-Valgaudemar et Devoluy, ainsi que du lac de Serre-Ponçon (15 km, plus grand lac artificiel de France). Axion-IA aide les hôteliers, gîteurs et loueurs saisonniers TPE/PME à automatiser réservations, relances, yield management et communication bilingue FR/IT-EN.",
+      a: "Oui, c'est même une priorité : Gap est la porte des stations de ski Orcières, Réallon, Champsaur-Valgaudemar et Devoluy, ainsi que du lac de Serre-Ponçon. Axion-IA aide les hôteliers, gîteurs et loueurs saisonniers TPE/PME à automatiser réservations, relances, yield management et communication bilingue FR/IT-EN.",
     },
     {
       q: "Axion-IA peut-il aider les artisans BTP de Gap sur la rénovation chalets ?",

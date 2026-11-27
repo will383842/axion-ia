@@ -14,9 +14,9 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
-    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales. Proximité immédiate Tours centre et gare TGV Saint-Pierre-des-Corps.",
+    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales.",
   ecosystemEn:
-    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales. Proximité immédiate Tours centre et gare TGV Saint-Pierre-des-Corps.",
+    "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales.",
   distancesFr:
     "Tours centre à 10 min. Gare TGV Saint-Pierre-des-Corps à 5 min (Paris 1h05). Aéroport Tours Val de Loire à 25 min. Amboise à 20 min. A10 Paris-Bordeaux à 10 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ville-aux-Dames et est de Tours ?",
-      a: "Oui, Axion-IA intervient à La Ville-aux-Dames et tout l'est de Tours Métropole (Saint-Pierre-des-Corps, Montlouis-sur-Loire, Saint-Avertin). Consultants depuis Tours centre (10 min) ou gare TGV Saint-Pierre-des-Corps (5 min).",
+      a: "Oui, Axion-IA intervient à La Ville-aux-Dames et tout l'est de Tours Métropole (Saint-Pierre-des-Corps, Montlouis-sur-Loire, Saint-Avertin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et PME de la ZA des Granges ?",
@@ -60,8 +60,8 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales (cabinets médicaux, juridiques, comptables) sur leurs cas IA : automatisation prise de RDV, classification dossiers, agents conversationnels patients/clients, rédaction assistée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (10 min) ou arrivent par la gare TGV Saint-Pierre-des-Corps (5 min, Paris 1h05). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission Axion-IA à La Ville-aux-Dames ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
     {
       q: "Respectez-vous le RGPD lors de vos interventions ?",

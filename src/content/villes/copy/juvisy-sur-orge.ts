@@ -49,7 +49,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Juvisy-sur-Orge et nord Essonne ?",
-      a: "Oui, Axion-IA intervient à Juvisy-sur-Orge et tout le nord Essonne (Athis-Mons à 5 min, Orly à 10 min, Paris-Austerlitz à 20 min via RER C, Paris-Gare de Lyon à 25 min via RER D).",
+      a: "Oui, Axion-IA intervient à Juvisy-sur-Orge et dans tout le nord Essonne (Athis-Mons, Orly).",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Juvisy-sur-Orge ?",
@@ -64,8 +64,8 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Austerlitz (20 min RER C) ou Paris-Gare de Lyon (25 min RER D), gare de Juvisy sur place. Aéroport Orly à 10 min. Tarifs publics.",
+      q: "Comment se déroule une mission Axion-IA à Juvisy-sur-Orge ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -244,6 +244,13 @@ describe("une signature « doc-v1 » existante se revérifie à l'identique", ()
       join(process.cwd(), "src/server/qualiopi/documents/signature/document-signature-service.ts"),
       "utf8",
     );
-    expect(src.match(/mentionVersion: MENTION_VERSION_DOCUMENT/g)?.length).toBe(2);
+    // Lot I3 (D1) : la version est choisie UNE fois, selon le canal (papier : version papier
+    // imposée), puis posée dans le tuple scellé et dans la ligne écrite.
+    expect(
+      src.match(
+        /const mentionVersion = papier\s+\? MENTION_VERSION_PAPIER\s+: \(input\.mentionVersion \?\? MENTION_VERSION_DOCUMENT\);/g,
+      )?.length,
+    ).toBe(1);
+    expect(src.match(/^\s+mentionVersion,$/gm)?.length).toBe(2);
   });
 });

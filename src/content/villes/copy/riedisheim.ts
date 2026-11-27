@@ -49,7 +49,7 @@ export const RIEDISHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Riedisheim ?",
-      a: "Oui, Axion-IA intervient à Riedisheim et dans l'agglomération mulhousienne est (Mulhouse, Rixheim, Brunstatt). Consultants via A36 ou gare de Mulhouse-Ville (10 min). Proximité de l'aéroport Bâle-Mulhouse (20 min) et de la Suisse.",
+      a: "Oui, Axion-IA intervient à Riedisheim et dans l'agglomération mulhousienne est (Mulhouse, Rixheim, Brunstatt).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME services et professions libérales ?",
@@ -65,7 +65,7 @@ export const RIEDISHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Riedisheim ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Riedisheim, en périphérie immédiate de Mulhouse, est à 10 min de l'autoroute A36 et de la gare de Mulhouse-Ville, avec un accès facile vers la Suisse et l'Allemagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

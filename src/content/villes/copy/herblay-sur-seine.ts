@@ -226,7 +226,7 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Herblay-sur-Seine ?",
-      a: "Oui, Axion-IA intervient à Herblay-sur-Seine et toute la CA Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Pierrelaye, Bessancourt). Couverture nord-ouest Val-d'Oise et accès depuis Paris (30 min Saint-Lazare).",
+      a: "Oui, Axion-IA intervient à Herblay-sur-Seine et toute la CA Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Pierrelaye, Bessancourt).",
     },
     {
       q: "Accompagnez-vous les TPE et artisans d'Herblay ?",
@@ -239,10 +239,6 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
     {
       q: "Comment se passe une intervention pour un cabinet professionnel ?",
       a: "Pour les cabinets professionnels (juridiques, expertise-comptable, conseil) à Herblay, nous démarrons par un audit ciblé sur vos workflows, puis une intervention sur site (1-2 journées) pour installer et configurer les outils IA sur vos données réelles. RGPD garanti.",
-    },
-    {
-      q: "Proposez-vous un suivi à distance après l'intervention à Herblay ?",
-      a: "Oui. Après l'intervention sur site à Herblay, un suivi en visio est possible pour ancrer les usages, répondre aux questions et ajuster les automatisations installées. Vos équipes du Val Parisis restent autonomes, avec un point d'avancement à la demande.",
     },
   ],
 };

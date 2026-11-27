@@ -11,9 +11,9 @@ export const CHELLES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Chelles (54 620 habitants, 77500), deuxième commune de Seine-et-Marne après Meaux et porte est de la métropole parisienne. Située à 18 km de Paris et reliée au RER E (terminus Chelles-Gournay) avec la ligne Transilien P, la ville concentre commerces, logistique et services autour du centre Terre-Ciel. Notre équipe se déplace sur site pour automatiser devis, relances, suivis administratifs et processus métiers avec du code custom (pas de no-code), adapté aux dirigeants chellois.",
   directAnswerFr:
-    "Axion-IA intervient à Chelles (Seine-et-Marne, 77500) pour les TPE et PME locales — commerces du centre-ville et de la zone Terre-Ciel, prestataires logistiques liés au RER E et à la future ligne 16 du Grand Paris Express prévue en 2028, artisans du bâtiment, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant. Code custom uniquement, déplacement sous 5 jours ouvrés depuis notre équipe nationale, conformité RGPD documentée.",
+    "Axion-IA intervient à Chelles (Seine-et-Marne, 77500) pour les TPE et PME locales — commerces du centre-ville et de la zone Terre-Ciel, prestataires logistiques liés au RER E et à la future ligne 16 du Grand Paris Express prévue en 2028, artisans du bâtiment, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant. Code custom uniquement, intervention sur site sous 5 jours ouvrés après confirmation, conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA intervient à Chelles (Seine-et-Marne, 77500) pour les TPE et PME locales — commerces du centre-ville et de la zone Terre-Ciel, prestataires logistiques liés au RER E et à la future ligne 16 du Grand Paris Express prévue en 2028, artisans du bâtiment, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant. Code custom uniquement, déplacement sous 5 jours ouvrés depuis notre équipe nationale, conformité RGPD documentée.",
+    "Axion-IA intervient à Chelles (Seine-et-Marne, 77500) pour les TPE et PME locales — commerces du centre-ville et de la zone Terre-Ciel, prestataires logistiques liés au RER E et à la future ligne 16 du Grand Paris Express prévue en 2028, artisans du bâtiment, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant. Code custom uniquement, intervention sur site sous 5 jours ouvrés après confirmation, conformité RGPD documentée.",
   seoHook: "TPE & PME Chelles · commerce, logistique, services",
   ecosystemFr:
     "Chelles appartient à la communauté d'agglomération Paris-Vallée de la Marne (arrondissement de Torcy). Son tissu économique mêle commerces de proximité, centre commercial Terre-Ciel, activités logistiques portées par la position est-parisienne et services aux entreprises. Historiquement marquée par le filage du coton, l'horlogerie et l'extraction du plâtre, la ville a basculé vers une économie tertiaire et résidentielle, avec une part importante de TPE et professions libérales.",
@@ -233,11 +233,11 @@ export const CHELLES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai vous déplacez-vous à Chelles ?",
-      a: "Notre équipe nationale intervient à Chelles sous 5 jours ouvrés après validation du devis. La ville étant à 18 km de Paris et desservie par le RER E, le déplacement est inclus sans surcoût.",
+      a: "Notre équipe nationale intervient à Chelles sous 5 jours ouvrés après validation du devis.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Chelles ?",
-      a: "Oui — nous nous déplaçons à Gagny, Montfermeil, Vaires-sur-Marne, Brou-sur-Chantereine, Courtry, Le Pin, Coubron, Neuilly-sur-Marne, Gournay-sur-Marne, Champs-sur-Marne et Noisiel aux mêmes tarifs publics.",
+      a: "Oui — nous intervenons à Gagny, Montfermeil, Vaires-sur-Marne, Brou-sur-Chantereine, Courtry, Le Pin, Coubron, Neuilly-sur-Marne, Gournay-sur-Marne, Champs-sur-Marne et Noisiel.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Chelles ?",

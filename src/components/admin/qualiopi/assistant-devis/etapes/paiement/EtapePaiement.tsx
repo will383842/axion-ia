@@ -60,19 +60,22 @@ export function EtapePaiement({
   };
 
   return (
-    <div className="flex flex-col gap-4 lg:flex-row">
+    <div className="flex flex-col gap-[var(--space-admin-8)] lg:flex-row lg:items-start">
       <div className="min-w-0 flex-1">
         {p === "prix_unique" ? (
-          <>
-            <RappelPhases
-              nom="Phases et versements"
-              phases={etat.achat.phases}
-              montants={montantsPhases?.A}
-            />
-          </>
+          <RappelPhases
+            nom="Phases et versements"
+            phases={etat.achat.phases}
+            montants={montantsPhases?.A}
+            mention="TTC"
+          />
         ) : (
           <>
-            <div role="tablist" aria-label="Formules" className="mb-3 flex gap-2">
+            <div
+              role="tablist"
+              aria-label="Formules"
+              className="mb-[var(--space-admin-6)] flex gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)]"
+            >
               {formules.map((f) => (
                 <button
                   key={f}
@@ -82,7 +85,7 @@ export function EtapePaiement({
                   aria-selected={actif === f}
                   aria-controls={`${uid}-panneau-${f}`}
                   tabIndex={actif === f ? 0 : -1}
-                  className="min-h-[44px] rounded border px-4"
+                  className="-mb-px min-h-[44px] border-b-2 border-transparent px-[var(--space-admin-5)] font-semibold text-[color:var(--color-admin-fg-muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--color-admin-accent)] aria-selected:border-[color:var(--color-admin-accent)] aria-selected:text-[color:var(--color-admin-fg)] motion-safe:transition-colors"
                   onClick={() => setChoix(f)}
                   onKeyDown={surTouche}
                 >

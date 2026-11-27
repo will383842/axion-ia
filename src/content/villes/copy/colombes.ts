@@ -231,8 +231,8 @@ export const COLOMBES_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Colombes démarre à {{price:intervention-4h|flat}}. Les implémentations et accompagnements un-à-un sont publiés sur notre page Tarifs. Tous nos prix sont publics, sans engagement et sans abonnement caché.",
     },
     {
-      q: "Vos consultants se déplacent-ils réellement à Colombes ou tout se fait en visio ?",
-      a: "Nous nous déplaçons sur site à Colombes pour les phases d'observation et de mise en route. Le suivi régulier et les itérations peuvent ensuite se faire en visio si vous le préférez.",
+      q: "Intervenez-vous réellement à Colombes ou tout se fait-il en visio ?",
+      a: "Nous nous déplaçons sur site à Colombes pour les phases d'observation et de mise en route.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Colombes ?",

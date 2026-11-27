@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   unifiedContactSchema,
   UNIFIED_CONTACT_TYPES,
+  TYPE_GROUPS,
   unifiedTypeLabel,
 } from "@/lib/schemas/unified-contact-schema";
 
@@ -151,6 +152,14 @@ describe("unifiedContactSchema", () => {
   });
 });
 
+describe("type journee_ia", () => {
+  it("est accepté, et placé en premier des pastilles principales", () => {
+    expect(unifiedContactSchema.safeParse({ ...validBase, type: "journee_ia" }).success).toBe(true);
+    expect(TYPE_GROUPS.projet[0]).toBe("journee_ia");
+    expect(TYPE_GROUPS.autre).not.toContain("journee_ia");
+  });
+});
+
 describe("unifiedTypeLabel", () => {
   it("returns FR labels for all types", () => {
     // Labels alignés sur le schema v2 2026-05-28 (12 types, libellés plus
@@ -161,6 +170,7 @@ describe("unifiedTypeLabel", () => {
     expect(unifiedTypeLabel("implementation", "fr")).toBe("Intégration sur-mesure");
     expect(unifiedTypeLabel("formation", "fr")).toBe("Formation IA");
     expect(unifiedTypeLabel("un_a_un", "fr")).toBe("Coaching 1 to 1");
+    expect(unifiedTypeLabel("journee_ia", "fr")).toBe("Journée IA (1 journée sur site)");
     expect(unifiedTypeLabel("partenariat", "fr")).toBe("Partenariat");
   });
 

@@ -49,7 +49,7 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Controis-en-Sologne ?",
-      a: "Oui, Axion-IA intervient au Controis-en-Sologne et dans tout le sud blésois. Consultants sur site depuis Blois (25 min).",
+      a: "Oui, Axion-IA intervient au Controis-en-Sologne et dans tout le sud blésois. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Controis-en-Sologne ?",
@@ -65,7 +65,7 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA dans une commune rurale ?",
-      a: "Déplacement sur site inclus. Formats adaptés : demi-journée pour TPE, journée complète pour PME. Visio complémentaire possible.",
+      a: "Formats adaptés : demi-journée pour TPE, journée complète pour PME. Visio complémentaire possible.",
     },
   ],
 };

@@ -7,7 +7,7 @@
  *   - On maîtrise TOUTE la chaîne IA & automatisation, de bout en bout : de la
  *     formation à l'implémentation complète, avec la même équipe (spécialistes,
  *     ingénieurs, experts seniors).
- *   - La première plateforme à tout couvrir avec du VRAI code source sur-mesure
+ *   - Une plateforme qui couvre tout avec du VRAI code source sur-mesure
  *     — pas du rafistolage de connecteurs no-code grand public (non nommés).
  *   - De l'audit au cadrage de vos premiers agents IA : on enchaîne dans la
  *     continuité, recommandations directement exploitables.
@@ -156,7 +156,7 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
               {isFr ? "Pourquoi nous choisir" : "Why choose us"}
             </p>
             <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-              {isFr ? "Le seul partenaire qui maîtrise " : "The only partner who masters "}
+              {isFr ? "Un partenaire qui couvre " : "A partner covering "}
               <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
                 {isFr ? "toute la chaîne IA, de bout en bout." : "the entire AI chain, end to end."}
               </span>
@@ -167,7 +167,7 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                 : "An AI audit is only worth what the people running it can grasp — business stakes, technical constraints and delivery reality. At Axion-IA we combine senior specialists, engineers and experts — and we go all the way: from training to full implementation."}
             </p>
 
-            {/* Claim de positionnement — la première plateforme bout-en-bout */}
+            {/* Claim de positionnement — plateforme bout-en-bout */}
             <p className="border-terracotta/30 bg-terracotta-soft/40 text-fg mt-7 flex items-start gap-3 rounded-2xl border px-5 py-4 text-[15px] leading-snug font-medium">
               <Sparkles
                 aria-hidden="true"
@@ -177,7 +177,7 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
               <span>
                 {isFr ? (
                   <>
-                    La première plateforme à couvrir{" "}
+                    Une plateforme qui couvre{" "}
                     <span className="font-bold">toute la chaîne IA & automatisation</span> de bout
                     en bout — avec des{" "}
                     <span className="font-bold">solutions développées sur-mesure</span>, robustes et
@@ -186,7 +186,7 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                   </>
                 ) : (
                   <>
-                    The first platform covering the{" "}
+                    A platform covering the{" "}
                     <span className="font-bold">entire AI &amp; automation chain</span> end to end —
                     with <span className="font-bold">bespoke, production-grade software</span>,
                     robust and durable. With on-site work{" "}

@@ -18,9 +18,9 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
   ecosystemEn:
     "Nogent-sur-Marne profite de sa position privilégiée aux portes de Paris, sur des bords de Marne classés et touristiques autour du Pavillon Baltard et du bois de Vincennes. Son économie résidentielle aisée s'appuie sur des professions libérales, des cabinets de conseil et de santé, des agences immobilières, un commerce et une restauration premium ainsi que de petites PME de services. Ces TPE et PME, dirigées par des indépendants exigeants sur la qualité de service, trouvent dans l'IA appliquée un levier direct pour libérer du temps et fluidifier la relation client.",
   distancesFr:
-    "Paris intra-muros à 10 min (RER A et RER E Nogent-Le Perreux). Gare de Lyon à 10 km, aéroport de Paris-Orly à 20 km, Roissy-CDG à 30 min. Bois de Vincennes limitrophe. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
+    "Paris intra-muros à 10 min (RER A et RER E Nogent-Le Perreux). Gare de Lyon à 10 km, aéroport de Paris-Orly à 20 km, Roissy-CDG à 30 min. Bois de Vincennes limitrophe. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Paris intra-muros à 10 min (RER A et RER E Nogent-Le Perreux). Gare de Lyon à 10 km, aéroport de Paris-Orly à 20 km, Roissy-CDG à 30 min. Bois de Vincennes limitrophe. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
+    "Paris intra-muros à 10 min (RER A et RER E Nogent-Le Perreux). Gare de Lyon à 10 km, aéroport de Paris-Orly à 20 km, Roissy-CDG à 30 min. Bois de Vincennes limitrophe. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Professions libérales (juridique, conseil, santé)",
     "Activités immobilières et gestion de patrimoine",
@@ -58,7 +58,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           "Le pôle tertiaire de la Cité d'Affaires Nogent Baltard (bureaux Eiffage au-dessus du RER A) et le siège de Bourrelier Group génèrent une demande de portails métier et d'applicatifs SaaS internes que nous concevons IA-native (recherche sémantique sur documents, agents conversationnels, automatisation de back-office).",
           "La filière santé locale — Hôpital Privé Armand Brillard (Ramsay, av. Watteau), nouvelle Maison médicale Nogent Baltard, nombreux cabinets libéraux — a besoin de sites de prise de rendez-vous, de pré-qualification patient et de portails conformes RGPD avec hébergement maîtrisé des données de santé.",
           "Le Pavillon Baltard (2 700 m², jusqu'à 2 200 personnes, salons et congrès) et l'écosystème événementiel/guinguettes des bords de Marne appellent des sites de billetterie, de réservation et de planification d'événements dopés à l'IA (assistant programme, réponses automatiques, suivi exposants).",
-          "L'économie résidentielle haut de gamme — agences immobilières, gestion de patrimoine, restauration et commerce premium du Cœur de Nogent — valorise des vitrines soignées en UX/UI mobile-first avec e-commerce multi-CMS et réponses client automatisées, à 10 minutes de Paris par RER A et RER E.",
+          "L'économie résidentielle haut de gamme — agences immobilières, gestion de patrimoine, restauration et commerce premium du Cœur de Nogent — valorise des vitrines soignées en UX/UI mobile-first avec e-commerce multi-CMS et réponses client automatisées.",
         ],
         methodology: [
           {
@@ -128,7 +128,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Le site sera-t-il rapide et bien référencé sur mobile ?",
-            a: "Oui. Nous concevons en mobile-first avec une attention forte aux performances (temps de chargement, fluidité) et au référencement local. C'est décisif pour les commerces du Cœur de Nogent et les cabinets visés par une clientèle de proximité à 10 minutes de Paris en RER.",
+            a: "Oui. Nous concevons en mobile-first avec une attention forte aux performances (temps de chargement, fluidité) et au référencement local.",
           },
           {
             q: "Quel est le délai pour démarrer un projet de site à Nogent-sur-Marne ?",
@@ -144,7 +144,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           "The tertiary hub of the Cité d'Affaires Nogent Baltard (Eiffage offices above the RER A) and the Bourrelier Group head office drive demand for business portals and internal SaaS apps that we build AI-native (semantic document search, conversational agents, back-office automation).",
           "The local healthcare sector — Hôpital Privé Armand Brillard (Ramsay, av. Watteau), the new Maison médicale Nogent Baltard, many liberal practices — needs booking websites, patient pre-qualification and GDPR-compliant portals with controlled hosting of health data.",
           "The Pavillon Baltard (2,700 sqm, up to 2,200 people, fairs and congresses) and the events/guinguette ecosystem on the Marne riverbanks call for AI-augmented ticketing, booking and event-planning sites (programme assistant, automatic replies, exhibitor tracking).",
-          "The upmarket residential economy — estate agencies, wealth management, premium retail and restaurants of the Cœur de Nogent — values polished mobile-first UX/UI with multi-CMS e-commerce and automated client replies, 10 minutes from Paris by RER A and RER E.",
+          "The upmarket residential economy — estate agencies, wealth management, premium retail and restaurants of the Cœur de Nogent — values polished mobile-first UX/UI with multi-CMS e-commerce and automated client replies. Axion-IA works anywhere in France, on site or remotely, including in Nogent-sur-Marne.",
         ],
         methodology: [
           {
@@ -214,7 +214,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Will the site be fast and well-ranked on mobile?",
-            a: "Yes. We design mobile-first with strong attention to performance (load time, smoothness) and local SEO. This is decisive for Cœur de Nogent retailers and practices targeting nearby clients 10 minutes from Paris by RER.",
+            a: "Yes. We design mobile-first with strong attention to performance (load time, smoothness) and local SEO. This is decisive for Cœur de Nogent retailers and practices targeting nearby clients.",
           },
           {
             q: "How quickly can a website project start in Nogent-sur-Marne?",
@@ -230,7 +230,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nogent-sur-Marne et dans l'est parisien ?",
-      a: "Oui. Nous couvrons Nogent-sur-Marne et l'est du Val-de-Marne (Le Perreux, Vincennes, Joinville-le-Pont). Nos consultants se déplacent sur site depuis Paris, à 10 min en RER, ou interviennent en visio selon votre besoin.",
+      a: "Oui. Nous couvrons Nogent-sur-Marne et l'est du Val-de-Marne (Le Perreux, Vincennes, Joinville-le-Pont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales et TPE de services ?",

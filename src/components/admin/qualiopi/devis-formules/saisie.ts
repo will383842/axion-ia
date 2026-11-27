@@ -207,10 +207,8 @@ export function construireOffre(s: SaisieFormules, textes: readonly TexteCopie[]
     const b = s.abonnement;
     const cat = eurosVersCents(b.mensuelCatalogueEur);
     const tva = pctVersBps(b.tauxTvaPct);
-    const indem = pctVersBps(b.indemniteTauxPct);
     if (cat === null) e.push("Abonnement : mensuel catalogue illisible.");
     if (tva === null) e.push("Abonnement : taux de TVA illisible.");
-    if (indem === null) e.push("Abonnement : taux d'indemnité de sortie illisible.");
     brut["abonnement"] = {
       miseEnServiceLignes: b.lignes.map((l, i) =>
         ligneVersOffre(l, `Mise en service, ligne ${i + 1}`, e),
@@ -228,7 +226,8 @@ export function construireOffre(s: SaisieFormules, textes: readonly TexteCopie[]
       engagementMois: b.engagementMois,
       reconduction: b.reconduction,
       preavisMois: b.preavisMois,
-      indemniteSortieTauxBps: indem ?? -1,
+      // D4 : indemnité de sortie anticipée fixée à zéro (la saisie ne la porte plus).
+      indemniteSortieTauxBps: 0,
     };
   }
 

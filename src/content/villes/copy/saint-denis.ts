@@ -205,7 +205,7 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
     },
     {
       q: "Que se passe-t-il en cas d'annulation ?",
-      a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+      a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
     },
   ],
   guarantees:
@@ -243,11 +243,6 @@ const IMPLEMENTATION_FR: VilleServiceCopyLocale = {
       step: "Recette + formation",
       detail:
         "Sur site Saint-Denis : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring sur les premières semaines d'exploitation.",
-    },
-    {
-      step: "Suivi post-go-live",
-      detail:
-        "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
     },
   ],
   pricing: [
@@ -314,7 +309,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     "Chaque session est construite autour de VOS cas métier réels : bons de livraison, scripts, devis BTP, dossiers ESS, emails — pas de générique.",
     "Flexibilité maximale : le format s'adapte à votre emploi du temps de dirigeant ou de manager — matinée, journée complète, séances étalées.",
     "De la Plaine Saint-Denis au hub Pleyel Grand Paris Express : si vous avez des rendez-vous clients dans tout le Grand Paris, nous adaptons les sessions à votre géographie professionnelle.",
-    "Suivi dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
+    "Coaching dans la durée possible : plusieurs séances progressives pour ancrer les pratiques IA dans votre quotidien opérationnel.",
     "Tarif d'entrée accessible aux indépendants et structures ESS dyonisiennes — voir la grille tarifaire publique.",
   ],
   methodology: [
@@ -332,11 +327,6 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
       step: "Installation et prise en main",
       detail:
         "Chaque outil est installé, configuré et testé avec vous. Vous partez autonome, avec des prompts personnalisés sauvegardés pour vos tâches récurrentes.",
-    },
-    {
-      step: "Suivi et ajustements",
-      detail:
-        "Une session de suivi quelques semaines après pour ancrer les habitudes, corriger les difficultés rencontrées et ouvrir de nouveaux cas d'usage.",
     },
     {
       step: "Bilan de progression",
@@ -397,7 +387,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     },
   ],
   guarantees:
-    "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances.",
+    "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides.",
 };
 
 // === SITES WEB AUGMENTÉS ===
@@ -541,7 +531,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Saint-Denis ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Saint-Denis et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Pouvez-vous intervenir dans des entrepôts logistiques ou sur des chantiers Grand Paris ?",
@@ -553,11 +543,11 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Denis ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Denis est directement desservi par le RER D, le RER B (La Plaine–Stade de France) et le métro ligne 13.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes Plaine Commune voisines ?",
-      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen (3 km de Saint-Denis), Aubervilliers (3 km), Épinay-sur-Seine (4 km), Pierrefitte-sur-Seine (4 km), Stains (5 km), Villetaneuse (5 km), L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte-sur-Seine, Stains, Villetaneuse, L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Saint-Denis ?",

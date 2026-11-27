@@ -49,7 +49,7 @@ export const CHAMPAGNE_AU_MONT_D_OR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champagne-au-Mont-d'Or et monts d'Or ?",
-      a: "Oui, Axion-IA intervient à Champagne-au-Mont-d'Or et tous les monts d'Or (Écully à 5 min, Dardilly, Saint-Didier-au-Mont-d'Or). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Champagne-au-Mont-d'Or et dans tous les monts d'Or (Écully, Dardilly, Saint-Didier-au-Mont-d'Or). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
@@ -65,7 +65,7 @@ export const CHAMPAGNE_AU_MONT_D_OR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Champagne-au-Mont-d'Or ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Champagne-au-Mont-d'Or, comme partout en France, ou à distance.",
     },
   ],
 };

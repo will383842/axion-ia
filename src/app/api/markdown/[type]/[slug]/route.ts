@@ -8,7 +8,7 @@
  *
  * URL canonique : `/api/markdown/{type}/{slug}`
  *   - type : "blog" | "actualites" | "guides" | "cas-concrets" | "centre-aide"
- *            | "faq" | "glossaire"
+ *            | "faq" | "glossaire" | "connaissances"
  *   - slug : slug FR canonique
  *
  * Découvrabilité : les pages HTML correspondantes émettent un
@@ -62,6 +62,7 @@ const ALLOWED_TYPES = new Set([
   "centre-aide",
   "faq",
   "glossaire",
+  "connaissances",
 ]);
 
 interface MarkdownContent {
@@ -201,18 +202,49 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
   if (type === "glossaire") {
     // GEO-038 — même source que `/glossaire/[slug]` : le SSOT fichier
     // `glossary-extension` (aucun appel DB, donc insensible au stub de build).
-    const { getGlossaryTermBySlug } = await import("@/content/glossary-extension");
+    const { getGlossaryTermBySlug, GLOSSARY_UPDATED_ISO } =
+      await import("@/content/glossary-extension");
     const term = getGlossaryTermBySlug(slug);
     if (!term) return null;
-    const exemples = term.examples.map((e) => `<p>${e}</p>`).join("\n");
     const alias =
       term.aliases.length > 0 ? `<p>Aussi appelé : ${term.aliases.join(", ")}.</p>` : "";
     return {
       title: term.term,
       excerpt: null,
-      body: [`<p>${term.fr}</p>`, alias, exemples].filter(Boolean).join("\n"),
-      updatedAt: new Date(SITE_EDITORIAL_DATE),
+      body: [
+        `<p>${term.definition}</p>`,
+        `<h2>Comment ça marche</h2>`,
+        `<p>${term.fonctionnement}</p>`,
+        `<h2>Exemple dans une PME</h2>`,
+        `<p>${term.exemple}</p>`,
+        `<h2>Erreur fréquente ou limite</h2>`,
+        `<p>${term.limite}</p>`,
+        alias,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+      updatedAt: new Date(GLOSSARY_UPDATED_ISO),
       canonicalSegment: "glossaire",
+    };
+  }
+
+  if (type === "connaissances") {
+    // GEO V2-18 — base de connaissances : même lecteur que
+    // `/connaissances/[slug]` (triple filtre public : publiée, audience et
+    // confidentialité publiques, embargo respecté). Un brouillon ou une fiche
+    // interne répond donc 404, jamais du Markdown. Aucun accès base au build :
+    // la route est dynamique (lecture à la requête) et le lecteur est fail-soft
+    // (stub.invalid → null → 404).
+    const { fetchPublicKbBySlug } = await import("@/lib/knowledge/public-fetch");
+    const { sanitizeTiptapHtml } = await import("@/lib/knowledge/tiptap-sanitize");
+    const entry = await fetchPublicKbBySlug(slug);
+    if (!entry) return null;
+    return {
+      title: entry.title,
+      excerpt: entry.excerpt,
+      body: sanitizeTiptapHtml(entry.body),
+      updatedAt: entry.updatedAt,
+      canonicalSegment: "connaissances",
     };
   }
 
@@ -307,6 +339,11 @@ export async function GET(_req: NextRequest, ctx: RouteParams): Promise<Response
         "Cache-Control":
           "public, max-age=3600, stale-while-revalidate=86400, stale-if-error=604800",
         "X-Content-Type-Options": "nosniff",
+        // GEO V2-18 — la version Markdown est un format alternatif, jamais une
+        // page à indexer : le canonical pointe vers la page HTML, et l'indexation
+        // de la ressource Markdown elle-même est refusée (tous types).
+        Link: `<${SITE_URL}/fr/${content.canonicalSegment}/${slug}>; rel="canonical"`,
+        "X-Robots-Tag": "noindex",
       },
     });
   } catch (err) {

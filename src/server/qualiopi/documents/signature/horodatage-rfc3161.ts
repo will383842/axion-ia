@@ -73,7 +73,7 @@ export interface ConfigurationTsa {
 export function configurationTsa(
   env: Readonly<Record<string, string | undefined>>,
 ): ConfigurationTsa {
-  const pem = (env["HORODATAGE_TSA_CA_PEM"] ?? "").trim();
+  const pem = (env["HORODATAGE_TSA_CA_PEM"] ?? "").replace(/\\n/g, "\n").trim();
   const ancresPem = pem === "" ? [] : [pem];
   const coupe: ConfigurationTsa = { url: null, ancresPem };
   if (env["HORODATAGE_DESACTIVE"] === "true") return coupe;

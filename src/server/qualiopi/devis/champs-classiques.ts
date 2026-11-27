@@ -9,6 +9,7 @@
 
 import { z } from "zod";
 import {
+  avecGarantieJourneeIa,
   CONDITIONS_PARTICULIERES_LIGNES_MAX,
   CONDITIONS_PARTICULIERES_MAX,
   MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
@@ -117,7 +118,7 @@ export const entreeDevisClassiqueSchema = z.object({
    */
   projetId: z.string().uuid().optional(),
   /**
-   * Conditions particulières (texte simple, devis CLASSIQUE seulement). Normalisé à la lecture ;
+   * Conditions particulières (texte simple, devis CLASSIQUE seulement ; l'assistant y écrit l'échéancier, les délais, la garantie et le plafond). Normalisé à la lecture ;
    * vide → `null`. CLÉ ABSENTE ≠ `null` : à la modification, l'absence laisse la colonne intacte
    * (l'assistant appelle l'action sans le champ), `null` l'efface.
    */
@@ -131,9 +132,36 @@ export const entreeDevisClassiqueSchema = z.object({
     })
     .nullable()
     .optional(),
+  /**
+   * Journée IA : imprimer la garantie de remboursement (CGV art. 47.10). Colonne `Devis.journeeIa`.
+   * CLÉ ABSENTE ≠ `false` : à la modification, l'absence laisse la colonne intacte.
+   */
+  journeeIa: z.boolean().optional(),
 });
 
 export type EntreeDevisClassique = z.infer<typeof entreeDevisClassiqueSchema>;
+
+/**
+ * Pose (ou retire) le paragraphe de la garantie Journée IA dans les conditions particulières
+ * déjà normalisées, puis refait le contrôle des 4 000 caractères / 80 lignes. Idempotent : un
+ * texte qui porte déjà le paragraphe (assistant) revient tel quel.
+ */
+export function conditionsAvecJourneeIa(
+  base: string | null,
+  journeeIa: boolean,
+): { texte: string | null } | { error: string } {
+  const texte = avecGarantieJourneeIa(base, journeeIa);
+  if (
+    texte !== null &&
+    (texte.length > CONDITIONS_PARTICULIERES_MAX ||
+      nombreDeLignes(texte) > CONDITIONS_PARTICULIERES_LIGNES_MAX)
+  )
+    return {
+      error:
+        "Les conditions particulières sont trop longues pour y ajouter la garantie de remboursement de la Journée IA (4 000 caractères et 80 lignes au plus).",
+    };
+  return { texte };
+}
 
 /** Σ Math.round(quantité × prix unitaire HT), en centimes (règle historique de la création). */
 export function totalHtClassiqueCents(

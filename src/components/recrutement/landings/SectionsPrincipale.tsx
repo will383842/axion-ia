@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import type { Chiffres } from "./chiffres";
 
 export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode }) {
@@ -31,21 +32,18 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                 )}
               </p>
               <div className="h-actions">
-                <Link
-                  className="btn btn-p"
-                  href="/fr/devenir-commercial-ia/candidature?depuis=haut"
-                >
+                <Link className="btn btn-p" href="/fr/appel/apporteur?depuis=haut">
                   <svg className="ico" aria-hidden="true" focusable="false">
                     <use href="#i-main" />
                   </svg>
-                  Devenir apporteur
+                  Réserver mon échange de 15 minutes
                 </Link>
                 <Link className="porte" href="/apporteur/dossier/retrouver">
                   Déjà apporteur&nbsp;? Retrouver mon lien personnel
                 </Link>
               </div>
               <p className="h-reassur">
-                3 minutes · zéro CV · sans frais d’entrée · sans exclusivité
+                15 minutes en visio · zéro CV · sans frais d’entrée · sans exclusivité
               </p>
               <ul className="chiffres" aria-label="L’essentiel en chiffres">
                 {p.commissionPublique ? (
@@ -187,11 +185,11 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </li>
           </ol>
           <div className="cta-bloc">
-            <Link className="btn btn-p" href="/fr/devenir-commercial-ia/candidature?depuis=comment">
+            <Link className="btn btn-p" href="/fr/appel/apporteur?depuis=comment">
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-main" />
               </svg>
-              Devenir apporteur
+              Réserver mon échange de 15 minutes
             </Link>
           </div>
         </div>
@@ -226,7 +224,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
               <div className="corps">
                 <div className="ruban-j" aria-label="Déroulé de la journée">
                   <span className="matin">
-                    9 h – 12 h<i>Audit&nbsp;: leurs gains, chiffrés</i>
+                    2 à 4 h<i>Audit&nbsp;: leurs gains repérés et classés</i>
                   </span>
                   <span className="aprem">
                     13 h 30 – 17 h 30<i>Formation des équipes sur leurs dossiers</i>
@@ -251,8 +249,9 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                       </svg>
                     </span>
                     <span className="t">
-                      <b>Le risque est chez nous</b> : si les gains identifiés ne dépassent pas 3
-                      fois le prix de la journée, nous remboursons, sans discussion, sous 30 jours.
+                      <b>Le risque est chez nous</b>&nbsp;: si le rapport n’identifie pas au moins 3
+                      fois le prix de la journée en gains, l’entreprise peut demander à être
+                      remboursée (conditions dans nos CGV).
                     </span>
                   </li>
                   <li>
@@ -263,7 +262,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                     </span>
                     <span className="t">
                       <b>Dans leurs locaux, partout en France.</b> Rapport et plan d’action sur 90
-                      jours sous 3 jours ouvrés.
+                      jours sous {DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.
                     </span>
                   </li>
                 </ul>
@@ -288,7 +287,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                 La seule phrase à retenir
               </p>
               <blockquote>
-                Je connais un organisme qui, en une journée dans votre entreprise, chiffre ce que
+                Je connais un organisme qui, en une journée dans votre entreprise, repère ce que
                 l’IA peut vous faire gagner et forme votre équipe. Je vous mets en relation&nbsp;?
               </blockquote>
               <p className="note">
@@ -525,14 +524,11 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </p>
           </div>
           <div className="com-cta prix-cta">
-            <Link
-              className="btn btn-o"
-              href="/fr/devenir-commercial-ia/candidature?depuis=commission"
-            >
+            <Link className="btn btn-o" href="/fr/appel/apporteur?depuis=commission">
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-main" />
               </svg>
-              Devenir apporteur
+              Réserver mon échange de 15 minutes
             </Link>
           </div>
         </div>
@@ -596,19 +592,19 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </span>
             Prochaine étape
           </p>
-          <h2 id="h-final">Trois minutes, sans CV</h2>
+          <h2 id="h-final">Un échange de 15 minutes, sans CV</h2>
           <ol className="etapes-v2">
             <li>
               <span className="n" aria-hidden="true">
                 1
               </span>
-              Un dossier de 3 minutes, une question par écran
+              Vous choisissez un créneau de 15 minutes, directement en ligne
             </li>
             <li>
               <span className="n" aria-hidden="true">
                 2
               </span>
-              Un échange de 15 minutes en visio, sur invitation
+              Un échange de 15 minutes en visio, pour faire connaissance et répondre à vos questions
             </li>
             <li>
               <span className="n" aria-hidden="true">
@@ -620,11 +616,11 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
           <p className="plusieurs">
             Vous connaissez déjà le dirigeant qu’il faut&nbsp;? Commencez par lui.
           </p>
-          <Link className="btn btn-blanc" href="/fr/devenir-commercial-ia/candidature?depuis=bas">
+          <Link className="btn btn-blanc" href="/fr/appel/apporteur?depuis=bas">
             <svg className="ico" aria-hidden="true" focusable="false">
               <use href="#i-main" />
             </svg>
-            Devenir apporteur
+            Réserver mon échange de 15 minutes
           </Link>
           <p className="reassur-t">Sans exclusivité · Aucun frais d’entrée</p>
         </div>

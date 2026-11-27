@@ -27,12 +27,19 @@ describe("llms-full.txt — le canal d'ingestion sert des prix, pas des gabarits
     expect(CORPS).not.toContain("{{label:");
   });
 
-  it("résout les jetons du bloc FAQ en « sur devis » (R7 : aucun montant public hors Journée IA)", () => {
-    // Garde anti-test-vide : sans jeton résolu, l'assertion ci-dessus
-    // passerait aussi sur un fichier dont on aurait simplement retiré la FAQ.
-    const faq = CORPS.split("## FAQ")[1] ?? "";
+  it("la FAQ est toujours là, sans jeton ni montant, et le fichier dit « sur devis » (R7)", () => {
+    // Refonte du 20/11/2026 : les RÉPONSES de la FAQ partagée ne sont plus recopiées ici (elles
+    // portent des affirmations que le code ne prouve pas) ; le fichier liste les questions, chacune
+    // avec le lien de sa page. Garde anti-test-vide : la section existe et porte des liens.
+    const faq = (CORPS.split("## FAQ")[1] ?? "").split("\n## ")[0] ?? "";
     expect(faq.length).toBeGreaterThan(500);
-    expect(faq.toLowerCase()).toContain("sur devis");
+    expect(
+      faq.match(/^- \[[^\]]+\]\(https:\/\/axion-ia\.com\/fr\/faq\/[a-z0-9-]+\)$/gm)?.length,
+    ).toBeGreaterThanOrEqual(15);
+    expect(faq).not.toContain("{{");
+    expect(faq).not.toMatch(/\d[\d\s\u00a0\u202f]*\s?€/);
+    // Les prestations hors Journée IA restent annoncées « sur devis », jamais chiffrées.
+    expect(CORPS.toLowerCase()).toContain("sur devis");
   });
 
   it("ne produit jamais « à partir de à partir de »", () => {

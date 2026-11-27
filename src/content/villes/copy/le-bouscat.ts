@@ -10,9 +10,9 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
   directAnswerFr:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   directAnswerEn:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   seoHook: "commerce détail & services aux entreprises",
   ecosystemFr:
     "Le Bouscat est limitrophe de Bordeaux, Bruges et Eysines, et membre de Bordeaux Métropole. Avec 4 750 habitants/km², la commune concentre commerces de proximité, professions libérales (santé, droit, expertise comptable), services aux entreprises et quelques unités artisanales. L'Hippodrome du Bouscat, le stade Sainte-Germaine et le Castel d'Andorte rythment la vie locale. L'accès rapide à la rocade bordelaise (sortie 7) connecte les entreprises locales à l'ensemble du bassin métropolitain.",
@@ -35,8 +35,8 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
       en: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
-      fr: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Formation 4 h dès {{price:intervention-4h|flat}}.",
-      en: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention ciblée au Bouscat pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention ciblée au Bouscat pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA sur mesure au Bouscat — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
@@ -230,8 +230,8 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
       a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour une formation collective et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
     },
     {
-      q: "Williams se déplace-t-il vraiment au Bouscat ?",
-      a: "Oui. Le Bouscat est accessible par le tramway TBM, la gare du Bouscat-Sainte-Germaine et la rocade A630 (sortie 7). Les interventions se déroulent dans vos locaux, au Bouscat ou dans les communes limitrophes (Bordeaux, Bruges, Eysines).",
+      q: "Intervenez-vous au Bouscat ?",
+      a: "Oui. Les interventions se déroulent dans vos locaux, au Bouscat ou dans les communes limitrophes (Bordeaux, Bruges, Eysines), sur place ou à distance.",
     },
     {
       q: "Quels délais pour une implémentation IA au Bouscat ?",
@@ -247,7 +247,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes limitrophes du Bouscat ?",
-      a: "Oui. Nous nous déplaçons sans surcoût à Bordeaux, Bruges et Eysines, toutes accessibles en moins de 15 minutes depuis Le Bouscat via le tramway TBM ou la rocade bordelaise.",
+      a: "Oui. Nous intervenons à Bordeaux, Bruges et Eysines, communes limitrophes du Bouscat.",
     },
   ],
 };

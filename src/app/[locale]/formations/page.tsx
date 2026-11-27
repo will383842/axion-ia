@@ -40,6 +40,7 @@ import {
 import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
+import { faqItems } from "@/content/questions-reference";
 import {
   FORMATION_DUREE_FACTS,
   getFormationCourseModes,
@@ -113,7 +114,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       loc === "fr"
         ? `Formations IA pour vos équipes, sur site ou à distance : ${qualiopiSerp}. Prix par groupe (${EFFECTIF_PLAGE_FR}), sur devis.`
-        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Instant time savings for your teams.`,
+        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Practical use cases for your teams.`,
   });
 }
 
@@ -735,8 +736,8 @@ export default async function FormationsHub({ params }: Props) {
         titleEm={isFr ? "mensuelle" : "monthly"}
         description={
           isFr
-            ? "Pour les TPE, PME, ETI et grands groupes, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
-            : "For SMEs, mid-caps and large companies, an expert AI trainer comes on site regularly, over 6, 12 or 24 months. Instant time savings measured at each session, business automations rolled out progressively, continuous exchanges between training days so you're never left alone."
+            ? "Pour les TPE, PME, ETI et grands groupes, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Cas d'usage concrets travaillés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
+            : "For SMEs, mid-caps and large companies, an expert AI trainer comes on site regularly, over 6, 12 or 24 months. Practical use cases worked on at each session, business automations rolled out progressively, continuous exchanges between training days so you're never left alone."
         }
         contentClassName={TIGHT_X}
       >
@@ -789,11 +790,6 @@ export default async function FormationsHub({ params }: Props) {
           <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:gap-7">
             {/* CARD 1 — Formule mensuelle (la plus mise en avant) */}
             <article className="bg-paper border-terracotta/40 shadow-subtle hover:border-terracotta hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
-              {/* Badge "Le plus choisi" */}
-              <span className="bg-terracotta text-mocha-fg absolute top-5 right-5 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
-                {isFr ? "Le plus choisi" : "Most chosen"}
-              </span>
-
               {/* Filet couleur */}
               <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
 
@@ -816,14 +812,14 @@ export default async function FormationsHub({ params }: Props) {
                     ? [
                         "Formateur IA expert dédié à votre entreprise",
                         "Montée en compétence progressive et mesurable",
-                        "Gain de temps instantané dès la 1ʳᵉ session",
+                        "Premières automatisations applicables dès la 1ʳᵉ session",
                         "Nouveaux cas d'automatisation métier maîtrisés chaque journée",
                         "WhatsApp d'entraide continue entre les sessions",
                       ]
                     : [
                         "Dedicated expert AI trainer for your company",
                         "Progressive, measurable upskilling",
-                        "Instant time savings from session 1",
+                        "First automations you can apply from session 1",
                         "New business automation cases mastered every session",
                         "Continuous WhatsApp peer-support between sessions",
                       ]
@@ -939,9 +935,7 @@ export default async function FormationsHub({ params }: Props) {
                 : "Why recurring corporate AI training?"}
             </h3>
             <p className="text-fg-soft mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed">
-              {isFr
-                ? "Un accompagnement dans la durée, pas une intervention ponctuelle — les résultats se cumulent session après session."
-                : "Long-term support, not a one-off intervention — results compound session after session."}
+              {isFr ? "Coaching régulier, sur devis." : "Regular coaching, on quote."}
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
               {(isFr
@@ -955,8 +949,8 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Les apprentissages s'installent dans la durée. Chaque mois consolide les gains du précédent et ouvre de nouveaux cas d'usage.",
                     },
                     {
-                      t: "Gain de temps instantané",
-                      d: "Dès la 1ʳᵉ journée, les participants maîtrisent 3-5 automatisations applicables à leurs tâches, qui leur font gagner du temps immédiatement.",
+                      t: "Premières automatisations applicables",
+                      d: "Dès la 1ʳᵉ journée, les participants maîtrisent 3-5 automatisations applicables à leurs tâches, qui peuvent être mises en pratique tout de suite.",
                     },
                     {
                       t: "Adapté à toutes les tailles",
@@ -981,8 +975,8 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Learning sticks over time. Each month consolidates previous gains and opens new use cases.",
                     },
                     {
-                      t: "Instant time savings",
-                      d: "From day 1, participants master 3-5 automations applicable to their tasks, saving time immediately.",
+                      t: "First automations you can apply",
+                      d: "From day 1, participants master 3-5 automations applicable to their tasks, ready to be put into practice right away.",
                     },
                     {
                       t: "Fits all company sizes",
@@ -1254,7 +1248,7 @@ export default async function FormationsHub({ params }: Props) {
                   className="text-fg text-2xl font-semibold tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "30 min, sans engagement" : "30 min, no commitment"}
+                  {isFr ? "45 minutes, sans engagement" : "45 minutes, no commitment"}
                 </h2>
                 <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                   {isFr ? "Scannez le QR code ou rendez-vous sur :" : "Scan the QR code or go to:"}
@@ -1418,14 +1412,11 @@ export default async function FormationsHub({ params }: Props) {
             items={
               isFr
                 ? [
-                    {
-                      // Prix dérivés du SSOT catalogue (matrice pricing.ts),
-                      // JAMAIS hardcodés — cohérents avec les cartes plus haut.
-                      id: "prix-formation-ia",
-                      question: "Combien coûte une formation IA en entreprise ?",
-                      answer:
-                        "Le prix est établi sur devis, par groupe (2 à 15 participants) — jamais par personne. Il dépend de la formation retenue (offre générale, par métier ou par secteur d'activité), de sa durée (4 h à 2 jours) et du format, sur site ou à distance. Le devis arrive sous 48 h ouvrées, sans engagement.",
-                    },
+                    ...faqItems(["ref-formation-prix"]).map(({ id, question, answer }) => ({
+                      id,
+                      question,
+                      answer,
+                    })),
                     {
                       id: "effectif",
                       question: "Combien de participants par session ?",
@@ -1496,7 +1487,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "remboursement",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos outils, de vos données et de ce que vos équipes appliquent ensuite. Ce que nous engageons figure au devis : le programme, la durée, le nombre de participants et les supports remis. En cas d'imprévu de votre côté, la session est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos outils, de vos données et de ce que vos équipes appliquent ensuite. Ce que nous engageons figure au devis : le programme, la durée, le nombre de participants et les supports remis. En cas d'imprévu de votre côté, la session est reportable une fois sans frais ; l'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure).",
                     },
                   ]
                 : [
@@ -1554,7 +1545,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "coverage-international",
                       question: "Do you intervene internationally or only in France?",
                       answer:
-                        "Metropolitan France systematically. Internationally, we intervene in French-speaking organisations (Belgium, Switzerland, Luxembourg, Quebec, French-speaking Maghreb, etc.) on missions of one week minimum — to make travel cost-effective and guarantee a complete autonomy transfer to your team. Custom quote including travel and accommodation costs.",
+                        "Metropolitan France systematically. Internationally, we intervene in French-speaking organisations (Belgium, Switzerland, Luxembourg, Quebec, French-speaking Maghreb, etc.) on missions of one week minimum — to guarantee a complete autonomy transfer to your team.",
                     },
                     {
                       // Miroir EN de la correction du 2026-08-12 — voir le commentaire
@@ -1564,7 +1555,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "guarantee",
                       question: "Guarantee?",
                       answer:
-                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your tools, your data and what your teams apply afterwards. What we do commit to is written in the quote: the programme, the duration, the number of participants and the materials handed over. If something unexpected comes up on your side, the session can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
+                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your tools, your data and what your teams apply afterwards. What we do commit to is written in the quote: the programme, the duration, the number of participants and the materials handed over. If something unexpected comes up on your side, the session can be postponed once at no cost; the deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side).",
                     },
                   ]
             }

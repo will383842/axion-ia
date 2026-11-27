@@ -49,7 +49,7 @@ export const VALDAHON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Valdahon et sur le plateau du Doubs ?",
-      a: "Oui, Axion-IA intervient a Valdahon et sur tout le plateau du Doubs (Vercel-Villedieu-le-Camp, Pierrefontaine-les-Varans, Baume-les-Dames). Besancon a 35 km, Pontarlier a 25 km.",
+      a: "Oui, Axion-IA intervient a Valdahon et sur tout le plateau du Doubs (Vercel-Villedieu-le-Camp, Pierrefontaine-les-Varans, Baume-les-Dames). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commercants et prestataires lies a la garnison ?",

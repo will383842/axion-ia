@@ -80,7 +80,7 @@ export const TOULON_COPY: VilleCopy = {
           "Le tissu industriel toulonnais est unique en France : Naval Group, Thales Underwater Systems, CNIM, Marine nationale — nous maîtrisons les contraintes spécifiques de confidentialité, souveraineté des données et processus métier de la défense maritime.",
           "Le Pôle Mer Méditerranée (siège à Toulon) regroupe des PME et ETI d'ingénierie navale, de nautisme, d'énergies marines et de robotique sous-marine — autant de cas d'usage IA à fort potentiel d'automatisation.",
           "L'écosystème numérique toulonnais monte en puissance : French Tech Toulon Var, TVT Innovation, ISEN Méditerranée (IA/cybersécurité), LIS-CNRS (laboratoire IA de l'UTLN) — nos audits profitent de ce vivier de compétences locales.",
-          "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer. Aucun supplément géographique par rapport aux autres villes françaises.",
+          "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne — aucun lock-in Axion-IA.",
         ],
         methodology: [
@@ -172,7 +172,7 @@ export const TOULON_COPY: VilleCopy = {
           "Toulon's industrial fabric is unique in France: Naval Group, Thales Underwater Systems, CNIM, Marine nationale — we understand the specific confidentiality, data sovereignty and business-process constraints of maritime defence.",
           "Pôle Mer Méditerranée (headquartered in Toulon) brings together SMEs and mid-caps in naval engineering, boating, marine energy and underwater robotics — all with high AI automation potential.",
           "Toulon's digital ecosystem is growing fast: French Tech Toulon Var, TVT Innovation, ISEN Méditerranée (AI/cybersecurity), LIS-CNRS (UTLN AI lab) — our audits tap into this local talent pool.",
-          "No opaque quote game: public pricing, you know exactly what you pay before signing. No geographical surcharge vs other French cities.",
+          "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "You stay in control: your action plan is executable with any vendor or in-house — no Axion-IA lock-in.",
         ],
         methodology: [
@@ -345,7 +345,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -437,7 +437,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -475,11 +475,6 @@ export const TOULON_COPY: VilleCopy = {
             step: "Recette + formation",
             detail:
               "Sur site à Toulon : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook de documentation, plan de monitoring post-déploiement.",
-          },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
           },
         ],
         pricing: [
@@ -567,11 +562,6 @@ export const TOULON_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site in Toulon: user acceptance tests, training of internal ambassadors, runbook documentation delivery, post-deployment monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [
@@ -813,7 +803,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Positioning interview included. Programme delivered before any financial commitment. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Travel expenses detailed and validated with you before each in-person session. No lock-in: tools and methods learned are usable in full autonomy without Axion-IA dependency.",
+          "Positioning interview included. Programme delivered before any financial commitment. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. No lock-in: tools and methods learned are usable in full autonomy without Axion-IA dependency.",
       },
     },
     sitesWeb: {
@@ -995,7 +985,7 @@ export const TOULON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Toulon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Axion-IA peut-il intervenir auprès des entreprises de défense maritime à Toulon ?",

@@ -15,10 +15,11 @@
 // Rendu à la demande (`force-dynamic`), jamais au build : `lireDossierParLien` refuse
 // lui-même la base factice (contrat `stub.invalid`, `AGENTS.md`).
 
+import { lireResiliationEnCours } from "@/features/apporteurs-reseau/resiliation";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
+import { empreinte, texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
 import { lireDossierParLien, vigilanceDemandeeA } from "@/features/apporteurs-reseau/donnees";
 import {
   AIDE_PIECE,
@@ -34,11 +35,18 @@ import {
 } from "@/features/apporteurs-reseau/signature";
 
 import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-entreprise";
+import { RESERVATION_PROVISOIRE_JOURS } from "@/features/apporteurs-reseau/regle-attribution";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 
+import {
+  EncartChallenge,
+  LienReglementsPasses,
+  lireEncartPourEspace,
+} from "./challenge/EncartChallenge";
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
 import { DeclarationEntreprise } from "./DeclarationEntreprise";
+import { lignesComment } from "./textes-comment";
 import { DepotPiece } from "./DepotPiece";
 import { DossierEnLigne, type DossierPublic } from "./DossierEnLigne";
 import { ListeDeclarations } from "./ListeDeclarations";
@@ -124,12 +132,15 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     const declarations = await lireDeclarationsDe(dossier.id);
     // Les attestations ne sont « demandées » qu'à l'approche du seuil : avant, pas de dépôt proposé.
     const vigilance = await vigilanceDemandeeA(dossier.id);
+    // Préavis de résiliation en cours (lot L1b) : une ligne d'information, rien à faire.
+    const fin = await lireResiliationEnCours(dossier.id);
+    const encartChallenge = await lireEncartPourEspace();
     return (
       <Coquille titre={titre}>
         <EcranEtat
           pastilleTexte={TEXTES.signePastille}
           titre={TEXTES.signeTitre}
-          ligne={vigilance ? TEXTES.signeLigneVigilance : TEXTES.signeLigne}
+          ligne={`${vigilance ? TEXTES.signeLigneVigilance : TEXTES.signeLigne}${fin ? ` ${TEXTES.preavisLigne(fin.dernierJourLe)}` : ""}`}
           succes
         >
           {dossier.aContratSigne ? (
@@ -143,12 +154,33 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             </a>
           ) : null}
         </EcranEtat>
-        <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
-        <ListeDeclarations declarations={declarations} />
+        {/* Challenge publié : la règle seulement (invitation libre). */}
+        <EncartChallenge vue={encartChallenge} id={dossier.id} jeton={jeton} />
+        <LienReglementsPasses id={dossier.id} jeton={jeton} />
+        <DeclarationEntreprise
+          id={dossier.id}
+          jeton={jeton}
+          lignesComment={lignesComment(
+            dossier.regleAttribution ?? null,
+            PROTECTION_MOIS,
+            RESERVATION_PROVISOIRE_JOURS,
+          )}
+        />
+        <ListeDeclarations
+          declarations={declarations}
+          contratDepuis2_8={dossier.contratDepuis2_8 === true}
+        />
+        {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}
+        <a
+          href={`/apporteur/dossier/${dossier.id}/${jeton}/documents`}
+          className="border-terracotta-deep text-terracotta-deep mt-5 flex min-h-[48px] items-center gap-2 rounded-2xl border-2 px-5 py-3 text-[17px] font-bold"
+        >
+          Mes documents : contrat, fiche des commissions, charte →
+        </a>
         {/* La grille de référence des commissions, réservée aux apporteurs (2026-10-09). */}
         <a
           href={`/apporteur/dossier/${dossier.id}/${jeton}/commissions`}
-          className="text-terracotta-deep mt-5 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+          className="text-terracotta-deep mt-3 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
         >
           Voir la grille de référence des commissions →
         </a>
@@ -227,6 +259,9 @@ export default async function DossierApporteurPage({ params }: PageProps) {
           : 4;
 
   const texte = texteDuContrat(valeursDuContrat(dossier, new Date()));
+  // Empreinte du texte AFFICHÉ, renvoyée à la signature : si le contrat change entre-temps,
+  // le serveur refuse au lieu de faire signer un texte que la personne n'a pas lu.
+  const empreinteLue = empreinte(texte);
 
   return (
     <Coquille titre={titre}>
@@ -234,6 +269,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         dossier={publicDossier}
         etapeInitiale={etapeInitiale}
         contrat={<ContratLisible texte={texte} />}
+        empreinteLue={empreinteLue}
         urlPdf={`/apporteur/dossier/${dossier.id}/${jeton}/contrat`}
       />
     </Coquille>

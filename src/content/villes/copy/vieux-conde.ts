@@ -65,7 +65,7 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vieux-Condé ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vieux-Condé, comme partout en France, ou à distance.",
     },
   ],
 };

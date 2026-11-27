@@ -49,7 +49,7 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Essarts-en-Bocage et dans le bocage vendéen ?",
-      a: "Oui, Axion-IA intervient à Essarts-en-Bocage et dans tout le bocage vendéen. La Roche-sur-Yon à 20 min, Les Herbiers à 25 min. Déplacements sur site couverts.",
+      a: "Oui, Axion-IA intervient à Essarts-en-Bocage et dans tout le bocage vendéen. Déplacements sur site couverts.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles d'Essarts-en-Bocage ?",

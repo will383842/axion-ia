@@ -367,9 +367,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Comment réserver votre formation IA en entreprise — les 7 étapes Axion-IA",
         nameEn: "How to book your corporate AI training — the 7 Axion-IA steps",
         altFr:
-          "Infographie « Comment réserver votre formation IA en entreprise » en 7 étapes : 1) contactez-nous, 2) échange sur vos besoins, 3) montage du dossier OPCO, 4) accord de financement, 5) intervention sur votre site, 6) interviews & podcast, 7) page dédiée + backlink dofollow.",
+          "Infographie « Comment réserver votre formation IA en entreprise » en 7 étapes : 1) contactez-nous, 2) échange sur vos besoins, 3) point sur le financement, 4) accord sur le devis, 5) intervention sur votre site, 6) interviews & podcast, 7) page dédiée + backlink dofollow.",
         altEn:
-          "Infographic “How to book your corporate AI training” in 7 steps: 1) contact us, 2) needs call, 3) OPCO funding file, 4) funding approval, 5) on-site delivery, 6) interviews & podcast, 7) dedicated page + dofollow backlink.",
+          "Infographic “How to book your corporate AI training” in 7 steps: 1) contact us, 2) needs call, 3) funding options, 4) quote approval, 5) on-site delivery, 6) interviews & podcast, 7) dedicated page + dofollow backlink.",
         width: 1983,
         height: 793,
         slot: "inline",
@@ -587,111 +587,6 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
-  // ===== Financement OPCO / France Travail =====
-  {
-    path: "/financement-opco-france-travail",
-    images: [
-      {
-        src: "/illustrations/financement/financement-formation-ia-opco-france-travail-axion-ia.webp",
-        nameFr:
-          "Vos formations IA financées avec OPCO et France Travail — Axion-IA vous accompagne de A à Z",
-        nameEn:
-          "Your AI trainings funded with OPCO and France Travail — Axion-IA supports you end to end",
-        altFr:
-          "Infographie Axion-IA.com « Vos formations IA financées avec OPCO et France Travail » : OPCO (financements dédiés aux entreprises et à leurs salariés) et France Travail (accompagnement vers l'emploi et la formation), avec le parcours en 5 étapes — votre besoin, dossier pris en charge, financement validé, formation réalisée, compétences et performance.",
-        altEn:
-          "Axion-IA.com infographic “Your AI trainings funded with OPCO and France Travail”: OPCO (funding dedicated to companies and their employees) and France Travail (support towards employment and training), with the 5-step path — your need, funded file, approved funding, training delivered, skills and performance.",
-        width: 1254,
-        height: 1254,
-        representativeOfPage: true,
-        slot: "hero",
-      },
-      {
-        src: "/illustrations/financement/bandeau-financement-formation-ia-opco-france-travail-axion-ia.webp",
-        nameFr: "Vos formations IA financées facilement — OPCO et France Travail | Axion-IA",
-        nameEn: "Your AI trainings funded easily — OPCO and France Travail | Axion-IA",
-        altFr:
-          "Bandeau Axion-IA.com « Vos formations IA financées facilement — OPCO · France Travail » : dossier (prise en charge simplifiée), financement (solutions adaptées à votre entreprise), accompagnement (suivi personnalisé), et repères sécurisé, gain de temps, investir, performance.",
-        altEn:
-          "Axion-IA.com banner “Your AI trainings funded easily — OPCO · France Travail”: file (simplified coverage), funding (solutions tailored to your company), support (personalised follow-up), and markers secure, time-saving, invest, performance.",
-        width: 1983,
-        height: 793,
-        slot: "banner",
-      },
-      {
-        src: "/illustrations/financement/dossier-financement-formation-opco-france-travail-axion-ia.webp",
-        nameFr: "Montage du dossier de financement d'une formation IA — OPCO / France Travail",
-        nameEn: "Building the funding file for an AI training — OPCO / France Travail",
-        altFr:
-          "Bureau avec documents et calculatrice pour le montage d'un dossier de prise en charge OPCO ou France Travail — Axion-IA prépare le dossier de financement avec vous.",
-        altEn:
-          "Desk with documents and calculator to build an OPCO or France Travail funding file — Axion-IA prepares the funding file with you.",
-        width: 1600,
-        height: 1067,
-        slot: "inline",
-      },
-      {
-        src: "/illustrations/financement/accompagnement-financement-formation-ia-axion-ia.webp",
-        nameFr: "Accompagnement au financement d'une formation IA — conseil personnalisé Axion-IA",
-        nameEn: "Support for funding an AI training — personalised Axion-IA advice",
-        altFr:
-          "Échange de conseil et d'accompagnement pour financer une formation IA — Axion-IA oriente entreprises et demandeurs d'emploi vers le bon dispositif (OPCO, France Travail).",
-        altEn:
-          "Advisory session to fund an AI training — Axion-IA guides companies and jobseekers to the right scheme (OPCO, France Travail).",
-        width: 1600,
-        height: 1067,
-        slot: "inline",
-      },
-      {
-        src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.avif",
-        nameFr: "Formation IA financée réalisée sur site — OPCO / France Travail",
-        nameEn: "Funded AI training delivered on site — OPCO / France Travail",
-        altFr:
-          "Salle de formation IA en entreprise Axion-IA — une fois le financement OPCO ou France Travail validé, la formation est réalisée sur site partout en France.",
-        altEn:
-          "Axion-IA corporate AI training room — once OPCO or France Travail funding is approved, the training is delivered on site across France.",
-        width: 1536,
-        height: 1024,
-        slot: "grid",
-      },
-      {
-        src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.avif",
-        nameFr: "Équipe en formation IA financée — montée en compétences OPCO",
-        nameEn: "Team in funded AI training — OPCO upskilling",
-        altFr:
-          "Équipe d'entreprise en formation IA pratique financée via l'OPCO — montée en compétences des salariés accompagnée par Axion-IA.",
-        altEn:
-          "Corporate team in hands-on AI training funded via the OPCO — employee upskilling supported by Axion-IA.",
-        width: 1536,
-        height: 1024,
-        slot: "grid",
-      },
-      {
-        src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.avif",
-        nameFr: "Bilan de formation IA financée — compétences et performance",
-        nameEn: "Funded AI training review — skills and performance",
-        altFr:
-          "Bilan de fin de formation IA Axion-IA — le financement OPCO ou France Travail se traduit par de nouvelles compétences et de la performance pour l'organisation.",
-        altEn:
-          "End-of-training review with Axion-IA — OPCO or France Travail funding translates into new skills and performance for the organisation.",
-        width: 1536,
-        height: 1024,
-        slot: "grid",
-      },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        nameFr: "Williams — Fondateur Axion-IA, monte votre dossier de financement",
-        nameEn: "Williams — Axion-IA founder, builds your funding file",
-        altFr:
-          "Williams, fondateur d'Axion-IA — accompagne les entreprises et demandeurs d'emploi dans le montage du dossier de financement OPCO ou France Travail de leur formation IA.",
-        altEn:
-          "Williams, Axion-IA founder — supports companies and jobseekers in building the OPCO or France Travail funding file for their AI training.",
-        width: 2048,
-        height: 2048,
-        slot: "portrait",
-      },
-    ],
-  },
   // ===== Audit IA (hub) =====
   // Images SEO-only rendues dans des sous-composants Audit* (pas de <Image> direct).
   {
@@ -737,9 +632,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameEn:
           "Enterprise AI audit by company size — small business, SME, mid-cap & large enterprise",
         altFr:
-          "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil.",
+          "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites) — durée, prix et périmètre adaptés à chaque profil.",
         altEn:
-          "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile.",
+          "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site) — duration, price and scope tailored to each profile.",
         width: 1536,
         height: 1024,
       },

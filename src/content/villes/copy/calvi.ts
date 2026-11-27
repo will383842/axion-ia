@@ -49,7 +49,7 @@ export const CALVI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Calvi et en Balagne ?",
-      a: "Oui, Axion-IA intervient à Calvi et dans toute la Balagne (L'Île-Rousse, Lumio, Calenzana, Algajola). Couverture aéroport Calvi-Sainte-Catherine à 7 km et liaison Bastia 1h45 par la T30.",
+      a: "Oui, Axion-IA intervient à Calvi et dans toute la Balagne (L'Île-Rousse, Lumio, Calenzana, Algajola).",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs saisonniers de Calvi ?",
@@ -65,7 +65,7 @@ export const CALVI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Calvi ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Livrable actionnable.",
     },
   ],
 };

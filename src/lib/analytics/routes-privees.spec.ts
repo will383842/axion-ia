@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { urlPorteUnSecret } from "./routes-privees";
+import { urlPorteUnSecret, urlSansMesureDePerformance } from "./routes-privees";
 
 describe("urlPorteUnSecret", () => {
   it.each([
@@ -48,5 +48,26 @@ describe("urlPorteUnSecret", () => {
     expect(urlPorteUnSecret(null)).toBe(false);
     expect(urlPorteUnSecret(undefined)).toBe(false);
     expect(urlPorteUnSecret("")).toBe(false);
+  });
+});
+
+describe("urlSansMesureDePerformance (Score IA TPE-PME)", () => {
+  it("coupe la mesure sur /diagnostic, avec ou sans locale", () => {
+    expect(urlSansMesureDePerformance("/fr/diagnostic")).toBe(true);
+    expect(urlSansMesureDePerformance("/diagnostic")).toBe(true);
+    expect(urlSansMesureDePerformance("/fr/diagnostic/")).toBe(true);
+  });
+
+  it("ne coupe PAS la mesure des pages voisines (garde étroite)", () => {
+    expect(urlSansMesureDePerformance("/fr/diagnostic-gratuit")).toBe(false);
+    expect(urlSansMesureDePerformance("/fr/roi")).toBe(false);
+    expect(urlSansMesureDePerformance("/fr/appel")).toBe(false);
+    expect(urlSansMesureDePerformance("/")).toBe(false);
+  });
+
+  it("ne casse pas sur une valeur absente", () => {
+    expect(urlSansMesureDePerformance(null)).toBe(false);
+    expect(urlSansMesureDePerformance(undefined)).toBe(false);
+    expect(urlSansMesureDePerformance("")).toBe(false);
   });
 });

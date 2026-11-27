@@ -178,12 +178,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Couvrez-vous toute la France et l'international ?",
       answer:
-        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs sont les mêmes partout, sans surcoût géographique. Les frais de déplacement, eux, sont facturés en sus et figurent sur une ligne distincte du devis : vous savez ce que vous payez avant de signer.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
+        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs sont les mêmes partout, sans surcoût géographique. Vous savez ce que vous payez avant de signer.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
       keyPoints: [
         "13 régions métropolitaines, Corse comprise, et les 5 DROM",
         "Entreprises francophones à l'étranger, sur devis selon la zone",
         "Sur site ou à distance, selon ce que la mission exige vraiment",
-        "Mêmes conditions tarifaires partout, frais de déplacement facturés en sus",
+        "Mêmes conditions tarifaires partout, sur toute la France",
         "Les 5 prestations disponibles sur l'ensemble du territoire",
       ],
       facts: [
@@ -204,9 +204,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "Beaucoup de missions se tiennent très bien à distance, et c'est souvent plus rentable pour une petite structure. Le format se décide au cadrage, pas d'après la géographie.",
         },
         {
-          title: "Les frais de déplacement ne sont pas inclus",
+          title: "Une intervention partout en France",
           detail:
-            "Les tarifs ne varient pas d'une région à l'autre, mais les frais de déplacement s'ajoutent : ils sont chiffrés selon la zone et apparaissent séparément sur le devis.",
+            "Les tarifs ne varient pas d'une région à l'autre : l'intervention a lieu dans vos locaux, partout en France, et le devis indique le total avant tout engagement.",
         },
       ],
     },
@@ -224,11 +224,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les conditions tarifaires sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
+        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les conditions tarifaires sont identiques partout, sans surcoût géographique. Vous connaissez le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
       keyPoints: [
         "Toutes les capitales régionales, et plus largement toute ville française",
         "Mêmes conditions tarifaires partout, sans surcoût géographique",
-        "Frais de déplacement en sus, sur une ligne distincte du devis",
+        "Intervention dans vos locaux, partout en France",
         "Formation collective, coaching 1-to-1 ou phase terrain d'audit",
         "Le format à distance reste possible quand le déplacement n'apporte rien",
       ],
@@ -247,7 +247,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le prix ne dépend pas de la ville",
           detail:
-            "Les tarifs sont les mêmes de Paris à Perpignan. Seuls les frais de déplacement varient selon la zone, et ils sont chiffrés à part, pas noyés dans le forfait.",
+            "Les tarifs sont les mêmes de Paris à Perpignan. Le devis indique le total avant tout engagement.",
         },
         {
           title: "Les grandes villes ne passent pas devant",
@@ -260,11 +260,8 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Do you work in regional cities (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…)?",
       answer:
-        // « Travel costs included » a ete retire le 2026-08-12 : c'etait la SEULE
-        // surface du site a l'affirmer, et elle contredisait la doctrine tenue
-        // partout ailleurs (frais de deplacement factures en sus, sur une ligne
-        // distincte du devis). Ne pas le reintroduire.
-        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
+        // Aucune mention de frais de deplacement ici : ils ne figurent que dans les CGV.
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere.",
     },
   },
   {
@@ -274,12 +271,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
       answer:
-        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les conditions tarifaires : elles sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
+        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les conditions tarifaires : elles sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
       keyPoints: [
         "Artisans, commerçants, TPE et PME, partout en France",
         "Zones rurales et petites villes incluses, sans condition de taille",
         "Mêmes conditions tarifaires quelle que soit la commune",
-        "Le distanciel évite les frais de déplacement, à qualité égale",
+        "Le distanciel fait gagner du temps, à qualité égale",
         "Sur site quand le terrain l'exige : atelier, production, équipe entière",
       ],
       facts: [
@@ -297,7 +294,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le distanciel n'est pas un pis-aller",
           detail:
-            "Pour une petite structure, c'est souvent le format le plus rentable : pas de frais de trajet, pas de demi-journée perdue sur la route, et on travaille sur vos vrais dossiers.",
+            "Pour une petite structure, c'est souvent le format le plus rentable : pas de demi-journée perdue sur la route, et on travaille sur vos vrais dossiers.",
         },
         {
           title: "Ce n'est pas réservé aux entreprises déjà équipées",
@@ -319,7 +316,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Pouvez-vous intervenir à distance ou à l'international ?",
       answer:
-        "Oui, les deux sont possibles. À distance, la session se tient en visioconférence sécurisée avec partage d'écran : le contenu, la durée et les ateliers sont identiques à ceux du présentiel, et les accès aux outils sont préparés avec vous en amont si besoin. C'est le format le plus simple quand vos équipes sont réparties sur plusieurs sites.\n\nSur site, nous couvrons les 13 régions de France métropolitaine, Corse comprise, ainsi que les 5 DROM. À l'international, nous intervenons auprès des entreprises francophones — Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission ; un déplacement hors métropole se cale sur une mission d'une semaine minimum, le temps de transférer réellement l'autonomie à l'équipe. Les interventions se déroulent en français ou en anglais.\n\nLe format hybride existe aussi : une journée sur place pour lancer la dynamique, puis les sessions de suivi à distance. Quel que soit le lieu, le devis vous parvient sous 48 h ouvrées.",
+        "Oui, les deux sont possibles. À distance, la session se tient en visioconférence sécurisée avec partage d'écran : le contenu, la durée et les ateliers sont identiques à ceux du présentiel, et les accès aux outils sont préparés avec vous en amont si besoin. C'est le format le plus simple quand vos équipes sont réparties sur plusieurs sites.\n\nSur site, nous couvrons les 13 régions de France métropolitaine, Corse comprise, ainsi que les 5 DROM. À l'international, nous intervenons auprès des entreprises francophones — Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission ; un déplacement hors métropole se cale sur une mission d'une semaine minimum, le temps de transférer réellement l'autonomie à l'équipe. Les interventions se déroulent en français ou en anglais.\n\nLe format hybride existe aussi (sur place et à distance). Quel que soit le lieu, le devis vous parvient sous 48 h ouvrées.",
       keyPoints: [
         "Distanciel en visioconférence sécurisée : même contenu, même durée, mêmes ateliers",
         "Sur site dans les 13 régions métropolitaines, Corse comprise, et les 5 DROM",
@@ -364,13 +361,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'Axion-IA ?",
       answer:
-        "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Concrètement : des intervenants seniors qui viennent travailler sur vos outils, vos données et vos dossiers réels, plutôt que de livrer une présentation sur l'intelligence artificielle.\n\nL'offre tient en cinq prestations. Les Formations IA, en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants. Le Coaching IA 1-to-1, une journée de 7 à 8 heures avec une seule personne, sur son poste. L'Audit IA, qui cartographie vos process et chiffre les opportunités, sur quatre niveaux. L'Implémentation IA, qui met en production les automatisations retenues. Et les Sites web & SaaS IA, pour greffer chatbot, recherche sémantique ou agents sur votre plateforme.\n\nNous intervenons sur site dans les 13 régions métropolitaines et les 5 DROM, ou à distance. L'échange démarre par un appel de cadrage de 45 minutes, sans engagement, et le devis suit sous 48 heures ouvrées.",
+        "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Concrètement : des intervenants seniors qui viennent travailler sur vos outils, vos données et vos dossiers réels, plutôt que de livrer une présentation sur l'intelligence artificielle.\n\nL'offre tient en cinq prestations. Les Formations IA, en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants. Le Coaching IA 1-to-1, une journée de 7 à 8 heures avec une seule personne, sur son poste. L'Audit IA, qui cartographie vos process et chiffre les opportunités, sur quatre niveaux. L'Implémentation IA, qui met en production les automatisations retenues. Et les Sites web & SaaS IA, pour greffer chatbot, recherche sémantique ou agents sur votre plateforme.\n\nNous intervenons sur site dans les 13 régions métropolitaines et les 5 DROM, ou à distance. L'échange démarre par un Diagnostic IA de 45 minutes, sans engagement, et le devis suit sous 48 heures ouvrées.",
       keyPoints: [
         "Cabinet IA opérationnel basé en France, intervenants seniors",
         "Cinq prestations : formations, coaching 1-to-1, audit, implémentation, sites web & SaaS IA",
         "On travaille sur vos outils et vos données réelles, pas sur des cas d'école",
         "13 régions métropolitaines et 5 DROM, sur site ou à distance",
-        "Appel de cadrage de 45 minutes, devis sous 48 h ouvrées",
+        "Diagnostic IA de 45 minutes, devis sous 48 h ouvrées",
       ],
       facts: [
         { figure: "5", label: "prestations au catalogue" },
@@ -412,19 +409,18 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       // Le SLUG `les-3-modules-axion-ia` reste, lui, INCHANGÉ (URL indexée).
       question: "Quels sont les modules d'Axion-IA ?",
       answer:
-        "Le découpage historique en trois modules — interventions, audit, implémentation — a été élargi : l'offre Axion-IA compte aujourd'hui cinq prestations, et c'est cette liste qui fait foi.\n\nLes Formations IA se déroulent en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants, dans vos locaux ou à distance. Le Coaching IA 1-to-1 est une journée de 7 à 8 heures avec une seule personne, sur son poste réel. L'Audit IA cartographie vos process et chiffre les opportunités, sur quatre niveaux selon la taille de l'entreprise et le périmètre. L'Implémentation IA met en production les automatisations retenues, avec 30 jours de support inclus à la livraison. Les Sites web & SaaS IA greffent chatbot, recherche sémantique ou agents sur votre site existant, ou construisent une plateforme IA-native.\n\nCes cinq prestations sont indépendantes : rien n'oblige à les enchaîner dans cet ordre.",
+        "Le découpage historique en trois modules — interventions, audit, implémentation — a été élargi : l'offre Axion-IA compte aujourd'hui cinq prestations, et c'est cette liste qui fait foi.\n\nLes Formations IA se déroulent en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants, dans vos locaux ou à distance. Le Coaching IA 1-to-1 est une journée de 7 à 8 heures avec une seule personne, sur son poste réel. L'Audit IA cartographie vos process et chiffre les opportunités, sur quatre niveaux selon la taille de l'entreprise et le périmètre. L'Implémentation IA met en production les automatisations retenues, à la livraison. Les Sites web & SaaS IA greffent chatbot, recherche sémantique ou agents sur votre site existant, ou construisent une plateforme IA-native.\n\nCes cinq prestations sont indépendantes : rien n'oblige à les enchaîner dans cet ordre.",
       keyPoints: [
         "Cinq prestations aujourd'hui, et non plus trois modules",
         "Formations IA : 4 heures à 2 journées, en intra, 2 à 15 participants",
         "Coaching IA 1-to-1 : une journée, une seule personne, sur son poste",
-        "Audit IA sur quatre niveaux ; Implémentation IA avec 30 jours de support",
+        "Audit IA sur quatre niveaux ; Implémentation IA livrée en production",
         "Sites web & SaaS IA : chatbot, recherche sémantique, agents, plateforme sur mesure",
       ],
       facts: [
         { figure: "5", label: "prestations au catalogue" },
         { figure: "4", label: "niveaux d'audit IA" },
         { figure: "2-15", label: "participants par formation" },
-        { figure: "30 j", label: "de support après livraison" },
       ],
       nuances: [
         {
@@ -435,12 +431,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce ne sont pas des étapes obligatoires",
           detail:
-            "On peut commencer par une formation, par un audit ou directement par une implémentation. L'appel de cadrage de 45 minutes sert justement à choisir le bon point d'entrée.",
+            "On peut commencer par une formation, par un audit ou directement par une implémentation. Le Diagnostic IA de 45 minutes sert justement à choisir le bon point d'entrée.",
         },
         {
           title: "Le tarif dépend du format",
           detail:
-            "Formation de 4 heures : {{price:intervention-4h|flat}} pour le groupe. Journée de formation : {{price:formation-generale-1j|from}}. Coaching 1-to-1 : {{price:intervention-membre-equipe|flat}} avec un collaborateur, {{price:intervention-dirigeants|flat}} avec le dirigeant. Audit IA : {{price:audit-flash|from}}. Implémentation : sur devis, avec réponse sous 48 h ouvrées.",
+            "Formation de 4 heures : {{price:intervention-4h|flat}} pour le groupe. Journée de formation : {{price:formation-generale-1j|from}}. Coaching 1-to-1 : sur devis. Audit IA : {{price:audit-flash|from}}. Implémentation : sur devis, avec réponse sous 48 h ouvrées.",
         },
       ],
     },
@@ -599,7 +595,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Devis détaillé valable 30 jours : la commande est ferme à la signature",
         "Règlement par virement bancaire, aucun abonnement ni engagement de durée",
         "Devis établis hors taxes — la TVA française à 20 % s'ajoute sur la facture",
-        "Devis personnalisé sous 48 h ouvrées après l'appel de cadrage",
+        "Devis personnalisé sous 48 h ouvrées après le Diagnostic IA",
         "Prestation reportable une fois sans frais en cas d'imprévu",
       ],
       facts: [
@@ -610,9 +606,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       steps: [
         {
-          title: "Appel de cadrage",
+          title: "Diagnostic IA",
           detail:
-            "Une trentaine de minutes pour cerner le besoin, le format adapté et le périmètre. C'est le seul temps offert du parcours, et il sert surtout à éviter un devis à côté de la plaque.",
+            "45 minutes pour cerner le besoin, le format adapté et le périmètre. C'est le seul temps offert du parcours, et il sert surtout à éviter un devis à côté de la plaque.",
         },
         {
           title: "Devis détaillé sous 48 h ouvrées",
@@ -661,25 +657,25 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Par où commencer avec l'IA dans mon entreprise ?",
       answer:
-        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et aucune installation logicielle n'est demandée de votre côté, ni sur place ni à distance : la visioconférence se fait sur Zoom, depuis le navigateur. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
+        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un Diagnostic IA de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et aucune installation logicielle n'est demandée de votre côté, ni sur place ni à distance : la visioconférence se fait sur Zoom, depuis le navigateur. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
       keyPoints: [
         "Commencer par un cas réel, pas par une stratégie IA",
-        "Appel de cadrage de 45 minutes pour choisir le point d'entrée",
+        "Diagnostic IA de 45 minutes pour choisir le point d'entrée",
         "Journée de découverte : 3 à 5 process candidats identifiés sur vos données",
         "Aucune compétence technique requise, rien à installer, ni sur place ni à distance",
         "Devis sous 48 h ouvrées, équipes opérationnelles dès le lendemain",
       ],
       facts: [
-        { figure: "45 min", label: "d'appel de cadrage" },
+        { figure: "45 min", label: "de Diagnostic IA" },
         { figure: "3-5", label: "process identifiés" },
         { figure: "48 h", label: "ouvrées pour le devis" },
         { figure: "J+1", label: "équipes opérationnelles" },
       ],
       steps: [
         {
-          title: "Appel de cadrage",
+          title: "Diagnostic IA",
           detail:
-            "30 minutes pour décrire votre contexte et cerner le format adapté. Sans engagement, et sans qu'aucun chiffrage ne soit encore nécessaire.",
+            "45 minutes pour décrire votre contexte et cerner le format adapté. Sans engagement, et sans qu'aucun chiffrage ne soit encore nécessaire.",
         },
         {
           title: "Journée de découverte",
@@ -694,7 +690,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mise en pratique",
           detail:
-            "Les équipes appliquent dès le lendemain. Ce qui mérite d'être automatisé passe ensuite en implémentation, avec 30 jours de support inclus à la livraison.",
+            "Les équipes appliquent dès le lendemain. Ce qui mérite d'être automatisé passe ensuite en implémentation.",
         },
       ],
       nuances: [
@@ -732,18 +728,17 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Quel est le délai pour implémenter l'IA en entreprise ?",
       answer:
-        "Comptez 6 à 8 semaines pour un projet d'implémentation IA complet, à compter de la signature du devis : 1 semaine de cadrage, 2 à 4 semaines de prototype, 1 à 2 semaines de tests et 1 semaine de déploiement. Trente jours de support correctif sont inclus après la mise en production.\n\nLe périmètre fait varier ce délai dans les deux sens. Une automatisation simple — lecture de factures, chatbot branché sur votre site — tourne en environ 2 semaines. À l'inverse, une IA sur mesure profondément intégrée à vos systèmes s'étale sur 4 à 12 semaines. Le devis, lui, part sous 48 heures ouvrées après l'échange de cadrage.\n\nRien n'oblige à attendre la fin pour voir quelque chose : on travaille par sprints courts avec des démos régulières, donc vous validez à chaque étape au lieu de découvrir le résultat au dernier jour. Et si votre besoin est d'abord de faire monter vos équipes, une formation collective les rend opérationnelles dès le lendemain.",
+        "Comptez 6 à 8 semaines pour un projet d'implémentation IA complet, à compter de la signature du devis : 1 semaine de cadrage, 2 à 4 semaines de prototype, 1 à 2 semaines de tests et 1 semaine de déploiement. La mission se termine à la mise en production : aucun suivi n'est prévu après la livraison.\n\nLe périmètre fait varier ce délai dans les deux sens. Une automatisation simple — lecture de factures, chatbot branché sur votre site — tourne en environ 2 semaines. À l'inverse, une IA sur mesure profondément intégrée à vos systèmes s'étale sur 4 à 12 semaines. Le devis, lui, part sous 48 heures ouvrées après l'échange de cadrage.\n\nRien n'oblige à attendre la fin pour voir quelque chose : on travaille par sprints courts avec des démos régulières, donc vous validez à chaque étape au lieu de découvrir le résultat au dernier jour. Et si votre besoin est d'abord de faire monter vos équipes, une formation collective les rend opérationnelles dès le lendemain.",
       keyPoints: [
         "6 à 8 semaines pour un projet complet, à partir de la signature du devis",
         "1 sem. de cadrage, 2 à 4 sem. de prototype, 1 à 2 sem. de tests, 1 sem. de déploiement",
         "Environ 2 semaines pour une automatisation simple et ciblée",
-        "30 jours de support correctif inclus après la mise en production",
+        "Livraison à la mise en production, sans suivi après la livraison",
         "Devis envoyé sous 48 h ouvrées après l'échange de cadrage",
       ],
       facts: [
         { figure: "6-8 sem", label: "pour un projet complet" },
         { figure: "2 sem", label: "pour une automatisation simple" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
@@ -763,9 +758,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "1 à 2 semaines de vérifications et de corrections, avec validation métier avant tout passage en production.",
         },
         {
-          title: "Déploiement et suivi",
+          title: "Déploiement",
           detail:
-            "Une semaine de mise en production sur vos outils, formation des équipes, puis 30 jours de support correctif.",
+            "Une semaine de mise en production sur vos outils, formation des équipes, puis livraison.",
         },
       ],
       nuances: [
@@ -789,7 +784,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How long does it take to implement AI in a company?",
       answer:
-        "An Axion-IA AI implementation project takes 6 to 8 weeks: 1 week scoping, 2 to 4 weeks prototype, 1 to 2 weeks testing, 1 week deployment. 30 days support included. For training alone, teams are operational from the next day.",
+        "An Axion-IA AI implementation project takes 6 to 8 weeks: 1 week scoping, 2 to 4 weeks prototype, 1 to 2 weeks testing, 1 week deployment. Delivery ends at go-live, with no follow-up afterwards. For training alone, teams are operational from the next day.",
     },
   },
   {
@@ -1111,7 +1106,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Cadrage du périmètre",
           detail:
-            "Un appel de cadrage fixe le niveau et le périmètre : une TPE entière, un département, plusieurs services ou un groupe multi-BU.",
+            "Un Diagnostic IA fixe le niveau et le périmètre : une TPE entière, un département, plusieurs services ou un groupe multi-BU.",
         },
         {
           title: "Cartographie des processus",
@@ -1270,12 +1265,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment choisir un cabinet IA ?",
       answer:
-        "Quatre critères suffisent à trancher. Premièrement, le cabinet intervient-il sur site, avec vos données réelles et vos vrais dossiers, ou se contente-t-il de slides ? Deuxièmement, livre-t-il un ROI chiffré et mesurable, ou des promesses qualitatives ? Troisièmement, maîtrise-t-il plusieurs modèles — ChatGPT, Claude, Gemini, et des modèles ouverts comme Llama ou Mistral déployables chez vous — ou n'est-il que le revendeur d'un seul outil ? Quatrièmement, prévoit-il un accompagnement après le déploiement, une fois l'effet nouveauté passé ?\n\nAxion-IA répond positivement aux quatre. Trois vérifications supplémentaires font la différence à l'usage. Demandez qui interviendra réellement : chez Axion-IA les intervenants sont tous seniors, et le même expert vous suit du cadrage à la livraison. Demandez le devis : il est détaillé et arrive sous 48 heures ouvrées. Demandez enfin ce qui reste chez vous à la fin — le rapport, les prompts testés et les méthodes doivent vous appartenir. La couverture est nationale : 13 régions et 5 DROM, sur site ou à distance.",
+        "Quatre critères suffisent à trancher. Premièrement, le cabinet intervient-il sur site, avec vos données réelles et vos vrais dossiers, ou se contente-t-il de slides ? Deuxièmement, livre-t-il un ROI chiffré et mesurable, ou des promesses qualitatives ? Troisièmement, maîtrise-t-il plusieurs modèles — ChatGPT, Claude, Gemini, et des modèles ouverts comme Llama ou Mistral déployables chez vous — ou n'est-il que le revendeur d'un seul outil ? Quatrièmement, livre-t-il une solution documentée, que vos équipes peuvent exploiter seules ?\n\nAxion-IA répond positivement aux quatre. Trois vérifications supplémentaires font la différence à l'usage. Demandez qui interviendra réellement : chez Axion-IA les intervenants sont tous seniors, et le même expert vous suit du cadrage à la livraison. Demandez le devis : il est détaillé et arrive sous 48 heures ouvrées. Demandez enfin ce qui reste chez vous à la fin — le rapport, les prompts testés et les méthodes doivent vous appartenir. La couverture est nationale : 13 régions et 5 DROM, sur site ou à distance.",
       keyPoints: [
         "Sur site avec vos données réelles, pas une démonstration générique",
         "Un ROI chiffré et mesurable, pas des promesses qualitatives",
         "Plusieurs modèles maîtrisés — pas le revendeur d'un seul outil",
-        "Un accompagnement prévu après le déploiement",
+        "Une solution documentée, exploitable en autonomie par vos équipes",
         "Un devis détaillé sous 48 h ouvrées, sans engagement",
       ],
       facts: [
@@ -1304,7 +1299,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How do you choose an AI consultancy?",
       answer:
-        "4 key criteria: (1) does the consultancy work on site with your real data (not just slides)? (2) does it deliver a costed, measurable ROI? (3) does it master multiple AI models (not a reseller of a single tool)? (4) does it offer post-deployment support? Axion-IA meets all 4 criteria.",
+        "4 key criteria: (1) does the consultancy work on site with your real data (not just slides)? (2) does it deliver a costed, measurable ROI? (3) does it master multiple AI models (not a reseller of a single tool)? (4) does it deliver documented work your teams can run on their own? Axion-IA meets all 4 criteria.",
     },
   },
   {
@@ -1398,13 +1393,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA intervient-il à distance ou sur site ?",
       answer:
-        "Les deux, au choix, et avec le même programme. Le format par défaut est le présentiel en intra, dans vos locaux : c'est celui qui permet de travailler directement sur vos outils, vos documents et vos données, et de capter les vraies questions au moment où elles se posent. Le distanciel est possible sur l'ensemble du catalogue, avec le même contenu et le même niveau d'interactivité.\n\nIl s'impose surtout quand l'équipe est répartie sur plusieurs sites, quand les déplacements pèseraient plus lourd que la session elle-même, ou pour une session de suivi après un premier passage sur place. Un format hybride est également possible : une journée dans vos locaux pour lancer la dynamique, puis le suivi à distance.\n\nLe matériel, lui, dépend du format. Sur place, un smartphone ou un ordinateur et une connexion internet suffisent ; un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur (finance, achats, commerce, équipes). À distance, il faut un ordinateur avec caméra et micro et une connexion internet : un smartphone ne permet pas de suivre la visioconférence et de pratiquer en même temps. La visioconférence se fait sur Zoom, depuis le navigateur, sans rien installer ; on la teste avant la session. Pendant la session, le formateur répond dans la conversation de la visioconférence ; en dehors, contact@axion-ia.com répond sous 1 jour ouvré. Dans les deux formats, les accès aux outils sont préparés avec vous en amont si besoin. Le format ne change pas le prix : il est fixé par groupe et par formation, pas par personne, et il n'y a pas de surcoût géographique en France métropolitaine.",
+        "Les deux, au choix, et avec le même programme. Le format par défaut est le présentiel en intra, dans vos locaux : c'est celui qui permet de travailler directement sur vos outils, vos documents et vos données, et de capter les vraies questions au moment où elles se posent. Le distanciel est possible sur l'ensemble du catalogue, avec le même contenu et le même niveau d'interactivité.\n\nIl s'impose surtout quand l'équipe est répartie sur plusieurs sites, quand les déplacements pèseraient plus lourd que la session elle-même. Un format hybride est également possible (sur place et à distance).\n\nLe matériel, lui, dépend du format. Sur place, un smartphone ou un ordinateur et une connexion internet suffisent ; un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur (finance, achats, commerce, équipes). À distance, il faut un ordinateur avec caméra et micro et une connexion internet : un smartphone ne permet pas de suivre la visioconférence et de pratiquer en même temps. La visioconférence se fait sur Zoom, depuis le navigateur, sans rien installer ; on la teste avant la session. Pendant la session, le formateur répond dans la conversation de la visioconférence ; en dehors, contact@axion-ia.com répond sous 1 jour ouvré. Dans les deux formats, les accès aux outils sont préparés avec vous en amont si besoin. Le format ne change pas le prix : il est fixé par groupe et par formation, pas par personne, et il n'y a pas de surcoût géographique en France métropolitaine.",
       keyPoints: [
         "Présentiel en intra par défaut, distanciel possible sur tout le catalogue",
         "Même programme, même durée, même niveau d'interactivité dans les deux cas",
-        "Le distanciel convient aux équipes multi-sites et aux sessions de suivi",
+        "Le distanciel convient aux équipes multi-sites",
         "À distance, un ordinateur avec caméra et micro est nécessaire",
-        "Format hybride possible : une journée sur place, puis le suivi à distance",
+        "Format hybride possible : sur place et à distance",
         "Prix fixé par groupe, sans surcoût géographique en France métropolitaine",
       ],
       facts: [
@@ -1434,7 +1429,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Does Axion-IA work remotely or on site?",
       answer:
-        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams or follow-up training. On site, participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). For remote sessions, they need a computer with a camera and a microphone and an internet connection; the videoconference runs on Zoom, in the browser, with nothing to install, and is tested before the session. During the session, the trainer answers in the videoconference chat; outside it, contact@axion-ia.com replies within 1 business day.",
+        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams. On site, participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). For remote sessions, they need a computer with a camera and a microphone and an internet connection; the videoconference runs on Zoom, in the browser, with nothing to install, and is tested before the session. During the session, the trainer answers in the videoconference chat; outside it, contact@axion-ia.com replies within 1 business day.",
     },
   },
   {
@@ -1604,24 +1599,19 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA propose-t-il un accompagnement après l'implémentation ?",
       answer:
-        "Oui, et il commence sans rien demander : 30 jours de support correctif accompagnent toute implémentation, à compter de la mise en production. Pendant ce mois, les ajustements et les corrections sont pris en charge, et si une fonctionnalité livrée ne correspond pas au cahier des charges signé, elle est corrigée sans surcoût.\n\nAu-delà, rien n'est imposé. Vous pouvez ne rien prendre : le code, les workflows et la documentation vous sont livrés, tout continue de tourner sans nous. Ceux qui préfèrent un filet souscrivent un contrat de maintenance optionnel, un forfait mensuel de 4 heures couvrant corrections, montées de version et optimisations continues. Un besoin nouveau, lui, est chiffré comme une mission complémentaire — pas absorbé dans un abonnement flou.\n\nLe troisième volet est humain : des sessions de suivi forment les nouvelles recrues ou couvrent les fonctionnalités ajoutées depuis la livraison. C'est souvent ce qui fait la différence entre un outil utilisé tous les jours et un outil oublié six mois plus tard.",
+        "Non : Axion-IA ne fait aucun suivi après la livraison. L'implémentation s'arrête à la mise en production, avec le code, les workflows et la documentation. Si une fonctionnalité livrée ne correspond pas au cahier des charges signé, elle est corrigée sans surcoût : c'est un écart de livraison, pas un suivi.\n\nRien n'est imposé ensuite. Le code, les workflows et la documentation vous sont livrés, tout continue de tourner sans nous. Un contrat de maintenance optionnel existe sur devis, pour ceux qui le souhaitent. Un besoin nouveau est chiffré comme une mission complémentaire — pas absorbé dans un abonnement flou.",
       keyPoints: [
-        "30 jours de support correctif inclus dans toute implémentation",
+        "Aucun suivi après la livraison : la mission s'arrête à la mise en production",
         "Aucune maintenance mensuelle imposée : le code et la documentation sont à vous",
-        "Contrat de maintenance optionnel, forfait de 4 h par mois",
+        "Contrat de maintenance optionnel, sur devis",
         "Un écart au cahier des charges signé est corrigé sans surcoût",
-        "Sessions de suivi pour les nouvelles recrues et les nouvelles fonctionnalités",
       ],
-      facts: [
-        { figure: "30 j", label: "de support inclus" },
-        { figure: "4 h", label: "par mois en maintenance" },
-        { figure: "0", label: "abonnement obligatoire" },
-      ],
+      facts: [{ figure: "0", label: "abonnement obligatoire" }],
       nuances: [
         {
           title: "Ce n'est pas un abonnement déguisé",
           detail:
-            "Le contrat de maintenance est optionnel et se souscrit après les 30 jours inclus. Si vous ne le prenez pas, rien ne s'arrête : la solution vous appartient et continue de fonctionner.",
+            "Le contrat de maintenance est optionnel et se souscrit sur devis. Si vous ne le prenez pas, rien ne s'arrête : la solution vous appartient et continue de fonctionner.",
         },
         {
           title: "Ce n'est pas de la maintenance d'infrastructure",
@@ -1638,7 +1628,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Does Axion-IA offer support after implementation?",
       answer:
-        "Yes. 30 days of corrective support are included in every implementation project. Beyond that, an optional monthly maintenance contract is available for corrections, version upgrades and continuous optimisation. Axion-IA also offers follow-up training sessions for new hires or new AI features.",
+        "No: Axion-IA does no follow-up after delivery. The implementation ends at go-live, with the code, workflows and documentation. An optional maintenance contract is available on quote for those who want one.",
     },
   },
   {
@@ -1676,7 +1666,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le coût du projet n'est pas seulement le devis",
           detail:
-            "Comptez aussi le temps de vos équipes, les abonnements aux outils IA retenus et, éventuellement, la maintenance après la période de support incluse. Tout cela s'anticipe au cadrage.",
+            "Comptez aussi le temps de vos équipes, les abonnements aux outils IA retenus et, éventuellement, une maintenance optionnelle. Tout cela s'anticipe au cadrage.",
         },
       ],
     },
@@ -1684,7 +1674,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question: "How much does an AI project cost for an SME?",
       answer:
         // R7 (ordre de Williams du 08/11/2026) : aucune indication de montant hors Journée IA.
-        "Every Axion-IA project is priced on a fixed quote, set after a short scoping call, with no surprises. Request a free quote.",
+        "Every Axion-IA project is priced on a fixed quote, set after a free 45-minute AI Diagnostic call, with no surprises. Request a free quote.",
     },
   },
   {
@@ -1838,7 +1828,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "À quoi sert le coaching 1-to-1 IA pour les dirigeants ?",
       answer:
-        "À prendre de la hauteur sur l'IA sans y passer vos soirées. Le coaching 1-to-1 dirigeant est une journée de 7 à 8 heures en tête-à-tête avec un intervenant senior, préparée en amont sur votre secteur : {{price:intervention-dirigeants|flat}}. Elle ne porte pas sur l'entreprise entière mais sur vous — votre temps, vos décisions, votre charge personnelle. On déroule le panorama IA de votre secteur, préparé avant la journée, on hiérarchise 5 à 10 leviers par impact et par urgence, et on regarde ce que cela donne à trois ans.\n\nLes usages travaillés sont ceux de votre quotidien : préparation de réunions, lecture rapide de dossiers, rédaction stratégique, veille sectorielle automatisée. Sous 7 jours, vous recevez la note de cadrage stratégique — le panorama sourcé et vos leviers priorisés — qui devient une base de discussion utilisable telle quelle avec votre équipe de direction. La journée se tient sur site, à distance ou en hybride, partout en France métropolitaine et dans les DROM.",
+        "À prendre de la hauteur sur l'IA sans y passer vos soirées. Le coaching 1-to-1 dirigeant est une journée de 7 à 8 heures en tête-à-tête avec un intervenant senior, préparée en amont sur votre secteur, sur devis. Elle ne porte pas sur l'entreprise entière mais sur vous — votre temps, vos décisions, votre charge personnelle. On déroule le panorama IA de votre secteur, préparé avant la journée, on hiérarchise 5 à 10 leviers par impact et par urgence, et on regarde ce que cela donne à trois ans.\n\nLes usages travaillés sont ceux de votre quotidien : préparation de réunions, lecture rapide de dossiers, rédaction stratégique, veille sectorielle automatisée. Sous 7 jours, vous recevez la note de cadrage stratégique — le panorama sourcé et vos leviers priorisés — qui devient une base de discussion utilisable telle quelle avec votre équipe de direction. La journée se tient sur site, à distance ou en hybride, partout en France métropolitaine et dans les DROM.",
       keyPoints: [
         "Une journée de 7 à 8 h en tête-à-tête, préparée en amont sur votre secteur",
         "Le périmètre, c'est vous : votre temps, vos décisions, votre charge",
@@ -1888,7 +1878,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif dépend du profil accompagné",
           detail:
-            "Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. La même journée avec un collaborateur, centrée sur son poste : {{price:intervention-membre-equipe|flat}}.",
+            "Prestation sur devis. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },
@@ -1906,12 +1896,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment sont fixés les tarifs d'Axion-IA ?",
       answer:
-        "Sur devis, prestation par prestation. Coaching 1-to-1, formation collective pour 2 à 15 participants, audit IA, implémentation, plateforme web ou SaaS : le montant dépend de l'effectif, du périmètre et du format, et il est établi après un premier échange. Une seule prestation a un prix fixe affiché : la Journée IA, {{price:journee-ia|flat}}.\n\nUn devis Axion-IA n'est pas un prix opaque : il arrive sous 48 h ouvrées après l'appel de cadrage, avec le périmètre écrit, les livrables, les délais et un prix ferme. Tous les montants sont hors taxes, la TVA s'ajoutant sur la facture, et les formats collectifs se lisent par groupe et non par personne. Le montant validé avant démarrage est celui que vous réglez.",
+        "Sur devis, prestation par prestation. Coaching 1-to-1, formation collective pour 2 à 15 participants, audit IA, implémentation, plateforme web ou SaaS : le montant dépend de l'effectif, du périmètre et du format, et il est établi après un premier échange. Une seule prestation a un prix fixe affiché : la Journée IA, {{price:journee-ia|flat}}.\n\nUn devis Axion-IA n'est pas un prix opaque : il arrive sous 48 h ouvrées après le Diagnostic IA, avec le périmètre écrit, les livrables, les délais et un prix ferme. Tous les montants sont hors taxes, la TVA s'ajoutant sur la facture, et les formats collectifs se lisent par groupe et non par personne. Le montant validé avant démarrage est celui que vous réglez.",
       keyPoints: [
         "Chaque prestation chiffrée sur devis, après un premier échange",
         "Formats collectifs facturés par groupe de 2 à 15 participants",
         "Seule la Journée IA a un prix fixe affiché",
-        "Devis détaillé sous 48 h ouvrées après l'appel de cadrage",
+        "Devis détaillé sous 48 h ouvrées après le Diagnostic IA",
         "Montants hors taxes : la TVA s'ajoute sur la facture",
       ],
       facts: [
@@ -1951,16 +1941,16 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Existe-t-il des aides ou subventions pour un projet IA ?",
       answer:
-        "Des dispositifs publics existent, mais aucun n'est automatique et aucun n'est porté par Axion-IA. Selon votre taille, votre secteur et votre région, un projet de transformation numérique peut relever d'un programme national ou d'un dispositif régional ; les développements réellement innovants peuvent, eux, entrer dans le champ des crédits d'impôt recherche et innovation. Chacun de ces mécanismes a ses propres critères, révisés régulièrement : l'éligibilité se vérifie auprès de l'organisme qui accorde l'aide, et votre expert-comptable reste le mieux placé pour trancher le volet fiscal.\n\nCe que nous pouvons faire, c'est vous remettre un dossier propre : un périmètre écrit, un devis détaillé, des livrables datés et un chiffrage des gains attendus — exactement les pièces qu'un financeur réclame. En revanche, aucune prestation n'est vendue comme financée ou subventionnée : le devis est un montant net que vous engagez, et une éventuelle prise en charge se règle ensuite entre vous et l'organisme concerné. Si ce point conditionne votre décision, le plus simple est de l'aborder dès l'appel de cadrage, avant même le devis.",
+        "Des dispositifs publics existent, mais aucun n'est automatique et aucun n'est porté par Axion-IA. Selon votre taille, votre secteur et votre région, un projet de transformation numérique peut relever d'un programme national ou d'un dispositif régional ; les développements réellement innovants peuvent, eux, entrer dans le champ des crédits d'impôt recherche et innovation. Chacun de ces mécanismes a ses propres critères, révisés régulièrement : l'éligibilité se vérifie auprès de l'organisme qui accorde l'aide, et votre expert-comptable reste le mieux placé pour trancher le volet fiscal.\n\nCe que nous pouvons faire, c'est vous remettre un dossier propre : un périmètre écrit, un devis détaillé, des livrables datés et un chiffrage des gains attendus — exactement les pièces qu'un financeur réclame. En revanche, aucune prestation n'est vendue comme financée ou subventionnée : le devis est un montant net que vous engagez, et un éventuel financement public se règle ensuite entre vous et l'organisme concerné. Si ce point conditionne votre décision, le plus simple est de l'aborder dès le Diagnostic IA, avant même le devis.",
       keyPoints: [
         "Des dispositifs nationaux, régionaux et fiscaux existent — aucun n'est automatique",
         "L'éligibilité dépend de votre taille, de votre secteur et de votre région",
         "Elle se vérifie auprès de l'organisme qui accorde l'aide, pas auprès du prestataire",
-        "Axion-IA ne porte aucun dispositif et ne conditionne aucun devis à une prise en charge",
+        "Axion-IA ne porte aucun dispositif et ne conditionne aucun devis à une aide publique",
         "Périmètre écrit, devis détaillé et gains chiffrés : les pièces utiles à un dossier",
       ],
       facts: [
-        { figure: "45 min", label: "d'appel de cadrage" },
+        { figure: "45 min", label: "de Diagnostic IA" },
         { figure: "48 h", label: "ouvrées pour le devis" },
         { figure: "30 j", label: "de validité du devis" },
       ],
@@ -1973,7 +1963,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Une aide ne change pas le prix",
           detail:
-            "Le devis reste un montant net, dû dans les conditions prévues. Une prise en charge éventuelle intervient après coup, entre vous et l'organisme, sans effet rétroactif sur la facture.",
+            "Le devis reste un montant net, dû dans les conditions prévues. Une aide éventuelle intervient après coup, entre vous et l'organisme, sans effet rétroactif sur la facture.",
         },
         {
           title: "Ce n'est pas un conseil fiscal",
@@ -1985,7 +1975,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Are there grants or subsidies for an AI project?",
       answer:
-        "Depending on your project, some AI audits or diagnostics can be partially co-funded in France: the France Num programme and its diagnostics, regional digital-transformation grants, BPI schemes where applicable, and research/innovation tax credits (CIR/CII) for custom development. Eligibility depends on your size, sector and region; we point you to the relevant schemes during the audit.",
+        "Public schemes exist, but none is automatic and none is run by Axion-IA. Depending on your size, sector and region, a digital-transformation project may fall under a national or regional programme, and genuinely innovative development may qualify for research and innovation tax credits (CIR/CII). Each scheme has its own criteria: eligibility is checked with the body that grants the aid, and your accountant is best placed to advise on tax. We provide a clean file (written scope, detailed quote, dated deliverables); no service is sold as subsidised, and any public support is settled between you and that body. If this matters for your decision, raise it during the free 45-minute AI Diagnostic call, before the quote.",
     },
   },
   {
@@ -2124,7 +2114,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Que contient le rapport d'un audit IA ?",
       answer:
-        "Le rapport d'audit IA Axion-IA contient cinq blocs : la cartographie de vos processus et de leurs points de friction ; une liste priorisée de cas d'usage IA concrets ; pour chacun, une estimation du ROI et du temps gagné ; les outils et l'architecture recommandés, cadrés RGPD et souveraineté ; enfin une feuille de route séquencée. C'est un document fait pour arbitrer, pas un rapport théorique.\n\nSon volume suit le niveau d'audit : 8 à 15 pages pour l'audit sur place d'une TPE, jusqu'à 60 à 80 pages board-ready pour un audit Stratégique ETI. S'y ajoutent des livrables annexes selon le format — la bibliothèque des prompts testés en direct pendant la journée sur site, 3 à 5 quick-wins priorisés, une roadmap stratégique 12-24 mois pour les PME, un cadre de gouvernance IA et 30 jours d'accompagnement post-audit pour les ETI.\n\nTout est remis avec une restitution orale, et tout vous appartient : le plan est écrit pour que vos équipes puissent l'exécuter seules si vous le décidez.",
+        "Le rapport d'audit IA Axion-IA contient cinq blocs : la cartographie de vos processus et de leurs points de friction ; une liste priorisée de cas d'usage IA concrets ; pour chacun, une estimation du ROI et du temps gagné ; les outils et l'architecture recommandés, cadrés RGPD et souveraineté ; enfin une feuille de route séquencée. C'est un document fait pour arbitrer, pas un rapport théorique.\n\nSon volume suit le niveau d'audit : 8 à 15 pages pour l'audit sur place d'une TPE, jusqu'à 60 à 80 pages board-ready pour un audit Stratégique ETI. S'y ajoutent des livrables annexes selon le format — la bibliothèque des prompts testés en direct pendant la journée sur site, 3 à 5 quick-wins priorisés, une roadmap stratégique 12-24 mois pour les PME, un cadre de gouvernance IA pour les ETI.\n\nTout est remis avec une restitution orale, et tout vous appartient : le plan est écrit pour que vos équipes puissent l'exécuter seules si vous le décidez.",
       keyPoints: [
         "Cartographie des processus et des points de friction",
         "Cas d'usage priorisés, chacun avec ROI et temps gagné estimés",
@@ -2229,7 +2219,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "0", label: "refonte du SI nécessaire" },
         { figure: "5", label: "CRM et ERP couverts" },
         { figure: "6", label: "outils du quotidien connectés" },
-        { figure: "30 j", label: "de support après livraison" },
       ],
       nuances: [
         {
@@ -2273,7 +2262,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "4", label: "familles de cas d'usage" },
         { figure: "0", label: "décision sensible sans humain" },
-        { figure: "30 j", label: "de support après livraison" },
       ],
       nuances: [
         {
@@ -2620,10 +2608,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se déroule une mission avec Axion-IA ?",
       answer:
-        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un appel de cadrage pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production, avec trente jours de support inclus. Mesurer, c'est revenir compter les heures et les coûts réellement économisés, sur des indicateurs convenus avant le déploiement.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
+        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un Diagnostic IA pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production. Mesurer, c'est vous remettre les indicateurs convenus avant le déploiement, pour compter vous-même les heures et les coûts économisés.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
       keyPoints: [
         "Quatre temps séparés, un livrable concret à chaque étape",
-        "Appel de cadrage puis devis sous 48 h ouvrées",
+        "Diagnostic IA puis devis sous 48 h ouvrées",
         "Journée sur site, audit de 5 jours, mise en production en 6-8 semaines",
         "Chaque étape peut être la dernière : aucun engagement de durée imposé",
         "Le même intervenant senior du cadrage jusqu'à la livraison",
@@ -2632,7 +2620,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "1 jour", label: "sur site pour identifier" },
         { figure: "5 j", label: "d'audit" },
         { figure: "6-8 sem.", label: "jusqu'à la production" },
-        { figure: "30 j", label: "de support inclus" },
       ],
       steps: [
         {
@@ -2648,12 +2635,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Implémenter",
           detail:
-            "Six à huit semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif. Livrable : la solution en production, avec 30 jours de support.",
+            "Six à huit semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif. Livrable : la solution en production.",
         },
         {
           title: "Mesurer",
           detail:
-            "Retour sur les indicateurs convenus avant le déploiement — heures et coûts économisés, impact qualitatif — et itération si une dérive de qualité apparaît. Livrable : le ROI mesuré.",
+            "Les indicateurs convenus avant le déploiement vous sont remis pour compter vous-même les heures et les coûts économisés, ainsi que l'impact qualitatif. Livrable : les indicateurs de mesure du ROI.",
         },
       ],
       nuances: [
@@ -2677,7 +2664,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How does a mission with Axion-IA unfold?",
       answer:
-        "A mission follows four simple steps: a first conversation to scope your need, an audit identifying high-ROI use cases, delivery (session, intervention or custom implementation), then support to embed usage and measure gains. You stay in control at every step, deliverables are concrete, and the goal remains measurable ROI — not a demo with no follow-up.",
+        "A mission follows four simple steps: a first conversation to scope your need, an audit identifying high-ROI use cases, delivery (session, intervention or custom implementation), then the indicators to measure the gains yourself. You stay in control at every step, deliverables are concrete, and the goal remains measurable ROI — not a demo with no result.",
     },
   },
   // ── Batch perfection FAQ 2026-05-31 #2 — secteurs, cas d'usage, comparatifs ────
@@ -2857,7 +2844,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Brancher, puis former",
           detail:
-            "L'outillage se greffe sur votre logiciel de devis et votre messagerie existants. Une implémentation se déroule en 6 à 8 semaines, avec 30 jours de support inclus.",
+            "L'outillage se greffe sur votre logiciel de devis et votre messagerie existants. Une implémentation se déroule en 6 à 8 semaines.",
         },
       ],
       nuances: [
@@ -2974,7 +2961,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "5-15 h", label: "libérées par collaborateur" },
         { figure: "2-3", label: "cas d'usage pour démarrer" },
         { figure: "6-8 sem.", label: "pour une implémentation" },
-        { figure: "30 j", label: "de support après déploiement" },
       ],
       steps: [
         {
@@ -3040,7 +3026,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "3-5", label: "process passés au crible" },
         { figure: "6-8 sem.", label: "pour une implémentation" },
-        { figure: "30 j", label: "de support après déploiement" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
@@ -3179,7 +3164,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "5-8 sem", label: "mise en production" },
         { figure: "0", label: "ressaisie des pièces lues" },
         { figure: "2", label: "flux : production et lecture" },
-        { figure: "30 j", label: "de support inclus" },
       ],
       steps: [
         {
@@ -3807,13 +3791,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Quel audit IA pour une TPE ou une PME ?",
       answer:
-        "Cela dépend surtout de votre effectif. Une TPE (moins de 10 salariés) ou une petite entreprise jusqu'à 19 salariés — artisan, commerçant, profession libérale, indépendant — relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un appel de cadrage permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
+        "Cela dépend surtout de votre effectif. Une TPE (moins de 10 salariés) ou une petite entreprise jusqu'à 19 salariés — artisan, commerçant, profession libérale, indépendant — relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un Diagnostic IA permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
       keyPoints: [
         "TPE et petites entreprises jusqu'à 19 salariés : audit sur place, 1 journée complète dans vos locaux",
         "PME, un seul département concerné : audit Ciblé, 3 à 4 semaines",
         "PME, plusieurs services : Stratégique PME, 5 à 6 semaines et roadmap 12-24 mois",
         "Rapport de synthèse sous 48 h ouvrées pour l'audit sur place",
-        "Un appel de cadrage fixe le bon niveau avant tout devis",
+        "Un Diagnostic IA fixe le bon niveau avant tout devis",
       ],
       facts: [
         { figure: "1-19", label: "salariés pour l'audit TPE" },
@@ -3823,7 +3807,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       steps: [
         {
-          title: "L'appel de cadrage",
+          title: "Le Diagnostic IA",
           detail:
             "Un échange court pour décrire votre contexte et votre périmètre prioritaire. C'est là que se choisit le niveau d'audit adapté à votre taille.",
         },
@@ -3869,7 +3853,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'un audit de maturité IA d'entreprise ?",
       answer:
-        "C'est l'évaluation de votre point de départ, avant toute décision d'investissement. Un audit de maturité IA regarde cinq choses : les outils d'IA déjà utilisés dans l'entreprise, y compris les usages informels que personne n'a déclarés ; le niveau réel des équipes ; la qualité et l'accessibilité de vos données ; les processus automatisables ; et votre conformité, RGPD comme AI Act 2026.\n\nIl en sort une photographie objective de votre situation et les prochaines étapes prioritaires. L'intérêt est d'éviter deux erreurs symétriques : investir dans des outils que personne n'utilisera parce que le niveau des équipes n'y est pas, ou lancer une automatisation sur des données trop dispersées pour être exploitables.\n\nChez Axion-IA, cette évaluation n'est pas une prestation séparée : elle constitue la première phase de l'audit IA, quel que soit le niveau retenu. Les entretiens terrain et la collecte documentaire servent d'abord à situer votre maturité, avant de scorer les opportunités par ROI estimé et complexité technique. Un appel de cadrage permet de dimensionner le périmètre à couvrir.",
+        "C'est l'évaluation de votre point de départ, avant toute décision d'investissement. Un audit de maturité IA regarde cinq choses : les outils d'IA déjà utilisés dans l'entreprise, y compris les usages informels que personne n'a déclarés ; le niveau réel des équipes ; la qualité et l'accessibilité de vos données ; les processus automatisables ; et votre conformité, RGPD comme AI Act 2026.\n\nIl en sort une photographie objective de votre situation et les prochaines étapes prioritaires. L'intérêt est d'éviter deux erreurs symétriques : investir dans des outils que personne n'utilisera parce que le niveau des équipes n'y est pas, ou lancer une automatisation sur des données trop dispersées pour être exploitables.\n\nChez Axion-IA, cette évaluation n'est pas une prestation séparée : elle constitue la première phase de l'audit IA, quel que soit le niveau retenu. Les entretiens terrain et la collecte documentaire servent d'abord à situer votre maturité, avant de scorer les opportunités par ROI estimé et complexité technique. Un Diagnostic IA permet de dimensionner le périmètre à couvrir.",
       keyPoints: [
         "Cinq dimensions : outils en place, niveau des équipes, données, processus, conformité",
         "Les usages informels comptent autant que les outils officiels",
@@ -3913,7 +3897,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Combien coûte un audit IA pour une entreprise ?",
       answer:
-        "Les audits sont chiffrés sur devis, selon la taille et le périmètre, sans prix caché. Quatre formats existent : l'audit sur place pour une TPE, une journée complète dans vos locaux ; l'audit Ciblé sur un département ; les audits Stratégiques, PME comme ETI.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après l'appel de cadrage, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
+        "Les audits sont chiffrés sur devis, selon la taille et le périmètre, sans prix caché. Quatre formats existent : l'audit sur place pour une TPE, une journée complète dans vos locaux ; l'audit Ciblé sur un département ; les audits Stratégiques, PME comme ETI.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après le Diagnostic IA, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
       keyPoints: [
         "Les audits sont chiffrés sur devis, selon la taille et le périmètre",
         "Audit sur place pour une TPE : une journée dans vos locaux",
@@ -3957,22 +3941,22 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se passe un premier diagnostic IA ?",
       answer:
-        "Tout commence par un appel de cadrage, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une TPE. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
+        "Tout commence par un Diagnostic IA, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. L'analyse elle-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une TPE. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
       keyPoints: [
-        "Un appel de cadrage d'abord, pour caler le périmètre et le niveau",
-        "Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière",
+        "Un Diagnostic IA d'abord, pour caler le périmètre et le niveau",
+        "L'analyse elle-même, c'est l'audit IA — une prestation à part entière",
         "Observation des processus réels, y compris les procédures orales",
         "2 à 3 cas d'usage à fort impact testés en direct sur vos vrais dossiers",
         "En sortie : des actions classées par priorité, ROI et complexité",
       ],
       facts: [
-        { figure: "3", label: "temps du diagnostic" },
+        { figure: "3", label: "temps de l'audit" },
         { figure: "2-3", label: "cas d'usage prioritaires" },
         { figure: "1 j", label: "sur site pour une TPE" },
       ],
       steps: [
         {
-          title: "L'appel de cadrage",
+          title: "Le Diagnostic IA",
           detail:
             "Vous décrivez votre activité, vos irritants et vos objectifs. On en déduit le périmètre prioritaire et le niveau d'audit adapté à votre taille.",
         },
@@ -3994,9 +3978,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       nuances: [
         {
-          title: "L'appel de cadrage n'est pas le diagnostic",
+          title: "Le Diagnostic IA n'est pas l'audit",
           detail:
-            "L'appel sert à caler le périmètre et le bon niveau. Le diagnostic lui-même, c'est l'audit IA : une intervention sur le terrain avec un livrable écrit.",
+            "Ce rendez-vous de 45 minutes sert à caler le périmètre et le bon niveau. L'analyse elle-même, c'est l'audit IA : une intervention sur le terrain avec un livrable écrit.",
         },
         {
           title: "Ce n'est pas un questionnaire à remplir",
@@ -4227,7 +4211,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif du 1-to-1 dépend du profil accompagné",
           detail:
-            "Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Le devis suit sous 48 h ouvrées.",
+            "Prestation sur devis. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },
@@ -4248,7 +4232,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'une implémentation IA sur mesure ?",
       answer:
-        "C'est la conception et le déploiement d'une solution IA calée sur vos processus, et non sur ceux d'un logiciel du marché : automatisation d'un workflow, agent métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes de sécurité et de RGPD.\n\nLe déroulé est toujours le même : cadrage technique et ateliers métier, développement par sprints courts avec des démos régulières, recette puis mise en production dans vos outils, enfin une phase de suivi. Comptez six à huit semaines pour la majorité des cas, avec trente jours de support correctif inclus à la livraison. Pas d'effet tunnel : vous voyez la solution prendre forme à chaque sprint.\n\nÀ la fin, le code et la documentation vous sont livrés, et vos équipes sont formées pour rester autonomes. Aucun abonnement n'est imposé et la maintenance reste optionnelle. C'est le même intervenant senior qui cadre le besoin et qui livre la solution, sans passage de relais entre un avant-vente et une équipe de production.",
+        "C'est la conception et le déploiement d'une solution IA calée sur vos processus, et non sur ceux d'un logiciel du marché : automatisation d'un workflow, agent métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes de sécurité et de RGPD.\n\nLe déroulé est toujours le même : cadrage technique et ateliers métier, développement par sprints courts avec des démos régulières, recette puis mise en production dans vos outils, enfin la livraison. Comptez six à huit semaines pour la majorité des cas. Pas d'effet tunnel : vous voyez la solution prendre forme à chaque sprint.\n\nÀ la fin, le code et la documentation vous sont livrés, et vos équipes sont formées pour rester autonomes. Aucun abonnement n'est imposé et la maintenance reste optionnelle. C'est le même intervenant senior qui cadre le besoin et qui livre la solution, sans passage de relais entre un avant-vente et une équipe de production.",
       keyPoints: [
         "Une solution calée sur vos processus, pas un outil générique adapté",
         "Sprints courts, démos régulières, validation métier à chaque étape",
@@ -4260,7 +4244,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "6-8 sem", label: "du cadrage à la production" },
         { figure: "1 sem", label: "de cadrage technique" },
         { figure: "3-5", label: "opérationnels en phase de test" },
-        { figure: "30 j", label: "de support inclus" },
       ],
       steps: [
         {
@@ -4279,9 +4262,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "Tests utilisateurs par trois à cinq opérationnels, corrections, puis passage en production dans vos outils. Le code et la documentation vous sont remis.",
         },
         {
-          title: "Suivi et évolution",
+          title: "Évolution",
           detail:
-            "Trente jours de support correctif sont inclus pour les ajustements. Ensuite, vous faites évoluer à la demande, sans maintenance imposée.",
+            "Le code et la documentation vous sont livrés. Ensuite, vous faites évoluer à la demande, sans maintenance imposée.",
         },
       ],
       nuances: [
@@ -4305,7 +4288,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Qu'est-ce qu'une implémentation IA sur mesure ?",
       answer:
-        "L'implémentation IA sur mesure consiste à concevoir et déployer une solution IA adaptée à VOS processus : automatisation d'un workflow, agent IA métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes (sécurité, RGPD). Axion-IA livre une solution opérationnelle, testée et documentée, avec un accompagnement pour l'ancrer durablement.",
+        "L'implémentation IA sur mesure consiste à concevoir et déployer une solution IA adaptée à VOS processus : automatisation d'un workflow, agent IA métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes (sécurité, RGPD). Axion-IA livre une solution opérationnelle, testée et documentée, avec une documentation pour que vos équipes l'exploitent.",
     },
   },
   {
@@ -4348,7 +4331,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mesurer",
           detail:
-            "On revient compter ce que ça a rapporté, sur les indicateurs convenus au départ : heures et coûts économisés, impact qualitatif. Itération si une dérive apparaît.",
+            "Les indicateurs convenus au départ vous sont remis pour compter vous-même ce que ça rapporte : heures et coûts économisés, impact qualitatif.",
         },
       ],
       nuances: [
@@ -4529,14 +4512,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "6-12", label: "semaines pour une plateforme" },
         { figure: "2-3", label: "semaines pour un chatbot" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
         {
           title: "Cadrage et arbitrage",
           detail:
-            "Une trentaine de minutes pour trancher la vraie question : construire une base neuve ou augmenter l'existant. Le devis détaillé suit sous 48 h ouvrées.",
+            "45 minutes pour trancher la vraie question : construire une base neuve ou augmenter l'existant. Le devis détaillé suit sous 48 h ouvrées.",
         },
         {
           title: "Conception et choix de stack",
@@ -4550,8 +4532,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         },
         {
           title: "Mise en production et suite",
-          detail:
-            "Livraison dans votre infrastructure, avec 30 jours de support inclus. Au-delà, un contrat de maintenance reste optionnel.",
+          detail: "Livraison dans votre infrastructure. Un contrat de maintenance reste optionnel.",
         },
       ],
       nuances: [
@@ -4589,17 +4570,16 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Développez-vous des applications ou SaaS augmentés à l'IA sur mesure ?",
       answer:
-        "Oui, avec l'IA au cœur du produit et non greffée à la fin : agents autonomes capables d'agir, automatisation des processus métier répétitifs, recherche sémantique, analyse de données, génération de contenu. La question préalable n'est d'ailleurs pas technique mais économique. Si votre plateforme actuelle fonctionne et expose une API, l'augmenter va plus vite et coûte moins cher. Si elle a plus de cinq ans, résiste aux évolutions ou n'expose aucune API, repartir sur une base IA-native est souvent plus rentable à dix-huit mois. On tranche avec vous dès le premier appel, quitte à vous dire que le projet neuf n'est pas justifié.\n\nLe développement se fait en forfait fixe sur un périmètre écrit — pas de régie. Comptez 6 à 12 semaines pour une plateforme complète, puis 30 jours de support inclus après la mise en production ; au-delà, la maintenance est optionnelle : {{price:maintenance-standard|full}}. Sécurité, RGPD et souveraineté des données sont traités comme des contraintes de conception : hébergement en Union européenne, et code, bases et modèles livrés dans votre infrastructure.",
+        "Oui, avec l'IA au cœur du produit et non greffée à la fin : agents autonomes capables d'agir, automatisation des processus métier répétitifs, recherche sémantique, analyse de données, génération de contenu. La question préalable n'est d'ailleurs pas technique mais économique. Si votre plateforme actuelle fonctionne et expose une API, l'augmenter va plus vite et coûte moins cher. Si elle a plus de cinq ans, résiste aux évolutions ou n'expose aucune API, repartir sur une base IA-native est souvent plus rentable à dix-huit mois. On tranche avec vous dès le premier appel, quitte à vous dire que le projet neuf n'est pas justifié.\n\nLe développement se fait en forfait fixe sur un périmètre écrit — pas de régie. Comptez 6 à 12 semaines pour une plateforme complète, puis la livraison à la mise en production ; une maintenance optionnelle existe : {{price:maintenance-standard|full}}. Sécurité, RGPD et souveraineté des données sont traités comme des contraintes de conception : hébergement en Union européenne, et code, bases et modèles livrés dans votre infrastructure.",
       keyPoints: [
         "IA-native : agents, automatisations et recherche sémantique intégrés dès la conception",
         "Arbitrage honnête entre augmenter l'existant et repartir d'une base neuve",
         "6 à 12 semaines en forfait fixe, sur un périmètre écrit",
-        "30 jours de support inclus, maintenance ensuite optionnelle",
+        "Livraison à la mise en production, maintenance optionnelle sur devis",
         "Hébergement UE, code et données livrés chez vous",
       ],
       facts: [
         { figure: "6-12", label: "semaines de développement" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "4 h", label: "par mois de maintenance" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
@@ -4622,7 +4602,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mise en production et transfert",
           detail:
-            "Déploiement dans votre infrastructure, transfert de compétences à vos équipes, 30 jours de support inclus. La maintenance reste ensuite un choix.",
+            "Déploiement dans votre infrastructure, transfert de compétences à vos équipes. La maintenance reste un choix.",
         },
       ],
       nuances: [
@@ -4646,7 +4626,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Développez-vous des applications ou SaaS augmentés à l'IA sur mesure ?",
       answer:
-        "Oui. Axion-IA développe des applications et plateformes SaaS sur mesure intégrant l'IA au cœur du produit : automatisations métier, analyse de données, génération de contenu, agents intelligents. On conçoit la solution autour de votre besoin réel et de vos contraintes (sécurité, RGPD, souveraineté des données), avec une attention forte à la performance et à l'expérience utilisateur. De l'idée au produit en ligne, avec un accompagnement continu.",
+        "Oui. Axion-IA développe des applications et plateformes SaaS sur mesure intégrant l'IA au cœur du produit : automatisations métier, analyse de données, génération de contenu, agents intelligents. On conçoit la solution autour de votre besoin réel et de vos contraintes (sécurité, RGPD, souveraineté des données), avec une attention forte à la performance et à l'expérience utilisateur. De l'idée au produit en ligne.",
     },
   },
   {
@@ -4719,7 +4699,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "2-3", label: "semaines pour un assistant" },
         { figure: "1-2", label: "semaines pour la recherche" },
-        { figure: "30 j", label: "de support inclus" },
         { figure: "48 h", label: "ouvrées pour le devis" },
       ],
       steps: [
@@ -4741,7 +4720,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Mesure puis extension",
           detail:
-            "On regarde les questions réellement posées et ce qu'elles évitent comme travail manuel, avec 30 jours de support inclus, avant d'ajouter une brique.",
+            "On regarde les questions réellement posées et ce qu'elles évitent comme travail manuel, avant d'ajouter une brique.",
         },
       ],
       nuances: [
@@ -4779,7 +4758,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Proposez-vous un accompagnement IA individuel pour dirigeant ?",
       answer:
-        "Oui, et il est strictement individuel : une personne, un intervenant senior, aucune salle de formation. Le format de référence est la journée de 7 à 8 heures avec le dirigeant ({{price:intervention-dirigeants|flat}}), déclinable sur deux jours quand le périmètre le justifie. Elle se tient dans vos locaux, à distance ou en hybride, sur les 13 régions et les 5 DROM ; à l'international, nous intervenons dans les structures francophones sur des missions d'une semaine minimum.\n\nLa confidentialité fait partie du cadre : on travaille sur vos vrais dossiers, vos vrais comptes et vos vrais chiffres, et rien n'est conservé après la journée. C'est aussi le même expert du premier échange à la remise du livrable — vous n'expliquez jamais deux fois votre contexte, et personne ne repart avec la moitié de l'histoire. Concrètement, un appel de cadrage d'une trentaine de minutes suffit à choisir le format et à caler la date ; le devis suit sous 48 h ouvrées, et la note de cadrage écrite arrive sous 7 jours après la journée.",
+        "Oui, et il est strictement individuel : une personne, un intervenant senior, aucune salle de formation. Le format de référence est la journée de 7 à 8 heures avec le dirigeant, déclinable sur deux jours quand le périmètre le justifie. Elle se tient dans vos locaux, à distance ou en hybride, sur les 13 régions et les 5 DROM ; à l'international, nous intervenons dans les structures francophones sur des missions d'une semaine minimum.\n\nLa confidentialité fait partie du cadre : on travaille sur vos vrais dossiers, vos vrais comptes et vos vrais chiffres, et rien n'est conservé après la journée. C'est aussi le même expert du premier échange à la remise du livrable — vous n'expliquez jamais deux fois votre contexte, et personne ne repart avec la moitié de l'histoire. Concrètement, un Diagnostic IA de 45 minutes suffit à choisir le format et à caler la date ; le devis suit sous 48 h ouvrées, et la note de cadrage écrite arrive sous 7 jours après la journée.",
       keyPoints: [
         "Une seule personne accompagnée, par un intervenant senior",
         "Journée de 7 à 8 h, déclinable sur deux jours selon le périmètre",
@@ -4876,18 +4855,17 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Le coaching IA est-il adapté aux cadres et aux managers ?",
       answer:
-        "Oui, et c'est souvent le profil sur lequel le retour est le plus visible. La journée 1-to-1 s'adresse à n'importe quel poste — responsable administratif, comptabilité, achats, RH, marketing, encadrement d'équipe — et se tient au tarif collaborateur : {{price:intervention-membre-equipe|flat}}. On part de vos tâches réelles : reporting hebdomadaire, comptes-rendus de réunion, tri des mails, notes internes, réponses récurrentes, tableaux de suivi. On les allège une par une, sur vos propres dossiers et vos propres outils.\n\nLa particularité d'un manager, c'est le double bénéfice : ce qu'il gagne pour lui, et ce qu'il devient capable de transmettre à son équipe. Vous repartez de la journée avec 3 à 5 méthodes pratiquées, utilisables dès le lendemain, puis votre cahier de prompts et un plan d'action sous 7 jours, avec un point de suivi à 30 jours. Quand plusieurs managers sont concernés, une journée collective en groupe de 2 à 15 participants est souvent plus efficace qu'un 1-to-1 répété : {{price:formation-generale-1j|flat}} pour le groupe.",
+        "Oui, et c'est souvent le profil sur lequel le retour est le plus visible. La journée 1-to-1 s'adresse à n'importe quel poste — responsable administratif, comptabilité, achats, RH, marketing, encadrement d'équipe — et se tient sur devis. On part de vos tâches réelles : reporting hebdomadaire, comptes-rendus de réunion, tri des mails, notes internes, réponses récurrentes, tableaux de suivi. On les allège une par une, sur vos propres dossiers et vos propres outils.\n\nLa particularité d'un manager, c'est le double bénéfice : ce qu'il gagne pour lui, et ce qu'il devient capable de transmettre à son équipe. Vous repartez de la journée avec 3 à 5 méthodes pratiquées, utilisables dès le lendemain, puis votre cahier de prompts et un plan d'action sous 7 jours. Quand plusieurs managers sont concernés, une journée collective en groupe de 2 à 15 participants est souvent plus efficace qu'un 1-to-1 répété : {{price:formation-generale-1j|flat}} pour le groupe.",
       keyPoints: [
         "Ouvert à tous les postes d'encadrement, au tarif collaborateur",
         "On part des tâches réelles : reporting, comptes-rendus, mails, notes internes",
         "3 à 5 méthodes pratiquées, utilisables dès le lendemain",
-        "Cahier de prompts et plan d'action sous 7 jours, suivi à 30 jours",
+        "Cahier de prompts et plan d'action sous 7 jours",
         "Plusieurs managers concernés : la journée collective est souvent plus adaptée",
       ],
       facts: [
         { figure: "3-5", label: "méthodes maîtrisées" },
         { figure: "7 j", label: "pour le livrable écrit" },
-        { figure: "30 j", label: "avant le point de suivi" },
         { figure: "2-15", label: "participants en collectif" },
       ],
       nuances: [
@@ -4935,13 +4913,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
       answer:
-        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours, avec un point de suivi à 30 jours. La journée se tient sur site, à distance ou en hybride.",
+        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours. La journée se tient sur site, à distance ou en hybride.",
       keyPoints: [
         "Une journée de 7 à 8 h, une seule personne — jamais un groupe",
         "Sur votre poste réel, vos comptes et vos vrais documents",
         "ChatGPT, Claude et Gemini, extensions, transcripteurs, puis vos propres assistants",
         "3 à 5 méthodes maîtrisées et un cahier de prompts qui reste le vôtre",
-        "Livrable écrit sous 7 jours, point de suivi à 30 jours",
+        "Livrable écrit sous 7 jours",
       ],
       facts: [
         { figure: "7-8 h", label: "en tête-à-tête" },
@@ -4985,14 +4963,14 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif dépend du profil accompagné",
           detail:
-            "Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Un échange préalable de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
+            "Prestation sur devis. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },
     en: {
       question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
       answer:
-        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours, avec un point de suivi à 30 jours. La journée se tient sur site, à distance ou en hybride.",
+        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours. La journée se tient sur site, à distance ou en hybride.",
     },
   },
 ];
@@ -5059,13 +5037,13 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     category: "Implémentation IA",
     fr: {
       title: "Quelles sont les phases d'un projet d'implémentation ?",
-      excerpt: "5 phases clés : cadrage, prototype, tests, déploiement, support.",
-      body: "Un projet d'implémentation IA Axion-IA suit 5 phases : (1) cadrage technique 1 semaine — choix du modèle, architecture, données ; (2) prototype 2-4 semaines — version fonctionnelle sur jeu de données réel ; (3) tests utilisateurs 1-2 semaines — validation par 3-5 opérationnels ; (4) déploiement production 1 semaine — mise en service progressive ; (5) support 30 jours inclus. Total 6-8 semaines pour la majorité des cas.",
+      excerpt: "4 phases clés : cadrage, prototype, tests, déploiement.",
+      body: "Un projet d'implémentation IA Axion-IA suit 4 phases : (1) cadrage technique 1 semaine — choix du modèle, architecture, données ; (2) prototype 2-4 semaines — version fonctionnelle sur jeu de données réel ; (3) tests utilisateurs 1-2 semaines — validation par 3-5 opérationnels ; (4) déploiement production 1 semaine — mise en service progressive. Total 6-8 semaines pour la majorité des cas.",
     },
     en: {
       title: "What are the phases of an implementation project?",
-      excerpt: "5 key phases: scoping, prototype, testing, deployment, support.",
-      body: "An Axion-IA AI implementation project follows 5 phases: (1) technical scoping 1 week — model choice, architecture, data; (2) prototype 2-4 weeks — functional version on real data; (3) user testing 1-2 weeks — validation by 3-5 operational staff; (4) production deployment 1 week — progressive go-live; (5) 30-day support included. Total 6-8 weeks for most cases.",
+      excerpt: "4 key phases: scoping, prototype, testing, deployment.",
+      body: "An Axion-IA AI implementation project follows 4 phases: (1) technical scoping 1 week — model choice, architecture, data; (2) prototype 2-4 weeks — functional version on real data; (3) user testing 1-2 weeks — validation by 3-5 operational staff; (4) production deployment 1 week — progressive go-live. Total 6-8 weeks for most cases.",
     },
   },
   {
@@ -5098,16 +5076,16 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
   },
   {
     slug: "support-post-livraison",
-    category: "Support post-livraison",
+    category: "Livraison",
     fr: {
-      title: "Quel support après livraison ?",
-      excerpt: "30 jours de maintenance corrective inclus, escalade chaude.",
-      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel ${PRIX_PUBLICS_AFFICHES ? `à ${formatPrice(maintenanceStandard, "fr")}` : "sur devis"} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
+      title: "Y a-t-il un support après livraison ?",
+      excerpt: "Aucun support inclus après la livraison ; maintenance optionnelle sur devis.",
+      body: `Aucun support n'est inclus après la livraison : la mission s'arrête à la mise en production, avec le code et la documentation. Un contrat de maintenance optionnel est disponible ${PRIX_PUBLICS_AFFICHES ? `à ${formatPrice(maintenanceStandard, "fr")}` : "sur devis"} (4 h/mois forfait).`,
     },
     en: {
-      title: "What post-delivery support?",
-      excerpt: "30 days of corrective maintenance included, warm escalation.",
-      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract ${PRIX_PUBLICS_AFFICHES ? `at ${formatPrice(maintenanceStandard, "en")}` : "on request"} (4h/month flat fee). No support is billed during the initial 30 days.`,
+      title: "Is there support after delivery?",
+      excerpt: "No support included after delivery; optional maintenance on quote.",
+      body: `No support is included after delivery: the project ends at go-live, with the code and documentation. An optional maintenance contract is available ${PRIX_PUBLICS_AFFICHES ? `at ${formatPrice(maintenanceStandard, "en")}` : "on request"} (4h/month flat fee).`,
     },
   },
 ];

@@ -53,7 +53,7 @@ export const CESSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cessy et dans le pays de Gex ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Cessy et de tout le pays de Gex (Gex à 5 min, Ferney-Voltaire, Saint-Genis-Pouilly, Divonne). Genève centre est à 15 min.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Cessy et de tout le pays de Gex (Gex, Ferney-Voltaire, Saint-Genis-Pouilly, Divonne). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec l'économie frontalière de Genève ?",
@@ -69,7 +69,7 @@ export const CESSY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cessy ?",
-      a: "Lyon est à 1h30 par l'A40, Genève à 15 min. Nous nous déplaçons sur site à Cessy.",
+      a: "Nous nous déplaçons sur site à Cessy.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

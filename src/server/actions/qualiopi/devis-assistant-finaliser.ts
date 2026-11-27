@@ -35,6 +35,11 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { createDevisAction, sendDevisAction } from "@/server/actions/qualiopi/devis";
 import {
+  erreurObjetEtMessage,
+  messageEntreeSchema,
+  objetEntreeSchema,
+} from "@/server/qualiopi/devis/contenu-email-devis";
+import {
   creerDevisFormulesAction,
   modifierDevisBrouillonAction,
 } from "@/server/actions/qualiopi/devis-formules";
@@ -45,7 +50,10 @@ import {
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { projetOuvrableDuClient } from "@/server/qualiopi/crm/devis-projet";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
-import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import { LOT_DEVIS_ASSISTANT } from "@/server/qualiopi/devis/interrupteur-assistant";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
+import { regimeTvaDepuisConfig, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import { createHash } from "node:crypto";
 import {
   payloadVersCreation,
   type ContexteConversion,
@@ -146,7 +154,9 @@ async function lier(
   devisMajLe: string,
   numerotee: PayloadAssistantV1,
   attendu: number,
+  conditionsSha256: string | null,
 ): Promise<{ revision: number; aRenumeroter: boolean } | null> {
+  const sync = { devisId, devisMajLe, ...(conditionsSha256 ? { conditionsSha256 } : {}) };
   for (let essai = 0; essai < 3; essai++) {
     const cur = await prisma.devisAssistantBrouillon.findFirst({
       where: { id, createdByAdminId: adminId, statut: "numerotation", verrouDepuis: verrou },
@@ -164,7 +174,7 @@ async function lier(
         revision: cur.revision,
       },
       data: {
-        payload: { ...base, sync: { devisId, devisMajLe } } as never,
+        payload: { ...base, sync } as never,
         devisId,
         statut: "lie_au_devis",
         verrouDepuis: null,
@@ -179,7 +189,7 @@ async function lier(
   // réécrit en entier (il écraserait la sauvegarde la plus récente) : seul `sync` est écrit, en
   // UNE instruction atomique (`jsonb_set`), sous la même condition statut + verrou. Sans lui,
   // `sync.devisMajLe` resterait nul et chaque rappel ferait MSG_PERIME (brouillon inutilisable).
-  const syncJson = JSON.stringify({ devisId, devisMajLe });
+  const syncJson = JSON.stringify(sync);
   const count = await prisma.$executeRaw`
     UPDATE "devis_assistant_brouillons"
     SET "payload" = jsonb_set("payload", '{sync}', ${syncJson}::jsonb, true),
@@ -198,6 +208,43 @@ async function lier(
     select: { revision: true },
   });
   return { revision: apres?.revision ?? attendu + 1, aRenumeroter: true };
+}
+
+/** Empreinte du texte des conditions particulières, tel que stocké (bords retirés). */
+function empreinteConditions(texte: string): string {
+  return createHash("sha256").update(texte.trim(), "utf8").digest("hex");
+}
+
+/** Relit le texte écrit en base (normalisé, recalculé) : c'est lui qu'on empreinte. */
+async function empreinteDuDevis(devisId: string): Promise<string | null> {
+  const d = await prisma.devis.findUnique({
+    where: { id: devisId },
+    select: { conditionsParticulieres: true },
+  });
+  const t = d?.conditionsParticulieres?.trim();
+  return t ? empreinteConditions(t) : null;
+}
+
+const MSG_ASSISTANT_ETEINT =
+  "L'assistant de devis est désactivé : aucun devis n'a été créé ni envoyé.";
+const MSG_ASSISTANT_ESSAI =
+  "L'assistant de devis est en essai : il n'agit que sur une fiche d'essai. Aucun devis n'a été créé ni envoyé.";
+
+/**
+ * Garde serveur : relit l'interrupteur à l'appel (jamais l'écran). Éteint → refus ; « essai » →
+ * refus si le client du brouillon n'est pas une fiche d'essai. Aucune écriture avant ce contrôle.
+ */
+async function refusInterrupteur(clientId: string | null): Promise<string | null> {
+  const etat = await lireInterrupteurQualiopi(LOT_DEVIS_ASSISTANT);
+  if (etat === "eteint") return MSG_ASSISTANT_ETEINT;
+  if (etat === "actif") return null;
+  const essai =
+    clientId !== null &&
+    (await prisma.client.findFirst({
+      where: { id: clientId, testInterne: { isNot: null } },
+      select: { id: true },
+    })) !== null;
+  return estActifPour(etat, { estTestInterne: essai }) ? null : MSG_ASSISTANT_ESSAI;
 }
 
 async function numeroter(i: unknown): Promise<Interne> {
@@ -221,6 +268,9 @@ async function numeroter(i: unknown): Promise<Interne> {
   if (!lu.ok) return { error: lu.error };
   const payload = lu.payload;
 
+  const refus = await refusInterrupteur(payload.clientId || null);
+  if (refus !== null) return { error: refus };
+
   // ── Devis déjà lié : il doit être encore un brouillon, du même client et du même type. ──
   let devisLie: {
     id: string;
@@ -229,6 +279,7 @@ async function numeroter(i: unknown): Promise<Interne> {
     clientId: string;
     offreSha256: string | null;
     offre: unknown;
+    conditionsParticulieres: string | null;
     updatedAt: Date;
   } | null = null;
   if (row.devisId) {
@@ -241,6 +292,7 @@ async function numeroter(i: unknown): Promise<Interne> {
         clientId: true,
         offreSha256: true,
         offre: true,
+        conditionsParticulieres: true,
         updatedAt: true,
       },
     });
@@ -273,9 +325,10 @@ async function numeroter(i: unknown): Promise<Interne> {
       ? (devisLie.offre as { automatisations?: unknown }).automatisations
       : undefined;
   const ctx: ContexteConversion = {
-    formulesActives: await formulesActives(),
+    formulesActives: await formulesActives(undefined, { clientId: payload.clientId ?? null }),
     typeClient,
     maintenant: new Date(),
+    regime: regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
     tauxStandard: Number(await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD,
     ...(Array.isArray(heritees) ? { automatisationsHeritees: heritees } : {}),
     clientIdDuProjet:
@@ -302,6 +355,21 @@ async function numeroter(i: unknown): Promise<Interne> {
         .slice(0, 3)
         .map((x) => x.message)
         .join(" "),
+    };
+  }
+
+  // Prix unique : l'assistant n'écrase que SON texte : colonne vide, ou texte dont l'empreinte est
+  // celle qu'il a gardée dans `sync` à sa dernière écriture. Le début « Échéancier de paiement »
+  // ne prouve rien (une clause ajoutée dessous le laisserait en place).
+  const existantes = devisLie?.conditionsParticulieres?.trim() ?? "";
+  if (
+    conv.type === "classique" &&
+    existantes !== "" &&
+    payload.sync.conditionsSha256 !== empreinteConditions(existantes)
+  ) {
+    return {
+      error:
+        "Les conditions particulières ont été modifiées à la main : l'assistant ne les remplace pas. Modifiez-les depuis la fiche du devis.",
     };
   }
 
@@ -402,6 +470,7 @@ async function numeroter(i: unknown): Promise<Interne> {
       majLe ?? payload.sync.devisMajLe ?? new Date().toISOString(),
       payload,
       attendu,
+      payload.sync.conditionsSha256 ?? null,
     );
     return {
       error: lienApresErreur
@@ -415,7 +484,15 @@ async function numeroter(i: unknown): Promise<Interne> {
   }
 
   // ── Lien : posé même si la validité a été refusée (jamais de devis orphelin). ──
-  const lien = await lier(id, adminId, verrou, devisId, majLe, payload, attendu);
+  let sha: string | null = payload.sync.conditionsSha256 ?? null;
+  if (conv.type === "classique") {
+    try {
+      sha = await empreinteDuDevis(devisId);
+    } catch (err) {
+      console.error("[devis-assistant] empreinte des conditions non relue", err);
+    }
+  }
+  const lien = await lier(id, adminId, verrou, devisId, majLe, payload, attendu, sha);
   if (!lien) {
     return {
       error: `Le devis ${numero} a été créé mais son lien avec le brouillon n'a pas pu être posé. Ne recommencez pas : ouvrez la liste des devis.`,
@@ -478,10 +555,30 @@ export async function numeroterDevisAssistantAction(i: {
 export async function envoyerDepuisAssistantAction(i: {
   brouillonId: string;
   attenduRevision: number;
+  /** Objet choisi par le fondateur ; absent = l'objet du gabarit. */
+  sujet?: string | undefined;
+  /** Message personnel ; absent = aucun. */
+  messagePersonnalise?: string | undefined;
 }): Promise<
-  ActionResult<{ devisId: string; emailEnvoye: boolean; signatureCreee: boolean; note?: string }>
+  ActionResult<{
+    devisId: string;
+    emailEnvoye: boolean;
+    signatureCreee: boolean;
+    /** `true` : l'e-mail attend dans Emails → À valider ; le devis reste en brouillon. */
+    garePourValidation: boolean;
+    note?: string;
+  }>
 > {
-  const n = await numeroter(i);
+  // Objet et message : mêmes limites que `sendDevisAction`, refusés AVANT toute écriture.
+  const choix = z
+    .object({ sujet: objetEntreeSchema, messagePersonnalise: messageEntreeSchema })
+    .safeParse({ sujet: i.sujet, messagePersonnalise: i.messagePersonnalise });
+  if (!choix.success) return { error: choix.error.issues[0]?.message ?? "Demande invalide." };
+  const { sujet, messagePersonnalise } = choix.data;
+  // Mots interdits et caractères invisibles : refusés AVANT `numeroter`, qui écrit.
+  const refus = erreurObjetEtMessage(sujet, messagePersonnalise);
+  if (refus !== null) return { error: refus };
+  const n = await numeroter({ brouillonId: i.brouillonId, attenduRevision: i.attenduRevision });
   if (!("data" in n)) return { error: n.error };
   if (n.rejoue) {
     // Doublon d'un appel déjà traité : jamais un second envoi (lien de signature, e-mail).
@@ -493,13 +590,22 @@ export async function envoyerDepuisAssistantAction(i: {
         "La saisie a été modifiée pendant la numérotation : le devis porte la version précédente. Relancez l'envoi.",
     };
   }
-  const r = await sendDevisAction(n.data.devisId);
+  // Sans objet ni message : appel strictement identique à l'ancien (devisId seul).
+  const opts = {
+    ...(sujet !== undefined ? { sujet } : {}),
+    ...(messagePersonnalise !== undefined ? { messagePersonnalise } : {}),
+  };
+  const r =
+    Object.keys(opts).length === 0
+      ? await sendDevisAction(n.data.devisId)
+      : await sendDevisAction(n.data.devisId, opts);
   if ("error" in r) return { error: r.error };
   return {
     data: {
       devisId: n.data.devisId,
       emailEnvoye: r.data.emailEnvoye,
       signatureCreee: r.data.signatureCreee,
+      garePourValidation: r.data.garePourValidation === true,
       ...(r.data.note !== undefined ? { note: r.data.note } : {}),
     },
   };

@@ -20,25 +20,31 @@ describe("lot 3 — une seule source de données", () => {
   it("l'aperçu et l'envoi construisent le PDF par donneesPdfDevis + lireContextePdfDevis", () => {
     for (const src of [route, envoi]) {
       expect(src).toContain("donneesPdfDevis(");
-      expect(src).toContain("lireContextePdfDevis()");
+      expect(src).toContain("lireContextePdfDevis(");
     }
     // ni l'un ni l'autre ne fabrique un DevisData à la main
     expect(route).not.toMatch(/regimeTva\s*:/);
   });
 
   it("l'envoi et le renvoi construisent l'e-mail par payloadDevisEnvoi (même contenu)", () => {
-    expect(envoi).toContain("payloadDevisEnvoi(");
+    // L'envoi passe par `contenuEmailDevis`, qui appelle `payloadDevisEnvoi` (une seule source).
+    expect(envoi).toContain("contenuEmailDevis(");
+    expect(
+      readFileSync(join(process.cwd(), "src/server/qualiopi/devis/contenu-email-devis.ts"), "utf8"),
+    ).toContain("payloadDevisEnvoi(");
     expect(renvoi).toContain("payloadDevisEnvoi(");
   });
 
   it("aucun point d'envoi nouveau : un seul enqueueEmail devis-envoi par action", () => {
-    expect(envoi.match(/"devis-envoi"/g)?.length).toBe(1);
+    // Le nom du gabarit vit dans `email-devis-en-attente.ts` (B2, PR 3) : un seul appel, nommé.
+    expect(envoi.match(/enqueueEmail\(\s*GABARIT_DEVIS_ENVOI/g)?.length).toBe(1);
+    expect(envoi.match(/enqueueEmail\(/g)?.length).toBe(1);
     expect(renvoi.match(/"devis-envoi"/g)?.length).toBe(1);
   });
 
   it("l'interrupteur est lu par le contexte du PDF (inerte s'il est éteint)", () => {
     const ctx = lire("src/server/qualiopi/documents/donnees-pdf-devis.ts");
-    expect(ctx).toContain("formulesActives: await formulesActives()");
+    expect(ctx).toContain("await formulesActives(undefined, formules)");
   });
 });
 

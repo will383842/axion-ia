@@ -6,6 +6,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { InterventionDetailPage } from "@/components/sections/InterventionDetailPage";
 import { INTERVENTION_DETAIL_CONFIGS } from "@/content/intervention-detail-configs";
 import { buildProductMetadata } from "@/lib/seo";
+import { metadataCanoniqueVersCoaching } from "@/lib/seo/coaching-canonical";
 
 // Sprint 14.10.7 (Will 2026-05-12) — wrapper page détail Vision IA stratégique.
 
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const c = INTERVENTION_DETAIL_CONFIGS[SLUG];
   const isFr = locale === "fr";
-  return buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: isFr
       ? "/interventions/dirigeant-vision-strategique"
@@ -34,6 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       en: "/interventions/executive-strategic-vision",
     },
   });
+  // V2-08 : le coaching dirigeant se lit sur la page de référence `/un-a-un`.
+  return metadataCanoniqueVersCoaching(meta, locale);
 }
 
 export default async function DirigeantVisionStrategiquePage({ params }: Props) {

@@ -30,8 +30,10 @@ export interface SectorPainContext {
   beforeScenario: string; // Vie d'avant (1-2 phrases concrètes)
   afterScenario: string; // Vie d'après (1-2 phrases concrètes)
   sectorLexicon: string[]; // Mots du MÉTIER, pas de la tech
-  objection: string; // "Oui mais..."
-  objectionReply: string; // La réponse courte et cash
+  // Paire facultative : une entrée dont la réponse n'est pas publiable n'en porte pas
+  // (les pages n'affichent alors ni bloc objection ni entrée FAQ). Les deux vont ensemble.
+  objection?: string; // "Oui mais..."
+  objectionReply?: string; // La réponse courte et cash
   kpiLabel: string; // Le KPI qui parle à CE secteur
   typicalBudgetSignal: string; // Signal budget pour calibrer le ROI
 }
@@ -114,9 +116,6 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
       "validation",
       "conformité",
     ],
-    objection: "Une journée de formation, ça ne suffit pas pour changer les habitudes.",
-    objectionReply:
-      "La formation est suivie de 30 jours d'accompagnement à distance — on ne vous lâche pas après le présentiel.",
     kpiLabel: "tâches IA maîtrisées par collaborateur",
     typicalBudgetSignal: "Une seule erreur de saisie évitée par mois rentabilise la journée",
   },
@@ -1136,8 +1135,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection:
       "Une journée de formation, ça ne suffit pas pour que mes opérateurs changent leurs habitudes en atelier.",
-    objectionReply:
-      "La journée est suivie de 30 jours d'accompagnement à distance et travaille sur vos vrais OF, pas sur des exemples génériques. On ne vous lâche pas après le présentiel.",
+    objectionReply: "La journée travaille sur vos vrais OF, pas sur des exemples génériques.",
     kpiLabel: "usages IA maîtrisés par rôle (ordonnancement, prépa, atelier)",
     typicalBudgetSignal: "Moins qu'une heure de ligne arrêtée, pour toute l'équipe formée",
   },
@@ -1248,7 +1246,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Une heure, c'est trop court pour que ça change quoi que ce soit à mon entreprise.",
     objectionReply:
-      "Une heure suffit pour repérer le gros gisement de temps perdu et le premier outil à mettre en place. Vous testez derrière, et on ajuste si besoin — pas de blabla, du concret.",
+      "Une heure suffit pour repérer le gros gisement de temps perdu et le premier outil à mettre en place. Pas de blabla, du concret.",
     kpiLabel: "heures/semaine récupérées sur l'administratif",
     typicalBudgetSignal: "Moins qu'une demi-journée de votre temps facturé client",
   },
@@ -1450,6 +1448,18 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
 ];
 
 /**
+ * Entrée FAQ « objection / réponse » d'une entrée de la matrice, ou `null` si la paire
+ * manque (ou est incomplète) : les pages ne rendent alors ni bloc ni JSON-LD FAQ.
+ */
+export function getObjectionFaq(
+  pain: Pick<SectorPainContext, "objection" | "objectionReply">,
+): { question: string; answer: string } | null {
+  const question = pain.objection?.trim();
+  const answer = pain.objectionReply?.trim();
+  return question && answer ? { question, answer } : null;
+}
+
+/**
  * Récupère le contexte douleur pour une combinaison secteur × verticale
  */
 export function getSectorPainContext(
@@ -1466,6 +1476,17 @@ export function getSectorPainContext(
  * Appelé dans chaque générateur AVANT la construction du prompt
  */
 export function serializePainContextForPrompt(ctx: SectorPainContext): string {
+  // Sans paire objection/réponse, ni le bloc ni la consigne qui s'y rapporte ne sont émis
+  // (sinon le prompt recevrait « undefined »). Avec la paire, la sortie est inchangée.
+  const faq = getObjectionFaq(ctx);
+  const regles = [
+    "Chaque paragraphe doit utiliser au moins 1 mot du vocabulaire métier ci-dessus",
+    "Mentionner le bénéfice chiffré dans les 150 premiers mots",
+    "Inclure le scénario avant/après sous forme narrative (pas de liste)",
+    ...(faq ? ["Traiter l'objection principale dans le corps du texte"] : []),
+    'JAMAIS : "innovant", "révolutionnaire", "puissant", "solution IA", "intelligence artificielle de pointe"',
+    "TOUJOURS : nommer la tâche concrète, puis le gain, puis la preuve ou le chiffre",
+  ];
   return `
 === CONTEXTE MÉTIER OBLIGATOIRE — À UTILISER, PAS À PARAPHRASER ===
 
@@ -1487,18 +1508,9 @@ SCÉNARIO APRÈS (vie d'après — à rendre concret dans le contenu) :
 VOCABULAIRE MÉTIER À UTILISER (jamais le jargon tech) :
 ${ctx.sectorLexicon.join(", ")}
 
-OBJECTION PRINCIPALE ET RÉPONSE :
-Objection : "${ctx.objection}"
-Réponse : "${ctx.objectionReply}"
-
-KPI QUI PARLE À CE CLIENT : ${ctx.kpiLabel}
+${faq ? `OBJECTION PRINCIPALE ET RÉPONSE :\nObjection : "${faq.question}"\nRéponse : "${faq.answer}"\n\n` : ""}KPI QUI PARLE À CE CLIENT : ${ctx.kpiLabel}
 
 === RÈGLES RÉDACTIONNELLES ABSOLUES ===
-1. Chaque paragraphe doit utiliser au moins 1 mot du vocabulaire métier ci-dessus
-2. Mentionner le bénéfice chiffré dans les 150 premiers mots
-3. Inclure le scénario avant/après sous forme narrative (pas de liste)
-4. Traiter l'objection principale dans le corps du texte
-5. JAMAIS : "innovant", "révolutionnaire", "puissant", "solution IA", "intelligence artificielle de pointe"
-6. TOUJOURS : nommer la tâche concrète, puis le gain, puis la preuve ou le chiffre
+${regles.map((r, i) => `${i + 1}. ${r}`).join("\n")}
 `.trim();
 }

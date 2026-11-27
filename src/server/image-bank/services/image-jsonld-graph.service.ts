@@ -18,7 +18,8 @@
 import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/generated/client";
 import { buildImageObjectJsonLd } from "./image-seo.service";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { BRAND, CONTACT_PUBLIC } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { ORGANIZATION_SAME_AS } from "@/lib/seo";
 import { DESCRIPTION_ENTITE_EN, DESCRIPTION_ENTITE_FR } from "@/content/journee-ia-commun";
 
 const SITE_NAME = "Axion-IA";
@@ -57,14 +58,9 @@ export type GalleryHubGraphArgs = {
 // ──────────────────────────────────────────────────────────
 
 function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): SchemaOrgNode {
-  // LinkedIn vanity URL utilise le slug officiel `axion-ia` (avec tiret).
-  // X/Twitter ne supportant pas les tirets dans les handles, on conserve
-  // la graphie camelCase `AxionIA` — exception documentée vs doctrine
-  // brand "Axion-IA" (cf. mémoire axionia_naming_brand_vs_project 2026-05-08).
-  // STOP & ASK : si le handle X officiel devient `@axionia` ou `@axion_ia`,
-  // mettre à jour ici + dans image-seo-enrichment.service.ts User-Agent.
-  const sameAs: string[] = [CONTACT_PUBLIC.linkedinEntreprise, "https://x.com/AxionIA"];
-  if (args.wikidataQid) sameAs.push(`https://www.wikidata.org/wiki/${args.wikidataQid}`);
+  // V1-11 : liste `sameAs` unique (`ORGANIZATION_SAME_AS`, seo.ts), identique sur tout le site.
+  const sameAs: string[] = [...ORGANIZATION_SAME_AS];
+  if (args.wikidataQid) sameAs.unshift(`https://www.wikidata.org/wiki/${args.wikidataQid}`);
 
   return {
     "@type": "Organization",

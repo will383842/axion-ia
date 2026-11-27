@@ -56,7 +56,7 @@ vi.mock("@/lib/prisma", () => {
   const tx = {
     $executeRaw: vi.fn(async () => 1),
     $queryRaw: vi.fn(async (q: { sql: string }) =>
-      q.sql.includes("SELECT 1 FROM content_gen_jobs")
+      q.sql.includes("FROM content_gen_jobs WHERE id")
         ? [{ "?column?": 1 }]
         : [{ total: reg.totaux.shift() ?? 0 }],
     ),
@@ -148,6 +148,17 @@ function configOk(extra: Record<string, unknown> = {}): Record<string, unknown> 
       ...extra,
     },
   };
+}
+
+/** Erreur Anthropic finale « plus aucune clé utilisable » (drapeau posé par le fournisseur). */
+function toutesEpuisees(
+  code: "quota_exhausted" | "auth_failed",
+  extra: Record<string, unknown> = {},
+): ProviderError {
+  return Object.assign(new ProviderError("fin", code, "anthropic", false), {
+    toutesEpuisees: true,
+    ...extra,
+  });
 }
 
 const REPONSE = {
@@ -274,6 +285,20 @@ describe("plafonds invalides = refus avant tout appel", () => {
     await expect(assertPlafondsClaude(REQ, "ecriture")).rejects.toMatchObject({ code: "eteint" });
     expect(reg.lignes).toHaveLength(0);
   });
+  it("assertPlafondsClaude : les frais fixes (recherches web) s'ajoutent au coût RÉSERVÉ", async () => {
+    await assertPlafondsClaude(REQ, "court", new Date(), 0);
+    await assertPlafondsClaude(REQ, "court", new Date(), 0.5);
+    expect(reg.lignes).toHaveLength(2);
+    expect(reg.lignes[1]!.costUsd - reg.lignes[0]!.costUsd).toBeGreaterThanOrEqual(0.49);
+  });
+  it("assertPlafondsClaude : frais fixes négatifs ou non finis = refus avant écriture", async () => {
+    for (const f of [-1, Number.NaN, Number.POSITIVE_INFINITY]) {
+      await expect(assertPlafondsClaude(REQ, "court", new Date(), f)).rejects.toMatchObject({
+        code: "config_invalide",
+      });
+    }
+    expect(reg.lignes).toHaveLength(0);
+  });
   it("alerte non envoyée : la clé Redis est libérée pour un nouvel essai", async () => {
     notifyMock.mockResolvedValue({ ok: false });
     const { alerterBlogClaude } = await import("../anthropic-credit-alert");
@@ -298,8 +323,12 @@ describe("plafonds invalides = refus avant tout appel", () => {
 });
 
 describe("modèles exacts, jamais de temperature", () => {
-  it("écriture = sonnet 5.5, relecture = opus 5.5", () => {
-    expect(MODELES).toEqual({ ecriture: "claude-sonnet-5-5", relecture: "claude-opus-5-5" });
+  it("écriture et court = sonnet 5.5, relecture = opus 5.5", () => {
+    expect(MODELES).toEqual({
+      ecriture: "claude-sonnet-5-5",
+      relecture: "claude-opus-5-5",
+      court: "claude-sonnet-5-5",
+    });
   });
   it("transmet le modèle du rôle, sans temperature ni preferredProvider, avec réservation", async () => {
     sdk.mockResolvedValue(REPONSE);
@@ -332,12 +361,31 @@ describe("réservation et flux coupé", () => {
     expect(reg.compteur).toBeGreaterThan(1);
   });
   it("quota_exhausted : refus non relançable après comptage du refus de crédit", async () => {
-    sdk.mockRejectedValue(new ProviderError("crédit", "quota_exhausted", "anthropic", false));
+    sdk.mockRejectedValue(toutesEpuisees("quota_exhausted"));
     const err = await genererTexteBlogClaude(REQ, "ecriture").catch((e: unknown) => e);
     expect(err).toBeInstanceOf(BlogClaudeRefusError);
     expect((err as BlogClaudeRefusError).code).toBe("credit_refuse");
     expect(err).toBeInstanceOf(UnrecoverableError);
     expect(reg.redis.get("blog-claude:refus-credit")).toBe(1);
+  });
+  it("quota_exhausted d'UNE clé sur plusieurs (sans drapeau) : refus, mais ni comptage ni alerte", async () => {
+    sdk.mockRejectedValue(new ProviderError("une clé", "quota_exhausted", "anthropic", false));
+    for (let i = 0; i < 5; i++) {
+      const err = await genererTexteBlogClaude(REQ, "ecriture").catch((e: unknown) => e);
+      expect((err as BlogClaudeRefusError).code).toBe("credit_refuse");
+    }
+    expect(reg.redis.get("blog-claude:refus-credit")).toBeUndefined();
+    expect(reg.upserts).toHaveLength(0);
+  });
+  it("401 de toutes les clés : compté (compteur d'authentification) ; une seule clé refusée : non", async () => {
+    sdk.mockRejectedValue(toutesEpuisees("auth_failed", { status: 401 }));
+    await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
+    expect(reg.redis.get("blog-claude:refus-auth")).toBe(1);
+    sdk.mockRejectedValue(
+      Object.assign(new ProviderError("une", "auth_failed", "anthropic", false), { status: 403 }),
+    );
+    await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
+    expect(reg.redis.get("blog-claude:refus-auth")).toBe(1);
   });
   it("la porte ne solde PAS elle-même : c'est le fournisseur qui solde (la ligne reste au maximum ici)", async () => {
     // Le fournisseur est simulé : il ne solde rien. Un second solde dans la porte
@@ -425,7 +473,7 @@ describe("suspension et limite de relectures", () => {
     await expect(genererTexteBlogClaude(REQ, "ecriture")).resolves.toBeDefined();
   });
   it("3 refus de crédit : alerte puis drapeau de suspension posé", async () => {
-    sdk.mockRejectedValue(new ProviderError("crédit", "quota_exhausted", "anthropic", false));
+    sdk.mockRejectedValue(toutesEpuisees("quota_exhausted"));
     for (let i = 0; i < 3; i++) {
       await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
     }

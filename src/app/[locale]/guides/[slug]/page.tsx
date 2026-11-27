@@ -43,12 +43,15 @@ import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { unSeulBlocSources } from "@/server/content-gen/shared/sources-et-chapo";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
 import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { TermesGlossaireLies } from "@/components/marketing/TermesGlossaireLies";
+import { termesPourTexte } from "@/content/maillage-glossaire";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
 // pour rétablir le cache ISR (audit Web Vitals 2026-05-15).
@@ -157,7 +160,11 @@ export default async function GuidePiliersPage({ params }: Props) {
     /<(?:p|h[1-6]|ul|ol|li|a|strong|em|blockquote|table|thead|tbody|tr|td|th|div|br|img|figure|figcaption|pre|code|hr)\b/i.test(
       guide.body,
     )
-      ? sanitizeContentGenHtml(guide.body)
+      ? // Audit B (2026-11-26) — un seul bloc « Sources » (cf. blog/[slug]).
+        unSeulBlocSources(
+          sanitizeContentGenHtml(guide.body),
+          aDesSourcesAffichables(guide.citations),
+        )
       : null;
 
   // Lot 9 audit blog 2026-10-24 : les liens internes des corps persistés sont
@@ -353,6 +360,12 @@ export default async function GuidePiliersPage({ params }: Props) {
 
       {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
       <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />
+
+      {/* V2-12 : les guides renvoient vers le glossaire (termes lus dans le texte du guide). */}
+      <TermesGlossaireLies
+        locale={locale}
+        termes={termesPourTexte(`${guide.title}\n${guide.body}`)}
+      />
 
       {/* V-14 sprint UX 2026-05-22 — section Articles connexes (auparavant absente sur /guides/[slug] → dead-end + bounce maximal). */}
       <SuggestedContent

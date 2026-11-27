@@ -65,7 +65,7 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Rambert-d'Albon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Rambert-d'Albon, comme partout en France, ou à distance.",
     },
   ],
 };

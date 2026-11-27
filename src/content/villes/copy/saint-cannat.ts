@@ -49,7 +49,7 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Cannat et dans la plaine d'Aix ?",
-      a: "Oui, Axion-IA intervient à Saint-Cannat et dans toute la plaine d'Aix (Éguilles, Lambesc, Rognes, Venelles, Le Puy-Sainte-Réparade). Proximité immédiate gare TGV Aix et technopôle Arbois.",
+      a: "Oui, Axion-IA intervient à Saint-Cannat et dans toute la plaine d'Aix (Éguilles, Lambesc, Rognes, Venelles, Le Puy-Sainte-Réparade). Nous intervenons aussi auprès des entreprises du technopôle d'Arbois.",
     },
     {
       q: "Tarifs audit IA à Saint-Cannat  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Saint-Cannat) ou en visio. Format flexible adapté aux cadres et professions libérales.",
     },
     {
-      q: "Comment se déplace Axion-IA à Saint-Cannat ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Saint-Cannat est à 15 min d'Aix et 20 min de Salon via D7n/A7. Coûts de déplacement à part, tarification transparente.",
+      q: "Comment se déroule une mission à Saint-Cannat ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Cannat, comme partout en France, ou à distance.",
     },
   ],
 };

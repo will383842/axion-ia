@@ -49,7 +49,7 @@ export const BUXEROLLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Buxerolles et Grand Poitiers ?",
-      a: "Oui, Axion-IA intervient à Buxerolles et toute l'agglomération Grand Poitiers (Poitiers centre à 10 min, Saint-Benoît, Migné-Auxances, Vouneuil-sous-Biard, Chasseneuil-du-Poitou). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Buxerolles et dans toute l'agglomération Grand Poitiers (Poitiers centre, Saint-Benoît, Migné-Auxances, Vouneuil-sous-Biard, Chasseneuil-du-Poitou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Buxerolles ?",
@@ -65,7 +65,7 @@ export const BUXEROLLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Buxerolles ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement Poitiers centre.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Buxerolles, comme partout en France, ou à distance.",
     },
   ],
 };

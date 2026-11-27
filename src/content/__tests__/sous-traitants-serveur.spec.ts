@@ -197,6 +197,10 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
     exempt:
       "Clé interne du jeton de désinscription opaque (op2, AES-GCM). Aucun tiers ne la reçoit.",
   },
+  METHODE_STUDIO_SECRET: {
+    exempt:
+      "Secret de la porte interne Studio de la couche Méthode, comparé à l'en-tête x-methode-secret par POST /api/internal/methode/studio. Aucun tiers ne le reçoit.",
+  },
   SENTRY_DSN: { tiers: "Sentry" },
   SENTRY_AUTH_TOKEN: { tiers: "Sentry" },
   OPENAI_API_KEY: { tiers: "OpenAI," },

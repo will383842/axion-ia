@@ -132,7 +132,7 @@ export const CLAMART_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps avant de recevoir un devis et de démarrer ?",
-            a: "Le devis est transmis à partir de 24 à 48 h selon la complexité du projet. Le kick-off a ensuite lieu sur site à Clamart — bureaux du parc Noveos, cabinet médical proche d'Antoine-Béclère ou commerce du centre — la ville étant desservie par le tramway T6 et bientôt par la gare Grand Paris Express Ligne 15 à Fort d'Issy-Vanves-Clamart.",
+            a: "Le devis est transmis à partir de 24 à 48 h selon la complexité du projet. Le démarrage a ensuite lieu sur site à Clamart : bureaux du parc Noveos, cabinet médical proche d'Antoine-Béclère ou commerce du centre.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const CLAMART_COPY: VilleCopy = {
           },
           {
             q: "How soon will I get a quote and start?",
-            a: "The quote is sent from 24 to 48 hours depending on project complexity. Kick-off then takes place on site in Clamart — Noveos park offices, a practice near Antoine-Béclère or a town-centre shop — the town being served by the T6 tram and soon by the Grand Paris Express Line 15 station at Fort d'Issy-Vanves-Clamart.",
+            a: "The quote is sent from 24 to 48 hours depending on project complexity. Kick-off then takes place on site in Clamart — Noveos park offices, a practice near Antoine-Béclère or a town-centre shop.",
           },
         ],
         guarantees:
@@ -246,7 +246,7 @@ export const CLAMART_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Clamart ?",
-      a: "Clamart est à environ 15 min de Paris-Montparnasse par le Transilien. Nous nous déplaçons sur site.",
+      a: "Axion IA intervient sur site à Clamart, après un échange de cadrage.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

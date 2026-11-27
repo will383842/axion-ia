@@ -49,7 +49,7 @@ export const PONT_SAINTE_MARIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-Sainte-Marie et dans l'agglo de Troyes ?",
-      a: "Oui, Axion-IA intervient à Pont-Sainte-Marie et dans toute l'agglomération troyenne (Troyes, Saint-André-les-Vergers, La Chapelle-Saint-Luc, Sainte-Savine). Gare de Troyes à 10 min.",
+      a: "Oui, Axion-IA intervient à Pont-Sainte-Marie et dans toute l'agglomération troyenne (Troyes, Saint-André-les-Vergers, La Chapelle-Saint-Luc, Sainte-Savine).",
     },
     {
       q: "Combien coûte un audit IA à Pont-Sainte-Marie  ?",

@@ -1,9 +1,9 @@
 "use server";
 
 // Observatoire IA 2026 — Server Action PUBLIQUE (sans requireAdmin).
-// Persiste une réponse anonyme au questionnaire. Anti-spam : honeypot +
-// horodatage + rate-limit IP. Aucune PII collectée (enquête anonyme) ;
-// `visitorId` = IP hashée SHA-256 (RGPD). Pas de recalcul snapshot synchrone
+// Persiste une réponse au questionnaire, sans nom ni e-mail. Anti-spam : honeypot +
+// horodatage + rate-limit IP. `visitorId` = IP hashée SHA-256 : une donnée
+// PSEUDONYMISÉE, donc personnelle (V2-10 : canal historique, fermé par PR-4 au profit du Score). Pas de recalcul snapshot synchrone
 // (le snapshot est recalculé via l'action admin / le worker).
 
 import * as Sentry from "@sentry/nextjs";

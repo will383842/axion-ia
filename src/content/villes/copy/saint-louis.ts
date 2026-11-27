@@ -10,9 +10,9 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Saint-Louis (Haut-Rhin), commune frontalière de 22 805 habitants située à 3,5 km du centre de Bâle et 4 km de Weil am Rhein. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces transfrontaliers, transporteurs et logisticiens, artisans du BTP et professionnels de santé libéraux du Pays de Saint-Louis. Notre approche développe du code custom — pas de no-code générique — adapté aux spécificités d'une agglomération trinationale France-Suisse-Allemagne.",
   directAnswerFr:
-    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût géographique.",
+    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables.",
   directAnswerEn:
-    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût géographique.",
+    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables.",
   seoHook: "TPE PME frontalières Bâle : commerce, logistique, BTP",
   ecosystemFr:
     "Saint-Louis, troisième commune la plus peuplée du Haut-Rhin (22 805 habitants en 2023), forme avec Bâle et Weil am Rhein une agglomération trinationale active. Le tissu économique local repose sur le commerce transfrontalier, la logistique liée à l'EuroAirport Bâle-Mulhouse-Fribourg (7e aéroport français), les services à la frontière, le BTP et la santé libérale. L'héritage industriel historique (rubans, soie, chimie, distillerie Fernet Branca devenue musée) a laissé place à une économie tertiaire et transfrontalière. Les TPE et PME y composent l'essentiel du tissu.",
@@ -117,11 +117,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous un site bilingue pour une clientèle suisse et allemande ?",
-            a: "Oui. À Saint-Louis, beaucoup de clients viennent de Bâle (3,5 km) ou de Weil am Rhein (4 km). On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
+            a: "Oui. À Saint-Louis, beaucoup de clients viennent de Bâle ou de Weil am Rhein. On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
           },
           {
             q: "Pouvez-vous équiper un transporteur ou logisticien de la zone EuroAirport ?",
-            a: "Oui. Pour les transporteurs et prestataires adossés à l'EuroAirport (2 km) et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
+            a: "Oui. Pour les transporteurs et prestataires adossés à l'EuroAirport et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
           },
           {
             q: "Mes données restent-elles en Europe en zone frontalière ?",
@@ -129,11 +129,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique pour la zone frontalière ni pour les communes du Pays de Saint-Louis.",
+            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
       },
       en: {
         hero: "Axion-IA conçoit et augmente à Saint-Louis (Haut-Rhin) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune frontalière de 22 805 habitants soudée à Bâle (3,5 km) et Weil am Rhein (4 km), où le tissu vit du commerce transfrontalier, de la logistique liée à l'EuroAirport, du BTP et de la santé libérale. Du commerce du centre-ville aux acteurs du futur quartier d'affaires Euro3Lys et de la ZAC du Technoport, nous concevons des expériences bilingues FR/DE et des plateformes métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Louis, itérations à distance.",
@@ -203,11 +203,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous un site bilingue pour une clientèle suisse et allemande ?",
-            a: "Oui. À Saint-Louis, beaucoup de clients viennent de Bâle (3,5 km) ou de Weil am Rhein (4 km). On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
+            a: "Oui. À Saint-Louis, beaucoup de clients viennent de Bâle ou de Weil am Rhein. On construit des sites et boutiques bilingues FR/DE, avec parcours d'achat, paiement multi-devises et chatbot multilingue adaptés à chaque rive de la frontière, pour capter aussi bien le chaland français que la clientèle germanophone.",
           },
           {
             q: "Pouvez-vous équiper un transporteur ou logisticien de la zone EuroAirport ?",
-            a: "Oui. Pour les transporteurs et prestataires adossés à l'EuroAirport (2 km) et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
+            a: "Oui. Pour les transporteurs et prestataires adossés à l'EuroAirport et à l'A35, nous développons des portails de suivi, des espaces clients et des agents d'automatisation branchés sur vos TMS et outils existants. Ces plateformes sont pensées pour monter en charge avec le futur quartier d'affaires Euro3Lys et son pôle logistique transfrontalier.",
           },
           {
             q: "Mes données restent-elles en Europe en zone frontalière ?",
@@ -215,11 +215,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique pour la zone frontalière ni pour les communes du Pays de Saint-Louis.",
+            a: "Oui. Après le cadrage à Saint-Louis, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale transfrontalière. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, transferts hors UE documentés : propriété totale, aucun abonnement imposé, aucun lock-in. Solution transférable à tout prestataire local du Pays de Saint-Louis ou du Haut-Rhin, ou reprise en interne par vos équipes.",
       },
     },
   },
@@ -227,11 +227,11 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Saint-Louis (Haut-Rhin) ?",
-      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour la zone frontalière.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Saint-Louis ?",
-      a: "Nous nous engageons à intervenir sur site à Saint-Louis dans un délai de 5 jours ouvrés après validation. Accès via EuroAirport Bâle-Mulhouse (2 km), gare TER Saint-Louis ou A35.",
+      a: "Nous nous engageons à intervenir sur site à Saint-Louis dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Quelles communes proches de Saint-Louis couvrez-vous ?",

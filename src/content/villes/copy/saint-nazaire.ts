@@ -233,8 +233,8 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
       a: "Oui. Les sous-traitants et PME de la filière naval-aéronautique de Saint-Nazaire figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et reporting qualité, sans intervenir sur leurs procédés industriels ni leurs systèmes critiques.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Nazaire ?",
-      a: "Oui, nos experts IA viennent dans vos locaux, des zones d'activités proches des Chantiers de l'Atlantique et d'Airbus aux PME de la presqu'île. L'observation terrain est le meilleur point de départ pour cibler des automatisations vraiment utiles.",
+      q: "Intervenez-vous sur site à Saint-Nazaire ?",
+      a: "Oui. Nous intervenons dans vos locaux, des zones d'activités proches des Chantiers de l'Atlantique et d'Airbus aux PME de la presqu'île. L'observation terrain est le meilleur point de départ pour cibler des automatisations vraiment utiles.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",
@@ -242,7 +242,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Nazaire ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte TGV et l'axe Nantes nous permettent d'intervenir rapidement sur toute la presqu'île et l'agglomération.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Saint-Nazaire ?",

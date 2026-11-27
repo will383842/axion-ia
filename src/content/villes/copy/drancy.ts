@@ -233,7 +233,7 @@ export const DRANCY_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Drancy ?",
-      a: "Notre équipe se déplace sur site à Drancy sous 5 jours ouvrés en moyenne. L'accès depuis Paris se fait en 15 minutes via la gare RER B Drancy.",
+      a: "Notre équipe se déplace sur site à Drancy sous 5 jours ouvrés en moyenne.",
     },
     {
       q: "Couvrez-vous les communes limitrophes de Drancy ?",

@@ -49,6 +49,9 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   revoquerTokensDocument: vi.fn(),
   TokenDocumentError: class extends Error {},
 }));
+// Ce fichier éprouve le chemin « auto » ; le mode « validation » est dans
+// `__tests__/devis-premier-envoi-a-l-approbation.spec.ts`.
+vi.mock("@/server/email/outbox-service", () => ({ resoudreMode: async () => "auto" }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: vi.fn(async () => ({ enqueued: true })),
 }));

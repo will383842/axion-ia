@@ -268,3 +268,36 @@ describe("lireDevisASigner — la page affiche la PHOTO de la pièce signée", (
     });
   });
 });
+
+describe("lireDevisASigner — date de validité imprimée sur le PDF (lot E2)", () => {
+  beforeEach(() => {
+    findFirst.mockReset();
+  });
+
+  it("date_imprimee_lue_dans_renderData", async () => {
+    findFirst.mockResolvedValue(
+      devisAvec(
+        photo({
+          lignes: [LIGNE],
+          regimeTva: "assujetti",
+          client: { raisonSociale: "C" },
+          dateValidite: "15/07/2026",
+        }),
+      ),
+    );
+    const r = await lireDevisASigner("doc1");
+    expect(r?.dateValiditeImprimee).toBe("15/07/2026");
+    // La date en cours reste celle de la colonne.
+    expect(r?.dateValiditeLisible).toBe(
+      new Date("2026-12-31T00:00:00Z").toLocaleDateString("fr-FR"),
+    );
+  });
+
+  it("absente_si_photo_ancienne", async () => {
+    findFirst.mockResolvedValue(devisAvec());
+    const r = await lireDevisASigner("doc1");
+    expect(r?.dateValiditeImprimee).toBeNull();
+    findFirst.mockResolvedValue(devisAvec({ documentGenere: { metadata: null } }));
+    expect((await lireDevisASigner("doc1"))?.dateValiditeImprimee).toBeNull();
+  });
+});

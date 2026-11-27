@@ -229,8 +229,8 @@ export const FREJUS_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Fréjus ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Fréjus, Saint-Raphaël et sur le littoral varois. La première rencontre se fait sur site, afin de bien comprendre votre activité et sa saisonnalité avant toute recommandation.",
+      q: "Intervenez-vous à Fréjus ?",
+      a: "Oui. Nous intervenons directement dans vos locaux à Fréjus, Saint-Raphaël et sur le littoral varois. La première rencontre se fait sur site, afin de bien comprendre votre activité et sa saisonnalité avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Fréjus ?",

@@ -49,11 +49,11 @@ export const LORGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lorgues et dans le centre-Var ?",
-      a: "Oui, Axion-IA intervient à Lorgues et dans tout le centre-Var (Draguignan, Les Arcs, Vidauban, Trans-en-Provence, Le Luc). Déplacements rapides via A8 et gare TGV des Arcs.",
+      a: "Oui, Axion-IA intervient à Lorgues et dans tout le centre-Var (Draguignan, Les Arcs, Vidauban, Trans-en-Provence, Le Luc).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole Côtes de Provence ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, restaurateurs et artisans lorguais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place, d'une durée de 4 heures avec diagnostic et ROI chiffré, est proposé dès {{price:audit-flash|flat}}. Adapté aux domaines viticoles, restaurateurs et artisans lorguais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Côtes de Provence ?",

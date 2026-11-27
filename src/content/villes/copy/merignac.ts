@@ -82,9 +82,9 @@ export const MERIGNAC_COPY: VilleCopy = {
               "Tests d'acceptation sur site à Mérignac, recette de performance (Web Vitals, mobile), contrôle d'accessibilité et de sécurité, déploiement sur hébergement européen, transfert des accès et de la documentation runbook à vos équipes.",
           },
           {
-            step: "Suivi et autonomie",
+            step: "Autonomie",
             detail:
-              "Mesure des indicateurs (trafic, conversion, qualification des leads B2B, déflexion support), itérations d'optimisation et formation de vos référents internes pour qu'ils administrent la plateforme sans dépendance — code et données restent intégralement chez vous.",
+              "Formation de vos référents internes pour qu'ils administrent la plateforme sans dépendance — code et données restent intégralement chez vous.",
           },
         ],
         pricing: [
@@ -132,7 +132,7 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants se déplacent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants interviennent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
           },
         ],
         guarantees:
@@ -168,9 +168,9 @@ export const MERIGNAC_COPY: VilleCopy = {
               "User acceptance tests on site in Mérignac, performance review (Web Vitals, mobile), accessibility and security checks, deployment on European hosting, handover of access and runbook documentation to your teams.",
           },
           {
-            step: "Follow-up and autonomy",
+            step: "Autonomy",
             detail:
-              "Metrics tracking (traffic, conversion, B2B lead qualification, support deflection), optimisation iterations and training of your internal owners so they run the platform with no dependency — code and data stay entirely with you.",
+              "Training of your internal owners so they run the platform with no dependency — code and data stay entirely with you.",
           },
         ],
         pricing: [
@@ -218,7 +218,7 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "How long until I get a quote?",
-            a: "From 24 to 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Our consultants travel to Mérignac and across the Bordeaux metropolitan area for framing.",
+            a: "From 24 to 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Axion-IA works anywhere in France, on site or remotely, including in Mérignac and across the Bordeaux metropolitan area.",
           },
         ],
         guarantees:
@@ -245,8 +245,8 @@ export const MERIGNAC_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la gestion des demandes.",
     },
     {
-      q: "Comment se passe une mission depuis Bordeaux centre ?",
-      a: "Mérignac est à 10 km de Bordeaux centre, relié par le tramway A et la rocade. Nous couvrons toute la métropole bordelaise.",
+      q: "Comment se déroule une mission Axion-IA à Mérignac ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

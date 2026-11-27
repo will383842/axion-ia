@@ -14,9 +14,9 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champagne-sur-Seine (77). Nous accompagnons TPE et PME : sous-traitants industriels, TPE artisanales, PME de maintenance et de services, commerçants de proximité et professions libérales du sud Seine-et-Marne.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
-    "Champagne-sur-Seine est une commune industrielle historique du sud Seine-et-Marne, en bord de Seine entre Thomery et Avon. L'héritage Schneider Electric a laissé un tissu de PME industrielles, sous-traitants mécaniques et maintenance. Complété par des TPE artisanales BTP, des commerces de centre-ville, des professions libérales et des PME de services. Proximité de Fontainebleau (5 min) et accès A6/N6 vers Paris.",
+    "Champagne-sur-Seine est une commune industrielle historique du sud Seine-et-Marne, en bord de Seine entre Thomery et Avon. L'héritage Schneider Electric a laissé un tissu de PME industrielles, sous-traitants mécaniques et maintenance. Complété par des TPE artisanales BTP, des commerces de centre-ville, des professions libérales et des PME de services.",
   ecosystemEn:
-    "Champagne-sur-Seine est une commune industrielle historique du sud Seine-et-Marne, en bord de Seine entre Thomery et Avon. L'héritage Schneider Electric a laissé un tissu de PME industrielles, sous-traitants mécaniques et maintenance. Complété par des TPE artisanales BTP, des commerces de centre-ville, des professions libérales et des PME de services. Proximité de Fontainebleau (5 min) et accès A6/N6 vers Paris.",
+    "Champagne-sur-Seine est une commune industrielle historique du sud Seine-et-Marne, en bord de Seine entre Thomery et Avon. L'héritage Schneider Electric a laissé un tissu de PME industrielles, sous-traitants mécaniques et maintenance. Complété par des TPE artisanales BTP, des commerces de centre-ville, des professions libérales et des PME de services.",
   distancesFr:
     "Gare de Champagne-sur-Seine (Transilien R) à 5 min à pied. Paris Gare de Lyon à 55 min en train. Fontainebleau à 5 min. A6 à 15 min via Nemours. Aéroport Paris-Orly à 50 min, Roissy-CDG à 1h15. Melun à 30 min.",
   distancesEn:

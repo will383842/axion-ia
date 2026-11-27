@@ -3,7 +3,7 @@
  *
  * Refonte 2026-05-31 (Will) — message : foncer sans diagnostic coûte cher ;
  * l'audit Axion-IA transforme le flou en plan rentable. Posture assumée de
- * référence française. Rendu très visuel : bande de preuves, opposition
+ * approche rigoureuse. Rendu très visuel : bande de preuves, opposition
  * « foncer tête baissée » ❌ vs « la méthode Axion-IA » ✅ (carte mise en
  * avant), claim de leadership. Écriture propre à Axion-IA (pas de paraphrase
  * du marché).
@@ -115,7 +115,7 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
               aria-hidden="true"
               className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
             />
-            {isFr ? "Audit IA · la référence française" : "AI audit · the French benchmark"}
+            {isFr ? "Audit IA · partout en France" : "AI audit · across France"}
           </p>
           <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
             {isFr ? "L'IA, tout le monde en parle." : "Everyone talks about AI."}

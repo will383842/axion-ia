@@ -49,7 +49,7 @@ export const GRENAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Grenay et sur l'axe Lens-Bethune ?",
-      a: "Oui, Axion-IA intervient a Grenay et sur tout l'axe Lens-Bethune (Bully-les-Mines, Noeux-les-Mines, Mazingarbe). Consultants depuis Lille (50 min TER) ou Paris (TGV 1h15 via Lens).",
+      a: "Oui, Axion-IA intervient a Grenay et sur tout l'axe Lens-Bethune (Bully-les-Mines, Noeux-les-Mines, Mazingarbe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les entreprises de transport a Grenay ?",

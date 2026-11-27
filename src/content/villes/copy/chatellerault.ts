@@ -132,7 +132,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place dans les zones industrielles du Grand Châtellerault ?",
-            a: "Oui. Nos consultants se déplacent dans vos locaux — ZI Nord des Varennes, ZI du Sanital, ZI de Saint-Ustre à Ingrandes ou centre-ville — depuis Poitiers (35 km, A10) ou Paris (TGV ~1h40). Le cadrage et la recette se font sur site, au plus près de vos ateliers et bureaux d'études.",
+            a: "Nous intervenons partout en France, sur place ou à distance. Le cadrage et la recette se font sur site, au plus près de vos ateliers et bureaux d'études.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
           },
           {
             q: "Do you come on site to the Grand Châtellerault industrial zones?",
-            a: "Yes. Our consultants travel to your premises — ZI Nord des Varennes, ZI du Sanital, ZI de Saint-Ustre in Ingrandes or the town centre — from Poitiers (35 km, A10) or Paris (TGV ~1h40). Framing and acceptance happen on site, close to your workshops and design offices.",
+            a: "Yes. We work on site at Châtellerault, like everywhere in France — ZI Nord des Varennes, ZI du Sanital, ZI de Saint-Ustre in Ingrandes or the town centre. Framing and acceptance happen on site, close to your workshops and design offices.",
           },
         ],
         guarantees:

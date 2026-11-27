@@ -6,8 +6,10 @@ import {
   RAPPORT_COMPLET,
   gainExempleEur,
   remplacerJetons,
+  SEUIL_DEVIS_DEDUCTION_EUR,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
-import { JOURNEE_IA_TIER } from "@/content/pricing";
+import { JOURNEE_IA_TIER, formatAmount } from "@/content/pricing";
 import { META_DESCRIPTION_MAX } from "@/lib/seo";
 import {
   CONTENU,
@@ -44,21 +46,36 @@ const toutLeTexte = [...textes(CONTENU), ...textes(TEXTES_ANNEXES), TITRE, DESCR
 const tout = toutLeTexte.join("\n");
 
 /** Mots visibles de CONTENU hors FAQ, re-mesurés le 09/11/2026 après la nouvelle carte des gains (était 872). */
-const MOTS_MESURES = 948;
+const MOTS_MESURES = 1013; // re-mesuré le 25/11/2026 (déduction détaillée, légende du seuil de garantie ; était 948)
 /** Mots du premier écran (l'accroche, sans le titre mis en couleur), mesurés de même. */
-const MOTS_PREMIER_ECRAN = 204; // re-mesuré le 09/11/2026 (nouvelle carte des gains ; était 183)
+const MOTS_PREMIER_ECRAN = 218; // re-mesuré le 26/11/2026 (diagnostic « gratuit et facultatif », priorités dans le rapport détaillé ; était 204)
 
 describe("Journée IA — contenu.ts", () => {
+  it("les gains sont chiffrés dans le rapport, jamais « le jour même » ; l'audit dure de 2 à 4 h", () => {
+    const t = tout.replace(/\s/g, " ");
+    expect(t).not.toMatch(/chiffr[^.]{0,80}jour m[êe]me|jour m[êe]me[^.]{0,80}chiffr/i);
+    expect(t).not.toMatch(/9 h\s?[–-]\s?12 h|de 9 h à 12 h/);
+    expect(t).toMatch(/de 2 à 4 h selon la structuration de l’entreprise/i);
+    expect(t).toMatch(/court questionnaire/i);
+  });
+
   it("tient dans une fourchette de mots (plancher −10 %, plafond +5 % : pas de « blockhaus »)", () => {
     const n = compte(horsFaq);
     expect(n).toBeGreaterThanOrEqual(Math.floor(MOTS_MESURES * 0.9));
     expect(n).toBeLessThanOrEqual(Math.ceil(MOTS_MESURES * 1.05));
   });
 
-  it("porte 194 à 214 mots au premier écran (accroche sans le titre accentué)", () => {
+  it("porte 208 à 228 mots au premier écran (accroche sans le titre accentué)", () => {
     const n = compte(textes(CONTENU.accroche));
     expect(n).toBeGreaterThanOrEqual(MOTS_PREMIER_ECRAN - 10);
     expect(n).toBeLessThanOrEqual(MOTS_PREMIER_ECRAN + 10);
+  });
+
+  it("annonce le diagnostic « gratuit et facultatif » et place les priorités dans le rapport détaillé", () => {
+    expect(CONTENU.accroche.microTexte).toContain("gratuit et facultatif");
+    const t = remplacerJetons(JSON.stringify(CONTENU));
+    expect(t).not.toMatch(/soir même|avant notre départ|3 jours ouvrés/);
+    expect(t).toContain("rapport détaillé");
   });
 
   it("n'a qu'un seul libellé de bouton : « Réserver un appel »", () => {
@@ -113,7 +130,7 @@ describe("Journée IA — contenu.ts", () => {
       "TPE/PME",
       "Grenoble",
       "Aucun gain garanti",
-      "Vous êtes remboursé",
+      "remboursé automatiquement",
       "même prix pour tous",
       "3 à 4 h",
       "3 à 4\u00a0h",
@@ -164,7 +181,15 @@ describe("Journée IA — contenu.ts", () => {
   });
 
   it("n'écrit aucun montant : ni symbole €, ni chiffre de prix", () => {
-    expect(tout).not.toContain("€");
+    // Seul le seuil de la garantie (3 fois le prix, calculé par `seuilGarantieEur()`) porte un « € ».
+    const sansSeuil = tout
+      .split(formatAmount(seuilGarantieEur(), "fr", { compact: true }))
+      .join("")
+      .split(formatAmount(seuilGarantieEur(), "fr"))
+      .join("")
+      .split(formatAmount(SEUIL_DEVIS_DEDUCTION_EUR, "fr")) // devis minimal de la déduction (CGV 47.7)
+      .join("");
+    expect(sansSeuil).not.toContain("€");
     // « en heures et en euros » est un libellé ; c'est un nombre suivi de « euros » qui est un montant.
     expect(tout).not.toMatch(/\d[\s\u00a0\u202f]*(euros?|eur)\b/i);
     expect(tout).not.toMatch(/\b1[\s\u00a0\u202f.]?490\b/);
@@ -211,11 +236,11 @@ describe("Journée IA — contenu.ts", () => {
   it("reprend la garantie mot pour mot, d'une seule constante", () => {
     // Le texte historique, déplacé dans le module commun, reste exporté tel quel.
     expect(GARANTIE).toBe(
-      "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.",
+      "Sous 10 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.",
     );
     // La page affiche la phrase de remboursement, la condition, puis le rapport (sans doublon).
     expect(GARANTIE_PHRASE).toBe(
-      "Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.",
+      "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.",
     );
     expect(GARANTIE.endsWith(GARANTIE_PHRASE)).toBe(true);
     expect(CONTENU.prix.garantie).toBe(GARANTIE_PHRASE);
@@ -223,7 +248,7 @@ describe("Journée IA — contenu.ts", () => {
     expect(CONTENU.prix.rapport).toBe(RAPPORT_COMPLET);
     expect(GARANTIE_PHRASE).toContain(DEBUT_PROMESSE);
     expect(CONTENU.prix.titreGarantie).toBe(
-      "Pas 3 fois le prix en gains identifiés\u202f? Nous vous remboursons.",
+      `Moins de ${formatAmount(seuilGarantieEur(), "fr")} de gains identifiés\u202f? Remboursement sur demande.`,
     );
     // La FAQ répète la phrase et la condition, mot pour mot.
     const faqGarantie = faq.find((f) => f.id === "faq-garantie");
@@ -232,12 +257,12 @@ describe("Journée IA — contenu.ts", () => {
     expect(JSON.stringify(CONTENU)).not.toMatch(/calculés sur un an/);
   });
 
-  it("a treize questions, aux identifiants uniques", () => {
-    expect(faq).toHaveLength(13);
+  it("a quatorze questions, aux identifiants uniques", () => {
+    expect(faq).toHaveLength(14);
     const ids = faq.map((f) => f.id);
-    expect(new Set(ids).size).toBe(13);
+    expect(new Set(ids).size).toBe(14);
     for (const id of ids) expect(id).toMatch(/^faq-[a-z-]+$/);
-    expect(new Set(faq.map((f) => f.question)).size).toBe(13);
+    expect(new Set(faq.map((f) => f.question)).size).toBe(14);
     for (const f of faq) expect(f.question.endsWith("?"), f.id).toBe(true);
   });
 

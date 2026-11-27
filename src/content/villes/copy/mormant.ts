@@ -49,7 +49,7 @@ export const MORMANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mormant et environs ?",
-      a: "Oui, Axion-IA intervient à Mormant et toute la Brie seine-et-marnaise (Melun à 20 min, Provins à 30 min, RER D Combs-la-Ville à 15 min, Paris à 50 min).",
+      a: "Oui. Nous intervenons à Mormant et dans toute la Brie seine-et-marnaise (Melun, Provins, Combs-la-Ville).",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles ?",
@@ -65,7 +65,7 @@ export const MORMANT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Melun et Provins ?",
-      a: "Oui, nous couvrons Mormant, Melun, Provins, Nangis et toute la Brie seine-et-marnaise. Coûts de déplacement à part, tarification transparente.",
+      a: "Oui, nous couvrons Mormant, Melun, Provins, Nangis et toute la Brie seine-et-marnaise.",
     },
   ],
 };

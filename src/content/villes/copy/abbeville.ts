@@ -74,7 +74,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Abbeville et dans la Somme ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Abbeville, de la baie de Somme et du Ponthieu. Nos consultants se déplacent sur site, à 1 h 30 de Paris par le train ou 50 minutes d'Amiens, ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Abbeville, de la baie de Somme et du Ponthieu. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et industrielles abbevilloises ?",
@@ -246,7 +246,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Abbeville ?",
-      a: "Abbeville est à 1 h 30 de Paris en train, 50 minutes d'Amiens et sur l'A16. Nos consultants se déplacent sur site ou interviennent en visio.",
+      a: "Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],
 };

@@ -58,7 +58,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
           "Goussainville vit du fret aéroportuaire de Roissy : nos sites et SaaS sont calibrés pour les transitaires et transporteurs des zones Le Pied de Fer, Le Pont de la Brèche et Dessous de l'Orme — suivi d'expéditions, portail transporteur, documents douane, là où Dachser et Barsan Global Logistics donnent le tempo local.",
           "Tissu de TPE/PME dense (564 établissements en services, commerce et transport) : nous concevons des vitrines B2B et e-commerce multi-CMS pour la messagerie (Messageries Courses Express), les services aux entreprises et le commerce de gros, plutôt que des sites génériques sans ancrage métier.",
           "Le Vieux Pays, village déserté depuis les années 1970 et aujourd'hui revitalisé, accueille tournages, shootings et l'accrobranche Abracadaparc ouvert en 2024 : nous outillons billetterie, réservation et présence en ligne de ces activités touristiques et culturelles avec IA intégrée.",
-          "Implantation à 10 min de Roissy, desservie par le RER D et les A1/A104/A3 : nos consultants se déplacent sur site dans les zones d'activité goussainvilloises et les communes voisines (Le Thillay, Louvres, Gonesse, Sarcelles) pour un cadrage en présentiel.",
+          "Implantation aux portes de Roissy : nous intervenons sur site dans les zones d'activité goussainvilloises et les communes voisines (Le Thillay, Louvres, Gonesse, Sarcelles) pour un cadrage en présentiel.",
         ],
         methodology: [
           {
@@ -80,11 +80,6 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
             step: "Recette sur site & formation",
             detail:
               "Tests d'acceptation dans vos locaux goussainvillois, mise en ligne, puis formation de vos équipes exploitation/administration pour qu'elles restent autonomes — pas de dépendance technique imposée à Axion-IA.",
-          },
-          {
-            step: "Suivi & itérations",
-            detail:
-              "Après mise en ligne, suivi des performances (Web Vitals, conversions, requêtes IA), corrections et évolutions. Le code, les modèles et la documentation restent intégralement chez vous, repris en interne ou par tout intégrateur du Val-d'Oise.",
           },
         ],
         pricing: [
@@ -144,7 +139,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
           "Goussainville lives off Roissy air freight: our sites and SaaS are calibrated for the forwarders and carriers of the Le Pied de Fer, Le Pont de la Brèche and Dessous de l'Orme zones — shipment tracking, carrier portal, customs documents — where Dachser and Barsan Global Logistics set the local pace.",
           "A dense fabric of micro-businesses and SMEs (564 establishments in services, commerce and transport): we build B2B showcase sites and multi-CMS e-commerce for couriers (Messageries Courses Express), B2B services and wholesale trade, rather than generic sites with no business grounding.",
           "The Vieux Pays, a village deserted since the 1970s and now revitalised, hosts film shoots, photo shoots and the Abracadaparc treetop course opened in 2024: we equip ticketing, booking and online presence for these tourism and cultural activities with embedded AI.",
-          "Located 10 minutes from Roissy, served by the RER D and the A1/A104/A3 motorways: our consultants travel on site across Goussainville's activity zones and neighbouring towns (Le Thillay, Louvres, Gonesse, Sarcelles) for in-person framing.",
+          "We work on site at Goussainville, like everywhere in France, across its activity zones and neighbouring towns (Le Thillay, Louvres, Gonesse, Sarcelles) for in-person framing.",
         ],
         methodology: [
           {
@@ -166,11 +161,6 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
             step: "On-site acceptance & training",
             detail:
               "Acceptance tests at your Goussainville premises, go-live, then training of your operations/admin teams so they stay autonomous — no technical dependency imposed on Axion-IA.",
-          },
-          {
-            step: "Follow-up & iterations",
-            detail:
-              "After go-live, monitoring of performance (Web Vitals, conversions, AI queries), fixes and evolutions. The code, models and documentation remain entirely yours, taken over in-house or by any Val-d'Oise integrator.",
           },
         ],
         pricing: [
@@ -250,7 +240,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Goussainville ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 10 min de Roissy. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

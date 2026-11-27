@@ -25,6 +25,7 @@ import { Link } from "@/i18n/navigation";
 
 import { REGIONS } from "@/content/regions";
 import { getIndexableVillesCore } from "@/content/villes/core";
+import { estCitableDansLeMaillage } from "@/content/villes/villes-indexees";
 import { EN_BREF_JOURNEE_IA_PARAGRAPHES, remplacerJetons } from "@/content/journee-ia-commun";
 import {
   CHEMIN_JOURNEE_IA,
@@ -66,6 +67,7 @@ export default async function ImplantationsHub({ params }: Props) {
   setRequestLocale(locale);
 
   const principales = [...getIndexableVillesCore()]
+    .filter((v) => estCitableDansLeMaillage(v.slug))
     .sort((a, b) => b.population - a.population)
     .slice(0, NB_VILLES_PRINCIPALES);
 
@@ -135,7 +137,7 @@ export default async function ImplantationsHub({ params }: Props) {
                 shape="pill"
                 track="hub_cta_diagnostic"
               >
-                Réserver le diagnostic gratuit
+                Réserver un Diagnostic IA
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Cta>
               <Cta
@@ -273,15 +275,15 @@ export default async function ImplantationsHub({ params }: Props) {
               Votre Journée IA commence par 45 minutes gratuites
             </h2>
             <p className="text-paper/85 text-base leading-relaxed sm:text-lg">
-              Diagnostic IA gratuit de 45 minutes, en visio ou par téléphone : une première tâche
-              chiffrée, et la date de votre journée fixée ensemble.
+              Diagnostic IA gratuit et facultatif de 45 minutes, en visio ou par téléphone : une
+              première tâche chiffrée, et la date de votre journée fixée ensemble.
             </p>
             <Link
               href={lienRendezVous("implantations-bas") as never}
               data-cta-tracking="hub_cta_final_diagnostic"
               className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              Réserver le diagnostic gratuit
+              Réserver un Diagnostic IA
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -290,7 +292,7 @@ export default async function ImplantationsHub({ params }: Props) {
 
       <StickyMobileCta
         href={lienRendezVous("implantations-bas")}
-        label="Réserver le diagnostic gratuit"
+        label="Réserver un Diagnostic IA"
         track="hub-sticky-mobile"
         threshold={600}
       />

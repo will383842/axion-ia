@@ -15,8 +15,18 @@
 
 import React from "react";
 import { z } from "zod";
+import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import {
+  raisonEcheancierRefuse,
+  TITRE_ECHEANCIER,
+} from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  logQualiopiActivity,
+  donneesJournalQualiopi,
+} from "@/server/actions/qualiopi/_guards";
+import { ACTION_REMIS_MAIN_PROPRE } from "@/server/qualiopi/devis/canal-emission";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { emettreDevisEmis } from "@/server/partners-sync/producteurs/devis";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
@@ -25,6 +35,8 @@ import {
   lireContextePdfDevis,
   OffreDevisInvalideError,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
+import { prendreVerrouEnvoiDevis } from "@/server/qualiopi/devis/marquer-devis-envoye";
+import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import {
   cloreVersionRemplacee,
   MSG_VERSION_REMPLACEE_ACCEPTEE,
@@ -55,9 +67,6 @@ const MSG_VERROU =
 const MSG_PDF_RATE =
   "Le PDF du devis n'a pas pu être créé. Rien n'a été modifié ; le devis reste en brouillon. Réessayez dans un instant.";
 
-/** Même clé que l'envoi : un envoi et une remise simultanés s'excluent. */
-const cleVerrou = (devisId: string): string => "devis.envoi:" + devisId;
-
 export async function marquerRemisEnMainPropreAction(input: {
   id: string;
   motif: "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -72,16 +81,12 @@ export async function marquerRemisEnMainPropreAction(input: {
   if (!parsed.success) return { error: "Demande invalide" };
   const { id: devisId, motif } = parsed.data;
 
-  let documentGenereId: string | null = null;
-
   try {
     await prisma.$transaction(
       async (tx) => {
         // (a) Verrou consultatif non bloquant, MÊME clé que l'envoi.
-        const [verrou] = await tx.$queryRaw<{ locked: boolean }[]>`
-          SELECT pg_try_advisory_xact_lock(hashtext(${cleVerrou(devisId)})) AS locked
-        `;
-        if (!verrou?.locked) throw new RemiseRefusee(MSG_VERROU, "verrou_pris");
+        if (!(await prendreVerrouEnvoiDevis(tx, devisId)))
+          throw new RemiseRefusee(MSG_VERROU, "verrou_pris");
 
         // (b) Relecture DANS la transaction, puis gardes.
         const devis = await tx.devis.findUnique({
@@ -153,18 +158,11 @@ export async function marquerRemisEnMainPropreAction(input: {
         }
         // Un courriel de ce devis attend déjà dans la corbeille : le remettre en main propre
         // le laisserait partir ensuite. Validez-le ou refusez-le d'abord.
-        const dejaGare = await tx.emailOutbox.findFirst({
-          where: {
-            template: "devis-envoi",
-            entityType: "Devis",
-            entityId: devisId,
-            statut: "a_valider",
-          },
-          select: { id: true },
-        });
+        // « À valider » ET « approuvé » (en cours d'envoi) : dans les deux cas l'e-mail peut partir.
+        const dejaGare = await emailDevisEnAttente(tx, devisId);
         if (dejaGare) {
           throw new RemiseRefusee(
-            "Un e-mail de ce devis attend déjà dans Emails → À valider : validez-le ou refusez-le avant de remettre le devis en main propre.",
+            "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page « E-mails envoyés » de la console. Le devis n'a pas été marqué remis en main propre.",
             "deja_gare",
           );
         }
@@ -172,7 +170,7 @@ export async function marquerRemisEnMainPropreAction(input: {
         // (c) Pièce PDF numérotée : un échec refuse tout (le devis reste en brouillon).
         let data: DevisData;
         try {
-          const contexte = await lireContextePdfDevis();
+          const contexte = await lireContextePdfDevis({ clientId: devis.clientId, tx });
           data = donneesPdfDevis(devis, contexte, new Date());
         } catch (err) {
           if (err instanceof OffreDevisInvalideError) {
@@ -180,6 +178,21 @@ export async function marquerRemisEnMainPropreAction(input: {
           }
           console.warn("[marquerRemisEnMainPropreAction] données du PDF non construites", err);
           throw new RemiseRefusee(MSG_PDF_RATE, "pdf_rate");
+        }
+        // Échéancier de l'assistant : même contrôle que sendDevisAction, AVANT toute pièce.
+        const raisonEcheancier = data.conditionsParticulieres?.startsWith(TITRE_ECHEANCIER)
+          ? raisonEcheancierRefuse(
+              data.conditionsParticulieres,
+              computeTotauxFacture(
+                data.lignes,
+                data.regimeTva,
+                data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+              ).totalTtcCents,
+              data.regimeTva,
+            )
+          : null;
+        if (raisonEcheancier !== null) {
+          throw new RemiseRefusee(raisonEcheancier, "echeancier_incoherent");
         }
         let pdfCle: string;
         let pieceId: string;
@@ -194,7 +207,6 @@ export async function marquerRemisEnMainPropreAction(input: {
           // Clé R2 stable (l'URL signée expire en 900 s : on stocke la clé).
           pdfCle = `documents/${new Date().getFullYear()}/devis/${doc.numero}.pdf`;
           pieceId = doc.id;
-          documentGenereId = pieceId;
         } catch (err) {
           console.warn("[marquerRemisEnMainPropreAction] génération PDF échouée", err);
           throw new RemiseRefusee(MSG_PDF_RATE, "pdf_rate");
@@ -230,6 +242,23 @@ export async function marquerRemisEnMainPropreAction(input: {
         });
         // (h) Événement « devis émis » dans la MÊME transaction (règle devis.emis du cliquet).
         await emettreDevisEmis(tx, devisId);
+        // (i) Trace du canal d'émission, dans la MÊME transaction : sans elle, le devis redeviendrait « inconnu ».
+        await tx.activityLog.create({
+          data: await donneesJournalQualiopi({
+            action: ACTION_REMIS_MAIN_PROPRE,
+            targetType: "Devis",
+            targetId: devisId,
+            changes: {
+              statut: "envoye",
+              canal: "main_propre",
+              motif,
+              documentGenereId: pieceId,
+              emailEnvoye: false,
+              lienSignatureEmis: false,
+            },
+            session,
+          }),
+        });
       },
       { maxWait: 5_000, timeout: 60_000 },
     );
@@ -269,21 +298,7 @@ export async function marquerRemisEnMainPropreAction(input: {
     throw err;
   }
 
-  // Transaction validée. Ni adresse ni lien dans le journal.
-  await logQualiopiActivity({
-    action: "qualiopi.devis.remis_main_propre",
-    targetType: "Devis",
-    targetId: devisId,
-    changes: {
-      statut: "envoye",
-      canal: "main_propre",
-      motif,
-      documentGenereId,
-      emailEnvoye: false,
-      lienSignatureEmis: false,
-    },
-    session,
-  });
+  // Trace écrite dans la transaction : elle est la source du canal d'émission.
 
   return { data: { id: devisId } };
 }

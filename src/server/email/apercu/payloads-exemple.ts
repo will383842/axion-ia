@@ -28,6 +28,7 @@
  */
 
 import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
+import { SITE_URL } from "@/lib/site-url";
 
 export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   amountTtc: "1 450,00 €",
@@ -53,6 +54,9 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
     "Se présenter à l'accueil du bâtiment B, badge visiteur à retirer. Parking visiteurs au sous-sol -1.",
   consoleUrl: "https://exemple.invalid/lien-de-demonstration",
   contactName: "Camille Dupont",
+  // `apporteur-attribution-confirmee` (variante « confirmée ») : champ facultatif, donné pour que
+  // l'aperçu montre la ligne « Date de la validation ». Date fictive.
+  dateValidation: "8 octobre 2026",
   contactNom: "Camille Dupont",
   contactSurPlace: "Camille Dupont — 06 00 00 00 00",
   contestationAvantLabel: "18 septembre 2026",
@@ -184,7 +188,10 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   sectorLabel: "Industrie",
   signataireNom: "Camille Dupont",
   signature: "Williams\nAxion-IA",
-  signatureUrl: "https://exemple.invalid/lien-de-demonstration",
+  signatureUrl: `${SITE_URL}/fr/portail/signer/jeton-de-demonstration`,
+  // Identité structurée : « Bonjour Monsieur Dupont, » (devis-envoi, relance-devis-client).
+  salutation: { civilite: "monsieur", nomFamille: "Dupont" },
+  pieceJointe: true,
   size: "24 salariés",
   slotTitre: "Créneau du 3 septembre à 13:00",
   soldePartiel: false,
@@ -214,6 +221,14 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   unsubscribeToken: "jeton-de-demonstration",
   version: "v2",
   ville: "Grenoble",
+  // Lot L1a — résiliation du contrat d'apporteur (gabarits sans émetteur).
+  fondement: "11.2",
+  notifieeLe: "25 novembre 2026",
+  effetLe: "25 décembre 2026",
+  miseEnDemeureLe: "5 novembre 2026",
+  motif: "Motif d'exemple, saisi par l'administrateur.",
+  argentEnJeu: true,
+  lien: "https://exemple.invalid/lien-de-demonstration",
   // Chantier QNC, L09 — réclamations (accusé et réponse signée).
   recueLe: "16 octobre 2026",
   reponseAvant: "6 novembre 2026",

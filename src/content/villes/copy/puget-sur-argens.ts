@@ -49,7 +49,7 @@ export const PUGET_SUR_ARGENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Puget-sur-Argens et dans l'Estérel ?",
-      a: "Oui, Axion-IA intervient à Puget-sur-Argens et dans toute l'agglomération Var-Estérel (Fréjus, Saint-Raphaël, Roquebrune-sur-Argens, Les Adrets-de-l'Estérel). Accès direct A8 sortie 37.",
+      a: "Oui, Axion-IA intervient à Puget-sur-Argens et dans toute l'agglomération Var-Estérel (Fréjus, Saint-Raphaël, Roquebrune-sur-Argens, Les Adrets-de-l'Estérel).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique à Puget-sur-Argens ?",

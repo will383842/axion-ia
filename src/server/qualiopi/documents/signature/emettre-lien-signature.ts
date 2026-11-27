@@ -41,6 +41,8 @@ import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import type { PartieSignataire } from "./document-signature-hash";
 import { circuitPour } from "./parties-requises";
+import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
+import { prendreVerrouEnvoiDevis } from "@/server/qualiopi/devis/marquer-devis-envoye";
 import { creerTokenDocument, TokenDocumentError } from "./token-document";
 
 export type ResultatEmission<T> = { data: T } | { error: string };
@@ -58,6 +60,18 @@ export const schemaEmissionLien = z.object({
     "axionia",
   ]),
 });
+
+export const MSG_RELANCE_DEVIS_EMAIL_EN_ATTENTE =
+  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page « E-mails envoyés » de la console. Rien n'a été émis ni envoyé ; le lien déjà reçu par le client reste valable.";
+export const MSG_RELANCE_DEVIS_ENVOI_EN_COURS =
+  "Un envoi de ce devis est déjà en cours : réessayez dans un instant. Rien n'a été émis ni envoyé.";
+export const MSG_RELANCE_DEVIS_SANS_DEVIS =
+  "Cette pièce ne correspond à aucun devis envoyé (envoi pas encore validé, ou pièce remplacée) : envoyez ou renvoyez le devis depuis sa fiche. Rien n'a été émis ni envoyé.";
+
+export const MSG_RELANCE_DEVIS_PAS_ENVOYE =
+  "Ce devis n'est plus au statut envoyé : ouvrez sa fiche. Rien n'a été émis ni envoyé.";
+export const MSG_RELANCE_DEVIS_VALIDITE_DEPASSEE =
+  "La validité de ce devis est dépassée : ouvrez sa fiche. Rien n'a été émis ni envoyé.";
 
 /** Identité FIGÉE à l'émission. Aucune de ces valeurs ne vient d'un formulaire. */
 interface IdentiteResolue {
@@ -404,7 +418,7 @@ export async function emettreLienSignature(
   const ipBrute = ipVisiteurOuNull(entetes);
 
   try {
-    const { token, expiresAt } = await creerTokenDocument({
+    const argsJeton = {
       documentGenereId,
       partie,
       signataireNom: resolution.identite.nom,
@@ -423,7 +437,44 @@ export async function emettreLienSignature(
       // compte plus dessus en silence : il est nommé ici.
       borneMetier: piece.suppressionPrevueAt,
       createdIpHash: hashIp(ipBrute),
-    });
+    };
+    let cree: { token: string; expiresAt: Date };
+    if (piece.type === "devis") {
+      // Une relance de devis ne forge jamais un jeton pendant qu'un e-mail du devis attend :
+      // il partirait avec un lien révoqué. Mêmes gardes que l'envoi, le renvoi et l'approbation.
+      const issue = await prisma.$transaction(
+        async (tx): Promise<{ error: string } | { cree: { token: string; expiresAt: Date } }> => {
+          const devisLies = await tx.devis.findMany({
+            where: { documentGenereId },
+            select: { id: true, statut: true, dateValidite: true },
+            take: 2,
+          });
+          if (devisLies.length !== 1) return { error: MSG_RELANCE_DEVIS_SANS_DEVIS };
+          const devisLie = devisLies[0]!;
+          const devisId = devisLie.id;
+          if (devisLie.statut !== "envoye") return { error: MSG_RELANCE_DEVIS_PAS_ENVOYE };
+          if (devisLie.dateValidite.getTime() < Date.now()) {
+            return { error: MSG_RELANCE_DEVIS_VALIDITE_DEPASSEE };
+          }
+          if (!(await prendreVerrouEnvoiDevis(tx, devisId))) {
+            return { error: MSG_RELANCE_DEVIS_ENVOI_EN_COURS };
+          }
+          if (await emailDevisEnAttente(tx, devisId)) {
+            return { error: MSG_RELANCE_DEVIS_EMAIL_EN_ATTENTE };
+          }
+          // Échéance du lien bornée à la validité du devis, comme tous les autres chemins.
+          return {
+            cree: await creerTokenDocument({ ...argsJeton, borneMetier: devisLie.dateValidite }),
+          };
+        },
+        { maxWait: 5_000, timeout: 60_000 },
+      );
+      if ("error" in issue) return { error: issue.error };
+      cree = issue.cree;
+    } else {
+      cree = await creerTokenDocument(argsJeton);
+    }
+    const { token, expiresAt } = cree;
 
     const entree = {
       action: "qualiopi.piece.lien_signature",
@@ -498,6 +549,7 @@ export async function emettreLienSignatureSystem(
     },
   });
   if (piece === null) return { error: "Pièce introuvable." };
+  if (piece.type === "devis") return { error: "Un lien de devis ne s'émet pas par ce chemin." };
   const circuit = circuitPour(piece.type);
   if (circuit === null || !circuit.parties.includes(partie)) {
     return { error: "Cette pièce n'appelle pas la signature de cette partie." };

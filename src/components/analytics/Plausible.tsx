@@ -12,7 +12,6 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
 // Re-export pour préserver l'API publique historique. La SSOT est dans
@@ -20,8 +19,8 @@ import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 export { trackEvent } from "@/lib/analytics/plausible-tracker";
 
 export function Plausible() {
-  const domain = env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
-  const apiUrl = env.NEXT_PUBLIC_PLAUSIBLE_API_URL ?? "https://plausible.axion-ia.com";
+  const domain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || undefined;
+  const apiUrl = process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL || "https://plausible.axion-ia.com";
   const pathname = usePathname();
 
   if (!domain) return null;

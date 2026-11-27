@@ -18,6 +18,8 @@ import {
 
 export interface ParamsInitiaux {
   defaultClientId?: string | undefined;
+  /** Type du client préchoisi : posé d'emblée pour ne pas modifier l'état au montage. */
+  defaultClientType?: EtatAssistant["clientType"] | undefined;
   projetId?: string | undefined;
   rencontreId?: string | undefined;
   validiteParDefaut: string;
@@ -44,7 +46,8 @@ function phaseSolde(id: string): PhaseAssistant {
     id,
     libelle: "Solde",
     pourcentage: "100",
-    declencheur: "signature",
+    // Acompte par défaut = 0 % (décision du fondateur) : le solde tombe à la livraison, modifiable.
+    declencheur: "livraison",
     livrable: "",
     delaiSemaines: "",
   };
@@ -54,7 +57,7 @@ export function etatInitial(p: ParamsInitiaux): EtatAssistant {
   return {
     modele: null,
     clientId: p.defaultClientId ?? "",
-    clientType: null,
+    clientType: p.defaultClientType ?? null,
     intitule: "",
     validite: p.validiteParDefaut,
     origine: {
@@ -68,6 +71,7 @@ export function etatInitial(p: ParamsInitiaux): EtatAssistant {
     proposition: "prix_unique",
     formulesActives: p.formulesActives,
     garantie: { afficher: true, jours: "", phrase: "" },
+    garantieJournee: false,
     delais: { texte: "", fourchette: "" },
     achat: {
       phases: [phaseSolde("phase-a-1")],
@@ -288,10 +292,6 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
         if (ab.engagementMois > 0 && ab.periodes.some((x) => ab.engagementMois % x.mois !== 0)) {
           err.push("L'engagement doit être un multiple de chaque période proposée.");
         }
-        const di = defautPourcentage(ab.indemniteTauxPct);
-        if (di === "illisible") err.push("Indemnité de sortie : taux illisible.");
-        if (di === "hors_borne")
-          err.push("Indemnité de sortie : le taux doit être entre 0 et 100 %.");
       }
       return err;
     }
@@ -333,6 +333,10 @@ export function deserialiser(brut: unknown): ResultatLecture {
   return {
     ok: true,
     etape: etape as Etape,
-    etat: JSON.parse(JSON.stringify(etat)) as EtatAssistant,
+    // Un ancien brouillon n'a pas ce champ : faux (la colonne du devis fait foi à la réouverture).
+    etat: {
+      ...(JSON.parse(JSON.stringify(etat)) as EtatAssistant),
+      garantieJournee: etat["garantieJournee"] === true,
+    },
   };
 }

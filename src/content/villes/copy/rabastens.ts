@@ -14,9 +14,9 @@ export const RABASTENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
   seoHook: "viticulture gaillac & agriculture grandes",
   ecosystemFr:
-    "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Proximité Toulouse (35 min A68), Albi (30 min), Gaillac (10 min). Commune résidentielle attractive entre Toulouse et Albi.",
+    "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Commune résidentielle attractive entre Toulouse et Albi.",
   ecosystemEn:
-    "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Proximité Toulouse (35 min A68), Albi (30 min), Gaillac (10 min). Commune résidentielle attractive entre Toulouse et Albi.",
+    "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Commune résidentielle attractive entre Toulouse et Albi.",
   distancesFr:
     "Toulouse centre à 35 min (A68). Gaillac à 10 min. Albi à 30 min. Gare SNCF Rabastens-Couffouleux (TER Toulouse-Albi). Aéroport Toulouse-Blagnac à 40 min. Lavaur à 20 min.",
   distancesEn:

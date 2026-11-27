@@ -49,7 +49,7 @@ export const SAINT_JUST_SAINT_RAMBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Just-Saint-Rambert et Loire Forez Agglo ?",
-      a: "Oui, Axion-IA intervient à Saint-Just-Saint-Rambert et toute Loire Forez Agglo (Montbrison à 20 min, Andrézieux-Bouthéon limitrophe, Feurs). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Saint-Just-Saint-Rambert et dans toute Loire Forez Agglo (Montbrison, Andrézieux-Bouthéon, Feurs), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires foréziennes ?",
@@ -65,7 +65,7 @@ export const SAINT_JUST_SAINT_RAMBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Just-Saint-Rambert ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Just-Saint-Rambert, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -146,6 +146,15 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Garantie Journée IA : remboursement de la garantie, avoirs via `genererAvoirFacture` (voie unique) —
+  // `lecture.ts` consomme donc vraiment la facturation qualiopi. Nommé seul.
+  "src/server/garanties-journee-ia/lecture.ts",
+  // Garantie Journée IA, suivi des remboursements (PR 2/3, 25/11/2026) — la fiche et le formulaire de
+  // création appellent les Server Actions du dossier (`actions/qualiopi/garanties-journee-ia`, gardées par
+  // `requireAdminWrite` / `requireHabilitation("facturer")` du domaine, journal `ActivityLog` commun) : une
+  // seule garde et un seul journal, jamais recopiés. N'importent que ce module du domaine. Nommés seuls.
+  "src/app/[locale]/(admin)/[adminPrefix]/garanties-journee-ia/[id]/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/garanties-journee-ia/nouveau/page.tsx",
   // Signature renforcée du devis, lot 4 bis (07/11/2026) — ce test de garde RGPD (aucune table ne garde une
   // donnée personnelle en silence) lit `COLONNES_SCELLEES_DOCUMENT` (colonnes scellées de la signature,
   // `document-reconstruction`) : c'est la liste unique des colonnes que l'effacement ne touche pas ; la
@@ -187,6 +196,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // la fiche (`calculerEncoursDuCents`, règle unique du reste dû) et lit le type `Client360` ; la recopier
   // donnerait deux règles. Rien d'autre du domaine. Nommé seul.
   "src/features/dossier-client/fiche/lire-en-tete.ts",
+  // Fiche client, pipeline alimenté par les devis envoyés (20/11/2026) — le montant doit être EXACTEMENT
+  // celui du PDF du devis (`montantsDevis` + `computeTotauxFacture`, règle unique des totaux) : les
+  // recopier donnerait deux règles. Lecture seule. Ce fichier et sa spec, nommés seuls.
+  "src/features/dossier-client/fiche/pipeline-devis.ts",
+  "src/features/dossier-client/fiche/__tests__/pipeline-devis.spec.ts",
   // Fiche client, lot B7 (29/10/2026) — l'argent de l'onglet Devis et factures (affichage seul) :
   // `resteDuNetCents` (règle unique du reste dû) et `estFactureOuverte` (source unique des statuts
   // ouverts). Ce fichier est le SEUL point d'entrée ; les cartes et tuiles passent par lui. Nommé seul.
@@ -342,7 +356,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/catalogue/page.tsx",
   "src/app/[locale]/certification-qualiopi/page.tsx",
   "src/app/[locale]/equipe/[slug]/page.tsx",
-  "src/app/[locale]/financement-opco-france-travail/page.tsx",
   "src/app/[locale]/memo-isere/page.tsx",
   "src/app/[locale]/secteurs/[secteur]/[activite]/page.tsx",
   "src/app/api/zeptomail/webhook/route.ts",
@@ -398,6 +411,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/admin/dossiers-pipeline.ts",
   "src/server/admin/pilotage-dashboard.ts",
   "src/server/admin/qualiopi-nav-counts.ts",
+  // V6-27 (#2246) : la spec du compteur vérifie que le délai demandé par le
+  //   client masque bien la relance (fonction du domaine devis importée).
+  "src/server/admin/qualiopi-nav-counts.spec.ts",
   // ── QNC L02 (mode essai) — deux sorties EXTERNES qui doivent reconnaître une
   //    pièce d'essai pour ne pas la laisser partir. Elles importent le prédicat
   //    UNIQUE (`essai/perimetre`) et le journal des sorties bloquées
@@ -721,6 +737,16 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    dans un double ne prouverait rien. Il vit sous `tests/integration/`, seul dossier que lit
   //    `vitest.integration.config.ts`. Tout ce qui sort de la base est simulé.
   "tests/integration/devis/envoi-concurrent-un-seul-envoye.spec.ts",
+  // ── Versions concurrentes d'un devis sur Postgres réel (verrou de ligne sur la version
+  //    remplacée). Le test appelle `marquerDevisEnvoye`, `prolongerValiditeDevisAction` et
+  //    `acceptDevisAction` TELLES QUELLES : le verrou est une propriété de la vraie base, un double
+  //    ne prouverait rien. Même raison, même dossier que le test d'envoi simultané ci-dessus.
+  "tests/integration/devis/versions-concurrentes.spec.ts",
+  // ── Garde de version d'une SIGNATURE de devis (garde-signature-version). Le test appelle la VRAIE
+  //    `signerDocument` et la VRAIE `marquerDevisEnvoye` contre un vrai Postgres : le verrou de ligne
+  //    est une propriété de la vraie base, un double ne prouverait rien. Même raison, même dossier
+  //    que `versions-concurrentes.spec.ts` ci-dessus.
+  "tests/integration/devis/signature-version-remplacee.spec.ts",
   // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
   //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
   //    paiement des formateurs (passage par mission, autofacture, virements,

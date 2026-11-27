@@ -49,7 +49,7 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Freyming-Merlebach ?",
-      a: "Oui, Axion-IA intervient à Freyming-Merlebach et dans tout le bassin houiller frontalier (Forbach, Saint-Avold, Hombourg-Haut, Stiring-Wendel). Consultants via gare SNCF Freyming-Merlebach ou autoroute A4. Sarrebruck à 25 min.",
+      a: "Oui, Axion-IA intervient à Freyming-Merlebach et dans tout le bassin houiller frontalier (Forbach, Saint-Avold, Hombourg-Haut, Stiring-Wendel).",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Freyming-Merlebach ?",
-      a: "Nos consultants se déplacent via gare SNCF Freyming-Merlebach (ligne Metz–Forbach) ou autoroute A4. Forbach à 10 min, Sarrebruck à 25 min, Metz à 55 min.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Freyming-Merlebach et dans tout le bassin houiller lorrain.",
     },
   ],
 };

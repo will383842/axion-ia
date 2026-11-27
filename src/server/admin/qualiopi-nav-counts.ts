@@ -26,6 +26,8 @@ import { compterEnAttente } from "@/server/email/outbox-service";
 import { countNonLues } from "@/server/qualiopi/alertes/alertes-service";
 import { compterPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import { compterEcheancesDepassees } from "@/server/qualiopi/parcours/echeances-service";
+import { idsDevisEnDelaiClient } from "@/server/qualiopi/devis/delai-client";
+import { relancesAtraiterWhere } from "@/server/qualiopi/devis/relances-a-traiter-filtre";
 
 export interface QualiopiNavCounts {
   /** Pièces dont une signature manque (partielle) ou n'a pas commencé (en_attente). */
@@ -96,13 +98,12 @@ export async function compterQualiopiNav(): Promise<QualiopiNavCounts> {
     // PLUS les reportées dont l'échéance de report est passée (une relance
     // reportée doit REVENIR, jamais disparaître). Deux définitions donneraient
     // un jour deux chiffres — et un badge qui ment n'est plus jamais regardé.
-    prisma.relanceProposee
-      .count({
-        where: {
-          OR: [{ statut: "a_traiter" }, { statut: "reportee", reporteeJusqua: { lte: now } }],
-        },
-      })
-      .catch(() => 0),
+    // Délai demandé par le client : la MÊME liste que la page Facturation (lecture en erreur =
+    // aucun délai, on compte comme avant).
+    (async () => {
+      const enDelai = await idsDevisEnDelaiClient(prisma, now).catch(() => [] as string[]);
+      return prisma.relanceProposee.count({ where: relancesAtraiterWhere(now, enDelai) });
+    })().catch(() => 0),
     // Lot 1 §1.4 — le MÊME service que la page « À traiter » et que la colonne
     // « Dossier » de la liste des sessions. Un second calcul dirait un jour un
     // autre chiffre pour la même chose, et c'est la promesse écrite en tête de

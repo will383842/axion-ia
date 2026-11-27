@@ -40,6 +40,18 @@ describe("aller-retour écran → payload → lirePayload → écran", () => {
     }
   }
 
+  it("délais saisis : nonImprime.delais = { texte, fourchette } ; rien d'écrit si vides", () => {
+    const e = reducteur(etatT4(), {
+      type: "champs",
+      patch: { delais: { texte: " Délais saisis. ", fourchette: " 6 semaines ", touche: true } },
+    });
+    expect(etatVersPayload(e, 3, CTX).nonImprime["delais"]).toEqual({
+      texte: "Délais saisis.",
+      fourchette: "6 semaines",
+    });
+    expect(etatVersPayload(etatT4(), 3, CTX).nonImprime).not.toHaveProperty("delais");
+  });
+
   it("le choix d'IA de l'écran survit malgré la garde « aucun montant d'IA » du serveur", () => {
     const e = reducteur(etatT1(), {
       type: "champs",

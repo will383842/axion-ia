@@ -16,9 +16,16 @@ import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { peutCorrigerBrouillonClassique } from "@/server/qualiopi/devis/brouillon-classique-modifiable";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { DevisDelaiClient } from "@/components/admin/qualiopi/DevisDelaiClient";
+import {
+  bornesDelaiClient,
+  delaisClientActifs,
+  peutDemanderDelai,
+} from "@/server/qualiopi/devis/delai-client";
 import { ChoixClientSigne } from "@/components/admin/qualiopi/ChoixClientSigne";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { choixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
@@ -59,15 +66,42 @@ import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/est
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
+import { lireCanalEmission } from "@/server/qualiopi/devis/canal-emission";
+import { peutEngager } from "@/server/auth/habilitations";
+import { peutOuvrirPiecePdf } from "@/server/qualiopi/documents/acces-piece";
+import { LOT_DEVIS_ASSISTANT } from "@/server/qualiopi/devis/interrupteur-assistant";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
+import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { ValiditeBrouillon } from "@/components/admin/qualiopi/ValiditeBrouillon";
 import {
   formatDateParis,
   validiteBrouillonModifiable,
+  devisAEstimationTiersFigee,
 } from "@/components/admin/qualiopi/devis-validite";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
+import {
+  aideAdresseDevis,
+  etatHorodatageDevis,
+  urlPdfDevisEmis,
+} from "@/server/qualiopi/devis/console-chaine-devis";
+import {
+  lireDateValiditeImprimee,
+  validiteProlongeeDepuisPdf,
+} from "@/server/qualiopi/documents/signature/devis-signature-queries";
+import { lireHorodatagesDeSignatures } from "@/server/qualiopi/documents/signature/lire-horodatages";
+import { PastilleHorodatage } from "@/components/admin/qualiopi/PastilleHorodatage";
+import { RelanceDevisDepuisLaPage } from "@/components/admin/qualiopi/RelanceDevisDepuisLaPage";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { verserScanDevisSigneAction } from "@/server/actions/qualiopi/devis-scan-papier";
+import {
+  DevisScanPapierEntree,
+  peutVerserScanPapier,
+  libelleSignaturePapier,
+} from "@/components/admin/qualiopi/DevisScanPapierEntree";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 
 export const dynamic = "force-dynamic";
 
@@ -167,10 +201,15 @@ function parseLignes(raw: unknown): DevisLigne[] {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function QualiopiDevisDetailPage({ params }: PageProps) {
+export default async function QualiopiDevisDetailPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
+  const sp = (await searchParams) ?? {};
+  // Résultat scellé de « Préparer une relance » (un message forgé ne s'affiche pas).
+  const messageRelance = lireMessageDeRetour(sp, "message");
+  const erreurRelance = lireMessageDeRetour(sp, "erreur");
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -208,7 +247,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     devis.offre !== null &&
     devis.formuleRetenue !== null &&
     totalLignesHtCents !== null &&
-    (await formulesActives())
+    (await formulesActives(undefined, { clientId: devis.clientId }))
       ? lirePalierSuivant({
           offre: devis.offre,
           formuleRetenue: devis.formuleRetenue,
@@ -223,7 +262,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     devis.offreSha256 !== null &&
     devis.formuleRetenue !== null &&
     (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
-    (await formulesActives());
+    (await formulesActives(undefined, { clientId: devis.clientId }));
   // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
   // normalement ZÉRO plan. Règle pure et testée : `evaluerPlansManquants`. `null` attendu = les
   // plans ne peuvent pas être calculés : message DISTINCT, jamais silencieux.
@@ -267,6 +306,16 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           orderBy: [{ createdAt: "asc" }, { id: "asc" }],
         })
       : [];
+  // Horodatage : lecture SEULE, une requête pour toutes les signatures de la pièce.
+  const etatHorodatage = etatHorodatageDevis(
+    await lireHorodatagesDeSignatures(signatures.map((s) => s.id)).catch(() => null),
+  );
+  // Canal d'émission : en cas d'erreur de lecture, on garde l'affichage d'avant.
+  const canal = await lireCanalEmission(prisma, devis).catch(() => "inconnu" as const);
+  const remisEnMainPropre = canal === "main_propre";
+  // même règle que les routes documents/[id], devis/[id]/apercu, pieces/[id]/exemplaire-signe
+  const peutOuvrirPdf = peutOuvrirPiecePdf(acces.role);
+  const urlPdfEmis = urlPdfDevisEmis(devis);
   // UN SEUL calcul, partagé par le bloc « Signature électronique » et le bloc « Actions » :
   // signature non révoquée ET pièce non annulée (`signatureClientDuDevis`, comme les gardes serveur).
   const { clientASigne, organismeASigne } = signatureClientDuDevis({
@@ -276,12 +325,61 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     },
   });
   const signeParClient = clientASigne && !organismeASigne;
+  const signatureClientPapier = signatures.some(
+    (s) => s.partie === "client" && s.methode === "papier_scanne",
+  );
+  // Version suivante émise (non brouillon) : la prolongation n'est plus proposée sur celle-ci.
+  const successeurEmis =
+    (await prisma.devis.findFirst({
+      where: { replacesDevisId: devis.id, statut: { not: "brouillon" } },
+      select: { id: true },
+    })) !== null;
+  const pieceDuDevis =
+    (devis.statut === "envoye" || devis.statut === "expire") &&
+    devis.documentGenereId !== null &&
+    !clientASigne
+      ? await prisma.devis.findUnique({
+          where: { id: devis.id },
+          select: { documentGenere: { select: { annuleeAt: true, type: true } } },
+        })
+      : null;
+  const pieceType = pieceDuDevis?.documentGenere?.type ?? null;
+  const pieceAnnulee = pieceDuDevis?.documentGenere?.annuleeAt != null;
+  // Même règle que l'action serveur : le signataire est celui de la fiche client.
+  const signataireNomFiche = (client?.contactNom ?? client?.raisonSociale ?? "").trim();
+  const peutVoirScan = peutSignerPourOrganisme(acces.role);
   // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
   // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
   const signeDesDeuxParties =
-    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
+    clientASigne &&
+    organismeASigne &&
+    (devis.statut === "envoye" || (devis.statut === "expire" && !successeurEmis)) &&
+    devis.offreSha256 === null;
   const repriseParRelance =
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
+  // « Le client demande un délai » : devis envoyé, valide, non signé, avec droit d'écriture. La
+  // lecture du délai en cours est « ouverte en cas d'erreur » (aucun délai : on montre comme avant).
+  const maintenantDelai = new Date();
+  const delaiProposable = peutDemanderDelai({
+    statut: devis.statut,
+    clientASigne,
+    signeParClient,
+    signeDesDeuxParties,
+    repriseParRelance,
+    peutEcrire: acces.peutEcrire,
+    dateValidite: devis.dateValidite,
+    maintenant: maintenantDelai,
+  });
+  const finDelaiClient = delaiProposable
+    ? ((
+        await delaisClientActifs(prisma, maintenantDelai, [devis.id]).catch(
+          () => new Map<string, Date>(),
+        )
+      ).get(devis.id) ?? null)
+    : null;
+  const bornesDelai = delaiProposable
+    ? bornesDelaiClient(maintenantDelai, devis.dateValidite)
+    : null;
   // X3 — devis CLASSIQUE (sans offre ni empreinte) signé des deux parties (pièce non annulée),
   // accepté : l'état de la confirmation de commande se lit en base, donc l'information qui suit
   // survit au rafraîchissement. « aucune » : reprise proposée (idempotente) ; « a_valider » : ligne
@@ -300,13 +398,45 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const confirmationClassiquePreparee = etatConfirmation === "a_valider";
   const identiteOrganisme = await getOrganismeIdentite();
 
+  const emailEnAttente =
+    devis.statut === "brouillon" && (await emailDevisEnAttente(prisma, devis.id));
+  // Badge d'affichage (lecture seule) : un ancien devis « envoyé » peut aussi avoir une ligne en
+  // attente. `emailEnAttente` ci-dessus garde son sens (brouillon seulement) pour les gardes.
+  const emailEnAttentePourBadge =
+    devis.statut === "envoye"
+      ? await emailDevisEnAttente(prisma, devis.id).catch(() => false)
+      : emailEnAttente;
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
-    devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
+    devis.statut === "brouillon" &&
+    devis.offreSha256 !== null &&
+    (await formulesActives(undefined, { clientId: devis.clientId }));
   // Brouillon CLASSIQUE : « Modifier le brouillon » mène à /corriger (REPLI D7).
   const estClassique = devis.offre === null && devis.offreSha256 === null;
   const peutCorrigerClassique = peutCorrigerBrouillonClassique(devis);
+  // E19-2 : un brouillon qui a un brouillon d'assistant lié se rouvre dans l'assistant (même règle
+  // que `new/page.tsx` : allumé, ou « essai » sur une fiche d'essai). Lecture seule.
+  let rouvrirDansAssistant = false;
+  if (devis.statut === "brouillon" && peutCorrigerClassique) {
+    const etatAssistant = await lireInterrupteurQualiopi(LOT_DEVIS_ASSISTANT);
+    if (etatAssistant !== "eteint") {
+      const lie = await prisma.devisAssistantBrouillon.findUnique({
+        where: { devisId: devis.id },
+        select: { id: true },
+      });
+      if (lie) {
+        const ficheEssai =
+          etatAssistant === "essai"
+            ? (await prisma.client.findFirst({
+                where: { id: devis.clientId, testInterne: { isNot: null } },
+                select: { id: true },
+              })) !== null
+            : false;
+        rouvrirDansAssistant = estActifPour(etatAssistant, { estTestInterne: ficheEssai });
+      }
+    }
+  }
   const lignes = parseLignes(devis.lignes);
   // Devis à formules, interrupteur allumé et aucune formule retenue : le montant se détermine au
   // choix du client — on résume les formules au lieu d'afficher 0,00 € et « Aucune ligne ».
@@ -315,7 +445,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     try {
       resumeFormules = formulesDuDevis(
         devis.offre,
-        await formulesActives(),
+        await formulesActives(undefined, { clientId: devis.clientId }),
         regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
       );
     } catch (err) {
@@ -324,8 +454,32 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     }
   }
 
+  const aideAdresse = aideAdresseDevis({
+    classique: estClassique,
+    adresse: client?.contactEmail ?? null,
+    statut: devis.statut,
+  });
+
   const isExpired =
     (devis.statut === "brouillon" || devis.statut === "envoye") && devis.dateValidite < new Date();
+  // Affichage du bloc « Validité » : le statut `expire` porte aussi la mention « (expiré) ».
+  const validiteAfficheeExpiree = isExpired || devis.statut === "expire";
+  // Date imprimée sur le PDF scellé (chaîne brute de la photo) : si elle diffère de la date en
+  // cours, la validité a été prolongée après l'envoi. Lecture seule ; absente = rien d'affiché.
+  // Affichage seulement : une lecture en échec ne doit jamais empêcher d'ouvrir la fiche.
+  const dateImprimeeSurPdf = await (async () => {
+    if (devis.documentGenereId === null) return null;
+    try {
+      const piece = await prisma.devis.findUnique({
+        where: { id: devis.id },
+        select: { documentGenere: { select: { metadata: true } } },
+      });
+      return lireDateValiditeImprimee(piece?.documentGenere?.metadata);
+    } catch {
+      return null;
+    }
+  })();
+  const validiteProlongee = validiteProlongeeDepuisPdf(dateImprimeeSurPdf, devis.dateValidite);
 
   const infoLabelCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
@@ -336,6 +490,103 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
     "px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
+
+  const etatScan = {
+    statut: devis.statut,
+    offre: devis.offre,
+    offreSha256: devis.offreSha256,
+    documentGenereId: devis.documentGenereId,
+    pieceType,
+    pieceAnnulee,
+    clientASigne,
+    successeurEmis,
+  };
+  const signaturesElectroniques = signatures.filter((s) => s.methode !== "papier_scanne");
+  const signaturesPapier = signatures.filter((s) => s.methode === "papier_scanne");
+  // Date écrite par le client, recopiée au versement : lue dans le journal (transcription, le scan
+  // fait foi). Au mieux : une lecture en échec n'empêche pas d'afficher la fiche.
+  const datesEcritesParSignature = new Map<string, string>();
+  if (signaturesPapier.length > 0) {
+    const journal = await prisma.activityLog
+      .findMany({
+        where: {
+          action: "qualiopi.devis.scan_papier_verse",
+          targetType: "DocumentSignature",
+          targetId: { in: signaturesPapier.map((s) => s.id) },
+        },
+        select: { targetId: true, changes: true },
+        orderBy: { createdAt: "desc" },
+      })
+      .catch(() => []);
+    for (const l of journal) {
+      const c = l.changes as { dateEcriteParClient?: unknown } | null;
+      const iso = c?.dateEcriteParClient;
+      if (
+        l.targetId !== null &&
+        typeof iso === "string" &&
+        !datesEcritesParSignature.has(l.targetId)
+      ) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+        if (m) datesEcritesParSignature.set(l.targetId, `${m[3]}/${m[2]}/${m[1]}`);
+      }
+    }
+  }
+  // Pour un devis expiré, `isExpired` est faux : la validité dépassée se lit sur la date elle-même.
+  const validiteDepasseeScan =
+    (devis.statut === "envoye" || devis.statut === "expire") && devis.dateValidite < new Date();
+  const ligneSignature = (s: (typeof signatures)[number]) => (
+    <li
+      key={s.id}
+      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
+    >
+      <p className={infoLabelCls}>
+        {s.partie === "client" ? "Accord du client" : "Contresignature de l'organisme"}
+      </p>
+      <p className={infoValueCls}>
+        {s.signataireNom}
+        {s.signataireQualite !== null ? ` — ${s.signataireQualite}` : ""}
+      </p>
+      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        {s.methode === "papier_scanne"
+          ? libelleSignaturePapier(s.signeAt, identiteOrganisme.raisonSociale)
+          : `Signé le ${s.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`}
+        {s.methode === "confirmation_accessible"
+          ? " — confirmation nominative, sans tracé manuscrit"
+          : ""}
+      </p>
+      {s.methode === "papier_scanne" && datesEcritesParSignature.has(s.id) && (
+        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          {`Date écrite par le client : ${datesEcritesParSignature.get(s.id)} (recopiée au versement).`}
+        </p>
+      )}
+      {s.methode === "papier_scanne" && s.partie === "client" && peutVoirScan && (
+        <a
+          href={`/api/qualiopi/devis/${devis.id}/scan-signe`}
+          className="inline-flex min-h-[var(--target-admin-min-mobile)] items-center text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
+        >
+          Ouvrir le scan versé (PDF)
+        </a>
+      )}
+      {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
+        <ChoixClientSigne
+          resultat={choixImprimable(
+            { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
+            {
+              hashVersion: s.hashVersion,
+              choixOffre: s.choixOffre,
+              choixOffreSha256: s.choixOffreSha256,
+            },
+          )}
+          maintenanceFacultativeProposee={maintenanceFacultativeDe(devis.offre)}
+        />
+      ) : null}
+      {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
+            vérifie pas, et une preuve invérifiable n'en est pas une. */}
+      <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
+        <code>{s.selfHash}</code>
+      </p>
+    </li>
+  );
 
   return (
     <AdminPageShell width="wide">
@@ -361,13 +612,20 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         title={`Devis ${devis.numero}`}
         description={client ? client.raisonSociale : "Client inconnu"}
         meta={
-          <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
-            {STATUT_LABELS[devis.statut] ?? devis.statut}
-          </AdminBadge>
+          <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
+            <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+              {STATUT_LABELS[devis.statut] ?? devis.statut}
+            </AdminBadge>
+            <BadgeEmailDevis
+              statut={devis.statut}
+              enAttente={emailEnAttentePourBadge}
+              href={`/${locale}/${adminPrefix}/qualiopi/emails`}
+            />
+          </span>
         }
         actions={
           <>
-            {devis.statut === "brouillon" ? (
+            {devis.statut === "brouillon" && peutOuvrirPdf ? (
               <AdminButton
                 variant="secondary"
                 href={`/api/qualiopi/devis/${devis.id}/apercu`}
@@ -377,13 +635,30 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                 Voir l&apos;aperçu PDF
               </AdminButton>
             ) : null}
+            {urlPdfEmis !== null && peutOuvrirPdf ? (
+              <AdminButton
+                variant="secondary"
+                href={urlPdfEmis}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ouvrir le devis (PDF)
+              </AdminButton>
+            ) : null}
             {peutModifierFormules ? (
               <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/modifier`}>
                 Modifier le brouillon
               </AdminButton>
             ) : null}
             {peutCorrigerClassique ? (
-              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/corriger`}>
+              <AdminButton
+                variant="secondary"
+                href={
+                  rouvrirDansAssistant
+                    ? `${devisBase}/new?devis=${devis.id}`
+                    : `${devisBase}/${devis.id}/corriger`
+                }
+              >
                 Modifier le brouillon
               </AdminButton>
             ) : null}
@@ -426,7 +701,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                 data-testid="mention-signe-par-client"
                 className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
               >
-                Signé par le client, à contresigner
+                {`Signé par le client${signatureClientPapier ? " sur papier" : ""}, à contresigner`}
               </p>
             )}
             {signeDesDeuxParties && (
@@ -468,16 +743,26 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             <p className={infoLabelCls}>Validité</p>
             <p
               className={
-                isExpired ? `${infoValueCls} text-[color:var(--color-admin-warning)]` : infoValueCls
+                validiteAfficheeExpiree
+                  ? `${infoValueCls} text-[color:var(--color-admin-warning)]`
+                  : infoValueCls
               }
             >
               {formatDate(devis.dateValidite)}
-              {isExpired && (
+              {validiteAfficheeExpiree && (
                 <span className="ml-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
                   (expiré)
                 </span>
               )}
             </p>
+            {validiteProlongee && (
+              <p
+                data-testid="validite-prolongee"
+                className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Prolongée (le PDF indique le {dateImprimeeSurPdf}).
+              </p>
+            )}
             {validiteBrouillonModifiable(devis) ? (
               <div className="mt-[var(--space-admin-3)]">
                 <ValiditeBrouillon
@@ -553,7 +838,13 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           {/* Envoyé le */}
           {devis.sentAt != null && (
             <div>
-              <p className={infoLabelCls}>Envoyé le</p>
+              <p className={infoLabelCls}>
+                {remisEnMainPropre
+                  ? "Remis en main propre le"
+                  : canal === "email"
+                    ? "Envoyé par e-mail le"
+                    : "Envoyé le"}
+              </p>
               <p className={infoValueCls}>{formatDate(devis.sentAt)}</p>
             </div>
           )}
@@ -673,47 +964,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Signature électronique</h2>
 
+        {signaturesElectroniques.length > 0 ? <PastilleHorodatage etat={etatHorodatage} /> : null}
+
         {/* Signatures RÉELLEMENT apposées, avec ce dont elles sont faites. */}
-        {signatures.length > 0 && (
+        {signaturesElectroniques.length > 0 && (
           <ul className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
-            {signatures.map((s) => (
-              <li
-                key={s.id}
-                className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
-              >
-                <p className={infoLabelCls}>
-                  {s.partie === "client" ? "Accord du client" : "Contresignature de l'organisme"}
-                </p>
-                <p className={infoValueCls}>
-                  {s.signataireNom}
-                  {s.signataireQualite !== null ? ` — ${s.signataireQualite}` : ""}
-                </p>
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {`Signé le ${s.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`}
-                  {s.methode === "confirmation_accessible"
-                    ? " — confirmation nominative, sans tracé manuscrit"
-                    : ""}
-                </p>
-                {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
-                  <ChoixClientSigne
-                    resultat={choixImprimable(
-                      { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
-                      {
-                        hashVersion: s.hashVersion,
-                        choixOffre: s.choixOffre,
-                        choixOffreSha256: s.choixOffreSha256,
-                      },
-                    )}
-                    maintenanceFacultativeProposee={maintenanceFacultativeDe(devis.offre)}
-                  />
-                ) : null}
-                {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
-                    vérifie pas, et une preuve invérifiable n'en est pas une. */}
-                <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
-                  <code>{s.selfHash}</code>
-                </p>
-              </li>
-            ))}
+            {signaturesElectroniques.map((s) => ligneSignature(s))}
           </ul>
         )}
 
@@ -795,7 +1051,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
             ⚠️ Rendu à la volée : ce n'est PAS la pièce du registre, dont
             l'empreinte est scellée et ne doit jamais être réécrite. */}
-        {signatures.length > 0 && (
+        {signaturesElectroniques.length > 0 && peutOuvrirPdf && (
           <p className="mt-[var(--space-admin-4)]">
             <a
               href={`/api/qualiopi/pieces/${devis.documentGenereId}/exemplaire-signe`}
@@ -814,7 +1070,21 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             aucun lien n'existe encore, et sur un devis accepté / refusé / expiré
             / transformé il n'y a plus rien à signer — l'afficher serait un faux
             positif permanent. */}
-        {devis.statut === "envoye" && !clientASigne && (
+        {devis.statut === "envoye" &&
+        !clientASigne &&
+        remisEnMainPropre &&
+        devis.documentGenereId !== null ? (
+          <p
+            role="status"
+            data-testid="info-remis-main-propre"
+            className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+          >
+            Devis remis en main propre le {devis.sentAt != null ? formatDate(devis.sentAt) : "—"} :
+            aucun e-mail n&apos;est parti et aucun lien de signature en ligne n&apos;existe. Une
+            fois le devis papier signé, cliquez sur « Marquer accepté ». Pour l&apos;envoyer par
+            e-mail, utilisez « Corriger et renvoyer » (nouvelle version).
+          </p>
+        ) : devis.statut === "envoye" && !clientASigne ? (
           <p
             role="alert"
             className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
@@ -823,8 +1093,31 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
               ? "Aucune pièce n'a été générée pour ce devis : le client ne peut pas signer en ligne. Réviser le devis pour le réémettre."
               : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email émet un nouveau lien et invalide l'ancien IMMÉDIATEMENT, avant même la validation de l'e-mail en corbeille : si l'e-mail est refusé ou supprimé, le client n'a plus de lien valable (il faudra alors renvoyer à nouveau)."}
           </p>
-        )}
+        ) : null}
       </section>
+
+      {/* ── Devis signé sur papier ───────────────────────────────────────── */}
+      {/* Une signature manuscrite sur papier n'est pas une signature électronique :
+          elle a sa propre section, jamais sous le titre « Signature électronique ». */}
+      {signaturesPapier.length > 0 || peutVerserScanPapier(etatScan, acces.role) ? (
+        <section data-testid="section-devis-papier" className="mb-[var(--space-admin-8)]">
+          <h2 className={sectionHeadCls}>Devis signé sur papier</h2>
+          {signaturesPapier.length > 0 && (
+            <ul className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
+              {signaturesPapier.map((s) => ligneSignature(s))}
+            </ul>
+          )}
+          <DevisScanPapierEntree
+            etat={etatScan}
+            role={acces.role}
+            devisId={devis.id}
+            signataireNom={signataireNomFiche}
+            organismeNom={identiteOrganisme.raisonSociale}
+            validiteDepassee={validiteDepasseeScan ? formatDate(devis.dateValidite) : null}
+            verserAction={verserScanDevisSigneAction}
+          />
+        </section>
+      ) : null}
 
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
@@ -837,10 +1130,66 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           montantHtLabel={formatEur(devis.montantTotalHtCents)}
           destinataire={client?.contactEmail ?? null}
           clientASigne={clientASigne}
+          emailEnAttente={emailEnAttente}
+          emailsHref={`/${locale}/${adminPrefix}/qualiopi/emails`}
           signeParClient={signeParClient}
           signeDesDeuxParties={signeDesDeuxParties}
           repriseParRelance={repriseParRelance}
+          remisEnMainPropre={remisEnMainPropre}
+          peutConclure={peutEngager(acces.role, "conclure_devis")}
+          peutEcrire={acces.peutEcrire}
+          dateValiditeIso={devis.dateValidite.toISOString()}
+          successeurEmis={successeurEmis}
+          estimationTiersFigee={devisAEstimationTiersFigee(devis)}
         />
+        {delaiProposable ? (
+          <div className="mt-[var(--space-admin-3)]">
+            <DevisDelaiClient
+              devisId={devis.id}
+              numero={devis.numero}
+              delaiJusquAuLisible={
+                finDelaiClient
+                  ? new Intl.DateTimeFormat("fr-FR", {
+                      timeZone: "Europe/Paris",
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    }).format(finDelaiClient)
+                  : null
+              }
+              bornes={bornesDelai}
+            />
+          </div>
+        ) : null}
+        {aideAdresse !== null ? (
+          <p
+            role="note"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+          >
+            {aideAdresse.texte}{" "}
+            {aideAdresse.lienFiche && client ? (
+              <Link
+                href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}`}
+                className="admin-link"
+              >
+                Ouvrir la fiche du client
+              </Link>
+            ) : null}
+          </p>
+        ) : null}
+        {devis.statut === "envoye" &&
+        !clientASigne &&
+        client &&
+        acces.peutEcrire &&
+        !remisEnMainPropre ? (
+          <RelanceDevisDepuisLaPage
+            clientId={client.id}
+            devisId={devis.id}
+            emailsHref={`/${locale}/${adminPrefix}/qualiopi/emails`}
+            message={messageRelance}
+            erreur={erreurRelance}
+          />
+        ) : null}
         <DevisSuiviLivraison
           devisId={devis.id}
           peutDemarrer={peutDemarrerLivraison(devis)}

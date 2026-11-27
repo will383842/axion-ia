@@ -39,6 +39,8 @@ import { FORMATIONS_V2, getFormationV2 } from "@/content/formations/catalog-v2";
 import { DELAI_ACCES_VALEUR } from "@/content/formations/delai-acces";
 import { FormationDetailPage } from "@/components/formations/FormationDetailPage";
 import { getResultatsPublicsFormation } from "@/server/qualiopi/indicateurs/resultats-publics-service";
+import { TermesGlossaireLies } from "@/components/marketing/TermesGlossaireLies";
+import { termesPourOffre } from "@/content/maillage-glossaire";
 
 // ── Dynamisme & ISR ──────────────────────────────────────────────────────────
 // ISR `revalidate=3600` (budget Web Vitals Phase B : éviter un appel DB par requête
@@ -211,6 +213,7 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
           referentHandicap={referentHandicap}
           resultats={resultats}
         />
+        <TermesGlossaireLies locale={locale} termes={termesPourOffre("formation", cat.slugFr)} />
         <EncartEnVideo theme="formations-ia" video={videoEncart} />
       </>
     );

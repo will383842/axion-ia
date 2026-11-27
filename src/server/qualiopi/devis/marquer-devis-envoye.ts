@@ -37,6 +37,22 @@ export interface EntreeMarquerDevisEnvoye {
   replacesDevis: { statut: string; documentGenereId: string | null } | null;
 }
 
+/**
+ * Verrou consultatif NON bloquant de l'envoi d'un devis (clé `devis.envoi:<id>`), tenu jusqu'à la
+ * fin de la transaction. Un second envoi simultané ne l'obtient pas et doit être refusé.
+ * ⚠️ `lien-a-l-envoi.ts` (non modifié par la PR 3) répète encore la même clé : la changer ici
+ * impose de la changer là.
+ */
+export async function prendreVerrouEnvoiDevis(
+  tx: Prisma.TransactionClient,
+  devisId: string,
+): Promise<boolean> {
+  const [verrou] = await tx.$queryRaw<{ locked: boolean }[]>`
+    SELECT pg_try_advisory_xact_lock(hashtext(${"devis.envoi:" + devisId})) AS locked
+  `;
+  return verrou?.locked === true;
+}
+
 export async function marquerDevisEnvoye(
   tx: Prisma.TransactionClient,
   e: EntreeMarquerDevisEnvoye,

@@ -20,8 +20,10 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { enqueueEmail } from "@/server/queue/queues";
+import { enqueueEmail, sonderEnvoiOutboxAvecLien } from "@/server/queue/queues";
+import { cleTacheOutbox, MiseEnFileIncertaine } from "@/server/email/outbox-en-cours";
 import type { MotifRetenue } from "@/server/email/suppression";
+import { CLE_SUJET_CHOISI } from "@/server/qualiopi/devis/contenu-email-devis";
 import type { EmailJobName } from "@/server/queue/types";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import { gabaritEnSommeil, MESSAGE_EMAIL_EN_SOMMEIL } from "@/server/qualiopi/financements/sommeil";
@@ -34,8 +36,8 @@ import { revoquerJetonPrecis } from "@/server/qualiopi/documents/signature/token
 import { ligneDuLien } from "@/server/qualiopi/documents/signature/lien-precedent";
 import {
   EnvoiOccupe,
+  type SondeDejaFait,
   envoyerAvecLienALEnvoi,
-  lireMarqueur,
 } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 import * as Sentry from "@sentry/nextjs";
 import type { Prisma } from "../../../../prisma/generated/client";
@@ -55,6 +57,32 @@ const approuverSchema = z.object({
 });
 
 /**
+ * L'objet que le worker doit imposer, ou `undefined` (le gabarit décide).
+ *
+ * Règle d'origine : seul un objet retouché à l'approbation s'impose. Exception unique : un devis
+ * (`devis-envoi`) dont l'objet a été choisi à l'envoi — la ligne porte alors le marqueur
+ * `sujetChoisi` égal à son objet. Sans marqueur, l'objet de la ligne n'est qu'une étiquette de
+ * corbeille (« Devis N — Axion-IA », « Convention à signer — … ») : jamais envoyée au client.
+ */
+function sujetAImposerALEnvoi(
+  email: { template: string; sujet: string },
+  payload: Record<string, unknown>,
+  sujetDemande: string | undefined,
+): string | undefined {
+  if (sujetDemande !== undefined) {
+    return sujetDemande !== email.sujet ? sujetDemande : undefined;
+  }
+  if (
+    email.template === "devis-envoi" &&
+    email.sujet.trim() !== "" &&
+    payload[CLE_SUJET_CHOISI] === email.sujet
+  ) {
+    return email.sujet;
+  }
+  return undefined;
+}
+
+/**
  * Approuve un email en attente ET l'envoie.
  *
  * La mise à jour conditionnelle (`updateMany` sur `statut: "a_valider"`) sert de
@@ -63,7 +91,7 @@ const approuverSchema = z.object({
  */
 export async function approuverEmailAction(
   input: z.infer<typeof approuverSchema>,
-): Promise<ActionResult<{ id: string; envoye: boolean }>> {
+): Promise<ActionResult<{ id: string; envoye: boolean; dejaFait?: boolean }>> {
   if (estStub()) return { error: "Indisponible pendant le build" };
   const session = await requireAdminWrite();
   const parsed = approuverSchema.safeParse(input);
@@ -121,15 +149,15 @@ export async function approuverEmailAction(
     ...(v.messagePersonnalise ? { messagePersonnalise: v.messagePersonnalise } : {}),
   };
 
+  const sujetAImposer = sujetAImposerALEnvoi(email, payload, v.sujet);
+
   const attachments = Array.isArray(email.attachments)
     ? (email.attachments as Array<{ filename: string; r2Key: string; contentType?: string }>)
     : undefined;
 
   // `enqueueEmail` peut lever (Redis coupé en cours d'appel) : sans ce filet, la
   // ligne resterait en `approuve` — le même tombeau, par une autre porte.
-  let res: { enqueued: boolean; retenu?: MotifRetenue };
-  // B2 — une ligne à marqueur ne porte aucun lien : il naît ici, à l'approbation.
-  const lienALEnvoi = lireMarqueur(email.payload) !== null;
+  let res: { enqueued: boolean; retenu?: MotifRetenue; dejaEnFile?: boolean };
   try {
     const resultat = await envoyerAvecLienALEnvoi({
       ligne: {
@@ -141,6 +169,14 @@ export async function approuverEmailAction(
       },
       payload,
       acteur: { session },
+      // OUT-1 : sonde sous le verrou du devis, AVANT tout jeton : un envoi déjà fait ou en file
+      // ne forge aucun lien neuf (il révoquerait celui que porte l'e-mail déjà en file).
+      sonder: async (): Promise<SondeDejaFait<Awaited<ReturnType<typeof enqueueEmail>>> | null> => {
+        const sonde = await sonderEnvoiOutboxAvecLien(cleTacheOutbox(email.id));
+        return sonde.dejaFait
+          ? { verdict: { enqueued: true, dejaEnFile: true }, urlEnFile: sonde.urlEnFile }
+          : null;
+      },
       // Ne lève QUE si l'e-mail n'est pas parti : rien après l'enfilage ne doit remonter.
       enfiler: async (payloadFinal) => {
         // Le retour est rendu à l'enveloppe, qui lit `enqueued`.
@@ -153,12 +189,14 @@ export async function approuverEmailAction(
             // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
             // corbeille se remplirait d'elle-même à l'infini.
             bypassValidation: true,
+            // OUT-1 : une seule tâche possible par ligne de corbeille (`outbox-<id>`).
+            cleOutbox: cleTacheOutbox(email.id),
             // Lot 2 (2026-09-02) : l'objet corrigé par l'admin traverse enfin la file.
             // Il était persisté, journalisé « modifié », puis jeté : le worker
             // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
             // objet inchangé (ou le nom technique d'un vieux garage) laisse le
             // gabarit décider, comme avant.
-            ...(v.sujet !== undefined && v.sujet !== email.sujet ? { sujetForce: v.sujet } : {}),
+            ...(sujetAImposer !== undefined ? { sujetForce: sujetAImposer } : {}),
             ...(email.entityType ? { entityType: email.entityType } : {}),
             ...(email.entityId ? { entityId: email.entityId } : {}),
             ...(attachments && attachments.length > 0 ? { attachments } : {}),
@@ -200,6 +238,19 @@ export async function approuverEmailAction(
     }
     res = resultat.res;
   } catch (err) {
+    // OUT-1 : issue inconnue (la file n'a pas répondu). L'e-mail est peut-être parti : on NE
+    // remet PAS la ligne « à valider » (une 2e approbation enverrait un doublon). Le balayage
+    // horaire tranche d'après le journal et alerte. Libellé fixe : ni adresse, ni lien, ni payload.
+    if (err instanceof MiseEnFileIncertaine) {
+      Sentry.captureException(new Error("Envoi approuvé : mise en file sans réponse"), {
+        tags: { action: "approuverEmailAction", template: email.template, cause: err.name },
+      });
+      revalidatePath("/[locale]/(admin)/[adminPrefix]/qualiopi/emails", "page");
+      return {
+        error:
+          "L'envoi n'a pas pu être confirmé. Ne l'approuvez pas de nouveau : vérifiez dans E-mails envoyés.",
+      };
+    }
     await prisma.emailOutbox.updateMany({
       where: { id: v.id, statut: "approuve" },
       data: { statut: "a_valider", approuveAt: null, approuveById: null },
@@ -225,14 +276,21 @@ export async function approuverEmailAction(
     // (lu avant le masquage) ; la base garde la forme masquée. Si la mise en file avait
     // échoué, on ne serait pas ici : rien n'est masqué.
     const masque = masquerLienSignaturePayload(email.template, email.payload);
-    await prisma.emailOutbox.update({
-      where: { id: v.id },
+    const marque = await prisma.emailOutbox.updateMany({
+      where: { id: v.id, statut: "approuve" },
       data: {
         statut: "envoye",
         envoyeAt: new Date(),
         ...(masque.modifie ? { payload: masque.payload as Prisma.InputJsonValue } : {}),
       },
     });
+    if (marque.count === 0) {
+      // OUT-1 : la ligne n'est plus « approuvé » (le balayage l'a déjà tranchée) : rien à écraser.
+      Sentry.captureMessage("Envoi approuvé : la ligne n'était plus « approuvé » à l'écriture", {
+        level: "warning",
+        tags: { action: "approuverEmailAction", template: email.template },
+      });
+    }
   } else if (res.retenu !== undefined) {
     // 🔴 2026-09-02 — liste de suppression. L'adresse a rebondi dur (ou la
     // personne s'est désabonnée d'un envoi marketing) : renvoyer l'email en
@@ -290,17 +348,23 @@ export async function approuverEmailAction(
     targetId: v.id,
     changes: {
       template: email.template,
-      // B2 : pas d'adresse dans le journal d'une ligne à lien créé à l'envoi.
-      ...(lienALEnvoi ? {} : { destinataire: email.recipient }),
+      // JRN-1 : jamais d'adresse dans le journal ; `targetId` retrouve la ligne.
       sujetModifie: v.sujet !== undefined && v.sujet !== email.sujet,
       messageAjoute: Boolean(v.messagePersonnalise),
       envoye: res.enqueued,
+      ...(res.dejaEnFile === true ? { dejaFait: true } : {}),
     },
     session,
   });
 
   revalidatePath("/[locale]/(admin)/[adminPrefix]/qualiopi/emails", "page");
-  return { data: { id: v.id, envoye: res.enqueued } };
+  return {
+    data: {
+      id: v.id,
+      envoye: res.enqueued,
+      ...(res.dejaEnFile === true ? { dejaFait: true } : {}),
+    },
+  };
 }
 
 /**

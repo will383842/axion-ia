@@ -15,7 +15,10 @@
  *   - ne pas rejouer `validerEtape(4)` → « automatisation neuve » et « total 0 € » rougissent ;
  *   - appeler `sendDevisAction` avant la synchronisation → « ordre » rougit.
  */
+import { createHash } from "node:crypto";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+const sha = (t: string) => createHash("sha256").update(t.trim(), "utf8").digest("hex");
 
 type Ligne = Record<string, unknown>;
 
@@ -38,13 +41,15 @@ const m = vi.hoisted(() => ({
   projetOuvrable: vi.fn(),
   log: vi.fn(),
   admin: vi.fn(),
+  interrupteur: vi.fn(),
+  clientFindFirst: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     devisAssistantBrouillon: { findFirst: m.findFirst, updateMany: m.updateMany },
     devis: { findUnique: m.devisFindUnique },
-    client: { findUnique: m.clientFindUnique },
+    client: { findUnique: m.clientFindUnique, findFirst: m.clientFindFirst },
     venteBrouillon: { updateMany: m.venteUpdateMany },
     $executeRaw: m.executeRaw,
   },
@@ -70,6 +75,10 @@ vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
 }));
 vi.mock("@/server/qualiopi/crm/devis-projet", () => ({
   projetOuvrableDuClient: m.projetOuvrable,
+}));
+vi.mock("@/server/qualiopi/socle/interrupteurs", async (orig) => ({
+  ...(await orig<typeof import("@/server/qualiopi/socle/interrupteurs")>()),
+  lireInterrupteurQualiopi: m.interrupteur,
 }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(async () => 20),
@@ -116,7 +125,7 @@ function formules(modele: "A" | "B" | "AB" = "AB"): PayloadAssistantV1 {
     { mois: 12, remisePct: "5" },
   ];
   p.formules.abonnement.engagementMois = 12;
-  p.formules.abonnement.indemniteTauxPct = "50";
+  p.formules.abonnement.indemniteTauxPct = "0";
   p.formules.abonnement.lignes = [
     { libelle: "Mise en service et adaptation", quantite: "1", prixEur: "1 900", tauxTvaPct: "20" },
   ];
@@ -202,6 +211,8 @@ beforeEach(() => {
     return 1;
   });
   // Le devis « en base » : créé par l'action, relu pour sa date de dernière mise à jour.
+  m.interrupteur.mockResolvedValue("actif");
+  m.clientFindFirst.mockResolvedValue(null);
   m.devisFindUnique.mockResolvedValue(devisBrouillon());
   m.creerClassique.mockResolvedValue({ data: { id: DEVIS, numero: "AXI-DEV-2026-007" } });
   m.creerFormules.mockResolvedValue({ data: { id: DEVIS, numero: "AXI-DEV-2026-007" } });
@@ -236,6 +247,9 @@ describe("numerotation — première fois", () => {
       { designation: "Atelier", quantite: 1, prixUnitaireHtCents: 240000 },
     ]);
     expect(JSON.stringify(entree)).not.toMatch(/tauxTva/);
+    // Prix unique : la porte existante reçoit l'échéancier, les délais et le plafond.
+    expect(entree.conditionsParticulieres).toContain("Échéancier de paiement");
+    expect(entree.conditionsParticulieres).toContain("Délais :");
     expect(m.creerFormules).not.toHaveBeenCalled();
     expect(m.row).toMatchObject({ devisId: DEVIS, statut: "lie_au_devis", verrouDepuis: null });
     expect((m.row!["payload"] as PayloadAssistantV1).sync).toEqual({
@@ -547,6 +561,68 @@ describe("numerotation — déjà lié : mise à jour, jamais un 2e numéro", ()
     expect(m.row).toMatchObject({ statut: "lie_au_devis", verrouDepuis: null });
   });
 
+  it("classique : une colonne conditionsParticulieres écrite à la main n'est jamais écrasée", async () => {
+    lier(classique());
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({
+        updatedAt: MAJ0,
+        conditionsParticulieres: "Clause négociée avec le client.",
+      }),
+    );
+    const r = await num();
+    expect(r).toMatchObject({ error: expect.stringContaining("conditions particulières") });
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerClassique).not.toHaveBeenCalled();
+    expect(m.row).toMatchObject({ statut: "lie_au_devis", verrouDepuis: null });
+  });
+
+  it("classique : une colonne produite par l'assistant (empreinte identique) est remplacée", async () => {
+    const texte = "Échéancier de paiement\n1. Solde";
+    const p = classique();
+    p.sync = { devisId: DEVIS, devisMajLe: MAJ0.toISOString(), conditionsSha256: sha(texte) };
+    poser(p, { devisId: DEVIS, statut: "lie_au_devis" });
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({ updatedAt: MAJ0, conditionsParticulieres: texte }),
+    );
+    await num();
+    expect(m.modifierClassique).toHaveBeenCalledTimes(1);
+    expect(m.modifierClassique.mock.calls[0]![0].input.conditionsParticulieres).toContain(
+      "Échéancier de paiement",
+    );
+  });
+
+  it("classique : une clause ajoutée sous l'échéancier est refusée, sans écriture", async () => {
+    const texte = "Échéancier de paiement\n1. Solde";
+    const p = classique();
+    p.sync = { devisId: DEVIS, devisMajLe: MAJ0.toISOString(), conditionsSha256: sha(texte) };
+    poser(p, { devisId: DEVIS, statut: "lie_au_devis" });
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({
+        updatedAt: MAJ0,
+        conditionsParticulieres: `${texte}\n\nClause négociée.`,
+      }),
+    );
+    const r = await num();
+    expect(r).toMatchObject({
+      error: expect.stringContaining("Les conditions particulières ont été modifiées à la main"),
+    });
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerClassique).not.toHaveBeenCalled();
+  });
+
+  it("classique : un texte « Échéancier… » sans empreinte gardée est refusé aussi", async () => {
+    lier(classique());
+    m.devisFindUnique.mockResolvedValue(
+      devisBrouillon({
+        updatedAt: MAJ0,
+        conditionsParticulieres: "Échéancier de paiement\n1. Solde",
+      }),
+    );
+    const r = await num();
+    expect("error" in r).toBe(true);
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+  });
+
   it("formules : modifierDevisBrouillonAction avec l'offre rejouée et sync.devisMajLe", async () => {
     lier(formules("AB"));
     m.devisFindUnique.mockResolvedValue(
@@ -745,8 +821,107 @@ describe("envoyerDepuisAssistantAction", () => {
     expect(ordre).toEqual(["numeroter", "envoyer"]);
     expect(m.envoyer).toHaveBeenCalledWith(DEVIS);
     expect(r).toEqual({
-      data: { devisId: DEVIS, emailEnvoye: true, signatureCreee: true },
+      data: { devisId: DEVIS, emailEnvoye: true, signatureCreee: true, garePourValidation: false },
     });
+  });
+
+  it("sans objet ni message : sendDevisAction est appelé exactement comme avant (devisId seul)", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({ data: { id: DEVIS, emailEnvoye: true, signatureCreee: true } });
+    await env();
+    expect(m.envoyer).toHaveBeenCalledTimes(1);
+    expect(m.envoyer.mock.calls[0]).toEqual([DEVIS]);
+  });
+
+  it("objet et message choisis : transmis à sendDevisAction(devisId, { sujet, messagePersonnalise })", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({ data: { id: DEVIS, emailEnvoye: true, signatureCreee: true } });
+    await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      sujet: "Votre devis",
+      messagePersonnalise: "Bonjour, voici le devis.",
+    });
+    expect(m.envoyer).toHaveBeenCalledWith(DEVIS, {
+      sujet: "Votre devis",
+      messagePersonnalise: "Bonjour, voici le devis.",
+    });
+  });
+
+  it("objet trop long ou non textuel : refusé AVANT toute écriture et tout envoi", async () => {
+    poser(classique());
+    const r1 = await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      sujet: "x".repeat(301),
+    });
+    expect("error" in r1).toBe(true);
+    const r2 = await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      messagePersonnalise: "y".repeat(4001),
+    });
+    expect("error" in r2).toBe(true);
+    const r3 = await envoyerDepuisAssistantAction({
+      brouillonId: ID,
+      attenduRevision: 4,
+      sujet: 42 as unknown as string,
+    });
+    expect("error" in r3).toBe(true);
+    expect(m.envoyer).not.toHaveBeenCalled();
+    expect(m.creerClassique).not.toHaveBeenCalled();
+  });
+
+  it("objet ou message interdit (même masqué) : refusé, AUCUNE écriture (numérotation, prisma, envoi)", async () => {
+    poser(classique());
+    const cas = [
+      { sujet: "Devis Qua\u00adliopi" },
+      { sujet: "Prise-en-charge" },
+      { messagePersonnalise: "Votre OPCO" },
+      { messagePersonnalise: "ＯＰＣＯ" },
+    ];
+    for (const c of cas) {
+      const r = await envoyerDepuisAssistantAction({ brouillonId: ID, attenduRevision: 4, ...c });
+      expect("error" in r).toBe(true);
+    }
+    expect(m.creerClassique).not.toHaveBeenCalled();
+    expect(m.modifierClassique).not.toHaveBeenCalled();
+    expect(m.creerFormules).not.toHaveBeenCalled();
+    expect(m.modifierFormules).not.toHaveBeenCalled();
+    expect(m.updateMany).not.toHaveBeenCalled();
+    expect(m.executeRaw).not.toHaveBeenCalled();
+    expect(m.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("mode garé : {emailEnvoye:false, garePourValidation:true, note} reprend sendDevisAction", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({
+      data: {
+        id: DEVIS,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "À valider",
+      },
+    });
+    expect(await env()).toEqual({
+      data: {
+        devisId: DEVIS,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "À valider",
+      },
+    });
+  });
+
+  it("mode direct : garePourValidation vaut false", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({
+      data: { id: DEVIS, emailEnvoye: true, signatureCreee: true, garePourValidation: false },
+    });
+    const r = await env();
+    expect(r).toMatchObject({ data: { emailEnvoye: true, garePourValidation: false } });
   });
 
   it("synchronise (mise à jour) PUIS envoie quand le devis est déjà numéroté", async () => {
@@ -835,5 +1010,48 @@ describe("envoyerDepuisAssistantAction", () => {
     );
     expect(src).not.toMatch(/prisma\.devis\.(update|updateMany|create|delete)/);
     expect(src).not.toMatch(/\.delete(Many)?\(/);
+  });
+});
+
+describe("garde serveur — interrupteur relu à chaque appel", () => {
+  const rienEcrit = () => {
+    expect(m.creerClassique).not.toHaveBeenCalled();
+    expect(m.creerFormules).not.toHaveBeenCalled();
+    expect(m.envoyer).not.toHaveBeenCalled();
+    expect(m.updateMany).not.toHaveBeenCalled();
+    expect(m.executeRaw).not.toHaveBeenCalled();
+  };
+
+  it("éteint : refus clair, aucune écriture, aucun envoi", async () => {
+    poser(classique());
+    m.interrupteur.mockResolvedValue("eteint");
+    const r = await envoyerDepuisAssistantAction({ brouillonId: ID, attenduRevision: 4 });
+    expect(r).toEqual({ error: expect.stringContaining("désactivé") });
+    rienEcrit();
+  });
+
+  it("essai + vrai client : refus, aucune écriture", async () => {
+    poser(classique());
+    m.interrupteur.mockResolvedValue("essai");
+    m.clientFindFirst.mockResolvedValue(null);
+    const r = await num();
+    expect(r).toEqual({ error: expect.stringContaining("fiche d'essai") });
+    expect(m.clientFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: CLIENT, testInterne: { isNot: null } } }),
+    );
+    rienEcrit();
+  });
+
+  it("essai + fiche d'essai : passe", async () => {
+    poser(classique());
+    m.interrupteur.mockResolvedValue("essai");
+    m.clientFindFirst.mockResolvedValue({ id: CLIENT });
+    expect(await num()).toMatchObject({ data: { devisId: DEVIS } });
+  });
+
+  it("actif : passe sans lire la fiche", async () => {
+    poser(classique());
+    expect(await num()).toMatchObject({ data: { devisId: DEVIS } });
+    expect(m.clientFindFirst).not.toHaveBeenCalled();
   });
 });

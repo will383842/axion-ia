@@ -47,6 +47,7 @@ import {
   PLAFOND_ACOMPTE_PARTICULIER_PCT,
 } from "@/server/qualiopi/financements/acompte";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { pedagogieActivePour } from "@/server/qualiopi/pedagogie/interrupteur";
 import {
   montantPrisEnChargeCents,
@@ -405,6 +406,8 @@ export async function produireConvention(
         },
       },
       montantHtCents: true,
+      // Journée IA : la case du devis d'origine (colonne `Devis.journeeIa`), photographiée ici.
+      devis: { select: { journeeIa: true } },
       formationSnapshot: true,
       formation: {
         select: {
@@ -435,6 +438,17 @@ export async function produireConvention(
   // lieu n'est pas émise : le motif dit quoi saisir.
   const refusLieu = refusEmissionLieu(session);
   if (refusLieu !== null) return { ok: false, motif: refusLieu };
+
+  // Convention v8 — photo du réglage à la génération : sans certification obtenue, la clause
+  // financeur, la 5 bis et la ligne Qualiopi ne s'impriment pas, donc la condition suspensive
+  // (qui vit dans la 5 bis) ne peut pas être posée. Refus AVANT toute préparation.
+  const certifie = isQualiopiCertificationObtenue();
+  if (!certifie && opts?.conditionSuspensiveOpco !== undefined) {
+    return {
+      ok: false,
+      motif: "La condition suspensive n'est disponible qu'une fois la certification obtenue.",
+    };
+  }
 
   let condition: ConditionPreparee | null = null;
   if (opts?.conditionSuspensiveOpco !== undefined) {
@@ -481,9 +495,13 @@ export async function produireConvention(
           // facture ». Cf. `acompte-defaut.ts` pour l'arbitrage.
           ...(opts?.acomptePercent !== undefined ? { acomptePercent: opts.acomptePercent } : {}),
           dateConvention: formatDateFr(new Date()),
+          certificationObtenue: certifie,
+          ...(session.devis?.journeeIa === true ? { journeeIa: true } : {}),
           ...(condition !== null ? { conditionSuspensiveOpco: condition.clause } : {}),
         },
-        identite,
+        // `resolveLieuDocument` (ci-dessus) garde l'identité d'origine ; seul le numéro Qualiopi
+        // est vidé tant que la certification n'est pas obtenue.
+        identite: certifie ? identite : { ...identite, qualiopi: "" },
       }),
     // `clientId` non-null ici : la garde « Session sans client » a déjà refusé.
     refs: { sessionId, clientId: session.clientId! },

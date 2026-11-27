@@ -28,6 +28,7 @@ import type { FormationBracket } from "../pricing";
 import { EFFECTIF_SEMINAIRE_FR } from "./effectif";
 import { MATERIEL_SMARTPHONE_OU_ORDINATEUR, MATERIEL_TABLEUR } from "./materiel";
 import type { ModalitePedagogique } from "./modalites";
+import { faqItems } from "../questions-reference";
 
 export interface FormationV2Faq {
   question: string;
@@ -6970,7 +6971,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   ],
 };
 
-export const FORMATIONS_V2: ReadonlyArray<FormationV2> = [
+export const FORMATIONS_V2_SOURCE: ReadonlyArray<FormationV2> = [
   // Offres générales (4)
   BIEN_COMMENCER_4H,
   BIEN_COMMENCER_JOURNEE,
@@ -6998,6 +6999,29 @@ export const FORMATIONS_V2: ReadonlyArray<FormationV2> = [
   // Séminaire — rubrique à part (hors catégories)
   SEMINAIRE_IA_ENTREPRISE,
 ];
+
+/**
+ * Questions communes à toutes les fiches (plan « questions-réponses de référence » du
+ * 18/11/2026) : « différence avec la Journée IA » (texte paramétré par le titre, sans
+ * montant ni durée) et « l'AI Act l'exige-t-il ? » (importée de `questions-reference.ts`).
+ */
+function questionsCommunesFiche(f: FormationV2): FormationV2Faq[] {
+  const aiAct = faqItems(["ref-ai-act-formation"])[0];
+  if (!aiAct) throw new Error("ref-ai-act-formation absente");
+  return [
+    {
+      question: `Quelle différence entre la formation « ${f.titreFr} » et la Journée IA ?`,
+      reponse: `La formation « ${f.titreFr} » répond à un besoin de formation défini avec vous, sur devis écrit, alors que la Journée IA est une journée d’audit et de formation dans vos locaux : l’audit du matin repère et chiffre vos priorités, la formation de l’après-midi forme les équipes sur leurs propres dossiers. La Journée IA est le point de départ recommandé.`,
+    },
+    { question: aiAct.question, reponse: aiAct.answer },
+  ];
+}
+
+/** Catalogue exporté : fiches du catalogue + questions communes en fin de liste. */
+export const FORMATIONS_V2: ReadonlyArray<FormationV2> = FORMATIONS_V2_SOURCE.map((f) => ({
+  ...f,
+  faqs: [...f.faqs, ...questionsCommunesFiche(f)],
+}));
 
 /** Formations « classiques » (exclut les séminaires) pour l'affichage catalogue. */
 export function getFormationsV2(): ReadonlyArray<FormationV2> {

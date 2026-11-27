@@ -2075,6 +2075,17 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par la sonde de santé e-mail, hors du balayage d'`evaluerAlertes`. Le balayage a remis ces e-mails dans la corbeille ; ce qui ferme l'alerte, c'est de les RELIRE et de les approuver de nouveau, pas leur retour en liste.",
     guichet: "direction",
   },
+  emails_envoi_incertain: {
+    // OUT-1. Un envoi approuvé dont la mise en file n'a pas répondu (Redis coupé) a une issue
+    // INCONNUE : l'e-mail est peut-être parti. Le balayage ne le remet pas « à valider » (une
+    // 2e approbation enverrait un doublon) et lève ce code.
+    niveau: "critique",
+    titre: "Des e-mails approuvés ont une issue d'envoi inconnue",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail, hors du balayage d'`evaluerAlertes`. Ce qui la ferme, c'est la vérification humaine dans « E-mails envoyés » (parti ou non), pas le temps qui passe.",
+    guichet: "direction",
+  },
   emails_rebonds: {
     niveau: "critique",
     titre: "E-mails rejetés par le destinataire",

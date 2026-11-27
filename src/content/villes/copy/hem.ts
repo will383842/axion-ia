@@ -49,7 +49,7 @@ export const HEM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hem et dans l'agglomération lilloise est ?",
-      a: "Oui, Axion-IA intervient à Hem et sur toute la Métropole Européenne de Lille (Roubaix, Tourcoing, Croix, Lys-lez-Lannoy, Wattrelos). A22 et axes transfrontaliers facilitent l'accès depuis la Belgique voisine.",
+      a: "Oui, Axion-IA intervient à Hem et sur toute la Métropole Européenne de Lille (Roubaix, Tourcoing, Croix, Lys-lez-Lannoy, Wattrelos).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Hem  ?",

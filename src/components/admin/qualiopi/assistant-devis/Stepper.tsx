@@ -41,8 +41,11 @@ export interface StepperProps {
 export function Stepper({ etape, onAller, desactive = false }: StepperProps) {
   const courant = rangPastille(etape);
   return (
-    <nav aria-label="Étapes du devis">
-      <ol className="mb-[var(--space-admin-6,16px)] flex items-center gap-[var(--space-admin-3,6px)]">
+    <nav
+      aria-label="Étapes du devis"
+      className="sticky top-0 z-10 mb-[var(--space-admin-6,16px)] bg-[color:var(--color-admin-bg)] py-2"
+    >
+      <ol className="grid grid-cols-4 gap-[var(--space-admin-3,6px)]">
         {PASTILLES.map((p) => {
           const etat = p.etape < courant ? "terminee" : p.etape === courant ? "courante" : "future";
           const pastille = (
@@ -50,33 +53,44 @@ export function Stepper({ etape, onAller, desactive = false }: StepperProps) {
               <span
                 aria-hidden="true"
                 className={cn(
-                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-[length:var(--text-admin-xs)] font-semibold",
+                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-[length:var(--text-admin-sm)] font-semibold",
                   etat === "courante" &&
                     "border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-accent)] text-white",
                   etat === "terminee" &&
                     "border-[color:var(--color-admin-success)] bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]",
                   etat === "future" &&
-                    "border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg-soft)]",
+                    "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]",
                 )}
               >
-                {etat === "terminee" ? <Check size={14} /> : p.etape}
+                {etat === "terminee" ? <Check size={16} /> : p.etape}
               </span>
               {/* Sous 640 px le libellé est masqué visuellement mais reste lu. */}
-              <span className="sr-only text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)] sm:not-sr-only">
+              <span
+                className={cn(
+                  "sr-only text-[length:var(--text-admin-sm)] sm:not-sr-only",
+                  etat === "courante"
+                    ? "font-semibold text-[color:var(--color-admin-fg)]"
+                    : "text-[color:var(--color-admin-fg-muted)]",
+                )}
+              >
                 {p.libelle}
                 {etat === "courante" && etape === "1b" ? (
-                  <span className="text-[color:var(--color-admin-fg-soft)]"> › Phases</span>
+                  <span className="text-[color:var(--color-admin-fg-muted)]"> › Phases</span>
                 ) : null}
               </span>
             </>
           );
-          const cls = "flex min-h-[44px] items-center gap-[var(--space-admin-2,4px)]";
+          const cls =
+            "flex min-h-[44px] w-full flex-col items-center justify-center gap-[var(--space-admin-2,4px)] border-b-2 pb-1 sm:flex-row sm:justify-start sm:gap-[var(--space-admin-3,6px)] " +
+            (etat === "courante"
+              ? "border-[color:var(--color-admin-accent)]"
+              : "border-[color:var(--color-admin-border)]");
           return (
-            <li key={p.etape} className="flex flex-1 items-center">
+            <li key={p.etape} className="flex">
               {etat === "terminee" ? (
                 <button
                   type="button"
-                  className={cls}
+                  className={cn(cls, "cursor-pointer")}
                   disabled={desactive}
                   onClick={() => onAller(p.etape)}
                 >

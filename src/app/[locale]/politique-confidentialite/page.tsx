@@ -20,8 +20,9 @@ const SLUG = "politique-confidentialite" as const;
 // retrait du consentement, lot L6). 11 novembre 2026 : section « Demande d'un guide via les réseaux sociaux » (ancre
 // #guide-reseaux-sociaux). 27 septembre 2026 : section « Organisateurs
 // d'événements professionnels » (information art. 14, ancre stable
-// #organisateurs-evenements). À mettre à jour à chaque révision de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
-const LAST_UPDATED_ISO = "2026-11-11";
+// #organisateurs-evenements). 20 novembre 2026 : section « Observatoire de l'IA et Score IA TPE-PME »
+// (ancre #observatoire-ia, V2-10 PR-4). À mettre à jour à chaque révision de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
+const LAST_UPDATED_ISO = "2026-11-20";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -61,7 +62,7 @@ export default async function PolitiqueConfidentialite({ params }: Props) {
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
-        lastUpdated={isFr ? "11 novembre 2026" : "November 11, 2026"}
+        lastUpdated={isFr ? "20 novembre 2026" : "November 20, 2026"}
         lastUpdatedIso={LAST_UPDATED_ISO}
         relatedLinks={[
           { href: "/sous-processeurs", label: isFr ? "Sous-processeurs" : "Sub-processors" },

@@ -49,7 +49,7 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boulay-Moselle ?",
-      a: "Oui, Axion-IA intervient à Boulay-Moselle et dans tout le pays de Nied (Bouzonville, Faulquemont, Courcelles-Chaussy, Falck). Consultants via gare SNCF Courcelles-Chaussy ou autoroute A4. Metz accessible en 30 min.",
+      a: "Oui, Axion-IA intervient à Boulay-Moselle et dans tout le pays de Nied (Bouzonville, Faulquemont, Courcelles-Chaussy, Falck).",
     },
     {
       q: "Travaillez-vous avec les artisans et professions libérales rurales ?",
@@ -65,7 +65,7 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Boulay-Moselle ?",
-      a: "Nos consultants se déplacent via gare SNCF Courcelles-Chaussy (15 min) ou autoroute A4. Metz à 30 min, Thionville à 35 min, Sarrebruck à 50 min.",
+      a: "Une mission à Boulay-Moselle démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

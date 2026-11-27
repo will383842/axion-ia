@@ -48,6 +48,7 @@ vi.mock("./_guards", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { CGV_VERSION } from "@/content/cgv-version";
+import { MENTION_VERSION_DEVIS } from "@/server/qualiopi/documents/signature/mentions-devis";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 import { signerDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -78,7 +79,7 @@ function entree(over: Record<string, unknown> = {}) {
     imageDataUrl: "data:image/png;base64,AAAA",
     cgvAcceptees: true as const,
     cgvVersionAffichee: CGV_VERSION,
-    mentionVersionAffichee: "doc-v2",
+    mentionVersionAffichee: MENTION_VERSION_DEVIS,
     // Signature renforcée (lot 4 bis) : déclaration saisie + code reçu par e-mail.
     declaration: { nom: "Camille Durand", fonction: "Gérante", pouvoirEngager: true },
     code: "123456",
@@ -117,7 +118,7 @@ beforeEach(() => {
     async (args: { select: Record<string, boolean> }) =>
       args.select["statut"] === true
         ? { statut: "envoye" }
-        : { numero: NUMERO, offre: OFFRE, offreSha256: OFFRE_SHA },
+        : { numero: NUMERO, clientId: "client-1", offre: OFFRE, offreSha256: OFFRE_SHA },
   );
   mockSigner.mockResolvedValue({
     ok: true,
@@ -154,6 +155,11 @@ describe("devis à formules — l'action valide le choix contre l'offre figée",
     const res = await signerPieceParJetonAction(entree());
     expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
     expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 la garde est posée pour le CLIENT du devis (fiche d'essai en mode « essai »)", async () => {
+    await signerPieceParJetonAction(entree());
+    expect(interrupteur.formulesActives).toHaveBeenCalledWith(undefined, { clientId: "client-1" });
   });
 
   it("sans choix : `choix_requis`, rien n'est signé", async () => {
@@ -317,7 +323,8 @@ describe("devis à formules — signature RENFORCÉE : déclaration et code (lot
     expect(r.declarationNom).toBe("Camille Durand");
     expect(r.declarationFonction).toBe("Gérante");
     expect(r.pouvoirDeclareAt.getTime()).toBeGreaterThanOrEqual(avant);
-    expect(arg["consentementVersion"]).toBe("doc-consent-code-v1");
+    expect(arg["mentionVersion"]).toBe("devis-v1");
+    expect(arg["consentementVersion"]).toBe("devis-consent-c-v1");
     // Le code est vérifié avec le blocage de 15 minutes.
     expect(code.verifierCodeSignature).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -560,7 +567,8 @@ describe("devis à formules — signature RENFORCÉE : déclaration et code (lot
     expect(res).toMatchObject({ ok: true });
     const arg = mockSigner.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(arg["renforcee"]).toBeUndefined();
-    expect(arg["consentementVersion"]).toBeUndefined();
+    expect(arg["mentionVersion"]).toBe("devis-v1");
+    expect(arg["consentementVersion"]).toBe("devis-consent-v1");
     expect(code.verifierCodeSignature).not.toHaveBeenCalled();
   });
 });

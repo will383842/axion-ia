@@ -17,6 +17,7 @@ const m = vi.hoisted(() => ({
   devisFindMany: vi.fn(),
   clientFindUnique: vi.fn(),
   transaction: vi.fn(),
+  outboxFindFirst: vi.fn(),
   estimate: vi.fn(),
   config: vi.fn(),
   log: vi.fn(),
@@ -33,6 +34,7 @@ vi.mock("@/lib/prisma", () => ({
       deleteMany: m.devisDeleteMany,
     },
     client: { findUnique: m.clientFindUnique },
+    emailOutbox: { findFirst: m.outboxFindFirst },
     $transaction: m.transaction,
   },
 }));
@@ -80,8 +82,50 @@ beforeEach(() => {
   vi.clearAllMocks();
   m.devisFindUnique.mockResolvedValue(EXISTANT);
   m.devisUpdateMany.mockResolvedValue({ count: 1 });
+  m.outboxFindFirst.mockResolvedValue(null);
   m.config.mockResolvedValue("assujetti");
   m.clientFindUnique.mockResolvedValue({ idcc: null });
+});
+
+describe("modifierDevisClassiqueBrouillonAction : l'échéancier suit le total", () => {
+  const TEXTE_1000 =
+    "Échéancier de paiement\n1. Acompte, à la signature : 30 %, soit 360,00 € TTC\n2. Étape, à l'avancement : 30 %, soit 360,00 € TTC\n3. Solde, à la livraison : 40 %, soit 480,00 € TTC\n\nDélais :\nX.";
+  const ligne1500 = [{ designation: "P", quantite: 1, prixUnitaireHtCents: 150000 }];
+  const appeler = (conditionsParticulieres: string) =>
+    modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: { clientId: CLIENT, lignes: ligne1500, conditionsParticulieres },
+    });
+  beforeEach(() => {
+    m.config.mockImplementation(async (k: string) =>
+      k === "taux_tva_standard_percent" ? 20 : "assujetti",
+    );
+  });
+
+  it("1 000 → 1 500 € HT : 540 / 540 / 720 € TTC écrits, clauses suivantes intactes", async () => {
+    const r = await appeler(TEXTE_1000);
+    expect("data" in r).toBe(true);
+    const texte = m.devisUpdateMany.mock.calls[0]?.[0].data.conditionsParticulieres as string;
+    expect(texte.match(/540,00\s€ TTC/g)).toHaveLength(2);
+    expect(texte).toMatch(/720,00\s€ TTC/);
+    expect(texte).not.toMatch(/360,00|480,00/);
+    expect(texte.endsWith("\n\nDélais :\nX.")).toBe(true);
+  });
+
+  it("échéancier retouché, illisible : refus clair, aucune écriture", async () => {
+    const r = await appeler(TEXTE_1000.replace("2. Étape", "Deuxième versement"));
+    expect(r).toEqual({
+      error:
+        "Le texte commence par \"Échéancier de paiement\" mais n'est pas au format de l'assistant : corrigez ou renommez ce titre.",
+    });
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("texte sans échéancier : écrit tel quel", async () => {
+    await appeler("Clause libre.");
+    expect(m.devisUpdateMany.mock.calls[0]?.[0].data.conditionsParticulieres).toBe("Clause libre.");
+  });
 });
 
 describe("modifierDevisClassiqueBrouillonAction", () => {
@@ -127,6 +171,34 @@ describe("modifierDevisClassiqueBrouillonAction", () => {
       input: ENTREE,
     });
     expect("error" in r).toBe(true);
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("un e-mail d'envoi du devis attend validation : refus, sans écrire", async () => {
+    m.outboxFindFirst.mockResolvedValue({ id: "ob-1" });
+    const MSG = "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.";
+    const r = await modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: ENTREE,
+    });
+    expect(r).toEqual({ error: MSG });
+    expect(m.outboxFindFirst).toHaveBeenCalledWith({
+      where: {
+        template: "devis-envoi",
+        entityType: "Devis",
+        entityId: DEVIS,
+        statut: { in: ["a_valider", "approuve"] },
+      },
+      select: { id: true },
+    });
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    const v = await fixerValiditeDevisBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      dateValidite: new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10),
+    });
+    expect(v).toEqual({ error: MSG });
     expect(m.devisUpdateMany).not.toHaveBeenCalled();
   });
 
@@ -599,5 +671,57 @@ describe("fixerValiditeDevisBrouillonAction (S10)", () => {
     vi.mocked(guards.requireAdminWrite).mockRejectedValueOnce(new Error("interdit"));
     await expect(appel("2026-12-08")).rejects.toThrow("interdit");
     expect(m.devisFindUnique).not.toHaveBeenCalled();
+  });
+});
+
+describe("modifierDevisClassiqueBrouillonAction : case « Journée IA » (colonne journeeIa)", () => {
+  const appeler = (input: Record<string, unknown>) =>
+    modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: { ...ENTREE, ...input } as never,
+    });
+
+  it("vraie : la colonne et le paragraphe imprimé sont écrits (idempotent)", async () => {
+    const { TEXTE_GARANTIE_JOURNEE_IA } =
+      await import("@/server/qualiopi/devis/assistant/textes-rubriques");
+    await appeler({ conditionsParticulieres: "Mon texte", journeeIa: true });
+    const data = m.devisUpdateMany.mock.calls[0]![0].data;
+    expect(data.journeeIa).toBe(true);
+    expect(data.conditionsParticulieres).toBe(`Mon texte\n\n${TEXTE_GARANTIE_JOURNEE_IA}`);
+    await appeler({ conditionsParticulieres: data.conditionsParticulieres, journeeIa: true });
+    expect(m.devisUpdateMany.mock.calls[1]![0].data.conditionsParticulieres).toBe(
+      data.conditionsParticulieres,
+    );
+  });
+
+  it("fausse : la colonne est effacée et le paragraphe retiré", async () => {
+    const { TEXTE_GARANTIE_JOURNEE_IA } =
+      await import("@/server/qualiopi/devis/assistant/textes-rubriques");
+    await appeler({
+      conditionsParticulieres: `Mon texte\n\n${TEXTE_GARANTIE_JOURNEE_IA}`,
+      journeeIa: false,
+    });
+    const data = m.devisUpdateMany.mock.calls[0]![0].data;
+    expect(data.journeeIa).toBe(false);
+    expect(data.conditionsParticulieres).toBe("Mon texte");
+  });
+
+  it("clé absente : colonne et conditions intactes (aucune clé écrite)", async () => {
+    await appeler({});
+    const data = m.devisUpdateMany.mock.calls[0]![0].data;
+    expect("journeeIa" in data).toBe(false);
+    expect("conditionsParticulieres" in data).toBe(false);
+  });
+
+  it("vraie sans clé conditions : part du texte enregistré, sans l'effacer", async () => {
+    m.devisFindUnique.mockResolvedValueOnce({
+      ...EXISTANT,
+      conditionsParticulieres: "Texte déjà enregistré",
+    });
+    await appeler({ journeeIa: true });
+    expect(m.devisUpdateMany.mock.calls[0]![0].data.conditionsParticulieres).toMatch(
+      /^Texte déjà enregistré\n\nGarantie de remboursement de la Journée IA/,
+    );
   });
 });

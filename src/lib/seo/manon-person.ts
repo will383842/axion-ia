@@ -13,6 +13,7 @@
  * `stub.invalid`) → l'ISR runtime réhydrate le nœud.
  */
 
+import { LIBELLE_PLUME_IA } from "@/lib/seo/plume-ia";
 import { prisma } from "@/lib/prisma";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 
@@ -46,6 +47,6 @@ export async function getManonByline(): Promise<ManonBylineData | null> {
   if (author?.slug !== "manon") return null;
   return {
     avatarUrl: author.photoUrl256,
-    bio: author.jobTitle,
+    bio: LIBELLE_PLUME_IA,
   };
 }

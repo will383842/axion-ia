@@ -4,11 +4,11 @@
 
 export const ADRESSE_CONTACT = "contact@axion-ia.com";
 
-export const ETAPES = ["Vous", "Votre activité", "Vos documents", "Votre contrat"] as const;
+export const ETAPES = ["Vous", "Votre activité", "Vos pièces", "Votre contrat"] as const;
 
 export const TEXTES = {
   marque: "Axion-IA",
-  surtitre: "Votre contrat d'apporteur",
+  surtitre: "Votre espace apporteur Axion IA",
   bonjour: (prenom: string) => (prenom ? `Bonjour ${prenom}` : "Bonjour"),
   etapeNsur4: (n: number) => `Étape ${n} sur 4`,
   duree: "Environ 10 minutes · vous pouvez reprendre plus tard",
@@ -47,6 +47,8 @@ export const TEXTES = {
   numeroTva: "Numéro de TVA",
   iban: "IBAN (pour vos commissions)",
   ibanEnregistre: (masque: string) => `Enregistré : ${masque}`,
+  ibanAide:
+    "Le RIB sert uniquement à vous verser vos commissions. Vous le trouvez dans l'application de votre banque.",
   ibanRemplacer: "Laissez vide pour garder celui-ci.",
   ibanInvalide:
     "Cet IBAN n'est pas valide, ou n'est pas celui d'un compte de la zone SEPA (Europe), où nous versons les commissions : vérifiez-le.",
@@ -109,9 +111,21 @@ export const TEXTES = {
   signeTitre: "Votre contrat est signé",
   signeLigne: "Vous pouvez nous déclarer une entreprise ci-dessous.",
   signeLigneVigilance: "Déposez ici les attestations que nous vous demandons.",
+  // Préavis de résiliation en cours (lot L1b) : information, aucune action demandée.
+  // `dernierJour` : le dernier jour du contrat (la veille de la prise d'effet).
+  preavisLigne: (dernierJour: string) =>
+    `Votre contrat prend fin le ${dernierJour} au soir. Jusqu'à cette date, vous pouvez continuer à nous présenter des entreprises.`,
   telechargerSigne: "Télécharger mon contrat signé (PDF)",
   connexionPerdue: "Connexion perdue : vos réponses sont conservées sur cet écran, réessayez.",
   etapeAnnonce: (n: number, nom: string) => `Étape ${n} sur 4 : ${nom}`,
+  // Écran juste après la signature (2026-11-27) : trois points simples.
+  ensuiteTitre: "Et ensuite ?",
+  ensuite: [
+    "Axion IA contresigne votre contrat, vous recevez un e-mail.",
+    "Vous retrouvez tous vos documents dans « Mes documents ».",
+    "Vous pouvez présenter vos premières entreprises.",
+  ],
+  mesDocuments: "Mes documents",
   fermer: "Vous pouvez fermer cette page.",
   // Lien invalide
   // Le lien d'exemple de l'aperçu de la console (2026-10-07) : Will a cliqué le

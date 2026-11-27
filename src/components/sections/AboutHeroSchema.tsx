@@ -29,7 +29,7 @@ export function AboutHeroSchema({ isFr, ariaLabel, className }: AboutHeroSchemaP
           icon: BarChart3,
           eyebrow: "Pilier 2",
           title: "ROI mesurable",
-          detail: "Plan d'action chiffré priorisé, support post-livraison inclus.",
+          detail: "Plan d'action chiffré et priorisé.",
           lead: false,
         },
         {
@@ -52,7 +52,7 @@ export function AboutHeroSchema({ isFr, ariaLabel, className }: AboutHeroSchemaP
           icon: BarChart3,
           eyebrow: "Pillar 2",
           title: "Measurable ROI",
-          detail: "Costed prioritised action plan, post-delivery support included.",
+          detail: "Costed, prioritised action plan.",
           lead: false,
         },
         {

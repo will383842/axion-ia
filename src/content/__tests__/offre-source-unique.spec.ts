@@ -3,7 +3,7 @@
 // Deux familles de vérifications :
 //
 // 1. Les FAITS de la source : prix lu dans `pricing.ts`, rendez-vous gratuit de 45 minutes,
-//    cible « de 5 à 249 salariés », mention prudente de l'article 4, garantie reprise mot
+//    cible « de 2 à 250 salariés », mention prudente de l'article 4, garantie reprise mot
 //    pour mot de `journee-ia-commun.ts`.
 // 2. Un BALAYAGE des textes publics, prompts, chatbot et e-mails : un prix de la Journée IA,
 //    une durée du rendez-vous gratuit ou une cible d'effectif DIFFÉRENTS de la source font
@@ -51,12 +51,12 @@ describe("offre.ts — les faits de la source", () => {
     expect(DUREE_RDV).toBe("45 minutes");
     expect(DUREE_RDV_COURTE).toBe("45 min");
     expect(MICRO_TEXTE_RDV).toBe(
-      "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
+      "Diagnostic IA · 45 minutes · gratuit et facultatif · en visio ou par téléphone · sans engagement",
     );
   });
 
-  it("cible les PME et TPE de 5 à 249 salariés", () => {
-    expect(EFFECTIF_CIBLE).toBe("de 5 à 249 salariés");
+  it("cible les PME et TPE de 2 à 250 salariés", () => {
+    expect(EFFECTIF_CIBLE).toBe("de 2 à 250 salariés");
   });
 
   it("matin audit, après-midi formation", () => {
@@ -72,20 +72,25 @@ describe("offre.ts — les faits de la source", () => {
   it("reprend la garantie mot pour mot, sans rien inventer", () => {
     expect(OFFRE_JOURNEE_IA.garantie.phrase).toBe(GARANTIE_PHRASE);
     expect(OFFRE_JOURNEE_IA.garantie.condition).toBe(CONDITION_GARANTIE);
-    expect(OFFRE_JOURNEE_IA.garantie.brouillon).toBe(true);
+    expect(OFFRE_JOURNEE_IA.garantie).not.toHaveProperty("brouillon");
+    expect(OFFRE_JOURNEE_IA.garantie.multiplePrixHt).toBe(3);
+    expect(OFFRE_JOURNEE_IA.garantie.delaiDemandeJours).toBe(30);
+    expect(OFFRE_JOURNEE_IA.garantie.delaiReponseJours).toBe(15);
+    expect(OFFRE_JOURNEE_IA.garantie.delaiVirementJours).toBe(30);
+    expect(OFFRE_JOURNEE_IA.deroule.rapportJoursOuvres).toBe(10);
   });
 });
 
 describe("offre.ts — les premiers consommateurs rendent EXACTEMENT le même texte", () => {
   it("promesse du Diagnostic IA (réservation)", () => {
     expect(TYPES_RESERVABLES.diagnostic.promesse).toBe(
-      "Diagnostic IA gratuit, 45 minutes, en visio ou par téléphone, sans engagement",
+      "Diagnostic IA, 45 minutes, gratuit, en visio ou par téléphone, sans engagement",
     );
   });
 
   it("règles fixes du chatbot", () => {
     expect(REGLES_FIXES).toContain(
-      "L'orientation par défaut est le Diagnostic IA gratuit de 45 minutes, sans engagement (un seul rendez-vous gratuit) ; cette durée est un fait que vous pouvez citer.",
+      "L'orientation par défaut est le Diagnostic IA de 45 minutes, sans engagement (un seul rendez-vous gratuit) ; cette durée est un fait que vous pouvez citer.",
     );
   });
 });
@@ -153,13 +158,13 @@ const REGLES: ReadonlyArray<{
   {
     nom: "durée du rendez-vous gratuit",
     motif:
-      /(?:rendez-vous gratuit|diagnostic IA gratuit|diagnostic gratuit|appel découverte|échange gratuit|premier échange)[^.\n]{0,60}?\b(\d+)\s?-?\s?(?:min\b|minutes?\b)/gi,
+      /(?:rendez-vous gratuit|Diagnostic IA|diagnostic IA gratuit|diagnostic gratuit|appel découverte|échange gratuit|premier échange)[^.\n]{0,60}?\b(\d+)\s?-?\s?(?:min\b|minutes?\b)/gi,
     diverge: (m) => Number(m[1]) !== DUREE_ATTENDUE,
   },
   {
     nom: "durée du rendez-vous gratuit (durée avant)",
     motif:
-      /\b(\d+)\s?-?\s?(?:min\b|minutes?\b)[^.\n]{0,40}?(?:rendez-vous gratuit|diagnostic IA gratuit|diagnostic gratuit|appel découverte)/gi,
+      /\b(\d+)\s?-?\s?(?:min\b|minutes?\b)[^.\n]{0,40}?(?:rendez-vous gratuit|Diagnostic IA|diagnostic IA gratuit|diagnostic gratuit|appel découverte)/gi,
     diverge: (m) => Number(m[1]) !== DUREE_ATTENDUE,
   },
   {
@@ -190,8 +195,8 @@ describe("offre.ts — aucun texte public, prompt ou e-mail ne contredit la sour
   it("les témoins : chaque règle attrape un vrai défaut et laisse passer la bonne valeur", () => {
     expect(divergences("La Journée IA à 2 450 € HT, dans vos locaux.")).toHaveLength(1);
     expect(divergences("La Journée IA à 1 490 € HT, dans vos locaux.")).toHaveLength(0);
-    expect(divergences("Réservez votre Diagnostic IA gratuit de 30 minutes.")).toHaveLength(1);
-    expect(divergences("Réservez votre Diagnostic IA gratuit de 45 minutes.")).toHaveLength(0);
+    expect(divergences("Réservez votre Diagnostic IA de 30 minutes.")).toHaveLength(1);
+    expect(divergences("Réservez votre Diagnostic IA de 45 minutes.")).toHaveLength(0);
     expect(divergences("Un appel de 60 min, diagnostic gratuit et sans engagement.")).toHaveLength(
       1,
     );
@@ -201,9 +206,9 @@ describe("offre.ts — aucun texte public, prompt ou e-mail ne contredit la sour
     expect(divergences("La Journée IA (commission de 500 € HT).")).toHaveLength(0);
     expect(divergences("Allumé : la commission de la Journée IA (500 € HT).")).toHaveLength(0);
     expect(divergences("La Journée IA pour les PME (10 à 249 salariés).")).toHaveLength(1);
-    expect(divergences("La Journée IA pour les PME (5 à 249 salariés).")).toHaveLength(0);
+    expect(divergences("La Journée IA pour les PME (2 à 250 salariés).")).toHaveLength(0);
     expect(divergences("Axion-IA aide les PME de 10 à 249 salariés.")).toHaveLength(1);
-    expect(divergences("Axion-IA aide les PME et les TPE, de 5 à 249 salariés.")).toHaveLength(0);
+    expect(divergences("Axion-IA aide les PME et les TPE, de 2 à 250 salariés.")).toHaveLength(0);
   });
 
   it("aucune divergence dans les racines balayées", () => {

@@ -101,6 +101,11 @@ describe("CarteFormuleB", () => {
     expect(screen.queryByRole("note")).toBeNull();
   });
 
+  it("D4 : la carte B ne propose aucun champ d'indemnité de sortie", () => {
+    render(<Hote vue="b" />);
+    expect(screen.queryByLabelText(/Indemnité/)).toBeNull();
+  });
+
   it("mensuel, niveau et IA incluse s'écrivent dans l'état, sans montant d'IA", () => {
     render(<Hote vue="b" />);
     fireEvent.change(screen.getByLabelText(/Abonnement mensuel \(HT\)/), {

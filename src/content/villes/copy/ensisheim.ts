@@ -49,7 +49,7 @@ export const ENSISHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ensisheim dans le Haut-Rhin ?",
-      a: "Oui, Axion-IA intervient à Ensisheim et dans tout le centre Haut-Rhin (Mulhouse, Colmar, Guebwiller, Soultz, Wittenheim). Nos consultants se déplacent sur site ou en visio, A35 axe direct Strasbourg-Mulhouse.",
+      a: "Oui, Axion-IA intervient à Ensisheim et dans tout le centre Haut-Rhin (Mulhouse, Colmar, Guebwiller, Soultz, Wittenheim). Nos consultants interviennent sur site ou en visio.",
     },
     {
       q: "Quel est le prix d'un audit IA à Ensisheim ?",

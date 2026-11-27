@@ -65,7 +65,7 @@ export const SALLANCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sallanches ?",
-      a: "Nos consultants interviennent sur site dans vos locaux à Sallanches ou en visio. Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour missions multi-jours en saison.",
+      a: "Nos consultants interviennent sur site dans vos locaux à Sallanches ou en visio. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

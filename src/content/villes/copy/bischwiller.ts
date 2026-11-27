@@ -49,7 +49,7 @@ export const BISCHWILLER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bischwiller et dans le Nord Alsace ?",
-      a: "Oui, Axion-IA intervient à Bischwiller et sur tout le Nord Alsace (Haguenau, Brumath, Hochfelden, Wissembourg). Strasbourg à 30 min via A4, gare SNCF Bischwiller connectée à la ligne Strasbourg-Wissembourg.",
+      a: "Oui, Axion-IA intervient à Bischwiller et sur tout le Nord Alsace (Haguenau, Brumath, Hochfelden, Wissembourg).",
     },
     {
       q: "Combien coûte un audit IA à Bischwiller  ?",

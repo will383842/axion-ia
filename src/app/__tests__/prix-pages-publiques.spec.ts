@@ -57,6 +57,11 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
 /** Fichiers de contenu (hors `app/` et `components/`) rendus au public par ce lot. */
 const CONTENUS: ReadonlyArray<string> = [
   "content/audit-detail-configs.ts",
+  "content/glossaire-reference/termes-fondamentaux.ts",
+  "content/glossaire-reference/termes-modeles-infra.ts",
+  "content/glossaire-reference/termes-rag-agents.ts",
+  "content/glossaire-reference/termes-securite-gouvernance.ts",
+  "content/glossaire-reference/termes-usages-visibilite.ts",
   "content/audit-taxonomy.ts",
   "content/intervention-detail-configs.ts",
   "content/interventions-taxonomy.ts",
@@ -228,8 +233,6 @@ const MONTANT_EUR = /\d[\d.,\s  ]*(?:k\s?€|M€|€|EUR\b|euros?\b)|(?:€|k�
 const FICHIERS_EXEMPTES: Readonly<Record<string, string>> = {
   "content/comparaisons.ts":
     "comparatif de marché : coûts SaaS tiers (20-30 €/user/mois), RAG/fine-tuning, salaires data scientist, seuils d'internalisation",
-  "content/glossary-extension.ts":
-    "coûts d'API de modèles tiers (€/Mtok) et exemples de définition",
   "content/stack-ia-details.ts": "prix d'outils tiers (licences par siège)",
   "content/case-studies.ts":
     "seuil de validation de factures chez un client (« montants > 5000 € »)",
@@ -237,14 +240,15 @@ const FICHIERS_EXEMPTES: Readonly<Record<string, string>> = {
 
 const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string }> = [
   {
+    fichier: "app/[locale]/_accueil/contenu.ts",
+    motif: /formatAmount\(seuilGarantieEur\(\), "fr"\)/,
+    raison:
+      "seuil de la garantie de la Journée IA (3 fois son prix HT), calculé depuis pricing.ts par seuilGarantieEur()",
+  },
+  {
     fichier: "components/sections/AuditConversionBlocks.tsx",
     motif: /30 k€|€30k/,
     raison: "devis opaque d'un concurrent (repoussoir), pas un tarif Axion-IA",
-  },
-  {
-    fichier: "components/formations/FormationDetailPage.tsx",
-    motif: /0 € de reste à charge/,
-    raison: "reste à charge après financement OPCO, pas un tarif",
   },
   {
     fichier: "app/[locale]/formations/entreprise/page.tsx",
@@ -265,11 +269,6 @@ const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string
     fichier: "content/automatisations.ts",
     motif: /1 500 €\/mois|€1,500\/month/,
     raison: "coût d'une agence SEO concurrente",
-  },
-  {
-    fichier: "content/formations/conditions-tarifaires.ts",
-    motif: /inférieure à 5 000 € HT/,
-    raison: "seuil des conditions de paiement (CGV), pas un prix d'offre",
   },
   {
     fichier: "content/transversal.ts",

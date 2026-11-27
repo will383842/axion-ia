@@ -16,7 +16,6 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight, FileText, Layers, Clock, RefreshCw } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
@@ -172,11 +171,7 @@ export async function BlogListingView({ locale, currentPageRequested }: ViewProp
       : "The Axion-IA blog gathers AI audit methodology, operational quick-wins and custom AI strategy for French SMBs. Every article is written after a real engagement — no speculation, no hype — and designed to stay actionable twelve months after publication.",
     speakable: true,
     mainEntity: { "@id": `${SITE_URL}/${locale}${pagePath}#itemlist` },
-    extra: {
-      // `@id` canonique, jamais interpolé par la locale : la fiche `/equipe/[slug]` 404
-      // hors FR, donc `…/en/equipe/williams#person` désignait une entité sans page.
-      reviewedBy: { "@id": FOUNDER_PERSON_ID },
-    },
+    // V2-17 : aucune relecture déclarée (`reviewedBy`) : aucune donnée n'atteste une relecture humaine.
   });
 
   // Pills réassurance (count dynamique)

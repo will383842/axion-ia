@@ -6,6 +6,7 @@
 // invitée, qui n'est pas forcément celle qu'on ouvre.
 
 import { prisma } from "@/lib/prisma";
+import { decoderEntites } from "@/lib/email/apercu-lecteur";
 import { decryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { lienZoho } from "@/lib/commercial-application/reponse-entrante";
 
@@ -45,6 +46,8 @@ export async function lireReponsesRecues(submissionId: string): Promise<ReponseR
     try {
       extrait = l.excerpt ? decryptPii(l.excerpt) : null;
       if (extrait === PII_DECRYPT_PLACEHOLDER) extrait = null;
+      // Réponses déjà en base : l'apostrophe y est restée « &#39; ».
+      else if (extrait) extrait = decoderEntites(extrait);
     } catch {
       extrait = null;
     }

@@ -49,7 +49,7 @@ export const CHATEAULIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteaulin et dans la vallée de l'Aulne ?",
-      a: "Oui, Axion-IA intervient à Châteaulin et dans toute la vallée de l'Aulne (Pleyben, Cast, Port-Launay, Saint-Coulitz, Dinéault). Couverture Quimper à 30 min et presqu'île de Crozon à 25 min.",
+      a: "Oui, Axion-IA intervient à Châteaulin et dans toute la vallée de l'Aulne (Pleyben, Cast, Port-Launay, Saint-Coulitz, Dinéault).",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires autour de Châteaulin ?",
@@ -65,7 +65,7 @@ export const CHATEAULIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Châteaulin ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Livrable actionnable.",
     },
   ],
 };

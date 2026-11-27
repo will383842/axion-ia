@@ -9,7 +9,7 @@
  *
  * Ce test garantit, sur ces trois pages :
  *   · la présence du lien vers `/fr/journee-ia` (et d'un rendez-vous `depuis=`) ;
- *   · aucune occurrence de « 7 jours » (le rapport arrive sous 3 jours ouvrés) ;
+ *   · aucune occurrence de « 7 jours » (le rapport arrive sous `DELAI_RAPPORT_JOURS_OUVRES` jours ouvrés) ;
  *   · aucun montant hors jeton (le seul prix public est celui de La Journée IA,
  *     lu dans `pricing.ts`) ;
  *   · aucun mot interdit.
@@ -27,6 +27,7 @@ import {
   GARANTIE_PHRASE,
   RAPPORT_COMPLET,
   lienDiagnostic,
+  DELAI_RAPPORT_JOURS_OUVRES,
 } from "@/content/journee-ia-commun";
 import { phrasePrixJourneeIa, texteDuRenvoi } from "@/content/renvoi-journee-ia";
 import { getFormationV2 } from "@/content/formations/catalog-v2";
@@ -136,11 +137,11 @@ describe("lien vers /fr/journee-ia sur les trois pages", () => {
   });
 });
 
-describe("le rapport : sous 3 jours ouvrés, jamais « 7 jours »", () => {
+describe("le rapport : sous le délai des CGV, jamais « 7 jours »", () => {
   const SEPT_JOURS = /\b7\s?jours\b|\bsept jours\b|\b7\s?days\b/i;
 
-  it("le bloc de renvoi dit 3 jours ouvrés", () => {
-    expect(RAPPORT_COMPLET).toMatch(/sous 3 jours ouvrés/i);
+  it("le bloc de renvoi dit le délai des CGV", () => {
+    expect(RAPPORT_COMPLET).toContain(`Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`);
     expect(texteDuRenvoi()).toContain(RAPPORT_COMPLET);
   });
 
@@ -160,7 +161,8 @@ describe("un seul prix public : celui de La Journée IA, lu dans pricing.ts", ()
     expect(phrasePrixJourneeIa()).toContain(prixDeLaJournee());
     const sansJeton = texteDuRenvoi().split(prixDeLaJournee()).join("");
     expect(sansJeton).not.toMatch(MONTANT);
-    expect(sansJeton).not.toMatch(/\bHT\b/);
+    // La garantie dit « le prix HT de la journée » (sans montant) : ce libellé n'est pas un prix.
+    expect(sansJeton.split("prix HT de la journée").join("")).not.toMatch(/\bHT\b/);
   });
 
   it("aucun montant écrit dans les sources des pages et composants alignés", () => {

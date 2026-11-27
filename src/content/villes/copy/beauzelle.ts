@@ -14,9 +14,9 @@ export const BEAUZELLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
-    "Beauzelle est une commune résidentielle du nord-ouest de Toulouse, entre Blagnac et Aussonne. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Proximité de l'aéroport et du pôle aéronautique.",
+    "Beauzelle est une commune résidentielle du nord-ouest de Toulouse, entre Blagnac et Aussonne. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Voisinage du pôle aéronautique toulousain.",
   ecosystemEn:
-    "Beauzelle est une commune résidentielle du nord-ouest de Toulouse, entre Blagnac et Aussonne. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Proximité de l'aéroport et du pôle aéronautique.",
+    "Beauzelle est une commune résidentielle du nord-ouest de Toulouse, entre Blagnac et Aussonne. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Voisinage du pôle aéronautique toulousain.",
   distancesFr:
     "Toulouse centre à 15 min (D902). Aéroport Toulouse-Blagnac à 8 min. Gare Matabiau à 20 min. Blagnac à 5 min. Aussonne à 5 min.",
   distancesEn:

@@ -13,7 +13,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
@@ -174,19 +173,8 @@ export default async function BlogCategoriesHub({ params }: Props) {
       : "The Axion-IA blog across 5 topics (training, 1-to-1 coaching, audits, implementation, AI-enhanced websites): AI methodology and use cases tested with French SMBs.",
     // Fraîcheur (audit SEO 2026-06-25) — date du dernier article mis à jour.
     // Stub-safe : latestDate null → champs omis par la factory.
-    ...(latestDate ? { dateModified: latestDate, lastReviewed: latestDate } : {}),
-    // E-E-A-T : revue éditoriale rattachée au nœud Person canonique du fondateur
-    // (référence `@id` — PAS de duplication d'identité ; le nœud est défini par
-    // l'Organization du layout). Pair avec `lastReviewed`.
-    ...(latestDate
-      ? {
-          extra: {
-            // `@id` canonique, jamais interpolé par la locale : la fiche `/equipe/[slug]`
-            // 404 hors FR, donc `…/en/equipe/williams#person` désignait une entité sans page.
-            reviewedBy: { "@id": FOUNDER_PERSON_ID },
-          },
-        }
-      : {}),
+    ...(latestDate ? { dateModified: latestDate } : {}),
+    // V2-17 : AUCUNE relecture déclarée (`reviewedBy`/`lastReviewed`) : aucune donnée n'atteste une relecture humaine de ce hub.
     // isPartOf omis → la factory référence le nœud canonique `#website`
     // (évite de créer un second WebSite inline plus faible — audit SEO 2026-06-24).
     // Speakable : l'intro answer-ready (#axion-direct-answer) devient citable voix/AI-Overview.
@@ -314,20 +302,11 @@ export default async function BlogCategoriesHub({ params }: Props) {
               : `The Axion-IA blog gathers ${totalArticles} article${totalArticles > 1 ? "s" : ""} across ${categories.length} AI topics — training, 1-to-1 coaching, audits, implementation and AI-enhanced websites. Each topic bundles a proven methodology and concrete use cases field-tested with French SMBs. Pick a topic to jump straight to the matching articles.`}
           </p>
           <p className="text-fg-muted mt-4 text-sm">
-            {isFr ? "Sélection éditoriale supervisée par " : "Editorial selection overseen by "}
-            <a
-              href={`/${locale}/equipe/williams`}
-              className="text-terracotta-deep font-medium underline-offset-2 hover:underline"
-            >
-              {FOUNDER.displayName}
-            </a>
-            {isFr ? ", fondateur d'Axion-IA" : ", founder of Axion-IA"}
             {latestDateLabel
               ? isFr
-                ? ` · Mis à jour le ${latestDateLabel}`
-                : ` · Updated ${latestDateLabel}`
+                ? `Mis à jour le ${latestDateLabel}.`
+                : `Updated ${latestDateLabel}.`
               : ""}
-            .
           </p>
         </div>
       </Container>

@@ -49,7 +49,7 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bonnières-sur-Seine et dans le Mantois ?",
-      a: "Oui, Axion-IA intervient à Bonnières-sur-Seine et dans tout le Mantois ouest (Rosny-sur-Seine à 5 min, Mantes-la-Jolie à 10 min, Vernon à 15 min). Nos consultants se déplacent sur site ou en visio.",
+      a: "Oui, Axion-IA intervient à Bonnières-sur-Seine et dans tout le Mantois ouest (Rosny-sur-Seine, Mantes-la-Jolie, Vernon). Nos consultants interviennent sur site ou en visio.",
     },
     {
       q: "Tarifs audit IA à Bonnières-sur-Seine  : quel budget prévoir ?",

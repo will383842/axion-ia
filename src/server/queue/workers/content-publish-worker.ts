@@ -29,6 +29,8 @@
 // tentait de COMPLÉTER un job dont il avait rendu le lock → erreurs « job not
 // in active state » (cf. bullmq/dist/esm/classes/worker.js : DelayedError est
 // intercepté et n'émet PAS l'event `failed`).
+import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
+import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import { Queue, Worker, DelayedError, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
@@ -400,6 +402,72 @@ async function executePublishPipeline(
     actualite: cgJob.contentType === "blog_from_rss",
     financementPublicAutorise: financementPublicAutoriseAujourdhui(),
   });
+  // PR 5 — type soumis au fact-check Claude (drapeau allumé) : sans la preuve écrite par le
+  // worker de génération, l'article n'est PAS publié (relecture). Drapeau éteint : inerte.
+  // Une approbation HUMAINE (`reviewedBy` posé par la console) reste un feu vert délibéré.
+  if (
+    publicationSansPreuveFactCheck({
+      contentType: cgJob.contentType,
+      output,
+      existingArticle: Boolean(existingArticle),
+      reviewedBy: review.reviewedBy,
+    })
+  ) {
+    await logStepError(
+      cgJob.id,
+      "validation",
+      "Publication refusée : fact-check par Claude non passé (article non vérifié)",
+      { fact_check_claude: "absent" },
+    );
+    await prisma.contentGenJob.update({
+      where: { id: cgJob.id },
+      data: { status: "needs_review", errorMessage: "fact_check_claude_non_passe" },
+    });
+    await prisma.reviewQueue.update({
+      where: { id: reviewQueueId },
+      data: {
+        status: "pending",
+        reviewNotes: "[fact-check Claude] non passé : relecture humaine requise",
+      },
+    });
+    return;
+  }
+  // Offre « Journée IA » : filet de dernière minute pour tout chemin d'auto-approbation
+  // (génération, boucle qualité, actualités). Sans approbation HUMAINE (`reviewedBy` posé
+  // par la console), le contenu retourne en relecture, quelle que soit sa note.
+  if (!existingArticle && !review.reviewedBy) {
+    const campagne = cgJob.campaignId
+      ? await prisma.coverageCampaign
+          .findUnique({ where: { id: cgJob.campaignId }, select: { name: true } })
+          .catch(() => null)
+      : null;
+    if (
+      exigeRelectureHumaine({
+        output,
+        inputPayload: cgJob.inputPayload,
+        campaignName: campagne?.name ?? null,
+      })
+    ) {
+      await logStepError(
+        cgJob.id,
+        "validation",
+        "Publication refusée : contenu qui parle de la Journée IA, relecture humaine obligatoire",
+        { journee_ia: true },
+      );
+      await prisma.contentGenJob.update({
+        where: { id: cgJob.id },
+        data: { status: "needs_review", errorMessage: "relecture_humaine_journee_ia" },
+      });
+      await prisma.reviewQueue.update({
+        where: { id: reviewQueueId },
+        data: {
+          status: "pending",
+          reviewNotes: "[Journée IA] relecture humaine obligatoire avant publication",
+        },
+      });
+      return;
+    }
+  }
   // Un article déjà inséré pour ce job (retry après insertion) n'est jamais retenu ici.
   if (!existingArticle && violationsSurface.length > 0) {
     const resume = resumerViolations(violationsSurface);
@@ -564,10 +632,11 @@ async function executePublishPipeline(
       : null;
   let refreshTranslationId: string | null = null;
   let refreshPreservedSlug: string | null = null;
+  let refreshExcerptExistant = false;
   if (refreshArticleId) {
     const existingTr = await prisma.articleTranslation.findFirst({
       where: { articleId: refreshArticleId, locale: "fr" },
-      select: { id: true, slug: true },
+      select: { id: true, slug: true, excerpt: true, metaDescription: true },
     });
     if (!existingTr) {
       // La cible de régénération n'a plus de traduction FR : on refuse plutôt
@@ -576,6 +645,11 @@ async function executePublishPipeline(
     }
     refreshTranslationId = existingTr.id;
     refreshPreservedSlug = existingTr.slug;
+    // Un chapô écrit à la main n'est jamais écrasé ; celui posé par ce worker (égal à
+    // l'ancienne meta-description) est renouvelé avec elle.
+    const ancienChapo = (existingTr.excerpt ?? "").trim();
+    refreshExcerptExistant =
+      ancienChapo.length > 0 && ancienChapo !== (existingTr.metaDescription ?? "").trim();
   }
 
   // Slug régénéré par le generator (ou dérivé du titre). Sur le chemin REFRESH,
@@ -828,6 +902,7 @@ async function executePublishPipeline(
     jobId: cgJob.id,
     contentType: cgJob.contentType,
     topicHint: primaryKeyword ?? title,
+    ...(heroImageFilePathRaw ? { heroImageUrl: heroImageFilePathRaw } : {}),
   });
   // Liens internes profonds vers d'autres articles tier-1 (maillage thématique),
   // après les images. Best-effort, sur la même chaîne persistée. Internal links
@@ -1006,9 +1081,15 @@ async function executePublishPipeline(
           title,
           ...(refreshSlugChanged ? { slug: regeneratedSlug } : {}),
           body: bodyHtmlForPersist,
-          ...(bodyText ? { bodyText } : {}),
+          // Rafraîchissement : un bodyText vide écrase l'ancien (sinon le rattrapage
+          // vectoriserait l'ancien texte alors que la publication a vu le nouveau HTML).
+          bodyText: bodyText || null,
           metaTitle,
           ...(metaDescription ? { metaDescription } : {}),
+          // Chapô : rempli depuis la meta-description si vide (audit B, 2026-11-26).
+          ...(metaDescription && !isNews && !refreshExcerptExistant
+            ? { excerpt: metaDescription }
+            : {}),
         },
       });
     } else {
@@ -1022,6 +1103,10 @@ async function executePublishPipeline(
           ...(bodyText ? { bodyText } : {}),
           metaTitle,
           ...(metaDescription ? { metaDescription } : {}),
+          // Chapô : sans lui la page n'affiche aucun résumé sous le titre. On part de la
+          // meta-description (pas de la réponse directe, déjà dans « Réponse rapide »).
+          // Pas pour une actualité : son TL;DR dérive de l'excerpt (doublon sinon).
+          ...(metaDescription && !isNews ? { excerpt: metaDescription } : {}),
           // wordCount n'est pas persisté : article_translations n'a pas de colonne
           // word_count ; les pages /blog et /actualites le recalculent à la volée
           // depuis le body (et le JSON-LD le reçoit via wordCount ci-dessous).
@@ -1148,6 +1233,7 @@ async function executePublishPipeline(
       title,
       ...(metaDescription ? { metaDescription } : {}),
       ...(bodyText ? { bodyText } : {}),
+      bodyHtml: bodyHtmlForPersist,
     });
     await logStep(
       cgJob.id,

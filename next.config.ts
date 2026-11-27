@@ -277,6 +277,21 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // V2-10 PR-4 (2026-11-20) : l'ancien formulaire de l'Observatoire est fermé, le Score IA
+      // TPE-PME (servi à /fr/diagnostic) devient le seul canal. 301 explicite (pas `permanent`,
+      // qui donne un 308). Ni la page, ni le formulaire, ni aucune donnée ne sont supprimés.
+      // L'EN (désactivé) atterrit sur la cible FR, comme le fait déjà le proxy pour tout /en/*.
+      // Garde : tests/unit/redirects/observatoire-participer.spec.ts.
+      {
+        source: "/:locale(fr|en)/observatoire-ia/participer",
+        destination: "/fr/diagnostic#observatoire",
+        statusCode: 301,
+      },
+      {
+        source: "/observatoire-ia/participer",
+        destination: "/fr/diagnostic#observatoire",
+        statusCode: 301,
+      },
       // Cas concrets éteints (2026-11-08, retrait juridique) : URLs déjà indexées → 301 vers la
       // page la plus proche (/fr/methodologie), plutôt qu'un 404 sec. Les notFound() des pages
       // restent en filet. Les redirections ne sont posées que tant que l'interrupteur
@@ -357,9 +372,27 @@ const nextConfig: NextConfig = {
         destination: "/:locale/carrieres/responsable-qualite",
         permanent: true,
       },
+      // 2026-11-18 : les 3 offres consacrées au financement sont archivées (poste qu'Axion-IA
+      // ne propose pas) : 301 permanent vers le hub carrières, anciens slugs compris (un seul
+      // saut, pas de chaîne). La page renvoie aussi 404 pour toute offre `archived`.
       {
-        source: "/:locale(fr|en)/carrieres/assistant-financements-qualiopi",
-        destination: "/:locale/carrieres/assistant-financements",
+        source:
+          "/:locale(fr|en)/carrieres/:slug(assistant-financements-qualiopi|assistant-financements|assistant-dossiers-financement-clients|charge-subventions)",
+        destination: "/fr/carrieres",
+        permanent: true,
+      },
+      {
+        source:
+          "/:locale(fr|en)/carrieres/:slug(assistant-financements|assistant-dossiers-financement-clients|charge-subventions)/postuler",
+        destination: "/fr/carrieres",
+        permanent: true,
+      },
+      // 2026-11-18 : la page « financement OPCO / France Travail » est retirée du site
+      // (décision du dirigeant). 301 permanent vers le catalogue des formations ; ne pas
+      // recréer la page ni ses liens (garde : tests/unit/ci/page-financement-retiree.spec.ts).
+      {
+        source: "/:locale(fr|en)/financement-opco-france-travail",
+        destination: "/fr/formations",
         permanent: true,
       },
       {
@@ -1208,6 +1241,11 @@ const sentryBuildOptions = {
   hideSourceMaps: true,
   widenClientFileUpload: true,
   reactComponentAnnotation: { enabled: false },
+  // Perf (lot 1 socle [locale]) : pas d'injection du manifeste de routes côté
+  // client (~89 Ko brut, injecté 2 fois dans le First Load). Seul effet : les
+  // transactions navigateur Sentry ne sont plus paramétrées (/fr/a-propos au
+  // lieu de /:locale/a-propos).
+  routeManifestInjection: false as const,
 };
 
 const composedConfig = withNextIntl(bundleAnalyzer(nextConfig));

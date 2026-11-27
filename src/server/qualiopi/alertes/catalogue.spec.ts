@@ -203,6 +203,7 @@ const CODES_ATTENDUS: string[] = [
   // Lot 3 (audit e-mails 2026-09-02) : le balayage horaire des e-mails restés
   // « approuvés » sans être partis.
   "emails_approuves_abandonnes",
+  "emails_envoi_incertain",
   // Cycle de vie du formateur sur une session (2026-09-03).
   "formateur_mission_refusee",
   "formateur_mission_sans_reponse",

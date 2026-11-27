@@ -14,9 +14,9 @@ export const VENTABREN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit sur place sur mesure, sans engagement.",
   seoHook: "TPE, PME & libéraux ouest aixois",
   ecosystemFr:
-    "Ventabren est une commune résidentielle perchée à l'ouest d'Aix-en-Provence, célèbre pour son aqueduc de Roquefavour et son cadre provençal préservé. Économie locale de TPE artisans, PME tertiaires, professions libérales, commerces, viticulture AOC Coteaux d'Aix et oléiculture. Proximité immédiate gare TGV Aix et technopôle de l'Arbois (cleantech, environnement).",
+    "Ventabren est une commune résidentielle perchée à l'ouest d'Aix-en-Provence, célèbre pour son aqueduc de Roquefavour et son cadre provençal préservé. Économie locale de TPE artisans, PME tertiaires, professions libérales, commerces, viticulture AOC Coteaux d'Aix et oléiculture. Technopôle de l'Arbois (cleantech, environnement) dans le voisinage économique.",
   ecosystemEn:
-    "Ventabren est une commune résidentielle perchée à l'ouest d'Aix-en-Provence, célèbre pour son aqueduc de Roquefavour et son cadre provençal préservé. Économie locale de TPE artisans, PME tertiaires, professions libérales, commerces, viticulture AOC Coteaux d'Aix et oléiculture. Proximité immédiate gare TGV Aix et technopôle de l'Arbois (cleantech, environnement).",
+    "Ventabren est une commune résidentielle perchée à l'ouest d'Aix-en-Provence, célèbre pour son aqueduc de Roquefavour et son cadre provençal préservé. Économie locale de TPE artisans, PME tertiaires, professions libérales, commerces, viticulture AOC Coteaux d'Aix et oléiculture. Technopôle de l'Arbois (cleantech, environnement) dans le voisinage économique.",
   distancesFr:
     "Aix-en-Provence à 15 min. Gare TGV Aix-en-Provence à 5 min. Technopôle de l'Arbois à 10 min. Marseille centre à 30 min. Aéroport Marseille Provence à 20 min. Accès A8 vers Aix et Nice.",
   distancesEn:
@@ -34,8 +34,8 @@ export const VENTABREN_COPY: VilleCopy = {
       en: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ventabren : ateliers pour cabinets libéraux, TPE artisans et équipes PME tertiaires. Proximité immédiate gare TGV et technopôle Arbois. Outils IA configurés métier réel.",
-      en: "Interventions IA sur site à Ventabren : ateliers pour cabinets libéraux, TPE artisans et équipes PME tertiaires. Proximité immédiate gare TGV et technopôle Arbois. Outils IA configurés métier réel.",
+      fr: "Interventions IA sur site à Ventabren : ateliers pour cabinets libéraux, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
+      en: "Interventions IA sur site à Ventabren : ateliers pour cabinets libéraux, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
     },
     implementation: {
       fr: "Implémentation IA à Ventabren : automatisation gestion cabinet libéral, CRM intelligent, agents conversationnels, gestion parcellaire viticole, marketing premium. RGPD strict.",
@@ -49,7 +49,7 @@ export const VENTABREN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ventabren et dans l'ouest aixois ?",
-      a: "Oui, Axion-IA intervient à Ventabren et dans tout l'ouest aixois (Coudoux à 5 min, Velaux, Éguilles, Aix à 15 min). Proximité immédiate gare TGV Aix-en-Provence et technopôle de l'Arbois.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Ventabren et dans l'ouest aixois. Nous accompagnons aussi les entreprises du technopôle de l'Arbois.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ventabren  ?",

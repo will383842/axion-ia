@@ -68,7 +68,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
     items: [
       "Chatbot de site web, support et FAQ dynamique",
       "Assistant interne pour vos équipes (procédures, outils)",
-      "Réponses fondées sur vos documents (RAG, anti-hallucination)",
+      "Réponses fondées sur vos documents (RAG)",
       "Multilingue, multicanal (web, e-mail, WhatsApp, messageries)",
       "Escalade vers un humain et passation de contexte",
       "Base de connaissances éditable par vos équipes, sans dépendre de nous",
@@ -120,7 +120,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
     items: [
       "Base de connaissance interrogeable en langage naturel",
       "Recherche sémantique unifiée sur tous vos documents",
-      "Réponses sourcées et citables (anti-hallucination)",
+      "Réponses sourcées et citables",
       "Assistant qui connaît vos procédures et votre métier",
       "Mise à jour continue à mesure que vos données évoluent",
       "Index livré avec sa procédure de mise à jour, tenue par vos équipes",

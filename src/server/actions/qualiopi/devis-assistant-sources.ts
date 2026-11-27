@@ -21,7 +21,11 @@ import { listInbox, PER_CHANNEL_FETCH } from "@/features/admin-inbox/queries";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
 import { clientsParEmail } from "@/server/qualiopi/crm/entrees";
-import { sourcesPourQui, type SourcePourQui } from "@/server/qualiopi/devis/assistant/sources";
+import {
+  ordonnerSources,
+  sourcesPourQui,
+  type SourcePourQui,
+} from "@/server/qualiopi/devis/assistant/sources";
 
 type ActionResult<T> = { data: T; note?: string } | { error: string };
 
@@ -32,6 +36,10 @@ const RECHERCHE_MAX = 200;
  * peuvent plus chasser un message plus ancien hors de la fenêtre.
  */
 const FENETRE = 400;
+/** Au plus 30 demandes éligibles renvoyées ; le panneau n'en montre que 10. */
+const ELIGIBLES_MAX = 30;
+/** Sous ce nombre d'éligibles, une troncature d'un canal utile mérite d'être signalée. */
+const ELIGIBLES_SUFFISANTS = 10;
 
 const NOM_CANAL: Record<string, string> = {
   appel: "appels réservés",
@@ -41,6 +49,7 @@ const NOM_CANAL_COUNT = Object.keys(NOM_CANAL).length;
 
 export async function listerSourcesPourQuiAction(i: {
   recherche: string;
+  clientId?: string | undefined;
 }): Promise<ActionResult<SourcePourQui[]>> {
   const session = await requireAdminWrite();
   const recherche = typeof i?.recherche === "string" ? i.recherche : "";
@@ -61,7 +70,9 @@ export async function listerSourcesPourQuiAction(i: {
       };
     }
     const clients = await clientsParEmail(inbox.rows.map((r) => r.contactEmail));
-    const data = sourcesPourQui(inbox.rows, clients, recherche);
+    const clientId = typeof i?.clientId === "string" && i.clientId !== "" ? i.clientId : undefined;
+    const eligibles = sourcesPourQui(inbox.rows, clients, recherche);
+    const data = ordonnerSources(eligibles, clientId, ELIGIBLES_MAX);
     const notes: string[] = [];
     if (utilesEnPanne.length > 0) {
       notes.push(
@@ -76,7 +87,7 @@ export async function listerSourcesPourQuiAction(i: {
     const tronqueUtile = Object.keys(NOM_CANAL).some(
       (c) => inbox.rows.filter((r) => r.channel === c).length >= PER_CHANNEL_FETCH,
     );
-    if (tronqueUtile) {
+    if (tronqueUtile && eligibles.length < ELIGIBLES_SUFFISANTS) {
       notes.push("Liste incomplète : seules les demandes les plus récentes sont affichées.");
     }
     return notes.length > 0 ? { data, note: notes.join(" ") } : { data };

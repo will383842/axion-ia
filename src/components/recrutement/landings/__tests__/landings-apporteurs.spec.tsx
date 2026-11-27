@@ -12,7 +12,6 @@ import type { ImgHTMLAttributes } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next/image", () => ({
-  // eslint-disable-next-line @next/next/no-img-element
   default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => (
     <img src={String(src)} alt={alt} />
   ),
@@ -80,8 +79,18 @@ describe("une seule offre, une seule commission", () => {
     expect(t).toContain(texte(p.commission));
     expect(t.toLowerCase()).toContain("à titre indicatif");
     expect(t).toContain(
-      "si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous remboursons",
+      "si le rapport n’identifie pas au moins 3 fois le prix de la journée en gains, l’entreprise peut demander à être remboursée",
     );
+  });
+
+  it("la garantie de la Journée IA est dite juste : remboursement sur demande, jamais d'office (CGV art. 47.10)", () => {
+    for (const html of [principale, pub]) {
+      const t = texte(html);
+      expect(t).toContain("peut demander à être remboursée");
+      expect(t).toContain("(conditions dans nos CGV)");
+      expect(t).not.toContain("sans discussion");
+      expect(t).not.toMatch(/nous remboursons/i);
+    }
   });
 
   it("aucun vocabulaire interdit, sur aucune des six surfaces", () => {
@@ -110,11 +119,20 @@ describe("tous les boutons mènent au bon endroit", () => {
           h === "#dossier",
       );
 
-  it("la page principale envoie chaque bouton vers le dossier de 3 minutes", () => {
-    const boutons = liens(principale).filter((h) => h.includes("candidature"));
-    expect(boutons.length).toBeGreaterThanOrEqual(3);
-    for (const href of boutons)
-      expect(href).toMatch(/^\/fr\/devenir-commercial-ia\/candidature\?depuis=/);
+  it("🔑 la page principale envoie chaque bouton vers la réservation, avec son emplacement", () => {
+    // Décision de Will du 25/11/2026 : plus de dossier de 3 minutes sur le hub.
+    expect(liens(principale).filter((h) => h.includes("candidature"))).toEqual([]);
+    const boutons = liens(principale).filter((h) => h.startsWith("/fr/appel"));
+    expect(boutons.map((h) => h.replace("/fr/appel/apporteur?depuis=", "")).sort()).toEqual([
+      "bas",
+      "comment",
+      "commission",
+      "haut",
+    ]);
+    for (const href of boutons) expect(href).toMatch(/^\/fr\/appel\/apporteur\?depuis=[a-z-]+$/);
+    const t = texte(principale);
+    expect(t).toContain("Réserver mon échange de 15 minutes");
+    expect(t).not.toMatch(/dossier de 3 minutes|sur invitation|Devenir apporteur/i);
   });
 
   it("la variante pub garde le formulaire court, la variante annonce envoie au dossier", () => {
@@ -149,7 +167,9 @@ describe("tous les boutons mènent au bon endroit", () => {
       for (const href of liens(html)) {
         const sansRequete = href.split("?")[0]!;
         expect(
-          connus.has(sansRequete) || sansRequete === "/fr/devenir-commercial-ia/candidature",
+          connus.has(sansRequete) ||
+            sansRequete === "/fr/devenir-commercial-ia/candidature" ||
+            sansRequete === "/fr/appel/apporteur",
           href,
         ).toBe(true);
       }

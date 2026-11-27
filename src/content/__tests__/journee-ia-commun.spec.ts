@@ -7,6 +7,7 @@ import { describe, it, expect } from "vitest";
 
 import {
   CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
   DATE_MISE_A_JOUR_JOURNEE_IA,
   DESCRIPTION_SERVICE_JOURNEE_IA,
   EN_BREF_ACCUEIL,
@@ -16,17 +17,20 @@ import {
   GARANTIE,
   GARANTIE_PHRASE,
   JETON_PRIX,
+  MULTIPLE_GARANTIE,
   MENTION_DECLARATION_OF,
   NUMERO_DECLARATION_ACTIVITE,
   RAPPORT_COMPLET,
+  SEUIL_DEVIS_DEDUCTION_EUR,
   gainExempleEur,
   remplacerJetons,
+  seuilGarantieEur,
 } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricing";
 
 /** Le littéral actuel de la garantie, recopié tel qu'il était dans `contenu.ts`. */
 const GARANTIE_ACTUELLE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
+  "Sous 10 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
 
 const TEXTES_AVEC_JETONS = {
   EN_BREF_ACCUEIL,
@@ -108,15 +112,43 @@ describe("la garantie", () => {
   it("GARANTIE finit par GARANTIE_PHRASE, qui est la phrase de remboursement", () => {
     expect(GARANTIE.endsWith(GARANTIE_PHRASE)).toBe(true);
     expect(GARANTIE_PHRASE).toBe(
-      "Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.",
+      "Si les gains identifiés dans votre rapport n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.",
     );
+  });
+
+  it("GARANTIE et GARANTIE_PHRASE : « n'atteignent pas », ni « ne dépassent pas » ni « sans discussion »", () => {
+    for (const t of [GARANTIE, GARANTIE_PHRASE]) {
+      expect(t).toContain("n’atteignent pas");
+      expect(t).not.toContain("ne dépassent pas");
+      expect(t).not.toContain("sans discussion");
+    }
+  });
+
+  it("GARANTIE annonce le rapport sous 10 jours ouvrés et le remboursement sur demande écrite", () => {
+    expect(DELAI_RAPPORT_JOURS_OUVRES).toBe(10);
+    expect(GARANTIE).toContain("10 jours ouvrés");
+    expect(GARANTIE_PHRASE).toContain("dans votre rapport n’atteignent pas");
+    expect(GARANTIE_PHRASE).toContain("sur demande écrite");
+    for (const t of [GARANTIE, GARANTIE_PHRASE]) {
+      expect(t).not.toContain("À la fin de la journée");
+      expect(t).not.toContain("nous vous remboursons");
+    }
+  });
+
+  it("CONDITION_GARANTIE n'exige ni chiffres ni questionnaire", () => {
+    expect(CONDITION_GARANTIE).not.toContain("chiffres");
+    expect(CONDITION_GARANTIE).not.toContain("questionnaire");
   });
 
   it("la condition et le rapport sont ceux décidés", () => {
     expect(CONDITION_GARANTIE).toBe(
-      "Condition : votre équipe est disponible pendant la journée et nous fournit les chiffres demandés.",
+      "Condition : le décideur et les personnes prévues sont présents pendant l’audit.",
     );
-    expect(RAPPORT_COMPLET.startsWith("Sous 3 jours ouvrés après la journée")).toBe(true);
+    expect(
+      RAPPORT_COMPLET.startsWith(
+        `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés après la journée`,
+      ),
+    ).toBe(true);
   });
 });
 
@@ -137,7 +169,21 @@ describe("mention de déclaration d'activité et date", () => {
 describe("textes publics : mots interdits", () => {
   it.each(Object.entries(TOUS_LES_TEXTES))("%s", (_nom, texte) => {
     expect(texte).not.toMatch(
-      /conforme|certifi|qualiopi|\bCPF\b|\bOPCO\b|offert|\bETI\b|TPE\/PME|financement|amende|valeur de|satisfait|intégrateur|SaaS|no-code|Grenoble|même prix pour tous|Vous êtes remboursé|3 à 4\s?h/i,
+      /conforme|certifi|qualiopi|\bCPF\b|\bOPCO\b|offert|\bETI\b|TPE\/PME|financement|amende|valeur de|satisfait|intégrateur|SaaS|no-code|Grenoble|même prix pour tous|rembours\S* automatiquement|3 à 4\s?h/i,
     );
+  });
+});
+
+describe("le seuil de la garantie (CGV art. 47.10)", () => {
+  it("le multiple décidé est 3", () => {
+    expect(MULTIPLE_GARANTIE).toBe(3);
+  });
+
+  it("le seuil est le multiple × le prix lu dans pricing.ts", () => {
+    expect(seuilGarantieEur()).toBe(3 * JOURNEE_IA_TIER.priceFlat!);
+  });
+
+  it("le devis minimum qui ouvre la déduction est 5 000 euros HT (art. 47.7)", () => {
+    expect(SEUIL_DEVIS_DEDUCTION_EUR).toBe(5000);
   });
 });

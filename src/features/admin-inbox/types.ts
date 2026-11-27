@@ -22,6 +22,11 @@ export interface InboxItem {
   receivedAt: Date;
   /** Nature de la demande, dans les mots du canal (« Audit IA », « premier-contact »…). */
   subject: string;
+  /**
+   * Nature technique de la demande (clé stable : type unifié du message, « apporteur », type de
+   * rendez-vous…). Aucune donnée personnelle ; sert au tri des demandes utiles à un devis.
+   */
+  nature?: string;
   contactName: string | null;
   contactEmail: string | null;
   /** Société / offre visée / lieu de tournage selon le canal. Peut être vide. */

@@ -49,7 +49,7 @@ export const FEGERSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fegersheim et dans l''Eurométropole de Strasbourg ?",
-      a: "Oui, Axion-IA intervient à Fegersheim et sur toute l''Eurométropole de Strasbourg (Lipsheim, Eschau, Geispolsheim, Plobsheim, Illkirch-Graffenstaden). Strasbourg centre à 15 min, Paris à 1h45 en TGV.",
+      a: "Oui, Axion-IA intervient à Fegersheim et sur toute l''Eurométropole de Strasbourg (Lipsheim, Eschau, Geispolsheim, Plobsheim, Illkirch-Graffenstaden).",
     },
     {
       q: "Quel est le tarif d''un audit IA à Fegersheim ?",

@@ -15,6 +15,9 @@ const prismaMock = vi.hoisted(() => ({
   questionnaireAvantAuditEnvoi: { findMany: vi.fn() },
   client: { findUnique: vi.fn() },
   clientFusion: { findMany: vi.fn() },
+  devis: { findMany: vi.fn() },
+  documentGenere: { findMany: vi.fn() },
+  factureFormation: { findMany: vi.fn() },
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: prismaMock }));
 vi.mock("@/features/questionnaire-preaudit/actions-suivi-ouvertures", () => ({
@@ -27,7 +30,12 @@ import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQu
 const U = (n: number): string => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
 const CLIENT = { id: U(9), numero: "AXI-CLI-005", raisonSociale: "Société test" };
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+  prismaMock.devis.findMany.mockResolvedValue([]);
+  prismaMock.documentGenere.findMany.mockResolvedValue([]);
+  prismaMock.factureFormation.findMany.mockResolvedValue([]);
+});
 
 describe("clientsDesLignes", () => {
   it("rattache une rencontre, un questionnaire et une réponse à leur fiche client", async () => {
@@ -92,6 +100,91 @@ describe("idsLiesAuClient", () => {
   });
 });
 
+describe("les e-mails de devis, de pièces et de factures sont rattachés (AD-C3)", () => {
+  it("rattache un e-mail Devis et un e-mail DocumentGenere à la bonne fiche, pas celle d'un autre client", async () => {
+    const AUTRE = { id: U(20), numero: "AXI-CLI-006", raisonSociale: "Autre société" };
+    prismaMock.devis.findMany.mockResolvedValue([
+      { id: U(30), client: CLIENT, documentGenere: null },
+      { id: U(31), client: AUTRE, documentGenere: null },
+    ]);
+    prismaMock.documentGenere.findMany.mockResolvedValue([
+      { id: U(40), client: CLIENT },
+      { id: U(41), client: null },
+    ]);
+    prismaMock.factureFormation.findMany.mockResolvedValue([{ id: U(50), client: CLIENT }]);
+    const m = await clientsDesLignes([
+      { id: "d1", entityType: "Devis", entityId: U(30) },
+      { id: "d2", entityType: "Devis", entityId: U(31) },
+      { id: "p1", entityType: "DocumentGenere", entityId: U(40) },
+      { id: "p2", entityType: "DocumentGenere", entityId: U(41) },
+      { id: "f1", entityType: "FactureFormation", entityId: U(50) },
+    ]);
+    expect(m.get("d1")?.id).toBe(U(9));
+    expect(m.get("d2")?.id).toBe(U(20));
+    expect(m.get("p1")?.id).toBe(U(9));
+    expect(m.get("f1")?.id).toBe(U(9));
+    // Une pièce sans client ni devis reste sans lien : jamais de faux rattachement.
+    expect(m.has("p2")).toBe(false);
+  });
+
+  it("une pièce sans client propre prend le client du devis qui la porte", async () => {
+    prismaMock.devis.findMany.mockResolvedValue([]);
+    prismaMock.documentGenere.findMany.mockResolvedValue([
+      { id: U(42), client: null, devisPortes: [{ client: CLIENT }] },
+    ]);
+    const m = await clientsDesLignes([{ id: "p", entityType: "DocumentGenere", entityId: U(42) }]);
+    expect(m.get("p")?.id).toBe(U(9));
+  });
+
+  it("une pièce portée par deux devis de clients différents n'a aucun lien", async () => {
+    const AUTRE = { id: U(20), numero: "AXI-CLI-006", raisonSociale: "Autre société" };
+    prismaMock.documentGenere.findMany.mockResolvedValue([
+      { id: U(43), client: null, devisPortes: [{ client: CLIENT }, { client: AUTRE }] },
+      { id: U(44), client: null, devisPortes: [{ client: CLIENT }, { client: CLIENT }] },
+    ]);
+    const m = await clientsDesLignes([
+      { id: "p3", entityType: "DocumentGenere", entityId: U(43) },
+      { id: "p4", entityType: "DocumentGenere", entityId: U(44) },
+    ]);
+    expect(m.has("p3")).toBe(false);
+    expect(m.get("p4")?.id).toBe(U(9));
+    const sel = prismaMock.documentGenere.findMany.mock.calls[0]![0].select.devisPortes;
+    expect(sel.take).toBeUndefined();
+  });
+
+  it("idsLiesAuClient ajoute devis, pièces (clientId OU pièce d'un devis) et factures, fiches absorbées comprises, sans doublon", async () => {
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    prismaMock.clientFusion.findMany
+      .mockResolvedValueOnce([{ absorbeId: U(8) }])
+      .mockResolvedValueOnce([]);
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValue([]);
+    prismaMock.devis.findMany.mockResolvedValue([
+      { id: U(30), documentGenereId: U(40) },
+      { id: U(31), documentGenereId: null },
+    ]);
+    prismaMock.documentGenere.findMany.mockResolvedValue([{ id: U(40) }, { id: U(41) }]);
+    prismaMock.factureFormation.findMany.mockResolvedValue([{ id: U(50) }]);
+    const ids = await idsLiesAuClient(U(9));
+    expect(ids).toEqual([U(30), U(31), U(40), U(41), U(50)]);
+    expect(prismaMock.devis.findMany.mock.calls[0]![0].where).toEqual({
+      clientId: { in: [U(9), U(8)] },
+    });
+    expect(prismaMock.documentGenere.findMany.mock.calls[0]![0].where).toEqual({
+      OR: [{ clientId: { in: [U(9), U(8)] } }, { id: { in: [U(40)] } }],
+    });
+    expect(prismaMock.factureFormation.findMany.mock.calls[0]![0].where).toEqual({
+      clientId: { in: [U(9), U(8)] },
+    });
+  });
+
+  it("une fiche sans rien rend []", async () => {
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    prismaMock.clientFusion.findMany.mockResolvedValue([]);
+    prismaMock.questionnaireAvantAudit.findMany.mockResolvedValue([]);
+    expect(await idsLiesAuClient(U(9))).toEqual([]);
+  });
+});
+
 describe("le journal lit l'heure de Paris et propose le filtre par client", () => {
   const vue = readFileSync(
     join(
@@ -101,8 +194,12 @@ describe("le journal lit l'heure de Paris et propose le filtre par client", () =
     "utf8",
   );
   it("la date de la liste porte timeZone Europe/Paris", () => {
-    const debut = vue.indexOf("const quand =");
-    expect(vue.slice(debut, debut + 400)).toContain('timeZone: "Europe/Paris"');
+    // Refonte en cartes : l'ancienne `quand` est remplacée par trois helpers de date, tous en Paris.
+    for (const nom of ["const jourParis =", "const cleJourParis =", "const heureParis ="]) {
+      const debut = vue.indexOf(nom);
+      expect(debut).toBeGreaterThan(-1);
+      expect(vue.slice(debut, debut + 400)).toContain('timeZone: "Europe/Paris"');
+    }
   });
   it("la liste montre l'objet et le lien vers la fiche, le filtre garde le client", () => {
     expect(vue).toContain("r.objet");

@@ -21,6 +21,7 @@ import { VILLES_CORE } from "./core";
 import {
   CHEMIN_JOURNEE_IA,
   CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
   GARANTIE_PHRASE,
   lienDiagnostic,
   RAPPORT_COMPLET,
@@ -149,9 +150,9 @@ export function descriptionVille(v: VilleLocale): string {
   const code = codeDepartement(v);
   return premierQuiTient(
     [
-      `La Journée IA ${a} (${dep}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `La Journée IA ${a} (${code}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `Journée IA ${a} (${code}) : audit dans vos locaux, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${dep}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${code}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
+      `Journée IA ${a} (${code}) : audit dans vos locaux, formation de vos équipes, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
   );
@@ -177,9 +178,9 @@ export function descriptionRegion(r: RegionLocale): string {
   const en = enRegion(r);
   return premierQuiTient(
     [
-      `La Journée IA ${en}, dans vos locaux : audit, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
-      `La Journée IA ${en}, dans vos locaux : audit, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
-      `Journée IA ${en} : audit et formation IA dans vos locaux, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${en}, dans vos locaux : audit, vos équipes formées l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
+      `La Journée IA ${en}, dans vos locaux : audit, formation de vos équipes, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
+      `Journée IA ${en} : audit et formation IA dans vos locaux, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
   );
@@ -191,7 +192,7 @@ export const TITRE_HUB = `La Journée IA partout en France${MARQUE}`;
 /** Meta description du hub. */
 export function descriptionHub(): string {
   return remplacerJetons(
-    "La Journée IA se tient dans vos locaux, partout en France : audit, vos équipes formées l’après-midi, rapport sous 3 jours ouvrés. {{PRIX}}.",
+    `La Journée IA se tient dans vos locaux, partout en France : audit, vos équipes formées l’après-midi, rapport sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. {{PRIX}}.`,
   );
 }
 
@@ -261,7 +262,7 @@ export function enBrefVille(
     `Nous n’avons pas de bureau ${a} : nous venons dans votre entreprise, à la date fixée avec vous.`,
   );
   return [
-    `La Journée IA est une journée d’audit et de formation à l’IA que nous menons dans les locaux de votre entreprise ${a}, comme partout en France. Le matin, l’audit cartographie votre entreprise et chiffre vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
+    `La Journée IA est une journée d’audit et de formation à l’IA que nous menons dans les locaux de votre entreprise ${a}, comme partout en France. Le matin, l’audit cartographie votre entreprise et repère vos plus gros gains, classés par priorité ; le rapport, sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, les chiffre en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
     local.join(" "),
     remplacerJetons(`${RAPPORT_COMPLET} Prix : {{PRIX}}. ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`),
   ];
@@ -273,7 +274,7 @@ export function faqVille(v: VilleLocale): ReadonlyArray<{ q: string; a: string }
   return [
     {
       q: `La Journée IA peut-elle se tenir dans nos locaux ${a} ?`,
-      a: `Oui. Nous venons dans votre entreprise ${a}, comme partout en France. Nous n’avons pas de bureau sur place : la journée se déroule chez vous, avec vos équipes et vos dossiers, à la date fixée avec vous pendant le diagnostic gratuit de 45 minutes.`,
+      a: `Oui. Nous venons dans votre entreprise ${a}, comme partout en France. Nous n’avons pas de bureau sur place : la journée se déroule chez vous, avec vos équipes et vos dossiers, à la date fixée avec vous pendant le Diagnostic IA gratuit de 45 minutes.`,
     },
     {
       q: `Combien coûte la Journée IA ${a} ?`,
@@ -281,7 +282,7 @@ export function faqVille(v: VilleLocale): ReadonlyArray<{ q: string; a: string }
     },
     {
       q: "Comment se déroule la journée ?",
-      a: "Le matin, l’audit cartographie votre entreprise et chiffre vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.",
+      a: `Le matin, l’audit cartographie votre entreprise et repère vos plus gros gains, classés par priorité ; le rapport, sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, les chiffre en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
     },
     {
       q: "Quand recevons-nous le rapport ?",
@@ -313,7 +314,7 @@ export function faqRegion(
     {
       id: "journee-ia-region-lieu",
       question: `La Journée IA est-elle possible ${en} ?`,
-      answer: `Oui. Nous menons la Journée IA ${en} comme partout en France, dans les locaux de votre entreprise. La date est fixée avec vous pendant le diagnostic gratuit de 45 minutes.`,
+      answer: `Oui. Nous menons la Journée IA ${en} comme partout en France, dans les locaux de votre entreprise. La date est fixée avec vous pendant le Diagnostic IA gratuit de 45 minutes.`,
     },
     {
       id: "journee-ia-region-prix",

@@ -22,11 +22,11 @@ import { describe, expect, it } from "vitest";
 
 const DOSSIER = join(process.cwd(), "src", "content", "villes", "copy");
 
-/** Lignes fautives restantes. Lot 1 : 1 147 → 957. */
-const PLAFOND = 957;
+/** Lignes fautives restantes : 0 (tous les lots retirés, S2 2026-11-26). */
+const PLAFOND = 0;
 
 /** Tout fichier dont le nom est ≤ celui-ci (ordre alphabétique) est propre. */
-const DERNIER_NETTOYE = "caussade.ts";
+const DERNIER_NETTOYE = "zzzz.ts";
 
 const PHRASE =
   /(^|["“] ?|[.!?] )Nos consultants (?:seniors )?(?:viennent (?:de|depuis)|se déplacent[^."]{0,40}depuis|interviennent depuis)[^."]*\.(?= |"|$)/u;

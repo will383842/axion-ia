@@ -48,8 +48,8 @@ export const BEZANNES_COPY: VilleCopy = {
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Bezannes et dans le pôle gare TGV ?",
-      a: "Oui, Axion-IA intervient à Bezannes et dans tout le pôle tertiaire gare TGV Champagne-Ardenne. Paris-Est à 45 min en TGV direct, Reims centre à 10 min.",
+      q: "Intervenez-vous à Bezannes et dans son pôle tertiaire ?",
+      a: "Oui, nous intervenons dans vos locaux à Bezannes et dans tout le pôle tertiaire de Champagne-Ardenne, comme partout en France.",
     },
     {
       q: "Tarifs audit IA à Bezannes  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const BEZANNES_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, automatisation propositions commerciales, gestion planning missions, facturation intelligente, reporting client pour cabinets et PME.",
     },
     {
-      q: "Comment accéder à Bezannes depuis Paris ?",
-      a: "Gare TGV Champagne-Ardenne sur place, Paris-Est à 45 min en TGV direct. Autoroute A4 à 5 min. Aéroport CDG à 1 h 30.",
+      q: "Comment se déroule une mission à Bezannes ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bezannes, comme partout en France, ou à distance.",
     },
   ],
 };

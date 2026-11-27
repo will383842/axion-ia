@@ -203,6 +203,8 @@ describe("inventaire des chemins de contresignature", () => {
       .sort();
     expect(appelants).toEqual([
       "src/server/actions/qualiopi/contrat-travail-signature.ts",
+      // Lot I3 : reversement papier (client), pas une contresignature de l'organisme.
+      "src/server/actions/qualiopi/devis-scan-papier.ts",
       "src/server/actions/qualiopi/lettre-mission-signature.ts",
       "src/server/actions/qualiopi/piece-signature.ts",
       "src/server/actions/qualiopi/releve-signature.ts",

@@ -32,6 +32,9 @@ vi.mock("@/lib/prisma", () => ({
     documentSignatureCode: { findFirst: vi.fn() },
     trainer: { findUnique: vi.fn() },
     adminUser: { findUnique: vi.fn() },
+    // Garde de version d'un devis (verrou de ligne puis relecture) : aucune ligne = rien à garder.
+    devis: { count: vi.fn(async () => 0) },
+    $queryRaw: vi.fn(async () => []),
     $transaction: vi.fn(),
   },
 }));
@@ -39,6 +42,18 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/server/qualiopi/emargement/storage", () => ({
   storeSignatureImage: vi.fn(),
   supprimerImageSignature: vi.fn(),
+}));
+
+// D1 : le reversement papier ne signe plus que par scan PDF — le stockage R2 du scan est simulé.
+vi.mock("./scan-papier-storage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("./scan-papier-storage")>()),
+  stockerScanPapier: vi.fn(async () => ({
+    key: "documents/2026/devis-signes-papier/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf",
+    sha256: "d".repeat(64),
+    mimeType: "application/pdf",
+    sizeBytes: 8,
+  })),
+  supprimerScanPapier: vi.fn(),
 }));
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
@@ -435,6 +450,8 @@ describe("🔴 autorisation du porteur", () => {
     const res = await signerDocument(
       entree({
         methode: "papier_scanne",
+        imageDataUrl: undefined,
+        scanPdf: { octets: Buffer.from("%PDF-1.7\n%%EOF\n") },
         partiesRequises: ["client", "axionia"],
         porteur: {
           type: "reversement_papier",
@@ -522,7 +539,20 @@ describe("🔴 cohérences de forme", () => {
     // ligne sans image, sans certificat de tiers et sans confirmation nominative
     // n'est adossée à rien.
     attendRefus(
-      await signerDocument(entree({ methode: "papier_scanne", imageDataUrl: undefined })),
+      await signerDocument(
+        entree({
+          methode: "papier_scanne",
+          imageDataUrl: undefined,
+          partiesRequises: ["client", "axionia"],
+          porteur: {
+            type: "reversement_papier",
+            adminId: ADMIN,
+            provider: "physical_signed",
+            partie: "client",
+            signataire: { nom: "Camille Durand" },
+          },
+        }),
+      ),
       "image_requise",
     );
   });
@@ -619,6 +649,8 @@ describe("🔴 l'identité vient du serveur sur le canal maison", () => {
     const res = await signerDocument(
       entree({
         methode: "papier_scanne",
+        imageDataUrl: undefined,
+        scanPdf: { octets: Buffer.from("%PDF-1.7\n%%EOF\n") },
         porteur: {
           type: "reversement_papier",
           adminId: ADMIN,

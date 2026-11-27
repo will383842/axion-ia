@@ -49,7 +49,7 @@ export const CHATEAURENARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteaurenard et dans la plaine maraîchère ?",
-      a: "Oui, Axion-IA intervient à Châteaurenard et dans toute la plaine maraîchère (Cavaillon, Noves, Eyragues, Saint-Andiol, Rognonas, Barbentane). Proximité Avignon TGV et axe A7.",
+      a: "Oui, Axion-IA intervient à Châteaurenard et dans toute la plaine maraîchère (Cavaillon, Noves, Eyragues, Saint-Andiol, Rognonas, Barbentane), comme partout en France.",
     },
     {
       q: "Tarifs audit IA à Châteaurenard  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const CHATEAURENARD_COPY: VilleCopy = {
       a: "Oui, nous intervenons en agriculture sur prévision de rendement, gestion irrigation prédictive, optimisation main-d'œuvre saisonnière, traçabilité parcellaire, marketing vente directe.",
     },
     {
-      q: "Comment se déplace Axion-IA à Châteaurenard ?",
-      a: "Châteaurenard est à 15 min d'Avignon et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux ou au MIN. Coûts de déplacement à part, tarification transparente.",
+      q: "Comment se déroule une mission à Châteaurenard ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Châteaurenard, comme partout en France, ou à distance.",
     },
   ],
 };

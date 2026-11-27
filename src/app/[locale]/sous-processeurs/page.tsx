@@ -92,12 +92,14 @@ const LABELS_TRANSFER_FR: Record<Subprocessor["transferFramework"], string> = {
   scc: "Clauses contractuelles types (SCC)",
   adequacy_decision: "Décision d'adéquation",
   self_hosted_eu: "Auto-hébergé UE — aucun transfert",
+  sans_donnee_personnelle: "Sans objet — aucune donnée personnelle transmise",
 };
 const LABELS_TRANSFER_EN: Record<Subprocessor["transferFramework"], string> = {
   intra_eu: "Intra-EU",
   scc: "Standard Contractual Clauses (SCC)",
   adequacy_decision: "Adequacy decision",
   self_hosted_eu: "Self-hosted EU — no transfer",
+  sans_donnee_personnelle: "Not applicable — no personal data transmitted",
 };
 
 const LABELS_CATEGORY_FR: Record<Subprocessor["category"], string> = {

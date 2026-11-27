@@ -1087,6 +1087,12 @@ model Article {
   /// Feature flag `OPENAI_EMBEDDINGS_ENABLED` gere l'activation prod.
   embedding Unsupported("vector(1536)")?
 
+  /// PR4 — Couche 4 dedup + voix de marque, fournisseur Voyage AI (voyage-3,
+  /// 1024 dim, index HNSW cosine). Colonne PARALLÈLE à `embedding` (OpenAI), jamais
+  /// mélangée : les deux espaces vectoriels ne sont pas comparables. Nullable,
+  /// rattrapée par `embeddings-backfill-worker`. Lue selon `CONTENT_EMBEDDING_PROVIDER`.
+  embeddingVoyage Unsupported("vector(1024)")? @map("embedding_voyage")
+
   /// Sprint S+2 City Domination — auto-tagging géographique (Phase C strat ville).
   /// Slugs des villes mentionnées dans le body article (détection via helper
   /// `extractMentionedCitiesFromText`). Permet au hub ville de filtrer les
@@ -1818,12 +1824,12 @@ model GuideRequest {
   createdAt                   DateTime            @default(now()) @map("created_at")
   updatedAt                   DateTime            @updatedAt @map("updated_at")
 
+  contactsGuideReseau ContactGuideReseau[]
+
   @@unique([emailKey, aimant])
   @@index([sentAt, queuedAt])
   @@index([createdAt])
   @@map("guide_requests")
-
-  contactsGuideReseau ContactGuideReseau[]
 }
 
 // ============================================================
@@ -2674,6 +2680,8 @@ enum CoverageScope {
   departement
   region
   multi
+  /// « France entière » : file globale des villes, sans ancre propre.
+  national
 }
 
 /// 12 types d'organisation cible (§ 25 v1.7 — audience mix).
@@ -5239,11 +5247,11 @@ model Client {
   /// champ — ce serait une facture non conforme. Cf. `financements/penalites.ts`.
   penalitesRetardActives Boolean                     @default(false) @map("penalites_retard_actives")
 
-  emailsEnAttente  EmailOutbox[]
-  reglesEmail      EmailAutomationSetting[]
-  venteBrouillons  VenteBrouillon[]
+  emailsEnAttente          EmailOutbox[]
+  reglesEmail              EmailAutomationSetting[]
+  venteBrouillons          VenteBrouillon[]
   devisAssistantBrouillons DevisAssistantBrouillon[]
-  coachingSessions CoachingSession[]
+  coachingSessions         CoachingSession[]
 
   // ── Dossier client (chantier visio, 2026-09-29) ──
   // Champs de RELATION seulement : aucune colonne n'est ajoutée à `clients`
@@ -5271,7 +5279,7 @@ model Client {
   /// Rapports d'analyse avant audit (relation seule, aucune colonne sur `clients`, 2026-11-02).
   rapportsAvantAudit       RapportAvantAudit[]
   /// E-mails écrits à la main vers cette fiche (relation seule ; RESTRICT).
-  emailsManuels            EmailManuel[]            @relation("EmailManuelClient")
+  emailsManuels            EmailManuel[]             @relation("EmailManuelClient")
 
   @@index([statut])
   @@index([nafCode])
@@ -5281,6 +5289,7 @@ model Client {
   // fiche absorbée par une fusion garde ses pièces et son SIREN.
   @@index([siren])
   @@map("clients")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// Devis commercial (CRM). Lignes snapshot ; pas de prix catalogue dupliqué.
@@ -5344,22 +5353,24 @@ model Devis {
   createdAt                   DateTime               @default(now()) @map("created_at")
   updatedAt                   DateTime               @updatedAt @map("updated_at")
 
-  sessions            TrainingSession[]
-  auditMissions       AuditMission[]
-  facturesFormation   FactureFormation[]
-  dossiersFinancement DossierFinancement[]
-  relancesProposees   RelanceProposee[]
-  venteBrouillons     VenteBrouillon[]
+  sessions                TrainingSession[]
+  auditMissions           AuditMission[]
+  facturesFormation       FactureFormation[]
+  dossiersFinancement     DossierFinancement[]
+  relancesProposees       RelanceProposee[]
+  venteBrouillons         VenteBrouillon[]
   devisAssistantBrouillon DevisAssistantBrouillon?
-  coachingSessions    CoachingSession[]
+  coachingSessions        CoachingSession[]
 
   /// Jalons de suivi après signature (colonnes posées par la migration
   /// 20261104120000_devis_formules). Posés par les boutons « Démarrer la
   /// livraison » / « Marquer livré » ; l'étape est DÉDUITE (aucune énumération).
-  livraisonDebutAt DateTime? @map("livraison_debut_at")
-  livreAt          DateTime? @map("livre_at")
+  livraisonDebutAt        DateTime? @map("livraison_debut_at")
+  livreAt                 DateTime? @map("livre_at")
   /// NULL pour toute pièce antérieure, jamais rétro-remplie.
-  conditionsParticulieres String? @map("conditions_particulieres") @db.Text
+  conditionsParticulieres String?   @map("conditions_particulieres") @db.Text
+  /// Journée IA vendue sous ce nom : imprime la garantie de remboursement (CGV art. 47.10). Lu par l'app seulement, jamais par le worker.
+  journeeIa               Boolean   @default(false) @map("journee_ia")
 
   /// Devis à formules (colonnes posées par la migration 20261104120000_devis_formules).
   /// `offre` NULL = devis classique, comportement INCHANGÉ. Tant que l'interrupteur
@@ -5385,6 +5396,7 @@ model Devis {
   @@index([documentGenereId])
   @@index([choixSignatureId])
   @@map("devis")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// Bibliothèque des textes du devis à formules (avantages, inconvénients, prérequis,
@@ -7838,10 +7850,10 @@ model DocumentSignature {
   /// société et celui où son code reçu par e-mail a été accepté. SCELLÉS en V4 quand ils sont
   /// présents (clés absentes du sceau sinon : les signatures V4 antérieures restent vérifiables).
   /// NULL partout avant le lot 4 bis. Jamais de V5.
-  declarationNom      String?   @map("declaration_nom") @db.VarChar(200)
-  declarationFonction String?   @map("declaration_fonction") @db.VarChar(200)
-  pouvoirDeclareAt    DateTime? @map("pouvoir_declare_at")
-  codeVerifieAt       DateTime? @map("code_verifie_at")
+  declarationNom      String?                      @map("declaration_nom") @db.VarChar(200)
+  declarationFonction String?                      @map("declaration_fonction") @db.VarChar(200)
+  pouvoirDeclareAt    DateTime?                    @map("pouvoir_declare_at")
+  codeVerifieAt       DateTime?                    @map("code_verifie_at")
   horodatage          DocumentSignatureHorodatage?
 
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
@@ -8025,25 +8037,25 @@ model DocumentSignatureEchecs {
 /// est définitif (déclencheurs SQL).
 /// rgpd: technique — empreinte SHA-256 d'un sceau et jeton d'horodatage de l'autorité ; ni nom, ni adresse, ni donnée en clair
 model DocumentSignatureHorodatage {
-  id               String            @id @default(uuid()) @db.Uuid
-  signatureId      String            @unique @map("signature_id") @db.Uuid
-  signature        DocumentSignature @relation(fields: [signatureId], references: [id], onDelete: Restrict)
+  id              String            @id @default(uuid()) @db.Uuid
+  signatureId     String            @unique @map("signature_id") @db.Uuid
+  signature       DocumentSignature @relation(fields: [signatureId], references: [id], onDelete: Restrict)
   /// `selfHash` de la signature : la valeur soumise à l'autorité.
-  empreinteSha256  String            @map("empreinte_sha256") @db.Char(64)
+  empreinteSha256 String            @map("empreinte_sha256") @db.Char(64)
   /// `en_attente` | `obtenu`.
-  statut           String            @default("en_attente") @db.VarChar(12)
+  statut          String            @default("en_attente") @db.VarChar(12)
   /// URL de l'autorité qui a répondu (renseignée à l'obtention).
-  autorite         String?           @db.VarChar(300)
+  autorite        String?           @db.VarChar(300)
   /// Réponse RFC 3161 (TimeStampResp, DER) telle que reçue.
-  jeton            Bytes?
-  jetonSha256      String?           @map("jeton_sha256") @db.Char(64)
+  jeton           Bytes?
+  jetonSha256     String?           @map("jeton_sha256") @db.Char(64)
   /// `genTime` du jeton.
-  horodateAt       DateTime?         @map("horodate_at")
-  essais           Int               @default(0)
-  dernierEssaiAt   DateTime?         @map("dernier_essai_at")
-  prochainEssaiAt  DateTime          @map("prochain_essai_at")
-  derniereErreur   String?           @map("derniere_erreur") @db.VarChar(200)
-  creeAt           DateTime          @default(now()) @map("cree_at")
+  horodateAt      DateTime?         @map("horodate_at")
+  essais          Int               @default(0)
+  dernierEssaiAt  DateTime?         @map("dernier_essai_at")
+  prochainEssaiAt DateTime          @map("prochain_essai_at")
+  derniereErreur  String?           @map("derniere_erreur") @db.VarChar(200)
+  creeAt          DateTime          @default(now()) @map("cree_at")
 
   @@index([statut, prochainEssaiAt])
   @@map("document_signature_horodatages")
@@ -8677,6 +8689,8 @@ model FactureFormation {
   @@index([statut, emiseAt])
   @@index([echeanceAt])
   @@map("factures_formation")
+  garantiesJourneeIaFacture GarantieJourneeIa[] @relation("GarantieJourneeIaFacture")
+  garantiesJourneeIaAvoir   GarantieJourneeIa[] @relation("GarantieJourneeIaAvoir")
 }
 
 // ============================================================
@@ -11597,6 +11611,10 @@ model BarometerResponse {
   rawAnswers       Json             @map("raw_answers")
   submittedAt      DateTime         @default(now()) @map("submitted_at")
   createdAt        DateTime         @default(now()) @map("created_at")
+  // GEO V2-10 PR-1 : Score IA PME. Nullables, NULL = canal historique.
+  source           String?          @db.VarChar(40)
+  consentVersion   String?          @map("consent_version") @db.VarChar(64)
+  codeRetraitHash  String?          @unique @map("code_retrait_hash") @db.VarChar(64)
 
   @@index([companySize])
   @@index([sector])
@@ -12780,6 +12798,7 @@ model AuditMission {
   @@index([dateDebut])
   @@index([dateDebut, dateFin])
   @@map("audit_missions")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// QR codes dynamiques (onglet admin "QR codes & liens").
@@ -14013,22 +14032,22 @@ model EdCanalNotification {
 /// tester une adresse qu'on a déjà. C'est exactement ce dont la chaîne
 /// d'envoi a besoin, et rien de plus.
 model EmailOpposition {
-  id        String   @id @default(uuid()) @db.Uuid
+  id                  String    @id @default(uuid()) @db.Uuid
   /// `hashEmailForLookup(adresse)` — 64 caractères hexadécimaux. Jamais l'adresse.
-  emailHash String   @unique @map("email_hash") @db.VarChar(64)
+  emailHash           String    @unique @map("email_hash") @db.VarChar(64)
   /// Gabarit depuis lequel le lien a été cliqué — une trace, pas un secret.
-  template  String?  @db.VarChar(60)
-  source    String   @default("lien-email") @db.VarChar(40)
+  template            String?   @db.VarChar(60)
+  source              String    @default("lien-email") @db.VarChar(40)
   /// Posée APRÈS la création : le CRM n'a pas encore été prévenu. NULL = ne pas réessayer.
-  crmEnAttenteDepuis DateTime? @map("crm_en_attente_depuis") @db.Timestamptz(6)
+  crmEnAttenteDepuis  DateTime? @map("crm_en_attente_depuis") @db.Timestamptz(6)
   /// Posée par l'effacement : le CRM ne doit plus jamais recevoir l'adresse.
-  crmInterditLe      DateTime? @map("crm_interdit_le") @db.Timestamptz(6)
+  crmInterditLe       DateTime? @map("crm_interdit_le") @db.Timestamptz(6)
   /// Posée par une DEMANDE D'EFFACEMENT (décision de Williams du 11/11/2026 : on écarte, on ne
   /// supprime pas). Une fois posée, plus AUCUN envoi ne part vers l'adresse, quel que soit le
   /// gabarit (`verdict-envoi.ts`). Jamais retirée par le code.
   effacementDemandeLe DateTime? @map("effacement_demande_le") @db.Timestamptz(6)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
 
   @@map("email_oppositions")
 }
@@ -14091,11 +14110,11 @@ model ClientContact {
   createdAt             DateTime       @default(now()) @map("created_at")
   updatedAt             DateTime       @updatedAt @map("updated_at")
 
-  adresses     ClientContactAdresse[]
+  adresses      ClientContactAdresse[]
   /// Tâches de la fiche qui visent cette personne (relation seule ; SET NULL).
-  clientTaches ClientTache[]
+  clientTaches  ClientTache[]
   /// E-mails écrits à la main vers cette personne (relation seule ; RESTRICT).
-  emailsManuels EmailManuel[] @relation("EmailManuelContact")
+  emailsManuels EmailManuel[]          @relation("EmailManuelContact")
 
   @@unique([id, clientId])
   @@index([clientId])
@@ -16461,6 +16480,63 @@ model PresentationEtablissement {
   @@map("presentation_etablissement")
 }
 
+/// Règle « validation au premier rendez-vous tenu » (lot 1, 2026-11-25) : la RÉSERVATION d'une
+/// présentation. L'entreprise présentée est réservée à l'apporteur jusqu'à `reserveeJusquAt` ; elle
+/// est validée par le premier rendez-vous tenu. Table séparée sans clé étrangère (fenêtre
+/// app/worker), comme `PresentationEtablissement`. Absente = présentation d'avant cette règle.
+/// rgpd: technique — règle d'attribution figée, dates et identifiants ; aucun nom, e-mail ni téléphone
+model PresentationReservation {
+  presentationId   String    @id @map("presentation_id") @db.Uuid
+  /// La règle figée à la présentation : « rendez_vous ».
+  regle            String    @db.VarChar(20)
+  reserveeJusquAt  DateTime  @map("reservee_jusqu_at") @db.Timestamptz(3)
+  echueAt          DateTime? @map("echue_at") @db.Timestamptz(3)
+  rendezVousPrisAt DateTime? @map("rendez_vous_pris_at") @db.Timestamptz(3)
+  rendezVousAt     DateTime? @map("rendez_vous_at") @db.Timestamptz(3)
+  /// « calendly:<id> » ou « rencontre:<id> » (`cleRendezVous`).
+  rendezVousCle    String?   @map("rendez_vous_cle") @db.VarChar(80)
+  /// calendly | rencontre | saisie | commande (texte, pas d'énumération : fenêtre app/worker).
+  validationSource String?   @map("validation_source") @db.VarChar(20)
+  valideeAt        DateTime? @map("validee_at") @db.Timestamptz(3)
+  /// Auteur : identifiant texte (administrateur ou « systeme »), pas un UUID ; sans clé étrangère.
+  valideeParId     String?   @map("validee_par_id") @db.VarChar(64)
+  /// Motif écrit de la validation, OBLIGATOIRE quand `validationSource` = « saisie » (validation
+  /// à la main par Axion). Texte libre d'administrateur : jamais un nom ni une coordonnée.
+  validationMotif  String?   @map("validation_motif") @db.Text
+  creeAt           DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt            DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  /// Index unique PARTIEL hors schéma (migration.sql) : rendez_vous_cle WHERE validee_at IS NOT NULL.
+  @@index([reserveeJusquAt])
+  @@map("presentation_reservation")
+}
+
+/// Un rendez-vous qui POURRAIT valider une présentation réservée, proposé à Williams qui le
+/// retient ou l'écarte. Une ligne par couple (présentation, rendez-vous). Sans clé étrangère.
+/// rgpd: technique — identifiants de présentation et de rendez-vous, motif, dates ; aucun nom, e-mail ni téléphone
+model PropositionRendezVousPresentation {
+  id                String    @id @default(uuid()) @db.Uuid
+  presentationId    String    @map("presentation_id") @db.Uuid
+  rendezVousCle     String    @map("rendez_vous_cle") @db.VarChar(80)
+  /// email_exact | meme_entreprise | meme_siren (texte, pas d'énumération).
+  motif             String    @db.VarChar(30)
+  apporteurCite     Boolean   @default(false) @map("apporteur_cite")
+  prisAt            DateTime  @map("pris_at") @db.Timestamptz(3)
+  rendezVousAt      DateTime? @map("rendez_vous_at") @db.Timestamptz(3)
+  creeAt            DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  ecarteeAt         DateTime? @map("ecartee_at") @db.Timestamptz(3)
+  /// Auteur : identifiant texte (administrateur ou « systeme »), pas un UUID ; sans clé étrangère.
+  ecarteeParId      String?   @map("ecartee_par_id") @db.VarChar(64)
+  /// Motif écrit de l'écart, OBLIGATOIRE : il est communiqué à l'apporteur.
+  ecarteeMotif      String?   @map("ecartee_motif") @db.Text
+  /// Quand le motif a été communiqué à l'apporteur (gabarit livré avant son émetteur).
+  ecarteeNotifieeAt DateTime? @map("ecartee_notifiee_at") @db.Timestamptz(3)
+  retenueAt         DateTime? @map("retenue_at") @db.Timestamptz(3)
+
+  @@unique([presentationId, rendezVousCle])
+  @@map("propositions_rendez_vous_presentation")
+}
+
 /// Contrat 2.6 : une commande soldée dont l'établissement ne correspond à aucune attribution
 /// exacte (SIRET absent, autre SIRET, siège qui paie pour l'agence) n'est JAMAIS perdue en
 /// silence : elle attend le choix de Williams (art. 3.1 ; 15 jours de l'encaissement).
@@ -16498,14 +16574,142 @@ model DevisEtablissement {
 /// ferait échouer, pendant la fenêtre app/worker (~50 min avant la migration), toutes les
 /// requêtes du worker qui lisent cette table sans liste de colonnes. Une ligne = retiré ;
 /// « Remettre dans le réseau » supprime la ligne (l'historique vit dans le journal d'audit).
-/// rgpd: technique — état « retiré du réseau » d'un dossier : identifiant, date et administrateur auteur ; aucune donnée de la personne
+/// rgpd: technique — état « retiré du réseau » d'un dossier : identifiant, date, administrateur auteur et motif du classement (texte libre de l'administrateur, sans donnée de la personne)
 model ApporteurReseauRetrait {
   apporteurId String   @id @map("apporteur_id") @db.Uuid
   retireAt    DateTime @default(now()) @map("retire_at") @db.Timestamptz(3)
   /// Identifiant de l'administrateur qui a retiré la fiche.
   retirePar   String?  @map("retire_par") @db.VarChar(64)
+  /// Motif du classement (L2, 2026-11-25), 3 à 500 caractères. Nul pour les lignes d'avant.
+  motif       String?  @db.Text
 
   @@map("apporteur_reseau_retrait")
+}
+
+/// Résiliation du contrat d'un apporteur en DEUX TEMPS (2026-11-25, lot L1b) : la notification
+/// écrite (article 11 ou 12.5), puis la prise d'effet à la date calculée (préavis de 30 jours en
+/// 11.1). Table séparée sans clé étrangère, comme `ApporteurReseauRetrait` : `ApporteurReseau` ne
+/// change pas pendant la fenêtre app/worker. Absente = aucune résiliation notifiée (lecture tolérante).
+/// rgpd: technique — dates, fondement et motif de la résiliation ; aucun nom, e-mail ni téléphone
+model ApporteurResiliation {
+  apporteurId        String    @id @map("apporteur_id") @db.Uuid
+  /// "societe" | "apporteur"
+  initiative         String    @db.VarChar(12)
+  /// "11.1" | "11.2" | "12.5"
+  fondement          String    @db.VarChar(8)
+  notifieeLe         DateTime  @map("notifiee_le") @db.Timestamptz(3)
+  effetLe            DateTime  @map("effet_le") @db.Timestamptz(3)
+  miseEnDemeureLe    DateTime? @map("mise_en_demeure_le") @db.Timestamptz(3)
+  motif              String?   @db.Text
+  parId              String    @map("par_id") @db.VarChar(64)
+  creeAt             DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  executeeAt         DateTime? @map("executee_at") @db.Timestamptz(3)
+  emailNotifEnvoyeAt DateTime? @map("email_notif_envoye_at") @db.Timestamptz(3)
+  emailEffetEnvoyeAt DateTime? @map("email_effet_envoye_at") @db.Timestamptz(3)
+
+  @@index([effetLe, executeeAt])
+  @@map("apporteur_resiliation")
+}
+
+/// Changement d'IBAN d'un apporteur APRÈS la signature (plan `docs/plans/apporteurs-changement-iban-2026-11-25.md`, lot 1).
+/// Une ligne par demande, jamais supprimée (déclencheur SQL). Table SÉPARÉE, sans clé étrangère ni énumération
+/// Postgres, à dessein : `apporteurs_reseau` ne change pas pendant la fenêtre app/worker, et tout lecteur tolère
+/// la table absente (P2021). `statut` est un texte contraint par CHECK (pas d'énumération : aucune valeur à
+/// propager entre les deux conteneurs). L'IBAN demandé n'est JAMAIS en clair (CHECK sur le format complet `enc:v2:`).
+/// rgpd: dossier-client
+model ApporteurChangementIban {
+  id                     String    @id @default(uuid()) @db.Uuid
+  apporteurId            String    @map("apporteur_id") @db.Uuid
+  /// a_confirmer | confirmee | validee | refusee | opposee | annulee | expiree (CHECK `apporteur_changements_iban_statut`).
+  statut                 String    @default("a_confirmer") @db.VarChar(16)
+  /// IBAN demandé, chiffré `enc:v2:` (donnée liée `changement-iban:<id>`). Jamais en clair (CHECK).
+  iban                   String    @db.Text
+  ibanEmpreinte          String    @map("iban_empreinte") @db.Char(64)
+  ibanFin4               String    @map("iban_fin4") @db.Char(4)
+  ancienIbanEmpreinte    String?   @map("ancien_iban_empreinte") @db.Char(64)
+  ancienIbanFin4         String?   @map("ancien_iban_fin4") @db.Char(4)
+  /// espace | console
+  origine                String    @db.VarChar(8)
+  demandeeAt             DateTime  @default(now()) @map("demandee_at") @db.Timestamptz(3)
+  demandeIpHash          String?   @map("demande_ip_hash") @db.VarChar(64)
+  /// Sortie de `resumerNavigateur` (« Chrome · Windows »), jamais le `User-Agent` entier.
+  demandeNavigateur      String?   @map("demande_navigateur") @db.VarChar(80)
+  avisEnvoyeAt           DateTime? @map("avis_envoye_at") @db.Timestamptz(3)
+  confirmeeAt            DateTime? @map("confirmee_at") @db.Timestamptz(3)
+  confirmationIpHash     String?   @map("confirmation_ip_hash") @db.VarChar(64)
+  confirmationNavigateur String?   @map("confirmation_navigateur") @db.VarChar(80)
+  opposeeAt              DateTime? @map("opposee_at") @db.Timestamptz(3)
+  annuleeAt              DateTime? @map("annulee_at") @db.Timestamptz(3)
+  expireeAt              DateTime? @map("expiree_at") @db.Timestamptz(3)
+  traiteeAt              DateTime? @map("traitee_at") @db.Timestamptz(3)
+  traiteePar             String?   @map("traitee_par") @db.Uuid
+  motifRefus             String?   @map("motif_refus") @db.Text
+  /// Les trois cases cochées et les alertes affichées. Jamais d'IBAN.
+  controles              Json?
+
+  @@index([apporteurId, demandeeAt], map: "apporteur_changements_iban_apporteur_idx")
+  @@index([statut, confirmeeAt], map: "apporteur_changements_iban_statut_idx")
+  @@map("apporteur_changements_iban")
+}
+
+/// RIB (pièce jointe) d'une demande de changement d'IBAN. Octets CHIFFRÉS (enveloppe de `pieces-chiffrement.ts`) ;
+/// `octets` passe à NULL à la purge (`purge_at` posé, CHECK de cohérence). Sans clé étrangère, comme la demande.
+/// rgpd: dossier-client
+model ApporteurChangementIbanRib {
+  demandeId  String    @id @map("demande_id") @db.Uuid
+  octets     Bytes?
+  sha256     String    @db.Char(64)
+  typeMime   String    @map("type_mime") @db.VarChar(80)
+  taille     Int
+  /// Même gabarit que `PieceApporteur`. NEUTRE : toujours « rib.pdf », jamais le nom d'origine (il peut contenir l'IBAN).
+  nomFichier String    @map("nom_fichier") @db.VarChar(200)
+  deposeAt   DateTime  @default(now()) @map("depose_at") @db.Timestamptz(3)
+  purgeAt    DateTime? @map("purge_at") @db.Timestamptz(3)
+
+  @@map("apporteur_changements_iban_rib")
+}
+
+/// Historique des comptes d'un apporteur : un compte par ligne, AJOUT SEUL (déclencheurs : ni DELETE ni TRUNCATE ;
+/// seule `en_vigueur_jusqua` passe de NULL à une date). L'ancien IBAN y est copié à la validation, jamais perdu.
+/// ⚠️ L'IBAN de la fiche est en `enc:v1` : on le DÉCHIFFRE puis on le rechiffre en v2 (donnée liée `iban-historique:<id>`) ; le CHECK refuse un v1 copié tel quel.
+/// rgpd: dossier-client
+model ApporteurIbanHistorique {
+  id              String    @id @default(uuid()) @db.Uuid
+  apporteurId     String    @map("apporteur_id") @db.Uuid
+  /// Chiffré `enc:v2:` (donnée liée `iban-historique:<id>`). Jamais en clair (CHECK).
+  iban            String    @db.Text
+  ibanEmpreinte   String    @map("iban_empreinte") @db.Char(64)
+  ibanFin4        String    @map("iban_fin4") @db.Char(4)
+  enVigueurDe     DateTime? @map("en_vigueur_de") @db.Timestamptz(3)
+  enVigueurJusqua DateTime? @map("en_vigueur_jusqua") @db.Timestamptz(3)
+  /// dossier_initial | changement
+  origine         String    @db.VarChar(16)
+  demandeId       String?   @map("demande_id") @db.Uuid
+  pieceRibId      String?   @map("piece_rib_id") @db.Uuid
+  creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, creeAt], map: "apporteur_iban_historique_apporteur_idx")
+  @@index([ibanEmpreinte], map: "apporteur_iban_historique_empreinte_idx")
+  @@map("apporteur_iban_historique")
+}
+
+/// Sur quel compte un virement est parti (déclaré par « Virement fait »). Ajout seul (déclencheurs).
+/// rgpd: dossier-client
+model ApporteurVirementCompte {
+  id                 String   @id @default(uuid()) @db.Uuid
+  autofactureNumero  String   @map("autofacture_numero") @db.VarChar(40)
+  apporteurId        String   @map("apporteur_id") @db.Uuid
+  ibanEmpreinte      String   @map("iban_empreinte") @db.Char(64)
+  ibanFin4           String   @map("iban_fin4") @db.Char(4)
+  /// Instant du « Virement fait » (celui de `commissions_apporteur.versee_at`) : une autofacture peut être versée en plusieurs fois.
+  verseAt            DateTime @map("verse_at") @db.Timestamptz(3)
+  declareAt          DateTime @default(now()) @map("declare_at") @db.Timestamptz(3)
+  declarePar         String   @map("declare_par") @db.VarChar(64)
+  premierSurCeCompte Boolean  @default(false) @map("premier_sur_ce_compte")
+
+  @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
+  @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
+  @@map("apporteur_virements_compte")
 }
 
 enum TypePieceApporteur {
@@ -16692,6 +16896,53 @@ model CommissionApporteur {
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])
   @@map("commissions_apporteur")
+}
+
+/// Une pièce de la série AXI-APP (autofacture ou avoir d'autofacture) FIGÉE à son émission :
+/// régime et n° de TVA imprimés, totaux du PDF. Le virement, les avoirs, la compensation, la DAS2,
+/// « Mes commissions » et le cumul de vigilance lisent CE régime, jamais celui de la fiche.
+/// Sans clé étrangère (fenêtre app/worker). Totaux NULL = pièce reprise à la migration.
+/// rgpd: technique — numéros, montants, régime ; aucune donnée personnelle en clair
+model PieceAutofactureApporteur {
+  numero           String             @id @db.VarChar(40)
+  apporteurId      String             @map("apporteur_id") @db.Uuid
+  /// « facture » | « avoir » (contrôlé par le code).
+  genre            String             @db.VarChar(10)
+  regimeTva        RegimeTvaApporteur @map("regime_tva")
+  numeroTva        String?            @map("numero_tva") @db.VarChar(20)
+  totalHtCents     Int?               @map("total_ht_cents")
+  totalTvaCents    Int?               @map("total_tva_cents")
+  totalTtcCents    Int?               @map("total_ttc_cents")
+  /// Avoir : l'autofacture rectifiée (dont il prend le régime).
+  factureRectifiee String?            @map("facture_rectifiee") @db.VarChar(40)
+  emiseAt          DateTime           @map("emise_at") @db.Timestamptz(3)
+  /// « emission » | « reprise_migration » | « rattrapage » (contrôlé par le code).
+  origine          String             @db.VarChar(20)
+  creeAt           DateTime           @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@index([apporteurId])
+  @@map("pieces_autofacture_apporteur")
+}
+
+/// Changement de régime de TVA d'un apporteur APRÈS signature (contrat 2.8, art. 4.7 et 6.3).
+/// Régime applicable au jour J = le changement non annulé de plus grande `effetAu` ≤ J
+/// (à égalité, le plus récent saisi), sinon la fiche. Sans clé étrangère.
+/// rgpd: technique — régime et n° de TVA d'une entreprise ; auteur = id d'administrateur
+model ApporteurRegimeTvaChangement {
+  id             String              @id @default(uuid()) @db.Uuid
+  apporteurId    String              @map("apporteur_id") @db.Uuid
+  regimeAvant    RegimeTvaApporteur? @map("regime_avant")
+  numeroTvaAvant String?             @map("numero_tva_avant") @db.VarChar(20)
+  regimeTva      RegimeTvaApporteur  @map("regime_tva")
+  numeroTva      String?             @map("numero_tva") @db.VarChar(20)
+  /// Jour de Paris à compter duquel le régime s'applique aux autofactures établies.
+  effetAu        DateTime            @map("effet_au") @db.Date
+  saisiAt        DateTime            @default(now()) @map("saisi_at") @db.Timestamptz(3)
+  saisiPar       String?             @map("saisi_par") @db.Uuid
+  annuleAt       DateTime?           @map("annule_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, effetAu])
+  @@map("apporteur_regime_tva_changements")
 }
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -18486,14 +18737,14 @@ model CibleReseau {
 /// plusieurs mots peuvent mener à la même cible. Mot normalisé (règle du Studio) : minuscules, sans accent, 2 à 20, pas que des chiffres, hors STOP et mots d'opposition — règle appliquée par le code ET reposée en SQL (contrainte `mots_cibles_mot_forme`).
 /// rgpd: technique — mot-clé éditorial ; aucune donnée sur une personne
 model MotCible {
-  id        String       @id @default(uuid()) @db.Uuid
-  mot       String       @db.VarChar(30)
-  reseau    String       @db.VarChar(10)
-  codeCible String       @map("code_cible") @db.VarChar(28)
-  actif     Boolean      @default(true)
-  creeLe    DateTime     @default(now()) @map("cree_le") @db.Timestamptz(3)
-  modifieLe DateTime     @updatedAt @map("modifie_le") @db.Timestamptz(3)
-  cible     CibleReseau  @relation(fields: [codeCible], references: [code], onDelete: Restrict)
+  id        String      @id @default(uuid()) @db.Uuid
+  mot       String      @db.VarChar(30)
+  reseau    String      @db.VarChar(10)
+  codeCible String      @map("code_cible") @db.VarChar(28)
+  actif     Boolean     @default(true)
+  creeLe    DateTime    @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime    @updatedAt @map("modifie_le") @db.Timestamptz(3)
+  cible     CibleReseau @relation(fields: [codeCible], references: [code], onDelete: Restrict)
 
   @@unique([mot, reseau], map: "mots_cibles_mot_reseau_key")
   @@index([codeCible], map: "mots_cibles_code_cible_idx")
@@ -18630,4 +18881,115 @@ model EmailManuelPieceJointe {
 
   @@index([emailManuelId], map: "emails_manuels_pieces_jointes_email_idx")
   @@map("emails_manuels_pieces_jointes")
+}
+
+/// Garantie « Journée IA » (CGV art. 47.10) — suivi des remboursements (PR 2/3, 2026-11-25).
+/// Une ligne par journée garantie. Règle retenue : « variante brief » — demande écrite du client sous
+/// 30 jours après la remise du rapport ; réponse d'Axion-IA sous 15 jours, sinon demande RÉPUTÉE
+/// ACCEPTÉE ; virement sous 30 jours après l'acceptation. Les échéances ne sont JAMAIS stockées :
+/// `calculerEcheances` les recalcule depuis les dates saisies. « Réputée acceptée » n'est jamais écrit
+/// par un robot. Montants en centimes. On archive (`archive_le`), on ne supprime jamais. `decision`
+/// est du texte (remboursement | refus | avoir), PAS une énumération Postgres (contrat
+/// app/worker, AGENTS.md « DEUX conteneurs »). Table additive : aucun code worker ne la lit en PR 2.
+/// rgpd: technique — dates, montants et décision d'un remboursement d'entreprise ; rattaché au client par identifiant, SIREN d'entreprise, notes internes sans coordonnées
+model GarantieJourneeIa {
+  id                    String            @id @default(uuid()) @db.Uuid
+  clientId              String            @map("client_id") @db.Uuid
+  client                Client            @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  devisId               String?           @map("devis_id") @db.Uuid
+  devis                 Devis?            @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  auditMissionId        String?           @unique @map("audit_mission_id") @db.Uuid
+  auditMission          AuditMission?     @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
+  factureId             String?           @map("facture_id") @db.Uuid
+  facture               FactureFormation? @relation("GarantieJourneeIaFacture", fields: [factureId], references: [id], onDelete: SetNull)
+  avoirId               String?           @map("avoir_id") @db.Uuid
+  avoir                 FactureFormation? @relation("GarantieJourneeIaAvoir", fields: [avoirId], references: [id], onDelete: SetNull)
+  /// SIREN figé à la création : contrôle « une seule fois » (47.10 e).
+  sirenSnapshot         String?           @map("siren_snapshot") @db.VarChar(14)
+  /// Prix et seuil HT en centimes, copiés du devis et figés.
+  prixHtCents           Int               @map("prix_ht_cents")
+  seuilHtCents          Int               @map("seuil_ht_cents")
+  totalGainsCents       Int?              @map("total_gains_cents")
+  montantRembourseCents Int?              @map("montant_rembourse_cents")
+  /// Décision « avoir » : montant de l'avoir offert, en euros HT (centimes), plafonné côté code à 4 470 €.
+  montantAvoirHtCents   Int?              @map("montant_avoir_ht_cents")
+  /// Dates = jour de Paris, sans heure.
+  dateJournee           DateTime          @map("date_journee") @db.Date
+  rapportRemisLe        DateTime?         @map("rapport_remis_le") @db.Date
+  demandeRecueLe        DateTime?         @map("demande_recue_le") @db.Date
+  decisionLe            DateTime?         @map("decision_le") @db.Date
+  avoirEmisLe           DateTime?         @map("avoir_emis_le") @db.Date
+  virementLe            DateTime?         @map("virement_le") @db.Date
+  /// remboursement | refus | avoir. Texte, pas d'énumération.
+  decision              String?           @db.VarChar(20)
+  motifDecision         String?           @map("motif_decision")
+  notes                 String?
+  archiveLe             DateTime?         @map("archive_le") @db.Timestamptz(3)
+  creePar               String?           @map("cree_par") @db.VarChar(80)
+  createdAt             DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([archiveLe, dateJournee], map: "garanties_journee_ia_archive_le_date_journee_idx")
+  @@index([clientId], map: "garanties_journee_ia_client_id_idx")
+  @@index([sirenSnapshot], map: "garanties_journee_ia_siren_snapshot_idx")
+  @@map("garanties_journee_ia")
+}
+
+/// Un challenge d'apporteurs (« Prime exceptionnelle de … » côté apporteur) : la règle, la
+/// période, le seuil et le montant, figés à la publication. INVITATION LIBRE : aucun objectif
+/// imposé à un apporteur, aucun classement, aucun compteur. Table autonome, sans clé étrangère
+/// (fenêtre app/worker) ; le brouillon n'est visible que dans la console.
+/// rgpd: technique — règle, période, seuil et montant d'un challenge ; identifiant de l'administrateur auteur ; aucune donnée d'apporteur
+model ChallengeApporteur {
+  id              String    @id @default(uuid()) @db.Uuid
+  titre           String    @db.VarChar(120)
+  /// Jours civils DE PARIS, bornes incluses (CHECK fin >= début en base).
+  debutLe         DateTime  @map("debut_le") @db.Date
+  finLe           DateTime  @map("fin_le") @db.Date
+  /// Dernier jour de paiement client retenu (règlement seulement) ; nul ou >= fin.
+  paiementJusquAu DateTime? @map("paiement_jusqu_au") @db.Date
+  /// Liste fermée : `journee-ia` (CHECK en base).
+  produit         String    @db.VarChar(40)
+  /// Liste fermée : `facturees_dans_la_periode` (CHECK en base).
+  critere         String    @db.VarChar(40)
+  /// 1 à 999 (CHECK en base).
+  seuil           Int
+  /// Montant HT de la prime, en centimes, > 0 (CHECK en base).
+  primeHtCents    Int       @map("prime_ht_cents")
+  /// Texte du règlement publié, figé à la publication.
+  reglement       String    @db.Text
+  /// Empreinte SHA-256 du règlement, posée à la publication.
+  reglementSha256 String?   @map("reglement_sha256") @db.Char(64)
+  /// `brouillon` (défaut) | `publie` | `archive` (CHECK en base).
+  statut          String    @default("brouillon") @db.VarChar(20)
+  publieAt        DateTime? @map("publie_at") @db.Timestamptz(3)
+  /// Instant de l'archivage ; un archivé arrêté avant son début n'est jamais lisible.
+  archiveAt       DateTime? @map("archive_at") @db.Timestamptz(3)
+  /// Identifiants texte d'administrateur, sans clé étrangère.
+  publiePar       String?   @map("publie_par") @db.VarChar(64)
+  creePar         String?   @map("cree_par") @db.VarChar(64)
+  creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt           DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([statut, debutLe], map: "challenges_apporteur_statut_debut_idx")
+  @@map("challenges_apporteur")
+}
+
+/// Questionnaire du Baromètre 2027 : une ligne par réponse, non nominative. Ni IP, ni e-mail, ni
+/// agent navigateur, ni horodatage précis (`jour` est tronqué au jour UTC). Effacement automatique
+/// 24 mois après le jour d'envoi de chaque réponse (exception déclarée dans le worker de purge).
+/// rgpd: technique — réponses non nominatives, sans identifiant de personne : l'export et l'effacement par personne n'existent pas (art. 11) ; retrait par code, effacement automatique à 24 mois
+model BarometreQuestionnaireReponse {
+  id                   String   @id @default(uuid()) @db.Uuid
+  campagne             String   @default("barometre-2027") @db.VarChar(40)
+  questionnaireVersion String   @map("questionnaire_version") @db.VarChar(20)
+  consentVersion       String   @map("consent_version") @db.VarChar(64)
+  codeRetraitHash      String   @unique @map("code_retrait_hash") @db.VarChar(64)
+  jour                 DateTime @db.Date
+  reponses             Json
+  texteUsage           String?  @map("texte_usage") @db.VarChar(1000)
+  texteQuestion        String?  @map("texte_question") @db.VarChar(1000)
+
+  @@index([campagne, jour], map: "barometre_questionnaire_reponses_campagne_jour_idx")
+  @@map("barometre_questionnaire_reponses")
 }

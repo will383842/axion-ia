@@ -53,7 +53,7 @@ export const ABLON_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ablon-sur-Seine et dans le Val-de-Marne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Ablon-sur-Seine et du secteur des bords de Seine sud. Nos consultants se déplacent sur site, à 25 minutes de Paris-Austerlitz par le RER C (gare sur place), ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Ablon-sur-Seine et du secteur des bords de Seine sud. Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Ablon-sur-Seine ?",
@@ -69,7 +69,7 @@ export const ABLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ablon-sur-Seine ?",
-      a: "Ablon-sur-Seine est à 25 minutes de Paris-Austerlitz par le RER C, avec sa gare sur place, et à 10 minutes d'Orly. Nos consultants se déplacent sur site ou interviennent en visio.",
+      a: "Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],
 };

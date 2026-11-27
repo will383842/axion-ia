@@ -65,7 +65,7 @@ export const EMBRUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Embrun ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

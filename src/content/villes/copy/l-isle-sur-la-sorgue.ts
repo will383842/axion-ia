@@ -229,8 +229,8 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à L'Isle-sur-la-Sorgue ?",
-      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos galeries, hôtels ou commerces de L'Isle-sur-la-Sorgue pour observer vos processus réels, généralement sous cinq jours ouvrés.",
+      q: "Comment se déroule une mission à L'Isle-sur-la-Sorgue ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à L'Isle-sur-la-Sorgue, comme partout en France, ou à distance.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un antiquaire de L'Isle-sur-la-Sorgue ?",
@@ -242,7 +242,7 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de L'Isle-sur-la-Sorgue ?",
-      a: "Oui. Nous nous déplaçons également à Avignon, Cavaillon, Carpentras et dans le reste du Comtat Venaissin pour des prestations sur site, sans surcoût caché.",
+      a: "Oui. Nous nous déplaçons également à Avignon, Cavaillon, Carpentras et dans le reste du Comtat Venaissin pour des prestations sur site.",
     },
     {
       q: "Vos solutions respectent-elles le RGPD à L'Isle-sur-la-Sorgue ?",

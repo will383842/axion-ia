@@ -232,7 +232,7 @@ export const VOIRON_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à Voiron ?",
-      a: "Nous nous engageons à intervenir sur site à Voiron sous 5 jours ouvrés après validation de votre demande, en TER (cadencé 20 min) ou par l'autoroute A48.",
+      a: "Nous nous engageons à intervenir sur site à Voiron sous 5 jours ouvrés après validation de votre demande, dans vos locaux, comme partout en France.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Voiron ?",

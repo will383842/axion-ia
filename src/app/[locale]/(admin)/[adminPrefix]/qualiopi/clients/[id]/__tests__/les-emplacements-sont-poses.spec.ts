@@ -44,7 +44,7 @@ const empreinte = (texte: string): string =>
 
 // Refonte lot 0 + B1-B10 terminée : toute modification de page.tsx re-scelle ce hash dans la
 // même PR, ancres inchangées.
-const HASH_PAGE = "9ee5ea88fe0218895deafdc6f1c55d80be3cb11f4bc1dfa89d7e9bc911b0c3a4";
+const HASH_PAGE = "b5818e02220cd6fa23031096a106686ec1d2190b28576b0deaa69986cb94bbbe";
 
 describe("les emplacements de la fiche client sont posés", () => {
   for (const { nom, suivante, appel } of ANCRES) {

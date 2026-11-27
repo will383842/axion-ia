@@ -22,6 +22,10 @@ import { prisma } from "@/lib/prisma";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { gscTopKeywordsForUrl } from "@/server/content-gen/seo/gsc-client";
+import {
+  chargerCarteRequetes,
+  equipeEditorialeActive,
+} from "@/server/content-gen/strategie/carte-requetes-source";
 
 const QUEUE_NAME = "content-keyword-sync";
 const RECENT_DAYS_MIN = 7;
@@ -124,6 +128,20 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
         },
       });
       stats.keywordsUpserted++;
+    }
+  }
+
+  // Équipe éditoriale (CONTENT_EQUIPE_EDITORIALE="true") : après la synchro,
+  // reconstruit la carte « une requête = une URL » et journalise la
+  // cannibalisation. Lecture seule ; une erreur ici ne fait pas échouer le run.
+  if (equipeEditorialeActive()) {
+    try {
+      const carte = await chargerCarteRequetes();
+      console.log(
+        `[keyword-sync] carte des requêtes — requetes=${carte.carte.size} cannibalisations=${carte.cannibalisations.length}`,
+      );
+    } catch (err) {
+      console.error("[keyword-sync] carte des requêtes en échec:", err);
     }
   }
 

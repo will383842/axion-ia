@@ -232,8 +232,8 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
       a: "L'Audit sur place 4 heures à Villeneuve-d'Ascq démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Tarifs publics complets sur notre page tarifs.",
     },
     {
-      q: "Comment Williams se déplace-t-il à Villeneuve-d'Ascq ?",
-      a: "Intervention dans vos locaux.",
+      q: "Intervenez-vous à Villeneuve-d'Ascq ?",
+      a: "Oui. Nous intervenons sur place à Villeneuve-d'Ascq, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour un audit IA à Villeneuve-d'Ascq ?",

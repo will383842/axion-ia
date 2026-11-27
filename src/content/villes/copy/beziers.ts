@@ -6,9 +6,9 @@ import type { VilleCopy } from "./types";
 
 export const BEZIERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) située à 12 km de la Méditerranée, sur l'axe A9-A75. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
+    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) proche de la Méditerranée. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
   pitchEn:
-    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) située à 12 km de la Méditerranée, sur l'axe A9-A75. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
+    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) proche de la Méditerranée. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
   directAnswerFr:
     "À Béziers, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. La ville est desservie par la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde. Nous intervenons partout en France, sur place ou à distance, dont Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
@@ -231,7 +231,7 @@ export const BEZIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les délais pour une intervention à Béziers ?",
-      a: "Williams se déplace à Béziers sous 5 à 7 jours ouvrés après validation du brief. L'Audit sur place est livré en 4 heures sur site, les implémentations entre 2 et 6 semaines selon le périmètre.",
+      a: "Williams intervient à Béziers sous 5 à 7 jours ouvrés après validation du brief. L'Audit sur place est livré en 4 heures sur site, les implémentations entre 2 et 6 semaines selon le périmètre.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Béziers ?",
@@ -246,8 +246,8 @@ export const BEZIERS_COPY: VilleCopy = {
       a: "Les TPE et PME viticoles (environ 2 000 ha autour de Béziers), l'hôtellerie-restauration touristique autour du Canal du Midi et de Fonseranes, le commerce de détail et la construction tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
-      q: "Williams se déplace-t-il vraiment chez les clients à Béziers ?",
-      a: "Oui, déplacement systématique sur site à Béziers (gare ligne Montpellier-Perpignan ou aéroport Béziers Cap d'Agde à 15 km). Pas d'audit à distance pour les premières missions : nous observons les processus réels en présentiel.",
+      q: "Intervenez-vous à Béziers ?",
+      a: "Oui. Nous intervenons sur place à Béziers : pas d'audit à distance pour les premières missions, nous observons les processus réels en présentiel.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const DONZERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Donzère et bassin Tricastin ?",
-      a: "Oui, Axion-IA intervient à Donzère et tout le bassin Tricastin (Pierrelatte à 10 min, Saint-Paul-Trois-Châteaux, Bollène, Grignan). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Donzère et dans tout le bassin Tricastin (Pierrelatte, Saint-Paul-Trois-Châteaux, Bollène, Grignan), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles Tricastin ?",
@@ -65,7 +65,7 @@ export const DONZERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Donzère ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Donzère, comme partout en France, ou à distance.",
     },
   ],
 };

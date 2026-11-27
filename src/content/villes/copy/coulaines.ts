@@ -65,7 +65,7 @@ export const COULAINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Coulaines ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Coulaines. Gare TGV Le Mans à 4 km (55 min Paris). Accès A11 et A28.",
+      a: "Nos consultants interviennent directement dans vos locaux à Coulaines.",
     },
   ],
 };

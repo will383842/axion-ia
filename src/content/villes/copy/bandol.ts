@@ -49,7 +49,7 @@ export const BANDOL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bandol et sur la côte ouest-varoise ?",
-      a: "Oui, Axion-IA intervient à Bandol et sur toute la côte ouest-varoise (Sanary-sur-Mer, Saint-Cyr-sur-Mer, Six-Fours-les-Plages, Le Castellet, Le Beausset). Gare TER en centre-ville.",
+      a: "Oui, Axion-IA intervient à Bandol et sur toute la côte ouest-varoise (Sanary-sur-Mer, Saint-Cyr-sur-Mer, Six-Fours-les-Plages, Le Castellet, Le Beausset).",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine AOC Bandol ?",

@@ -17,6 +17,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
+import { adminPath } from "@/lib/admin-path";
 import { apercuAssistantAction } from "@/server/actions/qualiopi/devis-assistant-apercu";
 import {
   creerBrouillonAssistantAction,
@@ -27,9 +28,13 @@ import {
   envoyerDepuisAssistantAction,
   numeroterDevisAssistantAction,
 } from "@/server/actions/qualiopi/devis-assistant-finaliser";
+import { apercuEmailDevisAction } from "@/server/actions/qualiopi/devis-assistant-apercu-email";
 import { listerSourcesPourQuiAction } from "@/server/actions/qualiopi/devis-assistant-sources";
 import type { PayloadAssistantV1 } from "@/server/qualiopi/devis/assistant/payload";
-import type { SourcePourQui } from "@/server/qualiopi/devis/assistant/sources";
+import { ordonnerSources, type SourcePourQui } from "@/server/qualiopi/devis/assistant/sources";
+import { Check } from "lucide-react";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 
 import type { TexteCopie } from "../devis-formules/saisie";
 import {
@@ -39,6 +44,7 @@ import {
   type ResultatSauvegarde,
 } from "./AssistantDevis";
 import { serialiser } from "./etat";
+import type { EmailAEnvoyer } from "./etapes/envoi/EmailEnvoi";
 import { EtapeEnvoi, type ApercuPrepare, type ResultatAction } from "./etapes/envoi/EtapeEnvoi";
 import type { ClientOption } from "./etapes/un/BlocClient";
 import { StatutSauvegarde } from "./StatutSauvegarde";
@@ -63,9 +69,9 @@ export interface PropsAssistantDevisBranche {
   /** Version des CGV en vigueur (lue en configuration par la page, jamais écrite en dur). */
   versionCgv: string;
   urlAssistant: string;
+  /** Salutation des e-mails par identifiant de client (lue sur la fiche, côté serveur). */
+  salutations?: Readonly<Record<string, string>> | undefined;
   defaultClientId?: string | undefined;
-  /** Devis brouillon rouvert : lié au brouillon d'assistant à sa création. */
-  devisId?: string | undefined;
   /** Étapes 1, 1b, 2 et 3 (assemblées par la page). */
   rendreEtape: (ctx: ContexteEtape) => ReactNode;
   onEnvoye?: ((r: { devisId: string }) => void) | undefined;
@@ -86,9 +92,11 @@ const MSG_INATTENDU =
 
 function SourcesPourQuiPanneau({
   clients,
+  clientId,
   onChoisir,
 }: {
   clients: readonly ClientOption[];
+  clientId: string | undefined;
   onChoisir: (c: ClientOption) => void;
 }) {
   const [etat, setEtat] = useState<
@@ -99,7 +107,7 @@ function SourcesPourQuiPanneau({
 
   useEffect(() => {
     let actif = true;
-    listerSourcesPourQuiAction({ recherche: "" }).then(
+    listerSourcesPourQuiAction({ recherche: "", ...(clientId ? { clientId } : {}) }).then(
       (r) => {
         if (!actif) return;
         setEtat(
@@ -116,40 +124,52 @@ function SourcesPourQuiPanneau({
     return () => {
       actif = false;
     };
+    // Une seule lecture au montage : le client préchoisi ne change pas.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (etat.s === "attente") return null;
   if (etat.s === "erreur") return <p role="note">{etat.message}</p>;
+  const lignes = ordonnerSources(etat.sources, clientId, 10);
   return (
     <section aria-label="Demandes récentes" className="mb-4">
-      <h3>Demandes récentes</h3>
       {etat.note ? <p role="note">{etat.note}</p> : null}
-      <ul className="list-none p-0">
-        {etat.sources.map((s, i) => {
-          const client = s.clientId ? clients.find((c) => c.id === s.clientId) : undefined;
-          return (
-            <li key={`${s.lien}-${i}`} className="flex flex-wrap items-center gap-2">
-              <span>
-                {s.libelle}
-                {s.detail !== "" ? ` · ${s.detail}` : ""}
-              </span>
-              {client ? (
-                <button
-                  type="button"
-                  className="min-h-[44px] rounded border px-3"
-                  onClick={() => onChoisir(client)}
-                >
-                  Choisir ce client
-                </button>
-              ) : (
-                <a href={s.lien} className="underline">
-                  Ouvrir la demande
-                </a>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+      <AdminBlocRepliable titre={`Demandes récentes (${lignes.length})`}>
+        <ul className="m-0 list-none p-0">
+          {lignes.map((s, i) => {
+            const client = s.clientId ? clients.find((c) => c.id === s.clientId) : undefined;
+            return (
+              <li
+                key={`${s.lien}-${i}`}
+                className="flex flex-wrap items-center justify-between gap-2 py-2"
+              >
+                <span className="min-w-0">
+                  <span className="block font-medium">{s.libelle}</span>
+                  {s.detail !== "" ? (
+                    <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {s.detail}
+                    </span>
+                  ) : null}
+                </span>
+                {client ? (
+                  <AdminButton
+                    variant="secondary"
+                    size="lg"
+                    icon={Check}
+                    onClick={() => onChoisir(client)}
+                  >
+                    Choisir ce client
+                  </AdminButton>
+                ) : (
+                  <a href={s.lien} className="admin-button-secondary admin-button-lg">
+                    Ouvrir la demande
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </AdminBlocRepliable>
     </section>
   );
 }
@@ -215,6 +235,64 @@ function PontSauvegarde(p: {
   );
 }
 
+// ───────────────────────── montants des phases (étape 3) ─────────────────────────
+
+const DELAI_MONTANTS_MS = 400;
+type MontantsPhases = NonNullable<ContexteEtape["montantsPhases"]>;
+
+/**
+ * Étape 3 : les montants par phase viennent du SERVEUR (même module que le PDF). Ils sont relus
+ * 400 ms après le dernier changement de l'état ; une erreur ou un aperçu impossible laisse les
+ * tirets (jamais un montant inventé). Aucun effet hors de l'étape 3.
+ */
+function EtapeAvecMontants({
+  ctx,
+  payloadDe,
+  rendre,
+}: {
+  ctx: ContexteEtape;
+  payloadDe: (etat: ContexteEtape["etat"]) => PayloadAssistantV1;
+  rendre: (ctx: ContexteEtape) => ReactNode;
+}) {
+  // Les montants portent l'état pour lequel ils ont été lus : jamais d'anciens montants affichés
+  // (état changé, ou étape 3 quittée puis retrouvée), sans écrire d'état dans l'effet.
+  const { etape, etat } = ctx;
+  const [lus, setLus] = useState<{ pour: unknown; montants: MontantsPhases } | undefined>(
+    undefined,
+  );
+  const montants = lus && lus.pour === etat ? lus.montants : undefined;
+  const payloadRef = useRef(payloadDe);
+  useEffect(() => {
+    payloadRef.current = payloadDe;
+  });
+  useEffect(() => {
+    if (etape !== 3) return;
+    let actif = true;
+    const minuteur = setTimeout(() => {
+      apercuAssistantAction(payloadRef.current(etat)).then(
+        (r) => {
+          if (!actif) return;
+          if ("error" in r || r.data.erreurs.length > 0) return setLus(undefined);
+          const a = r.data;
+          if (a.classique) return setLus({ pour: etat, montants: { A: a.classique.phasesCents } });
+          const m: MontantsPhases = {};
+          for (const f of a.formules?.formules ?? [])
+            m[f.formule === "achat" ? "A" : "B"] = f.phases.map((p) => p.montantHtCents);
+          setLus({ pour: etat, montants: m });
+        },
+        () => {
+          if (actif) setLus(undefined);
+        },
+      );
+    }, DELAI_MONTANTS_MS);
+    return () => {
+      actif = false;
+      clearTimeout(minuteur);
+    };
+  }, [etape, etat]);
+  return <>{rendre(etape === 3 && montants ? { ...ctx, montantsPhases: montants } : ctx)}</>;
+}
+
 // ───────────────────────── composant ─────────────────────────
 
 export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
@@ -238,9 +316,13 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   const dernier = useRef<Dernier | null>(
     initial ? { id: initial.id, revision: Number(initial.majLe) } : null,
   );
+  const defautClientId = props.defaultClientId ?? props.payloadInitial.clientId ?? undefined;
+  const defautClientType = props.clients.find((c) => c.id === defautClientId)?.type;
   const sauveur = useRef<Sauveur | null>(null);
   /** Révision du serveur inattendue (autre onglet ?) : plus aucune écriture ni envoi d'ici. */
   const enConflit = useRef(false);
+  // Devis numéroté par la dernière préparation de l'étape 4 : l'aperçu de l'e-mail le lit.
+  const devisPrepare = useRef<string | null>(null);
   const [avis, setAvis] = useState<string | null>(null);
   const [cleEnvoi, setCleEnvoi] = useState(0);
   const enregistrer = useCallback((f: Sauveur | null) => {
@@ -250,7 +332,7 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   const contexte = (devisId?: string) => ({
     tvaStandardPct: props.tauxStandard,
     textes: props.textesParDefaut,
-    devisId: devisId ?? props.devisId ?? props.payloadInitial.sync.devisId ?? undefined,
+    devisId: devisId ?? props.payloadInitial.sync.devisId ?? undefined,
     refClient: props.payloadInitial.refClient,
     venteBrouillonId: props.payloadInitial.venteBrouillonId,
     modeleId: props.payloadInitial.modeleId,
@@ -260,12 +342,8 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   async function sauverBrouillon(i: EntreeSauvegarde): Promise<ReponseSauvegarde> {
     const payload = etatVersPayload(i.donnees.etat, i.donnees.etape, contexte());
     if (i.id === undefined) {
-      const r = await creerBrouillonAssistantAction({
-        payload,
-        // Avec un brouillon fourni (même illisible), le lien au devis existe déjà : le renvoyer
-        // ferait rendre le brouillon lié SANS écrire le payload.
-        ...(props.devisId && !props.brouillon ? { devisId: props.devisId } : {}),
-      });
+      // Jamais de `devisId` : seul le finaliseur lie un devis à son brouillon.
+      const r = await creerBrouillonAssistantAction({ payload });
       if ("error" in r) return { error: r.error };
       dernier.current = { id: r.data.id, revision: r.data.revision };
       return { data: { id: r.data.id, majLe: String(r.data.revision) } };
@@ -323,7 +401,9 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     const client = props.clients.find((c) => c.id === ctx.etat.clientId);
     const preparer = async (): Promise<ResultatAction<ApercuPrepare>> => {
       try {
-        return await preparerSansFiltre();
+        const r = await preparerSansFiltre();
+        if ("data" in r) devisPrepare.current = r.data.devisId;
+        return r;
       } catch (err) {
         console.error("[devis-assistant] préparation de l'aperçu", err);
         return { error: MSG_INATTENDU };
@@ -363,11 +443,18 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           A: ctx.etat.achat.phases.map((p) => p.livrable),
           B: ctx.etat.abonnement.phases.map((p) => p.livrable),
         },
+        phasesPrixUnique: ctx.etat.achat.phases.map((p) => ({
+          libelle: p.libelle,
+          pourcentage: Number(p.pourcentage.replace(",", ".")) || 0,
+          declencheur: p.declencheur,
+        })),
       });
       return v.ok ? { data: v.prepare } : { error: v.erreur };
     };
     const envoyer = async (
       devisId: string,
+      _majLe: string,
+      email: EmailAEnvoyer,
     ): Promise<ResultatAction<{ enCorbeille: boolean; note?: string }>> => {
       if (enConflit.current) return { error: MSG_CONFLIT };
       const d = dernier.current;
@@ -376,6 +463,9 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
         const r = await envoyerDepuisAssistantAction({
           brouillonId: d.id,
           attenduRevision: d.revision,
+          // Sans modification, ni objet ni message : l'appel reste celui d'avant.
+          ...(email.sujet !== undefined ? { sujet: email.sujet } : {}),
+          ...(email.message !== undefined ? { messagePersonnalise: email.message } : {}),
         });
         if ("error" in r) {
           // Le message du serveur est affiché tel quel, aucun second envoi n'est lancé ici.
@@ -384,25 +474,41 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           if (lu === "adoptee") {
             // « À renuméroter » : le devis porte une version que le client n'a pas vue ici. On
             // refait un aperçu (sauver → numéroter → aperçu) au lieu de réenvoyer directement.
-            setAvis(`${r.error} L'aperçu a été recalculé : relisez-le avant d'envoyer.`);
+            const saisiePerdue =
+              (email.sujet ?? "").trim() !== "" || (email.message ?? "").trim() !== "";
+            setAvis(
+              `${r.error} L'aperçu a été recalculé : relisez-le avant d'envoyer.` +
+                (saisiePerdue
+                  ? " Votre objet et votre message ont été réinitialisés : vérifiez-les avant d'envoyer."
+                  : ""),
+            );
             setCleEnvoi((k) => k + 1);
           }
           return { error: r.error };
         }
         await relireRevision();
-        // Le devis est ENVOYÉ côté serveur dans tous les cas : l'écran en est informé.
-        props.onEnvoye?.({ devisId });
-        if (!r.data.emailEnvoye) {
+        if (r.data.garePourValidation) {
+          // Garé : l'e-mail n'est pas parti, le devis reste en brouillon. Pas d'`onEnvoye`.
           return {
             data: {
-              enCorbeille: false,
-              note:
-                r.data.note ??
-                "Le devis est envoyé, mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis.",
+              enCorbeille: true,
+              note: "Le devis reste en brouillon tant que l'e-mail n'est pas validé dans « Emails, À valider ».",
             },
           };
         }
-        return { data: { enCorbeille: true, ...(r.data.note ? { note: r.data.note } : {}) } };
+        if (r.data.emailEnvoye) {
+          props.onEnvoye?.({ devisId });
+          return { data: { enCorbeille: false, note: "Le devis est envoyé au client." } };
+        }
+        // Ni garé ni parti : la note du serveur, sans `onEnvoye`.
+        return {
+          data: {
+            enCorbeille: false,
+            note:
+              r.data.note ??
+              "Le devis est envoyé, mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis.",
+          },
+        };
       } catch (err) {
         console.error("[devis-assistant] envoi", err);
         await relireRevision();
@@ -418,6 +524,14 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           preparer={preparer}
           envoyer={envoyer}
           destinataire={client?.email ?? ""}
+          salutation={client ? props.salutations?.[client.id] : undefined}
+          apercuEmail={(m) =>
+            devisPrepare.current === null
+              ? Promise.resolve({ error: MSG_INDISPONIBLE })
+              : apercuEmailDevisAction({ devisId: devisPrepare.current, ...m })
+          }
+          lienFiche={client ? adminPath("fr", `/qualiopi/clients/${client.id}/edit`) : undefined}
+          modifiable
         />
       </>
     );
@@ -439,11 +553,20 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
             <TypeClientAuMontage ctx={ctx} clients={props.clients} />
             <SourcesPourQuiPanneau
               clients={props.clients}
+              clientId={defautClientId}
               onChoisir={(c) => ctx.dispatch({ type: "client", id: c.id, clientType: c.type })}
             />
           </>
         ) : null}
-        {ctx.etape === 4 ? etapeQuatre(ctx) : props.rendreEtape(ctx)}
+        {ctx.etape === 4 ? (
+          etapeQuatre(ctx)
+        ) : (
+          <EtapeAvecMontants
+            ctx={ctx}
+            payloadDe={(etat) => etatVersPayload(etat, 3, contexte())}
+            rendre={props.rendreEtape}
+          />
+        )}
       </>
     );
   }
@@ -452,7 +575,8 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     <AssistantDevis
       validiteParDefaut={props.validiteParDefaut}
       formulesActives={props.formulesActives}
-      defaultClientId={props.defaultClientId ?? props.payloadInitial.clientId ?? undefined}
+      defaultClientId={defautClientId}
+      defaultClientType={defautClientType}
       projetId={props.payloadInitial.projetId ?? undefined}
       rencontreId={props.payloadInitial.rencontreId ?? undefined}
       brouillonInitial={initial}

@@ -74,7 +74,19 @@ export function estJourFerieFrance(d: Date): boolean {
 }
 
 /** Ajoute `jours` jours ouvrés : week-ends et jours fériés ne comptent pas. */
-export function ajouterJoursOuvres(depuis: Date, jours: number): Date {
+export function ajouterJoursOuvres(depuis: Date, jours: number): Date;
+/** Jour civil « AAAA-MM-JJ » : le n-ième jour ouvré APRÈS `depuis` (calcul en UTC sur la date seule). */
+export function ajouterJoursOuvres(depuis: string, jours: number): string;
+export function ajouterJoursOuvres(depuis: Date | string, jours: number): Date | string {
+  if (typeof depuis === "string") {
+    let x = depuis;
+    let restant = jours;
+    while (restant > 0) {
+      x = ajouterJours(x, 1);
+      if (estJourOuvre(x)) restant -= 1;
+    }
+    return x;
+  }
   const d = new Date(depuis.getTime());
   let restant = jours;
   while (restant > 0) {
@@ -83,6 +95,32 @@ export function ajouterJoursOuvres(depuis: Date, jours: number): Date {
     if (!p.weekend && !joursFeriesFrance(p.annee).includes(p.cle)) restant -= 1;
   }
   return d;
+}
+
+function jourUtc(iso: string): number {
+  const t = Date.parse(`${iso}T00:00:00Z`);
+  if (Number.isNaN(t)) throw new Error(`jour civil invalide : ${iso}`);
+  return t;
+}
+
+/** Ajoute `n` jours calendaires à un jour civil « AAAA-MM-JJ » (n négatif accepté). */
+export function ajouterJours(iso: string, n: number): string {
+  return new Date(jourUtc(iso) + n * 86_400_000).toISOString().slice(0, 10);
+}
+
+/** Jours calendaires de `aujourdhuiIso` à `echeanceIso` ; négatif si l'échéance est dépassée. */
+export function joursRestants(echeanceIso: string, aujourdhuiIso: string): number {
+  return Math.round((jourUtc(echeanceIso) - jourUtc(aujourdhuiIso)) / 86_400_000);
+}
+
+/** Vrai si le jour civil « AAAA-MM-JJ » est l'un des onze fériés légaux de métropole. */
+export function estFerie(iso: string): boolean {
+  return joursFeriesFrance(new Date(jourUtc(iso)).getUTCFullYear()).includes(iso);
+}
+
+/** Ni samedi, ni dimanche, ni férié. */
+export function estJourOuvre(iso: string): boolean {
+  return estJourCivilOuvre(iso);
 }
 
 /**

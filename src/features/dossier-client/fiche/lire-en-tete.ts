@@ -5,6 +5,7 @@
  */
 
 import type { Client360 } from "@/server/qualiopi/crm/clients";
+import { estGabaritInterne } from "@/features/dossier-client/gabarits-internes";
 import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
 import { lireProjetsDuClient, lireRencontresDuClient } from "@/features/dossier-client/queries";
 import {
@@ -13,6 +14,7 @@ import {
 } from "@/features/dossier-client/suivi-prestations";
 import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
 import { prisma } from "@/lib/prisma";
+import { regimeTvaDepuisConfig, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 import { calculerEncoursDuCents } from "@/server/qualiopi/crm/clients";
 import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
@@ -26,6 +28,8 @@ export interface ContexteEnTete {
 export type LireClient = (id: string) => Promise<Client360 | null>;
 
 import { calculerPipeline, type PipelineCalcule } from "./pipeline";
+import { signeParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
+import { devisEnAttentePourPipeline, type DevisEnAttente } from "./pipeline-devis";
 import { santeDuCompte, type SanteDuCompte } from "./sante-du-compte";
 
 export type Lecture<T> = { readonly ok: true; readonly valeur: T } | { readonly ok: false };
@@ -72,6 +76,8 @@ export interface EnTete {
   readonly prochainRendezVous: Lecture<ProchainRendezVous | null>;
   readonly dernierEmail: Lecture<DernierEmail>;
   readonly pipeline: Lecture<PipelineCalcule>;
+  /** Devis envoyés en attente de réponse (`null` : aucun) : ils priment sur le montant saisi du pipeline. */
+  readonly devisEnAttente: Lecture<DevisEnAttente | null>;
   readonly sante: Lecture<SanteDuCompte>;
   readonly encours: Lecture<{ ttcCents: number; avantLe: Date | null; enRetard: boolean }>;
   /** `null` dans la lecture : aucun questionnaire envoyé. */
@@ -112,6 +118,7 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     questionnaires,
     nbPersonnes,
     nbDevis,
+    devisEnvoyes,
   ] = await Promise.all([
     proteger(async () => {
       const t = await prisma.clientTache.findFirst({
@@ -162,6 +169,40 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     proteger(() => lireQuestionnairesDeLaFiche(id)),
     proteger(() => prisma.clientContact.count({ where: { clientId: id, statut: "actif" } })),
     proteger(() => prisma.devis.count({ where: { clientId: id } })),
+    // Lecture seule : mêmes totaux que le PDF (`montantsDevis` + `computeTotauxFacture`).
+    proteger(async () => {
+      const devis = await prisma.devis.findMany({
+        // Échu = « Expiré » dans la liste : exclu, SAUF signé par le client (contresignature en
+        // attente : le job d'expiration ne l'expire jamais, c'est un devis gagné).
+        where: {
+          clientId: id,
+          statut: "envoye",
+          OR: [{ dateValidite: { gte: ctx.maintenant } }, signeParLeClient],
+        },
+        select: {
+          id: true,
+          statut: true,
+          activite: true,
+          offre: true,
+          lignes: true,
+          montantTotalHtCents: true,
+          sentAt: true,
+          createdAt: true,
+        },
+      });
+      if (devis.length === 0) return null;
+      // Import paresseux : la configuration tire next-auth, inutile aux autres lectures de l'en-tête.
+      const { getQualiopiConfig } = await import("@/server/qualiopi/config/site-settings");
+      const regime = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
+      const taux = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+      const { formulesActives } = await import("@/server/qualiopi/devis/interrupteur-formules");
+      return devisEnAttentePourPipeline(
+        devis,
+        regime,
+        taux,
+        await formulesActives(undefined, { clientId: id }),
+      );
+    }),
   ]);
 
   const sante: Lecture<SanteDuCompte> =
@@ -216,6 +257,7 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
     pipeline: pipelineBrut.ok
       ? { ok: true, valeur: calculerPipeline(pipelineBrut.valeur) }
       : { ok: false },
+    devisEnAttente: devisEnvoyes,
     sante,
     encours,
     questionnaire,
@@ -231,6 +273,15 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
   };
 }
 
+/** Un e-mail PARTI, et pas une alerte interne au fondateur. */
+function estEmailPartiAuClient(x: {
+  genre: string;
+  statutEmail?: string;
+  gabarit?: string;
+}): boolean {
+  return x.genre === "email" && x.statutEmail === "sent" && !estGabaritInterne(x.gabarit);
+}
+
 /** Dernier rendez-vous tenu OU dernier e-mail parti (`statutEmail === "sent"`), le plus récent. */
 export function dernierEchange(
   rendezVous: ReadonlyArray<{
@@ -238,14 +289,14 @@ export function dernierEchange(
     debutPrevu: Date | null;
     estTestInterne: boolean;
   }>,
-  fil: ReadonlyArray<{ genre: string; statutEmail?: string; date: Date }>,
+  fil: ReadonlyArray<{ genre: string; statutEmail?: string; gabarit?: string; date: Date }>,
   maintenant: Date,
 ): Date | null {
   const dates = [
     ...rendezVous
       .filter((r) => r.statut === "tenu" && r.debutPrevu !== null && !r.estTestInterne)
       .map((r) => r.debutPrevu!),
-    ...fil.filter((x) => x.genre === "email" && x.statutEmail === "sent").map((x) => x.date),
+    ...fil.filter(estEmailPartiAuClient).map((x) => x.date),
   ].filter((d) => d.getTime() <= maintenant.getTime());
   return dates.length === 0 ? null : new Date(Math.max(...dates.map((d) => d.getTime())));
 }
@@ -254,11 +305,11 @@ type FactureEnTete = { statut: string; avoirDeId: string | null; echeanceAt: Dat
 
 /** Dernier e-mail PARTI (`statutEmail === "sent"`), jamais dans le futur. */
 export function dernierEmailParti(
-  fil: ReadonlyArray<{ genre: string; statutEmail?: string; date: Date }>,
+  fil: ReadonlyArray<{ genre: string; statutEmail?: string; gabarit?: string; date: Date }>,
   maintenant: Date,
 ): Date | null {
   const dates = fil
-    .filter((x) => x.genre === "email" && x.statutEmail === "sent")
+    .filter(estEmailPartiAuClient)
     .map((x) => x.date.getTime())
     .filter((t) => t <= maintenant.getTime());
   return dates.length === 0 ? null : new Date(Math.max(...dates));

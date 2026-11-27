@@ -24,9 +24,9 @@ export const EMPLOYER_BRAND = {
 
   /** Qui on est (section « Pourquoi nous rejoindre »), ton startup ambitieux. */
   aboutFr:
-    "Axion-IA.com est une startup tech IA qui accompagne les entreprises sur toute la chaîne de l'IA : formations, coaching 1 to 1, audits en entreprise, intégration & implémentation d'IA, et sites web & SaaS augmentés à l'IA. Notre ambition est claire : devenir LA référence française de l'IA appliquée en entreprise. On construit comme une vraie équipe produit — du code en production, pas des promesses — avec l'envie de grandir vite. On voit grand.",
+    "Axion-IA.com est une startup tech IA qui accompagne les entreprises sur toute la chaîne de l'IA : formations, coaching 1 to 1, audits en entreprise, intégration & implémentation d'IA, et sites web & SaaS augmentés à l'IA. Notre ambition est claire : accompagner les entreprises de toute la France dans l'IA appliquée. On construit comme une vraie équipe produit — du code en production, pas des promesses — avec l'envie de grandir vite. On voit grand.",
   aboutEn:
-    "Axion-IA.com is an AI tech startup supporting businesses across the whole AI chain: training, 1-to-1 coaching, on-site audits, AI integration & implementation, and AI-augmented websites & SaaS. Our ambition is clear: become THE French reference for applied AI in companies. We build like a real product team — code in production, not promises — eager to grow fast. We think big.",
+    "Axion-IA.com is an AI tech startup supporting businesses across the whole AI chain: training, 1-to-1 coaching, on-site audits, AI integration & implementation, and AI-augmented websites & SaaS. Our ambition is clear: support companies across France in applied AI. We build like a real product team — code in production, not promises — eager to grow fast. We think big.",
 
   /** Pourquoi rejoindre l'équipe — bénéfices candidat concrets. */
   whyJoin: [
@@ -69,9 +69,9 @@ export const EMPLOYER_BRAND = {
   hqTitleFr: "Où on bosse 🏔️",
   hqTitleEn: "Where we work 🏔️",
   hqTextFr:
-    "Notre siège et nos bureaux sont à Grenoble (Isère). Postes en présentiel ici et autour (Voiron, Voreppe, Crolles) ; beaucoup en remote ou hybride, partout en France. Et nos formateurs interviennent par secteur, partout en France.",
+    "Beaucoup de postes sont en remote ou hybride, partout en France. Et nos formateurs interviennent par secteur, partout en France.",
   hqTextEn:
-    "Our head office and offices are in Grenoble (Isère). On-site roles here and nearby (Voiron, Voreppe, Crolles); many remote or hybrid, anywhere in France. And our trainers work by sector, across France.",
+    "Many roles are remote or hybrid, anywhere in France. And our trainers work by sector, across France.",
 
   /** Version condensée (encart sur chaque page offre). */
   shortAboutFr:

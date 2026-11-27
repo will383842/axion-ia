@@ -49,7 +49,7 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Croissy-sur-Seine et bords de Seine ouest ?",
-      a: "Oui, Axion-IA intervient à Croissy-sur-Seine et communes voisines (Le Vésinet et Chatou à 5 min, La Défense à 15 min via RER A, Paris-Étoile à 25 min via RER A).",
+      a: "Oui. Nous intervenons à Croissy-sur-Seine et dans les communes voisines (Le Vésinet, Chatou), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les cabinets conseil et gestion de patrimoine ?",
@@ -65,7 +65,7 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Croissy-sur-Seine ?",
-      a: "Gare Chatou-Croissy (RER A) à 5 min de Croissy. Paris-La Défense à 15 min, Paris-Étoile à 25 min via RER A. Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Croissy-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

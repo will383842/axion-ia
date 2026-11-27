@@ -29,6 +29,7 @@ const FICHIERS: readonly string[] = [
   ...dossier("src/server/content-gen/kb"),
   ...dossier("src/content/keywords"),
   "src/content/transversal.ts",
+  ...dossier("src/content/glossaire-reference"),
   "src/content/glossary-extension.ts",
   "src/content/formations/catalog-v2.ts",
 ];

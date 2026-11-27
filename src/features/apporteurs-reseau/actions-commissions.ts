@@ -20,7 +20,7 @@ import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
 import { leverSuspension, suspendreCommission } from "./litige";
 import { annulerRealisation, marquerPrestationRealisee } from "./realisation";
-import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
+import { enregistrerReprise, montantEnCentimes, notifierResiliation } from "./resiliation";
 import { euros } from "./regles";
 
 export type EtatActionCommission =
@@ -108,9 +108,34 @@ export async function resilierApporteurAction(fd: FormData): Promise<void> {
   if (refus) versFiche(apporteurId, "erreur", refus);
   if (texte(fd, "confirmer") !== "oui")
     versFiche(apporteurId, "erreur", "Cochez la confirmation avant de résilier.");
-  let r: Awaited<ReturnType<typeof resilierApporteur>>;
+  const adminId = (await auth())?.user?.id;
+  if (!adminId) versFiche(apporteurId, "erreur", "Session expirée : reconnectez-vous.");
+  const initiative = texte(fd, "initiative");
+  const fondement = texte(fd, "fondement");
+  if (initiative !== "societe" && initiative !== "apporteur")
+    versFiche(apporteurId, "erreur", "Indiquez qui résilie.");
+  if (fondement !== "11.1" && fondement !== "11.2" && fondement !== "12.5")
+    versFiche(apporteurId, "erreur", "Choisissez le fondement de la résiliation.");
+  const jour = (cle: string): Date | null => {
+    const v = texte(fd, cle);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return null;
+    const d = new Date(`${v}T12:00:00Z`);
+    // Aller-retour : « 2026-02-31 » n'est pas une date.
+    return Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== v ? null : d;
+  };
+  const notifieeLe = jour("notifieeLe");
+  if (!notifieeLe) versFiche(apporteurId, "erreur", "Indiquez la date de la notification écrite.");
+  let r: Awaited<ReturnType<typeof notifierResiliation>>;
   try {
-    r = await resilierApporteur(apporteurId);
+    r = await notifierResiliation({
+      apporteurId,
+      adminId: adminId!,
+      initiative: initiative as "societe" | "apporteur",
+      fondement: fondement as "11.1" | "11.2" | "12.5",
+      notifieeLe: notifieeLe!,
+      miseEnDemeureLe: jour("miseEnDemeureLe"),
+      motif: texte(fd, "motif"),
+    });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-resilier" } });
     return versFiche(apporteurId, "erreur", "Résiliation impossible. Réessayez.");
@@ -160,13 +185,16 @@ export async function classerActiviteAction(fd: FormData): Promise<void> {
   const refus = await sessionArgent();
   const id = texte(fd, "id");
   if (refus || !UUID.test(id)) redirect(retour);
+  let r: Awaited<ReturnType<typeof classerActiviteCommission>> | null = null;
   try {
-    await classerActiviteCommission(id, texte(fd, "activite"));
+    r = await classerActiviteCommission(id, texte(fd, "activite"));
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-classer" } });
   }
   revalidatePath(retour);
-  redirect(retour);
+  // Le motif renvoyé (ex. « Commande antérieure au contrat 2.8 ») arrive à l'écran.
+  if (r) versCommissions(r.ok ? "retour" : "erreur", r.message);
+  versCommissions("erreur", "Classement impossible. Réessayez.");
 }
 
 // ── Contestation écrite du client (contrat 2.3, art. 4.2 bis) ────────────

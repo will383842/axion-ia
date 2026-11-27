@@ -147,7 +147,8 @@ describe("page de signature — devis classique", () => {
 
   it("transmet au formulaire la version de mention qu'il affiche", async () => {
     await rendu();
-    expect(m.formulaire.mock.calls[0]?.[0]).toMatchObject({ mentionVersion: "doc-v2" });
+    // Devis signé par le client : mentions propres au devis (`devis-v1`).
+    expect(m.formulaire.mock.calls[0]?.[0]).toMatchObject({ mentionVersion: "devis-v1" });
   });
 
   it("sans conditions : la prop est absente ou nulle", async () => {
@@ -158,7 +159,9 @@ describe("page de signature — devis classique", () => {
 
   it("l'attestation désigne le DEVIS (AXI-DEV), pas le numéro de pièce AXI-DOC", async () => {
     await rendu();
-    expect(m.mentions.mock.calls[0]?.[1]).toMatchObject({ pieceNumero: "AXI-DEV-2026-014" });
+    const attestation = (m.formulaire.mock.calls[0]?.[0] as { mentions: string[] }).mentions[0];
+    expect(attestation).toContain("devis n° AXI-DEV-2026-014");
+    expect(attestation).not.toContain("AXI-DOC-2026-077");
   });
 
   it("autre pièce : le numéro de pièce reste celui de l'attestation, libellé défini transmis", async () => {
@@ -175,7 +178,7 @@ describe("page de signature — articles des messages", () => {
   it("pièce annulée : « Le devis … ne fait plus foi »", async () => {
     m.piece.mockResolvedValue(piece({ annuleeAt: new Date() }));
     const html = await rendu();
-    expect(html).toContain("Le devis AXI-DOC-2026-077 ne fait plus foi");
+    expect(html).toContain("Le devis AXI-DEV-2026-014 ne fait plus foi");
     expect(html).not.toContain("Le Le");
   });
 
@@ -200,6 +203,6 @@ describe("page de signature — articles des messages", () => {
   it("déjà signée : « Votre signature sur le devis … »", async () => {
     m.count.mockResolvedValue(1);
     const html = await rendu();
-    expect(html).toContain("Votre signature sur le devis AXI-DOC-2026-077 est enregistrée");
+    expect(html).toContain("Votre signature sur le devis AXI-DEV-2026-014 est enregistrée");
   });
 });

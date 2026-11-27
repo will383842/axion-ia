@@ -35,6 +35,7 @@ import {
   resolveJudgeOutcome,
   type AutoPublishPolicies,
 } from "@/server/content-gen/quality/judge-outcome";
+import { statutApresJugeJourneeIA } from "@/server/content-gen/quality/relecture-journee-ia";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 // P1-3 — Sentry capture pour observabilité prod (audit S+4-C).
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -146,7 +147,7 @@ async function getQualityLoopMonthSpent(): Promise<number> {
  * remettait à zéro au changement de mois, mais AUCUN code ne l'incrémentait —
  * la boucle pouvait dépenser sans limite, le garde-fou budgétaire était mort.
  * Sont désormais comptés : le coût du juge LLM (mesuré via CostLedger, car
- * `reviewArticle` ne retourne pas son coût) et le coût de chaque re-génération
+ * le coût est tracké par le provider) et le coût de chaque re-génération
  * (appelé depuis content-gen-worker quand un feedback juge est injecté).
  *
  * Fail-open assumé : un échec de lecture/écriture ne casse jamais le job (le
@@ -248,12 +249,12 @@ export async function erreurJugeNonRelancableCheminClaude(
   contentType: string,
 ): Promise<Error | null> {
   if (process.env["CONTENT_GEN_BLOG_CLAUDE"] !== "true") return null;
-  const { BLOG_TYPES, BlogClaudeRefusError } =
-    await import("@/server/content-gen/providers/blog-claude");
+  const { BlogClaudeRefusError } = await import("@/server/content-gen/providers/blog-claude");
+  const { typeClaudeAutorise } = await import("@/server/content-gen/providers/types-claude");
   const { ProviderError } = await import("@/server/content-gen/providers/IProvider");
   const { UnrecoverableError } = await import("bullmq");
   if (
-    BLOG_TYPES.has(contentType) &&
+    typeClaudeAutorise(contentType) &&
     (err instanceof BlogClaudeRefusError ||
       (err instanceof ProviderError && err.provider === "anthropic"))
   ) {
@@ -359,8 +360,8 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const output = dbJob.outputJsonRaw as Record<string, unknown> | null;
   let judge: JudgeResult | null = null;
   // Fix 2026-08-15 (C5) — borne temporelle pour retrouver le coût du juge dans
-  // CostLedger : `reviewArticle` ne retourne pas son coût (il est tracké par le
-  // provider), on somme donc les lignes du ledger de CE job écrites après cet
+  // CostLedger : le coût du juge est tracké par le provider (`JudgeResult.coutUsd`
+  // le porte aussi, mais ne s'ajoute pas au ledger), on somme donc les lignes du ledger de CE job écrites après cet
   // instant. Précis au job près (jobId + timestamp), sans toucher au juge.
   const judgePassStartedAt = new Date();
   if (output && typeof output["title"] === "string" && typeof output["bodyHtml"] === "string") {
@@ -448,13 +449,29 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   // P0-7 — REJECT P0 → quarantined_critical (violations AI Act, SIREN hardcodé…).
   // Fix 2026-07-17 — verdict `publish` → `approved` (cf. resolveJudgeOutcome).
   // Cap atteint sans P0 → needs_review (revue éditoriale standard).
-  const nextStatus = resolveJudgeOutcome({
+  const issueJuge = resolveJudgeOutcome({
     verdict,
     judgeRan: judge !== null,
     reachedCap,
     doctrineCheckPassed: dbJob.doctrineCheckPassed,
     isRss,
     policies,
+  });
+  // Offre « Journée IA » : jamais d'auto-publication sur verdict du juge, quelle que soit la
+  // note. Le contenu reste en relecture humaine (et ne squatte pas la clé `publish-<id>`).
+  let nomCampagne: string | null = null;
+  if (issueJuge === "approved" && dbJob.campaignId) {
+    nomCampagne =
+      (
+        await prisma.coverageCampaign
+          .findUnique({ where: { id: dbJob.campaignId }, select: { name: true } })
+          .catch(() => null)
+      )?.name ?? null;
+  }
+  const nextStatus = statutApresJugeJourneeIA(issueJuge, {
+    output: dbJob.outputJsonRaw,
+    inputPayload: dbJob.inputPayload,
+    campaignName: nomCampagne,
   });
   const shouldRegenerate = nextStatus === "quality_improving";
   const shouldAutoPublish = nextStatus === "approved";
@@ -586,6 +603,8 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
         },
         update: {
           status: "approved",
+          // Auto-approbation : un `reviewedBy` laissé par un refus humain ne doit pas valoir feu vert.
+          reviewedBy: null,
           reviewedAt: new Date(),
           reviewNotes: `[auto-pub juge] verdict=publish — éditorial ${judge?.globalScore.toFixed(1) ?? "?"}/10, qualité ${score}/100`,
         },

@@ -21,12 +21,18 @@ import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { montantsDevis } from "@/server/qualiopi/devis/montants-devis";
 import { sha256Offre } from "@/server/qualiopi/devis/offre-calculs";
 import { offreDevisV1, type OffreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { refusReglesFormules } from "@/server/qualiopi/devis/regles-commerciales";
 import { lierDevisAuProjet, projetOuvrableDuClient } from "@/server/qualiopi/crm/devis-projet";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { regimeTvaDepuisConfig, mentionTva } from "@/server/qualiopi/legal/tva";
+
+import {
+  emailDevisEnAttente,
+  MSG_EMAIL_EN_ATTENTE_MODIF,
+} from "@/server/qualiopi/devis/email-devis-en-attente";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -75,11 +81,26 @@ export async function modifierDevisBrouillonAction(
     return { error: "Indisponible pendant le build" };
   }
   const session = await requireAdminWrite();
-  if (!(await formulesActives())) return { error: MSG_ETEINT };
   const p = modifierSchema.safeParse(input);
   if (!p.success) return { error: "Données invalides" };
+  // Lecture seule AVANT la garde : la cible de l'interrupteur est le client du devis.
+  const existant = await prisma.devis.findUnique({
+    where: { id: p.data.id },
+    select: { clientId: true, client: { select: { type: true } } },
+  });
+  if (!(await formulesActives(undefined, { clientId: existant?.clientId ?? null }))) {
+    return { error: MSG_ETEINT };
+  }
   const d = deriver(p.data.offre);
   if (!d.ok) return { error: d.error };
+
+  // Un e-mail de ce devis attend validation : le client recevrait un devis périmé.
+  if (await emailDevisEnAttente(prisma, p.data.id)) return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
+
+  // D4/D6 côté serveur : le type du client est lu AVANT toute écriture (devis absent → refus).
+  if (!existant) return { error: "Devis introuvable" };
+  const refus = refusReglesFormules(d.offre, existant.client.type);
+  if (refus) return { error: refus };
 
   const { count } = await prisma.devis.updateMany({
     where: {
@@ -140,9 +161,11 @@ export async function creerDevisFormulesAction(
     return { error: "Indisponible pendant le build" };
   }
   const session = await requireAdminWrite();
-  if (!(await formulesActives())) return { error: MSG_ETEINT };
   const p = creerSchema.safeParse(input);
   if (!p.success) return { error: "Données invalides" };
+  if (!(await formulesActives(undefined, { clientId: p.data.clientId }))) {
+    return { error: MSG_ETEINT };
+  }
   const d = deriver(p.data.offre);
   if (!d.ok) return { error: d.error };
 
@@ -158,6 +181,8 @@ export async function creerDevisFormulesAction(
       error: "Le devis à formules est réservé aux clients professionnels (entreprise).",
     };
   }
+  const refus = refusReglesFormules(d.offre, client.type);
+  if (refus) return { error: refus };
   if (
     p.data.projetId !== undefined &&
     !(await projetOuvrableDuClient(prisma, p.data.projetId, p.data.clientId))

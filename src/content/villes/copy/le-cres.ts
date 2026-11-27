@@ -13,9 +13,9 @@ export const LE_CRES_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Crès (34). Nous accompagnons TPE commerçants, PME de services et tertiaire, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
   ecosystemFr:
-    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de TPE commerçants, PME de services, artisans BTP et professions libérales. Proximité immédiate de Castries, Vendargues et Baillargues, axe A9/A709.",
+    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de TPE commerçants, PME de services, artisans BTP et professions libérales. Voisinage immédiat de Castries, Vendargues et Baillargues.",
   ecosystemEn:
-    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de TPE commerçants, PME de services, artisans BTP et professions libérales. Proximité immédiate de Castries, Vendargues et Baillargues, axe A9/A709.",
+    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de TPE commerçants, PME de services, artisans BTP et professions libérales. Voisinage immédiat de Castries, Vendargues et Baillargues.",
   distancesFr:
     "Montpellier centre à 10 min par tramway T1 ou voiture. Castries à 5 min. Gare TGV Montpellier Sud de France à 20 min. Aéroport Montpellier-Méditerranée à 15 min. Accès A9/A709.",
   distancesEn:
@@ -49,7 +49,7 @@ export const LE_CRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Crès ?",
-      a: "Oui, Axion-IA intervient au Crès et dans toutes les communes est Montpellier (Castries, Vendargues, Baillargues, Jacou). Nos consultants se déplacent depuis Montpellier en 10 min.",
+      a: "Oui, Axion-IA intervient au Crès et dans toutes les communes est Montpellier (Castries, Vendargues, Baillargues, Jacou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les PME de services ?",

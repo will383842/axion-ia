@@ -72,7 +72,7 @@ function formules(m: "A" | "B" | "AB"): PayloadAssistantV1 {
     { mois: 12, remisePct: "5" },
   ];
   p.formules.abonnement.engagementMois = 12;
-  p.formules.abonnement.indemniteTauxPct = "50";
+  p.formules.abonnement.indemniteTauxPct = "0";
   p.formules.abonnement.phases = [
     { libelle: "Signature", pourcentage: "50", declencheur: "signature" },
     { libelle: "Livraison", pourcentage: "50", declencheur: "livraison" },
@@ -181,6 +181,34 @@ describe("égalité avec le PDF (donneesPdfDevis)", () => {
 
   it("A + B : alerte « total dépend du choix »", () => {
     expect(calculerApercu(formules("AB"), CTX).alertes.join(" ")).toMatch(/choix du client/);
+  });
+});
+
+describe("classique : montants des phases (une seule source)", () => {
+  it("phasesCents = [36000, 36000, 48000] et égalité avec les montants du texte imprimé", () => {
+    const p = base();
+    p.typeDevis = "classique";
+    p.lignesClassiques = [{ designation: "Prestation", quantite: "1", prixEur: "1000" }];
+    p.formules.achat.phases = [
+      { libelle: "Acompte", pourcentage: "30", declencheur: "signature" },
+      { libelle: "Étape", pourcentage: "30", declencheur: "avancement" },
+      { libelle: "Solde", pourcentage: "40", declencheur: "livraison" },
+    ];
+    const ap = calculerApercu(p, CTX);
+    expect(ap.classique!.phasesCents).toEqual([36000, 36000, 48000]);
+    const r = payloadVersCreation(p, {
+      formulesActives: true,
+      typeClient: "entreprise",
+      maintenant: new Date("2026-11-08T10:00:00Z"),
+      tauxStandard: 20,
+      regime: "assujetti",
+    });
+    if ("erreurs" in r || r.type !== "classique") throw new Error("conversion");
+    const montants = [
+      ...(r.input.conditionsParticulieres ?? "").matchAll(/soit ([\d\s\u00A0,]+€)/g),
+    ];
+    expect(montants).toHaveLength(3);
+    expect(montants.map((m) => m[1]!.replace(/[^\d]/g, ""))).toEqual(["36000", "36000", "48000"]);
   });
 });
 
@@ -304,13 +332,14 @@ describe("cas chiffrés de l'architecte (T1, T2, T3, T5)", () => {
     expect(versements(ap)).toEqual([95000, 95000]);
   });
 
-  it("T2 : mensuel net à 12 mois 18 999 ; période de 12 mois 227 988 HT ; indemnité maximale 119 994 ; 1 mois = 19 999", () => {
+  it("T2 : mensuel net à 12 mois 18 999 ; période de 12 mois 227 988 HT ; indemnité maximale nulle (D4) ; 1 mois = 19 999", () => {
     const ab = calculerApercu(lignes1900(formules("B")), CTX).formules!.formules[0]!.abonnement!;
     const p12 = ab.periodes.find((x) => x.mois === 12)!;
     expect(p12.mensuelNetHtCents).toBe(18999);
     expect(p12.prixPeriodeHtCents).toBe(227988);
     expect(ab.periodes.find((x) => x.mois === 1)!.prixPeriodeHtCents).toBe(19999);
-    expect(ab.indemniteSortieMaxHtCents).toBe(119994);
+    // D4 : plus d'indemnité de sortie, donc aucun maximum affiché.
+    expect(ab.indemniteSortieMaxHtCents).toBeNull();
   });
 
   it("T3 : A + B — avant le choix 0 ; choix A 448 393 / 89 679 / 538 072 ; choix B 190 000 / 38 000 / 228 000, sans ligne de L", () => {

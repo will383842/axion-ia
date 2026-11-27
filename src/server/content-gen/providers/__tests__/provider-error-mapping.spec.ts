@@ -203,13 +203,23 @@ describe("mapAnthropicError — crédit épuisé signalé en 400, pas en 429", (
     expect(mapped.retryable).toBe(false);
   });
 
-  it("400 « billing » (hors 429) reste quota_exhausted — motif large conservé", () => {
+  it("400 avec le seul mot « billing » n'est PAS un crédit épuisé (motif explicite exigé)", () => {
     const mapped = mapAnthropicError(
-      anthropicError(400, { message: "Please go to Plans & Billing to purchase credits." }),
+      anthropicError(400, { message: "Please go to Plans & Billing to review your settings." }),
     );
 
-    expect(mapped.code).toBe("quota_exhausted");
-    expect(mapped.retryable).toBe(false);
+    expect(mapped.code).not.toBe("quota_exhausted");
+  });
+
+  it("400 « credit balance is too low » et 402 restent quota_exhausted", () => {
+    const a = mapAnthropicError(
+      anthropicError(400, { message: "Your credit balance is too low to access the API." }),
+    );
+    const b = mapAnthropicError(anthropicError(402, { message: "Payment required" }));
+
+    expect(a.code).toBe("quota_exhausted");
+    expect(a.retryable).toBe(false);
+    expect(b.code).toBe("quota_exhausted");
   });
 
   it("5xx reste down + retryable", () => {

@@ -358,8 +358,7 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
 //   - Sous-tiers tarifaires par nombre de participants.
 //   - Conférence devient 1 jour (au lieu d'une ½ journée).
 //   - Nouveau format « Approfondie » 2 jours avec 3 sous-tiers.
-//   - Frais déplacement / hébergement / repas en sus systématiquement
-//     (cf. INTERVENTION_FEES_NOTE).
+//   - Frais annexes : jamais sur une page publique (CGV uniquement).
 // ============================================================================
 
 // ============================================================================
@@ -834,9 +833,9 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
 ];
 
 // ============================================================================
-// MAINTENANCE — support post-livraison récurrent
-// Sprint 14.10.5 (Will 2026-05-08) — Toute prestation inclut 30 jours de
-// support corrigé gratuit. Au-delà, contrat optionnel `maintenance-standard`.
+// MAINTENANCE — contrat optionnel `maintenance-standard`
+// Décision Williams 2026-11-20 : aucun support ni suivi n'est inclus après une
+// prestation. Le contrat de maintenance reste une option payante sur devis.
 // ============================================================================
 
 export const MAINTENANCE_TIERS: ReadonlyArray<PricingTier> = [
@@ -849,10 +848,8 @@ export const MAINTENANCE_TIERS: ReadonlyArray<PricingTier> = [
     recurrenceEn: "/month",
     durationFr: "4 h/mois forfait",
     durationEn: "4 h/month flat",
-    descriptionFr:
-      "Contrat de maintenance optionnel après les 30 jours de support post-livraison inclus. Forfait 4 h/mois.",
-    descriptionEn:
-      "Optional maintenance contract after the 30-day included post-delivery support. 4 h/month flat.",
+    descriptionFr: "Contrat de maintenance optionnel, sur devis. Forfait 4 h/mois.",
+    descriptionEn: "Optional maintenance contract, on quote. 4 h/month flat.",
   },
 ];
 
@@ -1457,8 +1454,8 @@ export const PRICING = {
 // 3 CATÉGORIES (offres générales / par métier / par secteur d'activité) et les
 // PRIX SONT PUBLICS — prix fixe HT par groupe (2 à 15 participants), identique
 // pour toutes les formations d'une même case (catégorie × durée). Fin de l'axe
-// gamme (IA/Claude) et des tranches 16-30 / 2-12. Intra-entreprise, hors frais
-// de déplacement. Source : `Downloads/Titres_Formations_Axion-IA.md`.
+// gamme (IA/Claude) et des tranches 16-30 / 2-12. Intra-entreprise.
+// Source : `Downloads/Titres_Formations_Axion-IA.md`.
 // ============================================================================
 
 /** Prix HT (€) d'une case, ou `undefined` si la combinaison n'existe pas. */

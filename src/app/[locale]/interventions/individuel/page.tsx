@@ -15,17 +15,12 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { faqItems } from "@/content/questions-reference";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildPageImageGraphJsonLd,
-  buildPrimaryImageOfPage,
-  buildWebPageJsonLd,
-} from "@/lib/seo";
-import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { buildProductMetadata, buildPageImageGraphJsonLd } from "@/lib/seo";
+import { metadataCanoniqueVersCoaching } from "@/lib/seo/coaching-canonical";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -48,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
-  return buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: "/interventions/individuel",
     title:
@@ -57,9 +52,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Individual AI coaching · 1-on-1 · managers, independents · Axion-IA",
     description:
       loc === "fr"
-        ? "Coaching IA personnel 1-to-1 pour managers, indépendants, freelances. Format adapté à votre besoin, sur devis. Cadrage par visio, devis sous 48 h."
+        ? "Coaching IA personnel 1-to-1 pour managers, indépendants, freelances. Format adapté à votre besoin, sur devis. Diagnostic IA de 45 min, devis sous 48 h."
         : "Personal 1-on-1 AI coaching for managers, independents, freelancers. Format tailored to your need, on request. Framing by video, quote within 48 h.",
   });
+  // V2-08 : une seule page de référence pour le coaching individuel.
+  return metadataCanoniqueVersCoaching(meta, locale);
 }
 
 export default async function IndividuelFamilyPage({ params }: Props) {
@@ -81,18 +78,6 @@ export default async function IndividuelFamilyPage({ params }: Props) {
 
   const contactHref = `/interventions/demande?objet=${encodeURIComponent(CONTACT_OBJECT)}`;
 
-  const serviceJsonLd = buildServiceJsonLd({
-    locale: loc,
-    path: "/interventions/individuel",
-    name: isFr
-      ? "Coaching IA individuel 1-to-1 · Axion-IA"
-      : "Individual 1-on-1 AI coaching · Axion-IA",
-    description: isFr ? family.taglineFr : family.taglineEn,
-    serviceType: "AI coaching",
-    priceEur: 0,
-    areasServed: buildServiceAreasServed(loc),
-  });
-
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
   // requêtes « coaching IA individuel », « coaching IA indépendant freelance ».
@@ -100,20 +85,8 @@ export default async function IndividuelFamilyPage({ params }: Props) {
     locale: loc,
     path: "/interventions/individuel",
   });
-  // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
-  const webPageJsonLd = buildWebPageJsonLd({
-    locale: loc,
-    path: "/interventions/individuel",
-    name: isFr
-      ? "Coaching IA individuel 1-to-1 · Axion-IA"
-      : "Individual 1-on-1 AI coaching · Axion-IA",
-    description: isFr ? family.taglineFr : family.taglineEn,
-    speakable: true,
-    ...(buildPrimaryImageOfPage("/interventions/individuel")
-      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/interventions/individuel") } }
-      : {}),
-  });
-
+  // V2-08 : ni `Service` ni `WebPage` ici — le seul `Service` « coaching individuel » est celui de
+  // la page de référence `/un-a-un` (canonical ci-dessous).
   // 3 mini-blocs « pour qui » — Will (2026-05-11) : ouvert à n'importe quel
   // poste, pas réservé aux managers/dirigeants. Secrétaire, comptable, designer,
   // commercial, formateur, indépendant — chacun a ses tâches répétitives qui
@@ -240,8 +213,8 @@ export default async function IndividuelFamilyPage({ params }: Props) {
           titleEm={isFr ? "construit avec vous" : "built with you"}
           description={
             isFr
-              ? "Aucun format pré-emballé : on construit votre parcours selon votre niveau IA, votre métier et vos objectifs. Cadrage de 20 min par visio, devis sous 48 h ouvrées."
-              : "No pre-packaged format: we build your journey based on your AI level, role and goals. 20-min framing by video, quote within 48 business hours."
+              ? "Aucun format pré-emballé : on construit votre parcours selon votre niveau IA, votre métier et vos objectifs. Diagnostic IA gratuit de 45 min, devis sous 48 h ouvrées."
+              : "No pre-packaged format: we build your journey based on your AI level, role and goals. 45-min preliminary call by video, quote within 48 business hours."
           }
           contentClassName={TIGHT_X}
         >
@@ -262,12 +235,12 @@ export default async function IndividuelFamilyPage({ params }: Props) {
             <ul className="mt-6 space-y-2.5 text-[14.5px]">
               {(isFr
                 ? [
-                    "Visio de cadrage 20 min pour comprendre votre contexte",
+                    "Diagnostic IA de 45 min pour comprendre votre contexte",
                     "Parcours personnalisé construit ensemble — séances, durée, format",
                     "Devis détaillé sous 48 h ouvrées · facturation après chaque séance",
                   ]
                 : [
-                    "20-min framing video call to understand your context",
+                    "45-min preliminary video call to understand your context",
                     "Personalised journey built together — sessions, duration, format",
                     "Detailed quote within 48 business hours · invoiced after each session",
                   ]
@@ -352,26 +325,31 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                       id: "a-qui",
                       question: "À qui s'adresse le coaching IA individuel ?",
                       answer:
-                        "À n'importe quel poste opérationnel — secrétariat, comptabilité, commercial, RH, métier créatif ou spécialisé, indépendant ou freelance. On part de vos vraies tâches répétitives, pas d'un programme générique.",
+                        "Le coaching IA individuel s'adresse à n'importe quel poste opérationnel : secrétariat, comptabilité, commercial, RH, métier créatif ou spécialisé, indépendant ou freelance. Nous partons de vos vraies tâches répétitives, pas d'un programme générique, et la journée est menée à votre poste, sur vos propres outils, avec vos propres dossiers.",
                     },
                     {
                       id: "format",
                       question: "Comment se passe un coaching individuel ?",
                       answer:
-                        "Un parcours construit avec vous : on passe votre poste en revue, on prend en main les bons outils sur vos vrais cas, et vous repartez avec des méthodes applicables tout de suite et un plan d'action priorisé.",
+                        "Un coaching IA individuel se déroule en tête-à-tête, sur un parcours construit avec vous : nous passons votre poste en revue, puis nous prenons en main les bons outils sur vos vrais cas. Vous repartez avec des méthodes applicables tout de suite et avec un plan d'action priorisé, remis sous 7 jours.",
                     },
                     {
                       id: "donnees",
                       question: "Mes données restent-elles confidentielles ?",
                       answer:
-                        "Oui. On travaille sur vos propres comptes et outils, et on évite tout service qui exporterait vos données. Un point confidentialité est fait en début d'accompagnement.",
+                        "Oui, vos données restent confidentielles pendant un coaching IA individuel : nous travaillons sur vos propres comptes et outils, et nous évitons tout service qui exporterait vos données. Un point confidentialité est fait en début d'accompagnement, avant d'ouvrir le moindre dossier, pour fixer ce qui peut être confié à l'IA et ce qui ne le sera jamais.",
                     },
                     {
                       id: "apres",
                       question: "Et si je veux aller plus loin après ?",
                       answer:
-                        "Le plan que vous emportez chiffre ce qui reste à faire. Vous pouvez l'appliquer seul·e, ou nous confier la suite — formation d'équipe ou implémentation — sur devis.",
+                        "Après un coaching IA individuel, le plan que vous emportez chiffre ce qui reste à faire. Vous choisissez ensuite la suite à votre rythme : appliquer ce plan avec vos équipes, ou nous confier la formation d'équipe ou la mise en place d'automatisations, sur devis écrit. Rien n'est obligatoire, et aucune suite n'est engagée sans votre accord.",
                     },
+                    ...faqItems(["ref-coaching-vs-formation"]).map(({ id, question, answer }) => ({
+                      id,
+                      question,
+                      answer,
+                    })),
                   ]
                 : [
                     {
@@ -396,7 +374,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                       id: "apres",
                       question: "What if I want to go further afterwards?",
                       answer:
-                        "The plan you take away quantifies what remains to do. You can apply it on your own, or commission us for what follows — team training or implementation — on request.",
+                        "The plan you take away quantifies what remains to do. You can apply it with your teams, or commission us for what follows — team training or implementation — on request.",
                     },
                   ]
             }
@@ -416,7 +394,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Réservez votre cadrage 20 minutes" : "Book your 20-minute framing call"}
+        title={isFr ? "Réservez votre Diagnostic IA, 45 min" : "Book your 45-minute call"}
         description={
           isFr
             ? "On vous appelle, on comprend votre besoin, on construit un parcours, on chiffre. Aucun engagement avant la signature du devis."
@@ -430,8 +408,6 @@ export default async function IndividuelFamilyPage({ params }: Props) {
         tone="dark"
       />
 
-      <JsonLd data={serviceJsonLd} />
-      <JsonLd data={webPageJsonLd} />
       {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
     </>
   );

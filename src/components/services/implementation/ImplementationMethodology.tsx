@@ -43,9 +43,9 @@ export function ImplementationMethodology({ isFr }: ImplementationMethodologyPro
         },
         {
           id: "suivi",
-          title: "Suivi & évolution",
+          title: "Évolution",
           description:
-            "Un support inclus à la livraison pour les ajustements. Ensuite, vous faites évoluer à la demande — sans abonnement ni maintenance imposée.",
+            "La mission s'arrête à la livraison. Ensuite, vous faites évoluer à la demande — sans abonnement ni maintenance imposée.",
         },
       ]
     : [
@@ -69,9 +69,9 @@ export function ImplementationMethodology({ isFr }: ImplementationMethodologyPro
         },
         {
           id: "suivi",
-          title: "Support & evolution",
+          title: "Evolution",
           description:
-            "Included support at delivery for adjustments. Then you evolve on demand — no subscription, no imposed maintenance.",
+            "The engagement ends at delivery. Then you evolve on demand — no subscription, no imposed maintenance.",
         },
       ];
 

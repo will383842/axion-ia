@@ -9,9 +9,9 @@ export const HOUILLES_COPY: VilleCopy = {
   pitchEn:
     "Houilles (78), commune des Yvelines située dans une boucle de la Seine à 7 km au nord-ouest de Paris, 33 983 habitants (Ovillois). Tissu économique tertiaire urbain : nombreuses TPE de services, PME du bâtiment, commerces de proximité, professions libérales, artisans. La gare de Houilles–Carrières-sur-Seine (RER A + Transilien L et J) draine 24 000 voyageurs/jour, plaçant la ville parmi les pôles résidentiels les plus actifs de l'ouest parisien. Axion-IA y accompagne les structures locales et celles des communes voisines Sartrouville, Carrières-sur-Seine et Bezons.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nous intervenons partout en France, sur place ou à distance.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nous intervenons partout en France, sur place ou à distance.",
   seoHook: "services aux entreprises & commerce de proximité",
   ecosystemFr:
     "Houilles est une ville résidentielle dense de la boucle de Seine, organisée autour d'une gare RER A très fréquentée. Le tissu local est dominé par les services aux entreprises (cadres et professions intermédiaires représentent plus de 38 % des actifs), le commerce de proximité, la restauration, le BTP de second œuvre et les artisans. Peu d'industrie lourde, mais une dense population de TPE familiales, professions libérales (santé, juridique, conseil) et petites PME tertiaires. La proximité immédiate de La Défense (6 min en RER A) attire de nombreux indépendants et structures de service.",
@@ -54,7 +54,7 @@ export const HOUILLES_COPY: VilleCopy = {
         whyHere: [
           "Le commerce de proximité est le moteur de Houilles : l'Association des commerçants et artisans de Houilles (ACAH) compte plus de 200 adhérents et le marché du centre-ville réunit 160 commerçants — une base idéale pour des sites e-commerce click-and-collect, des fiches produit générées par IA et des programmes de fidélité numériques dans la lignée de la carte Myloope.",
           "La Braderie de Houilles (1 500 à 2 000 exposants, 25 000 à 30 000 visiteurs au Parc Charles-de-Gaulle) appelle des plateformes web événementielles concrètes : inscription exposants, plan interactif, billetterie, communication multicanale — autant de cas d'usage SaaS que nous savons livrer.",
-          "Une clientèle locale aisée et connectée : le quartier du Réveil-Matin concentre de jeunes cadres (revenu médian ~39 200 € par ménage, 65 % de propriétaires), à 6 minutes de La Défense en RER A — un public qui achète en ligne et attend des sites rapides, mobiles et fiables.",
+          "Une clientèle locale aisée et connectée : le quartier du Réveil-Matin concentre de jeunes cadres (revenu médian ~39 200 € par ménage, 65 % de propriétaires) — un public qui achète en ligne et attend des sites rapides, mobiles et fiables.",
           "Un écosystème d'artisans d'art et de professions libérales (santé, juridique, conseil) qui a besoin de vitrines crédibles : prise de rendez-vous en ligne, portfolios, devis automatisés, agents conversationnels — au-delà du simple design, nous intégrons l'IA dans des outils utiles au quotidien.",
         ],
         methodology: [
@@ -140,7 +140,7 @@ export const HOUILLES_COPY: VilleCopy = {
         whyHere: [
           "Proximity retail drives Houilles: the Association des commerçants et artisans de Houilles (ACAH) has over 200 members and the downtown market gathers 160 traders — an ideal base for click-and-collect e-commerce sites, AI-generated product listings and digital loyalty programs in the spirit of the Myloope card.",
           "The Braderie de Houilles (1,500 to 2,000 exhibitors, 25,000 to 30,000 visitors at Parc Charles-de-Gaulle) calls for concrete event web platforms: exhibitor registration, interactive map, ticketing, multichannel communication — SaaS use cases we know how to deliver.",
-          "An affluent, connected local clientele: the Réveil-Matin district concentrates young executives (median household income around €39,200, 65% homeowners), 6 minutes from La Défense on the RER A — a public that buys online and expects fast, mobile, reliable sites.",
+          "An affluent, connected local clientele: the Réveil-Matin district concentrates young executives (median household income around €39,200, 65% homeowners) — a public that buys online and expects fast, mobile, reliable sites.",
           "An ecosystem of art craftspeople and liberal professions (health, legal, consulting) that needs credible storefronts: online booking, portfolios, automated quotes, conversational agents — beyond mere design, we embed AI into tools that are useful day to day.",
         ],
         methodology: [
@@ -193,7 +193,7 @@ export const HOUILLES_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Multi-site web and SaaS program",
             detail:
-              "For groups and large accounts near La Défense and in western Paris: multi-site portals, AI-native platforms, design system, centralized GDPR governance and long-term support.",
+              "For groups and large accounts near La Défense and in western Paris: multi-site portals, AI-native platforms, design system, centralized GDPR governance.",
           },
         ],
         faq: [
@@ -227,7 +227,7 @@ export const HOUILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Houilles ?",
-      a: "Oui, Axion-IA intervient à Houilles et dans tout le secteur de la boucle de Seine : Sartrouville, Carrières-sur-Seine, Bezons, Chatou, Maisons-Laffitte. Nos consultants se déplacent en 25 min depuis Paris via le RER A.",
+      a: "Oui, Axion-IA intervient à Houilles et dans tout le secteur de la boucle de Seine : Sartrouville, Carrières-sur-Seine, Bezons, Chatou, Maisons-Laffitte. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Houilles ?",

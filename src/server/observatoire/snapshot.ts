@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "../../../prisma/generated/client";
 import { BAROMETER_QUESTIONS, SECTOR_SLUGS, REGION_SLUGS } from "@/content/observatoire/questions";
 import { SNAPSHOT_KEY_LATEST } from "@/content/observatoire/study";
+import { calculerSnapshotScore } from "./score-snapshot";
 
 export interface DistributionEntry {
   readonly value: string;
@@ -97,7 +98,7 @@ function pct(count: number, base: number): number {
 }
 
 /** Effectif minimal d'un segment pour être publié (anti-bruit + anti-réidentification). */
-const MIN_SEGMENT_N = 5;
+export const MIN_SEGMENT_N = 5;
 
 /** Dimensions de segmentation (clé payload → colonne SQL). Allowlist (anti-injection). */
 const SEGMENT_DIMENSIONS: ReadonlyArray<{ key: string; col: string }> = [
@@ -297,6 +298,12 @@ export async function aggregateBarometer(
     ),
   ]);
 
+  // Données de personnes : un périmètre FILTRÉ trop petit permettrait de
+  // réidentifier des répondants → aucun pourcentage sous MIN_SEGMENT_N.
+  // (Sans filtre, l'affichage global reste inchangé.)
+  const filtre = Boolean(f.companySize || f.sector || f.region);
+  if (filtre && total < MIN_SEGMENT_N) return emptySnapshotPayload(f);
+
   const distributions: Record<string, DistributionEntry[]> = {};
   const singleMaps = new Map<string, Map<string, number>>();
 
@@ -389,6 +396,15 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
     });
   } catch {
     // no-op : historique non critique.
+  }
+
+  // Snapshot du Score IA TPE-PME (clé distincte de « latest ») — best-effort :
+  // un échec ne doit JAMAIS casser le snapshot publié ci-dessus. Code exécuté par le
+  // worker ET par l'app (bouton admin) : clé additive, compatible dans les deux sens.
+  try {
+    await calculerSnapshotScore();
+  } catch {
+    // no-op : le Score affiche « La comparaison sera disponible sous peu ».
   }
 
   return payload;

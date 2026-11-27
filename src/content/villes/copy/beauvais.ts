@@ -132,7 +132,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et travaillez-vous dans tout l'Oise ?",
-            a: "Devis à partir de 24 à 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), avec un kick-off sur site dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé. Nous intervenons partout en France, sur place ou à distance.",
+            a: "Devis à partir de 24 à 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and do you cover the whole Oise?",
-            a: "Quote from 24 to 48 hours depending on complexity. We work in Beauvais and across the southern Oise (Compiègne, Creil, Clermont), with an on-site kick-off at your premises — plant, design office, agri-food workshop or Éco-Parc de Beauvais-Tillé warehouse. We work across France, on site or remotely; Beauvais is reachable via the A16.",
+            a: "Quote from 24 to 48 hours depending on complexity. We work in Beauvais and across the southern Oise (Compiègne, Creil, Clermont), with an on-site kick-off at your premises — plant, design office, agri-food workshop or Éco-Parc de Beauvais-Tillé warehouse. Axion-IA works anywhere in France, on site or remotely.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beauvais et dans l'Oise ?",
-      a: "Oui, Axion-IA intervient à Beauvais et dans tout le sud de l'Oise (Compiègne à 50 min, Creil, Clermont). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans beauvaisiens ?",

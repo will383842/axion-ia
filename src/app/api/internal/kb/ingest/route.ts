@@ -50,7 +50,11 @@ const IngestBodySchema = z.object({
     .default("public"),
   language: z.literal("fr"),
   source: z.object({
-    factoryId: z.string().min(1).max(80),
+    factoryId: z
+      .string()
+      .min(1)
+      .max(80)
+      .refine((v) => v !== "methode-import", "factory_id_reserve"),
     promptId: z.string().min(1).max(120),
     modelUsed: z.string().min(1).max(80),
     cost: z.number().nonnegative(),

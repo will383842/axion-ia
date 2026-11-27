@@ -49,7 +49,7 @@ export const PERTUIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pertuis et dans le Sud Luberon ?",
-      a: "Oui, Axion-IA intervient à Pertuis et dans tout le Sud Luberon (La Tour-d'Aigues, Mirabeau, Beaumont-de-Pertuis, Cadenet, Villelaure). Accès direct via A51 et D973.",
+      a: "Oui, Axion-IA intervient à Pertuis et dans tout le Sud Luberon (La Tour-d'Aigues, Mirabeau, Beaumont-de-Pertuis, Cadenet, Villelaure).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pertuis  ?",
@@ -65,7 +65,7 @@ export const PERTUIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Pertuis ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou exploitations. Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou exploitations.",
     },
   ],
 };

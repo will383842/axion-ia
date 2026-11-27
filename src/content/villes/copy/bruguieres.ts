@@ -14,9 +14,9 @@ export const BRUGUIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Bruguières est une commune résidentielle du nord de Toulouse, entre Saint-Jory et Castelginest. Tissu TPE artisans, PME de services, commerces de bourg, professions libérales. Proximité de l'axe A62.",
+    "Bruguières est une commune résidentielle du nord de Toulouse, entre Saint-Jory et Castelginest. Tissu TPE artisans, PME de services, commerces de bourg, professions libérales.",
   ecosystemEn:
-    "Bruguières est une commune résidentielle du nord de Toulouse, entre Saint-Jory et Castelginest. Tissu TPE artisans, PME de services, commerces de bourg, professions libérales. Proximité de l'axe A62.",
+    "Bruguières est une commune résidentielle du nord de Toulouse, entre Saint-Jory et Castelginest. Tissu TPE artisans, PME de services, commerces de bourg, professions libérales.",
   distancesFr:
     "Toulouse centre à 18 min (D4/A62). Gare Matabiau à 22 min. Aéroport Toulouse-Blagnac à 22 min. Saint-Jory à 5 min. Castelginest à 5 min.",
   distancesEn:

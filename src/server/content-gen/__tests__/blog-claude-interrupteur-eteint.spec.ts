@@ -233,14 +233,11 @@ describe("branchement des générateurs de blog (garde statique)", () => {
     expect(src.match(/blogClaudeRole: "ecriture"/g)?.length).toBe(attendu);
   });
 
-  it("les autres générateurs ne signalent jamais le rôle", () => {
-    for (const f of [
-      "comparison.ts",
-      "barometer-insight.ts",
-      "guide-pilier.ts",
-      "faq-standalone.ts",
-    ]) {
-      expect(readFileSync(join(DIR, f), "utf8")).not.toContain("blogClaudeRole");
-    }
+  it("le chatbot ne signale jamais le rôle (le marquage des autres générateurs : PR3)", () => {
+    const src = readFileSync(
+      join(__dirname, "..", "..", "chatbot", "generation", "generate-stream.ts"),
+      "utf8",
+    );
+    expect(src).not.toContain("blogClaudeRole");
   });
 });

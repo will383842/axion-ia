@@ -49,7 +49,7 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtelaillon-Plage ?",
-      a: "Oui, Axion-IA intervient à Châtelaillon-Plage et sur tout le littoral entre La Rochelle et Rochefort. Nos consultants accèdent facilement via la gare de Châtelaillon-Plage (TER La Rochelle 15 min) ou la N137.",
+      a: "Oui, Axion-IA intervient à Châtelaillon-Plage et sur tout le littoral entre La Rochelle et Rochefort.",
     },
     {
       q: "Quels services IA pour le tourisme à Châtelaillon-Plage ?",
@@ -65,7 +65,7 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Châtelaillon-Plage ?",
-      a: "Nos consultants accèdent à Châtelaillon-Plage par TER (La Rochelle 15 min) ou voiture (N137). Mission sur site dans votre hôtel, restaurant ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre hôtel, restaurant ou commerce.",
     },
   ],
 };

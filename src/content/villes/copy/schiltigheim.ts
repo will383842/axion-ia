@@ -81,9 +81,9 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
               "Recette sur site à Schiltigheim : tests d'acceptation, conformité RGPD, performance (Web Vitals), accessibilité. Mise en production sur hébergement UE, formation de vos équipes à l'administration du site et des outils IA.",
           },
           {
-            step: "Transfert et suivi",
+            step: "Transfert",
             detail:
-              "Documentation runbook remise, code et accès intégralement chez vous, transférables à tout intégrateur de l'Eurométropole ou repris en interne. Suivi post-lancement à distance : monitoring, ajustements, mesure des conversions.",
+              "Documentation runbook remise, code et accès intégralement chez vous, transférables à tout intégrateur de l'Eurométropole ou repris en interne.",
           },
         ],
         pricing: [
@@ -167,9 +167,9 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
               "On-site acceptance in Schiltigheim: acceptance tests, GDPR compliance, performance (Web Vitals), accessibility. Production go-live on EU hosting, training of your teams to administer the site and AI tools.",
           },
           {
-            step: "Handover and follow-up",
+            step: "Handover",
             detail:
-              "Runbook documentation delivered, code and access fully with you, transferable to any Eurométropole integrator or kept in-house. Post-launch remote follow-up: monitoring, adjustments, conversion measurement.",
+              "Runbook documentation delivered, code and access fully with you, transferable to any Eurométropole integrator or kept in-house.",
           },
         ],
         pricing: [
@@ -232,8 +232,8 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
       a: "Nos interventions IA à Schiltigheim démarrent à {{price:intervention-4h|flat}} pour le format collectif (1 journée), après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
-      q: "Williams se déplace-t-il à Schiltigheim ?",
-      a: "Oui, Williams se déplace à Schiltigheim dans les 5 jours ouvrés suivant la signature, pour intervenir directement chez vous ou à l'Espace Européen de l'Entreprise.",
+      q: "Axion-IA intervient-il à Schiltigheim ?",
+      a: "Oui, Williams intervient à Schiltigheim dans les 5 jours ouvrés suivant la signature, directement chez vous ou à l'Espace Européen de l'Entreprise.",
     },
     {
       q: "Quels secteurs schilikois Axion-IA accompagne-t-il ?",

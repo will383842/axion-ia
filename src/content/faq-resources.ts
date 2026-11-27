@@ -131,8 +131,8 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
       href: "/methodologie",
       labelFr: "Méthodologie",
       labelEn: "Methodology",
-      descFr: "Réservation, déroulé et support après-vente.",
-      descEn: "Booking, process and after-sales support.",
+      descFr: "Réservation et déroulé.",
+      descEn: "Booking and process.",
     },
     {
       href: "/rgpd",

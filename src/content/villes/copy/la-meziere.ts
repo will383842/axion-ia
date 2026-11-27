@@ -49,7 +49,7 @@ export const LA_MEZIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Mézière et dans le nord de Rennes Métropole ?",
-      a: "Oui, Axion-IA intervient à La Mézière et dans tout le nord de Rennes Métropole (Melesse, Betton, Saint-Grégoire, Montreuil-le-Gast, Pacé). Nos consultants couvrent l'ensemble de l'agglomération rennaise avec déplacement inclus.",
+      a: "Oui, Axion-IA intervient à La Mézière et dans tout le nord de Rennes Métropole (Melesse, Betton, Saint-Grégoire, Montreuil-le-Gast, Pacé). Nos consultants couvrent l'ensemble de l'agglomération rennaise.",
     },
     {
       q: "Tarifs audit IA à La Mézière  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const LA_MEZIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à La Mézière ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants interviennent sur site à La Mézière ou en visio. Chaque mission inclut un livrable actionnable, un plan IA chiffré et un suivi post-mission de 30 jours.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants interviennent sur site à La Mézière ou en visio. Chaque mission inclut un livrable actionnable et un plan IA chiffré.",
     },
   ],
 };

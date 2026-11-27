@@ -50,7 +50,14 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
-import { coachingFormulePath, COACHING_1TO1_ISO_DURATION } from "@/content/coaching-1to1";
+import { COACHING_1TO1_DEROULE, COACHING_1TO1_ISO_DURATION } from "@/content/coaching-1to1";
+import {
+  COACHING_DEFINITION_FR,
+  COACHING_DEROULE_INTRO_FR,
+  COACHING_PROFILS_FR,
+  COACHING_TITRES_FR,
+  comparaisonCoachingFr,
+} from "@/content/coaching-reference";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
@@ -68,13 +75,10 @@ export const revalidate = 86400;
 
 const TIGHT_X = "lg:px-6 xl:px-10";
 
-const DIRIGEANT_PRICE = getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!;
-const MEMBRE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-membre-equipe").priceFlat!;
-
 // R7 (ordre de Williams du 08/11/2026) : aucun prix de coaching au public. `formatTierPrice`
 // lit l'interrupteur de pricing.ts : « Sur devis » tant qu'il est coupé ; rallumé, la
-// formule retrouve son « Dès 990 € HT ». Les montants bruts ci-dessus ne nourrissent plus
-// que le `priceEur` du JSON-LD (lot JSON-LD).
+// formule retrouve son « Dès 990 € HT ». Le JSON-LD `Service` n'émet plus aucun prix
+// (V2-08 : aucun prix de coaching).
 function prixDes(tier: PricingTier, loc: "fr" | "en"): string {
   const prix = formatTierPrice(tier, loc);
   if (!prixAffichable(tier)) return prix;
@@ -124,8 +128,10 @@ export default async function UnAUnHubPage({ params }: Props) {
       id: "dirigeant",
       accent: "mocha" as const,
       // path vers le hub famille Dirigeants (SSOT taxonomie, cf. coaching-1to1).
-      hrefFr: coachingFormulePath("dirigeant", "fr"),
-      hrefEn: coachingFormulePath("dirigeant", "en"),
+      // V2-08 : le hub est la page de référence ; les cartes renvoient à son bloc « Pour qui »
+      // (ancre), plus vers les pages « famille » qui ne sont plus canoniques.
+      hrefFr: "#profil-dirigeant",
+      hrefEn: "#profil-dirigeant",
       iso8601Duration: COACHING_1TO1_ISO_DURATION,
       labelFr: "Coaching dirigeant",
       labelEn: "Executive coaching",
@@ -159,8 +165,8 @@ export default async function UnAUnHubPage({ params }: Props) {
       id: "membre-equipe",
       accent: "terracotta" as const,
       // path vers le hub famille Coaching individuel (SSOT taxonomie).
-      hrefFr: coachingFormulePath("membre-equipe", "fr"),
-      hrefEn: coachingFormulePath("membre-equipe", "en"),
+      hrefFr: "#profil-collaborateur",
+      hrefEn: "#profil-collaborateur",
       iso8601Duration: COACHING_1TO1_ISO_DURATION,
       labelFr: "Coaching collaborateur",
       labelEn: "Team-member coaching",
@@ -204,7 +210,6 @@ export default async function UnAUnHubPage({ params }: Props) {
       ? `Accompagnement IA en tête-à-tête : 1 personne, 1 expert Axion-IA, 1 journée préparée en amont sur votre métier. Deux formules — dirigeant ou collaborateur. Sous 7 jours, votre livrable personnalisé : note de cadrage stratégique, ou cahier de prompts et plan d'action. Partout en France métropolitaine. Sur devis.`
       : `One-on-one AI coaching: 1 person, 1 Axion-IA expert, 1 day prepared in advance for your role. Two formats — executive or team member. Within 7 days, your personalised deliverable: strategic framing note, or prompt playbook and action plan. Across metropolitan France. On request.`,
     serviceType: isFr ? "Coaching IA individuel" : "Individual AI coaching",
-    priceEur: Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE),
     areasServed: buildServiceAreasServed(loc),
   });
 
@@ -253,14 +258,14 @@ export default async function UnAUnHubPage({ params }: Props) {
       {
         name: isFr ? "Journée en tête-à-tête" : "One-on-one day",
         text: isFr
-          ? "Échange préalable de 45 minutes, puis votre coach passe la journée avec vous : journée stratégique pour un dirigeant (panorama IA de votre secteur, leviers hiérarchisés), journée de pratique sur vos vrais dossiers pour un collaborateur."
+          ? "Diagnostic IA de 45 minutes, puis votre coach passe la journée avec vous : journée stratégique pour un dirigeant (panorama IA de votre secteur, leviers hiérarchisés), journée de pratique sur vos vrais dossiers pour un collaborateur."
           : "A 45-minute preliminary call, then your coach spends the day with you: a strategy day for an executive (AI landscape of your sector, prioritised levers), a hands-on day on your real files for a team member.",
       },
       {
         name: isFr ? "Livrable sous 7 jours" : "Deliverable within 7 days",
         text: isFr
-          ? "Sous 7 jours, vous recevez votre livrable personnalisé : la note de cadrage stratégique (dirigeant) ou votre cahier de prompts et plan d'action (collaborateur), avec un point de suivi à 30 jours pour le coaching collaborateur."
-          : "Within 7 days, you receive your personalised deliverable: the strategic framing note (executive) or your prompt playbook and action plan (team member), with a 30-day follow-up for the team-member coaching.",
+          ? "Sous 7 jours, vous recevez votre livrable personnalisé : la note de cadrage stratégique (dirigeant) ou votre cahier de prompts et plan d'action (collaborateur)."
+          : "Within 7 days, you receive your personalised deliverable: the strategic framing note (executive) or your prompt playbook and action plan (team member).",
       },
     ],
   });
@@ -272,7 +277,7 @@ export default async function UnAUnHubPage({ params }: Props) {
     items: COACHING_TYPES.map((c, idx) => ({
       position: idx + 1,
       name: isFr ? c.labelFr : c.labelEn,
-      url: `${SITE_URL}/${locale}${isFr ? c.hrefFr : c.hrefEn}`,
+      url: `${SITE_URL}/${locale}${path}${isFr ? c.hrefFr : c.hrefEn}`,
       description: isFr ? c.taglineFr : c.taglineEn,
     })),
   });
@@ -293,7 +298,7 @@ export default async function UnAUnHubPage({ params }: Props) {
         titleEm={isFr ? "une journée en tête-à-tête sur vos vraies tâches" : "the way you work"}
         description={
           isFr
-            ? "Une journée complète en tête-à-tête — dirigeant ou collaborateur clé : on met votre travail à plat, on identifie ce que l'IA peut alléger, et vous repartez avec un cap clair."
+            ? COACHING_DEFINITION_FR
             : "A full day one-on-one — executive or key team member: we map out your work, identify what AI can take off your plate, and you leave with a clear course."
         }
         ctas={
@@ -357,8 +362,8 @@ export default async function UnAUnHubPage({ params }: Props) {
         titleEm={isFr ? "d'être accompagné" : "to be coached"}
         description={
           isFr
-            ? "Une journée, deux approches selon qui en profite : le dirigeant, ou un collaborateur clé. À vous de choisir. Pour un accompagnement dans la durée, voir le coaching régulier plus bas."
-            : "One day, two approaches depending on who benefits: the executive, or a key team member. Your call. For ongoing support over time, see the recurring coaching below."
+            ? "Une journée, deux approches selon qui en profite : le dirigeant, ou un collaborateur clé. À vous de choisir. Pour du coaching régulier, sur devis, voir plus bas."
+            : "One day, two approaches depending on who benefits: the executive, or a key team member. Your call. For regular coaching, on quote, see below."
         }
         contentClassName={TIGHT_X}
       >
@@ -379,13 +384,13 @@ export default async function UnAUnHubPage({ params }: Props) {
                     : "bg-paper border-terracotta/30 hover:border-terracotta hover:shadow-[0_16px_40px_-12px_rgba(205,107,72,0.30)]",
                 )}
               >
-                <Link
-                  href={href as never}
+                <a
+                  href={href}
                   aria-label={`${isFr ? c.labelFr : c.labelEn} — ${ctaLabel}`}
                   className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-3xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <span className="sr-only">{ctaLabel}</span>
-                </Link>
+                </a>
 
                 {/* Filet couleur en haut */}
                 <span
@@ -447,8 +452,8 @@ export default async function UnAUnHubPage({ params }: Props) {
                   </div>
 
                   <div className="relative z-[2] mt-auto pt-7">
-                    <Link
-                      href={href as never}
+                    <a
+                      href={href}
                       className={cn(
                         "inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors",
                         isDirigeant
@@ -461,7 +466,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                         aria-hidden="true"
                         className="h-4 w-4 transition-transform duration-200 group-hover/formule:translate-x-1"
                       />
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </article>
@@ -469,6 +474,86 @@ export default async function UnAUnHubPage({ params }: Props) {
           })}
         </div>
       </Section>
+
+      {/* ============================================================
+          V2-08 — PAGE DE RÉFÉRENCE : pour qui, déroulé, différence avec la
+          Journée IA et la formation. Contenu serveur, visible en HTML (le
+          déroulé n'était que dans le JSON-LD HowTo). FR seulement : l'EN est
+          redirigé vers le FR. Aucun prix de coaching.
+          ============================================================ */}
+      {isFr ? (
+        <>
+          <Section
+            id="pour-qui"
+            eyebrow="Pour qui"
+            title={COACHING_TITRES_FR.pourQui}
+            contentClassName={TIGHT_X}
+          >
+            <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3">
+              {COACHING_PROFILS_FR.map((p) => (
+                <article
+                  key={p.id}
+                  id={p.ancre}
+                  className="bg-paper border-border shadow-subtle scroll-mt-24 rounded-2xl border p-6"
+                >
+                  <h3 className="text-fg text-xl font-semibold tracking-tight">{p.titre}</h3>
+                  <p className="text-fg-soft mt-2 text-[15px] leading-relaxed">{p.texte}</p>
+                  <p className="text-fg mt-3 text-[14px] leading-relaxed">
+                    <span className="font-semibold">Ce que vous recevez : </span>
+                    {p.livrable}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </Section>
+
+          <Section
+            id="deroule"
+            tone="sand"
+            eyebrow="Déroulé"
+            title={COACHING_TITRES_FR.deroule}
+            description={COACHING_DEROULE_INTRO_FR}
+            contentClassName={TIGHT_X}
+          >
+            <ol className="mx-auto flex max-w-3xl flex-col gap-3">
+              {COACHING_1TO1_DEROULE.map((e, i) => (
+                <li key={e.id} className="bg-paper border-border rounded-xl border p-5">
+                  <p className="text-terracotta-deep text-sm font-bold">Étape {i + 1}</p>
+                  <h3 className="text-fg mt-1 text-lg font-semibold">{e.title}</h3>
+                  <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">{e.detail}</p>
+                </li>
+              ))}
+            </ol>
+          </Section>
+
+          <Section
+            id="difference"
+            eyebrow="Ne pas confondre"
+            title={COACHING_TITRES_FR.difference}
+            contentClassName={TIGHT_X}
+          >
+            <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3">
+              {comparaisonCoachingFr().map((c) => (
+                <article
+                  key={c.id}
+                  className="bg-paper border-border shadow-subtle flex flex-col rounded-2xl border p-6"
+                >
+                  <h3 className="text-fg text-xl font-semibold tracking-tight">{c.titre}</h3>
+                  <p className="text-fg-soft mt-2 text-[15px] leading-relaxed">{c.texte}</p>
+                  {c.lien ? (
+                    <Link
+                      href={c.lien.href as never}
+                      className="text-terracotta-deep mt-4 inline-flex min-h-12 items-center font-bold underline underline-offset-4 hover:no-underline"
+                    >
+                      {c.lien.libelle}
+                    </Link>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          </Section>
+        </>
+      ) : null}
 
       {/* ============================================================
           COACHING RÉGULIER — adaptation 1-to-1 du bloc « Formation
@@ -491,9 +576,6 @@ export default async function UnAUnHubPage({ params }: Props) {
           <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:gap-7">
             {/* CARD 1 — Mensuel (mis en avant) */}
             <article className="bg-paper border-terracotta/40 shadow-subtle hover:border-terracotta hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
-              <span className="bg-terracotta text-mocha-fg absolute top-5 right-5 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
-                {isFr ? "Le plus choisi" : "Most chosen"}
-              </span>
               <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
               <div className="flex flex-1 flex-col p-7 sm:p-8">
                 <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl">
@@ -919,7 +1001,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "rapport",
                       question: "Recevez-vous un compte-rendu après la journée ?",
                       answer:
-                        "Oui, et c'est LE livrable clé, remis sous 7 jours. Pour un dirigeant : la note de cadrage stratégique — panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence. Pour un collaborateur : votre cahier de prompts personnel et un plan d'action, suivis d'un point à 30 jours.",
+                        "Oui, et c'est LE livrable clé, remis sous 7 jours. Pour un dirigeant : la note de cadrage stratégique — panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence. Pour un collaborateur : votre cahier de prompts personnel et un plan d'action.",
                     },
                     {
                       id: "duree",
@@ -950,7 +1032,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "garantie",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel, le livrable écrit sous 7 jours et un point de suivi à 30 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel et le livrable écrit sous 7 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; l'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure).",
                     },
                   ]
                 : [
@@ -1004,7 +1086,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "guarantee",
                       question: "Guarantee?",
                       answer:
-                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your own files and on what you apply afterwards. What we do commit to is written in the quote: a one-to-one day on your actual workstation, the written deliverable within 7 days and a follow-up at 30 days. If something unexpected comes up on your side, the day can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
+                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your own files and on what you apply afterwards. What we do commit to is written in the quote: a one-to-one day on your actual workstation and the written deliverable within 7 days. If something unexpected comes up on your side, the day can be postponed once at no cost; the deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side).",
                     },
                   ]
             }

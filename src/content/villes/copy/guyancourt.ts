@@ -238,7 +238,7 @@ export const GUYANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Guyancourt ?",
-      a: "Oui. Guyancourt est à une trentaine de minutes de Paris-Montparnasse via Saint-Quentin-en-Yvelines, et reliée par l'A12 et la N12. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Axion IA intervient partout en France, sur site ou à distance, y compris à Guyancourt. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Guyancourt ?",

@@ -49,7 +49,7 @@ export const LUZARCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luzarches et Pays de France ?",
-      a: "Oui, Axion-IA intervient à Luzarches et tout le Pays de France (Chantilly à 10 min, Sarcelles à 20 min, Paris Gare du Nord à 45 min). Gare Transilien H Luzarches (terminus).",
+      a: "Oui. Nous intervenons à Luzarches et dans tout le Pays de France (Chantilly, Sarcelles), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Luzarches ?",
@@ -64,8 +64,8 @@ export const LUZARCHES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Chantilly ou Paris ?",
-      a: "Chantilly (10 min). Sarcelles (20 min). Paris Gare du Nord (45 min). CDG (20 min). Coûts de déplacement à part, tarification transparente.",
+      q: "Comment se déroule une mission Axion-IA à Luzarches ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

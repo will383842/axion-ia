@@ -40,8 +40,12 @@ const enBuild = () => process.env["DATABASE_URL"]?.includes("stub.invalid") === 
 const uuid = z.string().uuid();
 
 /** `sync` tel que le SERVEUR le connaît : lien du devis (colonne) + sa dernière mise à jour. */
-function syncServeur(devisId: string | null, devisMajLe: string | null) {
-  return { devisId, devisMajLe };
+function syncServeur(
+  devisId: string | null,
+  devisMajLe: string | null,
+  conditionsSha256?: string | null,
+) {
+  return { devisId, devisMajLe, ...(conditionsSha256 ? { conditionsSha256 } : {}) };
 }
 
 /** Vérifie en base le client et le brouillon de vente du payload ; retire ce qui n'est pas valide. */
@@ -64,6 +68,8 @@ async function verifierReferences(
   return { ok: true, payload: { ...p, venteBrouillonId } };
 }
 
+const REFUS_DEVIS_ID = "Seul un devis préparé dans l'assistant se rouvre ici.";
+
 export async function creerBrouillonAssistantAction(i: {
   payload: unknown;
   devisId?: string;
@@ -72,85 +78,34 @@ export async function creerBrouillonAssistantAction(i: {
   const session = await requireAdminWrite();
   const adminId = session.userId;
 
+  // Seul `lier()` du finaliseur pose le lien brouillon ↔ devis : cette action ne lie jamais un
+  // devis existant (sinon un devis classique serait « adopté » par l'assistant, sans son contenu).
+  if (i?.devisId !== undefined) return { error: REFUS_DEVIS_ID };
+
   const lu = lirePayload(i?.payload);
   if (!lu.ok) return { error: lu.error };
-  let devisId: string | null = null;
-  if (i.devisId !== undefined) {
-    const d = uuid.safeParse(i.devisId);
-    if (!d.success) return { error: "Données invalides" };
-    devisId = d.data;
-  }
 
-  let devisMajLe: string | null = null;
-  let clientIdDuDevis: string | null = null;
-  if (devisId) {
-    // Rejeu sûr : un brouillon déjà lié à ce devis est renvoyé tel quel (contrainte unique).
-    const deja = await prisma.devisAssistantBrouillon.findUnique({
-      where: { devisId },
-      select: { id: true, revision: true, createdByAdminId: true },
-    });
-    if (deja) {
-      if (deja.createdByAdminId !== adminId) return { error: INTROUVABLE };
-      return { data: { id: deja.id, revision: deja.revision } };
-    }
-    const devis = await prisma.devis.findUnique({
-      where: { id: devisId },
-      select: { id: true, updatedAt: true, clientId: true, statut: true },
-    });
-    if (!devis) return { error: "Devis introuvable" };
-    if (devis.statut !== "brouillon") {
-      return { error: "Seul un devis en brouillon peut être repris dans l'assistant." };
-    }
-    // Le client est celui du devis : le payload ne peut ni le contredire ni le remplacer.
-    if (lu.payload.clientId !== null && lu.payload.clientId !== devis.clientId) {
-      return { error: "Le client du brouillon ne correspond pas à celui du devis." };
-    }
-    clientIdDuDevis = devis.clientId;
-    devisMajLe = devis.updatedAt.toISOString();
-  }
-
-  const refs = await verifierReferences(
-    clientIdDuDevis ? { ...lu.payload, clientId: clientIdDuDevis } : lu.payload,
-    adminId,
-  );
+  const refs = await verifierReferences(lu.payload, adminId);
   if (!refs.ok) return { error: refs.error };
-  const payload: PayloadAssistantV1 = { ...refs.payload, sync: syncServeur(devisId, devisMajLe) };
+  const payload: PayloadAssistantV1 = { ...refs.payload, sync: syncServeur(null, null) };
 
-  let cree: { id: string; revision: number };
-  try {
-    cree = await prisma.devisAssistantBrouillon.create({
-      data: {
-        createdByAdminId: adminId,
-        clientId: payload.clientId,
-        devisId,
-        venteBrouillonId: payload.venteBrouillonId,
-        etape: payload.etape,
-        statut: devisId ? "lie_au_devis" : "en_cours",
-        payload: payload as never,
-      },
-      select: { id: true, revision: true },
-    });
-  } catch (err) {
-    // Double clic / deux onglets : l'index unique `devis_id` a refusé le second — on relit
-    // le brouillon gagnant et on le renvoie (même règle de propriété que le rejeu).
-    if (devisId && (err as { code?: string })?.code === "P2002") {
-      const existant = await prisma.devisAssistantBrouillon.findUnique({
-        where: { devisId },
-        select: { id: true, revision: true, createdByAdminId: true },
-      });
-      if (existant) {
-        if (existant.createdByAdminId !== adminId) return { error: INTROUVABLE };
-        return { data: { id: existant.id, revision: existant.revision } };
-      }
-    }
-    throw err;
-  }
+  const cree = await prisma.devisAssistantBrouillon.create({
+    data: {
+      createdByAdminId: adminId,
+      clientId: payload.clientId,
+      venteBrouillonId: payload.venteBrouillonId,
+      etape: payload.etape,
+      statut: "en_cours",
+      payload: payload as never,
+    },
+    select: { id: true, revision: true },
+  });
 
   await logQualiopiActivity({
     action: "qualiopi.devis_assistant.brouillon_cree",
     targetType: "DevisAssistantBrouillon",
     targetId: cree.id,
-    changes: { devisId },
+    changes: { devisId: null },
     session,
   });
   return { data: { id: cree.id, revision: cree.revision } };
@@ -194,10 +149,11 @@ export async function sauverBrouillonAssistantAction(i: {
   // `sync` : le lien vient de la colonne, la date de la dernière synchronisation de la base.
   const ancien = lirePayload(actuel.payload);
   const devisMajLe = ancien.ok && actuel.devisId ? ancien.payload.sync.devisMajLe : null;
+  const empreinte = ancien.ok && actuel.devisId ? ancien.payload.sync.conditionsSha256 : null;
   const payload: PayloadAssistantV1 = {
     ...refs.payload,
     etape,
-    sync: syncServeur(actuel.devisId, devisMajLe),
+    sync: syncServeur(actuel.devisId, devisMajLe, empreinte),
   };
 
   const { count } = await prisma.devisAssistantBrouillon.updateMany({
@@ -263,7 +219,14 @@ export async function reprendreBrouillonAssistantAction(id: string): Promise<
   return {
     data: {
       // Le lien du devis est celui de la colonne, pas celui que le texte du brouillon prétend.
-      payload: { ...lu.payload, sync: syncServeur(row.devisId, lu.payload.sync.devisMajLe) },
+      payload: {
+        ...lu.payload,
+        sync: syncServeur(
+          row.devisId,
+          lu.payload.sync.devisMajLe,
+          lu.payload.sync.conditionsSha256,
+        ),
+      },
       revision: row.revision,
       etape,
       statut: row.statut as StatutBrouillonAssistant,

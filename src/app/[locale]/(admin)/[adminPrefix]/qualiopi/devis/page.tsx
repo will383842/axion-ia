@@ -13,6 +13,16 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
+import { prisma } from "@/lib/prisma";
+import {
+  devisAvecRelanceRecente,
+  devisRemisEnMainPropreParmi,
+  estCandidatARelance,
+  estDevisARelancer,
+} from "@/server/qualiopi/devis/devis-a-relancer";
+import { delaisClientActifs } from "@/server/qualiopi/devis/delai-client";
+import { devisAvecEmailEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -97,6 +107,24 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
     listDevis(),
     listClients(),
     idsPiecesDevisAContresigner(),
+  ]);
+
+  // Badge « E-mail à valider » : UNE lecture groupée pour toute la liste (brouillons et envoyés).
+  const emailsEnAttente = await devisAvecEmailEnAttente(
+    prisma,
+    devisList.filter((d) => d.statut === "brouillon" || d.statut === "envoye").map((d) => d.id),
+  ).catch(() => new Set<string>());
+
+  // Pastille « À relancer » : UNE lecture groupée des relances déjà garées ou envoyées.
+  const maintenant = new Date();
+  const idsCandidats = devisList
+    .filter((d) => estCandidatARelance(d, etatListeDevis(d, piecesAContresigner), maintenant))
+    .map((d) => d.id);
+  const [relancesRecentes, remisMainPropre, enDelai] = await Promise.all([
+    devisAvecRelanceRecente(prisma, idsCandidats, maintenant).catch(() => new Set<string>()),
+    devisRemisEnMainPropreParmi(prisma, idsCandidats).catch(() => new Set<string>()),
+    // Délai demandé par le client : lecture en erreur = aucun délai (on montre, comme avant).
+    delaisClientActifs(prisma, maintenant, idsCandidats).catch(() => new Map<string, Date>()),
   ]);
 
   // Index clients par id pour affichage rapide
@@ -240,9 +268,28 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                           À contresigner
                         </AdminBadge>
                       ) : (
-                        <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
-                          {STATUT_LABELS[devis.statut] ?? devis.statut}
-                        </AdminBadge>
+                        <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                          <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+                            {STATUT_LABELS[devis.statut] ?? devis.statut}
+                          </AdminBadge>
+                          {estDevisARelancer(
+                            devis,
+                            etatListeDevis(devis, piecesAContresigner),
+                            relancesRecentes.has(devis.id) ||
+                              remisMainPropre.has(devis.id) ||
+                              enDelai.has(devis.id),
+                            maintenant,
+                          ) && (
+                            <AdminBadge tone="warning" dot>
+                              À relancer
+                            </AdminBadge>
+                          )}
+                          <BadgeEmailDevis
+                            statut={devis.statut}
+                            enAttente={emailsEnAttente.has(devis.id)}
+                            href={`/${locale}/${adminPrefix}/qualiopi/emails`}
+                          />
+                        </span>
                       )}
                     </td>
                     <td className={cellCls}>

@@ -1,10 +1,10 @@
 // JobPosting JSON-LD (Google for Jobs) pour une offre d'emploi DB.
-// Crée ex nihilo (le JobPosting de /devenir-commercial-ia est inline, multi-lieux
-// et 100% commission — non réutilisable pour une offre single-location salariée).
-// Gère : remote→TELECOMMUTE vs Place ; baseSalary vs incentiveCompensation ;
+// Crée ex nihilo (le JobPosting de /devenir-commercial-ia, mono-lieu et à distance, est
+// construit à part dans `job-posting-apporteur.ts` — non réutilisable ici).
+// Gère : remote→TELECOMMUTE vs Place ; baseSalary ;
 // validThrough déterministe ; garde-fou published & !filled.
-import { BRAND_LOGO, SITE_URL } from "@/lib/seo";
-import { CONTACT_PUBLIC } from "@/lib/brand";
+import { BRAND_LOGO, ORGANIZATION_SAME_AS, SITE_URL } from "@/lib/seo";
+import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { careerImage } from "@/content/careers/careers-images";
 import { applicantCountryLabel, normalizeApplicantCountries } from "@/lib/careers/format";
@@ -13,7 +13,7 @@ import type { JobOffer } from "../../../prisma/generated/client";
 // Aligné sur le nœud Organization canonique (`seo.ts` `#organization`) : même
 // `@id` (résolution d'entité Google/LLM), même `name`, `logo` (affiché dans la
 // fiche Google for Jobs) et `sameAs` autoritatif (profil externe réel, pas la home).
-const HIRING_ORG = {
+export const HIRING_ORG = {
   "@type": "Organization",
   "@id": `${SITE_URL}/#organization`,
   name: "Axion-IA",
@@ -21,7 +21,8 @@ const HIRING_ORG = {
   // Vrai logo carré (`BRAND_LOGO`, 512×512), pas la bannière OpenGraph 1200×630
   // que Google for Jobs recadrait (audit SEO 2026-11-11, M3).
   logo: BRAND_LOGO.url,
-  sameAs: [CONTACT_PUBLIC.linkedinEntreprise],
+  // Identique au layout (`seo.ts`) : même liste, même ordre, aucune dérive d'entité.
+  sameAs: [...buildOrganizationSameAs(), ...ORGANIZATION_SAME_AS],
 } as const;
 
 /**
@@ -65,6 +66,9 @@ export function buildJobPostingJsonLd(
    */
   options: { readonly formateurFreelance?: boolean } = {},
 ): Record<string, unknown> | null {
+  // Une offre 100 % commission n'est jamais balisée comme offre d'emploi, sauf mission
+  // freelance : le seul JobPosting d'apporteur vit dans `job-posting-apporteur.ts`.
+  if (offer.isCommission && !options.formateurFreelance) return null;
   // Garde-fou cohérent avec l'indexabilité : pas de JobPosting si non-publiée,
   // pourvue, noindex (tier≠1) ou expirée (sinon Google for Jobs indexe une offre
   // qu'on a voulu cacher/clôturer).
@@ -174,16 +178,12 @@ export function buildJobPostingJsonLd(
     jsonLd.applicantLocationRequirements = applicantLocationRequirements(offer, isFr);
   }
 
-  // Rémunération : commission → incentiveCompensation ; sinon baseSalary
+  // Rémunération : baseSalary
   // (uniquement si fourchette renseignée ET affichée publiquement).
   if (options.formateurFreelance) {
     // Une mission confiée à un indépendant : CONTRACTOR seul, jamais de
     // salaire de base. Le tarif se lit dans la description de l'offre.
     jsonLd.employmentType = "CONTRACTOR";
-  } else if (offer.isCommission) {
-    jsonLd.incentiveCompensation = isFr
-      ? "Rémunération à la commission, déplafonnée."
-      : "Uncapped commission-based pay.";
   } else if (offer.salaryVisible && (offer.salaryMin != null || offer.salaryMax != null)) {
     jsonLd.baseSalary = {
       "@type": "MonetaryAmount",

@@ -236,7 +236,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Savigny-le-Temple ?",
-      a: "Oui, nous nous déplaçons aussi à Nandy, Vert-Saint-Denis, Cesson, Combs-la-Ville, Lieusaint, Moissy-Cramayel et Réau, au même tarif.",
+      a: "Oui, nous nous déplaçons aussi à Nandy, Vert-Saint-Denis, Cesson, Combs-la-Ville, Lieusaint, Moissy-Cramayel et Réau.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Savigny-le-Temple ?",

@@ -1000,6 +1000,13 @@ jobs:
           # de connexion ne répond pas et `signInAction` refuse toute connexion
           # admin par sécurité : voir le commentaire du service `redis`.
           REDIS_URL: "redis://localhost:6379"
+          # Clé secrète de TEST PUBLIQUE de Cloudflare (« toujours valide »), documentée par
+          # Cloudflare et reconnue par `DEV_KEYS` dans `src/lib/turnstile.ts` : JAMAIS un secret
+          # réel. Sans elle, ce job (NEXT_PUBLIC_APP_ENV=production) refuse toute vérification
+          # anti-robot (refus par défaut voulu) et `score-ia-pme.spec.ts` ne peut pas aboutir.
+          # Lue à l'exécution par le serveur (`pnpm start`) : pas besoin au build. Aucune clé de
+          # site : le formulaire envoie un jeton fictif sans widget et n'appelle pas Cloudflare.
+          TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA"
           # Vide sur tous les runs normaux ⇒ `a11y-admin-mesure` se `skip`.
           # Renseigné par `workflow_dispatch` ⇒ la mesure tourne ici.
           A11Y_ROUTES: ${{ github.event.inputs.a11y_routes || '' }}
@@ -1606,6 +1613,13 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/signature-renforcee-comportement.sql
+      # Changement d'IBAN des apporteurs (2026-11-26) : IBAN chiffré seulement (CHECK enc:v2), historique
+      # en ajout seul, une demande ouverte et un compte en vigueur par apporteur, validation impossible
+      # avant 72 h réelles (déclencheurs). Cas ANNULÉS.
+      - name: Changement d'IBAN des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,

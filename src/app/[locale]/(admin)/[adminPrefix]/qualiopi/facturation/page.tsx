@@ -40,8 +40,13 @@ import {
   STATUTS_FACTURE_OUVERTE,
   estFactureOuverte,
 } from "@/server/qualiopi/financements/statuts-facture";
-import { AdminListScaffold } from "../../_v2/AdminListScaffold";
-import type { AdminListScaffoldRow } from "../../_v2/AdminListScaffold";
+import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
+import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminPagination } from "@/components/admin/ui/AdminPagination";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
+import { ListeFactures, TuilesFacturation } from "./FacturationVisuel";
+import type { CarteFactureProps, TuileFacturation } from "./FacturationVisuel";
 import type {
   ActiviteFacturation,
   FactureFormationStatut,
@@ -50,6 +55,8 @@ import type {
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
+import { idsDevisEnDelaiClient } from "@/server/qualiopi/devis/delai-client";
+import { relancesAtraiterWhere } from "@/server/qualiopi/devis/relances-a-traiter-filtre";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -146,6 +153,8 @@ export default async function FacturationHubPage({
 
   // Requêtes en parallèle : page courante + total + KPIs transverses (hors filtre).
   const now = new Date();
+  // Délai demandé par le client : même liste que le compteur du menu (lecture en erreur = aucun délai).
+  const devisEnDelai = await idsDevisEnDelaiClient(prisma, now).catch(() => [] as string[]);
   const [factures, total, aggEmis, aggEncaisse, ouvertes, relances, dossiersEnCours, clients] =
     await Promise.all([
       prisma.factureFormation.findMany({
@@ -225,9 +234,9 @@ export default async function FacturationHubPage({
       prisma.relanceProposee.findMany({
         // À traiter = jamais traitées + reportées dont l'échéance de report est
         // passée (revue M2 : une relance reportée doit REVENIR, jamais disparaître).
-        where: {
-          OR: [{ statut: "a_traiter" }, { statut: "reportee", reporteeJusqua: { lte: now } }],
-        },
+        // Une relance de DEVIS n'est gardée que si le devis attend encore une réponse
+        // (filtre partagé avec la pastille du menu).
+        where: relancesAtraiterWhere(now, devisEnDelai),
         orderBy: { createdAt: "asc" },
         take: 20,
         select: {
@@ -237,6 +246,7 @@ export default async function FacturationHubPage({
           suggestion: true,
           factureFormationId: true,
           factureFormation: { select: { numero: true } },
+          devisId: true,
           devis: { select: { numero: true } },
         },
       }),
@@ -288,17 +298,29 @@ export default async function FacturationHubPage({
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
-  const kpis = [
-    { label: "Émis (TTC)", value: fmtEur(aggEmis._sum.montantTtcCents ?? 0) },
-    { label: "Encaissé", value: fmtEur(aggEncaisse._sum.amountCents ?? 0) },
+  // Tuiles : mêmes sept chiffres qu'avant, le ton dit l'état d'un coup d'œil.
+  const tonAlerte = (cents: number): TuileFacturation["ton"] =>
+    cents > 0 ? "destructive" : "success";
+  const kpis: TuileFacturation[] = [
+    { label: "Émis (TTC)", value: fmtEur(aggEmis._sum.montantTtcCents ?? 0), ton: "info" },
+    { label: "Encaissé", value: fmtEur(aggEncaisse._sum.amountCents ?? 0), ton: "success" },
     {
       label: `En retard (${retardCount})`,
       value: fmtEur(retardCents),
+      ton: tonAlerte(retardCents),
     },
-    { label: "À échoir", value: fmtEur(buckets.courant) },
-    { label: "Retard 0-30 j", value: fmtEur(buckets.b0_30) },
-    { label: "Retard 31-60 j", value: fmtEur(buckets.b31_60) },
-    { label: "Retard 60 j +", value: fmtEur(buckets.b60plus) },
+    { label: "À échoir", value: fmtEur(buckets.courant), ton: "default" },
+    {
+      label: "Retard 0-30 j",
+      value: fmtEur(buckets.b0_30),
+      ton: buckets.b0_30 > 0 ? "warning" : "success",
+    },
+    {
+      label: "Retard 31-60 j",
+      value: fmtEur(buckets.b31_60),
+      ton: buckets.b31_60 > 0 ? "warning" : "success",
+    },
+    { label: "Retard 60 j +", value: fmtEur(buckets.b60plus), ton: tonAlerte(buckets.b60plus) },
   ];
 
   const dossierItems: DossierItem[] = dossiersEnCours.map((d) => ({
@@ -342,6 +364,9 @@ export default async function FacturationHubPage({
       suggestion: r.suggestion,
       libelle: r.factureFormation?.numero ?? r.devis?.numero ?? "Document inconnu",
       envoiDirect: r.factureFormationId !== null,
+      ...(r.devisId !== null
+        ? { devisHref: `/${locale}/${adminPrefix}/qualiopi/devis/${r.devisId}` }
+        : {}),
       // Le formatage (euros, dates) est fait ICI, côté serveur : le composant
       // client n'embarque ni `Intl.NumberFormat` ni logique de montant.
       ...(d !== undefined
@@ -380,7 +405,7 @@ export default async function FacturationHubPage({
     avertissement: pointageBancaire.avertissement,
   };
 
-  const rows: AdminListScaffoldRow[] = factures.map((f) => {
+  const cartes: CarteFactureProps[] = factures.map((f) => {
     // Reste dû NET de la ligne — même formule que la balance âgée plus haut.
     const encaisse = f.payments.reduce((acc, p) => acc + p.amountCents, 0);
     const avoirsTtc = f.avoirs.reduce((acc, a) => acc + (a.montantTtcCents ?? a.montantHtCents), 0);
@@ -391,27 +416,17 @@ export default async function FacturationHubPage({
     return {
       id: f.id,
       detailHref: `${base}/${f.id}`,
-      cells: [
-        <span key="num" className="font-mono text-[length:var(--text-admin-xs)]">
-          {f.numero}
-          {f.avoirDeId !== null ? " (avoir)" : ""}
-        </span>,
-        f.activite !== null ? ACTIVITE_LABELS[f.activite] : "—",
-        <span key="client">
-          {f.destinataireNom}
-          {f.client?.estPublic === true ? (
-            <span
-              className="ml-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
-              title="Client secteur public — dépôt Chorus Pro obligatoire"
-            >
-              Chorus Pro
-            </span>
-          ) : null}
-        </span>,
-        f.refClient ?? "—",
-        fmtEur(f.montantTtcCents ?? f.montantHtCents),
-        STATUT_LABELS[f.statut],
-        // Canal réglementaire (réforme 2026/2027) : PA / Chorus / e-reporting / hors champ.
+      numero: f.numero,
+      estAvoir: f.avoirDeId !== null,
+      statut: f.statut,
+      statutLibelle: STATUT_LABELS[f.statut],
+      activite: f.activite !== null ? ACTIVITE_LABELS[f.activite] : null,
+      client: f.destinataireNom,
+      chorusPro: f.client?.estPublic === true,
+      refClient: f.refClient,
+      montant: fmtEur(f.montantTtcCents ?? f.montantHtCents),
+      // Canal réglementaire (réforme 2026/2027) : PA / Chorus / e-reporting / hors champ.
+      canal:
         CANAL_LABELS[
           classifierCanalReglementaire({
             activite: f.activite,
@@ -422,140 +437,116 @@ export default async function FacturationHubPage({
               f.client?.type === "particulier" || f.destinataire === "stagiaire",
           })
         ],
-        fmtDate(f.emiseAt),
-        fmtDate(f.echeanceAt),
-        encaissable ? (
-          <EncaisserRapideButton key="encaisser" factureId={f.id} resteDuCents={resteDuCents} />
-        ) : (
-          "—"
-        ),
-      ],
+      emise: fmtDate(f.emiseAt),
+      echeance: fmtDate(f.echeanceAt),
+      ...(encaissable
+        ? {
+            action: (
+              <EncaisserRapideButton key="encaisser" factureId={f.id} resteDuCents={resteDuCents} />
+            ),
+          }
+        : {}),
     };
   });
 
   return (
-    <>
-      <AdminListScaffold
+    <AdminPageShell width="wide">
+      <AdminPageHeader
         title="Facturation (Hub)"
-        itemLabel="facture"
-        total={total}
+        description={`${total} ${total > 1 ? "factures" : "facture"} · page ${page} / ${totalPages}`}
+        meta={
+          retardCount > 0 ? (
+            <AdminBadge tone="destructive">{retardCount} en retard</AdminBadge>
+          ) : (
+            <AdminBadge tone="success">Aucun retard</AdminBadge>
+          )
+        }
+      />
+      <div className="space-y-[var(--space-admin-6)]">
+        <TuilesFacturation tuiles={kpis} />
+        <div className="flex flex-wrap items-center gap-[var(--space-admin-4)]">
+          {peutEcrire && (
+            <>
+              <Link href={`/${locale}/${adminPrefix}/qualiopi/devis/new`} className="admin-button">
+                + Nouveau devis
+              </Link>
+              <Link href={`${base}/new`} className="admin-button-secondary">
+                + Facture directe
+              </Link>
+            </>
+          )}
+          {/* 🔴 2026-09-23 — « Plans récurrents » RETIRÉ d'ici : navigation
+              déguisée en action, la porte canonique est l'entrée du menu
+              Finances (`src/lib/admin-nav.ts`). « FEC / Import » n'a PAS
+              d'entrée de menu : ce bouton reste sa SEULE porte. Le devis ouvre
+              le cycle de facturation, il reste seul en primaire. */}
+          <Link href={`${base}/comptabilite`} className="admin-button-secondary">
+            FEC / Import
+          </Link>
+        </div>
+        {/* 2026-09-15 — dire la vérité sur l'origine des factures de
+            formation : une partie naît désormais sans clic. Cf.
+            `financements/facture-auto-regles.ts` pour le périmètre exact. */}
+        <AdminBlocRepliable titre="Comment naissent les factures de formation">
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Facture de formation : générée automatiquement le lendemain de la fin de la session une
+            fois celle-ci clôturée (financement direct, fiche client complète) ; l&apos;e-mail
+            attend votre validation dans « E-mails à valider ». Un financement non renseigné est
+            traité comme un financement direct (facture à l&apos;entreprise, montant HT complet).
+            Les autres cas (OPCO, CPF, France Travail, inter-entreprises, fiche incomplète, facture
+            libre déjà émise pour ce client) sont signalés dans les alertes et se facturent depuis
+            la fiche de session.
+          </p>
+        </AdminBlocRepliable>
+        <div className="space-y-[var(--space-admin-4)]">
+          <AdminFilterTabs
+            label="Activité"
+            current={isActivite(activiteParam) ? activiteParam : ""}
+            options={[
+              { value: "", label: "Toutes", href: hrefWith({ activite: undefined }) },
+              ...ACTIVITES.map((a) => ({
+                value: a,
+                label: ACTIVITE_LABELS[a],
+                href: hrefWith({ activite: a }),
+              })),
+            ]}
+          />
+          <AdminFilterTabs
+            label="Statut"
+            current={isStatut(statutParam) ? statutParam : ""}
+            options={[
+              { value: "", label: "Tous", href: hrefWith({ statut: undefined }) },
+              ...STATUTS.map((s) => ({
+                value: s,
+                label: STATUT_LABELS[s],
+                href: hrefWith({ statut: s }),
+              })),
+            ]}
+          />
+          <RelancesATraiter
+            relances={relanceItems}
+            canWrite={peutEcrire}
+            pointage={pointage}
+            baseHref={base}
+          />
+          <DossiersFinancementPanel
+            dossiers={dossierItems}
+            clients={clientOptions}
+            canWrite={peutEcrire}
+          />
+          <ListeFactures
+            cartes={cartes}
+            titreVide="Aucune facture"
+            descriptionVide="Créer un devis puis le facturer, ou émettre une facture libre."
+          />
+        </div>
+      </div>
+      <AdminPagination
         page={page}
         totalPages={totalPages}
-        filters={
-          <div className="space-y-[var(--space-admin-4)]">
-            <div className="flex flex-wrap items-center gap-[var(--space-admin-4)]">
-              {kpis.map((k) => (
-                <div
-                  key={k.label}
-                  className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)]"
-                >
-                  <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {k.label}
-                  </p>
-                  <p className="text-[length:var(--text-admin-lg)] font-semibold">{k.value}</p>
-                </div>
-              ))}
-              {peutEcrire && (
-                <>
-                  <Link
-                    href={`/${locale}/${adminPrefix}/qualiopi/devis/new`}
-                    className="admin-button"
-                  >
-                    + Nouveau devis
-                  </Link>
-                  <Link href={`${base}/new`} className="admin-button-secondary">
-                    + Facture directe
-                  </Link>
-                </>
-              )}
-              {/* 🔴 2026-09-23 — « Plans récurrents » RETIRÉ d'ici : le bouton
-                  était de la NAVIGATION déguisée en action, vers une route
-                  qui a maintenant sa propre entrée stable dans le menu
-                  Finances (`src/lib/admin-nav.ts`). Garder les deux portes
-                  ouvertes vers la même liste ne rendait service à personne ;
-                  la porte canonique d'une vraie LISTE est son entrée de
-                  menu, pas un bouton secondaire noyé dans le bandeau
-                  d'actions du Hub.
-
-                  « FEC / Import », lui, n'a PAS d'entrée de menu : ce bouton
-                  reste sa SEULE porte, il ne bouge pas. Il était déjà de la
-                  navigation déguisée en action, au même titre que « Plans
-                  récurrents » — il portait le même aplat terracotta que
-                  « + Nouveau devis », si bien que quatre boutons pleins se
-                  disputaient l'entête. Le devis ouvre le cycle de
-                  facturation, il reste seul en primaire ; celui-ci reste
-                  encadré donc parfaitement visible, mais cesse de crier. */}
-              <Link href={`${base}/comptabilite`} className="admin-button-secondary">
-                FEC / Import
-              </Link>
-            </div>
-            {/* 2026-09-15 — dire la vérité sur l'origine des factures de
-                formation : une partie naît désormais sans clic. Cf.
-                `financements/facture-auto-regles.ts` pour le périmètre exact. */}
-            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Facture de formation : générée automatiquement le lendemain de la fin de la session
-              une fois celle-ci clôturée (financement direct, fiche client complète) ; l&apos;e-mail
-              attend votre validation dans « E-mails à valider ». Un financement non renseigné est
-              traité comme un financement direct (facture à l&apos;entreprise, montant HT complet).
-              Les autres cas (OPCO, CPF, France Travail, inter-entreprises, fiche incomplète,
-              facture libre déjà émise pour ce client) sont signalés dans les alertes et se
-              facturent depuis la fiche de session.
-            </p>
-            <AdminFilterTabs
-              label="Activité"
-              current={isActivite(activiteParam) ? activiteParam : ""}
-              options={[
-                { value: "", label: "Toutes", href: hrefWith({ activite: undefined }) },
-                ...ACTIVITES.map((a) => ({
-                  value: a,
-                  label: ACTIVITE_LABELS[a],
-                  href: hrefWith({ activite: a }),
-                })),
-              ]}
-            />
-            <AdminFilterTabs
-              label="Statut"
-              current={isStatut(statutParam) ? statutParam : ""}
-              options={[
-                { value: "", label: "Tous", href: hrefWith({ statut: undefined }) },
-                ...STATUTS.map((s) => ({
-                  value: s,
-                  label: STATUT_LABELS[s],
-                  href: hrefWith({ statut: s }),
-                })),
-              ]}
-            />
-            <RelancesATraiter
-              relances={relanceItems}
-              canWrite={peutEcrire}
-              pointage={pointage}
-              baseHref={base}
-            />
-            <DossiersFinancementPanel
-              dossiers={dossierItems}
-              clients={clientOptions}
-              canWrite={peutEcrire}
-            />
-          </div>
-        }
-        columnHeaders={[
-          "Numéro",
-          "Activité",
-          "Client",
-          "Réf. commande",
-          "Montant TTC",
-          "Statut",
-          "Canal 2026",
-          "Émise",
-          "Échéance",
-          "Encaissement",
-        ]}
-        rows={rows}
-        emptyTitle="Aucune facture"
-        emptyDescription="Créer un devis puis le facturer, ou émettre une facture libre."
-        paginationBaseHref={base}
-        paginationPreservedParams={{ statut: statutParam, activite: activiteParam }}
+        baseHref={base}
+        preservedParams={{ statut: statutParam, activite: activiteParam }}
       />
-    </>
+    </AdminPageShell>
   );
 }

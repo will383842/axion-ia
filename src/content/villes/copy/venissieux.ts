@@ -10,9 +10,9 @@ export const VENISSIEUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams livre du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams intervient sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams intervient sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   seoHook: "automobile (Renault Trucks), équipementiers et logistique",
   ecosystemFr:
     "Vénissieux a connu une industrialisation forte au XXe siècle, passant d'un village agricole et viticole à un pôle automobile majeur. Le site Renault Trucks au quartier du Parilly et la présence de Bosch ancrent une filière équipementier et métallurgie. Les zones d'activité Chêne-Velin (commerciale et industrielle) et Parilly concentrent la sous-traitance. La desserte par le métro D (terminus Gare de Vénissieux), le tramway T4 vers Lyon 8e, et le boulevard Urbain Sud relient la commune au reste de la Métropole de Lyon en moins de 25 minutes.",
@@ -79,9 +79,9 @@ export const VENISSIEUX_COPY: VilleCopy = {
               "Tests d'acceptation sur vos vrais flux à Vénissieux, hébergement provisionné en UE (OVHcloud, Scaleway), bascule en production, et transfert documenté (runbook) à votre IT ou à votre prestataire habituel.",
           },
           {
-            step: "Suivi et autonomie",
+            step: "Autonomie",
             detail:
-              "Monitoring post-lancement (performance, disponibilité, qualité des réponses IA), correctifs, puis passation : votre équipe ou tout intégrateur de la Métropole de Lyon peut reprendre le code. Aucun verrou Axion-IA.",
+              "Passation : votre équipe ou tout intégrateur de la Métropole de Lyon peut reprendre le code. Aucun verrou Axion-IA.",
           },
         ],
         pricing: [
@@ -141,7 +141,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
           "Vénissieux is an industrial town, not a business district: our platforms target equipment makers (Aldes, HVAC and ventilation), the heavy-truck supply chain (Renault Trucks and its subcontractors) and metalworking-mechanics, with ERP/MES integrations a standard showcase site never touches.",
           "The conversion of the former Bosch site into the Vénissieux Industrial Campus (Industry 4.0, 11 ha at Puisoz) creates concrete demand for technical portals, supplier extranets and production-tracking SaaS, which we build in controlled code, not locked-in no-code.",
           "The Lyon Sud-Est industrial zone (Vénissieux–Corbas–Saint-Priest, ~900 companies, ~21,000 jobs) and the Lyon-Corbas wholesale market concentrate B2B trade and logistics: we deploy multi-CMS e-commerce, per-client negotiated catalogues and high-volume ordering spaces there.",
-          "The Grand Parilly–Puisoz urban project and the T4 tram / Metro D service connect Vénissieux to Lyon's 8th. We travel on site for framing and acceptance, from Parilly workshops to the industrial-zone offices.",
+          "Axion-IA works anywhere in France, on site or remotely, from Parilly workshops to the industrial-zone offices.",
         ],
         methodology: [
           {
@@ -165,9 +165,9 @@ export const VENISSIEUX_COPY: VilleCopy = {
               "User acceptance testing on your real flows in Vénissieux, EU hosting provisioned (OVHcloud, Scaleway), production cutover, and documented handover (runbook) to your IT or usual provider.",
           },
           {
-            step: "Follow-up and autonomy",
+            step: "Autonomy",
             detail:
-              "Post-launch monitoring (performance, availability, AI answer quality), fixes, then handover: your team or any Métropole de Lyon integrator can take over the code. No Axion-IA lock-in.",
+              "Handover: your team or any Métropole de Lyon integrator can take over the code. No Axion-IA lock-in.",
           },
         ],
         pricing: [
@@ -231,7 +231,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur Vénissieux et la Métropole de Lyon ?",
-      a: "Williams se déplace à Vénissieux sous 5 à 10 jours ouvrés après signature. Pour les sous-traitants soumis aux audits qualité IATF 16949, un onboarding documentaire préalable peut allonger légèrement le démarrage.",
+      a: "Williams intervient sur site à Vénissieux sous 5 à 10 jours ouvrés après signature. Pour les sous-traitants soumis aux audits qualité IATF 16949, un onboarding documentaire préalable peut allonger légèrement le démarrage.",
     },
     {
       q: "Axion-IA intervient-il dans les communes limitrophes de Vénissieux ?",
@@ -246,8 +246,8 @@ export const VENISSIEUX_COPY: VilleCopy = {
       a: "Sous-traitance automobile (équipementiers Renault Trucks, Bosch), métallurgie et travail des métaux, logistique industrielle de la rocade Est, BTP et second œuvre, et négoce B2B des zones Chêne-Velin et Parilly.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Vénissieux ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Vénissieux pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
+      q: "Intervenez-vous à Vénissieux ou tout se fait à distance ?",
+      a: "Oui. Nous intervenons sur place à Vénissieux, comme partout en France, pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
     },
   ],
 };

@@ -6,6 +6,7 @@ const lireDossierParLien = vi.fn();
 const enregistrerDeclarations = vi.fn();
 const envoyer = vi.fn();
 const uploadToR2 = vi.fn();
+const enteteObjetR2 = vi.fn();
 const updateMany = vi.fn();
 const rendreContratPdf = vi.fn();
 const findUnique = vi.fn();
@@ -13,6 +14,12 @@ const lireEntrepriseParSiren = vi.fn();
 vi.mock("../annuaire", () => ({
   lireEntrepriseParSiren: (...a: unknown[]) => lireEntrepriseParSiren(...a),
   lireRegistre: (...a: unknown[]) => lireEntrepriseParSiren(...a),
+}));
+
+const alerterSignatureApporteur = vi.fn();
+vi.mock("../alerte-telegram", () => ({
+  alerterSignatureApporteur: (...a: unknown[]) => alerterSignatureApporteur(...a),
+  alerterContresignature: vi.fn(),
 }));
 
 const captureMessage = vi.fn();
@@ -25,7 +32,11 @@ vi.mock("../donnees", () => ({
   enregistrerDeclarations: (...a: unknown[]) => enregistrerDeclarations(...a),
 }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
-vi.mock("@/lib/r2-storage", () => ({ uploadToR2: (...a: unknown[]) => uploadToR2(...a) }));
+vi.mock("@/lib/r2-storage", () => ({
+  uploadToR2: (...a: unknown[]) => uploadToR2(...a),
+  enteteObjetR2: (...a: unknown[]) => enteteObjetR2(...a),
+  isR2Configured: () => true,
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     apporteurReseau: {
@@ -43,6 +54,7 @@ vi.mock("../contrat-pdf", async () => {
   };
 });
 
+import { empreinte, texteDuContrat } from "../contrat-pdf";
 import { CONTRAT_VERSION } from "../contrat-v2";
 import { APPROCHE_VIGILANCE_CENTS } from "../regles";
 import {
@@ -51,18 +63,35 @@ import {
   casesCompletes,
   cleContratApporteur,
   etatDeLaPage,
+  LIBELLE_REFUS_SIGNATURE,
   manquesDuDossier,
   nomAjoutable,
   nomTapeCorrespond,
   piecesDeposables,
   vigilanceDemandee,
   resumerNavigateur,
-  signerContrat,
+  signerContrat as signerContratReel,
   typesDeposes,
   valeursDuContrat,
   verifierAvantSignature,
   type SignatureApporteurJson,
 } from "../signature";
+
+/**
+ * Les tests de signature réussie simulent une page qui a affiché le texte du dossier simulé :
+ * sauf si le test fixe `empreinteLue`, on la calcule comme la page (mêmes fonctions, même date).
+ */
+async function signerContrat(
+  e: Omit<Parameters<typeof signerContratReel>[0], "empreinteLue"> & { empreinteLue?: string },
+) {
+  if (e.empreinteLue !== undefined)
+    return signerContratReel({ ...e, empreinteLue: e.empreinteLue });
+  const dossier = await lireDossierParLien(e.apporteurId, e.jeton);
+  const lue = dossier
+    ? empreinte(texteDuContrat(valeursDuContrat(dossier, e.maintenant ?? new Date())))
+    : "";
+  return signerContratReel({ ...e, empreinteLue: lue });
+}
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const JETON = "AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-AbCd";
@@ -272,9 +301,63 @@ describe("dossier en ligne — signerContrat", () => {
     vi.clearAllMocks();
     rendreContratPdf.mockResolvedValue(Buffer.from("%PDF"));
     uploadToR2.mockResolvedValue({ key: "k", etag: null, sizeBytes: 4 });
+    enteteObjetR2.mockResolvedValue({ taille: 4, etag: "e" });
     updateMany.mockResolvedValue({ count: 1 });
     envoyer.mockResolvedValue("envoye");
     findUnique.mockResolvedValue({ declarations: {} });
+  });
+
+  // Empreinte du texte que la page a AFFICHÉ : même fonction, même texte que `signerContrat`.
+  const empreinteAffichee = (dossier = dossierComplet(), quand = entree.maintenant) =>
+    empreinte(texteDuContrat(valeursDuContrat(dossier as never, quand)));
+
+  it("🔴 empreinte lue DIFFÉRENTE : refus « texte_modifie », ni PDF, ni R2, ni base", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat({ ...entree, empreinteLue: "a".repeat(64) });
+    expect(r).toEqual({
+      ok: false,
+      raison: "refus",
+      message: LIBELLE_REFUS_SIGNATURE.texte_modifie,
+    });
+    expect(LIBELLE_REFUS_SIGNATURE.texte_modifie).toBe(
+      "Le contrat a été mis à jour depuis l'affichage de cette page. Rechargez la page, relisez-le, puis signez.",
+    );
+    expect(rendreContratPdf).not.toHaveBeenCalled();
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+    expect(enregistrerDeclarations).not.toHaveBeenCalled();
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("🔴 empreinte lue VIDE : même refus, rien n'est écrit", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat({ ...entree, empreinteLue: "" });
+    expect(r).toMatchObject({
+      ok: false,
+      raison: "refus",
+      message: LIBELLE_REFUS_SIGNATURE.texte_modifie,
+    });
+    expect(rendreContratPdf).not.toHaveBeenCalled();
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+  });
+
+  it("🔴 le contrat change après l'affichage (passage de minuit) : refus", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const lue = empreinteAffichee(dossierComplet(), new Date("2026-10-04T21:59:00Z"));
+    const r = await signerContrat({ ...entree, empreinteLue: lue });
+    expect(r).toMatchObject({ ok: false, message: LIBELLE_REFUS_SIGNATURE.texte_modifie });
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+  });
+
+  it("empreinte lue ÉGALE à celle du texte : la signature passe comme avant", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat({ ...entree, empreinteLue: empreinteAffichee() });
+    expect(r.ok).toBe(true);
+    expect(rendreContratPdf).toHaveBeenCalledTimes(1);
+    expect(uploadToR2).toHaveBeenCalledTimes(1);
+    expect(updateMany).toHaveBeenCalledTimes(1);
   });
 
   it("refuse un lien invalide sans rien écrire", async () => {
@@ -366,6 +449,16 @@ describe("dossier en ligne — signerContrat", () => {
     expect(envoyer.mock.calls[0]![0]).toMatchObject({ gabarit: "apporteur-dossier-a-verifier" });
   });
 
+  it("Telegram : une alerte vers le salon Apporteurs, même clé que l'e-mail ; la signature reste actée si elle échoue", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    alerterSignatureApporteur.mockResolvedValue("echec");
+    const r = await signerContrat(entree);
+    expect(r.ok).toBe(true);
+    expect(alerterSignatureApporteur).toHaveBeenCalledTimes(1);
+    const arg = alerterSignatureApporteur.mock.calls[0]![0] as { cleSignature: string };
+    expect(arg.cleSignature).toBe((envoyer.mock.calls[0]![0] as { jobId: string }).jobId);
+  });
+
   it("D3 : l'alerte suit le destinataire d'alertes internes configuré", async () => {
     vi.stubEnv("QUALIOPI_ALERTE_EMAIL", "williams@axion-ia.com");
     try {
@@ -401,6 +494,35 @@ describe("dossier en ligne — signerContrat", () => {
       jobId: `apporteur-dossier-recu-${ID}-${entree.maintenant.getTime()}`,
       payload: { contactName: "Éloïse" },
     });
+  });
+
+  const accuseEnvoye = () =>
+    envoyer.mock.calls
+      .map((c) => c[0] as Record<string, unknown>)
+      .find((c) => c["gabarit"] === "apporteur-dossier-recu");
+
+  it("l'accusé porte en pièce jointe le PDF que l'apporteur vient de signer (objet R2 déposé)", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    const r = await signerContrat(entree);
+    if (!r.ok) throw new Error("signature attendue");
+    const cle = cleContratApporteur(ID, r.sha256);
+    expect(uploadToR2.mock.calls[0]?.[0]).toBe(cle);
+    expect(accuseEnvoye()?.["attachments"]).toEqual([
+      expect.objectContaining({ r2Key: cle, contentType: "application/pdf" }),
+    ]);
+    // L'alerte interne, elle, ne porte aucune pièce.
+    const alerte = envoyer.mock.calls
+      .map((c) => c[0] as Record<string, unknown>)
+      .find((c) => c["gabarit"] === "apporteur-dossier-a-verifier");
+    expect(alerte).not.toHaveProperty("attachments");
+  });
+
+  it("🔴 R2 indisponible au moment de l'accusé : l'e-mail part quand même, sans pièce jointe", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    enteteObjetR2.mockRejectedValue(new Error("R2 en panne"));
+    expect(await signerContrat(entree)).toMatchObject({ ok: true });
+    expect(accuseEnvoye()).toBeDefined();
+    expect(accuseEnvoye()).not.toHaveProperty("attachments");
   });
 
   it("D3 : alerte non partie → journal et Sentry, sans donnée personnelle ; signature conservée", async () => {

@@ -131,7 +131,7 @@ chatbotTools.register<typeof CapturerLeadInputSchema._type>({
 chatbotTools.register<typeof ProposerRdvInputSchema._type>({
   name: "proposer_rdv",
   description:
-    "Renvoie le lien de prise de rendez-vous (échange découverte ou réservation). " +
+    "Renvoie le lien de prise de rendez-vous (Diagnostic IA, 45 min, ou réservation). " +
     "N'effectue aucune réservation serveur — oriente vers la page FR.",
   schema: ProposerRdvInputSchema,
   handler: async (input) => proposerRdv(input),

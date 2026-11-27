@@ -7,6 +7,10 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { ActionsPresentation } from "@/components/admin/apporteurs/entreprises/ActionsPresentation";
 import { ConfirmerAttribution } from "@/components/admin/apporteurs/entreprises/ConfirmerAttribution";
+import {
+  ActionsProposition,
+  SaisirRendezVous,
+} from "@/components/admin/apporteurs/entreprises/ValidationRendezVous";
 import { EtendreALEntreprise } from "@/components/admin/apporteurs/entreprises/EtendreALEntreprise";
 import { NouvellePresentationForm } from "@/components/admin/apporteurs/entreprises/NouvellePresentationForm";
 import { PrestationFiche } from "@/components/admin/apporteurs/entreprises/PrestationFiche";
@@ -27,7 +31,21 @@ import {
   type PresentationVue,
 } from "@/features/apporteurs-reseau/presentations";
 import { LIBELLE_PROLONGATION, type MotifProlongation } from "@/features/apporteurs-reseau/regles";
-import { dayKeyInParis } from "@/lib/calendar-grid";
+import { validationParRendezVousActive } from "@/features/apporteurs-reseau/interrupteur-rendez-vous";
+import { heureConsole } from "@/features/apporteurs-reseau/statut-rendez-vous";
+import {
+  LIBELLE_RESERVATION_ECHUE,
+  LIMITE_PROPOSITIONS,
+  lirePropositionsATraiter,
+  lireReservationsOuvertes,
+  type PropositionVue,
+  type ReservationOuverteVue,
+} from "@/features/apporteurs-reseau/requetes-console";
+import {
+  lireReservations,
+  suitLaRegleRendezVous,
+} from "@/features/apporteurs-reseau/reservation-presentation";
+import { dayKeyInParis, toParisLocalInput } from "@/lib/calendar-grid";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager, peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 import { coordonneesAffichables } from "@/features/apporteurs-reseau/coordonnees-presentees";
@@ -57,14 +75,8 @@ const STATUT: Record<
   terminee: { libelle: "Terminée", ton: "neutral" },
 };
 
-const heure = (d: Date) =>
-  d.toLocaleString("fr-FR", {
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/Paris",
-  });
+// Même formatage que le message de refus de la validation (`heureConsole`) : on retrouve la ligne.
+const heure = heureConsole;
 
 export default async function EntreprisesPresenteesPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -76,12 +88,23 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
   const maintenant = new Date();
   const voitPii = peutOuvrirDossierApporteur(acces.role);
 
-  const [comptes, lignes, apporteurs] = await Promise.all([
+  // Lot 6 : la section n'existe que si l'interrupteur est allumé (sinon rien ne change à l'écran).
+  const validationActive = validationParRendezVousActive();
+  const administrateur = acces.role === "super_admin" || acces.role === "admin";
+  const [comptes, lignes, apporteurs, propositions, reservationsOuvertes] = await Promise.all([
     compterParOnglet(),
     lirePresentations(onglet),
     lireApporteursSignes(),
+    validationActive ? lirePropositionsATraiter(maintenant) : Promise.resolve([]),
+    validationActive && administrateur ? lireReservationsOuvertes() : Promise.resolve([]),
   ]);
   const commissions = await lireCommissionsDesPresentations(lignes.map((p) => p.id));
+  // Règle par rendez-vous : la ligne de réservation fait foi (pas de « Confirmer maintenant »).
+  const parRendezVous = new Set(
+    [...(await lireReservations(lignes.map((p) => p.id))).entries()]
+      .filter(([, r]) => suitLaRegleRendezVous(r))
+      .map(([id]) => id),
+  );
   const peutMarquer = peutEngager(acces.role, "facturer");
   const retourPrestation =
     typeof sp.prestation === "string"
@@ -125,6 +148,15 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
         </AdminCard>
       ) : null}
 
+      {validationActive ? (
+        <SectionRendezVous
+          propositions={propositions}
+          reservations={reservationsOuvertes}
+          peutValider={administrateur}
+          aujourdhuiLocal={toParisLocalInput(maintenant)}
+        />
+      ) : null}
+
       {retourPrestation ? (
         <p
           role={retourPrestation.ok ? "status" : "alert"}
@@ -163,6 +195,7 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
               commissions={commissions.get(p.id) ?? []}
               peutMarquer={peutMarquer}
               onglet={onglet}
+              parRendezVous={parRendezVous.has(p.id)}
             />
           ))}
         </div>
@@ -180,6 +213,7 @@ function Carte({
   commissions,
   peutMarquer,
   onglet,
+  parRendezVous,
 }: {
   p: PresentationVue;
   signalements: string[];
@@ -190,6 +224,8 @@ function Carte({
   commissions: ReadonlyArray<CommissionDeLaPresentation>;
   peutMarquer: boolean;
   onglet: string;
+  /** La présentation suit la règle par rendez-vous : pas de confirmation manuelle. */
+  parRendezVous: boolean;
 }) {
   const statut = p.aTraiter
     ? { libelle: "À traiter", ton: "warning" as const }
@@ -302,7 +338,14 @@ function Carte({
               Actions
             </summary>
             <div className="flex flex-col gap-[var(--space-admin-3)] pt-[var(--space-admin-3)]">
-              {p.statut === "reservee" ? <ConfirmerAttribution id={p.id} /> : null}
+              {p.statut === "reservee" && !parRendezVous ? (
+                <ConfirmerAttribution id={p.id} />
+              ) : null}
+              {p.statut === "reservee" && parRendezVous ? (
+                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  Validation par rendez-vous ou par commande signée
+                </p>
+              ) : null}
               {(p.statut === "reservee" || p.statut === "confirmee") &&
               p.etablissement.siret !== null &&
               !p.etablissement.entreprise ? (
@@ -310,7 +353,7 @@ function Carte({
               ) : null}
               <ActionsPresentation
                 id={p.id}
-                peutConfirmer={p.statut === "reservee"}
+                peutConfirmer={p.statut === "reservee" && !parRendezVous}
                 peutDementir={p.statut === "reservee" || p.statut === "confirmee"}
                 note={p.note}
                 aujourdhui={aujourdhui}
@@ -320,6 +363,93 @@ function Carte({
         ) : null}
         {!peutEcrire && p.note ? (
           <p className="text-[length:var(--text-admin-sm)]">📝 {p.note}</p>
+        ) : null}
+      </div>
+    </AdminCard>
+  );
+}
+
+function SectionRendezVous({
+  propositions,
+  reservations,
+  peutValider,
+  aujourdhuiLocal,
+}: {
+  propositions: ReadonlyArray<PropositionVue>;
+  reservations: ReadonlyArray<ReservationOuverteVue>;
+  peutValider: boolean;
+  aujourdhuiLocal: string;
+}) {
+  return (
+    <AdminCard as="section">
+      <div className="flex flex-col gap-[var(--space-admin-3)]">
+        <div>
+          <h2 className="text-[length:var(--text-admin-lg)] font-semibold">Rendez-vous proposés</h2>
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            L&apos;outil propose, vous validez : rien n&apos;est validé tant que vous n&apos;avez
+            pas cliqué « Il a eu lieu ».
+          </p>
+        </div>
+        {propositions.length >= LIMITE_PROPOSITIONS ? (
+          <p role="status" className="text-[length:var(--text-admin-sm)]">
+            Liste tronquée à {LIMITE_PROPOSITIONS} propositions : traitez les plus anciennes pour
+            voir les suivantes.
+          </p>
+        ) : null}
+        {propositions.length === 0 ? (
+          <p className="text-[color:var(--color-admin-fg-muted)]">Aucun rendez-vous à examiner.</p>
+        ) : (
+          <ul className="flex flex-col gap-[var(--space-admin-3)]">
+            {propositions.map((r) => (
+              <li
+                key={r.id}
+                className="flex flex-col gap-[var(--space-admin-2)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-3)] first:border-t-0 first:pt-0"
+              >
+                <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                  <strong>{r.denomination}</strong>
+                  <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                    {r.siren} · saisie par {r.apporteur} le {heure(r.recueAt)}
+                  </span>
+                </div>
+                <p className="text-[length:var(--text-admin-sm)]">
+                  Rendez-vous pris le {heure(r.prisAt)}
+                  {r.rendezVousAt
+                    ? `, prévu le ${heure(r.rendezVousAt)}${r.tenuPasse ? "" : " (pas encore passé)"}`
+                    : ", date non connue"}
+                  . {r.motifLibelle}.
+                  {r.apporteurCite ? " La personne a cité un apporteur d'affaires." : ""}
+                </p>
+                {peutValider ? (
+                  <ActionsProposition
+                    id={r.id}
+                    dateTenueConnue={!!r.rendezVousAt}
+                    nonTenu={r.nonTenu}
+                    rencontre={r.rendezVousCle.startsWith("rencontre:")}
+                    prisLocal={toParisLocalInput(r.prisAt)}
+                    aujourdhuiLocal={aujourdhuiLocal}
+                  />
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+        {peutValider ? (
+          <details>
+            <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium">
+              Saisir un rendez-vous à la main (téléphone, sur place, ou annulé par Axion IA)
+            </summary>
+            <div className="pt-[var(--space-admin-3)]">
+              <SaisirRendezVous
+                aujourdhuiLocal={aujourdhuiLocal}
+                entreprises={reservations.map((e) => ({
+                  id: e.presentationId,
+                  libelle: `${e.denomination} (${e.apporteur}, saisie du ${dateCourte(e.recueAt)})${
+                    e.echueAt ? ` — ${LIBELLE_RESERVATION_ECHUE(dateCourte(e.echueAt))}` : ""
+                  }`,
+                }))}
+              />
+            </div>
+          </details>
         ) : null}
       </div>
     </AdminCard>

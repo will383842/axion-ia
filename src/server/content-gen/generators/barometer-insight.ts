@@ -82,7 +82,7 @@ const SYSTEM_PROMPT_PLAN =
 - Chaque chiffre cité est attribué à « Observatoire Axion-IA 2026 ».
 - Si un angle n'est pas couvert par les données, tu restes qualitatif (pas de chiffre inventé).
 - Angle opérationnel : ce que ces chiffres impliquent concrètement pour un dirigeant d'une petite ou moyenne entreprise française.
-- 0 délai chiffré, 0 frais de déplacement, 0 prix en dur, 0 numéro de téléphone (contact@axion-ia.com uniquement).
+- 0 délai chiffré, 0 prix en dur, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - "title" (le H1 affiché) : **50 à 60 caractères**, mot-clé/angle au tout début, cliquable. NE JAMAIS dépasser 60 caractères.
 - "metaTitle" : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces), mot-clé au tout début. NE JAMAIS descendre sous 50 caractères : si trop court, ajoute une précision utile (bénéfice, secteur, métier visé…). NE PAS dépasser 60.
 - "metaDescription" : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète avec bénéfice clair + mot-clé naturel. NE JAMAIS descendre sous 140 caractères : développe jusqu'à atteindre la fourchette. NE PAS dépasser 160.
@@ -103,10 +103,10 @@ const SYSTEM_PROMPT_EXPAND =
 - Tu ne cites QUE les chiffres présents dans le bloc « DONNÉES VÉRIFIÉES » fourni. Tu n'inventes AUCUN pourcentage, AUCUN effectif, AUCUNE donnée. Chaque chiffre est attribué à « Observatoire Axion-IA 2026 ». Si un angle n'est pas couvert, reste qualitatif (pas de chiffre inventé).
 - Angle opérationnel : ce que ces chiffres impliquent concrètement pour un dirigeant d'une petite ou moyenne entreprise française. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - LONGUEUR DÉTERMINANTE POUR LE RANG : développe EXACTEMENT les sections de l'outline fourni (une <h2> par entrée, dans l'ordre), **chacune de 130 à 190 mots** (2-3 paragraphes pleins). Corps total visé : **1000 à 1800 mots**. JAMAIS une section de 2 phrases. Développe pleinement l'analyse, ne résume pas.
-- Chaque <h2> d'un constat chiffré commence par le chiffre, en phrase autoportante (ex. « 59 % des entreprises… »).
+- Chaque <h2> d'un constat chiffré commence par le chiffre, en phrase autoportante (ex. « [chiffre du bloc] % des entreprises… »).
 - NE PAS inclure de <h1> dans le corps (le titre est rendu séparément par la page).
 - Sous CHAQUE <h2>, commence par une réponse autonome de 40-60 mots citable hors contexte, enveloppée dans <p data-aeo="answer">…</p>. Le développement suit.
-- ANTI-MONOTONIE : alterne les formats — chaque constat chiffré majeur en bloc chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">59 %</span><span class="ax-stat-label">…</span></aside> (chiffre RÉEL « Observatoire Axion-IA 2026 »), + 1 à 2 encadrés <aside class="callout callout-note"><p class="callout-label">…</p><p>…</p></aside>. Jamais plus de 3 paragraphes consécutifs sans élément visuel.
+- ANTI-MONOTONIE : alterne les formats — chaque constat chiffré majeur en bloc chiffre-clé <aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">[chiffre du bloc] %</span><span class="ax-stat-label">…</span></aside> (chiffre RÉEL « Observatoire Axion-IA 2026 »), + 1 à 2 encadrés <aside class="callout callout-note"><p class="callout-label">…</p><p>…</p></aside>. Jamais plus de 3 paragraphes consécutifs sans élément visuel.
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies (INSEE, France Num, BPI France, etc.).
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
@@ -203,9 +203,10 @@ export const barometerInsightGenerator: Generator = {
 
 ${verifiedData}
 ${externalLinksCtx.markdownSection}
-## Avis d'expert
-"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
+## Angle d'entrée
 ${consigneAngle(input.jobId)}
+## Avis d'expert
+"expertTake" = le point de vue d'Axion-IA (voix collective de l'entreprise, jamais celle d'une personne nommée, ni « je » d'un témoin) : perspective concise et utile sur le sujet, sans chiffre inventé.
 ${sectionChiffresVerifies()}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
@@ -215,6 +216,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         jobId: input.jobId,
         contentType: "barometer_insight",
         role: "text",
+        blogClaudeRole: "ecriture",
         responseFormatJson: true,
         systemPrompt: planSystem,
         userPrompt:
@@ -277,6 +279,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
       const expandResult = await expandOutlineChunked({
         jobId: input.jobId,
         contentType: "barometer_insight",
+        blogClaudeRole: "ecriture",
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,

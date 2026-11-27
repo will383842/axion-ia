@@ -9,15 +9,18 @@
  * (cf. `buildFaqJsonLd`).
  */
 
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { faqItems } from "@/content/questions-reference";
 import type { VilleContext } from "@/components/services/types";
 
 interface AuditFaqItem {
   readonly id: string;
   readonly question: string;
   readonly answer: string;
+  readonly liens?: ReadonlyArray<{ href: string; label: string }>;
 }
 
 export interface AuditFaqProps {
@@ -35,40 +38,48 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
   return [
     {
       id: "duree-reservation",
-      question: "Comment ça démarre ?",
-      answer:
-        "Par un rendez-vous de cadrage. Pour la plupart des entreprises, nous planifions La Journée IA dans vos locaux, avec un rapport complet sous 3 jours ouvrés. Pour un audit approfondi, vous recevez un devis écrit sous 48 h ouvrées.",
+      question: "Comment démarre un audit IA avec Axion-IA ?",
+      answer: `Un audit IA avec Axion-IA démarre par un rendez-vous de cadrage gratuit de 45 minutes, en visio ou par téléphone. Pour la plupart des entreprises, nous planifions ensuite La Journée IA dans vos locaux, avec un rapport complet remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Pour un audit plus approfondi, vous recevez d'abord un devis écrit sous 48 h ouvrées.`,
     },
     {
       id: "remote-onsite",
-      question: "À distance ou sur site ?",
+      question: "Un audit IA se fait-il à distance ou sur site ?",
       answer:
-        "À distance : visio sécurisée, entretiens, analyse de données. Sur site : observation directe et ateliers métier. Au choix selon votre besoin.",
+        "Un audit IA peut se faire à distance ou sur site, selon votre besoin. À distance : visio sécurisée, entretiens et analyse de données. Sur site : observation directe du travail et ateliers métier avec les équipes concernées. La Journée IA, elle, se déroule dans vos locaux, partout en France métropolitaine, pour voir les tâches là où elles se font.",
     },
     {
       id: "data",
-      question: "Quelles données dois-je fournir ?",
+      question: "Quelles données faut-il fournir pour un audit IA ?",
       answer:
-        "Aucune donnée sensible n'est exfiltrée hors UE. Pour le devis : taille, secteur, outils, périmètre. Aucun accès production avant signature.",
+        "Pour un audit IA, vous fournissez d'abord peu de choses : la taille de l'entreprise, le secteur, les outils utilisés et le périmètre souhaité, pour établir le devis. Aucun accès à vos systèmes de production n'est demandé avant la signature. Aucune donnée sensible n'est exfiltrée hors de l'Union européenne, et le RGPD s'applique.",
     },
     {
       id: "after",
-      question: "Que se passe-t-il après l'audit ?",
+      question: "Que se passe-t-il après un audit IA ?",
       answer:
-        "Vous repartez avec un plan d'action chiffré, priorisé par phases. Vous déployez à votre rythme — avec vos équipes ou avec nous (module Implémentation). Un suivi peut être programmé après livraison.",
+        "Après un audit IA, vous repartez avec un plan d'action chiffré et priorisé par phases. Vous déployez ensuite à votre rythme, avec vos équipes ou avec Axion-IA grâce au module Implémentation, sur devis écrit.",
     },
     {
       id: "eu-jurisdiction",
       question: "Axion-IA peut-elle facturer en France ?",
       answer:
-        "Oui. Société européenne en libre prestation dans toute l'UE (France incluse). Facturation HT, données hébergées en UE, dans le respect du RGPD.",
+        "Oui, Axion-IA facture en France : c'est une société française (SAS). Les devis et les factures sont établis hors taxes, la TVA au taux en vigueur s'ajoutant. Les données sont hébergées dans l'Union européenne, dans le respect du RGPD. Vous recevez un devis écrit avant tout démarrage, et rien ne se paie en ligne.",
     },
     {
       id: "starting-point",
-      question: "Et si je ne sais pas par où commencer ?",
-      answer:
-        "Commencez par La Journée IA : l'audit du matin chiffre vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous 3 jours ouvrés. Le module Implémentation peut ensuite prendre le relais.",
+      question: "Que faire si je ne sais pas par où commencer avec l'IA ?",
+      answer: `Si vous ne savez pas par où commencer avec l'IA, commencez par La Journée IA : l'audit du matin repère et classe vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Le module Implémentation peut ensuite prendre le relais, sur devis écrit.`,
     },
+    ...faqItems(["ref-audit-contenu", "ref-audit-prix", "ref-audit-vs-info"]).map(
+      ({ id, question, answer }) => ({
+        id,
+        question,
+        answer,
+        ...(id === "ref-audit-prix"
+          ? { liens: [{ href: "/fr/prix-audit-ia", label: "Le détail du prix" }] }
+          : {}),
+      }),
+    ),
   ];
 }
 
@@ -96,13 +107,13 @@ function buildEnFaqs(): ReadonlyArray<AuditFaqItem> {
       id: "after",
       question: "What happens after the audit?",
       answer:
-        "You leave with a costed action plan, prioritised by phase. You deploy at your pace — with your teams or with us (Implementation module). A follow-up can be scheduled after delivery.",
+        "You leave with a costed action plan, prioritised by phase. You deploy at your pace — with your teams or with us (Implementation module).",
     },
     {
       id: "eu-jurisdiction",
       question: "Can Axion-IA invoice in France?",
       answer:
-        "Yes. A registered European company under EU free-services-provision (France included). Excl. VAT invoicing, EU-hosted data, full GDPR compliance.",
+        "Yes. Axion-IA is a French company (SAS). Quotes and invoices are issued excluding VAT, data is hosted in the EU, and GDPR applies.",
     },
     {
       id: "starting-point",
@@ -140,11 +151,11 @@ export function AuditFaq({ isFr, villeContext, villeSpecificFaqs }: AuditFaqProp
 
   const description = villeContext
     ? isFr
-      ? `Les 6 questions que tout dirigeant pose avant de réserver un audit IA, complétées de précisions pour les entreprises de ${villeContext.name}. Si la vôtre n'y est pas, écrivez-nous.`
-      : `The 6 questions every leader asks before booking, plus specifics for ${villeContext.name}-area companies. Not yours? Write us.`
+      ? `Les questions que tout dirigeant pose avant de réserver un audit IA, complétées de précisions pour les entreprises de ${villeContext.name}. Si la vôtre n'y est pas, écrivez-nous.`
+      : `The questions every leader asks before booking, plus specifics for ${villeContext.name}-area companies. Not yours? Write us.`
     : isFr
-      ? "Les 6 questions que tout dirigeant pose avant de réserver. Si la vôtre n'y est pas, écrivez-nous."
-      : "The 6 questions every leader asks before booking. Not yours? Write us.";
+      ? "Les questions que tout dirigeant pose avant de réserver. Si la vôtre n'y est pas, écrivez-nous."
+      : "The questions every leader asks before booking. Not yours? Write us.";
 
   return (
     <Section

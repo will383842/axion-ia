@@ -33,8 +33,7 @@ import {
   INTERVENTION_FORMATS,
   type InterventionFormatEntry,
 } from "@/content/interventions-taxonomy";
-import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
-import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { coachingFormulePath, coachingFormatPath } from "@/content/coaching-1to1";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 
@@ -193,19 +192,19 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
       {
         qFr: "Je n'ai jamais utilisé l'IA, c'est pour moi ?",
         qEn: "I've never used AI — is this for me?",
-        aFr: "Oui — c'est exactement le bon format. La journée est calibrée pour quelqu'un qui démarre. Pas de jargon, pas de présupposé, on part de zéro et on construit ensemble.",
+        aFr: "Oui, le coaching IA découverte est exactement le bon format si vous n'avez jamais utilisé l'IA. La journée est calibrée pour quelqu'un qui démarre : pas de jargon, pas de présupposé. Nous partons de zéro, sur vos vraies tâches, et nous construisons ensemble, pas à pas, jusqu'à ce que vous soyez à l'aise avec les premiers outils.",
         aEn: "Yes — this is exactly the right format. The day is calibrated for someone starting out. No jargon, no assumptions, we start from zero and build together.",
       },
       {
         qFr: "Vous installez sur quel matériel ?",
         qEn: "Which hardware do you install on?",
-        aFr: "Votre poste de travail habituel — Windows, macOS, Linux. On utilise vos vrais accès (boîte mail, drive, outils métier) pour que vous soyez opérationnel·le dès le lendemain matin sur les mêmes outils.",
+        aFr: "Le coaching IA se fait sur votre poste de travail habituel, que ce soit Windows, macOS ou Linux. Nous utilisons vos vrais accès (boîte mail, drive, outils métier) pour que vous soyez opérationnel·le dès le lendemain matin, sur les mêmes outils que d'habitude et sans changer votre manière de travailler.",
         aEn: "Your usual workstation — Windows, macOS, Linux. We use your real logins (inbox, drive, business tools) so you're operational the next morning on the same tools.",
       },
       {
         qFr: "Si je veux aller plus loin après la journée ?",
         qEn: "What if I want to go further after the day?",
-        aFr: "Le plan d'implémentation que vous emportez chiffre ce qui reste à faire. Vous pouvez l'exécuter en interne, ou nous le confier sur devis via le module Implémentation IA.",
+        aFr: "Après la journée de coaching IA, le plan d'implémentation que vous emportez chiffre ce qui reste à faire. Vous choisissez la suite : mettre en œuvre ce plan avec vos équipes, ou nous le confier sur devis écrit via le module Implémentation IA. Aucune suite n'est engagée sans votre accord, et le plan reste à vous dans tous les cas.",
         aEn: "The implementation plan you take with you quantifies what remains to do. You can execute it internally, or commission us via the AI Implementation module on request.",
       },
     ],
@@ -252,16 +251,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
     },
   ];
 
-  // Service JSON-LD
-  const serviceJsonLd = buildServiceJsonLd({
-    locale,
-    path: formatPathFr,
-    name: `${isFr ? config.titleFr : config.titleEn} · Axion-IA`,
-    description: isFr ? config.promiseFr : config.promiseEn,
-    serviceType: "AI coaching",
-    priceEur: 0,
-    areasServed: buildServiceAreasServed(locale),
-  });
+  // Pas de Service JSON-LD : un seul Service de coaching existe, celui de /fr/un-a-un (GEO V2-08).
 
   // FAQPage JSON-LD pour AEO (via factory centralisée seo.ts).
   const faqJsonLd =
@@ -447,7 +437,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Échange préalable de 45 minutes" : "45-minute preliminary call"}
+        title={isFr ? "Diagnostic IA de 45 minutes" : "45-minute preliminary call"}
         description={
           isFr
             ? "On vous appelle, on comprend votre contexte et votre poste, on chiffre. Devis sous 48 h ouvrées. Aucun engagement avant signature."
@@ -466,7 +456,6 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
         tone="dark"
       />
 
-      <JsonLd data={serviceJsonLd} />
       {faqJsonLd ? <JsonLd data={faqJsonLd} /> : null}
       <JsonLd data={howToJsonLd} />
     </>

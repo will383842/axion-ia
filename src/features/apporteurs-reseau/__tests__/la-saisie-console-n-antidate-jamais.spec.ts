@@ -34,6 +34,7 @@ vi.mock("@/lib/prisma", () => ({
       create: (...a: unknown[]) => h.create(...a),
       findMany: (...a: unknown[]) => h.siennes(...a),
     },
+    presentationReservation: { findMany: async () => [], create: vi.fn() },
     $transaction: async (f: (t: unknown) => unknown) =>
       f({ presentationEntreprise: { create: (...a: unknown[]) => h.create(...a) } }),
   },
@@ -87,6 +88,14 @@ describe("saisie console — doublon (même contrôle que le formulaire)", () =>
       apporteurId: SAISIE.apporteurId,
       siren: SAISIE.siret.slice(0, 9),
     });
+  });
+
+  it("🔑 point 1 : la fenêtre de 30 jours d'une réservation échue ne bloque pas le même apporteur (art. 3.2, 3.4 bis)", async () => {
+    await creerPresentation({ ...SAISIE } as never, MAINTENANT);
+    const where = h.siennes.mock.calls[0]![0].where;
+    expect(where.statut).toEqual({ in: ["reservee", "confirmee"] });
+    expect(where.OR).toBeUndefined();
+    expect(h.create).toHaveBeenCalled();
   });
 
   it("protégée et NON échue : refusée", async () => {

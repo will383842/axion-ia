@@ -11,9 +11,9 @@ export const DUNKERQUE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des TPE et PME du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
   directAnswerFr:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams intervient sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams intervient sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   seoHook: "port, métallurgie & sous-traitance",
   ecosystemFr:
     "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de TPE et PME de sous-traitance, logistique, maintenance et services.",
@@ -52,7 +52,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
+        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams intervient sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
         whyHere: [
           "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de TPE et PME de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
@@ -132,19 +132,15 @@ export const DUNKERQUE_COPY: VilleCopy = {
             a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour une PME de sous-traitance du Grand Port Maritime n'a rien à voir avec une session pour un cabinet de services ou un atelier de maintenance industrielle.",
           },
           {
-            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation. Les modalités de prise en charge dépendent de votre situation, que nous examinons ensemble.",
-          },
-          {
             q: "Sous quel délai intervenez-vous à Dunkerque et quelles communes couvrez-vous ?",
-            a: "Williams se déplace sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis, parfois plus vite selon disponibilités. Nous intervenons à Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines et dans l'ensemble de la Communauté Urbaine de Dunkerque.",
+            a: "Nous intervenons sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis, parfois plus vite selon disponibilités, ainsi qu'à Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines et dans l'ensemble de la Communauté Urbaine de Dunkerque.",
           },
         ],
         guarantees:
           "Créneau confirmé dès la validation de la réservation. En cas de problème technique de notre fait le jour de la formation, la session est reportée. Notre engagement porte sur l'opérationnel : chaque participant repart avec ses outils IA installés et configurés pour son usage réel, dans l'objectif d'une autonomie dès le lendemain. Vocabulaire et démos ajustés à votre secteur dunkerquois — portuaire, logistique, maintenance, services — sans session générique recyclée. Chaque livrable intègre une analyse RGPD et AI Act, avec contrôle des données par le client.",
       },
       en: {
-        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
+        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams intervient sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
         whyHere: [
           "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de TPE et PME de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
@@ -224,12 +220,8 @@ export const DUNKERQUE_COPY: VilleCopy = {
             a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour une PME de sous-traitance du Grand Port Maritime n'a rien à voir avec une session pour un cabinet de services ou un atelier de maintenance industrielle.",
           },
           {
-            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation. Les modalités de prise en charge dépendent de votre situation, que nous examinons ensemble.",
-          },
-          {
             q: "Sous quel délai intervenez-vous à Dunkerque et quelles communes couvrez-vous ?",
-            a: "Williams se déplace sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis, parfois plus vite selon disponibilités. Nous intervenons à Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines et dans l'ensemble de la Communauté Urbaine de Dunkerque.",
+            a: "Nous intervenons sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis, parfois plus vite selon disponibilités, ainsi qu'à Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines et dans l'ensemble de la Communauté Urbaine de Dunkerque.",
           },
         ],
         guarantees:
@@ -418,8 +410,8 @@ export const DUNKERQUE_COPY: VilleCopy = {
       a: "Nos interventions essentielles débutent à {{price:intervention-4h|flat}}, les audits sur place à {{price:audit-flash|flat}} et les sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Les tarifs publics sont consultables sur notre site.",
     },
     {
-      q: "Sous quel délai Axion-IA se déplace-t-il à Dunkerque ?",
-      a: "Williams se déplace sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis. Les missions de formation ou d'audit peuvent démarrer plus rapidement selon disponibilités.",
+      q: "Sous quel délai Axion-IA intervient-il à Dunkerque ?",
+      a: "Nous intervenons à Dunkerque sous 5 jours ouvrés en moyenne après validation du devis. Les missions de formation ou d'audit peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
       q: "Quelles communes autour de Dunkerque sont couvertes ?",

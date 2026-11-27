@@ -19,10 +19,13 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
 import { redactEmailValue, sansAdresse } from "../lib/sanitize-job-data";
 import { sendEmail, verifyTransport } from "@/lib/email/client";
-import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import * as gabarits from "@/lib/email/templates";
 import { renderEmailTemplate } from "@/lib/email/templates";
+import {
+  GABARITS_A_PHRASE_PIECES_JOINTES,
+  payloadSansAnnexesOmises,
+} from "@/lib/email/templates/_annexes-jointes";
 import {
   estJetonOpposition,
   jetonOpposition,
@@ -31,7 +34,6 @@ import {
 } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
-import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
 import { enregistrerCopieEnvoi } from "@/server/email/copie-envoi";
 import { GABARITS_A_CODE_UNIQUE } from "@/lib/email/gabarits-a-code";
@@ -147,69 +149,15 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
   return null;
 }
 
-/**
- * Plafond cumulé des pièces jointes, en octets bruts (avant encodage base64).
- * Exporté pour que la garde soit testable — une borne qu'aucun test ne lit se
- * fait relever d'un facteur dix le jour où un envoi coince.
- */
-export const TAILLE_MAX_PJ_OCTETS = 10 * 1_048_576;
-
-/**
- * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
- * FAIL-HARD (revue M8) : les templates affirment « le document est joint » —
- * envoyer sans la PJ serait un mensonge au client. PJ irrécupérable → throw
- * → retry BullMQ (backoff), puis job `failed` visible (Sentry + logs).
- */
-export async function resolveAttachments(
-  attachments: EmailJobData["attachments"],
-): Promise<SendEmailParams["attachments"]> {
-  if (!attachments || attachments.length === 0) return undefined;
-  if (!isR2Configured()) {
-    throw new Error(
-      "[email-worker] pièces jointes demandées mais R2 non configuré — envoi refusé (le template promet un document joint)",
-    );
-  }
-  const resolved: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
-  let octetsTotal = 0;
-  for (const att of attachments) {
-    const buffer = await getObjectBufferR2(att.r2Key).catch(() => null);
-    if (buffer === null) {
-      throw new Error(
-        `[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi refusé, retry BullMQ`,
-      );
-    }
-    octetsTotal += buffer.byteLength;
-    resolved.push({
-      filename: att.filename,
-      content: buffer,
-      contentType: att.contentType ?? "application/pdf",
-    });
-  }
-
-  // 🔴 Audit du 2026-08-16 — AUCUNE garde de taille n'existait.
-  //
-  // On tirait de R2 des tampons de taille arbitraire et on les confiait au
-  // relais. Le refus arrivait donc de Zoho, après transfert, sous la forme d'un
-  // rejet SMTP opaque — puis cinq fois de suite, le temps que BullMQ épuise ses
-  // tentatives à repousser les mêmes mégaoctets.
-  //
-  // Le seuil porte sur les octets BRUTS alors que le plafond des relais porte
-  // sur le message encodé : le base64 gonfle d'environ un tiers, et s'ajoutent
-  // le corps HTML et les en-têtes. 10 Mo bruts ≈ 13,7 Mo transmis, ce qui reste
-  // sous les plafonds usuels (~15 Mo ZeptoMail, ~20 Mo Zoho Mail) avec de la
-  // marge. Repère : le catalogue imprimable, la plus grosse PJ du dépôt, pèse
-  // 7,8 Mo — rien d'existant ne bute sur ce seuil aujourd'hui.
-  if (octetsTotal > TAILLE_MAX_PJ_OCTETS) {
-    const mo = (n: number): string => (n / 1_048_576).toFixed(1);
-    throw new Error(
-      `[email-worker] pièces jointes trop lourdes : ${mo(octetsTotal)} Mo bruts pour ` +
-        `${resolved.length} fichier(s), plafond ${mo(TAILLE_MAX_PJ_OCTETS)} Mo. Le relais ` +
-        `rejetterait le message après transfert — on refuse ici, avec un motif lisible. ` +
-        `Alléger le document ou le remplacer par un lien de téléchargement.`,
-    );
-  }
-  return resolved;
-}
+import { notePiecesFacultatives, resoudrePiecesJointes } from "@/server/email/pieces-jointes";
+// Pièces jointes : extraites dans `@/server/email/pieces-jointes` (partagées avec l'aperçu de la console).
+export {
+  TAILLE_MAX_PJ_OCTETS,
+  notePiecesFacultatives,
+  resolveAttachments,
+  resoudrePiecesJointes,
+} from "@/server/email/pieces-jointes";
+export type { PieceOmise, PiecesResolues } from "@/server/email/pieces-jointes";
 
 /**
  * STOP-T1b — le guide a-t-il DÉJÀ été servi par un autre job, parti APRÈS la mise en file de
@@ -449,15 +397,27 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       if (retenu) return;
 
       try {
+        // Pièces résolues AVANT le rendu : la phrase « pièces jointes » de certains gabarits ne
+        // cite que les annexes réellement parties (une facultative omise au GET n'est pas promise).
+        const payloadRendu = payloadPourRendu(template, payload);
+        const resolues = await resoudrePiecesJointes(job.data.attachments);
+        const payloadDuRendu = GABARITS_A_PHRASE_PIECES_JOINTES.has(template)
+          ? payloadSansAnnexesOmises(
+              payloadRendu,
+              resolues.omises.map((o) => o.filename),
+            )
+          : payloadRendu;
         const {
           subject: subjectRendu,
           html,
           text,
           famille,
-        } = await renderEmailTemplate(template, locale, payloadPourRendu(template, payload), {
+        } = await renderEmailTemplate(template, locale, payloadDuRendu, {
           destinataire: to,
         });
-        const attachments = await resolveAttachments(job.data.attachments);
+        const attachments = resolues.pieces.length > 0 ? resolues.pieces : undefined;
+        const notePieces = notePiecesFacultatives(resolues);
+        const noteCloture = [noteRepli, notePieces].filter(Boolean).join(" ");
         // Lot 2 : l'objet forcé depuis la corbeille prime sur celui du gabarit.
         const subject = job.data.sujet?.trim() ? job.data.sujet.trim() : subjectRendu;
         // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
@@ -514,8 +474,9 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           status: EmailLogStatus.sent,
           providerMessageId: result.messageId,
           sentAt: new Date(),
-          // Seul champ de trace écrit à la clôture : on y note le repli (sinon rien, inchangé).
-          ...(noteRepli ? { error: noteRepli } : {}),
+          // Seul champ de trace écrit à la clôture : on y note le repli et les pièces
+          // facultatives, jointes (empreinte) ou non (sinon rien, inchangé).
+          ...(noteCloture ? { error: noteCloture } : {}),
           ...(entityType ? { entityType } : {}),
           ...(entityId ? { entityId } : {}),
           ...(jobId ? { jobId } : {}),
@@ -532,7 +493,10 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
             subject,
             html,
             text,
-            attachmentNames: job.data.attachments?.map((a) => a.filename),
+            // Les pièces RÉELLEMENT parties : une facultative omise n'y figure pas.
+            attachmentNames: job.data.attachments
+              ? resolues.pieces.map((a) => a.filename)
+              : undefined,
             // S6b : seul un e-mail à code à usage unique transmet son gabarit (code masqué).
             ...(GABARITS_A_CODE_UNIQUE.has(template)
               ? { template, codeAMasquer: codeDuPayload(template, payload) }

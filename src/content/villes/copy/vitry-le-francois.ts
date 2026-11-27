@@ -49,7 +49,7 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vitry-le-François et dans le sud de la Marne ?",
-      a: "Oui, Axion-IA intervient à Vitry-le-François et dans le sud de la Marne (Saint-Dizier, Châlons-en-Champagne, Thiéblemont-Farémont). Gare SNCF Vitry-le-François desservie par TER Champagne-Ardenne.",
+      a: "Oui, Axion-IA intervient à Vitry-le-François et dans le sud de la Marne (Saint-Dizier, Châlons-en-Champagne, Thiéblemont-Farémont).",
     },
     {
       q: "Tarifs audit IA à Vitry-le-François  : quel budget prévoir ?",

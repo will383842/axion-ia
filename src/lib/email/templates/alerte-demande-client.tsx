@@ -46,6 +46,7 @@ export const alerteDemandeClientSubject = (
   payload: Record<string, unknown>,
 ): string => {
   const p = payload as Payload;
+  if (texte(p.canal) === "reclamation") return "🔴 IMPORTANT DEMANDE CLIENT RÉCLAMATION";
   if (texte(p.canal) !== "calendly")
     return `🔴 IMPORTANT DEMANDE CLIENT MESSAGE${suffixeType(p.libelleType)}`;
   const e = texte(p.evenement);

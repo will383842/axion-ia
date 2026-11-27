@@ -49,7 +49,7 @@ export const RUNGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rungis et au MIN ?",
-      a: "Oui, Axion-IA intervient à Rungis et dans l'enceinte du Marché international (MIN). Orly à 5 min, Créteil à 15 min, Paris-Denfert à 20 min via RER B.",
+      a: "Oui, Axion-IA intervient à Rungis et dans l'enceinte du Marché international (MIN).",
     },
     {
       q: "Travaillez-vous avec les grossistes alimentaires du MIN ?",
@@ -65,7 +65,7 @@ export const RUNGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rungis ?",
-      a: "Paris-Denfert-Rochereau (20 min RER B, gare Pont de Rungis). Aéroport Orly à 5 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Rungis, comme partout en France, ou à distance.",
     },
   ],
 };

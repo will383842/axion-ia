@@ -15,6 +15,10 @@
  *                 « Marquer refusé »  → declineDevisAction
  *                 « Corriger et renvoyer » (classique, non signé par le client) →
  *                 reviseDevisAction après confirmation, puis écran /corriger.
+ *   - expire    : version suivante émise : note « remplacé » ; signé par le client : note
+ *                 « contresignez » ; sinon « Prolonger la validité… », « Corriger et renvoyer »
+ *                 (classique), « Marquer accepté » (classique, après confirmation d'un devis
+ *                 expiré) et « Marquer refusé ».
  *   - autres    : aucun bouton (terminal).
  *
  * router.refresh() après chaque succès.
@@ -34,6 +38,8 @@ import {
 import { marquerRemisEnMainPropreAction } from "@/server/actions/qualiopi/devis-remis-main-propre";
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 import { envoyerDevisEmailAction } from "@/server/actions/qualiopi/facturation-emails";
+import { prolongerValiditeDevisAction } from "@/server/actions/qualiopi/devis-prolonger-validite";
+import { formatDateParis } from "@/components/admin/qualiopi/devis-validite";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -55,6 +61,10 @@ export interface DevisLifecycleButtonsProps {
   destinataire?: string | null;
   /** Le client a déjà signé : « Corriger et renvoyer » n'est plus proposé. */
   clientASigne?: boolean;
+  /** Un e-mail d'envoi de ce devis attend validation (ou part) : aucun lien n'existe encore. */
+  emailEnAttente?: boolean;
+  /** Page des e-mails à valider de la console (le préfixe d'administration vient du serveur). */
+  emailsHref?: string;
   /** Le client a signé (non révoquée, pièce non annulée) et l'organisme pas encore : il ne reste qu'à contresigner. */
   signeParClient?: boolean;
   /** Les deux parties ont signé mais le statut est encore « envoyé » : l'acceptation est à finir. */
@@ -65,6 +75,64 @@ export interface DevisLifecycleButtonsProps {
    * (`acceptDevisAction` refuserait de toute façon).
    */
   repriseParRelance?: boolean;
+  /**
+   * Devis remis en main propre : aucun e-mail n'est parti et aucun lien n'existe. Le renvoi par
+   * e-mail et son avertissement sont masqués (le serveur le refuse aussi).
+   */
+  remisEnMainPropre?: boolean;
+  /** L'utilisateur peut conclure un devis (`conclure_devis`) : sans cela, ni « Marquer accepté » ni « Transformer ». */
+  peutConclure?: boolean;
+  /** L'utilisateur peut écrire dans la console : sans cela, aucun bouton d'écriture n'est rendu. */
+  peutEcrire?: boolean;
+  /** Date de validité actuelle (ISO). Absente : « Prolonger la validité… » n'est pas proposé. */
+  dateValiditeIso?: string;
+  /** Une version plus récente de ce devis a été émise : elle seule se prolonge. */
+  successeurEmis?: boolean;
+  /** Ancien classique avec estimation d'un tiers liée à sa date : la date ne se change pas ici. */
+  estimationTiersFigee?: boolean;
+}
+
+const JOUR_MS = 86_400_000;
+
+/** Jour civil de Paris décalé de `jours`, au format `AAAA-MM-JJ` (valeur d'un champ date). */
+function jourParisIso(jours: number): string {
+  const p = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  const [y, mo, d] = p.split("-").map(Number) as [number, number, number];
+  return new Date(Date.UTC(y, mo - 1, d) + jours * JOUR_MS).toISOString().slice(0, 10);
+}
+
+/**
+ * Plus petite date proposée : le plus tard entre demain et le lendemain de la validité actuelle
+ * (le serveur refuse une date non postérieure à l'actuelle). Les dates `AAAA-MM-JJ` se comparent
+ * comme des chaînes.
+ */
+function minNouvelleDate(dateValiditeIso: string | undefined): string {
+  const demain = jourParisIso(1);
+  if (!dateValiditeIso) return demain;
+  const actuelle = new Date(dateValiditeIso);
+  if (Number.isNaN(actuelle.getTime())) return demain;
+  const [y, mo, d] = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })
+    .format(actuelle)
+    .split("-")
+    .map(Number) as [number, number, number];
+  const lendemain = new Date(Date.UTC(y, mo - 1, d) + JOUR_MS).toISOString().slice(0, 10);
+  return lendemain > demain ? lendemain : demain;
+}
+
+/** `AAAA-MM-JJ` → `JJ/MM/AAAA`. */
+function jourLisible(iso: string): string {
+  const [y, mo, d] = iso.split("-");
+  return `${d}/${mo}/${y}`;
 }
 
 type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -87,9 +155,17 @@ export function DevisLifecycleButtons({
   montantHtLabel,
   destinataire = null,
   clientASigne = false,
+  emailEnAttente = false,
+  emailsHref = "../../emails",
   signeParClient = false,
   signeDesDeuxParties = false,
   repriseParRelance = false,
+  remisEnMainPropre = false,
+  peutConclure = true,
+  peutEcrire = true,
+  dateValiditeIso,
+  successeurEmis = false,
+  estimationTiersFigee = false,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -109,6 +185,20 @@ export function DevisLifecycleButtons({
   // `useConfirmation` ne propose pas de choix DANS le dialogue : le motif se choisit ici,
   // à côté du bouton, puis la confirmation est simple.
   const [motifRemise, setMotifRemise] = useState<MotifRemise>("sans_email");
+
+  const [prolongerOuvert, setProlongerOuvert] = useState(false);
+  const [nouvelleDate, setNouvelleDate] = useState("");
+  const peutProlonger =
+    peutEcrire &&
+    peutConclure &&
+    (statut === "envoye" || statut === "expire") &&
+    dateValiditeIso !== undefined &&
+    !clientASigne &&
+    !signeParClient &&
+    !signeDesDeuxParties &&
+    !repriseParRelance &&
+    !successeurEmis &&
+    !estimationTiersFigee;
 
   function resetMessages() {
     setError(null);
@@ -139,7 +229,7 @@ export function DevisLifecycleButtons({
           if (result.data.garePourValidation === true) {
             setWarningMsg(
               result.data.note ??
-                "Devis marqué envoyé. L'e-mail attend votre validation dans Emails → À valider.",
+                "L'e-mail attend votre validation dans Emails, À valider. Le devis reste en brouillon et aucun lien de signature n'existe tant que l'e-mail n'est pas parti.",
             );
           } else {
             setSuccessMsg("Devis envoyé au client par email (PDF joint + lien de signature).");
@@ -200,6 +290,39 @@ export function DevisLifecycleButtons({
     );
   }
 
+  function handleProlonger() {
+    if (!dateValiditeIso || nouvelleDate === "") return;
+    const nouvelle = jourLisible(nouvelleDate);
+    const ancienne = formatDateParis(new Date(dateValiditeIso));
+    const expire = statut === "expire";
+    demander(
+      {
+        titre: `Prolonger la validité du devis${numero ? ` ${numero}` : ""} ?`,
+        description: `La validité passe du ${ancienne} au ${nouvelle}. Le PDF n'est pas modifié. Le lien de signature déjà reçu par le client garde son ancienne échéance : renvoyez ensuite le devis par e-mail pour lui donner un lien valable.${expire ? " Le devis redevient « envoyé »." : ""}`,
+        libelleConfirmer: "Prolonger",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await prolongerValiditeDevisAction({ devisId, nouvelleDate });
+          if ("error" in result) {
+            setError(result.error);
+            return;
+          }
+          const lisible = result.data.nouvelleDateLisible;
+          setSuccessMsg(
+            remisEnMainPropre
+              ? `Validité prolongée jusqu'au ${lisible}. Ce devis a été remis en main propre : prévenez le client de la nouvelle date.`
+              : `Validité prolongée jusqu'au ${lisible}. Le client n'est pas prévenu : cliquez sur « Renvoyer par email » pour lui envoyer un nouveau lien (selon vos réglages, l'e-mail attendra votre validation dans Emails → À valider).`,
+          );
+          setProlongerOuvert(false);
+          setNouvelleDate("");
+          router.refresh();
+        });
+      },
+    );
+  }
+
   function handleResend() {
     resetMessages();
     startTransition(async () => {
@@ -220,29 +343,72 @@ export function DevisLifecycleButtons({
   }
 
   function handleAccept() {
-    resetMessages();
-    startTransition(async () => {
-      const result = await acceptDevisAction(devisId);
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setSuccessMsg("Devis accepté.");
-        router.refresh();
-      }
-    });
+    demander(
+      {
+        titre: `Marquer le devis${numero ? ` ${numero}` : ""} accepté ?`,
+        description:
+          "À faire seulement si le client a signé le devis papier ou donné son accord écrit. La fiche passe client et la suite est lancée.",
+        libelleConfirmer: "Marquer accepté",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await acceptDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg("Devis accepté.");
+            router.refresh();
+          }
+        });
+      },
+    );
+  }
+
+  function handleAcceptExpire() {
+    const depassee = dateValiditeIso ? formatDateParis(new Date(dateValiditeIso)) : "";
+    demander(
+      {
+        titre: "Marquer accepté un devis expiré ?",
+        description: `La date de validité de ce devis (${depassee}) est dépassée. Le marquer accepté vaut accord aux conditions du PDF d'origine, prix compris. Ne le faites que si le client vous a donné son accord.`,
+        libelleConfirmer: "Marquer accepté",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await acceptDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg("Devis accepté.");
+            router.refresh();
+          }
+        });
+      },
+    );
   }
 
   function handleDecline() {
-    resetMessages();
-    startTransition(async () => {
-      const result = await declineDevisAction(devisId);
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setSuccessMsg("Devis refusé.");
-        router.refresh();
-      }
-    });
+    demander(
+      {
+        titre: `Marquer le devis${numero ? ` ${numero}` : ""} refusé ?`,
+        description: "Le lien de signature envoyé au client est désactivé immédiatement.",
+        libelleConfirmer: "Marquer refusé",
+        destructif: true,
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await declineDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg("Devis refusé.");
+            router.refresh();
+          }
+        });
+      },
+    );
   }
 
   function handleTransform() {
@@ -259,7 +425,12 @@ export function DevisLifecycleButtons({
   }
 
   // Statuts terminaux : aucune action disponible (sauf accepté → transformer)
-  if (statut !== "brouillon" && statut !== "envoye" && statut !== "accepte") {
+  if (
+    statut !== "brouillon" &&
+    statut !== "envoye" &&
+    statut !== "accepte" &&
+    statut !== "expire"
+  ) {
     return (
       <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         Aucune action disponible pour ce statut.
@@ -271,16 +442,30 @@ export function DevisLifecycleButtons({
     <div className="flex flex-col gap-[var(--space-admin-3)]">
       {dialogue}
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
-        {statut === "brouillon" && !(estClassique && !destinataire) && (
-          <button
-            type="button"
-            onClick={handleSend}
-            disabled={isPending}
-            className="admin-button"
-            aria-label="Marquer le devis comme envoyé au client"
+        {peutEcrire &&
+          statut === "brouillon" &&
+          !(estClassique && !destinataire) &&
+          !emailEnAttente && (
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={isPending}
+              className="admin-button"
+              aria-label="Marquer le devis comme envoyé au client"
+            >
+              {isPending ? "…" : "Envoyer au client"}
+            </button>
+          )}
+        {statut === "brouillon" && emailEnAttente && (
+          <p
+            data-testid="email-en-attente"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
           >
-            {isPending ? "…" : "Envoyer au client"}
-          </button>
+            E-mail en attente de validation : aucun lien de signature n&apos;existe encore.{" "}
+            <a href={emailsHref} className="admin-link">
+              Ouvrir les e-mails à valider
+            </a>
+          </p>
         )}
         {statut === "brouillon" && estClassique && !destinataire && (
           <p
@@ -291,7 +476,7 @@ export function DevisLifecycleButtons({
           </p>
         )}
 
-        {statut === "brouillon" && estClassique && (
+        {peutEcrire && statut === "brouillon" && estClassique && (
           <>
             <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
               <span>Motif</span>
@@ -332,7 +517,7 @@ export function DevisLifecycleButtons({
           </a>
         )}
 
-        {statut === "envoye" && estClassique && !clientASigne && (
+        {peutEcrire && statut === "envoye" && estClassique && !clientASigne && (
           <button
             type="button"
             onClick={handleCorriger}
@@ -343,6 +528,62 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Corriger et renvoyer"}
           </button>
         )}
+        {statut === "expire" && successeurEmis && (
+          <p
+            data-testid="note-expire-remplace"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Ce devis a été remplacé par une version plus récente.
+          </p>
+        )}
+        {statut === "expire" && !successeurEmis && signeParClient && (
+          <p
+            data-testid="note-signe-par-client"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Le client a signé ce devis. Contresignez-le dans le bloc « Signature électronique »
+            ci-dessus pour le conclure.
+          </p>
+        )}
+        {peutEcrire &&
+          statut === "expire" &&
+          !successeurEmis &&
+          !signeParClient &&
+          !clientASigne && (
+            <>
+              {estClassique && (
+                <button
+                  type="button"
+                  onClick={handleCorriger}
+                  disabled={isPending}
+                  className="admin-button-secondary"
+                  aria-label="Créer une nouvelle version en brouillon de ce devis pour la corriger et la renvoyer"
+                >
+                  {isPending ? "…" : "Corriger et renvoyer"}
+                </button>
+              )}
+              {peutConclure && estClassique && (
+                <button
+                  type="button"
+                  onClick={handleAcceptExpire}
+                  disabled={isPending}
+                  className="admin-button"
+                  aria-label="Marquer le devis expiré comme accepté"
+                >
+                  {isPending ? "…" : "Marquer accepté"}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleDecline}
+                disabled={isPending}
+                className="admin-button-danger"
+                aria-label="Marquer le devis comme refusé"
+              >
+                {isPending ? "…" : "Marquer refusé"}
+              </button>
+            </>
+          )}
         {statut === "envoye" && signeParClient && (
           <p
             data-testid="note-signe-par-client"
@@ -352,26 +593,46 @@ export function DevisLifecycleButtons({
             ci-dessus pour le conclure.
           </p>
         )}
-        {statut === "envoye" && signeDesDeuxParties && (
-          <p
-            data-testid="note-signe-des-deux-parties"
-            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
-          >
-            Ce devis est signé des deux parties, mais son acceptation n&apos;a pas été enregistrée.
-            Cliquez sur « Marquer accepté » pour la finir.
-          </p>
-        )}
-        {statut === "envoye" && !signeParClient && !repriseParRelance && (
-          <>
+        {peutEcrire &&
+          peutConclure &&
+          statut === "expire" &&
+          !successeurEmis &&
+          signeDesDeuxParties &&
+          !repriseParRelance && (
             <button
               type="button"
-              onClick={handleAccept}
+              onClick={handleAcceptExpire}
               disabled={isPending}
               className="admin-button"
-              aria-label="Marquer le devis comme accepté"
+              aria-label="Marquer le devis expiré comme accepté"
             >
               {isPending ? "…" : "Marquer accepté"}
             </button>
+          )}
+        {peutConclure &&
+          (statut === "envoye" || (statut === "expire" && !successeurEmis && !repriseParRelance)) &&
+          signeDesDeuxParties && (
+            <p
+              data-testid="note-signe-des-deux-parties"
+              className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+            >
+              Ce devis est signé des deux parties, mais son acceptation n&apos;a pas été
+              enregistrée. Cliquez sur « Marquer accepté » pour la finir.
+            </p>
+          )}
+        {peutEcrire && statut === "envoye" && !signeParClient && !repriseParRelance && (
+          <>
+            {peutConclure && (
+              <button
+                type="button"
+                onClick={handleAccept}
+                disabled={isPending}
+                className="admin-button"
+                aria-label="Marquer le devis comme accepté"
+              >
+                {isPending ? "…" : "Marquer accepté"}
+              </button>
+            )}
             {!signeDesDeuxParties && (
               <button
                 type="button"
@@ -386,29 +647,81 @@ export function DevisLifecycleButtons({
           </>
         )}
 
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
+        {peutProlonger && !prolongerOuvert && (
           <button
             type="button"
-            onClick={handleResend}
+            onClick={() => setProlongerOuvert(true)}
             disabled={isPending}
-            className="admin-button"
-            aria-label="Renvoyer le devis au client par email (PDF joint)"
+            className="admin-button-secondary"
+            aria-label="Prolonger la validité du devis"
           >
-            {isPending ? "…" : "Renvoyer par email"}
+            Prolonger la validité…
           </button>
         )}
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
-          <p
-            data-testid="avertissement-renvoi-lien"
-            className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+        {peutProlonger && prolongerOuvert && (
+          <div
+            data-testid="zone-prolonger"
+            className="flex basis-full flex-wrap items-end gap-[var(--space-admin-3)]"
           >
-            Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
-            l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé, le
-            client n&apos;a plus de lien valable.
-          </p>
+            <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+              <span>Nouvelle date de validité</span>
+              <input
+                type="date"
+                name="nouvelleDate"
+                value={nouvelleDate}
+                min={minNouvelleDate(dateValiditeIso)}
+                max={jourParisIso(90)}
+                onChange={(e) => setNouvelleDate(e.target.value)}
+                disabled={isPending}
+                className="admin-input"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={handleProlonger}
+              disabled={isPending || nouvelleDate === ""}
+              className="admin-button"
+            >
+              {isPending ? "…" : "Prolonger"}
+            </button>
+            <p className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Le PDF déjà envoyé n&apos;est pas modifié : il garde sa date d&apos;origine.
+            </p>
+          </div>
         )}
+        {peutEcrire &&
+          statut === "envoye" &&
+          !signeParClient &&
+          !signeDesDeuxParties &&
+          !repriseParRelance &&
+          !remisEnMainPropre && (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={isPending}
+              className="admin-button"
+              aria-label="Renvoyer le devis au client par email (PDF joint)"
+            >
+              {isPending ? "…" : "Renvoyer par email"}
+            </button>
+          )}
+        {peutEcrire &&
+          statut === "envoye" &&
+          !signeParClient &&
+          !signeDesDeuxParties &&
+          !repriseParRelance &&
+          !remisEnMainPropre && (
+            <p
+              data-testid="avertissement-renvoi-lien"
+              className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+            >
+              Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
+              l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé,
+              le client n&apos;a plus de lien valable.
+            </p>
+          )}
 
-        {statut === "accepte" && (
+        {peutEcrire && peutConclure && statut === "accepte" && (
           <button
             type="button"
             onClick={handleTransform}

@@ -49,7 +49,7 @@ export const ROGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rognac et étang de Berre nord ?",
-      a: "Oui, Axion-IA intervient à Rognac et sur tout le nord de l'étang de Berre (Berre-l'Étang à 5 min, Vitrolles à 5 min, Velaux à 10 min). Couverture complète zone aéroportuaire.",
+      a: "Oui, Axion-IA intervient à Rognac et sur tout le nord de l'étang de Berre (Berre-l'Étang, Vitrolles, Velaux). Couverture complète zone aéroportuaire.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Rognac ?",

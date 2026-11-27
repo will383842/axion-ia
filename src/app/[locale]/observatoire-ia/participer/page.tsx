@@ -94,10 +94,10 @@ export default async function ParticiperPage({ params }: Props) {
   const reassurance = [
     {
       icon: ShieldCheck,
-      title: isFr ? "100 % anonyme" : "100% anonymous",
+      title: isFr ? "Sans nom ni e-mail" : "No name, no email",
       body: isFr
-        ? "Aucune donnée personnelle collectée. Réponses agrégées, conformes RGPD."
-        : "No personal data collected. Aggregated, GDPR-compliant responses.",
+        ? "Ni votre nom, ni votre e-mail ne sont demandés. Seules des statistiques d'ensemble sont publiées."
+        : "Neither your name nor your email is asked for. Only aggregate statistics are published.",
     },
     {
       icon: Clock,
@@ -180,8 +180,8 @@ export default async function ParticiperPage({ params }: Props) {
         <div className="max-w-3xl space-y-4">
           <p className="text-fg-soft text-lg leading-relaxed" data-answer="">
             {isFr
-              ? `En répondant à « ${studyName} », vous contribuez au premier panorama indépendant et ouvert de l'adoption de l'IA par les entreprises françaises. Vos réponses, strictement anonymes, nourrissent des statistiques publiques par secteur, région et taille d'entreprise.`
-              : `By answering "${studyName}", you contribute to the first independent, open snapshot of AI adoption among French companies. Your strictly anonymous answers feed public statistics by sector, region and company size.`}
+              ? `En répondant à « ${studyName} », vous contribuez au premier panorama indépendant et ouvert de l'adoption de l'IA par les entreprises françaises. Vos réponses, sans nom ni e-mail, nourrissent des statistiques publiques par secteur, région et taille d'entreprise.`
+              : `By answering "${studyName}", you contribute to the first independent, open snapshot of AI adoption among French companies. Your answers, without name or email, feed public statistics by sector, region and company size.`}
           </p>
           <p className="text-fg-soft leading-relaxed">
             {isFr

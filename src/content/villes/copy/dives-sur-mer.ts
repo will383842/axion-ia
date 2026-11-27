@@ -65,7 +65,7 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dives-sur-Mer ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible sur la Côte Fleurie.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Dives-sur-Mer, comme partout en France, ou à distance.",
     },
   ],
 };

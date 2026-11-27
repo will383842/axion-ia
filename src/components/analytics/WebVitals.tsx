@@ -4,9 +4,12 @@
 
 import { useEffect } from "react";
 import { useReportWebVitals } from "next/web-vitals";
-import { onINP } from "web-vitals/attribution";
 import { usePathname } from "next/navigation";
-import { urlEstConsoleAdmin, urlPorteUnSecret } from "@/lib/analytics/routes-privees";
+import {
+  urlEstConsoleAdmin,
+  urlPorteUnSecret,
+  urlSansMesureDePerformance,
+} from "@/lib/analytics/routes-privees";
 import { useLocale } from "next-intl";
 
 const VITALS_ENDPOINT = "/api/vitals";
@@ -284,7 +287,11 @@ export function WebVitals() {
   // `data/vitals/*.ndjson` ET dans la table `WebVitalSample` — deux stockages
   // qu'aucune purge RGPD ne visite. Sur le portail, ce serait le jeton
   // d'émargement archivé en clair, côté serveur, sans date de péremption.
-  const adminRoute = isAdminRoute(pathname) || urlPorteUnSecret(pathname);
+  const adminRoute =
+    isAdminRoute(pathname) ||
+    urlPorteUnSecret(pathname) ||
+    // Score IA TPE-PME : aucune balise avant la case de l'Observatoire (cf. routes-privees.ts).
+    urlSansMesureDePerformance(pathname);
 
   // P1-21 (audit re-run 2026-05-15) — INP attribution Chrome 124+.
   // `useReportWebVitals` ne supporte pas la prop `attribution` ; on appelle
@@ -296,61 +303,76 @@ export function WebVitals() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (adminRoute) return; // skip admin
-    onINP(
-      (metric) => {
-        const nav = navigator as NavigatorWithExtras;
-        const attribution = metric.attribution ?? {};
-        const interactionTarget =
-          (attribution as { interactionTarget?: string }).interactionTarget ?? null;
-        const interactionType =
-          (attribution as { interactionType?: string }).interactionType ?? null;
-        const ua =
-          typeof navigator.userAgent === "string" ? navigator.userAgent.slice(0, 200) : null;
-        const payload: VitalsPayload = {
-          id: metric.id,
-          name: "INP-attribution",
-          value: metric.value,
-          rating: metric.rating,
-          delta: metric.delta,
-          navigationType: metric.navigationType,
-          href: window.location.href,
-          route: pathname ?? "",
-          locale,
-          effectiveType: nav.connection?.effectiveType ?? null,
-          deviceMemory: nav.deviceMemory ?? null,
-          // P2-30 — enrichissement client.
-          deviceType: detectDeviceType(),
-          userAgent: ua,
-          sessionId: getOrCreateSessionId(),
-          pageType: inferPageType(pathname ?? ""),
-        };
-        // Ajoute interactionTarget/Type comme suffix dans `id` pour
-        // que /api/vitals route handler les capte sans changer le contrat.
-        if (interactionTarget) {
-          payload.id = `${payload.id}|target=${interactionTarget.slice(0, 60)}`;
-        }
-        if (interactionType) {
-          payload.id = `${payload.id}|type=${interactionType}`;
-        }
-        const body = JSON.stringify(payload);
-        try {
-          if (typeof navigator.sendBeacon === "function") {
-            const blob = new Blob([body], { type: "application/json" });
-            navigator.sendBeacon(VITALS_ENDPOINT, blob);
-          } else {
-            void fetch(VITALS_ENDPOINT, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body,
-              keepalive: true,
-            });
-          }
-        } catch {
-          // Swallow
-        }
-      },
-      { reportAllChanges: false },
-    );
+    // Perf (lot 1 socle [locale]) : `web-vitals/attribution` est chargé après
+    // le montage (import dynamique) au lieu de peser dans le First Load JS.
+    // `annule` évite d'enregistrer l'observateur d'un effet déjà nettoyé
+    // (navigation avant la fin du chargement) : le dernier effet enregistre.
+    let annule = false;
+    void import("web-vitals/attribution")
+      .then(({ onINP }) => {
+        if (annule) return;
+        onINP(
+          (metric) => {
+            const nav = navigator as NavigatorWithExtras;
+            const attribution = metric.attribution ?? {};
+            const interactionTarget =
+              (attribution as { interactionTarget?: string }).interactionTarget ?? null;
+            const interactionType =
+              (attribution as { interactionType?: string }).interactionType ?? null;
+            const ua =
+              typeof navigator.userAgent === "string" ? navigator.userAgent.slice(0, 200) : null;
+            const payload: VitalsPayload = {
+              id: metric.id,
+              name: "INP-attribution",
+              value: metric.value,
+              rating: metric.rating,
+              delta: metric.delta,
+              navigationType: metric.navigationType,
+              href: window.location.href,
+              route: pathname ?? "",
+              locale,
+              effectiveType: nav.connection?.effectiveType ?? null,
+              deviceMemory: nav.deviceMemory ?? null,
+              // P2-30 — enrichissement client.
+              deviceType: detectDeviceType(),
+              userAgent: ua,
+              sessionId: getOrCreateSessionId(),
+              pageType: inferPageType(pathname ?? ""),
+            };
+            // Ajoute interactionTarget/Type comme suffix dans `id` pour
+            // que /api/vitals route handler les capte sans changer le contrat.
+            if (interactionTarget) {
+              payload.id = `${payload.id}|target=${interactionTarget.slice(0, 60)}`;
+            }
+            if (interactionType) {
+              payload.id = `${payload.id}|type=${interactionType}`;
+            }
+            const body = JSON.stringify(payload);
+            try {
+              if (typeof navigator.sendBeacon === "function") {
+                const blob = new Blob([body], { type: "application/json" });
+                navigator.sendBeacon(VITALS_ENDPOINT, blob);
+              } else {
+                void fetch(VITALS_ENDPOINT, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body,
+                  keepalive: true,
+                });
+              }
+            } catch {
+              // Swallow
+            }
+          },
+          { reportAllChanges: false },
+        );
+      })
+      .catch(() => {
+        // Swallow — analytics ne doit jamais affecter l'UX (chunk bloqué/hors ligne).
+      });
+    return () => {
+      annule = true;
+    };
   }, [pathname, locale, adminRoute]);
 
   // P1-20 — LoAF + Long Tasks observation post-mount.

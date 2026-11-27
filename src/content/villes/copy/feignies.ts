@@ -65,7 +65,7 @@ export const FEIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission transfrontalière à Feignies ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mons (Belgique) à 20 min, Charleroi à 45 min. Expertise transfrontalière FR/BE incluse.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Expertise transfrontalière FR/BE incluse.",
     },
   ],
 };

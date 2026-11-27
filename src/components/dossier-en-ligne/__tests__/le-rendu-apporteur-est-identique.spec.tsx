@@ -3,7 +3,12 @@
 // les rendus de référence ont été figés sur `main` avant l'extraction.
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
+// `useParams` vide : hors d'un espace personnel, la coquille ne rend pas le lien « Besoin
+// d'aide ? » — le rendu de référence reste donc identique (le lien a son test : `aide.spec.tsx`).
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: vi.fn() }),
+  useParams: () => ({}),
+}));
 vi.mock("@/app/apporteur/dossier/[id]/[jeton]/actions", () => ({ deposerPieceAction: vi.fn() }));
 vi.mock("@/app/apporteur/dossier/retrouver/actions", () => ({ demanderLienEspace: vi.fn() }));
 

@@ -37,6 +37,10 @@ vi.mock("../presentations", () => ({
   presentationOccupe: (p: { statut: string }) =>
     p.statut === "reservee" || p.statut === "confirmee",
 }));
+vi.mock("../reservation-presentation", () => ({
+  lireReservations: async () => new Map(),
+  lireIdsEnGrace: async () => [],
+}));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),
@@ -123,6 +127,16 @@ describe("declarerEntreprise", () => {
       message: MESSAGE_DEJA,
     });
     expect(creerPresentation).not.toHaveBeenCalled();
+  });
+
+  it("🔑 point 1 : la fenêtre de 30 jours d'une réservation échue ne bloque pas l'apporteur lui-même (art. 3.2, 3.4 bis)", async () => {
+    // La requête « siennes » ne lit que reservee/confirmee : une `terminee` en grâce n'y figure pas.
+    await declarerEntreprise(ID, BONNE, MAINTENANT);
+    const where = findMany.mock.calls[0]![0].where;
+    expect(where.apporteurId).toBe(ID);
+    expect(where.statut).toEqual({ in: ["reservee", "confirmee"] });
+    expect(where.OR).toBeUndefined();
+    expect(creerPresentation).toHaveBeenCalled();
   });
 
   it("une entreprise attribuée à un autre apporteur est reçue sans rien révéler", async () => {

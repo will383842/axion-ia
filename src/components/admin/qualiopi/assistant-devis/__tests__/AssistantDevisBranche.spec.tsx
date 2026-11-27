@@ -11,6 +11,7 @@ const A = vi.hoisted(() => ({
   numeroter: vi.fn(),
   envoyer: vi.fn(),
   apercu: vi.fn(),
+  apercuEmail: vi.fn(),
   sources: vi.fn(),
 }));
 
@@ -26,16 +27,20 @@ vi.mock("@/server/actions/qualiopi/devis-assistant-finaliser", () => ({
 vi.mock("@/server/actions/qualiopi/devis-assistant-apercu", () => ({
   apercuAssistantAction: A.apercu,
 }));
+vi.mock("@/server/actions/qualiopi/devis-assistant-apercu-email", () => ({
+  apercuEmailDevisAction: A.apercuEmail,
+}));
 vi.mock("@/server/actions/qualiopi/devis-assistant-sources", () => ({
   listerSourcesPourQuiAction: A.sources,
 }));
 
+import { adminPath } from "@/lib/admin-path";
 import { calculerApercu } from "@/server/qualiopi/devis/assistant/apercu";
 import { lirePayload } from "@/server/qualiopi/devis/assistant/payload";
 
 import { AssistantDevisBranche } from "../AssistantDevisBranche";
 import type { ClientOption } from "../etapes/un/BlocClient";
-import { etatT1 } from "../fixtures";
+import { etatT1, etatT4 } from "../fixtures";
 import type { Etape, EtatAssistant } from "../types";
 import { etatVersPayload } from "../vers-payload";
 
@@ -50,6 +55,18 @@ const CLIENT: ClientOption = {
   email: "client@example.test",
 };
 const CTX = { tvaStandardPct: 20, textes: [] };
+const donneesEmail = (o: Record<string, unknown> = {}) => ({
+  a: "client@example.test",
+  de: '"Axion-IA" <contact@axion-ia.com>',
+  objet: "Votre devis AXI-DEV-2026-0001",
+  objetOrigine: "Votre devis AXI-DEV-2026-0001",
+  html: "<p>Bonjour</p>",
+  piecesJointes: [],
+  lienSignature: "créé à l'envoi",
+  salutation: "Bonjour",
+  adresseManquante: false,
+  ...o,
+});
 
 function monter(
   o: {
@@ -57,7 +74,7 @@ function monter(
     etape?: Etape;
     brouillon?: { id: string; revision: number } | null;
     clients?: ClientOption[];
-    devisId?: string;
+    salutations?: Record<string, string>;
     onEnvoye?: (r: { devisId: string }) => void;
   } = {},
 ) {
@@ -68,13 +85,13 @@ function monter(
       payloadInitial={payload}
       brouillon={o.brouillon === undefined ? { id: BROUILLON, revision: 5 } : o.brouillon}
       clients={o.clients ?? [CLIENT]}
+      salutations={o.salutations}
       textesParDefaut={[]}
       tauxStandard={20}
       formulesActives
       validiteParDefaut="2026-12-08"
       versionCgv="version lue en configuration"
       urlAssistant="/fr/adm/qualiopi/devis/new"
-      devisId={o.devisId}
       onEnvoye={o.onEnvoye}
       rendreEtape={({ etape, etat: e, dispatch }) => (
         <div>
@@ -119,9 +136,91 @@ beforeEach(() => {
   A.envoyer.mockResolvedValue({
     data: { devisId: NUM.devisId, emailEnvoye: true, signatureCreee: true },
   });
+  A.apercuEmail.mockImplementation(async (i: { sujet?: string }) => ({
+    data: donneesEmail({ ...(i.sujet !== undefined ? { objet: i.sujet } : {}) }),
+  }));
 });
 
+/** Le bouton reste désactivé jusqu'à l'aperçu de l'e-mail (adresse lue sur la fiche). */
+const cliquerEnvoyer = async () => {
+  const b = await waitFor(() => {
+    const x = screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement;
+    expect(x.disabled).toBe(false);
+    return x;
+  });
+  fireEvent.click(b);
+};
+
 const continuer = () => fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+
+describe("étape 3 : montants des phases relus au serveur", () => {
+  it("prix unique : 400 ms après le dernier changement, A reçoit phasesCents ; aucun appel hors étape 3", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      const etat = etatT4();
+      const payload = etatVersPayload(etat, 3, CTX);
+      render(
+        <AssistantDevisBranche
+          payloadInitial={payload}
+          brouillon={{ id: BROUILLON, revision: 5 }}
+          clients={[CLIENT]}
+          textesParDefaut={[]}
+          tauxStandard={20}
+          formulesActives
+          validiteParDefaut="2026-12-08"
+          versionCgv="v"
+          urlAssistant="/fr/adm/qualiopi/devis/new"
+          rendreEtape={({ etape, montantsPhases }) => (
+            <p data-testid="m">
+              {String(etape)}:{JSON.stringify(montantsPhases ?? null)}
+            </p>
+          )}
+        />,
+      );
+      expect(A.apercu).not.toHaveBeenCalled();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(500);
+      });
+      expect(A.apercu).toHaveBeenCalledTimes(1);
+      expect(screen.getByTestId("m").textContent).toMatch(/^3:.*"A":\[\d+/);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+
+describe("étapes 1 et 2 : aucun aperçu relu pour les montants", () => {
+  it.each([1, 2] as const)("rendu à l'étape %i : apercu n'est jamais appelé", async (etape) => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      render(
+        <AssistantDevisBranche
+          payloadInitial={etatVersPayload(etatT4(), etape, CTX)}
+          brouillon={{ id: BROUILLON, revision: 5 }}
+          clients={[CLIENT]}
+          textesParDefaut={[]}
+          tauxStandard={20}
+          formulesActives
+          validiteParDefaut="2026-12-08"
+          versionCgv="v"
+          urlAssistant="/fr/adm/qualiopi/devis/new"
+          rendreEtape={({ etape: e, montantsPhases }) => (
+            <p data-testid="m">
+              {String(e)}:{JSON.stringify(montantsPhases ?? null)}
+            </p>
+          )}
+        />,
+      );
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+      expect(A.apercu).not.toHaveBeenCalled();
+      expect(screen.getByTestId("m").textContent).toBe(`${etape}:null`);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
 
 describe("sauvegarde : la révision du serveur suit chaque sauvegarde (jeton opaque)", () => {
   it("chaque envoi porte la révision rendue par le précédent, avec un sauvegardeId neuf", async () => {
@@ -141,13 +240,13 @@ describe("sauvegarde : la révision du serveur suit chaque sauvegarde (jeton opa
     expect(A.creer).not.toHaveBeenCalled();
   });
 
-  it("sans brouillon : création (avec le devis rouvert), puis sauvegardes sur la révision créée", async () => {
+  it("sans brouillon : création (jamais de devisId : seul le finaliseur lie un devis), puis sauvegardes sur la révision créée", async () => {
     A.creer.mockResolvedValue({ data: { id: BROUILLON, revision: 2 } });
-    monter({ brouillon: null, devisId: "33333333-3333-4333-8333-333333333333" });
+    monter({ brouillon: null });
     fireEvent.click(screen.getByRole("button", { name: "Saisir le devis" }));
     continuer();
     await waitFor(() => expect(A.creer).toHaveBeenCalledTimes(1));
-    expect(A.creer.mock.calls[0]![0].devisId).toBe("33333333-3333-4333-8333-333333333333");
+    expect(A.creer.mock.calls[0]![0]).not.toHaveProperty("devisId");
     expect(A.sauver).not.toHaveBeenCalled();
     await screen.findByText(/étape 1b/);
     continuer();
@@ -249,7 +348,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
   it("l'adresse du client s'affiche en LECTURE SEULE", async () => {
     monter({ etape: 4 });
     const champ = (await screen.findByLabelText("À")) as HTMLInputElement;
-    expect(champ.value).toBe("client@example.test");
+    await waitFor(() => expect(champ.value).toBe("client@example.test"));
     expect(champ.readOnly).toBe(true);
   });
 
@@ -257,11 +356,75 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     const onEnvoye = vi.fn();
     monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
-    expect(await screen.findByText(/en corbeille, à valider/i)).toBeTruthy();
+    await cliquerEnvoyer();
+    expect(await screen.findByText("Le devis est envoyé au client.")).toBeTruthy();
     expect(A.envoyer).toHaveBeenCalledTimes(1);
     expect(A.envoyer.mock.calls[0]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
     expect(onEnvoye).toHaveBeenCalledWith({ devisId: NUM.devisId });
+  });
+
+  it("l'aperçu de l'e-mail est lu avec le devis numéroté ; la fiche s'ouvre sur le client", async () => {
+    A.apercuEmail.mockResolvedValue({ data: donneesEmail({ a: "", adresseManquante: true }) });
+    monter({ etape: 4, etat: { ...etatT4(), clientId: CLIENT.id } });
+    await screen.findByTestId("apercu-email");
+    await waitFor(() => expect(A.apercuEmail).toHaveBeenCalled());
+    expect(A.apercuEmail.mock.calls[0]![0]).toEqual({ devisId: NUM.devisId });
+    const lien = await screen.findByRole("link", { name: "Ajouter l'adresse sur la fiche" });
+    expect(lien.getAttribute("href")).toBe(adminPath("fr", `/qualiopi/clients/${CLIENT.id}/edit`));
+  });
+
+  it("aller-retour : l'objet et le message choisis arrivent à envoyerDepuisAssistantAction", async () => {
+    monter({ etape: 4 });
+    const objet = (await screen.findByLabelText("Objet")) as HTMLInputElement;
+    fireEvent.change(objet, { target: { value: "Votre proposition" } });
+    fireEvent.change(screen.getByLabelText("Message personnel"), {
+      target: { value: "Bonjour, voici la proposition." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Actualiser l'aperçu" }));
+    await waitFor(() => expect(A.apercuEmail).toHaveBeenCalledTimes(2));
+    expect(A.apercuEmail.mock.calls[1]![0]).toEqual({
+      devisId: NUM.devisId,
+      sujet: "Votre proposition",
+      message: "Bonjour, voici la proposition.",
+    });
+    await waitFor(() =>
+      expect(
+        (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
+      ).toBe(false),
+    );
+    await cliquerEnvoyer();
+    await screen.findByText("Le devis est envoyé au client.");
+    expect(A.envoyer).toHaveBeenCalledTimes(1);
+    expect(A.envoyer.mock.calls[0]![0]).toEqual({
+      brouillonId: BROUILLON,
+      attenduRevision: 8,
+      sujet: "Votre proposition",
+      messagePersonnalise: "Bonjour, voici la proposition.",
+    });
+  });
+
+  it("sans modification : l'appel d'envoi est identique à avant (ni sujet ni message)", async () => {
+    monter({ etape: 4 });
+    await screen.findByLabelText("Objet");
+    await waitFor(() =>
+      expect(
+        (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
+      ).toBe(false),
+    );
+    await cliquerEnvoyer();
+    await screen.findByText("Le devis est envoyé au client.");
+    expect(A.envoyer.mock.calls[0]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
+  });
+
+  it("adresse vide sur la fiche : bouton désactivé et lien vers la fiche du client", async () => {
+    A.apercuEmail.mockResolvedValue({ data: donneesEmail({ a: "", adresseManquante: true }) });
+    monter({ etape: 4, etat: { ...etatT4(), clientId: CLIENT.id } });
+    const lien = await screen.findByRole("link", { name: "Ajouter l'adresse sur la fiche" });
+    expect(lien.getAttribute("href")).toBe(adminPath("fr", `/qualiopi/clients/${CLIENT.id}/edit`));
+    expect(
+      (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
+    ).toBe(true);
+    expect(A.envoyer).not.toHaveBeenCalled();
   });
 
   it("envoi rejoué : l'erreur du serveur est affichée, aucun second appel d'envoi", async () => {
@@ -270,7 +433,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     });
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     expect((await screen.findByRole("alert")).textContent).toContain("Envoi déjà demandé");
     await act(async () => void (await Promise.resolve()));
     expect(A.envoyer).toHaveBeenCalledTimes(1);
@@ -284,7 +447,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     A.reprendre.mockResolvedValueOnce({ data: { revision: 9 } });
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await waitFor(() => expect(A.numeroter).toHaveBeenCalledTimes(2));
     expect(A.envoyer).toHaveBeenCalledTimes(1);
     expect(A.apercu).toHaveBeenCalledTimes(2);
@@ -292,14 +455,46 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     expect(await screen.findByText(/L'aperçu a été recalculé/)).toBeTruthy();
   });
 
+  it("à renuméroter avec objet et message saisis : avis « réinitialisés » (role=status)", async () => {
+    A.envoyer.mockResolvedValueOnce({
+      error:
+        "La saisie a été modifiée pendant la numérotation : le devis porte la version précédente. Relancez l'envoi.",
+    });
+    A.reprendre.mockResolvedValueOnce({ data: { revision: 9 } });
+    monter({ etape: 4 });
+    fireEvent.change(await screen.findByLabelText("Objet"), { target: { value: "Votre devis" } });
+    fireEvent.change(screen.getByLabelText("Message personnel"), {
+      target: { value: "Bonjour." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Actualiser l'aperçu" }));
+    await waitFor(() => expect(A.apercuEmail).toHaveBeenCalledTimes(2));
+    await cliquerEnvoyer();
+    await waitFor(() => expect(A.numeroter).toHaveBeenCalledTimes(2));
+    const avis = await screen.findByText(/Votre objet et votre message ont été réinitialisés/);
+    expect(avis.closest("[role=status]")).not.toBeNull();
+  });
+
+  it("à renuméroter sans objet ni message saisis : pas d'avis de réinitialisation", async () => {
+    A.envoyer.mockResolvedValueOnce({
+      error:
+        "La saisie a été modifiée pendant la numérotation : le devis porte la version précédente. Relancez l'envoi.",
+    });
+    A.reprendre.mockResolvedValueOnce({ data: { revision: 9 } });
+    monter({ etape: 4 });
+    await screen.findByText(/Proposition n°/);
+    await cliquerEnvoyer();
+    await waitFor(() => expect(A.numeroter).toHaveBeenCalledTimes(2));
+    expect(screen.queryByText(/ont été réinitialisés/)).toBeNull();
+  });
+
   it("après un échec d'envoi, une révision autre que dernier + 1 N'EST PAS adoptée : conflit, plus aucun envoi", async () => {
     A.envoyer.mockResolvedValueOnce({ error: "Envoi refusé." });
     A.reprendre.mockResolvedValueOnce({ data: { revision: 12 } });
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     expect((await screen.findByRole("alert")).textContent).toContain("modifié ailleurs");
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await waitFor(() => expect(screen.getAllByRole("alert")[0]!.textContent).toContain("ailleurs"));
     expect(A.envoyer).toHaveBeenCalledTimes(1);
     expect(A.numeroter).toHaveBeenCalledTimes(1);
@@ -309,7 +504,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     A.envoyer.mockRejectedValueOnce(new Error("réseau"));
     monter({ etape: 4 });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     expect((await screen.findByRole("alert")).textContent).toContain("Vérifiez l'état du devis");
   });
 
@@ -351,7 +546,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     expect(A.numeroter.mock.calls[1]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
   });
 
-  it("e-mail non préparé : le devis est déjà envoyé, onEnvoye est appelé et le message n'est PAS une erreur", async () => {
+  it("e-mail non préparé : la note du serveur est affichée, ce n'est PAS une erreur, et onEnvoye n'est PAS appelé", async () => {
     A.envoyer.mockResolvedValue({
       data: {
         devisId: NUM.devisId,
@@ -363,18 +558,62 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     const onEnvoye = vi.fn();
     monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
-    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await cliquerEnvoyer();
     await waitFor(() =>
       expect(document.body.textContent).toContain("Le client n'a pas d'adresse."),
     );
     expect(screen.queryByRole("alert")).toBeNull();
-    expect(screen.queryByText(/en corbeille, à valider/i)).toBeNull();
+    expect(document.body.textContent).not.toContain("En attente dans");
+    expect(onEnvoye).not.toHaveBeenCalled();
+  });
+
+  it("garé pour validation : le texte « À valider », le devis reste en brouillon, AUCUN onEnvoye", async () => {
+    A.envoyer.mockResolvedValue({
+      data: {
+        devisId: NUM.devisId,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "Garé.",
+      },
+    });
+    const onEnvoye = vi.fn();
+    monter({ etape: 4, onEnvoye });
+    await screen.findByText(/Proposition n°/);
+    await cliquerEnvoyer();
+    await waitFor(() =>
+      expect(document.body.textContent).toContain(
+        "reste en brouillon tant que l'e-mail n'est pas validé dans « Emails, À valider »",
+      ),
+    );
+    expect(onEnvoye).not.toHaveBeenCalled();
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("direct : onEnvoye est appelé avec le devis", async () => {
+    const onEnvoye = vi.fn();
+    monter({ etape: 4, onEnvoye });
+    await screen.findByText(/Proposition n°/);
+    await cliquerEnvoyer();
+    await screen.findByText("Le devis est envoyé au client.");
     expect(onEnvoye).toHaveBeenCalledWith({ devisId: NUM.devisId });
+  });
+
+  it("la salutation du client choisi est affichée à l'étape 4", async () => {
+    monter({ etape: 4, salutations: { [CLIENT.id]: "Bonjour Madame Martin," } });
+    expect(
+      await screen.findByText("L'e-mail commencera par : Bonjour Madame Martin,"),
+    ).toBeTruthy();
+  });
+
+  it("sans salutation connue : la salutation suit la fiche", async () => {
+    monter({ etape: 4 });
+    expect(await screen.findByText("La salutation suit la fiche du client.")).toBeTruthy();
   });
 });
 
 describe("brouillon fourni mais illisible", () => {
-  it("est remplacé AVEC le message, sans envoyer devisId à la création (le lien existe déjà)", async () => {
+  it("est remplacé AVEC le message, sans envoyer devisId à la création", async () => {
     const etat = etatT1();
     const payload = etatVersPayload(etat, 1, CTX);
     payload.nonImprime = { ecran: { v: 99 } };
@@ -389,7 +628,6 @@ describe("brouillon fourni mais illisible", () => {
         validiteParDefaut="2026-12-08"
         versionCgv="v"
         urlAssistant="/fr/adm/qualiopi/devis/new"
-        devisId="33333333-3333-4333-8333-333333333333"
         rendreEtape={({ dispatch }) => (
           <button type="button" onClick={() => dispatch({ type: "remplacer", etat })}>
             Saisir le devis

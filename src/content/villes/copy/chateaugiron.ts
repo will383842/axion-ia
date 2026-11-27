@@ -14,9 +14,9 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaugiron (35). Nous accompagnons TPE et PME : entreprises tertiaires du bassin rennais est, artisans BTP, commerçants, professions libérales, exploitants agricoles et acteurs du tourisme patrimonial de la communauté de communes autour du château médiéval.",
   seoHook: "tertiaires services & artisanat construction",
   ecosystemFr:
-    "Châteaugiron est un bourg historique à l'est de Rennes, structuré autour de son château médiéval classé. Commune périurbaine en croissance, elle accueille un tissu de PME tertiaires et services, TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales et agriculture résiduelle (polyculture, élevage laitier). Proximité Rennes (20 min) et accès A87/RN157.",
+    "Châteaugiron est un bourg historique à l'est de Rennes, structuré autour de son château médiéval classé. Commune périurbaine en croissance, elle accueille un tissu de PME tertiaires et services, TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales et agriculture résiduelle (polyculture, élevage laitier).",
   ecosystemEn:
-    "Châteaugiron est un bourg historique à l'est de Rennes, structuré autour de son château médiéval classé. Commune périurbaine en croissance, elle accueille un tissu de PME tertiaires et services, TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales et agriculture résiduelle (polyculture, élevage laitier). Proximité Rennes (20 min) et accès A87/RN157.",
+    "Châteaugiron est un bourg historique à l'est de Rennes, structuré autour de son château médiéval classé. Commune périurbaine en croissance, elle accueille un tissu de PME tertiaires et services, TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales et agriculture résiduelle (polyculture, élevage laitier).",
   distancesFr:
     "Rennes centre à 20 min. Gare de Rennes à 25 min (TGV Paris 1h25). Aéroport Rennes-Bretagne à 35 min. Vitré à 25 min. Janzé à 10 min. Axe RN157 vers Angers/Paris.",
   distancesEn:

@@ -49,7 +49,7 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mont-Saint-Martin et dans le Pays Haut ?",
-      a: "Oui, Axion-IA intervient à Mont-Saint-Martin et dans tout le Pays Haut (Longwy, Villerupt, Herserange, Rehon). Consultants depuis Metz (1h) ou Nancy (1h20) avec accès frontalier Luxembourg/Belgique.",
+      a: "Oui, Axion-IA intervient à Mont-Saint-Martin et dans tout le Pays Haut (Longwy, Villerupt, Herserange, Rehon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces transfrontaliers du Pays Haut ?",
@@ -65,7 +65,7 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mont-Saint-Martin ?",
-      a: "Nos consultants interviennent depuis Metz (1h) ou Nancy (1h20). Missions sur site dans vos locaux commerciaux, bureau ou entrepôt.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos locaux commerciaux, bureau ou entrepôt.",
     },
   ],
 };

@@ -43,7 +43,11 @@ import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
 import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
-import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
+import {
+  GLOSSARY_UPDATED_ISO,
+  listGlossaryTermSlugs,
+  isGlossaryTermIndexable,
+} from "@/content/glossary-extension";
 // Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
 import { getAllStackToolSlugs } from "@/content/stack-ia-details";
 // Fraîcheur réelle par famille (dernier commit git des sources), générée en CI —
@@ -68,6 +72,8 @@ import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 // Contenu unique par combo (pain-matrix 50/50) → indexable, anti-doorway.
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
+import { BAROMETRE_PUBLIC } from "@/content/barometre-2027/donnees";
+import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -180,6 +186,8 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // publiée. Elle est annoncée par `sitemap-videos.xml`, qui est lui-même 404 dans ce cas ;
   // la déclarer ici ferait figurer une URL 404 dans pages.xml.
   "/videos",
+  // V2-10 PR-4 : 301 next.config vers le Score (/diagnostic#observatoire) : ne pas annoncer une URL redirigée.
+  "/observatoire-ia/participer",
   // 301 next.config (2026-11) : doublons de /formations et /tarifs, à ne pas annoncer dans pages.xml.
   "/formations/entreprise",
   "/formations/tarifs",
@@ -209,8 +217,6 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // Console « URL noindexée dans le sitemap » corrigée plus haut pour
   // `/mes-donnees/export`.
   "/simulateur",
-  // Page d'atterrissage publicitaire — `noindex`, même raison que ci-dessus.
-  "/diagnostic",
   "/recherche",
   "/preferences-cookies",
   // V-11 sprint UX 2026-05-22 — `/glossaire` hub double-déclaré entre pages.xml
@@ -227,6 +233,12 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // pages 200 (clés distinctes) → NON impactées par cette exclusion, elles restent
   // dans le sitemap. `/formations` (clé propre) reste émise normalement.
   "/interventions",
+  // V2-08 (GEO) — une seule page de référence pour le coaching individuel : `/fr/un-a-un`.
+  // Ces trois pages restent en ligne (aucune URL supprimée) mais leur canonical pointe vers
+  // elle ; une URL non canonique n'a pas sa place dans pages.xml. Liste : `coaching-reference.ts`.
+  "/interventions/individuel",
+  "/interventions/dirigeants",
+  "/interventions/dirigeant-vision-strategique",
   // Audit "page vide / noindexed in sitemap" 2026-06-15 — `/carrieres/widget`
   // (embed iframe, robots:noindex,nofollow) et `/carrieres/widget-builder`
   // (outil de configuration, robots:noindex) sont émis tels quels dans
@@ -238,6 +250,8 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page renvoie en 308 vers
   // /journee-ia. Une URL redirigée n'a pas sa place dans pages.xml (crawl-budget, GSC).
   "/audit/tpe-1-jour",
+  // Questionnaire du Baromètre 2027 : diffusé par lien, `noindex`, collecte permanente, sans date de fin.
+  "/questionnaire-barometre-ia-2027",
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {
@@ -346,16 +360,16 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
 // puis disparaisse sans raison.
 function getVillesSitemapIds(): string[] {
   const ids: string[] = [];
-  // Structure de chunks STABLE : basée sur TOUTES les villes avec copy (pas la
-  // cohorte du jour). Ainsi les IDs de sub-sitemaps ne changent jamais quand la
-  // cohorte drip s'élargit (Google n'aime pas qu'un sub-sitemap apparaisse puis
-  // disparaisse). Seul le CONTENU de chaque chunk grandit dans le temps (cf.
-  // buildVillesByRegionSitemap qui filtre sur isVilleIndexable).
-  const withCopy = VILLES.filter((v) => !!v.copy);
+  // 18/11/2026 : les IDs dérivent UNIQUEMENT des villes de `villes-indexees.ts`
+  // (40 villes, 12 régions, jamais plus de 10 villes par région → aucun découpage).
+  // Une région sans ville gardée (Corse, DROM) n'a PAS de sub-sitemap : l'index
+  // refuse les sitemaps vides (`sitemap-index.xml/route.ts`). Test de garde :
+  // `src/app/__tests__/sitemap-villes.spec.ts`.
+  const gardees = VILLES.filter((v) => !!v.copy && isVilleIndexable(v.slug));
   const regions = [...getIndexableRegions()].sort((a, b) => a.slug.localeCompare(b.slug));
 
   for (const region of regions) {
-    const villesInRegion = withCopy.filter((v) => v.region === region.slug);
+    const villesInRegion = gardees.filter((v) => v.region === region.slug);
     if (villesInRegion.length === 0) continue;
 
     // 2 locales (FR + EN) par ville → multiplie le compte d'URLs par 2
@@ -591,7 +605,9 @@ export default async function sitemap(props: {
   // Static IDs
   switch (id) {
     case "pages":
-      return filterEnIfDisabled(buildPagesSitemap(editorialFor("pages")));
+      return filterEnIfDisabled(
+        buildPagesSitemap(editorialFor("pages"), await hubGuidesEstIndexable()),
+      );
     case "blog":
       // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
       // date ne sert que de défaut pour les entrées sans date propre.
@@ -732,11 +748,15 @@ export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<strin
 
 // Static routes — declared in `routing.pathnames` minus excluded + slug templates.
 // Priority 1.0 (home) > 0.8 (depth 2) > 0.6 (depth ≥ 3). changefreq weekly.
-function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
+function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
+    // V1-17 : hub /guides vide = noindex, donc hors pages.xml (revient seul avec le 1er guide).
+    if (key === "/guides" && !hubGuidesIndexable) continue;
+    // Baromètre 2027 : noindex donc hors pages.xml tant que BAROMETRE_PUBLIC vaut false.
+    if (key === "/ressources/barometre-ia-tpe-pme-2027" && !BAROMETRE_PUBLIC) continue;
     // Cas concrets éteints (2026-11-08) : la page répond 404, donc hors pages.xml.
     if (key === "/cas-concrets" && !CAS_CONCRETS_AFFICHES) continue;
     // Page de réassurance Qualiopi : Phase-B uniquement (la page `notFound()` en
@@ -753,13 +773,6 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     // R7 (08/11/2026) : la page redirige aussi tant que les prix publics sont masqués.
     if (key === "/catalogue" && !isQualiopiCertificationObtenue()) continue;
     if (key === "/catalogue" && !PRIX_PUBLICS_AFFICHES) continue;
-    // Page financement OPCO/France Travail : Phase-B only (mentions financement
-    // interdites avant l'agrément OF) → hors sitemap en Phase A.
-    if (
-      key === "/financement-opco-france-travail" &&
-      (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
-    )
-      continue;
     // Date PAR ROUTE (audit SEO 2026-11-11, I2) : avant, les 87 URL portaient
     // toutes `now` (date de la famille `pages`). `dateRoute` est la fonction que
     // lit aussi le `dateModified` JSON-LD de la page (`buildWebPageJsonLd`) ;
@@ -767,6 +780,8 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     // absente du manifeste.
     const lastModified = new Date(dateRoute(key));
     for (const locale of effectiveLocales) {
+      // Baromètre 2027 : FR seul, pas d'URL EN dans le sitemap.
+      if (key === "/ressources/barometre-ia-tpe-pme-2027" && locale === "en") continue;
       const url = localeUrl(key, locale);
       entries.push({
         url,
@@ -1220,7 +1235,8 @@ function buildSecteursSitemap(now: Date): MetadataRoute.Sitemap {
  * ChangeFrequency `monthly` — alignement réaliste avec la cadence d'enrichissement
  * du glossaire (Will valide périodiquement les ajouts).
  */
-function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
+function buildGlossarySitemap(_now: Date): MetadataRoute.Sitemap {
+  const modifie = new Date(GLOSSARY_UPDATED_ISO);
   const entries: MetadataRoute.Sitemap = [];
 
   // 1) Le hub /glossaire (FR canonique + EN miroir si activé).
@@ -1229,7 +1245,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     const url = `${SITE_URL}/${locale}${localizedHref(hubKey, locale)}`;
     entries.push({
       url,
-      lastModified: now,
+      lastModified: modifie,
       changeFrequency: "monthly",
       priority: 0.7,
       alternates: { languages: alternateLanguages(hubKey) },
@@ -1250,7 +1266,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
     entries.push({
       url: frUrl,
-      lastModified: now,
+      lastModified: modifie,
       changeFrequency: "monthly",
       priority: 0.6,
       alternates: { languages: langs },
@@ -1258,7 +1274,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     if (!EN_LOCALE_DISABLED) {
       entries.push({
         url: enUrl,
-        lastModified: now,
+        lastModified: modifie,
         changeFrequency: "monthly",
         priority: 0.6,
         alternates: { languages: langs },

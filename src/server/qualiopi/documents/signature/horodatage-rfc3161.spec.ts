@@ -1,4 +1,6 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
+import { certificatsDePem } from "./horodatage-cms";
 import {
   configurationTsa,
   construireRequete,
@@ -9,6 +11,7 @@ import {
   TAILLE_MAX_REPONSE,
 } from "./horodatage-rfc3161";
 
+const FIXTURES = "src/server/qualiopi/documents/signature/__fixtures__/freetsa/";
 const EMPREINTE = "ab".repeat(32);
 const NONCE = Buffer.from("0102030405060708", "hex");
 const MAINTENANT = new Date("2026-11-07T10:00:00.000Z");
@@ -353,5 +356,26 @@ describe("horodatage RFC 3161 : configuration", () => {
         .ancresPem,
     ).toEqual([pem]);
     expect(configurationTsa({ HORODATAGE_TSA_URL: "https://a.test/tsr" }).ancresPem).toEqual([]);
+  });
+
+  it("accepte un PEM collé avec des \\n littéraux (variable d'environnement sur une ligne)", () => {
+    const pem = readFileSync(FIXTURES + "cacert.pem", "utf8");
+    const litteral = pem.trim().replace(/\n/g, "\\n");
+    expect(litteral).not.toContain("\n");
+    const { ancresPem } = configurationTsa({
+      HORODATAGE_TSA_URL: "https://a.test/tsr",
+      HORODATAGE_TSA_CA_PEM: litteral,
+    });
+    expect(ancresPem).toHaveLength(1);
+    expect(certificatsDePem(ancresPem[0]!)).toHaveLength(1);
+  });
+
+  it("laisse un PEM normal inchangé", () => {
+    const pem = readFileSync(FIXTURES + "cacert.pem", "utf8");
+    const { ancresPem } = configurationTsa({
+      HORODATAGE_TSA_URL: "https://a.test/tsr",
+      HORODATAGE_TSA_CA_PEM: pem,
+    });
+    expect(ancresPem).toEqual([pem.trim()]);
   });
 });

@@ -9,6 +9,13 @@ const ADRESSE = "destinataire-secret@exemple.test";
 const ID = "00000000-0000-4000-8000-000000000001";
 
 const h = vi.hoisted(() => ({
+  /** OUT-1 : résultat de la sonde « envoi déjà fait ? » (sous le verrou du devis, avant tout jeton). */
+  sonde: {
+    v: "a_faire" as "a_faire" | "deja_fait",
+    url: null as string | null,
+    // Le lien que porte la tâche en file : vivant (cette pièce, partie client) ou non.
+    vivant: true,
+  },
   ligne: { v: null as null | Record<string, unknown> },
   etat: { statut: "a_valider" as string, refuseMotif: null as string | null },
   vivants: new Set<string>(),
@@ -39,13 +46,21 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: (...a: unknown[]) => h.log(...a),
 }));
 vi.mock("next/cache", () => ({ revalidatePath: (...a: unknown[]) => h.reval(...a) }));
-vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => h.enqueue(...a) }));
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: (...a: unknown[]) => h.enqueue(...a),
+  sonderEnvoiOutboxAvecLien: async () => ({
+    dejaFait: h.sonde.v === "deja_fait",
+    urlEnFile: h.sonde.url,
+  }),
+}));
 vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
   formulesActives: async () => true,
 }));
 vi.mock("@/server/qualiopi/devis/marquer-devis-envoye", () => ({ marquerDevisEnvoye: vi.fn() }));
-vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
-  ligneDuLien: vi.fn().mockResolvedValue(null),
+vi.mock("@/server/qualiopi/documents/signature/lien-precedent", async (importOriginal) => ({
+  ...(await importOriginal<
+    typeof import("@/server/qualiopi/documents/signature/lien-precedent")
+  >()),
   // L'ancien lien est rendu : le jeton neuf ne vit plus.
   rendreLienPrecedent: async (url: string) => {
     h.vivants.delete(url.split("/").pop() as string);
@@ -91,9 +106,29 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => h.devisFindUnique(...a),
       count: (...a: unknown[]) => h.devisCount(...a),
     },
+    documentSignatureToken: {
+      // R4 : lecture locale du lien de la tâche (échéance et usage compris).
+      findUnique: async () =>
+        h.sonde.vivant
+          ? {
+              documentGenereId: "piece-1",
+              partie: "client",
+              revokedAt: null,
+              usedAt: null,
+              expiresAt: new Date(Date.now() + 86_400_000),
+            }
+          : null,
+    },
     $transaction: async (f: (t: unknown) => unknown) => {
       h.nbTransactions.v += 1;
-      return f({ $queryRaw: (...a: unknown[]) => h.queryRaw(...a) });
+      return f({
+        $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
+        // B2 PR 4 : le renvoi relit le devis DANS la transaction, après le verrou.
+        devis: {
+          findUnique: (...a: unknown[]) => h.devisFindUnique(...a),
+          count: (...a: unknown[]) => h.devisCount(...a),
+        },
+      });
     },
   },
 }));
@@ -138,6 +173,9 @@ const sorties = () =>
   JSON.stringify([h.log.mock.calls, h.sentryExc.mock.calls, h.sentryMsg.mock.calls]);
 
 beforeEach(() => {
+  h.sonde.v = "a_faire";
+  h.sonde.url = null;
+  h.sonde.vivant = true;
   vi.clearAllMocks();
   h.etat.statut = "a_valider";
   h.etat.refuseMotif = null;
@@ -318,7 +356,12 @@ describe("lignes anciennes et autres gabarits : inchangé", () => {
       ADRESSE,
       "fr",
       { numero: "D-1", signatureUrl: lien },
-      { bypassValidation: true, entityType: "Devis", entityId: "devis-1" },
+      {
+        bypassValidation: true,
+        cleOutbox: `outbox-${ID}`,
+        entityType: "Devis",
+        entityId: "devis-1",
+      },
     ]);
   });
 
@@ -352,6 +395,7 @@ describe("ligne ANCIENNE (sans marqueur) : non-régression", () => {
       { numero: "D-1", signatureUrl: lien, messagePersonnalise: "Bonjour" },
       {
         bypassValidation: true,
+        cleOutbox: `outbox-${ID}`,
         sujetForce: "Nouvel objet",
         entityType: "Devis",
         entityId: "devis-1",
@@ -387,17 +431,19 @@ describe("ligne ANCIENNE (sans marqueur) : non-régression", () => {
     expect(h.nbTransactions.v).toBe(0);
   });
 
-  it("(d) journal email.outbox.approuver inchangé (avec l'adresse du destinataire)", async () => {
+  it("(d) journal email.outbox.approuver : jamais d'adresse, même sans marqueur", async () => {
     h.ligne.v = ancienne();
     await approuverEmailAction({ id: ID, sujet: "Autre" });
     expect(h.log).toHaveBeenCalledTimes(1);
+    const changes = (h.log.mock.calls[0]?.[0] as { changes: Record<string, unknown> }).changes;
+    expect("destinataire" in changes).toBe(false);
+    expect(JSON.stringify(changes)).not.toContain(ADRESSE);
     expect(h.log.mock.calls[0]?.[0]).toEqual({
       action: "email.outbox.approuver",
       targetType: "EmailOutbox",
       targetId: ID,
       changes: {
         template: "devis-envoi",
-        destinataire: ADRESSE,
         sujetModifie: true,
         messageAjoute: false,
         envoye: true,
@@ -429,5 +475,16 @@ describe("journaux", () => {
     expect(s).not.toContain("JETON-NEUF");
     expect(s).not.toContain("portail/signer");
     expect(s).not.toContain("http");
+  });
+  it("RENVOI : verrou pris → même message d'attente, aucun jeton, aucun refus, ligne remise à valider", async () => {
+    h.queryRaw.mockResolvedValue([{ locked: false }]);
+    const r = await approuverEmailAction({ id: ID });
+    expect(r).toEqual({
+      error: "Cet e-mail est déjà en cours d'envoi. Réessayez dans un instant.",
+    });
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.enqueue).not.toHaveBeenCalled();
+    expect(h.etat.statut).toBe("a_valider");
+    expect(h.etat.refuseMotif).toBeNull();
   });
 });

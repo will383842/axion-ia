@@ -49,7 +49,7 @@ export const TALANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Talange ?",
-      a: "Oui, Axion-IA intervient à Talange et dans toute l'agglomération de Thionville (Hagondange, Maizières-lès-Metz, Rombas, Amnéville). Autoroute A31 accès direct, gare SNCF Hagondange à 5 min.",
+      a: "Oui, Axion-IA intervient à Talange et dans toute l'agglomération de Thionville (Hagondange, Maizières-lès-Metz, Rombas, Amnéville).",
     },
     {
       q: "Travaillez-vous avec les commerces et la grande distribution ?",
@@ -65,7 +65,7 @@ export const TALANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Talange ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Talange est desservie par l'autoroute A31 et à 5 min de la gare SNCF d'Hagondange, à 15 min de Metz et de Thionville.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

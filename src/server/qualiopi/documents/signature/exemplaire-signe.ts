@@ -57,6 +57,7 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getSignedUrlR2 } from "@/lib/r2-storage";
+import { mentionPapierV1 } from "./mentions-papier";
 import type { PreuveSignature, PreuvesParPartie } from "@/server/qualiopi/documents/base-layout";
 import { DevisPdf } from "@/server/qualiopi/documents/templates/devis";
 import { ConventionPdf } from "@/server/qualiopi/documents/templates/convention";
@@ -204,9 +205,26 @@ async function versPreuve(ligne: {
   provider?: string;
   signatureKey: string | null;
   imagePurgeeAt: Date | null;
+  mimeType?: string | null;
+  signatureSha256?: string | null;
+  /** Nom de la personne de l'organisme qui a versé un scan papier (lot I3). */
+  verseParNom?: string | null;
 }): Promise<PreuveSignature> {
   let imageSrc: string | null = null;
-  if (ligne.imagePurgeeAt === null && ligne.signatureKey !== null && ligne.signatureKey !== "") {
+  // Lot I3 : le scan d'un devis signé sur papier est un PDF. `Image` de @react-pdf ne sait pas
+  // l'afficher : on ne télécharge RIEN, et la mention papier dit ce qui a été versé. Un mime
+  // absent (lignes antérieures) reste traité comme une image.
+  const estImage =
+    ligne.mimeType === undefined ||
+    ligne.mimeType === null ||
+    ligne.mimeType === "image/png" ||
+    ligne.mimeType === "image/jpeg";
+  if (
+    estImage &&
+    ligne.imagePurgeeAt === null &&
+    ligne.signatureKey !== null &&
+    ligne.signatureKey !== ""
+  ) {
     try {
       const url = await getSignedUrlR2(ligne.signatureKey, 120);
       const rep = await fetch(url);
@@ -234,6 +252,16 @@ async function versPreuve(ligne: {
       : {}),
     imageSrc,
     imagePurgee: ligne.imagePurgeeAt !== null,
+    // Lot I3 — libellé du scan papier. Absent hors scan PDF : le rendu d'avant est inchangé.
+    ...(!estImage && ligne.methode === "papier_scanne" && ligne.signatureSha256 != null
+      ? {
+          mentionPapier: mentionPapierV1({
+            verseLeLisible: heureParis(ligne.signeAt),
+            verseParNom: ligne.verseParNom ?? "un membre de l'organisme",
+            empreinteScanSha256: ligne.signatureSha256,
+          }),
+        }
+      : {}),
   };
 }
 
@@ -313,6 +341,9 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
       provider: true,
       signatureKey: true,
       imagePurgeeAt: true,
+      mimeType: true,
+      signatureSha256: true,
+      recueilliParAdminId: true,
       // Sceau V4 du devis à formules : le choix imprimé sur l'exemplaire.
       hashVersion: true,
       choixOffre: true,
@@ -326,9 +357,35 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
     return { ok: false, raison: "aucune_signature", message: MESSAGES.aucune_signature };
   }
 
+  // Lot I3 : nom de la personne qui a versé un scan papier. Lu seulement s'il y en a un ; une
+  // panne ne bloque pas le rendu (la mention retombe sur un libellé neutre).
+  const verseurs = new Map<string, string>();
+  const idsVerseurs = [
+    ...new Set(
+      lignes
+        .filter((l) => l.methode === "papier_scanne" && l.recueilliParAdminId != null)
+        .map((l) => l.recueilliParAdminId as string),
+    ),
+  ];
+  if (idsVerseurs.length > 0) {
+    try {
+      const admins = await prisma.adminUser.findMany({
+        where: { id: { in: idsVerseurs } },
+        select: { id: true, name: true },
+      });
+      for (const a of admins) verseurs.set(a.id, a.name);
+    } catch {
+      // libellé neutre
+    }
+  }
+
   const signatures: PreuvesParPartie = {};
   for (const l of lignes) {
-    signatures[l.partie] = await versPreuve(l);
+    signatures[l.partie] = await versPreuve({
+      ...l,
+      verseParNom:
+        l.recueilliParAdminId == null ? null : (verseurs.get(l.recueilliParAdminId) ?? null),
+    });
   }
 
   // 🔴 Devis à formules : le choix SCELLÉ du client s'imprime à côté des signatures. Source =

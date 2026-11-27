@@ -61,11 +61,11 @@ export const VERNOUILLET_78_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les PME à Vernouillet ?",
-      a: "Oui, nos interventions IA sur site à Vernouillet sont adaptées aux PME de services et logistique. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier, avec support post-intervention.",
+      a: "Oui, nos interventions IA sur site à Vernouillet sont adaptées aux PME de services et logistique. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     {
       q: "Comment se déroule une mission IA à Vernouillet ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

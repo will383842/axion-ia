@@ -76,8 +76,6 @@ jobs:
           cat << 'EOF'
           https://axion-ia.com/sitemap-images-services.xml
           https://axion-ia.com/sitemap-images-villes-t1.xml
-          https://axion-ia.com/sitemap-images-villes-t2.xml
-          https://axion-ia.com/sitemap-images-villes-t3-t4.xml
           https://axion-ia.com/fr/audit-ia
           https://axion-ia.com/fr/formations-ia
           https://axion-ia.com/fr/interventions-ia
@@ -103,8 +101,6 @@ jobs:
             "urlList": [
               "${SITE}/sitemap-images-services.xml",
               "${SITE}/sitemap-images-villes-t1.xml",
-              "${SITE}/sitemap-images-villes-t2.xml",
-              "${SITE}/sitemap-images-villes-t3-t4.xml",
               "${SITE}/fr/audit-ia",
               "${SITE}/fr/formations-ia",
               "${SITE}/fr/interventions-ia",

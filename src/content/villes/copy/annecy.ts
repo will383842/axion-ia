@@ -486,11 +486,6 @@ export const ANNECY_COPY: VilleCopy = {
             detail:
               "Sur site Annecy : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring post go-live.",
           },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel versus prédiction SOW. Rapport final remis à clôture de mission.",
-          },
         ],
         pricing: [
           {
@@ -577,11 +572,6 @@ export const ANNECY_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Annecy: user acceptance tests, training of internal ambassadors, runbook documentation delivery, post go-live monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
           },
         ],
         pricing: [
@@ -1005,7 +995,7 @@ export const ANNECY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Annecy ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Annecy et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il dans le bassin industriel d'Annecy et la Vallée de l'Arve ?",

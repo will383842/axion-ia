@@ -19,15 +19,16 @@
 import React from "react";
 import { View, Document, Text, StyleSheet } from "@react-pdf/renderer";
 import {
-  QualiopiPage,
-  DocSection,
-  FieldRow,
-  BulletList,
-  pdfStyles,
-} from "@/server/qualiopi/documents/base-layout";
+  PageCharte,
+  Carte,
+  LigneChamp,
+  ListePuces,
+  CHARTE_COULEURS,
+  CHARTE_TYPO,
+} from "../charte/v1";
+import { NoteLegale, Paragraphe } from "./charte-documents-formation";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formaterDuree, type ModuleProgramme } from "@/server/qualiopi/documents/programme-modules";
-import { brandColor, QUALIOPI_PDF_TYPE } from "@/server/qualiopi/brand/brand-tokens";
 import { titreModuleSansPrefixe } from "@/server/qualiopi/documents/programme-modules";
 
 // ============================================================
@@ -88,42 +89,37 @@ export interface ProgrammeFormationProps {
 // Styles locaux
 // ============================================================
 
-// Couleurs et corps de texte pris aux jetons de marque — jamais d'hexadécimal en
-// dur : `brand-tokens.ts` est sous test de parité avec `globals.css`, une valeur
-// écrite ici échapperait à ce contrôle et le PDF dériverait du site.
+// Style v2 : couleurs et tailles de `charte/v1` (aucun hexadécimal en dur).
 const local = StyleSheet.create({
   moduleBloc: {
-    marginBottom: 10,
-    paddingLeft: 6,
+    marginBottom: 9,
+    paddingLeft: 8,
     borderLeftWidth: 2,
-    borderLeftColor: brandColor("border-strong"),
+    borderLeftColor: CHARTE_COULEURS.bleu,
   },
   moduleTitre: {
-    fontSize: QUALIOPI_PDF_TYPE.md,
-    fontWeight: "bold",
+    fontSize: CHARTE_TYPO.titreCarte.taille,
+    fontWeight: CHARTE_TYPO.graisses.grasse,
+    color: CHARTE_COULEURS.texte,
     marginBottom: 2,
   },
   moduleDuree: {
-    fontSize: QUALIOPI_PDF_TYPE.sm,
-    color: brandColor("fg-muted"),
+    fontSize: CHARTE_TYPO.petit.taille,
+    color: CHARTE_COULEURS.terracotta,
     marginBottom: 3,
   },
   sequenceItem: {
-    fontSize: QUALIOPI_PDF_TYPE.sm,
-    lineHeight: 1.5,
+    fontSize: CHARTE_TYPO.petit.taille,
+    lineHeight: CHARTE_TYPO.corps.interligne,
+    color: CHARTE_COULEURS.texte,
     marginBottom: 1,
     paddingLeft: 8,
   },
-  bodyText: {
-    fontSize: QUALIOPI_PDF_TYPE.base,
-    lineHeight: 1.5,
-    marginBottom: 4,
-  },
   absent: {
-    fontSize: QUALIOPI_PDF_TYPE.sm,
+    fontSize: CHARTE_TYPO.petit.taille,
     fontStyle: "italic",
-    color: brandColor("fg-soft"),
-    lineHeight: 1.5,
+    color: CHARTE_COULEURS.texte,
+    lineHeight: CHARTE_TYPO.corps.interligne,
   },
 });
 
@@ -145,7 +141,7 @@ export function ProgrammeFormationPdf({
 
   return (
     <Document>
-      <QualiopiPage
+      <PageCharte
         docTitle="Programme de l'action de formation"
         docNumber={data.numero}
         identite={identite}
@@ -154,28 +150,28 @@ export function ProgrammeFormationPdf({
         {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* 1. Identification de l'action */}
-        <DocSection title="1. Identification de l'action">
-          <FieldRow label="Intitulé" value={data.intitule} required />
-          <FieldRow label="Durée" value={dureeContractuelle} required />
-          <FieldRow label="Modalité" value={data.modalite} />
-          <FieldRow label="Lieu de déroulement" value={data.lieu} />
+        <Carte titre="1. Identification de l'action">
+          <LigneChamp label="Intitulé" value={data.intitule} required />
+          <LigneChamp label="Durée" value={dureeContractuelle} required />
+          <LigneChamp label="Modalité" value={data.modalite} />
+          <LigneChamp label="Lieu de déroulement" value={data.lieu} />
           {data.versionProgramme ? (
-            <FieldRow label="Version du programme" value={data.versionProgramme} />
+            <LigneChamp label="Version du programme" value={data.versionProgramme} />
           ) : null}
-          <FieldRow label="Date d'édition" value={data.dateEdition} />
-        </DocSection>
+          <LigneChamp label="Date d'édition" value={data.dateEdition} />
+        </Carte>
 
         {/* 2. Public et prérequis */}
-        <DocSection title="2. Public visé et prérequis">
-          <FieldRow label="Public visé" value={data.publicVise} required />
+        <Carte titre="2. Public visé et prérequis">
+          <LigneChamp label="Public visé" value={data.publicVise} required />
           {/*
             « Aucun prérequis » est une INFORMATION, pas une absence de donnée :
             un stagiaire doit pouvoir lire qu'il peut s'inscrire sans condition.
             Laisser la ligne vide se lirait comme un oubli.
           */}
-          <FieldRow label="Prérequis" value={data.prerequis || "Aucun prérequis"} />
-          {data.niveau ? <FieldRow label="Niveau visé" value={data.niveau} /> : null}
-          <FieldRow
+          <LigneChamp label="Prérequis" value={data.prerequis || "Aucun prérequis"} />
+          {data.niveau ? <LigneChamp label="Niveau visé" value={data.niveau} /> : null}
+          <LigneChamp
             label="Accessibilité"
             value={
               data.accessibleHandicap
@@ -187,19 +183,19 @@ export function ProgrammeFormationPdf({
                 : "Nous contacter pour étudier les adaptations possibles."
             }
           />
-        </DocSection>
+        </Carte>
 
         {/* 3. Objectifs pédagogiques */}
-        <DocSection title="3. Objectifs pédagogiques">
+        <Carte titre="3. Objectifs pédagogiques">
           {data.objectifs.length > 0 ? (
-            <BulletList items={data.objectifs} />
+            <ListePuces items={data.objectifs} />
           ) : (
             <Text style={local.absent}>Objectifs non renseignés au programme de cette action.</Text>
           )}
-        </DocSection>
+        </Carte>
 
         {/* 4. Contenu — le cœur de la pièce */}
-        <DocSection title="4. Contenu de la formation">
+        <Carte titre="4. Contenu de la formation">
           {data.modules.length > 0 ? (
             data.modules.map((m, i) => {
               const duree = formaterDuree(m.dureeMin);
@@ -238,38 +234,36 @@ export function ProgrammeFormationPdf({
               qu&apos;elle a été conclue.
             </Text>
           )}
-        </DocSection>
+        </Carte>
 
         {/* 5. Méthodes et moyens */}
-        <DocSection title="5. Moyens pédagogiques et techniques">
-          <Text style={local.bodyText}>{data.methodesPedagogiques || "—"}</Text>
-          {data.moyensTechniques ? (
-            <Text style={local.bodyText}>{data.moyensTechniques}</Text>
-          ) : null}
-        </DocSection>
+        <Carte titre="5. Moyens pédagogiques et techniques">
+          <Paragraphe>{data.methodesPedagogiques || "—"}</Paragraphe>
+          {data.moyensTechniques ? <Paragraphe>{data.moyensTechniques}</Paragraphe> : null}
+        </Carte>
 
         {/* 6. Ressources pédagogiques — INDICATEUR 19.
             Omise, jamais vide : une section « Ressources » suivie d'un tiret
             prouverait le contraire de ce qu'elle est censée prouver. */}
         {ressources.length > 0 ? (
-          <DocSection title="6. Ressources pédagogiques mises à disposition">
-            <BulletList items={ressources} />
-          </DocSection>
+          <Carte titre="6. Ressources pédagogiques mises à disposition">
+            <ListePuces items={ressources} />
+          </Carte>
         ) : null}
 
         {/* Évaluation et sanction */}
-        <DocSection title={`${numEvaluation}. Modalités d'évaluation et sanction`}>
-          <Text style={local.bodyText}>{data.modalitesEvaluation}</Text>
-          <FieldRow label="Sanction de la formation" value={data.sanction} />
-        </DocSection>
+        <Carte titre={`${numEvaluation}. Modalités d'évaluation et sanction`}>
+          <Paragraphe>{data.modalitesEvaluation}</Paragraphe>
+          <LigneChamp label="Sanction de la formation" value={data.sanction} />
+        </Carte>
 
-        <Text style={pdfStyles.legalNote}>
+        <NoteLegale>
           Ce programme constitue l&apos;annexe pédagogique de la convention de formation
           professionnelle (articles L.6353-1 et D.6353-1 du Code du travail : intitulé, objectif,
           contenu, moyens, durée et modalités de déroulement, de suivi et de sanction de
           l&apos;action).
-        </Text>
-      </QualiopiPage>
+        </NoteLegale>
+      </PageCharte>
     </Document>
   );
 }

@@ -65,7 +65,7 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chazelles-sur-Lyon ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chazelles-sur-Lyon, comme partout en France, ou à distance.",
     },
   ],
 };

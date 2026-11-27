@@ -13,15 +13,21 @@ const h = vi.hoisted(() => ({
   appFindUnique: vi.fn(),
   appUpdateMany: vi.fn(async (_a?: unknown) => ({ count: 1 })),
   journal: vi.fn(),
+  alerteContresignature: vi.fn(),
 }));
 
 vi.mock("../annuaire", () => ({
   lireEntrepriseParSiren: (...a: unknown[]) => h.registre(...a),
   lireRegistre: (...a: unknown[]) => h.registre(...a),
 }));
+vi.mock("../alerte-telegram", () => ({
+  alerterContresignature: (...a: unknown[]) => h.alerteContresignature(...a),
+}));
+vi.mock("../apercu-envoi", () => ({
+  apercu: vi.fn(async () => ({ sujet: "s", html: "<p/>", destinataire: "x" })),
+}));
 vi.mock("../envois", () => ({
   envoyer: (...a: unknown[]) => h.envoyer(...a),
-  apercu: vi.fn(async () => ({ sujet: "s", html: "<p/>", destinataire: "x" })),
   avecTexteLibre: (payload: Record<string, unknown>) => payload,
 }));
 vi.mock("../donnees", () => ({
@@ -150,5 +156,26 @@ describe("pas d'alerte : aucune case exigée, rien de tracé", () => {
     const r = await appliquerDecision(ID, "contresigner", null);
     expect(r).toMatchObject({ ok: true });
     expect(h.journal).not.toHaveBeenCalled();
+  });
+});
+
+describe("alerte Telegram de contresignature", () => {
+  beforeEach(() => {
+    h.registre.mockResolvedValue(entreprise([{ nom: "MARTIN", prenoms: "CLAIRE", qualite: null }]));
+  });
+
+  it("transmet le résultat de l'envoi (e-mail non parti signalé)", async () => {
+    h.envoyer.mockResolvedValue("echec");
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: true });
+    expect(h.alerteContresignature).toHaveBeenCalledWith(
+      expect.objectContaining({ apporteurId: ID, envoi: "echec" }),
+    );
+  });
+
+  it("une alerte qui lève n'empêche pas la contresignature (ok: true)", async () => {
+    h.alerteContresignature.mockRejectedValue(new Error("telegram"));
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: true });
   });
 });

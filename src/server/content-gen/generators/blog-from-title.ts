@@ -22,6 +22,10 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { coutErreurTronquee, estSortieJsonTronquee } from "../providers/IProvider";
 import { UnrecoverableError } from "bullmq";
 import { interrupteurBlogClaude } from "../providers/blog-claude";
+import {
+  MAX_TOKENS_EXPANSION_CLAUDE,
+  MAX_TOKENS_PLAN_CLAUDE,
+} from "../providers/blog-claude-budgets";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
@@ -35,12 +39,15 @@ import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
+import { equipeEditorialeActive } from "../fact-check/equipe-editoriale-drapeau";
+import { consigneRedactionEquipe } from "../equipe/redaction";
 import { expandOutlineChunked } from "../shared/expand-outline-chunked";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { consigneAngle } from "../brand/positionnement";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
@@ -71,6 +78,14 @@ const MIN_WORD_COUNT = 850;
 // ───────────────────────────────────────────────────────────────────────────
 // ARCHITECTURE 2-APPELS (2026-06-25)
 // ───────────────────────────────────────────────────────────────────────────
+
+// Consigne du plan (équipe éditoriale, derrière CONTENT_EQUIPE_EDITORIALE) : contrat vérifié par equipe/plan.ts.
+const CONSIGNE_PLAN_EQUIPE = `## Contrat de plan (obligatoire — prime sur « 8 sections » ci-dessus)
+- "directAnswer" : 40 à 60 mots, placée juste sous le titre, qui contient le mot-clé principal.
+- "outline" : 5 à 8 sections <h2>, chacune répondant à une sous-question du brief ; ajoute à chaque entrée "questionCouverte" (la sous-question) et, si tu en as une, "preuve" (texte ou identifiant de preuve).
+- Pas de <h3> sauf si un <h2> en a au moins deux ; <h4> à <h6> seulement si nécessaire ; jamais de saut de niveau.
+- Chaque question du brief est traitée UNE fois : dans un <h2> OU dans la FAQ, jamais les deux.
+`;
 
 // APPEL 1 — PLAN : produit l'ossature (métadonnées + FAQ + outline 8 sections).
 // PAS de bodyHtml ici (c'est l'appel 2 qui développe). Le TITRE est IMPOSÉ par
@@ -163,7 +178,8 @@ export const blogFromTitleGenerator: Generator = {
     let lastPromptHash = ""; // P0-3 AI Act art. 50
     const glossaryContext = getGlossaryContext([mandatoryTitle].filter(Boolean));
 
-    type OutlineSection = { h2: string; brief: string };
+    // questionCouverte / preuve : facultatifs (circuit équipe éditoriale) — un job ou un plan sans eux reste valide.
+    type OutlineSection = { h2: string; brief: string; questionCouverte?: string; preuve?: string };
     type PlanParsed = {
       title: string;
       metaTitle: string;
@@ -193,7 +209,8 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile, sans chiffre inventé.
 ${consigneAngle(input.jobId)}
-${sectionChiffresVerifies()}## Output attendu (JSON)
+${consigneJourneeIA(mandatoryTitle)}
+${sectionChiffresVerifies()}${equipeEditorialeActive() ? CONSIGNE_PLAN_EQUIPE : ""}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;
@@ -212,7 +229,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
             planAttempt === 0
               ? planUserPrompt
               : `${planUserPrompt}\n\n## Correction\nLe "metaTitle" DOIT couvrir le mot-clé du titre "${safeTitle}" (≤ 60 caractères ; « IA » accepté pour « intelligence artificielle »).`,
-          maxTokens: 2600,
+          maxTokens: interrupteurBlogClaude() ? MAX_TOKENS_PLAN_CLAUDE : 2600,
           temperature: 0.6,
         });
       } catch (err) {
@@ -293,7 +310,9 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,
-        maxTokens: input.templateOverride?.maxTokens ?? 5000,
+        maxTokens:
+          input.templateOverride?.maxTokens ??
+          (interrupteurBlogClaude() ? MAX_TOKENS_EXPANSION_CLAUDE : 5000),
         temperature: input.templateOverride?.temperature ?? (iteration === 0 ? 0.7 : 0.5),
         buildUserPrompt: ({ chunkText, isFirst, isLast }) =>
           `Rédige le CORPS HTML (sections de l'article) pour le titre : "${safeTitle}" (intent ${safeIntent}, audience ${safeAudienceSize}).
@@ -305,7 +324,7 @@ ${chunkText}
 ## Sources internes Axion-IA (grounding obligatoire)
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
-${glossaryContext ? `\n${glossaryContext}` : ""}
+${glossaryContext ? `\n${glossaryContext}` : ""}${consigneRedactionEquipe({ plan: { sections: plan.outline ?? [] }, dossier: input.dossierPreuves })}
 ## Output attendu (JSON)
 { bodyHtml }  (UNIQUEMENT les <h2> de CES sections, rien d'autre)`,
       });
@@ -500,6 +519,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       directAnswer: parsed.directAnswer ?? "",
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
       // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le

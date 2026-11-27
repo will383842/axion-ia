@@ -56,7 +56,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           "Tremblay-en-France est un pôle fret/logistique unique en France : siège Air France à Roissypôle, parc Aérolians Paris (198 ha, ~250-317 entreprises dont FedEx Express, Airbus Helicopters, Daher Aerospace et Mondial Relay) et 577 entreprises sur Paris-Nord 2. Nos plateformes IA sont calibrées pour ces métiers de l'express et de l'entreposage.",
           "Nous bâtissons des portails clients et SaaS de tracking pour les commissionnaires de transport et entrepôts e-commerce : suivi colis temps réel, génération de bordereaux et d'AWB, recherche sémantique dans la documentation douanière, agents conversationnels multilingues pour les flux internationaux CDG.",
           "Le commerce local (centre commercial Aéroville, ~3 000 emplois depuis 2013) et les futurs occupants du Parc des Expositions Paris-Nord Villepinte (extension Aérolians, ligne 17 du Grand Paris Express) ont besoin de vitrines e-commerce multi-CMS, de prise de rendez-vous et de catalogues performants en mobile.",
-          "Nous intervenons sur site dans les quatre zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor et Tremblay-CDG — accessibles par le RER B (CDG Terminaux 1 et 2, Vert-Galant) et les autoroutes A1, A104 et A3.",
+          "Nous intervenons sur site dans les quatre zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor et Tremblay-CDG.",
         ],
         methodology: [
           {
@@ -121,8 +121,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
             a: "Oui. Nous construisons des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou stack headless sur mesure), mobile-first, avec recommandations produit et recherche augmentées par l'IA. Idéal pour les enseignes du centre commercial Aéroville et les distributeurs de Paris-Nord 2.",
           },
           {
-            q: "Vous déplacez-vous sur site dans les zones d'activité de Tremblay-en-France ?",
-            a: "Oui. Nous tenons le kick-off et la recette en présentiel à Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle ou Tremblay-CDG, accessibles par le RER B (CDG Terminaux 1 et 2, Vert-Galant) et les autoroutes A1, A104 et A3. Observer vos quais et vos écrans d'exploitation est indispensable avant de coder.",
+            q: "Intervenez-vous sur site dans les zones d'activité de Tremblay-en-France ?",
+            a: "Oui. Nous tenons le kick-off et la recette en présentiel à Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle ou Tremblay-CDG. Observer vos quais et vos écrans d'exploitation est indispensable avant de coder.",
           },
           {
             q: "Sous quel délai obtient-on un devis ?",
@@ -142,7 +142,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           "Tremblay-en-France is a freight/logistics hub unique in France: Air France HQ at Roissypôle, the Aérolians Paris park (198 ha, ~250-317 companies including FedEx Express, Airbus Helicopters, Daher Aerospace and Mondial Relay) and 577 companies at Paris-Nord 2. Our AI platforms are calibrated for these express and warehousing trades.",
           "We build customer portals and tracking SaaS for freight forwarders and e-commerce warehouses: real-time parcel tracking, waybill and AWB generation, semantic search across customs documentation, multilingual conversational agents for CDG international flows.",
           "Local retail (Aéroville shopping center, ~3,000 jobs since 2013) and future occupants of the Paris-Nord Villepinte Exhibition Park (Aérolians extension, Grand Paris Express line 17) need multi-CMS e-commerce storefronts, booking and high-performance mobile catalogs.",
-          "We work on site across the four zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor and Tremblay-CDG — reachable via RER B (CDG Terminals 1 and 2, Vert-Galant) and the A1, A104 and A3 motorways.",
+          "Axion-IA works anywhere in France, on site or remotely, across the four zones — Roissypôle, Aérolians Paris, Paris-Nord 2, Garonor and Tremblay-CDG.",
         ],
         methodology: [
           {
@@ -207,8 +207,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
             a: "Yes. We build multi-CMS e-commerce stores (Shopify, WooCommerce, PrestaShop or custom headless stack), mobile-first, with AI-augmented product recommendations and search. Ideal for Aéroville shopping center brands and Paris-Nord 2 distributors.",
           },
           {
-            q: "Do you travel on site to Tremblay-en-France business zones?",
-            a: "Yes. We hold the kick-off and acceptance in person at Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle or Tremblay-CDG, reachable via RER B (CDG Terminals 1 and 2, Vert-Galant) and the A1, A104 and A3 motorways. Observing your docks and operations screens is essential before coding.",
+            q: "Do you work on site in Tremblay-en-France business zones?",
+            a: "Yes. We hold the kick-off and acceptance in person at Aérolians Paris, Paris-Nord 2, Garonor, Roissypôle or Tremblay-CDG. Observing your docks and operations screens is essential before coding.",
           },
           {
             q: "How quickly do we get a quote?",
@@ -231,8 +231,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
       a: "L'Audit sur place 4h à Tremblay-en-France démarre à {{price:audit-flash|flat}}. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
-      q: "Axion-IA se déplace-t-il à Tremblay-en-France pour des audits ?",
-      a: "Oui, Williams se déplace sur site à Tremblay-en-France (Paris-Nord 2, Roissypôle, Tremblay-CDG ou centre-ville) dans un délai de 5 jours ouvrés à compter de la signature du devis.",
+      q: "Axion-IA intervient-il à Tremblay-en-France pour des audits ?",
+      a: "Oui, Williams intervient sur site à Tremblay-en-France (Paris-Nord 2, Roissypôle, Tremblay-CDG ou centre-ville) dans un délai de 5 jours ouvrés à compter de la signature du devis.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Tremblay-en-France ?",

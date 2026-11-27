@@ -58,10 +58,21 @@ export interface PayloadAssistantV1 {
   opco: OpcoSaisie;
   formules: SaisieFormules;
   textes: TexteCopie[];
+  /**
+   * Journée IA : imprimer la garantie de remboursement (CGV art. 47.10). Devis à prix unique
+   * seulement. Miroir de la colonne `Devis.journeeIa`, qui reste la source de vérité (relue à
+   * la réouverture). Faux par défaut.
+   */
+  journeeIa: boolean;
   /** Champs de la maquette sans place dans le moteur (D1). Bornés par la taille globale. */
   nonImprime: Record<string, unknown>;
   /** Écrit par le serveur seulement : toute valeur reçue du navigateur est à ignorer. */
-  sync: { devisId: string | null; devisMajLe: string | null };
+  sync: {
+    devisId: string | null;
+    devisMajLe: string | null;
+    /** sha256 du texte des conditions particulières que l'assistant a écrit (absent = jamais écrit). */
+    conditionsSha256?: string | null;
+  };
 }
 
 export const TAILLE_MAX_PAYLOAD_OCTETS = 256 * 1024;
@@ -117,6 +128,7 @@ export function payloadVide(tvaStandardPct: number): PayloadAssistantV1 {
     opco: {},
     formules: saisieVide(tvaStandardPct),
     textes: [],
+    journeeIa: false,
     nonImprime: {},
     sync: { devisId: null, devisMajLe: null },
   };
@@ -361,8 +373,16 @@ export function lirePayload(
       opco: lireOpco(brut.opco),
       formules: lireFormules(brut.formules, TAUX_TVA_STANDARD),
       textes: lireTextes(brut.textes),
+      journeeIa: brut.journeeIa === true,
       nonImprime: estObjet(brut.nonImprime) ? { ...brut.nonImprime } : {},
-      sync: { devisId: chaineOuNull(sync.devisId), devisMajLe: chaineOuNull(sync.devisMajLe) },
+      sync: {
+        devisId: chaineOuNull(sync.devisId),
+        devisMajLe: chaineOuNull(sync.devisMajLe),
+        ...(typeof sync.conditionsSha256 === "string" &&
+        /^[0-9a-f]{64}$/.test(sync.conditionsSha256)
+          ? { conditionsSha256: sync.conditionsSha256 }
+          : {}),
+      },
     },
   };
 }

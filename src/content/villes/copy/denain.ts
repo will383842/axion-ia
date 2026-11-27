@@ -72,7 +72,7 @@ export const DENAIN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, portail de suivi de commandes, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Denain, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, portail de suivi de commandes, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const DENAIN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, portail de suivi de commandes, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Denain, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, portail de suivi de commandes, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -236,7 +236,7 @@ export const DENAIN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Denain ?",
-      a: "Oui, nous couvrons sans surcoût Douchy-les-Mines, Escaudain, Lourches, Haulchin, Haveluy, Wallers, Oisy, Wavrechain-sous-Denain ainsi que Valenciennes à 10 km.",
+      a: "Oui, nous couvrons Douchy-les-Mines, Escaudain, Lourches, Haulchin, Haveluy, Wallers, Oisy, Wavrechain-sous-Denain ainsi que Valenciennes.",
     },
     {
       q: "Vos automatisations à Denain sont-elles conformes au RGPD ?",

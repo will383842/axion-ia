@@ -16,6 +16,7 @@ import {
 import { vueFormules, type VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import { type PayloadAssistantV1 } from "./payload";
 import { payloadVersCreation } from "./conversion";
+import { texteConditionsPrixUnique } from "./conditions-prix-unique";
 import type { ErreurChamp } from "./validation-etapes";
 
 export interface ApercuAssistant {
@@ -24,6 +25,8 @@ export interface ApercuAssistant {
   classique?: {
     lignes: Array<{ designation: string; totalHtCents: number }>;
     totaux: TotauxFacture;
+    /** Montant de chaque versement du prix unique (TTC si assujetti) : même source que le PDF. */
+    phasesCents: number[];
   };
   /** EXACTEMENT ce que le PDF imprimera. */
   formules?: VueFormules;
@@ -53,6 +56,7 @@ export function calculerApercu(p: PayloadAssistantV1, ctx: ContexteApercu): Aper
     typeClient: ctx.typeClient ?? null,
     maintenant: ctx.maintenant ?? new Date(),
     tauxStandard: ctx.tauxStandard,
+    regime: ctx.regime,
     ...(ctx.automatisationsHeritees !== undefined
       ? { automatisationsHeritees: ctx.automatisationsHeritees }
       : {}),
@@ -71,6 +75,7 @@ export function calculerApercu(p: PayloadAssistantV1, ctx: ContexteApercu): Aper
       prixUnitaireHtCents: l.prixUnitaireHtCents,
     }));
     const totaux = computeTotauxFacture(lignes, ctx.regime, ctx.tauxStandard);
+    const cond = texteConditionsPrixUnique(p, totaux, ctx.regime);
     sortie.classique = {
       lignes: r.input.lignes.map((l) => ({
         designation: l.designation,
@@ -81,6 +86,7 @@ export function calculerApercu(p: PayloadAssistantV1, ctx: ContexteApercu): Aper
         ).totalHtCents,
       })),
       totaux,
+      phasesCents: "phasesCents" in cond ? cond.phasesCents : [],
     };
     return sortie;
   }

@@ -65,7 +65,7 @@ export const BIOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biot ?",
-      a: "Nos consultants interviennent directement au village de Biot ou en zone Sophia Antipolis (5 min). Accès depuis Antibes (10 min), Nice (25 min), aéroport (20 min). Formats flexibles : demi-journée audit, journée intervention, mission multi-semaines.",
+      a: "Nos consultants interviennent directement au village de Biot ou en zone Sophia Antipolis. Formats flexibles : demi-journée audit, journée intervention, mission multi-semaines.",
     },
   ],
 };

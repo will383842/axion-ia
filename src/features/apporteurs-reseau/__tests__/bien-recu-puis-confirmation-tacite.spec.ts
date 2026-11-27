@@ -63,8 +63,8 @@ vi.mock("../commissions", () => ({
   piecesVigilanceValides: vi.fn(async () => true),
   statutApresVigilance: vi.fn(async () => ({ statut: "due", demander: false })),
 }));
+vi.mock("../apercu-envoi", () => ({ apercu: vi.fn() }));
 vi.mock("../envois", () => ({
-  apercu: vi.fn(),
   avecTexteLibre: (p: Record<string, unknown>) => p,
   envoyer: vi.fn(async (e: unknown) => {
     etat.envoyes.push(e);
@@ -145,6 +145,7 @@ vi.mock("@/lib/prisma", () => {
     },
     factureFormation: { findMany: vi.fn(async () => []) },
     commissionApporteur: { findMany: vi.fn(async () => []), groupBy: vi.fn(async () => []) },
+    presentationReservation: { findMany: vi.fn(async () => []) },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     devis: { findMany: vi.fn(async () => []) },
     apporteurReseau: { findMany: vi.fn(async () => []) },

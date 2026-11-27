@@ -17,7 +17,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const generateMock = vi.fn<(...args: unknown[]) => Promise<{ output: string }>>();
+const generateMock = vi.fn<(...args: unknown[]) => Promise<{ output: string; costUsd?: number }>>();
 
 // Will 2026-07-09 : le juge tourne sur OpenAI (plus sur Claude).
 vi.mock("@/server/content-gen/providers/openai", () => ({
@@ -328,6 +328,33 @@ describe("reviewArticle — integration with openai provider", () => {
     const callArgs = generateMock.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(callArgs["userPrompt"]).toContain("Q1?");
     expect(callArgs["userPrompt"]).toContain("A1.");
+  });
+});
+
+describe("reviewArticle — coutUsd propagé", () => {
+  const art = {
+    jobId: "j-cout",
+    title: "T",
+    bodyHtml: "<p>x</p>",
+    bodyText: "Un texte. Un autre texte.",
+  };
+  it("présent sur le retour final (avec diversité linguistique)", async () => {
+    generateMock.mockResolvedValueOnce({ output: makeRawJudgeJson({ scores: {} }), costUsd: 0.07 });
+    expect((await reviewArticle(art)).coutUsd).toBe(0.07);
+  });
+  it("présent sur le retour anticipé (sans corps de texte)", async () => {
+    generateMock.mockResolvedValueOnce({ output: makeRawJudgeJson({ scores: {} }), costUsd: 0.04 });
+    const r = await reviewArticle({ jobId: "j", title: "T", bodyHtml: "" });
+    expect(r.coutUsd).toBe(0.04);
+  });
+  it("absent si le coût n'est pas un nombre fini", async () => {
+    generateMock.mockResolvedValueOnce({
+      output: makeRawJudgeJson({ scores: {} }),
+      costUsd: Number.NaN,
+    });
+    expect("coutUsd" in (await reviewArticle(art))).toBe(false);
+    generateMock.mockResolvedValueOnce({ output: makeRawJudgeJson({ scores: {} }) });
+    expect("coutUsd" in (await reviewArticle(art))).toBe(false);
   });
 });
 

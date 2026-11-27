@@ -51,7 +51,7 @@ import {
   prixAffichable,
 } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesCoreIndexableNow } from "@/content/villes/core";
+import { getVillesCitablesMaillage } from "@/content/villes/core";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 
 interface Props {
@@ -179,7 +179,7 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
     };
   });
 
-  const villes = getVillesCoreIndexableNow().slice(0, 48);
+  const villes = getVillesCitablesMaillage().slice(0, 48);
 
   return (
     <>

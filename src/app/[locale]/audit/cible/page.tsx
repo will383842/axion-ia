@@ -12,6 +12,8 @@ import {
   buildPrimaryImageOfPage,
   buildWebPageJsonLd,
 } from "@/lib/seo";
+import { TermesGlossaireLies } from "@/components/marketing/TermesGlossaireLies";
+import { termesPourOffre } from "@/content/maillage-glossaire";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Ciblé via template SSOT.
 // Remplace /audit/process (renommé selon doctrine pricing.ts AUDIT_TIERS).
@@ -72,6 +74,7 @@ export default async function AuditCiblePage({ params }: Props) {
   return (
     <>
       <AuditDetailPage tier={TIER} locale={loc} />
+      <TermesGlossaireLies locale={locale} termes={termesPourOffre("audit", "cible")} />
       <JsonLd data={webPageJsonLd} />
       {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
     </>

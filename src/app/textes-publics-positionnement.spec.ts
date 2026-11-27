@@ -27,7 +27,11 @@ import { GET as getLlms } from "./llms.txt/route";
 import { GET as getLlmsFull } from "./llms-full.txt/route";
 import { BRAND, FOUNDER } from "@/lib/brand";
 import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
-import { DESCRIPTION_SERVICE_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
+import {
+  DESCRIPTION_ENTITE_FR,
+  DESCRIPTION_SERVICE_JOURNEE_IA,
+  remplacerJetons,
+} from "@/content/journee-ia-commun";
 import { buildPersonWilliamsJsonLd } from "@/lib/seo/williams-person";
 import { WILLIAMS_LEAD, WILLIAMS_IDENTITE, WILLIAMS_PREUVES } from "@/content/equipe/williams";
 
@@ -100,7 +104,14 @@ describe("llms.txt / llms-full.txt — cible, rendez-vous, Qualiopi", () => {
     ["llms.txt", getLlms],
     ["llms-full.txt", getLlmsFull],
   ] as const)("%s : porte le message principal", async (_n, get) => {
-    expect(await (await get()).text()).toContain(POSITIONNEMENT);
+    // Depuis la refonte du 20/11/2026, le message principal des deux fichiers est la présentation
+    // officielle (`DESCRIPTION_ENTITE_FR`), en citation juste sous le titre. Le slogan des données
+    // structurées (`POSITIONNEMENT`) reste verrouillé plus bas, sur le nœud Organization.
+    const corps = await (await get()).text();
+    expect(corps.startsWith(`# Axion-IA\n\n> ${DESCRIPTION_ENTITE_FR}\n`)).toBe(true);
+    expect(DESCRIPTION_ENTITE_FR).toMatch(
+      /^Axion-IA est une entreprise française qui aide les TPE et PME/,
+    );
   });
 
   it.each([
@@ -331,10 +342,16 @@ describe("relecture Opus : accueil, régions, presse, transparence (décisions n
     expect(brutCharte).toMatch(/newsAutoPublish/);
   });
 
-  it("presse : le nœud #organization du JSON-LD n'émet que le pays", () => {
+  it("presse : ne redéfinit plus l'Organization (V1-11), elle cite l'@id ; l'adresse du layout n'émet que le pays", () => {
     const p = page("src/app/[locale]/presse/page.tsx");
     expect(p).not.toMatch(/addressLocality/);
-    expect(p).toMatch(/addressCountry:\s*"FR"/);
+    expect(p).not.toMatch(/PostalAddress/);
+    expect(p).toMatch(/about: \{ "@id": `\$\{SITE_URL\}\/#organization` \}/);
+    const seo = page("src/lib/seo.ts");
+    const debut = seo.indexOf("function buildSiegePostalAddress()");
+    const corps = seo.slice(debut, seo.indexOf("\n}\n", debut));
+    expect(corps).not.toMatch(/addressLocality/);
+    expect(corps).toMatch(/addressCountry:\s*"FR"/);
   });
 
   it("transparence, bandeau IA et blog : aucune promesse de relecture humaine systématique ou de fact-check avant publication", () => {

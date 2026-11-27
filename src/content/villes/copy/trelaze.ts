@@ -14,9 +14,9 @@ export const TRELAZE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "artisanat second & commerce détail",
   ecosystemFr:
-    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
+    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Ancrage dans le bassin d'Angers Loire Métropole.",
   ecosystemEn:
-    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
+    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Ancrage dans le bassin d'Angers Loire Métropole.",
   distancesFr:
     "Gare d'Angers Saint-Laud (TGV Paris 1h30) à 10 min tramway/bus. Aéroport Nantes Atlantique à 1h15. Accès A11/A87 via Angers en 10 min. Tramway ligne A arrêt Trélazé centre.",
   distancesEn:

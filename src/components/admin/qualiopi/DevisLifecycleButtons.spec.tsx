@@ -9,15 +9,20 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const remise = vi.fn();
+const accepter = vi.fn();
+const refuser = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
 vi.mock("@/server/actions/qualiopi/devis-remis-main-propre", () => ({
   marquerRemisEnMainPropreAction: (...a: unknown[]) => remise(...a),
 }));
 vi.mock("@/server/actions/qualiopi/devis", () => ({
   sendDevisAction: vi.fn(),
-  acceptDevisAction: vi.fn(),
-  declineDevisAction: vi.fn(),
+  acceptDevisAction: (...a: unknown[]) => accepter(...a),
+  declineDevisAction: (...a: unknown[]) => refuser(...a),
   transformDevisToConventionAction: vi.fn(),
+}));
+vi.mock("@/server/actions/qualiopi/devis-prolonger-validite", () => ({
+  prolongerValiditeDevisAction: vi.fn(),
 }));
 vi.mock("@/server/actions/qualiopi/facturation-emails", () => ({
   envoyerDevisEmailAction: vi.fn(),
@@ -76,5 +81,99 @@ describe("DevisLifecycleButtons — remis en main propre", () => {
     const src = readFileSync(path.resolve(__dirname, "DevisLifecycleButtons.tsx"), "utf8");
     expect(src).not.toMatch(/window\.confirm|\bconfirm\(/);
     expect(src).toContain("useConfirmation");
+  });
+});
+
+describe("DevisLifecycleButtons — remisEnMainPropre (I1)", () => {
+  it("masque le renvoi et l'avertissement, garde accepter, refuser et corriger", () => {
+    render(
+      <DevisLifecycleButtons
+        devisId="d"
+        statut="envoye"
+        estClassique
+        numero="N1"
+        remisEnMainPropre
+      />,
+    );
+    expect(screen.queryByText("Renvoyer par email")).toBeNull();
+    expect(screen.queryByTestId("avertissement-renvoi-lien")).toBeNull();
+    expect(screen.queryByText("Marquer accepté")).not.toBeNull();
+    expect(screen.queryByText("Marquer refusé")).not.toBeNull();
+    expect(screen.queryByText(/Corriger et renvoyer/)).not.toBeNull();
+  });
+
+  it("par défaut le renvoi reste proposé", () => {
+    render(<DevisLifecycleButtons devisId="d" statut="envoye" estClassique numero="N1" />);
+    expect(screen.queryByText("Renvoyer par email")).not.toBeNull();
+  });
+});
+
+describe("DevisLifecycleButtons — confirmations et rôles (accepter / refuser)", () => {
+  const rendre = (extra: Partial<React.ComponentProps<typeof DevisLifecycleButtons>> = {}) =>
+    render(
+      <DevisLifecycleButtons devisId="d" statut="envoye" estClassique numero="AXI-7" {...extra} />,
+    );
+
+  it("« Marquer accepté » : confirmation avant l'action, annuler n'appelle rien", async () => {
+    accepter.mockResolvedValue({ data: { id: "d" } });
+    rendre();
+    await userEvent.click(screen.getByText("Marquer accepté"));
+    expect(accepter).not.toHaveBeenCalled();
+    expect(screen.getByText("Marquer le devis AXI-7 accepté ?")).toBeTruthy();
+    expect(
+      screen.getByText(
+        "À faire seulement si le client a signé le devis papier ou donné son accord écrit. La fiche passe client et la suite est lancée.",
+      ),
+    ).toBeTruthy();
+    await userEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    expect(accepter).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByText("Marquer accepté"));
+    await userEvent.click(screen.getByRole("button", { name: "Marquer accepté" }));
+    expect(accepter).toHaveBeenCalledTimes(1);
+    expect(accepter).toHaveBeenCalledWith("d");
+  });
+
+  it("« Marquer refusé » : confirmation avant l'action, annuler n'appelle rien", async () => {
+    refuser.mockResolvedValue({ data: { id: "d" } });
+    rendre();
+    await userEvent.click(screen.getByText("Marquer refusé"));
+    expect(refuser).not.toHaveBeenCalled();
+    expect(screen.getByText("Marquer le devis AXI-7 refusé ?")).toBeTruthy();
+    expect(
+      screen.getByText("Le lien de signature envoyé au client est désactivé immédiatement."),
+    ).toBeTruthy();
+    await userEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    expect(refuser).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByText("Marquer refusé"));
+    await userEvent.click(screen.getByRole("button", { name: "Marquer refusé" }));
+    expect(refuser).toHaveBeenCalledTimes(1);
+  });
+
+  it("peutConclure=false : pas de « Marquer accepté », les autres boutons restent", () => {
+    rendre({ peutConclure: false });
+    expect(screen.queryByText("Marquer accepté")).toBeNull();
+    expect(screen.queryByText("Marquer refusé")).not.toBeNull();
+  });
+
+  it("peutEcrire=false : aucun bouton d'écriture", () => {
+    rendre({ peutEcrire: false });
+    for (const t of ["Marquer accepté", "Marquer refusé", "Renvoyer par email"]) {
+      expect(screen.queryByText(t)).toBeNull();
+    }
+    expect(screen.queryByText(/Corriger et renvoyer/)).toBeNull();
+  });
+
+  it("peutEcrire=false sur un brouillon : ni envoi ni remise en main propre", () => {
+    render(
+      <DevisLifecycleButtons
+        devisId="d"
+        statut="brouillon"
+        estClassique
+        destinataire="a@b.fr"
+        peutEcrire={false}
+      />,
+    );
+    expect(screen.queryByText("Envoyer au client")).toBeNull();
+    expect(screen.queryByText(BOUTON)).toBeNull();
   });
 });

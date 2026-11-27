@@ -172,7 +172,7 @@ export async function handleTurn(
     return {
       ...base,
       intent: "explication",
-      text: "Axion-IA ne propose pas de financement ; parlons-en lors du Diagnostic IA gratuit de 45 minutes, sans engagement :",
+      text: "Axion-IA ne propose pas de financement ; parlons-en lors du Diagnostic IA de 45 minutes, sans engagement :",
       cards: [],
       sendLinks: false,
       rdvUrl: RDV_URL,
@@ -267,7 +267,7 @@ export async function handleTurn(
       return {
         ...base,
         intent,
-        text: "Avec plaisir — vous pouvez réserver un échange découverte ici :",
+        text: "Avec plaisir — vous pouvez réserver un Diagnostic IA, 45 min, ici :",
         cards: [],
         sendLinks: false,
         rdvUrl: RDV_URL,
@@ -447,7 +447,7 @@ export async function handleTurn(
         return {
           intent: "explication",
           text: doctrine
-            ? "Je préfère vous orienter vers un échange plutôt que d'avancer une information imprécise. Réservez votre Diagnostic IA gratuit de 45 minutes, sans engagement :"
+            ? "Je préfère vous orienter vers un échange plutôt que d'avancer une information imprécise. Réservez votre Diagnostic IA de 45 minutes, sans engagement :"
             : "Je préfère ne pas avancer une information incertaine. Voici un échange pour en parler précisément :",
           cards: [],
           sendLinks: false,

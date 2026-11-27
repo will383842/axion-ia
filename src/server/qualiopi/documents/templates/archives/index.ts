@@ -30,7 +30,7 @@
 
 import type React from "react";
 
-import type { TypeGabaritSignable } from "../gabarit-versions";
+import type { TypeGabaritFormation, TypeGabaritSignable } from "../gabarit-versions";
 import { ConventionPdf as ConventionPdfV2 } from "./convention.v2";
 import { ConventionTripartitePdf as ConventionTripartitePdfV2 } from "./convention-tripartite.v2";
 import { ConventionPdf as ConventionPdfV3 } from "./convention.v3";
@@ -41,10 +41,28 @@ import { DevisPdf as DevisPdfV1 } from "./devis.v1";
 import { DevisPdf as DevisPdfV2 } from "./devis.v2";
 import { DevisPdf as DevisPdfV3 } from "./devis.v3";
 import { DevisPdf as DevisPdfV4 } from "./devis.v4";
+import { DevisPdf as DevisPdfV5 } from "./devis.v5";
 import { ConventionTripartitePdf as ConventionTripartitePdfV4 } from "./convention-tripartite.v4";
 import { ConventionTripartitePdf as ConventionTripartitePdfV5 } from "./convention-tripartite.v5";
 import { ContratFormationPdf as ContratFormationPdfV1 } from "./contrat-formation.v1";
+import { ContratFormationPdf as ContratFormationPdfV2 } from "./contrat-formation.v2";
+import { ConventionPdf as ConventionPdfV6 } from "./convention.v6";
+import { ConventionPdf as ConventionPdfV7 } from "./convention.v7";
+import { ConventionPdf as ConventionPdfV8 } from "./convention.v8";
+import { ConventionPdf as ConventionPdfV9 } from "./convention.v9";
+import { ConventionPdf as ConventionPdfV10 } from "./convention.v10";
+import { ConventionPdf as ConventionPdfV11 } from "./convention.v11";
+import { ConventionTripartitePdf as ConventionTripartitePdfV9 } from "./convention-tripartite.v9";
+import { ConventionTripartitePdf as ConventionTripartitePdfV8 } from "./convention-tripartite.v8";
+import { ConventionTripartitePdf as ConventionTripartitePdfV7 } from "./convention-tripartite.v7";
+import { ConventionTripartitePdf as ConventionTripartitePdfV6 } from "./convention-tripartite.v6";
 import { ReleveConnexionPdf as ReleveConnexionPdfV1 } from "./releve-connexion.v1";
+import { ProgrammeFormationPdf as ProgrammeFormationPdfV1 } from "./programme-formation.v1";
+import { ConvocationPdf as ConvocationPdfV1 } from "./convocation.v1";
+import { AttestationPdf as AttestationPdfV1 } from "./attestation.v1";
+import { AttestationPartiellePdf as AttestationPartiellePdfV1 } from "./attestation-partielle.v1";
+import { CertificatRealisationPdf as CertificatRealisationPdfV1 } from "./certificat-realisation.v1";
+import { FacturePdf as FacturePdfV1 } from "./facture.v1";
 
 export type ComposantPiece = React.ComponentType<{ data: never; identite?: never }>;
 
@@ -62,6 +80,18 @@ export const GABARITS_ARCHIVES: Readonly<
     3: { fichier: "convention.v3.tsx", Composant: ConventionPdfV3 as unknown as ComposantPiece },
     4: { fichier: "convention.v4.tsx", Composant: ConventionPdfV4 as unknown as ComposantPiece },
     5: { fichier: "convention.v5.tsx", Composant: ConventionPdfV5 as unknown as ComposantPiece },
+    6: { fichier: "convention.v6.tsx", Composant: ConventionPdfV6 as unknown as ComposantPiece },
+    7: { fichier: "convention.v7.tsx", Composant: ConventionPdfV7 as unknown as ComposantPiece },
+    8: { fichier: "convention.v8.tsx", Composant: ConventionPdfV8 as unknown as ComposantPiece },
+    9: { fichier: "convention.v9.tsx", Composant: ConventionPdfV9 as unknown as ComposantPiece },
+    10: {
+      fichier: "convention.v10.tsx",
+      Composant: ConventionPdfV10 as unknown as ComposantPiece,
+    },
+    11: {
+      fichier: "convention.v11.tsx",
+      Composant: ConventionPdfV11 as unknown as ComposantPiece,
+    },
   },
   convention_tripartite: {
     2: {
@@ -80,17 +110,38 @@ export const GABARITS_ARCHIVES: Readonly<
       fichier: "convention-tripartite.v5.tsx",
       Composant: ConventionTripartitePdfV5 as unknown as ComposantPiece,
     },
+    6: {
+      fichier: "convention-tripartite.v6.tsx",
+      Composant: ConventionTripartitePdfV6 as unknown as ComposantPiece,
+    },
+    7: {
+      fichier: "convention-tripartite.v7.tsx",
+      Composant: ConventionTripartitePdfV7 as unknown as ComposantPiece,
+    },
+    8: {
+      fichier: "convention-tripartite.v8.tsx",
+      Composant: ConventionTripartitePdfV8 as unknown as ComposantPiece,
+    },
+    9: {
+      fichier: "convention-tripartite.v9.tsx",
+      Composant: ConventionTripartitePdfV9 as unknown as ComposantPiece,
+    },
   },
   devis: {
     1: { fichier: "devis.v1.tsx", Composant: DevisPdfV1 as unknown as ComposantPiece },
     2: { fichier: "devis.v2.tsx", Composant: DevisPdfV2 as unknown as ComposantPiece },
     3: { fichier: "devis.v3.tsx", Composant: DevisPdfV3 as unknown as ComposantPiece },
     4: { fichier: "devis.v4.tsx", Composant: DevisPdfV4 as unknown as ComposantPiece },
+    5: { fichier: "devis.v5.tsx", Composant: DevisPdfV5 as unknown as ComposantPiece },
   },
   contrat_formation: {
     1: {
       fichier: "contrat-formation.v1.tsx",
       Composant: ContratFormationPdfV1 as unknown as ComposantPiece,
+    },
+    2: {
+      fichier: "contrat-formation.v2.tsx",
+      Composant: ContratFormationPdfV2 as unknown as ComposantPiece,
     },
   },
   releve_connexion: {
@@ -99,9 +150,54 @@ export const GABARITS_ARCHIVES: Readonly<
       Composant: ReleveConnexionPdfV1 as unknown as ComposantPiece,
     },
   },
+  facture: {
+    1: { fichier: "facture.v1.tsx", Composant: FacturePdfV1 as unknown as ComposantPiece },
+  },
 };
 
 /** Composant archivé d'une version donnée, ou `null` s'il n'a pas été conservé. */
 export function gabaritArchive(type: TypeGabaritSignable, version: number): ComposantPiece | null {
   return GABARITS_ARCHIVES[type]?.[version]?.Composant ?? null;
+}
+
+/**
+ * Pièces de formation NON signables (programme, convocation, attestations, certificat) :
+ * leur v1 est conservée ici pour re-rendre à l'identique une pièce émise avant le passage à la
+ * charte 2027. Même règle que ci-dessus : une archive ne se modifie jamais.
+ */
+export const GABARITS_ARCHIVES_FORMATION: Readonly<
+  Record<TypeGabaritFormation, Readonly<Record<number, GabaritArchive>>>
+> = {
+  programme: {
+    1: {
+      fichier: "programme-formation.v1.tsx",
+      Composant: ProgrammeFormationPdfV1 as unknown as ComposantPiece,
+    },
+  },
+  convocation: {
+    1: { fichier: "convocation.v1.tsx", Composant: ConvocationPdfV1 as unknown as ComposantPiece },
+  },
+  attestation: {
+    1: { fichier: "attestation.v1.tsx", Composant: AttestationPdfV1 as unknown as ComposantPiece },
+  },
+  attestation_partielle: {
+    1: {
+      fichier: "attestation-partielle.v1.tsx",
+      Composant: AttestationPartiellePdfV1 as unknown as ComposantPiece,
+    },
+  },
+  certificat: {
+    1: {
+      fichier: "certificat-realisation.v1.tsx",
+      Composant: CertificatRealisationPdfV1 as unknown as ComposantPiece,
+    },
+  },
+};
+
+/** Composant archivé d'une pièce de formation non signable, ou `null` s'il n'a pas été conservé. */
+export function gabaritArchiveFormation(
+  type: TypeGabaritFormation,
+  version: number,
+): ComposantPiece | null {
+  return GABARITS_ARCHIVES_FORMATION[type][version]?.Composant ?? null;
 }

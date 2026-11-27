@@ -49,7 +49,7 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vern-sur-Seiche et au sud-est de Rennes ?",
-      a: "Oui, Axion-IA intervient à Vern-sur-Seiche et dans tout le sud-est rennais (Cesson-Sévigné, Chantepie, Noyal-Châtillon-sur-Seiche, Châteaugiron). Rennes centre à 15 min en voiture.",
+      a: "Oui, Axion-IA intervient à Vern-sur-Seiche et dans tout le sud-est rennais (Cesson-Sévigné, Chantepie, Noyal-Châtillon-sur-Seiche, Châteaugiron).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Vern-sur-Seiche  ?",
@@ -64,8 +64,8 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
       a: "Oui, devis automatisés, planning chantiers, suivi clients, gestion stocks, fidélisation locale, présence Google Business Profile pour artisans, commerçants et services de proximité.",
     },
     {
-      q: "Comment accéder à Vern-sur-Seiche depuis Rennes ?",
-      a: "Vern-sur-Seiche est à 15 min de Rennes en voiture (rocade sud-est). Gare TGV Rennes à 20 min, aéroport Rennes-Saint-Jacques à 15 min.",
+      q: "Comment se déroule une mission à Vern-sur-Seiche ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vern-sur-Seiche, comme partout en France, ou à distance.",
     },
   ],
 };

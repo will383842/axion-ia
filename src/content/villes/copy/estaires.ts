@@ -65,7 +65,7 @@ export const ESTAIRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Estaires ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Estaires, comme partout en France, ou à distance.",
     },
   ],
 };

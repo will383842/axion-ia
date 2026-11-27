@@ -17,8 +17,19 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     devis: { findUnique: d.findUnique },
     documentGenere: { findUnique: d.docFindUnique },
+    // B2 PR 4 : aucun e-mail de devis n'attend (garde « déjà garé »).
+    emailOutbox: { findFirst: async () => null },
+    // Verrou consultatif « xact » : toujours obtenu dans ces cas à un seul appel.
+    $transaction: async (f: (t: unknown) => unknown) =>
+      f({
+        $queryRaw: async () => [{ locked: true }],
+        activityLog: { findFirst: async () => null },
+        emailOutbox: { findFirst: async () => null },
+      }),
   },
 }));
+// B2 PR 4 : ces cas éprouvent le chemin « auto » (jeton créé à l'envoi), inchangé.
+vi.mock("@/server/email/outbox-service", () => ({ resoudreMode: async () => "auto" }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => d.enqueueEmail(...a),
 }));

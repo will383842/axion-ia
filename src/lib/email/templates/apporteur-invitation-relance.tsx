@@ -27,6 +27,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
+import { salutation } from "../salutation";
 import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -38,6 +39,11 @@ interface Payload {
   etape?: string;
   /** Titre de l'offre d'emploi (variante `offre`, cf. l'invitation). Présent, même vide : variante. */
   offreEmploi?: string;
+  /**
+   * Saisie manuelle seulement (même forme que l'invitation). `indirecte` : la personne
+   * n'a pas candidaté, « candidature retenue » serait faux. Absent : texte d'origine.
+   */
+  provenance?: { mode?: unknown; libelle?: unknown };
 }
 
 export const COPY_RELANCE_INVITATION = {
@@ -69,6 +75,19 @@ export const COPY_RELANCE_INVITATION = {
       dernier
         ? "Notre dernier message à ce sujet : l'échange de 15 minutes en visio reste ouvert."
         : "Il ne reste qu'à choisir le moment de notre échange de 15 minutes sur le réseau d'apporteurs d'affaires.",
+    // Variante `indirecte` : adresse reçue d'ailleurs, aucune candidature.
+    subjectIndirecte: (dernier: boolean) =>
+      dernier
+        ? "Dernier rappel : l'échange sur le réseau"
+        : "Votre échange sur le réseau vous attend",
+    previewIndirecte: (dernier: boolean) =>
+      dernier
+        ? "Notre dernier message à ce sujet : l'échange de 15 minutes en visio reste ouvert."
+        : "Il ne reste qu'à choisir le moment de notre échange de 15 minutes, si vous le souhaitez.",
+    j3Indirecte: (n: string) =>
+      `${salutation({ prenom: n }, "fr")} nous aimerions échanger avec vous sur le réseau d'apporteurs Axion IA. Si cela vous intéresse, choisissez le moment de notre échange de 15 minutes en visio, en un clic avec le bouton ci-dessous.`,
+    j7Indirecte: (n: string) =>
+      `${salutation({ prenom: n }, "fr")} c'est notre dernier message à ce sujet : nous aimerions échanger avec vous sur le réseau d'apporteurs Axion IA, et l'échange de 15 minutes en visio reste ouvert. Si ce n'est pas le bon moment, aucun souci : sans réservation de votre part, nous ne vous relancerons plus.`,
     j3Offre: (n: string, o: string) =>
       `${n ? `Bonjour ${n}, suite` : "Bonjour, suite"} à votre candidature ${o ? `à notre offre « ${o} »` : "à l'une de nos offres d'emploi"}, nous vous avons proposé de découvrir aussi notre réseau d'apporteurs d'affaires indépendants. Si la proposition vous intéresse, il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio, en un clic avec le bouton ci-dessous.`,
     j7Offre: (n: string, o: string) =>
@@ -98,6 +117,16 @@ export const COPY_RELANCE_INVITATION = {
       dernier
         ? "Our last message on the subject: the 15-minute video call remains open."
         : "All that is left is to pick the time of our 15-minute call about the business introducer network.",
+    subjectIndirecte: (dernier: boolean) =>
+      dernier ? "Last reminder: the network call" : "Your call about the network awaits",
+    previewIndirecte: (dernier: boolean) =>
+      dernier
+        ? "Our last message on the subject: the 15-minute video call remains open."
+        : "All that is left is to pick the time of our 15-minute call, if you wish.",
+    j3Indirecte: (n: string) =>
+      `${salutation({ prenom: n }, "en")} we would like to talk with you about the Axion IA business introducer network. If you are interested, choose the time of our 15-minute video call, in one click with the button below.`,
+    j7Indirecte: (n: string) =>
+      `${salutation({ prenom: n }, "en")} this is our last message on the subject: we would still like to talk with you about the Axion IA business introducer network, and the 15-minute video call remains open. If now is not the right time, no problem: without a booking from you, we will not remind you again.`,
     j3Offre: (n: string, o: string) =>
       `${n ? `Hello ${n}, following` : "Hello, following"} your application ${o ? `to our “${o}” opening` : "to one of our job openings"}, we offered you to also discover our network of independent business introducers. If the proposal interests you, all that is left is to choose the time of our 15-minute video call, in one click with the button below.`,
     j7Offre: (n: string, o: string) =>
@@ -115,12 +144,19 @@ function lireOffre(p: Record<string, unknown>): string | null {
   return typeof o === "string" ? o.trim() : null;
 }
 
+/** `true` si la personne a été saisie à la main et que son adresse vient d'ailleurs (mode `indirecte`). */
+function estIndirecte(p: Record<string, unknown>): boolean {
+  const pr = p["provenance"];
+  return !!pr && typeof pr === "object" && (pr as { mode?: unknown }).mode === "indirecte";
+}
+
 export const apporteurInvitationRelanceSubject = (
   locale: Locale,
   p: Record<string, unknown>,
 ): string => {
   const t = COPY_RELANCE_INVITATION[locale === "fr" ? "fr" : "en"];
-  return lireOffre(p) !== null ? t.subjectOffre(estDernier(p)) : t.subject(estDernier(p));
+  if (lireOffre(p) !== null) return t.subjectOffre(estDernier(p));
+  return estIndirecte(p) ? t.subjectIndirecte(estDernier(p)) : t.subject(estDernier(p));
 };
 
 export function ApporteurInvitationRelanceEmail({
@@ -135,18 +171,29 @@ export function ApporteurInvitationRelanceEmail({
   const dernier = estDernier(payload);
   const prenom = (p.contactName ?? "").trim().split(/\s+/)[0] ?? "";
   const offre = lireOffre(payload);
+  const indirecte = offre === null && estIndirecte(payload);
   const texte =
     offre !== null
       ? dernier
         ? t.j7Offre(prenom, offre)
         : t.j3Offre(prenom, offre)
-      : dernier
-        ? t.j7(prenom)
-        : t.j3(prenom);
+      : indirecte
+        ? dernier
+          ? t.j7Indirecte(prenom)
+          : t.j3Indirecte(prenom)
+        : dernier
+          ? t.j7(prenom)
+          : t.j3(prenom);
   return (
     <EmailLayout
       famille="B"
-      preview={offre !== null ? t.previewOffre(dernier) : t.preview(dernier)}
+      preview={
+        offre !== null
+          ? t.previewOffre(dernier)
+          : indirecte
+            ? t.previewIndirecte(dernier)
+            : t.preview(dernier)
+      }
       title={t.title(dernier)}
       // 2026-10-05 : NOTRE page de réservation quand l'adresse est celle de
       // l'échange apporteur, l'adresse reçue sinon (`lien-du-site.ts`).

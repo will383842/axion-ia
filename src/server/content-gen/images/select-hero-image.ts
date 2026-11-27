@@ -28,12 +28,20 @@
  */
 
 import { assignHeroImage, type AssignHeroImageInput } from "./assign-hero-image";
-import { unsplashProvider, type UnsplashSelectedPhoto } from "../providers/unsplash";
+import {
+  findQualityUnsplashPhoto,
+  unsplashProvider,
+  type UnsplashSelectedPhoto,
+} from "../providers/unsplash";
+import { buildTopic, imageQualityEnabled } from "./photo-quality";
+import { loadUsedPhotoKeys, makePhotoGate } from "./used-photos";
 
 export interface SelectHeroImageInput extends AssignHeroImageInput {
   /** Pour la traçabilité cost/audit du provider Unsplash. */
   readonly jobId: string;
   readonly contentType: string;
+  /** Simulation : ne réserve aucune photo (aperçu du rattrapage). */
+  readonly dryRun?: boolean;
 }
 
 export interface SelectedHero {
@@ -136,7 +144,62 @@ async function tryUnsplash(
  * → requête générique. Garantit qu'un article a quasi toujours une photo (le
  * mot-clé brut échouait sur ~1 article/lot, ex. titre avec nom de région).
  */
+/**
+ * Règles qualité (CONTENT_IMAGES_QUALITE actif) : cascade spécifique → court →
+ * générique, chaque étape = 1 recherche de 20 résultats, photo jamais déjà
+ * utilisée (autre article ou corps), pertinente et de bonne taille. Rien de
+ * pertinent → null (hero_image_pending), JAMAIS de photo hors sujet. La requête
+ * générique est notée sur ses propres mots mais respecte le même anti-doublon.
+ */
+async function selectHeroQuality(input: SelectHeroImageInput): Promise<SelectedHero | null> {
+  if (!process.env.UNSPLASH_ACCESS_KEY) return null;
+  const base = buildUnsplashQuery(input);
+  const raw: string[] = [];
+  if (base) {
+    raw.push(base);
+    const broad = broadenQuery(base);
+    if (broad) raw.push(broad);
+  }
+  raw.push(GENERIC_FALLBACK_QUERY);
+
+  let accept: (url: string) => Promise<boolean>;
+  try {
+    accept = makePhotoGate(await loadUsedPhotoKeys(), { reserve: input.dryRun !== true });
+  } catch {
+    return null; // mémoire des doublons illisible → image en attente plutôt qu'un doublon
+  }
+
+  const tried = new Set<string>();
+  for (const r of raw) {
+    const { query, terms } = buildTopic(r);
+    if (!query || tried.has(query)) continue;
+    tried.add(query);
+    try {
+      const photo = await findQualityUnsplashPhoto({ jobId: input.jobId, query, terms, accept });
+      if (photo?.hotlinkUrl && photo.attribution?.photographer) {
+        return {
+          source: "unsplash",
+          url: photo.hotlinkUrl,
+          alt: photo.alt || query,
+          assetId: null,
+          photographerName: photo.attribution.photographer,
+          photographerUrl: photo.attribution.photographerUrl,
+        };
+      }
+    } catch {
+      // provider désactivé / rate-limit / réseau → requête suivante.
+    }
+  }
+  return null;
+}
+
 export async function selectHeroImage(input: SelectHeroImageInput): Promise<SelectedHero | null> {
+  if (imageQualityEnabled()) {
+    const quality = await selectHeroQuality(input);
+    if (quality) return quality;
+    // Unsplash uniquement : pas de repli image-bank sauf opt-in explicite (inchangé).
+    return bankFallback(input);
+  }
   const base = buildUnsplashQuery(input);
   const candidates: string[] = [];
   if (base) {
@@ -160,6 +223,10 @@ export async function selectHeroImage(input: SelectHeroImageInput): Promise<Sele
   // `hero_image_pending` (assignation manuelle) et la page rend simplement sans
   // image (pas de régression). Le fallback image-bank reste réactivable sans
   // redéploiement via `HERO_IMAGE_BANK_FALLBACK=true` (réversibilité).
+  return bankFallback(input);
+}
+
+async function bankFallback(input: SelectHeroImageInput): Promise<SelectedHero | null> {
   if (process.env.HERO_IMAGE_BANK_FALLBACK !== "true") return null;
 
   const bank = await assignHeroImage(input);

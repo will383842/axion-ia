@@ -39,6 +39,10 @@ const base = {
   livreAt: null,
 };
 
+// L'action de versement du scan papier tire next-auth : la fiche ne fait que la transmettre.
+vi.mock("@/server/actions/qualiopi/devis-scan-papier", () => ({
+  verserScanDevisSigneAction: vi.fn(),
+}));
 vi.mock("@/server/auth/garde-page", () => ({
   gardePage: () => Promise.resolve({ autorise: true, role: "admin", peutEcrire: true }),
 }));
@@ -48,8 +52,16 @@ vi.mock("@/server/qualiopi/crm/devis", () => ({
 vi.mock("@/server/qualiopi/crm/clients", () => ({
   getClient: () => Promise.resolve({ id: "c1", raisonSociale: "Client fictif" }),
 }));
+vi.mock("@/server/actions/qualiopi/devis-delai-client", () => ({
+  demanderDelaiClientAction: vi.fn(),
+  leverDelaiClientAction: vi.fn(),
+}));
+vi.mock("@/server/actions/qualiopi/devis-prolonger-validite", () => ({
+  prolongerValiditeDevisAction: vi.fn(),
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    devis: { findFirst: () => Promise.resolve(null) },
     factureFormation: { findMany: () => Promise.resolve([]) },
     documentSignature: {
       findMany: () =>
@@ -70,6 +82,7 @@ vi.mock("@/lib/prisma", () => ({
         ),
     },
     planRecurrent: { count: () => Promise.resolve(0) },
+    emailOutbox: { findFirst: () => Promise.resolve(null) },
   },
 }));
 vi.mock("@/server/qualiopi/financements/etat-fonds-opco-lecture", () => ({
@@ -89,6 +102,13 @@ vi.mock("@/features/apporteurs-reseau/etablissement-presentation", () => ({
 }));
 vi.mock("@/server/qualiopi/devis/confirmation-commande", () => ({
   etatConfirmationCommande: () => Promise.resolve(etat.confirmation),
+}));
+// Chaîne du devis : la relance (action serveur) et la lecture d'horodatage ne sont pas l'objet de ce test.
+vi.mock("@/features/dossier-client/fiche/actions-relance-devis", () => ({
+  preparerRelanceDevisAction: vi.fn(),
+}));
+vi.mock("@/server/qualiopi/documents/signature/lire-horodatages", () => ({
+  lireHorodatagesDeSignatures: vi.fn(async () => []),
 }));
 vi.mock("@/server/actions/qualiopi/piece-signature", () => ({
   contresignerPieceAction: vi.fn(),

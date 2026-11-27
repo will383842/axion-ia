@@ -327,7 +327,8 @@ describe("🔴 ouvert : le sitemap, l'index et llms.txt citent la route", () => 
     const llms = sansCommentaires(lire("src/app/llms.txt/route.ts"));
     expect(llms).toMatch(/const sectionTour = TOUR_PUBLIC\s*\?/);
     expect(lire("src/app/robots.ts")).not.toMatch(/tour-?(de-?)?france/);
-    expect(lire("src/app/llms.txt/route.ts")).toContain("## Tour France IA");
+    // Depuis la refonte du 20/11/2026, le Tour est une ligne de la section « Optional ».
+    expect(lire("src/app/llms.txt/route.ts")).toContain("- [Tour France IA](");
   });
 });
 
@@ -441,10 +442,10 @@ describe("🔴 la page n'embarque rien de la coquille d'Axion", () => {
   });
 });
 
-/** La section « Tour France IA » de llms.txt, seule : le reste du fichier parle d'autres offres. */
+/** La ligne « Tour France IA » de llms.txt, seule : le reste du fichier parle d'autres offres. */
 function sectionTourLlms(): string {
   const llms = lire("src/app/llms.txt/route.ts");
-  const debut = llms.indexOf("## Tour France IA");
+  const debut = llms.indexOf("- [Tour France IA](");
   expect(debut).toBeGreaterThan(-1);
   return llms.slice(debut, llms.indexOf("`", debut));
 }
@@ -555,8 +556,8 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     );
   });
 
-  it("🔴 l'AI Act dit avec prudence : « aide à répondre », jamais d'obligation ni de conformité promise", () => {
-    expect(texte).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
+  it("🔴 l'AI Act dit avec prudence : « l’une des mesures possibles au titre de l’article 4 », jamais d'obligation ni de conformité promise", () => {
+    expect(texte).toMatch(/l’une des mesures possibles au titre de l’article 4 de l’AI Act/);
     expect(texte).not.toMatch(
       /obligatoire|obligation|certifi|attestation|conforme à l|conforme (à l[’'])?AI Act|en conformit[ée] totale|garanti/i,
     );
@@ -643,7 +644,7 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     expect(description).toMatch(
       /formation de 4 h de leur équipe, en intra-entreprise et en présentiel/,
     );
-    expect(description).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
+    expect(description).toMatch(/l’une des mesures possibles au titre de l’article 4 de l’AI Act/);
     expect(description).toMatch(/une ville s’ouvre dès 5 demandes/);
     expect(description).toMatch(/offerte aux 5 entreprises retenues par ville/);
     expect(description).toMatch(/en échange d’un podcast/);

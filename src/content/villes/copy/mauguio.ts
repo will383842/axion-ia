@@ -49,7 +49,7 @@ export const MAUGUIO_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mauguio près de Montpellier ?",
-      a: "Oui, Axion-IA intervient à Mauguio et dans toute l'agglomération de Montpellier est. Consultants accessibles via l'aéroport Montpellier-Méditerranée (5 min) et la gare TGV Montpellier-Saint-Roch (20 min).",
+      a: "Oui, Axion-IA intervient à Mauguio et dans toute l'agglomération de Montpellier est.",
     },
     {
       q: "Combien coûte un audit IA à Mauguio  ?",
@@ -65,7 +65,7 @@ export const MAUGUIO_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mauguio ?",
-      a: "Nos consultants interviennent sur site à Mauguio et dans l'agglo Montpellier est. Déplacement direct dans votre entreprise. Aéroport Montpellier-Méditerranée à 5 min, gare TGV Montpellier à 20 min.",
+      a: "Nos consultants interviennent sur site à Mauguio et dans l'agglo Montpellier est. Déplacement direct dans votre entreprise.",
     },
   ],
 };

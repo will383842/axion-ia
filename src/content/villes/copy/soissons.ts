@@ -58,7 +58,7 @@ export const SOISSONS_COPY: VilleCopy = {
           "La filière betteravière soissonnaise (Cristal Union, Tereos) traverse une chute des prps du sucre d'environ 40 % et une rémunération betterave passée de 41,44 €/t à une fourchette 30-35 €/t : les coopératives et industries de transformation ont besoin de portails de suivi des contrats, des tonnages livrés et de la traçabilité — pas de gadgets, des outils qui sécurisent la marge.",
           "La ZA Le Plateau à Courmelles concentre des acteurs comme OREXAD (distribution de fournitures industrielles), HBS WICONA (laquage aluminium et logistique), HOUTCT (transport) ou BASTIDE (matériel médical) : autant de besoins e-commerce B2B, de configurateurs de devis et de suivi de livraison que nous savons bâtir avec un moteur IA de recherche produit et de génération de devis.",
           "SCAL, fabricant de produits alimentaires pour pizzas implanté sur Le Plateau, illustre l'agroalimentaire local : pour ces transformateurs, nous développons des plateformes de prise de commande, de fiches techniques et de traçabilité lot par lot, avec assistants IA pour répondre aux clients professionnels.",
-          "Le bassin de Soissons recherche en priorité, selon France Travail 2024, des arboriculteurs, maraîchers et ouvriers de la plasturgie/chimie : producteurs de la vallée de l'Aisne, plasturgistes et commerces du centre historique sont nos cibles directes pour des vitrines, des prises de rendez-vous et de la vente en ligne dotées d'IA.",
+          "Le bassin de Soissons recherche en priorité, selon l’enquête nationale de recrutement 2024, des arboriculteurs, maraîchers et ouvriers de la plasturgie/chimie : producteurs de la vallée de l'Aisne, plasturgistes et commerces du centre historique sont nos cibles directes pour des vitrines, des prises de rendez-vous et de la vente en ligne dotées d'IA.",
         ],
         methodology: [
           {
@@ -120,7 +120,7 @@ export const SOISSONS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous pour les entreprises de la zone d'activités Le Plateau à Courmelles ?",
-            a: "Oui. La ZA Le Plateau (180 ha, près de 580 salariés, labellisée site industriel clés en main) regroupe des distributeurs et industriels comme OREXAD, HBS WICONA, HOUTCT ou BASTIDE. Pour ce type d'acteurs B2B, nous développons des catalogues en ligne, des configurateurs de devis et des espaces clients dotés de recherche produit et de génération de devis par IA.",
+            a: "Oui. La ZA Le Plateau, avec 180 ha, près de 580 salariés et un label de site industriel clés en main, regroupe des distributeurs et industriels comme OREXAD, HBS WICONA, HOUTCT ou BASTIDE. Pour ce type d'acteurs B2B, nous développons des catalogues en ligne, des configurateurs de devis et des espaces clients dotés de recherche produit et de génération de devis par IA.",
           },
           {
             q: "Quel délai pour un devis sur mon projet de site ou SaaS à Soissons ?",
@@ -144,7 +144,7 @@ export const SOISSONS_COPY: VilleCopy = {
           "The Soissons beet sector (Cristal Union, Tereos) is weathering a roughly 40% drop in sugar prices and a beet price falling from €41.44/t toward a €30-35/t range: cooperatives and processing plants need portals to track contracts, delivered tonnage and traceability — no gadgets, tools that protect the margin.",
           "The Le Plateau park in Courmelles concentrates players such as OREXAD (industrial-supply distribution), HBS WICONA (aluminium lacquering and logistics), HOUTCT (transport) and BASTIDE (medical equipment): B2B e-commerce, quote configurators and delivery tracking that we build with an AI product-search and quote-generation engine.",
           "SCAL, a maker of food products for pizzas based on Le Plateau, illustrates the local agri-food base: for such processors we develop order-intake platforms, technical data sheets and batch-by-batch traceability, with AI assistants to answer professional customers.",
-          "Per France Travail's 2024 hiring survey, the Soissons basin most seeks arborists, market gardeners and plastics/chemicals workers: Aisne-valley growers, plastics firms and historic-centre retailers are our direct targets for AI-enabled storefronts, booking and online sales.",
+          "Per the 2024 national hiring survey, the Soissons basin most seeks arborists, market gardeners and plastics/chemicals workers: Aisne-valley growers, plastics firms and historic-centre retailers are our direct targets for AI-enabled storefronts, booking and online sales.",
         ],
         methodology: [
           {

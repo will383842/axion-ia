@@ -228,7 +228,7 @@ export const VINCENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vincennes et dans l'est parisien ?",
-      a: "Oui, nous intervenons à Vincennes (94) et dans les communes limitrophes : Saint-Mandé, Fontenay-sous-Bois, Montreuil et Paris (12e et 20e). Accès rapide métro ligne 1, RER A ou en visio.",
+      a: "Oui, nous intervenons à Vincennes (94) et dans les communes limitrophes : Saint-Mandé, Fontenay-sous-Bois, Montreuil et Paris (12e et 20e).",
     },
     {
       q: "Quels sont les tarifs pour une intervention IA à Vincennes ?",

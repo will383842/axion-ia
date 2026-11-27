@@ -13,9 +13,9 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit sur place sur mesure.",
   ecosystemFr:
-    "Coulounieix-Chamiers est la deuxième commune de l'agglomération de Périgueux, à caractère résidentiel et commercial. Zones d'activités, commerces de proximité, artisanat BTP et second œuvre, professions libérales, services aux entreprises et secteur médico-social. Proximité immédiate de Périgueux et de l'axe A89.",
+    "Coulounieix-Chamiers est la deuxième commune de l'agglomération de Périgueux, à caractère résidentiel et commercial. Zones d'activités, commerces de proximité, artisanat BTP et second œuvre, professions libérales, services aux entreprises et secteur médico-social. Un tissu d'entreprises directement lié à l'agglomération de Périgueux.",
   ecosystemEn:
-    "Coulounieix-Chamiers est la deuxième commune de l'agglomération de Périgueux, à caractère résidentiel et commercial. Zones d'activités, commerces de proximité, artisanat BTP et second œuvre, professions libérales, services aux entreprises et secteur médico-social. Proximité immédiate de Périgueux et de l'axe A89.",
+    "Coulounieix-Chamiers est la deuxième commune de l'agglomération de Périgueux, à caractère résidentiel et commercial. Zones d'activités, commerces de proximité, artisanat BTP et second œuvre, professions libérales, services aux entreprises et secteur médico-social. Un tissu d'entreprises directement lié à l'agglomération de Périgueux.",
   distancesFr:
     "Périgueux à 5 min. Bergerac à 45 min. Bordeaux à 1h30 A89. Brive à 1h20 A89. Paris à 4h30 (TGV via Limoges). Gare SNCF Périgueux à 10 min. A89 accès direct.",
   distancesEn:
@@ -49,7 +49,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coulounieix-Chamiers ?",
-      a: "Oui, Axion-IA intervient à Coulounieix-Chamiers et dans toute l'agglomération de Périgueux (Boulazac, Trélissac, Marsac). Périgueux à 5 min, A89 accès direct.",
+      a: "Oui, Axion-IA intervient à Coulounieix-Chamiers et dans toute l'agglomération de Périgueux (Boulazac, Trélissac, Marsac).",
     },
     {
       q: "Tarifs audit IA à Coulounieix-Chamiers  : quel budget prévoir ?",
@@ -61,7 +61,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Coulounieix-Chamiers ?",
-      a: "Intervention sous 5 jours ouvrés. Périgueux à 5 min, Bordeaux à 1h30 A89. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous du coaching IA pour professions libérales à Périgueux ?",

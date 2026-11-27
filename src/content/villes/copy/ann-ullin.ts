@@ -65,7 +65,7 @@ export const ANN_ULLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Annœullin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Annœullin, comme partout en France, ou à distance.",
     },
   ],
 };

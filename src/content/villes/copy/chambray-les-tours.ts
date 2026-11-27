@@ -49,7 +49,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chambray-lès-Tours et sud Tours ?",
-      a: "Oui, Axion-IA intervient à Chambray-lès-Tours et tout le sud de Tours Métropole (Joué-lès-Tours à 5 min, Saint-Avertin, La Riche). Tours centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Chambray-lès-Tours et dans tout le sud de Tours Métropole (Joué-lès-Tours, Saint-Avertin, La Riche, Tours centre).",
     },
     {
       q: "Travaillez-vous avec les commerces des zones d'activités ?",
@@ -65,7 +65,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Chambray-lès-Tours ?",
-      a: "Nos consultants interviennent sur site à Chambray-lès-Tours (Tours centre à 10 min).",
+      a: "Axion IA intervient sur site à Chambray-lès-Tours, après un échange de cadrage.",
     },
   ],
 };

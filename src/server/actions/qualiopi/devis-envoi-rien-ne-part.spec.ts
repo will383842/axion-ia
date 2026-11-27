@@ -13,6 +13,7 @@ const h = vi.hoisted(() => ({
   txDevisUpdateMany: vi.fn(),
   txDevisUpdate: vi.fn(),
   txDevisCount: vi.fn(),
+  statutAncien: "envoye",
   statuts: {} as Record<string, string>,
   enAttente: {} as Record<string, string>,
   txClientUpdateMany: vi.fn(),
@@ -30,6 +31,7 @@ const h = vi.hoisted(() => ({
   sentryMessage: vi.fn(),
   formules: vi.fn(),
   telegram: vi.fn(),
+  mode: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -42,7 +44,13 @@ vi.mock("@/lib/prisma", () => ({
       h.txOptions(options);
       h.enAttente = {};
       const resultat = await f({
-        $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
+        $queryRaw: (...a: unknown[]) => {
+          // Verrou de LIGNE de la version remplacée : rend le statut relu sous le verrou.
+          const texte = Array.isArray(a[0]) ? (a[0] as string[]).join("?") : String(a[0]);
+          if (texte.includes("FOR NO KEY UPDATE"))
+            return Promise.resolve([{ statut: h.statutAncien }]);
+          return h.queryRaw(...a);
+        },
         devis: {
           findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
           updateMany: (...a: unknown[]) => h.txDevisUpdateMany(...a),
@@ -99,6 +107,9 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   transactionDevisSigne: vi.fn(),
   devisConcernesPourEmission: vi.fn(async () => []),
 }));
+vi.mock("@/server/email/outbox-service", () => ({
+  resoudreMode: async (...a: unknown[]) => h.mode(...a),
+}));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: (...a: unknown[]) => h.telegram(...a) }));
 
 import { sendDevisAction } from "./devis";
@@ -150,6 +161,9 @@ beforeEach(() => {
   vi.clearAllMocks();
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
   h.formules.mockReturnValue(false);
+  // Ce fichier éprouve le chemin « auto » (jeton, enfilage, « envoye ») ; le mode « validation »
+  // est éprouvé dans `__tests__/devis-premier-envoi-a-l-approbation.spec.ts`.
+  h.mode.mockResolvedValue("auto");
   h.queryRaw.mockResolvedValue([{ locked: true }]);
   h.txDevisFindUnique.mockResolvedValue(devis());
   h.txDevisUpdateMany.mockResolvedValue({ count: 1 });
@@ -240,30 +254,35 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(h.revoquer).toHaveBeenCalledOnce();
   });
 
-  it("(8) courriel garé : « envoye » écrit, garePourValidation:true, note conservée", async () => {
+  it("(8) courriel garé alors que le mode est « auto » : traité comme non parti (rien d'écrit, ligne refusée, lien révoqué)", async () => {
     h.enqueueEmail.mockResolvedValue({
       enqueued: false,
       garePourValidation: true,
       outboxId: "ob-1",
     });
     const r = await sendDevisAction(ID);
-    expect(r).toMatchObject({ data: { garePourValidation: true, emailEnvoye: false } });
-    expect(JSON.stringify(r)).toContain("Emails → À valider");
-    expect(h.txDevisUpdateMany).toHaveBeenCalledWith({
-      where: { id: ID, statut: "brouillon" },
-      data: expect.objectContaining({ statut: "envoye", documentGenereId: "doc-1" }),
+    expect(erreur(r)).toContain("La règle d'envoi a changé");
+    aucuneEcritureEnvoye();
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.outboxUpdateMany).toHaveBeenCalledWith({
+      where: { id: "ob-1", statut: "a_valider" },
+      data: expect.objectContaining({ statut: "refuse" }),
     });
-    expect(h.emettre).toHaveBeenCalledOnce();
-    expect(h.revoquer).not.toHaveBeenCalled();
+    expect(h.revoquer).toHaveBeenCalledOnce();
   });
 
-  it("(9) courriel enfilé : « envoye » écrit, l'appel n'ajoute pas clientId ni ne change le payload", async () => {
+  it("(9) courriel enfilé : « envoye » écrit, l'appel ne change que par clientId (règle du client), sans toucher au payload", async () => {
     const r = await sendDevisAction(ID);
     expect(r).toMatchObject({ data: { emailEnvoye: true, signatureCreee: true } });
     expect(JSON.stringify(r)).not.toContain("garePourValidation");
     expect(h.txDevisUpdateMany).toHaveBeenCalledOnce();
     const options = h.enqueueEmail.mock.calls[0]![4] as Record<string, unknown>;
-    expect(Object.keys(options).sort()).toEqual(["attachments", "entityId", "entityType"]);
+    expect(Object.keys(options).sort()).toEqual([
+      "attachments",
+      "clientId",
+      "entityId",
+      "entityType",
+    ]);
     expect(h.enqueueEmail.mock.calls[0]![0]).toBe("devis-envoi");
   });
 
@@ -286,32 +305,36 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     aucuneEcritureEnvoye();
   });
 
-  it("(12) une ligne a_valider existe déjà : refus, rien produit", async () => {
+  it("(12) une ligne a_valider ou approuve existe déjà : refus, rien produit", async () => {
     h.txOutboxFindFirst.mockResolvedValue({ id: "ob-0" });
     const r = await sendDevisAction(ID);
-    expect(erreur(r)).toContain("attend déjà dans Emails → À valider");
+    expect(erreur(r)).toContain("attend dans « E-mails à valider » ou est en cours d'envoi");
     expect(h.txOutboxFindFirst).toHaveBeenCalledWith({
-      where: { template: "devis-envoi", entityType: "Devis", entityId: ID, statut: "a_valider" },
+      where: {
+        template: "devis-envoi",
+        entityType: "Devis",
+        entityId: ID,
+        statut: { in: ["a_valider", "approuve"] },
+      },
       select: { id: true },
     });
     expect(h.generateDocument).not.toHaveBeenCalled();
     aucuneEcritureEnvoye();
   });
 
-  it("(13) updateMany à 0 après un courriel garé : la ligne passe à « refuse », Sentry appelé", async () => {
+  it("(13) verdict garé en mode auto : la ligne passe à « refuse », lien masqué, Sentry appelé", async () => {
     h.enqueueEmail.mockResolvedValue({
       enqueued: false,
       garePourValidation: true,
       outboxId: "ob-1",
     });
-    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
     const r = await sendDevisAction(ID);
-    expect(erreur(r)).toContain("Ne le renvoyez pas");
+    expect(erreur(r)).toContain("La règle d'envoi a changé");
     expect(h.outboxUpdateMany).toHaveBeenCalledWith({
       where: { id: "ob-1", statut: "a_valider" },
       data: expect.objectContaining({
         statut: "refuse",
-        refuseMotif: "Devis non marqué envoyé (erreur base)",
+        refuseMotif: "Règle d'envoi changée pendant l'envoi : e-mail non parti",
       }),
     });
     // Le lien de signature ne reste pas en clair dans la ligne refusée (même écriture).
@@ -341,6 +364,26 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(alerte).not.toContain("@");
   });
 
+  it("(13h) mode auto : ligne approuvée entre-temps (refus 0 ligne) → jeton NON révoqué, alerte fixe sans donnée", async () => {
+    h.enqueueEmail.mockResolvedValue({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "ob-1",
+    });
+    h.outboxUpdateMany.mockResolvedValue({ count: 0 });
+    await sendDevisAction(ID);
+    expect(h.revoquer).not.toHaveBeenCalled();
+    const alertes = h.sentryMessage.mock.calls.map((c) => String(c[0]));
+    expect(alertes).toContain(
+      "Devis : la ligne de corbeille a été approuvée pendant l'envoi automatique, lien de signature conservé : vérifier Emails.",
+    );
+    for (const a of alertes) {
+      expect(a).not.toContain("http");
+      expect(a).not.toContain("@");
+      expect(a).not.toContain("JETON");
+    }
+  });
+
   it("(13g) contre-témoin : ligne de corbeille refusée (count 1) → aucune alerte « corbeille »", async () => {
     h.enqueueEmail.mockResolvedValue({
       enqueued: false,
@@ -359,7 +402,6 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
       garePourValidation: true,
       outboxId: "ob-1",
     });
-    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
     h.outboxFindUnique.mockRejectedValue(new Error("base indisponible"));
     await sendDevisAction(ID);
     expect(h.outboxUpdateMany).toHaveBeenCalledWith({
@@ -370,9 +412,8 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
 
   it("(13c) courriel garé SANS outboxId puis échec d'écriture : alerte, aucune exception", async () => {
     h.enqueueEmail.mockResolvedValue({ enqueued: false, garePourValidation: true });
-    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
     const r = await sendDevisAction(ID);
-    expect(erreur(r)).toContain("Ne le renvoyez pas");
+    expect(erreur(r)).toContain("La règle d'envoi a changé");
     expect(h.outboxUpdateMany).not.toHaveBeenCalled();
     expect(h.sentry).toHaveBeenCalled();
     expect(h.telegram).toHaveBeenCalledOnce();
@@ -383,11 +424,7 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     const maj = new Date("2026-11-01T10:00:00Z");
     h.txDevisFindUnique.mockResolvedValue(devis({ updatedAt: maj }));
     h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
-    h.enqueueEmail.mockResolvedValue({
-      enqueued: false,
-      garePourValidation: true,
-      outboxId: "ob-9",
-    });
+    h.enqueueEmail.mockResolvedValue({ enqueued: true });
     const r = await sendDevisAction(ID);
     expect(erreur(r)).toContain("Ne le renvoyez pas");
     expect(h.txDevisUpdateMany).toHaveBeenCalledOnce();
@@ -396,13 +433,9 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     );
     expect(h.txClientUpdateMany).not.toHaveBeenCalled();
     expect(h.emettre).not.toHaveBeenCalled();
-    expect(h.outboxUpdateMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: { id: "ob-9", statut: "a_valider" },
-        data: expect.objectContaining({ statut: "refuse" }),
-      }),
-    );
-    expect(h.revoquer).toHaveBeenCalledOnce();
+    // Courriel enfilé : il est parti, on n'y touche pas (alerte seulement).
+    expect(h.outboxUpdateMany).not.toHaveBeenCalled();
+    expect(h.revoquer).not.toHaveBeenCalled();
   });
 
   it("(13b) erreur après un courriel ENFILÉ : Sentry + alerte, lien NON révoqué", async () => {
@@ -446,8 +479,10 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
 });
 
 const ANCIEN = { replacesDevisId: "ancien" };
-const avecAncien = (statut: string) =>
-  devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+const avecAncien = (statut: string) => {
+  h.statutAncien = statut; // le statut relu sous le verrou de ligne est celui du cas
+  return devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+};
 
 describe("sendDevisAction — version remplacée signée ou acceptée", () => {
   it("version remplacée signée par le client : refus AVANT le PDF, rien d'écrit", async () => {

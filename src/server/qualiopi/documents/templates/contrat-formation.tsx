@@ -13,17 +13,21 @@
 
 import type { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import React from "react";
-import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { Document, View, Text } from "@react-pdf/renderer";
 import {
-  QualiopiPage,
-  DocSection,
-  FieldRow,
-  NdaFieldRow,
   SignatureZone,
-  pdfStyles,
   assainirEspacesPdf,
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
+import { BlocSignature, EncadreDoux, PageCharte } from "@/server/qualiopi/documents/charte/v1";
+import {
+  Champ,
+  ChampListe,
+  ChampNda,
+  SectionCarte,
+  stylesPiece,
+  tauxFr,
+} from "@/server/qualiopi/documents/templates/pieces-charte";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { PLAFOND_ACOMPTE_PARTICULIER_PCT } from "@/server/qualiopi/financements/acompte";
@@ -120,27 +124,15 @@ export interface ContratFormationData {
 // Styles locaux
 // ============================================================
 
-const local = StyleSheet.create({
-  listItem: {
-    fontSize: 10,
-    marginBottom: 2,
-    paddingLeft: 8,
-  },
-  amountRow: {
-    flexDirection: "row" as const,
-    justifyContent: "space-between" as const,
-    paddingVertical: 3,
-    borderBottomWidth: 1,
-    borderBottomColor: pdfStyles.fieldRow.borderBottomColor,
-  },
-  amountLabel: {
-    fontSize: 10,
-  },
-  amountValue: {
-    fontSize: 10,
-    fontWeight: "bold",
-  },
-});
+const local = {
+  annexeList: { marginTop: 4 },
+  annexeItem: stylesPiece.annexe,
+  listItem: stylesPiece.puce,
+  amountRow: stylesPiece.ligneMontant,
+  amountLabel: stylesPiece.libelleMontant,
+  amountValue: stylesPiece.valeurMontant,
+  subrogationNote: stylesPiece.note,
+};
 
 // ============================================================
 // Helpers
@@ -226,7 +218,7 @@ export function ContratFormationPdf({
 
   return (
     <Document>
-      <QualiopiPage
+      <PageCharte
         docTitle="Contrat de formation professionnelle"
         docNumber={data.numero}
         identite={identite}
@@ -235,16 +227,14 @@ export function ContratFormationPdf({
         {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Mention légale de tête */}
-        <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.contratParticulier}</Text>
+        <EncadreDoux>{LEGAL_MENTIONS.contratParticulier}</EncadreDoux>
 
         {/* 1. Parties */}
-        <DocSection title="1. Entre les soussignés">
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
-            L'organisme de formation (prestataire)
-          </Text>
-          <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
-          <FieldRow label="SIRET" value={identite.siret} required />
-          <NdaFieldRow nda={identite.nda} />
+        <SectionCarte title="1. Entre les soussignés">
+          <Text style={stylesPiece.sousTitre}>L'organisme de formation (prestataire)</Text>
+          <Champ label="Raison sociale" value={identite.raisonSociale} required />
+          <Champ label="SIRET" value={identite.siret} required />
+          <ChampNda nda={identite.nda} />
           {/*
             🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
             Marquée `required`, elle imprimait « Non renseigné » dans le style
@@ -256,63 +246,54 @@ export function ContratFormationPdf({
             aucune raison d'exister. Même traitement que la facture et le devis.
           */}
           {identite.qualiopi ? (
-            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+            <Champ label="Certification Qualiopi" value={identite.qualiopi} />
           ) : null}
-          <FieldRow label="Siège social" value={identite.adresseSiege} required />
-          <FieldRow label="Email" value={identite.email || "—"} />
-          <FieldRow label="Téléphone" value={identite.telephone || "—"} />
+          <Champ label="Siège social" value={identite.adresseSiege} required />
+          <Champ label="Email" value={identite.email || "—"} />
+          <Champ label="Téléphone" value={identite.telephone || "—"} />
 
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
+          <Text style={[stylesPiece.sousTitre, { marginTop: 8 }]}>
             Le stagiaire (personne physique)
           </Text>
-          <FieldRow label="Nom et prénom" value={data.stagiaire.nomPrenom} />
-          <FieldRow
+          <Champ label="Nom et prénom" value={data.stagiaire.nomPrenom} />
+          <Champ
             label="Adresse"
             value={data.stagiaire.adresse || "_______________________________"}
           />
-          <FieldRow label="Email" value={data.stagiaire.email || "—"} />
-          <FieldRow label="Téléphone" value={data.stagiaire.telephone || "—"} />
-          <Text style={pdfStyles.legalNote}>
+          <Champ label="Email" value={data.stagiaire.email || "—"} />
+          <Champ label="Téléphone" value={data.stagiaire.telephone || "—"} />
+          <Text style={stylesPiece.mention}>
             Le présent contrat est conclu avec une personne physique qui entreprend la formation à
             titre individuel et à ses frais (articles L.6353-3 à L.6353-7 du Code du travail).
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 2. Objet et nature de l'action (L.6353-4) */}
-        <DocSection title="2. Objet, nature et organisation de l'action">
-          <FieldRow label="Intitulé" value={data.intitule} />
-          <FieldRow label="Nature de l'action" value={natureAction} />
-          <View style={pdfStyles.fieldRow}>
-            <Text style={pdfStyles.fieldLabel}>Objectifs</Text>
-            <View style={{ flex: 1 }}>
-              {data.objectifs.map((obj, i) => (
-                <Text key={i} style={local.listItem}>
-                  • {obj}
-                </Text>
-              ))}
-            </View>
-          </View>
-          <FieldRow label="Niveau de connaissances préalables" value={niveauPrealable} />
-          <FieldRow
+        <SectionCarte title="2. Objet, nature et organisation de l'action">
+          <Champ label="Intitulé" value={data.intitule} />
+          <Champ label="Nature de l'action" value={natureAction} />
+          <ChampListe label="Objectifs" items={data.objectifs} />
+          <Champ label="Niveau de connaissances préalables" value={niveauPrealable} />
+          <Champ
             label="Durée"
             value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
           />
-          <FieldRow label="Date de début" value={data.dateDebut} />
-          <FieldRow label="Date de fin" value={data.dateFin} />
-          <FieldRow label="Modalité de déroulement" value={data.modalite} />
-          <FieldRow label="Lieu" value={data.lieu} />
-          <FieldRow label="Sanction de la formation" value={sanction} />
-        </DocSection>
+          <Champ label="Date de début" value={data.dateDebut} />
+          <Champ label="Date de fin" value={data.dateFin} />
+          <Champ label="Modalité de déroulement" value={data.modalite} />
+          <Champ label="Lieu" value={data.lieu} />
+          <Champ label="Sanction de la formation" value={sanction} />
+        </SectionCarte>
 
         {/* 3. Prix et modalités de règlement (L.6353-4 / L.6353-6) */}
-        <DocSection title="3. Prix et modalités de règlement">
+        <SectionCarte title="3. Prix et modalités de règlement">
           <View style={local.amountRow}>
             <Text style={local.amountLabel}>Prix total de la formation (net)</Text>
             <Text style={local.amountValue}>{formatEur(data.prixNet)}</Text>
           </View>
           <View style={local.amountRow}>
             <Text style={local.amountLabel}>
-              Acompte à l'expiration du délai de rétractation ({acomptePercent} % maximum)
+              Acompte à l'expiration du délai de rétractation ({tauxFr(acomptePercent)} % maximum)
             </Text>
             <Text style={local.amountValue}>{formatEur(acompte)}</Text>
           </View>
@@ -329,7 +310,7 @@ export function ContratFormationPdf({
               ci-dessus : on ne fabrique aucune date. */}
           {data.echeancierSolde !== undefined && data.echeancierSolde.length > 0 ? (
             <View style={{ marginTop: 6 }}>
-              <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>Échéancier du solde</Text>
+              <Text style={stylesPiece.sousTitre}>Échéancier du solde</Text>
               {data.echeancierSolde.map((e, i) => (
                 <View key={i} style={local.amountRow}>
                   <Text style={local.amountLabel}>
@@ -348,32 +329,32 @@ export function ContratFormationPdf({
             `null` en régime assujetti → aucun bloc, ce qui est correct.
           */}
           {identite.mentionTvaRegime ? (
-            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+            <Text style={stylesPiece.mention}>{identite.mentionTvaRegime}</Text>
           ) : null}
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Conformément à l'article L.6353-6 du Code du travail, aucune somme ne peut être exigée
             du stagiaire avant l'expiration du délai de rétractation. À l'issue de ce délai, il ne
             peut être versé un acompte supérieur à 30 % du prix convenu ; le solde fait l'objet d'un
             échelonnement des paiements au fur et à mesure du déroulement de la formation.
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 4. Délai de rétractation (L.6353-5) */}
-        <DocSection title="4. Délai de rétractation">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="4. Délai de rétractation">
+          <Text style={stylesPiece.paragraphe}>
             À compter de la date de signature du présent contrat, le stagiaire dispose d'un délai de{" "}
             <Text style={{ fontWeight: "bold" }}>dix (10) jours</Text> pour se rétracter. Il en
             informe l'organisme de formation par lettre recommandée avec accusé de réception.
           </Text>
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Dans ce cas, aucune somme ne peut être retenue ni exigée du stagiaire (article L.6353-6
             du Code du travail).
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 5. Interruption, abandon et résiliation (L.6353-7) */}
-        <DocSection title="5. Interruption, abandon et résiliation">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="5. Interruption, abandon et résiliation">
+          <Text style={stylesPiece.paragraphe}>
             Si, par suite d'un cas de force majeure dûment reconnu, le stagiaire est empêché de
             suivre la formation, il peut rompre le contrat. Seules les prestations effectivement
             dispensées sont alors dues, à due proportion de leur valeur prévue au présent contrat
@@ -387,14 +368,14 @@ export function ContratFormationPdf({
             • En cas d'abandon en cours de formation pour un motif autre que la force majeure, les
             prestations effectivement réalisées restent dues.
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 6. Documents annexés */}
-        <DocSection title="6. Documents annexés">
+        <SectionCarte title="6. Documents annexés">
           <Text style={local.listItem}>– Programme détaillé de la formation</Text>
           <Text style={local.listItem}>– Règlement intérieur des stagiaires</Text>
           <Text style={local.listItem}>– Conditions générales de vente (CGV)</Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 7. Médiation de la consommation (L.612-1 C. conso)
 
@@ -415,21 +396,21 @@ export function ContratFormationPdf({
             consommateur un recours qui échoue — donc un grief de plus, pas une
             conformité. */}
         {data.mediation ? (
-          <DocSection title="7. Médiation de la consommation">
-            <Text style={pdfStyles.paragraph}>
+          <SectionCarte title="7. Médiation de la consommation">
+            <Text style={stylesPiece.paragraphe}>
               Conformément aux articles L.611-1 et L.612-1 du Code de la consommation, le stagiaire
               agissant en qualité de consommateur peut recourir gratuitement à un médiateur de la
               consommation en vue de la résolution amiable d'un litige qui l'opposerait à
               l'organisme de formation.
             </Text>
-            <Text style={pdfStyles.paragraph}>
+            <Text style={stylesPiece.paragraphe}>
               Le recours à la médiation suppose que le stagiaire ait préalablement adressé une
               réclamation écrite à l'organisme et n'ait pas obtenu satisfaction, ou soit resté sans
               réponse pendant deux mois.
             </Text>
             <Text style={local.listItem}>• Médiateur : {data.mediation.nom}</Text>
             <Text style={local.listItem}>• Saisine : {data.mediation.url}</Text>
-          </DocSection>
+          </SectionCarte>
         ) : null}
 
         {/* Signatures — numérotée 8 quand la clause de médiation précède, 7
@@ -439,7 +420,7 @@ export function ContratFormationPdf({
             manquante, et c'est la première chose qu'un lecteur méfiant relève. */}
         {/* « Fait à » = ville du siège — même raisonnement que la convention : un
             blanc sur une pièce signée électroniquement reste vide pour toujours. */}
-        <DocSection title={`${data.mediation ? 8 : 7}. Signatures`}>
+        <BlocSignature titre={`${data.mediation ? 8 : 7}. Signatures`}>
           <SignatureZone
             intro="Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie."
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateContrat}`}
@@ -457,8 +438,8 @@ export function ContratFormationPdf({
               },
             ]}
           />
-        </DocSection>
-      </QualiopiPage>
+        </BlocSignature>
+      </PageCharte>
     </Document>
   );
 }

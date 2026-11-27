@@ -36,12 +36,12 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
       en: "Réaliser un audit IA à Cormeilles-en-Parisis pour les TPE et PME des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
     },
     interventions: {
-      fr: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
-      en: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
+      fr: "Intervenir à Cormeilles-en-Parisis pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
+      en: "Intervenir à Cormeilles-en-Parisis pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
-      en: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
+      fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP.",
+      en: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP.",
     },
     unAUn: {
       fr: "Accompagner en un-à-un les dirigeants de TPE et PME à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
@@ -56,7 +56,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           "Tissu industriel et BTP dominant : la carrière de gypse Placoplatre (Saint-Gobain), l'usine Placo et les ~40 établissements de la ZAE Carrefour des Champs Guillaume (9,48 ha, BTP et petit transport) ont des besoins concrets — configurateurs de devis plâtrerie-construction, suivi de chantier, portails fournisseurs — que nous traitons en applications web sur mesure.",
           "Le quartier Seine Parisii (reconversion de la friche Lafarge : 1 200 logements, marina ~110 anneaux mise en eau prévue avril 2026, 1er label BBCA Quartier de France) crée une vague d'activité pour promoteurs, services de proximité, loisirs nautiques et commerces : autant de vitrines web et plateformes de réservation à lancer.",
           "Commerce de proximité concentré : ~50 commerces le long de l'avenue Foch avec la locomotive Auchan, et un droit de préemption commercial instauré par la ville en 2025 pour redynamiser le centre — un contexte propice aux e-commerce locaux, click & collect et fiches Google Business optimisées que nous déployons en multi-CMS.",
-          "Accès direct depuis Paris (ligne J Transilien depuis Saint-Lazare, A15 sortie Herblay, A115) : nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch, sans surcoût logistique disproportionné.",
+          "Nos kick-offs se tiennent sur site à Cormeilles-en-Parisis, dans les Bois Rochefort, les Champs Guillaume ou avenue Foch.",
         ],
         methodology: [
           {
@@ -78,11 +78,6 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
             step: "Recette et mise en ligne",
             detail:
               "Tests d'acceptation sur mobile et desktop, optimisation Web Vitals et SEO local (Cormeilles-en-Parisis, Val Parisis, communes limitrophes), conformité RGPD et hébergement en Union européenne. Mise en production et transfert des accès à votre nom.",
-          },
-          {
-            step: "Suivi post-livraison",
-            detail:
-              "Documentation, formation de votre équipe à l'administration du site et des fonctions IA, monitoring des performances. Vous gardez la pleine maîtrise : code, contenu et hébergement vous appartiennent, sans verrou Axion-IA.",
           },
         ],
         pricing: [
@@ -130,11 +125,11 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes autour de Cormeilles-en-Parisis ?",
-            a: "Oui, sur l'ensemble de la CA Val Parisis et des communes limitrophes : Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, ainsi que Argenteuil, Sartrouville et Maisons-Laffitte. Le kick-off se fait sur site, accessible via la ligne J depuis Paris Saint-Lazare et l'A15.",
+            a: "Oui, sur l'ensemble de la CA Val Parisis et des communes limitrophes : Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, ainsi que Argenteuil, Sartrouville et Maisons-Laffitte. Axion IA intervient partout en France, sur site ou à distance.",
           },
         ],
         guarantees:
-          "Devis transmis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code custom (pas de no-code opaque), avec UX/UI, design mobile-first et e-commerce multi-CMS. Hébergement en Union européenne et conformité RGPD par défaut. Vous gardez la pleine maîtrise : code source, contenus et hébergement vous appartiennent, transférables à tout intégrateur ou repris en interne, sans verrou Axion-IA. Kick-off sur site à Cormeilles-en-Parisis ; frais de déplacement éventuels calculés au cas par cas selon la zone.",
+          "Devis transmis à partir de 24 à 48 h selon la complexité. Sites et plateformes développés en code custom (pas de no-code opaque), avec UX/UI, design mobile-first et e-commerce multi-CMS. Hébergement en Union européenne et conformité RGPD par défaut. Vous gardez la pleine maîtrise : code source, contenus et hébergement vous appartiennent, transférables à tout intégrateur ou repris en interne, sans verrou Axion-IA. Kick-off sur site à Cormeilles-en-Parisis.",
       },
       en: {
         hero: "Axion-IA supports micro-businesses, SMEs and mid-caps in Cormeilles-en-Parisis (Val-d'Oise, CA Val Parisis) on their AI-augmented websites and SaaS platforms. The local fabric is distinctive: the Placoplatre quarry, owned by the Saint-Gobain group, still extracts Cormeilles gypsum — heir to the Lambert plaster works (1822) and accounting on its own for nearly 10% of France's plaster production — while the former Lafarge cement brownfield is being converted into the Seine Parisii district with its marina on the Seine. Between the Carrefour des Champs Guillaume business park (construction and transport), the Bois Rochefort leisure hub and the Avenue Foch shops, we build showcase sites, multi-CMS e-commerce and custom-code business applications, hosted in the European Union and GDPR-compliant, with UX/UI, mobile and embedded AI.",
@@ -142,7 +137,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           "Dominant industrial and construction fabric: the Placoplatre gypsum quarry (Saint-Gobain), the Placo plant and the ~40 establishments of the Carrefour des Champs Guillaume business park (9.48 ha, construction and small transport) have concrete needs — plastering/construction quote configurators, site-tracking tools, supplier portals — that we deliver as custom web applications.",
           "The Seine Parisii district (conversion of the Lafarge brownfield: 1,200 homes, a ~110-berth marina set to be water-filled in April 2026, France's first BBCA District label) is driving a wave of activity for developers, local services, nautical leisure and shops — all requiring web showcases and booking platforms.",
           "Concentrated local retail: ~50 shops along Avenue Foch with the Auchan anchor, and a commercial pre-emption right introduced by the city in 2025 to revitalise the centre — a context well suited to local e-commerce, click & collect and optimised Google Business profiles, which we deploy in multi-CMS.",
-          "Direct access from Paris (Transilien line J from Saint-Lazare, A15 Herblay exit, A115): our kick-offs take place on site in Cormeilles-en-Parisis — in Bois Rochefort, Champs Guillaume or on Avenue Foch — without disproportionate logistics costs.",
+          "Axion-IA works anywhere in France, on site or remotely: our kick-offs take place in Cormeilles-en-Parisis — in Bois Rochefort, Champs Guillaume or on Avenue Foch.",
         ],
         methodology: [
           {
@@ -164,11 +159,6 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
             step: "Acceptance and go-live",
             detail:
               "Acceptance tests on mobile and desktop, Web Vitals and local SEO optimisation (Cormeilles-en-Parisis, Val Parisis, neighbouring communes), GDPR compliance and European Union hosting. Production release and transfer of access in your name.",
-          },
-          {
-            step: "Post-delivery follow-up",
-            detail:
-              "Documentation, training of your team on administering the site and AI features, performance monitoring. You retain full control: the code, content and hosting belong to you, with no Axion-IA lock-in.",
           },
         ],
         pricing: [
@@ -216,11 +206,11 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
           {
             q: "Do you operate in the communes around Cormeilles-en-Parisis?",
-            a: "Yes, across the whole CA Val Parisis and neighbouring communes: Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, as well as Argenteuil, Sartrouville and Maisons-Laffitte. The kick-off takes place on site, accessible via line J from Paris Saint-Lazare and the A15.",
+            a: "Yes, across the whole CA Val Parisis and neighbouring communes: Sannois, Franconville, Montigny-lès-Cormeilles, Herblay, La Frette-sur-Seine, as well as Argenteuil, Sartrouville and Maisons-Laffitte. The kick-off takes place on site, as everywhere in France.",
           },
         ],
         guarantees:
-          "Quote sent from 24 to 48 hours depending on complexity. Sites and platforms built in custom code (no opaque no-code), with UX/UI, mobile-first design and multi-CMS e-commerce. European Union hosting and GDPR compliance by default. You keep full control: source code, content and hosting belong to you, transferable to any integrator or brought in-house, with no Axion-IA lock-in. Kick-off on site in Cormeilles-en-Parisis; any travel costs are calculated case by case depending on the zone.",
+          "Quote sent from 24 to 48 hours depending on complexity. Sites and platforms built in custom code (no opaque no-code), with UX/UI, mobile-first design and multi-CMS e-commerce. European Union hosting and GDPR compliance by default. You keep full control: source code, content and hosting belong to you, transferable to any integrator or brought in-house, with no Axion-IA lock-in. Kick-off on site in Cormeilles-en-Parisis.",
       },
     },
   },
@@ -228,11 +218,11 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Cormeilles-en-Parisis ?",
-      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Quels sont les délais pour une intervention IA à Cormeilles-en-Parisis ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis (ligne J, Paris Saint-Lazare à 16 minutes). Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
+      a: "Williams intervient habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Cormeilles-en-Parisis ?",

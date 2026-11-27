@@ -62,7 +62,13 @@ function dossier(over: Partial<DossierPublic> = {}): DossierPublic {
 
 const rendre = (d: DossierPublic, etape: 1 | 2 | 3 | 4) =>
   render(
-    <DossierEnLigne dossier={d} etapeInitiale={etape} contrat={<p>Contrat</p>} urlPdf="/pdf" />,
+    <DossierEnLigne
+      dossier={d}
+      etapeInitiale={etape}
+      contrat={<p>Contrat</p>}
+      empreinteLue={"a".repeat(64)}
+      urlPdf="/pdf"
+    />,
   );
 
 beforeEach(() => {
@@ -173,7 +179,7 @@ describe("D19 : changement d'étape annoncé et focalisé", () => {
     rendre(dossier(), 3);
     const annonce = screen.getByRole("status");
     expect(annonce.getAttribute("aria-live")).toBe("polite");
-    expect(annonce.textContent).toBe(TEXTES.etapeAnnonce(3, "Vos documents"));
+    expect(annonce.textContent).toBe(TEXTES.etapeAnnonce(3, "Vos pièces"));
     fireEvent.click(screen.getByRole("button", { name: TEXTES.continuer }));
     const titre = await screen.findByRole("heading", { level: 1, name: TEXTES.contratTitre });
     expect(titre.getAttribute("tabindex")).toBe("-1");
@@ -284,5 +290,31 @@ describe("aperçu du fichier envoyé", () => {
     expect(lien.getAttribute("target")).toBe("_blank");
     // Le nettoyage de l'effet (qui libère l'ancien aperçu) passe après l'affichage : on l'attend.
     await waitFor(() => expect(URL.revokeObjectURL).toHaveBeenCalled());
+  });
+});
+
+describe("après la signature : « Et ensuite ? » et le lien « Mes documents »", () => {
+  it("affiche les trois points et un vrai lien vers les documents de l'espace", async () => {
+    h.signerAction.mockResolvedValue({ ok: true });
+    rendre(dossier(), 4);
+    const cases = screen.getAllByRole("checkbox");
+    fireEvent.click(cases[0]!);
+    fireEvent.click(cases[1]!);
+    fireEvent.click(screen.getByRole("button", { name: TEXTES.signer }));
+    await screen.findByRole("heading", { name: TEXTES.ensuiteTitre });
+    expect(screen.getAllByRole("listitem").map((li) => li.textContent)).toEqual([
+      ...TEXTES.ensuite,
+    ]);
+    const lien = screen.getByRole("link", { name: TEXTES.mesDocuments });
+    expect(lien.getAttribute("href")).toBe(`/apporteur/dossier/${ID}/${"j".repeat(43)}/documents`);
+  });
+
+  it("l'étape 2 explique à quoi sert le RIB, sous le champ IBAN", () => {
+    rendre(dossier(), 2);
+    expect(screen.getByText(TEXTES.ibanAide)).toBeTruthy();
+  });
+
+  it("le surtitre de la coquille est celui de l'espace apporteur", () => {
+    expect(TEXTES.surtitre).toBe("Votre espace apporteur Axion IA");
   });
 });

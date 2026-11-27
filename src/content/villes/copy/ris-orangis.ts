@@ -218,11 +218,11 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start a project in Ris-Orangis?",
-            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; we work anywhere in France, on site or remotely (Ris-Orangis is about 25 km south of Paris, served by the A6 and RER D).",
+            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins. Axion-IA works anywhere in France, on site or remotely.",
           },
         ],
         guarantees:
-          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs listed separately, with full transparency.",
+          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live.",
       },
     },
   },
@@ -246,7 +246,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ris-Orangis ?",
-      a: "Le diagnostic et les sessions clés se font sur site à Ris-Orangis ; le suivi se poursuit en visio. Le RER D et l'A6 permettent des déplacements rapides, dont les frais sont indiqués séparément, en toute transparence.",
+      a: "Le diagnostic et les sessions clés se font sur site à Ris-Orangis ; le suivi se poursuit en visio.",
     },
   ],
 };

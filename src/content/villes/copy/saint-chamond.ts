@@ -56,7 +56,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           "Cœur de cible : les sous-traitants industriels et fabricants de la vallée du Gier (mécanique, acier façon Loire Industrie ZI du Clos Marquet, tressage métallique pour gaines et câbles héritier du lacet, plasturgie type Agripolyane), pour qui un site doit exposer un catalogue technique vivant plutôt qu'une plaquette figée.",
           "Saint-Chamond conjugue une filière de défense exigeante (NBC-Sys / KNDS, équipements NRBC souverains) et une sous-traitance acier de précision : nous construisons des espaces clients et configurateurs où la confidentialité des données et l'hébergement UE sont des prérequis non négociables, pas des options.",
           "L'écoquartier Novaciéries (ancienne friche Creusot-Loire de 45 ha) fait émerger ~100 entreprises et des commerces neufs autour du cinéma Veo Grand Lumière : nouveaux sites vitrines, e-commerce et prise de rendez-vous en ligne y trouvent un terrain direct, du commerce de proximité à Novasoie et la soie de luxe.",
-          "Nous intervenons sur place (gare TER du Gier, A47) : kick-off sur site dans vos ateliers du Clos Marquet, de la vallée du Gier ou de Novaciéries, puis itérations à distance — l'architecture reste maintenable par votre équipe ou un prestataire local.",
+          "Nous intervenons sur place : kick-off sur site dans vos ateliers du Clos Marquet, de la vallée du Gier ou de Novaciéries, puis itérations à distance — l'architecture reste maintenable par votre équipe ou un prestataire local.",
         ],
         methodology: [
           {
@@ -125,7 +125,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
             a: "Oui. Nous couvrons l'UX/UI, le mobile, et l'e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop ou solution custom) selon votre besoin. Pour un commerce de l'écoquartier Novaciéries, un acteur du textile comme Novasoie ou une marque de centre-ville, nous ajoutons des briques IA utiles : recommandations, recherche visuelle, génération de fiches produits.",
           },
           {
-            q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
+            q: "Intervenez-vous réellement à Saint-Chamond ?",
             a: "Oui. Le cadrage et la recette se font sur site — atelier ZI du Clos Marquet, locaux vallée du Gier ou espace Novaciéries — puis les itérations peuvent continuer à distance si vous préférez. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
@@ -231,7 +231,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Saint-Chamond démarre à {{price:intervention-4h|flat}}. Tous nos prix sont publics sur la page Tarifs, sans abonnement caché.",
     },
     {
-      q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
+      q: "Comment se déroule une intervention à Saint-Chamond ?",
       a: "Oui. Les phases d'observation et de mise en route se font sur site à Saint-Chamond ; le suivi peut ensuite continuer en visio si vous préférez. Nous intervenons partout en France, sur place ou à distance.",
     },
     {

@@ -36,8 +36,8 @@ export const AURILLAC_COPY: VilleCopy = {
       en: "Audit sur place 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
-      en: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
+      fr: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}.",
+      en: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de {{price:impl-poc|entry}}.",
@@ -72,7 +72,7 @@ export const AURILLAC_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio depuis Aurillac, avec validation continue des Web Vitals.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio, avec validation continue des Web Vitals.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const AURILLAC_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio depuis Aurillac, avec validation continue des Web Vitals.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits du terroir, chatbot RAG multilingue, recherche sémantique, prise de rendez-vous, agents métier branchés sur votre SI. Démos hebdomadaires en visio, avec validation continue des Web Vitals.",
           },
           {
             step: "Recette + mise en ligne",
@@ -232,7 +232,7 @@ export const AURILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Aurillac ?",
-      a: "Williams se déplace à Aurillac sous 5 jours ouvrés après validation du devis. Pour un Audit sur place, le livrable est remis sous 5 jours après la visite. Une implémentation complète dure de 2 à 6 semaines selon le périmètre.",
+      a: "Williams intervient sur site à Aurillac sous 5 jours ouvrés après validation du devis. Pour un Audit sur place, le livrable est remis sous 5 jours après la visite. Une implémentation complète dure de 2 à 6 semaines selon le périmètre.",
     },
     {
       q: "Intervenez-vous dans les communes proches d'Aurillac ?",

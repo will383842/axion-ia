@@ -3,12 +3,13 @@
  *
  *  1. La ligne « Avis clients » n'existe que si au moins un avis est publié (même règle
  *     que les pages /avis, qui répondent 404 sinon).
- *  2. La Journée IA : description du nœud Service, garantie et condition MOT POUR MOT,
- *     rapport complet.
+ *  2. La Journée IA : description du nœud Service, garantie et condition MOT POUR MOT ;
+ *     le rapport complet dans `llms-full.txt` (la description dit déjà « sous 10 jours ouvrés »,
+ *     et `llms.txt` n'écrit plus rien deux fois : refonte du 20/11/2026).
  *  3. Aucun mot proscrit (hors ligne du Tour France IA, décision en attente).
  *  4. Voix « nous » : aucune promesse d'intervention personnelle du fondateur.
- *  7. Les faits partagés (langues, hébergement, faits pratiques) sont IDENTIQUES dans les
- *     deux fichiers, et le bruit interne a disparu.
+ *  7. Les faits partagés (langues, hébergement, facturation, accessibilité) sont IDENTIQUES
+ *     dans les deux fichiers, et le bruit interne a disparu.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -31,12 +32,16 @@ import {
   GARANTIE_PHRASE,
   RAPPORT_COMPLET,
   remplacerJetons,
+  DELAI_RAPPORT_JOURS_OUVRES,
 } from "@/content/journee-ia-commun";
 import {
+  ACCESSIBILITE_LLMS,
+  FACTURATION_LLMS,
+  HEBERGEMENT_LLMS,
   LIBELLE_SITES_WEB_FR,
   MOTS_INTERDITS_LLMS,
-  enteteFaitsLlms,
-  sectionFaitsPratiquesLlms,
+  enteteLlms,
+  languesLlms,
 } from "@/app/_llms/faits-communs";
 
 const SITE = "https://axion-ia.com";
@@ -80,9 +85,15 @@ describe("2. La Journée IA : description, garantie et rapport, mot pour mot", (
     expect(corps).toContain(remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA));
     expect(corps).toContain(GARANTIE_PHRASE);
     expect(corps).toContain(CONDITION_GARANTIE);
-    expect(corps).toContain(RAPPORT_COMPLET);
+    expect(corps).toContain(`remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`);
     expect(corps).toContain("2 à 4 h d’audit");
     expect(corps).not.toContain("{{");
+  });
+});
+
+describe("2 bis. Le rapport complet, mot pour mot", () => {
+  it("llms-full.txt le porte", async () => {
+    expect(await lireFull()).toContain(RAPPORT_COMPLET);
   });
 });
 
@@ -104,8 +115,10 @@ describe("3. Mots proscrits", () => {
   it("llms-full.txt : aucun, FAQ partagée comprise", async () => {
     const corps = await lireFull();
     expect(corps).not.toMatch(MOTS_INTERDITS_LLMS);
-    // Garde anti-test-vide : la FAQ est toujours là.
-    expect((corps.split("## FAQ")[1] ?? "").length).toBeGreaterThan(5000);
+    // Garde anti-test-vide : la FAQ est toujours là (liste de questions liées, depuis la refonte
+    // du 20/11/2026 : ses réponses ne sont plus recopiées dans ce fichier).
+    const faq = (corps.split("## FAQ")[1] ?? "").split("\n## ")[0] ?? "";
+    expect(faq.match(/^- \[/gm)?.length ?? 0).toBeGreaterThanOrEqual(15);
   });
 
   it("le motif attrape bien ce qu'il doit attraper", () => {
@@ -136,19 +149,25 @@ describe("7. Faits communs, identiques dans les deux fichiers", () => {
   it.each([false, true])("même en-tête et mêmes faits pratiques (EN servi : %s)", async (en) => {
     process.env["EN_LOCALE_ENABLED"] = en ? "true" : "false";
     const [llms, full] = await Promise.all([lireLlms(), lireFull()]);
-    for (const ligne of enteteFaitsLlms()) {
-      expect(llms).toContain(`> ${ligne}`);
-      expect(full).toContain(`> ${ligne}`);
+    // Le même en-tête, entier, ouvre les deux fichiers.
+    const entete = enteteLlms(SITE);
+    expect(llms.startsWith(`${entete}\n\n## `)).toBe(true);
+    expect(full.startsWith(`${entete}\n\n## `)).toBe(true);
+    expect(languesLlms()).toBe(en ? "français (version de référence) et anglais" : "français");
+    for (const fait of [
+      `- Langue : ${languesLlms()}. Hébergement : ${HEBERGEMENT_LLMS}.`,
+      `- ${FACTURATION_LLMS}`,
+      `- [Accessibilité](${SITE}/fr/accessibilite): ${ACCESSIBILITE_LLMS}`,
+    ]) {
+      expect(llms, fait).toContain(fait);
+      expect(full, fait).toContain(fait);
     }
-    const faits = sectionFaitsPratiquesLlms(SITE);
-    expect(llms).toContain(faits);
-    expect(full).toContain(faits);
     expect(llms.includes("/sitemaps/images-en.xml")).toBe(en);
   });
 
   it("aucun fait divergent ni invérifiable", async () => {
     for (const corps of [await lireLlms(), await lireFull()]) {
-      expect(corps).not.toMatch(/Nuremberg|Frankfurt|CPX32|implanté en Europe/);
+      expect(corps).not.toMatch(/Nuremberg|Frankfurt|Francfort|CPX32|implanté en Europe/);
       expect(corps).not.toMatch(/EN miroir|\bmiroir EN\b/);
       expect(corps).not.toMatch(/Audit (?:IA )?(?:en )?5 j/);
       expect(corps).not.toMatch(/4 tailles d'entreprise × 2 modalités/);
@@ -171,11 +190,13 @@ describe("7. Faits communs, identiques dans les deux fichiers", () => {
     }
   });
 
-  it("llms.txt : les pages d'entrée sont en tête", async () => {
+  it("llms.txt : « Par où commencer » est la première section, les pages d'entrée restent liées", async () => {
     const corps = await lireLlms();
-    const tete = corps.split("## Offre phare")[0] ?? "";
+    expect(corps.split("\n").find((l) => l.startsWith("## "))).toBe("## Par où commencer");
+    const tete = corps.split("## La Journée IA, offre phare")[0] ?? "";
+    expect(tete).toContain(`(${SITE}/fr/appel)`);
     expect(tete).toContain(`(${SITE}/fr)`);
-    expect(tete).toContain(`(${SITE}/fr/a-propos)`);
-    expect(tete).toContain(`(${SITE}/fr/faq/ai-act-2026)`);
+    expect(corps).toContain(`(${SITE}/fr/a-propos)`);
+    expect(corps).toContain(`(${SITE}/fr/faq/ai-act-2026)`);
   });
 });

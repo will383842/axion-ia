@@ -49,7 +49,7 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteauneuf-les-Martigues et autour de l'étang de Berre ?",
-      a: "Oui, Axion-IA intervient à Châteauneuf-les-Martigues et dans tout le pourtour de l'étang de Berre (Martigues, Marignane, Vitrolles, Istres, Fos-sur-Mer, Berre-l'Étang). Proximité aéroport Marseille-Provence et axe A55.",
+      a: "Oui, Axion-IA intervient à Châteauneuf-les-Martigues et dans tout le pourtour de l'étang de Berre (Martigues, Marignane, Vitrolles, Istres, Fos-sur-Mer, Berre-l'Étang).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Châteauneuf-les-Martigues  ?",
@@ -64,8 +64,8 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en pétrochimie et industrie lourde sur maintenance prédictive capteurs, optimisation énergétique, gestion documentaire HSE, agents IA support technique, sécurité opérationnelle.",
     },
     {
-      q: "Comment se déplace Axion-IA à Châteauneuf-les-Martigues ?",
-      a: "Châteauneuf-les-Martigues est à 15 min de l'aéroport Marseille-Provence et 35 min de Marseille via A55. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Châteauneuf-les-Martigues ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Châteauneuf-les-Martigues, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -16,7 +16,7 @@
  * dans ses entités réelles.
  */
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, Circle, CircleCheck, CircleMinus, ExternalLink, OctagonAlert } from "lucide-react";
@@ -97,6 +97,10 @@ export interface VenteDevisEtat {
   /** Lien de signature maison émis pour la pièce du devis. */
   signatureMaison?: boolean;
   montantTotalHtCents: number;
+  /** Devis créé par l'assistant (brouillon d'assistant lié) : seul celui-là s'y rouvre. */
+  parAssistant: boolean;
+  /** Devis classique (sans offre à formules) : il se corrige depuis `/corriger`. */
+  classique?: boolean;
 }
 
 export interface VenteSessionEtat {
@@ -127,6 +131,13 @@ export interface VenteWizardProps {
    * lié au projet (`projet_devis`) ; rien n'est pré-rempli.
    */
   projetId?: string;
+  /**
+   * Interrupteur de l'assistant de devis (S14), lu CÔTÉ SERVEUR par la page.
+   * Allumé : l'étape 3 ne crée plus le devis ici, elle renvoie vers l'assistant.
+   * Éteint (défaut) : l'ancien parcours (montant, « Créer le devis »,
+   * « Envoyer le devis ») est conservé tel quel comme repli.
+   */
+  assistantDevisActif?: boolean;
   /**
    * Emplacement rendu CÔTÉ SERVEUR sous l'en-tête, tel quel : le panneau « Ce
    * que le client a dit » (lecture seule, vente ouverte depuis un projet ; rien
@@ -191,6 +202,7 @@ export function VenteWizard({
   formations,
   clientInitialId,
   projetId,
+  assistantDevisActif = false,
   aside,
   brouillon,
   devisInitial,
@@ -209,6 +221,8 @@ export function VenteWizard({
     return e >= 1 && e <= 4 ? (e as Etape) : 1;
   });
   const [brouillonId, setBrouillonId] = useState<string | null>(brouillon?.id ?? null);
+  // Identifiant du brouillon lu juste après `persisterBrouillon` (l'état React n'est pas encore à jour).
+  const brouillonIdRef = useRef<string | null>(brouillon?.id ?? null);
   const [sale, setSale] = useState(false);
 
   // ── Étape 1 — client ──
@@ -333,6 +347,7 @@ export function VenteWizard({
       }
       id = cree.data.id;
       setBrouillonId(id);
+      brouillonIdRef.current = id;
     }
     const r = await updateVenteBrouillonAction({
       id,
@@ -458,6 +473,8 @@ export function VenteWizard({
         fichierPdfUrl: null,
         docusealSubmissionId: null,
         montantTotalHtCents: montantCents,
+        parAssistant: false,
+        classique: true,
       };
       setDevis(nouveau);
       setSale(true);
@@ -478,6 +495,13 @@ export function VenteWizard({
         toast.error(r.error);
         return;
       }
+      // Interrupteur éteint, e-mail GARÉ dans la corbeille de validation : le devis
+      // n'est pas parti, il reste brouillon et la signature n'est pas touchée.
+      if (r.data.garePourValidation === true) {
+        setDevis({ ...devis, statut: "brouillon" });
+        toast.message(r.data.note ?? "Devis en attente de validation (Emails → À valider)");
+        return;
+      }
       setDevis({
         ...devis,
         statut: "envoye",
@@ -492,6 +516,24 @@ export function VenteWizard({
         r.data.emailEnvoye
           ? "Devis envoyé au client"
           : `Devis marqué envoyé${r.data.note !== undefined ? ` — ${r.data.note}` : ""}`,
+      );
+    });
+  }
+
+  /** Assistant allumé : le devis se fait dans l'assistant, la vente est sauvegardée d'abord. */
+  function ouvrirAssistant(): void {
+    if (clientId === "") return;
+    startTransition(async () => {
+      const ok = await persisterBrouillon(3);
+      if (!ok) return;
+      const bId = brouillonIdRef.current;
+      if (bId === null) return;
+      const liaisonProjet =
+        projetId !== undefined && clientId === clientInitialId
+          ? `&projetId=${encodeURIComponent(projetId)}`
+          : "";
+      router.push(
+        `${base}/qualiopi/devis/new?clientId=${encodeURIComponent(clientId)}&venteBrouillonId=${encodeURIComponent(bId)}&modele=formation${liaisonProjet}`,
       );
     });
   }
@@ -1043,24 +1085,26 @@ export function VenteWizard({
                 {offreChoisie !== null ? `${offreChoisie.code} (${offreChoisie.prixLabelFr})` : ""}.
               </p>
               <div className="grid grid-cols-1 gap-[var(--space-admin-3,6px)] sm:grid-cols-2">
-                <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-                  Montant HT (€)
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={montantEur}
-                    onChange={(e) => {
-                      setMontantEur(e.target.value);
-                      setSale(true);
-                    }}
-                    placeholder={
-                      offreChoisie?.prixHtCents != null
-                        ? (offreChoisie.prixHtCents / 100).toLocaleString("fr-FR")
-                        : "Aucun prix ferme — à chiffrer"
-                    }
-                    className="admin-input"
-                  />
-                </label>
+                {assistantDevisActif ? null : (
+                  <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
+                    Montant HT (€)
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={montantEur}
+                      onChange={(e) => {
+                        setMontantEur(e.target.value);
+                        setSale(true);
+                      }}
+                      placeholder={
+                        offreChoisie?.prixHtCents != null
+                          ? (offreChoisie.prixHtCents / 100).toLocaleString("fr-FR")
+                          : "Aucun prix ferme — à chiffrer"
+                      }
+                      className="admin-input"
+                    />
+                  </label>
+                )}
                 <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
                   Stagiaires prévus
                   <input
@@ -1088,7 +1132,10 @@ export function VenteWizard({
                   />
                 </label>
               </div>
-              {offreChoisie !== null && offreChoisie.prixHtCents !== null && montantEur === "" ? (
+              {!assistantDevisActif &&
+              offreChoisie !== null &&
+              offreChoisie.prixHtCents !== null &&
+              montantEur === "" ? (
                 <div>
                   <AdminButton
                     variant="secondary"
@@ -1106,9 +1153,19 @@ export function VenteWizard({
               ) : null}
               <BandeauAttributionPartners texte={bandeauAffiche} />
               <div>
-                <AdminButton onClick={creerDevis} loading={isPending} disabled={clientId === ""}>
-                  Créer le devis (brouillon)
-                </AdminButton>
+                {assistantDevisActif ? (
+                  <AdminButton
+                    onClick={ouvrirAssistant}
+                    loading={isPending}
+                    disabled={clientId === ""}
+                  >
+                    Faire le devis dans l&apos;assistant
+                  </AdminButton>
+                ) : (
+                  <AdminButton onClick={creerDevis} loading={isPending} disabled={clientId === ""}>
+                    Créer le devis (brouillon)
+                  </AdminButton>
+                )}
               </div>
             </div>
           ) : (
@@ -1131,9 +1188,30 @@ export function VenteWizard({
 
               {devis.statut === "brouillon" ? (
                 <div>
-                  <AdminButton onClick={envoyerDevis} loading={isPending}>
-                    Envoyer le devis
-                  </AdminButton>
+                  {assistantDevisActif ? (
+                    // L'assistant ne rouvre QUE ses propres devis ; un devis classique se corrige
+                    // ailleurs, un devis à formules hors assistant n'a pas de lien ici. Jamais
+                    // « Envoyer le devis » quand l'interrupteur est allumé.
+                    devis.parAssistant ? (
+                      <Link
+                        href={`${base}/qualiopi/devis/new?devis=${devis.id}`}
+                        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        Ouvrir dans l&apos;assistant
+                      </Link>
+                    ) : devis.classique === true ? (
+                      <Link
+                        href={`${base}/qualiopi/devis/${devis.id}/corriger`}
+                        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        Corriger le brouillon
+                      </Link>
+                    ) : null
+                  ) : (
+                    <AdminButton onClick={envoyerDevis} loading={isPending}>
+                      Envoyer le devis
+                    </AdminButton>
+                  )}
                 </div>
               ) : null}
 

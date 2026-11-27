@@ -22,7 +22,7 @@
  * `GABARIT_VERSIONS`, et l'ancienne part dans `archives/`.
  */
 
-import type { ComposantPiece } from "./archives";
+import { gabaritArchive, type ComposantPiece } from "./archives";
 import { ContratCadrePdf as ContratCadrePdfV3 } from "./archives/contrat-cadre.v3";
 import { LettreMissionV2Pdf as LettreMissionPdfV2 } from "./archives/lettre-mission-v2.v2";
 import { ContratCadrePdf } from "./contrat-cadre";
@@ -109,16 +109,24 @@ export function composantVersionArretee(
  * Version à inscrire dans l'instantané d'une pièce qu'on émet.
  *
  * Sans demande, la version courante — comportement d'avant ce registre, à
- * l'identique. Une demande n'est acceptée que pour la version courante ou une
- * version ARRÊTÉE : sinon l'émission échoue, plutôt que de sceller une pièce
+ * l'identique. Une demande n'est acceptée que pour la version courante, une
+ * version ARRÊTÉE ou une version ARCHIVÉE (réédition d'une pièce déjà émise) : sinon l'émission échoue, plutôt que de sceller une pièce
  * dont l'exemplaire signé ne pourrait pas être rejoué.
  */
-export function versionGabaritAEcrire(type: string, demandee?: number): number | null {
+export function versionGabaritAEcrire(
+  type: string,
+  demandee?: number,
+  reeditionPieceEmise = false,
+): number | null {
   const gabarit = typeGabarit(type);
   if (gabarit === null) return null;
   const courante = GABARIT_VERSIONS[gabarit];
   if (demandee === undefined || demandee === courante) return courante;
   if (versionArretee(type, demandee)) return demandee;
+  // Duplicata ou régénération d'une pièce DÉJÀ ÉMISE (drapeau explicite, jamais par
+  // défaut) : elle se rend avec la version de l'ORIGINAL, donc une version ARCHIVÉE.
+  if (reeditionPieceEmise && demandee < courante && gabaritArchive(gabarit, demandee) !== null)
+    return demandee;
   throw new Error(
     `[gabarit] La version ${String(demandee)} de « ${type} » n'est ni la version courante ` +
       `(${courante}) ni une version arrêtée : émission refusée.`,

@@ -49,7 +49,7 @@ export const FOURMIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fourmies et dans l'Avesnois ?",
-      a: "Oui, Axion-IA intervient à Fourmies et dans tout l'Avesnois (Avesnes-sur-Helpe, Trélon, Wignehies, Anor). Nos consultants se déplacent via la RN2 ou le TER Fourmies–Aulnoye-Aymeries et couvrent le sud du département du Nord.",
+      a: "Oui, Axion-IA intervient à Fourmies et dans tout l'Avesnois (Avesnes-sur-Helpe, Trélon, Wignehies, Anor) et couvre le sud du département du Nord.",
     },
     {
       q: "Accompagnez-vous les TPE et PME industrielles de Fourmies ?",
@@ -65,7 +65,7 @@ export const FOURMIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Fourmies ?",
-      a: "Nos consultants se déplacent à Fourmies via la RN2 ou le TER (Aulnoye-Aymeries). Maubeuge à 30 min, Avesnes-sur-Helpe à 15 min. Intervention sur site ou en visio.",
+      a: "Intervention sur site ou en visio.",
     },
   ],
 };

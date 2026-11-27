@@ -65,7 +65,7 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Flers-en-Escrebieux ?",
-      a: "Depuis Lille : 35 min via A1. Depuis Paris : TGV Douai en 50 min. Missions sur site à Flers-en-Escrebieux ou en visio.",
+      a: "Missions sur site à Flers-en-Escrebieux ou en visio.",
     },
   ],
 };

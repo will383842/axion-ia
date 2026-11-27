@@ -65,7 +65,7 @@ export const VALDOIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Valdoie ?",
-      a: "Belfort centre (5 min) ou TGV Belfort-Montbéliard (15 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Valdoie, comme partout en France, ou à distance.",
     },
   ],
 };

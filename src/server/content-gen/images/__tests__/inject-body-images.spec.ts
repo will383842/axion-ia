@@ -6,6 +6,8 @@ vi.mock("../../providers/unsplash", () => ({
   unsplashProvider: { generate: (...args: unknown[]) => generateMock(...args) },
 }));
 
+// Ces specs couvrent le comportement d'AVANT (CONTENT_IMAGES_QUALITE="false").
+vi.mock("../used-photos", () => ({ loadUsedPhotoKeys: vi.fn(), makePhotoGate: vi.fn() }));
 import { injectBodyImages, __testInternals } from "../inject-body-images";
 
 const { h2ToQuery, h2Offsets, buildFigure } = __testInternals;
@@ -39,10 +41,12 @@ const BODY_3H2 =
 describe("inject-body-images", () => {
   const OLD = process.env.UNSPLASH_ACCESS_KEY;
   beforeEach(() => {
+    process.env.CONTENT_IMAGES_QUALITE = "false";
     generateMock.mockReset();
     process.env.UNSPLASH_ACCESS_KEY = "test-key";
   });
   afterEach(() => {
+    delete process.env.CONTENT_IMAGES_QUALITE;
     if (OLD === undefined) delete process.env.UNSPLASH_ACCESS_KEY;
     else process.env.UNSPLASH_ACCESS_KEY = OLD;
   });

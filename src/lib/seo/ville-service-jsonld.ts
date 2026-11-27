@@ -34,6 +34,7 @@ import {
   buildWebPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
+import { idNoeudPlumeIa } from "@/lib/seo/plume-ia";
 import { JOURNEE_IA_SERVICE_ID, buildJourneeIaServiceJsonLd } from "@/lib/seo/journee-ia-service";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -231,23 +232,11 @@ export function buildVilleServiceJsonLdGraph(
     );
   }
 
-  // ── 6. Person — Manon (autrice éditoriale) ─────────────────────────────────
-  // Nécessaire pour le signal E-E-A-T (Experience, Expertise, Authority, Trust).
-  // Google AI Overviews et Perplexity valorisent l'authorship documenté.
+  // ── 6. Plume IA — simple référence vers le nœud non humain (V1-18) ─────────
+  // Le nœud lui-même est émis par la page équipe ; jamais de `Person` pour la plume IA.
   schemas.push({
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Manon",
-    jobTitle: isFr ? "Plume éditoriale Axion-IA" : "Editorial voice Axion-IA",
-    worksFor: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA",
-    },
-    knowsAbout: isFr
-      ? ["Intelligence artificielle en entreprise", "Audit IA", "Transformation numérique PME"]
-      : ["Enterprise AI", "AI audit", "SME digital transformation"],
-    knowsLanguage: ["fr", "en"],
+    "@id": idNoeudPlumeIa(SITE_URL),
   });
 
   // ── 7. WebPage JSON-LD + abstract (signal #1 pour featured snippets / position 0)

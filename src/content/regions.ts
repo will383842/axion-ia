@@ -137,17 +137,17 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Grenoble, Clermont-Ferrand, Annecy. Axion-IA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
+      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Clermont-Ferrand, Annecy. Axion-IA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
     pitchEn:
-      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Grenoble, Clermont-Ferrand, Annecy. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
+      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Clermont-Ferrand, Annecy. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
     metaTitleFr: "Auvergne-Rhône-Alpes · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaTitleEn: "Auvergne-Rhône-Alpes · Senior AI experts · Audit, Training, Coaching, SaaS",
     metaDescFr:
-      "Architectes IA seniors en Auvergne-Rhône-Alpes pour PME, ETI deep-tech et grands groupes : audit IA, formation, implémentation, coaching. Lyon, Grenoble.",
+      "Architectes IA seniors en Auvergne-Rhône-Alpes pour PME, ETI deep-tech et grands groupes : audit IA, formation, implémentation, coaching. Lyon, Annecy.",
     metaDescEn:
-      "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Grenoble, Annecy, Clermont.",
+      "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Annecy, Clermont.",
     audienceLocalFr:
-      "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces grenoblois. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles deep-tech (Grenoble, Saint-Étienne), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
+      "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces de Lyon et d’Annecy. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles deep-tech (Saint-Étienne, Annecy), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "PME mécanique de la Loire",
       leadFr: "Devis chiffré en 12 min vs 2 h avant",
@@ -155,7 +155,7 @@ export const REGIONS: ReadonlyArray<Region> = [
         "Sous-traitant Tier 2 automobile près de Roanne : agent IA RAG sur leur catalogue de pièces + historique devis. Réponse client passée de 2 h à 12 min en moyenne, taux de transformation devis × 1,6 mesuré sur trimestre.",
     },
     audienceLocalEn:
-      "Auvergne-Rhône-Alpes counts over 700,000 SMBs, from the Roanne area to the Alpine valleys. Restaurateurs and hoteliers in Annecy and Chamonix, butchers in Lyon Confluence, mechanical SMBs in the Loire and Oyonnax plastics cluster, consulting firms on Part-Dieu, Grenoble e-commerces. Axion-IA serves these SMB executives first. Industrial deep-tech mid-caps (Grenoble, Saint-Étienne) are also supported.",
+      "Auvergne-Rhône-Alpes counts over 700,000 SMBs, from the Roanne area to the Alpine valleys. Restaurateurs and hoteliers in Annecy and Chamonix, butchers in Lyon Confluence, mechanical SMBs in the Loire and Oyonnax plastics cluster, consulting firms on Part-Dieu, Lyon and Annecy e-commerces. Axion-IA serves these SMB executives first. Industrial deep-tech mid-caps (Saint-Étienne, Annecy) are also supported.",
   },
   {
     slug: "provence-alpes-cote-d-azur",
@@ -512,7 +512,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     audienceLocalFr:
       "La Guadeloupe abrite plus de 35 000 TPE-PME insulaires. Hôteliers et restaurateurs de Sainte-Anne et Saint-François, distillateurs de rhum agricole (Damoiseau, Bologne, Longueteau, Bellevue), exportateurs de banane et de melon, négociants en café et cacao, agences de tourisme caribéen, artisans pointois et basse-terriens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles et touristiques antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre métier.",
     dromLogisticsFr:
-      "Intervenir en Guadeloupe demande une logistique cadrée : aéroport Pôle Caraïbes (Pointe-à-Pitre), accès à Basse-Terre par la côte sous-le-vent ou la traversée centrale, archipel des Saintes / Marie-Galante / La Désirade accessibles en ferry. Axion-IA structure les missions en blocs cohérents (audit sur place + atelier ; ou implementation sprint), avec sessions distancielles en complément pour limiter les déplacements. Devis transparent intégrant les frais de voyage et hébergement, validé avant signature.",
+      "Intervenir en Guadeloupe demande une logistique cadrée : aéroport Pôle Caraïbes (Pointe-à-Pitre), accès à Basse-Terre par la côte sous-le-vent ou la traversée centrale, archipel des Saintes / Marie-Galante / La Désirade accessibles en ferry. Axion-IA structure les missions en blocs cohérents (audit sur place + atelier ; ou implementation sprint), avec sessions distancielles en complément pour limiter les déplacements.",
     audienceCaseStudyFr: {
       titleFr: "Distillerie de rhum agricole AOC",
       leadFr: "Traçabilité export + storytelling marque",
@@ -543,7 +543,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     audienceLocalFr:
       "La Martinique compte près de 32 000 TPE-PME ancrées dans le tissu créole. Hôteliers et restaurateurs des Trois-Îlets et de Sainte-Anne, distillateurs de rhum agricole AOC (Saint-James, Trois-Rivières, La Mauny, Clément, Depaz, JM), exportateurs de banane et fruits tropicaux, négociants foyalais, cabinets médicaux, agences immobilières, artisans pêcheurs du François. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre.",
     dromLogisticsFr:
-      "Intervenir en Martinique se cadre autour de l'aéroport Aimé-Césaire (Le Lamentin) et de l'agglomération foyalaise. Distance utile : Fort-de-France → Sainte-Marie 35 min, → Trois-Îlets 20 min de ferry. Axion-IA regroupe les missions par campagnes (audit sur 2-3 jours, atelier dirigeant + équipe, livrables sous 5 jours), avec suivi distanciel sur 30-60 jours. Devis transparent incluant transport et hébergement, sans surprise.",
+      "Intervenir en Martinique se cadre autour de l'aéroport Aimé-Césaire (Le Lamentin) et de l'agglomération foyalaise. Distance utile : Fort-de-France → Sainte-Marie 35 min, → Trois-Îlets 20 min de ferry. Axion-IA regroupe les missions par campagnes (audit sur 2-3 jours, atelier dirigeant + équipe, livrables sous 5 jours).",
     audienceCaseStudyFr: {
       titleFr: "Hôtel 4★ Trois-Îlets",
       leadFr: "Concierge IA croisières + clients USA",
@@ -574,7 +574,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     audienceLocalFr:
       "La Guyane fédère près de 15 000 TPE-PME amazoniennes. Restaurateurs et hôteliers de Cayenne et Rémire-Montjoly, sous-traitants aérospatiaux du Centre spatial guyanais à Kourou (logistique, ingénierie, maintenance), entreprises forestières et exploitants aurifères, négociants en bois précieux, artisans amérindiens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI aérospatiales et minières guyanaises, avec le même standard premium senior — mission cadrée selon votre entreprise et vos contraintes logistiques amazoniennes.",
     dromLogisticsFr:
-      "Intervenir en Guyane se cadre autour de l'aéroport Félix-Eboué (Cayenne) et de l'axe Cayenne → Kourou (60 km, 45 min). Saint-Laurent-du-Maroni accessible par RN1 (250 km). Axion-IA regroupe les missions par campagnes denses (2-4 jours sur place + livrables sous 5 jours), avec suivi distanciel pour limiter les déplacements transatlantiques. Devis transparent incluant transport, hébergement et frais spécifiques amazoniens (autorisations Kourou si zone spatiale).",
+      "Intervenir en Guyane se cadre autour de l'aéroport Félix-Eboué (Cayenne) et de l'axe Cayenne → Kourou (60 km, 45 min). Saint-Laurent-du-Maroni accessible par RN1 (250 km). Axion-IA regroupe les missions par campagnes denses (2-4 jours sur place + livrables sous 5 jours).",
     audienceCaseStudyFr: {
       titleFr: "Sous-traitant aérospatial Kourou",
       leadFr: "Conformité agence spatiale + traçabilité pièces",
@@ -605,7 +605,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     audienceLocalFr:
       "La Réunion compte plus de 75 000 TPE-PME insulaires au tissu dense. Hôteliers et restaurateurs des cirques (Cilaos, Salazie, Mafate) et de la côte ouest, planteurs et industriels de la canne à sucre (Tereos Océan Indien), exportateurs de vanille Bourbon et de géranium rosat, PME tech de Saint-Denis et Sainte-Marie, agences de voyage volcanique (piton de la Fournaise), artisans dionysiens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles et tertiaires réunionnaises, avec le même standard premium senior.",
     dromLogisticsFr:
-      "Intervenir à La Réunion se cadre autour de l'aéroport Roland-Garros (Saint-Denis) ou Pierrefonds (Saint-Pierre). Axe Nord-Sud : Saint-Denis → Saint-Pierre 1h30 (route des Tamarins). Axion-IA structure les missions en campagnes longues (4-7 jours sur place) pour amortir le voyage et couvrir Nord-Ouest-Sud, avec suivi distanciel ensuite. Devis transparent incluant vol, hébergement, location véhicule et déplacements inter-cirques si nécessaire.",
+      "Intervenir à La Réunion se cadre autour de l'aéroport Roland-Garros (Saint-Denis) ou Pierrefonds (Saint-Pierre). Axe Nord-Sud : Saint-Denis → Saint-Pierre 1h30 (route des Tamarins). Axion-IA structure les missions en campagnes longues (4-7 jours sur place) pour amortir le voyage et couvrir Nord-Ouest-Sud.",
     audienceCaseStudyFr: {
       titleFr: "Exportateur de vanille Bourbon",
       leadFr: "Lots traçables blockchain + IA",
@@ -636,7 +636,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     audienceLocalFr:
       "Mayotte fédère plus de 10 000 TPE-PME mahoraises au sein du plus jeune département français (101ᵉ depuis 2011). Producteurs de vanille Bourbon et d'ylang-ylang, pêcheurs artisanaux du lagon, commerçants mamoudziens et de Koungou, restaurateurs créoles et comoriens, cabinets médicaux du Centre hospitalier de Mayotte, négociants en produits tropicaux, artisans. Axion-IA accompagne ces dirigeants TPE-PME mahoraises comme les ETI agro-industrielles et de pêche, avec le même standard premium senior — mission cadrée selon votre entreprise et votre périmètre métier.",
     dromLogisticsFr:
-      "Intervenir à Mayotte se cadre autour de l'aéroport de Dzaoudzi-Pamandzi (Petite-Terre), accessible depuis Mamoudzou via la barge maritime (~30 min). Axion-IA organise les missions en blocs denses (3-5 jours sur place + livrables sous 5 jours), avec suivi distanciel sur 30-60 jours pour limiter les rotations longue distance. Devis transparent incluant vol, hébergement, navette barge et déplacements Grande-Terre / Petite-Terre selon le périmètre.",
+      "Intervenir à Mayotte se cadre autour de l'aéroport de Dzaoudzi-Pamandzi (Petite-Terre), accessible depuis Mamoudzou via la barge maritime (~30 min). Axion-IA organise les missions en blocs denses (3-5 jours sur place + livrables sous 5 jours).",
     audienceCaseStudyFr: {
       titleFr: "Producteur d'ylang-ylang",
       leadFr: "Vente parfumeurs Grasse en direct",

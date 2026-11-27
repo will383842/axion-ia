@@ -4,7 +4,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
-import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
+import { auteurJsonLd } from "@/lib/seo/plume-ia";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
@@ -186,20 +186,10 @@ export default async function BlogCategoryPage({ params }: Props) {
     abstract: isFr
       ? `${label} sur le blog Axion-IA : méthodologie et cas d'usage IA concrets pour TPE, PME, ETI et grands groupes français (${posts.length} article${posts.length > 1 ? "s" : ""}).`
       : `${label} on the Axion-IA blog: concrete AI methodology and use cases for French SMBs (${posts.length} article${posts.length > 1 ? "s" : ""}).`,
-    // Fraîcheur + E-E-A-T (audit AEO 2026-06-25) — date du dernier article +
-    // revue éditoriale rattachée au nœud Person canonique du fondateur (référence
-    // `@id`, pas de duplication d'identité). Omis si aucune date ISO exploitable.
-    ...(hasIsoDate
-      ? {
-          dateModified: latestDate,
-          lastReviewed: latestDate,
-          extra: {
-            // `@id` canonique, jamais interpolé par la locale : la fiche `/equipe/[slug]`
-            // 404 hors FR, donc `…/en/equipe/williams#person` désignait une entité sans page.
-            reviewedBy: { "@id": FOUNDER_PERSON_ID },
-          },
-        }
-      : {}),
+    // Fraîcheur (audit AEO 2026-06-25) — date du dernier article. V2-17 : AUCUNE
+    // relecture déclarée (`reviewedBy`/`lastReviewed`), aucune donnée n'atteste une
+    // relecture humaine de ce hub. Omis si aucune date ISO exploitable.
+    ...(hasIsoDate ? { dateModified: latestDate } : {}),
     // isPartOf omis → référence le nœud canonique `#website` (audit SEO 2026-06-24).
     // Speakable : intro answer-ready (#axion-direct-answer) citable voix/AI-Overview.
     speakable: true,
@@ -208,7 +198,7 @@ export default async function BlogCategoryPage({ params }: Props) {
       headline: p.title,
       url: `${SITE_URL}/${locale}/${p.route}/${p.slug}`,
       datePublished: p.publishedAt,
-      author: { "@type": "Person", name: p.author },
+      author: auteurJsonLd(p.author, SITE_URL),
     })),
   });
 
@@ -362,20 +352,11 @@ export default async function BlogCategoryPage({ params }: Props) {
               : `Axion-IA's « ${label} » articles bundle a proven methodology and concrete AI use cases drawn from real field missions with French SMBs. Browse the ${posts.length} article${posts.length > 1 ? "s" : ""} below or refine your search by keywords.`}
           </p>
           <p className="text-fg-muted mt-4 text-sm">
-            {isFr ? "Sélection éditoriale supervisée par " : "Editorial selection overseen by "}
-            <a
-              href={`/${locale}/equipe/williams`}
-              className="text-terracotta-deep font-medium underline-offset-2 hover:underline"
-            >
-              {FOUNDER.displayName}
-            </a>
-            {isFr ? ", fondateur d'Axion-IA" : ", founder of Axion-IA"}
             {latestDateLabel
               ? isFr
-                ? ` · Mis à jour le ${latestDateLabel}`
-                : ` · Updated ${latestDateLabel}`
+                ? `Mis à jour le ${latestDateLabel}.`
+                : `Updated ${latestDateLabel}.`
               : ""}
-            .
           </p>
         </div>
       </Container>

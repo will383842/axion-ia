@@ -52,6 +52,7 @@ import {
   validerChoixSignature,
 } from "@/server/qualiopi/devis/choix-signature";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { versionDevisEncoreSignable } from "@/server/qualiopi/devis/garde-signature-version";
 import { codeAssezRecent, validerDeclaration } from "@/server/qualiopi/devis/signature-renforcee";
 import { peutEngager } from "@/server/auth/habilitations";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
@@ -72,6 +73,19 @@ import {
   CONSENTEMENT_VERSION_DOCUMENT_CODE,
   type VersionConsentementDocument,
 } from "./mentions-document";
+import {
+  MENTION_VERSION_DEVIS,
+  CONSENTEMENT_VERSION_DEVIS,
+  CONSENTEMENT_VERSION_DEVIS_CODE,
+  estSignatureClientDevis,
+  type VersionConsentementDevis,
+} from "./mentions-devis";
+import {
+  MENTION_VERSION_PAPIER,
+  CONSENTEMENT_VERSION_PAPIER,
+  type VersionConsentementPapier,
+} from "./mentions-papier";
+import { estCleScanPapier, stockerScanPapier, supprimerScanPapier } from "./scan-papier-storage";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, c'est autre chose qu'une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -204,7 +218,9 @@ export type RefusSignatureDocument =
   /** Signature renforcée — nom, fonction ou déclaration de pouvoir absents ou invalides. */
   | "declaration_requise"
   /** Signature renforcée — aucun code à usage unique récemment accepté pour cette pièce. */
-  | "code_requis";
+  | "code_requis"
+  /** Devis : une version plus récente a été émise pendant la signature ; rien n'est inscrit. */
+  | "version_remplacee";
 
 export type ResultatSignatureDocument =
   | {
@@ -231,6 +247,12 @@ export interface EntreeSignatureDocument {
   partiesRequises: readonly PartieSignataire[];
   /** Data-URL PNG/JPEG. Obligatoire sauf pour `confirmation_accessible`. */
   imageDataUrl?: string | undefined;
+  /**
+   * Lot I3 — scan PDF d'un devis signé à la main. Admis SEULEMENT avec le porteur
+   * `reversement_papier` ET la méthode `papier_scanne`, et jamais avec `imageDataUrl`.
+   * Les octets sont écrits sur R2 tels quels (jamais ré-encodés) ; l'empreinte porte sur eux.
+   */
+  scanPdf?: { octets: Buffer } | undefined;
   ipHash?: string | null | undefined;
   userAgentSha256?: string | null | undefined;
   /** Injectable pour les tests. Jamais `new Date()` en dur dans la logique. */
@@ -240,7 +262,14 @@ export interface EntreeSignatureDocument {
    * « code » n'est passée que par l'appelant qui a VÉRIFIÉ et consommé le code
    * à usage unique (contrat-cadre v3, lot L7c) : elle entre dans le tuple haché.
    */
-  consentementVersion?: VersionConsentementDocument | undefined;
+  consentementVersion?:
+    VersionConsentementDocument | VersionConsentementPapier | VersionConsentementDevis | undefined;
+  /**
+   * Version des mentions affichées. Seule `devis-v1` est admise, et seulement pour la signature du
+   * CLIENT sur un DEVIS, avec un consentement devis. Absente : `MENTION_VERSION_DOCUMENT` (autres
+   * appelants, contresignature de la console).
+   */
+  mentionVersion?: typeof MENTION_VERSION_DEVIS | undefined;
   /**
    * Version des CGV acceptées. 🔴 Fournie par le SERVEUR (jamais par le navigateur) et
    * OBLIGATOIRE pour un devis signé par lien (`signataire_jeton`). Les autres pièces et
@@ -333,7 +362,17 @@ const MESSAGES: Record<RefusSignatureDocument, string> = {
     "Renseignez votre nom, votre fonction et cochez la déclaration de pouvoir d'engager la société avant de signer.",
   code_requis:
     "Saisissez le code reçu par e-mail pour signer. S'il a expiré, demandez-en un nouveau.",
+  version_remplacee:
+    "Une version plus récente de ce devis vient d'être émise : cette signature n'a pas été enregistrée. C'est la nouvelle version qui doit être signée.",
 };
+
+/** Devis : la version signée a été remplacée avant l'inscription ; jamais réessayé. */
+class SignatureSurVersionRemplaceeError extends Error {
+  constructor() {
+    super("signature sur une version de devis remplacée");
+    this.name = "SignatureSurVersionRemplaceeError";
+  }
+}
 
 function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
   return { ok: false, raison, message: MESSAGES[raison] };
@@ -353,7 +392,9 @@ function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
 async function nettoyerImageOrpheline(image: { key: string } | null): Promise<void> {
   if (image === null) return;
   try {
-    await supprimerImageSignature(image.key);
+    // La forme de la clé dit ce que c'est : scan PDF papier (lot I3) ou image de tracé.
+    if (estCleScanPapier(image.key)) await supprimerScanPapier(image.key);
+    else await supprimerImageSignature(image.key);
   } catch (err) {
     Sentry.captureException(err, {
       tags: { action: "signerDocument:nettoyage_orphelin" },
@@ -920,6 +961,12 @@ export async function signerDocument(
     jeton = v.jeton;
   }
 
+  // La méthode papier n'appartient qu'au reversement papier : tout autre porteur affirmerait
+  // une signature manuscrite qu'il n'a pas recueillie. Avant CGV et pré-contrôles de forme.
+  if (input.methode === "papier_scanne" && porteur.type !== "reversement_papier") {
+    return refus("porteur_non_autorise");
+  }
+
   // Placé APRÈS l'autorisation : sinon un appelant qui devine un identifiant de
   // pièce apprend si une autre partie a déjà signé.
   if (ctx.signatures.length > 0) return refus("deja_signe");
@@ -1038,7 +1085,7 @@ export async function signerDocument(
   //
   // ⚠️ AUCUNE exception, canal papier compris. Le reversement d'une signature
   // manuscrite recueillie AVANT l'annulation serait le seul cas légitime — mais
-  // ce porteur n'a aucun appelant dans le dépôt, et le service n'accepte pas de
+  // son seul appelant (lot I3, `verserScanDevisSigneAction`, devis) ne passe pas de date de recueil, et le service n'accepte pas de
   // date de recueil distincte de `maintenant` : il ne pourrait donc pas établir
   // l'antériorité qui justifierait l'exception. L'ouvrir sur une promesse
   // reviendrait à rouvrir le défaut pour le seul canal où personne ne regarde.
@@ -1062,9 +1109,45 @@ export async function signerDocument(
   }
 
   const imageFournie = input.imageDataUrl !== undefined && input.imageDataUrl !== "";
+  const scanFourni = input.scanPdf !== undefined;
+  const papier = input.methode === "papier_scanne";
+
+  // Lot I3 — le scan PDF n'a qu'un seul chemin : le reversement papier, méthode papier scanné,
+  // sans image de tracé en plus. Codes EXISTANTS : un scan hors de ce chemin présenterait comme
+  // papier ce qui ne l'est pas.
+  if (scanFourni && (porteur.type !== "reversement_papier" || !papier || imageFournie)) {
+    return refus("image_interdite");
+  }
+  // Sens inverse : le reversement papier ne signe que par scan PDF. Placée après les gardes de pièce, avant tout R2.
+  // Sans scan, une méthode autre que papier_scanne, ou une image jointe, ferait afficher comme image une ligne papier (« Signé le »).
+  // `papier_scanne` sans rien reste à `image_requise` plus bas ; un scan fourni garde ses refus propres.
+  if (porteur.type === "reversement_papier" && !scanFourni && (!papier || imageFournie)) {
+    return refus("porteur_non_autorise");
+  }
+  // D1 (option c) — versions papier IMPOSÉES en papier, refusées ailleurs : l'appelant ne choisit
+  // jamais ce que la ligne dit du consentement.
+  if (papier && input.consentementVersion !== undefined) return refus("porteur_non_autorise");
+  if (!papier && input.consentementVersion === CONSENTEMENT_VERSION_PAPIER) {
+    return refus("porteur_non_autorise");
+  }
+  // Mentions `devis-v1` : réservées à la signature du CLIENT sur un DEVIS, jamais en papier, et
+  // toujours AVEC un consentement devis (texte lu et consentement scellé cohérents). Avant tout R2.
+  if (input.mentionVersion !== undefined) {
+    if (input.mentionVersion !== MENTION_VERSION_DEVIS) return refus("porteur_non_autorise");
+    if (papier || !estSignatureClientDevis(ctx.type, partie)) {
+      return refus("porteur_non_autorise");
+    }
+  }
+  const consentementDevis =
+    input.consentementVersion === CONSENTEMENT_VERSION_DEVIS ||
+    input.consentementVersion === CONSENTEMENT_VERSION_DEVIS_CODE;
+  if (consentementDevis !== (input.mentionVersion === MENTION_VERSION_DEVIS)) {
+    return refus("porteur_non_autorise");
+  }
+
   if (input.methode === "confirmation_accessible") {
     if (imageFournie) return refus("image_interdite");
-  } else if (!imageFournie) {
+  } else if (!imageFournie && !scanFourni) {
     // `trace` sans image, `papier_scanne` sans scan : dans les deux cas la ligne
     // affirmerait l'existence d'une pièce que personne ne pourra produire.
     return refus("image_requise");
@@ -1090,7 +1173,13 @@ export async function signerDocument(
   // genre inconnu produirait des images ineffaçables. Les clés sont des UUID :
   // partager le préfixe avec l'émargement ne crée aucune collision.
   let image: { key: string; sha256: string; mimeType: string; sizeBytes: number } | null = null;
-  if (imageFournie && input.imageDataUrl !== undefined) {
+  if (input.scanPdf !== undefined) {
+    image = await stockerScanPapier({
+      octets: input.scanPdf.octets,
+      signeAt: maintenant,
+      id: signatureId,
+    });
+  } else if (imageFournie && input.imageDataUrl !== undefined) {
     image = await storeSignatureImage({
       dataUrl: input.imageDataUrl,
       genre: "signatures",
@@ -1102,14 +1191,23 @@ export async function signerDocument(
   const suppressionPrevueAt = new Date(maintenant);
   suppressionPrevueAt.setFullYear(suppressionPrevueAt.getFullYear() + DOCUMENT_RETENTION_YEARS);
 
-  const consentementVersion = input.consentementVersion ?? CONSENTEMENT_VERSION_DOCUMENT;
+  // D1 : en papier, les deux versions sont IMPOSÉES (jamais fournies par l'appelant).
+  const mentionVersion = papier
+    ? MENTION_VERSION_PAPIER
+    : (input.mentionVersion ?? MENTION_VERSION_DOCUMENT);
+  const consentementVersion = papier
+    ? CONSENTEMENT_VERSION_PAPIER
+    : (input.consentementVersion ?? CONSENTEMENT_VERSION_DOCUMENT);
 
   // V1-A-7 — le FACTEUR qui a prouvé l'adresse, scellé dans le tuple v2. Affirmé
   // seulement s'il est constaté en base : le texte « avec code » ET un code consommé
   // pour cette pièce et cette partie (l'appelant le consomme juste avant). Sans code
   // consommé, rien n'est affirmé — jamais déduit du seul texte affiché.
   let facteurVerification: FacteurVerificationSignature | null = null;
-  if (consentementVersion === CONSENTEMENT_VERSION_DOCUMENT_CODE) {
+  if (
+    consentementVersion === CONSENTEMENT_VERSION_DOCUMENT_CODE ||
+    consentementVersion === CONSENTEMENT_VERSION_DEVIS_CODE
+  ) {
     const code = await prisma.documentSignatureCode.findFirst({
       where: { documentGenereId: ctx.id, partie, utiliseAt: { not: null } },
       select: { id: true },
@@ -1131,7 +1229,7 @@ export async function signerDocument(
     signataireQualite,
     methode: input.methode,
     signatureSha256: image?.sha256 ?? null,
-    mentionVersion: MENTION_VERSION_DOCUMENT,
+    mentionVersion,
     consentementVersion,
     signeAtIso: maintenant.toISOString(),
     cgvVersion,
@@ -1143,6 +1241,12 @@ export async function signerDocument(
   for (let essai = 0; essai < MAX_REPRISES_CHAINE; essai++) {
     try {
       const cree = await prisma.$transaction(async (tx) => {
+        // Garde de version : en PREMIER, avant toute lecture de la chaîne. Les contrôles d'avant la
+        // transaction (statut, jeton, version suivante) datent d'avant l'envoi R2 : seule cette
+        // relecture sous verrou fait foi.
+        if (ctx.type === "devis" && !(await versionDevisEncoreSignable(tx, ctx.id))) {
+          throw new SignatureSurVersionRemplaceeError();
+        }
         // 🔴 L'ordre de la chaîne est celui de l'INSERTION (`createdAt`), jamais
         // celui de `signeAt` : ce dernier est figé AVANT l'écriture de l'image sur
         // R2 (sharp + aller-retour réseau, 100 à 500 ms), et il peut de surcroît
@@ -1208,7 +1312,7 @@ export async function signerDocument(
             prevHash,
             selfHash,
             hashVersion: sceauV4 === null ? HASH_VERSION_DOCUMENT : HASH_VERSION_DOCUMENT_V4,
-            mentionVersion: MENTION_VERSION_DOCUMENT,
+            mentionVersion,
             consentementVersion,
             facteurVerification,
             cgvVersion,
@@ -1242,7 +1346,8 @@ export async function signerDocument(
         // Horodatage RFC 3161 du sceau (lot 4 bis) : la ligne naît « en attente » dans la MÊME
         // transaction que la preuve ; le jeton est demandé APRÈS, sans jamais bloquer ni défaire la
         // signature. Toute signature V4 (client et contresignature) a la sienne.
-        if (sceauV4 !== null) {
+        // Lot I3 : le scan papier d'un devis a la sienne aussi (V3, empreinte = `selfHash`).
+        if (sceauV4 !== null || (porteur.type === "reversement_papier" && ctx.type === "devis")) {
           await tx.documentSignatureHorodatage.create({
             data: {
               signatureId: sig.id,
@@ -1284,6 +1389,15 @@ export async function signerDocument(
         statutSignature: cree.statutSignature,
       };
     } catch (err) {
+      if (err instanceof SignatureSurVersionRemplaceeError) {
+        await nettoyerImageOrpheline(image);
+        Sentry.captureMessage("Signature refusée : version de devis remplacée", {
+          level: "warning",
+          tags: { action: "signerDocument:version_remplacee" },
+          extra: { documentGenereId: input.documentGenereId, partie },
+        });
+        return refus("version_remplacee");
+      }
       const conflit = err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
       if (!conflit) {
         await nettoyerImageOrpheline(image);

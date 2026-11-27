@@ -557,6 +557,20 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a déclaré l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-resiliation-notifiee": {
+    categorie: "recrutement",
+    quand:
+      "Fiche de l'apporteur : « Notifier la résiliation » (article 11.1 avec préavis de 30 jours, 11.2 ou 12.5)",
+    destinataire: "l'apporteur dont le contrat est résilié",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-resiliation-effective": {
+    categorie: "recrutement",
+    quand:
+      "Le jour de la prise d'effet de la résiliation (passage quotidien, ou aussitôt en 11.2 et 12.5)",
+    destinataire: "l'apporteur dont le contrat prend fin",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:
@@ -569,6 +583,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand:
       "Console Commissions : « suspendre » (contestation écrite du client) puis « Lever la suspension »",
     destinataire: "l'apporteur dont la commission est suspendue, puis libérée",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-regime-tva": {
+    categorie: "recrutement",
+    quand:
+      "Console, fiche apporteur : « Changer le régime de TVA » enregistré (ou annulé avant sa date d'effet)",
+    destinataire: "l'apporteur dont le régime de TVA change",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-dossier-recu": {
@@ -589,9 +610,23 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-presentation-recue-rendez-vous": {
+    categorie: "recrutement",
+    quand:
+      "Bouton « Bien reçu » d'une entreprise présentée par un apporteur sous la validation par rendez-vous (interrupteur allumé ET contrat signé ≥ 2.8), après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-presentation-refusee": {
     categorie: "recrutement",
     quand: "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-presentation-non-retenue": {
+    categorie: "recrutement",
+    quand:
+      "Le dirigeant écarte une entreprise présentée (démentie, déjà connue, hors champ) ; envoi éteint tant que APPORTEURS_EMAIL_REFUS n'est pas « true »",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
@@ -624,7 +659,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-attribution-confirmee": {
     categorie: "recrutement",
     quand:
-      "Quand une attribution devient définitive (console, ou confirmation réputée acquise au passage quotidien) et quand la protection est prolongée de trois mois",
+      "Quand une attribution devient définitive (rendez-vous tenu ou commande signée validé en console, ou confirmation réputée acquise au passage quotidien), avec la date de la validation et la fin de la protection ; et quand la protection est prolongée de trois mois",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/attribution-annonce.ts",
   },
@@ -643,8 +678,10 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "apporteur-lien-espace": {
     categorie: "recrutement",
-    quand: "Page « Retrouver mon espace » : l'apporteur tape son adresse e-mail",
-    destinataire: "l'apporteur du réseau qui a demandé son lien",
+    quand:
+      "Page « Retrouver mon espace » : l'apporteur tape son adresse e-mail ; ou bouton « Envoyer le lien de son espace » de la fiche d'un apporteur au dossier signé",
+    destinataire:
+      "l'apporteur du réseau qui a demandé son lien, ou à qui un administrateur l'envoie depuis la console (le texte ne dit alors pas « comme vous l'avez demandé »)",
     // L'action de la page appelle `envoyer()`, qui pose le job : comme les autres gabarits
     // apporteur, l'appelant réel de `enqueueEmail` est `envois.ts`.
     source: "features/apporteurs-reseau/envois.ts",

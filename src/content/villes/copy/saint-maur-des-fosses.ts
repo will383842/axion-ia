@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés autour des quatre gares RER A (Saint-Maur – Créteil, Parc de Saint-Maur, Saint-Maur – Champigny, La Varenne – Chennevières), avec du code source sur-mesure.",
+    "Axion-IA accompagne les TPE et PME de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés à Saint-Maur-des-Fossés, de Saint-Maur – Créteil à La Varenne – Chennevières, avec du code source sur-mesure.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés autour des quatre gares RER A (Saint-Maur – Créteil, Parc de Saint-Maur, Saint-Maur – Champigny, La Varenne – Chennevières), avec du code source sur-mesure.",
+    "Axion-IA accompagne les TPE et PME de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés à Saint-Maur-des-Fossés, de Saint-Maur – Créteil à La Varenne – Chennevières, avec du code source sur-mesure.",
   directAnswerFr:
     "Axion-IA se déplace à Saint-Maur-des-Fossés (Val-de-Marne, 76 572 habitants) pour auditer et automatiser les processus des TPE et PME locales. Bordée par Bonneuil-sur-Marne, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Joinville-le-Pont, Maisons-Alfort et Sucy-en-Brie, la commune accueille un tissu dense de commerces, professions libérales, artisans et PME de services tertiaires. Nos interventions reposent sur du code source sur-mesure et respectent le RGPD, sans recours à des outils no-code.",
   directAnswerEn:
@@ -36,8 +36,8 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
+      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
@@ -56,7 +56,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           "Les marchés de La Varenne (Place de Stalingrad) et d'Adamville rouvrent en 2026 entièrement rénovés, avec Halle gourmande, Traiteur Village et l'Atelier du Marché : les commerçants ont besoin de vitrines e-commerce, de click-and-collect et de cartes en ligne — pas de simple page Facebook.",
           "Forte densité de professions libérales et de santé autour de la Clinique Gaston Métivet (94 lits, maternité, chirurgie) : sites de cabinets, prise de RDV intelligente, formulaires conformes RGPD pour données de patients et de clients sensibles.",
           "54 % des entreprises créées à Saint-Maur en 2024 sont des entreprises individuelles, et 588 relèvent d'activités scientifiques et techniques : un vivier d'indépendants et de micro-structures qui ont besoin d'un site rapide, d'un copilote IA de contenu et d'un mini-SaaS métier, sans budget grand-compte.",
-          "Quatre gares RER A et un réseau local actif (Saint-Maur Entreprendre) : nous nous déplaçons dans le Vieux Saint-Maur, La Varenne et Adamville pour cadrer le projet en présentiel, sans réduire un commerçant ou un cabinet à un template générique.",
+          "Un réseau local actif (Saint-Maur Entreprendre) : nous intervenons dans le Vieux Saint-Maur, La Varenne et Adamville pour cadrer le projet en présentiel, sans réduire un commerçant ou un cabinet à un template générique.",
         ],
         methodology: [
           {
@@ -231,8 +231,8 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Saint-Maur-des-Fossés démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous les tarifs publics figurent sur axion-ia.com.",
     },
     {
-      q: "Sous quel délai Axion-IA se déplace-t-il à Saint-Maur-des-Fossés ?",
-      a: "Notre équipe se déplace sur site à Saint-Maur-des-Fossés sous 5 jours ouvrés après signature du devis, dans n'importe lequel des quartiers (Vieux Saint-Maur, La Varenne, Adamville). Cadrage en visioconférence possible sous 48 h.",
+      q: "Sous quel délai Axion-IA intervient-il à Saint-Maur-des-Fossés ?",
+      a: "Nous intervenons à Saint-Maur-des-Fossés sous 5 jours ouvrés après signature du devis, dans n'importe lequel des quartiers (Vieux Saint-Maur, La Varenne, Adamville). Cadrage en visioconférence possible sous 48 h.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Saint-Maur-des-Fossés ?",

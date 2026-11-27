@@ -29,8 +29,10 @@ import {
 import {
   CHEMIN_JOURNEE_IA,
   CONDITION_GARANTIE,
+  DELAI_RAPPORT_JOURS_OUVRES,
   DEROULE_JOURNEE_IA,
   GARANTIE_PHRASE,
+  MULTIPLE_GARANTIE,
   RAPPORT_COMPLET,
   lienDiagnostic,
 } from "@/content/journee-ia-commun";
@@ -38,13 +40,14 @@ import { ANCRE_JOURNEE_IA, LIBELLE_RENDEZ_VOUS_RENVOI } from "@/content/renvoi-j
 import { getFormationsV2 } from "@/content/formations/catalog-v2";
 import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
+import { faqItems as faqReference } from "@/content/questions-reference";
 
 // Page récap tarifs (Sprint Header refonte 2026-05-24, Will ; réalignée sur La
 // Journée IA après l'audit SEO/GEO du 11/11/2026).
 //
 // 🔑 UN SEUL prix public : celui de La Journée IA, lu dans `pricing.ts`
 // (`formatTierPrice(JOURNEE_IA_TIER)`). Elle est en tête de la page, avec son
-// rapport (sous 3 jours ouvrés) et sa garantie, mot pour mot depuis
+// rapport (sous le délai des CGV) et sa garantie, mot pour mot depuis
 // `journee-ia-commun.ts`. Tout le reste est « sur devis écrit » : aucune carte de
 // cette page n'affiche un autre montant, même si l'interrupteur des prix publics
 // de `pricing.ts` venait à être levé.
@@ -75,8 +78,8 @@ function titreMeta(isFr: boolean): string {
 
 function descriptionMeta(isFr: boolean): string {
   return isFr
-    ? `La Journée IA : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, rapport complet sous 3 jours ouvrés et garantie écrite. Formations, audit approfondi et projets IA : sur devis écrit.`
-    : `The AI Day: ${formatTierPrice(JOURNEE_IA_TIER, "en")}, full report within 3 business days and a written guarantee. Trainings, in-depth audit and AI projects: on written quote.`;
+    ? `La Journée IA : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, rapport complet sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés et garantie écrite. Formations, audit approfondi et projets IA : sur devis écrit.`
+    : `The AI Day: ${formatTierPrice(JOURNEE_IA_TIER, "en")}, full report within ${DELAI_RAPPORT_JOURS_OUVRES} business days and a written guarantee. Trainings, in-depth audit and AI projects: on written quote.`;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -148,9 +151,9 @@ export default async function PricingPage({ params }: Props) {
 
   const heroDesc = isFr
     ? `${RAPPORT_COMPLET} ${GARANTIE_PHRASE} Tout le reste — formations, audit approfondi, accompagnement individuel, mise en place de l'IA — est sur devis écrit, sous 48 h ouvrées.`
-    : `Full report within 3 business days after the day. If the gains identified do not exceed 3 times the price of the day, we refund you within 30 days. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
+    : `Full report within ${DELAI_RAPPORT_JOURS_OUVRES} business days after the day. If the gains identified in the report do not reach ${MULTIPLE_GARANTIE} times the price of the day excl. VAT, you are refunded on written request. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
 
-  // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + suivi régulier.
+  // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + coaching régulier.
   // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17).
   const unAUnDisplayTiers: ReadonlyArray<PricingTier> = [
     getTierById(INTERVENTION_TIERS, "intervention-membre-equipe"),
@@ -185,8 +188,8 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Accompagnement individuel" : "1-to-1 support",
       title: serviceOfficial(SERVICE_BY_ID.unAUn, isFr),
       description: isFr
-        ? "Une journée en tête-à-tête avec le dirigeant ou un collaborateur clé, ou un suivi régulier."
-        : "A one-to-one day with the executive or a key team member, or regular follow-up.",
+        ? "Une journée en tête-à-tête avec le dirigeant ou un collaborateur clé, ou un coaching régulier."
+        : "A one-to-one day with the executive or a key team member, or regular coaching.",
       detail: isFr
         ? "Chaque format est établi sur devis écrit, selon la personne accompagnée et la durée."
         : "Each format is on written quote, according to the person and the duration.",
@@ -212,8 +215,8 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Mise en production" : "Production deployment",
       title: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
       description: isFr
-        ? "Pilote, assistant sur vos documents, agents IA, automatisations, IA sur mesure. Mise en production en 4 à 12 semaines, support de 30 jours inclus."
-        : "Pilot, assistant on your documents, AI agents, automations, custom AI. In production in 4 to 12 weeks, 30-day support included.",
+        ? "Pilote, assistant sur vos documents, agents IA, automatisations, IA sur mesure. Mise en production en 4 à 12 semaines."
+        : "Pilot, assistant on your documents, AI agents, automations, custom AI. In production in 4 to 12 weeks.",
       detail: isFr
         ? "Chaque chantier est chiffré sur devis écrit, après un cadrage de 45 minutes."
         : "Each build is priced on written quote, after a 45-minute scoping call.",
@@ -238,16 +241,13 @@ export default async function PricingPage({ params }: Props) {
   // le balisage est identique au texte visible par construction.
   const faqItems = isFr
     ? [
-        {
-          id: "prix-journee-ia",
-          question: "Combien coûte La Journée IA ?",
-          answer: `${prixJournee}, prix unique. ${DEROULE_JOURNEE_IA} ${RAPPORT_COMPLET} ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
-        },
-        {
-          id: "prix-formation-ia",
-          question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Le prix d'une formation est établi sur devis écrit, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. Il dépend de la formation retenue (offre générale, métier ou secteur), de sa durée (4 h à 2 jours) et du format (sur site ou à distance). Les conditions de paiement et d'annulation figurent dans nos conditions générales.`,
-        },
+        ...faqReference(["ref-journee-prix", "ref-formation-prix", "ref-automatisation-prix"]).map(
+          ({ id, question, answer }) => ({
+            id,
+            question,
+            answer,
+          }),
+        ),
         {
           id: "tarifs-publics",
           question: "Pourquoi un devis plutôt qu'une grille ?",
@@ -263,7 +263,7 @@ export default async function PricingPage({ params }: Props) {
           id: "engagement",
           question: "Y a-t-il un engagement dans la durée ?",
           answer:
-            "Aucun engagement annuel : chaque prestation est un livrable autonome. Les conditions de règlement sont précisées au devis et dans les CGV. Maintenance optionnelle après la période de support incluse.",
+            "Aucun engagement annuel : chaque prestation est un livrable autonome. Les conditions de règlement sont précisées au devis et dans les CGV. Maintenance optionnelle sur devis.",
         },
         {
           id: "devis-personnalise",
@@ -276,7 +276,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-journee-ia",
           question: "How much does the AI Day cost?",
-          answer: `${prixJournee}, single price. A 2 to 4 h audit in the morning on your premises, 4 h of team training in the afternoon. Full report within 3 business days. ${GARANTIE_PHRASE}`,
+          answer: `${prixJournee}, single price. A 2 to 4 h audit in the morning on your premises, 4 h of team training in the afternoon. Full report within ${DELAI_RAPPORT_JOURS_OUVRES} business days. If the gains identified in the report do not reach ${MULTIPLE_GARANTIE} times the price of the day excl. VAT, you are refunded on written request.`,
         },
         {
           id: "prix-formation-ia",
@@ -298,7 +298,7 @@ export default async function PricingPage({ params }: Props) {
           id: "engagement",
           question: "Is there a long-term commitment?",
           answer:
-            "No annual commitment: each engagement is a standalone deliverable. Payment terms are detailed in the quote and Terms. Optional maintenance after the included support window.",
+            "No annual commitment: each engagement is a standalone deliverable. Payment terms are detailed in the quote and Terms. Optional maintenance on quote.",
         },
         {
           id: "devis-personnalise",

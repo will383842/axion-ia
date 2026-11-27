@@ -74,7 +74,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio depuis Montpellier.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio depuis Montpellier.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : boutique de vente directe, réservation, chatbot RAG multilingue, recherche sémantique, traçabilité AOP et sanitaire, agents et automatisations. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Frontignan et autour de l'étang de Thau ?",
-      a: "Oui, Axion-IA intervient à Frontignan et dans tout le bassin de Thau (Sète à 10 min, Mèze, Balaruc-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Frontignan et dans tout le bassin de Thau (Sète, Mèze, Balaruc-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs du Muscat de Frontignan ?",

@@ -45,6 +45,7 @@
 
 "use server";
 
+import { rattacherOrphelinsDeLaFiche } from "@/server/calendly/rattachement-orphelins";
 import { ORIGINE_ECRAN_1_DOSSIER } from "@/lib/contact/accuse-attendu";
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
@@ -172,6 +173,9 @@ export async function capturerContactDossierAction(
         userAgent,
       },
     });
+
+    // Rendez-vous déjà pris par cette personne (avant sa fiche) : rattachement rétroactif. Ne lève jamais.
+    await rattacherOrphelinsDeLaFiche(submission.id);
 
     // 🔴 La preuve porte le texte AFFICHÉ à l'écran 1 — celui du dossier :
     // « J'accepte que mes informations soient utilisées pour l'étude de ma

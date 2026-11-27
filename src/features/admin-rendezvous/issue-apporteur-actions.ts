@@ -15,6 +15,10 @@
 
 "use server";
 
+import {
+  NOTE_RATTACHEMENT_AUTO,
+  rattacherRendezVousOrphelin,
+} from "@/server/calendly/rattachement-orphelins";
 import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 
@@ -164,6 +168,22 @@ function phraseEnvoi(r: ResultatEnvoiIssue | null): string {
 }
 
 /**
+ * Rendez-vous orphelin : rattachement automatique par l'adresse CONFIRMÉE par Calendly (jamais la
+ * colonne, jamais le téléphone ni le nom). Écrit dans le journal ; rend la fiche et la phrase à
+ * ajouter au message (vide si rien n'a été posé). « Même nom, autre adresse » reste au sélecteur.
+ */
+async function rattacherSiOrphelin(
+  calendlyEventId: string,
+  qui: { id: string; email: string | null },
+): Promise<{ ficheId: string | null; note: string }> {
+  const r = await rattacherRendezVousOrphelin(calendlyEventId, {
+    adminUserId: qui.id,
+    libelle: qui.email ?? qui.id,
+  });
+  return { ficheId: r.ficheId, note: r.rattache ? NOTE_RATTACHEMENT_AUTO : "" };
+}
+
+/**
  * « Enregistrer SANS envoyer d'e-mail » (2026-10-05, demande de Will : ne pas écrire
  * systématiquement à tout le monde). Même écriture du point que le chemin normal,
  * mais AUCUN e-mail, et rien de ce qui en dépend :
@@ -185,6 +205,13 @@ async function enregistrerSansEmail(
   if (!evt) return { etat: "erreur", message: "Rendez-vous introuvable." };
   if (!estRendezVousApporteur(evt)) {
     return { etat: "erreur", message: "Ce rendez-vous n'est pas un échange apporteur." };
+  }
+  // Orphelin : rattachement automatique (adresse confirmée) avant de classer.
+  let noteRattachement = "";
+  if (!evt.linkedSubmissionId) {
+    const r = await rattacherSiOrphelin(evt.id, qui);
+    evt.linkedSubmissionId = r.ficheId;
+    noteRattachement = r.note;
   }
   try {
     await prisma.rendezVousSuivi.upsert({
@@ -222,7 +249,7 @@ async function enregistrerSansEmail(
   updateTag("admin:rendez-vous-a-faire");
   return {
     etat: "ok",
-    message: `Issue enregistrée : ${LIBELLE_ISSUE_APPORTEUR[saisie.issue]}. Aucun e-mail n'est parti.${classement}`,
+    message: `Issue enregistrée : ${LIBELLE_ISSUE_APPORTEUR[saisie.issue]}. Aucun e-mail n'est parti.${noteRattachement}${classement}`,
   };
 }
 
@@ -249,7 +276,10 @@ export async function enregistrerIssueApporteurAction(
   if (veutSansEmail) return enregistrerSansEmail(saisie, donnees, qui);
 
   let prep;
+  let noteRattachement = "";
   try {
+    // L'aperçu ne rattache rien ; c'est ICI, à l'enregistrement, que le lien est écrit (et journalisé).
+    noteRattachement = (await rattacherSiOrphelin(saisie.calendlyEventId, qui)).note;
     prep = await preparerIssueApporteur({
       calendlyEventId: saisie.calendlyEventId,
       issue: saisie.issue,
@@ -342,7 +372,7 @@ export async function enregistrerIssueApporteurAction(
   const base = `Issue enregistrée : ${LIBELLE_ISSUE_APPORTEUR[saisie.issue]}.`;
   const sansEmail = prep.sansEmail ? ` ${prep.sansEmail}` : "";
   const alerte = prep.alerteLien ? ` ⚠️ ${prep.alerteLien}` : "";
-  const message = `${base}${classement}${phraseEnvoi(envoi)}${sansEmail}${alerte}`;
+  const message = `${base}${noteRattachement}${classement}${phraseEnvoi(envoi)}${sansEmail}${alerte}`;
   const echecEnvoi = envoi?.statut === "retenu" || envoi?.statut === "file-indisponible";
   return echecEnvoi ? { etat: "erreur", message } : { etat: "ok", message };
 }
@@ -363,9 +393,16 @@ export async function ouvrirDossierEtEnvoyerLienAction(input: {
     where: { id: input.calendlyEventId },
     select: { id: true, linkedSubmissionId: true },
   });
-  if (!evt?.linkedSubmissionId) {
-    return { etat: "erreur", message: "Ce rendez-vous n'est rattaché à aucune fiche candidat." };
+  let ficheId = evt?.linkedSubmissionId ?? null;
+  if (evt && !ficheId) ficheId = (await rattacherSiOrphelin(evt.id, qui)).ficheId;
+  if (!evt || !ficheId) {
+    return {
+      etat: "erreur",
+      message:
+        "Ce rendez-vous n'est rattaché à aucune fiche candidat. Si la personne a réservé avec une autre adresse, choisissez sa fiche dans le sélecteur de la fiche d'appel.",
+    };
   }
+  evt.linkedSubmissionId = ficheId;
   try {
     const avant = await ouvrirDossierDepuisCandidature(evt.linkedSubmissionId, { creer: false });
     if (avant.ok) {
@@ -396,7 +433,13 @@ export async function ouvrirDossierEtEnvoyerLienAction(input: {
     }
     const dossier = await ouvrirDossierDepuisCandidature(evt.linkedSubmissionId, { creer: true });
     if (!dossier.ok) return { etat: "erreur", message: dossier.message };
-    const r = await envoyerLien(dossier.apporteurId, null);
+    const r = await envoyerLien(
+      dossier.apporteurId,
+      null,
+      undefined,
+      false,
+      `apporteur-dossier-lien-${dossier.apporteurId}-ouverture`,
+    );
     try {
       await prisma.activityLog.create({
         data: {

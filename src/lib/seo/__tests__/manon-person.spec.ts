@@ -25,7 +25,7 @@ describe("getManonPersonJsonLd (VIS-05)", () => {
     findUniqueMock.mockResolvedValue(MANON);
     const node = await getManonPersonJsonLd();
     expect(node).not.toBeNull();
-    expect(node?.["@type"]).toBe("Person");
+    expect(node?.["@type"]).toBe("Organization");
     // L'@id doit matcher celui posé en author par les factories (résolution).
     expect(String(node?.["@id"])).toContain("/equipe/manon#person");
   });

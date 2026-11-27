@@ -65,7 +65,7 @@ export const SAINT_LYPHARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Lyphard ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour missions multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

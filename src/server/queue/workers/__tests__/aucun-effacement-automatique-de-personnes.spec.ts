@@ -107,6 +107,13 @@ const APPELS_INTERDITS = [
  */
 const EXCEPTION_CANDIDATURES = ["jobApplication"] as const;
 
+/**
+ * Seconde exception, décision de l'éditeur (conservation de 24 mois validée le 2026-11-27) :
+ * les réponses non nominatives au questionnaire du Baromètre 2027, effacées 24 mois après leur
+ * date d'envoi (collecte sans fin). Listée À PART, nommée, et non comme purge technique : elle ne s'allonge pas.
+ */
+const EXCEPTION_QUESTIONNAIRE_BAROMETRE = ["barometreQuestionnaireReponse"] as const;
+
 /** Les seules tables que la passe a le droit de purger. */
 const PURGES_TECHNIQUES_AUTORISEES = [
   "generationLog",
@@ -244,6 +251,7 @@ describe("🛑 aucun effacement automatique de données de personnes", () => {
       const autorisees = new Set<string>([
         ...PURGES_TECHNIQUES_AUTORISEES,
         ...EXCEPTION_CANDIDATURES,
+        ...EXCEPTION_QUESTIONNAIRE_BAROMETRE,
       ]);
       const horsListe = [...suppressions.keys()].filter((m) => !autorisees.has(m));
       expect(

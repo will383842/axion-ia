@@ -81,7 +81,7 @@ export const NIMES_COPY: VilleCopy = {
           "La présence de BRL Groupe (siège social) et des filières agroalimentaires (Royal Canin Aimargues, Perrier Vergèze) crée des besoins réels en automatisation documentaire et en pilotage de données opérationnelles.",
           "Le CHU Carémeau et les structures médico-sociales du Gard représentent un terrain fertile pour l'IA appliquée à la gestion administrative et à la coordination de soins.",
           "Le Parc Georges Besse concentre des structures tertiaires et numériques où les cas IA (qualification de leads, génération de contenus, analyse contractuelle) sont immédiatement activables.",
-          "Tarifs publics, aucun supplément géographique : le tarif Nîmes est le même que partout en France.",
+          "Tarifs publics affichés : vous savez ce que vous payez avant de signer.",
           "Restitution toujours en présentiel à Nîmes dans vos locaux : atelier livrable en main propre avec votre direction ou comité de pilotage.",
         ],
         methodology: [
@@ -173,7 +173,7 @@ export const NIMES_COPY: VilleCopy = {
           "The presence of BRL Groupe (HQ) and agri-food supply chains (Royal Canin Aimargues, Perrier Vergèze) creates real demand for document automation and operational data management.",
           "CHU Carémeau and Gard medico-social structures represent fertile ground for AI applied to administrative management and care coordination.",
           "Parc Georges Besse concentrates tertiary and digital structures where AI use cases (lead qualification, content generation, contract analysis) are immediately activatable.",
-          "Public pricing, no geographic surcharge: Nîmes rate is the same as anywhere in France.",
+          "Public pricing: you know exactly what you pay before signing.",
           "Read-out always in person at your Nîmes premises: deliverable workshop handed face-to-face to your leadership or steering committee.",
         ],
         methodology: [
@@ -269,7 +269,7 @@ export const NIMES_COPY: VilleCopy = {
           "Les PME du BTP nîmois bénéficient particulièrement des outils IA pour les comptes-rendus de chantier, la rédaction de CCTP et la gestion documentaire.",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction des ETI gardoises.",
           "Vocabulaire ajusté à votre secteur dominant local : ingénierie, agroalimentaire, commerce, santé, BTP. Aucune session générique recyclée.",
-          "Nos consultants se déplacent à Nîmes et dans le bassin (Marguerittes, Bouillargues, Manduel, Beaucaire) — frais de déplacement et hébergement facturés séparément.",
+          "Nos consultants se déplacent à Nîmes et dans le bassin (Marguerittes, Bouillargues, Manduel, Beaucaire).",
         ],
         methodology: [
           {
@@ -347,7 +347,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation tardive ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -361,7 +361,7 @@ export const NIMES_COPY: VilleCopy = {
           "Nîmes construction SMEs benefit particularly from AI tools for site meeting minutes, specification writing and document management.",
           "The Executives format enables a strategic in-camera framing for Gard mid-cap executive committees.",
           "Vocabulary adjusted to your dominant local sector: engineering, agri-food, trade, health, construction. No recycled generic session.",
-          "Our consultants travel to Nîmes and the basin (Marguerittes, Bouillargues, Manduel, Beaucaire) — travel and lodging costs billed separately.",
+          "Our consultants travel to Nîmes and the basin (Marguerittes, Bouillargues, Manduel, Beaucaire).",
         ],
         methodology: [
           {
@@ -439,7 +439,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "What happens with a late cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -478,11 +478,6 @@ export const NIMES_COPY: VilleCopy = {
             step: "Recette + formation",
             detail:
               "Sur site à Nîmes : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook, plan de monitoring.",
-          },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
           },
         ],
         pricing: [
@@ -570,11 +565,6 @@ export const NIMES_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site in Nîmes: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [
@@ -998,7 +988,7 @@ export const NIMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nîmes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise).",
     },
     {
       q: "Quels secteurs nîmois sont les plus concernés par l'IA ?",

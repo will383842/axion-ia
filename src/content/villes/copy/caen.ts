@@ -78,7 +78,7 @@ export const CAEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Caen ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Caen et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des cas clients dans le bassin Caen la Mer ?",
@@ -90,7 +90,7 @@ export const CAEN_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes du bassin hors Caen intra-muros ?",
-      a: "Oui. Le bassin entier est notre zone d'intervention : Hérouville-Saint-Clair, Mondeville (Bosch), Colombelles (NXP, EffiScience), Ifs, Bretteville-sur-Odon, Bénouville et les autres communes Caen la Mer. Aucun supplément de zone.",
+      a: "Oui. Le bassin entier est notre zone d'intervention : Hérouville-Saint-Clair, Mondeville (Bosch), Colombelles (NXP, EffiScience), Ifs, Bretteville-sur-Odon, Bénouville et les autres communes Caen la Mer.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Caen ?",
@@ -281,7 +281,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover basin communes (Mondeville, Colombelles, Hérouville-Saint-Clair)?",
-            a: "Yes. The full Caen la Mer area is our territory. Our consultants travel to all communes — from Mondeville (Bosch) to Colombelles (NXP, EffiScience), Hérouville-Saint-Clair to Ifs and Bretteville-sur-Odon.",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including across the full Caen la Mer area — from Mondeville (Bosch) to Colombelles (NXP, EffiScience), Hérouville-Saint-Clair to Ifs and Bretteville-sur-Odon.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -379,7 +379,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -471,7 +471,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -509,11 +509,6 @@ export const CAEN_COPY: VilleCopy = {
             step: "Recette + formation",
             detail:
               "Sur site Caen : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring de plusieurs semaines.",
-          },
-          {
-            step: "Suivi post-go-live",
-            detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture de mission.",
           },
         ],
         pricing: [
@@ -601,11 +596,6 @@ export const CAEN_COPY: VilleCopy = {
             step: "Acceptance + training",
             detail:
               "On site Caen: user acceptance tests, training of internal ambassadors, runbook documentation delivery, multi-week monitoring plan.",
-          },
-          {
-            step: "Post-go-live follow-up",
-            detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at mission closure.",
           },
         ],
         pricing: [

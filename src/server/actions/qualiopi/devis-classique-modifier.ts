@@ -24,11 +24,28 @@ import { prisma } from "@/lib/prisma";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
+  conditionsAvecJourneeIa,
   entreeDevisClassiqueSchema,
   estimationOpcoDevis,
   mentionTvaDevisClassique,
   totalHtClassiqueCents,
 } from "@/server/qualiopi/devis/champs-classiques";
+
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import {
+  computeTotauxFacture,
+  regimeTvaDepuisConfig,
+  TAUX_TVA_STANDARD,
+} from "@/server/qualiopi/legal/tva";
+import {
+  recalculerEcheancier,
+  TITRE_ECHEANCIER,
+} from "@/server/qualiopi/devis/assistant/conditions-prix-unique";
+import { finDeJourneeParis, JOUR_MS, minuitParisUtc } from "@/server/qualiopi/devis/date-validite";
+import {
+  emailDevisEnAttente,
+  MSG_EMAIL_EN_ATTENTE_MODIF,
+} from "@/server/qualiopi/devis/email-devis-en-attente";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -67,6 +84,7 @@ export async function modifierDevisClassiqueBrouillonAction(
       offreSha256: true,
       updatedAt: true,
       dateValidite: true,
+      conditionsParticulieres: true,
     },
   });
   if (!actuel) return { error: "Devis introuvable" };
@@ -79,10 +97,34 @@ export async function modifierDevisClassiqueBrouillonAction(
   if (actuel.clientId !== v.clientId) {
     return { error: "Le client d'un devis ne se change pas : créez un nouveau devis." };
   }
+  if (await emailDevisEnAttente(prisma, id)) return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
   if (actuel.updatedAt.getTime() !== attendu.getTime()) return { error: MSG_PERIME };
 
   const opco = await estimationOpcoDevis(v, montantTotalHtCents, actuel.dateValidite);
   const mentionTva = await mentionTvaDevisClassique();
+
+  // Échéancier écrit par l'assistant : il suit le nouveau total (même calcul que le PDF), sinon refus.
+  let conditions = v.conditionsParticulieres;
+  if (typeof conditions === "string" && conditions.startsWith(TITRE_ECHEANCIER)) {
+    const regime = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
+    const taux = Number(await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+    const totaux = computeTotauxFacture(
+      v.lignes.map((l) => ({ quantite: l.quantite, prixUnitaireHtCents: l.prixUnitaireHtCents })),
+      regime,
+      taux,
+    );
+    const r = recalculerEcheancier(conditions, totaux.totalTtcCents, regime);
+    if ("erreur" in r) return { error: r.erreur };
+    conditions = r.texte;
+  }
+  // Journée IA : clé présente = la colonne et le paragraphe imprimé suivent la case (clé absente
+  // de `conditions` : on part du texte enregistré, sans l'effacer). Clé `journeeIa` absente = rien.
+  if (v.journeeIa !== undefined) {
+    const base = conditions !== undefined ? conditions : actuel.conditionsParticulieres;
+    const r = conditionsAvecJourneeIa(base, v.journeeIa);
+    if ("error" in r) return { error: r.error };
+    conditions = r.texte;
+  }
 
   const { count } = await prisma.devis.updateMany({
     where: { id, statut: "brouillon", offreSha256: null, updatedAt: attendu },
@@ -105,9 +147,8 @@ export async function modifierDevisClassiqueBrouillonAction(
           }
         : {}),
       // Conditions particulières : même règle. `null` (ou texte vide, normalisé en `null`) efface.
-      ...(v.conditionsParticulieres !== undefined
-        ? { conditionsParticulieres: v.conditionsParticulieres }
-        : {}),
+      ...(conditions !== undefined ? { conditionsParticulieres: conditions } : {}),
+      ...(v.journeeIa !== undefined ? { journeeIa: v.journeeIa } : {}),
     },
   });
   if (count === 0) return { error: MSG_PERIME };
@@ -131,41 +172,6 @@ export async function modifierDevisClassiqueBrouillonAction(
 
 const VALIDITE_MIN_JOURS = 7;
 const VALIDITE_MAX_JOURS = 90;
-const JOUR_MS = 86_400_000;
-
-/** Jour civil (heure de Paris) de `maintenant`, en millisecondes UTC à minuit. */
-function minuitParisUtc(maintenant: Date): number {
-  const p = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Paris",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(maintenant);
-  const [y, mo, d] = p.split("-").map(Number) as [number, number, number];
-  return Date.UTC(y, mo - 1, d);
-}
-
-/** Décalage de Paris par rapport à UTC (ms) à l'instant `t`. */
-function decalageParisMs(t: number): number {
-  const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/Paris",
-    hourCycle: "h23",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  }).formatToParts(new Date(t));
-  const g = (k: string) => Number(parts.find((x) => x.type === k)?.value);
-  return Date.UTC(g("year"), g("month") - 1, g("day"), g("hour"), g("minute"), g("second")) - t;
-}
-
-/** Instant UTC de 23 h 59 min 59 s, HEURE DE PARIS, du jour civil `y-mo-d`. */
-function finDeJourneeParis(y: number, mo: number, d: number): Date {
-  const naif = Date.UTC(y, mo - 1, d, 23, 59, 59);
-  return new Date(naif - decalageParisMs(naif - decalageParisMs(naif)));
-}
 
 const validiteSchema = z.object({
   id: z.string().uuid(),
@@ -233,6 +239,7 @@ export async function fixerValiditeDevisBrouillonAction(
   if (actuel.statut !== "brouillon") {
     return { error: "Un devis envoyé ne se modifie pas : créez une révision (nouvelle version)." };
   }
+  if (await emailDevisEnAttente(prisma, id)) return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
   if (actuel.updatedAt.getTime() !== attendu.getTime()) return { error: MSG_PERIME };
 
   const nouvelleDate = finDeJourneeParis(y, mo, d);

@@ -21,6 +21,8 @@
 
 import "server-only";
 
+import { timingSafeEqual } from "node:crypto";
+
 import * as Sentry from "@sentry/nextjs";
 
 import { adminPath } from "@/lib/admin-path";
@@ -32,9 +34,11 @@ import type { Prisma } from "../../../prisma/generated/client";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { lireRegistre } from "./annuaire";
+import { pieceContratDeLAccuse } from "./documents-joints";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
 import { jugerAdmission, LIBELLE_REFUS_ADMISSION } from "./regles";
 import { CONTRAT_VERSION } from "./contrat-v2";
+import { alerterSignatureApporteur } from "./alerte-telegram";
 import { envoyer } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -85,6 +89,12 @@ export type ResultatSignature =
 
 const INTROUVABLE = "Ce lien ne fonctionne plus.";
 
+/** Égalité de deux empreintes hexadécimales (vide ou de longueur différente : jamais égales). */
+function empreintesEgales(lue: string, calculee: string): boolean {
+  if (!lue || lue.length !== calculee.length) return false;
+  return timingSafeEqual(Buffer.from(lue, "utf8"), Buffer.from(calculee, "utf8"));
+}
+
 export async function signerContrat(e: {
   apporteurId: string;
   jeton: string;
@@ -93,6 +103,12 @@ export async function signerContrat(e: {
   acceptations: readonly string[];
   ipHash: string | null;
   userAgent: string | null;
+  /**
+   * Empreinte SHA-256 du texte que la page a AFFICHÉ à la personne. Obligatoire : si le contrat
+   * a changé depuis (mise en ligne, passage de minuit), on refuse plutôt que de signer un texte
+   * jamais lu.
+   */
+  empreinteLue: string;
   maintenant?: Date;
 }): Promise<ResultatSignature> {
   const dossier = await lireDossierParLien(e.apporteurId, e.jeton);
@@ -147,6 +163,10 @@ export async function signerContrat(e: {
     return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE.incomplet };
   }
   const sha256 = empreinte(texte);
+  // Ce que la personne a LU doit être ce qu'elle signe : sinon rien n'est rendu, envoyé ni écrit.
+  if (!empreintesEgales(e.empreinteLue, sha256)) {
+    return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE.texte_modifie };
+  }
   const navigateur = resumerNavigateur(e.userAgent);
 
   const pdf = await rendreContratPdf({
@@ -203,13 +223,14 @@ export async function signerContrat(e: {
   const lienConsole = `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", `apporteurs/${dossier.id}`)}`;
   // Clé d'idempotence PAR SIGNATURE (horodatage inclus) : une re-signature après
   // « à compléter » alerte de nouveau, même si le texte du contrat n'a pas changé.
+  const jobIdAlerte = `apporteur-dossier-a-verifier-${dossier.id}-${maintenant.getTime()}`;
   const alerte = await envoyer({
     gabarit: "apporteur-dossier-a-verifier",
     destinataire: destinataireAlertesInternes(),
     payload: { contactName: `${dossier.prenom} ${dossier.nom}`.trim(), lienConsole },
     entityType: "ApporteurReseau",
     entityId: dossier.id,
-    jobId: `apporteur-dossier-a-verifier-${dossier.id}-${maintenant.getTime()}`,
+    jobId: jobIdAlerte,
   });
   if (alerte !== "envoye") {
     // La signature est actée : on ne la défait pas. Mais on ne perd pas l'alerte en silence
@@ -220,10 +241,19 @@ export async function signerContrat(e: {
       tags: { service: "apporteur-dossier", etape: "alerte-a-verifier", resultat: alerte },
     });
   }
+  // Même fait, salon Telegram « Apporteurs » : mêmes clé et jamais bloquant (le module ne lève pas).
+  await alerterSignatureApporteur({
+    cleSignature: jobIdAlerte,
+    prenom: dossier.prenom,
+    nom: dossier.nom,
+    lienConsole,
+  });
   // « Dossier bien reçu » à l'apporteur, une fois par signature (même horodatage que l'alerte) :
-  // jamais bloquant, la signature est actée.
+  // jamais bloquant, la signature est actée. Il porte le contrat qu'il vient de signer (déposé
+  // sur R2 plus haut) ; si R2 ne répond plus, l'accusé part sans pièce, comme avant.
   try {
     const url = urlDossier(dossier.id, dossier.versionLien);
+    const pieces = await pieceContratDeLAccuse(cle);
     const accuse = await envoyer({
       gabarit: "apporteur-dossier-recu",
       destinataire: dossier.email,
@@ -231,6 +261,7 @@ export async function signerContrat(e: {
       entityType: "ApporteurReseau",
       entityId: dossier.id,
       jobId: `apporteur-dossier-recu-${dossier.id}-${maintenant.getTime()}`,
+      ...(pieces.length > 0 ? { attachments: pieces } : {}),
     });
     if (accuse !== "envoye") {
       console.warn(`[apporteur-dossier] « dossier bien reçu » non parti (${accuse})`);

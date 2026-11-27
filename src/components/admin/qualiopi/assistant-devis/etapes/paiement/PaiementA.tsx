@@ -9,7 +9,9 @@
  */
 import { useId, type Dispatch } from "react";
 
+import { AdminCard } from "@/components/admin/ui/AdminCard";
 import type { ActionAssistant } from "../../etat";
+import { LibelleSegment } from "../LibelleSegment";
 import type { EtatAssistant, MoisPeriode } from "../../types";
 import { RappelPhases } from "./RappelPhases";
 
@@ -19,6 +21,11 @@ export interface PropsPaiementA {
   /** Centimes par phase, calculés par le serveur. */
   montants?: ReadonlyArray<number | null> | undefined;
 }
+
+// Contrôle segmenté : vraie case à cocher masquée visuellement mais focusable ; bordure d'accent
+// de même épaisseur dans les deux états.
+const SEGMENT =
+  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] pl-[calc(var(--space-admin-4)+1.375rem)] pr-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)] has-[:checked]:font-semibold forced-colors:has-[:checked]:outline forced-colors:has-[:checked]:outline-2";
 
 export const RYTHMES_MAINTENANCE: ReadonlyArray<{ mois: MoisPeriode; libelle: string }> = [
   { mois: 1, libelle: "Chaque mois" },
@@ -43,32 +50,71 @@ export function PaiementA({ etat, dispatch, montants }: PropsPaiementA) {
         nom="Phases de la mise en place"
         phases={etat.achat.phases}
         montants={montants}
+        mention="HT"
       />
-      <fieldset className="mb-3">
-        <legend>Maintenance : rythme de paiement proposé</legend>
-        <p id={`${uid}-aide`} className="text-[length:var(--text-admin-sm)]">
-          Ne concerne que la maintenance. Au moins un rythme reste proposé.
-        </p>
-        <div className="flex flex-wrap gap-4">
-          {RYTHMES_MAINTENANCE.map((r) => (
-            <label key={r.mois} className="flex min-h-[44px] items-center gap-2">
-              <input
-                type="checkbox"
-                value={r.mois}
-                checked={m.periodes.includes(r.mois)}
-                disabled={m.periodes.length === 1 && m.periodes[0] === r.mois}
-                aria-describedby={`${uid}-aide`}
-                onChange={() => bascule(r.mois)}
-              />
-              {r.libelle}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-      <p className="text-[length:var(--text-admin-sm)]">
-        Aucun travail ne démarre avant la réception du premier versement. Chaque versement suivant
-        est appelé à la fin de la phase correspondante.
-      </p>
+      <AdminCard as="div" className="mb-[var(--space-admin-8)]">
+        <fieldset>
+          <legend className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
+            Maintenance : rythme de paiement proposé
+          </legend>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex flex-wrap gap-1 rounded-[var(--radius-admin-lg)] bg-[color:var(--color-admin-surface-sunken)] p-1">
+              {RYTHMES_MAINTENANCE.map((r) => (
+                <label key={r.mois} className={SEGMENT}>
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    value={r.mois}
+                    checked={m.periodes.includes(r.mois)}
+                    disabled={m.periodes.length === 1 && m.periodes[0] === r.mois}
+                    aria-describedby={`${uid}-aide`}
+                    onChange={() => bascule(r.mois)}
+                  />
+                  <LibelleSegment coche={m.periodes.includes(r.mois)} texte={r.libelle} />
+                </label>
+              ))}
+            </div>
+            <details className="relative inline-block">
+              <summary
+                aria-label="En savoir plus sur le rythme de maintenance"
+                className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-full focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] [&::-webkit-details-marker]:hidden"
+              >
+                <span
+                  aria-hidden="true"
+                  className="grid h-[22px] w-[22px] place-items-center rounded-full border border-[color:var(--color-admin-control-border)] text-[length:var(--text-admin-xs)] font-bold"
+                >
+                  ?
+                </span>
+              </summary>
+              <div
+                id={`${uid}-aide`}
+                className="absolute top-11 left-0 z-10 w-80 rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] shadow-[var(--shadow-admin-2)]"
+              >
+                Ne concerne que la maintenance. Au moins un rythme reste proposé.
+              </div>
+            </details>
+          </div>
+        </fieldset>
+      </AdminCard>
+      <div className="flex items-center gap-[var(--space-admin-1)]">
+        <details className="relative inline-block">
+          <summary
+            aria-label="En savoir plus sur le démarrage des travaux"
+            className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-full focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] [&::-webkit-details-marker]:hidden"
+          >
+            <span
+              aria-hidden="true"
+              className="grid h-[22px] w-[22px] place-items-center rounded-full border border-[color:var(--color-admin-control-border)] text-[length:var(--text-admin-xs)] font-bold"
+            >
+              ?
+            </span>
+          </summary>
+          <div className="absolute top-11 left-0 z-10 w-80 rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] shadow-[var(--shadow-admin-2)]">
+            Aucun travail ne démarre avant la réception du premier versement. Chaque versement
+            suivant est appelé à la fin de la phase correspondante.
+          </div>
+        </details>
+      </div>
     </div>
   );
 }

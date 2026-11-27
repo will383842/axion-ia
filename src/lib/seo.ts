@@ -705,13 +705,7 @@ export function buildServiceJsonLd({
     // Mieux vaut OMETTRE le champ que mentir : Google tolère l'absence.
     // Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
     ...(dateModified ? { dateModified } : {}),
-    provider: providerId
-      ? { "@id": providerId }
-      : {
-          "@type": "Organization",
-          name: "Axion-IA",
-          url: SITE_URL,
-        },
+    provider: providerId ? { "@id": providerId } : { "@id": `${SITE_URL}/#organization` },
     ...(audience
       ? {
           audience: {
@@ -1160,6 +1154,34 @@ function describeRegistrationNumber(value: string): string {
   return "immatriculation RCS";
 }
 
+/**
+ * V1-11 — LISTE UNIQUE des profils externes (`sameAs`) de l'entité Axion-IA.
+ *
+ * Tout JSON-LD qui décrit l'`Organization` (`/#organization`) reprend CETTE liste,
+ * jamais une sienne : une entité dont les profils changent d'une page à l'autre
+ * n'est plus une seule entité aux yeux des moteurs. Le Q-number Wikidata
+ * (optionnel, env) s'ajoute devant via `buildOrganizationSameAs()`.
+ *
+ * - LinkedIn : page ENTREPRISE (vanity `company/axion-ia-france`), jamais le profil personnel.
+ * - Facebook : page entreprise `axioniacom`, jamais un profil personnel.
+ * - X : UN seul compte, `AxionIAFrance` (celui du pied de page des e-mails et de /carrieres).
+ * - F6S et Crunchbase : fiches corrigées et relues à la main (arbitrage A4, 2026-08-16) ;
+ *   leur vérification automatique est impossible (mur anti-robot).
+ * - YouTube : chaîne officielle.
+ */
+export const ORGANIZATION_SAME_AS: readonly string[] = [
+  CONTACT_PUBLIC.linkedinEntreprise,
+  "https://www.facebook.com/axioniacom",
+  "https://x.com/AxionIAFrance",
+  "https://about.me/axion-ia",
+  "https://www.indiehackers.com/AxionIA",
+  "https://www.f6s.com/axion-ia1",
+  "https://www.crunchbase.com/organization/axion-ia",
+  "https://www.youtube.com/@Axion-IA-com",
+  // Profil pro Pinterest, créé le 26/11/2026.
+  "https://www.pinterest.com/axion_ia/",
+];
+
 // Layout-level Organization JSON-LD — single source of truth for AEO/GEO 2026
 // (Claude.ai / Perplexity / SGE / Bing Copilot citations).
 //
@@ -1210,50 +1232,8 @@ export function buildOrganizationJsonLd({
     // + LLMs (sameAs = vérification d'identité, pas de link juice).
     // LinkedIn = vanity public réel `company/axion-ia-france` (confirmé Will 2026-06-05 ;
     // page interne /company/123134154).
-    sameAs: [
-      ...buildOrganizationSameAs(),
-      CONTACT_PUBLIC.linkedinEntreprise,
-      // Page Facebook entreprise — adresse propre fournie par Will le 2026-09-23
-      // (remplace `profile.php?id=61591668644032`). Jamais le profil PERSONNEL.
-      "https://www.facebook.com/axioniacom",
-      "https://about.me/axion-ia",
-      "https://www.indiehackers.com/AxionIA",
-      // GEO-045 / arbitrage A4 — F6S DECLAREE le 2026-08-16, une fois la fiche
-      // CORRIGEE et pas avant.
-      //
-      // Pourquoi cette fiche compte : sur « Qui est Axion-IA ? », le moteur de
-      // reponse teste cite F6S en source n°2 (Crunchbase en n°1) et ZERO fois
-      // axion-ia.com. Ce sont ces pages qui definissent l'entreprise pour les
-      // moteurs de reponse aujourd'hui — les declarer en `sameAs`, c'est dire
-      // explicitement « cette fiche, c'est moi » au lieu de laisser deviner.
-      //
-      // 🔴 L'ORDRE EST LA CONDITION. Avant correction, la fiche annoncait un
-      // siege a PARIS. La declarer alors aurait revenu a SIGNER SOI-MEME
-      // l'erreur que les moteurs arbitrent deja contre nous — c'est exactement
-      // ce que l'arbitrage A4 interdit. Corrigee par Will le 2026-08-16
-      // (localisation Grenoble, fondation 2026, site sans redirection), verifiee
-      // par lui apres rechargement.
-      //
-      // ⚠️ Le suffixe `1` du slug n'est PAS un doublon : F6S a du suffixer parce
-      // que `axion-ia` etait deja pris par le profil MEMBRE. Deux types d'objets
-      // ne partagent pas une URL. C'est bien la fiche SOCIETE.
-      //
-      // ⚠️ Verification automatique IMPOSSIBLE sur ce domaine : F6S sert un mur
-      // anti-bot (`<title>Checking your browser</title>`, 200 trompeur). Un
-      // `curl` de controle ne prouvera jamais rien ici — ne pas conclure d'un
-      // 200 que la page est bonne.
-      "https://www.f6s.com/axion-ia1",
-      // GEO-020 / GEO-045 — Crunchbase DECLAREE le 2026-08-16, meme condition :
-      // apres correction, pas avant. C'est la source n°1 citee par le moteur de
-      // reponse sur « Qui est Axion-IA ? ».
-      //
-      // ⚠️ Meme impossibilite de verification automatique que F6S, sur un autre
-      // mode : Crunchbase repond 403 aux robots (`<title>One moment, please…</title>`,
-      // 8 760 octets de page de controle). L'audit ne l'avait pas vue non plus.
-      // La seule verification possible est humaine, connectee — elle a ete faite
-      // par Will le 2026-08-16.
-      "https://www.crunchbase.com/organization/axion-ia",
-    ],
+    // Liste unique `ORGANIZATION_SAME_AS` (V1-11) : la même sur tout le site.
+    sameAs: [...buildOrganizationSameAs(), ...ORGANIZATION_SAME_AS],
     // Offre phare (audit SEO 2026-11-11, B3) : le catalogue pointe la Journée IA,
     // référencée par l'`@id` de son nœud Service (émis en entier par l'accueil et
     // la landing, `seo/journee-ia-service.ts`) — jamais redéfinie ici, donc
@@ -1453,12 +1433,7 @@ export function buildPersonJsonLd({
       : `${SITE_URL}/${locale}/${isFr ? "a-propos" : "about"}#${slug}`,
     image: resolvedImage,
     sameAs,
-    worksFor: {
-      "@type": "Organization",
-      name: BRAND.name,
-      legalName: BRAND.legalName,
-      url: SITE_URL,
-    },
+    worksFor: { "@id": `${SITE_URL}/#organization` },
     knowsAbout: [
       isFr ? "Intelligence artificielle opérationnelle" : "Operational AI",
       isFr ? "Audit IA d'entreprise" : "Enterprise AI audits",
@@ -1491,6 +1466,8 @@ interface ArticleJsonLdInput {
   authorSlug?: string;
   /** Author display name — defaults to "Will". */
   authorName?: string;
+  /** Auteur explicite (ex. l'organisation `{ "@id": ".../#organization" }`) : remplace le nœud Person. */
+  author?: { "@id": string };
   /** Image absolute URL. Defaults to OG dynamic. */
   image?: string;
   /** Tags / keywords. */
@@ -1520,7 +1497,7 @@ interface ArticleJsonLdInput {
   isBasedOn?: ReadonlyArray<{
     name: string;
     url: string;
-    type?: "Report" | "Article" | "Dataset" | "ScholarlyArticle";
+    type?: "Report" | "Article" | "Dataset" | "ScholarlyArticle" | "WebPage";
   }>;
   /**
    * Entités/concepts mentionnés (Things, technologies, entreprises). schema.org
@@ -1564,6 +1541,7 @@ export function buildArticleJsonLd({
   // d'autorité le plus large du dépôt, et il se perdait sur deux valeurs par défaut.
   authorSlug = FOUNDER.slug,
   authorName = FOUNDER.fullName,
+  author,
   image,
   keywords,
   articleSection,
@@ -1594,8 +1572,9 @@ export function buildArticleJsonLd({
      * est gérée par leurs propres fabriques, et leur poser cet `@id` fusionnerait deux
      * personnes distinctes.
      */
-    author:
-      authorSlug === FOUNDER.slug || authorSlug === "will"
+    author: author
+      ? author
+      : authorSlug === FOUNDER.slug || authorSlug === "will"
         ? { "@type": "Person", "@id": FOUNDER_PERSON_ID, name: authorName, url: founderUrl() }
         : {
             "@type": "Person",
@@ -2354,13 +2333,7 @@ export function buildDatasetJsonLd({
     description,
     url,
     inLanguage: locale,
-    creator: {
-      "@type": "Organization",
-      name: BRAND.name,
-      legalName: BRAND.legalName,
-      alternateName: [...BRAND.alternateName],
-      url: SITE_URL,
-    },
+    creator: { "@id": `${SITE_URL}/#organization` },
     ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),
     ...(license ? { license } : {}),
     ...(datePublished ? { datePublished } : {}),

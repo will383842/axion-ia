@@ -13,6 +13,39 @@ import type { InboxChannel, InboxItem } from "@/features/admin-inbox/types";
 
 export const CANAUX_SOURCES_DEVIS: ReadonlyArray<InboxChannel> = ["appel", "message"];
 
+/**
+ * Natures de demande qui peuvent devenir un devis (clés techniques de `InboxItem.nature`) :
+ * types unifiés des messages, types de base sans type unifié, types de rendez-vous.
+ */
+export const NATURES_GARDEES: ReadonlyArray<string> = [
+  "journee_ia",
+  "audit",
+  "implementation",
+  "formation",
+  "un_a_un",
+  "devis",
+  "simulateur_roi",
+  "contact",
+  "quote_request",
+  "intervention",
+  "diagnostic",
+  "echange_projet",
+];
+
+/** Natures écartées : pas un client potentiel d'un devis. Toute nature inconnue l'est aussi. */
+export const NATURES_EXCLUES: ReadonlyArray<string> = [
+  "apporteur",
+  "recrutement",
+  "presse",
+  "partenariat",
+  "speaker",
+  "investisseur",
+  "support_client",
+  "autre",
+  "salon",
+  "tour_de_france_ia",
+];
+
 export interface SourcePourQui {
   clientId: string | null;
   libelle: string;
@@ -41,6 +74,8 @@ export function sourcesPourQui(
   const out: SourcePourQui[] = [];
   for (const it of items) {
     if (!CANAUX_SOURCES_DEVIS.includes(it.channel)) continue;
+    // Une ligne sans nature, ou d'une nature non classée, n'est jamais proposée.
+    if (it.nature === undefined || !NATURES_GARDEES.includes(it.nature)) continue;
     if (q !== "") {
       const meule = norme(
         [it.contactName, it.contactEmail, it.context, it.subject].filter(Boolean).join(" "),
@@ -57,4 +92,15 @@ export function sourcesPourQui(
     });
   }
   return out;
+}
+
+/** Le client choisi d'abord, puis l'ordre d'arrivée ; au plus `max` lignes. */
+export function ordonnerSources(
+  sources: ReadonlyArray<SourcePourQui>,
+  clientId: string | null | undefined,
+  max = 10,
+): SourcePourQui[] {
+  const choisies = clientId ? sources.filter((s) => s.clientId === clientId) : [];
+  const autres = clientId ? sources.filter((s) => s.clientId !== clientId) : [...sources];
+  return [...choisies, ...autres].slice(0, max);
 }

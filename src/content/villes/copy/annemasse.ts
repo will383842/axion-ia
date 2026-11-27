@@ -196,7 +196,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Platform program and dedicated governance",
             detail:
-              "For large accounts operating across Annemasse and Geneva: design of AI-native platforms, cross-border data governance, multi-team deployment and long-term support.",
+              "For large accounts operating across Annemasse and Geneva: design of AI-native platforms, cross-border data governance, multi-team deployment.",
           },
         ],
         faq: [
@@ -238,7 +238,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Annemasse ?",
-      a: "Oui. Annemasse est reliée à Genève par le Léman Express et au reste de la Haute-Savoie par l'A40. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
+      a: "Oui. Un expert senior intervient dans vos locaux à Annemasse et en Haute-Savoie pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Annemasse ?",

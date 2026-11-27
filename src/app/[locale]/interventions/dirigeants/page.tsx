@@ -15,19 +15,17 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { faqItems } from "@/content/questions-reference";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
 import {
   buildProductMetadata,
-  buildServiceJsonLd,
   buildItemListJsonLd,
-  buildWebPageJsonLd,
   buildPageImageGraphJsonLd,
-  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
-import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { metadataCanoniqueVersCoaching } from "@/lib/seo/coaching-canonical";
 
 // ============================================================================
 // Sprint 14.10.7 (Will 2026-05-12) — refactor en HUB FAMILLE Dirigeants.
@@ -47,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
-  return buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
     title:
@@ -60,6 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "A 1-on-1 day dedicated to the executive: strategic AI vision — sector landscape, prioritised levers, framing note within 7 days. For one executive, not a committee.",
     alternates: { fr: "/interventions/dirigeants", en: "/interventions/executives" },
   });
+  // V2-08 : une seule page de référence pour le coaching individuel.
+  return metadataCanoniqueVersCoaching(meta, locale);
 }
 
 export default async function DirigeantsFamilyPage({ params }: Props) {
@@ -80,18 +80,6 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
   ];
 
   const contactHref = `/interventions/demande?objet=${encodeURIComponent(CONTACT_OBJECT)}`;
-
-  const serviceJsonLd = buildServiceJsonLd({
-    locale: loc,
-    path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
-    name: isFr
-      ? "Interventions dirigeants 1-to-1 · Axion-IA"
-      : "Executive 1-on-1 sessions · Axion-IA",
-    description: isFr ? family.taglineFr : family.taglineEn,
-    serviceType: "AI strategy · executives",
-    priceEur: 0,
-    areasServed: buildServiceAreasServed(loc),
-  });
 
   // ItemList JSON-LD — AEO/GEO 2026 : permet aux LLMs d'énumérer la liste
   // du format Dirigeants quand quelqu'un demande « formations IA pour
@@ -116,20 +104,8 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
     locale: loc,
     path: "/interventions/dirigeants",
   });
-  // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
-  const webPageJsonLd = buildWebPageJsonLd({
-    locale: loc,
-    path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
-    name: isFr
-      ? "Accompagnement 1-to-1 des dirigeants · Axion-IA"
-      : "1-on-1 executive AI support · Axion-IA",
-    description: isFr ? family.taglineFr : family.taglineEn,
-    speakable: true,
-    ...(buildPrimaryImageOfPage("/interventions/dirigeants")
-      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/interventions/dirigeants") } }
-      : {}),
-  });
-
+  // V2-08 : ni `Service` ni `WebPage` ici — le seul `Service` « coaching individuel » est celui de
+  // la page de référence `/un-a-un` (canonical ci-dessous).
   // 2 mini-blocs « pour qui » — deux angles du MÊME format (Vision IA stratégique).
   const audiences = [
     {
@@ -298,26 +274,31 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                       id: "pourquoi-1to1",
                       question: "Pourquoi un format 1-to-1 plutôt qu'une formation collective ?",
                       answer:
-                        "Parce que votre temps et vos décisions de dirigeant sont spécifiques. Le 1-to-1 se concentre sur VOUS : votre quotidien, vos dossiers, votre vision — pas sur un programme d'équipe standardisé.",
+                        "Le format 1-to-1 convient à un dirigeant parce que son temps et ses décisions sont spécifiques. Il se concentre sur vous : votre quotidien, vos dossiers, votre vision de l'entreprise, et non sur un programme d'équipe standardisé. Pour former plusieurs personnes à la fois, la formation collective ou la Journée IA est plus adaptée.",
                     },
                     {
                       id: "confidentiel",
                       question: "C'est vraiment confidentiel ?",
                       answer:
-                        "Oui, strictement. Vous êtes seul·e avec votre interlocuteur, sur vos vrais dossiers, y compris stratégiques. Aucune donnée n'est partagée ni réutilisée.",
+                        "Oui, le coaching IA 1-to-1 est strictement confidentiel : vous êtes en tête-à-tête avec votre interlocuteur, sur vos vrais dossiers, y compris stratégiques. Aucune donnée n'est partagée ni réutilisée en dehors de la journée. Un point confidentialité est fait au début, pour décider avec vous de ce qui peut être confié à l'IA.",
                     },
                     {
                       id: "choisir",
                       question: "Dirigeant ou collaborateur : quelle formule choisir ?",
                       answer:
-                        "La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un échange préalable de 45 minutes permet de trancher.",
+                        "Pour choisir entre la formule dirigeant et la formule collaborateur, la question est : stratégie ou pratique ? La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un Diagnostic IA de 45 minutes permet de trancher.",
                     },
                     {
                       id: "repars",
                       question: "Qu'est-ce que je repars avec ?",
                       answer:
-                        "Une vision claire dès le soir même, puis, sous 7 jours, la note de cadrage stratégique : le panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence.",
+                        "Après un coaching IA dirigeant, vous repartez avec une vision claire dès le soir même, puis, sous 7 jours, avec la note de cadrage stratégique : le panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence. Le tout est remis par écrit, pour pouvoir le relire.",
                     },
+                    ...faqItems(["ref-coaching-vs-formation"]).map(({ id, question, answer }) => ({
+                      id,
+                      question,
+                      answer,
+                    })),
                   ]
                 : [
                     {
@@ -382,8 +363,6 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         tone="dark"
       />
 
-      <JsonLd data={serviceJsonLd} />
-      <JsonLd data={webPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
       {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
     </>

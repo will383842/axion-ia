@@ -270,6 +270,12 @@ export function ClientEditForm({
     });
   }
 
+  const nomChange = v.contactNom.trim() !== initial.contactNom.trim();
+  const adresseChange = v.contactEmail.trim() !== initial.contactEmail.trim();
+  const nouvellePersonne = nomChange && adresseChange;
+  // Seul le nom change : le serveur renomme la personne actuelle.
+  const personneRenommee = nomChange && !adresseChange;
+
   const labelCls =
     "block text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-[var(--space-admin-1)]";
   const inputCls =
@@ -485,6 +491,15 @@ export function ClientEditForm({
               disabled={isPending}
               className={inputCls}
             />
+            {nouvellePersonne ? (
+              <p className={aideCls}>
+                Une nouvelle personne sera créée ; l&apos;ancienne reste dans l&apos;onglet
+                Personnes.
+              </p>
+            ) : null}
+            {personneRenommee ? (
+              <p className={aideCls}>La personne actuelle sera renommée.</p>
+            ) : null}
           </div>
 
           <div className={fieldCls}>

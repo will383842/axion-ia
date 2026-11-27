@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   queryRaw: vi.fn(),
+  statutAncien: "envoye",
   txOptions: vi.fn(),
   txDevisFindUnique: vi.fn(),
   txDevisUpdateMany: vi.fn(),
@@ -21,6 +22,7 @@ const h = vi.hoisted(() => ({
   enqueueEmail: vi.fn(),
   emettre: vi.fn(),
   logActivity: vi.fn(),
+  txLogCreate: vi.fn(),
   tx: {} as unknown,
 }));
 
@@ -30,7 +32,13 @@ vi.mock("@/lib/prisma", () => ({
       h.txOptions(options);
       h.enAttente = {};
       h.tx = {
-        $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
+        $queryRaw: (...a: unknown[]) => {
+          // Verrou de LIGNE de la version remplacée : rend le statut relu sous le verrou.
+          const texte = Array.isArray(a[0]) ? (a[0] as string[]).join("?") : String(a[0]);
+          if (texte.includes("FOR NO KEY UPDATE"))
+            return Promise.resolve([{ statut: h.statutAncien }]);
+          return h.queryRaw(...a);
+        },
         devis: {
           findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
           updateMany: (...a: unknown[]) => h.txDevisUpdateMany(...a),
@@ -40,6 +48,7 @@ vi.mock("@/lib/prisma", () => ({
         client: { updateMany: (...a: unknown[]) => h.txClientUpdateMany(...a) },
         documentSignatureToken: { updateMany: (...a: unknown[]) => h.txTokenUpdateMany(...a) },
         emailOutbox: { findFirst: (...a: unknown[]) => h.txOutboxFindFirst(...a) },
+        activityLog: { create: (...a: unknown[]) => h.txLogCreate(...a) },
       };
       const resultat = await f(h.tx);
       // Validation : les statuts écrits n'existent qu'après un COMMIT (une exception les annule).
@@ -51,6 +60,23 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(async () => ({ userId: "adm-1", role: "super_admin" })),
   logQualiopiActivity: (...a: unknown[]) => h.logActivity(...a),
+  donneesJournalQualiopi: vi.fn(
+    async (i: {
+      session: { userId: string };
+      action: string;
+      targetType?: string;
+      targetId?: string;
+      changes: unknown;
+    }) => ({
+      adminUserId: i.session.userId,
+      action: i.action,
+      targetType: i.targetType ?? null,
+      targetId: i.targetId ?? null,
+      changes: i.changes,
+      ipAddress: null,
+      userAgent: null,
+    }),
+  ),
 }));
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
@@ -74,6 +100,7 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   emettreDevisEmis: (...a: unknown[]) => h.emettre(...a),
 }));
 
+import { ACTION_REMIS_MAIN_PROPRE } from "@/server/qualiopi/devis/canal-emission";
 import { marquerRemisEnMainPropreAction } from "./devis-remis-main-propre";
 
 const ID = "11111111-1111-4111-8111-111111111111";
@@ -120,13 +147,17 @@ const erreur = (r: unknown): string => {
   if (typeof r === "object" && r !== null && "error" in r) return (r as { error: string }).error;
   throw new Error("refus attendu, obtenu : " + JSON.stringify(r));
 };
-const actions = () => h.logActivity.mock.calls.map((c) => (c[0] as { action: string }).action);
+const actions = () => [
+  ...h.logActivity.mock.calls.map((c) => (c[0] as { action: string }).action),
+  ...h.txLogCreate.mock.calls.map((c) => (c[0] as { data: { action: string } }).data.action),
+];
 const rienProduit = () => {
   expect(h.txDevisUpdateMany).not.toHaveBeenCalled();
   expect(h.creerToken).not.toHaveBeenCalled();
   expect(h.enqueueEmail).not.toHaveBeenCalled();
   expect(h.emettre).not.toHaveBeenCalled();
   expect(actions()).not.toContain("qualiopi.devis.remis_main_propre");
+  expect(h.txLogCreate).not.toHaveBeenCalled();
 };
 
 beforeEach(() => {
@@ -142,6 +173,43 @@ beforeEach(() => {
 });
 
 describe("marquerRemisEnMainPropreAction", () => {
+  describe("trace du canal d'émission (I1)", () => {
+    it("trace écrite dans la transaction, après l'événement, sans doublon après commit", async () => {
+      await appel();
+      expect(h.txLogCreate).toHaveBeenCalledOnce();
+      const data = (h.txLogCreate.mock.calls[0]![0] as { data: { action: string } }).data;
+      expect(data.action).toBe(ACTION_REMIS_MAIN_PROPRE);
+      expect(h.emettre.mock.invocationCallOrder[0]!).toBeLessThan(
+        h.txLogCreate.mock.invocationCallOrder[0]!,
+      );
+      const apresCommit = h.logActivity.mock.calls.map((c) => (c[0] as { action: string }).action);
+      expect(apresCommit).not.toContain(ACTION_REMIS_MAIN_PROPRE);
+    });
+
+    it("changes inchangé, sans adresse ni lien", async () => {
+      await appel();
+      const data = (h.txLogCreate.mock.calls[0]![0] as { data: { changes: unknown } }).data;
+      expect(data.changes).toEqual({
+        statut: "envoye",
+        canal: "main_propre",
+        motif: "sans_email",
+        documentGenereId: "doc-1",
+        emailEnvoye: false,
+        lienSignatureEmis: false,
+      });
+      const json = JSON.stringify(data);
+      expect(json).not.toContain("@");
+      expect(json).not.toContain("portail/signer");
+    });
+
+    it("la trace échoue → tout est annulé, le devis n'est pas « envoye »", async () => {
+      h.txLogCreate.mockRejectedValueOnce(new Error("log KO"));
+      await expect(appel()).rejects.toThrow("log KO");
+      expect(h.statuts[ID]).not.toBe("envoye");
+      expect(h.logActivity).not.toHaveBeenCalled();
+    });
+  });
+
   it("client sans e-mail : « envoye », pièce posée, ni jeton ni e-mail, événement émis dans tx", async () => {
     const r = await appel();
     expect(r).toEqual({ data: { id: ID } });
@@ -164,12 +232,53 @@ describe("marquerRemisEnMainPropreAction", () => {
     expect(verrou.slice(1)).toEqual(["devis.envoi:" + ID]);
   });
 
+  describe("échéancier de l'assistant (B1)", () => {
+    const donnees = async (cond: string | undefined) => {
+      const m = await import("@/server/qualiopi/documents/donnees-pdf-devis");
+      vi.mocked(m.donneesPdfDevis).mockReturnValueOnce({
+        identite: {
+          raisonSociale: "Axion",
+          siret: "1",
+          adresseSiege: "x",
+          nda: "n",
+          qualiopi: "q",
+        },
+        formules: undefined,
+        lignes: [{ quantite: 1, prixUnitaireHtCents: 100000 }],
+        regimeTva: "assujetti",
+        tauxTvaStandardPercent: 10,
+        conditionsParticulieres: cond,
+      } as never);
+    };
+    const TEXTE =
+      "Échéancier de paiement\n1. Acompte, à la signature : 30 %, soit 360,00 € TTC\n2. Étape, à la livraison : 30 %, soit 360,00 € TTC\n3. Solde, à la livraison : 40 %, soit 480,00 € TTC";
+
+    it("échéancier qui ne suit plus le total (TVA 20 % → 10 %) : refus, aucune pièce, statut inchangé", async () => {
+      await donnees(TEXTE);
+      expect(erreur(await appel())).toMatch(/échéancier de paiement ne correspond plus au total/i);
+      expect(h.generateDocument).not.toHaveBeenCalled();
+      rienProduit();
+    });
+
+    it("échéancier cohérent (330 / 330 / 440) : remise acceptée", async () => {
+      await donnees(TEXTE.replace(/360,00/g, "330,00").replace("480,00", "440,00"));
+      expect(await appel()).toEqual({ data: { id: ID } });
+    });
+
+    it("sans échéancier : comportement inchangé", async () => {
+      await donnees("Clause libre.");
+      expect(await appel()).toEqual({ data: { id: ID } });
+      expect(h.generateDocument).toHaveBeenCalledOnce();
+    });
+  });
+
   it("journal : motif, canal, aucun e-mail ni lien, aucune adresse", async () => {
     await appel();
-    const j = h.logActivity.mock.calls.find(
-      (c) => (c[0] as { action: string }).action === "qualiopi.devis.remis_main_propre",
+    const j = h.txLogCreate.mock.calls.find(
+      (c) =>
+        (c[0] as { data: { action: string } }).data.action === "qualiopi.devis.remis_main_propre",
     );
-    expect((j![0] as { changes: unknown }).changes).toEqual({
+    expect((j![0] as { data: { changes: unknown } }).data.changes).toEqual({
       statut: "envoye",
       canal: "main_propre",
       motif: "sans_email",
@@ -227,11 +336,18 @@ describe("marquerRemisEnMainPropreAction", () => {
     rienProduit();
   });
 
-  it("ligne a_valider présente : refus, aucun PDF", async () => {
+  it("ligne a_valider ou approuve présente : refus, aucun PDF", async () => {
     h.txOutboxFindFirst.mockResolvedValue({ id: "ob-0" });
-    expect(erreur(await appel())).toContain("attend déjà dans Emails → À valider");
+    expect(erreur(await appel())).toContain(
+      "attend dans « E-mails à valider » ou est en cours d'envoi",
+    );
     expect(h.txOutboxFindFirst).toHaveBeenCalledWith({
-      where: { template: "devis-envoi", entityType: "Devis", entityId: ID, statut: "a_valider" },
+      where: {
+        template: "devis-envoi",
+        entityType: "Devis",
+        entityId: ID,
+        statut: { in: ["a_valider", "approuve"] },
+      },
       select: { id: true },
     });
     expect(h.generateDocument).not.toHaveBeenCalled();
@@ -246,6 +362,7 @@ describe("marquerRemisEnMainPropreAction", () => {
   });
 
   it("révision : version remplacée « expire », ses jetons sont révoqués", async () => {
+    h.statutAncien = "envoye";
     h.txDevisFindUnique.mockResolvedValue(
       devis({
         replacesDevisId: "ancien",
@@ -279,8 +396,10 @@ describe("marquerRemisEnMainPropreAction", () => {
 });
 
 const ANCIEN = { replacesDevisId: "ancien" };
-const avecAncien = (statut: string) =>
-  devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+const avecAncien = (statut: string) => {
+  h.statutAncien = statut; // le statut relu sous le verrou de ligne est celui du cas
+  return devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+};
 
 describe("marquerRemisEnMainPropreAction — version remplacée signée ou acceptée", () => {
   it("version remplacée signée par le client : refus AVANT le PDF, rien d'écrit", async () => {

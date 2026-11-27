@@ -42,7 +42,7 @@ export function buildJourneeIaServiceJsonLd() {
     areasServed: [{ type: "Country", name: "France" }],
     availableChannels: [{ name: "Dans les locaux du client, partout en France" }],
     providerId: ORGANIZATION_ID,
-    audience: { audienceType: "PME et TPE", minEmployees: 5, maxEmployees: 249 },
+    audience: { audienceType: "PME et TPE", minEmployees: 2, maxEmployees: 250 },
     offer: {
       unitText: "journée",
       unitCode: "DAY",

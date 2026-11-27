@@ -65,7 +65,7 @@ export const EPERNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Épernon ?",
-      a: "Nos consultants arrivent en gare d'Épernon (TER Paris-Montparnasse 1h via Rambouillet) ou par la N10 (1h10). Chartres à 25 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Épernon, comme partout en France, ou à distance.",
     },
   ],
 };

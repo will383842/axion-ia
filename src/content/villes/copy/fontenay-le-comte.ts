@@ -65,7 +65,7 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Fontenay-le-Comte ?",
-      a: "Nos consultants interviennent via gare SNCF Fontenay-le-Comte ou par route (A83 à 15 min). La Roche-sur-Yon à 45 min, Niort à 35 min. Déplacement sur site dans vos locaux professionnels.",
+      a: "Intervention sur site dans vos locaux professionnels.",
     },
   ],
 };

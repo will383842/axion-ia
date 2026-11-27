@@ -314,7 +314,7 @@ describe("doctrine des interdits en sortie (lot R3)", () => {
       },
     );
     expect(r.text).not.toMatch(/qualiopi|100 ?%/i);
-    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
+    expect(r.text).toMatch(/Diagnostic IA de 45 minutes, sans engagement/);
     expect(r.escalate).toBe(false); // le lien vers le rendez-vous suffit
     expect(r.rdvUrl).toBeTruthy();
     expect(r.guard.ok).toBe(false);
@@ -376,7 +376,7 @@ describe("réponse financement (mots interdits en public)", () => {
       { retrieve: noopRetrieve },
     );
     expect(r.text).not.toMatch(/cpf|opco|qualiopi/i);
-    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
+    expect(r.text).toMatch(/Diagnostic IA de 45 minutes, sans engagement/);
     expect(r.text).not.toMatch(/factur/i);
   });
 });

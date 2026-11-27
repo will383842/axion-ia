@@ -124,20 +124,21 @@ describe("DevisPdf — conditions particulières", () => {
     expect(texte(devis({ conditionsParticulieres: "" }))).not.toContain("Conditions particulières");
   });
 
-  it("le bloc n'est pas dans une LegalCallout insécable", () => {
+  it("le bloc n'est pas dans un cadre insécable (EncadreDoux, Carte insecable)", () => {
     const source = readFileSync(
       join(process.cwd(), "src/server/qualiopi/documents/templates/devis.tsx"),
       "utf8",
     );
     const debut = source.indexOf("styles.cpTitre");
     expect(debut).toBeGreaterThan(0);
-    const fin = source.indexOf('title="Conditions du devis"', debut);
+    const fin = source.indexOf('titre="Conditions du devis"', debut);
     expect(fin).toBeGreaterThan(debut);
     const bloc = source.slice(
       source.lastIndexOf("styles.cpBox", debut),
-      source.lastIndexOf("<LegalCallout", fin),
+      source.lastIndexOf("<EncadreDoux", fin),
     );
-    expect(bloc).not.toContain("LegalCallout");
+    expect(bloc).not.toContain("EncadreDoux");
+    expect(bloc).not.toContain("insecable");
     expect(bloc).not.toContain("wrap={false}");
     expect(bloc).toContain("minPresenceAhead");
   });

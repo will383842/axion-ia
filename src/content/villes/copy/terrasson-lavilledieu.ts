@@ -49,7 +49,7 @@ export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Terrasson-Lavilledieu ?",
-      a: "Oui, Axion-IA intervient à Terrasson-Lavilledieu et en vallée de la Vézère (Montignac-Lascaux, Hautefort, Le Lardin-Saint-Lazare). Gare SNCF Terrasson ligne Brive–Périgueux.",
+      a: "Oui, Axion-IA intervient à Terrasson-Lavilledieu et en vallée de la Vézère (Montignac-Lascaux, Hautefort, Le Lardin-Saint-Lazare).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Terrasson  ?",
@@ -61,7 +61,7 @@ export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Terrasson ?",
-      a: "Intervention sous 5 jours ouvrés. Brive à 25 min, Périgueux à 50 min. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous du coaching IA pour le tourisme en Périgord ?",

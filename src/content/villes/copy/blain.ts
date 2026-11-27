@@ -65,7 +65,7 @@ export const BLAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Blain ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Blain, comme partout en France, ou à distance.",
     },
   ],
 };

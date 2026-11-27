@@ -48,6 +48,31 @@ describe("worker de génération : conversion du chemin Claude", () => {
   });
 });
 
+describe("worker de génération : types autorisés (CONTENT_GEN_CLAUDE_TYPES)", () => {
+  it("`tous` : une erreur Anthropic sur un type hors blog => UnrecoverableError", () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    vi.stubEnv("CONTENT_GEN_CLAUDE_TYPES", "tous");
+    const r = erreurNonRelancableCheminClaude(claude(), "landing_ville");
+    expect(r).toBeInstanceOf(UnrecoverableError);
+  });
+  it("liste : seul un type listé est converti ; un autre garde l'erreur d'origine", () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    vi.stubEnv("CONTENT_GEN_CLAUDE_TYPES", "landing_ville");
+    expect(erreurNonRelancableCheminClaude(claude(), "landing_ville")).toBeInstanceOf(
+      UnrecoverableError,
+    );
+    expect(erreurNonRelancableCheminClaude(claude(), "comparison")).toBeNull();
+  });
+  it("un refus de plafond (BlogClaudeRefusError) est déjà non relançable, sur tout type autorisé", () => {
+    const refus = new BlogClaudeRefusError("plafond", "plafond_mois");
+    expect(refus).toBeInstanceOf(UnrecoverableError);
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    vi.stubEnv("CONTENT_GEN_CLAUDE_TYPES", "tous");
+    // Déjà UnrecoverableError : aucune conversion, l'erreur d'origine est relancée telle quelle.
+    expect(erreurNonRelancableCheminClaude(refus, "landing_ville")).toBeNull();
+  });
+});
+
 describe("worker d'amélioration (juge) : conversion du chemin Claude", () => {
   it("allumé + blog + erreur Anthropic ou refus de la porte => UnrecoverableError", async () => {
     vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
@@ -82,5 +107,16 @@ describe("S-M2 : `reservationId` est réservé à la porte blog-claude", () => {
     expect(liste.length).toBeGreaterThan(0);
     const fautifs = liste.filter((f) => /reservationId/.test(readFileSync(f, "utf-8")));
     expect(fautifs).toEqual([]);
+  });
+});
+
+describe("juge d'amélioration : types autorisés hors blog (PR3)", () => {
+  it("un refus Claude sur un type non-blog autorisé est non relançable", async () => {
+    vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", "true");
+    vi.stubEnv("CONTENT_GEN_CLAUDE_TYPES", "guide_pilier");
+    const err = new BlogClaudeRefusError("refus", "plafond_jour");
+    expect(await erreurJugeNonRelancableCheminClaude(err, "guide_pilier")).not.toBeNull();
+    expect(await erreurJugeNonRelancableCheminClaude(err, "comparison")).toBeNull();
+    vi.unstubAllEnvs();
   });
 });

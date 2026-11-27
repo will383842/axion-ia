@@ -49,7 +49,7 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Romilly-sur-Seine et dans l'ouest aubois ?",
-      a: "Oui, Axion-IA intervient à Romilly-sur-Seine et dans tout l'ouest aubois. Troyes à 40 min via N19, Paris-Est à 1 h 30 en TER direct, Nogent-sur-Seine à 20 min.",
+      a: "Oui, Axion-IA intervient à Romilly-sur-Seine et dans tout l'ouest aubois.",
     },
     {
       q: "Combien coûte un audit IA à Romilly-sur-Seine  ?",
@@ -64,8 +64,8 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, optimisation tournées, gestion entrepôts, suivi expéditions, automatisation facturation, prévision stocks, reporting clients pour TPE/PME logistique et transport.",
     },
     {
-      q: "Comment accéder à Romilly-sur-Seine ?",
-      a: "TER direct Paris-Est à Romilly en 1 h 30. Autoroute A5 puis N19 en 1 h 30 en voiture. Aéroport CDG à 2 h.",
+      q: "Comment se déroule une mission à Romilly-sur-Seine ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Romilly-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

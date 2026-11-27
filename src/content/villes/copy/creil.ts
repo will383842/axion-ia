@@ -218,7 +218,7 @@ export const CREIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: scope and deliverables defined in the quote, delivery within the timeline agreed at signature. Desktop and mobile UX/UI, multi-CMS e-commerce and AI components included per the chosen scope. European Union hosting by default, GDPR compliance, DPO on request. No vendor lock-in: code, content and AI components belong to you and are recoverable in-house or by any Oise integrator. Consultant travel costs within the Creil basin (travel, meals, lodging if multi-day) are billed separately from the fixed fee, case by case depending on the zone.",
+          "Contractual commitment: scope and deliverables defined in the quote, delivery within the timeline agreed at signature. Desktop and mobile UX/UI, multi-CMS e-commerce and AI components included per the chosen scope. European Union hosting by default, GDPR compliance, DPO on request. No vendor lock-in: code, content and AI components belong to you and are recoverable in-house or by any Oise integrator.",
       },
     },
   },
@@ -242,7 +242,7 @@ export const CREIL_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à distance pour les équipes de Creil ?",
-      a: "Oui. En complément des interventions sur site dans le bassin Creil Sud Oise, nous assurons des sessions et un suivi en visio — pratique pour les équipes multi-sites ou les sous-traitants aéronautiques répartis autour de Roissy. Le mix présentiel/distanciel se cale sur votre organisation.",
+      a: "Oui. En complément des interventions sur site dans le bassin Creil Sud Oise, nous assurons aussi des sessions en visio — pratique pour les équipes multi-sites ou les sous-traitants aéronautiques répartis autour de Roissy. Le mix présentiel/distanciel se cale sur votre organisation.",
     },
   ],
 };

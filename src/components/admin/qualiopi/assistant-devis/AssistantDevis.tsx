@@ -10,7 +10,10 @@
  * Accessibilité : focus sur le titre à chaque changement d'étape, annonce `aria-live`,
  * erreurs en `role="alert"`. Entrée dans un champ n'avance jamais (aucun formulaire).
  */
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useReducer, useRef, useState, type Dispatch, type ReactNode } from "react";
+
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 
 import { controlerEtape, deserialiser, etatInitial, reducteur, serialiser } from "./etat";
 import type { ActionAssistant } from "./etat";
@@ -23,12 +26,17 @@ export interface ContexteEtape {
   etape: Etape;
   etat: EtatAssistant;
   dispatch: Dispatch<ActionAssistant>;
+  /** Centimes par phase calculés par le serveur (étape 3) : TTC en prix unique, HT en formules. */
+  montantsPhases?:
+    | { A?: ReadonlyArray<number | null> | undefined; B?: ReadonlyArray<number | null> | undefined }
+    | undefined;
 }
 
 export interface PropsAssistantDevis {
   validiteParDefaut: string;
   formulesActives: boolean;
   defaultClientId?: string | undefined;
+  defaultClientType?: EtatAssistant["clientType"] | undefined;
   projetId?: string | undefined;
   rencontreId?: string | undefined;
   brouillonInitial?: { id: string; majLe: string; donnees: EtatSerialise } | undefined;
@@ -50,6 +58,7 @@ function depart(p: PropsAssistantDevis): {
 } {
   const neuf = etatInitial({
     defaultClientId: p.defaultClientId,
+    defaultClientType: p.defaultClientType,
     projetId: p.projetId,
     rencontreId: p.rencontreId,
     validiteParDefaut: p.validiteParDefaut,
@@ -124,15 +133,30 @@ export function AssistantDevis(props: PropsAssistantDevis) {
   return (
     <div>
       <Stepper etape={etape} onAller={aller} desactive={enCours} />
-      <h2 ref={titre} tabIndex={-1} className="mb-[var(--space-admin-4,8px)] outline-none">
-        {titreEtape(etape)}
-      </h2>
+      <div className="mb-[var(--space-admin-6,16px)] flex items-center gap-3">
+        <span
+          aria-hidden="true"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-admin-accent)] text-[length:var(--text-admin-sm)] font-semibold text-white"
+        >
+          {rangPastille(etape)}
+        </span>
+        <h2
+          ref={titre}
+          tabIndex={-1}
+          className="m-0 text-[length:var(--text-admin-xl)] font-semibold outline-none"
+        >
+          {titreEtape(etape)}
+        </h2>
+      </div>
       <p role="status" aria-live="polite" className="sr-only">
         {annonceEtape(etape)}
       </p>
       {erreurs.length > 0 ? (
-        <div role="alert" className="mb-[var(--space-admin-4,8px)]">
-          <ul className="list-disc pl-5">
+        <div
+          role="alert"
+          className="mb-[var(--space-admin-6,16px)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-3 text-[color:var(--color-admin-destructive-fg)]"
+        >
+          <ul className="m-0 list-disc pl-5">
             {erreurs.map((e) => (
               <li key={e}>{e}</li>
             ))}
@@ -140,24 +164,26 @@ export function AssistantDevis(props: PropsAssistantDevis) {
         </div>
       ) : null}
       <div className="min-h-[24rem]">{props.rendreEtape?.({ etape, etat, dispatch })}</div>
-      <div className="mt-[var(--space-admin-6,16px)] flex items-center justify-between gap-3">
-        <button
-          type="button"
-          className="min-h-[44px] rounded border px-4"
+      <div className="mt-[var(--space-admin-8,32px)] flex items-center justify-between gap-3 border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-6,16px)]">
+        <AdminButton
+          variant="secondary"
+          size="lg"
+          icon={ChevronLeft}
           onClick={() => aller(ETAPES[index - 1]!)}
           disabled={index === 0 || enCours}
         >
           Retour
-        </button>
+        </AdminButton>
         {index < ETAPES.length - 1 ? (
-          <button
-            type="button"
-            className="min-h-[44px] rounded bg-[color:var(--color-admin-accent)] px-4 text-white"
+          <AdminButton
+            variant="primary"
+            size="lg"
+            iconAfter={ChevronRight}
             onClick={() => void continuer()}
             disabled={enCours}
           >
             {enCours ? "Enregistrement…" : "Continuer"}
-          </button>
+          </AdminButton>
         ) : null}
       </div>
     </div>
