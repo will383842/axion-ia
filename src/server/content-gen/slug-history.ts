@@ -16,6 +16,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { resolveArticleRoute } from "./blog/resolve-article-route";
 import type { Prisma } from "../../../prisma/generated/client";
 
 /**
@@ -83,6 +84,8 @@ export async function recordSlugChange(
 export interface ArticleSlugRedirect {
   readonly newSlug: string;
   readonly isNews: boolean;
+  /** Rubrique canonique actuelle de l'article (miroir de `resolveArticleRoute`). */
+  readonly section: "blog" | "actualites" | "guides";
 }
 
 /**
@@ -108,10 +111,15 @@ export async function findArticleSlugRedirect(
   if (!currentTranslation) return null;
   // Ne redirige que si l'article est encore publié (sinon Tombstone le rendra).
   if (history.article.status !== "published") return null;
-  return {
-    newSlug: currentTranslation.slug,
+  const newSlug = currentTranslation.slug;
+  // S1 (404) : la rubrique est celle d'AUJOURD'HUI, pas celle de la page qui a reçu la
+  // requête. Un article passé de blog à actualité (ou à guide) redirige alors en un saut.
+  const section = resolveArticleRoute({
     isNews: history.article.isNews,
-  };
+    templateVariant: history.article.templateVariant,
+    slug: newSlug,
+  });
+  return { newSlug, isNews: history.article.isNews, section };
 }
 
 /**
