@@ -170,7 +170,7 @@ const COPY = {
       // Conservation (2026-10-07, décision Will) : aucun dossier n'est supprimé
       // automatiquement — même phrase que la politique de confidentialité,
       // section « Réseau d'apporteurs d'affaires ».
-      "Combien de temps : votre dossier est conservé pour garder la trace de nos échanges ; il n'est pas supprimé automatiquement. " +
+      "Combien de temps : votre dossier est conservé pour garder la trace de nos échanges ; il n'est pas supprimé automatiquement, sauf si vous nous demandez de le retirer. " +
       "Vos droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
       "Tout est détaillé dans notre ",
     infoLien: "politique de confidentialité",
