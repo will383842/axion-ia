@@ -7,8 +7,8 @@ Branche : `feat/gabarits-articles-conception`. Maquettes : `maquettes/index.html
 
 1. **Images** : aucun changement de la sélection des images (une autre PR s'en occupe) ni de l'attribution du photographe Unsplash (`UnsplashCredit`, `resoudreImagePartageArticle`, `featuredImage*`). Les gabarits ne font que _placer_ l'image existante.
 2. **Prisma** : aucun changement de schéma, aucune migration. Le type de contenu se lit par `Article.generatedByJobId` → `ContentGenJob.contentType` (requête supplémentaire, sans relation Prisma).
-3. **Interrupteur `BLOG_GABARITS_V2`** : `"true"` = nouveaux gabarits ; toute autre valeur (absente, `"false"`, vide) = page actuelle **inchangée à l'octet près**, sans requête supplémentaire. Lecture au rendu côté serveur (jamais `NEXT_PUBLIC_`). Retour arrière = repasser la variable à autre chose que `true` et redémarrer (puis purge : `revalidate = 3600` + Cloudflare).
-4. **Anglais** : la locale EN reste désactivée (301 vers FR). Tous les textes visibles des nouveaux composants passent par le système de traduction existant (`next-intl`, `messages/fr.json` et `messages/en.json`), jamais en dur.
+3. **Interrupteur `BLOG_GABARITS_V2`** : `"true"` = nouveaux gabarits ; toute autre valeur (absente, `"false"`, vide) = page actuelle **au balisage identique** (même HTML qu'aujourd'hui, hors `<style>`), sans requête supplémentaire. Seule la feuille CSS commune, inlinée dans toutes les pages, peut grossir (≤ 2 Ko gz) ; toute règle ajoutée est **bornée** à `[data-gabarit]` ou `html:has([data-gabarit])` pour ne rien changer au rendu V1. Lecture au rendu côté serveur (jamais `NEXT_PUBLIC_`). Retour arrière = repasser la variable à autre chose que `true` et redémarrer (puis purge : `revalidate = 3600` + Cloudflare).
+4. **Anglais** : la locale EN reste désactivée (301 vers FR). Tous les textes visibles des nouveaux composants passent par le système de traduction existant (`next-intl`, `src/messages/fr.json` et `src/messages/en.json`), jamais en dur.
 5. **Performance** : aucun JavaScript client ajouté sans nécessité (voir §7). Aucun cliquet `size-limit` relevé.
 6. **SEO** : `generateMetadata`, URL, slugs, canonical, hreflang, `og:image`, redirections (`guide-*` → `/guides`, `isNews` → `/actualites`), tombstone, historique de slugs : **inchangés**.
 7. **Contenu** : pas de prix, pas de donnée client, pas de chiffre inventé. Le gabarit ne met jamais en valeur un chiffre ou un témoignage qui ne vient pas d'une donnée structurée vérifiée.
@@ -57,6 +57,8 @@ Toute la table est un `Record<ContentType, GabaritArticle>` **exhaustif** : l'aj
 | Suivi de la section active (scroll-spy)                   | Non retenu en V1 des gabarits. Option sans JS en amélioration progressive : `scroll-target-group` + `:target-current` (Chromium). Un îlot client n'est admis que s'il pèse < 1 Ko gz (modèle `ObservateurBarreGuide`) et après décision explicite.          |
 | JSON-LD : parité d'abord ou enrichissement                | Parité d'abord : les PR de gabarits **n'altèrent pas** le graphe JSON-LD. Les enrichissements (WebPage, HowTo, ItemList…) viennent dans une PR dédiée, derrière le même interrupteur (voir §8).                                                             |
 | Formulaire newsletter (≈ 24 Ko gz de JS)                  | Chargement différé = décision produit (texte validé par le propriétaire). Non inclus ; signalé comme première économie possible.                                                                                                                            |
+| Réponse directe (`AnswerCard`)                            | Les maquettes la restylent (bordure 2 px encre, filet terracotta) : `AnswerCard` reçoit une prop `variante="v2"` (V1 intacte), les attributs `data-aeo="tldr"` et la classe `.tldr-answer` sont conservés.                                                  |
+| Image en mobile (avant ou après la réponse directe)       | Conservée avant (repère visuel) ; à re-trancher d'après la mesure du LCP mobile après mise en ligne (option : image après la réponse directe).                                                                                                              |
 | Mode sombre                                               | Le site n'en a pas. On n'en introduit pas ; on déclare `color-scheme: light` pour limiter l'inversion automatique des navigateurs.                                                                                                                          |
 
 ## 4. Squelette commun (ordre de lecture = ordre du DOM)
@@ -65,7 +67,7 @@ Toute la table est un `Record<ContentType, GabaritArticle>` **exhaustif** : l'aj
 2. **En-tête** : surtitre (libellé du gabarit + catégorie) · H1 (`splitTitleEm`) · chapô · **une seule ligne de métadonnées** : auteur · publié le · mis à jour le (seulement si différent) · temps de lecture, avec `<time datetime>`. Le bandeau « Mis à jour » séparé disparaît.
 3. **Image** (inchangée : choix, `alt`, `UnsplashCredit`) ; ratio 16/10 réservé.
 4. **Réponse directe** (`AnswerCard`, `data-aeo="tldr"`, 40 à 60 mots visés) puis « Point clé » (`ArticleKeyTakeaway`) si présent.
-5. **Sommaire** (≥ 2 entrées ; masqué sous 4 pour Définition).
+5. **Sommaire** (affiché à partir de 3 `<h2>`, seuil existant de `buildToc` ; sinon construit par le gabarit à partir des questions ou des étapes ; masqué sous 4 entrées pour Définition). Les ancres des H2 ne changent jamais ; celles des H3, questions et étapes sont posées par `ancrerSousTitres` (S3) _après_ `buildToc`.
 6. **Corps** (`prose-axionia`, mesure `68ch`).
 7. Blocs propres au gabarit (§5).
 8. Citation d'expert si réellement renseignée.
@@ -78,7 +80,7 @@ Inchangés : JSON-LD (jusqu'à la PR dédiée), balise `alternate` markdown, bar
 
 ### Ce que chaque gabarit ajoute
 
-- **Analyse** : sommaire H2+H3 (supprimer le `level: 2` forcé) ; au-delà de 2 500 mots : numéros de chapitre (compteur CSS) et lien « Revenir au sommaire ».
+- **Analyse** : sommaire H2+H3 (le gabarit reçoit le HTML brut et construit son sommaire ; `buildToc` et le `level: 2` de `page.tsx` ne sont pas modifiés) ; au-delà de 2 500 mots : numéros de chapitre (compteur CSS) et lien « Revenir au sommaire ».
 - **Guide** : encadré « Avant de commencer » si le corps débute par des prérequis ; étapes en liste numérotée à pastilles (`ArticleEtapes`, via `parseStepsFromBody` exportée) ; le sommaire = les étapes. CTA audit.
 - **Comparatif** : le premier tableau du corps remonté en « En bref », première colonne collante au défilement horizontal ; entrée « Tableau récapitulatif » au sommaire ; aucun « gagnant » ni note inventés. CTA audit.
 - **Sélection** : H2 numérotés en grand (compteur CSS, sans JS) ; tableau de synthèse si présent. CTA audit.
@@ -159,11 +161,11 @@ Règles : texte courant en `fg` ou `fg-soft` sur ivoire, papier ou sable (AAA) ;
 
 Commande : `SKIP_ENV_VALIDATION=true DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub REDIS_URL=redis://stub.invalid:6379 BULLMQ_DISABLED=true SKIP_NEXT_TYPECHECK=true NODE_OPTIONS=--max-old-space-size=8192 pnpm exec next build --webpack --experimental-build-mode compile` (≈ 9 min sur 4 cœurs ; `--webpack` indispensable, la mémoire à 8 Go de tas sinon le noyau tue le worker). Le tableau de Next ne donne pas le First Load ; il a été reconstitué par script (chunks racine + modules client du layout et de la page, gzip -9).
 
-| Route                                | First Load JS (gz)                                            |
-| ------------------------------------ | ------------------------------------------------------------- |
-| `/[locale]/blog/[slug]`              | **249,70 Ko** (21 fichiers ; 214,87 Ko brotli ; 814 Ko bruts) |
-| accueil / `/blog` / `/contact`       | 234,78 / 231,87 / 258,63 Ko                                   |
-| `guides/[slug]`, `actualites/[slug]` | 249,70 Ko (identique : gabarit partagé)                       |
+| Route                                | First Load JS (gz)                                                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------------- |
+| `/[locale]/blog/[slug]`              | **249,70 Ko** (21 fichiers ; 214,87 Ko brotli ; 814 Ko bruts)                       |
+| accueil / `/blog` / `/contact`       | 234,78 / 231,87 / 258,63 Ko                                                         |
+| `guides/[slug]`, `actualites/[slug]` | 249,70 Ko (même First Load ; **pages autonomes**, non couvertes par l'interrupteur) |
 
 Répartition de `/blog/[slug]` : socle App Router 132,54 Ko · chunks du layout 45,03 Ko · partagés layout+page 41,63 Ko · **propres à la page 30,49 Ko** (dont ≈ 24 Ko pour le seul formulaire newsletter de fin d'article).
 
@@ -226,18 +228,19 @@ URL, slugs, redirections, canonical, hreflang, metadata, `og:image`, `@id` exist
 1. `src/env.ts` : `BLOG_GABARITS_V2: z.enum(["true","false"]).optional()` (forme de `CRM_SYNC_ENABLED`) ; lecture via `src/lib/blog/gabarits-v2.ts` : `gabaritsV2Actifs() = process.env.BLOG_GABARITS_V2 === "true"`.
 2. `page.tsx` : tout le calcul existant est conservé ; **juste avant le `return (` principal** : `if (gabaritsV2Actifs()) { const type = await chargerTypeContenu(view); return <ArticleGabarit … /> }`. Le JSX actuel reste intact. `generateMetadata` n'est pas touché.
 3. Interrupteur coupé : aucune requête supplémentaire, aucun module V2 chargé.
-4. Mise en route : variable Coolify (portée RUN) + redémarrage ; effet complet après revalidation (≤ 1 h) ou purge Cloudflare. Aucun contrat app↔worker (rien à ordonnancer côté worker).
+4. **ISR** : `generateStaticParams` et `revalidate = 3600` font pré-rendre des pages au build GitHub Actions, **sans** la variable ; un redéploiement qui recrée le conteneur repart du HTML du build. Allumer ou couper l'interrupteur n'agit donc que page par page, à la revalidation (≤ 1 h) ; la purge Cloudflare ne régénère pas le cache ISR. Si un effet immédiat est requis : `revalidatePath` en masse (action d'administration à prévoir, hors de cette conception) ou variable passée au build.
+5. Mise en route : variable Coolify (portée RUN) + redémarrage ; effet complet après revalidation (≤ 1 h) ou purge Cloudflare. Aucun contrat app↔worker (rien à ordonnancer côté worker).
 
 ## 10. Composants
 
 Existants réutilisés tels quels : `Breadcrumbs`, `AnswerCard`, `ArticleKeyTakeaway`, `ArticleExpertQuote`, `ArticleFaq`, `ArticleSources`, `ArticleTransparencyBlock`, `AuthorByline`, `QualiopiContentBadge`, `AiContentDisclaimer`, `ArticleShareBar`, `ArticlePeopleAlsoAsk`, `ArticlePrevNext`, `SuggestedContent`, `ArticleNewsletterInline`, `EncartEnVideo`, `CtaBlock`, `UnsplashCredit`, `TermesGlossaireLies`.
 Existants ajustés par prop (V1 intacte) : `ArticleTOC` (`cibleTactile`, H3, variantes) ; `ArticleFaq` (`premiereOuverte`, `niveauTitre`, padding sur le `<summary>`).
 À créer (`src/components/article-v2/`, tous serveur) : `ArticleGabarit`, `EnteteArticle`, `HeroImageArticle` (enveloppe l'`<Image>` + `UnsplashCredit` actuels), `MiseEnPageLecture`, `CorpsArticle`, `TableauDefilant`, `ArticleEtapes`, `EncadreArticle`, `FicheContexte`, `BlocDefinition`, `BandeauDonnees`, `PiedArticle`, `CtaGabarit`.
-Fonctions pures (`src/server/content-gen/blog/gabarits.ts`) : `gabaritPourType`, `envelopperTableaux`, `abaisserH1`, `controlerTitres`.
+Fonctions pures : `src/server/content-gen/blog/gabarits.ts` (`gabaritPourType`, repli HTML — PR S1) ; `src/server/content-gen/blog/transformations.ts` (`envelopperTableaux`, `abaisserH1`, `controlerTitres`, `ancrerSousTitres`, `marquerLiensExternes` — PR S3). Deux fichiers distincts, deux PR parallèles.
 
 ## 11. Tests attendus (transversaux)
 
-Rendu de chaque gabarit (Vitest, `renderToStaticMarkup`) · exhaustivité `Record<ContentType, …>` · interrupteur coupé = marqueurs V1 présents (`max-w-[52rem]`, bandeau « Mis à jour ») et aucun marqueur V2 · interrupteur allumé = `generateMetadata` identique et ensemble des `@id` identique · aucun `"use client"` dans `article-v2/` hors exception justifiée · un seul `h1`, pas de saut de titre, chaque ancre du sommaire a son `id`, chaque `table` enveloppée · accessibilité automatique : **axe via `@axe-core/playwright`** (déjà utilisé par `tests/e2e/a11y.spec.ts` ; `jest-axe` est déclaré mais inutilisable avec Vitest) à 1280 px et 320 px, mouvement réduit, couleurs forcées, focus non masqué · données structurées (un seul nœud article, un `BreadcrumbList`, au plus une `FAQPage`, aucun `@id` divergent, parité visible ↔ JSON-LD) · textes via `next-intl` (clés FR présentes et `messages/en.json` aligné).
+Rendu de chaque gabarit (Vitest, `renderToStaticMarkup`) · exhaustivité `Record<ContentType, …>` · interrupteur coupé = marqueurs V1 présents (`max-w-[52rem]`, bandeau « Mis à jour ») et aucun marqueur V2 · interrupteur allumé = `generateMetadata` identique et ensemble des `@id` identique · aucun `"use client"` dans `article-v2/` hors exception justifiée · un seul `h1`, pas de saut de titre, chaque ancre du sommaire a son `id`, chaque `table` enveloppée · accessibilité automatique : **axe via `@axe-core/playwright`** (déjà utilisé par `tests/e2e/a11y.spec.ts` ; `jest-axe` est déclaré mais inutilisable avec Vitest) à 1280 px et 320 px, mouvement réduit, couleurs forcées, focus non masqué · données structurées (un seul nœud article, un `BreadcrumbList`, au plus une `FAQPage`, aucun `@id` divergent, parité visible ↔ JSON-LD) · textes via `next-intl` (clés FR présentes et `src/messages/en.json` aligné).
 ⚠️ Les verrous existants qui lisent `page.tsx` par expression régulière (`metadata-editoriale`, `sources-eeat`, `un-seul-mis-a-jour-par-article`) peuvent passer à vide si le JSX migre : les étendre aux nouveaux fichiers. Les E2E `seo-jsonld.spec.ts:115` et `blog-article.spec.ts:39` attendent `Article` et ratent `BlogPosting` : accepter {Article, BlogPosting, NewsArticle, TechArticle}.
 
 ## 12. Risques
@@ -247,7 +250,7 @@ Rendu de chaque gabarit (Vitest, `renderToStaticMarkup`) · exhaustivité `Recor
 3. **CSS inlinée dans toutes les pages** (+ ≤ 2 Ko gz visé) : toute règle de gabarit alourdit le site entier.
 4. **Gates aveugles** : une régression de poids de l'article passerait au vert (voir §7) ; d'où le script de mesure et l'URL `lhci` proposée.
 5. **Contenu produit par IA** : sauts de titres, `alt` absents, liens « ici » : contrôles au rendu, pas seulement à la génération.
-6. **Marges de contraste minces** (terracotta 4,66-4,81 ; sage 4,63) : couleurs pleines, aucune opacité sur le texte.
+6. **Marges de contraste minces** (terracotta sur sable 4,81 ; terracotta sur terracotta-soft 4,66 ; sage sur sage-soft 4,63) : couleurs pleines, aucune opacité sur le texte.
 7. **Type de contenu inconnu** : requête supplémentaire (`ContentGenJob`) seulement si l'interrupteur est allumé ; repli Analyse.
 8. **Verrous existants** lisant `page.tsx` (voir §11).
 9. **Dette de poids du site** (249,7 Ko vs 75 Ko) : hors périmètre, mais à ne pas aggraver ni masquer.
