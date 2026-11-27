@@ -217,7 +217,7 @@ export default async function BarometrePage({ params }: Props) {
                 Ce que cela veut dire pour un dirigeant de TPE ou PME
               </h2>
               <p className="text-fg-soft mt-2 text-sm">
-                Ces enseignements décrivent des tendances ; ils ne promettent aucun résultat.
+                Ces enseignements décrivent des tendances observées.
               </p>
               <ol className="mt-3 list-decimal space-y-3 pl-5">
                 {ENSEIGNEMENTS.map((e) => (
