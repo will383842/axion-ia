@@ -9,6 +9,8 @@ import {
   SEUIL_PUBLICATION_DEPART,
   actionApresVerdict,
   estCritereBloquant,
+  noteValide,
+  tentativeEnCours,
   publicationAutorisee,
   refusDepuisVerdict,
   type ResultatCritere,
@@ -32,13 +34,27 @@ const echec = (
   ...extra,
 });
 
+/** Sortie complète : les bloquants non cités sont « ok » (la porte les a tous évalués). */
 function sortie(
   verdict: SortiePorte["verdict"],
   criteres: ResultatCritere[],
   note = 90,
 ): SortiePorte {
-  return { versionPorte: "v1", verdict, note, criteres };
+  const cites = new Set(criteres.map((c) => c.id));
+  const completes = [...CRITERES_BLOQUANTS.filter((b) => !cites.has(b)).map(ok), ...criteres];
+  return { versionPorte: "v1", verdict, note, criteres: completes };
 }
+
+const brut = (
+  verdict: SortiePorte["verdict"],
+  criteres: ResultatCritere[],
+  note = 90,
+): SortiePorte => ({
+  versionPorte: "v1",
+  verdict,
+  note,
+  criteres,
+});
 
 describe("constantes du contrat", () => {
   it("reprend les valeurs de la conception", () => {
@@ -75,18 +91,29 @@ describe("constantes du contrat", () => {
 describe("refusDepuisVerdict", () => {
   it("ne rend rien pour un contenu publiable", () => {
     expect(
-      refusDepuisVerdict(sortie("publiable", [ok("B01")]), { tentative: 1, coutUsd: 0.4 }),
+      refusDepuisVerdict(sortie("publiable", [ok("B01")]), {
+        contenuId: "c1",
+        reecrituresFaites: 0,
+        coutUsd: 0.4,
+      }),
     ).toEqual([]);
   });
 
   it("rend un refus par bloquant en échec, avec code, critère, raison, preuve, tentative et version", () => {
     const r = refusDepuisVerdict(
       sortie("a_corriger", [ok("B01"), echec("B08", { section: "intro" }), echec("W03")], 80),
-      { tentative: 2, coutUsd: 1.25, versionPrompt: "p3", versionBrief: "b1" },
+      {
+        contenuId: "c1",
+        reecrituresFaites: 1,
+        coutUsd: 1.25,
+        versionPrompt: "p3",
+        versionBrief: "b1",
+      },
     );
     expect(r).toEqual([
       {
         role: "porte",
+        contenuId: "c1",
         code: "reponse_directe_absente",
         critere: "B08",
         raison: "raison en français",
@@ -102,37 +129,58 @@ describe("refusDepuisVerdict", () => {
   });
 
   it("applique la précision du critère (B11 → longueur) et ignore une précision étrangère", () => {
-    const [a, b] = refusDepuisVerdict(
+    const [b, a] = refusDepuisVerdict(
       sortie("a_corriger", [
         echec("B11", { precision: "longueur_hors_fourchette" }),
         echec("B01", { precision: "chiffre_retire" }),
       ]),
-      { tentative: 1, coutUsd: 0 },
+      { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 },
     );
     expect(a?.code).toBe("longueur_hors_fourchette");
     expect(b?.code).toBe("doctrine");
   });
 
-  it("enregistre un bloquant non évalué (échec fermé) avec le code du critère", () => {
-    const r = refusDepuisVerdict(
-      sortie("bloque", [
-        { id: "B02", etat: "non_evalue", preuve: "", raison: "source indisponible" },
-      ]),
-      { tentative: 1, coutUsd: 0 },
-    );
+  it("n'enregistre pas un bloquant non évalué ni absent : une panne n'est pas un refus", () => {
+    const ctx = { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 };
+    expect(
+      refusDepuisVerdict(
+        sortie("bloque", [
+          { id: "B02", etat: "non_evalue", preuve: "", raison: "source indisponible" },
+        ]),
+        ctx,
+      ),
+    ).toEqual([]);
+    expect(refusDepuisVerdict(brut("bloque", [ok("B01")]), ctx)).toEqual([]);
+  });
+
+  it("enregistre un refus « autre » sans critère quand seule la note refuse", () => {
+    const r = refusDepuisVerdict(sortie("a_corriger", [], 78), {
+      contenuId: "c9",
+      reecrituresFaites: 1,
+      coutUsd: 0.9,
+    });
     expect(r).toHaveLength(1);
-    expect(r[0]?.code).toBe("fait_non_source");
+    expect(r[0]).toMatchObject({ code: "autre", contenuId: "c9", tentative: 2, coutUsd: 0.9 });
+    expect(r[0]?.critere).toBeUndefined();
   });
 
   it("n'enregistre jamais B17 : c'est un report, pas un refus", () => {
     expect(
-      refusDepuisVerdict(sortie("a_corriger", [echec("B17")]), { tentative: 1, coutUsd: 0 }),
+      refusDepuisVerdict(sortie("a_corriger", [echec("B17")]), {
+        contenuId: "c1",
+        reecrituresFaites: 0,
+        coutUsd: 0,
+      }),
     ).toEqual([]);
   });
 
   it("ne produit que des codes de la liste fermée", () => {
     const tous = CRITERES_BLOQUANTS.map((id) => echec(id));
-    for (const r of refusDepuisVerdict(sortie("bloque", tous, 10), { tentative: 1, coutUsd: 0 })) {
+    for (const r of refusDepuisVerdict(sortie("bloque", tous, 10), {
+      contenuId: "c1",
+      reecrituresFaites: 0,
+      coutUsd: 0,
+    })) {
       expect(estCodeRefus(r.code)).toBe(true);
     }
   });
@@ -203,8 +251,104 @@ describe("actionApresVerdict", () => {
     ).toBe("reecrire");
   });
 
-  it("verdict non publiable sans critère en échec (note basse) → réécriture tant qu'il reste des essais", () => {
-    expect(actionApresVerdict(sortie("a_corriger", [], 78), debut).action).toBe("reecrire");
+  it("note basse sans bloquant en échec : corrections tirées des avertissements localisés", () => {
+    const r = actionApresVerdict(
+      sortie("a_corriger", [echec("W02", { section: "h2-2" })], 78),
+      debut,
+    );
+    expect(r).toEqual({
+      action: "reecrire",
+      corrections: [{ critere: "W02", section: "h2-2", code: "style" }],
+    });
+  });
+
+  it("note basse sans rien de localisable → abandon « autre » (jamais une réécriture vide)", () => {
+    expect(actionApresVerdict(sortie("a_corriger", [], 78), debut)).toEqual({
+      action: "abandonner",
+      code: "autre",
+    });
+    expect(actionApresVerdict(sortie("bloque", [echec("W03")], 60), debut)).toEqual({
+      action: "abandonner",
+      code: "autre",
+    });
+  });
+
+  it("bloquant non évalué (source indisponible) seul → mise en attente, ni refus ni abandon", () => {
+    const s = sortie("bloque", [{ id: "B04", etat: "non_evalue", preuve: "", raison: "" }]);
+    expect(actionApresVerdict(s, debut)).toEqual({
+      action: "mettre_en_attente",
+      criteres: ["B04"],
+    });
+    // même au plafond : l'attente ne détruit pas le contenu
+    expect(actionApresVerdict(s, { reecrituresFaites: 2, coutUsd: 9 }).action).toBe(
+      "mettre_en_attente",
+    );
+  });
+
+  it("critères absents de la sortie → mise en attente (échec fermé)", () => {
+    const r = actionApresVerdict(brut("publiable", [], 90), debut);
+    expect(r.action).toBe("mettre_en_attente");
+  });
+
+  it("note invalide → mise en attente, jamais relecture humaine", () => {
+    expect(actionApresVerdict(sortie("publiable", [], Number.NaN), debut).action).toBe(
+      "mettre_en_attente",
+    );
+    expect(actionApresVerdict(sortie("publiable", [], 120), debut).action).toBe(
+      "mettre_en_attente",
+    );
+  });
+
+  it("échec non évalué + échec réel : on traite l'échec réel", () => {
+    const s = sortie("bloque", [
+      { id: "B04", etat: "non_evalue", preuve: "", raison: "" },
+      echec("B10", { section: "fin" }),
+    ]);
+    expect(actionApresVerdict(s, debut).action).toBe("reecrire");
+  });
+
+  it("bloquant corrigeable sans section → abandon (cause non localisable)", () => {
+    expect(actionApresVerdict(sortie("a_corriger", [echec("B16")], 80), debut)).toEqual({
+      action: "abandonner",
+      code: "generique",
+    });
+  });
+
+  it("dur sans section + un autre localisé dans la même sortie → abandon", () => {
+    const s = sortie("bloque", [echec("B15"), echec("B10", { section: "fin" })]);
+    expect(actionApresVerdict(s, debut)).toEqual({ action: "abandonner", code: "texte_cache" });
+  });
+
+  it("dérogeable seul → décision humaine (dérogation ou fusion), pas de réécriture", () => {
+    expect(actionApresVerdict(sortie("a_corriger", [echec("B05")], 88), debut)).toEqual({
+      action: "derogation_ou_fusion",
+      criteres: ["B05"],
+    });
+  });
+
+  it("dérogeable + corrigeable localisé → réécriture du seul corrigeable", () => {
+    const s = sortie("a_corriger", [echec("B06"), echec("B10", { section: "fin" })]);
+    expect(actionApresVerdict(s, debut)).toEqual({
+      action: "reecrire",
+      corrections: [{ critere: "B10", section: "fin", code: "appel_incoherent" }],
+    });
+  });
+
+  it("B17 avec une note sous 70 → pas de report", () => {
+    const r = actionApresVerdict(sortie("bloque", [echec("B17")], 60), debut);
+    expect(r.action).not.toBe("reporter");
+  });
+});
+
+describe("compteur unique et utilitaires", () => {
+  it("la tentative en cours vaut réécritures faites + 1", () => {
+    expect(tentativeEnCours(0)).toBe(1);
+    expect(tentativeEnCours(MAX_REECRITURES)).toBe(3);
+  });
+
+  it("noteValide", () => {
+    for (const n of [0, 50, 100]) expect(noteValide(n)).toBe(true);
+    for (const n of [-1, 100.5, Number.NaN, Infinity]) expect(noteValide(n)).toBe(false);
   });
 });
 
@@ -236,6 +380,18 @@ describe("publicationAutorisee (échec fermé)", () => {
     expect(publicationAutorisee({ etat: "ok", sortie: sortie("publiable", [echec("B17")]) })).toBe(
       false,
     );
+  });
+
+  it("refuse une sortie « publiable » où des bloquants manquent (critère absent ≠ critère réussi)", () => {
+    expect(publicationAutorisee({ etat: "ok", sortie: brut("publiable", [], 90) })).toBe(false);
+    const sans16 = CRITERES_BLOQUANTS.filter((b) => b !== "B16").map(ok);
+    expect(publicationAutorisee({ etat: "ok", sortie: brut("publiable", sans16, 90) })).toBe(false);
+    expect(
+      publicationAutorisee({
+        etat: "ok",
+        sortie: brut("publiable", CRITERES_BLOQUANTS.map(ok), 90),
+      }),
+    ).toBe(true);
   });
 
   it("refuse une note hors de 0 à 100", () => {

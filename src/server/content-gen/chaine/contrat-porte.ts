@@ -101,8 +101,11 @@ export interface EntreePorte {
   readonly corps: string;
   readonly dossierPreuves: readonly FaitPreuve[];
   readonly brief: BriefPorte;
-  /** 1 pour le premier passage, 2 et 3 pour les réécritures. */
-  readonly tentative: number;
+  /**
+   * Réécritures déjà faites : l'UNIQUE compteur du cycle (même compteur que la
+   * porte, § 5.1). La tentative en cours vaut `reecrituresFaites + 1`.
+   */
+  readonly reecrituresFaites: number;
 }
 
 // ─── Réponse de la porte (porte → chaîne) ────────────────────────────────────
@@ -136,19 +139,53 @@ export type ResultatAppelPorte =
   | { readonly etat: "ok"; readonly sortie: SortiePorte }
   | { readonly etat: "erreur"; readonly message: string };
 
-/** Critères bloquants qui ne sont pas « ok » (en échec ou non évalués). */
-function defautsBloquants(sortie: SortiePorte): ResultatCritere[] {
-  return sortie.criteres.filter((c) => estCritereBloquant(c.id) && c.etat !== "ok");
+/** Une note valide est un nombre fini de 0 à 100. */
+export function noteValide(note: number): boolean {
+  return Number.isFinite(note) && note >= 0 && note <= 100;
+}
+
+/** Numéro de la tentative en cours (1 = premier passage), d'après l'unique compteur. */
+export function tentativeEnCours(reecrituresFaites: number): number {
+  return reecrituresFaites + 1;
+}
+
+interface DefautBloquant {
+  readonly id: CritereBloquant;
+  readonly etat: "echec" | "non_evalue";
+  /** Absent quand la porte n'a rendu aucun résultat pour ce critère. */
+  readonly resultat?: ResultatCritere;
 }
 
 /**
- * Seul chemin vers la publication : appel réussi, verdict `publiable`, aucun
- * bloquant en défaut (B17 compris), note valide. Tout le reste est refusé.
+ * Bloquants qui ne sont pas « ok », dans l'ordre B01…B17. Un bloquant ABSENT de
+ * la sortie vaut « non évalué » (échec fermé), jamais « ok ». Si un critère est
+ * répété, le pire état l'emporte.
+ */
+function defautsBloquants(sortie: SortiePorte): DefautBloquant[] {
+  const parId = new Map<IdCritere, ResultatCritere>();
+  for (const c of sortie.criteres) {
+    const avant = parId.get(c.id);
+    const rang = (e: EtatCritere) => (e === "ok" ? 0 : e === "non_evalue" ? 1 : 2);
+    if (!avant || rang(c.etat) > rang(avant.etat)) parId.set(c.id, c);
+  }
+  const defauts: DefautBloquant[] = [];
+  for (const id of CRITERES_BLOQUANTS) {
+    const r = parId.get(id);
+    if (!r) defauts.push({ id, etat: "non_evalue" });
+    else if (r.etat !== "ok") defauts.push({ id, etat: r.etat, resultat: r });
+  }
+  return defauts;
+}
+
+/**
+ * Seul chemin vers la publication : appel réussi, verdict `publiable`, note
+ * valide, et les 17 bloquants présents et « ok » (B17 compris). Tout le reste
+ * est refusé : un critère manquant n'est pas un critère réussi.
  */
 export function publicationAutorisee(resultat: ResultatAppelPorte): boolean {
   if (resultat.etat !== "ok") return false;
   const { sortie } = resultat;
-  if (!Number.isFinite(sortie.note) || sortie.note < 0 || sortie.note > 100) return false;
+  if (!noteValide(sortie.note)) return false;
   return sortie.verdict === "publiable" && defautsBloquants(sortie).length === 0;
 }
 
@@ -157,9 +194,10 @@ export function publicationAutorisee(resultat: ResultatAppelPorte): boolean {
 /** Une ligne de refus, prête à être écrite par `ContenuRefus` (§ 7.1). */
 export interface RefusEnregistrable {
   readonly role: "porte";
+  readonly contenuId: string;
   readonly code: CodeRefus;
-  /** Critère exact (Bnn) : distingue B03 de B04 malgré un code commun. */
-  readonly critere: CritereBloquant;
+  /** Critère exact (Bnn) : distingue B03 de B04 malgré un code commun. Absent si le refus tient à la note seule. */
+  readonly critere?: CritereBloquant;
   readonly raison: string;
   readonly preuve: string;
   readonly section?: string;
@@ -171,7 +209,9 @@ export interface RefusEnregistrable {
 }
 
 export interface ContexteRefus {
-  readonly tentative: number;
+  readonly contenuId: string;
+  /** L'unique compteur du cycle ; la tentative enregistrée vaut `reecrituresFaites + 1`. */
+  readonly reecrituresFaites: number;
   /** Coût déjà dépensé sur ce contenu. */
   readonly coutUsd: number;
   readonly versionPrompt?: string;
@@ -179,25 +219,44 @@ export interface ContexteRefus {
 }
 
 /**
- * Un refus par bloquant en défaut. B17 est exclu : c'est un report. Les
- * avertissements ne sont jamais des refus.
+ * Lignes de refus d'un verdict :
+ * - une par bloquant EN ÉCHEC (B17 exclu : c'est un report) ;
+ * - un bloquant « non évalué » n'est PAS un refus (c'est une panne de source :
+ *   elle ne doit pas fausser les statistiques de refus) ;
+ * - si le verdict n'est pas publiable alors qu'aucun bloquant n'est en défaut
+ *   (note sous le seuil), une ligne `autre` sans critère, pour que ce refus ne
+ *   se perde pas ;
+ * - les avertissements ne sont jamais des refus.
  */
 export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): RefusEnregistrable[] {
+  const base = {
+    role: "porte" as const,
+    contenuId: ctx.contenuId,
+    tentative: tentativeEnCours(ctx.reecrituresFaites),
+    versionPorte: sortie.versionPorte,
+    coutUsd: ctx.coutUsd,
+    ...(ctx.versionPrompt !== undefined ? { versionPrompt: ctx.versionPrompt } : {}),
+    ...(ctx.versionBrief !== undefined ? { versionBrief: ctx.versionBrief } : {}),
+  };
+  const defauts = defautsBloquants(sortie);
   const refus: RefusEnregistrable[] = [];
-  for (const c of defautsBloquants(sortie)) {
-    if (!estCritereBloquant(c.id) || CLASSE_CRITERE[c.id] === "report") continue;
+  for (const d of defauts) {
+    if (d.etat !== "echec" || !d.resultat || CLASSE_CRITERE[d.id] === "report") continue;
     refus.push({
-      role: "porte",
-      code: codePourCritere(c.id, c.precision),
-      critere: c.id,
-      raison: c.raison,
-      preuve: c.preuve,
-      ...(c.section !== undefined ? { section: c.section } : {}),
-      tentative: ctx.tentative,
-      versionPorte: sortie.versionPorte,
-      coutUsd: ctx.coutUsd,
-      ...(ctx.versionPrompt !== undefined ? { versionPrompt: ctx.versionPrompt } : {}),
-      ...(ctx.versionBrief !== undefined ? { versionBrief: ctx.versionBrief } : {}),
+      ...base,
+      code: codePourCritere(d.id, d.resultat.precision),
+      critere: d.id,
+      raison: d.resultat.raison,
+      preuve: d.resultat.preuve,
+      ...(d.resultat.section !== undefined ? { section: d.resultat.section } : {}),
+    });
+  }
+  if (sortie.verdict !== "publiable" && defauts.length === 0) {
+    refus.push({
+      ...base,
+      code: "autre",
+      raison: `Note de ${sortie.note} sur 100, sous le seuil de publication`,
+      preuve: "",
     });
   }
   return refus;
@@ -206,8 +265,8 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
 // ─── Décision après verdict (cycle du § 4) ───────────────────────────────────
 
 export interface CorrectionLocalisee {
-  readonly critere: CritereBloquant;
-  readonly section?: string;
+  readonly critere: IdCritere;
+  readonly section: string;
   readonly code: CodeRefus;
 }
 
@@ -219,49 +278,82 @@ export interface EtatCycle {
 export type ActionApresVerdict =
   | { readonly action: "relecture_humaine" }
   | { readonly action: "reporter" }
-  | {
-      readonly action: "reecrire";
-      readonly corrections: readonly CorrectionLocalisee[];
-    }
+  /** Source indisponible ou note invalide : on ne publie pas, on ne détruit pas, on ne compte pas de refus. */
+  | { readonly action: "mettre_en_attente"; readonly criteres: readonly CritereBloquant[] }
+  /** Bloquant dérogeable seul (B05, B06, B07) : un humain tranche (dérogation motivée, fusion ou abandon). */
+  | { readonly action: "derogation_ou_fusion"; readonly criteres: readonly CritereBloquant[] }
+  | { readonly action: "reecrire"; readonly corrections: readonly CorrectionLocalisee[] }
   | { readonly action: "abandonner"; readonly code: CodeRefus };
 
 /**
  * Ce que fait la chaîne d'un verdict. Ordre des règles :
- * 1. B17 seul en défaut → report (jamais de réécriture ni d'abandon) ;
- * 2. publiable et sans défaut → relecture humaine (jamais de publication directe) ;
- * 3. plafond de réécritures ou de coût atteint → abandon `plafond_atteint` ;
- * 4. bloquant dur sans section en cause → abandon (cause non localisable) ;
- * 5. sinon → réécriture ciblée des sections en cause.
- * Une dérogation humaine (B05, B06, B07) se décide hors de cette fonction.
+ * 1. note invalide → mise en attente ;
+ * 2. B17 seul en défaut, note ≥ 70 → report (ni réécriture ni abandon) ;
+ * 3. publiable et sans défaut → relecture humaine (jamais de publication directe) ;
+ * 4. bloquant (hors B17) non évalué ou absent, sans échec → mise en attente ;
+ * 5. plafond de réécritures ou de coût atteint → abandon `plafond_atteint` ;
+ * 6. échec dur ou corrigeable sans section en cause → abandon (non localisable) ;
+ * 7. seuls des dérogeables en échec → `derogation_ou_fusion` ;
+ * 8. sinon réécriture ciblée des sections en cause (échecs bloquants non
+ *    dérogeables) ; sans aucun bloquant en échec (note basse), les corrections
+ *    viennent des avertissements localisés, à défaut → abandon `autre`.
  */
 export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): ActionApresVerdict {
   const defauts = defautsBloquants(sortie);
-  if (defauts.length > 0 && defauts.every((c) => c.id === "B17")) return { action: "reporter" };
+  if (!noteValide(sortie.note)) {
+    return { action: "mettre_en_attente", criteres: defauts.map((d) => d.id) };
+  }
+  if (defauts.length > 0 && defauts.every((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE) {
+    return { action: "reporter" };
+  }
   if (sortie.verdict === "publiable" && defauts.length === 0) {
     return { action: "relecture_humaine" };
+  }
+  const echecs = defauts.filter(
+    (d): d is DefautBloquant & { resultat: ResultatCritere } =>
+      d.etat === "echec" && d.resultat !== undefined && CLASSE_CRITERE[d.id] !== "report",
+  );
+  const nonEvalues = defauts.filter((d) => d.etat === "non_evalue" && d.id !== "B17");
+  if (echecs.length === 0 && nonEvalues.length > 0) {
+    return { action: "mettre_en_attente", criteres: nonEvalues.map((d) => d.id) };
   }
   if (etat.reecrituresFaites >= MAX_REECRITURES || etat.coutUsd >= PLAFOND_COUT_USD) {
     return { action: "abandonner", code: "plafond_atteint" };
   }
-  const refus = defauts.filter(
-    (c): c is ResultatCritere & { id: CritereBloquant } =>
-      estCritereBloquant(c.id) && CLASSE_CRITERE[c.id] !== "report",
+  const sansSection = echecs.find(
+    (d) => CLASSE_CRITERE[d.id] !== "derogeable" && d.resultat.section === undefined,
   );
-  const durNonLocalise = refus.find(
-    (c) => CLASSE_CRITERE[c.id] === "dur" && c.section === undefined,
-  );
-  if (durNonLocalise) {
+  if (sansSection) {
     return {
       action: "abandonner",
-      code: codePourCritere(durNonLocalise.id, durNonLocalise.precision),
+      code: codePourCritere(sansSection.id, sansSection.resultat.precision),
     };
   }
+  const aCorriger = echecs.filter((d) => CLASSE_CRITERE[d.id] !== "derogeable");
+  if (echecs.length > 0 && aCorriger.length === 0) {
+    return { action: "derogation_ou_fusion", criteres: echecs.map((d) => d.id) };
+  }
+  if (aCorriger.length > 0) {
+    return {
+      action: "reecrire",
+      corrections: aCorriger.map((d) => ({
+        critere: d.id,
+        section: d.resultat.section as string,
+        code: codePourCritere(d.id, d.resultat.precision),
+      })),
+    };
+  }
+  const avertissements = sortie.criteres.filter(
+    (c): c is ResultatCritere & { section: string } =>
+      !estCritereBloquant(c.id) && c.etat === "echec" && c.section !== undefined,
+  );
+  if (avertissements.length === 0) return { action: "abandonner", code: "autre" };
   return {
     action: "reecrire",
-    corrections: refus.map((c) => ({
+    corrections: avertissements.map((c) => ({
       critere: c.id,
-      ...(c.section !== undefined ? { section: c.section } : {}),
-      code: codePourCritere(c.id, c.precision),
+      section: c.section,
+      code: "style" as const,
     })),
   };
 }

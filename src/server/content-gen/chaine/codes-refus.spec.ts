@@ -82,7 +82,7 @@ describe("correspondance Bnn → code", () => {
     expect(Object.keys(CORRESPONDANCE_BNN)).toEqual([...CRITERES_BLOQUANTS]);
   });
 
-  it("reprend le § 8 de la chaîne : code par défaut de chaque critère", () => {
+  it("reprend le § 8 de la chaîne (sauf B08, écart assumé de C4) : code par défaut de chaque critère", () => {
     const defauts = {
       B01: "doctrine",
       B02: "fait_non_source",
@@ -129,6 +129,7 @@ describe("correspondance Bnn → code", () => {
     // précision étrangère au critère : retour au code par défaut, jamais un code faux
     expect(codePourCritere("B01", "chiffre_retire")).toBe("doctrine");
     expect(codePourCritere("B11", undefined)).toBe("style");
+    expect(codePourCritere("B08", "style")).toBe("style");
   });
 
   it("partitionne les codes : chaque code vient d'un Bnn ou est hors critère, jamais rien", () => {
