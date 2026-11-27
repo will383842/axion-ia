@@ -4,8 +4,9 @@
 //    l'envoi (gabarit, langue, charge mise en file, vrai destinataire) : la même fonction,
 //    les mêmes arguments. Le jeton d'opposition du pied de page est donc le vrai.
 // 2. Avant de quitter le serveur, objet, HTML et texte passent par `masquerSecretsEmail`,
-//    puis les liens du HTML par `rendreLiensInertes` : le navigateur de la console ne reçoit
-//    jamais un jeton, et un clic dans le cadre ne mène nulle part.
+//    puis les liens du HTML par `rendreLiensOuvrables` : le navigateur de la console ne reçoit
+//    jamais un jeton ; un lien public s'ouvre dans un nouvel onglet, un lien personnel du
+//    destinataire n'est pas cliquable.
 //
 // Jamais journalisé, jamais mis en cache : le HTML rendu porte des liens personnels.
 
@@ -13,12 +14,15 @@ import "server-only";
 
 import {
   extrairePreEntete,
-  rendreLiensInertes,
+  rendreLiensOuvrables,
   type ApercuLecteur,
 } from "@/lib/email/apercu-lecteur";
 import { enveloppeExpedition } from "@/lib/email/enveloppe";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { renderEmailTemplate } from "@/lib/email/templates";
+import { piecesJointesPourApercu } from "@/server/email/pieces-jointes-apercu";
+import { prefixeAdminAttendu } from "@/server/auth/garde-route-console";
+import type { EmailJobData } from "@/server/queue/types";
 
 export type ArgumentsRendu = Parameters<typeof renderEmailTemplate>;
 
@@ -35,6 +39,7 @@ export async function apercuMasque(
   locale: ArgumentsRendu[1],
   payload: ArgumentsRendu[2],
   destinataire: string,
+  attachments?: EmailJobData["attachments"],
 ): Promise<ApercuMasque> {
   const rendu = await renderEmailTemplate(gabarit, locale, payload, { destinataire });
   const masque = masquerSecretsEmail({
@@ -42,7 +47,7 @@ export async function apercuMasque(
     html: rendu.html,
     text: rendu.text,
   });
-  const html = rendreLiensInertes(masque.html);
+  const html = rendreLiensOuvrables(masque.html);
   const enveloppe = enveloppeExpedition();
   return {
     sujet: masque.subject,
@@ -57,6 +62,8 @@ export async function apercuMasque(
       a: destinataire,
       repondreA: enveloppe.replyTo,
       preEntete: extrairePreEntete(html),
+      // Les pièces que l'envoi joindra (même fonction que le worker) ; `[]` = « Aucune pièce jointe ».
+      piecesJointes: await piecesJointesPourApercu(attachments, prefixeAdminAttendu() ?? ""),
     },
   };
 }

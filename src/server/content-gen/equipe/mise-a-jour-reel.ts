@@ -16,6 +16,7 @@ import {
   verifierTexteFinal,
 } from "../fact-check/verificateur-deux-phases";
 import { genererTexteBlogClaude } from "../providers/blog-claude";
+import { creerJobPorteur, type JobPorteur } from "../providers/job-porteur";
 import { readContentGenConfigDirect } from "../config-store";
 import { CLE_MAJ_MAX_JOUR, resoudreRythmeEquipe } from "../scheduler/anti-burst";
 import type { CarteRequetes } from "../strategie/carte-requetes";
@@ -24,7 +25,12 @@ import { decider as deciderGardien } from "./gardien";
 import { redacteurEnChef } from "./redacteur-en-chef";
 import { sansBalises, type DependancesMiseAJour } from "./mise-a-jour";
 
-const CONTENT_TYPE = "blog_from_keywords";
+/**
+ * Plafond de coût cumulé d'UNE mise à jour (somme des réservations de la vérification, de la
+ * réécriture, de la conformité et du rédacteur en chef), posé sur son job porteur. Les réservations
+ * se font au coût maximal : ce plafond borne le pire cas d'un article, en plus du cumul commun.
+ */
+export const PLAFOND_PORTEUR_MAJ_USD = 3;
 const texteBrut = (h: string) =>
   h
     .replace(/<[^>]*>/g, " ")
@@ -62,8 +68,16 @@ export interface ContexteReel {
   readonly urlDe: (articleId: string) => Promise<string | undefined>;
 }
 
-export async function dependancesReelles(c: ContexteReel): Promise<DependancesMiseAJour> {
-  const jobId = `maj-${c.articleId}`;
+export async function dependancesReelles(
+  c: ContexteReel,
+  creerPorteur: typeof creerJobPorteur = creerJobPorteur,
+): Promise<DependancesMiseAJour> {
+  // Job porteur (statut terminal, type existant) créé au PREMIER appel payant seulement : une mise à
+  // jour que le gardien écarte ne laisse aucune ligne. Sans lui, la porte de coût refuse tout
+  // (« job inconnu ») : l'ancien `maj-<id>` n'existait pas en base.
+  let porteur: Promise<JobPorteur> | undefined;
+  const obtenirPorteur = (): Promise<JobPorteur> =>
+    (porteur ??= creerPorteur({ origine: "equipe_maj", plafondJobUsd: PLAFOND_PORTEUR_MAJ_USD }));
   const cleQuota = cleQuotaMaj(c.maintenant);
   let derniereConformite: ResultatConformite | undefined;
   const rythme = resoudreRythmeEquipe({
@@ -92,24 +106,26 @@ export async function dependancesReelles(c: ContexteReel): Promise<DependancesMi
         },
       }),
     verifier: async (html, motCle) => {
+      const { jobId, contentType } = await obtenirPorteur();
       const dossier = await constituerDossierPreuves({
         jobId,
-        contentType: CONTENT_TYPE,
+        contentType,
         sujet: motCle,
       });
       const r = await verifierTexteFinal({
         jobId,
-        contentType: CONTENT_TYPE,
+        contentType,
         phrases: phrasesAVerifier(html),
         dossier,
       });
       return { aRetirer: r.aRetirer, coutUsd: r.coutUsd + dossier.coutUsd };
     },
     reecrire: async ({ sections, aRetirer, raisons }) => {
+      const { jobId, contentType } = await obtenirPorteur();
       const rep = await genererTexteBlogClaude(
         {
           jobId,
-          contentType: CONTENT_TYPE,
+          contentType,
           role: "text",
           systemPrompt:
             "Tu mets à jour des sections d'un article publié. Vouvoie le lecteur, phrases de 20 mots au plus. " +
@@ -135,8 +151,9 @@ export async function dependancesReelles(c: ContexteReel): Promise<DependancesMi
       return { sections: lu as string[], coutUsd: rep.costUsd ?? 0 };
     },
     conformite: async (html) => {
+      const { jobId, contentType } = await obtenirPorteur();
       derniereConformite = await controlerConformite(
-        { jobId, contentType: CONTENT_TYPE, output: { title: c.titre, bodyHtml: html } },
+        { jobId, contentType, output: { title: c.titre, bodyHtml: html } },
         {
           rechercherFiches: rechercherFichesPertinentes,
           juger: jugerAvecClaude,
@@ -146,6 +163,7 @@ export async function dependancesReelles(c: ContexteReel): Promise<DependancesMi
       return derniereConformite;
     },
     enChef: async (html, coutDepenseUsd) => {
+      const { jobId, contentType } = await obtenirPorteur();
       const s = await redacteurEnChef({
         html,
         h1: c.titre,
@@ -153,8 +171,8 @@ export async function dependancesReelles(c: ContexteReel): Promise<DependancesMi
         conformite: derniereConformite,
         chiffresHorsDossier: [],
         liens: [],
-        contentType: CONTENT_TYPE,
-        article: { jobId, title: c.titre, bodyHtml: html, contentType: CONTENT_TYPE },
+        contentType,
+        article: { jobId, title: c.titre, bodyHtml: html, contentType },
         renvoisFaits: 0,
         coutDepenseUsd,
         journeeIA: { output: { title: c.titre, bodyHtml: html } },

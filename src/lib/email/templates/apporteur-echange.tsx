@@ -87,7 +87,7 @@ const COPY = {
       puces: [
         "L'invitation d'agenda vous parvient séparément, par Calendly. C'est le même rendez-vous — vous n'avez rien à confirmer.",
         "Nous vous écrivons la veille, puis une dernière fois une heure avant.",
-        "Rien à préparer de votre côté.",
+        "Si ce n'est pas déjà fait, complétez votre candidature avant l'échange ; rien d'autre à préparer.",
       ],
       signature: "À très vite,\nL'équipe Axion-IA",
     },
@@ -119,7 +119,7 @@ const COPY = {
       puces: [
         "Your calendar invitation arrives separately, from Calendly. Same meeting — nothing for you to confirm.",
         "We write to you the day before, then once more an hour ahead.",
-        "Nothing to prepare on your side.",
+        "If you have not already, complete your application before the call; nothing else to prepare.",
       ],
       signature: "Talk soon,\nThe Axion-IA team",
     },

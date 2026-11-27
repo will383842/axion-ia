@@ -6,13 +6,13 @@
  * (`contenuEmailDevis`) : ce que le fondateur voit est ce qui partira.
  *
  * Le lien de signature n'existe pas encore (il est créé à l'envoi) : le rendu reçoit un lien
- * fictif, puis `masquerSecretsEmail` et `rendreLiensInertes` ôtent tout lien actif.
+ * fictif, puis `masquerSecretsEmail` et `rendreLiensOuvrables` ôtent tout lien personnel (le lien fictif de signature reste inerte).
  */
 import { z } from "zod";
 
 import { isUuid } from "@/lib/is-uuid";
 import { enveloppeExpedition } from "@/lib/email/enveloppe";
-import { rendreLiensInertes } from "@/lib/email/apercu-lecteur";
+import { rendreLiensOuvrables } from "@/lib/email/apercu-lecteur";
 import { salutation } from "@/lib/email/salutation";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { renderEmailTemplate, sujetDuGabarit } from "@/lib/email/templates";
@@ -143,7 +143,7 @@ export async function apercuEmailDevisAction(input: {
         de: enveloppeExpedition().from,
         objet: modifie.sujet ?? masque.subject,
         objetOrigine,
-        html: rendreLiensInertes(masque.html),
+        html: rendreLiensOuvrables(masque.html, { exclure: [LIEN_FICTIF] }),
         piecesJointes: [`${devis.numero}.pdf`],
         lienSignature: "créé à l'envoi",
         // Même fonction que le gabarit : « Bonjour Monsieur Dupont, », « Bonjour Léa, » ou « Bonjour, ».

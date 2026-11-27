@@ -16,7 +16,7 @@ import { avecLienEspace, type EnvoiApporteur, type GabaritApporteur } from "./en
 
 /**
  * L'aperçu exact d'un e-mail, plus (si modifiable) son texte par défaut en texte brut.
- * 🔴 `html` et `apercu` sont MASQUÉS et INERTES (aucun jeton, aucun `href`) : ils quittent le serveur.
+ * 🔴 `html` et `apercu` sont MASQUÉS (aucun jeton ; liens personnels sans `href`) : ils quittent le serveur.
  */
 export type ApercuRendu = ApercuRenduMonde<GabaritApporteur> & { apercu: ApercuLecteur };
 
@@ -25,10 +25,13 @@ export type ApercuRendu = ApercuRenduMonde<GabaritApporteur> & { apercu: ApercuL
  * recalculé compris), par `renderEmailTemplate` comme le worker ; puis masque et rend inerte.
  */
 export async function apercu(
-  e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload" | "entityType" | "entityId">,
+  e: Pick<
+    EnvoiApporteur,
+    "gabarit" | "destinataire" | "payload" | "entityType" | "entityId" | "attachments"
+  >,
 ): Promise<ApercuRendu> {
   const payload = await avecLienEspace(e as EnvoiApporteur);
-  const rendu = await apercuMasque(e.gabarit, "fr", payload, e.destinataire);
+  const rendu = await apercuMasque(e.gabarit, "fr", payload, e.destinataire, e.attachments);
   // Le texte par défaut se calcule SANS le texte réécrit : « Texte d'origine » reste possible.
   const { texteLibre: _ignore, ...sansTexte } = e.payload;
   const texteDefaut = texteParDefaut(e.gabarit, sansTexte);
