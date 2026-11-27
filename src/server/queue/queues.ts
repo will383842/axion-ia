@@ -1107,7 +1107,12 @@ export async function enqueueEmail(
     entityType?: string;
     entityId?: string;
     /** PJ (clé R2, jamais de binaire dans Redis) — Hub facturation. */
-    attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+    attachments?: Array<{
+      filename: string;
+      r2Key: string;
+      contentType?: string;
+      facultative?: boolean;
+    }>;
     /**
      * Client concerné — sert au réglage d'automatisation PAR CLIENT (F60).
      * Sans lui, seules les règles globales s'appliquent.
