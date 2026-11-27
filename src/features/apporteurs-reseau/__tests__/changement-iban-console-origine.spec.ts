@@ -22,7 +22,7 @@ vi.hoisted(() => {
 const m = vi.hoisted(() => {
   const f = () => vi.fn();
   const prisma = {
-    apporteurReseau: { findUnique: f(), update: f() },
+    apporteurReseau: { findUnique: f(), update: f(), updateMany: f() },
     apporteurChangementIban: {
       findUnique: f(),
       findMany: f(),
@@ -228,7 +228,7 @@ describe("validation d'une demande « console » : mêmes barrières", () => {
     m.prisma.pieceApporteur.create.mockResolvedValue({
       id: "77777777-7777-4777-8777-777777777777",
     });
-    m.prisma.apporteurReseau.update.mockResolvedValue({ versionLien: 2 });
+    m.prisma.apporteurReseau.updateMany.mockResolvedValue({ count: 1 });
     m.prisma.apporteurIbanHistorique.create.mockResolvedValue({});
     const r = await validerDemande({
       demandeId: ID,

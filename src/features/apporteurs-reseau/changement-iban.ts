@@ -631,8 +631,10 @@ export async function validerDemande(e: {
       const maj = await tx.apporteurReseau.updateMany({
         where: {
           id: d.apporteurId,
-          statut: "signe",
-          resilieAt: null,
+          // Origine « console » (lot 9) : la fiche peut être retirée ou résiliée, jamais refusée.
+          ...(d.origine === "console"
+            ? { statut: { in: ["signe", "resilie"] } }
+            : { statut: "signe", resilieAt: null }),
           refuseAt: null,
           iban: fiche.iban,
         },
