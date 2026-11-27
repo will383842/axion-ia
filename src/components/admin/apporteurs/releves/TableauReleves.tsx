@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { AdminBadge } from "@/components/admin/ui";
 import type { ReleveEcran } from "@/features/apporteurs-reseau/releve-mensuel/statistiques";
+import { ActionsLigneReleve } from "./ActionsPreparation";
 import { eur } from "./format";
 
 const LIBELLE: Record<ReleveEcran["statut"], string> = {
@@ -23,11 +24,18 @@ const TON: Record<
   ecarte: "neutral",
 };
 
+/** Ce qui demande une action (échec, erreur) passe EN PREMIER ; le reste garde l'ordre des numéros. */
+export function ordreAffichage(releves: readonly ReleveEcran[]): ReleveEcran[] {
+  const rang = (r: ReleveEcran): number => (r.statut === "echec" ? 0 : r.erreur ? 1 : 2);
+  return [...releves].sort((a, b) => rang(a) - rang(b) || a.numero.localeCompare(b.numero));
+}
+
 export function TableauReleves({
   base,
   periode,
   releves,
   peutVoirPdf,
+  peutAgir = false,
 }: {
   /** `/fr/<adminPrefix>` */
   base: string;
@@ -35,6 +43,8 @@ export function TableauReleves({
   releves: readonly ReleveEcran[];
   /** Droit de facturation : le PDF est une pièce financière. */
   peutVoirPdf: boolean;
+  /** Droit de facturation : Recalculer / Écarter / Rétablir (lot 3c). */
+  peutAgir?: boolean;
 }) {
   if (releves.length === 0) {
     return (
@@ -59,11 +69,12 @@ export function TableauReleves({
             <th className="pr-[var(--space-admin-3)] text-right">En attente HT</th>
             <th className="pr-[var(--space-admin-3)]">Statut</th>
             <th className="pr-[var(--space-admin-3)]">Empreinte</th>
-            <th>Aperçu</th>
+            <th className="pr-[var(--space-admin-3)]">Aperçu</th>
+            {peutAgir ? <th>Actions</th> : null}
           </tr>
         </thead>
         <tbody>
-          {releves.map((r) => (
+          {ordreAffichage(releves).map((r) => (
             <tr key={r.id} className="border-t border-[color:var(--color-admin-border)] align-top">
               <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
                 <Link href={`${base}/apporteurs/${r.apporteurId}`} className="underline">
@@ -87,6 +98,11 @@ export function TableauReleves({
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.enAttenteHtCents)}</td>
               <td className="pr-[var(--space-admin-3)]">
                 <AdminBadge tone={TON[r.statut]}>{LIBELLE[r.statut]}</AdminBadge>
+                {r.erreur ? (
+                  <span className="block text-[color:var(--color-admin-destructive)]">
+                    {r.erreur}
+                  </span>
+                ) : null}
                 {r.motifEcart ? (
                   <span className="block text-[color:var(--color-admin-fg-muted)]">
                     {r.motifEcart}
@@ -94,7 +110,7 @@ export function TableauReleves({
                 ) : null}
               </td>
               <td className="pr-[var(--space-admin-3)] font-mono">{r.empreinteCourte}</td>
-              <td>
+              <td className="pr-[var(--space-admin-3)]">
                 {r.pdfDisponible && peutVoirPdf ? (
                   <a
                     href={`${base}/apporteurs/releves/${periode}/pdf?numero=${r.numero}`}
@@ -108,6 +124,11 @@ export function TableauReleves({
                   "—"
                 )}
               </td>
+              {peutAgir ? (
+                <td>
+                  <ActionsLigneReleve id={r.id} periode={periode} statut={r.statut} rang={r.rang} />
+                </td>
+              ) : null}
             </tr>
           ))}
         </tbody>

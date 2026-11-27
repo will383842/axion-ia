@@ -105,7 +105,10 @@ describe("page releves/[periode]", () => {
     );
     expect(html).toContain("Camille Exemple");
     expect(html).toContain("pdf?numero=REL-2026-10-0001");
-    expect(html).not.toMatch(/<button|Envoyer les relevés/);
+    // Lot 3c : « Préparer » et les gestes par ligne existent ; AUCUN bouton d'envoi avant le lot 4a.
+    expect(html).toContain("Préparer les relevés de octobre 2026");
+    expect(html).toContain("Recalculer");
+    expect(html).not.toContain("Envoyer les relevés");
   });
   it("un compte de consultation ne lit pas l'identité et n'a pas le lien PDF", async () => {
     d.session = { user: { id: "u2", role: "reader" } };
@@ -114,5 +117,7 @@ describe("page releves/[periode]", () => {
     );
     expect(html).not.toContain("Camille Exemple");
     expect(html).not.toContain("pdf?numero=");
+    // Consultation seule : aucun bouton d'action (préparer, recalculer, écarter).
+    expect(html).not.toMatch(/<button/);
   });
 });

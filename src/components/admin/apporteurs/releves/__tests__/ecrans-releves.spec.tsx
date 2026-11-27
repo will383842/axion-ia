@@ -8,6 +8,14 @@ vi.mock("next/link", () => ({
   ),
 }));
 
+// Les actions serveur tirent `@/auth` (next-auth) : inutile pour un rendu statique.
+vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-preparation", () => ({
+  preparerRelevesAction: async () => ({ etat: "initial" }),
+  recalculerReleveAction: async () => ({ etat: "initial" }),
+  ecarterReleveAction: async () => ({ etat: "initial" }),
+  retablirReleveAction: async () => ({ etat: "initial" }),
+}));
+
 import { BandeauAnomalies } from "../BandeauAnomalies";
 import { CartesReleves } from "../CartesReleves";
 import { eur } from "../format";
