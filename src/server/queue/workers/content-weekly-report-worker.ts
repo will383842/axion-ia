@@ -13,6 +13,7 @@
  * - Anomalies détectées (checkAnomalies)
  */
 
+import { whereHorsPorteurs } from "@/server/content-gen/providers/job-porteur";
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { destinataireRapportHebdo } from "@/lib/destinataires-internes";
@@ -57,7 +58,9 @@ async function collectWeeklyStats(since: Date): Promise<{
         })
         .catch(() => 0),
 
-      prisma.contentGenJob.count({ where: { createdAt: { gte: since } } }).catch(() => 0),
+      prisma.contentGenJob
+        .count({ where: { createdAt: { gte: since }, ...whereHorsPorteurs } })
+        .catch(() => 0),
 
       prisma.contentGenJob
         .aggregate({

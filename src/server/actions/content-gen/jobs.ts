@@ -9,6 +9,7 @@
 "use server";
 
 import { estJobEssaiClaude } from "@/server/content-gen/essai-claude";
+import { estJobPorteur } from "@/server/content-gen/providers/job-porteur";
 import * as Sentry from "@sentry/nextjs";
 
 import { Queue } from "bullmq";
@@ -267,6 +268,7 @@ export async function retryJob(id: string): Promise<void> {
       where: { id },
       select: {
         id: true,
+        idempotencyKey: true,
         status: true,
         contentType: true,
         targetSearchIntent: true,
@@ -276,6 +278,11 @@ export async function retryJob(id: string): Promise<void> {
     });
     if (!dbJob) {
       throw new Error("job_introuvable : ce job n'existe pas (ou plus) en base.");
+    }
+    if (estJobPorteur(dbJob)) {
+      throw new Error(
+        "porteur_non_rejouable : job porteur de la porte de coût, il ne porte aucune génération.",
+      );
     }
     if (estJobEssaiClaude({ inputPayload: dbJob.inputPayload })) {
       throw new Error(
