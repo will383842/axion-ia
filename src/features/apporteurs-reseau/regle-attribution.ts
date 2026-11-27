@@ -179,3 +179,25 @@ export function versReservationProvisoire(
     echueAt: r.valideeAt ? null : (r.echueAt ?? null),
   };
 }
+
+/** Statuts d'une présentation (miroir de l'énumération Prisma, sans l'importer : module pur). */
+export type StatutOccupation = string;
+
+/**
+ * Une présentation occupe-t-elle encore le SIREN à cette date ? `reservation` (facultatif, règle
+ * par rendez-vous) : une présentation `reservee` occupe tant que sa réservation court, ou qu'un
+ * rendez-vous pris pendant la réservation reste à tenir (`reservationOccupe`).
+ */
+export function presentationOccupe(
+  p: { statut: StatutOccupation; protegeeJusquAt: Date | null },
+  maintenant: Date,
+  reservation?: ReservationProvisoire | null,
+): boolean {
+  if (p.statut === "reservee") return !reservation || reservationOccupe(reservation, maintenant);
+  // Contrat 2.8 : une réservation terminée sans validation occupe encore 30 jours (E1).
+  if (p.statut === "terminee")
+    return !!reservation?.echueAt && reservationOccupe(reservation, maintenant);
+  if (p.statut === "confirmee")
+    return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
+  return false;
+}

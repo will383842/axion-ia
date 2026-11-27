@@ -16,8 +16,7 @@ import type { prisma } from "@/lib/prisma";
 
 import { alerteInterne } from "./alerte-interne";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
-import { presentationOccupe } from "./presentations";
-import { versReservationProvisoire } from "./regle-attribution";
+import { presentationOccupe, versReservationProvisoire } from "./regle-attribution";
 import { lireIdsEnGrace } from "./reservation-presentation";
 
 export const MESSAGE_CONFLIT_RATTRAPAGE =

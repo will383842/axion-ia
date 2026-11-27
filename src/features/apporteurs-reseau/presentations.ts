@@ -43,11 +43,7 @@ import {
   type ResultatEnvoi,
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
-import {
-  type ReservationProvisoire,
-  reservationOccupe,
-  versReservationProvisoire,
-} from "./regle-attribution";
+import { presentationOccupe, versReservationProvisoire } from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
@@ -81,24 +77,8 @@ export function devisSigneNonFacture(d: {
   return facture < d.montantTotalHtCents;
 }
 
-/**
- * Une présentation occupe-t-elle encore le SIREN à cette date ? `reservation` (facultatif, règle
- * par rendez-vous) : une présentation `reservee` occupe tant que sa réservation court, ou qu'un
- * rendez-vous pris pendant la réservation reste à tenir (`reservationOccupe`).
- */
-export function presentationOccupe(
-  p: { statut: StatutPresentation; protegeeJusquAt: Date | null },
-  maintenant: Date,
-  reservation?: ReservationProvisoire | null,
-): boolean {
-  if (p.statut === "reservee") return !reservation || reservationOccupe(reservation, maintenant);
-  // Contrat 2.8 : une réservation terminée sans validation occupe encore 30 jours (E1).
-  if (p.statut === "terminee")
-    return !!reservation?.echueAt && reservationOccupe(reservation, maintenant);
-  if (p.statut === "confirmee")
-    return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
-  return false;
-}
+// `presentationOccupe` vit dans `regle-attribution.ts` (module pur, atteint par le worker) ; ré-exporté ici.
+export { presentationOccupe };
 
 const STATUTS_FACTURE_EMISE = ["emise", "partiellement_payee", "en_retard", "payee"] as const;
 
