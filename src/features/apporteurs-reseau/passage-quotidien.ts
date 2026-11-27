@@ -81,6 +81,7 @@ import {
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
+import { controlerRegistreApporteurs } from "./controle-registre";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import {
   commandeRenduePourLaLigne,
@@ -328,7 +329,8 @@ type NomEtape =
   | "hors-grille"
   | "declarations-sans-reponse"
   | "commandes-a-attribuer"
-  | "resiliations-echues";
+  | "resiliations-echues"
+  | "controle-registre";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -411,6 +413,8 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
+    // Point 20 : relecture du registre public pour les apporteurs sous contrat (alerte interne seule).
+    ["controle-registre", async () => void (await controlerRegistreApporteurs(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;

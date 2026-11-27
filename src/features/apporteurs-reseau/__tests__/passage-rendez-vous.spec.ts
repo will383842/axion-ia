@@ -53,6 +53,7 @@ vi.mock("../facturation", () => ({
   })),
 }));
 vi.mock("../hors-grille", () => ({ alerterHorsGrille: vi.fn(async () => 0) }));
+vi.mock("../controle-registre", () => ({ controlerRegistreApporteurs: vi.fn(async () => 0) }));
 vi.mock("../manquement", () => ({ regenererAvoirsSansPiece: vi.fn(async () => 0) }));
 vi.mock("../pieces-chiffrement", () => ({ chiffrerPiecesEnClair: vi.fn(async () => 0) }));
 vi.mock("../rebonds", () => ({ idsPriseDeContactRebondie: vi.fn(async () => new Set<string>()) }));
