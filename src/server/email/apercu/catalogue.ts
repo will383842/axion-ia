@@ -546,7 +546,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-commission-avoir-client": {
     categorie: "recrutement",
     quand:
-      "Passage horaire : la facture du client est annulée par un avoir alors que la commission était facturée et pas versée (art. 4.5)",
+      "Passage horaire : un avoir du client réduit ou annule la commission (pas encore facturée), la retient (facturée, pas versée) ou en reprend une part (déjà versée) (art. 4.5)",
     destinataire: "l'apporteur (et le parrain dont la part est annulée)",
     source: "features/apporteurs-reseau/envois.ts",
   },
@@ -570,6 +570,37 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
       "Le jour de la prise d'effet de la résiliation (passage quotidien, ou aussitôt en 11.2 et 12.5)",
     destinataire: "l'apporteur dont le contrat prend fin",
     source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-compte-a-confirmer": {
+    categorie: "recrutement",
+    quand:
+      "À la demande de changement de compte bancaire (lien « Je confirme », valable 24 heures)",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-demande-bloquee": {
+    categorie: "recrutement",
+    quand: "Après une opposition (« Bloquer cette demande »)",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-change": {
+    categorie: "recrutement",
+    quand: "Après la validation du nouveau compte par le super administrateur",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-refuse": {
+    categorie: "recrutement",
+    quand: "Après le refus de la demande, avec le motif de l'administrateur",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-expire": {
+    categorie: "recrutement",
+    quand: "Demande non confirmée dans les 24 heures, au retour sur l'espace",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
   },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
@@ -668,6 +699,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand:
       "Tâche horaire : dès qu'une commission devient due (client payé à 100 %), avec l'autofacture en pièce jointe",
     destinataire: "l'apporteur dont la commission vient d'être facturée",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-releve-mensuel": {
+    categorie: "recrutement",
+    quand:
+      "Pas encore émis (gabarit en attente) : à terme, bouton console « Envoyer les relevés à tout le monde », une fois par mois, pour le mois précédent",
+    destinataire: "l'apporteur dont le relevé du mois a été préparé et vérifié",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-virement-fait": {

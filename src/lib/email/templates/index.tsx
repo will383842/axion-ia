@@ -215,7 +215,23 @@ import {
   apporteurPresentationRecueRendezVousSubject,
   ApporteurPresentationRecueRendezVousEmail,
 } from "./apporteur-presentation-recue-rendez-vous";
+import {
+  ApporteurReleveMensuelEmail,
+  apporteurReleveMensuelSubject,
+} from "./apporteur-releve-mensuel";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
+import {
+  ApporteurCompteAConfirmerEmail,
+  ApporteurCompteChangeEmail,
+  ApporteurCompteDemandeBloqueeEmail,
+  ApporteurCompteExpireEmail,
+  ApporteurCompteRefuseEmail,
+  apporteurCompteAConfirmerSubject,
+  apporteurCompteChangeSubject,
+  apporteurCompteDemandeBloqueeSubject,
+  apporteurCompteExpireSubject,
+  apporteurCompteRefuseSubject,
+} from "./apporteur-compte";
 import {
   ApporteurResiliationEffectiveEmail,
   apporteurResiliationEffectiveSubject,
@@ -675,6 +691,27 @@ const TEMPLATES: TemplateMap = {
     subject: apporteurResiliationEffectiveSubject,
     component: ApporteurResiliationEffectiveEmail,
   },
+  // Lot 2 « changement de compte bancaire » : gabarits SANS émetteur avant le lot 4.
+  "apporteur-compte-a-confirmer": {
+    subject: apporteurCompteAConfirmerSubject,
+    component: ApporteurCompteAConfirmerEmail,
+  },
+  "apporteur-compte-demande-bloquee": {
+    subject: apporteurCompteDemandeBloqueeSubject,
+    component: ApporteurCompteDemandeBloqueeEmail,
+  },
+  "apporteur-compte-change": {
+    subject: apporteurCompteChangeSubject,
+    component: ApporteurCompteChangeEmail,
+  },
+  "apporteur-compte-refuse": {
+    subject: apporteurCompteRefuseSubject,
+    component: ApporteurCompteRefuseEmail,
+  },
+  "apporteur-compte-expire": {
+    subject: apporteurCompteExpireSubject,
+    component: ApporteurCompteExpireEmail,
+  },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,
     component: ApporteurContratSigneEmail,
@@ -718,6 +755,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-releve": {
     subject: apporteurReleveSubject,
     component: ApporteurReleveEmail,
+  },
+  "apporteur-releve-mensuel": {
+    subject: apporteurReleveMensuelSubject,
+    component: ApporteurReleveMensuelEmail,
   },
   "apporteur-virement-fait": {
     subject: apporteurVirementFaitSubject,
@@ -816,6 +857,18 @@ const TEMPLATES: TemplateMap = {
  * Ce worker connaît-il ce nom de gabarit ? Faux pour un nom émis par une application plus récente
  * que le worker (fenêtre de déploiement, lot S3) : le worker le reporte au lieu de planter.
  */
+/**
+ * Gabarits dont le rendu ne porte JAMAIS le lien personnel de l'espace (plan 6.1) : ni bouton
+ * « Ouvrir mon espace », ni « Lien perdu ? », même si la charge porte `lienEspace`.
+ */
+export const GABARITS_SANS_LIEN_ESPACE: ReadonlySet<string> = new Set([
+  "apporteur-compte-a-confirmer",
+  "apporteur-compte-demande-bloquee",
+  "apporteur-compte-change",
+  "apporteur-compte-refuse",
+  "apporteur-compte-expire",
+]);
+
 export function estGabaritConnu(name: string): name is EmailJobName {
   return Object.prototype.hasOwnProperty.call(TEMPLATES, name);
 }
@@ -873,13 +926,17 @@ export async function renderEmailTemplate(
     oppositionHref: contexte.destinataire ? urlOpposition(contexte.destinataire) : null,
     // « Ouvrir mon espace » : seulement pour un e-mail d'apporteur qui porte son lien (2026-10-09).
     lienEspace:
+      !GABARITS_SANS_LIEN_ESPACE.has(name) &&
       (name.startsWith("apporteur-") || estGabaritFormateurIndependant(name)) &&
       typeof payload.lienEspace === "string"
         ? payload.lienEspace
         : null,
     // « Lien perdu ? » dans le pied : seulement pour un e-mail adressé à un apporteur, c'est-à-dire
     // un gabarit `apporteur-*` dont `envoyer()` a posé le lien de l'espace (2026-11-25).
-    espaceApporteur: name.startsWith("apporteur-") && typeof payload.lienEspace === "string",
+    espaceApporteur:
+      !GABARITS_SANS_LIEN_ESPACE.has(name) &&
+      name.startsWith("apporteur-") &&
+      typeof payload.lienEspace === "string",
   };
   // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance de tous les
   // templates, sans changer chaque template. Variable de module re-posée avant chaque `render` :

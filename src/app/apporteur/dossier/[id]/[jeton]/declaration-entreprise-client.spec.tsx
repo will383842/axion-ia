@@ -51,7 +51,9 @@ describe("DeclarationEntreprise", () => {
     );
     const t = rdv.container.textContent ?? "";
     expect(t).toContain("vous est gardée 60 jours à compter de votre déclaration");
-    expect(t).toContain("Une commission n'est due que sur une commande payée.");
+    expect(t).toContain(
+      "Une commission est due quand le client a payé la totalité de sa commande.",
+    );
     expect(t).not.toContain("réservé 6 mois à compter de votre déclaration");
     cleanup();
     const nulle = render(

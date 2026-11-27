@@ -34,11 +34,15 @@ import {
   loadBlogArticleForView,
   loadAdjacentArticles,
   loadPeopleAlsoAsk,
+  chargerTypeContenu,
 } from "@/server/content-gen/blog/loader";
 import { isRenderableBlogCategorySlug } from "@/server/content-gen/blog/category-loader";
 import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
 import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
 import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
+import { gabaritsV2Actifs } from "@/lib/blog/gabarits-v2";
+import { gabaritPourType } from "@/server/content-gen/blog/gabarits";
+import { ArticleGabarit } from "@/components/article-v2/ArticleGabarit";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
@@ -293,8 +297,8 @@ export default async function BlogArticle({ params }: Props) {
     // indéfiniment (même doctrine anti-307 que proxy.ts). `permanentRedirect()`
     // émet le 308 attendu par le commentaire d'origine.
     const redirectInfo = await findArticleSlugRedirect(slug, loc as "fr" | "en");
-    if (redirectInfo && !redirectInfo.isNews) {
-      permanentRedirect(`/${loc}/blog/${redirectInfo.newSlug}`);
+    if (redirectInfo && !(redirectInfo.section === "blog" && redirectInfo.newSlug === slug)) {
+      permanentRedirect(`/${loc}/${redirectInfo.section}/${redirectInfo.newSlug}`);
     }
 
     // Audit indexation 2026-05-15 P0-7 — soft-410 si Article archived/draft.
@@ -555,6 +559,47 @@ export default async function BlogArticle({ params }: Props) {
     anchorVille && anchorVille.copy
       ? `/implantations/${anchorVille.region}/${anchorVille.slug}`
       : null;
+
+  // Gabarits d'articles (PR S1) — interrupteur BLOG_GABARITS_V2 : éteint, ce bloc
+  // n'est jamais exécuté (aucune requête ; les modules V2, sans effet de bord, restent importés) et le JSX
+  // ci-dessous reste celui d'avant, à l'octet près.
+  if (gabaritsV2Actifs()) {
+    const type = await chargerTypeContenu(view);
+    return (
+      <ArticleGabarit
+        gabarit={gabaritPourType(type, dbBodyHtml ?? view.body)}
+        view={view}
+        locale={loc}
+        html={dbBodyHtml}
+        blocs={blocks}
+        tocItems={tocItems}
+        pageUrl={pageUrl}
+        chapo={chapo || null}
+        titre={{ lead: titleParts.lead, em: titleParts.em }}
+        tldr={tldrText}
+        filAriane={breadcrumbItems}
+        auteurHref={authorHref}
+        bylineManon={manonByline}
+        emettreJsonLdAuteur={!isDbHtml}
+        sourcesVerifiees={sourcesVerifiees}
+        villeAncree={
+          anchorVilleHref && anchorVille ? { href: anchorVilleHref, nom: anchorVille.nameFr } : null
+        }
+        precedentSuivant={{ prev: adjacent.prev, next: adjacent.next }}
+        questionsAssociees={peopleAlsoAsk}
+        suggestions={related.map((r) => ({
+          href: `/${segmentForArticleType(r.type ?? "blog")}/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+          ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
+        }))}
+        themeEncart={themeEncart}
+        jsonLd={personJsonLd ? [articleJsonLd, personJsonLd] : [articleJsonLd]}
+      />
+    );
+  }
 
   return (
     <>

@@ -149,7 +149,12 @@ describe("Journée IA : lecture du devis, sinon « à qualifier » (jamais un mo
 });
 
 describe("Journée IA : reprise après avoir (ligne de commission existante)", () => {
-  const ligne = { activite: "formation", palier: "journee-ia", prixPublicHtCents: 149_000 };
+  const ligne = {
+    activite: "formation",
+    palier: "journee-ia",
+    prixPublicHtCents: 149_000,
+    grille: "v3" as const,
+  };
   it("avoir total : la commission tombe à 0 €", () => {
     expect(commissionPourPrixConserve(ligne, 0, 50_000)).toBe(0);
   });

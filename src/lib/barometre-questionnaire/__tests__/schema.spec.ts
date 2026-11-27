@@ -32,6 +32,17 @@ describe("schéma du questionnaire", () => {
     }
   });
 
+  it("startedAt est obligatoire", () => {
+    expect(ok(sans(UTILISATEUR as Record<string, unknown>, "startedAt"))).toBe(false);
+    expect(ok(avec(UTILISATEUR, { startedAt: "0" }))).toBe(false);
+  });
+
+  it("octet nul refusé dans q15 et q16", () => {
+    expect(ok(avec(UTILISATEUR, { q15: "a\u0000b" }))).toBe(false);
+    expect(ok(avec(UTILISATEUR, { q16: "\u0000" }))).toBe(false);
+    expect(ok(avec(UTILISATEUR, { q15: "texte normal" }))).toBe(true);
+  });
+
   it("valeurs hors liste refusées", () => {
     expect(ok(avec(UTILISATEUR, { q1: "12" }))).toBe(false);
     expect(ok(avec(UTILISATEUR, { q2: "peche" }))).toBe(false);

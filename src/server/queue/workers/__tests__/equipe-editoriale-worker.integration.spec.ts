@@ -11,6 +11,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 const h = vi.hoisted(() => {
   const ordre: string[] = [];
   const state = {
+    consoleMarche: true,
     processeur: undefined as undefined | ((job: unknown) => Promise<void>),
     cout: 0,
     /** Ce que la garde du routeur a répondu pendant l'écriture. */
@@ -32,6 +33,7 @@ const h = vi.hoisted(() => {
     contentGenJob: { findUnique: vi.fn(), update: vi.fn(async () => ({})) },
     reviewQueue: {
       create: vi.fn(async () => ({})),
+      updateMany: vi.fn(async () => ({ count: 0 })),
       count: vi.fn(async () => 0),
       findUnique: vi.fn(async () => null),
     },
@@ -96,6 +98,10 @@ vi.mock("bullmq", () => {
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
 vi.mock("@/server/content-gen/config-store", () => ({
   readKillSwitchFailSafe: async () => ({ active: false }),
+}));
+// PR 17 : réglage console « marche » (modifiable par chaque test via h.state.consoleMarche).
+vi.mock("@/server/content-gen/equipe/pilotage", () => ({
+  equipeEnMarche: async () => h.state.consoleMarche !== false,
 }));
 vi.mock("@/server/content-gen/kb-health", () => ({
   assertKbReady: async () => undefined,
@@ -261,6 +267,7 @@ beforeEach(() => {
   h.state.depensesBoucle = [];
   h.state.factCheck = false;
   h.state.plafondApresReecriture = false;
+  h.state.consoleMarche = true;
   vi.mocked(addQualityLoopSpend).mockClear();
   h.prisma.contentGenJob.findUnique.mockResolvedValue({
     id: "job-1",
@@ -483,6 +490,13 @@ describe("worker content-gen : restes de la relecture (3e passe)", () => {
 describe("worker content-gen : circuit complet (équipe allumée)", () => {
   beforeEach(() => {
     h.state.generateur = "ok";
+  });
+
+  it("PR 17 : arrêt console (variable allumée) = aucun rôle de l'équipe lancé", async () => {
+    h.state.consoleMarche = false;
+    await lancer();
+    expect(h.ordre).not.toContain("strateg");
+    expect(h.ordre).not.toContain("gardien");
   });
 
   it("publication : tous les rôles dans l'ordre, journal et brief persistés, barrière absente", async () => {

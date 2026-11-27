@@ -8,11 +8,17 @@ vi.mock("server-only", () => ({}));
 const h = vi.hoisted(() => ({
   lireDossierParLien: vi.fn(),
   checkRateLimit: vi.fn(),
+  r2: vi.fn(),
 }));
 
 vi.mock("@/features/apporteurs-reseau/donnees", () => ({
   lireDossierParLien: (...a: unknown[]) => h.lireDossierParLien(...a),
 }));
+vi.mock("@/lib/r2-storage", () => ({
+  isR2Configured: () => true,
+  getObjectBufferR2: (...a: unknown[]) => h.r2(...a),
+}));
+vi.mock("@/features/apporteurs-reseau/signaler", () => ({ signalerErreurReseau: vi.fn() }));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.9" }));
 vi.mock("@/lib/security/ip-hash", () => ({ hashIp: () => "hash" }));
 vi.mock("@/lib/rate-limit", () => ({
@@ -44,6 +50,7 @@ const appel = (get: Get, suffixe = "", id = ID, jeton = JETON) =>
 
 beforeEach(() => {
   vi.clearAllMocks();
+  h.r2.mockResolvedValue(Buffer.from("%PDF-1.7 test"));
   h.checkRateLimit.mockResolvedValue({ allowed: true });
   h.lireDossierParLien.mockImplementation(async (id: string, jeton: string) =>
     id === ID && jeton === JETON ? { id: ID, statut: "dossier_en_cours", restreint: false } : null,
@@ -101,6 +108,19 @@ describe.each(ROUTES)("%s/route.ts", (_nom, get, nomFichier) => {
     expect(r.status).toBe(404);
     expect(await r.text()).toBe("Introuvable");
     if (id) expect(h.lireDossierParLien).not.toHaveBeenCalled();
+  });
+
+  it("🔴 PDF absent de R2 : 404 neutre (jamais de 500), même pour un lien valide", async () => {
+    h.r2.mockResolvedValue(null);
+    const r = await appel(get);
+    expect(r.status).toBe(404);
+    expect(await r.text()).toBe("Introuvable");
+  });
+
+  it("🔴 R2 qui lève : 404 neutre, pas de 500", async () => {
+    h.r2.mockRejectedValue(new Error("réseau"));
+    const r = await appel(get);
+    expect(r.status).toBe(404);
   });
 
   it("trop de demandes : 429 sans PDF", async () => {

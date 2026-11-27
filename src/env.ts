@@ -76,6 +76,11 @@ export const env = createEnv({
     // comporte EXACTEMENT comme avant le lot. Rollback = repasser à "false".
     // Optionnelles toutes les quatre : un site sans CRM doit démarrer.
     CRM_SYNC_ENABLED: z.enum(["true", "false"]).optional(),
+    // ── Gabarits d'articles de blog (chantier gabarits-articles, PR S1) ─────
+    // Éteint par défaut : SEULE la valeur exacte "true" allume les nouveaux
+    // gabarits (lue par `gabaritsV2Actifs()`, côté serveur, à chaque rendu).
+    // Toute autre valeur = pages actuelles, balisage identique.
+    BLOG_GABARITS_V2: z.enum(["true", "false"]).optional(),
     // ── Chantier visio (PR 4, 2026-09-29) — balayage du dossier client ──────
     // Lu par le WORKER seulement. Le worker et son entrée répétable tournent
     // TOUJOURS (ils portent l'enregistreur : clôture d'office, purges, témoin de
@@ -809,6 +814,7 @@ export const env = createEnv({
     MAILWIZZ_API_URL: process.env.MAILWIZZ_API_URL,
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
+    BLOG_GABARITS_V2: process.env.BLOG_GABARITS_V2,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
     EMAIL_MANUEL_ACTIF: process.env.EMAIL_MANUEL_ACTIF,
     EMAIL_MANUEL_NOM_EXPEDITEUR: process.env.EMAIL_MANUEL_NOM_EXPEDITEUR,
