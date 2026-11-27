@@ -24,6 +24,7 @@ import { retrieve as kbRetrieve } from "../kb-client";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeSlugInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { consigneLisibiliteV2 } from "../brand/consigne-lisibilite";
 import { consigneJourneeIAForcee } from "../knowledge/journee-ia-fiche";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { checkHubVsVerticalesDuplicate } from "./anti-duplicate-check";
@@ -663,7 +664,7 @@ export async function generateVilleHubCopy(
     }
 
     const userPrompt = buildUserPrompt(ville, kbMarkdown, kbDoctrineContext, retryFeedback);
-    const systemPrompt = `${VILLE_HUB_SYSTEM_PROMPT}\n\n${getBrandVoiceForContentType("landing_ville")}${consigneJourneeIAForcee()}`;
+    const systemPrompt = `${VILLE_HUB_SYSTEM_PROMPT}\n\n${getBrandVoiceForContentType("landing_ville")}${consigneLisibiliteV2("landing_ville")}${consigneJourneeIAForcee()}`;
     const promptHash = hashPrompt(systemPrompt + userPrompt);
 
     // Temperature décroissante : passe 1 plus créative, passes suivantes plus rigides

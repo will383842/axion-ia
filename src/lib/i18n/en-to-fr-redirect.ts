@@ -26,6 +26,9 @@
 // 301 → 307/404 → catchall soft 404. Le mapping exhaustif émet un seul 301 vers
 // la canonique FR, économisant 1 hop + transmettant 100% du link juice.
 const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
+  // Équipe : hub et fiches (`/team/[slug]`) — « team » n'existe pas côté FR.
+  ["/en/team", "/fr/equipe"],
+
   // pSEO par-ville (templates services-villes)
   ["/en/audit/by-city/", "/fr/audit/par-ville/"],
   ["/en/interventions/by-city/", "/fr/interventions/par-ville/"],

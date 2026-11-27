@@ -26,6 +26,7 @@ import { routing } from "@/i18n/routing";
 import { DATE_MISE_A_JOUR_CARTOGRAPHIE } from "@/content/cartographie-date";
 import { DATE_MISE_A_JOUR_PRIX_AUDIT_IA } from "@/content/prix-audit-ia-date";
 import { DATE_MISE_A_JOUR_JOURNEE_IA } from "@/content/journee-ia-commun";
+import { HUB_DATE_MAJ } from "@/content/equipe/hub";
 
 /**
  * Date éditoriale FIGÉE (audit fraîcheur 2026-06-08) — dernier repli quand le
@@ -51,6 +52,7 @@ function isoValide(iso: string | undefined): string | undefined {
 export const DATES_EDITORIALES: Readonly<Record<string, string>> = {
   "/": DATE_MISE_A_JOUR_JOURNEE_IA,
   "/journee-ia": DATE_MISE_A_JOUR_JOURNEE_IA,
+  "/equipe": HUB_DATE_MAJ,
   "/cartographie": DATE_MISE_A_JOUR_CARTOGRAPHIE,
   "/prix-audit-ia": DATE_MISE_A_JOUR_PRIX_AUDIT_IA,
 };
