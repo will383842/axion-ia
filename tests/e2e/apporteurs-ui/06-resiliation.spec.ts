@@ -4,6 +4,10 @@ import { expect, test } from "@playwright/test";
 import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
 import { aujourdhuiParis, capture, emailsCaptures, semer } from "./outillage/aides";
 
+// Budget de la suite : les attentes internes (60 s) et la connexion admin (180 s) doivent pouvoir expirer
+// avant lui (cliquet delai-interne-sous-le-budget). Même valeur que outillage/playwright.config.ts.
+test.describe.configure({ timeout: 300_000 });
+
 test.skip(
   process.env["APPORTEUR_BAC_A_SABLE"] !== "1",
   "bac à sable seulement : poser APPORTEUR_BAC_A_SABLE=1",
