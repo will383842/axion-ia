@@ -12,8 +12,8 @@ interface BlocDefinitionProps {
 /** Bloc de définition : `<dfn>` pour le terme, réponse directe à côté. */
 export function BlocDefinition({ terme, libelle, children }: BlocDefinitionProps) {
   return (
-    <section className="art-encadre" aria-labelledby="bloc-definition">
-      <p id="bloc-definition" className="art-encadre-titre">
+    <section className="encadre encadre--modele" aria-labelledby="bloc-definition">
+      <p id="bloc-definition" className="encadre__titre">
         {libelle}
       </p>
       <p>

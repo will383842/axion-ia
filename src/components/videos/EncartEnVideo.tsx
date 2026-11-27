@@ -19,14 +19,18 @@ export async function EncartEnVideo({
   theme,
   exclure = [],
   video: fournie,
+  variante = "defaut",
 }: {
   theme: string;
   exclure?: ReadonlyArray<string>;
   /** Vidéo déjà choisie par l'appelant (formations : soumise au drapeau OF). */
   video?: VideoPubliee | null;
+  /** `article-v2` : façade des gabarits d'articles (`.encart-video`). Défaut inchangé. */
+  variante?: "defaut" | "article-v2";
 }) {
   const video = fournie === undefined ? await videoPourEncart(theme, exclure) : fournie;
   if (!video) return null;
+  if (variante === "article-v2") return <EncartArticleV2 video={video} />;
   return <EncartRendu video={video} />;
 }
 
@@ -48,5 +52,39 @@ function EncartRendu({ video }: { video: VideoPubliee }) {
       </ul>
       {mention ? <p className="text-fg-muted mt-2 text-xs">{mention}</p> : null}
     </aside>
+  );
+}
+
+/**
+ * Façade des gabarits d'articles (option A de la conception) : cadre 16/9 qui MÈNE à la page
+ * vidéo, résumé dans un `<details>`. Aucun lecteur, aucun `<iframe>`, aucun `<video>`, aucun
+ * `VideoObject`. Image `loading="lazy"`, dimensions fixes, jamais `fetchpriority="high"`.
+ */
+function EncartArticleV2({ video }: { video: VideoPubliee }) {
+  const idTitre = `${useId()}-titre`;
+  const v = video.fichiers.vignette43;
+  return (
+    <section className="encart-video" aria-labelledby={idTitre} data-aeo="video-slot">
+      <p className="encart-video__repere">En vidéo</p>
+      <h2 className="encart-video__titre" id={idTitre}>
+        {video.titre}
+      </h2>
+      <a className="encart-video__cadre" href={`/fr/videos/${video.slug}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={v.chemin}
+          alt=""
+          width={v.largeur ?? 960}
+          height={v.hauteur ?? 720}
+          loading="lazy"
+          decoding="async"
+        />
+        <span className="encart-video__lire">Regarder la vidéo</span>
+      </a>
+      <details className="encart-video__texte">
+        <summary>Lire le résumé</summary>
+        <p>{video.resume}</p>
+      </details>
+    </section>
   );
 }

@@ -21,10 +21,10 @@ export function ArticleEtapes({ etapes, niveauTitre = 3 }: ArticleEtapesProps) {
   if (etapes.length === 0) return null;
   const Titre = niveauTitre === 4 ? "h4" : "h3";
   return (
-    <ol className="art-etapes">
+    <ol className="etapes">
       {etapes.map((e) => (
         <li key={e.id} id={e.id}>
-          <Titre>{e.titre}</Titre>
+          <Titre className="etapes__titre">{e.titre}</Titre>
           {e.contenu}
         </li>
       ))}

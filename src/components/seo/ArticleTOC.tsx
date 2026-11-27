@@ -25,8 +25,8 @@ interface ArticleTOCProps {
   readonly sticky?: boolean;
   /**
    * `v1` (défaut) : rendu historique, inchangé. `v2` : gabarits d'articles —
-   * deux `<nav aria-label>` (un `<details>` replié sur mobile, un rail sur
-   * ordinateur ; l'un est masqué par CSS, donc absent de l'arbre d'accessibilité),
+   * un seul `<nav class="sommaire">` (`<details>` replié sur téléphone, ouvert et
+   * collant sur ordinateur par la feuille du socle),
    * `<ol>` imbriqués pour les H3, pastilles `aria-hidden`.
    */
   readonly variante?: "v1" | "v2";
@@ -114,14 +114,9 @@ export function ArticleTOC({
     }
     const liste = (
       <ol>
-        {groupes.map((g, i) => (
+        {groupes.map((g) => (
           <li key={g.item.anchor}>
-            <a href={`#${g.item.anchor}`}>
-              <span aria-hidden="true" className="art-toc-pastille">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {g.item.title}
-            </a>
+            <a href={`#${g.item.anchor}`}>{g.item.title}</a>
             {g.enfants.length > 0 ? (
               <ol>
                 {g.enfants.map((e) => (
@@ -138,15 +133,11 @@ export function ArticleTOC({
     return (
       <>
         <JsonLd data={itemListJsonLd} />
-        <nav aria-label={label} className="art-toc-m not-prose">
-          <details className="art-toc">
+        <nav aria-label={label} className="sommaire not-prose">
+          <details>
             <summary>{label}</summary>
             {liste}
           </details>
-        </nav>
-        <nav aria-label={label} className="art-toc-d art-toc not-prose">
-          <p className="art-toc-titre">{label}</p>
-          {liste}
         </nav>
       </>
     );
@@ -176,7 +167,7 @@ export function ArticleTOC({
             href={`#${item.anchor}`}
             className={`group/toc hover:bg-paper flex items-baseline gap-2.5 rounded-lg px-2 py-1.5 transition-colors ${
               item.level === 3 ? "pl-5" : ""
-            }${cibleTactile ? " min-h-11" : ""}`}
+            }${cibleTactile ? "min-h-11" : ""}`}
           >
             <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-bold tabular-nums">
               {String(i + 1).padStart(2, "0")}

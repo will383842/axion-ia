@@ -17,11 +17,13 @@ interface TableauDefilantProps {
  */
 export function TableauDefilant({ id, legende, children }: TableauDefilantProps) {
   return (
-    <div className="art-tscroll" role="region" tabIndex={0} aria-labelledby={id}>
-      <table>
-        <caption id={id}>{legende}</caption>
-        {children}
-      </table>
+    <div className="tableau">
+      <div className="tableau__defilant" role="region" tabIndex={0} aria-labelledby={id}>
+        <table>
+          <caption id={id}>{legende}</caption>
+          {children}
+        </table>
+      </div>
     </div>
   );
 }

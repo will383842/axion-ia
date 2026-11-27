@@ -59,11 +59,11 @@ interface AnswerCardProps {
   readonly className?: string;
   /**
    * `v1` (défaut) : rendu historique, inchangé. `v2` : gabarits d'articles
-   * (bordure 2 px encre, filet terracotta). `data-aeo="tldr"` et `.tldr-answer`
+   * (rendu `.en-bref` du socle v3). `data-aeo="tldr"` et `.tldr-answer`
    * sont conservés : les sélecteurs `speakable` en dépendent.
    */
   readonly variante?: "v1" | "v2";
-  /** Libellé du titre V2, déjà traduit (défaut : « Réponse directe » / « Direct answer »). */
+  /** Libellé du titre V2, déjà traduit (défaut : « En bref » / « In brief »). */
   readonly libelle?: string;
 }
 
@@ -81,28 +81,23 @@ export function AnswerCard({
 
   if (variante === "v2") {
     return (
-      <section
+      <aside
+        role="doc-tip"
         data-aeo="tldr"
         data-answer
-        aria-labelledby="reponse-directe"
-        className={cn(
-          "tldr-answer bg-paper border-fg border-l-terracotta rounded-xl border-2 border-l-8 p-5",
-          className,
-        )}
+        aria-labelledby="en-bref-titre"
+        className={cn("en-bref tldr-answer", className)}
       >
-        <h2
-          id="reponse-directe"
-          className="text-terracotta-deep m-0 mb-2 text-[0.8125rem] leading-none font-semibold tracking-[0.08em] uppercase"
-        >
-          {libelle ?? (isFr ? "Réponse directe" : "Direct answer")}
-        </h2>
-        {question ? <p className="text-fg m-0 mb-2 font-semibold">{question}</p> : null}
-        <div className="text-fg m-0 text-[1.1875rem] leading-[1.6]">{children}</div>
+        <p className="en-bref__titre" id="en-bref-titre">
+          {libelle ?? (isFr ? "En bref" : "In brief")}
+        </p>
+        {question ? <p className="font-semibold">{question}</p> : null}
+        <div>{children}</div>
         {sourceLabel ? (
-          <p className="text-fg-muted mt-2 mb-0 text-[0.9375rem]">
+          <p className="en-bref__source">
             Source :{" "}
             {sourceUrl ? (
-              <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">
+              <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
                 {sourceLabel}
               </a>
             ) : (
@@ -110,7 +105,7 @@ export function AnswerCard({
             )}
           </p>
         ) : null}
-      </section>
+      </aside>
     );
   }
 

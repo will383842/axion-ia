@@ -5,5 +5,5 @@ import type { ReactNode } from "react";
  * vertical commun, à la place des `Section`/`Container` imbriqués de la V1.
  */
 export function PiedArticle({ children }: { readonly children: ReactNode }) {
-  return <div className="art-pied">{children}</div>;
+  return <div>{children}</div>;
 }

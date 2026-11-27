@@ -1,5 +1,5 @@
 {
-  "reponseDirecte": "Direct answer",
+  "reponseDirecte": "In brief",
   "sommaire": "Contents",
   "surtitre": {
     "analyse": "Analysis",
@@ -19,21 +19,99 @@
   "donneesAu": "Data as of <dateBalise>{date}</dateBalise>",
   "voirObservatoire": "Visit the Observatory",
   "nouvelleFenetre": "(new window)",
-  "cta": {
-    "audit": {
-      "titre": "Take stock of how you use AI",
-      "description": "An audit to spot what is worth automating in your organisation.",
-      "bouton": "Discover the audit"
+  "enBref": "In brief",
+  "typeEtCategorie": "Type and category",
+  "partager": "Share the article",
+  "partagerSur": "Share on {reseau}",
+  "partagerMail": "Share by email",
+  "publieLe": "Published on",
+  "misAJourLe": "Updated on",
+  "par": "By",
+  "signe": {
+    "analyse": {
+      "grand": "4 wks",
+      "legende": "trial, then a decision"
     },
-    "journeeIa": {
-      "titre": "One day to take action",
-      "description": "The AI Day identifies which tasks to automate first in your organisation.",
-      "bouton": "Discover the AI Day"
+    "guide": {
+      "grand": "1 → 6",
+      "legende": "steps, one at a time"
     },
-    "rdv": {
-      "titre": "Talk about your project",
-      "description": "Speak with the team to define your needs.",
-      "bouton": "Book a call"
+    "comparatif": {
+      "grand": "A or B",
+      "legende": "depending on your case"
+    },
+    "selection": {
+      "grand": "10",
+      "legende": "options reviewed"
+    },
+    "cas": {
+      "grand": "Case",
+      "legende": "an example, not a measure"
+    },
+    "definition": {
+      "grand": "Def.",
+      "legende": "the term, simply"
+    },
+    "faq": {
+      "grand": "?",
+      "legende": "direct answers"
+    },
+    "chiffres": {
+      "grand": "≈ 10%",
+      "legende": "sourced figures"
     }
-  }
+  },
+  "actions": {
+    "aria": "Take action",
+    "titreDebut": "From reading",
+    "titreEm": "to action",
+    "sousTitre": "For your business, anywhere in France.",
+    "diagnostic": {
+      "long": "AI diagnostic, 45 min",
+      "court": "AI diagnostic",
+      "sous": "Free · by video or phone · no commitment",
+      "aria": "AI diagnostic, 45 min, free",
+      "pastille": "45 min"
+    },
+    "journee": {
+      "long": "Discover the AI Day",
+      "court": "AI Day",
+      "sous": "Audit in the morning, your teams trained in the afternoon, on site.",
+      "aria": "Discover the AI Day"
+    },
+    "message": {
+      "long": "Write a message",
+      "court": "Message",
+      "sous": "Read by a senior consultant, never by a robot.",
+      "aria": "Write a message"
+    },
+    "rassurance": ["Immediate confirmation", "Cancel in one click", "Anywhere in France"],
+    "qualiopi": "Qualiopi-certified training organisation"
+  },
+  "ctaMilieu": {
+    "titre": "And at your place, where to start?",
+    "texte": "In 45 minutes, we look at your situation and pick the first task to hand to AI.",
+    "bouton": "AI diagnostic, 45 min",
+    "lien": "See how the AI Day runs"
+  },
+  "ctaFin": {
+    "surtitre": "Take action",
+    "titre": "Turn this reading into a first trial",
+    "texte": "Pick the entry point that suits you.",
+    "diagnostic": "AI diagnostic, 45 min",
+    "journee": "Discover the AI Day",
+    "message": "Write a message",
+    "etapesTitre": "How the diagnostic runs",
+    "etapes": [
+      "You pick a 45-minute slot.",
+      "We look at your repetitive tasks together.",
+      "You leave with a first lead, in writing."
+    ]
+  },
+  "video": {
+    "repere": "On video",
+    "resume": "Read the summary",
+    "lire": "Watch the video"
+  },
+  "progression": "Reading progress"
 }

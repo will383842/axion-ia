@@ -79,18 +79,16 @@ export function ArticleFaq({
     // padding porté par le `<summary>` (≥ 44 px), pas de titre dans le `<summary>`.
     const Titre = niveauTitre === 3 ? "h3" : "h2";
     return (
-      <section className="art-faq" aria-labelledby="art-faq-titre">
-        <Titre id="art-faq-titre">
+      <section className="faq" aria-labelledby="art-faq-titre" data-aeo="people-also-ask">
+        <Titre id="art-faq-titre" className="bloc-titre">
           {titre ?? (isFr ? "Questions fréquentes" : "Frequently asked questions")}
         </Titre>
         {prepared.map((p, i) => (
           <details key={i} open={premiereOuverte && i === 0}>
-            <summary data-faq-q>
-              <span>{p.question}</span>
-            </summary>
+            <summary data-faq-q>{p.question}</summary>
             <div
               data-faq-a
-              className="faq-answer art-faq-reponse"
+              className="faq-answer"
               dangerouslySetInnerHTML={{ __html: p.answerHtml }}
             />
           </details>

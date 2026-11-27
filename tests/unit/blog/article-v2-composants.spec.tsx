@@ -2,14 +2,33 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("next-intl", () => {
-  const t = Object.assign((k: string) => k, {
-    rich: (k: string, v: Record<string, unknown>) => {
-      const balise = v.dateBalise as (m: string) => unknown;
-      return [k, " ", balise(String(v.date))];
-    },
-  });
-  return { useTranslations: () => t };
+vi.mock("next-intl", async () => {
+  const { readFileSync } = await import("node:fs");
+  const commun = JSON.parse(readFileSync("src/messages/gabarits/commun.fr.json", "utf8"));
+  const chercher = (ns: string, k: string): unknown => {
+    if (!ns.startsWith("articleGabarits.commun")) return undefined;
+    const chemin = `${ns}.${k}`.replace(/^articleGabarits\.commun\.?/, "");
+    return chemin
+      .split(".")
+      .filter(Boolean)
+      .reduce<unknown>((o, c) => (o as Record<string, unknown> | undefined)?.[c], commun);
+  };
+  const fabrique = (ns: string) =>
+    Object.assign(
+      (k: string, vars?: Record<string, unknown>) => {
+        const v = chercher(ns, k);
+        if (typeof v !== "string") return k;
+        return v.replace(/\{(\w+)\}/g, (_, n) => String(vars?.[n] ?? ""));
+      },
+      {
+        raw: (k: string) => chercher(ns, k),
+        rich: (k: string, v: Record<string, unknown>) => {
+          const balise = v.dateBalise as (m: string) => unknown;
+          return [k, " ", balise(String(v.date))];
+        },
+      },
+    );
+  return { useTranslations: (ns: string) => fabrique(ns ?? "") };
 });
 vi.mock("next/image", () => ({
   default: (p: Record<string, unknown>) => (
@@ -17,6 +36,7 @@ vi.mock("next/image", () => ({
     <img
       alt={String(p.alt)}
       src={String(p.src)}
+      data-fill={String(p.fill)}
       loading={p.loading as "eager"}
       sizes={String(p.sizes)}
       data-fetchpriority={String(p.fetchPriority)}
@@ -25,8 +45,14 @@ vi.mock("next/image", () => ({
   ),
 }));
 vi.mock("@/i18n/navigation", () => ({
-  Link: (p: { href: string; className?: string; children: React.ReactNode }) => (
-    <a href={p.href} className={p.className}>
+  Link: (p: {
+    href: string;
+    className?: string;
+    children: React.ReactNode;
+    "aria-label"?: string;
+    "data-cta"?: string;
+  }) => (
+    <a href={p.href} className={p.className} aria-label={p["aria-label"]} data-cta={p["data-cta"]}>
       {p.children}
     </a>
   ),
@@ -37,9 +63,13 @@ vi.mock("@/components/marketing/JsonLd", () => ({
   ),
 }));
 vi.mock("@/lib/seo", () => ({ buildFaqJsonLd: () => ({ "@type": "FAQPage" }) }));
-vi.mock("@/server/content-gen/shared/faq-sanitizer", () => ({
-  sanitizeFaqAnswer: (a: string) => ({ html: a, skip: false }),
-}));
+vi.mock("@/components/article-v2/ColonneActionsConnectee", async () => {
+  const { ColonneActions } = await import("@/components/article-v2/ColonneActions");
+  return {
+    ColonneActionsConnectee: ({ gabarit }: { gabarit: string }) =>
+      ColonneActions({ gabarit, qualiopiPublie: false }),
+  };
+});
 for (const m of [
   "@/components/nav/Breadcrumbs",
   "@/components/knowledge/public/AuthorByline",
@@ -63,11 +93,16 @@ for (const m of [
 }
 
 import { GABARITS_ARTICLE } from "@/server/content-gen/blog/gabarits";
+import { PHOTOS_REPLI } from "@/lib/blog/photos-repli";
 import type { ArticleGabaritProps } from "@/components/article-v2/types";
 
 const { ArticleGabarit } = await import("@/components/article-v2/ArticleGabarit");
-const { EnteteArticle } = await import("@/components/article-v2/EnteteArticle");
-const { HeroImageArticle } = await import("@/components/article-v2/HeroImageArticle");
+const { HerosArticle } = await import("@/components/article-v2/HerosArticle");
+const { PhotoArticle } = await import("@/components/article-v2/PhotoArticle");
+const { ColonneActions } = await import("@/components/article-v2/ColonneActions");
+const { CtaMilieu } = await import("@/components/article-v2/CtaMilieu");
+const { CtaFin } = await import("@/components/article-v2/CtaFin");
+const { BarreProgression } = await import("@/components/article-v2/BarreProgression");
 const { MiseEnPageLecture } = await import("@/components/article-v2/MiseEnPageLecture");
 const { CorpsArticle } = await import("@/components/article-v2/CorpsArticle");
 const { TableauDefilant } = await import("@/components/article-v2/TableauDefilant");
@@ -77,7 +112,6 @@ const { FicheContexte } = await import("@/components/article-v2/FicheContexte");
 const { BlocDefinition } = await import("@/components/article-v2/BlocDefinition");
 const { BandeauDonnees } = await import("@/components/article-v2/BandeauDonnees");
 const { PiedArticle } = await import("@/components/article-v2/PiedArticle");
-const { CtaGabarit } = await import("@/components/article-v2/CtaGabarit");
 const { ArticleTOC } = await import("@/components/seo/ArticleTOC");
 const { ArticleFaq } = await import("@/components/content-gen/ArticleFaq");
 const { AnswerCard } = await import("@/components/marketing/AnswerCard");
@@ -85,79 +119,132 @@ const { AnswerCard } = await import("@/components/marketing/AnswerCard");
 const rendre = (el: React.ReactElement) => renderToStaticMarkup(el);
 
 describe("composants communs (S2)", () => {
-  it("EnteteArticle : un h1, une ligne de méta, « mis à jour » seulement si différent", () => {
-    const base = {
-      surtitre: "Analyse · Cat",
-      titre: { lead: "Titre", em: "accent" },
-      chapo: "Chapô",
-      auteur: "Manon",
-      auteurHref: "/equipe/manon",
-      publieLe: "2026-01-02",
-      tempsLecture: "4 min",
-    };
-    const diff = rendre(<EnteteArticle {...base} misAJourLe="2026-02-03" />);
-    expect(diff.match(/<h1\b/g)).toHaveLength(1);
-    expect(diff).toContain("<em>accent</em>");
-    expect(diff).toContain('<time datetime="2026-01-02">');
-    expect(diff).toContain('<time datetime="2026-02-03">');
-    expect(diff.match(/<ul class="art-meta">/g)).toHaveLength(1);
-    const meme = rendre(<EnteteArticle {...base} misAJourLe="2026-01-02" />);
-    expect(meme).not.toContain("updatedOn");
-    const aucun = rendre(<EnteteArticle {...base} misAJourLe={null} chapo={null} />);
-    expect(aucun).not.toContain("art-chapo");
-    expect(aucun).not.toContain("art-avec-image");
+  const baseHeros = {
+    gabarit: "analyse" as const,
+    categorie: "Organisation & IA",
+    titre: { lead: "Titre", em: "accent" },
+    chapo: "Chapô",
+    auteur: "Manon",
+    auteurHref: "/equipe/manon",
+    publieLe: "2026-01-02",
+    tempsLecture: "4 min",
+    pageUrl: "https://x.test/fr/blog/a",
+    titreArticle: "Titre accent",
+  };
+
+  it("HerosArticle : header.heros.sur-terracotta, un h1, jamais un en-tête de site", () => {
+    const html = rendre(<HerosArticle {...baseHeros} misAJourLe="2026-02-03" />);
+    expect(html).toContain('<header class="heros sur-terracotta">');
+    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).toContain("<em>accent</em>");
+    expect(html).toContain('<time dateTime="2026-01-02">');
+    expect(html).toContain('data-aeo="freshness"');
+    expect(html).not.toContain("<main");
+    expect(html).not.toContain("data-tone");
+    expect(html).not.toContain("site-entete");
+    expect(html.match(/<li><a href="(https:\/\/|mailto:)/g)).toHaveLength(3);
+    expect(html).toContain('class="heros__signe signe--analyse" aria-hidden="true"');
   });
 
-  it("EnteteArticle : l'image place l'en-tête sur deux colonnes", () => {
-    const html = rendre(
-      <EnteteArticle
-        surtitre="s"
-        titre={{ lead: "T" }}
-        chapo={null}
-        auteur="A"
-        auteurHref="/a"
-        publieLe="2026-01-02"
-        misAJourLe={null}
-        tempsLecture="1 min"
-        media={<span>IMG</span>}
-      />,
-    );
-    expect(html).toContain("art-avec-image");
-    expect(html).toContain("IMG");
+  it("HerosArticle : « mis à jour » seulement si la date diffère, chapô facultatif", () => {
+    const meme = rendre(<HerosArticle {...baseHeros} misAJourLe="2026-01-02" chapo={null} />);
+    expect(meme).not.toContain("freshness");
+    expect(meme).not.toContain('class="chapo"');
+    expect(rendre(<HerosArticle {...baseHeros} misAJourLe={null} />)).not.toContain("freshness");
   });
 
-  it("HeroImageArticle : eager, fetchPriority high, sizes imposé, pas de priority", () => {
+  it("PhotoArticle : vraie photo, eager, fetchPriority high, sizes imposé, aucun svg", () => {
     const html = rendre(
-      <HeroImageArticle src="/x.jpg" alt="Alt" photographerName={null} photographerUrl={null} />,
-    );
-    expect(html).toContain('loading="eager"');
-    expect(html).toContain('data-fetchpriority="high"');
-    expect(html).toContain('data-priority="undefined"');
-    expect(html).toContain(
-      'sizes="(min-width: 1366px) 565px, (min-width: 1024px) 45vw, calc(100vw - 2rem)"',
-    );
-    expect(html).toContain('alt="Alt"');
-  });
-
-  it("HeroImageArticle : le crédit Unsplash est conservé", () => {
-    const html = rendre(
-      <HeroImageArticle
+      <PhotoArticle
+        gabarit="analyse"
         src="/x.jpg"
         alt="Alt"
+        titre="T"
         photographerName="Jeanne Photo"
         photographerUrl="https://unsplash.com/@jeanne"
       />,
     );
+    expect(html).toContain('<figure class="visuel"><div class="visuel__cadre">');
+    expect(html).toContain('loading="eager"');
+    expect(html).toContain('data-fetchpriority="high"');
+    expect(html).toContain('data-priority="undefined"');
+    expect(html).toContain('sizes="(min-width: 1024px) 41.5em, calc(100vw - 32px)"');
+    expect(html).toContain('alt="Alt"');
+    expect(html).not.toContain("<svg");
+    expect(html).toContain("<figcaption>");
     expect(html).toContain("Jeanne Photo");
     expect(html).toContain("utm_source=axion-ia");
   });
 
-  it("MiseEnPageLecture : avec et sans sommaire", () => {
-    const avec = rendre(<MiseEnPageLecture sommaire={<nav>S</nav>}>corps</MiseEnPageLecture>);
-    expect(avec).toContain("<nav>S</nav>");
-    expect(avec).not.toContain("art-sans-sommaire");
-    const sans = rendre(<MiseEnPageLecture>corps</MiseEnPageLecture>);
-    expect(sans).toContain("art-sans-sommaire");
+  it("PhotoArticle : sans photo d'article, photo de repli de la banque, jamais de SVG", () => {
+    for (const code of GABARITS_ARTICLE) {
+      const html = rendre(
+        <PhotoArticle gabarit={code} src={null} alt={null} titre="Titre de l'article" />,
+      );
+      expect(html).toContain(PHOTOS_REPLI[code].src);
+      expect(html).not.toContain("<svg");
+      expect(html).not.toContain("<figcaption>");
+    }
+  });
+
+  it("BarreProgression : décor aria-hidden", () => {
+    expect(rendre(<BarreProgression />)).toBe('<div class="progression" aria-hidden="true"></div>');
+  });
+
+  it("ColonneActions : un seul aside, trois liens, aria-label contenant le texte visible", () => {
+    const html = rendre(<ColonneActions gabarit="analyse" />);
+    expect(html.match(/<aside\b/g)).toHaveLength(1);
+    expect(html).toContain('aria-label="Passer à l’action"');
+    expect(html.match(/<a /g)).toHaveLength(3);
+    expect(html).toContain("depuis=analyse-colonne");
+    expect(html).toContain('href="/journee-ia"');
+    expect(html).toContain('href="/contact"');
+    for (const [visible, aria] of [
+      ["Diagnostic IA, 45 min", "Diagnostic IA, 45 min, gratuit"],
+      ["Découvrir la Journée IA", "Découvrir la Journée IA"],
+      ["Écrire un message", "Écrire un message"],
+    ] as const) {
+      expect(html).toContain(visible);
+      expect(html).toContain(`aria-label="${aria}"`);
+    }
+    expect(html).not.toContain("btn--bleu");
+  });
+
+  it("ColonneActions : la mention Qualiopi n'existe que si l'identité est publiée", () => {
+    expect(rendre(<ColonneActions gabarit="analyse" />)).not.toContain("Qualiopi");
+    expect(rendre(<ColonneActions gabarit="analyse" qualiopiPublie />)).toContain("Qualiopi");
+  });
+
+  it("CtaMilieu : titre en <p> (jamais un h2), un bouton et un lien, principal selon le gabarit", () => {
+    const d = rendre(<CtaMilieu gabarit="analyse" />);
+    expect(d).not.toMatch(/<h[1-6]/);
+    expect(d).toContain('<p class="cta-milieu__titre" id="cta-milieu-titre">');
+    expect(d).toContain("depuis=analyse-milieu");
+    expect(d.match(/class="btn btn--terracotta"/g)).toHaveLength(1);
+    const j = rendre(<CtaMilieu gabarit="guide" principal="journee" />);
+    expect(j).toMatch(/href="\/journee-ia" class="btn btn--terracotta"/);
+  });
+
+  it("CtaFin : trois actions, déroulé en trois étapes, réassurance factuelle", () => {
+    const html = rendre(<CtaFin gabarit="analyse" />);
+    expect(html.match(/data-cta=/g)).toHaveLength(3);
+    expect(html.match(/<ol class="deroule".*?<\/ol>/s)![0].match(/<li>/g)).toHaveLength(3);
+    expect(html).toContain("depuis=analyse-fin");
+  });
+
+  it("MiseEnPageLecture : article.article puis la colonne ; ni <main> ni en-tête de site", () => {
+    const html = rendre(
+      <MiseEnPageLecture
+        ouverture={<header>O</header>}
+        sommaire={<nav>S</nav>}
+        colonne={<aside>C</aside>}
+      >
+        corps
+      </MiseEnPageLecture>,
+    );
+    expect(html).toBe(
+      '<div class="conteneur mise-en-page"><article class="article"><header>O</header><nav>S</nav><div class="article__corps prose">corps</div></article><aside>C</aside></div>',
+    );
   });
 
   it("CorpsArticle : HTML tel quel, ou blocs d'un article en fichier", () => {
@@ -173,7 +260,7 @@ describe("composants communs (S2)", () => {
     );
     expect(blocs).toContain("<p>Texte</p>");
     expect(blocs.match(/<li>/g)).toHaveLength(2);
-    expect(rendre(<CorpsArticle html={null} blocs={null} />)).toContain("art-corps");
+    expect(rendre(<CorpsArticle html={null} blocs={null} />)).toBe("<div></div>");
   });
 
   it("TableauDefilant : région focusable nommée par la caption", () => {
@@ -196,7 +283,7 @@ describe("composants communs (S2)", () => {
   it("ArticleEtapes : 0, 1 et 5 étapes, ids uniques", () => {
     expect(rendre(<ArticleEtapes etapes={[]} />)).toBe("");
     const une = rendre(<ArticleEtapes etapes={[{ id: "e1", titre: "Un" }]} />);
-    expect(une).toContain('<li id="e1"><h3>Un</h3></li>');
+    expect(une).toContain('<li id="e1"><h3 class="etapes__titre">Un</h3></li>');
     const cinq = rendre(
       <ArticleEtapes
         niveauTitre={4}
@@ -204,7 +291,7 @@ describe("composants communs (S2)", () => {
       />,
     );
     expect(cinq.match(/<li id=/g)).toHaveLength(5);
-    expect(cinq).toContain("<h4>T5</h4>");
+    expect(cinq).toContain('<h4 class="etapes__titre">T5</h4>');
   });
 
   it("EncadreArticle : section nommée, sans role note/alert/status", () => {
@@ -213,8 +300,8 @@ describe("composants communs (S2)", () => {
         <p>Texte</p>
       </EncadreArticle>,
     );
-    expect(html).toContain('<section class="art-encadre" aria-labelledby="pt">');
-    expect(html).toContain('<p id="pt" class="art-encadre-titre">Point clé</p>');
+    expect(html).toContain('<section class="encadre encadre--retenir" aria-labelledby="pt">');
+    expect(html).toContain('<p id="pt" class="encadre__titre">Point clé</p>');
     expect(html).not.toMatch(/role="(note|alert|status)"/);
   });
 
@@ -255,7 +342,7 @@ describe("composants communs (S2)", () => {
   it("BandeauDonnees : rendu seulement si la date du relevé existe", () => {
     expect(rendre(<BandeauDonnees dateIso={null} dateLisible="" />)).toBe("");
     const html = rendre(<BandeauDonnees dateIso="2026-10-01" dateLisible="1 octobre 2026" />);
-    expect(html).toContain('<time datetime="2026-10-01">1 octobre 2026</time>');
+    expect(html).toContain('<time dateTime="2026-10-01">1 octobre 2026</time>');
     expect(html).toContain("/observatoire-ia");
   });
 
@@ -266,16 +353,7 @@ describe("composants communs (S2)", () => {
         <p>b</p>
       </PiedArticle>,
     );
-    expect(html.match(/art-pied/g)).toHaveLength(1);
-  });
-
-  it("CtaGabarit : trois variantes, un lien chacune, h2 nommé", () => {
-    const audit = rendre(<CtaGabarit variante="audit" />);
-    expect(audit).toContain('href="/audit"');
-    expect(audit).toContain('aria-labelledby="art-cta-titre"');
-    expect(rendre(<CtaGabarit variante="rdv" />)).toContain('href="/appel"');
-    expect(rendre(<CtaGabarit variante="journeeIa" />)).toMatch(/href="\/[^"]+"/);
-    expect(audit.match(/<a /g)).toHaveLength(1);
+    expect(html).toBe("<div><p>a</p><p>b</p></div>");
   });
 });
 
@@ -286,16 +364,15 @@ describe("variantes V2 des composants partagés", () => {
     { anchor: "deux", title: "Deux", level: 2 as const },
   ];
 
-  it("ArticleTOC v2 : deux <nav aria-label>, H3 imbriqués, pastilles aria-hidden", () => {
+  it("ArticleTOC v2 : un seul <nav class=sommaire>, details, H3 imbriqués, pas de pastille", () => {
     const html = rendre(
       <ArticleTOC items={items} pageUrl="https://x.test/p" locale="fr" variante="v2" />,
     );
-    expect(html.match(/<nav aria-label="Sommaire"/g)).toHaveLength(2);
-    expect(html).toContain("<details");
-    expect(html).toContain('aria-hidden="true" class="art-toc-pastille"');
+    expect(html.match(/<nav /g)).toHaveLength(1);
+    expect(html).toContain('<nav aria-label="Sommaire" class="sommaire not-prose">');
+    expect(html).toContain("<details>");
     expect(html).toContain('<ol><li><a href="#u1">Sous-un</a></li></ol>');
-    // Les H3 ne portent pas de pastille : seuls les H2 sont numérotés.
-    expect(html.match(/art-toc-pastille/g)).toHaveLength(4);
+    expect(html).not.toContain("pastille");
   });
 
   it("ArticleTOC v2 : niveauMax 2 retire les H3", () => {
@@ -343,7 +420,8 @@ describe("variantes V2 des composants partagés", () => {
     const html = rendre(<ArticleFaq items={faq} locale="fr" variante="v2" premiereOuverte />);
     expect(html.match(/<details/g)).toHaveLength(2);
     expect(html.match(/<details open/g)).toHaveLength(1);
-    expect(html).toContain('<h2 id="art-faq-titre">');
+    expect(html).toContain('<h2 id="art-faq-titre" class="bloc-titre">');
+    expect(html).toContain('class="faq"');
     expect(html).toContain("data-faq-q");
     expect(html).toContain("data-faq-a");
     expect(html).not.toMatch(/<summary[^>]*>\s*<h[1-6]/);
@@ -352,7 +430,7 @@ describe("variantes V2 des composants partagés", () => {
 
   it("ArticleFaq v2 : niveauTitre 3, rien d'ouvert par défaut", () => {
     const html = rendre(<ArticleFaq items={faq} locale="fr" variante="v2" niveauTitre={3} />);
-    expect(html).toContain('<h3 id="art-faq-titre">');
+    expect(html).toContain('<h3 id="art-faq-titre" class="bloc-titre">');
     expect(html).not.toContain("<details open");
   });
 
@@ -370,14 +448,15 @@ describe("variantes V2 des composants partagés", () => {
 
   it("AnswerCard v2 : data-aeo et .tldr-answer conservés, V1 intacte par défaut", () => {
     const v2 = rendre(
-      <AnswerCard locale="fr" variante="v2" libelle="Réponse directe">
+      <AnswerCard locale="fr" variante="v2" libelle="En bref">
         Texte
       </AnswerCard>,
     );
     expect(v2).toContain('data-aeo="tldr"');
     expect(v2).toContain("tldr-answer");
-    expect(v2).toContain("border-2");
-    expect(v2).not.toContain("doc-tip");
+    expect(v2).toContain('class="en-bref tldr-answer"');
+    expect(v2).toContain('role="doc-tip"');
+    expect(v2).not.toContain("border-2");
     const defaut = rendre(<AnswerCard locale="fr">Texte</AnswerCard>);
     expect(defaut).toBe(
       rendre(
@@ -450,16 +529,24 @@ describe("aiguillage vers les huit gabarits (S2)", () => {
         expect(html).toContain(`href="#${ancre}"`);
         expect(html).toContain(`id='${ancre}'`);
       }
-      expect(html.match(/<nav aria-label="sommaire"/g)).toHaveLength(2);
+      expect(html.match(/<nav aria-label="Sommaire"/g)).toHaveLength(1);
+      expect(html).toContain('<header class="heros sur-terracotta">');
+      expect(html.match(/<aside class="action"/g)).toHaveLength(1);
+      expect(html).not.toContain("<main");
+      expect(html).not.toContain("data-tone");
+      expect(html).toContain("visuel__cadre");
       expect(html).toContain("BlogPosting");
       // Aucun marqueur de la page V1.
       expect(html).not.toContain("max-w-[52rem]");
     },
   );
 
-  it("un seul appel à l'action par page", () => {
+  it("appels à l'action : une colonne, un encart de milieu, un appel de fin", () => {
     for (const code of GABARITS_ARTICLE) {
-      expect(rendre(<ArticleGabarit {...props(code)} />).match(/art-cta-bouton/g)).toHaveLength(1);
+      const html = rendre(<ArticleGabarit {...props(code)} />);
+      expect(html.match(/<aside class="action"/g)).toHaveLength(1);
+      expect(html.match(/class="cta-milieu"/g)).toHaveLength(1);
+      expect(html.match(/class="cta-fin sur-sombre"/g)).toHaveLength(1);
     }
   });
 

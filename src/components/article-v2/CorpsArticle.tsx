@@ -10,15 +10,10 @@ interface CorpsArticleProps {
 /** Corps de l'article (`prose-axionia`, mesure 68ch). Composant serveur. */
 export function CorpsArticle({ html, blocs }: CorpsArticleProps) {
   if (html) {
-    return (
-      <div
-        className="prose prose-axionia art-corps max-w-none"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    );
+    return <div className="corps-html" dangerouslySetInnerHTML={{ __html: html }} />;
   }
   return (
-    <div className="art-corps">
+    <div>
       {(blocs ?? []).map((bloc, idx) =>
         bloc.kind === "ol" ? (
           <ol key={`b-${idx}`} className="marker:text-terracotta list-decimal pl-6">

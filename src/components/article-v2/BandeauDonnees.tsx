@@ -17,7 +17,7 @@ export function BandeauDonnees({ dateIso, dateLisible }: BandeauDonneesProps) {
   const t = useTranslations("articleGabarits.commun");
   if (!dateIso) return null;
   return (
-    <p className="art-bandeau art-sombre">
+    <p className="encadre encadre--saviez">
       {t.rich("donneesAu", {
         date: dateLisible,
         dateBalise: (morceaux) => <time dateTime={dateIso}>{morceaux}</time>,

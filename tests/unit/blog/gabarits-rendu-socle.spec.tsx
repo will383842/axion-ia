@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next-intl", () => ({
-  useTranslations: () => (k: string) => k,
+  useTranslations: () => Object.assign((k: string) => k, { raw: () => [] }),
 }));
 vi.mock("next/image", () => ({
   default: (p: { alt: string }) => <img alt={p.alt} />,
@@ -30,6 +30,7 @@ for (const m of [
   "@/components/suggested/SuggestedContent",
   "@/components/marketing/AiContentDisclaimer",
   "@/components/media/UnsplashCredit",
+  "@/components/article-v2/ColonneActionsConnectee",
 ]) {
   vi.doMock(m, () => {
     const nom = m.split("/").pop()!;
