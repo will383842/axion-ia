@@ -30,6 +30,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { enqueueEmail } from "@/server/queue/queues";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { rattacherRendezVousOrphelin } from "@/server/calendly/rattachement-orphelins";
 import { lienReservation } from "@/features/commercial-application/relances-invitation-apporteur";
 import { ouvrirDossierDepuisCandidature } from "@/features/apporteurs-reseau/donnees";
 import { retraitDe } from "@/features/apporteurs-reseau/retrait";
@@ -191,6 +192,11 @@ export async function preparerIssueApporteur(input: {
   if (!evt) return { ok: false, message: "Rendez-vous introuvable." };
   if (!estAppelApporteur(evt.eventTypeName)) {
     return { ok: false, message: "Ce rendez-vous n'est pas un échange apporteur." };
+  }
+  // Rendez-vous orphelin : on tente le rattachement automatique (e-mail, sinon téléphone) AVANT
+  // d'afficher l'erreur. Plusieurs fiches possibles → rien n'est deviné, le message reste.
+  if (!evt.linkedSubmissionId) {
+    evt.linkedSubmissionId = await rattacherRendezVousOrphelin(evt.id);
   }
   const evenement: EvenementIssue = {
     id: evt.id,

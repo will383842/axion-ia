@@ -34,6 +34,7 @@
 
 "use server";
 
+import { rattacherOrphelinsDeLaFiche } from "@/server/calendly/rattachement-orphelins";
 import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
 import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
@@ -214,6 +215,9 @@ export async function creerContactManuelAction(payload: unknown): Promise<Saisie
         } as object,
       },
     });
+
+    // Rendez-vous déjà pris par cette personne (avant sa fiche) : rattachement rétroactif. Ne lève jamais.
+    await rattacherOrphelinsDeLaFiche(submission.id);
 
     // Journal : qui, quand, sur quoi. L'adresse n'y est pas recopiée en clair.
     await prisma.activityLog.create({

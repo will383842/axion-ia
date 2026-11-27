@@ -58,6 +58,7 @@
 
 "use server";
 
+import { rattacherOrphelinsDeLaFiche } from "@/server/calendly/rattachement-orphelins";
 import { randomUUID } from "node:crypto";
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
@@ -423,6 +424,9 @@ async function creerLead(
       userAgent,
     },
   });
+
+  // Rendez-vous déjà pris par cette personne (avant sa fiche) : rattachement rétroactif. Ne lève jamais.
+  await rattacherOrphelinsDeLaFiche(submission.id);
 
   if (suspect) {
     // Ligne gardée (on voit le robot), mais ni preuve de consentement d'une

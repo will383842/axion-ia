@@ -15,6 +15,7 @@
 
 "use server";
 
+import { rattacherRendezVousOrphelin } from "@/server/calendly/rattachement-orphelins";
 import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 
@@ -185,6 +186,10 @@ async function enregistrerSansEmail(
   if (!evt) return { etat: "erreur", message: "Rendez-vous introuvable." };
   if (!estRendezVousApporteur(evt)) {
     return { etat: "erreur", message: "Ce rendez-vous n'est pas un échange apporteur." };
+  }
+  // Orphelin : rattachement automatique avant de classer (le classement lit la fiche).
+  if (!evt.linkedSubmissionId) {
+    evt.linkedSubmissionId = await rattacherRendezVousOrphelin(evt.id);
   }
   try {
     await prisma.rendezVousSuivi.upsert({
@@ -363,9 +368,13 @@ export async function ouvrirDossierEtEnvoyerLienAction(input: {
     where: { id: input.calendlyEventId },
     select: { id: true, linkedSubmissionId: true },
   });
-  if (!evt?.linkedSubmissionId) {
+  const ficheId = evt
+    ? (evt.linkedSubmissionId ?? (await rattacherRendezVousOrphelin(evt.id)))
+    : null;
+  if (!evt || !ficheId) {
     return { etat: "erreur", message: "Ce rendez-vous n'est rattaché à aucune fiche candidat." };
   }
+  evt.linkedSubmissionId = ficheId;
   try {
     const avant = await ouvrirDossierDepuisCandidature(evt.linkedSubmissionId, { creer: false });
     if (avant.ok) {
