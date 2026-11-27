@@ -701,6 +701,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur dont la commission vient d'être facturée",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-releve-mensuel": {
+    categorie: "recrutement",
+    quand:
+      "Pas encore émis (gabarit en attente) : à terme, bouton console « Envoyer les relevés à tout le monde », une fois par mois, pour le mois précédent",
+    destinataire: "l'apporteur dont le relevé du mois a été préparé et vérifié",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-virement-fait": {
     categorie: "recrutement",
     quand: "Console : bouton « Virement fait » sur une autofacture",

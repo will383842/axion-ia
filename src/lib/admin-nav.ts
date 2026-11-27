@@ -806,6 +806,13 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       group: "apporteurs",
       navLevel: 0,
     },
+    {
+      href: `${base}/apporteurs/releves`,
+      label: "Relevés mensuels",
+      icon: "FileText",
+      group: "apporteurs",
+      navLevel: 0,
+    },
     // Challenges (invitation libre : jamais un objectif imposé). Écran éteint par interrupteur.
     {
       href: `${base}/apporteurs/challenges`,
