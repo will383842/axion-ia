@@ -342,15 +342,32 @@ export function conditionsCommissionQ4b(
       {
         autofactureNumero: { not: null },
         avoirNumero: null,
-        autofactureEmiseAt: { lt: coupure },
-        OR: [{ verseeAt: null }, { verseeAt: { gte: coupure } }],
+        // Date d'émission = `autofactureEmiseAt ?? majAt` (comme `emission()` de calcul.ts :
+        // les plus anciennes n'ont pas de date d'émission).
+        AND: [
+          {
+            OR: [
+              { autofactureEmiseAt: { lt: coupure } },
+              { autofactureEmiseAt: null, majAt: { lt: coupure } },
+            ],
+          },
+          { OR: [{ verseeAt: null }, { verseeAt: { gte: coupure } }] },
+        ],
       },
       {
         autofactureAttenteDepuis: { lt: coupure },
         OR: [{ autofactureEmiseAt: null }, { autofactureEmiseAt: { gte: coupure } }],
       },
-      { autofactureNumero: { not: null }, autofactureEmiseAt: { gte: debut, lt: coupure } },
-      { autofactureNumero: { not: null }, verseeAt: { gte: debut, lt: coupure } },
+      {
+        autofactureNumero: { not: null },
+        avoirNumero: null,
+        autofactureEmiseAt: { gte: debut, lt: coupure },
+      },
+      {
+        autofactureNumero: { not: null },
+        avoirNumero: null,
+        verseeAt: { gte: debut, lt: coupure },
+      },
     ],
   };
 }
@@ -382,11 +399,21 @@ export async function lireCiblesPeriode(
 ): Promise<CibleReleve[]> {
   const { debut, coupure } = bornesPeriode(periode);
   const select = { id: true, prenom: true, nom: true, denomination: true } as const;
-  const avoirs = await prisma.pieceAutofactureApporteur.findMany({
+  const pieces = await prisma.pieceAutofactureApporteur.findMany({
     where: { genre: "avoir", emiseAt: { gte: debut, lt: coupure } },
-    select: { apporteurId: true },
+    select: { numero: true, apporteurId: true },
     take: 10000,
   });
+  // Comme `avoirs()` de calcul.ts : seule une pièce portée par une commission non annulée compte.
+  const reprises = pieces.length
+    ? await prisma.commissionApporteur.findMany({
+        where: { avoirNumero: { in: pieces.map((p) => p.numero) }, statut: { not: "annulee" } },
+        select: { avoirNumero: true },
+        take: 10000,
+      })
+    : [];
+  const numerosRepris = new Set(reprises.map((c) => c.avoirNumero));
+  const avoirs = pieces.filter((p) => numerosRepris.has(p.numero));
   const [signes, avecArgent] = await Promise.all([
     prisma.apporteurReseau.findMany({
       where: {

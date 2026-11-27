@@ -152,6 +152,7 @@ type W = Record<string, unknown>;
 function evalWhere(w: W, row: W): boolean {
   return Object.entries(w).every(([k, v]) => {
     if (k === "OR") return (v as W[]).some((x) => evalWhere(x, row));
+    if (k === "AND") return (v as W[]).every((x) => evalWhere(x, row));
     const val = row[k] ?? null;
     if (v === null) return val === null;
     if (typeof v !== "object" || v instanceof Date) return val === v;
@@ -175,10 +176,20 @@ describe("lireCiblesPeriode (définition des cibles)", () => {
   const cible = (o: W) =>
     evalWhere(conditionsCommissionQ4b(debut, coupure) as unknown as W, com(o));
 
-  async function lire(signes: W[], resilies: W[], avoirs: W[] = []) {
+  async function lire(signes: W[], resilies: W[], avoirs: W[] = [], repris?: string[]) {
     const appels: Array<{ where: W }> = [];
+    const piecesAppels: Array<{ where: W }> = [];
     const prisma = (await import("@/lib/prisma")).prisma as unknown as Record<string, unknown>;
-    prisma.pieceAutofactureApporteur = { findMany: async () => avoirs };
+    prisma.pieceAutofactureApporteur = {
+      findMany: async (arg: { where: W }) => {
+        piecesAppels.push(arg);
+        return avoirs;
+      },
+    };
+    prisma.commissionApporteur = {
+      findMany: async () =>
+        (repris ?? avoirs.map((a) => a.numero as string)).map((n) => ({ avoirNumero: n })),
+    };
     prisma.apporteurReseau = {
       findMany: async (arg: { where: W }) => {
         appels.push(arg);
@@ -186,7 +197,7 @@ describe("lireCiblesPeriode (définition des cibles)", () => {
       },
     };
     const { lireCiblesPeriode } = await import("../statistiques");
-    return { appels, cibles: await lireCiblesPeriode("2026-10", true) };
+    return { appels, piecesAppels, cibles: await lireCiblesPeriode("2026-10", true) };
   }
   const ligne = (id: string, denomination: string | null = null) => ({
     id,
@@ -264,15 +275,45 @@ describe("lireCiblesPeriode (définition des cibles)", () => {
     expect(cible({ autofactureEmiseAt: av, verseeAt: debut })).toBe(true);
     expect(cible({ autofactureEmiseAt: av, verseeAt: new Date(debut.getTime() - 1) })).toBe(false);
   });
+  it("Q4 b (D1) : émission datée par majAt quand autofactureEmiseAt est nul", () => {
+    const o = { autofactureEmiseAt: null, verseeAt: null };
+    expect(cible({ ...o, majAt: av })).toBe(true);
+    expect(cible({ ...o, majAt: ap })).toBe(false);
+  });
+  it("Q4 b : autofacture reprise par un avoir, non versée = PAS cible", () => {
+    expect(cible({ autofactureEmiseAt: av, verseeAt: null, avoirNumero: "AXI-APP-AV-1" })).toBe(
+      false,
+    );
+  });
+  it("Q4 b : émise ou versée dans le mois mais reprise par un avoir = PAS cible", () => {
+    expect(cible({ autofactureEmiseAt: dedans, verseeAt: null, avoirNumero: "AV" })).toBe(false);
+    expect(cible({ autofactureEmiseAt: av, verseeAt: dedans, avoirNumero: "AV" })).toBe(false);
+  });
   it("Q4 b : une commission annulée ne rend jamais cible", () => {
     expect(cible({ statut: "annulee", autofactureEmiseAt: av, verseeAt: null })).toBe(false);
   });
   it("Q4 b : un avoir du mois rend cible (apporteur lu sur la pièce, bornes du mois)", async () => {
-    const { appels } = await lire([], [], [{ apporteurId: "r7" }, { apporteurId: "r7" }]);
+    const { appels, piecesAppels } = await lire(
+      [],
+      [],
+      [
+        { numero: "AV1", apporteurId: "r7" },
+        { numero: "AV2", apporteurId: "r7" },
+      ],
+    );
     const q = appels.find((a) => a.where.statut !== "signe")!;
     expect((q.where.OR as W[]).some((x) => JSON.stringify(x) === '{"id":{"in":["r7"]}}')).toBe(
       true,
     );
+    expect(piecesAppels[0]?.where).toEqual({
+      genre: "avoir",
+      emiseAt: { gte: debut, lt: coupure },
+    });
+  });
+  it("Q4 b : un avoir qu'aucune commission non annulée ne porte ne rend pas cible", async () => {
+    const { appels } = await lire([], [], [{ numero: "AV1", apporteurId: "r8" }], []);
+    const q = appels.find((a) => a.where.statut !== "signe")!;
+    expect(JSON.stringify(q.where)).not.toContain("r8");
   });
 });
 
