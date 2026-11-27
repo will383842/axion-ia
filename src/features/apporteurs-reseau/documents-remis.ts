@@ -78,7 +78,9 @@ export const DOCUMENTS_REMIS: readonly DocumentRemis[] = [
     description: "Comment vos commissions sont calculées et versées, expliqué simplement.",
     action: "Ouvrir la fiche (PDF)",
     chemin: () => CHEMIN_FICHE_COMMISSIONS,
-    visible: () => true,
+    // Masquée le 27/11 : ancien PDF v2.3 ; la fiche à jour est jointe à l'e-mail du contrat signé
+    // et sera servie par lien (PR feat/apporteurs-documents-par-lien).
+    visible: () => false,
     nouvelOnglet: true,
   },
   {

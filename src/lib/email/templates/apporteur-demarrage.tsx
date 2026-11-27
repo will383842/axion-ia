@@ -45,7 +45,6 @@ const REPONSE_CONTESTATION_JOURS = 30;
 
 // Le filet anti-localhost de `site-url.ts` : jamais un lien localhost dans un e-mail de prod.
 const SITE_URL = SITE_URL_BRUT.replace(/\/+$/, "");
-const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
 const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
 // Analyse du 09/10 (point 19) : l'e-mail au prospect renvoie à SA section, pas à celle des candidats.
 const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#personnes-presentees-par-un-apporteur`;
@@ -170,7 +169,6 @@ export const COPY_DEMARRAGE = {
     ensuiteTitre: "Ensuite",
     ensuite: [
       "Nous vous répondons pour vous confirmer que c'est noté.",
-      "L'entreprise vous est réservée : la date de votre déclaration fait foi.",
       (mois: number) =>
         `Une fois l'entreprise attribuée, toutes ses commandes signées pendant ${mois} mois à compter de votre déclaration vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
     ],
@@ -180,8 +178,7 @@ export const COPY_DEMARRAGE = {
     paiement:
       "Elle vous est due dès que le client a payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée : nous établissons votre facture pour vous, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
     fiche:
-      "Votre contrat signé des deux parties est en pièce jointe. La fiche « Comment ça marche » est à garder sous la main : ",
-    ficheLien: "la fiche en PDF",
+      "Votre contrat signé des deux parties est en pièce jointe. Le détail des commissions figure dans la Fiche des commissions jointe à cet e-mail.",
   },
   presentationRecue: {
     subject: (e: string) =>
@@ -508,7 +505,7 @@ export const apporteurContratSigneSubject = (_locale: Locale): string =>
 export function ApporteurContratSigneEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.contratSigne;
-  const [e1, e2, e3] = t.ensuite;
+  const [e1, e3] = t.ensuite;
   const libres = paragraphesLibres(p.texteLibre);
   // Le lien du dossier porte le formulaire de déclaration : bouton quand on l'a.
   const url = texteOuNull(p.dossierUrl);
@@ -541,9 +538,8 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
 
           <Text style={intertitre}>{t.ensuiteTitre}</Text>
           <Text style={puce}>1. {e1}</Text>
-          <Text style={puce}>2. {e2}</Text>
           <Text style={emailStyles.paragraphStyle}>
-            3. {e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
+            2. {e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
           </Text>
 
           <Text style={intertitre}>{t.commissionTitre}</Text>
@@ -558,13 +554,7 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
         </>
       )}
       {/* Hors du texte réécrivable : la fiche reste jointe même quand Will réécrit le message. */}
-      <Text style={emailStyles.paragraphStyle}>
-        {t.fiche}
-        <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
-          {t.ficheLien}
-        </a>
-        .
-      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.fiche}</Text>
     </EmailLayout>
   );
 }
@@ -1303,18 +1293,18 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
     }
     case "apporteur-contrat-signe": {
       const t = COPY_DEMARRAGE.contratSigne;
-      const [e1, e2, e3] = t.ensuite;
+      const [e1, e3] = t.ensuite;
       return avecMot([
         mot,
         t.merci,
         `${t.presenterTitre}\n${t.presenter}\n${liste(t.champs)}`,
         t.prevenir,
-        `${t.ensuiteTitre}\n1. ${e1}\n2. ${e2}\n3. ${e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}`,
+        `${t.ensuiteTitre}\n1. ${e1}\n2. ${e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}`,
         `${t.commissionTitre}\n${lignesBareme()
           .map((ligne) => `• ${ligne}`)
           .join("\n")}\n• ${t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}`,
         t.paiement,
-        "Votre contrat signé des deux parties est en pièce jointe.",
+        "Votre contrat signé des deux parties est en pièce jointe. Le détail des commissions figure dans la Fiche des commissions jointe à cet e-mail.",
       ]);
     }
     case "apporteur-presentation-recue": {

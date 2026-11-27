@@ -47,12 +47,11 @@ describe("le registre", () => {
 });
 
 describe("ce que voit l'apporteur", () => {
-  it("sous contrat signé, tout présent : les six, avec leurs adresses", () => {
+  it("sous contrat signé, tout présent : les cinq visibles (fiche des commissions masquée le 27/11), avec leurs adresses", () => {
     const docs = documentsRemis(ctx());
     expect(docs.map((d) => [d.cle, d.href])).toEqual([
       ["contrat", `${ESPACE}/contrat?dl=1`],
       ["guide", `${ESPACE}/guide`],
-      ["fiche-commissions", "/documents/apporteurs/comment-ca-marche.pdf"],
       ["livret", CHEMIN_LIVRET],
       ["charte", `${ESPACE}/charte`],
       ["outils", `${ESPACE}/outils`],
@@ -63,7 +62,6 @@ describe("ce que voit l'apporteur", () => {
   it("contrat signé mais fichier absent : pas de ligne contrat", () => {
     expect(cles(ctx({ contratSigneDisponible: false }))).toEqual([
       "guide",
-      "fiche-commissions",
       "livret",
       "charte",
       "outils",
@@ -71,10 +69,7 @@ describe("ce que voit l'apporteur", () => {
   });
 
   it("dossier pas encore signé : ni contrat, ni charte, ni outils", () => {
-    expect(cles(ctx({ sousContrat: false, contratSigneDisponible: false }))).toEqual([
-      "fiche-commissions",
-      "livret",
-    ]);
+    expect(cles(ctx({ sousContrat: false, contratSigneDisponible: false }))).toEqual(["livret"]);
     // Même si un fichier de contrat existait, il ne s'affiche pas hors contrat signé.
     expect(cles(ctx({ sousContrat: false }))).not.toContain("contrat");
   });
@@ -88,7 +83,6 @@ describe("ce que voit l'apporteur", () => {
     expect(parCle).toEqual({
       contrat: true,
       guide: true,
-      "fiche-commissions": true,
       livret: true,
       charte: true,
       outils: false,

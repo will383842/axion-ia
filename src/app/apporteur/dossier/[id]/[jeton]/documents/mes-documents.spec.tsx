@@ -103,7 +103,8 @@ describe("dossier signé", () => {
     expect(html).toContain(`href="${ESPACE}/contrat?dl=1"`);
     expect(html).toContain(`href="${ESPACE}/guide"`);
     expect(html).toMatch(new RegExp(`<a href="${ESPACE}/guide\\?dl=1"[^>]* download`));
-    expect(html).toContain('href="/documents/apporteurs/comment-ca-marche.pdf"');
+    // Fiche des commissions masquée le 27/11 (ancien PDF v2.3).
+    expect(html).not.toContain("comment-ca-marche.pdf");
     expect(html).toContain(`href="${ESPACE}/charte"`);
     expect(html).toContain(`href="${ESPACE}/outils"`);
     expect(html).toContain(`href="${ESPACE}"`);
@@ -113,8 +114,8 @@ describe("dossier signé", () => {
 
   it("chaque document est un titre de niveau 2 dans une liste", async () => {
     const html = await rendre();
-    expect(html.match(/<h2/g)).toHaveLength(5);
-    expect(html.match(/<li/g)).toHaveLength(5);
+    expect(html.match(/<h2/g)).toHaveLength(4);
+    expect(html.match(/<li/g)).toHaveLength(4);
     expect(html).not.toMatch(/<h[3-6]/);
   });
 
@@ -134,7 +135,7 @@ describe("dossier signé", () => {
     h.livret = true;
     const html = await rendre();
     expect(html).toContain('href="/documents/apporteurs/livret-apporteur.pdf"');
-    expect(html.match(/<li/g)).toHaveLength(6);
+    expect(html.match(/<li/g)).toHaveLength(5);
   });
 
   it("aucun montant ni pourcentage, aucun mot interdit", async () => {
@@ -147,15 +148,15 @@ describe("dossier signé", () => {
 
 describe("dossier pas encore signé", () => {
   it.each(["dossier_en_cours", "a_completer", "a_verifier"])(
-    "%s : la fiche seulement, et la phrase qui annonce la suite",
+    "%s : aucun document (fiche masquée), et la phrase qui annonce la suite",
     async (statut) => {
       h.dossier = { ...signe, statut, aContratSigne: false };
       const html = await rendre();
-      expect(html).toContain('href="/documents/apporteurs/comment-ca-marche.pdf"');
+      expect(html).not.toContain("comment-ca-marche.pdf");
       expect(html).not.toContain("/contrat");
       expect(html).not.toContain("/charte");
       expect(html).not.toContain("/outils");
-      expect(html.match(/<li/g)).toHaveLength(1);
+      expect(html.match(/<li/g)).toBeNull();
       expect(texte(html)).toContain(DOCUMENTS_NON_SIGNE);
     },
   );

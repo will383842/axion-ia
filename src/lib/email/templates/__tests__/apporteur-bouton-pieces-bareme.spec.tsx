@@ -94,11 +94,12 @@ describe("étape 2 : « Pas encore de numéro SIREN ? »", () => {
 });
 
 describe("13) « contrat signé » réécrit par Will", () => {
-  it("garde le lien vers la fiche « Comment ça marche »", async () => {
+  it("ne lie plus l'ancien PDF (v2.3) : la fiche à jour est jointe à l'e-mail", async () => {
     const r = await renderEmailTemplate("apporteur-contrat-signe" as never, "fr", {
       contactName: "Claire Martin",
       texteLibre: "Bienvenue dans le réseau.",
     });
-    expect(r.html).toContain("comment-ca-marche.pdf");
+    expect(r.html).not.toContain("comment-ca-marche.pdf");
+    expect(r.html).toContain("Fiche des commissions jointe à cet e-mail");
   });
 });
