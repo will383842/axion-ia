@@ -15,11 +15,10 @@ import type { PrismaClient } from "../../../../prisma/generated/client";
 
 import { cumulerParSemaineIso, requetesARetirerDuTexte, semaineIso } from "../donnees";
 import { ajouterJours, enDate, enJour, MOIS_HISTORIQUE, reculerMois } from "./dates";
-import { TYPE_RECHERCHE } from "./jour";
+import { TENTATIVES_MAX, TYPE_RECHERCHE } from "./jour";
 
 export const CONSERVATION_DETAIL_JOURS = 90;
 export const CONSERVATION_SEMAINES_MOIS = 25;
-export const GRACE_SEMAINE_JOURS = 30;
 export const SEUIL_TEXTE_REQUETE = 3;
 const LOT_SUPPRESSION = 1000;
 const SEMAINES_MAX_PAR_PASSAGE = 60;
@@ -73,26 +72,29 @@ async function consoliderEtPurgerJours(
     const fin = ajouterJours(debut, 6);
     // Seules les semaines ENTIÈREMENT hors du délai de conservation sont touchées.
     if (fin >= coupure) continue;
-    const delaiDeGraceEchu = fin < ajouterJours(coupure, -GRACE_SEMAINE_JOURS);
-    if (!delaiDeGraceEchu) {
-      const reussis = await prisma.gscImportRun.findMany({
-        where: {
-          typeRecherche: TYPE_RECHERCHE,
-          statut: "reussi",
-          jour: { gte: enDate(debut), lte: enDate(fin) },
-        },
-        select: { jour: true },
-      });
-      const faits = new Set(reussis.map((r) => enJour(r.jour)));
-      let complet = true;
-      for (let j = debut; j <= fin; j = ajouterJours(j, 1)) {
-        // Les jours antérieurs à la borne de 16 mois ne seront jamais importés.
-        if (j >= borneHistorique && !faits.has(j)) complet = false;
-      }
-      if (!complet) {
-        enAttente++;
-        continue;
-      }
+    const runs = await prisma.gscImportRun.findMany({
+      where: {
+        typeRecherche: TYPE_RECHERCHE,
+        jour: { gte: enDate(debut), lte: enDate(fin) },
+      },
+      select: { jour: true, statut: true, tentatives: true },
+    });
+    // Un jour est « réglé » s'il est importé, ou abandonné après trop d'échecs. Un jour jamais
+    // tenté (le rattrapage n'y est pas arrivé) met la semaine en attente : la cumuler plus tôt
+    // la ferait cumuler à moitié.
+    const regles = new Set(
+      runs
+        .filter((r) => r.statut === "reussi" || r.tentatives >= TENTATIVES_MAX)
+        .map((r) => enJour(r.jour)),
+    );
+    let complet = true;
+    for (let j = debut; j <= fin; j = ajouterJours(j, 1)) {
+      // Les jours antérieurs à la borne de 16 mois ne seront jamais importés.
+      if (j >= borneHistorique && !regles.has(j)) complet = false;
+    }
+    if (!complet) {
+      enAttente++;
+      continue;
     }
     traitees++;
     const lignes = await prisma.gscPageRequeteJour.findMany({
@@ -117,7 +119,7 @@ async function consoliderEtPurgerJours(
       })),
     );
     const semaine = enDate(debut);
-    const aInserer = cumul.map((c) => {
+    const nouveaux = cumul.map((c) => {
       const [type, chemin, id] = c.cle.split("\u0000") as [string, string, string];
       return {
         semaine,
@@ -129,10 +131,37 @@ async function consoliderEtPurgerJours(
         positionSum: c.positionSum,
       };
     });
-    // Tout ou rien : le cumul remplace celui de la semaine, puis les jours partent. Rejouer ne
-    // double rien (le cumul est recalculé, jamais additionné).
+    // Tout ou rien. Le cumul s'AJOUTE à celui déjà posé pour la semaine (un jour importé après
+    // une première purge ne doit pas l'écraser), puis les jours partent dans la même transaction :
+    // un jour ne peut jamais être compté deux fois.
     await prisma.$transaction(
       async (tx) => {
+        const existants = await tx.gscPageRequeteSemaine.findMany({ where: { semaine } });
+        const fusion = new Map<string, (typeof nouveaux)[number]>();
+        for (const e of [...existants, ...nouveaux]) {
+          const k = cleTriplet(e.typeRecherche, e.chemin, e.requeteId);
+          const cur = fusion.get(k);
+          fusion.set(
+            k,
+            cur
+              ? {
+                  ...cur,
+                  clics: cur.clics + e.clics,
+                  impressions: cur.impressions + e.impressions,
+                  positionSum: cur.positionSum + e.positionSum,
+                }
+              : {
+                  semaine,
+                  typeRecherche: e.typeRecherche,
+                  chemin: e.chemin,
+                  requeteId: e.requeteId,
+                  clics: e.clics,
+                  impressions: e.impressions,
+                  positionSum: e.positionSum,
+                },
+          );
+        }
+        const aInserer = [...fusion.values()];
         await tx.gscPageRequeteSemaine.deleteMany({ where: { semaine } });
         for (let i = 0; i < aInserer.length; i += LOT_SUPPRESSION) {
           await tx.gscPageRequeteSemaine.createMany({
@@ -171,7 +200,8 @@ async function purgerSemainesAnciennes(prisma: BasePurge, aujourdhui: string): P
 }
 
 /** Étape 3 : texte des requêtes sous le seuil, avec ses lignes de détail. */
-async function purgerTexteRequetes(prisma: BasePurge): Promise<number> {
+async function purgerTexteRequetes(prisma: BasePurge, aujourdhui: string): Promise<number> {
+  const limiteAge = enDate(ajouterJours(aujourdhui, -CONSERVATION_DETAIL_JOURS));
   const sommes = new Map<number, number>();
   const jours = await prisma.gscPageRequeteJour.groupBy({
     by: ["requeteId"],
@@ -192,12 +222,15 @@ async function purgerTexteRequetes(prisma: BasePurge): Promise<number> {
   for (;;) {
     const lot = await prisma.gscRequete.findMany({
       where: { id: { gt: curseur } },
-      select: { id: true, texte: true },
+      select: { id: true, texte: true, premiereLe: true },
       orderBy: { id: "asc" },
       take: 5000,
     });
     if (lot.length === 0) break;
     for (const r of lot) {
+      // Une requête de moins de 90 jours n'a pas eu sa fenêtre complète : jamais candidate
+      // (sinon une requête régulière à 1-2 impressions par semaine serait recréée en boucle).
+      if (r.premiereLe > limiteAge) continue;
       lignes.push({ requete: r.texte, impressions: sommes.get(r.id) ?? 0 });
       idsParTexte.set(r.texte, [...(idsParTexte.get(r.texte) ?? []), r.id]);
     }
@@ -228,7 +261,7 @@ export async function tachePurge(deps: DepsPurge): Promise<BilanPurge> {
     aujourdhui,
   );
   const semainesSupprimees = await purgerSemainesAnciennes(deps.prisma, aujourdhui);
-  const requetesRetirees = await purgerTexteRequetes(deps.prisma);
+  const requetesRetirees = await purgerTexteRequetes(deps.prisma, aujourdhui);
   return {
     semainesCumulees,
     semainesEnAttente,

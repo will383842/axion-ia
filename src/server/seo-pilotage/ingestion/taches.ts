@@ -56,10 +56,11 @@ export async function tacheRattrapageGsc(deps: DepsIngestion): Promise<IssueTach
     const run = parJour.get(j);
     if (!run) return { tache, issue: "fait", jour: await ingererJour(j, deps) };
     if (run.statut === "reussi") continue;
+    // Abandonné, quel que soit le statut (un jour qui fait tomber le processus reste `en_cours`) :
+    // visible à l'écran de santé, jamais repris seul.
+    if (run.tentatives >= TENTATIVES_MAX) continue;
     if (run.statut === "en_cours") {
       if (maintenant.getTime() - run.debutLe.getTime() < DELAI_PASSAGE_MORT_MS) continue;
-    } else if (run.tentatives >= TENTATIVES_MAX) {
-      continue; // abandonné : visible à l'écran de santé, jamais repris seul
     }
     return { tache, issue: "fait", jour: await ingererJour(j, deps) };
   }

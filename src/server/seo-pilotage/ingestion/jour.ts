@@ -50,6 +50,9 @@ export type BaseIngestion = Pick<
   | "trainer"
   | "jobApplication"
   | "client"
+  | "trainee"
+  | "clientContact"
+  | "adminUser"
   | "$transaction"
 >;
 
@@ -76,6 +79,7 @@ export type IssueJour =
     }
   | { readonly issue: "deja"; readonly jour: string }
   | { readonly issue: "occupe"; readonly jour: string }
+  | { readonly issue: "abandonne"; readonly jour: string }
   | { readonly issue: "echec"; readonly jour: string; readonly code: string };
 
 function ligneValide(l: GscSearchRow | undefined, cles: number): l is GscSearchRow {
@@ -124,7 +128,7 @@ async function reserverJour(
   prisma: BaseIngestion,
   jour: string,
   maintenant: Date,
-): Promise<{ id: string; tentativesAvant: number } | "deja" | "occupe"> {
+): Promise<{ id: string; tentativesAvant: number } | "deja" | "occupe" | "abandonne"> {
   const cle = { jour: enDate(jour), typeRecherche: TYPE_RECHERCHE };
   const existant = await prisma.gscImportRun.findUnique({
     where: { jour_typeRecherche: cle },
@@ -142,6 +146,8 @@ async function reserverJour(
       throw err;
     }
   }
+  // Plafond de tentatives quel que soit le statut : un jour « poison » ne boucle pas.
+  if (existant.tentatives >= TENTATIVES_MAX) return "abandonne";
   const vivant =
     existant.statut === "en_cours" &&
     maintenant.getTime() - existant.debutLe.getTime() < DELAI_PASSAGE_MORT_MS;
@@ -181,6 +187,7 @@ export async function ingererJour(jour: string, deps: DepsIngestion): Promise<Is
   const prise = await reserverJour(prisma, jour, maintenant);
   if (prise === "deja") return { issue: "deja", jour };
   if (prise === "occupe") return { issue: "occupe", jour };
+  if (prise === "abandonne") return { issue: "abandonne", jour };
   const { id: idRun, tentativesAvant } = prise;
 
   try {
@@ -249,7 +256,7 @@ export async function ingererJour(jour: string, deps: DepsIngestion): Promise<Is
     }
     // Une requête vide ou trop longue pour la colonne ne peut pas être stockée : retirée comme
     // une donnée écartée (comptée, jamais stockée).
-    const parPage = new Map<string, typeof brutes>();
+    const aFiltrer: Array<(typeof brutes)[number] & { i: number }> = [];
     for (const l of brutes) {
       const p = pages.get(l.chemin) as PageAgregee;
       p.impressionsDetaillees += l.impressions;
@@ -257,29 +264,32 @@ export async function ingererJour(jour: string, deps: DepsIngestion): Promise<Is
         p.requetesFiltrees += 1;
         continue;
       }
-      parPage.set(l.chemin, [...(parPage.get(l.chemin) ?? []), l]);
+      aFiltrer.push({ ...l, i: aFiltrer.length });
+    }
+    // UN seul passage du filtre (les noms ne sont normalisés qu'une fois) ; les lignes retirées
+    // se retrouvent par leur rang `i` et sont comptées sur leur page.
+    const filtre = filtrerDonneesPersonnelles(aFiltrer, { noms });
+    const gardees = new Set(filtre.conservees.map((l) => l.i));
+    for (const l of aFiltrer) {
+      if (!gardees.has(l.i)) (pages.get(l.chemin) as PageAgregee).requetesFiltrees += 1;
     }
     const detail = new Map<
       string,
       { chemin: string; requete: string; clics: number; impressions: number; positionSum: number }
     >();
-    for (const [chemin, groupe] of parPage) {
-      const filtre = filtrerDonneesPersonnelles(groupe, { noms });
-      (pages.get(chemin) as PageAgregee).requetesFiltrees += filtre.retirees.lignes;
-      for (const l of filtre.conservees) {
-        const k = `${l.chemin}\u0000${l.requete}`;
-        const cur = detail.get(k) ?? {
-          chemin: l.chemin,
-          requete: l.requete,
-          clics: 0,
-          impressions: 0,
-          positionSum: 0,
-        };
-        cur.clics += l.clics;
-        cur.impressions += l.impressions;
-        cur.positionSum += positionSum(l.position, l.impressions);
-        detail.set(k, cur);
-      }
+    for (const l of filtre.conservees) {
+      const k = `${l.chemin}\u0000${l.requete}`;
+      const cur = detail.get(k) ?? {
+        chemin: l.chemin,
+        requete: l.requete,
+        clics: 0,
+        impressions: 0,
+        positionSum: 0,
+      };
+      cur.clics += l.clics;
+      cur.impressions += l.impressions;
+      cur.positionSum += positionSum(l.position, l.impressions);
+      detail.set(k, cur);
     }
 
     // ── Rattachement à la route et type de page, figés à l'import ──

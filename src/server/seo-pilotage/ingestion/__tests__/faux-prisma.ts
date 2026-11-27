@@ -124,6 +124,9 @@ export function creerFauxPrisma(opts: { noms?: Array<{ prenom: string; nom: stri
     trainer: new Table(),
     jobApplication: new Table(),
     client: new Table(),
+    trainee: new Table(),
+    clientContact: new Table(),
+    adminUser: new Table(),
   };
   for (const n of opts.noms ?? []) base.trainer.lignes.push({ ...n });
   const prisma = {

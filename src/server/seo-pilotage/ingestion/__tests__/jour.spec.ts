@@ -198,3 +198,45 @@ describe("ingererJour", () => {
     expect(base.gscImportRun.lignes).toHaveLength(0);
   });
 });
+
+describe("ingererJour : jour poison", () => {
+  it("n'est plus repris après 5 tentatives, même resté « en_cours »", async () => {
+    const { prisma, base } = creerFauxPrisma();
+    await base.gscImportRun.create({
+      data: {
+        jour: new Date(`${JOUR}T00:00:00Z`),
+        typeRecherche: "web",
+        statut: "en_cours",
+        tentatives: 5,
+        debutLe: new Date("2020-01-01"),
+      },
+    });
+    const rech = recherche({});
+    expect(await ingererJour(JOUR, { prisma, recherche: rech })).toEqual({
+      issue: "abandonne",
+      jour: JOUR,
+    });
+    expect(rech).not.toHaveBeenCalled();
+  });
+});
+
+describe("chargerNomsConnus", () => {
+  it("couvre formateurs, candidats, clients, stagiaires, contacts et équipe", async () => {
+    const { chargerNomsConnus } = await import("../noms-connus");
+    const t = (lignes: object[]) => ({ findMany: async () => lignes });
+    const noms = await chargerNomsConnus({
+      trainer: t([{ prenom: "Ana", nom: "Bel" }]),
+      jobApplication: t([{ firstName: "Cyr", lastName: "Dor" }]),
+      client: t([{ contactPrenom: null, contactNomFamille: null, contactNom: "Eve Fau" }]),
+      trainee: t([{ prenom: "Gil", nom: "Han" }]),
+      clientContact: t([
+        { prenom: null, nom: "Ida Jol" },
+        { prenom: "Kim", nom: "Lac" },
+      ]),
+      adminUser: t([{ name: "Max Noe" }, { name: "Solo" }]),
+    } as never);
+    expect(noms.sort()).toEqual(
+      ["Ana Bel", "Cyr Dor", "Eve Fau", "Gil Han", "Ida Jol", "Kim Lac", "Max Noe"].sort(),
+    );
+  });
+});

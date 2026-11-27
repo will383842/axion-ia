@@ -90,7 +90,10 @@ export async function runSeoPilotageJob(
       return { issue: "fait", tache };
     }
     const j = r.jour;
-    console.warn(
+    // Un échec de collecte est journalisé en ERREUR (visible), sans faire échouer le job : l'état
+    // vit en base et le jour est repris au passage suivant.
+    const journal = j.issue === "echec" || j.issue === "abandonne" ? console.error : console.warn;
+    journal(
       j.issue === "reussi"
         ? `[seo-pilotage-worker] ${tache} (${mode}) ${j.jour} : ${j.pages} page(s), ${j.requetes} requête(s), ` +
             `${j.requetesFiltrees} filtrée(s), ${j.pagesIsolees} isolée(s), écart total ${j.ecartTotal ?? "inconnu"}`

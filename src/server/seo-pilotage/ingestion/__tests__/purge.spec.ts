@@ -122,8 +122,8 @@ describe("tachePurge", () => {
   it("retire le texte des requêtes sous 3 impressions, avec leur détail ; garde l'agrégat de page", async () => {
     const { prisma, base } = creerFauxPrisma();
     base.gscRequete.lignes.push(
-      { id: 1, texte: "rare", premiereLe: date("2026-11-20"), derniereLe: date("2026-11-20") },
-      { id: 2, texte: "courante", premiereLe: date("2026-11-20"), derniereLe: date("2026-11-21") },
+      { id: 1, texte: "rare", premiereLe: date("2026-05-01"), derniereLe: date("2026-11-20") },
+      { id: 2, texte: "courante", premiereLe: date("2026-05-01"), derniereLe: date("2026-11-21") },
     );
     base.gscPageRequeteJour.lignes.push(detail("2026-11-20", 1, 2), detail("2026-11-20", 2, 40));
     base.gscPageJour.lignes.push({
@@ -157,6 +157,60 @@ describe("tachePurge", () => {
       positionSum: 0,
     });
     await tachePurge({ prisma, maintenant });
+    expect(base.gscRequete.lignes).toHaveLength(1);
+  });
+});
+
+describe("tachePurge : import tardif d'un jour d'une semaine déjà purgée", () => {
+  it("conserve la somme de la semaine (cumul additionné, jamais écrasé)", async () => {
+    const { prisma, base } = creerFauxPrisma();
+    semaineComplete(base, "2026-08-03");
+    base.gscRequete.lignes.push({
+      id: 1,
+      texte: "q",
+      premiereLe: date("2026-08-03"),
+      derniereLe: date("2026-08-09"),
+    });
+    base.gscPageRequeteJour.lignes.push(detail("2026-08-03", 1, 10));
+    await tachePurge({ prisma, maintenant });
+    // un jour de la même semaine réapparaît (reprise tardive), puis nouvelle purge
+    base.gscPageRequeteJour.lignes.push({ id: 99, ...detail("2026-08-06", 1, 5) });
+    await tachePurge({ prisma, maintenant });
+    expect(base.gscPageRequeteSemaine.lignes).toHaveLength(1);
+    expect(base.gscPageRequeteSemaine.lignes[0]!["impressions"]).toBe(15);
+  });
+
+  it("un jour jamais tenté met la semaine en attente ; un jour abandonné la débloque", async () => {
+    const { prisma, base } = creerFauxPrisma();
+    semaineComplete(base, "2026-08-10");
+    const manquant = base.gscImportRun.lignes.pop()!;
+    base.gscRequete.lignes.push({
+      id: 1,
+      texte: "q",
+      premiereLe: date("2026-08-10"),
+      derniereLe: date("2026-08-10"),
+    });
+    base.gscPageRequeteJour.lignes.push(detail("2026-08-10", 1, 50));
+    expect(await tachePurge({ prisma, maintenant })).toMatchObject({
+      semainesEnAttente: 1,
+      semainesCumulees: 0,
+    });
+    base.gscImportRun.lignes.push({ ...manquant, statut: "echec", tentatives: 5 });
+    expect(await tachePurge({ prisma, maintenant })).toMatchObject({ semainesCumulees: 1 });
+  });
+});
+
+describe("tachePurge : requêtes récentes", () => {
+  it("ne retire jamais le texte d'une requête de moins de 90 jours", async () => {
+    const { prisma, base } = creerFauxPrisma();
+    base.gscRequete.lignes.push({
+      id: 1,
+      texte: "neuve",
+      premiereLe: date("2026-11-25"),
+      derniereLe: date("2026-11-25"),
+    });
+    base.gscPageRequeteJour.lignes.push(detail("2026-11-25", 1, 1));
+    expect((await tachePurge({ prisma, maintenant })).requetesRetirees).toBe(0);
     expect(base.gscRequete.lignes).toHaveLength(1);
   });
 });
