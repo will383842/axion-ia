@@ -995,7 +995,7 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
     {
       href: `${base}/barometre-questionnaire`,
       label: "Questionnaire Baromètre 2027",
-      icon: "Telescope",
+      icon: "ClipboardCheck",
       group: "content_gen",
       subGroup: "suivre",
       tier: "advanced",
