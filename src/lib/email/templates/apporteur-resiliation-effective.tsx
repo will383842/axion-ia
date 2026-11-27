@@ -35,6 +35,8 @@ export const COPY_RESILIATION_EFFECTIVE = {
       : "La résiliation de votre contrat d'apporteur d'affaires, qui vous a été notifiée, prend effet ce jour.",
   commissions:
     "Les commandes signées avant cette date par les entreprises qui vous sont attribuées ou réservées restent commissionnées (article 12.3), et vos commissions acquises vous sont facturées et versées normalement (article 12.2).",
+  documents:
+    "Les autofactures, avoirs et décomptes qui vous sont dus continueront de vous parvenir par e-mail jusqu'à l'extinction de vos droits (article 12.3).",
   espace: "Votre accès à l'espace prend fin avec votre contrat.",
   fin: "Nous vous remercions de votre collaboration.",
 } as const;
@@ -66,6 +68,7 @@ export function ApporteurResiliationEffectiveEmail({
       </Text>
       <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.commissions}</Text>
       <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.espace}</Text>
+      <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.documents}</Text>
       <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.fin}</Text>
     </EmailLayout>
   );

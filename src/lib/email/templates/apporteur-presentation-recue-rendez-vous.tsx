@@ -69,8 +69,8 @@ export const COPY_PRESENTATION_RECUE_RENDEZ_VOUS = {
   devis: (jours: number) => `Une commande signée pendant ces ${jours} jours compte aussi.`,
   sansRendezVous:
     "Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un nouveau contact avec elle.",
-  rendezVousAnnule:
-    "Si nous annulons un rendez-vous pris pendant ces 60 jours, il compte comme tenu.",
+  rendezVousAnnule: (jours: number) =>
+    `Si nous annulons un rendez-vous pris pendant ces ${jours} jours, il compte comme tenu.`,
   commission: "Une commission n'est due que sur une commande payée.",
 } as const;
 
@@ -108,7 +108,7 @@ export function ApporteurPresentationRecueRendezVousEmail({ locale, payload }: P
         {t.validation(date, RESERVATION_RENDEZ_VOUS_JOURS, FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.devis(RESERVATION_RENDEZ_VOUS_JOURS)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.rendezVousAnnule}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.rendezVousAnnule(RESERVATION_RENDEZ_VOUS_JOURS)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.sansRendezVous}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.commission}</Text>
     </EmailLayout>

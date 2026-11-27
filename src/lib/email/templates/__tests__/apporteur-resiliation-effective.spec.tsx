@@ -38,6 +38,12 @@ describe("apporteur-resiliation-effective", () => {
     }
   });
 
+  it("dit que autofactures, avoirs et décomptes continuent par e-mail (art. 12.3)", async () => {
+    const r = await rendu({ prenom: "Claire", effetLe: "25 décembre 2026" });
+    expect(r.t).toContain("autofactures, avoirs et décomptes");
+    expect(r.t).toContain("par e-mail jusqu'à l'extinction de vos droits");
+  });
+
   it("salue par le prénom seul", async () => {
     const r = await rendu({ prenom: "Claire", effetLe: "25 décembre 2026" });
     expect(r.t).toContain("Bonjour Claire,");
