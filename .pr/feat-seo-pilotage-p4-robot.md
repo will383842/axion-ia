@@ -1,4 +1,4 @@
-> ⚠️ **Dépend de #2421, à fusionner après.** Cette branche part de `feat/seo-pilotage-p2-mesure` (les tables de la collecte) puis a reçu `main`.
+Robot de collecte quotidienne Search Console pour le pilotage SEO (collecte, rattrapage, ménage)
 
 ## Ce que fait cette PR
 
@@ -27,7 +27,7 @@ Le robot « pilotage SEO » (lot P4) : chaque jour, il va chercher dans la Searc
 
 - `pnpm prisma:generate`, `pnpm typecheck`, `pnpm lint` (0 erreur), prettier : OK.
 - Vitest : specs du pilotage SEO, du worker et de `src/server/queue` : OK (316 tests sur le pilotage + worker ; `tests/unit/ci` voisin OK).
-- ⚠️ Un test existant, `tests/unit/ci/contacts-guide-reseau-origine-optionnelle.spec.ts`, échoue : sa liste fermée de migrations ne connaît pas `20261127170000_pilotage_seo_mesure` (migration de #2421, pas de cette PR). À corriger dans #2421.
+- Fusion de `main` faite (la migration des tables de P2 est celle de main, `20261127230000_pilotage_seo_mesure` ; cette branche n'a aucune migration ni changement de schéma). Specs de migrations (dont `contacts-guide-reseau-origine-optionnelle`), `content-gen:isolation-check` (cinq exceptions nommées ajoutées pour le robot), lint et prettier : OK.
 
 ## Limites connues (relecture)
 
@@ -36,6 +36,9 @@ Le robot « pilotage SEO » (lot P4) : chaque jour, il va chercher dans la Searc
 
 ## Relecture
 
+Tour final après fusion (Opus) : rien de bloquant. À traiter avant d'allumer `CONTENT_PILOTAGE_SEO` : délai entre deux tentatives d'un même jour (une panne Google de ~1 h 30 sur le détail par requête peut abandonner un jour) et remontée à Sentry d'un jour en échec. Points faibles notés : filtre de noms limité à 20 000 lignes par source, rattrapage qui continue de solliciter Google une fois l'historique plein, `finLe` = heure de début.
+
+Première relecture :
 Deux relectures Opus indépendantes (exactitude ; jobs BullMQ / idempotence / coût), 2 tours. Défauts trouvés au tour 1 et corrigés : cumul hebdomadaire écrasé, jour qui plante repris sans fin, sources de noms incomplètes, purge de requêtes récentes. Tour 2 : correctifs confirmés ; trois points mineurs restants (commentaire périmé, tentative consommée par une colonne absente, lecture hors transaction dans la purge) corrigés ensuite, hors relecture.
 
 VERDICT OPUS : BON
