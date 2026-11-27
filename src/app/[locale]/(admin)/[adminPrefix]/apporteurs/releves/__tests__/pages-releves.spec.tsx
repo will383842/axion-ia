@@ -42,7 +42,7 @@ vi.mock("@/features/apporteurs-reseau/releve-mensuel/statistiques", async (orig)
       periodes: [{ periode: "2026-10", prepares: 1, envoyes: 0, echecs: 0, ecartes: 0 }],
     }),
     lireVuePeriode: async (_p: string, voitIdentite: boolean) => ({
-      nbCibles: 1,
+      cibles: [{ apporteurId: "a1", nom: "Apporteur fictif" }],
       releves: [
         {
           id: "r1",
@@ -54,6 +54,8 @@ vi.mock("@/features/apporteurs-reseau/releve-mensuel/statistiques", async (orig)
           nbLignes: 1,
           facturesHtCents: 10_000,
           avoirsHtCents: 0,
+          tvaCents: 0,
+          ttcCents: 0,
           viresTtcCents: 0,
           enAttenteHtCents: 0,
           cumulAnneeHtCents: 10_000,

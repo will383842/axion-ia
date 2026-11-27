@@ -10,6 +10,7 @@ vi.mock("next/link", () => ({
 
 import { BandeauAnomalies } from "../BandeauAnomalies";
 import { CartesReleves } from "../CartesReleves";
+import { eur } from "../format";
 import { ListePeriodes } from "../ListePeriodes";
 import { SerieDouzeMois } from "../SerieDouzeMois";
 import { TableauReleves } from "../TableauReleves";
@@ -87,6 +88,8 @@ describe("TableauReleves", () => {
     nbLignes: 2,
     facturesHtCents: 10_000,
     avoirsHtCents: 1_000,
+    tvaCents: 1_800,
+    ttcCents: 10_800,
     viresTtcCents: 0,
     enAttenteHtCents: 0,
     cumulAnneeHtCents: 0,
@@ -103,6 +106,15 @@ describe("TableauReleves", () => {
     );
     expect(html).toContain("abcd1234");
     expect(html).toContain("/fr/x/apporteurs/releves/2026-10/pdf?numero=REL-2026-10-0001");
+  });
+  it("affiche la TVA et le TTC lus sur le relevé (HT/TVA/TTC)", () => {
+    const html = renderToStaticMarkup(
+      <TableauReleves base="/fr/x" periode="2026-10" releves={[ligne]} peutVoirPdf />,
+    );
+    expect(html).toContain(">TVA<");
+    expect(html).toContain(">TTC<");
+    expect(html).toContain(eur(1_800));
+    expect(html).toContain(eur(10_800));
   });
   it("sans droit de facturation, pas de lien d'aperçu", () => {
     const html = renderToStaticMarkup(

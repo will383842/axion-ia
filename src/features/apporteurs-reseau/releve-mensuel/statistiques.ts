@@ -67,6 +67,9 @@ export interface ReleveEcran {
   nbLignes: number;
   facturesHtCents: number;
   avoirsHtCents: number;
+  /** TVA et TTC NETS du mois, LUS dans `contenu.totaux` (jamais recalculés) ; 0 si illisibles. */
+  tvaCents: number;
+  ttcCents: number;
   viresTtcCents: number;
   enAttenteHtCents: number;
   cumulAnneeHtCents: number;
@@ -83,8 +86,14 @@ export interface AnomalieEcran {
   detail: string;
 }
 
+/** Apporteur attendu dans la période (cibles de la préparation : signés avant la coupure + Q4 b). */
+export interface CibleReleve {
+  apporteurId: string;
+  nom: string;
+}
+
 export interface VuePeriode {
-  nbCibles: number;
+  cibles: CibleReleve[];
   releves: ReleveEcran[];
 }
 
@@ -105,6 +114,13 @@ export interface ReleveDeFiche {
 export const PREFIXE_ERREUR_DONNEES_MODIFIEES = "données du mois modifiées";
 
 // ── Fonctions pures ──────────────────────────────────────────────────────────────────────────
+
+/** TVA et TTC lus tels quels dans le contenu figé ; entiers ou 0. Aucun calcul. */
+export function totauxTvaDeContenu(contenu: unknown): { tvaCents: number; ttcCents: number } {
+  const t = (contenu as { totaux?: { tvaCents?: unknown; ttcCents?: unknown } } | null)?.totaux;
+  const lire = (v: unknown) => (typeof v === "number" && Number.isInteger(v) ? v : 0);
+  return { tvaCents: lire(t?.tvaCents), ttcCents: lire(t?.ttcCents) };
+}
 
 /** Les 12 mois finissant à `derniere` (comprise), le plus ancien d'abord. */
 export function periodesDouzeMois(derniere: string): string[] {
@@ -152,17 +168,17 @@ export function hauteursEnPourcent(valeurs: readonly number[]): number[] {
 
 /** Anomalies BLOQUANTES de la vérification avant envoi (complétude, e-mail, PDF, données, échec). */
 export function anomaliesDePeriode(e: {
-  nbCibles: number;
+  cibles: readonly CibleReleve[];
   releves: readonly ReleveEcran[];
 }): AnomalieEcran[] {
   const anomalies: AnomalieEcran[] = [];
-  const origines = e.releves.filter((r) => r.rang === 0);
-  if (origines.length < e.nbCibles) {
-    const manque = e.nbCibles - origines.length;
-    anomalies.push({
-      code: "completude",
-      detail: `${manque} apporteur(s) sans relevé : ${origines.length} préparé(s) pour ${e.nbCibles} cible(s).`,
-    });
+  // Complétude par ENSEMBLES d'apporteurId (jamais par comptage : un résilié préparé ne doit pas
+  // masquer un signé manquant) : une anomalie par apporteur cible sans relevé d'origine (rang 0).
+  const avecReleve = new Set(e.releves.filter((r) => r.rang === 0).map((r) => r.apporteurId));
+  for (const c of e.cibles) {
+    if (!avecReleve.has(c.apporteurId)) {
+      anomalies.push({ code: "completude", detail: `${c.nom} : aucun relevé préparé pour la période.` });
+    }
   }
   for (const r of e.releves) {
     if (r.statut === "ecarte") continue;
@@ -301,8 +317,60 @@ export async function lireVueStatistiques(maintenant: Date = new Date()): Promis
   };
 }
 
+/**
+ * Cibles de la période (même définition que la préparation) : les apporteurs `signe` dont le
+ * contrat est contresigné AVANT la coupure (un signé après n'est pas attendu), plus, Q4 b, les
+ * résiliés ou retirés qui ont eu un mouvement dans le mois ou ont encore de l'argent en jeu
+ * (autofacture non versée, ligne en attente d'autofacture).
+ */
+export async function lireCiblesPeriode(
+  periode: string,
+  voitIdentite: boolean,
+): Promise<CibleReleve[]> {
+  const { debut, coupure } = bornesPeriode(periode);
+  const select = { id: true, prenom: true, nom: true, denomination: true } as const;
+  const [signes, avecArgent] = await Promise.all([
+    prisma.apporteurReseau.findMany({
+      where: {
+        statut: "signe",
+        OR: [{ signeParSocieteAt: null }, { signeParSocieteAt: { lt: coupure } }],
+      },
+      select,
+      take: 5000,
+    }),
+    prisma.apporteurReseau.findMany({
+      where: {
+        statut: { not: "signe" },
+        commissions: {
+          some: {
+            statut: { not: "annulee" },
+            OR: [
+              { autofactureEmiseAt: { gte: debut, lt: coupure } },
+              { autofactureNumero: { not: null }, verseeAt: null },
+              { autofactureAttenteDepuis: { not: null }, autofactureNumero: null },
+            ],
+          },
+        },
+      },
+      select,
+      take: 5000,
+    }),
+  ]);
+  const vus = new Map<string, CibleReleve>();
+  for (const a of [...signes, ...avecArgent]) {
+    if (vus.has(a.id)) continue;
+    vus.set(a.id, {
+      apporteurId: a.id,
+      nom: voitIdentite
+        ? a.denomination || `${a.prenom} ${a.nom}`.trim() || "Apporteur"
+        : "Apporteur (identité masquée)",
+    });
+  }
+  return [...vus.values()];
+}
+
 export async function lireVuePeriode(periode: string, voitIdentite: boolean): Promise<VuePeriode> {
-  const [lignes, nbCibles] = await Promise.all([
+  const [lignes, cibles] = await Promise.all([
     prisma.releveMensuelApporteur.findMany({
       where: { periode },
       orderBy: [{ numero: "asc" }],
@@ -316,6 +384,7 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
         nbLignes: true,
         facturesHtCents: true,
         avoirsHtCents: true,
+        contenu: true,
         viresTtcCents: true,
         enAttenteHtCents: true,
         cumulAnneeHtCents: true,
@@ -327,10 +396,10 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
         apporteur: { select: { prenom: true, nom: true, denomination: true, email: true } },
       },
     }),
-    prisma.apporteurReseau.count({ where: { statut: "signe" } }),
+    lireCiblesPeriode(periode, voitIdentite),
   ]);
   return {
-    nbCibles,
+    cibles,
     releves: lignes.map((l) => ({
       id: l.id,
       numero: l.numero,
@@ -345,6 +414,7 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
       nbLignes: l.nbLignes,
       facturesHtCents: l.facturesHtCents,
       avoirsHtCents: l.avoirsHtCents,
+      ...totauxTvaDeContenu(l.contenu),
       viresTtcCents: l.viresTtcCents,
       enAttenteHtCents: l.enAttenteHtCents,
       cumulAnneeHtCents: l.cumulAnneeHtCents,

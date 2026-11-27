@@ -53,6 +53,8 @@ export function TableauReleves({
             <th className="pr-[var(--space-admin-3)] text-right">Lignes</th>
             <th className="pr-[var(--space-admin-3)] text-right">Facturé HT</th>
             <th className="pr-[var(--space-admin-3)] text-right">Avoirs HT</th>
+            <th className="pr-[var(--space-admin-3)] text-right">TVA</th>
+            <th className="pr-[var(--space-admin-3)] text-right">TTC</th>
             <th className="pr-[var(--space-admin-3)] text-right">Viré TTC</th>
             <th className="pr-[var(--space-admin-3)] text-right">En attente HT</th>
             <th className="pr-[var(--space-admin-3)]">Statut</th>
@@ -75,6 +77,8 @@ export function TableauReleves({
               <td className="pr-[var(--space-admin-3)] text-right">{r.nbLignes}</td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.facturesHtCents)}</td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.avoirsHtCents)}</td>
+              <td className="pr-[var(--space-admin-3)] text-right">{eur(r.tvaCents)}</td>
+              <td className="pr-[var(--space-admin-3)] text-right">{eur(r.ttcCents)}</td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.viresTtcCents)}</td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.enAttenteHtCents)}</td>
               <td className="pr-[var(--space-admin-3)]">

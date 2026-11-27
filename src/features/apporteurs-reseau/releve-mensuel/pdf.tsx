@@ -9,11 +9,12 @@
 import React from "react";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
-import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
+import { COORDONNEES_PUBLIQUES, IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
 import { uploadToR2 } from "@/lib/r2-storage";
 // Plomberie PDF (charte, polices, nettoyage d'espaces) empruntée à `registre-pdf` : polices
 // enregistrées à son import ; aucun import direct du domaine Qualiopi (garde d'isolation).
 import { styles as base, txt, enBuffer } from "@/features/conformite-rgpd/registre-pdf";
+import { DELAI_CONTESTATION_APPORTEUR_JOURS } from "../autofacture-donnees";
 import { sha256Hex } from "./empreinte";
 import type { ContenuReleveV1, LigneReleve, PieceReleve, VirementReleve } from "./types";
 
@@ -28,6 +29,17 @@ const styles = StyleSheet.create({
   gras: { fontWeight: 700 },
   vide: { fontSize: 9, marginTop: 6 },
 });
+
+/**
+ * En-tête du PDF, HORS `contenu` figé (plan § 2.5 : les coordonnées de l'apporteur ne figurent que
+ * sur le PDF). `numero` est le numéro `REL-AAAA-MM-NNNN` du relevé (jamais `AXI-APP-`, qui est celui
+ * des autofactures) ; `rectifie` n'existe que pour un rectificatif (« Rectifie le relevé n° … »).
+ */
+export interface EnteteReleve {
+  readonly numero: string;
+  readonly destinataire: string;
+  readonly rectifie?: { readonly numero: string; readonly date: string };
+}
 
 // ── Formats (purs, sur des centimes entiers et des dates « AAAA-MM-JJ » déjà figées) ──────────
 
@@ -159,7 +171,13 @@ function Section({ titre, children }: { titre: string; children: React.ReactNode
   );
 }
 
-export function ReleveMensuelPdf({ contenu }: { contenu: ContenuReleveV1 }) {
+export function ReleveMensuelPdf({
+  contenu,
+  entete: enteteReleve,
+}: {
+  contenu: ContenuReleveV1;
+  entete: EnteteReleve;
+}) {
   const c = contenu;
   const entete = `Relevé de commissions — ${moisLisible(c.periode)}`;
   return (
@@ -175,6 +193,15 @@ export function ReleveMensuelPdf({ contenu }: { contenu: ContenuReleveV1 }) {
         <Text style={base.entite}>{txt(IDENTITE_LEGALE.legalName)}</Text>
         <Text style={base.entite}>{txt(adresseSiegeUneLigne())}</Text>
         <Text style={base.titre}>{txt(entete)}</Text>
+        <Text style={styles.ligne}>{txt(`Relevé n° ${enteteReleve.numero}`)}</Text>
+        <Text style={styles.ligne}>{txt(`Destinataire : ${enteteReleve.destinataire}`)}</Text>
+        {enteteReleve.rectifie && (
+          <Text style={styles.ligne}>
+            {txt(
+              `Rectifie le relevé n° ${enteteReleve.rectifie.numero} du ${jour(enteteReleve.rectifie.date)}`,
+            )}
+          </Text>
+        )}
         <Text style={styles.mention}>{txt(c.mention)}</Text>
         <Text style={styles.detail}>
           {txt(`Arrêté au ${jour(c.coupureAt.slice(0, 10))} (heure de Paris).`)}
@@ -217,6 +244,14 @@ export function ReleveMensuelPdf({ contenu }: { contenu: ContenuReleveV1 }) {
               <Rangee libelle="Facturé HT" valeur={eur(c.totaux.factureHtCents)} />
               <Rangee libelle="Avoirs HT" valeur={eur(-c.totaux.avoirHtCents)} />
               <Rangee libelle="Net HT" valeur={eur(c.totaux.netHtCents)} fort />
+              <Rangee
+                libelle={`Dont commissions facturées : ${c.sousTotaux.facturees.nb}`}
+                valeur={`${eur(c.sousTotaux.facturees.htCents)} HT`}
+              />
+              <Rangee
+                libelle={`Dont commissions versées : ${c.sousTotaux.versees.nb}`}
+                valeur={`${eur(c.sousTotaux.versees.htCents)} HT`}
+              />
               <Rangee libelle="TVA" valeur={eur(c.totaux.tvaCents)} />
               <Rangee libelle="Net TTC" valeur={eur(c.totaux.ttcCents)} />
               <Rangee libelle="Viré dans le mois (TTC)" valeur={eur(c.totaux.vireTtcCents)} />
@@ -273,6 +308,11 @@ export function ReleveMensuelPdf({ contenu }: { contenu: ContenuReleveV1 }) {
           <Rangee libelle="Viré (TTC)" valeur={eur(c.cumulAnnee.vireTtcCents)} />
         </Section>
 
+        <Text style={[styles.mention, { marginTop: 12 }]}>
+          {txt(
+            `Réclamations : ${COORDONNEES_PUBLIQUES.contactEmail}. Les délais sont ceux du contrat d'apporteur (contestation d'une autofacture : ${DELAI_CONTESTATION_APPORTEUR_JOURS} jours, annexe 2, article 2.4) ; ce relevé n'en crée aucun nouveau.`,
+          )}
+        </Text>
         <Text style={[styles.mention, { marginTop: 12 }]}>{txt(c.mention)}</Text>
         <View style={base.pied} fixed>
           <Text>{txt(`${IDENTITE_LEGALE.legalName} — ${entete}`)}</Text>
@@ -287,7 +327,7 @@ export function ReleveMensuelPdf({ contenu }: { contenu: ContenuReleveV1 }) {
  * Tous les textes que le PDF affiche, dans l'ordre : sert aux gardes (mention, vocabulaire, PII)
  * sans décoder un PDF compressé. Parcourt l'arbre React en développant les composants fonction.
  */
-export function textesDuReleve(contenu: ContenuReleveV1): string[] {
+export function textesDuReleve(contenu: ContenuReleveV1, entete: EnteteReleve): string[] {
   const sortie: string[] = [];
   const visiter = (n: unknown): void => {
     if (n === null || n === undefined || typeof n === "boolean") return;
@@ -310,7 +350,7 @@ export function textesDuReleve(contenu: ContenuReleveV1): string[] {
     }
     visiter(el.props?.children);
   };
-  visiter(<ReleveMensuelPdf contenu={contenu} />);
+  visiter(<ReleveMensuelPdf contenu={contenu} entete={entete} />);
   return sortie;
 }
 
@@ -322,9 +362,10 @@ export function textesDuReleve(contenu: ContenuReleveV1): string[] {
 export async function rendreEtStockerPdfReleve(
   contenu: ContenuReleveV1,
   cle: string,
+  entete: EnteteReleve,
 ): Promise<{ r2Key: string; sha256: string }> {
   if (!cle.trim()) throw new Error("Clé R2 du relevé vide.");
-  const octets = await enBuffer(<ReleveMensuelPdf contenu={contenu} />);
+  const octets = await enBuffer(<ReleveMensuelPdf contenu={contenu} entete={entete} />);
   const sha256 = sha256Hex(octets);
   await uploadToR2(cle, octets, "application/pdf", { sha256, periode: contenu.periode });
   return { r2Key: cle, sha256 };

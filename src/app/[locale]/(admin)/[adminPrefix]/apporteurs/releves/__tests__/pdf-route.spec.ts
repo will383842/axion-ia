@@ -8,12 +8,16 @@ const d = vi.hoisted(() => ({
   releve: null as null | { pdfR2Key: string | null; numero: string },
   octets: Buffer.from("%PDF-1.7 test") as Buffer | null,
   cleLue: "",
+  where: undefined as unknown,
 }));
 
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("@/server/auth/garde-route-console", () => ({ refuserSiHorsConsole: async () => null }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { releveMensuelApporteur: { findFirst: async () => d.releve } },
+  prisma: { releveMensuelApporteur: { findFirst: async (arg: { where: unknown }) => {
+        d.where = arg.where;
+        return d.releve;
+      } } },
 }));
 vi.mock("@/lib/r2-storage", () => ({
   getObjectBufferR2: async (cle: string) => {
@@ -64,5 +68,9 @@ describe("GET releves/[periode]/pdf", () => {
     expect(r.headers.get("content-type")).toBe("application/pdf");
     expect(r.headers.get("cache-control")).toBe("no-store");
     expect(d.cleLue).toBe("apporteurs/releves/a1/REL-2026-10-0001-abcd1234.pdf");
+  });
+  it("cherche le couple (numéro, période) : un numéro d'une autre période ne sert pas", async () => {
+    await GET(req("REL-2026-10-0001"), ctx("2026-10"));
+    expect(d.where).toEqual({ numero: "REL-2026-10-0001", periode: "2026-10" });
   });
 });
