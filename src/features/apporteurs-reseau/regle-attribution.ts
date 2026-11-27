@@ -14,7 +14,7 @@
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
  */
 
-import { PROTECTION_MOIS, ajouterJours, ajouterMois, finDuNiemeJourParis } from "./regles";
+import { PROTECTION_MOIS, ajouterMois, finDuNiemeJourParis } from "./regles";
 
 /** Durée de la réservation provisoire, à compter de la saisie (`recueAt`). */
 export const RESERVATION_PROVISOIRE_JOURS = 60;
