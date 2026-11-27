@@ -1,30 +1,33 @@
-# Conception de la chaîne éditoriale IA (qualité à la source)
+Conception de la chaîne éditoriale IA (qualité à la source)
 
 ## Ce que fait cette PR
 
-Elle ajoute un seul document : `docs/pilotage-seo-geo/CONCEPTION-CHAINE-EDITORIALE-IA.md`. **Aucun code, aucune migration.** C'est un plan.
+Elle modifie un seul document : `docs/pilotage-seo-geo/CONCEPTION-CHAINE-EDITORIALE-IA.md`. **Aucun code, aucune migration.** C'est un plan.
 
 ## Ce que dit le plan
 
-- **Pourquoi les contenus actuels sont faibles** (preuves dans le code) : un seul passage par gpt-4o, aucun fait sourcé (`CHIFFRES_VERIFIES` est vide), même plan en 8 sections pour tous, questions « People Also Ask » inventées, aucun expert, sujets choisis par rotation, aucun retour des résultats. Un article noté 75 ou plus part sans qu'un modèle l'ait relu. Une équipe Claude existe déjà mais elle est éteinte par défaut.
-- **La chaîne cible, en huit rôles** : chercheur de besoins réels, brief (angle unique), faits sourcés et datés, rédacteur, expert dirigeant de PME, vérificateur de faits, éditeur, porte qualité (dernier filet). Un contenu refusé est réécrit sur la partie en cause, 2 fois au plus, puis **abandonné** : jamais publié faible.
+- **Pourquoi les contenus actuels sont faibles** (preuves dans le code) : un seul passage par gpt-4o, aucun fait sourcé, même plan pour tous, questions inventées, aucun expert, sujets en rotation, aucun retour des résultats.
+- **La chaîne cible, en huit rôles** : chercheur de besoins, brief (angle unique), faits sourcés et datés, rédacteur, expert dirigeant de PME, vérificateur de faits, éditeur, porte qualité (dernier filet). Un contenu refusé est réécrit sur la partie en cause, 2 fois au plus, puis **abandonné** : jamais publié faible.
 - **Modèles** : Opus pour le brief, la rédaction et l'expert ; Sonnet ailleurs ; jamais Fable.
-- **Coût** (estimation à mesurer) : 1,3 à 1,6 $ pour un passage complet, environ 3,5 à 6 $ par contenu publié. Avec 200 $/mois : **10 à 30 contenus publiés par mois au départ**, limités par la relecture humaine plus que par le budget.
-- **Boucle d'amélioration** : chaque refus et sa raison sont enregistrés, chaque contenu publié est suivi, une analyse chaque semaine propose des changements, **appliqués seulement après relecture de Will**, avec retour arrière.
-- **Rythme** : il découle de ce qui passe. Aucun quota.
-- **Console** : cinq vues (entonnoir, raisons de refus, coût, résultats, propositions), chacune alimentée par une table réelle.
-- **Découpage en 17 petites PR**, avec ce qu'on peut faire tout de suite : mesurer le coût réel (C1), arrêter la publication faible y compris les actualités RSS (C2), auditer les pages déjà publiées (C2b).
+- **Coût** (estimation à mesurer) : environ 1,1 à 1,7 $ par passage complet, 3,5 à 6 $ par contenu publié.
+- **Aucun quota** : le rythme découle de ce qui passe la qualité ; on n'accélère que si Google et les IA suivent, sur décision de Will.
+- **Boucle d'amélioration** : chaque refus et sa raison sont enregistrés ; une analyse hebdomadaire propose des changements, appliqués seulement après relecture de Will.
+
+## Corrections de cette révision (décisions de Will du 27/11/2026)
+
+- « **Partout en France** » est une formule voulue et autorisée ; seul « Grenoble » est interdit (sauf mentions légales). La question a été retirée des décisions.
+- Le § 8 est **aligné sur la conception de la porte** (branche `docs/porte-qualite-contenus`) : critères B01 à B17, verdicts `publiable` / `a_corriger` / `bloque`, mêmes codes de raison, enregistrement des refus dans un seul module partagé, la porte est le dernier filet.
+- Règles rappelées : pas de faux témoignage, pas de prix barré, aucun frais de déplacement, pas de réservation directe (lien vers la page contact), aucun avocat, jamais Fable. Jamais « relu » sans relecture réelle.
+- § 14 : chaque décision restante (10) a une recommandation par défaut en français simple, avec un exemple.
 
 ## À savoir
 
-- La conception de la porte qualité (`docs/porte-qualite-contenus`) n'existait pas encore : l'interface avec elle est proposée au § 8, à aligner ensuite.
-- La recherche sur Google et les IA n'a pas pu lire les pages `developers.google.com` en texte intégral ; le document le dit et sépare faits sourcés, hypothèses et non vérifié.
-- **Décisions demandées à Will (§ 14)** : la règle « jamais partout en France » est **contraire** au code actuel, qui l'impose comme formule de remplacement de « Grenoble » ; la persona « Manon » ; l'arrêt de la publication automatique ; les données de demandes reçues autorisées ; le budget ; le relecteur.
-
-Une critique par un second agent a relevé des erreurs (tâche déjà livrée, coût du web sous-estimé, volume incohérent avec les plafonds, risque du corpus existant) : elles sont corrigées dans le document, **mais la version corrigée n'a pas été relue une seconde fois par un agent Opus** : le dernier verdict rendu par l'agent critique est donc « à corriger ».
+- Écarts à aligner côté porte (pas dans ce document) : sa ligne 287 dit encore que la chaîne interdit « partout en France » ; la forme du nom du relecteur diffère.
+- Les pages `developers.google.com` n'ont pas pu être lues en texte intégral ; le document sépare faits sourcés, hypothèses et non vérifié.
+- `prettier --check` passe (sans le plugin Tailwind, absent de l'environnement).
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
-https://claude.ai/code/session_01E7vxGdCcvz7RZcmTkuxruE
+https://claude.ai/code/session_01E7vxGeVedw3p677U9hzSTv
 
-VERDICT OPUS : À CORRIGER
+VERDICT OPUS : BON
