@@ -37,11 +37,11 @@ import { annoncerAttribution } from "./attribution-annonce";
 import { finDuNiemeJourParis } from "./regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
-import { presentationOccupe } from "./presentations";
 import { versReservationProvisoire } from "./regle-attribution";
 import {
   type MotifRendezVousRefuse,
   finDeProtectionRendezVous,
+  presentationOccupe,
   regleDe,
   rendezVousRecevable,
 } from "./regle-attribution";
