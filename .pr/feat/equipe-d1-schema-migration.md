@@ -48,3 +48,5 @@ https://claude.ai/code/session_01E7vxGdGtv3VwYAA3Wn61C9
 VERDICT OPUS : BON
 
 AUDIT DONNÉES OPUS : BON
+
+MAJ main : conflits résolus (tests/unit/ci/contacts-guide-reseau-origine-optionnelle.spec.ts)
