@@ -22,7 +22,7 @@
  * veille d'indexation (P18). Décalés d'autres crons pour ne pas concentrer la charge.
  *
  * Fail-soft : chaque check est dans son try/catch. Une erreur sur queueStuck
- * n'empêche pas soft404 + indexationStagnant de tourner.
+ * n'empêche pas soft404 + anomalies de tourner (la veille d'indexation a son propre passage).
  *
  * Note V1.5 — `alertProviderDown5min/30min` non câblé ici : nécessite un
  * compteur fail-counter dans le call provider lui-même (cost-tracker ou
