@@ -1,6 +1,7 @@
 // Export art. 15 du réseau d'apporteurs : module à part de `rgpd-dossier-client.ts`, car
 // ses colonnes sont chiffrées par `encryptPii` (formulaire), pas par `chiffrer-parole`.
 
+import { estTableAbsente } from "@/lib/commercial-application/reponse-entrante";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -66,6 +67,13 @@ export interface ExportReseauApporteur {
       readonly entreprise: string;
       readonly presenteeLe: Date;
       readonly statut: string;
+    }>;
+    /** Messages reçus de lui (e-mails, demandes d'aide) : objet, date, extrait déchiffré. */
+    readonly messagesRecus?: ReadonlyArray<{
+      readonly recuLe: Date;
+      readonly source: string;
+      readonly objet: string;
+      readonly extrait: string | null;
     }>;
   };
   readonly presenteePar: ReadonlyArray<{
@@ -160,6 +168,19 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         select: { denomination: true, recueAt: true, statut: true },
       })
     : [];
+  // Table pas encore migrée (fenêtre app/worker) : liste vide.
+  const messages = a
+    ? await Promise.resolve(
+        prisma.apporteurMessageRecu.findMany({
+          where: { apporteurId: a.id },
+          orderBy: { receivedAt: "desc" },
+          select: { receivedAt: true, source: true, subject: true, excerpt: true },
+        }),
+      ).catch((e: unknown) => {
+        if (estTableAbsente(e)) return []; // table pas encore migrée (fenêtre app/worker)
+        throw e;
+      })
+    : [];
   return {
     apporteur: a
       ? {
@@ -198,6 +219,12 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
           signeLe: a.signeParApporteurAt,
           contresigneLe: a.signeParSocieteAt,
           pieces: pieces.map((p) => ({ type: p.type, statut: p.statut, deposeeLe: p.deposeeAt })),
+          messagesRecus: messages.map((m) => ({
+            recuLe: m.receivedAt,
+            source: m.source,
+            objet: m.subject,
+            extrait: decryptPii(m.excerpt),
+          })),
           entreprisesPresentees: siennes.map((p) => ({
             entreprise: p.denomination,
             presenteeLe: p.recueAt,

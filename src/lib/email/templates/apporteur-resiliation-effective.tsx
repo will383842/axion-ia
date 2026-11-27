@@ -5,8 +5,9 @@
 //
 // Rappelle seulement ce que le contrat prévoit : les commandes signées avant la date d'effet
 // restent commissionnées, les commissions acquises sont versées. Si de l'argent est en jeu
-// (`argentEnJeu`), la charge porte le lien de l'espace en mode restreint (prop `cta`, sans
-// recopie en clair). Notification, rien d'autre : aucune invitation à agir.
+// (`argentEnJeu`), la charge peut encore porter un lien, mais le gabarit NE L'AFFICHE PAS :
+// le lien de l'espace est coupé à la fin du contrat (article 12.3, non modifié ici).
+// Notification, rien d'autre : aucune invitation à agir.
 
 import { Text } from "@react-email/components";
 
@@ -34,9 +35,9 @@ export const COPY_RESILIATION_EFFECTIVE = {
       : "La résiliation de votre contrat d'apporteur d'affaires, qui vous a été notifiée, prend effet ce jour.",
   commissions:
     "Les commandes signées avant cette date par les entreprises qui vous sont attribuées ou réservées restent commissionnées (article 12.3), et vos commissions acquises vous sont facturées et versées normalement (article 12.2).",
-  espace:
-    "Votre espace reste accessible pour consulter vos commissions et, si nous vous le demandons, déposer l'attestation de vigilance correspondante.",
-  cta: "Ouvrir mon espace",
+  espace: "Votre accès à l'espace prend fin avec votre contrat.",
+  documents:
+    "Vous continuerez de recevoir par e-mail vos autofactures, vos avoirs et vos décomptes, ainsi que le motif de tout blocage, jusqu'à l'extinction de vos droits (article 12.3).",
   fin: "Nous vous remercions de votre collaboration.",
 } as const;
 
@@ -53,16 +54,12 @@ export function ApporteurResiliationEffectiveEmail({
   const p = payload as Payload;
   const prenom = typeof p.prenom === "string" ? (p.prenom.trim().split(/\s+/)[0] ?? "") : "";
   const effet = typeof p.effetLe === "string" ? p.effetLe.trim() : "";
-  const lien = p.argentEnJeu === true && typeof p.lien === "string" && p.lien ? p.lien : null;
   return (
     <EmailLayout
       famille="B"
       preview={COPY_RESILIATION_EFFECTIVE.preview}
       title={COPY_RESILIATION_EFFECTIVE.title}
       locale={locale === "fr" ? "fr" : "en"}
-      {...(lien
-        ? { cta: { label: COPY_RESILIATION_EFFECTIVE.cta, href: lien }, ctaSecret: true }
-        : {})}
       sansReseauxSociaux
       signature="fondateur-court"
     >
@@ -70,9 +67,8 @@ export function ApporteurResiliationEffectiveEmail({
         {`${salutation({ prenom }, locale)} ${COPY_RESILIATION_EFFECTIVE.effet(effet)}`}
       </Text>
       <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.commissions}</Text>
-      {lien ? (
-        <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.espace}</Text>
-      ) : null}
+      <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.espace}</Text>
+      <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.documents}</Text>
       <Text style={emailStyles.paragraphStyle}>{COPY_RESILIATION_EFFECTIVE.fin}</Text>
     </EmailLayout>
   );

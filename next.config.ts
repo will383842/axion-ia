@@ -280,6 +280,14 @@ const nextConfig: NextConfig = {
   async redirects() {
     return etendreRedirections(
       [
+        // Ancienne fiche PDF d'apporteur retirée du dépôt public (PR #2399) : les e-mails déjà
+        // envoyés pointaient dessus. 302 (temporaire, pas mis en mémoire) vers la page publique
+        // des apporteurs, plutôt qu'un 404 sec ; la fiche actuelle s'ouvre par le lien personnel.
+        {
+          source: "/documents/apporteurs/comment-ca-marche.pdf",
+          destination: "/fr/apporteur-affaires",
+          statusCode: 302,
+        },
         // V2-10 PR-4 (2026-11-20) : l'ancien formulaire de l'Observatoire est fermé, le Score IA
         // TPE-PME (servi à /fr/diagnostic) devient le seul canal. 301 explicite (pas `permanent`,
         // qui donne un 308). Ni la page, ni le formulaire, ni aucune donnée ne sont supprimés.

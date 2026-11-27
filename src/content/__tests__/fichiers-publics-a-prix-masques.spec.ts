@@ -21,8 +21,8 @@
  *     tarifs d'ÉDITEURS (Google Workspace, OpenAI…), des exemples de ROI et des
  *     plafonds publics (CPF, Bpifrance) — aucun prix d'Axion-IA ;
  *   - les trois fiches et le dossier intervenant : aucun montant ;
- *   - `public/documents/apporteurs/comment-ca-marche.pdf` : fiche de l'apporteur
- *     SOUS CONTRAT, liée seulement par l'e-mail privé `apporteur-demarrage.tsx`.
+ *   - `public/documents/apporteurs/comment-ca-marche.pdf` : RETIRÉ du dépôt (le dépôt est
+ *     public) ; la fiche actuelle est servie par le lien personnel de l'apporteur.
  */
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
@@ -106,7 +106,6 @@ describe("fichiers publics porteurs de prix : masqués par une redirection tempo
   it("la redirection ne déborde pas : la page /fr/catalogue et le guide IA restent servis", async () => {
     const rs = await regles();
     expect(regleQuiCouvre(rs, "/imprimes/guide-ia-entreprise-2026-axion-ia.pdf")).toBeUndefined();
-    expect(regleQuiCouvre(rs, "/documents/apporteurs/comment-ca-marche.pdf")).toBeUndefined();
     expect(regleQuiCouvre(rs, "/fr/catalogue")).toBeUndefined();
   });
 });
