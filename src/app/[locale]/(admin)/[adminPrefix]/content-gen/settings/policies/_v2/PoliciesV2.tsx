@@ -15,6 +15,7 @@ interface PoliciesConfig {
   rssMaxPerDay: number;
   rssMaxAgeDays: number;
   newsAutoPublish: boolean;
+  publicationSansRelectureAutorisee?: boolean;
 }
 
 interface Props {
@@ -34,6 +35,7 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
       rssMaxPerDay: Number(formData.get("rssMaxPerDay") ?? 20),
       rssMaxAgeDays: Number(formData.get("rssMaxAgeDays") ?? 3),
       newsAutoPublish: formData.get("newsAutoPublish") === "on",
+      publicationSansRelectureAutorisee: formData.get("publicationSansRelectureAutorisee") === "on",
     });
   }
 
@@ -50,11 +52,26 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
             <label className="admin-label">
               <input
                 type="checkbox"
+                name="publicationSansRelectureAutorisee"
+                defaultChecked={cfg.publicationSansRelectureAutorisee === true}
+              />{" "}
+              Autoriser la publication SANS relecture humaine (retour arrière). Décoché (par défaut)
+              = tout contenu généré attend sa validation dans /review-queue, les deux cases
+              d’auto-publication ci-dessous n’ont alors aucun effet, et la génération est plafonnée
+              à 3 contenus par jour (actualités RSS comprises).
+            </label>
+          </div>
+
+          <div className="admin-field">
+            <label className="admin-label">
+              <input
+                type="checkbox"
                 name="factoryAutoPublishAllBlogTypes"
                 defaultChecked={cfg.factoryAutoPublishAllBlogTypes}
               />{" "}
-              Full auto-publish — publie TOUS les types automatiquement, sans relecture (décocher =
-              repasse en validation manuelle via /review-queue)
+              Full auto-publish (sans effet sans l’autorisation ci-dessus) — publie TOUS les types
+              automatiquement, sans relecture (décocher = repasse en validation manuelle via
+              /review-queue)
             </label>
           </div>
 

@@ -94,6 +94,14 @@ interface Payload {
   piecesARetransmettre?: string[];
   /** Vigilance : `premiere` (approche de 5 000 €) ou `renouvellement` (6 mois). */
   variante?: string;
+  /**
+   * Commission touchée par l'avoir du client (art. 4.5) : montants déjà formatés (jamais de centimes
+   * bruts) et date de l'avoir en clair. Variante : `retenue` (défaut), `reduite`, `annulee`, `reprise`.
+   */
+  avant?: string;
+  apres?: string;
+  repris?: string;
+  annulationLe?: string;
   /** Commission facturée : montant formaté, numéro d'autofacture, échéance de paiement (J+30). */
   montant?: string;
   echeance?: string;
@@ -446,6 +454,39 @@ export const COPY_DEMARRAGE = {
       "La facture d'une commande sur laquelle vous étiez commissionné a été annulée par un avoir. Comme le prévoit votre contrat (article 4.5), la somme correspondante, déjà facturée mais pas encore versée, est annulée : vous trouverez ci-joint l'avoir d'autofacture qui la neutralise.",
     suite:
       "Cela ne change rien à vos autres commissions. Si vous avez une question, répondez simplement à cet e-mail.",
+    // Variantes SANS pièce jointe (lot « annonces de l'avoir client ») : aucune somme n'est demandée.
+    // ⛔ Les montants viennent du payload (chaînes déjà formatées) : jamais écrits ici. Pas de délai
+    // en jours : des dates. Un payload sans variante, ou de variante inconnue, garde le texte ci-dessus.
+    variantes: {
+      // EN (non câblé) : Subject « Your commission is reduced » / title « Commission reduced » / body « The client received a credit note on ${annulationLe} for an order on which you earned a commission. As provided by your contract (article 4.5), your commission is recalculated on the price actually paid, rounded to the nearest cent: it goes from ${avant} to ${apres} excluding VAT. It had not yet been invoiced: nothing is asked of you. Your other commissions are unchanged. »
+      reduite: {
+        subject: "Votre commission est réduite",
+        title: "Commission réduite",
+        preview: "Votre commission est recalculée sur le prix réellement payé.",
+        texte: (avant: string, apres: string, le: string) =>
+          `Le client a reçu un avoir${le ? ` le ${le}` : ""} sur une commande pour laquelle vous étiez commissionné. Comme le prévoit votre contrat (article 4.5), votre commission est recalculée sur le prix réellement payé, arrondie au centime le plus proche : elle passe de ${avant} à ${apres} hors taxes. Elle n'avait pas encore été facturée : aucune somme ne vous est demandée.`,
+      },
+      // EN (non câblé) : Subject « Your commission is cancelled » / title « Commission cancelled » / body « The client received a credit note on ${annulationLe} cancelling an order on which you earned a commission. As provided by your contract (article 4.5), the related commission (${avant} excluding VAT) is cancelled. It had not yet been invoiced: nothing is asked of you. »
+      annulee: {
+        subject: "Votre commission est annulée",
+        title: "Commission annulée",
+        preview: "Le client a reçu un avoir qui annule la commande.",
+        texte: (avant: string, _apres: string, le: string) =>
+          `Le client a reçu un avoir${le ? ` le ${le}` : ""} qui annule une commande pour laquelle vous étiez commissionné. Comme le prévoit votre contrat (article 4.5), la commission correspondante (${avant} hors taxes) est annulée. Elle n'avait pas encore été facturée : aucune somme ne vous est demandée.`,
+      },
+      // EN (non câblé) : Subject « Deduction from a commission already paid » / title « Commission taken back » / body « The client received a credit note on ${annulationLe} for an order whose commission has already been paid to you. As provided by your contract (article 4.5), ${repris} excluding VAT are taken back, rounded to the nearest cent. This amount will be deducted from your next commissions, and the matching self-billing credit note will be sent to you then (articles 4.5 and 12.4). »
+      reprise: {
+        subject: "Reprise sur une commission déjà versée",
+        title: "Commission reprise",
+        preview: "Une somme sera déduite de vos prochaines commissions.",
+        texte: (repris: string, _apres: string, le: string) =>
+          `Le client a reçu un avoir${le ? ` le ${le}` : ""} sur une commande pour laquelle votre commission vous a déjà été versée. Comme le prévoit votre contrat (article 4.5), ${repris} hors taxes sont repris, arrondis au centime le plus proche. Cette somme sera déduite de vos prochaines commissions, et l'avoir d'autofacture correspondant vous sera envoyé à ce moment-là (articles 4.5 et 12.4).`,
+      },
+    },
+    suiteVariante:
+      "Cela ne change rien à vos autres commissions. Si vous avez une question, écrivez-nous depuis votre espace.",
+    // La reprise est justement déduite de vos autres commissions : jamais « ne change rien ».
+    suiteReprise: "Si vous avez une question sur cette reprise, écrivez-nous depuis votre espace.",
   },
   dossierRecu: {
     // ⛔ Aucun délai promis : la vérification dépend des pièces reçues.
@@ -1155,26 +1196,50 @@ export function ApporteurRegimeTvaEmail({ locale, payload }: Props) {
 
 // ── Commission annulée après l'avoir du client (art. 4.5) ───────────────
 
+type VarianteAvoirClient = "reduite" | "annulee" | "reprise";
+
+/** Variante demandée par le payload ; toute autre valeur (ou aucune) = le texte « retenue » actuel. */
+function varianteAvoirClient(p: Payload | undefined): VarianteAvoirClient | null {
+  const v = p?.variante;
+  return v === "reduite" || v === "annulee" || v === "reprise" ? v : null;
+}
+
 export const apporteurCommissionAvoirClientSubject = (
   _locale: Locale,
-  _payload?: Record<string, unknown>,
-): string => COPY_DEMARRAGE.commissionAvoirClient.subject;
+  payload?: Record<string, unknown>,
+): string => {
+  const v = varianteAvoirClient(payload as Payload | undefined);
+  return v
+    ? COPY_DEMARRAGE.commissionAvoirClient.variantes[v].subject
+    : COPY_DEMARRAGE.commissionAvoirClient.subject;
+};
 
 export function ApporteurCommissionAvoirClientEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.commissionAvoirClient;
+  const v = varianteAvoirClient(p);
+  const variante = v ? t.variantes[v] : null;
+  const corps = variante
+    ? variante.texte(
+        texteOuNull(v === "reprise" ? p.repris : p.avant) ?? "la somme concernée",
+        texteOuNull(p.apres) ?? "",
+        texteOuNull(p.annulationLe) ?? "",
+      )
+    : t.texte;
   return (
     <EmailLayout
       famille="B"
-      preview={t.preview}
-      title={t.title}
+      preview={variante ? variante.preview : t.preview}
+      title={variante ? variante.title : t.title}
       locale={locale === "fr" ? "fr" : "en"}
       sansReseauxSociaux
       signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+      <Text style={emailStyles.paragraphStyle}>{corps}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {v === "reprise" ? t.suiteReprise : variante ? t.suiteVariante : t.suite}
+      </Text>
     </EmailLayout>
   );
 }

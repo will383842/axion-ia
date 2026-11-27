@@ -24,6 +24,62 @@ const LIGNES = new Map(
   SOURCES.map((f) => [f, readFileSync(join(RACINE, f), "utf8").split("\n")] as const),
 );
 
+/**
+ * S6-2 : pages et gabarits qui parlent de géographie hors des fichiers de contenu
+ * ville. Mêmes motifs que ci-dessus, lus dans le code servi (commentaires ignorés).
+ */
+const PAGES: ReadonlyArray<string> = [
+  "src/components/sections/LocalGeoFaqSection.tsx",
+  "src/components/sections/LocalCoverageSection.tsx",
+  "src/app/[locale]/implantations/page.tsx",
+  "src/app/[locale]/implantations/[region]/page.tsx",
+  "src/components/sections/VilleServicePageTemplate.tsx",
+];
+const LIGNES_PAGES = new Map(
+  PAGES.map((f) => [f, readFileSync(join(process.cwd(), f), "utf8").split("\n")] as const),
+);
+
+function fautesPages(motif: RegExp): string[] {
+  const re = new RegExp(motif.source, motif.flags.replace("g", ""));
+  const out: string[] = [];
+  for (const [f, lignes] of LIGNES_PAGES)
+    lignes.forEach((l, i) => {
+      if (!estCommentaire(l) && re.test(l)) out.push(`${f}:${i + 1}`);
+    });
+  return out;
+}
+
+/** Allégations et promesses interdites sur les pages géographiques (fiche S6, § 2.3). */
+const PAGES_INTERDITES: ReadonlyArray<readonly [string, RegExp]> = [
+  [
+    "premier pôle / terrain d'intervention",
+    /premiers?[\s\u00a0\u202f](?:p[ôo]les?|terrains?)\b|top (?:engagement )?(?:hubs?|ground)/iu,
+  ],
+  ["part importante de nos missions", /part importante de nos missions|significant share of our/iu],
+  ["mêmes conditions que Paris", /m[êe]mes conditions que|same terms as/iu],
+  [
+    "consultants mobiles",
+    /consultants sont mobiles|consultants are mobile|consultants? mobiles?/iu,
+  ],
+  ["au cœur de notre activité", /au c(?:œ|oe)ur de notre activit[ée]|heart of our development/iu],
+  [
+    "majorité de nos projets / accompagnements",
+    /majorité de nos (?:projets|accompagnements)|dans la majorité des cas|most of our (?:projects|1-to-1)|in most cases/iu,
+  ],
+  [
+    "même tarif quel que soit le lieu",
+    /same rate regardless|regardless of location|quel que soit le lieu|m[êe]me tarif/iu,
+  ],
+  [
+    "douze régions",
+    /(?:douze|12)[\s\u00a0\u202f]r[ée]gions|(?:twelve|12) (?:metropolitan )?regions/iu,
+  ],
+  [
+    "éligibilité selon un seuil de 5 000 habitants",
+    /(?:5[\s\u00a0\u202f]?000 habitants|5,000 inhabitants)[^".]{0,30}(?:éligible|eligible)|(?:éligible|eligible)[^".]{0,40}(?:5[\s\u00a0\u202f]?000 habitants|5,000 inhabitants)/iu,
+  ],
+];
+
 function fautes(motif: RegExp, exclure: (f: string) => boolean = () => false): string[] {
   const re = new RegExp(motif.source, motif.flags.replace("g", ""));
   const out: string[] = [];
@@ -254,6 +310,57 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
       if (f.startsWith("copy/")) n += lignes.filter((l) => motif.test(l)).length;
     expect(n).toBeGreaterThanOrEqual(712);
   });
+
+  it("les motifs des pages sont vivants et épargnent les phrases justes", () => {
+    const EXEMPLES: Record<string, string> = {
+      "premier pôle / terrain d'intervention":
+        "Paris est notre premier terrain pour l'accompagnement.",
+      "part importante de nos missions": "Paris concentre une part importante de nos missions.",
+      "mêmes conditions que Paris": "couvertes aux mêmes conditions que Paris",
+      "consultants mobiles": "Nos consultants sont mobiles : Lyon.",
+      "au cœur de notre activité": "sont au cœur de notre activité de développement.",
+      "majorité de nos projets / accompagnements":
+        "La majorité de nos projets sont conduits en full-remote.",
+      "même tarif quel que soit le lieu": "Same rate regardless of location.",
+      "douze régions": "Douze régions métropolitaines couvertes.",
+    };
+    const EXEMPLES_EN: Record<string, string> = {
+      "premier pôle / terrain d'intervention":
+        "Paris and Greater Paris are among our top engagement hubs.",
+      "part importante de nos missions": "Paris hosts a significant share of our missions.",
+      "mêmes conditions que Paris": "covered on the same terms as Paris",
+      "consultants mobiles": "Our consultants are mobile across Greater Paris.",
+      "au cœur de notre activité": "at the heart of our development activity",
+      "majorité de nos projets / accompagnements":
+        "Most of our projects run full-remote. Hybrid in most cases.",
+      "douze régions": "Twelve metropolitan regions covered.",
+    };
+    for (const [nom, phrase] of Object.entries(EXEMPLES_EN))
+      expect(PAGES_INTERDITES.find(([n]) => n === nom)![1].test(phrase), `EN ${nom}`).toBe(true);
+    for (const [nom, phrase] of Object.entries(EXEMPLES))
+      expect(PAGES_INTERDITES.find(([n]) => n === nom)![1].test(phrase), nom).toBe(true);
+    const seuil = PAGES_INTERDITES.find(([n]) => n.startsWith("éligibilité"))![1];
+    expect(seuil.test("Toute commune de plus de 5 000 habitants est éligible.")).toBe(true);
+    expect(seuil.test("Communes de plus de 5 000 habitants, groupées par département.")).toBe(
+      false,
+    );
+    const juste = "Nous intervenons partout en France, dans vos locaux.";
+    for (const [, m] of PAGES_INTERDITES) expect(m.test(juste)).toBe(false);
+  });
+
+  it("les pages géographiques sont lues (garde contre un test vide)", () => {
+    for (const [f, lignes] of LIGNES_PAGES) expect(lignes.length, f).toBeGreaterThan(20);
+  });
+
+  for (const [nom, motif] of PAGES_INTERDITES)
+    it(`pages géographiques sans allégation ni promesse : ${nom}`, () => vide(fautesPages(motif)));
+
+  for (const [nom, motif] of [...FRAIS, ...PRESENCE, ...ANGLAIS])
+    it(`pages géographiques sans frais, surcoût ni trajet : ${nom}`, () =>
+      vide(fautesPages(motif)));
+
+  it("le nom de la ville du siège n'apparaît dans aucune page géographique", () =>
+    vide(fautesPages(/Grenoble/u)));
 
   it("« Grenoble » n'apparaît que sur la page de Grenoble", () => {
     expect(fautes(/Grenoble/u, (f) => f === "copy/grenoble.ts")).toEqual([]);
