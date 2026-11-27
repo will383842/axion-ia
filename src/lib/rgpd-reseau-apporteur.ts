@@ -1,6 +1,7 @@
 // Export art. 15 du réseau d'apporteurs : module à part de `rgpd-dossier-client.ts`, car
 // ses colonnes sont chiffrées par `encryptPii` (formulaire), pas par `chiffrer-parole`.
 
+import { estTableAbsente } from "@/lib/commercial-application/reponse-entrante";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -175,7 +176,10 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
           orderBy: { receivedAt: "desc" },
           select: { receivedAt: true, source: true, subject: true, excerpt: true },
         }),
-      ).catch(() => []) // table pas encore migrée (fenêtre app/worker)
+      ).catch((e: unknown) => {
+        if (estTableAbsente(e)) return []; // table pas encore migrée (fenêtre app/worker)
+        throw e;
+      })
     : [];
   return {
     apporteur: a
