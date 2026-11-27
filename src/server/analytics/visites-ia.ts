@@ -96,6 +96,14 @@ export interface PageArriveeIA {
   readonly visiteurs: number;
   readonly visites: number;
 }
+/** Une semaine de la tendance, avec le détail par IA (P10). */
+export interface SemaineParIA extends SemaineIA {
+  readonly parIA: readonly LigneIA[];
+}
+/** Une page d'arrivée, avec le détail par IA (P10 : page d'arrivée × IA). */
+export interface PageParIA extends PageArriveeIA {
+  readonly parIA: readonly LigneIA[];
+}
 export type VisitesIA =
   | {
       readonly statut: "ok";
@@ -103,6 +111,10 @@ export type VisitesIA =
       readonly trente: PeriodeIA;
       readonly semaines: readonly SemaineIA[];
       readonly pages: readonly PageArriveeIA[];
+      /** P10 : tendance sur 12 semaines, par IA. Mêmes lignes que `semaines`, aucun appel de plus. */
+      readonly semainesParIA: readonly SemaineParIA[];
+      /** P10 : page d'arrivée × IA (top 10). Mêmes lignes que `pages`, aucun appel de plus. */
+      readonly pagesParIA: readonly PageParIA[];
     }
   | { readonly statut: "indisponible"; readonly raison: string };
 
@@ -173,6 +185,41 @@ export function agregerPagesIA(rows: unknown): PageArriveeIA[] {
   }
   return [...m.entries()]
     .map(([page, c]) => ({ page, ...c }))
+    .sort((a, b) => b.visiteurs - a.visiteurs || b.visites - a.visites)
+    .slice(0, 10);
+}
+
+/** Clé de regroupement → total + détail par IA, pour des lignes `[clé, source, référent?]`. */
+function regrouperParIA(rows: unknown): Map<string, PeriodeIA & { cle: string }> {
+  const parCle = new Map<string, LigneBrute[]>();
+  for (const l of lignes(rows)) {
+    const cle = dim(l, 0);
+    if (!cle) continue;
+    const ia = iaDe(dim(l, 1), dim(l, 2));
+    if (!ia) continue;
+    // Le sous-agrégat lit `[source, référent]` : on le lui présente tel quel.
+    const vue: LigneBrute = { dimensions: [dim(l, 1), dim(l, 2)], metrics: l.metrics };
+    parCle.set(cle, [...(parCle.get(cle) ?? []), vue]);
+  }
+  return new Map([...parCle.entries()].map(([cle, ls]) => [cle, { cle, ...agregerParIA(ls) }]));
+}
+
+/** Lignes `[semaine, source, référent?]` → tendance par semaine, détail par IA. */
+export function agregerSemainesParIA(rows: unknown): SemaineParIA[] {
+  return [...regrouperParIA(rows).values()]
+    .map((p) => ({
+      debut: p.cle.slice(0, 10),
+      visiteurs: p.visiteurs,
+      visites: p.visites,
+      parIA: p.parIA,
+    }))
+    .sort((a, b) => a.debut.localeCompare(b.debut));
+}
+
+/** Lignes `[page d'arrivée, source, référent?]` → top 10 des pages, détail par IA. */
+export function agregerPagesParIA(rows: unknown): PageParIA[] {
+  return [...regrouperParIA(rows).values()]
+    .map((p) => ({ page: p.cle, visiteurs: p.visiteurs, visites: p.visites, parIA: p.parIA }))
     .sort((a, b) => b.visiteurs - a.visiteurs || b.visites - a.visites)
     .slice(0, 10);
 }
@@ -270,6 +317,8 @@ export async function lireVisitesIA(): Promise<VisitesIA> {
       trente: agregerParIA(r30),
       semaines: agregerSemainesIA(rSem),
       pages: agregerPagesIA(rPages),
+      semainesParIA: agregerSemainesParIA(rSem),
+      pagesParIA: agregerPagesParIA(rPages),
     };
   } catch (err) {
     if (err instanceof V2Absente) {

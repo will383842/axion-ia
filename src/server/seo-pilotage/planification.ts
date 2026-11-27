@@ -7,3 +7,5 @@ export const PATTERN_SEO_RATTRAPAGE = "7,27,47 * * * *";
 /** Purge : le dimanche, 03 h 17 à Paris. */
 export const PATTERN_SEO_PURGE = "17 3 * * 0";
 export const FUSEAU_SEO_PILOTAGE = "Europe/Paris";
+/** Robots d'IA (P10) : tous les jours à 07 h 07 à Paris, après la collecte Search Console de 06 h 37. */
+export const PATTERN_SEO_ROBOTS_IA = "7 7 * * *";

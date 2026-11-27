@@ -12,6 +12,7 @@ import { redactEmail } from "@/lib/pii-redaction";
 import { Queue } from "bullmq";
 import {
   FUSEAU_SEO_PILOTAGE,
+  PATTERN_SEO_ROBOTS_IA,
   PATTERN_SEO_INGESTION,
   PATTERN_SEO_PURGE,
   PATTERN_SEO_RATTRAPAGE,
@@ -1794,6 +1795,7 @@ export async function bootRepeatableJobs(): Promise<void> {
       { tache: "ingestion-gsc", pattern: PATTERN_SEO_INGESTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "rattrapage-gsc", pattern: PATTERN_SEO_RATTRAPAGE, tz: undefined },
       { tache: "purge", pattern: PATTERN_SEO_PURGE, tz: FUSEAU_SEO_PILOTAGE },
+      { tache: "robots-ia", pattern: PATTERN_SEO_ROBOTS_IA, tz: FUSEAU_SEO_PILOTAGE },
     ] as const;
     for (const { tache, pattern, tz } of programmeSeo) {
       await seoPilotageQueue.add(

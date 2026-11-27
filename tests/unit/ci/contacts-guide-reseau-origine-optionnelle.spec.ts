@@ -52,6 +52,7 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261127130000_team_members",
       "20261127200000_apporteurs_releve_mensuel",
       "20261127230000_pilotage_seo_mesure",
+      "20261128010064_pilotage_seo_robots_ia",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

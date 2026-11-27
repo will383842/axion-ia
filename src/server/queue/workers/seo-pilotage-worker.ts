@@ -13,7 +13,8 @@
  * encore, elle ne doit rien exécuter par défaut.
  *
  * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (un jour d'historique par passage),
- * `purge` (dimanche). Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
+ * `purge` (dimanche), `robots-ia` (P10 : passages des robots d'IA, agrégats Cloudflare ; sans
+ * jeton Cloudflare la tâche saute, « indisponible »). Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
  * jamais un nom.
  *
  * Marqueur de déploiement (`grep` dans le conteneur du worker) : `seo-pilotage-worker`.
@@ -31,7 +32,12 @@ import {
 
 export const SEO_PILOTAGE_QUEUE_NAME = "seo-pilotage";
 
-export const TACHES_SEO_PILOTAGE = ["ingestion-gsc", "rattrapage-gsc", "purge"] as const;
+export const TACHES_SEO_PILOTAGE = [
+  "ingestion-gsc",
+  "rattrapage-gsc",
+  "purge",
+  "robots-ia",
+] as const;
 export type TacheSeoPilotage = (typeof TACHES_SEO_PILOTAGE)[number];
 
 export type IssueJob =
@@ -63,9 +69,10 @@ export async function runSeoPilotageJob(
 
   try {
     // Imports paresseux : Prisma n'est chargé qu'une fois l'interrupteur vérifié.
-    const [{ prisma }, ingestion] = await Promise.all([
+    const [{ prisma }, ingestion, geo] = await Promise.all([
       import("@/lib/prisma"),
       import("@/server/seo-pilotage/ingestion"),
+      import("@/server/seo-pilotage/geo"),
     ]);
     const mode = await lireModePilotage(prisma);
     if (tache === "purge") {
@@ -76,6 +83,15 @@ export async function runSeoPilotageJob(
           `${b.semainesSupprimees} ligne(s) de semaine supprimée(s), ${b.requetesRetirees} requête(s) retirée(s)`,
       );
       return { issue: "fait", tache };
+    }
+    if (tache === "robots-ia") {
+      const b = await geo.tacheRobotsIa({ prisma });
+      console.log(
+        b.issue === "saute"
+          ? `[seo-pilotage-worker] robots-ia sauté : ${b.motif}`
+          : `[seo-pilotage-worker] robots-ia (${mode}) : ${b.lignes} ligne(s) d'agrégat`,
+      );
+      return b.issue === "saute" ? { issue: "saute", motif: b.motif } : { issue: "fait", tache };
     }
     const r =
       tache === "ingestion-gsc"

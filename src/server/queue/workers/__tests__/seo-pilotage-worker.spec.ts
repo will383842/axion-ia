@@ -16,6 +16,8 @@ vi.mock("@/server/seo-pilotage/ingestion", () => ({
   tacheRattrapageGsc: tacheRattrapage,
   tachePurge,
 }));
+const tacheRobotsIa = vi.fn();
+vi.mock("@/server/seo-pilotage/geo", () => ({ tacheRobotsIa }));
 const lireMode = vi.fn(async () => "observation");
 vi.mock("@/server/seo-pilotage/interrupteur", async (orig) => ({
   ...(await orig<typeof import("@/server/seo-pilotage/interrupteur")>()),
@@ -34,6 +36,7 @@ describe("worker seo-pilotage", () => {
     process.env.DATABASE_URL = "postgresql://u:p@db:5432/x";
     tacheIngestion.mockResolvedValue({ tache: "ingestion-gsc", issue: "termine", motif: "ok" });
     tacheRattrapage.mockResolvedValue({ tache: "rattrapage-gsc", issue: "termine", motif: "ok" });
+    tacheRobotsIa.mockResolvedValue({ tache: "robots-ia", issue: "fait", lignes: 3 });
     tachePurge.mockResolvedValue({
       semainesCumulees: 0,
       semainesEnAttente: 0,
@@ -98,6 +101,34 @@ describe("worker seo-pilotage", () => {
     expect(tacheIngestion).toHaveBeenCalledTimes(1);
     expect(tacheRattrapage).toHaveBeenCalledTimes(1);
     expect(tachePurge).toHaveBeenCalledTimes(1);
+  });
+
+  it("robots-ia : éteint, aucune lecture de base ni appel Cloudflare ; allumé, aiguillée ; indisponible : saute", async () => {
+    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+      issue: "saute",
+      motif: "interrupteur_eteint",
+    });
+    expect(accesBase).not.toHaveBeenCalled();
+    expect(tacheRobotsIa).not.toHaveBeenCalled();
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+      issue: "fait",
+      tache: "robots-ia",
+    });
+    tacheRobotsIa.mockResolvedValueOnce({
+      tache: "robots-ia",
+      issue: "saute",
+      motif: "indisponible",
+    });
+    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+      issue: "saute",
+      motif: "indisponible",
+    });
+    tacheRobotsIa.mockRejectedValueOnce(Object.assign(new Error("table"), { code: "P2021" }));
+    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+      issue: "saute",
+      motif: "tables_absentes",
+    });
   });
 
   it("une tâche inconnue est journalisée et IGNORÉE, même allumé, sans rien lancer", async () => {
