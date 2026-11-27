@@ -5,12 +5,16 @@
 // française), et affiche le footer légal France. Empêche toute régression de
 // layout ou de bascule France→Estonie sur l'ensemble du parc email.
 
+import { SITE_URL } from "@/lib/site-url";
 import { describe, it, expect } from "vitest";
 import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES } from "./index";
 
 // Payload « superset » : les templates ignorent les champs inconnus et ont des
 // fallbacks, donc une seule charge couvre tous les cas (rendu non vide garanti).
 const PAYLOAD: Record<string, unknown> = {
+  // E-mail 1 de changement de compte : exige https, l'hôte du site et le chemin de demande.
+  lienConfirmer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande/signature-a`,
+  lienBloquer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande/signature-b`,
   contactName: "Jean Dupont",
   invoiceNumber: "F-2026-0001",
   amountTtc: "1 200,00 €",
