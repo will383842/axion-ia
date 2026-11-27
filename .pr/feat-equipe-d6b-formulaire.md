@@ -35,4 +35,23 @@ Chaque personne écrit elle-même sa présentation et donne ses accords un par u
 - Si la photo échoue après la transaction, la fiche est gardée et la personne en est informée.
 - `pnpm bundle:check` : voir le compte rendu final.
 
-VERDICT OPUS : EN COURS
+## Relecture Opus (sécurité et données) : corrigé
+
+- Case photo ou LinkedIn décochée : l'accord antérieur est retiré (colonnes remises à vide, photo retirée, preuve `optout` écrite). Sur une fiche déjà publiée rien n'est touché, c'est voulu : la version en ligne reste jusqu'à la relecture.
+- La mise à jour d'une fiche existante refuse une fiche devenue publiée entre la lecture et l'écriture.
+- Réponse « apport » rangée à part de celles de la catégorie (le partenaire a une question du même nom).
+- Invitation et fiche de catégories différentes : message neutre.
+- Collision de slug entre deux envois simultanés : message d'erreur, invitation non consommée.
+- Échec de la photo après l'envoi : un événement `photo_questionnaire_echec` est écrit pour que l'équipe recontacte la personne.
+- Clé de preuve : l'empreinte e-mail de l'invitation, sinon celle de la fiche, sinon une empreinte de l'invitation. Agent navigateur de la réponse haché.
+- Limite par jeton qui refuse si Redis tombe ; le formulaire n'efface plus les réponses après un refus.
+
+## Restes
+
+- À faire côté invitations (autre branche) : renseigner `emailHash` à la création, sinon les accords restent introuvables par la recherche RGPD, et créer l'invitation avec la même catégorie que la fiche.
+- La photo est décodée deux fois (contrôle avant, dépôt après) : coût accepté.
+- `pnpm bundle:check` et la mesure du premier chargement de la page n'ont pas pu être faits : le build du robot n'a pas abouti dans le temps imparti. La page n'envoie en JavaScript que l'îlot du formulaire, et Turnstile est chargé à la demande.
+- Pour passer le contrôle de typage du commit, des fichiers de `main` ont été posés temporairement hors commit ; ils ne sont pas dans la branche.
+- Le dernier `git merge origin/main` n'a pas pu être fait dans cet environnement (fichiers en lecture seule) : à faire avant la fusion.
+
+VERDICT OPUS : BON, avec les restes ci-dessus

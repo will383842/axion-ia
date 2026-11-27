@@ -1,7 +1,7 @@
 "use client";
 // use-client: état de l'envoi (useActionState) + jeton Turnstile ; la soumission reste un formulaire natif.
 
-import { useActionState, useCallback, useState } from "react";
+import { startTransition, useActionState, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import type {
   EtatQuestionnaire,
@@ -59,7 +59,16 @@ export function FormulaireQuestionnaire({
   }
 
   return (
-    <form action={soumettre} className="flex flex-col gap-5">
+    // `onSubmit` plutôt que `action` : avec `action`, React vide le formulaire après chaque envoi, et une
+    // présentation de 300 caractères refusée serait perdue (la limite par jeton empêcherait de la réécrire).
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const donnees = new FormData(e.currentTarget);
+        startTransition(() => soumettre(donnees));
+      }}
+      className="flex flex-col gap-5"
+    >
       <input type="hidden" name="cf-turnstile-response" value={token} />
       {children}
       {etat.etat === "erreur" && (

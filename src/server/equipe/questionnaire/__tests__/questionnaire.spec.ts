@@ -14,6 +14,7 @@ const m = vi.hoisted(() => ({
   rate: vi.fn(),
   turnstile: vi.fn(),
   photo: vi.fn(),
+  retirer: vi.fn(),
   traiter: vi.fn(),
 }));
 vi.mock("server-only", () => ({}));
@@ -35,6 +36,7 @@ vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: m.rate }));
 vi.mock("@/lib/turnstile", () => ({ verifyTurnstile: m.turnstile }));
 vi.mock("../../photo-collaborateur", () => ({
   deposerPhotoCollaborateur: m.photo,
+  retirerPhotoCollaborateur: m.retirer,
   traiterPhoto: m.traiter,
 }));
 
@@ -114,6 +116,7 @@ beforeEach(() => {
   m.city.findMany.mockResolvedValue([]);
   m.traiter.mockResolvedValue({ ok: true });
   m.photo.mockResolvedValue({ ok: true, slug: "julie-annecy" });
+  m.retirer.mockResolvedValue({ ok: true, slug: "julie" });
 });
 
 describe("lireInvitation : message neutre identique", () => {
@@ -258,6 +261,7 @@ describe("soumettreQuestionnaire", () => {
       id: "44444444-4444-4444-8444-444444444444",
       slug: "julie-annecy",
       status: "publie",
+      category: "apporteur",
       erasureRequestedAt: null,
     });
     const r = await soumettreQuestionnaire(entree());
@@ -274,6 +278,7 @@ describe("soumettreQuestionnaire", () => {
       id: "44444444-4444-4444-8444-444444444444",
       slug: "julie",
       status: "brouillon",
+      category: "apporteur",
       erasureRequestedAt: null,
     });
     await soumettreQuestionnaire(entree());
@@ -306,5 +311,64 @@ describe("soumettreQuestionnaire", () => {
     expect(m.photo).toHaveBeenCalledWith(
       expect.objectContaining({ acteur: "questionnaire", memberId: expect.any(String) }),
     );
+  });
+
+  it("une case « photo » décochée retire l'accord et la photo antérieurs, et le trace", async () => {
+    const id = "44444444-4444-4444-8444-444444444444";
+    m.inv.findUnique.mockResolvedValue(invite({ memberId: id }));
+    m.tm.findUnique.mockResolvedValue({
+      id,
+      slug: "julie",
+      status: "brouillon",
+      category: "apporteur",
+      erasureRequestedAt: null,
+      photoConsentAt: new Date(),
+      linkedinConsentAt: null,
+      photoKind: "reelle",
+      photoStoragePath: "/p",
+      contactEmailHash: null,
+    });
+    await soumettreQuestionnaire(entree());
+    const data = m.tm.updateMany.mock.calls[0]![0].data;
+    expect(data.photoConsentAt).toBeNull();
+    expect(data.linkedinConsentAt).toBeNull();
+    expect(m.retirer).toHaveBeenCalledWith(expect.objectContaining({ memberId: id }));
+    const evts = m.ce.createMany.mock.calls[0]![0].data as Array<{
+      formRef: string;
+      action: string;
+    }>;
+    expect(evts.some((e) => e.formRef === "team-profile-photo" && e.action === "optout")).toBe(
+      true,
+    );
+  });
+  it("la mise à jour ne touche jamais une fiche devenue publiée entre-temps", async () => {
+    const id = "44444444-4444-4444-8444-444444444444";
+    m.inv.findUnique.mockResolvedValue(invite({ memberId: id }));
+    m.tm.findUnique.mockResolvedValue({
+      id,
+      slug: "julie",
+      status: "brouillon",
+      category: "apporteur",
+      erasureRequestedAt: null,
+      photoConsentAt: null,
+      linkedinConsentAt: null,
+      photoKind: "avatar",
+      photoStoragePath: null,
+      contactEmailHash: null,
+    });
+    await soumettreQuestionnaire(entree());
+    expect(m.tm.updateMany.mock.calls[0]![0].where).toMatchObject({ status: { not: "publie" } });
+  });
+  it("invitation et fiche de catégories différentes : message neutre", async () => {
+    const id = "44444444-4444-4444-8444-444444444444";
+    m.inv.findUnique.mockResolvedValue(invite({ memberId: id }));
+    m.tm.findUnique.mockResolvedValue({
+      id,
+      slug: "julie",
+      status: "brouillon",
+      category: "developpeur",
+      erasureRequestedAt: null,
+    });
+    expect(await soumettreQuestionnaire(entree())).toMatchObject({ ok: false, motif: "neutre" });
   });
 });

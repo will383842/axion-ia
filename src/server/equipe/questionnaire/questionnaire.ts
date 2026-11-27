@@ -23,7 +23,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { hashIp } from "@/lib/security/ip-hash";
+import { hashIp, hashUserAgent } from "@/lib/security/ip-hash";
 import {
   TEAM_ATTESTATION_VERSION_COURANTE,
   TEAM_CONSENT_VERSION_COURANTE,
@@ -34,7 +34,11 @@ import {
   type Question,
 } from "@/lib/equipe/donnees";
 import { baseSlug, candidatsSlug, slugSchema } from "@/lib/equipe/console/schemas";
-import { deposerPhotoCollaborateur, traiterPhoto } from "../photo-collaborateur";
+import {
+  deposerPhotoCollaborateur,
+  retirerPhotoCollaborateur,
+  traiterPhoto,
+} from "../photo-collaborateur";
 import { hacherJetonQuestionnaire } from "./jeton";
 
 export const PHOTO_QUESTIONNAIRE_MAX_OCTETS = 5 * 1024 * 1024;
@@ -224,6 +228,7 @@ export async function soumettreQuestionnaire(
   const parJeton = await checkRateLimit(`equipe-questionnaire:jeton:${tokenHash}`, {
     limit: TENTATIVES_PAR_JETON,
     windowSec: HEURE,
+    surPanne: "refuser",
   });
   if (!parJeton.allowed) return refus("limite", "Trop de tentatives. Réessayez dans une heure.");
 
@@ -260,18 +265,31 @@ export async function soumettreQuestionnaire(
     linkedin: TEAM_CONSENT_VERSION_COURANTE.linkedin,
     attestation: TEAM_ATTESTATION_VERSION_COURANTE,
   };
-  let effet: { memberId: string; slug: string; appliquee: boolean };
+  let effet: { memberId: string; slug: string; appliquee: boolean; photoARetirer: boolean };
   try {
     effet = await prisma.$transaction(async (tx) => {
       const existant = invite.memberId
         ? await tx.teamMember.findUnique({
             where: { id: invite.memberId },
-            select: { id: true, slug: true, status: true, erasureRequestedAt: true },
+            select: {
+              id: true,
+              slug: true,
+              status: true,
+              category: true,
+              erasureRequestedAt: true,
+              photoConsentAt: true,
+              linkedinConsentAt: true,
+              photoKind: true,
+              photoStoragePath: true,
+              contactEmailHash: true,
+            },
           })
         : null;
       if (invite.memberId && (!existant || existant.erasureRequestedAt !== null)) {
         throw new Abandon("neutre");
       }
+      // L'invitation et la fiche doivent parler de la même catégorie.
+      if (existant && existant.category !== invite.category) throw new Abandon("neutre");
       // Usage unique : la condition est dans l'UPDATE, donc deux envois simultanés ne passent pas tous les deux.
       const consommee = await tx.teamQuestionnaireInvite.updateMany({
         where: { id: invite.id, usedAt: null, revokedAt: null, expiresAt: { gt: maintenant } },
@@ -290,26 +308,27 @@ export async function soumettreQuestionnaire(
           jobTitle: v.commun.intitule,
           bioMd: v.commun.presentation,
           languages: v.commun.langues,
-          categoryAnswers: { apport: v.commun.apport, ...v.categorie },
+          categoryAnswers: { commun: { apport: v.commun.apport }, categorie: v.categorie },
           questionnaireVersion: invite.questionnaireVersion,
           ...lieu,
           publicationConsentAt: maintenant,
           publicationConsentVersion: version.publication.version,
           consentSource: "questionnaire",
+          // Case cochée : accord enregistré. Case décochée : tout accord antérieur est retiré.
           ...(v.consentements.photo
             ? { photoConsentAt: maintenant, photoConsentVersion: version.photo.version }
-            : {}),
+            : { photoConsentAt: null, photoConsentVersion: null }),
           ...(v.consentements.linkedin
             ? {
                 linkedinUrl: v.commun.linkedin ?? null,
                 linkedinConsentAt: maintenant,
                 linkedinConsentVersion: version.linkedin.version,
               }
-            : {}),
+            : { linkedinUrl: null, linkedinConsentAt: null, linkedinConsentVersion: null }),
         };
         if (existant) {
           const r = await tx.teamMember.updateMany({
-            where: { id: existant.id, erasureRequestedAt: null },
+            where: { id: existant.id, erasureRequestedAt: null, status: { not: "publie" } },
             data: donnees,
           });
           if (r.count !== 1) throw new Abandon("neutre");
@@ -341,18 +360,20 @@ export async function soumettreQuestionnaire(
           },
           status: "recue",
           ipHash: hashIp(entree.ip),
-          userAgent: entree.userAgent ? entree.userAgent.slice(0, 300) : null,
+          userAgent: hashUserAgent(entree.userAgent),
         },
       });
 
       // Preuve : une ligne par accord donné + l'attestation. Pas d'e-mail : la clé est celle de l'invitation.
       const personKey =
-        invite.emailHash ?? createHash("sha256").update(`team-invite:${invite.id}`).digest("hex");
-      const preuve = (c: { formRef: string; version: string }) => ({
+        invite.emailHash ??
+        existant?.contactEmailHash ??
+        createHash("sha256").update(`team-invite:${invite.id}`).digest("hex");
+      const preuve = (c: { formRef: string; version: string }, action = "optin") => ({
         personKey,
         formRef: c.formRef,
         consentVersion: c.version,
-        action: "optin",
+        action,
         occurredAt: maintenant,
         ipHash: hashIp(entree.ip),
         userAgent: null,
@@ -362,6 +383,13 @@ export async function soumettreQuestionnaire(
           preuve(version.publication),
           ...(v.consentements.photo ? [preuve(version.photo)] : []),
           ...(v.consentements.linkedin ? [preuve(version.linkedin)] : []),
+          // Case décochée alors qu'un accord existait : le retrait est tracé.
+          ...(!publiee && existant?.photoConsentAt && !v.consentements.photo
+            ? [preuve(version.photo, "optout")]
+            : []),
+          ...(!publiee && existant?.linkedinConsentAt && !v.consentements.linkedin
+            ? [preuve(version.linkedin, "optout")]
+            : []),
           preuve(version.attestation),
         ],
       });
@@ -383,9 +411,19 @@ export async function soumettreQuestionnaire(
           },
         },
       });
-      return { memberId, slug, appliquee: !publiee };
+      const photoARetirer =
+        !publiee &&
+        !v.consentements.photo &&
+        existant !== null &&
+        (existant.photoKind === "reelle" ||
+          existant.photoStoragePath !== null ||
+          existant.photoConsentAt !== null);
+      return { memberId, slug, appliquee: !publiee, photoARetirer };
     });
   } catch (e) {
+    if ((e as { code?: string } | null)?.code === "P2002") {
+      return refus("invalide", "Un problème est survenu. Réessayez dans quelques minutes.");
+    }
     if (e instanceof Abandon) {
       return e.message === "slug"
         ? refus("invalide", "Un problème est survenu. Réessayez dans quelques minutes.")
@@ -395,6 +433,11 @@ export async function soumettreQuestionnaire(
   }
 
   // 6. Photo, après la transaction. Une fiche déjà publiée garde sa photo jusqu'à la relecture.
+  if (effet.photoARetirer) {
+    await retirerPhotoCollaborateur({ memberId: effet.memberId, acteur: "questionnaire" }).catch(
+      () => undefined,
+    );
+  }
   let photo: "aucune" | "deposee" | "non-appliquee" | "echec" = "aucune";
   if (entree.photo !== null) {
     if (!effet.appliquee) {
@@ -406,6 +449,18 @@ export async function soumettreQuestionnaire(
         acteur: "questionnaire",
       }).catch(() => ({ ok: false as const, erreur: "" }));
       photo = r.ok ? "deposee" : "echec";
+      if (!r.ok) {
+        // L'invitation est consommée : la trace permet à l'équipe de recontacter la personne.
+        await prisma.teamMemberEvent
+          .create({
+            data: {
+              memberId: effet.memberId,
+              action: "photo_questionnaire_echec",
+              actor: "questionnaire",
+            },
+          })
+          .catch(() => undefined);
+      }
     }
   }
   revalidatePath("/fr/equipe");
