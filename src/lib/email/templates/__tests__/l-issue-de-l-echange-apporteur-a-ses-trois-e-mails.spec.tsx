@@ -150,9 +150,7 @@ describe("Retenu — bienvenue dans le réseau", () => {
       const r = await rendu("apporteur-issue-retenu", l, {
         dossierUrl: "https://axion-ia.com/apporteur/dossier/abc/jeton123",
       });
-      const brut = `${r.subject}
-${r.text}
-${texte(r.html)}`;
+      const brut = `${r.subject}\n${r.text}\n${texte(r.html)}`;
       // Décision de Will du 27/11/2026 : seule la Journée IA est chiffrée ; le reste vit dans le contrat et la fiche.
       const phraseJourneeIA =
         l === "fr"
