@@ -58,8 +58,10 @@ describe("plus aucun montant dans « Retenu » ni « contrat signé » (le barè
       expect(signe).not.toContain(ligne);
     }
     // Seul le montant Journée IA est cité (décision de Will du 27/11/2026).
-    expect(retenu).toContain("Pour une Journée IA, à titre indicatif : 500 € HT par journée");
-    expect(retenu.replace("500 € HT par journée", "")).not.toContain("€");
+    expect(retenu).toContain(
+      "Pour une Journée IA, votre commission est, à titre indicatif, de 500 € HT par journée",
+    );
+    expect(retenu.replaceAll("500 € HT par journée", "")).not.toContain("€");
     expect(signe).not.toContain("€");
     expect(signe).not.toContain("Audit :");
     expect(signe).toContain("Parrainage");
