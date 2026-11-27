@@ -103,4 +103,8 @@ Mineurs connus, non corrigés (derrière l'interrupteur) :
 - un arrêt avant écriture hors reprise ne met pas à jour `costUsd` du job ;
 - une reprise qui échoue en cours d'écriture n'ajoute pas sa dépense au compteur de la boucle qualité.
 
-VERDICT OPUS : À CORRIGER
+### Relecture Opus (3e passe, tour 2)
+
+Le correctif du bloquant tient : remise à zéro avant la réécriture, aucun nouveau bloquant, aucun double comptage. Mineurs sans effet sur la publication : `coutFactCheckUsd` du tour 1 non persisté après un renvoi suivi d'un arrêt (le coût reste dans `costUsd`) ; marqueur perdu si la réécriture échoue (prudent) ; le mailleur et l'éditeur SEO modifient le texte après la phase B (choix de conception d'avant).
+
+VERDICT OPUS : BON
