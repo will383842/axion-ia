@@ -177,7 +177,10 @@ export function anomaliesDePeriode(e: {
   const avecReleve = new Set(e.releves.filter((r) => r.rang === 0).map((r) => r.apporteurId));
   for (const c of e.cibles) {
     if (!avecReleve.has(c.apporteurId)) {
-      anomalies.push({ code: "completude", detail: `${c.nom} : aucun relevé préparé pour la période.` });
+      anomalies.push({
+        code: "completude",
+        detail: `${c.nom} : aucun relevé préparé pour la période.`,
+      });
     }
   }
   for (const r of e.releves) {

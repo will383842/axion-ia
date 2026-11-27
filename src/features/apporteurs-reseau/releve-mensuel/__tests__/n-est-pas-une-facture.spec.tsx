@@ -17,7 +17,12 @@ vi.mock("@/lib/r2-storage", () => ({
 
 import { MENTION_PAS_UNE_FACTURE } from "../types";
 import { contenuExemple } from "./fixtures";
-import { ReleveMensuelPdf, type EnteteReleve, rendreEtStockerPdfReleve, textesDuReleve } from "../pdf";
+import {
+  ReleveMensuelPdf,
+  type EnteteReleve,
+  rendreEtStockerPdfReleve,
+  textesDuReleve,
+} from "../pdf";
 
 const ENTETE: EnteteReleve = { numero: "REL-2026-10-0001", destinataire: "Apporteur fictif" };
 
@@ -94,7 +99,10 @@ describe("PDF du relevé : n'est pas une facture", () => {
   });
 
   it("le composant est un document A4", () => {
-    const el = ReleveMensuelPdf({ contenu: contenuExemple(), entete: ENTETE }) as React.ReactElement;
+    const el = ReleveMensuelPdf({
+      contenu: contenuExemple(),
+      entete: ENTETE,
+    }) as React.ReactElement;
     expect(el).toBeTruthy();
   });
 });

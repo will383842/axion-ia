@@ -14,10 +14,14 @@ const d = vi.hoisted(() => ({
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("@/server/auth/garde-route-console", () => ({ refuserSiHorsConsole: async () => null }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { releveMensuelApporteur: { findFirst: async (arg: { where: unknown }) => {
+  prisma: {
+    releveMensuelApporteur: {
+      findFirst: async (arg: { where: unknown }) => {
         d.where = arg.where;
         return d.releve;
-      } } },
+      },
+    },
+  },
 }));
 vi.mock("@/lib/r2-storage", () => ({
   getObjectBufferR2: async (cle: string) => {

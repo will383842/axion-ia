@@ -9,7 +9,11 @@
 import React from "react";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
-import { COORDONNEES_PUBLIQUES, IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
+import {
+  COORDONNEES_PUBLIQUES,
+  IDENTITE_LEGALE,
+  adresseSiegeUneLigne,
+} from "@/lib/identite-legale-ssot";
 import { uploadToR2 } from "@/lib/r2-storage";
 // Plomberie PDF (charte, polices, nettoyage d'espaces) empruntée à `registre-pdf` : polices
 // enregistrées à son import ; aucun import direct du domaine Qualiopi (garde d'isolation).
