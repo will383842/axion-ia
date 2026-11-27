@@ -41,3 +41,18 @@ Arrêt au plafond (avant stratège, avant l'écriture, en cours de circuit, via 
 ## Rebase
 
 La branche part de la PR 11 (#2372). Avant le push final : `git fetch`, rebase sur `origin/main` si la PR 11 y est fusionnée.
+
+## Relecture Opus (1 tour)
+
+Corrigé après relecture : titre vide (`||` au lieu de `??`), reprise de la boucle qualité (article conservé, passage en relecture avec ligne de file), coût du juge compté une seule fois (déjà au registre), renvoi au seul mailleur / éditeur SEO = relecture humaine (pas de tour payé pour le même texte).
+
+Restes connus, non corrigés dans cette PR (derrière l'interrupteur, à traiter en PR suivante) :
+
+- l'appel court de réparation de la réponse directe (`ensureDirectAnswer`) et les appels internes du générateur ne repassent pas par la vérification du plafond ;
+- la décision « réorienter » du gardien n'est pas transmise au rédacteur (gardien presque inopérant tant que `voisins` est vide) ;
+- le verrou de mot-clé n'est pas relâché sur arrêt avant écriture (expire à 30 min) ;
+- `addQualityLoopSpend` ne compte pas encore tous les coûts de l'équipe ;
+- `chargerCarteRequetes()` est hors du try de l'équipe ;
+- pas de test d'intégration du worker (verrou de source seulement).
+
+VERDICT OPUS : À CORRIGER

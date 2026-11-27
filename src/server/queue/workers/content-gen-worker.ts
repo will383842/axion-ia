@@ -718,10 +718,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       : undefined;
     let briefEquipe: Brief | undefined;
     let decisionGardienEquipe: DecisionGardien | undefined;
+    const reprise = improvementFeedback !== undefined;
     if (suiviEquipe) {
-      const titreBrief = title ?? resolvedKeyword ?? contentType;
+      const titreBrief = title || resolvedKeyword || contentType;
       const briefRepli = (prevOutput?.["equipe"] as { brief?: Brief } | undefined)?.brief;
-      const reprise = improvementFeedback !== undefined;
       const carte = reprise ? undefined : await chargerCarteRequetes();
       const avant = await avantEcriture(suiviEquipe, {
         // Reprise de la boucle qualité : même article, déjà arbitré (pas de second brief payé).
@@ -774,12 +774,21 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         await prisma.contentGenJob.update({
           where: { id: contentGenJobId },
           data: {
-            status: "cancelled",
+            // Reprise de la boucle qualité : l'article existe déjà, on le garde pour la relecture.
+            status:
+              reprise && (avant.issue === "relecture_humaine" || avant.issue === "plafond")
+                ? "needs_review"
+                : "cancelled",
             errorMessage: `Équipe éditoriale (${avant.issue}) : ${avant.raison}`.slice(0, 1000),
             completedAt: new Date(),
-            outputJsonRaw: { equipe: journal } as never,
+            outputJsonRaw: { ...(reprise ? (prevOutput ?? {}) : {}), equipe: journal } as never,
           },
         });
+        if (reprise && (avant.issue === "relecture_humaine" || avant.issue === "plafond")) {
+          await prisma.reviewQueue
+            .create({ data: { jobId: contentGenJobId, status: "pending" } })
+            .catch(() => undefined);
+        }
         return;
       }
       briefEquipe = avant.brief;
@@ -843,7 +852,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             status: "cancelled",
             errorMessage: `Équipe éditoriale (plafond) : ${premiere.arret}`.slice(0, 1000),
             completedAt: new Date(),
-            outputJsonRaw: { equipe: journal } as never,
+            outputJsonRaw: { ...(reprise ? (prevOutput ?? {}) : {}), equipe: journal } as never,
           },
         });
         return;
@@ -1106,7 +1115,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             ["redacteur", "architecte", "verificateur"].includes(r.role),
           );
           if (!reecrire) {
-            return { output: o, decision: "reprise du mailleur / de l'éditeur SEO" };
+            // Mailleur / éditeur SEO seuls : rien à réécrire, un nouveau tour payerait pour le même texte.
+            throw new Error(
+              "Renvoi sans réécriture possible (mailleur / éditeur SEO) : relecture humaine",
+            );
           }
           const nouveau = await retoucherSortie(await genererArticle(consigneRenvoi(renvois)));
           return {

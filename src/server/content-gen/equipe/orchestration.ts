@@ -362,9 +362,7 @@ export async function apresEcriture<O>(
               : {}),
         }),
       );
-      // Le juge n'écrit pas forcément au registre : son coût est rendu à l'appelant (ici).
-      suivi.compterHorsRegistre(chef.coutJugeUsd);
-
+      // Le coût du juge est déjà au registre (même jobId) : il est relu au prochain contrôle, jamais compté deux fois.
       const d = chef.decision;
       if (d.type === "publier" || d.type === "inchange") {
         return { statut: "publier", output, decision: d, renvois };

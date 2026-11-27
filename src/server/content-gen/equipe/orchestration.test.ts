@@ -204,12 +204,16 @@ describe("apresEcriture", () => {
     expect(d.enChef).not.toHaveBeenCalled();
   });
 
-  it("le coût du rédacteur en chef est compté : un renvoi est refusé s'il fait dépasser le plafond", async () => {
+  it("le coût du rédacteur en chef (écrit au registre) est relu : un renvoi est refusé s'il fait dépasser le plafond", async () => {
+    let cout = 0.5;
     const d = depsFin([renvoi], {
-      enChef: vi.fn(async () => sortie(renvoi, 2.9)),
+      enChef: vi.fn(async () => {
+        cout = 3.4;
+        return sortie(renvoi, 2.9);
+      }),
     });
     const r = await apresEcriture(
-      suiviAvec(() => 0.5),
+      suiviAvec(() => cout),
       "t",
       d,
     );
