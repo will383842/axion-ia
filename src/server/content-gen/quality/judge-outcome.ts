@@ -12,11 +12,15 @@
  * boucle qualité »), restée ouverte pour tous les autres types de contenu.
  */
 
+import {
+  autoPublicationBlogActive,
+  autoPublicationNewsActive,
+  type PolitiquesRelecture,
+} from "./relecture-obligatoire";
+
 /** Sous-ensemble de `policies` (clé ContentGenConfig) utile à la décision. */
-export interface AutoPublishPolicies {
-  readonly factoryAutoPublishAllBlogTypes?: boolean;
+export interface AutoPublishPolicies extends PolitiquesRelecture {
   readonly factoryAutoPromoteTier1MinScore?: number;
-  readonly newsAutoPublish?: boolean;
 }
 
 export interface JudgeOutcomeInput {
@@ -51,9 +55,11 @@ export function resolveJudgeOutcome(input: JudgeOutcomeInput): JudgeOutcome {
     // `doctrineCheckPassed === false` ⇒ blockingFail : doublon sémantique,
     // bénéfice insuffisant, plagiat, intent — jamais d'auto-publication.
     if (input.doctrineCheckPassed === false) return "needs_review";
+    // C2 (2026-11) : relecture d'abord. Absent ou « vrai » hérité ne suffit plus : il faut
+    // l'autorisation explicite `publicationSansRelectureAutorisee` (cf. relecture-obligatoire.ts).
     const allowed = input.isRss
-      ? input.policies.newsAutoPublish !== false
-      : input.policies.factoryAutoPublishAllBlogTypes !== false;
+      ? autoPublicationNewsActive(input.policies)
+      : autoPublicationBlogActive(input.policies);
     return allowed ? "approved" : "needs_review";
   }
   return "needs_review";

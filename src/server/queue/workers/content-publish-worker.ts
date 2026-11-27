@@ -48,6 +48,11 @@ import { buildArticlePath } from "@/server/content-gen/indexing/url-builder";
 import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import {
+  relectureObligatoire,
+  tierNaissancePublication,
+  type PolitiquesRelecture,
+} from "@/server/content-gen/quality/relecture-obligatoire";
 import { sendTelegram } from "@/lib/telegram";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 // B.4 P1.5 — Traçabilite provenance LLM (AI Act art. 50).
@@ -431,6 +436,34 @@ async function executePublishPipeline(
       },
     });
     return;
+  }
+  // C2 (2026-11, « arrêter la publication faible ») : filet de dernière minute. Sans
+  // approbation HUMAINE (`reviewedBy` posé par la console), un contenu généré retourne en
+  // relecture, sauf si l'autorisation explicite `publicationSansRelectureAutorisee` est posée
+  // (retour arrière depuis la console). Rien n'est supprimé : la fiche repasse « pending ».
+  if (!existingArticle && !review.reviewedBy) {
+    const politiquesPublication = await readContentGenConfig<PolitiquesRelecture>("policies", {});
+    if (relectureObligatoire(politiquesPublication)) {
+      await logStepError(
+        cgJob.id,
+        "validation",
+        "Publication refusée : relecture humaine obligatoire (contenu généré non relu)",
+        { relecture_obligatoire: true },
+      );
+      await prisma.contentGenJob.update({
+        where: { id: cgJob.id },
+        data: { status: "needs_review", errorMessage: "relecture_humaine_obligatoire" },
+      });
+      await prisma.reviewQueue.update({
+        where: { id: reviewQueueId },
+        data: {
+          status: "pending",
+          reviewNotes:
+            "[relecture obligatoire] contenu généré : validation humaine avant publication",
+        },
+      });
+      return;
+    }
   }
   // Offre « Journée IA » : filet de dernière minute pour tout chemin d'auto-approbation
   // (génération, boucle qualité, actualités). Sans approbation HUMAINE (`reviewedBy` posé
@@ -868,7 +901,9 @@ async function executePublishPipeline(
   // mortes côté publication — c'est VOULU (doctrine tout-indexable), mais les
   // LOGS doivent le dire (cf. logStep « Tier amont ignoré » après l'insert) au
   // lieu d'annoncer une publication tier-2/noindex qui n'existe pas.
-  const indexationTier = "tier_1_indexable";
+  // C2 (2026-11) : seul un contenu relu par un humain naît indexable ; un contenu non relu
+  // (possible uniquement en retour arrière explicite) naît `noindex,follow`.
+  const indexationTier = tierNaissancePublication({ reviewedBy: review.reviewedBy });
 
   // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
   if (cgJob.correlationId) {
@@ -1148,7 +1183,7 @@ async function executePublishPipeline(
   // « tout contenu publié = indexable », cf. bloc indexationTier ci-dessus).
   // Sans cette ligne, le GenerationLog laissait croire à une publication
   // noindex alors que l'article entrait dans le sitemap.
-  if (!promoteToTier1) {
+  if (!promoteToTier1 && indexationTier === "tier_1_indexable") {
     await logStep(
       cgJob.id,
       "publish",

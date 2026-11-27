@@ -8,7 +8,8 @@
  *   2. Skip si row `GeneratedVilleCopy` déjà `approved` (resume support)
  *   3. Generator A `landing-ville-economic-data` si pas de TS eco-data
  *   4. Generator B `ville-hub-copy` (consomme eco-data via ecoOverride)
- *   5. UPSERT DB + auto-approve si quality >= threshold
+ *   5. UPSERT DB ; C2c : reste « generated » (relecture humaine). Auto-approve seulement si
+ *      VILLES_AUTO_APPROBATION_ACTIVE=true (retour arrière)
  *
  * Coût : ~$0.05/ville (Claude Sonnet × 2 LLM calls). Total 2100 villes ≈ $105.
  *
@@ -25,6 +26,7 @@ import { VILLES } from "../src/content/villes";
 import type { Ville } from "../src/content/villes";
 import { generateVilleEconomicData } from "../src/server/content-gen/generators/landing-ville-economic-data";
 import { generateVilleHubCopy } from "../src/server/content-gen/generators/ville-hub-copy";
+import { statutPageVilleApresGeneration } from "../src/server/content-gen/quality/relecture-obligatoire";
 
 type Tier = 1 | 2 | 3 | 4;
 
@@ -187,8 +189,24 @@ async function processOneVille(
   });
   totalCostUsd += copyResult.totalCostUsd;
 
-  // Step 3 : auto-approve si quality OK
-  if (copyResult.qualityScore >= args.autoApproveThreshold) {
+  // Step 3 : C2c (2026-11) — la copie reste « generated » (file de validation humaine) ;
+  // l'auto-approbation n'a lieu que si VILLES_AUTO_APPROBATION_ACTIVE=true (retour arrière).
+  const statutFinal = statutPageVilleApresGeneration({
+    qualityScore: copyResult.qualityScore,
+    seuil: args.autoApproveThreshold,
+    env: process.env,
+  });
+  if (statutFinal === "generated" && copyResult.qualityScore >= args.autoApproveThreshold) {
+    return {
+      villeSlug: slug,
+      status: "success",
+      ecoGenerated,
+      qualityScore: copyResult.qualityScore,
+      totalCostUsd,
+      errorMessage: `score ${copyResult.qualityScore} >= ${args.autoApproveThreshold} mais auto-approbation arrêtée (C2c) : status=generated, relecture humaine requise`,
+    };
+  }
+  if (statutFinal === "approved") {
     await prisma.generatedVilleCopy.update({
       where: { villeSlug: slug },
       data: {
