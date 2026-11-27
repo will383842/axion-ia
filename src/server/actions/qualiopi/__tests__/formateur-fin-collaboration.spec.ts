@@ -75,7 +75,7 @@ beforeEach(() => {
   d.terminer.mockResolvedValue({ ok: true, preavis: 30, close: false, desactivee: true, contexte });
   d.envoyer.mockResolvedValue("envoye");
   d.dejaParti.mockResolvedValue(null);
-  d.apercu.mockResolvedValue({ sujet: "s", html: "<p></p>", destinataire: "x" });
+  d.apercu.mockResolvedValue({ html: "<p></p>", objet: "s", a: "x" });
 });
 
 const fin = { trainerId: ID, motif: "initiative_axion" as const, dateEffet: "2026-12-01" };

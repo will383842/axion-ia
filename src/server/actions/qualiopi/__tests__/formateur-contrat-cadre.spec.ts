@@ -106,7 +106,7 @@ beforeEach(() => {
   d.resume.mockReturnValue("Un article change.");
   d.figer.mockResolvedValue({ listees: 2 });
   d.envoyerDossier.mockResolvedValue({ ok: true, envoi: "envoye" });
-  d.apercu.mockResolvedValue({ sujet: "s", html: "<p></p>", destinataire: "x" });
+  d.apercu.mockResolvedValue({ html: "<p></p>", objet: "s", a: "x" });
   d.trainer.mockResolvedValue({ prenom: "Camille", email: "camille@exemple.fr" });
 });
 

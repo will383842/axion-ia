@@ -64,7 +64,7 @@ import {
   libelleEtatPiece,
 } from "@/server/qualiopi/formateurs-independants/pieces-a-renouveler";
 import { apresDecisionPiece } from "@/server/qualiopi/formateurs-independants/pieces-decision";
-import { apercu } from "@/server/qualiopi/formateurs-independants/envois";
+import { apercuBrutServeurSeulement as apercu } from "@/server/qualiopi/formateurs-independants/envois";
 import { emailsQueue } from "@/server/queue/queues";
 import { passerCampagnes } from "@/server/relances/passer-campagnes";
 import { REGISTRE_CAMPAGNES } from "@/server/relances/registre-campagnes";

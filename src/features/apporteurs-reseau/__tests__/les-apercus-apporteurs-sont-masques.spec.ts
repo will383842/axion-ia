@@ -168,7 +168,7 @@ describe.each(CAS)("$nom", ({ lire }) => {
   it("3) pied de page : lien d'opposition masqué, texte présent, en-tête complet", async () => {
     const { email } = await lire();
     const lecteur = (email as unknown as { apercu: EmailLu }).apercu;
-    expect(lecteur.html).toContain("[masqué]");
+    expect(lecteur.html).toContain("/api/unsubscribe?token=[masqué]");
     expect(lecteur.html).not.toMatch(/href=/i);
     expect(typeof lecteur.texte).toBe("string");
     expect((lecteur.texte ?? "").length).toBeGreaterThan(10);
@@ -196,5 +196,30 @@ describe("aperçu et envoi : mêmes arguments de rendu", () => {
     expect(rendu[1]).toBe(locale);
     expect(rendu[2]).toEqual(payload);
     expect(rendu[3]).toEqual({ destinataire });
+  });
+
+  it("5) un payload qui porte un vrai lien : l'aperçu le masque, l'envoi le garde en clair", async () => {
+    const e: EnvoiApporteur = {
+      gabarit: "apporteur-contrat-signe",
+      destinataire: ADRESSE,
+      payload: { contactName: "Claire", lien: LIEN },
+      entityType: "ApporteurReseau",
+      entityId: ID,
+    };
+    const vu = await apercu(e);
+    expect(JSON.stringify(vu)).not.toContain(MARQUEUR);
+    await envoyer(e);
+    expect(JSON.stringify(h.enqueueEmail.mock.calls[0]![3])).toContain(MARQUEUR);
+  });
+});
+
+describe("apercuLienAction : une panne du rendu ne remonte pas", () => {
+  it("rend un message d'erreur au lieu de lever", async () => {
+    h.lireDossier.mockResolvedValue({ ...dossier, statut: "invite" });
+    h.render.mockImplementation(() => {
+      throw new Error("rendu en panne");
+    });
+    const r = await apercuLienAction({ apporteurId: ID, mot: null });
+    expect(r).toEqual({ ok: false, message: "L'aperçu n'a pas pu être préparé." });
   });
 });

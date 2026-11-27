@@ -71,6 +71,14 @@ vi.mock("@/features/apporteurs-reseau/retrait", () => ({
   retraitDe: (...a: unknown[]) => retraitDe(...(a as [])),
 }));
 
+// Un vrai lien de dossier, reconnaissable (le vrai calcul demande une clé absente des tests).
+const MARQUEUR_DOSSIER = "JETONMARQUEURabcdef0123456789";
+vi.mock("@/features/apporteurs-reseau/jeton", async (orig) => ({
+  ...(await orig<typeof import("@/features/apporteurs-reseau/jeton")>()),
+  urlDossier: () =>
+    `https://axion-ia.com/apporteur/dossier/6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b/${MARQUEUR_DOSSIER}`,
+}));
+
 const enqueueEmail = vi.fn();
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => enqueueEmail(...a) }));
 const appliquerTransition = vi.fn();
@@ -494,6 +502,15 @@ describe("l'aperçu ne livre aucun lien personnel à la console", () => {
     expect(lecteur["a"]).toBe("camille@exemple.fr");
     expect(lecteur["de"]).toContain("@");
     expect(lecteur["repondreA"]).toContain("@");
+  });
+
+  it("l'aperçu masque le lien du dossier, mais la charge mise en file le garde en clair", async () => {
+    const a = await apercuIssueApporteurAction({ calendlyEventId: "evt_1", issue: "retenu" });
+    expect(JSON.stringify(a)).not.toContain(MARQUEUR);
+    // Témoin : le rendu de l'aperçu a bien reçu le vrai lien.
+    expect(JSON.stringify(renderEmailTemplate.mock.calls[0]![2])).toContain(MARQUEUR_DOSSIER);
+    await enregistrerIssueApporteurAction(INITIAL, fd({ issue: "retenu", confirmer: "oui" }));
+    expect(JSON.stringify(enqueueEmail.mock.calls[0]![3])).toContain(MARQUEUR_DOSSIER);
   });
 
   it("l'aperçu rend avec la charge exacte que l'envoi met en file", async () => {

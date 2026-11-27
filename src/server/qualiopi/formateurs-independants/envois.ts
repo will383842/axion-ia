@@ -14,7 +14,7 @@
  *   3. le lien « Ouvrir mon espace » est toujours RECALCULÉ, jamais repris du payload.
  *      Tant que l'espace formateur n'existe pas (lot L5), il n'y en a aucun.
  *
- * `apercu()` rend l'e-mail exact sans rien envoyer : la console le montre avant tout
+ * `apercuLecteurFormateur()` rend l'e-mail exact, masqué, sans rien envoyer : la console le montre avant tout
  * envoi décidé par Will, même texte non validé.
  */
 
@@ -165,7 +165,11 @@ export function texteParDefautFormateur(
   return assemblerParagraphes((vs[e] ?? vs[0]).paragraphes);
 }
 
-export function apercu(
+/**
+ * L'aperçu BRUT (HTML non masqué, avec les liens personnels) : jamais renvoyé au navigateur.
+ * Le navigateur de la console reçoit `apercuLecteurFormateur`, masqué et inerte.
+ */
+export function apercuBrutServeurSeulement(
   e: Pick<EnvoiFormateur, "gabarit" | "destinataire" | "payload">,
 ): Promise<ApercuRendu<GabaritFormateur>> {
   return apercuGabarit(e, texteParDefautFormateur);

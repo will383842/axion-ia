@@ -166,9 +166,14 @@ export async function apercuLienAction(input: {
   if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
   const texte = validerTexteLibre(input.texte);
   if (!texte.ok) return texte;
-  const prep = await preparerLien(input.apporteurId, input.mot, texte.texte);
-  if (!prep.ok) return prep;
-  return { ok: true, email: await apercu(prep.envoi), dejaEnvoyeLe: prep.dejaEnvoyeLe };
+  try {
+    const prep = await preparerLien(input.apporteurId, input.mot, texte.texte);
+    if (!prep.ok) return prep;
+    return { ok: true, email: await apercu(prep.envoi), dejaEnvoyeLe: prep.dejaEnvoyeLe };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-lien", step: "apercu" } });
+    return { ok: false, message: "L'aperçu n'a pas pu être préparé." };
+  }
 }
 
 export async function envoyerLienAction(input: {
