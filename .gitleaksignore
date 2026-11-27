@@ -50,3 +50,5 @@ dbdfd2dec2a5386019804ca8b7c6229e22e8178d:src/server/qualiopi/devis/confirmation-
 459d2893b00b46c8319b6ef185fdce0e96f898f3:src/server/qualiopi/documents/templates/__tests__/fixtures-documents-formation.tsx:generic-api-key:162
 # Lot I3 (scan papier) : FAUX POSITIF, constante d'identifiant de version (aucune clé réelle). Exemptée par `gitleaks:allow` au commit suivant ; le commit d'origine porte toujours la ligne nue et l'historique ne se réécrit pas.
 a2d5b24a2ef7c325d13d728fa41017dfcd5e1ec8:src/server/qualiopi/documents/signature/mentions-papier.ts:generic-api-key:20
+# 27/11 — faux positif : secret AUTH_SECRET FICTIF d'un test (PR « chaîne du contrat de bout en bout ») ; remplacé par une valeur courte au commit suivant, mais le commit d'origine reste dans l'historique de la branche (pas de push forcé).
+acbe2fa9a29d0afae328665291d0a52d6fc27594:src/features/apporteurs-reseau/__tests__/chaine-du-contrat-de-bout-en-bout.spec.tsx:generic-api-key:151
