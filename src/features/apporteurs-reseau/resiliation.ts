@@ -559,6 +559,8 @@ export async function enregistrerReprise(e: {
       parrainage: true,
       montantCents: true,
       autofactureNumero: true,
+      regleAppliquee: true,
+      versionContrat: true,
     },
   });
   if (!origine || (e.apporteurId && origine.apporteurId !== e.apporteurId))
@@ -617,6 +619,9 @@ export async function enregistrerReprise(e: {
           factureHtCents: 0,
           montantCents: -e.demandeeCents,
           statut: "reprise",
+          // Relevé mensuel : la reprise garde la règle de la commission d'origine (aucun calcul).
+          regleAppliquee: origine.regleAppliquee,
+          versionContrat: origine.versionContrat,
         },
         select: { id: true },
       });

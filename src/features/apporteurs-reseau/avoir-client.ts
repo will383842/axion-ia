@@ -93,6 +93,8 @@ const CHAMPS_LIGNE = {
   presentationId: true,
   litigeDepuis: true,
   litigeMotif: true,
+  regleAppliquee: true,
+  versionContrat: true,
 } as const;
 
 /** Les avoirs de moins de 24 mois (art. 4.5 : la reprise court de la date de CHAQUE annulation). */
@@ -370,6 +372,9 @@ type LigneLue = {
   litigeDepuis: Date | null;
   litigeMotif: string | null;
   creeAt?: Date | null;
+  /** Relevé mensuel : repris sur le complément (jamais recalculés). */
+  regleAppliquee?: string | null;
+  versionContrat?: string | null;
 };
 
 const motifRetour = (net: number) =>
@@ -642,6 +647,8 @@ async function completer(
         factureHtCents: 0,
         montantCents: aCompleter,
         statut: v.statut,
+        regleAppliquee: l.regleAppliquee ?? null,
+        versionContrat: l.versionContrat ?? null,
         ...contestation,
       },
       select: { id: true },
@@ -783,6 +790,8 @@ export async function reprendreApresAvoirsClients(
       presentationId: true,
       litigeDepuis: true,
       litigeMotif: true,
+      regleAppliquee: true,
+      versionContrat: true,
     },
   });
   if (lignes.length === 0) return bilan;

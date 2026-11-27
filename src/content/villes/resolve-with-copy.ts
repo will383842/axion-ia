@@ -4,7 +4,7 @@
  * Architecture (Sprint VilleCopy generator 2026-05-24) :
  *
  *   Priorité de résolution VilleCopy :
- *     1. Fichier statique `src/content/villes/copy/[slug].ts` (manuel curatié, ~40 villes pilotes)
+ *     1. Fichier statique `src/content/villes/copy/[slug].ts` (manuel curatié ; 2 157 communes en ont un aujourd'hui)
  *     2. Table DB `GeneratedVilleCopy` (status=approved, généré par ville-hub-copy.ts)
  *     3. Aucune copy → ville reste en stub `noindex follow` (anti-doorway HCU 2024)
  *
