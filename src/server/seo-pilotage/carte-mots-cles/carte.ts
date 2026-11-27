@@ -79,7 +79,7 @@ interface PageAgregee {
   impressions: number;
   positionPonderee: number;
   typePage: LigneRequete["typePage"];
-  /** Impressions de la ligne qui a donné `typePage` (le type le plus vu l'emporte, ex. aequo : ordre alphabétique). */
+  /** Impressions de la ligne qui a donné `typePage` (le type de la ligne la plus vue l'emporte ; à égalité, ordre alphabétique). */
   impressionsType: number;
 }
 

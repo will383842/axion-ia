@@ -142,7 +142,7 @@ describe("carte des mots-clés : une page principale par recherche", () => {
     expect(r.rapprochements).toHaveLength(0);
   });
 
-  it("une page protégée n'est devient un signalement seul, sans action", () => {
+  it("une page protégée devient un signalement seul, sans action", () => {
     const r = construireCarteMotsCles([
       l({ url: `${B}/blog/a`, impressions: 300 }),
       l({ url: `${B}/tarifs`, typePage: "offre", impressions: 150 }),
