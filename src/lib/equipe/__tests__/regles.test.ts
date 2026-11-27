@@ -500,3 +500,54 @@ describe("3e relecture : cas limites", () => {
     expect(p?.departement).toBeUndefined();
   });
 });
+
+describe("4e relecture : faux positifs et dates", () => {
+  it("nom contenu dans le prénom : pas de refus à tort", () => {
+    expect(validerPrenom("Martine", "Martine Martin")).toBeNull();
+    expect(validerPrenom("Léonie", "Léonie Leon")).toBeNull();
+    const p = fichePubliqueBrute(
+      fiche({
+        prenom: "Martine",
+        nomComplet: "Martine Martin",
+        slug: "martine",
+        fonction: "Martine, apporteuse",
+      }),
+      ["martine"],
+    );
+    expect(p?.fonction).toBe("Martine, apporteuse");
+    expect(p?.slug).toBe("martine");
+  });
+  it("mots voisins du nom : texte conservé", () => {
+    for (const [nom, texte] of [
+      ["Roche", "Une approche concrète"],
+      ["Mercier", "remercier mes clients"],
+      ["Lamar", "lancé la marque"],
+    ] as const) {
+      const p = fichePubliqueBrute(
+        fiche({ prenom: "Ana", nomComplet: `Ana ${nom}`, slug: "ana", fonction: texte }),
+      );
+      expect(p?.fonction).toBe(texte);
+    }
+  });
+  it("nom identique à une particule : les textes ne sont pas vidés", () => {
+    const p = fichePubliqueBrute(
+      fiche({
+        prenom: "Minh",
+        nomComplet: "Minh Le",
+        slug: "minh",
+        fonction: "Minh est le relais",
+      }),
+    );
+    expect(p?.fonction).toBe("Minh est le relais");
+  });
+  it("nom collé avec chiffres ou prénom : écarté", () => {
+    const p = fichePubliqueBrute(
+      fiche({ prenom: "Jean", nomComplet: "Jean Dupont", slug: "jean", fonction: "dupont2" }),
+    );
+    expect(p?.fonction).toBe("");
+  });
+  it("consentement : 30 février refusé", () => {
+    const photo = { src: "/a.jpg", largeur: 1, hauteur: 1, alt: "x", consentementLe: "2026-02-30" };
+    expect(fichePubliqueBrute(fiche({ photo }))?.photo).toBeUndefined();
+  });
+});

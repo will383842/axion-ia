@@ -69,7 +69,7 @@ function famille(f: Pick<FicheCollaborateur, "prenom" | "nomComplet">): string[]
   if (reste.length === 0) reste = nom.length >= 2 ? nom.slice(-1) : [];
   const parts = new Set<string>();
   const complet = slugifier(reste.join(" "));
-  if (complet) parts.add(complet);
+  if (complet && !PARTICULES.has(complet) && Array.from(complet).length >= 2) parts.add(complet);
   for (const mot of reste) {
     const brut = mot.toLocaleLowerCase("fr");
     const sl = slugifier(mot);
@@ -90,23 +90,45 @@ function cle(mot: string): string {
   return slugifier(mot) || nettoyer(mot).toLocaleLowerCase("fr");
 }
 
-/** Vrai si le texte contient un fragment du nom de famille (mots entiers, slugifiés). */
-function contientFamille(texte: string | undefined, parts: ReadonlyArray<string>): boolean {
+/**
+ * Vrai si le texte contient un fragment du nom de famille : mot entier, ou mot
+ * collé au prénom ou à des chiffres (« jeandupont », « dupont2 »). Jamais à
+ * l'intérieur d'un autre mot (« approche » ne contient pas « roche »).
+ * `prenoms` : prénoms (slugifiés) qui peuvent être collés au nom.
+ */
+function contientFamille(
+  texte: string | undefined,
+  parts: ReadonlyArray<string>,
+  prenoms: ReadonlyArray<string> = [],
+): boolean {
   if (!texte || parts.length === 0) return false;
-  const slug = slugifier(texte);
-  const norm = `-${slug}-`;
-  const compact = slug.replace(/-/g, "");
-  const jetons = new Set(
-    nettoyer(texte)
-      .toLocaleLowerCase("fr")
-      .split(/[^\p{L}\p{M}\p{N}]+/u),
-  );
+  const norm = `-${slugifier(texte)}-`;
+  const jetons = nettoyer(texte)
+    .toLocaleLowerCase("fr")
+    .split(/[^\p{L}\p{M}\p{N}]+/u)
+    .filter(Boolean);
   return parts.some((p) => {
-    if (norm.includes(`-${p}-`) || jetons.has(p)) return true;
-    // Nom collé (« JeanDupont », « #dupont2 ») : forme sans tirets, fragments de 4 lettres et plus.
+    if (norm.includes(`-${p}-`)) return true;
     const c = p.replace(/-/g, "");
-    return c.length >= 4 && compact.includes(c);
+    return jetons.some((j) => {
+      if (j === p) return true;
+      const sj = slugifier(j) || j;
+      if (c.length < 4 || sj === c) return sj === c;
+      const reste = sj.startsWith(c)
+        ? sj.slice(c.length)
+        : sj.endsWith(c)
+          ? sj.slice(0, -c.length)
+          : null;
+      return reste !== null && (/^\d*$/.test(reste) || prenoms.includes(reste));
+    });
   });
+}
+
+function prenomsCles(prenom: string): string[] {
+  return nettoyer(prenom)
+    .split(" ")
+    .filter(Boolean)
+    .map((m) => cle(m));
 }
 
 /**
@@ -225,7 +247,9 @@ export function slugCollaborateur(
   if (!pris.has(base)) return base;
   const parts = famille({ prenom, nomComplet: nomComplet ?? "" });
   const villeSlug =
-    estTextePropre(ville) && !contientFamille(ville ?? "", parts) ? slugifier(ville) : "";
+    estTextePropre(ville) && !contientFamille(ville ?? "", parts, prenomsCles(prenom))
+      ? slugifier(ville)
+      : "";
   const avecVille = villeSlug ? `${base}-${villeSlug}` : base;
   if (!pris.has(avecVille)) return avecVille;
   for (let n = 2; ; n++) {
@@ -247,6 +271,10 @@ function consentementValide(brut: string | null | undefined): boolean {
   const d = nettoyer(brut);
   if (!DATE_ISO.test(d)) return false;
   const t = Date.parse(d);
+  const [y, m, j] = d.slice(0, 10).split("-").map(Number);
+  const calendrier = new Date(Date.UTC(y ?? 0, (m ?? 1) - 1, j ?? 1));
+  // Jour inexistant (30 février) : refusé.
+  if (calendrier.getUTCMonth() !== (m ?? 1) - 1 || calendrier.getUTCDate() !== j) return false;
   return Number.isFinite(t) && t <= Date.now() + 24 * 3600 * 1000;
 }
 
@@ -309,14 +337,15 @@ export function fichePublique(
   if (!nom) return null;
   const dirigeant = estDirigeantNomme(f);
   const parts = dirigeant ? [] : famille(f);
+  const pren = prenomsCles(f.prenom);
   const propre = (t: string | null | undefined): string | undefined =>
-    estTextePropre(t) && !contientFamille(t ?? "", parts) ? (t as string) : undefined;
+    estTextePropre(t) && !contientFamille(t ?? "", parts, pren) ? (t as string) : undefined;
 
   let slug = f.slug;
   const slugConforme = /^[a-z0-9]+(-[a-z0-9]+)*$/.test(f.slug ?? "");
   if (
     !dirigeant &&
-    (!slugConforme || contientFamille(f.slug, parts) || SLUGS_RESERVES.includes(f.slug))
+    (!slugConforme || contientFamille(f.slug, parts, pren) || SLUGS_RESERVES.includes(f.slug))
   ) {
     const neuf = slugCollaborateur(f.prenom, propre(f.ville), existants, f.nomComplet);
     if (!neuf) return null;
