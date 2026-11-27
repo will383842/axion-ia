@@ -93,7 +93,7 @@ describe("briefSchema étendu (C3)", () => {
   it("accepte intention de recherche, plan de titres et fourchette de longueur", () => {
     const r = briefSchema.safeParse({
       ...valide,
-
+      intention: "comparaison",
       planTitres: [
         { niveau: 1, titre: "Pilote IA en PME" },
         { niveau: 2, titre: "Par où commencer ?" },
