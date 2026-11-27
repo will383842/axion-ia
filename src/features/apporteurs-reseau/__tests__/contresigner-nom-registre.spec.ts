@@ -161,9 +161,7 @@ describe("pas d'alerte : aucune case exigée, rien de tracé", () => {
 
 describe("alerte Telegram de contresignature", () => {
   beforeEach(() => {
-    h.registre.mockResolvedValue(
-      entreprise([{ nom: "MARTIN", prenoms: "CLAIRE", qualite: null }]),
-    );
+    h.registre.mockResolvedValue(entreprise([{ nom: "MARTIN", prenoms: "CLAIRE", qualite: null }]));
   });
 
   it("transmet le résultat de l'envoi (e-mail non parti signalé)", async () => {
