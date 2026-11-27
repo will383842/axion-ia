@@ -22,6 +22,7 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
     apporteurReseauSiret: { findUnique: async () => null },
+    apporteurMessageRecu: { findMany: async () => [], deleteMany: async () => ({ count: 0 }) },
     apporteurReseau: {
       findUnique: (...a: unknown[]) => h.appFindUnique(...a),
       update: (...a: unknown[]) => h.appUpdate(...a),

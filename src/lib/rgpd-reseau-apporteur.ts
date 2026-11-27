@@ -167,14 +167,15 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         select: { denomination: true, recueAt: true, statut: true },
       })
     : [];
+  // Table pas encore migrée (fenêtre app/worker) : liste vide.
   const messages = a
-    ? await prisma.apporteurMessageRecu
-        .findMany({
+    ? await Promise.resolve(
+        prisma.apporteurMessageRecu.findMany({
           where: { apporteurId: a.id },
           orderBy: { receivedAt: "desc" },
           select: { receivedAt: true, source: true, subject: true, excerpt: true },
-        })
-        .catch(() => []) // table pas encore migrée (fenêtre app/worker)
+        }),
+      ).catch(() => []) // table pas encore migrée (fenêtre app/worker)
     : [];
   return {
     apporteur: a
