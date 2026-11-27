@@ -682,7 +682,7 @@ export const siteRouteGscQueue: Queue<SiteRouteGscJobData> | null = connection
   : null;
 
 /**
- * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
+ * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly ; veille indexation : cron hebdomadaire dédié, P18).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
  *  - `alertSoft404Detected` (link-checker tier-1 HEAD samples)
@@ -1985,7 +1985,8 @@ export async function bootRepeatableJobs(): Promise<void> {
   }
 
   // Méta-cert 2026-05-15 AGENT 19 — content-monitoring hourly @ xx:15.
-  // Câble alertQueueStuck + alertSoft404Detected + alertIndexationStagnant.
+  // Câble alertQueueStuck + alertSoft404Detected (+ anomalies). La veille indexation est
+  // hebdomadaire (P18, cron ci-dessous).
   if (contentMonitoringQueue) {
     await contentMonitoringQueue.removeRepeatable(
       "tick",

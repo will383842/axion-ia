@@ -18,8 +18,8 @@
  *  3. `alertIndexationStagnant` — hebdomadaire (P18), chiffres réels de `GscPageJour`
  *     (voir `monitoring/indexation-stagnante.ts`).
  *
- * Cron pattern : `15 * * * *` (xx:15 every hour). Décalé d'autres crons
- * pour ne pas concentrer la charge.
+ * Cron pattern : `15 * * * *` (xx:15 every hour), plus `40 8 * * 1` (lundi) réservé à la
+ * veille d'indexation (P18). Décalés d'autres crons pour ne pas concentrer la charge.
  *
  * Fail-soft : chaque check est dans son try/catch. Une erreur sur queueStuck
  * n'empêche pas soft404 + indexationStagnant de tourner.
@@ -213,7 +213,6 @@ async function checkIndexationStagnant(): Promise<void> {
           translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
         },
         orderBy: { publishedAt: "asc" },
-        take: 200,
       });
       return rows.flatMap((r) => {
         const slug = r.translations[0]?.slug;
@@ -258,6 +257,10 @@ async function checkIndexationStagnant(): Promise<void> {
         "NX",
       )) === "OK",
     alerter: alertIndexationStagnant,
+    signalerSourceInsuffisante: (jours) =>
+      console.warn(
+        `[content-monitoring] indexationStagnant : GscPageJour couvre ${jours} jour(s) sur 28 — veille muette (robot P4 éteint ou récent ?)`,
+      ),
   });
 }
 

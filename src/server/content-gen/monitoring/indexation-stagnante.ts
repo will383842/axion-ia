@@ -21,8 +21,12 @@ import { normaliserChemin } from "@/server/seo-pilotage/donnees/chemins";
 export const AGE_MIN_JOURS = 30;
 /** Fenêtre de mesure Search Console (jours). */
 export const FENETRE_JOURS = 28;
-/** Jours distincts à couvrir dans la fenêtre pour que la source soit jugée exploitable. */
-export const JOURS_COUVERTS_MIN = 14;
+/**
+ * Jours distincts à couvrir dans la fenêtre pour que la source soit jugée exploitable. Les seuils
+ * d'impressions sont calibrés sur 28 jours : une fenêtre partielle fabriquerait de fausses
+ * alertes (retard Search Console de 2 à 3 jours compris).
+ */
+export const JOURS_COUVERTS_MIN = 24;
 /** Sous ce nombre d'impressions sur la fenêtre, la page est jugée non indexée. */
 export const IMPRESSIONS_MIN = 10;
 /** Au-delà de ce nombre d'impressions, un CTR sous le seuil est jugé stagnant. */
@@ -57,6 +61,8 @@ export interface DepsIndexationStagnante {
   /** Réserve le slug pour 30 j ; `false` si déjà réservé. Lève si Redis est indisponible. */
   reserverAlerte: (slug: string) => Promise<boolean>;
   alerter: (slug: string, ctrPct: number, ageJours: number, impressions: number) => Promise<void>;
+  /** Source trop peu fournie : silence voulu, mais journalisé pour ne pas passer inaperçu. */
+  signalerSourceInsuffisante?: (joursCouverts: number) => void;
 }
 
 const JOUR_MS = 86_400_000;
@@ -69,34 +75,30 @@ export function estStagnante(m: MesurePage): boolean {
 
 export async function detecterIndexationStagnante(deps: DepsIndexationStagnante): Promise<void> {
   const maintenant = deps.maintenant();
+  // `date` est un jour calendaire (minuit UTC) : on tronque pour couvrir exactement 28 jours.
   const depuis = new Date(maintenant.getTime() - FENETRE_JOURS * JOUR_MS);
+  depuis.setUTCHours(0, 0, 0, 0);
 
-  // 1. Source exploitable ? Sinon silence (jamais de zéros fabriqués).
-  try {
-    if ((await deps.lireJoursCouverts(depuis)) < JOURS_COUVERTS_MIN) return;
-  } catch {
+  // 1. Source exploitable ? Sinon silence Telegram (jamais de zéros fabriqués). Une lecture en
+  // échec REMONTE (journal + Sentry par processJob) : une veille muette ne doit pas être invisible.
+  const joursCouverts = await deps.lireJoursCouverts(depuis);
+  if (joursCouverts < JOURS_COUVERTS_MIN) {
+    deps.signalerSourceInsuffisante?.(joursCouverts);
     return;
   }
 
   // 2. Candidats et leurs chemins.
   const publieAvant = new Date(maintenant.getTime() - AGE_MIN_JOURS * JOUR_MS);
-  let candidats: ArticleCandidat[];
-  let mesures: Map<string, MesurePage>;
   const parChemin = new Map<string, ArticleCandidat>();
-  try {
-    candidats = await deps.lireArticles(publieAvant);
-    for (const a of candidats) {
-      if (a.publishedAt > publieAvant) continue; // garde-fou : jamais d'article trop récent
-      const chemin = normaliserChemin(
-        buildArticlePath({ slug: a.slug, isNews: a.isNews, templateVariant: a.templateVariant }),
-      );
-      if (chemin) parChemin.set(chemin, a);
-    }
-    if (parChemin.size === 0) return;
-    mesures = await deps.lireMesures([...parChemin.keys()], depuis);
-  } catch {
-    return;
+  for (const a of await deps.lireArticles(publieAvant)) {
+    if (a.publishedAt > publieAvant) continue; // garde-fou : jamais d'article trop récent
+    const chemin = normaliserChemin(
+      buildArticlePath({ slug: a.slug, isNews: a.isNews, templateVariant: a.templateVariant }),
+    );
+    if (chemin) parChemin.set(chemin, a);
   }
+  if (parChemin.size === 0) return;
+  const mesures = await deps.lireMesures([...parChemin.keys()], depuis);
 
   // 3. Alertes, plafonnées, avec réservation de 30 j avant l'envoi.
   let envoyees = 0;
@@ -104,11 +106,10 @@ export async function detecterIndexationStagnante(deps: DepsIndexationStagnante)
     if (envoyees >= MAX_ALERTES) break;
     const m = mesures.get(chemin) ?? { impressions: 0, clics: 0 };
     if (!estStagnante(m)) continue;
-    try {
-      if (!(await deps.reserverAlerte(a.slug))) continue;
-    } catch {
-      return; // anti-répétition impossible : mieux vaut se taire que répéter
-    }
+    // Anti-répétition impossible (Redis en panne) : la lève remonte, aucune alerte n'est envoyée.
+    // La réservation précède l'envoi : si Telegram échoue, l'article n'est pas re-signalé avant
+    // 30 jours (choix assumé : mieux vaut manquer une info que répéter).
+    if (!(await deps.reserverAlerte(a.slug))) continue;
     const ctrPct = m.impressions > 0 ? Math.round((m.clics / m.impressions) * 10_000) / 100 : 0;
     const age = Math.floor((maintenant.getTime() - a.publishedAt.getTime()) / JOUR_MS);
     await deps.alerter(a.slug, ctrPct, age, m.impressions);

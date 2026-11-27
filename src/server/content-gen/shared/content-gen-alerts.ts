@@ -405,7 +405,7 @@ export async function alertIndexationStagnant(
       silent: true,
       body:
         `*[ℹ️ INDEXATION STAGNANTE]* tier-1 \`${slug}\` : ` +
-        `CTR ${ctrPct.toFixed(2)} % sur ${impressions} impressions (${ageDays} j).\n` +
+        `CTR ${ctrPct.toFixed(2)} % sur ${impressions} impressions (28 derniers jours ; publié depuis ${ageDays} j).\n` +
         `Considérer rewrite ou rétrograder tier-2.\n` +
         `→ ${adminUrl(`/jobs?slug=${encodeURIComponent(slug)}`)}\n` +
         `Runbook : \`R30\` (Lighthouse weekly) + analyse Search Console`,

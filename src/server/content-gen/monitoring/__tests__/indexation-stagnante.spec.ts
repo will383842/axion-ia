@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { detecterIndexationStagnante, type DepsIndexationStagnante } from "../indexation-stagnante";
+import {
+  detecterIndexationStagnante,
+  type DepsIndexationStagnante,
+  type MesurePage,
+} from "../indexation-stagnante";
 
 const MAINTENANT = new Date("2026-11-27T10:00:00Z");
 const JOUR = 86_400_000;
@@ -20,6 +24,7 @@ function deps(surcharge: Partial<DepsIndexationStagnante> = {}): DepsIndexationS
     maintenant: () => MAINTENANT,
     lireArticles: async () => [article("a-guide", 60)],
     lireJoursCouverts: async () => 28,
+    signalerSourceInsuffisante: vi.fn(),
     lireMesures: async () => new Map([["/fr/blog/a-guide", { impressions: 3, clics: 0 }]]),
     reserverAlerte: async () => true,
     alerter: vi.fn(async () => undefined),
@@ -74,6 +79,55 @@ describe("detecterIndexationStagnante : vrais chiffres Search Console", () => {
   });
 });
 
+describe("detecterIndexationStagnante : seuils et fenêtre", () => {
+  const avec = (impressions: number, clics: number) =>
+    deps({
+      lireMesures: async () => new Map([["/fr/blog/a-guide", { impressions, clics }]]),
+    });
+
+  it("9 impressions : stagnante ; 10 avec un bon CTR : non", async () => {
+    const a = avec(9, 1);
+    await detecterIndexationStagnante(a);
+    expect(a.alerter).toHaveBeenCalledTimes(1);
+    const b = avec(10, 1);
+    await detecterIndexationStagnante(b);
+    expect(b.alerter).not.toHaveBeenCalled();
+  });
+
+  it("99 impressions sans clic : pas de verdict de CTR ; 100 sans clic : stagnante", async () => {
+    const a = avec(99, 0);
+    await detecterIndexationStagnante(a);
+    expect(a.alerter).not.toHaveBeenCalled();
+    const b = avec(100, 0);
+    await detecterIndexationStagnante(b);
+    expect(b.alerter).toHaveBeenCalledTimes(1);
+  });
+
+  it("article de exactement 30 jours : examiné", async () => {
+    const d = deps({ lireArticles: async () => [article("a-guide", 30)] });
+    await detecterIndexationStagnante(d);
+    expect(d.alerter).toHaveBeenCalledTimes(1);
+  });
+
+  it("fenêtre de 28 jours calendaires pleins (minuit UTC)", async () => {
+    const lireMesures = vi.fn(async () => new Map<string, MesurePage>());
+    await detecterIndexationStagnante(deps({ lireMesures }));
+    const depuis = (lireMesures.mock.calls[0] as unknown as [string[], Date])[1];
+    expect(depuis.toISOString()).toBe("2026-10-30T00:00:00.000Z");
+  });
+
+  it("au-delà des 5 premiers, un article déjà réservé ne bloque pas les suivants", async () => {
+    const reserves = new Set(["s0", "s1", "s2", "s3", "s4"]);
+    const d = deps({
+      lireArticles: async () => Array.from({ length: 8 }, (_, i) => article(`s${i}`, 60)),
+      lireMesures: async () => new Map(),
+      reserverAlerte: async (slug) => !reserves.has(slug),
+    });
+    await detecterIndexationStagnante(d);
+    expect(d.alerter).toHaveBeenCalledTimes(3);
+  });
+});
+
 describe("detecterIndexationStagnante : anti-répétition", () => {
   it("pas de seconde alerte quand la réservation de 30 jours existe déjà", async () => {
     const d = deps({ reserverAlerte: async () => false });
@@ -100,7 +154,7 @@ describe("detecterIndexationStagnante : anti-répétition", () => {
         throw new Error("redis down");
       },
     });
-    await detecterIndexationStagnante(d);
+    await expect(detecterIndexationStagnante(d)).rejects.toThrow("redis down");
     expect(d.alerter).not.toHaveBeenCalled();
   });
 
@@ -121,14 +175,22 @@ describe("detecterIndexationStagnante : source indisponible = aucune alerte", ()
         throw new Error("relation gsc_page_jours does not exist");
       },
     });
-    await detecterIndexationStagnante(d);
+    // L'échec remonte (journal + Sentry par processJob) : jamais d'alerte, jamais invisible.
+    await expect(detecterIndexationStagnante(d)).rejects.toThrow("gsc_page_jours");
     expect(d.alerter).not.toHaveBeenCalled();
   });
 
-  it("table vide ou robot éteint (moins de 14 jours couverts) : pas de zéros fabriqués", async () => {
-    const d = deps({ lireJoursCouverts: async () => 3 });
+  it("table vide ou robot éteint (moins de 24 jours couverts) : pas de zéros, mais signalé", async () => {
+    const d = deps({ lireJoursCouverts: async () => 23 });
     await detecterIndexationStagnante(d);
     expect(d.alerter).not.toHaveBeenCalled();
+    expect(d.signalerSourceInsuffisante).toHaveBeenCalledWith(23);
+  });
+
+  it("24 jours couverts : la veille tourne", async () => {
+    const d = deps({ lireJoursCouverts: async () => 24 });
+    await detecterIndexationStagnante(d);
+    expect(d.alerter).toHaveBeenCalledTimes(1);
   });
 
   it("lecture des mesures en échec", async () => {
@@ -137,7 +199,7 @@ describe("detecterIndexationStagnante : source indisponible = aucune alerte", ()
         throw new Error("boom");
       },
     });
-    await detecterIndexationStagnante(d);
+    await expect(detecterIndexationStagnante(d)).rejects.toThrow("boom");
     expect(d.alerter).not.toHaveBeenCalled();
   });
 });
