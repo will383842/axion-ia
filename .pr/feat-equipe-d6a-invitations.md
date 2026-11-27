@@ -30,6 +30,8 @@ L'envoi ne doit plus être un copier-coller. Plus tard, la contresignature du co
 - `pnpm format:check` échoue seulement sur `.mcp.json` (fichier non versionné, illisible ici).
 - Le hook de commit lance `tsc` en entier : il manque de mémoire sans `NODE_OPTIONS=--max-old-space-size=7000`.
 
+- **`origin/main` n'a pas pu être refusionné** : il a avancé de 2 commits dont un touche `package.json`, fichier que ce bac à sable ne peut pas réécrire (« Device or resource busy »). La fusion est donc à faire avant la PR : `git fetch && git merge origin/main`.
+
 ## Relecture Opus (sécurité et données)
 
 Corrigés : lien précédent perdu si l'envoi échoue ; course entre deux envois ; double e-mail si une écriture de suivi échoue ; déchiffrement qui peut lever ; liste des fiches masquée si les colonnes d'invitation ne sont pas encore migrées.
