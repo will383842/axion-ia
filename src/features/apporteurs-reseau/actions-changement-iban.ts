@@ -10,10 +10,12 @@
 
 import { revalidatePath } from "next/cache";
 
+import { getClientIp, getClientUserAgent } from "@/lib/client-ip";
+
 import { auth } from "@/auth";
 import { peutEngager } from "@/server/auth/habilitations";
 
-import { refuserDemande, validerDemande } from "./changement-iban";
+import { demanderChangementIban, refuserDemande, validerDemande } from "./changement-iban";
 
 export type ResultatDecision = { ok: true } | { ok: false; message: string };
 
@@ -31,7 +33,10 @@ async function acteur() {
   return { id: session.user.id, role };
 }
 
-const REFUS_ROLE: ResultatDecision = { ok: false, message: "Seul le super administrateur peut décider." };
+const REFUS_ROLE: ResultatDecision = {
+  ok: false,
+  message: "Seul le super administrateur peut décider.",
+};
 
 export async function validerChangementCompteAction(fd: FormData): Promise<ResultatDecision> {
   const a = await acteur();
@@ -58,6 +63,42 @@ export async function refuserChangementCompteAction(fd: FormData): Promise<Resul
   const demandeId = texte(fd, "demandeId", 40);
   if (!UUID.test(demandeId)) return { ok: false, message: "Demande introuvable." };
   const r = await refuserDemande({ demandeId, acteur: a, motif: texte(fd, "motif", 500) });
+  revalidatePath("/[locale]/[adminPrefix]/apporteurs/changements-de-compte", "layout");
+  return r.ok ? { ok: true } : { ok: false, message: r.message };
+}
+
+/**
+ * Lot 9 : ouvrir une demande AU NOM d'un apporteur retiré ou résilié avec de l'argent dû. L'IBAN est saisi
+ * par une PERSONNE (jamais par Claude, plan §2.6), chiffré aussitôt, jamais renvoyé. Mêmes barrières
+ * ensuite : e-mail de confirmation à l'adresse de la fiche, 72 h, rappel, validation `super_admin`.
+ */
+export async function ouvrirDemandeConsoleAction(fd: FormData): Promise<ResultatDecision> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, message: "Session expirée : reconnectez-vous." };
+  const role = (session.user as { role?: string }).role ?? null;
+  const apporteurId = texte(fd, "apporteurId", 40);
+  if (!UUID.test(apporteurId)) return { ok: false, message: "Apporteur introuvable." };
+  const rib = fd.get("rib");
+  if (!(rib instanceof File) || rib.size === 0 || rib.size > 10 * 1024 * 1024) {
+    return { ok: false, message: "Ajoutez le RIB du nouveau compte (10 Mo au plus)." };
+  }
+  let ip: string | null = null;
+  let userAgent: string | null = null;
+  try {
+    ip = (await getClientIp()) ?? null;
+    userAgent = (await getClientUserAgent()) ?? null;
+  } catch {
+    /* sans IP : la limite de débit répond « inconnue » */
+  }
+  const r = await demanderChangementIban({
+    apporteurId: apporteurId.toLowerCase(),
+    iban: texte(fd, "iban", 60),
+    rib: { nom: rib.name, octets: new Uint8Array(await rib.arrayBuffer()) },
+    ip,
+    userAgent,
+    origine: "console",
+    acteur: { id: session.user.id, role },
+  });
   revalidatePath("/[locale]/[adminPrefix]/apporteurs/changements-de-compte", "layout");
   return r.ok ? { ok: true } : { ok: false, message: r.message };
 }

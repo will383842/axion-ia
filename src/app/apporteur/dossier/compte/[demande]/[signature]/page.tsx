@@ -25,7 +25,12 @@ export const metadata: Metadata = {
 };
 
 const jour = (d: Date) =>
-  d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" });
+  d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
 
 export default async function PageLienCompte({
   params,

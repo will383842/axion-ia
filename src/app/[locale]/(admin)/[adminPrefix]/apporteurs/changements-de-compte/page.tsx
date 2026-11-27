@@ -6,7 +6,10 @@ import Link from "next/link";
 import { AdminBadge, AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { jourParis } from "@/features/apporteurs-reseau/autofacture-donnees";
-import { etatConsole, listerDemandesConsole } from "@/features/apporteurs-reseau/requetes-changements-iban";
+import {
+  etatConsole,
+  listerDemandesConsole,
+} from "@/features/apporteurs-reseau/requetes-changements-iban";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +24,11 @@ const LIBELLE: Record<string, string> = {
   expiree: "Expirée",
 };
 
-export default async function ChangementsDeComptePage({ params }: { params: Promise<{ adminPrefix: string }> }) {
+export default async function ChangementsDeComptePage({
+  params,
+}: {
+  params: Promise<{ adminPrefix: string }>;
+}) {
   const { adminPrefix } = await params;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
@@ -36,11 +43,14 @@ export default async function ChangementsDeComptePage({ params }: { params: Prom
       />
       {etat.secretAbsent ? (
         <p role="alert" className="text-[color:var(--color-admin-danger)]">
-          Le secret d&apos;empreinte n&apos;est pas posé sur l&apos;application : aucune demande ne peut s&apos;enregistrer ni se valider.
+          Le secret d&apos;empreinte n&apos;est pas posé sur l&apos;application : aucune demande ne
+          peut s&apos;enregistrer ni se valider.
         </p>
       ) : null}
       {!etat.interrupteurAllume ? (
-        <p>Le service est éteint : les demandes déjà reçues restent visibles, aucune ne se valide.</p>
+        <p>
+          Le service est éteint : les demandes déjà reçues restent visibles, aucune ne se valide.
+        </p>
       ) : null}
       <AdminCard as="section">
         {lignes.length === 0 ? <p>Aucune demande.</p> : null}

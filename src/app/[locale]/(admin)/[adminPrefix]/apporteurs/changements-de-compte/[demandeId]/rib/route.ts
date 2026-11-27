@@ -24,7 +24,8 @@ const SANS_CACHE = {
   "X-Content-Type-Options": "nosniff",
   "X-Robots-Tag": "noindex",
 };
-const refus = (statut: number, t: string) => new NextResponse(t, { status: statut, headers: SANS_CACHE });
+const refus = (statut: number, t: string) =>
+  new NextResponse(t, { status: statut, headers: SANS_CACHE });
 
 export async function GET(
   _req: Request,
@@ -42,9 +43,13 @@ export async function GET(
   const rib = await lireRibDemande(demandeId.toLowerCase());
   if (!rib || !rib.apporteurId) return refus(404, "RIB introuvable.");
   const verdict = await analyserOctets(rib.octets, 30_000);
-  if (verdict.issue === "infecte") return refus(409, "L'antivirus a trouvé un risque dans ce fichier.");
+  if (verdict.issue === "infecte")
+    return refus(409, "L'antivirus a trouvé un risque dans ce fichier.");
   if (verdict.issue === "indisponible") {
-    return refus(503, "La vérification antivirus est momentanément indisponible. Réessayez dans quelques minutes.");
+    return refus(
+      503,
+      "La vérification antivirus est momentanément indisponible. Réessayez dans quelques minutes.",
+    );
   }
   // L'ouverture est tracée : qui, quand, quelle demande. Jamais l'IBAN.
   await journaliser(prisma, {

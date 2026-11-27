@@ -122,11 +122,16 @@ export async function lireDetailDemande(id: string): Promise<DetailDemande | nul
   const alertes: AlerteCompte[] = [];
   // Une demande d'un autre apporteur (contestée) sur la même empreinte.
   const contestees = await prisma.apporteurChangementIban.findMany({
-    where: { ibanEmpreinte: d.ibanEmpreinte, apporteurId: { not: d.apporteurId }, statut: "opposee" },
+    where: {
+      ibanEmpreinte: d.ibanEmpreinte,
+      apporteurId: { not: d.apporteurId },
+      statut: "opposee",
+    },
     select: { apporteurId: true },
     take: 10,
   });
-  for (const c of contestees) alertes.push({ code: "demande-contestee", apporteurId: c.apporteurId });
+  for (const c of contestees)
+    alertes.push({ code: "demande-contestee", apporteurId: c.apporteurId });
   for (const apporteurId of await apporteursAyantCeCompte(d.ibanEmpreinte, d.apporteurId)) {
     alertes.push({ code: "deja-connu", apporteurId });
   }

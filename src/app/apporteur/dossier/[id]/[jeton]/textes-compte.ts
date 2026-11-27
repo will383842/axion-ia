@@ -2,7 +2,8 @@
 // Textes soumis à la relecture du dirigeant (D-10) : ne pas les retoucher sans elle.
 export const TEXTES_COMPTE = {
   titre: "Mon compte bancaire",
-  compteActuel: (fin4: string) => `Nous versons vos commissions sur le compte qui se termine par ${fin4}.`,
+  compteActuel: (fin4: string) =>
+    `Nous versons vos commissions sur le compte qui se termine par ${fin4}.`,
   changer: "Changer de compte",
   formTitre: "Changer de compte bancaire",
   formIban: "Votre nouvel IBAN",
@@ -15,7 +16,8 @@ export const TEXTES_COMPTE = {
     "Tant que le changement n'est pas validé, nos virements vers vous sont en attente. Vos commissions continuent d'être enregistrées, et le virement part dès la décision.",
   envoyer: "Envoyer ma demande",
   regardezTitre: "Regardez vos e-mails",
-  regardezLigne: "Nous venons de vous écrire. Cliquez sur le bouton de cet e-mail pour confirmer. Vous avez 24 heures.",
+  regardezLigne:
+    "Nous venons de vous écrire. Cliquez sur le bouton de cet e-mail pour confirmer. Vous avez 24 heures.",
   annuler: "Annuler ma demande",
   enCoursTitre: "Demande en cours",
   enCoursLigne: (demandee: string, reponse: string, fin4: string) =>

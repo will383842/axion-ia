@@ -55,11 +55,15 @@ import { MonCompteBancaire, type VueCompte } from "./MonCompteBancaire";
 import { lireSectionCompte } from "@/features/apporteurs-reseau/changement-iban-espace-lecture";
 import { dateReponseAuPlusTot } from "@/features/apporteurs-reseau/changement-iban-espace";
 
-
 export const dynamic = "force-dynamic";
 
 const jourParis = (d: Date) =>
-  d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" });
+  d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
 
 /** « Mon compte bancaire » : jamais une erreur de lecture ne casse l'espace (la section disparaît). */
 async function vueSectionCompte(apporteurId: string): Promise<VueCompte | null> {
@@ -244,7 +248,9 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             })}
           </ul>
         ) : null}
-        {sectionCompte ? <MonCompteBancaire id={dossier.id} jeton={jeton} vue={sectionCompte} /> : null}
+        {sectionCompte ? (
+          <MonCompteBancaire id={dossier.id} jeton={jeton} vue={sectionCompte} />
+        ) : null}
       </Coquille>
     );
   }

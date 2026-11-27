@@ -13,11 +13,29 @@ const bouton =
   "bg-terracotta hover:bg-terracotta-deep inline-flex min-h-[56px] w-full items-center justify-center rounded-2xl px-6 text-[18px] font-bold text-white disabled:opacity-60";
 
 export type VueCompte =
-  | { etat: "ferme" | "normal" | "a-confirmer" | "sans-telephone"; fin4: string | null; demandeId: string | null }
-  | { etat: "confirmee"; fin4: string | null; demandeId: string | null; demandee: string; reponse: string }
+  | {
+      etat: "ferme" | "normal" | "a-confirmer" | "sans-telephone";
+      fin4: string | null;
+      demandeId: string | null;
+    }
+  | {
+      etat: "confirmee";
+      fin4: string | null;
+      demandeId: string | null;
+      demandee: string;
+      reponse: string;
+    }
   | { etat: "refusee"; fin4: string | null; demandeId: string | null; motif: string };
 
-export function MonCompteBancaire({ id, jeton, vue }: { id: string; jeton: string; vue: VueCompte }) {
+export function MonCompteBancaire({
+  id,
+  jeton,
+  vue,
+}: {
+  id: string;
+  jeton: string;
+  vue: VueCompte;
+}) {
   const uid = useId();
   const routeur = useRouter();
   const [ouvert, setOuvert] = useState(false);
@@ -48,7 +66,15 @@ export function MonCompteBancaire({ id, jeton, vue }: { id: string; jeton: strin
   return (
     <section aria-labelledby={`${uid}-t`} className="mt-8">
       <h2 id={`${uid}-t`} className="font-display text-[24px]">
-        {vue.etat === "a-confirmer" ? T.regardezTitre : vue.etat === "confirmee" ? T.enCoursTitre : vue.etat === "refusee" ? T.refuseTitre : vue.etat === "sans-telephone" ? T.sansTelTitre : T.titre}
+        {vue.etat === "a-confirmer"
+          ? T.regardezTitre
+          : vue.etat === "confirmee"
+            ? T.enCoursTitre
+            : vue.etat === "refusee"
+              ? T.refuseTitre
+              : vue.etat === "sans-telephone"
+                ? T.sansTelTitre
+                : T.titre}
       </h2>
       {vue.etat === "ferme" ? (
         <>
@@ -65,7 +91,9 @@ export function MonCompteBancaire({ id, jeton, vue }: { id: string; jeton: strin
       ) : null}
       {vue.etat === "confirmee" ? (
         <>
-          <p className="mt-2 text-[17px]">{T.enCoursLigne(vue.demandee, vue.reponse, vue.fin4 ?? "")}</p>
+          <p className="mt-2 text-[17px]">
+            {T.enCoursLigne(vue.demandee, vue.reponse, vue.fin4 ?? "")}
+          </p>
           {annuler(vue.demandeId)}
         </>
       ) : null}
@@ -98,11 +126,26 @@ export function MonCompteBancaire({ id, jeton, vue }: { id: string; jeton: strin
               <h3 className="text-[19px] font-semibold">{T.formTitre}</h3>
               <label className="block text-[15px] font-semibold" htmlFor={`${uid}-iban`}>
                 {T.formIban}
-                <input id={`${uid}-iban`} name="iban" className={champ} autoComplete="off" inputMode="text" maxLength={60} required />
+                <input
+                  id={`${uid}-iban`}
+                  name="iban"
+                  className={champ}
+                  autoComplete="off"
+                  inputMode="text"
+                  maxLength={60}
+                  required
+                />
               </label>
               <label className="block text-[15px] font-semibold" htmlFor={`${uid}-rib`}>
                 {T.formRib}
-                <input id={`${uid}-rib`} name="rib" type="file" accept="application/pdf,image/png,image/jpeg" className={champ} required />
+                <input
+                  id={`${uid}-rib`}
+                  name="rib"
+                  type="file"
+                  accept="application/pdf,image/png,image/jpeg"
+                  className={champ}
+                  required
+                />
                 <span className="text-fg-soft block text-[15px] font-normal">{T.formRibAide}</span>
               </label>
               <div>

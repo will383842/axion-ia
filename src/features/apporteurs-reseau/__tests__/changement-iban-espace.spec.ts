@@ -31,8 +31,12 @@ describe("etatSectionCompte", () => {
   });
   it("demande à confirmer / confirmée / refusée", () => {
     const d = new Date("2026-11-25T10:00:00Z");
-    expect(etatSectionCompte({ ...base, demande: { statut: "a_confirmer", demandeeAt: d } }).etat).toBe("a-confirmer");
-    expect(etatSectionCompte({ ...base, demande: { statut: "confirmee", demandeeAt: d } }).etat).toBe("confirmee");
+    expect(
+      etatSectionCompte({ ...base, demande: { statut: "a_confirmer", demandeeAt: d } }).etat,
+    ).toBe("a-confirmer");
+    expect(
+      etatSectionCompte({ ...base, demande: { statut: "confirmee", demandeeAt: d } }).etat,
+    ).toBe("confirmee");
     const r = etatSectionCompte({
       ...base,
       demande: { statut: "refusee", demandeeAt: d, motifRefus: "RIB illisible" },
@@ -42,11 +46,15 @@ describe("etatSectionCompte", () => {
   it("validée, opposée, annulée, expirée : retour à l'état normal", () => {
     const d = new Date();
     for (const statut of ["validee", "opposee", "annulee", "expiree"] as const) {
-      expect(etatSectionCompte({ ...base, demande: { statut, demandeeAt: d } }).etat).toBe("normal");
+      expect(etatSectionCompte({ ...base, demande: { statut, demandeeAt: d } }).etat).toBe(
+        "normal",
+      );
     }
   });
   it("réponse au plus tôt : 72 h après la confirmation", () => {
-    expect(dateReponseAuPlusTot(new Date("2026-11-25T10:00:00Z")).toISOString()).toBe("2026-11-28T10:00:00.000Z");
+    expect(dateReponseAuPlusTot(new Date("2026-11-25T10:00:00Z")).toISOString()).toBe(
+      "2026-11-28T10:00:00.000Z",
+    );
   });
 });
 

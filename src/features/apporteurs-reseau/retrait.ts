@@ -358,6 +358,8 @@ export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   "apporteur-compte-change",
   "apporteur-compte-refuse",
   "apporteur-compte-expire",
+  // Le lien neuf qui suit une validation ou une opposition : l'accès à SON espace, donc à son argent (lot 9).
+  "apporteur-lien-espace",
   // Une commission suspendue puis libérée reste de l'argent dû : l'apporteur retiré est prévenu.
   "apporteur-commission-suspension",
   // Le régime de TVA détermine ses autofactures : l'apporteur retiré en est informé.

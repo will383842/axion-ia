@@ -10,7 +10,10 @@
 "use server";
 
 import { getClientIp, getClientUserAgent } from "@/lib/client-ip";
-import { annulerDemande, demanderChangementIban } from "@/features/apporteurs-reseau/changement-iban";
+import {
+  annulerDemande,
+  demanderChangementIban,
+} from "@/features/apporteurs-reseau/changement-iban";
 import { lireDossierParLien } from "@/features/apporteurs-reseau/donnees";
 import { etatDeLaPage } from "@/features/apporteurs-reseau/signature";
 
@@ -39,7 +42,8 @@ export async function demanderChangementCompteAction(fd: FormData): Promise<Resu
   if (!dossier) return { ok: false, message: T.erreurNeutre };
   const iban = fd.get("iban");
   const rib = fd.get("rib");
-  if (typeof iban !== "string" || iban.length > 60) return { ok: false, message: T.erreurIbanInvalide };
+  if (typeof iban !== "string" || iban.length > 60)
+    return { ok: false, message: T.erreurIbanInvalide };
   if (!(rib instanceof File) || rib.size === 0) return { ok: false, message: T.erreurRibManque };
   if (rib.size > MAX_RIB) return { ok: false, message: T.erreurFichier };
   const octets = new Uint8Array(await rib.arrayBuffer());

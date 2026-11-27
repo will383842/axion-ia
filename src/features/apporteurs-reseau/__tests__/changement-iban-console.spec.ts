@@ -14,7 +14,10 @@ const valider = vi.hoisted(() => vi.fn());
 const refuser = vi.hoisted(() => vi.fn());
 vi.mock("../changement-iban", () => ({ validerDemande: valider, refuserDemande: refuser }));
 
-import { refuserChangementCompteAction, validerChangementCompteAction } from "../actions-changement-iban";
+import {
+  refuserChangementCompteAction,
+  validerChangementCompteAction,
+} from "../actions-changement-iban";
 
 const UUID = "11111111-1111-4111-8111-111111111111";
 const fd = (o: Record<string, string>) => {
@@ -26,28 +29,44 @@ const fd = (o: Record<string, string>) => {
 describe("les actions de décision", () => {
   it("refusent hors super_admin, sans appeler le cœur", async () => {
     auth.mockResolvedValue({ user: { id: "u", role: "admin" } });
-    const r = await validerChangementCompteAction(fd({ demandeId: UUID, titulaire: "on", iban: "on", rappel: "on", ibanRecopie: "x" }));
+    const r = await validerChangementCompteAction(
+      fd({ demandeId: UUID, titulaire: "on", iban: "on", rappel: "on", ibanRecopie: "x" }),
+    );
     expect(r.ok).toBe(false);
-    expect((await refuserChangementCompteAction(fd({ demandeId: UUID, motif: "RIB illisible" }))).ok).toBe(false);
+    expect(
+      (await refuserChangementCompteAction(fd({ demandeId: UUID, motif: "RIB illisible" }))).ok,
+    ).toBe(false);
     expect(valider).not.toHaveBeenCalled();
     expect(refuser).not.toHaveBeenCalled();
   });
   it("transmettent les trois cases et le rôle au cœur, qui garde la décision", async () => {
     auth.mockResolvedValue({ user: { id: "u", role: "super_admin" } });
     valider.mockResolvedValue({ ok: true });
-    await validerChangementCompteAction(fd({ demandeId: UUID, titulaire: "on", ibanRecopie: "FR76" }));
+    await validerChangementCompteAction(
+      fd({ demandeId: UUID, titulaire: "on", ibanRecopie: "FR76" }),
+    );
     expect(valider).toHaveBeenCalledWith(
-      expect.objectContaining({ cases: { titulaire: true, iban: false, rappel: false }, acteur: { id: "u", role: "super_admin" } }),
+      expect.objectContaining({
+        cases: { titulaire: true, iban: false, rappel: false },
+        acteur: { id: "u", role: "super_admin" },
+      }),
     );
   });
   it("une valeur de retour ne contient jamais l'IBAN recopié", async () => {
-    valider.mockResolvedValue({ ok: false, message: "L'IBAN recopié n'est pas celui de la demande." });
-    const r = await validerChangementCompteAction(fd({ demandeId: UUID, ibanRecopie: "FR7630006000011234567890189" }));
+    valider.mockResolvedValue({
+      ok: false,
+      message: "L'IBAN recopié n'est pas celui de la demande.",
+    });
+    const r = await validerChangementCompteAction(
+      fd({ demandeId: UUID, ibanRecopie: "FR7630006000011234567890189" }),
+    );
     expect(JSON.stringify(r)).not.toContain("FR7630006000011234567890189");
   });
   it("refusent un identifiant qui n'est pas un UUID", async () => {
     auth.mockResolvedValue({ user: { id: "u", role: "super_admin" } });
-    expect((await refuserChangementCompteAction(fd({ demandeId: "x", motif: "abc" }))).ok).toBe(false);
+    expect((await refuserChangementCompteAction(fd({ demandeId: "x", motif: "abc" }))).ok).toBe(
+      false,
+    );
   });
 });
 
@@ -63,7 +82,11 @@ describe("la route du RIB de demande", () => {
 
 describe("les écrans", () => {
   it("ne rendent aucun IBAN entier : jamais de lecture de la colonne chiffrée", () => {
-    for (const f of [`${BASE}/page.tsx`, `${BASE}/[demandeId]/page.tsx`, "src/features/apporteurs-reseau/requetes-changements-iban.ts"]) {
+    for (const f of [
+      `${BASE}/page.tsx`,
+      `${BASE}/[demandeId]/page.tsx`,
+      "src/features/apporteurs-reseau/requetes-changements-iban.ts",
+    ]) {
       const s = lire(f);
       expect(s).not.toMatch(/decryptPii\([^)]*\.iban\b/);
       expect(s).not.toMatch(/select:\s*\{[^}]*\biban:\s*true/);

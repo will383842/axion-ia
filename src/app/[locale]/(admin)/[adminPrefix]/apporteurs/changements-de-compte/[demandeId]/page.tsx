@@ -65,8 +65,14 @@ export default async function DetailChangementPage({
         </p>
       ) : null}
       {alertes.map((a) => (
-        <p key={`${a.code}-${a.apporteurId}`} role="alert" className="text-[color:var(--color-admin-danger)]">
-          {a.code === "deja-connu" ? "Ce compte est déjà celui d'un autre apporteur : " : "Ce compte a déjà fait l'objet d'une demande contestée : "}
+        <p
+          key={`${a.code}-${a.apporteurId}`}
+          role="alert"
+          className="text-[color:var(--color-admin-danger)]"
+        >
+          {a.code === "deja-connu"
+            ? "Ce compte est déjà celui d'un autre apporteur : "
+            : "Ce compte a déjà fait l'objet d'une demande contestée : "}
           <Link href={`/fr/${adminPrefix}/apporteurs/${a.apporteurId}`} className="underline">
             voir la fiche
           </Link>
@@ -74,7 +80,8 @@ export default async function DetailChangementPage({
       ))}
       <AdminCard as="section">
         <p>
-          Compte actuel : se termine par {d.ancienFin4 ?? "—"}. Compte demandé : se termine par {d.fin4}.
+          Compte actuel : se termine par {d.ancienFin4 ?? "—"}. Compte demandé : se termine par{" "}
+          {d.fin4}.
         </p>
         <p>
           <AdminBadge>{d.statut}</AdminBadge>
@@ -93,21 +100,31 @@ export default async function DetailChangementPage({
         <>
           <AdminCard as="section">
             <h2 className="font-semibold">Valider</h2>
-            {!d.decidable ? <p>Le délai d&apos;opposition de 72 heures n&apos;est pas écoulé.</p> : null}
+            {!d.decidable ? (
+              <p>Le délai d&apos;opposition de 72 heures n&apos;est pas écoulé.</p>
+            ) : null}
             <form action={valider} className="flex flex-col gap-[var(--space-admin-3)]">
               <input type="hidden" name="demandeId" value={d.id} />
               <label>
-                <input type="checkbox" name="titulaire" /> Le compte est au nom de l&apos;apporteur ou de son entreprise.
+                <input type="checkbox" name="titulaire" /> Le compte est au nom de l&apos;apporteur
+                ou de son entreprise.
               </label>
               <label>
                 <input type="checkbox" name="iban" /> L&apos;IBAN du RIB est lisible et complet.
               </label>
               <label>
-                <input type="checkbox" name="rappel" /> J&apos;ai rappelé l&apos;apporteur au numéro de sa fiche.
+                <input type="checkbox" name="rappel" /> J&apos;ai rappelé l&apos;apporteur au numéro
+                de sa fiche.
               </label>
               <label>
                 IBAN lu sur le RIB (recopié, pour contrôle)
-                <input name="ibanRecopie" autoComplete="off" maxLength={60} required className="admin-input" />
+                <input
+                  name="ibanRecopie"
+                  autoComplete="off"
+                  maxLength={60}
+                  required
+                  className="admin-input"
+                />
               </label>
               <button type="submit" className="admin-button" disabled={!d.decidable}>
                 Valider le changement
@@ -120,7 +137,13 @@ export default async function DetailChangementPage({
               <input type="hidden" name="demandeId" value={d.id} />
               <label>
                 Motif (envoyé à l&apos;apporteur)
-                <textarea name="motif" required minLength={3} maxLength={500} className="admin-input" />
+                <textarea
+                  name="motif"
+                  required
+                  minLength={3}
+                  maxLength={500}
+                  className="admin-input"
+                />
               </label>
               <button type="submit" className="admin-button">
                 Refuser la demande
