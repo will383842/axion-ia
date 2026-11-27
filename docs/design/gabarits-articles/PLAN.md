@@ -328,6 +328,14 @@ Le contenu d'un encadré est du **texte réel** dans le DOM (jamais dans `::befo
 - **Preuve de valeur sans faux témoignage** : déroulé du diagnostic en 3 étapes (libellés du site), ce que remet la Journée IA (attestation, rapport de priorités), et la phrase du site « Nous n'annonçons jamais un gain à l'avance. »
 - Interdits : prix, frais de déplacement, « Grenoble », « Aucun gain garanti », compte à rebours, chiffre de résultat client.
 
+### 15.3 bis Décisions issues de l'arbitrage qualité (2 tours)
+
+- **Boutons dès le premier écran sur ordinateur.** La carte d'actions est posée dans le bandeau sombre de l'en-tête, puis reste collante. Le sommaire collant se place dessous, dans la hauteur qui reste : fondu en bas et indication « ↓ suite du sommaire » quand il défile. La réassurance est masquée sous 860 px de hauteur d'écran.
+- **Bouton bleu « Diagnostic IA, 45 min » dans le bandeau de navigation du site**, sur ordinateur seulement (`depuis=<gabarit>-entete`). Sur téléphone, c'est la barre basse qui le porte. Ce bouton touche l'en-tête global du site : ce sera une PR distincte, soumise à la décision du propriétaire (impact sur toutes les pages).
+- **Un signe propre à chaque gabarit dans l'en-tête** (« RAG. », « A ou B », « ≈ 10 % », « Art. 4 », jalons…), en décor `aria-hidden`.
+- **Typographie française** : espace fine insécable devant ? ! ; et insécable devant : et dans les « ». À appliquer au rendu des textes d'interface, via les messages.
+- **Promesses vérifiées contre le site** : le rapport et le plan d'action à 90 jours de la Journée IA arrivent **sous 10 jours ouvrés**, pas le jour même.
+
 ### 15.4 Visuel signature de chaque gabarit
 
 | Gabarit            | Visuel signature                                                                                                                                        |
