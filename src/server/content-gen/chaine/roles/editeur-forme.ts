@@ -26,11 +26,12 @@ import {
   type CompteurCout,
   type Correction,
 } from "./commun";
+import { nombresDe } from "./nombres";
+import { normaliserTitre } from "./structure-hn";
 import { mesurerEquilibre } from "./equilibre-sections";
 import {
   analyserArticle,
   decouperSections,
-  nombresDe,
   type ArticleRedige,
   type EntreeRedaction,
 } from "./redacteur";
@@ -38,7 +39,11 @@ import {
 export type EntreeEdition = EntreeRedaction & { readonly article: ArticleRedige };
 
 export type MotifRejetEdition =
-  "chiffres_modifies" | "liens_modifies" | "regle_de_marque" | "probleme_introduit";
+  | "chiffres_modifies"
+  | "faq_modifiee"
+  | "liens_modifies"
+  | "regle_de_marque"
+  | "probleme_introduit";
 
 export type ResultatEdition =
   | {
@@ -48,6 +53,8 @@ export type ResultatEdition =
       readonly motifRejet: MotifRejetEdition | null;
       /** Fond à renvoyer à R4 (section courte, redite, longueur). */
       readonly renvoiR4: ReadonlyArray<Correction>;
+      /** Problèmes de contrat restants (marque, chiffre hors dossier, plan…) : à renvoyer aussi. */
+      readonly problemesResiduels: ReadonlyArray<Correction>;
       readonly avertissements: ReadonlyArray<string>;
     }
   | { readonly verdict: "illisible"; readonly raison: string };
@@ -93,7 +100,8 @@ function chiffresParSegment(a: ArticleRedige): string[][] {
   ];
 }
 
-const hrefsDe = (h: string) => [...h.matchAll(/<a\s[^>]*href="([^"]+)"/gi)].map((m) => m[1]!);
+const hrefsDe = (h: string) =>
+  [...h.matchAll(/<a\s[^>]*?href\s*=\s*["']?([^"'\s>]+)/gi)].map((m) => m[1]!);
 
 function liensConformes(
   avant: ArticleRedige,
@@ -152,16 +160,29 @@ export async function editerForme(
     article,
     motifRejet: motif,
     renvoiR4: fondRenvoye(e, article),
+    problemesResiduels: residuels(e, article),
     avertissements: avertissements(article),
   });
 
   if (JSON.stringify(chiffresParSegment(article)) !== JSON.stringify(chiffresParSegment(propose))) {
     return rejeter("chiffres_modifies");
   }
-  if (!liensConformes(article, propose, e.structure.liensInternes))
+  const questions = (a: ArticleRedige) =>
+    JSON.stringify(a.faq.map((f) => normaliserTitre(f.question)));
+  if (questions(article) !== questions(propose)) return rejeter("faq_modifiee");
+  const tousHtml = (a: ArticleRedige): ArticleRedige => ({
+    ...a,
+    bodyHtml: `${a.directAnswer}\n${a.bodyHtml}\n${a.faq.map((f) => f.answer).join("\n")}`,
+  });
+  if (!liensConformes(tousHtml(article), tousHtml(propose), e.structure.liensInternes)) {
     return rejeter("liens_modifies");
+  }
   const tout = `${propose.directAnswer}\n${propose.bodyHtml}\n${propose.faq.map((f) => `${f.question} ${f.answer}`).join("\n")}`;
-  const marqueAvant = new Set(verifierReglesMarque(`${article.directAnswer}\n${article.bodyHtml}`));
+  const marqueAvant = new Set(
+    verifierReglesMarque(
+      `${article.directAnswer}\n${article.bodyHtml}\n${article.faq.map((f) => `${f.question} ${f.answer}`).join("\n")}`,
+    ),
+  );
   if (verifierReglesMarque(tout).some((m) => !marqueAvant.has(m)))
     return rejeter("regle_de_marque");
   const dejaLa = new Set(avant.map(cleProbleme));
@@ -175,8 +196,14 @@ export async function editerForme(
     article: propose,
     motifRejet: null,
     renvoiR4: fondRenvoye(e, propose),
+    problemesResiduels: residuels(e, propose),
     avertissements: avertissements(propose),
   };
+}
+
+/** Problèmes de contrat encore présents après l'édition (marque, chiffre hors dossier, plan…). */
+function residuels(e: EntreeRedaction, a: ArticleRedige): Correction[] {
+  return analyserArticle(e, a).filter((c) => c.probleme !== "longueur_hors_fourchette");
 }
 
 function fondRenvoye(e: EntreeRedaction, a: ArticleRedige): Correction[] {

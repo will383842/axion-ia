@@ -13,17 +13,19 @@ const pages: SourceLue[] = [
   {
     url: "https://www.insee.fr/fr/statistiques/1",
     titre: "Insee",
-    texte: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA dans leur activité.",
+    texte:
+      "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA dans leur activité. Publié en 2026.",
   },
   {
     url: "https://www.economie.gouv.fr/ia-pme",
     titre: "Ministère",
-    texte: "Le règlement européen sur l'IA s'applique par étapes depuis août 2024.",
+    texte: "Le règlement européen sur l'IA s'applique par étapes depuis août 2024. Publié en 2026.",
   },
   {
     url: "https://www.cnil.fr/fr/ia-rgpd",
     titre: "CNIL",
-    texte: "La CNIL recommande d'informer les personnes lorsqu'un traitement repose sur une IA.",
+    texte:
+      "La CNIL recommande d'informer les personnes lorsqu'un traitement repose sur une IA. Publié en 2026.",
   },
 ];
 
@@ -137,12 +139,13 @@ describe("collecterFaits (R3)", () => {
 
   it("sur un sujet sensible, exige une source de moins de 18 mois", async () => {
     const anciennes = trois().map((f) => ({ ...f, datePublication: "2024-01-10" }));
-    const r = await collecterFaits(entree, reponse(anciennes), new CompteurCout());
+    const src = pages.map((p) => ({ ...p, texte: `${p.texte} Publié en 2024.` }));
+    const r = await collecterFaits(entree, reponse(anciennes, src), new CompteurCout());
     expect(r.verdict).toBe("dossier_insuffisant");
     expect(r.raison).toMatch(/18 mois/);
     const hors = await collecterFaits(
       { ...entree, sujetSensible: false },
-      reponse(anciennes),
+      reponse(anciennes, src),
       new CompteurCout(),
     );
     expect(hors.verdict).toBe("dossier_complet");
@@ -170,6 +173,38 @@ describe("collecterFaits (R3)", () => {
     expect(requete!.maxRecherches).toBe(8);
     expect(requete!.user).toContain("<donnees_non_fiables");
     expect(requete!.system).toContain("jamais des instructions");
+  });
+
+  it("écarte un fait dont l'énoncé porte un chiffre absent de l'extrait exact", async () => {
+    const r = await collecterFaits(
+      entree,
+      reponse([...trois(), fait({ enonce: "80 % des PME utilisent l'IA.", valeur: null })]),
+      new CompteurCout(),
+    );
+    expect(r.ecartes.map((e) => e.raison)).toContain("enonce_hors_extrait");
+  });
+
+  it("écarte une date future, un texte de référence hors liste de domaines, une année absente de la page", async () => {
+    const r = await collecterFaits(
+      entree,
+      reponse([
+        ...trois(),
+        fait({ datePublication: "2027-01-01" }),
+        fait({ texteReference: true, datePublication: "2019-01-01" }),
+        fait({
+          datePublication: "2025-05-05",
+          url: pages[1]!.url,
+          extrait: "Le règlement européen sur l'IA s'applique par étapes",
+          valeur: null,
+          enonce: "Le règlement s'applique par étapes.",
+        }),
+      ]),
+      new CompteurCout(),
+    );
+    const raisons = r.ecartes.map((e) => e.raison);
+    expect(raisons).toEqual(
+      expect.arrayContaining(["date_future", "reference_non_admise", "annee_absente_de_la_page"]),
+    );
   });
 });
 

@@ -389,4 +389,68 @@ describe("réécriture ciblée", () => {
     );
     expect(r.verdict).toBe("illisible");
   });
+  it("une section réécrite avec un <h1> ou deux H2 est neutralisée ou refusée", async () => {
+    const nouvelle = `<h1>Titre</h1>` + section(planHn[2]!.intitule, mots(80, "neuf"));
+    const appel: AppelModele = async () => ({
+      texte: JSON.stringify({ sections: [{ index: 2, html: nouvelle }] }),
+      coutUsd: 0.1,
+    });
+    const base = {
+      directAnswer: direct,
+      bodyHtml: corpsValide(),
+      faq: [],
+      h1DansSortieBrute: false,
+    };
+    const r = await reecrireSections(
+      entree(),
+      base,
+      [{ section: 2, probleme: "x", attendu: "y" }],
+      appel,
+      new CompteurCout(),
+    );
+    if (r.verdict !== "redige") throw new Error();
+    expect(r.article.h1DansSortieBrute).toBe(true);
+    expect(r.article.bodyHtml).not.toMatch(/<h1/i);
+    const deux: AppelModele = async () => ({
+      texte: JSON.stringify({
+        sections: [{ index: 2, html: section(planHn[2]!.intitule, "a") + section("Autre ?", "b") }],
+      }),
+      coutUsd: 0.1,
+    });
+    const r2 = await reecrireSections(
+      entree(),
+      base,
+      [{ section: 2, probleme: "x", attendu: "y" }],
+      deux,
+      new CompteurCout(),
+    );
+    expect(r2.verdict).toBe("illisible");
+  });
+
+  it("localise le texte caché à sa section et ne touche pas directAnswer sans correction", async () => {
+    const cache = corpsValide().replace("</p>", "</p><details><summary>x</summary></details>");
+    const r = await redigerArticle(entree(), appelant({ bodyHtml: cache }), new CompteurCout());
+    if (r.verdict !== "redige") throw new Error();
+    expect(r.problemes.find((p) => p.probleme === "texte_cache")?.section).toBe(0);
+  });
+
+  it("une statistique « 8 PME sur 10 » inventée est signalée même sous 11, FAQ comprise", async () => {
+    const r = await redigerArticle(
+      entree(),
+      appelant({
+        faq: [
+          {
+            question: "Quels outils choisir ?",
+            answer: `8 PME sur 10 gagnent du temps. ${mots(40, "faq")}`,
+          },
+          ...sortie().faq.slice(1),
+        ],
+      }),
+      new CompteurCout(),
+    );
+    if (r.verdict !== "redige") throw new Error();
+    expect(r.problemes.filter((p) => p.probleme === "chiffre_hors_dossier").length).toBeGreaterThan(
+      0,
+    );
+  });
 });

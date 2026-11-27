@@ -20,11 +20,12 @@ import {
   appelerRole,
   encadrerDonnees,
   lireJson,
+  verifierReglesMarque,
   type AppelModele,
   type CompteurCout,
   type SourceLue,
 } from "./commun";
-import { normaliserTitre } from "./structure-hn";
+import { motsSignificatifs, normaliserTitre } from "./structure-hn";
 
 export const PART_PME_CIBLE = 0.8;
 export const PART_TPE_CIBLE = 0.2;
@@ -135,6 +136,17 @@ export function proposerIntention(question: string): BesoinPropose["intentionPro
 
 const cle = (s: string) => normaliserTitre(s);
 
+/** Part des mots significatifs communs (sur le plus petit des deux ensembles). */
+function recouvrement(a: string, b: string): number {
+  const x = new Set(motsSignificatifs(a));
+  const y = new Set(motsSignificatifs(b));
+  const petit = Math.min(x.size, y.size);
+  if (petit < 2) return 0;
+  let communs = 0;
+  for (const m of x) if (y.has(m)) communs++;
+  return communs / petit;
+}
+
 export async function chercherBesoins(
   e: EntreeChercheur,
   appel: AppelModele,
@@ -204,15 +216,19 @@ export async function chercherBesoins(
   const besoins: BesoinPropose[] = [];
   for (const b of lu.valeur.besoins) {
     const k = cle(b.question);
+    if (verifierReglesMarque(b.question).length > 0) {
+      rejetes.push({ question: b.question, raison: "regle_de_marque" });
+      continue;
+    }
     if (contientDonneePersonnelle(b.question)) {
       rejetes.push({ question: b.question, raison: "donnee_personnelle" });
       continue;
     }
     const reelle =
       b.source === "page-lue"
-        ? (pages.get(b.sourceRef) ?? "").includes(k)
+        ? k.length >= 15 && (pages.get(b.sourceRef) ?? "").includes(k)
         : b.source === "demandes-agregees"
-          ? themesFournis.some((t) => t.includes(k) || k.includes(t))
+          ? themesFournis.some((t) => recouvrement(k, t) >= 0.6)
           : questionsFournies.has(k);
     if (!reelle) {
       rejetes.push({ question: b.question, raison: "source_introuvable" });

@@ -232,8 +232,11 @@ describe("strategeBrief (R2)", () => {
     ]);
   });
 
-  it("admet une question « autre-source » dont l'URL est une page réellement lue", async () => {
-    const r = await strategeBrief(
+  it("admet une question « autre-source » présente dans une page réellement lue ; refuse si absente du texte", async () => {
+    const avecQuestion = sources.map((s, i) =>
+      i === 0 ? { ...s, texte: `${s.texte} Un forum dit-il que le scan suffit ?` } : s,
+    );
+    const sansTexte = await strategeBrief(
       entree(),
       appelant({
         questions: [
@@ -244,17 +247,7 @@ describe("strategeBrief (R2)", () => {
             principale: true,
           },
           {
-            question: "Quels justificatifs faut-il conserver ?",
-            origine: "search-console",
-            reference: "requête 1",
-          },
-          {
-            question: "Combien de temps faut-il pour déployer ?",
-            origine: "search-console",
-            reference: "requête 2",
-          },
-          {
-            question: "Un forum dit-il que le scan suffit ?",
+            question: "Une question inventée mais attribuée à une page lue ?",
             origine: "autre-source",
             reference: "https://a.fr/1",
           },
@@ -268,24 +261,88 @@ describe("strategeBrief (R2)", () => {
           },
           {
             type: "informatif",
-            intitule: "Quels justificatifs faut-il conserver ?",
-            question: 1,
+            intitule: "Quels outils choisir pour une PME ?",
+            question: null,
             blocAttendu: null,
           },
           {
             type: "informatif",
             intitule: "Combien de temps faut-il pour déployer ?",
-            question: 2,
+            question: null,
             blocAttendu: null,
           },
           {
             type: "informatif",
-            intitule: "Un simple scan suffit-il vraiment ?",
-            question: 3,
+            intitule: "Comment former deux référents internes ?",
+            question: null,
             blocAttendu: null,
           },
         ],
       }),
+      new CompteurCout(),
+    );
+    expect(sansTexte.verdict).toBe("brief_pret");
+    if (sansTexte.verdict === "brief_pret") {
+      expect(sansTexte.structure.questionsEcartees.map((q) => q.motif)).toEqual([
+        "sans_origine_reelle",
+      ]);
+    }
+    const r = await strategeBrief(
+      entree(),
+      appelant(
+        {
+          questions: [
+            {
+              question: QUESTION,
+              origine: "plan-editorial",
+              reference: "plan n° 12",
+              principale: true,
+            },
+            {
+              question: "Quels justificatifs faut-il conserver ?",
+              origine: "search-console",
+              reference: "requête 1",
+            },
+            {
+              question: "Combien de temps faut-il pour déployer ?",
+              origine: "search-console",
+              reference: "requête 2",
+            },
+            {
+              question: "Un forum dit-il que le scan suffit ?",
+              origine: "autre-source",
+              reference: "https://a.fr/1",
+            },
+          ],
+          planHn: [
+            {
+              type: "informatif",
+              intitule: "Quels frais peut-on automatiser en premier ?",
+              question: null,
+              blocAttendu: null,
+            },
+            {
+              type: "informatif",
+              intitule: "Quels justificatifs faut-il conserver ?",
+              question: 1,
+              blocAttendu: null,
+            },
+            {
+              type: "informatif",
+              intitule: "Combien de temps faut-il pour déployer ?",
+              question: 2,
+              blocAttendu: null,
+            },
+            {
+              type: "informatif",
+              intitule: "Un simple scan suffit-il vraiment ?",
+              question: 3,
+              blocAttendu: null,
+            },
+          ],
+        },
+        avecQuestion,
+      ),
       new CompteurCout(),
     );
     expect(r.verdict).toBe("brief_pret");
@@ -492,5 +549,26 @@ describe("strategeBrief (R2)", () => {
     expect(vu!.user).toContain("<donnees_non_fiables");
     expect(vu!.system).toContain("dirigeants de PME");
     expect(vu!.outils).toEqual(["web_search", "web_fetch"]);
+  });
+  it("une page lue ne compte qu'une fois : la même URL listée trois fois ne donne pas une mesure", async () => {
+    const r = await strategeBrief(
+      entree(),
+      appelant({ pagesLues: Array(3).fill({ url: "https://a.fr/1", format: "analyse" }) }, [
+        sources[0]!,
+      ]),
+      new CompteurCout(),
+    );
+    expect(r.verdict).toBe("brief_pret");
+    if (r.verdict === "brief_pret")
+      expect(r.structure.fourchetteMots.methode).toBe("repli-gabarit");
+  });
+
+  it("refuse Grenoble dans une question ou le métier du lecteur", async () => {
+    const r = await strategeBrief(
+      entree(),
+      appelant({ lecteur: { profil: "pme", metier: "dirigeant à Grenoble" } }),
+      new CompteurCout(),
+    );
+    expect(r.verdict).toBe("brief_invalide");
   });
 });

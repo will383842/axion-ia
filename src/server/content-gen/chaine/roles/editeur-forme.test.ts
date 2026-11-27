@@ -226,4 +226,19 @@ describe("editerForme (R7)", () => {
     const bad: AppelModele = async () => ({ texte: "voilà", coutUsd: 0.1 });
     expect((await editerForme(entree(), bad, new CompteurCout())).verdict).toBe("illisible");
   });
+  it("rejette un changement de questions de FAQ et un lien en apostrophes ajouté", async () => {
+    const avecFaq = entree({
+      article: { ...article(), faq: [{ question: "Quels outils choisir ?", answer: mots(40) }] },
+    });
+    const r = await editerForme(
+      avecFaq,
+      rend({ faq: [{ question: "Une question inventée ?", answer: mots(40) }] }),
+      new CompteurCout(),
+    );
+    expect(r).toMatchObject({ verdict: "inchange", motifRejet: "faq_modifiee" });
+    const lien = corps() + "<p>Voir <a href='https://autre.fr/x'>ici</a>.</p>";
+    expect(await editerForme(entree(), rend({ bodyHtml: lien }), new CompteurCout())).toMatchObject(
+      { verdict: "inchange", motifRejet: "liens_modifies" },
+    );
+  });
 });

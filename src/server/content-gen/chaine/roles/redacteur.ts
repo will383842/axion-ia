@@ -30,6 +30,7 @@ import {
   type CompteurCout,
   type Correction,
 } from "./commun";
+import { nombresDe } from "./nombres";
 import { compterMotsContenu, motsSignificatifs, normaliserTitre } from "./structure-hn";
 import type { StructureBrief } from "./strateg-brief";
 
@@ -89,6 +90,10 @@ const sortieReecritureSchema = z
       .array(z.object({ index: z.number().int().min(0), html: z.string() }).strict())
       .optional(),
     directAnswer: z.string().optional(),
+    faq: z
+      .array(z.object({ question: z.string(), answer: z.string() }).strict())
+      .max(20)
+      .optional(),
   })
   .strict();
 
@@ -116,38 +121,6 @@ export function decouperSections(bodyHtml: string): { avant: string; sections: s
 
 const titreH2 = (section: string) =>
   sansBalises(/<h2[^>]*>([\s\S]*?)<\/h2>/i.exec(section)?.[1] ?? "");
-
-// ── Chiffres ────────────────────────────────────────────────────────────────
-
-const RE_NOMBRE =
-  /(?<![\p{L}\p{N}])(\d{1,3}(?:[  .]\d{3})+|\d+)(?:,(\d+))?(\s?(?:%|€|k€|m€|millions?|milliards?))?(?![\p{L}\p{N}])/giu;
-
-export interface NombreTrouve {
-  readonly cle: string;
-  readonly valeur: number;
-  readonly notable: boolean;
-  readonly annee: boolean;
-  readonly minutes: boolean;
-}
-
-export function nombresDe(texte: string): NombreTrouve[] {
-  const sortie: NombreTrouve[] = [];
-  for (const m of texte.matchAll(RE_NOMBRE)) {
-    const entier = (m[1] ?? "").replace(/[  .]/g, "");
-    const dec = m[2];
-    const unite = (m[3] ?? "").replace(/\s/g, "").toLowerCase();
-    const valeur = Number(dec ? `${entier}.${dec}` : entier);
-    const apres = texte.slice((m.index ?? 0) + m[0].length, (m.index ?? 0) + m[0].length + 12);
-    sortie.push({
-      cle: `${dec ? `${entier}.${dec}` : entier}${unite}`,
-      valeur,
-      notable: unite !== "" || dec !== undefined || valeur > 10,
-      annee: unite === "" && dec === undefined && valeur >= 1900 && valeur <= 2100,
-      minutes: /^\s*minutes?/i.test(apres),
-    });
-  }
-  return sortie;
-}
 
 // ── Contrôles ───────────────────────────────────────────────────────────────
 
@@ -220,7 +193,8 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
   const anneesDossier = new Set<number>([e.maintenant.getUTCFullYear()]);
   for (const f of e.faits) {
     anneesDossier.add(Number(f.datePublication.slice(0, 4)));
-    for (const n of nombresDe(`${f.enonce} ${f.valeur ?? ""} ${f.extrait}`)) {
+    for (const n of nombresDe(f.enonce)) if (n.annee) anneesDossier.add(n.valeur);
+    for (const n of nombresDe(`${f.valeur ?? ""} ${f.extrait}`)) {
       nombresDossier.set(n.cle, [...(nombresDossier.get(n.cle) ?? []), f]);
       if (n.annee) anneesDossier.add(n.valeur);
     }
@@ -264,6 +238,7 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
     }
   };
   verifierSegment(a.directAnswer, null, "directAnswer");
+  for (const f of a.faq) verifierSegment(`${f.question} ${f.answer}`, null, "faq");
   const segmenter = (html: string) => html.split(/(?=<(?:p|li|td|h2|h3)[\s>])/i);
   sections.forEach((s, i) =>
     segmenter(s).forEach((seg) => verifierSegment(sansBalises(seg), seg, i)),
@@ -281,37 +256,43 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
       });
   }
 
-  // Texte caché, HTML interdit, mention « relu ».
-  const tout = `${a.directAnswer}\n${a.bodyHtml}\n${a.faq.map((f) => `${f.question} ${f.answer}`).join("\n")}`;
-  if (/<details|\shidden[\s>=]|display\s*:\s*none|aria-hidden/i.test(a.bodyHtml)) {
-    pb.push({
-      section: "global",
-      probleme: "texte_cache",
-      attendu: "Aucune réponse cachée (pas de <details> ni d'élément masqué)",
-    });
-  }
-  if (/<(script|iframe|style|object|embed|form|input)\b|\son\w+\s*=/i.test(a.bodyHtml)) {
-    pb.push({
-      section: "global",
-      probleme: "html_interdit",
-      attendu: "HTML éditorial seulement (titres, paragraphes, listes, tableaux, liens)",
-    });
-  }
-  if (/\brelu(?:e|s|es)?\s+par\b/i.test(tout)) {
-    pb.push({
-      section: "global",
-      probleme: "relu_sans_relecture",
-      attendu: "Jamais « relu par » sans relecture humaine réelle",
-    });
-  }
-  const marque = verifierReglesMarque(tout);
-  if (marque.length > 0) {
-    pb.push({
-      section: "global",
-      probleme: "regle_de_marque",
-      attendu: `Retirer : ${marque.join(", ")}`,
-    });
-  }
+  // Texte caché, HTML interdit, « relu par », marque : localisés à la section fautive.
+  const CACHE =
+    /<details|\shidden[\s>=]|display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0|opacity\s*:\s*0|sr-only|aria-hidden|<!--/i;
+  const INTERDIT = /<(script|iframe|style|object|embed|form|input)\b|\son\w+\s*=/i;
+  const RELU = /\brelu(?:e|s|es)?\s+par\b/i;
+  const controlerForme = (html: string, texte: string, section: Correction["section"]) => {
+    if (CACHE.test(html)) {
+      pb.push({
+        section,
+        probleme: "texte_cache",
+        attendu: "Aucune réponse cachée (pas de <details> ni d'élément masqué)",
+      });
+    }
+    if (INTERDIT.test(html)) {
+      pb.push({
+        section,
+        probleme: "html_interdit",
+        attendu: "HTML éditorial seulement (titres, paragraphes, listes, tableaux, liens)",
+      });
+    }
+    if (RELU.test(texte)) {
+      pb.push({
+        section,
+        probleme: "relu_sans_relecture",
+        attendu: "Jamais « relu par » sans relecture humaine réelle",
+      });
+    }
+    const marque = verifierReglesMarque(html);
+    if (marque.length > 0) {
+      pb.push({ section, probleme: "regle_de_marque", attendu: `Retirer : ${marque.join(", ")}` });
+    }
+  };
+  controlerForme(a.directAnswer, a.directAnswer, "directAnswer");
+  controlerForme(avant, sansBalises(avant), "global");
+  sections.forEach((s, i) => controlerForme(s, sansBalises(s), i));
+  for (const f of a.faq)
+    controlerForme(`${f.question} ${f.answer}`, `${f.question} ${f.answer}`, "faq");
 
   // Longueur.
   const total =
@@ -333,7 +314,12 @@ function filtrerFaq(
   e: EntreeRedaction,
   brute: ReadonlyArray<{ question: string; answer: string }>,
 ): { faq: Array<{ question: string; answer: string }>; inventee: boolean } {
-  const permises = new Set(e.brief.questions.map((q) => normaliserTitre(q.question)));
+  const permises = new Set(
+    e.structure.faqPrevue
+      .map((i) => e.brief.questions[i]?.question)
+      .filter((q): q is string => typeof q === "string")
+      .map((q) => normaliserTitre(q)),
+  );
   const gardees = brute.filter((f) => permises.has(normaliserTitre(f.question)));
   const inventee = gardees.length < brute.length;
   // Sous 4 questions réelles, la FAQ est omise (sauf gabarit Questions-réponses) : jamais comblée.
@@ -432,7 +418,7 @@ export async function reecrireSections(
   const reponse = await appelerRole(appel, compteur, "redacteur", {
     system:
       PROMPT_REDACTEUR_SYSTEME +
-      '\n\nMODE RÉÉCRITURE CIBLÉE : réécris UNIQUEMENT les sections données, sans changer leur titre H2. Réponds par {"sections":[{"index":N,"html":"<h2>…</h2>…"}], "directAnswer":"(seulement si demandé)"}.',
+      '\n\nMODE RÉÉCRITURE CIBLÉE : réécris UNIQUEMENT les sections données, sans changer leur titre H2. Réponds par {"sections":[{"index":N,"html":"<h2>…</h2>…"}], "directAnswer":"(seulement si demandé)", "faq":[...] (seulement si demandé)}.',
     user: [
       userRedaction(e),
       encadrerDonnees("sections-a-reecrire", aReecrire),
@@ -444,17 +430,29 @@ export async function reecrireSections(
   if (!lu.ok) return { verdict: "illisible", raison: `Réécriture illisible (${lu.raison})` };
 
   const nouvelles = [...sections];
+  let h1 = false;
   for (const s of lu.valeur.sections ?? []) {
     if (!visees.includes(s.index))
       return { verdict: "illisible", raison: `Section ${s.index} non demandée` };
+    if ((s.html.match(/<h2[\s>]/gi) ?? []).length !== 1) {
+      return { verdict: "illisible", raison: `La section ${s.index} doit contenir un seul H2` };
+    }
     if (normaliserTitre(titreH2(s.html)) !== normaliserTitre(titreH2(sections[s.index]!))) {
       return { verdict: "illisible", raison: `Le titre H2 de la section ${s.index} a changé` };
     }
-    nouvelles[s.index] = s.html;
+    h1 = h1 || /<h1[\s>]/i.test(s.html);
+    nouvelles[s.index] = s.html.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, "<p>$1</p>");
   }
+  const vise = (c: Correction["section"]) => corrections.some((x) => x.section === c);
+  const faqNouvelle = vise("faq") && lu.valeur.faq ? filtrerFaq(e, lu.valeur.faq).faq : article.faq;
   const suivant: ArticleRedige = {
     ...article,
-    directAnswer: lu.valeur.directAnswer?.trim() || article.directAnswer,
+    directAnswer:
+      vise("directAnswer") && lu.valeur.directAnswer
+        ? lu.valeur.directAnswer.trim()
+        : article.directAnswer,
+    faq: faqNouvelle,
+    h1DansSortieBrute: article.h1DansSortieBrute || h1,
     bodyHtml: avant + nouvelles.join(""),
   };
   return { verdict: "redige", article: suivant, problemes: analyserArticle(e, suivant) };

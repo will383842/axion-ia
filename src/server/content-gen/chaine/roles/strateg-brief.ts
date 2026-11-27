@@ -19,6 +19,7 @@
 import { z } from "zod";
 import { slugify } from "@/lib/slug";
 import { ORIGINES_QUESTION, briefSchema, type Brief, type Question } from "../../equipe/brief";
+import type { CodeRefus } from "../codes-refus";
 import {
   CONSIGNE_DONNEES,
   REGLES_MARQUE_PROMPT,
@@ -37,6 +38,7 @@ import {
   calculerFourchetteMots,
   compterMotsContenu,
   formatDominant,
+  normaliserTitre,
   verifierTitres,
   type Gabarit,
   type PageLue,
@@ -175,7 +177,15 @@ export interface StructureBrief {
   };
 }
 
-export type CodeRefusStrateg = "pas_d_angle" | "pas_de_matiere" | "intention_couverte";
+/**
+ * `intention_hors_article` et `deja_couvert` sont deux VERDICTS distincts ; le code de refus enregistré
+ * est `intention_couverte` (la liste fermée de C4 n'a pas de code propre : à ajouter à C4 si la console
+ * doit les distinguer, décision à prendre avec la porte).
+ * Codes de la liste fermée de C4 : le compilateur refuse tout autre nom. */
+export type CodeRefusStrateg = Extract<
+  CodeRefus,
+  "pas_d_angle" | "pas_de_matiere" | "intention_couverte"
+>;
 
 export type ResultatStrateg =
   | {
@@ -253,6 +263,11 @@ function texteCompletDe(s: Sortie): string {
     s.cluster,
     ...(s.requetesSecondaires ?? []),
     ...(s.entites ?? []),
+    ...(s.champSemantique ?? []),
+    ...(s.questions ?? []).map((q) => q.question),
+    s.lecteur?.metier,
+    s.ecartFormat,
+    s.raison,
   ]
     .filter((x): x is string => typeof x === "string")
     .join("\n");
@@ -301,6 +316,13 @@ export async function strategeBrief(
     };
   }
   const intention = s.intention;
+  if (s.verdict === "brief" && intention === undefined) {
+    return {
+      verdict: "brief_invalide",
+      raison: "Intention de recherche absente du brief.",
+      problemes: ["intention_absente"],
+    };
+  }
   if (
     s.verdict === "intention_hors_article" ||
     (intention !== "informational" && intention !== "commercial_investigation")
@@ -349,14 +371,15 @@ function valider(
 
   // Pages lues : URL réellement lues, mots comptés par le code.
   const lues = new Map(sourcesLues.map((p) => [p.url, p.texte ?? ""]));
+  // Toutes les pages réellement lues (sans doublon) : le modèle ne fournit que le format par URL.
+  const formats = new Map((s.pagesLues ?? []).map((p) => [p.url, p.format]));
   const pagesLues: PageLue[] = [];
-  for (const p of s.pagesLues ?? []) {
-    if (!lues.has(p.url)) continue;
-    const format = (FORMATS_OBSERVES as ReadonlyArray<string>).includes(p.format)
-      ? p.format
-      : "autre";
-    pagesLues.push({ url: p.url, format, mots: compterMotsContenu(lues.get(p.url) ?? "") });
+  for (const [url, contenu] of lues) {
+    const brut = formats.get(url) ?? "autre";
+    const format = (FORMATS_OBSERVES as ReadonlyArray<string>).includes(brut) ? brut : "autre";
+    pagesLues.push({ url, format, mots: compterMotsContenu(contenu) });
   }
+  if (pagesLues.length > 5) pagesLues.length = 5;
   const dominant = formatDominant(pagesLues);
   const regles = GABARITS_REGLES[gabarit];
   const compatible =
@@ -374,7 +397,7 @@ function valider(
   (s.questions ?? []).forEach((q, i) => {
     const reelle =
       q.origine === "autre-source"
-        ? lues.has(q.reference)
+        ? normaliserTitre(lues.get(q.reference) ?? "").includes(normaliserTitre(q.question))
         : connues.has(`${q.origine}|${norme(q.question)}`);
     if (!reelle) {
       questionsEcartees.push({ question: q.question, motif: "sans_origine_reelle" });

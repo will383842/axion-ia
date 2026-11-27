@@ -31,7 +31,7 @@ const ligne = (o: Record<string, unknown> = {}) => ({
   section: 0,
   verdict: "confirme",
   sourceUrl: "https://www.insee.fr/fr/statistiques/1",
-  extrait: "14 % des PME de 10 salariés ou plus ont utilisé l'IA",
+  extrait: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA",
   ...o,
 });
 
@@ -39,7 +39,7 @@ const sources: SourceLue[] = [
   {
     url: "https://www.insee.fr/fr/statistiques/1",
     titre: "Insee",
-    texte: "14 % des PME de 10 salariés ou plus ont utilisé l'IA",
+    texte: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA",
   },
 ];
 const appelant =
@@ -172,5 +172,45 @@ describe("verifierFaits (R6)", () => {
   it("rejette une sortie illisible", async () => {
     const bad: AppelModele = async () => ({ texte: "ok je pense", coutUsd: 0.1 });
     expect((await verifierFaits(entree(), bad, new CompteurCout())).verdict).toBe("illisible");
+  });
+  it("une affirmation géante qui couvre tout l'article ne vérifie pas les phrases chiffrées", async () => {
+    const e = entree({
+      bodyHtml: `<h2>Combien ?</h2><p>${PHRASE} Le décret 2025-12 impose 42 % de plus.</p>`,
+    });
+    const geante = ligne({
+      affirmation: `${PHRASE} Le décret 2025-12 impose 42 % de plus.`,
+      extrait: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA",
+    });
+    const r = await verifierFaits(e, appelant([geante]), new CompteurCout());
+    if (r.verdict === "illisible") throw new Error();
+    expect(r.verdict).toBe("a_corriger");
+  });
+
+  it("un « confirme » dont un chiffre est absent de l'extrait est rétrogradé", async () => {
+    const r = await verifierFaits(
+      entree(),
+      appelant([ligne({ affirmation: "En 2025, 87 % des PME ont utilisé l'IA." })]),
+      new CompteurCout(),
+    );
+    if (r.verdict === "illisible") throw new Error();
+    expect(r.verdict).toBe("a_corriger");
+  });
+
+  it("ne teste jamais un hôte interne (SSRF) et lit les liens entre apostrophes", async () => {
+    let appels = 0;
+    const r = await verifierFaits(
+      entree({
+        bodyHtml: `<h2>Combien ?</h2><p>${PHRASE} <a href='http://localhost:8080/x'>a</a> <a href="http://10.0.0.1/y">b</a></p>`,
+        testerLien: async () => {
+          appels++;
+          return { statut: 200, urlFinale: "" };
+        },
+      }),
+      appelant([ligne()]),
+      new CompteurCout(),
+    );
+    expect(appels).toBe(0);
+    if (r.verdict === "illisible") throw new Error();
+    expect(r.liensMorts).toHaveLength(2);
   });
 });

@@ -151,6 +151,30 @@ describe("règles de marque (§ 9)", () => {
     expect(verifierReglesMarque("hors frais de déplacement")).toContain("frais_deplacement");
     expect(verifierReglesMarque("<s>990 €</s> 790 €")).toContain("prix_barre");
   });
+  it("détecte aussi un lien absolu vers /appel", () => {
+    expect(verifierReglesMarque('<a href="https://axion-ia.com/fr/appel">x</a>')).toContain(
+      "lien_appel",
+    );
+    expect(verifierReglesMarque("axion-ia.com/appel")).toContain("lien_appel");
+  });
+
+  it("estime le coût maximal avant l'appel et refuse s'il dépasserait le plafond", async () => {
+    const c = new CompteurCout();
+    c.ajouter("collecteur", 0.9);
+    c.ajouter("redacteur", 0.8);
+    c.ajouter("verificateur", 0.7);
+    c.ajouter("strateg", 0.5);
+    let appels = 0;
+    const appel: AppelModele = async () => {
+      appels++;
+      return { texte: "x", coutUsd: 0.01 };
+    };
+    await expect(
+      appelerRole(appel, c, "expert", { system: "s", user: "u", maxTokens: 9000 }),
+    ).rejects.toBeInstanceOf(PlafondAtteintError);
+    expect(appels).toBe(0);
+  });
+
   it("n'interdit jamais « partout en France »", () => {
     expect(verifierReglesMarque("Nous venons dans vos locaux, partout en France.")).toEqual([]);
   });

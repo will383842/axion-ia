@@ -184,4 +184,24 @@ describe("verifierTitres (H-1 à H-11)", () => {
       "motcle_exact_trop_present",
     );
   });
+  it("refuse un titre générique suivi d'un deux-points", () => {
+    const p = plan(
+      "Conclusion : ce qu'il faut retenir pour vous",
+      "Quels outils choisir pour une PME ?",
+      "Comment former les équipes ?",
+      "Quelles erreurs éviter ici ?",
+    );
+    expect(
+      verifierTitres({
+        h1: "Comment automatiser les notes de frais dans une PME ?",
+        motCle: "notes de frais",
+        plan: p,
+        gabarit: "analyse",
+      }),
+    ).toContain("h2_generique");
+  });
+  it("le plancher de couverture relève le minimum même sous la borne basse", () => {
+    const r = calculerFourchetteMots({ gabarit: "definition", pagesLues: [], nbH2: 6 });
+    expect(r.ok && r.min).toBeGreaterThanOrEqual(660);
+  });
 });

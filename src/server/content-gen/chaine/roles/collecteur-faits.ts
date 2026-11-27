@@ -26,6 +26,15 @@ import {
   type CompteurCout,
 } from "./commun";
 import type { ChiffreVerifie } from "../../kb/chiffres-verifies";
+import { nombresDe } from "./nombres";
+
+/** Seuls ces domaines peuvent porter un « texte de référence » exempté de la règle des 3 ans. */
+export const DOMAINES_TEXTE_REFERENCE = [
+  "legifrance.gouv.fr",
+  "eur-lex.europa.eu",
+  "journal-officiel.gouv.fr",
+  "service-public.fr",
+];
 
 /** Plafond de recherches de la phase de collecte (relevé de 4 à 8, conception § 3 R3). */
 export const PLAFOND_RECHERCHES_COLLECTE = 8;
@@ -45,6 +54,10 @@ export const RAISONS_ECART_FAIT = [
   "source_trop_ancienne",
   "confiance_basse",
   "valeur_absente_de_l_extrait",
+  "enonce_hors_extrait",
+  "date_future",
+  "annee_absente_de_la_page",
+  "reference_non_admise",
 ] as const;
 export type RaisonEcartFait = (typeof RAISONS_ECART_FAIT)[number];
 
@@ -204,10 +217,26 @@ function motifDEcart(
   if (!/^\d{4}-\d{2}-\d{2}$/.test(f.datePublication) || Number.isNaN(date.getTime())) {
     return "date_invalide";
   }
+  if (date.getTime() > maintenant.getTime()) return "date_future";
+  if (
+    f.texteReference === true &&
+    !DOMAINES_TEXTE_REFERENCE.some((d) => hoteDe(f.url).endsWith(d))
+  ) {
+    return "reference_non_admise";
+  }
   if (f.texteReference !== true && ageEnMois(date, maintenant) > AGE_MAX_SOURCE_MOIS) {
     return "source_trop_ancienne";
   }
+  // La page lue doit porter l'année de publication annoncée (date contrôlée, pas seulement formée).
+  if (f.texteReference !== true && !page.includes(f.datePublication.slice(0, 4))) {
+    return "annee_absente_de_la_page";
+  }
   if (f.valeur && !extrait.includes(normaliser(f.valeur))) return "valeur_absente_de_l_extrait";
+  // Un chiffre de l'énoncé doit figurer dans l'extrait exact (l'énoncé est écrit par le modèle).
+  const dansExtrait = new Set(nombresDe(f.extrait).map((n) => n.cle));
+  if (nombresDe(f.enonce).some((n) => n.notable && !n.annee && !dansExtrait.has(n.cle))) {
+    return "enonce_hors_extrait";
+  }
   return null;
 }
 

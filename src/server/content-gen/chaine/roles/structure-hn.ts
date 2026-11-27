@@ -331,8 +331,8 @@ export function calculerFourchetteMots(e: EntreeFourchette): ResultatFourchette 
     max = r.motsMax;
     min = Math.max(r.motsMin, plancher, r.motsMax - 200);
   } else if (max < r.motsMin) {
-    min = r.motsMin;
-    max = Math.min(r.motsMax, r.motsMin + 200);
+    min = Math.max(r.motsMin, plancher);
+    max = Math.min(r.motsMax, min + 200);
   } else {
     min = Math.max(min, r.motsMin);
     max = Math.min(max, r.motsMax);
@@ -413,8 +413,8 @@ export function verifierTitres(e: EntreeTitres): ProblemeTitre[] {
     const norme = normaliserTitre(t);
     const mots = t.split(/\s+/).filter(Boolean).length;
     if (mots < 3 || mots > 14 || t.length > 90) pb.add("h2_longueur");
-    const sansDeuxPoints = norme.replace(/\s*:.*$/, "").trim();
-    if (TITRES_GENERIQUES.includes(norme) || TITRES_GENERIQUES.includes(sansDeuxPoints)) {
+    const avantDeuxPoints = normaliserTitre(t.split(":")[0] ?? t);
+    if (TITRES_GENERIQUES.includes(norme) || TITRES_GENERIQUES.includes(avantDeuxPoints)) {
       pb.add("h2_generique");
     }
     if (vus.has(norme)) pb.add("h2_doublon");

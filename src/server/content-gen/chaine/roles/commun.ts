@@ -136,6 +136,19 @@ export type AppelModele = (
   requete: RequeteModele & { readonly role: RoleChaine; readonly modele: string },
 ) => Promise<ReponseModele>;
 
+/**
+ * Majorants prudents du prix de sortie par million de jetons : réservation AVANT l'appel (un appel
+ * qui pourrait dépasser le plafond n'est pas lancé). À remplacer par les tarifs du dépôt
+ * (providers/anthropic.ts) au branchement.
+ */
+const PRIX_SORTIE_MAX_USD_PAR_MTOK: Readonly<Record<string, number>> = {
+  [MODELE_OPUS]: 30,
+  [MODELE_SONNET]: 15,
+};
+export function estimerCoutMax(modele: string, maxTokens: number): number {
+  return ((PRIX_SORTIE_MAX_USD_PAR_MTOK[modele] ?? 75) * maxTokens) / 1_000_000;
+}
+
 /** Appelle le modèle du rôle : modèle imposé, plafonds relus avant ET après l'appel. */
 export async function appelerRole(
   appel: AppelModele,
@@ -145,7 +158,10 @@ export async function appelerRole(
 ): Promise<ReponseModele> {
   const modele = MODELES_ROLES[role];
   if (!modeleAutorise(modele)) throw new Error(`Modèle non autorisé pour ${role}`);
-  if (compteur.epuise) {
+  if (
+    compteur.epuise ||
+    compteur.totalUsd + estimerCoutMax(modele, requete.maxTokens) > PLAFOND_COUT_CONTENU_USD
+  ) {
     throw new PlafondAtteintError("Plafond du contenu déjà atteint : aucun appel", role);
   }
   const reponse = await appel({ ...requete, role, modele });
@@ -238,7 +254,7 @@ export const REGLES_MARQUE_PROMPT = [
 
 const MOTIFS_MARQUE: ReadonlyArray<readonly [string, RegExp]> = [
   ["grenoble", /grenoble/i],
-  ["lien_appel", /(^|[\s"'(=])\/(?:fr\/)?appel(?![\p{L}-])/iu],
+  ["lien_appel", /(?:^|[\s"'(=]|\.[a-z]{2,})\/(?:(?:fr|en)\/)?appel(?![\p{L}-])/iu],
   ["calendly", /calendly/i],
   ["reservation_en_ligne", /r[ée]servez\s+en\s+ligne/i],
   ["avocat", /\bavocats?\b/i],

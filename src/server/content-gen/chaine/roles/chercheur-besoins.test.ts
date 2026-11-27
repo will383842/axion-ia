@@ -202,4 +202,22 @@ describe("selectionnerBesoins : environ 80 % de PME et 20 % de TPE", () => {
     const r = selectionnerBesoins([{ ...b("pme", 5, 1), statut: "couvert" }], 5);
     expect(r.choisis).toEqual([]);
   });
+  it("rejette une question de marque interdite et un thème court qui « couvrirait » tout", async () => {
+    const r = await chercherBesoins(
+      entree({
+        themesAgreges: [{ theme: "ia", nombre: 3, sur: 20 }],
+        questionsDirigeants: [{ question: "Formation IA à Grenoble ?", reference: "l" }],
+      }),
+      appelant([
+        brut({ question: "Formation IA à Grenoble ?" }),
+        brut({
+          question: "Une question inventée sur l'ia ?",
+          source: "demandes-agregees",
+          sourceRef: "ia",
+        }),
+      ]),
+      new CompteurCout(),
+    );
+    expect(r.besoins).toEqual([]);
+  });
 });

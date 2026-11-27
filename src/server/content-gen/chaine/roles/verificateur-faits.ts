@@ -15,6 +15,7 @@
  */
 
 import { z } from "zod";
+import type { CodeRefus } from "../codes-refus";
 import type { FaitSource } from "./collecteur-faits";
 import {
   CONSIGNE_DONNEES,
@@ -25,13 +26,13 @@ import {
   type CompteurCout,
   type Correction,
 } from "./commun";
-import { nombresDe } from "./redacteur";
+import { nombresDe } from "./nombres";
 import { normaliserTitre } from "./structure-hn";
 
 export const PLAFOND_RECHERCHES_VERIFICATION = 6;
 export const MAX_LECTURES_VERIFICATION = 6;
 
-export type CodeRefusVerif = "fait_non_source" | "chiffre_retire" | "lien_mort";
+export type CodeRefusVerif = Extract<CodeRefus, "fait_non_source" | "chiffre_retire" | "lien_mort">;
 
 export interface ResultatLien {
   readonly statut: number;
@@ -139,8 +140,19 @@ function phrasesVerifiables(e: EntreeVerification): Phrase[] {
 const correspond = (phrase: string, affirmation: string) => {
   const a = normaliserTitre(phrase);
   const b = normaliserTitre(affirmation);
-  return b.length >= 15 && (a.includes(b) || b.includes(a));
+  if (b.length < 15) return false;
+  // Pas de sur-ensemble : une affirmation géante ne « couvre » pas toutes les phrases.
+  const [court, long] = a.length <= b.length ? [a, b] : [b, a];
+  return long.includes(court) && long.length <= court.length * 1.6 + 20;
 };
+
+/** Seuls des hôtes publics sont testés (jamais localhost, adresse IP ou nom interne : SSRF). */
+export function hotePublic(url: string): boolean {
+  const h = hote(url);
+  if (!h || !h.includes(".")) return false;
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(h) || h.includes(":") || h.startsWith("[")) return false;
+  return !/(^|\.)(localhost|local|internal|intranet|lan)$/i.test(h);
+}
 
 function hote(url: string): string {
   try {
@@ -198,6 +210,15 @@ export async function verifierFaits(
       } else if (!a.extrait || !textePage(url).includes(normaliserTitre(a.extrait))) {
         verdict = "a_retirer";
         motif = "extrait_introuvable";
+      } else {
+        // Chaque chiffre et chaque année de l'affirmation doit figurer dans l'extrait confirmé.
+        const dansExtrait = new Set(nombresDe(a.extrait).map((n) => n.cle));
+        if (
+          nombresDe(a.affirmation).some((n) => (n.notable || n.annee) && !dansExtrait.has(n.cle))
+        ) {
+          verdict = "a_retirer";
+          motif = "extrait_introuvable";
+        }
       }
     }
     return {
@@ -235,10 +256,17 @@ export async function verifierFaits(
 
   // Liens sortants.
   const liensMorts: string[] = [];
+  const tout = `${e.directAnswer}\n${e.bodyHtml}\n${e.faq.map((f) => `${f.question} ${f.answer}`).join("\n")}`;
   const hrefs = [
-    ...new Set([...e.bodyHtml.matchAll(/<a\s[^>]*href="(https?:\/\/[^"]+)"/gi)].map((m) => m[1]!)),
+    ...new Set(
+      [...tout.matchAll(/<a\s[^>]*?href\s*=\s*["']?(https?:\/\/[^"'\s>]+)/gi)].map((m) => m[1]!),
+    ),
   ];
   for (const url of hrefs) {
+    if (!hotePublic(url)) {
+      liensMorts.push(url);
+      continue;
+    }
     try {
       const r = await e.testerLien(url);
       if (r.statut !== 200 || hote(r.urlFinale) !== hote(url)) liensMorts.push(url);

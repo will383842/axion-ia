@@ -15,6 +15,7 @@
  */
 
 import { z } from "zod";
+import type { CodeRefus } from "../codes-refus";
 import {
   CONSIGNE_DONNEES,
   REGLES_MARQUE_PROMPT,
@@ -31,7 +32,10 @@ import type { Gabarit, TypeSection } from "./structure-hn";
 export const NOTE_MIN_REFUS = 3;
 export const MAX_CORRECTIONS = 10;
 
-export type CodeRefusExpert = "generique" | "non_actionnable" | "fait_non_source";
+export type CodeRefusExpert = Extract<
+  CodeRefus,
+  "generique" | "non_actionnable" | "fait_non_source"
+>;
 
 export interface EntreeExpert {
   readonly titre: string;
@@ -99,7 +103,7 @@ const CODE_PAR_QUESTION: Readonly<Record<keyof NotesExpert, CodeRefusExpert>> = 
 };
 
 const FAIRE_SEUL =
-  /(vous pouvez (?:le |la |les )?(?:faire|mettre en place|déployer|installer)\s+(?:vous[- ]même|seul(?:e)?)|sans (?:l'aide d'un |l'aide de |recourir à un |faire appel à un )?(?:prestataire|expert|consultant)|en autonomie complète|faites-le vous[- ]même)/i;
+  /(vous pouvez (?:le |la |les )?(?:faire|mettre en place|déployer|installer)\s+(?:vous[- ]même|seul(?:e)?)|en autonomie complète|faites-le vous[- ]même)/i;
 
 const sansBalises = (h: string) =>
   h
