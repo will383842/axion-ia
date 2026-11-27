@@ -620,13 +620,22 @@ describe("étape « bascule-regle-rendez-vous »", () => {
     "interrupteur %s : aucune ligne, le silence joue comme avant",
     async (v) => {
       if (v !== undefined) process.env.APPORTEURS_VALIDATION_RDV = v;
-      db.pres.push(paul({ recueAt: j(VINGT_SIX, -61) }));
+      // Reçue le 10/11 : silence non acquis, elle basculerait si l'interrupteur était allumé.
+      db.pres.push(paul());
       const b = await passerReseauApporteurs(VINGT_SIX);
       expect(b.basculees).toBe(0);
       expect(db.res).toHaveLength(0);
-      expect(b.confirmeesTacites).toBe(1);
+      expect(b.confirmeesTacites).toBe(0);
     },
   );
+
+  it("interrupteur éteint : le silence déjà acquis joue comme avant", async () => {
+    db.pres.push(paul({ recueAt: j(VINGT_SIX, -61) }));
+    const b = await passerReseauApporteurs(VINGT_SIX);
+    expect(b.basculees).toBe(0);
+    expect(db.res).toHaveLength(0);
+    expect(b.confirmeesTacites).toBe(1);
+  });
 
   it.each([["2.6"], ["2.7"], [undefined], ["n'importe quoi"]])(
     "apporteur en version %s : ancienne règle intacte, aucune ligne",

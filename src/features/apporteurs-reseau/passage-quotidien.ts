@@ -186,7 +186,7 @@ export interface BilanPassageReseau {
   echeancesSuspendues: number;
   /** Présentations en attente passées de l'ancienne règle à la règle du rendez-vous. */
   basculees: number;
-  /** Présentations en attente NON basculées (terme dépassé ou prise de contact en erreur), signalées. */
+  /** Présentations en attente NON basculées (terme dépassé ou prise de contact en erreur), signalées : total « à ce jour » (une même présentation est recomptée à chaque passage tant qu'elle reste en attente). */
   basculeesEcartees: number;
   /** Entreprises validées par une commande signée pendant la réservation. */
   validationsParCommande: number;
@@ -583,11 +583,15 @@ async function signalerBascules(
       return `${b.denomination} (jusqu'au ${dateEnClair(b.terme)}${reste <= 15 ? `, ${reste} j restants` : ""})`;
     })
     .join(" ; ");
+  const reste =
+    basculees.length > 50
+      ? ` ; … et ${basculees.length - 50} autres (voir le journal apporteur.presentation_basculee_rendez_vous)`
+      : "";
   await alerteInterne({
     jobId: `apporteur-bascule-lot-${jour}-${empreinte}`,
     code: "apporteur_bascule_rendez_vous",
     titre: `${basculees.length} présentation(s) passée(s) à la règle du rendez-vous`,
-    message: `Ces présentations en attente ne sont plus confirmées par le silence : ${liste}. Vérifiez les rendez-vous déjà pris ou tenus avec ces entreprises depuis la saisie : ils ne sont pas proposés automatiquement. À valider dans la console (Apporteurs › Entreprises présentées).`,
+    message: `Ces présentations en attente ne sont plus confirmées par le silence : ${liste}${reste}. Vérifiez les rendez-vous déjà pris ou tenus avec ces entreprises depuis la saisie : ils ne sont pas proposés automatiquement. À valider dans la console (Apporteurs › Entreprises présentées).`,
     cibleType: "PresentationEntreprise",
     cibleId: "bascule",
     maintenant,
@@ -658,7 +662,7 @@ async function basculerParPages(
           ).getTime() <= maintenant.getTime(),
         aUneLigne: false,
         rebond: rebonds.has(p.id),
-        actif: true,
+        actif: validationParRendezVousActive(),
         maintenant,
       });
       if (d.bascule) {
