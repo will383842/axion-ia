@@ -49,11 +49,13 @@ export const revalidate = 86400;
 // substantielle de cette charte). Émise dans dateModified JSON-LD + visible UX.
 const LAST_REVIEWED = "2026-11-08";
 
-// ⚠️ Ce que la page affirme de la relecture suppose que les réglages de publication
-// automatique `factoryAutoPublishAllBlogTypes` et `newsAutoPublish` sont VRAIS
-// (réglages en base, configuration éditoriale, clé `policies` ; défauts du code : true, cf.
-// policies.ts, réglages de publication du pipeline éditorial). Si l'un est désactivé, des articles
-// attendent une validation humaine avant publication : relire les sections 2 et 4.
+// ⚠️ Ce que la page affirme de la relecture (« publié sans validation humaine préalable »)
+// décrit l'état d'AVANT C2 : réglages de publication automatique `factoryAutoPublishAllBlogTypes`
+// et `newsAutoPublish` VRAIS (clé `policies`). Depuis C2 (2026-11, « arrêter la publication
+// faible »), la relecture humaine est obligatoire par défaut (`publicationSansRelectureAutorisee`
+// absent) : les articles attendent une validation avant publication. Les sections 2 et 4 (et les
+// phrases du résumé) sont donc plus pessimistes que la réalité ; leur réécriture est une décision
+// du propriétaire du site (texte public), hors périmètre de C2 : relire ces sections avant de les modifier.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

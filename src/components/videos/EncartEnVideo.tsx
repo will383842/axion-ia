@@ -8,6 +8,8 @@
  * des centaines de « pages vidéo » concurrentes). Rend `null` — donc rien — si le thème n'a pas
  * de vidéo publiée.
  */
+import { useId } from "react";
+
 import { CarteVideo } from "@/components/videos/CarteVideo";
 import { mentionIa } from "@/server/videos/mention-ia";
 import { videoPourEncart } from "@/server/videos/encarts";
@@ -25,10 +27,20 @@ export async function EncartEnVideo({
 }) {
   const video = fournie === undefined ? await videoPourEncart(theme, exclure) : fournie;
   if (!video) return null;
+  return <EncartRendu video={video} />;
+}
+
+/**
+ * Partie synchrone : `useId` donne un identifiant unique PAR INSTANCE (deux encarts sur une page
+ * ne partagent pas d'id). Un hook ne peut pas vivre dans le composant asynchrone ci-dessus.
+ * Toujours composant serveur : aucun JS client.
+ */
+function EncartRendu({ video }: { video: VideoPubliee }) {
+  const idTitre = `${useId()}-titre`;
   const mention = mentionIa(video);
   return (
-    <aside aria-labelledby="encart-en-video" className="mx-auto w-full max-w-5xl px-4 py-8">
-      <h2 id="encart-en-video" className="text-fg text-xl font-bold">
+    <aside aria-labelledby={idTitre} className="mx-auto w-full max-w-5xl px-4 py-8">
+      <h2 id={idTitre} className="text-fg text-xl font-bold">
         En vidéo
       </h2>
       <ul className="mt-4 grid max-w-sm gap-4">

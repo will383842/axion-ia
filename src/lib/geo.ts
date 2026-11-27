@@ -15,7 +15,7 @@ import type { CaseStudy } from "@/content/case-studies";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { BLOG_POSTS, type BlogPost } from "@/content/transversal";
 import { VILLES_CORE, hasVilleCopy } from "@/content/villes/core";
-import { estCitableDansLeMaillage } from "@/content/villes/villes-indexees";
+import { VILLES_INDEXEES, estCitableDansLeMaillage } from "@/content/villes/villes-indexees";
 import { slugify } from "@/lib/slug";
 
 import { haversineKm } from "./geo-distance";
@@ -33,7 +33,18 @@ interface NearbyVille {
 export function getNearbyVilles(
   origin: { lat: number; lon: number },
   n: number,
-  options?: { excludeSlug?: string; sameRegion?: string; maxKm?: number; indexableOnly?: boolean },
+  options?: {
+    excludeSlug?: string;
+    sameRegion?: string;
+    maxKm?: number;
+    indexableOnly?: boolean;
+    /**
+     * Ne retient que les villes dont la page est réellement INDEXÉE
+     * (`villes-indexees.ts`). `indexableOnly` ne filtre que sur « a un copy »,
+     * vrai pour les 2 157 communes : il ne protège plus depuis le 18/11/2026.
+     */
+    indexeesSeulement?: boolean;
+  },
 ): NearbyVille[] {
   const opts = options ?? {};
   const candidates: NearbyVille[] = [];
@@ -42,11 +53,11 @@ export function getNearbyVilles(
     // 18/11/2026 : certaines villes ne sont jamais citées dans le maillage des autres pages.
     if (!estCitableDansLeMaillage(ville.slug)) continue;
     if (opts.sameRegion && ville.region !== opts.sameRegion) continue;
-    // Audit maillage 2026-07-03 — `indexableOnly` : ne retenir que les villes
-    // avec `copy` (= vraies pages éligibles à l'index). Évite de mailler vers
-    // les ~2 280 communes stub noindex (doorway HCU) et de gaspiller le
-    // link-equity des pages indexables sur des pages volontairement noindex.
+    // `indexableOnly` : ne retient que les villes avec `copy`. Depuis le 18/11/2026
+    // toutes les communes en ont un : ce filtre n'exclut plus rien. Pour ne mailler
+    // que vers des pages indexées, utiliser `indexeesSeulement`.
     if (opts.indexableOnly && !hasVilleCopy(ville.slug)) continue;
+    if (opts.indexeesSeulement && !VILLES_INDEXEES.has(ville.slug)) continue;
     const distanceKm = haversineKm(origin, ville.geo);
     if (typeof opts.maxKm === "number" && distanceKm > opts.maxKm) continue;
     candidates.push({ ville, distanceKm });

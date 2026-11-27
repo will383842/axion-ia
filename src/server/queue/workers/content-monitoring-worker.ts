@@ -30,6 +30,10 @@
  * IProvider wrapper), pas un cron périodique. Sprint dédié.
  */
 
+import {
+  plafondGenerationEffectif,
+  type PolitiquesRelecture,
+} from "@/server/content-gen/quality/relecture-obligatoire";
 import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
@@ -441,7 +445,12 @@ async function checkAnomalies(): Promise<void> {
     readContentGenConfig<DailyGenerationCap>("daily_generation_cap", DEFAULT_DAILY_GENERATION_CAP),
     countConsumedToday(startOfDayUtc).catch(() => null),
   ]);
-  const capPerDay = resolveCapPerDay(dailyCap);
+  // C2 (2026-11) : même plafond que l'orchestrateur (3/jour tant que la relecture est obligatoire).
+  const politiquesRelecture = await readContentGenConfig<PolitiquesRelecture>("policies", {});
+  const capPerDay = plafondGenerationEffectif(
+    { maxPerDay: resolveCapPerDay(dailyCap) },
+    politiquesRelecture,
+  );
   const roomAt = (msSince: number) =>
     computeCampaignTickBudget({
       dailyTarget: capPerDay,
