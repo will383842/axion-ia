@@ -123,6 +123,15 @@ describe("registre des gabarits — les dormants sont vraiment dormants", () => 
     // retirées avec — classer un gabarit n'est plus un cas particulier pour eux.)
     const EXEMPTIONS: Readonly<Record<string, ReadonlyArray<string>>> = {
       "src/server/newsletter/retention.ts": ["newsletter-confirm-optin"],
+      // Lot 2 « changement de compte bancaire » : la politique de l'outbox ne fait que LIBELLER
+      // les cinq gabarits (clé du tableau) ; aucun envoi. À retirer avec le lot 4.
+      "src/server/email/outbox-policy.ts": [
+        "apporteur-compte-a-confirmer",
+        "apporteur-compte-demande-bloquee",
+        "apporteur-compte-change",
+        "apporteur-compte-refuse",
+        "apporteur-compte-expire",
+      ],
     };
     const exempte = (fichier: string, nom: string): boolean =>
       Object.entries(EXEMPTIONS).some(
