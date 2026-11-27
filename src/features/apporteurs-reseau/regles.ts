@@ -298,13 +298,22 @@ export function commandeCouverte(e: {
   confirmee: boolean;
   protegeeJusquAt: Date | null;
   reservation?: { reserveeJusquAt: Date; statut: string } | null;
+  /**
+   * Date d'émission du devis (`sentAt ?? createdAt`, la plus ancienne de la chaîne de remplacement).
+   * Facultatif, lu par la SEULE branche réservation : un devis émis AVANT la saisie ne couvre pas
+   * la commande (il n'est pas le fruit de la présentation). La protection et la commission n'y
+   * touchent pas.
+   */
+  devisEmisAt?: Date | null;
 }): boolean {
   const signee = e.signeeAt.getTime();
   const apresLaSaisie = signee >= e.recueAt.getTime();
   if (e.confirmee && e.protegeeJusquAt && apresLaSaisie && signee <= e.protegeeJusquAt.getTime())
     return true;
-  if (e.reservation && e.reservation.statut === "reservee" && !e.confirmee)
+  if (e.reservation && e.reservation.statut === "reservee" && !e.confirmee) {
+    if (e.devisEmisAt && e.devisEmisAt.getTime() < e.recueAt.getTime()) return false;
     return apresLaSaisie && signee <= e.reservation.reserveeJusquAt.getTime();
+  }
   return false;
 }
 

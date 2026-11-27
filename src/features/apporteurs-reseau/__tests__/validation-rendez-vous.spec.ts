@@ -17,6 +17,7 @@ const { bd, tx } = vi.hoisted(() => {
     rencontres: [] as Ligne[],
     journal: [] as Ligne[],
     annonces: [] as string[],
+    alertes: [] as Ligne[],
     conflit: false,
     /** Appelée au début de la première écriture conditionnelle : simule une écriture concurrente. */
     avantEcriture: null as null | (() => void),
@@ -28,10 +29,12 @@ const { bd, tx } = vi.hoisted(() => {
   };
   function correspond(l: Ligne, where: Ligne): boolean {
     return Object.entries(where).every(([k, v]) => {
+      if (k === "OR") return (v as Ligne[]).some((w) => correspond(l, w));
       if (v === null) return l[k] == null;
       if (v && typeof v === "object" && !(v instanceof Date)) {
         if ("in" in v) return v.in.includes(l[k]);
         if ("not" in v) return v.not === null ? l[k] != null : l[k] !== v.not;
+        if ("gt" in v) return l[k] instanceof Date && l[k].getTime() > v.gt.getTime();
         return true;
       }
       return l[k] === v;
@@ -99,6 +102,13 @@ vi.mock("../attribution-annonce", () => ({
   },
 }));
 
+vi.mock("../alerte-interne", () => ({
+  alerteInterne: async (a: Ligne) => {
+    bd.alertes.push(a);
+    return true;
+  },
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     ...tx,
@@ -137,6 +147,7 @@ vi.mock("@/lib/prisma", () => ({
 import {
   ecarterProposition,
   MESSAGE_AUTRE_APPORTEUR,
+  messageMotifRefuse,
   validerParRendezVous,
 } from "../validation-rendez-vous";
 
@@ -224,6 +235,7 @@ beforeEach(() => {
     "rencontres",
     "journal",
     "annonces",
+    "alertes",
   ] as const)
     bd[k].length = 0;
   bd.conflit = false;
@@ -941,5 +953,156 @@ describe("journal et messages (tour d'audit)", () => {
     const r = await validerParRendezVous(saisie("p1"), MAINTENANT);
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.message).toMatch(/écartez-le d.abord/);
+  });
+});
+
+describe("L3c · rattrapage : une réservation échue se valide encore si le rendez-vous a été PRIS avant le terme", () => {
+  const MAINT = new Date("2027-01-05T10:00:00Z"); // terme : 2026-12-31
+  const ECHUE = new Date("2027-01-01T04:00:00Z");
+
+  /** Une entreprise dont la réservation a pris fin sans validation (présentation `terminee`). */
+  function echue(id: string, apporteurId: string, o: Ligne = {}, statutApporteur = "signe") {
+    entreprise(id, apporteurId, { statut: "terminee", confirmeeAt: null, ...o }, statutApporteur);
+    const l = bd.reservations.find((r) => r["presentationId"] === id)!;
+    l["echueAt"] = ECHUE;
+  }
+
+  it("rendez-vous pris avant le terme : validée, annonce, six mois à compter de la tenue, journal « rattrapage »", async () => {
+    echue("p1", A1);
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(true);
+    const p = bd.presentations[0]!;
+    expect(p["statut"]).toBe("confirmee");
+    expect(p["confirmeeAt"]).toEqual(TENU);
+    expect(p["protegeeJusquAt"]).toEqual(new Date("2027-05-10T10:00:00Z"));
+    expect(bd.reservations[0]!["valideeAt"]).toEqual(MAINT);
+    expect(bd.reservations[0]!["echueAt"]).toEqual(ECHUE); // la trace de l'échéance est gardée
+    expect(bd.journal[0]!["changes"]).toMatchObject({ rattrapage: true });
+    expect(bd.annonces).toEqual(["p1"]);
+  });
+
+  it("une validation ordinaire n'est pas marquée « rattrapage »", async () => {
+    entreprise("p1", A1);
+    await validerParRendezVous(saisie("p1"), MAINTENANT);
+    expect(bd.journal[0]!["changes"]).toMatchObject({ rattrapage: false });
+  });
+
+  it("rendez-vous pris APRÈS le terme : refusé (pris_apres_reservation), rien d'écrit", async () => {
+    echue("p1", A1);
+    const prisApres = new Date("2027-01-02T10:00:00Z");
+    const r = await validerParRendezVous(
+      saisie("p1", { prisAt: prisApres, tenuAt: new Date("2027-01-03T10:00:00Z") }),
+      MAINT,
+    );
+    expect(r).toEqual({ ok: false, message: messageMotifRefuse("pris_apres_reservation") });
+    expect(bd.presentations[0]!["statut"]).toBe("terminee");
+    expect(bd.reservations[0]!["valideeAt"]).toBeNull();
+    expect(bd.annonces).toHaveLength(0);
+  });
+
+  it("déjà confirmée (par une autre voie) : refusée, rien d'écrit", async () => {
+    echue("p1", A1, {
+      statut: "confirmee",
+      confirmeeAt: TENU,
+      protegeeJusquAt: new Date("2027-05-10T10:00:00Z"),
+    });
+    bd.reservations[0]!["valideeAt"] = TENU;
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(false);
+    expect(bd.annonces).toHaveLength(0);
+    expect(bd.journal).toHaveLength(0);
+  });
+
+  it("présentation `terminee` AVEC confirmeeAt (protection finie) : jamais revalidée", async () => {
+    echue("p1", A1, { confirmeeAt: TENU });
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations[0]!["statut"]).toBe("terminee");
+  });
+
+  it("`terminee` sans échéance (ramenée par une résiliation) : toujours refusée", async () => {
+    entreprise("p1", A1, { statut: "terminee", confirmeeAt: null });
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(false);
+  });
+
+  it("double appel : une seule écriture, une seule annonce", async () => {
+    echue("p1", A1);
+    const [a, b] = await Promise.all([
+      validerParRendezVous(saisie("p1"), MAINT),
+      validerParRendezVous(saisie("p1"), MAINT),
+    ]);
+    expect([a.ok, b.ok].filter(Boolean)).toHaveLength(1);
+    expect(bd.journal).toHaveLength(1);
+    expect(bd.annonces).toEqual(["p1"]);
+  });
+
+  it("apporteur résilié : refusé", async () => {
+    echue("p1", A1, {}, "resilie");
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations[0]!["statut"]).toBe("terminee");
+    expect(bd.annonces).toHaveLength(0);
+  });
+
+  it("conflit : une autre déclaration RÉSERVÉE (non échue) d'un autre apporteur → refus + alerte critique pour Will", async () => {
+    echue("p1", A1);
+    entreprise("p2", A2, { recueAt: new Date("2027-01-02T10:00:00Z") });
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(false);
+    expect(bd.presentations.find((p) => p["id"] === "p1")!["statut"]).toBe("terminee");
+    expect(bd.annonces).toHaveLength(0);
+    expect(bd.alertes).toHaveLength(1);
+    expect(bd.alertes[0]).toMatchObject({
+      niveau: "critique",
+      cibleId: "p1",
+      jobId: "apporteur-rattrapage-conflit-p1",
+    });
+  });
+
+  it("conflit : une autre entreprise CONFIRMÉE avec protection en cours → refus + alerte", async () => {
+    echue("p1", A1);
+    entreprise("p2", A2, {
+      statut: "confirmee",
+      recueAt: new Date("2026-11-20T10:00:00Z"),
+      protegeeJusquAt: new Date("2027-06-01T00:00:00Z"),
+    });
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(false);
+    expect(bd.alertes).toHaveLength(1);
+  });
+
+  it("conflit : une autre déclaration dans ses 30 jours (E1) → refus + alerte", async () => {
+    echue("p1", A1);
+    echue("p2", A2, { recueAt: new Date("2026-11-20T10:00:00Z") });
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(false);
+    expect(bd.alertes).toHaveLength(1);
+  });
+
+  it("pas de conflit : l'autre déclaration est échue depuis plus de 30 jours → validée", async () => {
+    echue("p1", A1);
+    echue("p2", A2, { recueAt: new Date("2026-09-01T10:00:00Z") });
+    bd.reservations.find((r) => r["presentationId"] === "p2")!["echueAt"] = new Date(
+      "2026-11-01T00:00:00Z",
+    );
+    const r = await validerParRendezVous(saisie("p1"), MAINT);
+    expect(r.ok).toBe(true);
+    expect(bd.alertes).toHaveLength(0);
+  });
+
+  it("E1 · une validation ordinaire est refusée tant qu'une autre déclaration échue est dans ses 30 jours", async () => {
+    entreprise("p1", A1, { recueAt: new Date("2026-12-30T10:00:00Z") });
+    bd.reservations[0]!["reserveeJusquAt"] = new Date("2027-02-28T10:00:00Z");
+    echue("p2", A2);
+    bd.events[0]!["startTime"] = new Date("2027-01-03T10:00:00Z");
+    const r = await validerParRendezVous(
+      saisie("p1", {
+        prisAt: new Date("2027-01-02T10:00:00Z"),
+        tenuAt: new Date("2027-01-03T10:00:00Z"),
+      }),
+      MAINT,
+    );
+    expect(r).toEqual({ ok: false, message: MESSAGE_AUTRE_APPORTEUR });
   });
 });
