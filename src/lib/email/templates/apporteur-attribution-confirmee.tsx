@@ -62,7 +62,7 @@ export const COPY_ATTRIBUTION = {
     title: "Votre attribution est confirmée",
     preview: "L'attribution est désormais définitive.",
     texte: (e: string) =>
-      `L'attribution de ${e || "l'entreprise que vous nous avez présentée"} est désormais définitive : elle vous est réservée.`,
+      `L'attribution de ${e || "l'entreprise que vous nous avez présentée"} est désormais définitive : elle vous est attribuée.`,
   },
   prolongee: {
     subject: (e: string) => (e ? `${e} : protection prolongée` : "Votre protection est prolongée"),
