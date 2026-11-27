@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
+import { cheminSansSuffixeMiroir } from "@/lib/redirections/suffixe-miroir";
 
 /**
  * Catch-all `[locale]/[...catchall]/page.tsx` — déclenche un 404 HTTP propre
@@ -31,6 +32,14 @@ import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default function CatchAllNotFound(): never {
+export default async function CatchAllNotFound({
+  params,
+}: {
+  params: Promise<{ locale: string; catchall: string[] }>;
+}): Promise<never> {
+  // S1 (404) : `/fr/contact-1` (copieur externe) → page statique `/fr/contact`.
+  const { locale, catchall } = await params;
+  const cible = cheminSansSuffixeMiroir(catchall ?? []);
+  if (cible && (locale === "fr" || locale === "en")) permanentRedirect(`/${locale}${cible}`);
   notFound();
 }
