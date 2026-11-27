@@ -129,6 +129,13 @@ describe("cumulerParSemaineIso", () => {
     expect(l!.position).toBeNull();
   });
 
+  it("neutralise NaN et valeurs négatives", () => {
+    const [l] = cumulerParSemaineIso([
+      { date: "2026-11-27", cle: "x", clics: Number.NaN, impressions: -4, positionSum: Number.NaN },
+    ]);
+    expect(l).toMatchObject({ clics: 0, impressions: 0, positionSum: 0, position: null });
+  });
+
   it("liste vide", () => {
     expect(cumulerParSemaineIso([])).toEqual([]);
   });

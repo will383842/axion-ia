@@ -24,6 +24,7 @@ describe("filtrerDonneesPersonnelles", () => {
     "+33612345678",
     "0033 6 12 34 56 78",
     "04 76 12 34 56 devis",
+    "0612 345 678",
   ])("retire un téléphone : %s", (q) => {
     expect(filtrerDonneesPersonnelles([l(q)], { noms: [] }).conservees).toEqual([]);
   });
@@ -74,6 +75,17 @@ describe("filtrerDonneesPersonnelles", () => {
   });
 });
 
+describe("trous comblés après relecture", () => {
+  it.each(["jdupont@gmail", "jean.dupont @ gmail . com"])("e-mail : %s", (q) => {
+    expect(filtrerDonneesPersonnelles([l(q)], { noms: [] }).conservees).toEqual([]);
+  });
+
+  it("nom collé", () => {
+    const r = filtrerDonneesPersonnelles([l("elodiemartin avis")], { noms: ["Élodie Martin"] });
+    expect(r.conservees).toEqual([]);
+  });
+});
+
 describe("requetesARetirerDuTexte (purge < 3 impressions cumulées sur 90 jours)", () => {
   it("rend les requêtes sous le seuil, cumul tous jours confondus", () => {
     const lignes = [
@@ -91,9 +103,10 @@ describe("requetesARetirerDuTexte (purge < 3 impressions cumulées sur 90 jours)
     expect(requetesARetirerDuTexte([l("x", 3)], 4)).toEqual(["x"]);
   });
 
-  it("regroupe les variantes de casse et d'espaces", () => {
-    expect(requetesARetirerDuTexte([l("Formation IA", 1), l("formation  ia", 1)], 3)).toEqual([
-      "formation ia",
-    ]);
+  it("regroupe les variantes mais rend les textes d'origine", () => {
+    expect(
+      requetesARetirerDuTexte([l("Formation IA", 1), l("formation  ia", 1)], 3).sort(),
+    ).toEqual(["Formation IA", "formation  ia"]);
+    expect(requetesARetirerDuTexte([l("définition de l'ia", 1)])).toEqual(["définition de l'ia"]);
   });
 });

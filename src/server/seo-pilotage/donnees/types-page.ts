@@ -76,6 +76,21 @@ const PAR_SEGMENT: Readonly<Record<string, TypePage>> = {
   booking: "conversion",
   // Galerie
   galerie: "galerie",
+  // Sections réelles classées « autre » par categories.ts : offres
+  formations: "offre",
+  catalogue: "offre",
+  secteurs: "offre",
+  "certification-qualiopi": "offre",
+  diagnostic: "offre",
+  simulateur: "offre",
+  "prix-audit-ia": "offre",
+  "journee-ia": "offre",
+  // Contenu et institutionnel
+  podcast: "article",
+  livres: "article",
+  "observatoire-ia": "article",
+  avis: "institutionnel",
+  carrieres: "institutionnel",
 };
 
 /** Chemin déjà normalisé (voir `normaliserChemin`). Sans langue : le chemin est lu tel quel. */
@@ -85,6 +100,7 @@ export function typePageDepuisChemin(chemin: string): TypePage {
   // Home (`/`, `/fr`) : vitrine de l'offre, comme `categorizeRoute`.
   if (segments.length === 0) return "offre";
   // Pages ville × service, rangées en « villes » par categories.ts.
-  if (segments.includes("par-ville")) return "ville";
-  return PAR_SEGMENT[segments[0]!] ?? "autre";
+  const type = PAR_SEGMENT[segments[0]!] ?? "autre";
+  if (type === "offre" && segments.includes("par-ville")) return "ville";
+  return type;
 }

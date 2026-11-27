@@ -31,4 +31,3 @@ Variantes d'hôte, de slash, de query et de fragment ; `/en/` ramené à FR ; un
 - Le filtre de téléphones est volontairement étroit (formats français et « + » international) pour ne pas vider des requêtes comme « iso 27001 2022 » ; un numéro écrit en groupes inhabituels peut passer.
 - Les noms d'un seul mot sont retirés en mot entier : un nom commun injecté retirera aussi les requêtes qui le contiennent (choix prudent pour la vie privée).
 - `contenu` hors blog/guides/actualités (glossaire, connaissances…) → `article` ; `presse` → `institutionnel` : à revoir en P7 si besoin.
-

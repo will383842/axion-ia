@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { categorizeRoute, type RouteCategory } from "@/server/site-explorer/categories";
+import {
+  categorizeRoute,
+  SECTION_TO_CATEGORY,
+  type RouteCategory,
+} from "@/server/site-explorer/categories";
 import { TYPES_PAGE, type TypePage, typePageDepuisChemin } from "../types-page";
 
 describe("typePageDepuisChemin", () => {
@@ -48,7 +52,7 @@ describe("typePageDepuisChemin", () => {
 const COMPATIBLE: Record<RouteCategory, ReadonlyArray<TypePage>> = {
   commercial: ["offre"],
   villes: ["ville"],
-  contenu: ["article", "actualite", "guide", "institutionnel"],
+  contenu: ["article", "actualite", "guide"],
   aide: ["faq"],
   legal: ["institutionnel"],
   conversion: ["conversion"],
@@ -57,65 +61,43 @@ const COMPATIBLE: Record<RouteCategory, ReadonlyArray<TypePage>> = {
   autre: ["autre"],
 };
 
-const SECTIONS = [
-  "audit",
-  "interventions",
-  "implementation",
-  "un-a-un",
-  "sites-web-augmentes",
-  "implantations",
-  "blog",
-  "guides",
-  "actualites",
-  "connaissances",
-  "ressources",
-  "glossaire",
-  "cas-concrets",
-  "comparaisons",
-  "presse",
-  "faq",
-  "centre-aide",
-  "a-propos",
-  "equipe",
-  "methodologie",
-  "stack-ia",
-  "guide-ia",
-  "roi",
-  "tarifs",
-  "transparence",
-  "charte-editoriale",
-  "corrections",
-  "sous-processeurs",
-  "recherche",
-  "contact",
-  "demande-devis",
-  "reserver",
-  "appel",
-  "booking",
-  "galerie",
-  "mentions-legales",
-  "conditions-generales",
-  "politique-confidentialite",
-  "politique-deplacement",
-  "cookies",
-  "preferences-cookies",
-  "rgpd",
-  "accessibilite",
-  "mes-donnees",
-  "desabonnement",
-  "confirmation",
-  "section-inconnue",
-];
+// Toute la table de categories.ts, plus une section inconnue. `presse` est « contenu » côté
+// categories.ts mais institutionnelle ici (exception assumée).
+const SECTIONS = [...Object.keys(SECTION_TO_CATEGORY), "section-inconnue"];
 
 describe("types-page : cohérence avec site-explorer/categories.ts", () => {
   it.each(SECTIONS)("section « %s »", (section) => {
     const categorie = categorizeRoute(section, `/fr/${section}/[slug]`);
     const type = typePageDepuisChemin(`/fr/${section}/un-slug`);
+    if (section === "presse") return expect(type).toBe("institutionnel");
     expect(COMPATIBLE[categorie]).toContain(type);
   });
 
   it("page ville×service : même verdict que categorizeRoute", () => {
     const categorie = categorizeRoute("audit", "/fr/audit/par-ville/[ville]");
     expect(COMPATIBLE[categorie]).toContain(typePageDepuisChemin("/fr/audit/par-ville/lyon"));
+  });
+});
+
+describe("sections réelles absentes de categories.ts", () => {
+  it.each([
+    ["formations", "offre"],
+    ["catalogue", "offre"],
+    ["secteurs", "offre"],
+    ["certification-qualiopi", "offre"],
+    ["diagnostic", "offre"],
+    ["simulateur", "offre"],
+    ["prix-audit-ia", "offre"],
+    ["journee-ia", "offre"],
+    ["podcast", "article"],
+    ["avis", "institutionnel"],
+    ["carrieres", "institutionnel"],
+  ] as const)("%s → %s", (section, attendu) => {
+    expect(typePageDepuisChemin(`/fr/${section}`)).toBe(attendu);
+  });
+
+  it("par-ville dans un article de blog ne le range pas en ville", () => {
+    expect(typePageDepuisChemin("/fr/blog/guide-par-ville")).toBe("article");
+    expect(typePageDepuisChemin("/fr/blog/par-ville/x")).toBe("article");
   });
 });

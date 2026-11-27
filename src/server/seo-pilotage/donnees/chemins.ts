@@ -9,26 +9,30 @@ import { mapEnToFr } from "@/lib/i18n/en-to-fr-redirect";
 const HOTES_SITE: ReadonlySet<string> = new Set(["axion-ia.com", "www.axion-ia.com"]);
 
 export function normaliserChemin(brut: string): string | null {
-  const s = (brut ?? "").trim();
-  if (!s) return null;
+  let s = (brut ?? "").trim();
+  if (!s || s.startsWith("//")) return null;
+  // Hôte sans schéma (« axion-ia.com/fr/blog ») : lu comme une URL.
+  if (/^(?:www\.)?axion-ia\.com(?:[/?#]|$)/i.test(s)) s = `https://${s}`;
 
-  let chemin: string;
-  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(s)) {
-    let u: URL;
-    try {
-      u = new URL(s);
-    } catch {
-      return null;
-    }
-    if (!HOTES_SITE.has(u.hostname.toLowerCase())) return null;
-    chemin = u.pathname;
-  } else if (s.startsWith("//")) {
+  let u: URL;
+  try {
+    // Même passage par `URL` pour une URL complète et pour un chemin seul : mêmes `..`,
+    // même encodage, donc une forme unique.
+    u = new URL(s, "https://axion-ia.com");
+  } catch {
     return null;
-  } else {
-    chemin = s.split("#")[0]!.split("?")[0]!;
   }
+  if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+  if (!HOTES_SITE.has(u.hostname.toLowerCase())) return null;
 
+  let chemin = u.pathname;
+  try {
+    chemin = decodeURIComponent(chemin);
+  } catch {
+    // séquence % invalide : on garde la forme encodée
+  }
   chemin = chemin
+    .replace(/;[^/]*/g, "") // paramètres de chemin (;jsessionid=…)
     .toLowerCase()
     .replace(/\/{2,}/g, "/")
     .replace(/\/+$/, "");

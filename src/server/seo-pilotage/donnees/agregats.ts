@@ -101,7 +101,13 @@ export interface LigneSemaine {
 /** Cumul par (semaine ISO, clé) ; tri par semaine puis par clé. N'altère pas l'entrée. */
 export function cumulerParSemaineIso(lignes: ReadonlyArray<LigneJour>): LigneSemaine[] {
   const acc = new Map<string, Omit<LigneSemaine, "position">>();
-  for (const l of lignes) {
+  for (const brute of lignes) {
+    const l = {
+      ...brute,
+      clics: positif(brute.clics) ? brute.clics : 0,
+      impressions: positif(brute.impressions) ? brute.impressions : 0,
+      positionSum: positif(brute.positionSum) ? brute.positionSum : 0,
+    };
     const s = semaineIso(l.date);
     const k = `${s.cle}\u0000${l.cle}`;
     const cur = acc.get(k);

@@ -25,11 +25,12 @@ export interface ResultatFiltre<T extends LigneRequete> {
   readonly retirees: { lignes: number; impressions: number; clics: number };
 }
 
-const RE_EMAIL = /[a-z0-9._%+-]+\s?@\s?[a-z0-9-]+(?:\.[a-z0-9-]+)+/;
+// « @ » entouré d'espaces ou sans domaine de premier niveau compris : on préfère trop retirer.
+const RE_EMAIL = /[a-z0-9._%+-]+\s?@\s?[a-z0-9-]+/;
 // Téléphone français (0X XX XX XX XX, +33 X XX XX XX XX, 0033…) ou international en « + ».
 // Volontairement étroit : « iso 27001 2022 » ne doit pas être pris pour un numéro.
 const RE_TELEPHONE =
-  /(?<![0-9])(?:(?:\+33|0033|0)[ .-]?[1-9](?:[ .-]?[0-9]{2}){4}|\+[1-9][0-9]{0,2}(?:[ .-]?[0-9]){8,12})(?![0-9])/;
+  /(?<![0-9])(?:(?:\+33|0033|0)[ .-]?[1-9](?:[ .-]?[0-9]){8}|\+[1-9][0-9]{0,2}(?:[ .-]?[0-9]){8,12})(?![0-9])/;
 
 /** Texte normalisé : sans accents, minuscules, ponctuation → espace, espaces compactées. */
 function lisse(t: string): string {
@@ -50,12 +51,18 @@ function jeuxDeNoms(noms: ReadonlyArray<string>): string[][] {
   return noms.map((n) => mots(n)).filter((m) => m.length > 0 && m.join("").length >= 3);
 }
 
-export function estDonneePersonnelle(requete: string, nomsConnus: string[][]): boolean {
+function estDonneePersonnelle(requete: string, nomsConnus: string[][]): boolean {
   const t = lisse(requete);
   if (RE_EMAIL.test(t)) return true;
   if (RE_TELEPHONE.test(t)) return true;
   const motsRequete = new Set(mots(requete));
-  return nomsConnus.some((nom) => nom.every((m) => motsRequete.has(m)));
+  if (nomsConnus.some((nom) => nom.every((m) => motsRequete.has(m)))) return true;
+  // Nom collé (« elodiemartin ») : mots accolés dans l'un ou l'autre ordre.
+  const collee = [...motsRequete].join(" ");
+  return nomsConnus.some(
+    (nom) =>
+      nom.length > 1 && [nom.join(""), [...nom].reverse().join("")].some((c) => collee.includes(c)),
+  );
 }
 
 export function filtrerDonneesPersonnelles<T extends LigneRequete>(
@@ -77,15 +84,22 @@ export function filtrerDonneesPersonnelles<T extends LigneRequete>(
   return { conservees, retirees };
 }
 
-/** Requêtes dont le texte doit être purgé : cumul d'impressions (90 j) strictement sous le seuil. */
+/**
+ * Textes (tels que stockés) à purger : un groupe de variantes (casse, accents, ponctuation) dont
+ * le cumul d'impressions (90 j) est strictement sous le seuil. On rend les textes d'ORIGINE,
+ * pour qu'une purge `WHERE requete IN (…)` les retrouve.
+ */
 export function requetesARetirerDuTexte(
   lignes: ReadonlyArray<Pick<LigneRequete, "requete" | "impressions">>,
   seuil = 3,
 ): string[] {
-  const cumul = new Map<string, number>();
+  const groupes = new Map<string, { n: number; textes: Set<string> }>();
   for (const l of lignes) {
     const k = mots(l.requete).join(" ");
-    cumul.set(k, (cumul.get(k) ?? 0) + l.impressions);
+    const g = groupes.get(k) ?? { n: 0, textes: new Set<string>() };
+    g.n += l.impressions;
+    g.textes.add(l.requete);
+    groupes.set(k, g);
   }
-  return [...cumul].filter(([, n]) => n < seuil).map(([k]) => k);
+  return [...groupes.values()].filter((g) => g.n < seuil).flatMap((g) => [...g.textes]);
 }

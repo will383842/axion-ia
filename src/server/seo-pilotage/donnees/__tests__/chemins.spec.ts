@@ -47,4 +47,21 @@ describe("normaliserChemin", () => {
     expect(normaliserChemin("   ")).toBeNull();
     expect(normaliserChemin("https://")).toBeNull();
   });
+
+  it("même forme pour une URL complète et un chemin seul (non ASCII, points)", () => {
+    expect(normaliserChemin("https://axion-ia.com/fr/blog/caf%C3%A9")).toBe("/fr/blog/café");
+    expect(normaliserChemin("/fr/blog/café")).toBe("/fr/blog/café");
+    expect(normaliserChemin("/fr/blog/../faq")).toBe("/fr/faq");
+    expect(normaliserChemin("https://axion-ia.com/fr/blog/../faq")).toBe("/fr/faq");
+  });
+
+  it("refuse les schémas autres que http(s)", () => {
+    expect(normaliserChemin("javascript://axion-ia.com/fr/x")).toBeNull();
+    expect(normaliserChemin("ftp://axion-ia.com/fr/x")).toBeNull();
+  });
+
+  it("hôte sans schéma, et paramètre de chemin retiré", () => {
+    expect(normaliserChemin("axion-ia.com/fr/blog")).toBe("/fr/blog");
+    expect(normaliserChemin("/fr/blog;jsessionid=ABC")).toBe("/fr/blog");
+  });
 });
