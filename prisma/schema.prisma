@@ -16448,6 +16448,35 @@ model ApporteurReseau {
   @@map("apporteurs_reseau")
 }
 
+/// Un message REÇU d'un apporteur après son invitation (2026-11-27) : un e-mail relevé dans la
+/// boîte Zoho dont l'expéditeur est l'adresse de sa fiche (`source = "email"`, idempotent par
+/// `zohoMessageId`), ou une demande d'aide envoyée depuis son espace (`source = "demande_aide"`).
+/// Sans clé étrangère (fenêtre app/worker) ; l'extrait est chiffré par `encryptPii`.
+/// rgpd: dossier-client
+model ApporteurMessageRecu {
+  id                String   @id @default(uuid()) @db.Uuid
+  apporteurId       String   @map("apporteur_id") @db.Uuid
+  /// `email` ou `demande_aide`.
+  source            String   @db.VarChar(20)
+  receivedAt        DateTime @map("received_at") @db.Timestamptz(3)
+  /// `hashEmailForLookup` de l'expéditeur (e-mails seulement).
+  fromEmailHash     String?  @map("from_email_hash") @db.VarChar(64)
+  subject           String   @db.VarChar(500)
+  /// Extrait du texte, chiffré par `encryptPii`.
+  excerpt           String?  @db.Text
+  /// Identifiant du message DANS Zoho — clé d'idempotence du relevé (absent pour une demande d'aide).
+  zohoMessageId     String?  @unique @map("zoho_message_id") @db.VarChar(64)
+  zohoFolderId      String?  @map("zoho_folder_id") @db.VarChar(64)
+  internetMessageId String?  @map("internet_message_id") @db.VarChar(500)
+  /// Réponse automatique (absence, accusé) : gardée, signalée.
+  auto              Boolean  @default(false)
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, receivedAt])
+  @@index([fromEmailHash])
+  @@map("apporteur_messages_recus")
+}
+
 /// SIRET de l'établissement sous lequel l'apporteur apporte des affaires (2026-10-08) : plusieurs
 /// activités = un SIREN, plusieurs SIRET. Table séparée sans clé étrangère (fenêtre app/worker),
 /// comme `ApporteurReseauRetrait`. Absente = on ne connaît que le SIREN (comportement d'avant).

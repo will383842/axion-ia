@@ -16,6 +16,7 @@ import {
   NomEtEntreprise,
   NomEtEntrepriseEnCours,
 } from "@/components/admin/apporteurs/fiche/NomEtEntreprise";
+import { MessagesRecus } from "@/components/admin/apporteurs/fiche/MessagesRecus";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
 import {
@@ -23,6 +24,7 @@ import {
   FinDeVie,
   SoldeNegatifFiche,
 } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
+import { lireMessagesRecus } from "@/features/apporteurs-reseau/messages-recus";
 import { lireResiliationEnCours } from "@/features/apporteurs-reseau/resiliation";
 import { lireSoldeNegatif } from "@/features/apporteurs-reseau/solde-negatif";
 import { siretDe } from "@/features/apporteurs-reseau/siret-apporteur";
@@ -112,6 +114,10 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
     siretDe(d.id),
     lireChangementsRegimeTva(d.id),
   ]);
+  // Messages reçus (e-mails + demandes d'aide) : contenu personnel, réservé aux rôles autorisés.
+  const messagesRecus = peutOuvrirDossierApporteur(acces.role)
+    ? await lireMessagesRecus(d.id).catch(() => [])
+    : null;
   const refusSuppr = etatSuppr ? refusSuppression(etatSuppr) : "Dossier introuvable.";
   // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
   const voitPii = peutOuvrirDossierApporteur(acces.role);
@@ -343,6 +349,8 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           />
         </AdminCard>
       </div>
+
+      {messagesRecus ? <MessagesRecus messages={messagesRecus} /> : null}
 
       <AdminCard as="section">
         <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">

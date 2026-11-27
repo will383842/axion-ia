@@ -67,6 +67,13 @@ export interface ExportReseauApporteur {
       readonly presenteeLe: Date;
       readonly statut: string;
     }>;
+    /** Messages reçus de lui (e-mails, demandes d'aide) : objet, date, extrait déchiffré. */
+    readonly messagesRecus?: ReadonlyArray<{
+      readonly recuLe: Date;
+      readonly source: string;
+      readonly objet: string;
+      readonly extrait: string | null;
+    }>;
   };
   readonly presenteePar: ReadonlyArray<{
     readonly entreprise: string;
@@ -160,6 +167,15 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         select: { denomination: true, recueAt: true, statut: true },
       })
     : [];
+  const messages = a
+    ? await prisma.apporteurMessageRecu
+        .findMany({
+          where: { apporteurId: a.id },
+          orderBy: { receivedAt: "desc" },
+          select: { receivedAt: true, source: true, subject: true, excerpt: true },
+        })
+        .catch(() => []) // table pas encore migrée (fenêtre app/worker)
+    : [];
   return {
     apporteur: a
       ? {
@@ -198,6 +214,12 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
           signeLe: a.signeParApporteurAt,
           contresigneLe: a.signeParSocieteAt,
           pieces: pieces.map((p) => ({ type: p.type, statut: p.statut, deposeeLe: p.deposeeAt })),
+          messagesRecus: messages.map((m) => ({
+            recuLe: m.receivedAt,
+            source: m.source,
+            objet: m.subject,
+            extrait: decryptPii(m.excerpt),
+          })),
           entreprisesPresentees: siennes.map((p) => ({
             entreprise: p.denomination,
             presenteeLe: p.recueAt,
