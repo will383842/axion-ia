@@ -34,6 +34,14 @@ export function evaluerB13(c: ContenuPorte, x: ContextePorte, r: ReglagesPorte):
     };
   }
   const brut = x.pageProprietaire.valeur?.trim();
+  // Seul `null` veut dire « ce thème n'a pas de page propriétaire » ; une chaîne vide est une donnée cassée.
+  if (x.pageProprietaire.valeur !== null && x.pageProprietaire.valeur !== undefined && !brut) {
+    return {
+      statut: "non_evalue",
+      raison: "Page propriétaire du thème vide : la carte des thèmes est illisible.",
+      preuves: chemins,
+    };
+  }
   if (brut) {
     const proprietaire = cheminInterne(
       /^(\/|https?:)/i.test(brut) ? brut : `/${brut}`,

@@ -51,6 +51,14 @@ describe("B01 doctrine (appelle interdits-publication, ne la copie pas)", () => 
       "echec",
     );
   });
+  it("un champ supplémentaire sale sous un nom propre n'est jamais perdu (B01 et B03)", () => {
+    expect(
+      r("B01", { champsSupplementaires: { corps: "Grenoble", titre: "Qualiopi" } }).statut,
+    ).toBe("echec");
+    expect(
+      r("B01", { champsSupplementaires: { directAnswer: "Axion-IA à Grenoble" } }).statut,
+    ).toBe("echec");
+  });
   it("refuse Qualiopi", () => {
     expect(
       r("B01", { corpsHtml: corpsValide() + "<p>Nous sommes certifiés Qualiopi.</p>" }).statut,
@@ -244,6 +252,9 @@ describe("B13 maillage sortant", () => {
     ).toBe("echec");
   });
   it("chemin relatif de page propriétaire accepté (fr/contact)", () => {
+    expect(r("B13", {}, { pageProprietaire: { etat: "ok", valeur: "  " } }).statut).toBe(
+      "non_evalue",
+    );
     expect(r("B13", {}, { pageProprietaire: { etat: "ok", valeur: "fr/contact" } }).statut).toBe(
       "ok",
     );

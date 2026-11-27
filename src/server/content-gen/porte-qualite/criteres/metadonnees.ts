@@ -4,7 +4,11 @@ import { nettoyer, texteDe } from "../html";
 import type { ContenuPorte, ContextePorte, ResultatBrut } from "../types";
 
 const jour = (d: string): string => d.slice(0, 10);
-const valide = (d: string): boolean => /^\d{4}-\d{2}-\d{2}/.test(d) && !Number.isNaN(Date.parse(d));
+const valide = (d: string): boolean => {
+  if (!/^\d{4}-\d{2}-\d{2}/.test(d) || Number.isNaN(Date.parse(d))) return false;
+  // Refuse un jour inexistant que V8 fait déborder (« 2026-02-30 » → 2 mars).
+  return new Date(`${d.slice(0, 10)}T00:00:00Z`).toISOString().slice(0, 10) === d.slice(0, 10);
+};
 
 export function evaluerB14(c: ContenuPorte, x: ContextePorte): ResultatBrut {
   // Horloge injectée invalide : on ne compare rien (échec fermé, voir `lancer`).

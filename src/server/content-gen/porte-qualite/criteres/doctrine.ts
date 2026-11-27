@@ -10,8 +10,11 @@ const OK: ResultatBrut = { statut: "ok", raison: null, preuves: [] };
 /** Tous les champs du contenu qui peuvent atteindre le public. */
 export function surfaceDuContenu(c: ContenuPorte): Record<string, string | undefined> {
   return {
-    // Les champs supplémentaires d'abord : ils ne peuvent pas écraser les champs propres.
-    ...c.champsSupplementaires,
+    // Les champs supplémentaires sont préfixés : ils ne peuvent ni écraser un champ propre
+    // ni être écrasés par lui (un champ « corps » sale ne doit jamais se perdre).
+    ...Object.fromEntries(
+      Object.entries(c.champsSupplementaires).map(([k, v]) => [`supp:${k}`, v]),
+    ),
     titre: c.titre,
     metaDescription: c.metaDescription ?? undefined,
     directAnswer: c.directAnswer ?? undefined,
