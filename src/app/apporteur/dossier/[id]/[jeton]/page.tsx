@@ -51,8 +51,40 @@ import { DepotPiece } from "./DepotPiece";
 import { DossierEnLigne, type DossierPublic } from "./DossierEnLigne";
 import { ListeDeclarations } from "./ListeDeclarations";
 import { TEXTES } from "./textes";
+import { MonCompteBancaire, type VueCompte } from "./MonCompteBancaire";
+import { lireSectionCompte } from "@/features/apporteurs-reseau/changement-iban-espace-lecture";
+import { dateReponseAuPlusTot } from "@/features/apporteurs-reseau/changement-iban-espace";
+
 
 export const dynamic = "force-dynamic";
+
+const jourParis = (d: Date) =>
+  d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" });
+
+/** « Mon compte bancaire » : jamais une erreur de lecture ne casse l'espace (la section disparaît). */
+async function vueSectionCompte(apporteurId: string): Promise<VueCompte | null> {
+  try {
+    const s = await lireSectionCompte(apporteurId, false);
+    const base = { fin4: s.fin4, demandeId: s.demandeId };
+    switch (s.etat.etat) {
+      case "absente":
+        return null;
+      case "confirmee":
+        return {
+          ...base,
+          etat: "confirmee",
+          demandee: jourParis(s.demandeeAt ?? new Date()),
+          reponse: jourParis(dateReponseAuPlusTot(s.confirmeeAt ?? new Date())),
+        };
+      case "refusee":
+        return { ...base, etat: "refusee", motif: s.etat.motif };
+      default:
+        return { ...base, etat: s.etat.etat };
+    }
+  } catch {
+    return null;
+  }
+}
 
 export const metadata: Metadata = {
   title: "Votre dossier d'apporteur — Axion-IA",
@@ -135,6 +167,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     // Préavis de résiliation en cours (lot L1b) : une ligne d'information, rien à faire.
     const fin = await lireResiliationEnCours(dossier.id);
     const encartChallenge = await lireEncartPourEspace();
+    const sectionCompte = await vueSectionCompte(dossier.id);
     return (
       <Coquille titre={titre}>
         <EcranEtat
@@ -211,6 +244,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             })}
           </ul>
         ) : null}
+        {sectionCompte ? <MonCompteBancaire id={dossier.id} jeton={jeton} vue={sectionCompte} /> : null}
       </Coquille>
     );
   }
