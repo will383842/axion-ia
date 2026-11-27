@@ -384,8 +384,165 @@ describe("régressions de la relecture", () => {
     expect(points(html).jsonLd).toBe(10);
   });
 
-  it("une entrée gigantesque est traitée sans exception", () => {
-    const r = calculerCitabilite(entree("<".repeat(100_000)));
+  it.each([
+    ["<p> non fermés", "<p>mot ".repeat(150_000)],
+    ["<!-- non fermés", "<!-- x ".repeat(150_000)],
+    ["<script non fermés", "<script>x ".repeat(100_000)],
+    ["balises ouvertes sans >", "<a href=x ".repeat(90_000)],
+    ["<ul> non fermés", "<ul><li>a ".repeat(80_000)],
+    ["chiffres collés à Journée IA", `Journée IA ${"9".repeat(200_000)}`],
+  ])("une entrée gigantesque (%s) reste en temps linéaire", (_nom, corps) => {
+    const t0 = Date.now();
+    const r = calculerCitabilite(entree(`<html><body><main>${corps}</main></body></html>`));
     expect(r.score).toBeGreaterThanOrEqual(0);
+    expect(Date.now() - t0).toBeLessThan(1500);
+  });
+});
+
+describe("régressions de la relecture — tour 2", () => {
+  const penal = (html: string) => calculerCitabilite(entree(html));
+
+  it("un Organization imbriqué (recognizedBy) n'est pas une seconde définition", () => {
+    const ld = JSON.stringify({
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": ID_ORGANISATION,
+          name: "Axion-IA",
+          recognizedBy: [{ "@type": "Organization", name: "Organisme certificateur" }],
+        },
+        { "@type": "WebPage", publisher: { "@id": ID_ORGANISATION } },
+      ],
+    });
+    expect(points(page({ jsonLd: ld })).jsonLd).toBe(10);
+  });
+
+  it("un GovernmentOrganization défini au niveau du graphe sans @id du site fait perdre le critère", () => {
+    const ld = JSON.stringify({
+      "@graph": [{ "@type": "GovernmentOrganization", name: "Autre" }],
+    });
+    expect(points(page({ jsonLd: ld })).jsonLd).toBe(0);
+  });
+
+  it("« par rapport à … 5 jours ouvrés » n'est pas le délai du rapport", () => {
+    const r = penal(
+      "<main><p>Par rapport à un cabinet, comptez 5 jours ouvrés pour un devis.</p></main>",
+    );
+    expect(r.divergences).toEqual([]);
+  });
+
+  it("un autre délai après un point-virgule n'est pas jugé", () => {
+    const r = penal(
+      `<main><p>Le rapport est remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés ; le paiement à 30 jours ouvrés.</p></main>`,
+    );
+    expect(r.divergences).toEqual([]);
+  });
+
+  it("des blocs voisins sans ponctuation ne fusionnent pas en une phrase", () => {
+    const r = penal(
+      "<main><h3>Découvrir la Journée IA</h3><h3>Accompagnement</h3><p>À partir de 4 900 €</p></main>",
+    );
+    expect(r.divergences).toEqual([]);
+  });
+
+  it("un prix faux dans la même phrase que la Journée IA reste détecté", () => {
+    const r = penal("<main><p>La Journée IA coûte 4 900 €.</p></main>");
+    expect(r.divergences.map((d) => d.type)).toEqual(["prix-journee-ia"]);
+  });
+
+  it("les formules d'accueil (slogan, « ils nous font confiance ») ne sont pas pénalisées", () => {
+    const r = penal("<main><h1>Axion-IA</h1><p>Nous, si.</p><p>Ils nous font confiance</p></main>");
+    expect(r.interdits).toEqual([]);
+  });
+
+  it("« Questions fréquentes » et « Commentaires » ne comptent pas comme questions", () => {
+    const html = page({ h2: ["Questions fréquentes", "Quelques chiffres", "Commentaires"] });
+    expect(points(html).structureTitres).toBe(0);
+  });
+
+  it("un <time> hors du corps (pied de page) ne date pas la page", () => {
+    const html = page({ temps: "" }).replace(
+      "</main>",
+      `</main><footer><time datetime="2026-10-01">1 oct.</time></footer>`,
+    );
+    expect(points(html).dateVisible).toBe(0);
+  });
+
+  it("le dateModified d'un WebSite ne date pas la page", () => {
+    const ld = JSON.stringify({
+      "@graph": [
+        { "@type": "WebSite", dateModified: "2026-10-01", publisher: { "@id": ID_ORGANISATION } },
+      ],
+    });
+    expect(points(page({ jsonLd: ld })).dateVisible).toBe(0);
+  });
+});
+
+describe("page réelle — rendu complet (gabarit Next : layout, JSON-LD global, hero, nav)", () => {
+  // Instantané reconstitué du rendu d'une page d'offre : <head> chargé, graphe JSON-LD global
+  // (organisation + organisme certificateur imbriqué), hero sans ponctuation, cartes, images
+  // à srcset long, pied de page daté.
+  const srcset = Array.from(
+    { length: 40 },
+    (_, i) => `/_next/image?url=%2Fa.png&w=${i + 1}0&q=75 ${i + 1}0w`,
+  ).join(", ");
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charSet="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>La Journée IA — Axion-IA</title>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://axion-ia.com/fr/journee-ia"/>
+<link rel="alternate" type="text/markdown" href="https://axion-ia.com/fr/journee-ia.md"/>
+<script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EducationalOrganization",
+        "@id": ID_ORGANISATION,
+        name: "Axion-IA",
+        url: "https://axion-ia.com",
+        recognizedBy: [{ "@type": "Organization", name: "Organisme certificateur" }],
+      },
+      { "@type": "WebSite", "@id": "https://axion-ia.com/#website", dateModified: "2020-01-01" },
+      {
+        "@type": "WebPage",
+        "@id": "https://axion-ia.com/fr/journee-ia",
+        publisher: { "@id": ID_ORGANISATION },
+        dateModified: "2026-11-01",
+      },
+    ],
+  })}</script>
+<script>self.__next_f=self.__next_f||[];self.__next_f.push([1,"<h1>faux</h1>"])</script>
+<style>.hero{color:#c24a1b}</style></head>
+<body class="antialiased"><header><nav><a href="/fr">Accueil</a><a href="/fr/tarifs">Tarifs</a></nav></header>
+<main id="contenu"><section class="hero"><h1>La Journée IA</h1>
+<p>Une journée dans votre entreprise : le matin, un audit de vos usages ; l'après-midi, la formation de vos équipes sur vos propres cas. Le prix est fixe, ${faitsCanon().prixJourneeIaEur.toLocaleString("fr-FR")}&nbsp;€, et le rapport vous est remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, avec les priorités classées et un plan d'action chiffré pour les trois mois suivants.</p>
+<img alt="Équipe en atelier" src="/a.png" srcset="${srcset}" sizes="100vw"/></section>
+<section><h2>Comment se déroule la journée ?</h2>
+<ul><li>Audit du matin</li><li>Formation de l'après-midi</li><li>Rapport sous quelques jours</li></ul>
+<h2>Que contient le rapport ?</h2><p>${phrase(55)}</p>
+<h2>Pourquoi un prix fixe ?</h2><p>${phrase(60)}</p>
+<div class="carte"><h3>Découvrir la Journée IA</h3></div><div class="carte"><h3>Accompagnement</h3></div>
+<p>À partir de 4&nbsp;900&nbsp;€ pour l'accompagnement long.</p>
+<a href="/fr/tarifs">Voir les tarifs</a> <a href="/fr/a-propos">À propos</a></section></main>
+<footer><time datetime="2026-11-01">1 novembre 2026</time></footer></body></html>`;
+
+  it("score cohérent, aucune pénalité à tort, JSON-LD relié, pas de fuite de script ni de srcset", () => {
+    const r = calculerCitabilite(
+      entree(html, {
+        url: "https://axion-ia.com/fr/journee-ia",
+        pagesFortes: ["/fr/tarifs", "/fr/a-propos"],
+      }),
+    );
+    expect(r.penalites).toEqual([]);
+    const ok = (id: IdCritere) => r.criteres.find((c) => c.id === id)?.ok;
+    expect(ok("jsonLd")).toBe(true);
+    expect(ok("indexable")).toBe(true);
+    expect(ok("markdown")).toBe(true);
+    expect(ok("structureTitres")).toBe(true);
+    expect(ok("structureListes")).toBe(true);
+    expect(ok("liensInternes")).toBe(true);
+    // Le <time> n'est que dans le pied de page : la date visible n'est pas créditée.
+    expect(ok("dateVisible")).toBe(false);
+    expect(r.score).toBeGreaterThan(50);
   });
 });

@@ -105,22 +105,111 @@ function decoder(t: string): string {
   });
 }
 
-function texteDe(fragment: string): string {
-  return decoder(fragment.replace(/<[^>]{0,1024}>/g, " "))
-    .replace(/[  ]/g, " ")
-    .replace(/\s+/g, " ")
+const BLOCS_TEXTE =
+  /<\/?(?:h[1-6]|p|li|ul|ol|div|section|article|header|footer|main|nav|aside|figure|figcaption|table|thead|tbody|tr|th|td|dt|dd|dl|blockquote|pre|br|hr|form|details|summary)\b[^>]{0,1024}>/gi;
+
+function texteDe(fragment: string, separerBlocs = false): string {
+  const t = separerBlocs ? fragment.replace(BLOCS_TEXTE, "\n") : fragment;
+  return decoder(t.replace(/<[^>]{0,1024}>/g, " "))
+    .replace(/[  ]/g, " ")
+    .replace(/[^\S\n]+/g, " ")
+    .replace(/ ?\n[\s]*/g, separerBlocs ? "\n" : " ")
     .trim();
 }
 
+interface Bloc {
+  readonly ouvrante: string;
+  readonly contenu: string;
+}
+
+/**
+ * Blocs `<nom …>…</nom>` en UNE passe, sans retour arrière : une balise ouvrante sans fermante
+ * s'arrête à la première recherche vaine (aucune fermante plus loin non plus), donc coût linéaire.
+ */
+function blocs(html: string, nom: string): Bloc[] {
+  const ouvre = new RegExp(`<${nom}\\b[^>]{0,1024}>`, "gi");
+  const ferme = new RegExp(`<\\/${nom}\\s*>`, "gi");
+  const out: Bloc[] = [];
+  let pos = 0;
+  for (;;) {
+    ouvre.lastIndex = pos;
+    const o = ouvre.exec(html);
+    if (!o) break;
+    const debut = o.index + o[0].length;
+    ferme.lastIndex = debut;
+    const f = ferme.exec(html);
+    if (!f) break;
+    out.push({ ouvrante: o[0], contenu: html.slice(debut, f.index) });
+    pos = f.index + f[0].length;
+  }
+  return out;
+}
+
+/**
+ * Un `<` sans `>` à moins de 1 024 caractères n'ouvre aucune balise : on l'écrit `&lt;` UNE fois,
+ * en une passe (le `>` suivant est mémorisé), pour qu'aucune regex ne rebalaie 1 024 caractères
+ * à chaque `<` d'une entrée hostile.
+ */
+function neutraliserChevrons(html: string): string {
+  let out = "";
+  let pos = 0;
+  let gt = -2; // -2 : pas encore cherché ; -1 : plus aucun `>`
+  for (;;) {
+    const lt = html.indexOf("<", pos);
+    if (lt < 0) break;
+    if (gt !== -1 && gt < lt) gt = html.indexOf(">", lt);
+    if (gt === -1 || gt - lt > 1024) {
+      out += html.slice(pos, lt) + "&lt;";
+    } else {
+      out += html.slice(pos, lt + 1);
+    }
+    pos = lt + 1;
+  }
+  return out + html.slice(pos);
+}
+
 function sansScripts(html: string): string {
-  return html
-    .replace(/<!--[\s\S]*?-->/g, " ")
-    .replace(/<(script|style|noscript|template)\b[\s\S]*?<\/\1\s*>/gi, " ");
+  // Commentaires : indexOf, linéaire ; un commentaire non fermé s'arrête là (reste inchangé).
+  let sans = "";
+  let pos = 0;
+  for (;;) {
+    const d = html.indexOf("<!--", pos);
+    if (d < 0) break;
+    const f = html.indexOf("-->", d + 4);
+    if (f < 0) {
+      // Commentaire jamais fermé : le navigateur ignore tout le reste, nous aussi.
+      return finirSansScripts(sans + html.slice(pos, d));
+    }
+    sans += html.slice(pos, d) + " ";
+    pos = f + 3;
+  }
+  return finirSansScripts(sans + html.slice(pos));
+}
+
+function finirSansScripts(entree: string): string {
+  let sans = entree;
+  for (const nom of ["script", "style", "noscript", "template"]) {
+    let r = "";
+    let p = 0;
+    const ouvre = new RegExp(`<${nom}\\b[^>]{0,1024}>`, "gi");
+    const ferme = new RegExp(`<\\/${nom}\\s*>`, "gi");
+    for (;;) {
+      ouvre.lastIndex = p;
+      const o = ouvre.exec(sans);
+      if (!o) break;
+      ferme.lastIndex = o.index + o[0].length;
+      const f = ferme.exec(sans);
+      if (!f) break;
+      r += sans.slice(p, o.index) + " ";
+      p = f.index + f[0].length;
+    }
+    sans = r + sans.slice(p);
+  }
+  return sans;
 }
 
 function balises(html: string, nom: string): string[] {
-  const re = new RegExp(`<${nom}\\b[^>]{0,1024}>([\\s\\S]*?)<\\/${nom}\\s*>`, "gi");
-  return [...html.matchAll(re)].map((m) => m[1] ?? "");
+  return blocs(html, nom).map((b) => b.contenu);
 }
 
 function attribut(balise: string, nom: string): string | null {
@@ -164,41 +253,56 @@ function cheminDe(href: string, base: string): string | null {
   }
 }
 
-/** Nœuds JSON-LD aplatis (@graph et objets imbriqués compris). Un bloc illisible est ignoré. */
-function noeudsJsonLd(html: string): Record<string, unknown>[] {
+/**
+ * Nœuds JSON-LD aplatis (@graph et objets imbriqués compris). Un bloc illisible est ignoré.
+ * `racines` : nœuds posés au niveau du document ou dans `@graph` (les autres sont imbriqués).
+ */
+function noeudsJsonLd(html: string): { noeuds: Record<string, unknown>[]; racines: Set<object> } {
   const out: Record<string, unknown>[] = [];
-  const visiter = (v: unknown, profondeur: number): void => {
+  const racines = new Set<object>();
+  const visiter = (v: unknown, profondeur: number, racine: boolean): void => {
     if (profondeur > 8 || v === null || typeof v !== "object") return;
     if (Array.isArray(v)) {
-      for (const x of v) visiter(x, profondeur + 1);
+      for (const x of v) visiter(x, profondeur + 1, racine);
       return;
     }
     const o = v as Record<string, unknown>;
     out.push(o);
-    for (const x of Object.values(o)) visiter(x, profondeur + 1);
+    if (racine) racines.add(o);
+    for (const [k, x] of Object.entries(o)) visiter(x, profondeur + 1, k === "@graph" && racine);
   };
-  const re =
-    /<script\b[^>]{0,1024}type\s*=\s*["']application\/ld\+json["'][^>]{0,1024}>([\s\S]*?)<\/script\s*>/gi;
-  for (const m of html.matchAll(re)) {
+  for (const b of blocs(html, "script")) {
+    if (!/type\s*=\s*["']application\/ld\+json["']/i.test(b.ouvrante)) continue;
     try {
-      visiter(JSON.parse(m[1] ?? ""), 0);
+      visiter(JSON.parse(b.contenu), 0, true);
     } catch {
       /* JSON-LD cassé : aucun point, pas d'exception */
     }
   }
-  return out;
+  return { noeuds: out, racines };
 }
 
-function aType(n: Record<string, unknown>, type: string): boolean {
+const TYPES_ORGANISATION = [
+  "Organization",
+  "EducationalOrganization",
+  "GovernmentOrganization",
+  "Corporation",
+  "NGO",
+  "LocalBusiness",
+  "ProfessionalService",
+];
+
+function aType(n: Record<string, unknown>, type: string | readonly string[]): boolean {
+  const cibles = typeof type === "string" ? [type] : type;
   const t = n["@type"];
-  return Array.isArray(t) ? t.includes(type) : t === type;
+  return Array.isArray(t) ? t.some((x) => cibles.includes(String(x))) : cibles.includes(String(t));
 }
 
 const INTERROGATIF =
-  /^(qu['’e]|quel|quelle|quels|quelles|comment|pourquoi|combien|quand|ou |est-ce|peut-on|faut-il|dois-je|y a-t-il|a-t-on|que |qui |lequel)/;
+  /^(qu['’]|que |qui |quel(?:le)?s?\b|lequel|comment |pourquoi|combien|quand |ou |est-ce|peut-on|faut-il|dois-je|y a-t-il|a-t-on)/;
 
 const RENVOI =
-  /(comme (vu|indique|mentionne|evoque|explique|dit|detaille)|ci-dessus|plus haut|precedemment|(?<![a-z])voir plus haut)/;
+  /(comme (vu|indique|mentionne|evoque|explique|dit|detaille)\b|ci-dessus|ci-dessous|plus haut|precedemment|(?<![a-z])voir plus haut)/;
 
 /* ───────────────────────────────── critères ───────────────────────────────── */
 
@@ -210,14 +314,15 @@ function critere(id: IdCritere, ok: boolean): ResultatCritere {
 export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   const canon = entree.canon ?? faitsCanon();
   // Entrée non fiable : on borne la taille pour garder un coût linéaire.
-  const brut =
-    entree.html.length > TAILLE_HTML_MAX ? entree.html.slice(0, TAILLE_HTML_MAX) : entree.html;
+  const brut = neutraliserChevrons(
+    entree.html.length > TAILLE_HTML_MAX ? entree.html.slice(0, TAILLE_HTML_MAX) : entree.html,
+  );
   const html = sansScripts(brut);
   const corps = balises(html, "main")[0] ?? balises(html, "body")[0] ?? html;
 
   // 1. Titres
   const h1 = balises(html, "h1");
-  const h2 = balises(corps, "h2").map(texteDe);
+  const h2 = balises(corps, "h2").map((t) => texteDe(t));
   const questions = h2.filter((t) => t.endsWith("?") || INTERROGATIF.test(normaliser(t))).length;
   const titres = h1.length === 1 && h2.length >= 3 && questions / h2.length >= 0.3;
 
@@ -252,12 +357,14 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   });
 
   // 5. Date visible + dateModified récente
-  const noeuds = noeudsJsonLd(brut);
-  const dateVisible = ouvrantes(html, "time").some((t) => {
+  const { noeuds, racines } = noeudsJsonLd(brut);
+  const dateVisible = ouvrantes(corps, "time").some((t) => {
     const d = attribut(t, "datetime");
     return d !== null && !Number.isNaN(Date.parse(d));
   });
+  // Les dates d'un `WebSite`, d'une image ou d'une vidéo ne datent pas le contenu de la page.
   const modifs = noeuds
+    .filter((n) => !aType(n, ["WebSite", "ImageObject", "VideoObject", "AudioObject"]))
     .map((n) => (typeof n["dateModified"] === "string" ? Date.parse(n["dateModified"]) : NaN))
     .filter((d) => !Number.isNaN(d));
   const ageJours = modifs.length
@@ -266,7 +373,9 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   const date = dateVisible && ageJours >= -2 && ageJours <= FRAICHEUR_MAX_JOURS;
 
   // 6. JSON-LD relié à /#organization, sans second nœud Organization
-  const organisations = noeuds.filter((n) => aType(n, "Organization"));
+  // Seuls les nœuds posés au niveau du document ou de `@graph` sont des définitions : un
+  // `recognizedBy` / `publisher` / `citation` imbriqué décrit un TIERS, pas l'organisation du site.
+  const organisations = noeuds.filter((n) => racines.has(n) && aType(n, TYPES_ORGANISATION));
   const estReference = (x: unknown): boolean =>
     x !== null &&
     typeof x === "object" &&
@@ -285,8 +394,8 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
     definitions.every((n) => n["@id"] === ID_ORGANISATION);
 
   // 7. FAQ visible concordant avec FAQPage
-  const texteVisible = texteDe(corps);
-  const visibleNorm = normaliser(texteVisible);
+  const texteVisible = texteDe(corps, true);
+  const visibleNorm = normaliser(texteVisible.replace(/\n/g, " "));
   const faqNoeuds = noeuds.filter((n) => aType(n, "FAQPage"));
   const questionsFaq = faqNoeuds
     .flatMap((n) => {
@@ -302,8 +411,8 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   // 8. Tableau ou liste structurée
   const listes =
     /<table\b/i.test(corps) ||
-    [...corps.matchAll(/<(ul|ol)\b[^>]{0,1024}>([\s\S]*?)<\/\1\s*>/gi)].some(
-      (m) => (m[2]?.match(/<li\b/gi) ?? []).length >= 3,
+    [...blocs(corps, "ul"), ...blocs(corps, "ol")].some(
+      (b) => (b.contenu.match(/<li\b/gi) ?? []).length >= 3,
     );
 
   // 9. Indexable, canonique sur elle-même, dans le sitemap
@@ -360,8 +469,11 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   const sousTotal = criteres.reduce((s, c) => s + c.points, 0);
 
   // Pénalités : faits canon et mots interdits (lus sur le texte visible)
-  const divergences = detecterFaitsDivergents(texteVisible, canon);
-  const interdits = detecterInterditsDoctrine(texteVisible);
+  // Le texte visible ne contient plus de balise : un `<` restant (entité décodée) est du texte, et
+  // ne doit pas relancer le retrait de balises, quadratique, du contrôle de doctrine.
+  const aAnalyser = texteVisible.replace(/[<>]/g, " ");
+  const divergences = detecterFaitsDivergents(aAnalyser, canon);
+  const interdits = detecterInterditsDoctrine(aAnalyser);
   const penalites: PenaliteScore[] = [];
   if (divergences.length > 0) {
     penalites.push({

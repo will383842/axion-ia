@@ -51,7 +51,8 @@ function normaliser(t: string): string {
 function montantsEuros(phrase: string): number[] {
   const propre = phrase.replace(/[   ]/g, " ");
   const out: number[] = [];
-  const re = /(\d{1,3}(?:[ .]\d{3})+|\d+)(?:,\d+)?\s*(?:€|eur\b|euros?\b)/gi;
+  const re =
+    /(?<![\d.,])(\d{1,3}(?:[ .]\d{3}){1,4}|\d{1,12})(?:,\d{1,2})?\s*(?:€|eur\b|euros?\b)/gi;
   for (const m of propre.matchAll(re)) {
     const n = Number((m[1] ?? "").replace(/[ .]/g, ""));
     if (Number.isFinite(n)) out.push(n);
@@ -66,10 +67,11 @@ function montantsEuros(phrase: string): number[] {
  * Une phrase sans le sujet n'est jamais jugée (un autre prix peut être légitime).
  */
 export function detecterFaitsDivergents(texte: string, canon: FaitsCanon): DivergenceFait[] {
-  const phrases = texte.split(/(?<=[.!?…])\s+|\n+/);
+  const phrases = texte.split(/(?<=[.!?…;])\s+|\n+/);
   const out: DivergenceFait[] = [];
   for (const phrase of phrases) {
-    const n = normaliser(phrase);
+    // « par rapport à » n'est pas le rapport remis au client.
+    const n = normaliser(phrase).replace(/par rapport\b/g, " ");
     if (/journee ia/.test(n)) {
       // Une phrase qui contient déjà le prix canon peut citer d'autres montants (ex. le seuil de
       // déduction « 5 000 € ») : on ne juge que les phrases où AUCUN montant n'est le prix.
@@ -102,10 +104,26 @@ export function detecterFaitsDivergents(texte: string, canon: FaitsCanon): Diver
   return out;
 }
 
+/**
+ * Interdits propres à la rédaction d'ARTICLES : sur une page (accueil : « Nous, si. », « Ils nous
+ * font confiance »), ils sont légitimes et ne doivent pas coûter 20 points.
+ */
+const CODES_REDACTION_ARTICLE: ReadonlySet<CodeInterdit> = new Set<CodeInterdit>([
+  "slogan-recopie",
+  "partenariat",
+  "etiquette-tpe-pme",
+  "stat-axion",
+  "temoignage-axion",
+  "citation-temoin",
+  "preuve-sociale-vague",
+]);
+
 /** Mots interdits de la doctrine (source unique : `interdits-publication.ts`) dans un texte. */
 export function detecterInterditsDoctrine(texte: string): InterditTrouve[] {
   return detecterInterditsSurface(
     { page: texte },
     { actualite: false, financementPublicAutorise: false },
-  ).map((i) => ({ code: i.code, extrait: i.extrait }));
+  )
+    .filter((i) => !CODES_REDACTION_ARTICLE.has(i.code))
+    .map((i) => ({ code: i.code, extrait: i.extrait }));
 }
