@@ -403,7 +403,7 @@ export async function renderVilleServicePage({
 
   // === JSON-LD stack — Phase C 2026-05-20 (centralisé via buildVilleServiceJsonLdGraph) ===
   // Les 5 variables individuelles ont été remplacées par le graph builder centralisé
-  // (`src/lib/seo/ville-service-jsonld.ts`) qui émet 7 schémas :
+  // (`src/lib/seo/ville-service-jsonld.ts`) qui émet 6 schémas (numérotation historique conservée) :
   //   1. Service  2. (LocalBusiness retiré le 11/11/2026 : aucun LocalBusiness, aucune adresse)  3. BreadcrumbList
   //   4. FAQPage + Speakable  5. HowTo  6. Person (Manon E-E-A-T)  7. ItemList villes proches
   const jsonLdSchemas = buildVilleServiceJsonLdGraph({

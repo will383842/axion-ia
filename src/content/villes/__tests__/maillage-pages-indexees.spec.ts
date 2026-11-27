@@ -36,14 +36,34 @@ describe("getNearbyVilles — option indexeesSeulement", () => {
 });
 
 describe("villesPrincipalesIndexees — pages région", () => {
-  it("Île-de-France : seulement les villes indexées de la région, plus peuplées d'abord", () => {
+  it("Île-de-France : exactement les 5 villes indexées, plus peuplées d'abord", () => {
     const idf = VILLES_CORE.filter((v) => v.region === "ile-de-france");
-    const attendu = idf.filter((v) => VILLES_INDEXEES.has(v.slug));
-    const liste = villesPrincipalesIndexees(idf, 12);
-    expect(liste.map((v) => v.slug).sort()).toEqual(attendu.map((v) => v.slug).sort());
-    expect(liste.length).toBeLessThanOrEqual(12);
-    for (let i = 1; i < liste.length; i++)
-      expect(liste[i - 1]!.population).toBeGreaterThanOrEqual(liste[i]!.population);
+    const liste = villesPrincipalesIndexees(idf, 12).map((v) => v.slug);
+    expect(liste).toEqual([
+      "paris",
+      "saint-denis",
+      "boulogne-billancourt",
+      "montreuil",
+      "argenteuil",
+    ]);
+  });
+
+  it("aucune région, hors celle du siège, ne cite la ville du siège", () => {
+    for (const r of new Set(VILLES_CORE.map((v) => v.region))) {
+      if (r === "auvergne-rhone-alpes") continue;
+      const liste = villesPrincipalesIndexees(
+        VILLES_CORE.filter((v) => v.region === r),
+        12,
+      );
+      for (const v of liste)
+        expect(VILLES_HORS_MAILLAGE.has(v.slug), `${r} : ${v.slug}`).toBe(false);
+    }
+  });
+
+  it("la Corse n'a aucune ville indexée : liste vide, section masquée", () => {
+    const corse = VILLES_CORE.filter((v) => v.region === "corse");
+    expect(corse.length).toBeGreaterThan(0);
+    expect(villesPrincipalesIndexees(corse, 12)).toEqual([]);
   });
 
   it("une région sans ville indexée rend une liste vide (jamais une page noindex)", () => {

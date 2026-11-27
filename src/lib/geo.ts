@@ -53,10 +53,9 @@ export function getNearbyVilles(
     // 18/11/2026 : certaines villes ne sont jamais citées dans le maillage des autres pages.
     if (!estCitableDansLeMaillage(ville.slug)) continue;
     if (opts.sameRegion && ville.region !== opts.sameRegion) continue;
-    // Audit maillage 2026-07-03 — `indexableOnly` : ne retenir que les villes
-    // avec `copy` (= vraies pages éligibles à l'index). Évite de mailler vers
-    // les ~2 280 communes stub noindex (doorway HCU) et de gaspiller le
-    // link-equity des pages indexables sur des pages volontairement noindex.
+    // `indexableOnly` : ne retient que les villes avec `copy`. Depuis le 18/11/2026
+    // toutes les communes en ont un : ce filtre n'exclut plus rien. Pour ne mailler
+    // que vers des pages indexées, utiliser `indexeesSeulement`.
     if (opts.indexableOnly && !hasVilleCopy(ville.slug)) continue;
     if (opts.indexeesSeulement && !VILLES_INDEXEES.has(ville.slug)) continue;
     const distanceKm = haversineKm(origin, ville.geo);
