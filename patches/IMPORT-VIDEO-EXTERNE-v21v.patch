@@ -1,0 +1,57 @@
+From f8b06e485c55f5dacc42eb9dd601abfff79d6eab Mon Sep 17 00:00:00 2001
+From: "github-actions[bot]" <noreply@github.com>
+Date: Fri, 27 Nov 2026 20:58:11 +0000
+Subject: [PATCH] =?UTF-8?q?IMPORT-VIDEO-EXTERNE-v21v=20:=20correction=20(r?=
+ =?UTF-8?q?obot=20cr=C3=A9dits=20API)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ src/services/fabrication.ts        | 2 --
+ tests/import-video-externe.test.ts | 7 ++++---
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/src/services/fabrication.ts b/src/services/fabrication.ts
+index 8b8297bd..fce14326 100644
+--- a/src/services/fabrication.ts
++++ b/src/services/fabrication.ts
+@@ -1069,8 +1069,6 @@ export async function estimerRetoucheVideo(videoId: Id, planIds: Id[], operation
+   if (!video || !courante) throw new ErreurStudio("INTROUVABLE", "Aucune version à retoucher.");
+   // Vidéo importée : aucun plan, et le moteur de repli serait la simulation. Refus AVANT tout (rien n'est payé ni créé).
+   if (estVideoImportee(video)) throw new ErreurStudio("RETOUCHE_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
+-  // Vidéo importée : aucun plan, et le moteur de repli serait la simulation. Refus AVANT tout (rien n'est payé ni créé).
+-  if (estVideoImportee(video)) throw new ErreurStudio("RETOUCHE_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
+   if (!planIds.length) return { total: centimes(0), dureeSec: 0 };
+   const ids = await plansDeLaCommande(courante.id, courante.commande, planIds);
+   await preparerReglagesMoteur(courante.commande);
+diff --git a/tests/import-video-externe.test.ts b/tests/import-video-externe.test.ts
+index a4835ffe..de8a8136 100644
+--- a/tests/import-video-externe.test.ts
++++ b/tests/import-video-externe.test.ts
+@@ -22,9 +22,9 @@ const { creerVideoImportee } = await import("@/services/import-video-externe");
+ const { controlerImportVideo, TAILLE_MAX_IMPORT_OCTETS, DUREE_MAX_IMPORT_SEC } = await import("@/domaine/import-video-externe");
+ const { listerAPublier, videoEnEssai } = await import("@/services/publications");
+ const { vueAPublier } = await import("@/services/a-publier");
+-const { lancerRetouche, reexporter, lancerFabrication, estimerReexport } = await import("@/services/fabrication");
++const { lancerRetouche, reexporter, lancerFabrication, estimerReexport, estimerRetoucheVideo } = await import("@/services/fabrication");
+ const { proposerModification, exemplesModification } = await import("@/services/modifications");
+-const { DUREE_MIN_IMPORT_SEC } = await import("@/domaine/import-video-externe");
++const { DUREE_MIN_IMPORT_SEC, IMPORTEE_PAS_REFABRICABLE } = await import("@/domaine/import-video-externe");
+ const { importerVideoExterne, ratioDeLaTaille } = await import("@/services/import-video-externe");
+ const { commandeEnEssai } = await import("@/moteurs");
+ const auth = await import("@/services/auth");
+@@ -274,7 +274,8 @@ describe("une vidéo importée ne peut être ni retouchée ni refabriquée", ()
+     await expect(reexporter(videoId, "1:1")).rejects.toMatchObject({ code: "REEXPORT_INDISPONIBLE" });
+     await expect(lancerFabrication(videoId)).rejects.toMatchObject({ code: "FABRICATION_INDISPONIBLE" });
+     expect((await estimerReexport(videoId, "1:1")).centimes).toBe(0);
+-    expect(await exemplesModification(videoId)).toMatchObject({ exemples: [] });
++    await expect(estimerRetoucheVideo(videoId, ["p1"])).rejects.toMatchObject({ code: "RETOUCHE_INDISPONIBLE" });
++    expect(await exemplesModification(videoId)).toMatchObject({ exemples: [], note: IMPORTEE_PAS_REFABRICABLE });
+     expect([await d.versions.compter(() => true), await d.travaux.compter(() => true), await d.retouches.compter(() => true)]).toEqual(avant);
+     expect(sondes.fournisseurs).toEqual([]);
+     expect((await d.videos.obtenir(videoId))?.statut).toBe("prete");
+-- 
+2.56.1
+
