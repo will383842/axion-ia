@@ -1,22 +1,31 @@
-From f8b06e485c55f5dacc42eb9dd601abfff79d6eab Mon Sep 17 00:00:00 2001
+From 1f7499af6c41104a288fdc3f1eeb66072e5efbf5 Mon Sep 17 00:00:00 2001
 From: "github-actions[bot]" <noreply@github.com>
-Date: Fri, 27 Nov 2026 20:58:11 +0000
+Date: Fri, 27 Nov 2026 21:03:36 +0000
 Subject: [PATCH] =?UTF-8?q?IMPORT-VIDEO-EXTERNE-v21v=20:=20correction=20(r?=
  =?UTF-8?q?obot=20cr=C3=A9dits=20API)?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
 ---
- src/services/fabrication.ts        | 2 --
+ src/services/fabrication.ts        | 4 +---
  tests/import-video-externe.test.ts | 7 ++++---
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/src/services/fabrication.ts b/src/services/fabrication.ts
-index 8b8297bd..fce14326 100644
+index 8b8297bd..e2484d1d 100644
 --- a/src/services/fabrication.ts
 +++ b/src/services/fabrication.ts
+@@ -4,8 +4,8 @@
+  * CommandeFabrication versionnée (contrat v2). Un moteur ne lit que la commande.
+  * Le moteur est FIGÉ au lancement (`commande.moteurId`) : tout travail lancé lit `moteurDeCommande`.
+  */
+-import { estVideoImportee, IMPORTEE_PAS_REFABRICABLE } from "@/domaine/import-video-externe";
+ import "server-only";
++import { estVideoImportee, IMPORTEE_PAS_REFABRICABLE } from "@/domaine/import-video-externe";
+ import type {
+   CommandeFabrication,
+   DistributionResolue,
 @@ -1069,8 +1069,6 @@ export async function estimerRetoucheVideo(videoId: Id, planIds: Id[], operation
    if (!video || !courante) throw new ErreurStudio("INTROUVABLE", "Aucune version à retoucher.");
    // Vidéo importée : aucun plan, et le moteur de repli serait la simulation. Refus AVANT tout (rien n'est payé ni créé).
