@@ -246,6 +246,50 @@ describe("durcissements (relecture)", () => {
     expect(fichePublique(f).fonction).toBe("");
     expect(slugCollaborateur("Camille", "Grenoble", ["camille"])).toBe("camille-2");
   });
+  it("textes publiés sans le nom de famille", () => {
+    const f = fiche({
+      reponseQui: "Camille Dupont-Martin accompagne les TPE.",
+      fonction: "Spécialiste IA",
+      photo: {
+        src: "/equipe/camille-dupont-martin.jpg",
+        largeur: 8,
+        hauteur: 8,
+        alt: "Portrait de Camille Dupont-Martin",
+        consentementLe: "2026-11-01",
+      },
+      citations: ["Dupont-Martin dit oui", "Une citation saine"],
+    });
+    const p = fichePublique(f);
+    expect(JSON.stringify(p)).not.toMatch(/Dupont|dupont/);
+    expect(p.citations).toEqual(["Une citation saine"]);
+    const g = fichePublique({ ...f, photo: { ...f.photo!, src: "/c.jpg" } });
+    expect(g.photo?.alt).toBe("Portrait de Camille");
+  });
+  it("noms à particule et composés", () => {
+    const f = fiche({ prenom: "Manon Le", nomComplet: "Manon Le Gall", slug: "manon-le-gall" });
+    expect(nomAffiche(f)).not.toMatch(/Gall/);
+    expect(JSON.stringify(fichePublique(f))).not.toMatch(/gall/i);
+  });
+  it("slug de remplacement : réservé ou déjà pris jamais repris", () => {
+    const f = fiche({ prenom: "Manon", nomComplet: "Manon Dupont", slug: "manon-dupont" });
+    expect(fichePublique(f).slug).toBe("manon-lyon");
+    const g = fiche({ prenom: "Marie", nomComplet: "Marie Dupont", slug: "marie-dupont" });
+    expect(fichePubliqueBrute(g, ["marie"])!.slug).toBe("marie-lyon");
+    expect(
+      fichePublique(fiche({ prenom: "Williams", nomComplet: "Williams Martin", slug: "williams" }))
+        .slug,
+    ).toBe("williams-lyon");
+  });
+  it("photo sans consentement : absente de la sortie", () => {
+    const f = fiche({
+      photo: { src: "/c.jpg", largeur: 8, hauteur: 8, alt: "x", consentementLe: null },
+    });
+    expect(fichePublique(f).photo).toBeUndefined();
+  });
+  it("les éléments non affichables ne comptent pas pour l'indexation", () => {
+    const f = { ...riche, citations: ["Un prix de 100 euros"], publications: 0 };
+    expect(elementsDistinctifs(f)).toBe(1);
+  });
   it("prix en toutes lettres refusés", () => {
     expect(estTextePropre("Tarif 100 euros HT")).toBe(false);
     expect(estTextePropre("1 500 EUR")).toBe(false);

@@ -137,9 +137,12 @@ export function coordonneesDe(
   if (dep === null && (lieu.departement ?? "").trim() !== "") return null;
   const cle = slugifier(lieu.ville);
   if (cle) {
-    const trouvee = villes.find(
+    const candidates = villes.filter(
       (v) => slugifier(v.nameFr) === cle && (dep === null || v.departement.toUpperCase() === dep),
     );
+    // Sans département, des homonymes de départements différents : on ne devine pas.
+    const ambigu = new Set(candidates.map((v) => v.departement)).size > 1;
+    const trouvee = ambigu ? undefined : candidates[0];
     if (trouvee) return { lat: trouvee.geo.lat, lon: trouvee.geo.lon, precision: "ville" };
   }
   const chefLieu = dep ? CHEFS_LIEUX[dep] : undefined;

@@ -31,27 +31,61 @@ function estDirigeantNomme(f: Pick<FicheCollaborateur, "estDirigeantPrincipal" |
   return f.estDirigeantPrincipal === true && f.slug === SLUG_DIRIGEANT_PRINCIPAL;
 }
 
-/** Dernier mot du nom complet, slugifié : le nom de famille d'un collaborateur. */
-function familleSlug(nomComplet: string | undefined): string {
-  const mots = nettoyer(nomComplet).split(" ").filter(Boolean);
-  return mots.length >= 2 ? slugifier(mots[mots.length - 1]) : "";
+const PARTICULES = new Set([
+  "le",
+  "la",
+  "les",
+  "de",
+  "du",
+  "des",
+  "van",
+  "von",
+  "der",
+  "den",
+  "el",
+  "al",
+]);
+
+/**
+ * Fragments du nom de famille (slugifiés) : le nom complet moins les mots qui
+ * répondent au prénom saisi ; à défaut, son dernier mot. Sert à repérer toute
+ * fuite, jamais à l'afficher.
+ */
+function famille(f: Pick<FicheCollaborateur, "prenom" | "nomComplet">): string[] {
+  const nom = nettoyer(f.nomComplet).split(" ").filter(Boolean);
+  if (nom.length < 2) return [];
+  const prenom = nettoyer(f.prenom).split(" ").filter(Boolean);
+  let i = 0;
+  while (i < prenom.length && i < nom.length && slugifier(prenom[i]) === slugifier(nom[i])) i++;
+  let reste = nom.slice(i);
+  if (reste.length === 0) reste = nom.slice(-1);
+  if (i === 0) reste = nom.slice(1);
+  const parts = new Set<string>();
+  const complet = slugifier(reste.join(" "));
+  if (complet) parts.add(complet);
+  for (const mot of reste.flatMap((m) => slugifier(m).split("-"))) {
+    if (mot.length >= 3 && !PARTICULES.has(mot)) parts.add(mot);
+  }
+  return [...parts];
 }
 
-/** Vrai si le texte contient le nom de famille (mot entier, une fois slugifié). */
-function contientFamille(texte: string, famille: string): boolean {
-  return famille.length > 0 && `-${slugifier(texte)}-`.includes(`-${famille}-`);
+/** Vrai si le texte contient un fragment du nom de famille (mots entiers, slugifiés). */
+function contientFamille(texte: string | undefined, parts: ReadonlyArray<string>): boolean {
+  if (!texte || parts.length === 0) return false;
+  const norm = `-${slugifier(texte)}-`;
+  return parts.some((p) => norm.includes(`-${p}-`));
 }
 
 /**
- * Prénom SEUL : si le champ « prénom » contient plusieurs mots dont le dernier
- * est le nom de famille connu, ce mot est retiré. Les prénoms composés
- * (« Marie Claire », « Jean-Pierre ») sont conservés.
+ * Prénom SEUL : dans un prénom à plusieurs mots, un mot qui est un fragment
+ * du nom de famille connu est retiré. Les prénoms composés sont conservés.
  */
 function prenomSeul(f: Pick<FicheCollaborateur, "prenom" | "nomComplet">): string {
   const mots = nettoyer(f.prenom).split(" ").filter(Boolean);
-  const famille = familleSlug(f.nomComplet);
-  if (mots.length > 1 && famille && slugifier(mots[mots.length - 1]) === famille) mots.pop();
-  return mots.join(" ");
+  if (mots.length < 2) return mots.join(" ");
+  const parts = famille(f);
+  const gardes = mots.filter((m) => !contientFamille(m, parts));
+  return (gardes.length > 0 ? gardes : mots.slice(0, 1)).join(" ");
 }
 
 /**
@@ -141,14 +175,15 @@ function aVraiePhoto(f: FicheCollaborateur): boolean {
 export function elementsDistinctifs(f: FicheCollaborateur): number {
   const communs = CATEGORIES[f.categorie]?.metiersCommuns ?? [];
   const parcoursDate =
-    (f.parcours?.avant?.some((a) => Number.isInteger(a?.annee) && nettoyer(a?.libelle)) ?? false) ||
+    (f.parcours?.avant?.some((a) => Number.isInteger(a?.annee) && estTextePropre(a?.libelle)) ??
+      false) ||
     Number.isInteger(f.parcours?.chezAxionDepuis);
   return [
     parcoursDate,
-    (f.citations ?? []).some((c) => nettoyer(c)),
+    (f.citations ?? []).some((c) => estTextePropre(c)),
     (f.metiers ?? []).some((m) => nettoyer(m?.id) && !communs.includes(m.id)),
     (f.publications ?? 0) > 0,
-    (f.parcours?.attestations ?? []).some((a) => nettoyer(a)),
+    (f.parcours?.attestations ?? []).some((a) => estTextePropre(a)),
   ].filter(Boolean).length;
 }
 
@@ -171,18 +206,31 @@ export function estIndexable(f: FicheCollaborateur): boolean {
 
 /**
  * Seule sortie à transmettre à une page : ni `nomComplet`, ni `prenom` brut,
- * ni clé inconnue (y compris dans les objets imbriqués, recopiés champ par
- * champ). Rend `null` si la fiche n'a pas de prénom. Le dirigeant principal
- * n'a jamais de point sur la carte ; un slug qui contient le nom de famille
- * est remplacé par celui du prénom ; un texte non « propre » est écarté.
+ * ni clé inconnue (objets imbriqués recopiés champ par champ). Rend `null` si
+ * la fiche n'a pas de prénom. Le dirigeant principal n'a jamais de point sur la
+ * carte. Pour les autres : tout texte qui contient un fragment du nom de
+ * famille, ou une formulation interdite, est écarté ; un slug qui le contient
+ * (ou réservé) est régénéré depuis le prénom (`existants` = slugs déjà pris) ;
+ * la photo n'existe que si le consentement est daté.
  */
-export function fichePublique(f: FicheCollaborateur): FichePublique | null {
+export function fichePublique(
+  f: FicheCollaborateur,
+  existants: Iterable<string> = [],
+): FichePublique | null {
   const nom = nomAffiche(f);
   if (!nom) return null;
   const dirigeant = estDirigeantNomme(f);
-  const famille = familleSlug(f.nomComplet);
-  const slug = !dirigeant && contientFamille(f.slug, famille) ? slugifier(prenomSeul(f)) : f.slug;
-  const propre = (t: string | undefined) => (estTextePropre(t) ? (t as string) : undefined);
+  const parts = dirigeant ? [] : famille(f);
+  const propre = (t: string | null | undefined): string | undefined =>
+    estTextePropre(t) && !contientFamille(t ?? "", parts) ? (t as string) : undefined;
+
+  let slug = f.slug;
+  if (!dirigeant && (contientFamille(f.slug, parts) || SLUGS_RESERVES.includes(f.slug))) {
+    const neuf = slugCollaborateur(f.prenom, propre(f.ville), existants, f.nomComplet);
+    if (!neuf) return null;
+    slug = neuf;
+  }
+
   const publique: FichePublique = {
     slug,
     categorie: f.categorie,
@@ -196,18 +244,20 @@ export function fichePublique(f: FicheCollaborateur): FichePublique | null {
   };
   const ville = propre(f.ville);
   if (ville) publique.ville = ville;
-  if (f.departement !== undefined) publique.departement = f.departement;
-  if (f.photo) {
+  if (f.departement != null) publique.departement = f.departement;
+  if (f.photo && aVraiePhoto(f) && propre(f.photo.src)) {
     publique.photo = {
       src: f.photo.src,
       largeur: f.photo.largeur,
       hauteur: f.photo.hauteur,
-      alt: f.photo.alt,
+      alt: propre(f.photo.alt) ?? `Portrait de ${nom}`,
       consentementLe: f.photo.consentementLe ?? null,
     };
   }
   if (f.metiers) {
-    publique.metiers = f.metiers.filter(Boolean).map((m) => ({ id: m.id, nom: m.nom }));
+    publique.metiers = f.metiers
+      .filter((m) => m && propre(m.nom))
+      .map((m) => ({ id: m.id, nom: m.nom }));
   }
   if (f.parcours) {
     const p = f.parcours;
@@ -215,15 +265,15 @@ export function fichePublique(f: FicheCollaborateur): FichePublique | null {
       ...(p.avant
         ? {
             avant: p.avant
-              .filter((a) => a && estTextePropre(a.libelle))
+              .filter((a) => a && propre(a.libelle))
               .map((a) => ({ annee: a.annee, libelle: a.libelle })),
           }
         : {}),
-      ...(p.chezAxionDepuis !== undefined ? { chezAxionDepuis: p.chezAxionDepuis } : {}),
-      ...(p.attestations ? { attestations: p.attestations.filter((a) => estTextePropre(a)) } : {}),
+      ...(p.chezAxionDepuis != null ? { chezAxionDepuis: p.chezAxionDepuis } : {}),
+      ...(p.attestations ? { attestations: p.attestations.filter((a) => propre(a)) } : {}),
     };
   }
-  if (f.citations) publique.citations = f.citations.filter((c) => estTextePropre(c));
-  if (f.publications !== undefined) publique.publications = f.publications;
+  if (f.citations) publique.citations = f.citations.filter((c) => propre(c));
+  if (f.publications != null) publique.publications = f.publications;
   return publique;
 }
