@@ -1,42 +1,108 @@
-VERDICT A CORRIGER sha=e112fded (R2) : tests/import-video-externe.test.ts — 8 mutations sur 15 survivent : ajouter des tests (1) importerVideoExterne : session exigée, NON_VALIDEE avant fichierEnvoye, fichier refusé si mauvais type/entiteId (src/services/import-video-externe.ts:98-100) ; (2) ratioDeLaTaille 16:9/1:1/4:5 (:31) ; (3) refus TAILLE vide, TITRE vide, RESEAUX vides ou inconnus, mime vide toléré (src/domaine/import-video-externe.ts:40,53,58-60)
+VERDICT A CORRIGER sha=417eb1a7 (R2) : src/moteurs/index.ts:84 + src/services/fabrication.ts:1124 (lancerRetouche) — une vidéo importée (moteurId "import-externe") est retouchable via le moteur de SIMULATION mais déclarée « pas un essai » : refuser retouche et réexport quand origineVideo === "importee" (ou commande.moteurId === MOTEUR_IMPORT_EXTERNE), masquer « Demander une modification » sur sa page, et tester ; plus ajouter les tests de bornes exactes (3 s, 600 s, 1 Go) que 3 mutations ont traversés.
 
-## Contrôles
+# Relecture R2 indépendante — video/IMPORT-VIDEO-EXTERNE-v21v
 
-- Tête vérifiée : `e112fdedf35ce1bbe438a633ccd6a86b498d84d1` (= e112fded).
-- Diff `origin/master...origin/video/IMPORT-VIDEO-EXTERNE-v21v` : 7 fichiers, +376 lignes, aucune suppression. Il est petit et va avec le nom de la branche : un domaine pur, un service, une action serveur, un composant client, un bouton dans la page « À publier », le champ `origineVideo?: "importee"` dans `Video`, un fichier de test. Aucun fichier touché dans `.github/**`, `deploiement/**`, `outils/gardes/**` ni `scripts/echecs-connus.json`. Aucun secret.
-- `pnpm install --frozen-lockfile` : OK.
-- `npx vitest run tests/import-video-externe.test.ts` : 7 tests sur 7 passent.
-- Non-régression des tests qui appellent `listerAPublier` : `tests/a-publier.test.ts`, `tests/usine/ap-01-a-publier-formats.test.ts`, `tests/tutoriel-outil/contrat-usine.test.ts` → 28 tests sur 28 passent. La suite complète n'a pas été lancée jusqu'au bout : elle dépasse 9 minutes ici et a été coupée.
-- `npx tsc --noEmit -p .` (avec `--max-old-space-size=7000`, sinon le processus manque de mémoire) : 154 erreurs sur la branche comme sur `origin/master`. Les deux listes `fichier(ligne,col): code` sont identiques, donc **aucune erreur neuve**. Les seules différences de texte viennent de l'ordre d'affichage des unions dans les messages. Aucune erreur ne porte sur un fichier du diff.
+- Dépôt : will383842/studio-axion-ia-public, branche `video/IMPORT-VIDEO-EXTERNE-v21v`.
+- Tête vérifiée : `417eb1a7a82cb41502d24e41dd6e5006635d4d00` (conforme, tête inchangée).
+- Aucune fiche fournie (dépôt des plans privé) : le diff est jugé seul.
 
-## Mutations (15, code remis à l'identique après chacune, `git status` vide à la fin)
+## 1. Périmètre du diff
+
+`git diff --stat origin/master...origin/video/IMPORT-VIDEO-EXTERNE-v21v` : 10 fichiers, +511 / −4.
+
+```
+src/app/(studio)/a-publier/actions-import.ts |  16 ++
+src/app/(studio)/a-publier/page.tsx          |   2 +
+src/components/publication/ImporterVideo.tsx |  93 +++
+src/domaine/import-video-externe.ts          |  62 ++
+src/domaine/types.ts                         |   2 +
+src/moteurs/ids.ts                           |   3 +
+src/moteurs/index.ts                         |   4 +-
+src/services/import-video-externe.ts         | 105 +++
+src/services/publications.ts                 |   4 +-
+tests/import-video-externe.test.ts           | 224 +++
+```
+
+- Petit, cohérent avec le nom de la branche. ✅
+- Ne touche ni `.github/**`, ni `deploiement/**`, ni `outils/gardes/**`, ni `scripts/echecs-connus.json`. ✅
+- Aucun secret (le hash argon2 du test est calculé à la volée depuis un mot de passe de test). ✅
+
+## 2. Contrôles lancés
+
+| Contrôle | Résultat |
+| --- | --- |
+| `pnpm install --frozen-lockfile` | OK |
+| `npx vitest run tests/import-video-externe.test.ts` | **20/20 verts** |
+| `npx tsc --noEmit -p .` (branche vs `origin/master`, `--max-old-space-size=8192`) | 154 erreurs des deux côtés, **même liste** (deux lignes ne diffèrent que par l'ordre des unions). **Aucune erreur neuve**, aucune dans un fichier touché ✅ |
+| `npx eslint` sur les 8 fichiers touchés | 0 erreur ✅ |
+
+## 3. Mutations (code remis à `417eb1a7` après chaque mutation, `git status` propre, rien de poussé)
 
 | # | Mutation | Résultat |
-|---|----------|----------|
-| M1 | domaine : garde `valide !== true` neutralisée | tuée (« sans case cochée rien n'est créé ») |
-| M2 | domaine : borne taille `> MAX` → `> MAX + 1` | tuée |
-| M3 | domaine : borne durée max `> 600` → `>= 602` | tuée |
-| M9 | domaine : durée min 3 → 1 | tuée |
-| M13 | service : `etapeEditoriale` validée → `a_relire` | tuée (2 tests) |
-| M14 | service : `mentionIA.incrustee` → true | tuée |
-| M4 | domaine : type MIME vide refusé (`m === ""` retiré) | **SURVIT** |
-| M5 | domaine : garde `taille <= 0` retirée | **SURVIT** |
-| M6 | domaine : refus `TITRE` (titre vide) retiré | **SURVIT** |
-| M7 | domaine : refus `RESEAUX` (aucun réseau) retiré | **SURVIT** |
-| M8 | domaine : filtre des réseaux inconnus retiré | **SURVIT** |
-| M10 | service : `await exigerSession()` retiré de `importerVideoExterne` | **SURVIT** |
-| M11 | service : garde NON_VALIDEE avant `fichierEnvoye` retirée | **SURVIT** |
-| M12 | service : `ratioDeLaTaille` renvoie toujours 9:16 | **SURVIT** |
-| M15 | service : `fichierEnvoye` (contrôle type `video` + `entiteId` + statut) remplacé par une lecture brute | **SURVIT** |
+| --- | --- | --- |
+| M1 | `commandeEnEssai` : retirer `commande.moteurId !== MOTEUR_IMPORT_EXTERNE` | 🔴 1 rouge ✅ |
+| M2 | `videoEnEssai` : retirer `video.origineVideo === "importee" \|\|` | 🔴 1 rouge ✅ |
+| M3 | service : garde `valide !== true` désactivée | 🔴 1 rouge ✅ |
+| M4 | service : `fichierEnvoye` sans `entiteId` | 🔴 1 rouge ✅ |
+| M5 | domaine : `dureeSec > DUREE_MAX` → `>=` (600 s refusé) | 🟢 **20/20 : TROU** |
+| M6 | domaine : `dureeSec < DUREE_MIN` → `<=` (3 s refusé) | 🟢 **20/20 : TROU** |
+| M7 | domaine : `taille > TAILLE_MAX` → `>=` (1 Go pile refusé) | 🟢 **20/20 : TROU** |
+| M8 | domaine : MIME vide plus toléré | 🔴 1 rouge ✅ |
+| M9 | domaine : garde « case cochée » neutralisée | 🔴 1 rouge ✅ |
+| M10 | domaine : titre non coupé à 120 | 🔴 1 rouge ✅ |
+| M11 | service : `journaliser` supprimé | 🔴 1 rouge ✅ |
+| M12 | service : `exigerSession()` retiré de `importerVideoExterne` | 🟢 20/20 — mutation **équivalente** pour la promesse testée (`fichierEnvoye` exige aussi la session) ; seul effet : sans session, `valide:false` répond `NON_VALIDEE` au lieu de rediriger. Pas bloquant. |
+| M13 | `mentionIA.incrustee: true` | 🔴 1 rouge ✅ |
+| M14 | `etapeEditoriale: "a_relire"` | 🔴 2 rouges ✅ |
 
-## À corriger (tests à ajouter, le code lui-même paraît juste)
+**Trois trous (M5, M6, M7)** : la doc du domaine promet « de 3 secondes à 10 minutes, 1 Go au plus » (bornes incluses), mais les tests n'essaient que `1`, `MAX+1` et `TAILLE_MAX+1`. Une borne décalée d'un cran passe au vert.
 
-1. `src/services/import-video-externe.ts:97-103` (`importerVideoExterne`) n'est jamais testé. Les tests n'appellent que `creerVideoImportee`, donc la session, la case cochée avant tout et le contrôle du fichier réellement arrivé ne sont pas prouvés. Ajouter des tests : sans session → refus ; `valide: false` → NON_VALIDEE **sans lire le fichier** ; fichier d'un autre `typeEntite`, d'un autre `entiteId` ou au statut différent de `pret` → FICHIER_INCONNU / ENVOI_INCOMPLET, sans rien créer ; cas nominal → vidéo créée et ligne de journal écrite.
-2. `src/services/import-video-externe.ts:31` (`ratioDeLaTaille`) : seul 1080×1920 est essayé. Tester 1920×1080 → 16:9, 1080×1080 → 1:1, 1080×1350 → 4:5, et une taille absente ou nulle → 9:16.
-3. `src/domaine/import-video-externe.ts` : tester les refus `TAILLE` (taille 0), `TITRE` (titre vide ou fait d'espaces), `RESEAUX` (liste vide, ou seulement des réseaux inconnus), la tolérance du type MIME vide et de `video/x-m4v` pour un mp4, le titre coupé à 120 caractères et les réseaux en double fusionnés.
-4. Les noms de tests doivent dire la promesse. Exemples : « un réseau inconnu est ignoré, et sans réseau connu rien n'est créé », « l'import exige une session et un fichier réellement arrivé pour cette vidéo ».
+## 4. Défaut bloquant : la vidéo importée passe dans le moteur de simulation sans être « essai »
 
-## Remarques sans blocage
+`commandeEnEssai` (src/moteurs/index.ts:84) — décrit comme « CE test qui décide partout : refus, prix, pastilles,
+notification, envoi à Buffer » — est désormais `false` pour `moteurId: "import-externe"`. Mais
+`idMoteurDeCommande` (src/moteurs/ids.ts:20) ne connaît pas ce moteur et retombe sur `"simulation"`, donc
+`moteurDeCommande()` rend le **moteur de simulation** (`retoucheParPlan: true`, src/moteurs/simulation.ts:226).
 
-- `ImporterVideo.tsx` : la case est vérifiée côté client avant l'envoi du fichier, et le serveur revérifie, ce qui est cohérent. Le composant n'a pas de test, ce qui est acceptable pour l'interface puisque les décisions sont prises côté serveur.
-- `formatId: "video-importee"` ne correspond à aucun format du registre. Les tests « À publier » existants passent, mais aucun test ne couvre l'ouverture de la fiche vidéo d'une vidéo importée.
+Preuve (sonde vitest temporaire, supprimée ensuite) sur une vidéo créée par `creerVideoImportee`, session ouverte :
+
+```
+lancerRetouche(videoId, [], "Demande : coupe")
+→ RETOUCHE LANCEE { retoucheId, travailId }   (étapes « voix », « visage »… du moteur de simulation)
+→ NOUVELLE VERSION moteurId= import-externe  essai= false  moteur reel= simulation
+```
+
+Conséquence : une retouche (bouton « Demander une modification », affiché sur la page vidéo car
+`prete && !facecam`, src/app/(studio)/videos/[id]/page.tsx:226) fabrique une version de **démonstration** qui
+remplace la vraie vidéo importée, et cette version est déclarée **non-essai** — donc éligible à l'envoi réel
+(Buffer/Zernio), ce que le garde-fou `commandeEnEssai` existait précisément pour empêcher. En plus,
+`proposerModification` appelle le fournisseur `script` (Claude, payant en réel) alors que la vidéo n'a aucun plan.
+(`appliquerSousTitres` est en revanche bien refusé : « ne peut pas recevoir la correction sans être refaite ».)
+
+**À faire :**
+1. Refuser toute refabrication d'une vidéo importée : dans `retoucheSousVerrou` (src/services/fabrication.ts ~1124),
+   `proposerModification` (src/services/modifications.ts ~249) et les réexports, `if (video.origineVideo === "importee")`
+   → `ErreurStudio("RETOUCHE_INDISPONIBLE", …)` AVANT tout appel fournisseur ; ou, à la racine, faire que
+   `moteurDeCommande` refuse `MOTEUR_IMPORT_EXTERNE` au lieu de retomber sur la simulation.
+2. Masquer « Demander une modification » (et tout bouton de refabrication) sur la page d'une vidéo importée.
+3. Test : « une vidéo importée ne peut pas être retouchée et aucun fournisseur n'est appelé » (aucune nouvelle version,
+   `sondes.fournisseurs` vide).
+4. Tests de bornes exactes : 3 s acceptée, 600 s acceptée, `TAILLE_MAX_IMPORT_OCTETS` acceptée (et `MIN − ε`
+   refusée), pour tuer M5/M6/M7.
+
+## 5. Remarques non bloquantes
+
+- `ImporterVideo.tsx` n'a aucun contrôle de taille/format côté navigateur : un fichier de 3 Go (sous le plafond de 4 Go
+  de `/api/depots`) est entièrement envoyé avant d'être refusé « trop lourde », et reste orphelin dans le stockage.
+  Un pré-contrôle client (mêmes constantes du domaine) éviterait l'envoi.
+- La durée est celle annoncée par le navigateur (`dureeSec`) : le serveur la borne mais ne la vérifie pas.
+- `lireMetadonnees` n'a pas de délai d'abandon : si ni `loadedmetadata` ni `error` ne se déclenche, le bouton reste
+  « Envoi en cours… ».
+- Le même `fichierId` peut être importé deux fois (deux vidéos sur le même fichier).
+- Le composant client n'a pas de test (acceptable pour un formulaire, les décisions sont côté serveur et testées).
+
+## 6. Promesses ↔ tests
+
+Chaque comportement ajouté a un test au nom explicite (formats, bornes, case cochée, création « prête/validée/importée »,
+présence dans `listerAPublier`, aucun fournisseur, pas un essai, session, fichier réellement arrivé, journal, ratio) —
+**sauf** les bornes exactes (§3) et l'interdiction de refabriquer une vidéo importée (§4), qui n'existe pas.
