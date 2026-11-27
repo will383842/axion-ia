@@ -33,7 +33,7 @@ import {
 
 const envoyer = vi.fn(async (_input: unknown) => ({ ok: true as const }));
 vi.mock("@/server/actions/barometre-questionnaire/envoyer", () => ({
-  envoyerQuestionnaire: (input: unknown) => envoyer(input),
+  envoyerReponsesBarometre: (input: unknown) => envoyer(input),
 }));
 
 const props: QuestionsProp = {

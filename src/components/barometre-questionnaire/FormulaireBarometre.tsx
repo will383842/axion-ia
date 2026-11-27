@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
-import { envoyerQuestionnaire } from "@/server/actions/barometre-questionnaire/envoyer";
+import { envoyerReponsesBarometre } from "@/server/actions/barometre-questionnaire/envoyer";
 import { CONSENT_VERSION } from "@/lib/barometre-questionnaire/constantes";
 import { empreinteDuCode, formaterCode, genererCode } from "@/lib/score-ia-pme/code-retrait";
 
@@ -196,7 +196,7 @@ export function FormulaireBarometre({ q }: { q: QuestionsProp }) {
           if (typeof x === "string" && x.trim() === "") continue;
           reponses[k] = x;
         }
-        const resultat = await envoyerQuestionnaire({
+        const resultat = await envoyerReponsesBarometre({
           ...reponses,
           consentement: true,
           consentVersion: CONSENT_VERSION,

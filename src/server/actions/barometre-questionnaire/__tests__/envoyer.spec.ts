@@ -28,12 +28,12 @@ vi.mock("@/lib/barometre-questionnaire/constantes", async (original) => ({
   estOuvert: ouvertMock,
 }));
 
-import { envoyerQuestionnaire } from "../envoyer";
+import { envoyerReponsesBarometre } from "../envoyer";
 
 const IP = "203.0.113.9";
 const lent = { startedAt: Date.now() - 60_000 };
 
-describe("envoyerQuestionnaire", () => {
+describe("envoyerReponsesBarometre", () => {
   beforeEach(() => {
     for (const m of [createMock, rlMock, tsMock, ouvertMock, sentryMock, ipMock]) m.mockReset();
     rlMock.mockResolvedValue({ allowed: true });
@@ -45,7 +45,7 @@ describe("envoyerQuestionnaire", () => {
   afterEach(() => vi.useRealTimers());
 
   it("écrit une ligne pour une réponse valide", async () => {
-    const r = await envoyerQuestionnaire({
+    const r = await envoyerReponsesBarometre({
       ...UTILISATEUR,
       ...lent,
       q15: "  Mes devis ",
@@ -63,17 +63,17 @@ describe("envoyerQuestionnaire", () => {
   });
 
   it("sans consentement : aucun create", async () => {
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent, consentement: false });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent, consentement: false });
     expect(r.ok).toBe(false);
     expect(createMock).not.toHaveBeenCalled();
-    const r2 = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent, consentement: undefined });
+    const r2 = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent, consentement: undefined });
     expect(r2.ok).toBe(false);
     expect(createMock).not.toHaveBeenCalled();
   });
 
   it("questionnaire fermé : message dédié, aucun create, rien d'autre appelé", async () => {
     ouvertMock.mockReturnValue(false);
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent });
     expect(r).toEqual({ ok: false, error: "Le questionnaire est fermé." });
     expect(createMock).not.toHaveBeenCalled();
     expect(rlMock).not.toHaveBeenCalled();
@@ -81,27 +81,27 @@ describe("envoyerQuestionnaire", () => {
   });
 
   it("pot de miel rempli : succès silencieux, aucun create", async () => {
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent, website: "http://spam" });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent, website: "http://spam" });
     expect(r).toEqual({ ok: true });
     expect(createMock).not.toHaveBeenCalled();
   });
 
   it("envoi trop rapide (< 3 s) : succès silencieux, aucun create", async () => {
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, startedAt: Date.now() - 500 });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, startedAt: Date.now() - 500 });
     expect(r).toEqual({ ok: true });
     expect(createMock).not.toHaveBeenCalled();
   });
 
   it("Turnstile refusé : aucun create", async () => {
     tsMock.mockResolvedValue(false);
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent });
     expect(r.ok).toBe(false);
     expect(createMock).not.toHaveBeenCalled();
   });
 
   it("limite de débit dépassée : aucun create, clé sans IP en clair", async () => {
     rlMock.mockResolvedValue({ allowed: false });
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent });
     expect(r.ok).toBe(false);
     expect(createMock).not.toHaveBeenCalled();
     const cle = rlMock.mock.calls[0]![0] as string;
@@ -110,19 +110,19 @@ describe("envoyerQuestionnaire", () => {
   });
 
   it("filtre rejoué côté serveur : q5 envoyé avec q4 « non » refusé", async () => {
-    const r = await envoyerQuestionnaire({ ...NON_UTILISATEUR, ...lent, q5: ["autre"] });
+    const r = await envoyerReponsesBarometre({ ...NON_UTILISATEUR, ...lent, q5: ["autre"] });
     expect(r).toEqual({ ok: false, error: "Réponses invalides." });
     expect(createMock).not.toHaveBeenCalled();
   });
 
   it("clé inconnue (email) refusée", async () => {
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent, email: "a@b.fr" });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent, email: "a@b.fr" });
     expect(r.ok).toBe(false);
     expect(createMock).not.toHaveBeenCalled();
   });
 
   it("aucune clé ni valeur IP / e-mail / agent en base, même si l'IP est 203.0.113.9", async () => {
-    await envoyerQuestionnaire({ ...UTILISATEUR, ...lent, q15: "texte" });
+    await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent, q15: "texte" });
     const { data } = createMock.mock.calls[0]![0] as { data: Record<string, unknown> };
     const cles = Object.keys(data).join(" ").toLowerCase();
     for (const interdit of [
@@ -143,7 +143,7 @@ describe("envoyerQuestionnaire", () => {
   });
 
   it("q5 à q9 absents de `reponses` pour un non-utilisateur", async () => {
-    await envoyerQuestionnaire({ ...NON_UTILISATEUR, ...lent });
+    await envoyerReponsesBarometre({ ...NON_UTILISATEUR, ...lent });
     const { data } = createMock.mock.calls[0]![0] as {
       data: { reponses: Record<string, unknown> };
     };
@@ -154,14 +154,14 @@ describe("envoyerQuestionnaire", () => {
   it("jour tronqué à minuit UTC", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-12-05T17:42:11.123Z"));
-    await envoyerQuestionnaire({ ...UTILISATEUR, startedAt: Date.now() - 60_000 });
+    await envoyerReponsesBarometre({ ...UTILISATEUR, startedAt: Date.now() - 60_000 });
     const { data } = createMock.mock.calls[0]![0] as { data: { jour: Date } };
     expect(data.jour.toISOString()).toBe("2026-12-05T00:00:00.000Z");
   });
 
   it("panne de base : message neutre, Sentry avec un tag seulement, jamais d'extra", async () => {
     createMock.mockRejectedValue(new Error("boom"));
-    const r = await envoyerQuestionnaire({ ...UTILISATEUR, ...lent, q15: "secret libre" });
+    const r = await envoyerReponsesBarometre({ ...UTILISATEUR, ...lent, q15: "secret libre" });
     expect(r.ok).toBe(false);
     expect(sentryMock).toHaveBeenCalledTimes(1);
     const opts = sentryMock.mock.calls[0]![1] as Record<string, unknown>;
