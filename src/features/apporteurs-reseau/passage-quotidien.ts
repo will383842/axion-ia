@@ -54,6 +54,7 @@ import {
 import { alerteInterne } from "./alerte-interne";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
+import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
 import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
 import {
@@ -2142,6 +2143,9 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
       jobId,
       ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     });
-    if (r === "envoye") bilan.rappelsDossier += 1;
+    if (r === "envoye") {
+      bilan.rappelsDossier += 1;
+      await noterDocumentsRemis(a.id, annexes.attachments, "lien_dossier", jobId);
+    }
   }
 }

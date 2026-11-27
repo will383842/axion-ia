@@ -19,6 +19,7 @@
 
 import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
 
+import { versionCourante } from "./annexes-versions";
 import { signalerErreurReseau } from "./signaler";
 
 // ⚠️ Pas d'import de `./signature-regles` (même `import type`) : il importe `contrat-pdf`
@@ -63,13 +64,15 @@ export async function lirePdfPrive(cle: string, libelle: string): Promise<Buffer
 }
 
 /** Le PDF de la fiche des commissions, ou `null`. Ne lève jamais. */
-export function lireFicheCommissions(): Promise<Buffer | null> {
-  return lirePdfPrive(CLE_R2_FICHE_COMMISSIONS, "fiche des commissions");
+export async function lireFicheCommissions(): Promise<Buffer | null> {
+  const v = await versionCourante("fiche-commissions");
+  return lirePdfPrive(v?.cleR2 ?? CLE_R2_FICHE_COMMISSIONS, "fiche des commissions");
 }
 
 /** Le PDF du livret d'accueil, ou `null`. Ne lève jamais. */
-export function lireLivret(): Promise<Buffer | null> {
-  return lirePdfPrive(CLE_R2_LIVRET, "livret");
+export async function lireLivret(): Promise<Buffer | null> {
+  const v = await versionCourante("livret");
+  return lirePdfPrive(v?.cleR2 ?? CLE_R2_LIVRET, "livret");
 }
 
 /**

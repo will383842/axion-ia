@@ -25,6 +25,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
+import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien, bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
 import { alerterContresignature } from "./alerte-telegram";
@@ -498,11 +499,13 @@ export async function appliquerDecision(
     }
     // Le contrat, toujours ; la fiche des commissions, le livret et le guide de démarrage s'ils sont sur R2 (le guide y est déposé tout seul s'il manque).
     const pieces = await piecesDuContratSigne(cle);
+    const jobIdContrat = `apporteur-contrat-signe-${apporteurId}`;
     const r = await envoyer({
       ...prep.envoi,
-      jobId: `apporteur-contrat-signe-${apporteurId}`,
+      jobId: jobIdContrat,
       attachments: pieces,
     });
+    if (r === "envoye") await tracerRemise(apporteurId, pieces, "contrat_signe", jobIdContrat);
     // Salon Telegram « Apporteurs » : jamais bloquant, la contresignature est actée.
     try {
       const qui = await lireDossier(apporteurId);
@@ -586,6 +589,7 @@ export async function renvoyerContratSigne(
   });
   if (!a?.contratSigneCle) return { ok: false, message: "Le contrat signé est introuvable." };
   const pieces = await piecesDuContratSigne(a.contratSigneCle);
+  const jobIdRenvoi = `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`;
   const r = await envoyer({
     destinataire: d.email,
     entityType: "ApporteurReseau",
@@ -596,9 +600,10 @@ export async function renvoyerContratSigne(
       ...dossierUrlSi(urlDossier(d.id, d.versionLien)),
       ...regleRendezVousSi(d.regleAttribution),
     },
-    jobId: `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`,
+    jobId: jobIdRenvoi,
     attachments: pieces,
   });
+  if (r === "envoye") await tracerRemise(apporteurId, pieces, "renvoi_contrat", jobIdRenvoi);
   return {
     ok: true,
     message:
@@ -729,6 +734,20 @@ export async function dernierLienEnvoyeLe(
     : null;
 }
 
+/** Note les annexes remises (point 11). Jamais bloquant : l'e-mail est déjà en file. */
+async function tracerRemise<P extends { r2Key: string }>(
+  apporteurId: string,
+  pieces: readonly P[],
+  contexte: "contrat_signe" | "renvoi_contrat" | "lien_dossier",
+  jobId: string,
+): Promise<void> {
+  try {
+    await noterDocumentsRemis(apporteurId, pieces, contexte, jobId);
+  } catch (err) {
+    signalerErreurReseau("annexes remises : trace", err);
+  }
+}
+
 export async function envoyerLien(
   apporteurId: string,
   mot: string | null,
@@ -745,10 +764,10 @@ export async function envoyerLien(
       message: `Lien déjà envoyé le ${prep.dejaEnvoyeLe} : ouvrez l'aperçu et confirmez pour le renvoyer.`,
     };
   }
-  const r = await envoyer({
-    ...prep.envoi,
-    jobId: jobId ?? `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
-  });
+  const jobIdLien = jobId ?? `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`;
+  const r = await envoyer({ ...prep.envoi, jobId: jobIdLien });
+  if (r === "envoye" && prep.envoi.attachments)
+    await tracerRemise(apporteurId, prep.envoi.attachments, "lien_dossier", jobIdLien);
   return {
     ok: true as const,
     message: r === "envoye" ? "Lien envoyé." : `Lien préparé (e-mail : ${r}).`,

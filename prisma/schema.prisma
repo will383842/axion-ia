@@ -16796,6 +16796,43 @@ model ApporteurVirementCompte {
   @@map("apporteur_virements_compte")
 }
 
+/// Une VERSION d'un document annexe (fiche des commissions, livret, guide), déposée UNE fois à une clé IMMUABLE dérivée
+/// de son empreinte. Jamais réécrite ; seule `retireeAt` passe de NULL à une date (déclencheurs : ni DELETE ni TRUNCATE).
+/// rgpd: technique — identifiant de document, empreinte, clé de stockage, taille, dates ; aucune donnée personnelle
+model DocumentAnnexeVersion {
+  id         String    @id @default(uuid()) @db.Uuid
+  /// fiche-commissions | livret | guide-demarrage (CHECK)
+  documentId String    @map("document_id") @db.VarChar(40)
+  sha256     String    @db.Char(64)
+  cleR2      String    @unique(map: "documents_annexes_versions_cle_r2_key") @map("cle_r2") @db.VarChar(300)
+  taille     Int
+  deposeAt   DateTime  @default(now()) @map("depose_at") @db.Timestamptz(3)
+  deposePar  String?   @map("depose_par") @db.VarChar(64)
+  retireeAt  DateTime? @map("retiree_at") @db.Timestamptz(3)
+
+  @@unique([documentId, sha256], map: "documents_annexes_versions_document_id_sha256_key")
+  @@index([documentId, deposeAt], map: "documents_annexes_versions_document_id_depose_at_idx")
+  @@map("documents_annexes_versions")
+}
+
+/// Ce qui a été REMIS à un apporteur : quelle version de quelle annexe, dans quel envoi. Ajout seul (déclencheurs).
+/// rgpd: technique — identifiant d'apporteur, de document, empreinte, contexte et dates ; aucun nom, e-mail ni téléphone
+model ApporteurDocumentRemis {
+  id            String   @id @default(uuid()) @db.Uuid
+  apporteurId   String   @map("apporteur_id") @db.Uuid
+  documentId    String   @map("document_id") @db.VarChar(40)
+  versionSha256 String   @map("version_sha256") @db.Char(64)
+  cleR2         String   @map("cle_r2") @db.VarChar(300)
+  /// contrat_signe | renvoi_contrat | lien_dossier (CHECK)
+  contexte      String   @db.VarChar(30)
+  emailJobId    String?  @map("email_job_id") @db.VarChar(120)
+  remisAt       DateTime @default(now()) @map("remis_at") @db.Timestamptz(3)
+
+  @@unique([apporteurId, documentId, versionSha256, contexte, emailJobId], map: "apporteur_documents_remis_apporteur_id_document_id_version__key")
+  @@index([apporteurId, remisAt], map: "apporteur_documents_remis_apporteur_id_remis_at_idx")
+  @@map("apporteur_documents_remis")
+}
+
 enum TypePieceApporteur {
   identite
   rib
