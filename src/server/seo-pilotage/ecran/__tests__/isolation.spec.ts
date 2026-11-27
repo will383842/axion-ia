@@ -28,7 +28,7 @@ describe("le pilotage SEO ne fuit pas vers le site public", () => {
     ].filter(hors);
     expect(publics.length).toBeGreaterThan(100);
     const fautifs = publics.filter((f) =>
-      /(from|import\s*\()\s*["'][^"']*(seo-pilotage|actions\/content-gen\/pilotage)/.test(
+      /(from|import\s*\()\s*["'][^"']*(seo-pilotage|actions\/[a-z-]+\/pilotage)/.test(
         readFileSync(f, "utf8"),
       ),
     );
