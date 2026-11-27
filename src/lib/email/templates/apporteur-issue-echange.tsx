@@ -24,6 +24,7 @@
 // Ils se lisent dans le SSOT (`content/pricing.ts`) : un taux recopié à la main
 // finit toujours par diverger de la page publique — c'est arrivé en août.
 
+import { phrasePiecesJointes } from "./_annexes-jointes";
 import { Text } from "@react-email/components";
 import type { ReactElement } from "react";
 
@@ -40,6 +41,8 @@ interface Payload {
   calendlyUrl?: string;
   /** Retenu seulement : le lien personnel du dossier en ligne (démarrage manuel, 2026-10-05). */
   dossierUrl?: string;
+  /** Retenu seulement : annexes réellement jointes (facultatif, ignoré s'il est absent). */
+  annexesJointes?: string[];
   /** Retenu seulement : le dossier est déjà signé (à vérifier ou contresigné). */
   dossierSigne?: boolean;
   /** Absent seulement : « mardi 22 septembre », déjà formaté en heure de Paris. */
@@ -266,6 +269,8 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
   const t = COPY_ISSUE_ECHANGE[l].retenu;
   const dossierUrl = texteOuNull(p.dossierUrl);
   const signe = p.dossierSigne === true;
+  // La phrase n'a de sens que pour un dossier à signer, en français (le texte des pièces l'est).
+  const piecesJointes = !signe && l === "fr" ? phrasePiecesJointes(p.annexesJointes) : null;
   return (
     <EmailLayout
       famille="B"
@@ -307,6 +312,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       <Text style={intertitre}>{t.suiteTitre}</Text>
       <Text style={puce}>• {signe ? t.dossierSigne : dossierUrl ? t.dossier : t.contrat}</Text>
       {dossierUrl && !signe ? <Text style={puce}>{ligneAPreparer(l)}</Text> : null}
+      {piecesJointes ? <Text style={puce}>• {piecesJointes}</Text> : null}
       <Text style={emailStyles.paragraphStyle}>• {t.espace}</Text>
 
       <BlocKitApporteur locale={l} intro={t.kit} />

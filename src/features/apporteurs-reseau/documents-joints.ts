@@ -247,6 +247,28 @@ export async function pieceContratDeLAccuse(cleContrat: string): Promise<PieceJo
   ];
 }
 
+/**
+ * Les annexes d'un e-mail qui porte le LIEN du contrat à signer (lien du dossier, rappels,
+ * « Retenu »), avant toute signature : il n'y a pas encore de contrat signé à joindre.
+ * `payload` est le champ FACULTATIF `annexesJointes` (identifiants des annexes réellement
+ * jointes) que le gabarit lit pour écrire sa phrase ; absent si aucune pièce. Un worker plus
+ * ancien l'ignore. Ne lève jamais.
+ */
+export async function annexesDeLEnvoiDuLien(): Promise<{
+  attachments: PieceJointe[];
+  payload: { annexesJointes?: string[] };
+}> {
+  const attachments = await documentsAnnexesAJoindre();
+  const ids = idsAnnexesJointes(attachments);
+  return { attachments, payload: ids.length > 0 ? { annexesJointes: ids } : {} };
+}
+
+/** Identifiants (dans l'ordre de `DOCUMENTS_ANNEXES`) des annexes présentes dans ces pièces. */
+export function idsAnnexesJointes(pieces: readonly PieceJointe[]): string[] {
+  const cles = new Set(pieces.map((p) => p.r2Key));
+  return DOCUMENTS_ANNEXES.filter((d) => cles.has(d.cleR2)).map((d) => d.id);
+}
+
 const enListe = (noms: readonly string[]): string =>
   noms.length <= 1 ? noms.join("") : `${noms.slice(0, -1).join(", ")} et ${noms.at(-1)}`;
 

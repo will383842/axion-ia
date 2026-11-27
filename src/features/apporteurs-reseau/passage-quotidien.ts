@@ -49,6 +49,7 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { envoyer } from "./envois";
+import { annexesDeLEnvoiDuLien } from "./documents-joints";
 import { lireReservations, tableAbsente } from "./reservation-presentation";
 import { finDeProtectionRendezVous, reservationOccupe } from "./regle-attribution";
 import { facturerCommissionsDues } from "./facturation";
@@ -1556,13 +1557,21 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     const url = urlDossier(a.id, a.versionLien);
     const destinataire = decryptPii(a.email);
     if (!url || !destinataire) continue;
+    // Les relances portent aussi la fiche, le livret et le guide (facultatifs, jamais d'erreur).
+    const annexes = await annexesDeLEnvoiDuLien();
     const r = await envoyer({
       gabarit: "apporteur-dossier-lien",
       destinataire,
-      payload: { contactName: decryptPii(a.prenom) ?? "", dossierUrl: url, rappel },
+      payload: {
+        contactName: decryptPii(a.prenom) ?? "",
+        dossierUrl: url,
+        rappel,
+        ...annexes.payload,
+      },
       entityType: "ApporteurReseau",
       entityId: a.id,
       jobId,
+      ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     });
     if (r === "envoye") bilan.rappelsDossier += 1;
   }
