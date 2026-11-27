@@ -80,16 +80,20 @@ async function apporteur(): Promise<unknown> {
       nom: encryptPii(court)!,
       email: encryptPii(email)!,
       emailHash: hashEmailForLookup(email)!,
-      statut: "signe",
+      statut: a["statut"] === "dossier_en_cours" ? "dossier_en_cours" : "signe",
       siren: String(a["siren"] ?? sirenFictif()),
       denomination: "Apporteur Fictif",
       statutJuridique: "micro_entrepreneur",
       regimeTva: (a["regime"] as "franchise_293b" | "assujetti" | undefined) ?? "franchise_293b",
       adresse: encryptPii("12 rue de l'Exemple 69001 Lyon")!,
       iban: encryptPii(String(a["iban"] ?? "FR7630006000011234567890189"))!,
-      signeParApporteurAt: maintenant,
-      signeParSocieteAt: maintenant,
-      signatureApporteur: { version, nom: `Test ${court}` },
+      ...(a["statut"] === "dossier_en_cours"
+        ? {}
+        : {
+            signeParApporteurAt: maintenant,
+            signeParSocieteAt: maintenant,
+            signatureApporteur: { version, nom: `Test ${court}` },
+          }),
     },
     select: { id: true, versionLien: true },
   });
