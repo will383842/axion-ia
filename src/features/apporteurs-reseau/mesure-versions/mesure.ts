@@ -1,17 +1,25 @@
+import { versionNormalisee } from "../regle-attribution";
+
 /**
  * MESURE EN LECTURE SEULE — apporteurs et commissions par version de contrat signée (lot G1, Q8).
  *
  * Question posée : combien d'apporteurs ont signé chaque version du contrat
- * (`ApporteurReseau.signatureApporteur.version`, absente = v2, signature antérieure au 07/10), et
- * combien de commissions créées depuis la bascule 2.8 les concernent ?
+ * (`ApporteurReseau.signatureApporteur.version`), et combien de commissions créées depuis la
+ * bascule 2.8 les concernent ?
  *
- * Aucune écriture : le seul accès base passe par `findMany` / `groupBy`-équivalents de lecture,
- * verrouillé par un test statique. Le rapport ne contient que des COMPTES (aucun identifiant,
- * aucun nom, aucun montant) ; les groupes de moins de `SEUIL_MASQUAGE` sont rendus « < 5 ».
+ * Versions lues comme `versionAuMoins` (regle-attribution.ts) : forme canonique seulement,
+ * normalisée (« 2.6.0 » = « 2.6 ») ; tout le reste est classé « illisible ». Une version ABSENTE
+ * est classée « absente » : l'hypothèse « absente = v2 » n'a pas de source vérifiée, elle n'est
+ * donc pas affirmée.
+ *
+ * Aucune écriture : le seul accès base passe par deux `findMany` de lecture, verrouillés par un
+ * test statique. Le rapport ne contient que des COMPTES (aucun identifiant, aucun nom, aucun
+ * montant). Une ligne dont l'effectif d'apporteurs est sous `SEUIL_MASQUAGE` est masquée EN
+ * ENTIER (commissions comprises) ; aucune commission n'est écartée sans être comptée.
  */
 
-/** Version attribuée à une signature sans champ `version` (antérieure au 07/10). */
-export const VERSION_ABSENTE = "2";
+/** Signature sans champ `version` : classée telle quelle, sans supposer une version. */
+export const VERSION_ABSENTE = "absente";
 export const VERSION_INCONNUE = "illisible";
 /** Sous ce seuil, un compte est masqué dans le rapport (petits effectifs = personnes identifiables). */
 export const SEUIL_MASQUAGE = 5;
@@ -33,16 +41,23 @@ export function versionSignee(signature: unknown): string | null {
   if (typeof signature !== "object" || Array.isArray(signature)) return VERSION_INCONNUE;
   const v = (signature as { version?: unknown }).version;
   if (v === undefined || v === null || v === "") return VERSION_ABSENTE;
-  if (typeof v === "string" || typeof v === "number") return String(v).trim();
-  return VERSION_INCONNUE;
+  return versionNormalisee(v) ?? VERSION_INCONNUE;
 }
+
+export type Mesure = {
+  lignes: LigneVersion[];
+  sansSignature: number;
+  /** Commissions dont l'apporteur n'a pas de signature : comptées ici, jamais perdues. */
+  commissionsNonRattachees: number;
+};
 
 export function mesurerVersions(
   apporteurs: readonly ApporteurLu[],
   commissions: readonly CommissionLue[],
-): { lignes: LigneVersion[]; sansSignature: number } {
+): Mesure {
   const versionDe = new Map<string, string>();
   let sansSignature = 0;
+  let commissionsNonRattachees = 0;
   const parVersion = new Map<string, LigneVersion>();
   const ligne = (version: string): LigneVersion => {
     let l = parVersion.get(version);
@@ -64,7 +79,10 @@ export function mesurerVersions(
   const avecCommission = new Set<string>();
   for (const c of commissions) {
     const v = versionDe.get(c.apporteurId);
-    if (v === undefined) continue; // apporteur non signé ou hors périmètre : non compté
+    if (v === undefined) {
+      commissionsNonRattachees += 1; // apporteur sans signature : comptée à part
+      continue;
+    }
     ligne(v).commissions += 1;
     if (!avecCommission.has(c.apporteurId)) {
       avecCommission.add(c.apporteurId);
@@ -74,25 +92,29 @@ export function mesurerVersions(
   const lignes = [...parVersion.values()].sort((a, b) =>
     a.version.localeCompare(b.version, "fr", { numeric: true }),
   );
-  return { lignes, sansSignature };
+  return { lignes, sansSignature, commissionsNonRattachees };
 }
 
 const masque = (n: number): string =>
   n > 0 && n < SEUIL_MASQUAGE ? `< ${SEUIL_MASQUAGE}` : String(n);
 
-export function formaterRapport(
-  mesure: { lignes: LigneVersion[]; sansSignature: number },
-  depuis: string,
-): string {
+export function formaterRapport(mesure: Mesure, depuis: string): string {
+  // Effectif d'apporteurs sous le seuil : TOUTE la ligne est masquée, commissions comprises
+  // (un compte exact de commissions décrirait l'activité d'une personne identifiable).
+  const ligne = (l: LigneVersion): string => {
+    if (l.apporteurs > 0 && l.apporteurs < SEUIL_MASQUAGE) {
+      const m = `< ${SEUIL_MASQUAGE}`;
+      return `${l.version} | ${m} | ${m} | ${m}`;
+    }
+    return `${l.version} | ${l.apporteurs} | ${masque(l.apporteursAvecCommission)} | ${masque(l.commissions)}`;
+  };
   const out = [
     `Version signée | apporteurs | dont avec commission depuis ${depuis} | commissions depuis ${depuis}`,
     "---|---|---|---",
-    ...mesure.lignes.map(
-      (l) =>
-        `${l.version} | ${masque(l.apporteurs)} | ${masque(l.apporteursAvecCommission)} | ${masque(l.commissions)}`,
-    ),
+    ...mesure.lignes.map(ligne),
     "",
     `Apporteurs sans signature : ${masque(mesure.sansSignature)}`,
+    `Commissions non rattachées (apporteur sans signature) depuis ${depuis} : ${masque(mesure.commissionsNonRattachees)}`,
   ];
   return out.join("\n");
 }

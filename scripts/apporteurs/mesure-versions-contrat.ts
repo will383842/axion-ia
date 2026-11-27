@@ -4,8 +4,9 @@
  * de contrat signée. N'écrit rien en base. Sortie : des comptes, jamais de donnée personnelle.
  *
  * Usage : pnpm tsx scripts/apporteurs/mesure-versions-contrat.ts [AAAA-MM-JJ]
- * (date de début de fenêtre des commissions ; défaut 2026-11-26, bascule 2.8)
+ * (date de début de fenêtre des commissions, minuit heure de Paris ; défaut 2026-11-26, bascule 2.8)
  */
+import { fromParisLocalInput } from "../../src/lib/calendar-grid";
 import { PrismaClient } from "../../prisma/generated/client";
 import {
   type ClientLecture,
@@ -23,14 +24,13 @@ async function main() {
     apporteurReseau: {
       findMany: () =>
         prisma.apporteurReseau.findMany({
-          where: { statut: { in: ["a_verifier", "signe", "resilie"] } },
           select: { id: true, statut: true, signatureApporteur: true },
         }),
     },
     commissionApporteur: {
       findMany: () =>
         prisma.commissionApporteur.findMany({
-          where: { creeAt: { gte: new Date(`${depuis}T00:00:00+01:00`) } },
+          where: { creeAt: { gte: fromParisLocalInput(`${depuis}T00:00`)! } },
           select: { apporteurId: true },
         }),
     },
