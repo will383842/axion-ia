@@ -14,6 +14,7 @@ import {
   FUSEAU_SEO_PILOTAGE,
   PATTERN_SEO_INGESTION,
   PATTERN_SEO_PURGE,
+  PATTERN_SEO_RECALCUL,
   PATTERN_SEO_RATTRAPAGE,
 } from "@/server/seo-pilotage/planification";
 import { getBullConnection, isBullmqDisabled } from "./connection";
@@ -1794,6 +1795,7 @@ export async function bootRepeatableJobs(): Promise<void> {
       { tache: "ingestion-gsc", pattern: PATTERN_SEO_INGESTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "rattrapage-gsc", pattern: PATTERN_SEO_RATTRAPAGE, tz: undefined },
       { tache: "purge", pattern: PATTERN_SEO_PURGE, tz: FUSEAU_SEO_PILOTAGE },
+      { tache: "recalcul", pattern: PATTERN_SEO_RECALCUL, tz: FUSEAU_SEO_PILOTAGE },
     ] as const;
     for (const { tache, pattern, tz } of programmeSeo) {
       await seoPilotageQueue.add(
