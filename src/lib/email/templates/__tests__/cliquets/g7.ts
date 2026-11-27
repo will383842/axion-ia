@@ -132,7 +132,8 @@ export const GROUPE_G7 = {
       "apporteur-echange-rappel",
     ],
     repondezDansLeCorps: ["apporteur-commission-avoir-client"],
-    delaiEnDur: ["apporteur-issue-retenu", "apporteur-releve", "vivier-information"],
+    // « apporteur-issue-retenu » retiré : sa règle 2.8 ne porte plus de délai « dans les 60 jours » (le cliquet se resserre).
+    delaiEnDur: ["apporteur-releve", "vivier-information"],
     valeurTechnique: [
       "candidature-commercial-confirmee",
       "lead-apporteur-recu",

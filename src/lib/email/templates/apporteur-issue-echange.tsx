@@ -91,7 +91,7 @@ export const COPY_ISSUE_ECHANGE = {
       fonctionnementTitre: "Comment ça marche",
       fonctionnement: [
         "Vous nous mettez en relation avec une entreprise qui a un besoin : formation à l'IA, audit ou intégration.",
-        "L'entreprise vous est attribuée dès qu'un premier rendez-vous avec nous a eu lieu, s'il a été pris dans les 60 jours qui suivent votre déclaration. Nous gérons tout le reste : rendez-vous, devis et réalisation.",
+        "L'entreprise vous est réservée 60 jours à partir de votre déclaration. Elle vous est attribuée dès son premier rendez-vous avec nous, s'il a été pris pendant ces 60 jours (même s'il a lieu après ; un rendez-vous annulé par Axion-IA compte comme tenu), ou dès qu'elle signe une commande pendant ces 60 jours ; elle est alors commissionnée pendant la durée prévue à compter de ce rendez-vous ou de cette commande. Nous gérons tout le reste : rendez-vous, devis et réalisation.",
         // Aucun montant dans cet e-mail : ils vivent dans la fiche des commissions (lien ci-dessous).
         "Vous touchez une commission quand l'entreprise a payé l'intégralité de sa commande. Les montants à jour sont dans la fiche des commissions ci-dessous ; votre contrat fait foi.",
       ],
@@ -179,7 +179,7 @@ export const COPY_ISSUE_ECHANGE = {
       fonctionnementTitre: "How it works",
       fonctionnement: [
         "You put us in touch with a company that has a need: AI training, audit or integration.",
-        "The company is attributed to you as soon as a first meeting with us has taken place, provided it was booked within 60 days of your declaration. We handle everything else: meetings, quote and delivery.",
+        "The company is reserved for you for 60 days from your declaration. It is attributed to you as soon as its first meeting with us is booked during those 60 days (even if it takes place later; a meeting cancelled by Axion-IA counts as held), or as soon as it signs an order during those 60 days; it is then commissioned for the agreed period from that meeting or that order. We handle everything else: meetings, quote and delivery.",
         "You earn a commission once the company has paid its order in full. Up-to-date amounts are in the commission sheet below; your agreement prevails.",
       ],
       statutTitre: "Your status",

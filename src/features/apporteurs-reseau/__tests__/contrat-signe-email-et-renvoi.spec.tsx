@@ -67,9 +67,35 @@ describe("e-mail « contrat signé » (D5)", () => {
       expect(x).toContain("10 % des commissions nées de ses commandes signées pendant les 6 mois");
     }
     expect(h).toContain(`href="${URL_DOSSIER}/documents"`);
+    // Sans `regleRendezVous` : règle du silence (texte d'origine), jamais la règle par rendez-vous.
+    expect(t).toContain("Une fois l'entreprise attribuée");
+    expect(t).not.toContain("premier rendez-vous");
+  });
+
+  it("règle par rendez-vous (regleRendezVous: true) : règle 2.8 complète, sans lien vers le PDF", async () => {
+    const h = await html({
+      contactName: "Claire",
+      dossierUrl: URL_DOSSIER,
+      regleRendezVous: true,
+    });
+    const t = h
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&#x27;|&#39;/g, "'")
+      .replace(/\s+/g, " ");
+    expect(t).toContain("L'entreprise vous est réservée 60 jours à partir de votre déclaration.");
     expect(t).toContain(
-      "Elle vous est attribuée dès qu'un premier rendez-vous avec nous a eu lieu",
+      "Elle vous est attribuée dès son premier rendez-vous avec nous, s'il a été pris pendant ces 60 jours (même s'il a lieu après ; un rendez-vous annulé par Axion-IA compte comme tenu), ou dès qu'elle signe une commande pendant ces 60 jours.",
     );
+    expect(t).toContain("à compter de ce rendez-vous ou de cette commande");
+    expect(h).not.toContain("comment-ca-marche.pdf");
+    const d = texteParDefaut("apporteur-contrat-signe", {
+      contactName: "Claire",
+      regleRendezVous: true,
+    })!;
+    expect(d).toContain("ou dès qu'elle signe une commande pendant ces 60 jours");
+    const ancien = texteParDefaut("apporteur-contrat-signe", { contactName: "Claire" })!;
+    expect(ancien).not.toContain("premier rendez-vous");
+    expect(ancien).not.toContain("comment-ca-marche.pdf");
   });
 
   it("le texte par défaut (« Modifier le texte ») dit la même chose que le gabarit", () => {

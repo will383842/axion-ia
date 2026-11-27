@@ -84,7 +84,7 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain("Vous nous mettez en relation avec une entreprise qui a un besoin");
     expect(t).toContain("Nous gérons tout le reste : rendez-vous, devis et réalisation.");
     expect(t).toContain(
-      "L'entreprise vous est attribuée dès qu'un premier rendez-vous avec nous a eu lieu, s'il a été pris dans les 60 jours qui suivent votre déclaration. Nous gérons tout le reste : rendez-vous, devis et réalisation.",
+      "L'entreprise vous est réservée 60 jours à partir de votre déclaration. Elle vous est attribuée dès son premier rendez-vous avec nous, s'il a été pris pendant ces 60 jours (même s'il a lieu après ; un rendez-vous annulé par Axion-IA compte comme tenu), ou dès qu'elle signe une commande pendant ces 60 jours ; elle est alors commissionnée pendant la durée prévue à compter de ce rendez-vous ou de cette commande. Nous gérons tout le reste : rendez-vous, devis et réalisation.",
     );
     expect(t).toContain(
       "Vous touchez une commission quand l'entreprise a payé l'intégralité de sa commande. Les montants à jour sont dans la fiche des commissions ci-dessous ; votre contrat fait foi.",
