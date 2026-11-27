@@ -87,7 +87,7 @@ describe("Retenu — bienvenue dans le réseau", () => {
       "L'entreprise vous est réservée 60 jours à partir de votre déclaration. Elle vous est attribuée dès son premier rendez-vous avec nous, s'il a été pris pendant ces 60 jours (même s'il a lieu après ; un rendez-vous annulé par Axion-IA compte comme tenu), ou dès qu'elle signe une commande pendant ces 60 jours ; elle est alors commissionnée pendant la durée prévue à compter de ce rendez-vous ou de cette commande. Nous gérons tout le reste : rendez-vous, devis et réalisation.",
     );
     expect(t).toContain(
-      "Vous touchez une commission quand l'entreprise a payé l'intégralité de sa commande. Pour une Journée IA : 500 € HT par journée, au prorata du prix effectivement payé. Pour nos autres prestations, les montants sont dans votre contrat et dans la fiche des commissions ci-dessous ; votre contrat fait foi.",
+      "Vous touchez une commission quand l'entreprise a payé l'intégralité de sa commande. Pour une Journée IA, à titre indicatif : 500 € HT par journée, au prorata du prix effectivement payé. Pour nos autres prestations, les montants sont dans votre contrat et dans la fiche des commissions ci-dessous ; votre contrat fait foi.",
     );
     expect(t).toContain("sans objectif ni exclusivité");
     expect(t).toContain(
@@ -154,8 +154,8 @@ describe("Retenu — bienvenue dans le réseau", () => {
       // Décision de Will du 27/11/2026 : seule la Journée IA est chiffrée ; le reste vit dans le contrat et la fiche.
       const phraseJourneeIA =
         l === "fr"
-          ? "Pour une Journée IA : 500 € HT par journée, au prorata du prix effectivement payé."
-          : "For an AI Day: €500 excl. VAT per day, pro rata to the price actually paid.";
+          ? "Pour une Journée IA, à titre indicatif : 500 € HT par journée, au prorata du prix effectivement payé."
+          : "For an AI Day, for information only: €500 excl. VAT per day, pro rata to the price actually paid.";
       expect(brut.replace(/\s+/g, " ")).toContain(phraseJourneeIA);
       const sansJourneeIA = brut.replace(/\s+/g, " ").replace(phraseJourneeIA, "");
       expect(sansJourneeIA).not.toContain("€");
