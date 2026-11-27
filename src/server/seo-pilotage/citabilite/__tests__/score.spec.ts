@@ -450,9 +450,24 @@ describe("régressions de la relecture — tour 2", () => {
     expect(r.divergences.map((d) => d.type)).toEqual(["prix-journee-ia"]);
   });
 
-  it("les formules d'accueil (slogan, « ils nous font confiance ») ne sont pas pénalisées", () => {
-    const r = penal("<main><h1>Axion-IA</h1><p>Nous, si.</p><p>Ils nous font confiance</p></main>");
-    expect(r.interdits).toEqual([]);
+  it("le slogan « Nous, si. » est toléré sur une page", () => {
+    expect(penal("<main><h1>Axion-IA</h1><p>Nous, si.</p></main>").interdits).toEqual([]);
+  });
+
+  it("faux partenariat, fausse statistique et « ils nous font confiance » restent pénalisés", () => {
+    const r = penal(
+      "<main><p>Ils nous font confiance. Nous sommes partenaire officiel de Bpifrance. Données internes Axion-IA 2025.</p></main>",
+    );
+    expect(r.interdits.length).toBeGreaterThan(0);
+    expect(r.penalites.map((p) => p.code)).toContain("interdit");
+  });
+
+  it("un JSON-LD commenté ne rapporte aucun point", () => {
+    const html = page({ jsonLd: "{}" }).replace(
+      "</head>",
+      `<!-- <script type="application/ld+json">${JSON_LD_PARFAIT}</script> --></head>`,
+    );
+    expect(points(html).jsonLd).toBe(0);
   });
 
   it("« Questions fréquentes » et « Commentaires » ne comptent pas comme questions", () => {

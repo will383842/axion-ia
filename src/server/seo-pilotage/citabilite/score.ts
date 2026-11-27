@@ -168,7 +168,7 @@ function neutraliserChevrons(html: string): string {
   return out + html.slice(pos);
 }
 
-function sansScripts(html: string): string {
+function sansCommentaires(html: string): string {
   // Commentaires : indexOf, linéaire ; un commentaire non fermé s'arrête là (reste inchangé).
   let sans = "";
   let pos = 0;
@@ -178,15 +178,15 @@ function sansScripts(html: string): string {
     const f = html.indexOf("-->", d + 4);
     if (f < 0) {
       // Commentaire jamais fermé : le navigateur ignore tout le reste, nous aussi.
-      return finirSansScripts(sans + html.slice(pos, d));
+      return sans + html.slice(pos, d);
     }
     sans += html.slice(pos, d) + " ";
     pos = f + 3;
   }
-  return finirSansScripts(sans + html.slice(pos));
+  return sans + html.slice(pos);
 }
 
-function finirSansScripts(entree: string): string {
+function sansScripts(entree: string): string {
   let sans = entree;
   for (const nom of ["script", "style", "noscript", "template"]) {
     let r = "";
@@ -317,7 +317,8 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   const brut = neutraliserChevrons(
     entree.html.length > TAILLE_HTML_MAX ? entree.html.slice(0, TAILLE_HTML_MAX) : entree.html,
   );
-  const html = sansScripts(brut);
+  const sansComm = sansCommentaires(brut);
+  const html = sansScripts(sansComm);
   const corps = balises(html, "main")[0] ?? balises(html, "body")[0] ?? html;
 
   // 1. Titres
@@ -357,7 +358,7 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   });
 
   // 5. Date visible + dateModified récente
-  const { noeuds, racines } = noeudsJsonLd(brut);
+  const { noeuds, racines } = noeudsJsonLd(sansComm);
   const dateVisible = ouvrantes(corps, "time").some((t) => {
     const d = attribut(t, "datetime");
     return d !== null && !Number.isNaN(Date.parse(d));

@@ -105,17 +105,13 @@ export function detecterFaitsDivergents(texte: string, canon: FaitsCanon): Diver
 }
 
 /**
- * Interdits propres à la rédaction d'ARTICLES : sur une page (accueil : « Nous, si. », « Ils nous
- * font confiance »), ils sont légitimes et ne doivent pas coûter 20 points.
+ * Interdits de pure rédaction d'ARTICLES, légitimes sur une page : le slogan « Nous, si. » (accueil,
+ * tour de France) et l'étiquette « TPE-PME ». Tout le reste — faux partenariat, faux témoignage,
+ * fausse statistique — est interdit PARTOUT (aucun partenariat ni client nommé public).
  */
 const CODES_REDACTION_ARTICLE: ReadonlySet<CodeInterdit> = new Set<CodeInterdit>([
   "slogan-recopie",
-  "partenariat",
   "etiquette-tpe-pme",
-  "stat-axion",
-  "temoignage-axion",
-  "citation-temoin",
-  "preuve-sociale-vague",
 ]);
 
 /** Mots interdits de la doctrine (source unique : `interdits-publication.ts`) dans un texte. */
