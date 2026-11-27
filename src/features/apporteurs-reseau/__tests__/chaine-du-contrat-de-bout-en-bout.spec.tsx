@@ -6,8 +6,9 @@
 // `jeton`, `signature`, `contrat-pdf` (texte, empreinte ET rendu PDF), `verification`,
 // `documents-joints`, le guide de démarrage embarqué, les gabarits d'e-mail.
 //
-// a) invitation  b) signature en ligne  c) accusé « dossier bien reçu »
-// d) e-mail « contrat signé »  e) fiche / livret absents de R2  f) version 2.8
+// a) invitation (annexes jointes, #2392)  b) signature en ligne  c) accusé « dossier bien reçu »
+// d) e-mail « contrat signé »  e) fiche / livret / guide absents de R2  f) version 2.8
+// g) CAS DE REFUS (portés de #2251, base unique des tests de bout en bout du contrat)
 import { render } from "@react-email/render";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -21,6 +22,10 @@ const h = vi.hoisted(() => ({
   /** Ligne `ApporteurReseau` simulée (ce que Prisma garderait). */
   ligne: {} as Record<string, unknown>,
   dossier: {} as Record<string, unknown>,
+  /** Réponse du registre public ; `null` = entreprise active (défaut). */
+  registre: null as unknown,
+  /** Lien (jeton) refusé par la page du dossier. */
+  lienInvalide: false,
 }));
 
 vi.mock("@/lib/r2-storage", () => ({
@@ -61,10 +66,13 @@ vi.mock("../annuaire", () => {
       dirigeantsSocietes: 0,
     },
   };
-  return { lireEntrepriseParSiren: async () => ok, lireRegistre: async () => ok };
+  return {
+    lireEntrepriseParSiren: async () => h.registre ?? ok,
+    lireRegistre: async () => h.registre ?? ok,
+  };
 });
 vi.mock("../donnees", () => ({
-  lireDossierParLien: vi.fn(async () => h.dossier),
+  lireDossierParLien: vi.fn(async () => (h.lienInvalide ? null : h.dossier)),
   lireDossier: vi.fn(async () => h.dossier),
   enregistrerDeclarations: vi.fn(),
   purgerContenuPieces: vi.fn(),
@@ -73,10 +81,16 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     apporteurReseau: {
       findUnique: vi.fn(async () => h.ligne),
-      updateMany: vi.fn(async (a: { data: Record<string, unknown> }) => {
-        Object.assign(h.ligne, a.data);
-        return { count: 1 };
-      }),
+      updateMany: vi.fn(
+        async (a: { where?: { statut?: unknown }; data: Record<string, unknown> }) => {
+          // Écriture conditionnée au statut, comme la vraie base : un dossier déjà passé « à vérifier » n'est pas réécrit.
+          const admis = (a.where?.statut as { in?: string[] } | undefined)?.in;
+          if (admis && typeof h.ligne["statut"] === "string" && !admis.includes(h.ligne["statut"]))
+            return { count: 0 };
+          Object.assign(h.ligne, a.data);
+          return { count: 1 };
+        },
+      ),
     },
     activityLog: { create: vi.fn() },
     pieceApporteur: { findMany: vi.fn().mockResolvedValue([]) },
@@ -90,9 +104,11 @@ import { SITE_URL } from "@/lib/site-url";
 import { empreinte, rendreContratPdf, texteDuContrat } from "../contrat-pdf";
 import { CONTRAT_V2_MARKDOWN, CONTRAT_VERSION } from "../contrat-v2";
 import { DOCUMENTS_ANNEXES, NOM_CONTRAT_APPORTEUR, NOM_CONTRAT_SIGNE } from "../documents-joints";
+import { LIBELLE_REFUS_ADMISSION } from "../regles";
 import { jetonDossierValide, urlDossier } from "../jeton";
 import {
   CLES_ACCEPTATIONS,
+  CLE_REGISTRE_INDISPONIBLE,
   CLES_DECLARATIONS,
   LIBELLE_REFUS_SIGNATURE,
   signerContrat,
@@ -155,6 +171,8 @@ beforeEach(() => {
   h.envois.length = 0;
   h.dossier = dossierEnCours();
   h.ligne = {};
+  h.registre = null;
+  h.lienInvalide = false;
 });
 
 /** Dépose une annexe sur le faux R2 (ce que fait `scripts/apporteurs/deposer-document-joint.ts`). */
@@ -183,7 +201,7 @@ describe("a) l'e-mail d'invitation part avec le lien du dossier", () => {
     expect(url).toBe(urlDossier(ID, 1));
   });
 
-  it("le gabarit rendu contient ce lien (bouton) ; l'invitation ne porte aucune pièce jointe", async () => {
+  it("le gabarit rendu contient ce lien (bouton) ; sans annexe sur R2, l'invitation part sans pièce jointe (#2392)", async () => {
     await envoyerLien(ID, null);
     const e = dernier("apporteur-dossier-lien");
     const url = (e["payload"] as { dossierUrl: string }).dossierUrl;
@@ -191,7 +209,40 @@ describe("a) l'e-mail d'invitation part avec le lien du dossier", () => {
       <ApporteurDossierLienEmail locale="fr" payload={e["payload"] as Record<string, unknown>} />,
     );
     expect(html).toContain(url);
-    expect(e).not.toHaveProperty("attachments");
+    expect(pieces(e)).toEqual([]);
+    expect(e["payload"]).not.toHaveProperty("annexesJointes");
+  });
+
+  it("#2392 : fiche, livret et guide présents sur R2 → joints dès l'invitation (facultatifs), et le gabarit les annonce", async () => {
+    deposer(FICHE.cleR2);
+    deposer(LIVRET.cleR2);
+    deposer(GUIDE.cleR2);
+    await envoyerLien(ID, null);
+    const e = dernier("apporteur-dossier-lien");
+    expect(noms(e)).toEqual([
+      "Fiche-des-commissions-Axion-IA.pdf",
+      "Livret-apporteur-Axion-IA.pdf",
+      GUIDE.nomFichier,
+    ]);
+    expect(pieces(e).every((p) => p.facultative === true)).toBe(true);
+    expect((e["payload"] as { annexesJointes?: string[] }).annexesJointes).toEqual([
+      "fiche-commissions",
+      "livret",
+      "guide-demarrage",
+    ]);
+    const html = await render(
+      <ApporteurDossierLienEmail locale="fr" payload={e["payload"] as Record<string, unknown>} />,
+    );
+    expect(html).toContain((e["payload"] as { dossierUrl: string }).dossierUrl);
+  });
+
+  it("#2392 : une annexe absente ou vide n'est pas jointe, l'invitation part quand même", async () => {
+    deposer(LIVRET.cleR2);
+    h.r2.set(FICHE.cleR2, Buffer.alloc(0));
+    await envoyerLien(ID, null);
+    const e = dernier("apporteur-dossier-lien");
+    expect(noms(e)).toEqual(["Livret-apporteur-Axion-IA.pdf"]);
+    expect((e["payload"] as { annexesJointes?: string[] }).annexesJointes).toEqual(["livret"]);
   });
 
   it("dossier fermé (refusé) : aucun lien ne part", async () => {
@@ -341,20 +392,19 @@ describe("e) fiche ou livret manquent sur R2", () => {
     return (await appliquerDecision(ID, "contresigner", null)) as { ok: true; message: string };
   }
 
-  it("🔴 ni fiche ni livret : l'e-mail PART quand même, avec le contrat et le guide (déposé depuis l'image) ; la console le dit", async () => {
+  it("🔴 aucune annexe sur R2 : l'e-mail PART quand même, avec le contrat seul ; la console le dit", async () => {
     const r = await contresigne();
-    expect(noms(dernier("apporteur-contrat-signe"))).toEqual([NOM_CONTRAT_SIGNE, GUIDE.nomFichier]);
+    expect(noms(dernier("apporteur-contrat-signe"))).toEqual([NOM_CONTRAT_SIGNE]);
     expect(r.message).toBe(
-      "Contrat contresigné et envoyé. Pièces jointes : le contrat et le guide de démarrage. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+      "Contrat contresigné et envoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions, le livret et le guide de démarrage.",
     );
-    // Le guide vient de l'image ; la fiche et le livret, eux, ne sont JAMAIS fabriqués.
-    expect(h.r2.has(GUIDE.cleR2)).toBe(true);
-    expect(h.r2.has(FICHE.cleR2)).toBe(false);
-    expect(h.r2.has(LIVRET.cleR2)).toBe(false);
+    // Aucune annexe n'est jamais fabriquée à l'envoi : elles sont déposées à la main sur R2.
+    for (const a of [FICHE, LIVRET, GUIDE]) expect(h.r2.has(a.cleR2)).toBe(false);
   });
 
   it("le livret seul manque : contrat + fiche + guide", async () => {
     deposer(FICHE.cleR2);
+    deposer(GUIDE.cleR2);
     const r = await contresigne();
     expect(noms(dernier("apporteur-contrat-signe"))).toEqual([
       NOM_CONTRAT_SIGNE,
@@ -431,5 +481,160 @@ describe("f) la version du contrat présentée est la 2.8", () => {
     });
     expect(pdf.subarray(0, 4).toString()).toBe("%PDF");
     expect(pdf.byteLength).toBeGreaterThan(5_000);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════
+// g) CAS DE REFUS — portés de la PR #2251 (« parcours signature »), adaptés à cette harness.
+// Dans chaque cas : rien n'est écrit, aucun PDF n'est rangé, aucun e-mail ne part.
+describe("g) cas de refus", () => {
+  const ENTREPRISE_CESSEE = {
+    ok: true as const,
+    entreprise: {
+      siren: "123456782",
+      active: false,
+      francaise: true,
+      personnes: [{ nom: "EXEMPLAIRE", prenoms: "CAMILLE", qualite: "Gérant" }],
+      dirigeantsSocietes: 0,
+    },
+  };
+  const rienNEstSorti = () => {
+    expect(h.r2.size).toBe(0);
+    expect(h.envois).toHaveLength(0);
+    expect(h.ligne["signatureApporteur"]).toBeUndefined();
+  };
+
+  it("SIREN ABSENT : la signature est refusée (dossier incomplet), ni PDF ni e-mail", async () => {
+    h.dossier = { ...dossierEnCours(), siren: null };
+    const r = await signerContrat(entreeSignature(empreinteAffichee()));
+    expect(r).toMatchObject({ ok: false, message: LIBELLE_REFUS_SIGNATURE.incomplet });
+    rienNEstSorti();
+  });
+
+  it("dossier INCOMPLET (pièce à retransmettre, case non cochée, nom tapé faux) : aucune signature", async () => {
+    h.dossier = {
+      ...dossierEnCours(),
+      pieces: [
+        { type: "identite", statut: "deposee" },
+        { type: "rib", statut: "a_retransmettre" },
+      ],
+    };
+    expect(await signerContrat(entreeSignature(empreinteAffichee()))).toMatchObject({
+      ok: false,
+      message: LIBELLE_REFUS_SIGNATURE.incomplet,
+    });
+    h.dossier = dossierEnCours();
+    const e = entreeSignature(empreinteAffichee());
+    expect(await signerContrat({ ...e, acceptations: CLES_ACCEPTATIONS.slice(1) })).toMatchObject({
+      ok: false,
+      message: LIBELLE_REFUS_SIGNATURE.cases,
+    });
+    expect(await signerContrat({ ...e, nomTape: "Quelqu'un d'Autre" })).toMatchObject({
+      ok: false,
+      message: LIBELLE_REFUS_SIGNATURE.nom,
+    });
+    rienNEstSorti();
+  });
+
+  it("contrat contenant « [à compléter] » (adresse vide) : jamais signé, ni PDF, ni écriture", async () => {
+    h.dossier = { ...dossierEnCours(), adresse: "" };
+    const r = await signerContrat(entreeSignature(empreinteAffichee()));
+    expect(r).toMatchObject({ ok: false, message: LIBELLE_REFUS_SIGNATURE.incomplet });
+    rienNEstSorti();
+  });
+
+  it("statuts « à vérifier », « signé », « refusé », « résilié » : plus signables ; « à compléter » : re-signable", async () => {
+    for (const statut of ["a_verifier", "signe", "refuse", "resilie"]) {
+      h.dossier = { ...dossierEnCours(), statut };
+      expect(await signerContrat(entreeSignature(empreinteAffichee()))).toMatchObject({
+        ok: false,
+        message: LIBELLE_REFUS_SIGNATURE.non_modifiable,
+      });
+    }
+    rienNEstSorti();
+    h.dossier = { ...dossierEnCours(), statut: "a_completer" };
+    h.ligne["statut"] = "a_completer";
+    expect((await signerContrat(entreeSignature(empreinteAffichee()))).ok).toBe(true);
+    expect(h.ligne["statut"]).toBe("a_verifier");
+  });
+
+  it("lien (jeton) refusé par la page du dossier, ou dossier retiré : « introuvable », aucune écriture", async () => {
+    h.lienInvalide = true;
+    expect(await signerContrat(entreeSignature("a".repeat(64)))).toMatchObject({
+      ok: false,
+      raison: "introuvable",
+    });
+    h.lienInvalide = false;
+    h.dossier = { ...dossierEnCours(), restreint: true };
+    expect(await signerContrat(entreeSignature("a".repeat(64)))).toMatchObject({
+      ok: false,
+      raison: "introuvable",
+    });
+    rienNEstSorti();
+  });
+
+  it("DOUBLE signature : la seconde est refusée, une seule preuve et un seul accusé", async () => {
+    await apporteurSigne();
+    const preuve = h.ligne["signatureApporteur"];
+    const seconde = await signerContrat(entreeSignature(empreinteAffichee()));
+    expect(seconde).toMatchObject({ ok: false, message: LIBELLE_REFUS_SIGNATURE.non_modifiable });
+    expect(h.ligne["signatureApporteur"]).toBe(preuve);
+    expect(envoi("apporteur-dossier-recu")).toHaveLength(1);
+    expect(envoi("apporteur-dossier-a-verifier")).toHaveLength(1);
+  });
+
+  it("DOUBLE signature SIMULTANÉE (deux onglets) : une seule est écrite (écriture conditionnée au statut)", async () => {
+    h.ligne["statut"] = "dossier_en_cours";
+    const e = entreeSignature(empreinteAffichee());
+    const [a, b] = await Promise.all([signerContrat(e), signerContrat(e)]);
+    expect([a.ok, b.ok].sort()).toEqual([false, true]);
+    expect(h.ligne["statut"]).toBe("a_verifier");
+    expect(envoi("apporteur-dossier-recu")).toHaveLength(1);
+    expect(envoi("apporteur-dossier-a-verifier")).toHaveLength(1);
+  });
+
+  it("SIREN saisi pendant une panne du registre, devenu CESSÉ au moment de signer : refus à la signature", async () => {
+    h.ligne["declarations"] = { [CLE_REGISTRE_INDISPONIBLE]: true };
+    h.registre = ENTREPRISE_CESSEE;
+    const r = await signerContrat(entreeSignature(empreinteAffichee()));
+    expect(r).toMatchObject({ ok: false, message: LIBELLE_REFUS_ADMISSION.siren_inactif });
+    expect(h.r2.size).toBe(0);
+    expect(h.envois).toHaveLength(0);
+    expect(h.ligne["signatureApporteur"]).toBeUndefined();
+  });
+
+  it("SIREN signé pendant une panne du registre, CESSÉ ensuite : la contresignature est refusée", async () => {
+    h.registre = { ok: false, raison: "indisponible" };
+    await apporteurSigne(); // registre muet : on signe
+    h.envois.length = 0;
+    h.registre = ENTREPRISE_CESSEE;
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect(r.message).toContain("cessée au registre public");
+    expect(h.ligne["contratSigneCle"]).toBeUndefined();
+    expect(envoi("apporteur-contrat-signe")).toHaveLength(0);
+  });
+
+  it("registre muet à la contresignature : bloquée tant qu'il ne confirme pas", async () => {
+    await apporteurSigne();
+    h.envois.length = 0;
+    h.registre = { ok: false, raison: "indisponible" };
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect(r.message).toContain("le registre public ne répond pas");
+    expect(envoi("apporteur-contrat-signe")).toHaveLength(0);
+  });
+
+  it("la contresignature rejouée (double clic) n'écrit rien de plus et n'envoie rien", async () => {
+    await apporteurSigne();
+    h.envois.length = 0;
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: true });
+    expect(envoi("apporteur-contrat-signe")).toHaveLength(1);
+    h.dossier = { ...dossierEnCours(), statut: "signe" };
+    const r2avant = h.r2.size;
+    const seconde = await appliquerDecision(ID, "contresigner", null);
+    expect(seconde).toEqual({ ok: false, message: "Ce dossier n'attend pas de vérification." });
+    expect(envoi("apporteur-contrat-signe")).toHaveLength(1);
+    expect(h.r2.size).toBe(r2avant);
   });
 });
