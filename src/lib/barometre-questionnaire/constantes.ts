@@ -7,23 +7,16 @@
  */
 export const QUESTIONNAIRE_OUVERT = false;
 
-/** Premier jour de collecte (inclus), UTC. */
+/** Premier jour de collecte (inclus), UTC. La collecte n'a PAS de date de fin (décision du 27/11/2026). */
 export const DATE_DEBUT_COLLECTE = "2026-12-01";
-/** Dernier jour de collecte (inclus), UTC. */
-export const DATE_FIN_COLLECTE = "2027-01-12";
 
-const JOUR_MS = 24 * 60 * 60 * 1000;
-
-/** Vrai si l'interrupteur est allumé ET si `now` est dans la fenêtre de collecte (bornes incluses). */
+/** Vrai si l'interrupteur est allumé ET si `now` est au plus tôt le premier jour de collecte. Aucune borne de fin. */
 export function estOuvert(now: Date): boolean {
   if (!QUESTIONNAIRE_OUVERT) return false;
-  const debut = Date.parse(`${DATE_DEBUT_COLLECTE}T00:00:00.000Z`);
-  const finExclue = Date.parse(`${DATE_FIN_COLLECTE}T00:00:00.000Z`) + JOUR_MS;
-  const t = now.getTime();
-  return t >= debut && t < finExclue;
+  return now.getTime() >= Date.parse(`${DATE_DEBUT_COLLECTE}T00:00:00.000Z`);
 }
 
-/** Conservation des réponses brutes, en mois après la fin de l'enquête. */
+/** Conservation de chaque réponse brute, en mois après SON jour d'envoi. */
 export const CONSERVATION_MOIS = 24;
 
 /** Version du texte de consentement. Toute retouche, même d'une virgule, crée `barometre-q-v2`. */
@@ -42,12 +35,12 @@ export const CAMPAGNE = "barometre-2027";
 export const N_MIN_PUBLICATION = 10;
 
 /**
- * Date à partir de laquelle les réponses brutes s'effacent : fin de l'enquête (jour inclus)
- * + `CONSERVATION_MOIS` mois, à minuit UTC. Avant cette date, le worker n'envoie AUCUNE requête.
+ * Limite d'effacement à l'instant `now` : toute réponse dont le jour d'envoi est antérieur ou égal
+ * à cette date (minuit UTC) a atteint `CONSERVATION_MOIS` mois et s'efface. Chaque réponse a donc
+ * sa propre échéance (jour d'envoi + 24 mois) ; il n'y a pas de date de fin d'enquête.
  */
-export function limiteEffacement(): Date {
-  const fin = new Date(`${DATE_FIN_COLLECTE}T00:00:00.000Z`);
-  fin.setUTCDate(fin.getUTCDate() + 1);
-  fin.setUTCMonth(fin.getUTCMonth() + CONSERVATION_MOIS);
-  return fin;
+export function limiteEffacement(now: Date = new Date()): Date {
+  const limite = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  limite.setUTCMonth(limite.getUTCMonth() - CONSERVATION_MOIS);
+  return limite;
 }

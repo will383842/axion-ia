@@ -20,7 +20,7 @@ export const DUREE = "Durée : 5 minutes maximum. 14 questions fermées + 2 ques
 export const FERME = {
   titre: "Le questionnaire est fermé.",
   texte:
-    "La collecte n'est pas ouverte en ce moment. Si vous avez déjà répondu, vous pouvez retirer vos réponses avec votre code de retrait, ci-dessous.",
+    "La collecte n'est pas encore ouverte : elle ouvre le 1er décembre 2026, puis reste ouverte en continu. Si vous avez déjà répondu, vous pouvez retirer vos réponses avec votre code de retrait, ci-dessous.",
 } as const;
 
 /** Mention d'information, affichée en tête du formulaire. */
@@ -47,11 +47,11 @@ export const RGPD: ReadonlyArray<{ titre: string; texte: string }> = [
   },
   {
     titre: "Durée de conservation des réponses",
-    texte: `${CONSERVATION_MOIS} mois après la fin de l'enquête ; ensuite, seules des statistiques agrégées sont gardées.`,
+    texte: `${CONSERVATION_MOIS} mois après la date de votre envoi (chaque réponse a sa propre échéance) ; ensuite, seules des statistiques agrégées sont gardées.`,
   },
   {
     titre: "Destinataire",
-    texte: "l'éditeur seul lit les réponses brutes. Les résultats publiés sont agrégés.",
+    texte: "l'éditeur seul lit les réponses brutes. Les résultats publiés sont agrégés : publiés à partir de 100 réponses, puis mis à jour régulièrement.",
   },
   {
     titre: "Hébergement et transferts",
@@ -97,7 +97,7 @@ export const FORMULAIRE = {
 export const RETRAIT = {
   titre: "Retirer mes réponses",
   intro:
-    "Saisissez le code de retrait affiché après votre envoi. Le code ne quitte pas votre navigateur : seule son empreinte est envoyée. Le retrait reste possible après la fermeture du questionnaire.",
+    "Saisissez le code de retrait affiché après votre envoi. Le code ne quitte pas votre navigateur : seule son empreinte est envoyée. Le retrait reste possible à tout moment, tant que la réponse existe.",
   champ: "Code de retrait",
   bouton: "Retirer mes réponses",
   vide: "Saisissez votre code de retrait.",

@@ -1,7 +1,7 @@
 /**
  * Admin — questionnaire du Baromètre 2027 : état de la collecte.
  *
- * Nombre de réponses, état (ouvert / fermé), dates, lien vers l'export CSV (administrateur
+ * Nombre de réponses, état (ouvert / pas encore ouvert), date d'ouverture, lien vers l'export CSV (administrateur
  * seul). AUCUN texte libre et aucune réponse n'est affiché ici : seul l'export les porte.
  * Server Component, force-dynamic, noindex.
  */
@@ -17,7 +17,6 @@ import {
   CAMPAGNE,
   CONSERVATION_MOIS,
   DATE_DEBUT_COLLECTE,
-  DATE_FIN_COLLECTE,
   estOuvert,
   limiteEffacement,
 } from "@/lib/barometre-questionnaire/constantes";
@@ -52,18 +51,16 @@ export default async function BarometreQuestionnaireAdminPage({ params }: PagePr
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Questionnaire du Baromètre 2027"
-        description="Collecte non nominative : l'état, les dates et le nombre de réponses. Les réponses elles-mêmes et les textes libres ne s'affichent pas ici."
+        description="Collecte non nominative : l'état, la date d'ouverture et le nombre de réponses. Les réponses elles-mêmes et les textes libres ne s'affichent pas ici."
       />
       <dl className="space-y-2 text-sm">
         <div>
           <dt className="font-medium">État</dt>
-          <dd>{ouvert ? "Ouvert" : "Fermé"}</dd>
+          <dd>{ouvert ? "Ouvert" : "Pas encore ouvert"}</dd>
         </div>
         <div>
-          <dt className="font-medium">Fenêtre de collecte</dt>
-          <dd>
-            du {DATE_DEBUT_COLLECTE} au {DATE_FIN_COLLECTE} (inclus)
-          </dd>
+          <dt className="font-medium">Collecte</dt>
+          <dd>ouverte en continu à partir du {DATE_DEBUT_COLLECTE}, sans date de fin</dd>
         </div>
         <div>
           <dt className="font-medium">Réponses enregistrées</dt>
@@ -72,7 +69,8 @@ export default async function BarometreQuestionnaireAdminPage({ params }: PagePr
         <div>
           <dt className="font-medium">Effacement automatique</dt>
           <dd>
-            {CONSERVATION_MOIS} mois après la fin de l&apos;enquête, soit à partir du {jourLimite}
+            {CONSERVATION_MOIS} mois après le jour d&apos;envoi de chaque réponse (réponses envoyées
+            jusqu&apos;au {jourLimite} déjà échues)
           </dd>
         </div>
       </dl>

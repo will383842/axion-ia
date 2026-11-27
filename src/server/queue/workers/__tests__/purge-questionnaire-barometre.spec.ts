@@ -1,6 +1,6 @@
 /**
  * Bloc 7 du worker de purge : les réponses du questionnaire du Baromètre 2027 s'effacent 24 mois
- * après la fin de l'enquête. Avant cette limite, AUCUNE requête n'est envoyée.
+ * après LEUR jour d'envoi (collecte sans date de fin).
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
@@ -50,33 +50,31 @@ describe("purge du questionnaire du Baromètre", () => {
     vi.restoreAllMocks();
   });
 
-  it("la limite est la fin de l'enquête + 24 mois", () => {
-    expect(limiteEffacement().toISOString()).toBe("2029-01-13T00:00:00.000Z");
+  it("la limite est aujourd'hui moins 24 mois (minuit UTC)", () => {
+    expect(limiteEffacement(new Date("2028-12-01T15:30:00.000Z")).toISOString()).toBe(
+      "2026-12-01T00:00:00.000Z",
+    );
   });
 
-  it("avant la limite : aucune requête", async () => {
+  it("chaque réponse a sa propre échéance : filtre sur `jour`, jamais sur une date de fin", async () => {
     vi.useFakeTimers();
-    vi.setSystemTime(new Date("2029-01-12T23:59:59.000Z"));
+    vi.setSystemTime(new Date("2028-12-01T03:00:00.000Z"));
     await executerPurgeRetention();
-    expect(deleteMany).not.toHaveBeenCalled();
+    expect(deleteMany).toHaveBeenCalledTimes(1);
+    expect(deleteMany).toHaveBeenCalledWith({
+      where: { campagne: "barometre-2027", jour: { lte: new Date("2026-12-01T00:00:00.000Z") } },
+    });
   });
 
-  it("aujourd'hui (2026) : aucune requête", async () => {
-    await executerPurgeRetention();
-    expect(deleteMany).not.toHaveBeenCalled();
-  });
-
-  it("après la limite : deleteMany filtré sur la campagne", async () => {
+  it("une réponse envoyée la veille de la limite est visée, celle du lendemain ne l'est pas", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2029-01-13T03:00:00.000Z"));
     await executerPurgeRetention();
-    expect(deleteMany).toHaveBeenCalledTimes(1);
-    expect(deleteMany).toHaveBeenCalledWith({ where: { campagne: "barometre-2027" } });
+    const arg = deleteMany.mock.calls[0]?.[0] as { where: { jour: { lte: Date } } };
+    expect(arg.where.jour.lte.toISOString()).toBe("2027-01-13T00:00:00.000Z");
   });
 
   it("une panne est signalée sans interrompre la passe", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2029-02-01T03:00:00.000Z"));
     deleteMany.mockRejectedValue(new Error("down"));
     await expect(executerPurgeRetention()).resolves.toBeUndefined();
     expect(captureWorkerError).toHaveBeenCalled();
