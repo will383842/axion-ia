@@ -37,6 +37,19 @@ function composantes(version: unknown): number[] | null {
 }
 
 /**
+ * Version canonique d'une valeur lue en base, sous forme normalisée (« 2.6.0 » → « 2.6 »,
+ * « 3 » → « 3.0 » : au moins deux composantes, zéros finals en trop retirés) ; `null` si elle
+ * n'est pas canonique. Même lecture que `versionAuMoins`.
+ */
+export function versionNormalisee(version: unknown): string | null {
+  const c = composantes(version);
+  if (!c) return null;
+  while (c.length < 2) c.push(0);
+  while (c.length > 2 && c[c.length - 1] === 0) c.pop();
+  return c.join(".");
+}
+
+/**
  * La signature de l'apporteur (`signatureApporteur`, champ `version`) porte-t-elle une version du
  * contrat au moins égale à `min` ? Comparaison composante par composante, en NOMBRES
  * (« 2.10 » > « 2.8 ») ; une composante manquante vaut 0 (« 3 » = « 3.0 »). Version absente,
