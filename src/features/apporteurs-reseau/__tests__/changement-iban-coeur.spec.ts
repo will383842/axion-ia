@@ -23,7 +23,7 @@ vi.hoisted(() => {
 const m = vi.hoisted(() => {
   const f = () => vi.fn();
   const prisma = {
-    apporteurReseau: { findUnique: f(), update: f() },
+    apporteurReseau: { findUnique: f(), update: f(), updateMany: f() },
     apporteurChangementIban: {
       findUnique: f(),
       findMany: f(),
@@ -43,6 +43,7 @@ const m = vi.hoisted(() => {
     controlerPiece: f(),
     retraitDe: f(),
     enqueueEmail: f(),
+    signaler: f(),
   };
 });
 
@@ -59,6 +60,7 @@ vi.mock("../retrait", async (orig) => ({
   retraitDe: m.retraitDe,
 }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: m.enqueueEmail }));
+vi.mock("../signaler", () => ({ signalerErreurReseau: m.signaler }));
 
 import { decryptPii, encryptPii } from "@/lib/pii-crypto";
 import { chiffrerContenuPiece } from "../pieces-chiffrement";
@@ -152,6 +154,7 @@ beforeEach(() => {
     nomFichier: "rib.pdf",
   });
   m.prisma.apporteurReseau.update.mockResolvedValue({ versionLien: 2 });
+  m.prisma.apporteurReseau.updateMany.mockResolvedValue({ count: 1 });
   m.prisma.apporteurIbanHistorique.findMany.mockResolvedValue([]);
   m.prisma.apporteurIbanHistorique.updateMany.mockResolvedValue({ count: 0 });
   m.prisma.pieceApporteur.findFirst.mockResolvedValue({
@@ -193,6 +196,23 @@ describe("demande", () => {
     expect(data.ancienIbanFin4).toBe("2606");
     expect(data.demandeIpHash).not.toContain("203.0.113.9");
     expect(data.demandeNavigateur).toBe("Chrome sur Windows");
+  });
+
+  it("aucun IBAN entier ne sort à la demande, y compris sur un chemin d'erreur (transaction rejetée)", async () => {
+    await demander();
+    const sortie = JSON.stringify([
+      m.envoyer.mock.calls,
+      m.journaliser.mock.calls,
+      m.signaler.mock.calls,
+      m.enqueueEmail.mock.calls,
+    ]);
+    expect(sortie).not.toContain(IBAN_NEUF);
+    expect(sortie).not.toContain(RIB.nom);
+    m.prisma.$transaction.mockRejectedValue(new Error("base HS"));
+    await demander().catch(() => undefined);
+    const apres = JSON.stringify([m.signaler.mock.calls, m.journaliser.mock.calls]);
+    expect(apres).not.toContain(IBAN_NEUF);
+    expect(apres).not.toContain(RIB.nom);
   });
 
   it("le RIB est rangé sous un nom neutre (le nom d'origine peut contenir l'IBAN)", async () => {
@@ -300,7 +320,6 @@ describe("demande", () => {
       }),
       await annulerDemande({ apporteurId: APPORTEUR, demandeId: ID, ip: "1.1.1.1" }),
       await validerDemande({ demandeId: ID, acteur: SUPER, cases: CASES, ibanRecopie: IBAN_NEUF }),
-      await refuserDemande({ demandeId: ID, acteur: SUPER, motif: "non" }),
     ];
     for (const r of reponses) expect(r.ok).toBe(false);
     for (const t of [
@@ -454,6 +473,26 @@ describe("opposition", () => {
     expect(m.prisma.apporteurChangementIban.updateMany).not.toHaveBeenCalled();
   });
 
+  it("5 appels à signature fausse n'épuisent pas le budget : le vrai « Bloquer » aboutit ensuite", async () => {
+    const compteurs = new Map<string, number>();
+    m.checkRateLimit.mockImplementation(async (cle: string, o: { limit: number }) => {
+      const n = (compteurs.get(cle) ?? 0) + 1;
+      compteurs.set(cle, n);
+      return { allowed: n <= o.limit, count: n, remaining: 0, resetAt: 0, panne: false };
+    });
+    for (let i = 0; i < 6; i++) {
+      const r = await sOpposerALaDemande({
+        demandeId: ID,
+        signature: "x".repeat(43),
+        ip: "1.1.1.1",
+      });
+      expect(r.ok).toBe(false);
+    }
+    expect(compteurs.get(`apporteur:iban:bloquer:demande:${ID}`) ?? 0).toBe(0);
+    expect((await bloquer()).ok).toBe(true);
+    expect(m.prisma.apporteurChangementIban.updateMany).toHaveBeenCalled();
+  });
+
   it("une signature de confirmation ne sert pas à s'opposer", async () => {
     const r = await sOpposerALaDemande({
       demandeId: ID,
@@ -579,27 +618,65 @@ describe("validation", () => {
     expect(neuf.origine).toBe("changement");
     expect(neuf.demandeId).toBe(ID);
     expect(neuf.enVigueurJusqua ?? null).toBeNull();
-    const fiche = m.prisma.apporteurReseau.update.mock.calls[0]![0].data;
+    const fiche = m.prisma.apporteurReseau.updateMany.mock.calls[0]![0].data;
     expect(decryptPii(fiche.iban)).toBe(IBAN_NEUF);
     expect(fiche.versionLien).toEqual({ increment: 1 });
   });
 
   it("si le journal échoue, rien n'est écrit : la transaction entière est rejetée", async () => {
     m.journaliser.mockRejectedValue(new Error("journal HS"));
-    const ecrits: string[] = [];
-    m.prisma.$transaction.mockImplementation(async (fn: (tx: unknown) => Promise<unknown>) => {
-      const instantane = ecrits.length;
-      try {
-        return await fn(m.prisma);
-      } catch (e) {
-        ecrits.length = instantane;
-        throw e;
-      }
-    });
     const r = await valider();
     expect(r.ok).toBe(false);
     expect(m.journaliser.mock.calls[0]![2]).toMatchObject({ exiger: true });
     expect(m.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("le journal est écrit DANS la transaction (le `tx`, pas le `prisma` global)", async () => {
+    const tx = { ...m.prisma };
+    m.prisma.$transaction.mockImplementation(async (fn: (t: unknown) => unknown) => fn(tx));
+    await valider();
+    expect(m.journaliser).toHaveBeenCalledTimes(1);
+    expect(m.journaliser.mock.calls[0]![0]).toBe(tx);
+    expect(m.journaliser.mock.calls[0]![0]).not.toBe(m.prisma);
+  });
+
+  it("IBAN de la fiche changé depuis la demande : refus, rien d'écrit", async () => {
+    m.prisma.apporteurReseau.findUnique.mockResolvedValue(
+      ficheSignee({ iban: encryptPii(IBAN_NEUF) }),
+    );
+    expect((await valider()).ok).toBe(false);
+    expect(m.prisma.$transaction).not.toHaveBeenCalled();
+  });
+
+  it("fiche modifiée entre la lecture et l'écriture (écriture conditionnelle à 0 ligne) : refus, transaction rejetée", async () => {
+    m.prisma.apporteurReseau.updateMany.mockResolvedValue({ count: 0 });
+    const r = await valider();
+    expect(r.ok).toBe(false);
+    const w = m.prisma.apporteurReseau.updateMany.mock.calls[0]![0].where;
+    expect(w).toMatchObject({
+      id: APPORTEUR,
+      statut: "signe",
+      resilieAt: null,
+      refuseAt: null,
+    });
+    expect(w.iban).toBeTruthy();
+    expect(m.journaliser).not.toHaveBeenCalled();
+    expect(m.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("téléphone absent de la fiche à la validation : refus", async () => {
+    m.prisma.apporteurReseau.findUnique.mockResolvedValue(ficheSignee({ telephone: null }));
+    expect((await valider()).ok).toBe(false);
+    expect(m.prisma.$transaction).not.toHaveBeenCalled();
+  });
+
+  it("déchiffrement du nouvel IBAN en échec : refus propre, sans IBAN, signalé", async () => {
+    m.prisma.apporteurChangementIban.findUnique.mockResolvedValue(
+      demandeConfirmee({ iban: "enc:v2:corrompu" }),
+    );
+    const r = await valider();
+    expect(r.ok).toBe(false);
+    expect(JSON.stringify(r)).not.toContain(IBAN_NEUF);
   });
 
   it("le RIB de la demande devient la pièce rib courante ; l'ancienne est marquée remplacée, ses octets gardés", async () => {
@@ -641,6 +718,14 @@ describe("validation", () => {
     ]);
     for (const iban of [IBAN_NEUF, IBAN_ANCIEN]) expect(sortie).not.toContain(iban);
   });
+
+  it("même sur un chemin d'erreur, rien ne part vers Sentry avec un IBAN entier", async () => {
+    m.prisma.$transaction.mockRejectedValue(new Error(`boom ${IBAN_NEUF.slice(0, 4)}`));
+    const r = await valider();
+    expect(r.ok).toBe(false);
+    const sortie = JSON.stringify([r, m.signaler.mock.calls, m.journaliser.mock.calls]);
+    for (const iban of [IBAN_NEUF, IBAN_ANCIEN]) expect(sortie).not.toContain(iban);
+  });
 });
 
 describe("refus", () => {
@@ -665,6 +750,32 @@ describe("refus", () => {
     expect(e.payload.ancienFin).toBe("2606");
     expect(JSON.stringify([e, m.journaliser.mock.calls])).not.toContain(IBAN_NEUF);
     expect(m.prisma.apporteurReseau.update).not.toHaveBeenCalled();
+  });
+});
+
+describe("refus, interrupteur éteint", () => {
+  it("le refus reste possible (lever un gel), avec ou sans secret d'empreinte", async () => {
+    process.env["APPORTEUR_CHANGEMENT_IBAN_ENABLED"] = "false";
+    delete process.env["IBAN_EMPREINTE_SECRET"];
+    const r = await refuserDemande({ demandeId: ID, acteur: SUPER, motif: "Retour arrière" });
+    expect(r.ok).toBe(true);
+    expect(m.prisma.apporteurChangementIban.updateMany.mock.calls[0]![0].data.statut).toBe(
+      "refusee",
+    );
+  });
+});
+
+describe("demande : expiration avertie", () => {
+  it("les demandes périmées sont expirées AVEC l'e-mail 5 avant l'insertion", async () => {
+    m.prisma.apporteurChangementIban.findMany.mockImplementation(
+      async (q: { where: { statut?: string } }) =>
+        q.where.statut === "a_confirmer" ? [{ id: ID, ancienIbanFin4: "2606" }] : [],
+    );
+    await demander();
+    const e = m.envoyer.mock.calls
+      .map((c) => c[0])
+      .find((x) => x.gabarit === "apporteur-compte-expire");
+    expect(e?.jobId).toBe(`apporteur-compte-expire-${ID}`);
   });
 });
 

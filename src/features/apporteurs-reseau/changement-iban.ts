@@ -241,6 +241,10 @@ export async function demanderChangementIban(
   });
   if (!controle.ok) return refus(controle.message);
 
+  // Les demandes périmées sont expirées AVANT, avec leur e-mail 5 (sinon l'expiration écrite dans la
+  // transaction de demande les ferait disparaître sans avertir : `expirerEtAvertir` ne les retrouverait plus).
+  await expirerEtAvertir(e.apporteurId);
+
   const id = randomUUID();
   // Les liens d'abord : sans secret de signature, rien n'est écrit.
   const lienConfirmer = lienConfirmerDemande(id, e.apporteurId, maintenant);
@@ -359,14 +363,12 @@ export async function sOpposerALaDemande(e: {
   ip: string | null;
 }): Promise<Succes | Refus> {
   if (!ouvert()) return FERME;
-  if (
-    !(await sousLaLimite("bloquerParIp", empreinteIp(e.ip))) ||
-    !(UUID.test(e.demandeId) && (await sousLaLimite("bloquerParDemande", e.demandeId)))
-  ) {
-    return NEUTRE;
-  }
+  if (!(await sousLaLimite("bloquerParIp", empreinteIp(e.ip)))) return NEUTRE;
   const d = await lireDemande(e.demandeId);
   if (!d || !signatureBloquerValide(d.id, d.apporteurId, e.signature)) return NEUTRE;
+  // Le plafond par demande ne se décompte QU'APRÈS une signature valide : un tiers qui connaît
+  // l'identifiant (visible dans le chemin) ne peut pas épuiser le budget de l'apporteur légitime.
+  if (!(await sousLaLimite("bloquerParDemande", d.id))) return NEUTRE;
 
   const coupee = await prisma.$transaction(async (tx) => {
     const r = await tx.apporteurChangementIban.updateMany({
@@ -408,7 +410,7 @@ export async function sOpposerALaDemande(e: {
         "Un apporteur dit ne pas être à l'origine d'une demande de changement de compte. La demande est annulée et son lien d'espace est coupé. Le rappeler au numéro de sa fiche.",
       cibleType: "ApporteurReseau",
       cibleId: d.apporteurId,
-      createdAt: new Date().toLocaleDateString("fr-FR"),
+      createdAt: new Date().toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }),
       rubrique: "apporteurs",
       chemin: `apporteurs/${d.apporteurId}`,
     },
@@ -488,7 +490,7 @@ export async function validerDemande(e: {
   }
   const fiche = await prisma.apporteurReseau.findUnique({
     where: { id: d.apporteurId },
-    select: { statut: true, iban: true, resilieAt: true, refuseAt: true },
+    select: { statut: true, iban: true, telephone: true, resilieAt: true, refuseAt: true },
   });
   if (!fiche || fiche.statut !== "signe" || fiche.resilieAt || fiche.refuseAt) {
     return refus("Le dossier n'est plus dans un état qui permet ce changement.");
@@ -502,15 +504,19 @@ export async function validerDemande(e: {
     await journalSansIban("controle_iban_echoue", d.apporteurId, { demandeId: d.id }, e.acteur.id);
     return refus("L'IBAN recopié n'est pas celui de la demande.");
   }
+  if (!decryptPii(fiche.telephone)?.trim()) {
+    return refus("La fiche n'a plus de numéro de téléphone : le compléter avant de valider.");
+  }
   const ancien = decryptPii(fiche.iban);
   if (!ancien || !memeEmpreinte(empreinteIban(ancien), d.ancienIbanEmpreinte)) {
     return refus(
       "Le compte de la fiche a changé depuis la demande. Refusez-la et refaites-en une.",
     );
   }
-  const nouveau = decryptPii(d.iban, { aad: `changement-iban:${d.id}`, cleExigee: true });
 
   try {
+    const nouveau = decryptPii(d.iban, { aad: `changement-iban:${d.id}`, cleExigee: true });
+    if (!nouveau) throw new RefusValidation("Le nouvel IBAN de la demande est illisible.");
     await prisma.$transaction(async (tx) => {
       const rib = await tx.apporteurChangementIbanRib.findUnique({ where: { demandeId: d.id } });
       if (!rib || !rib.octets) throw new RefusValidation("Le RIB de la demande est absent.");
@@ -593,10 +599,19 @@ export async function validerDemande(e: {
       });
 
       // La fiche : format de l'existant (`enc:v1`, lu sans donnée liée par le worker) ; lien personnel renouvelé.
-      await tx.apporteurReseau.update({
-        where: { id: d.apporteurId },
+      // Conditionnée à l'état lu plus haut : une résiliation ou une correction d'IBAN survenue entre
+      // la lecture et l'écriture n'est jamais écrasée (et l'historique reste vrai).
+      const maj = await tx.apporteurReseau.updateMany({
+        where: {
+          id: d.apporteurId,
+          statut: "signe",
+          resilieAt: null,
+          refuseAt: null,
+          iban: fiche.iban,
+        },
         data: { iban: encryptPii(ibanNormalise(nouveau)), versionLien: { increment: 1 } },
       });
+      if (maj.count !== 1) throw new RefusValidation("Le dossier a changé : rien n'a été modifié.");
 
       // Sans trace, pas de changement : le journal est exigé dans la même transaction.
       await journaliser(
@@ -645,7 +660,8 @@ export async function refuserDemande(e: {
   acteur: ActeurConsole;
   motif: string;
 }): Promise<Succes | Refus> {
-  if (!ouvert()) return FERME;
+  // Pas de `ouvert()` : le refus n'utilise ni empreinte ni lien signé, et il est le seul moyen de lever
+  // le gel d'une demande ouverte avant l'extinction de l'interrupteur (plan §8).
   if (!peutEngager(e.acteur.role, "valider_changement_iban")) {
     return refus("Seul le super administrateur peut décider.");
   }
