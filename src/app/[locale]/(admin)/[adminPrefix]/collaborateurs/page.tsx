@@ -16,7 +16,6 @@ import {
   type LigneInvitation,
 } from "@/components/admin/collaborateurs/InvitationsQuestionnaire";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
-import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 import {
   TEAM_CATEGORIES,
@@ -47,11 +46,6 @@ const LIBELLE_STATUT: Record<string, string> = {
 export default async function CollaborateursPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const login = `/${locale}/${adminPrefix}/login`;
-  // Garde de lecture du dossier client, AVANT toute lecture ; puis la garde administrateur (écriture).
-  const lecture = await gardeLectureEchanges(login);
-  if (!lecture.autorise) {
-    return <AccesRefuse motif={lecture.motif} retourHref={`/${locale}/${adminPrefix}`} />;
-  }
   const acces = await gardeLectureEchanges(
     login,
     () => "Les fiches collaborateurs sont réservées aux administrateurs.",
