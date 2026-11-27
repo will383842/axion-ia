@@ -4,7 +4,8 @@
 // servi sans contrôle). Elle n'existe que derrière la page admin
 // `imprimes/trame-apporteur`, qui exige la session.
 //
-// Le texte reprend à l'identique `trame-appel-apporteur-2026-11-27.html`. Il est
+// Ce fichier FAIT FOI pour la trame (version du 27/11/2026, contrat 2.8) ;
+// `docs/imprimes/trame-echange-apporteur.html` et son PDF sont plus anciens. Il est
 // écrit en JSX (`dangerouslySetInnerHTML` ne sert qu'au CSS statique) : le prénom passé dans l'URL
 // est un simple texte, que React échappe.
 //
