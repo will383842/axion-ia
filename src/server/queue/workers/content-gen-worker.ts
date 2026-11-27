@@ -162,6 +162,10 @@ import {
   type Verticale,
 } from "@/server/content-gen/kb/sector-pain-matrix";
 import { getVilleCore, getRegionByDepartement } from "@/content/villes/core";
+import {
+  autoPublicationBlogActive,
+  autoPublicationNewsActive,
+} from "@/server/content-gen/quality/relecture-obligatoire";
 
 interface PoliciesConfig {
   readonly plagiarismJaccardInternal?: number;
@@ -189,9 +193,14 @@ interface PoliciesConfig {
   readonly plagiarismCorpusSize?: number;
   /**
    * 2026-07-01 — Interrupteur dédié « auto-publier les news en Actualités ».
-   * Default true (undefined traité comme ON). false → news → review queue.
+   * C2 : n'agit que si publicationSansRelectureAutorisee=true ; sinon → review queue.
    */
   readonly newsAutoPublish?: boolean;
+  /**
+   * C2 (2026-11) — sans ce réglage à `true`, AUCUNE auto-publication (blog, pages, actualités),
+   * quelles que soient les deux cases ci-dessus. Absent = relecture obligatoire.
+   */
+  readonly publicationSansRelectureAutorisee?: boolean;
 }
 
 interface QualityLoopConfig {
@@ -1890,7 +1899,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     //   newsAutoPublish=false → news → review queue (modération humaine).
     const rssAutoPublishMinScore =
       policies.rssAutoPublishMinScore ?? RSS_AUTOPUBLISH_MIN_SCORE_DEFAULT;
-    const newsAutoPublishEnabled = policies.newsAutoPublish !== false; // défaut ON
+    // C2 (2026-11) : relecture d'abord. L'actualité RSS n'est plus publiée sur sa seule note ;
+    // il faut l'autorisation explicite (relecture-obligatoire.ts). Sinon → file de relecture.
+    const newsAutoPublishEnabled = autoPublicationNewsActive(policies);
     const rssAutoPublishRequested =
       isRss && newsAutoPublishEnabled && !blockingFail && score >= rssAutoPublishMinScore;
 
@@ -1921,7 +1932,8 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // 2026-07-01 — Les NEWS (`blog_from_rss`) sont EXCLUES du full-auto global :
     // elles ont leur gate dédié `rssAutoPublishRequested` (toggle newsAutoPublish).
     // Sinon une news se publierait via le full-auto même toggle news désactivé.
-    const fullAutoPublishEnabled = policies.factoryAutoPublishAllBlogTypes !== false;
+    // C2 (2026-11) : idem pour tous les autres types (blog, pages gabaritées…).
+    const fullAutoPublishEnabled = autoPublicationBlogActive(policies);
     const fullAutoPublishRequested =
       !isRss && fullAutoPublishEnabled && !blockingFail && score >= qualityThreshold;
 
@@ -2053,6 +2065,18 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       if (process.env.NODE_ENV !== "production") {
         console.warn(`[content-gen-worker] reviewQueue create skipped (likely retry):`, err);
       }
+    }
+
+    if (nextStatus === "needs_review") {
+      // C2 : après « Demander des modifications » (fiche `needs_edits`) puis régénération, la
+      // création ci-dessus échoue (la ligne existe) : sans cette remise la fiche resterait en
+      // `needs_edits`, état que ni approuver ni refuser n'acceptent.
+      await prisma.reviewQueue
+        .updateMany({
+          where: { jobId: contentGenJobId, status: "needs_edits" },
+          data: { status: "pending", reviewedBy: null, reviewedAt: null },
+        })
+        .catch(() => undefined);
     }
 
     if (nextStatus === "approved") {

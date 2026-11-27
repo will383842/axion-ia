@@ -247,6 +247,7 @@ import { planResiliation, executerResiliation } from "../resiliation";
 import { alerterDeclarationsSansReponse } from "../attribution-annonce";
 import { regleDe } from "../regle-attribution";
 import { envoyer } from "../envois";
+import { prisma } from "@/lib/prisma";
 
 const JOUR = 86_400_000;
 const j = (d: Date, n: number) => new Date(d.getTime() + n * JOUR);
@@ -1103,5 +1104,58 @@ describe("alerte interne « déclaration sans réponse » : le texte suit la rè
     db.pres.push(pres({ recueAt: j(MAINT, -16) }));
     await alerterDeclarationsSansReponse(MAINT);
     expect(String(db.alertes[0]!.payload.message)).toMatch(/réputée confirmée/);
+  });
+});
+
+describe("surveillance du passage (#2464, points 5, 10 et 22)", () => {
+  it("point 22 : une ligne échue en erreur n'arrête pas les suivantes ; compteur et alerte", async () => {
+    db.pres.push(pres(), pres({ id: "P2" }));
+    db.res.push(reservation(), reservation({ presentationId: "P2" }));
+    vi.mocked(prisma.$transaction).mockImplementationOnce(async () => {
+      throw new Error("base indisponible");
+    });
+    const b = await passerReseauApporteurs(MAINT);
+    expect(b.erreurs).toBe(1);
+    expect(b.reservationsEchues).toBe(1);
+    expect(db.pres.map((p) => p.statut).sort()).toEqual(["reservee", "terminee"]);
+    // Rejouée : la ligne en erreur est reprise au passage suivant.
+    const b2 = await passerReseauApporteurs(j(MAINT, 1));
+    expect(b2.reservationsEchues).toBe(1);
+    expect(db.pres.map((p) => p.statut)).toEqual(["terminee", "terminee"]);
+  });
+
+  it("point 5 : une étape en erreur prévient Williams, une fois par jour, jamais l'apporteur", async () => {
+    vi.mocked(prisma.presentationReservation.findMany).mockRejectedValueOnce(new Error("boum"));
+    const b1 = await passerReseauApporteurs(MAINT);
+    expect(b1.erreurs).toBeGreaterThan(0);
+    const alertes = () =>
+      db.alertes.filter((a) => a.jobId.startsWith("apporteur-surveillance-etape-"));
+    expect(alertes().length).toBeGreaterThan(0);
+    const avant = alertes().length;
+    // Même jour, même panne : pas de seconde alerte (clé du jour).
+    vi.mocked(prisma.presentationReservation.findMany).mockRejectedValueOnce(new Error("boum"));
+    await passerReseauApporteurs(new Date(MAINT.getTime() + 3_600_000));
+    expect(alertes()).toHaveLength(avant);
+    expect(alertes().every((a) => a.to === "williams@x.test")).toBe(true);
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("point 10 : « à vérifier » depuis plus de 2 jours ouvrés alerte en interne ; avant, silence", async () => {
+    const signe = new Date("2026-12-14T09:00:00Z"); // lundi ; échéance : mercredi 16
+    const lire = vi.mocked(prisma.apporteurReseau.findMany);
+    const impl = async (a: { where?: { statut?: string } }) =>
+      a?.where?.statut === "a_verifier" ? [{ id: "APP9", signeParApporteurAt: signe }] : [];
+    lire.mockImplementation(impl as never);
+    try {
+      await passerReseauApporteurs(new Date("2026-12-16T08:00:00Z"));
+      expect(db.alertes.filter((a) => a.jobId.includes("a-verifier"))).toHaveLength(0);
+      await passerReseauApporteurs(MAINT); // 20 décembre
+      const al = db.alertes.filter((a) => a.jobId.includes("a-verifier"));
+      expect(al).toHaveLength(1);
+      expect(al[0]).toMatchObject({ gabarit: "qualiopi-alerte-interne", to: "williams@x.test" });
+      expect(envoyer).not.toHaveBeenCalled();
+    } finally {
+      lire.mockImplementation((async () => []) as never);
+    }
   });
 });

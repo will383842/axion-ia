@@ -76,6 +76,11 @@ export const env = createEnv({
     // comporte EXACTEMENT comme avant le lot. Rollback = repasser à "false".
     // Optionnelles toutes les quatre : un site sans CRM doit démarrer.
     CRM_SYNC_ENABLED: z.enum(["true", "false"]).optional(),
+    // ── Gabarits d'articles de blog (chantier gabarits-articles, PR S1) ─────
+    // Éteint par défaut : SEULE la valeur exacte "true" allume les nouveaux
+    // gabarits (lue par `gabaritsV2Actifs()`, côté serveur, à chaque rendu).
+    // Toute autre valeur = pages actuelles, balisage identique.
+    BLOG_GABARITS_V2: z.enum(["true", "false"]).optional(),
     // ── Chantier visio (PR 4, 2026-09-29) — balayage du dossier client ──────
     // Lu par le WORKER seulement. Le worker et son entrée répétable tournent
     // TOUJOURS (ils portent l'enregistreur : clôture d'office, purges, témoin de
@@ -157,6 +162,14 @@ export const env = createEnv({
     // Challenges d'apporteurs (invitation libre) : absents = éteints, valeur exacte "true".
     APPORTEUR_CHALLENGES_CONSOLE_ENABLED: z.string().optional(),
     APPORTEUR_CHALLENGES_ESPACE_ENABLED: z.string().optional(),
+    // Déclarés pour être documentés (#2464, point 26) ; leur COMPORTEMENT n'est pas changé : ils
+    // restent lus par `process.env`, absents = éteints, seule « true » allume. Texte libre.
+    // APPORTEURS_EMAIL_REFUS : site (à allumer APRÈS le worker, cf. `refus-annonce.ts`).
+    APPORTEURS_EMAIL_REFUS: z.string().optional(),
+    // APPORTEUR_CHANGEMENT_IBAN_ENABLED : site (cf. `interrupteur-changement-iban.ts`).
+    APPORTEUR_CHANGEMENT_IBAN_ENABLED: z.string().optional(),
+    // RESERVATION_DIRECTE_ACTIVE : site.
+    RESERVATION_DIRECTE_ACTIVE: z.string().optional(),
     // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
     // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
     // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
@@ -812,6 +825,7 @@ export const env = createEnv({
     MAILWIZZ_API_URL: process.env.MAILWIZZ_API_URL,
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
+    BLOG_GABARITS_V2: process.env.BLOG_GABARITS_V2,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
     CONTENT_PORTE_OBSERVATION: process.env.CONTENT_PORTE_OBSERVATION,
     EMAIL_MANUEL_ACTIF: process.env.EMAIL_MANUEL_ACTIF,
@@ -841,6 +855,9 @@ export const env = createEnv({
     APPORTEUR_MES_COMMISSIONS_ENABLED: process.env.APPORTEUR_MES_COMMISSIONS_ENABLED,
     APPORTEUR_CHALLENGES_CONSOLE_ENABLED: process.env.APPORTEUR_CHALLENGES_CONSOLE_ENABLED,
     APPORTEUR_CHALLENGES_ESPACE_ENABLED: process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED,
+    APPORTEURS_EMAIL_REFUS: process.env.APPORTEURS_EMAIL_REFUS,
+    APPORTEUR_CHANGEMENT_IBAN_ENABLED: process.env.APPORTEUR_CHANGEMENT_IBAN_ENABLED,
+    RESERVATION_DIRECTE_ACTIVE: process.env.RESERVATION_DIRECTE_ACTIVE,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
