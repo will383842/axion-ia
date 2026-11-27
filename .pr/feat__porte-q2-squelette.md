@@ -28,10 +28,10 @@ Un nouveau dossier `src/server/content-gen/porte-qualite/`, sans aucune entrée 
 
 ## Comment vérifier
 
-`pnpm vitest run src/server/content-gen/porte-qualite` (98 tests), `pnpm typecheck` (aucune erreur dans le dossier ; les autres erreurs viennent du client Prisma non généré dans cet environnement), `prettier --check`.
+`pnpm vitest run src/server/content-gen/porte-qualite` (99 tests), `pnpm typecheck` (aucune erreur dans le dossier ; les autres erreurs viennent du client Prisma non généré dans cet environnement), `prettier --check`.
 
 ## Relecture
 
-Trois relectures Opus. La troisième a relevé trois points (B03 qui mélangeait titres et paragraphes, page propriétaire inconnue sautée en silence, option publique `idsAttendus`), corrigés ensuite, **sans nouvelle relecture** (plafond de trois tours atteint).
+Quatre relectures Opus. La troisième a relevé trois points, corrigés ; la quatrième (sur le code corrigé) en a relevé deux : un champ supplémentaire portant le nom d'un champ propre était perdu en silence (maintenant préfixé `supp:`), et une page propriétaire vide était lue comme « pas de page » (maintenant non évaluée). Une date inexistante (« 2026-02-30 ») est aussi refusée. La relecture finale n'a trouvé aucun défaut bloquant ; seuls un test et cette fiche ont changé depuis.
 
-VERDICT OPUS : À CORRIGER
+VERDICT OPUS : BON

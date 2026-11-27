@@ -51,7 +51,7 @@ describe("B01 doctrine (appelle interdits-publication, ne la copie pas)", () => 
       "echec",
     );
   });
-  it("un champ supplémentaire sale sous un nom propre n'est jamais perdu (B01 et B03)", () => {
+  it("un champ supplémentaire sale sous un nom propre n'est jamais perdu (B01)", () => {
     expect(
       r("B01", { champsSupplementaires: { corps: "Grenoble", titre: "Qualiopi" } }).statut,
     ).toBe("echec");
@@ -275,6 +275,7 @@ describe("B14 auteur et dates honnêtes", () => {
     expect(r("B14", { auteur: null }).statut).toBe("echec");
     expect(r("B14", { datePublished: null }).statut).toBe("echec");
     expect(r("B14", { datePublished: "pas une date" }).statut).toBe("echec");
+    expect(r("B14", { datePublished: "2026-02-30" }).statut).toBe("echec");
   });
   it("refuse un faux auteur (personne non réelle)", () => {
     expect(r("B14", { auteur: { nom: "Marie Durand", type: "Person", reel: false } }).statut).toBe(
