@@ -144,6 +144,11 @@ export function noteValide(note: number): boolean {
   return Number.isFinite(note) && note >= 0 && note <= 100;
 }
 
+/** Une section n'est localisée que si elle est non vide. */
+function sectionLocalisee(section: string | undefined): section is string {
+  return section !== undefined && section.trim() !== "";
+}
+
 /** Numéro de la tentative en cours (1 = premier passage), d'après l'unique compteur. */
 export function tentativeEnCours(reecrituresFaites: number): number {
   return reecrituresFaites + 1;
@@ -186,7 +191,11 @@ export function publicationAutorisee(resultat: ResultatAppelPorte): boolean {
   if (resultat.etat !== "ok") return false;
   const { sortie } = resultat;
   if (!noteValide(sortie.note)) return false;
-  return sortie.verdict === "publiable" && defautsBloquants(sortie).length === 0;
+  return (
+    sortie.verdict === "publiable" &&
+    sortie.note >= SEUIL_PUBLICATION_DEPART &&
+    defautsBloquants(sortie).length === 0
+  );
 }
 
 // ─── Enregistrement des refus (porte → ContenuRefus) ─────────────────────────
@@ -223,8 +232,9 @@ export interface ContexteRefus {
  * - une par bloquant EN ÉCHEC (B17 exclu : c'est un report) ;
  * - un bloquant « non évalué » n'est PAS un refus (c'est une panne de source :
  *   elle ne doit pas fausser les statistiques de refus) ;
- * - si le verdict n'est pas publiable alors qu'aucun bloquant n'est en défaut
- *   (note sous le seuil), une ligne `autre` sans critère, pour que ce refus ne
+ * - note invalide : aucune ligne (panne, mise en attente) ;
+ * - si le verdict n'est pas publiable alors qu'aucun refus n'a été produit
+ *   (note sous le seuil, ou B17 seul avec une note sous 70), une ligne `autre` sans critère, pour que ce refus ne
  *   se perde pas ;
  * - les avertissements ne sont jamais des refus.
  */
@@ -238,6 +248,8 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
     ...(ctx.versionPrompt !== undefined ? { versionPrompt: ctx.versionPrompt } : {}),
     ...(ctx.versionBrief !== undefined ? { versionBrief: ctx.versionBrief } : {}),
   };
+  // Note invalide : panne de la porte, pas faute du contenu (action : mise en attente).
+  if (!noteValide(sortie.note)) return [];
   const defauts = defautsBloquants(sortie);
   const refus: RefusEnregistrable[] = [];
   for (const d of defauts) {
@@ -251,7 +263,10 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
       ...(d.resultat.section !== undefined ? { section: d.resultat.section } : {}),
     });
   }
-  if (sortie.verdict !== "publiable" && defauts.length === 0) {
+  const nonEvalueHorsB17 = defauts.some((d) => d.etat === "non_evalue" && d.id !== "B17");
+  const report =
+    defauts.length > 0 && defauts.every((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE;
+  if (sortie.verdict !== "publiable" && refus.length === 0 && !nonEvalueHorsB17 && !report) {
     refus.push({
       ...base,
       code: "autre",
@@ -290,10 +305,13 @@ export type ActionApresVerdict =
  * 1. note invalide → mise en attente ;
  * 2. B17 seul en défaut, note ≥ 70 → report (ni réécriture ni abandon) ;
  * 3. publiable et sans défaut → relecture humaine (jamais de publication directe) ;
- * 4. bloquant (hors B17) non évalué ou absent, sans échec → mise en attente ;
- * 5. plafond de réécritures ou de coût atteint → abandon `plafond_atteint` ;
- * 6. échec dur ou corrigeable sans section en cause → abandon (non localisable) ;
- * 7. seuls des dérogeables en échec → `derogation_ou_fusion` ;
+ * 4. bloquant (hors B17) non évalué ou absent, sans échec → mise en attente,
+ *    sauf B04 seul : relecture humaine (§ 5 de la porte) ;
+ * 5. seuls des dérogeables en échec → `derogation_ou_fusion` (avant le plafond :
+ *    une dérogation ne consomme pas de réécriture) ;
+ * 6. plafond de réécritures ou de coût atteint, ou compteur invalide → abandon
+ *    `plafond_atteint` ;
+ * 7. échec dur ou corrigeable sans section non vide → abandon (non localisable) ;
  * 8. sinon réécriture ciblée des sections en cause (échecs bloquants non
  *    dérogeables) ; sans aucun bloquant en échec (note basse), les corrections
  *    viennent des avertissements localisés, à défaut → abandon `autre`.
@@ -315,23 +333,35 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   );
   const nonEvalues = defauts.filter((d) => d.etat === "non_evalue" && d.id !== "B17");
   if (echecs.length === 0 && nonEvalues.length > 0) {
+    // § 5 de la porte : « B04 non évalué = relecture humaine » (liste réglementaire pas encore activée).
+    // Cette relecture est un autre chemin que `publicationAutorisee` (qui exige B04 « ok »).
+    if (nonEvalues.every((d) => d.id === "B04")) return { action: "relecture_humaine" };
     return { action: "mettre_en_attente", criteres: nonEvalues.map((d) => d.id) };
   }
-  if (etat.reecrituresFaites >= MAX_REECRITURES || etat.coutUsd >= PLAFOND_COUT_USD) {
+  const aCorriger = echecs.filter((d) => CLASSE_CRITERE[d.id] !== "derogeable");
+  // Une dérogation ne consomme aucune réécriture : elle passe avant le plafond.
+  if (echecs.length > 0 && aCorriger.length === 0) {
+    return { action: "derogation_ou_fusion", criteres: echecs.map((d) => d.id) };
+  }
+  // Compteurs corrompus (NaN, négatif) : plafond atteint, jamais « illimité » (échec fermé).
+  const compteurOk =
+    Number.isInteger(etat.reecrituresFaites) &&
+    etat.reecrituresFaites >= 0 &&
+    Number.isFinite(etat.coutUsd) &&
+    etat.coutUsd >= 0;
+  if (
+    !compteurOk ||
+    etat.reecrituresFaites >= MAX_REECRITURES ||
+    etat.coutUsd >= PLAFOND_COUT_USD
+  ) {
     return { action: "abandonner", code: "plafond_atteint" };
   }
-  const sansSection = echecs.find(
-    (d) => CLASSE_CRITERE[d.id] !== "derogeable" && d.resultat.section === undefined,
-  );
+  const sansSection = aCorriger.find((d) => !sectionLocalisee(d.resultat.section));
   if (sansSection) {
     return {
       action: "abandonner",
       code: codePourCritere(sansSection.id, sansSection.resultat.precision),
     };
-  }
-  const aCorriger = echecs.filter((d) => CLASSE_CRITERE[d.id] !== "derogeable");
-  if (echecs.length > 0 && aCorriger.length === 0) {
-    return { action: "derogation_ou_fusion", criteres: echecs.map((d) => d.id) };
   }
   if (aCorriger.length > 0) {
     return {
@@ -345,7 +375,7 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   }
   const avertissements = sortie.criteres.filter(
     (c): c is ResultatCritere & { section: string } =>
-      !estCritereBloquant(c.id) && c.etat === "echec" && c.section !== undefined,
+      !estCritereBloquant(c.id) && c.etat === "echec" && sectionLocalisee(c.section),
   );
   if (avertissements.length === 0) return { action: "abandonner", code: "autre" };
   return {

@@ -116,9 +116,9 @@ export type CritereBloquant = (typeof CRITERES_BLOQUANTS)[number];
  * - B02 : `fait_non_source` si la source manque, `chiffre_retire` si le chiffre
  *   n'est pas retrouvé dans la source.
  * - B08 : ÉCART ASSUMÉ avec le § 8 de la chaîne (qui dit `style`) : le défaut est
- *   `reponse_directe_absente`, code demandé par C4 ; le § 8 doit être mis à jour.
- *   `reponse_directe_absente` (C4) ; `style` si la réponse existe mais est
- *   mal formée (hors fourchette de 40 à 60 mots, trop tardive).
+ *   `reponse_directe_absente`, code demandé par C4 (le § 8 doit être mis à jour) ;
+ *   `style` si la réponse existe mais est mal formée (hors fourchette de 40 à
+ *   60 mots, trop tardive).
  * - B11 : `style` par défaut ; `longueur_hors_fourchette` ou `structure_titres`
  *   (H1 unique, 3 à 8 H2) quand la complétude échoue pour l'une de ces causes.
  * - Autres écarts avec le § 5.1 de la porte, où la chaîne prime : B05, B06

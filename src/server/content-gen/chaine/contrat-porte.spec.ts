@@ -274,15 +274,28 @@ describe("actionApresVerdict", () => {
   });
 
   it("bloquant non évalué (source indisponible) seul → mise en attente, ni refus ni abandon", () => {
-    const s = sortie("bloque", [{ id: "B04", etat: "non_evalue", preuve: "", raison: "" }]);
+    const s = sortie("bloque", [{ id: "B02", etat: "non_evalue", preuve: "", raison: "" }]);
     expect(actionApresVerdict(s, debut)).toEqual({
       action: "mettre_en_attente",
-      criteres: ["B04"],
+      criteres: ["B02"],
     });
     // même au plafond : l'attente ne détruit pas le contenu
     expect(actionApresVerdict(s, { reecrituresFaites: 2, coutUsd: 9 }).action).toBe(
       "mettre_en_attente",
     );
+  });
+
+  it("B04 non évalué seul → relecture humaine (§ 5 de la porte) ; avec un autre non évalué → attente", () => {
+    const b04 = { id: "B04", etat: "non_evalue", preuve: "", raison: "" } as const;
+    expect(actionApresVerdict(sortie("bloque", [b04]), debut)).toEqual({
+      action: "relecture_humaine",
+    });
+    expect(
+      actionApresVerdict(
+        sortie("bloque", [b04, { id: "B02", etat: "non_evalue", preuve: "", raison: "" }]),
+        debut,
+      ).action,
+    ).toBe("mettre_en_attente");
   });
 
   it("critères absents de la sortie → mise en attente (échec fermé)", () => {
@@ -337,6 +350,67 @@ describe("actionApresVerdict", () => {
   it("B17 avec une note sous 70 → pas de report", () => {
     const r = actionApresVerdict(sortie("bloque", [echec("B17")], 60), debut);
     expect(r.action).not.toBe("reporter");
+  });
+});
+
+describe("cas limites des compteurs, notes et sections", () => {
+  const ctx = { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 };
+  const loc = sortie("a_corriger", [echec("B10", { section: "fin" })], 80);
+
+  it("compteur corrompu (NaN, négatif, fractionnaire) → plafond atteint, jamais illimité", () => {
+    for (const etat of [
+      { reecrituresFaites: Number.NaN, coutUsd: 0 },
+      { reecrituresFaites: -1, coutUsd: 0 },
+      { reecrituresFaites: 0.5, coutUsd: 0 },
+      { reecrituresFaites: 0, coutUsd: Number.NaN },
+      { reecrituresFaites: 0, coutUsd: -2 },
+    ]) {
+      expect(actionApresVerdict(loc, etat)).toEqual({
+        action: "abandonner",
+        code: "plafond_atteint",
+      });
+    }
+  });
+
+  it("dérogeable seul à 2 réécritures → décision humaine, pas plafond_atteint", () => {
+    expect(
+      actionApresVerdict(sortie("a_corriger", [echec("B05")], 88), {
+        reecrituresFaites: 2,
+        coutUsd: 1,
+      }),
+    ).toEqual({ action: "derogation_ou_fusion", criteres: ["B05"] });
+  });
+
+  it("section vide ou d'espaces → non localisée → abandon", () => {
+    for (const section of ["", "   "]) {
+      expect(
+        actionApresVerdict(sortie("a_corriger", [echec("B10", { section })], 80), {
+          reecrituresFaites: 0,
+          coutUsd: 0,
+        }),
+      ).toEqual({ action: "abandonner", code: "appel_incoherent" });
+    }
+  });
+
+  it("note invalide : aucune ligne de refus (panne, pas faute du contenu)", () => {
+    expect(refusDepuisVerdict(sortie("bloque", [echec("B01")], Number.NaN), ctx)).toEqual([]);
+    expect(refusDepuisVerdict(sortie("a_corriger", [], 120), ctx)).toEqual([]);
+  });
+
+  it("B17 seul avec note sous 70 : l'abandon est enregistré (ligne « autre »)", () => {
+    const r = refusDepuisVerdict(sortie("bloque", [echec("B17")], 60), ctx);
+    expect(r).toHaveLength(1);
+    expect(r[0]?.code).toBe("autre");
+  });
+
+  it("un non évalué hors B17 sans échec n'ajoute pas de ligne « autre »", () => {
+    const s = sortie("bloque", [{ id: "B02", etat: "non_evalue", preuve: "", raison: "" }], 60);
+    expect(refusDepuisVerdict(s, ctx)).toEqual([]);
+  });
+
+  it("publiable avec une note sous le seuil de départ n'est pas publiable", () => {
+    expect(publicationAutorisee({ etat: "ok", sortie: sortie("publiable", [], 40) })).toBe(false);
+    expect(publicationAutorisee({ etat: "ok", sortie: sortie("publiable", [], 85) })).toBe(true);
   });
 });
 
