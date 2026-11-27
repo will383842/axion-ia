@@ -42,6 +42,9 @@ import {
   type SignauxArticle,
 } from "@/server/content-gen/equipe/suivi-publication";
 import { chargerCarteRequetes } from "@/server/content-gen/strategie/carte-requetes-source";
+import { normaliserUrl, type CarteRequetes } from "@/server/content-gen/strategie/carte-requetes";
+import { executerMiseAJour } from "@/server/content-gen/equipe/mise-a-jour";
+import { dependancesReelles } from "@/server/content-gen/equipe/mise-a-jour-reel";
 
 const QUEUE_NAME = "content-refresh";
 const DEFAULT_OLDER_THAN_DAYS = 14;
@@ -56,7 +59,7 @@ interface RefreshJobData {
    * absent = scan de rafraîchissement, comme avant. Les autres tâches ne
    * s'exécutent que si CONTENT_EQUIPE_EDITORIALE=true.
    */
-  readonly tache?: "suivi-publication" | "liens-hebdo";
+  readonly tache?: "suivi-publication" | "liens-hebdo" | "mise-a-jour";
 }
 
 export interface ContentRefreshResult {
@@ -65,6 +68,8 @@ export interface ContentRefreshResult {
   readonly refreshedCount: number;
   readonly checkedAt: string;
   readonly suivi?: Readonly<Record<string, number>>;
+  /** Mode « mise à jour » (équipe éditoriale) : nombre d'articles par issue. */
+  readonly miseAJour?: Readonly<Record<string, number>>;
 }
 
 const ENABLED_ENV = process.env.CONTENT_REFRESH_ENABLED === "true";
@@ -178,6 +183,84 @@ async function runTacheEquipe(
   return { ...base, flaggedCount: casses, suivi: { liensCasses: casses } };
 }
 
+/** Mot-clé principal d'une URL d'après la carte des requêtes (premier par ordre alphabétique). */
+function motClePrincipal(carte: CarteRequetes, url: string): string | null {
+  const u = normaliserUrl(url);
+  const cles = [...carte.carte.entries()].filter(([, v]) => v === u).map(([k]) => k);
+  return cles.sort()[0] ?? null;
+}
+
+interface Retenu {
+  readonly id: string;
+  readonly isNews: boolean;
+  readonly templateVariant: string | null;
+  readonly translations: ReadonlyArray<{ slug: string; title?: string; body?: string }>;
+}
+
+/** Une mise à jour par article retenu ; le quota du jour est contrôlé dans `executerMiseAJour`. */
+async function miseAJourRetenus(
+  retenus: readonly Retenu[],
+  carte: CarteRequetes,
+  maintenant: Date,
+): Promise<Record<string, number>> {
+  const bilan: Record<string, number> = {};
+  for (const a of retenus) {
+    const t = a.translations[0];
+    const url = urlArticle(a);
+    const motCle = url ? motClePrincipal(carte, url) : null;
+    if (!t?.slug || !t.body || !url || !motCle) {
+      bilan["ignore"] = (bilan["ignore"] ?? 0) + 1;
+      continue;
+    }
+    try {
+      const deps = await dependancesReelles({
+        maintenant,
+        articleId: a.id,
+        titre: t.title ?? motCle,
+        carte,
+        urlDe: async (id) => {
+          const x = await prisma.article.findUnique({
+            where: { id },
+            select: {
+              isNews: true,
+              templateVariant: true,
+              translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
+            },
+          });
+          return x ? (urlArticle(x) ?? undefined) : undefined;
+        },
+      });
+      const r = await executerMiseAJour(
+        {
+          article: { id: a.id, slug: t.slug, motCle, html: t.body },
+          brief: {
+            motCle,
+            intention: "information",
+            requetesSecondaires: [],
+            champSemantique: [],
+            entites: [],
+            questions: [],
+            urlCible: url,
+            cluster: "mise-a-jour",
+            type: "mise-a-jour",
+          },
+          raisons: [],
+        },
+        deps,
+      );
+      bilan[r.statut] = (bilan[r.statut] ?? 0) + 1;
+      console.log(
+        `[content-refresh] mise à jour ${t.slug} : ${r.statut}${r.raison ? ` — ${r.raison}` : ""}`,
+      );
+      if (r.statut === "quota") break;
+    } catch (err) {
+      bilan["erreur"] = (bilan["erreur"] ?? 0) + 1;
+      console.error(`[content-refresh] mise à jour ${t.slug} en erreur :`, err);
+    }
+  }
+  return bilan;
+}
+
 async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshResult> {
   const checkedAt = new Date().toISOString();
   if (!ENABLED_ENV) {
@@ -185,7 +268,7 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     return { scannedCount: 0, flaggedCount: 0, refreshedCount: 0, checkedAt };
   }
 
-  if (job.data.tache && equipeEditorialeActive()) {
+  if (job.data.tache && job.data.tache !== "mise-a-jour" && equipeEditorialeActive()) {
     return runTacheEquipe(job.data.tache, checkedAt);
   }
 
@@ -213,7 +296,11 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
         updatedAt: true,
         isNews: true,
         templateVariant: true,
-        translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
+        translations: {
+          where: { locale: "fr" },
+          select: { slug: true, title: true, body: true },
+          take: 1,
+        },
       },
     })
     .catch(() => []);
@@ -258,6 +345,12 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     const ids = new Set(choisis);
     retenus = stale.filter((a) => ids.has(a.id));
   }
+  // Mode « mise à jour » : seulement interrupteur allumé ET tâche demandée. Sinon, comme avant.
+  let miseAJour: Record<string, number> | undefined;
+  if (equipe && job.data.tache === "mise-a-jour") {
+    const carte = await chargerCarteRequetes().catch(() => null);
+    if (carte) miseAJour = await miseAJourRetenus(retenus, carte, new Date(now));
+  }
   const candidates = retenus.map((a) => ({
     slug: a.translations[0]?.slug ?? a.id,
     ageDays: Math.round((now - a.updatedAt.getTime()) / (24 * 60 * 60 * 1000)),
@@ -278,8 +371,9 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
   return {
     scannedCount: stale.length,
     flaggedCount: candidates.length,
-    refreshedCount: 0,
+    refreshedCount: miseAJour?.["mis-a-jour"] ?? 0,
     checkedAt,
+    ...(miseAJour ? { miseAJour } : {}),
   };
 }
 
