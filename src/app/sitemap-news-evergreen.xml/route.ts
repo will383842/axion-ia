@@ -38,7 +38,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
 // Fenêtre evergreen : ~90 jours (bien au-delà des 48h Google News). Au-delà,
-// l'actu reste indexable mais sort de ce sitemap (crawl-budget concentré).
+// l'actu est archivée (page « retirée » en noindex) et sort de ce sitemap.
 const EVERGREEN_WINDOW_MS = 90 * 24 * 60 * 60 * 1000;
 
 // Cap défensif (best-practice ≤ 1000 URLs/sub-sitemap, cohérent avec les autres

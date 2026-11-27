@@ -30,7 +30,7 @@
  * elle-même.
  */
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -157,12 +157,31 @@ describe("sub-sitemaps — pas de doublon à une URL (GEO-147)", () => {
  * S2-1 et S2-2 : tant que le module n'existe pas dans l'arbre, la ligne est
  * ignorée ; dès qu'il existe, la ligne devient exigeante (aucun retour arrière).
  */
-import { existsSync } from "node:fs";
+
+/**
+ * Retire les commentaires en traitant d'abord les `//` : un `/*` qui apparaît DANS un
+ * commentaire de ligne (ex. `// … /en/gallery/étoile …`) ne doit pas ouvrir un faux bloc qui
+ * avalerait le code jusqu'à la prochaine fin de bloc.
+ */
+export function sansCommentairesStrict(src: string): string {
+  return src.replace(/(^|[^:])\/\/[^\n]*/g, "$1").replace(/\/\*[\s\S]*?\*\//g, "");
+}
+
+describe("S2-4 · sansCommentairesStrict", () => {
+  it("un /* dans un commentaire de ligne n'avale pas le code", () => {
+    expect(sansCommentairesStrict("// a /en/x/* b\nconst a = 1; /* c */ const b = 2;")).toContain(
+      "const a = 1;",
+    );
+  });
+});
 
 interface Famille {
   nom: string;
   /** Fonction (ou jeton) que la page ET le plan du site doivent tous deux appeler. */
   jeton: string;
+  /** Jeton propre à la page / au plan du site si l'appel diffère (défaut : `jeton`). */
+  jetonPage?: string;
+  jetonPlan?: string;
   page: string;
   plans: string[];
   /** Si renseigné, la ligne n'est exigée que si ce fichier existe (PR S2-1 / S2-2). */
@@ -185,15 +204,18 @@ const FAMILLES: Famille[] = [
   {
     nom: "FAQ",
     jeton: "isFaqItemIndexable",
+    jetonPage: "isFaqItemIndexable(",
+    jetonPlan: "filter(isFaqItemIndexable)",
     page: "src/app/[locale]/faq/[slug]/page.tsx",
     plans: ["src/app/sitemap.ts"],
   },
   {
     nom: "livres",
     jeton: "estPublie",
+    jetonPage: "estPublie(",
+    jetonPlan: "livresPublies(",
     page: "src/app/[locale]/livres/[slug]/page.tsx",
-    // `livresPublies()` est défini comme `LIVRES.filter(estPublie)` (src/content/livres.ts).
-    plans: ["src/content/livres.ts"],
+    plans: ["src/app/sitemap.ts"],
   },
   {
     nom: "galerie",
@@ -215,15 +237,18 @@ describe("S2-4 · la page et le plan du site appellent le même prédicat d'inde
   for (const f of FAMILLES) {
     const actif = !f.exigeSiExiste || existsSync(path.join(process.cwd(), f.exigeSiExiste));
     (actif ? it : it.skip)(`${f.nom} : ${f.jeton}`, () => {
-      const page = sansCommentaires(source(f.page));
+      const page = sansCommentairesStrict(source(f.page));
       expect(page.length, `${f.page} lu vide`).toBeGreaterThan(200);
-      expect(page.includes(f.jeton), `${f.page} n'appelle plus ${f.jeton}`).toBe(true);
+      expect(
+        page.includes(f.jetonPage ?? f.jeton),
+        `${f.page} n'appelle plus ${f.jetonPage ?? f.jeton}`,
+      ).toBe(true);
       for (const plan of f.plans) {
-        const src = sansCommentaires(source(plan));
+        const src = sansCommentairesStrict(source(plan));
         expect(src.length, `${plan} lu vide`).toBeGreaterThan(200);
         expect(
-          src.includes(f.jeton),
-          `${plan} n'appelle plus ${f.jeton} : le plan du site peut annoncer des pages noindex ` +
+          src.includes(f.jetonPlan ?? f.jeton),
+          `${plan} n'appelle plus ${f.jetonPlan ?? f.jeton} : le plan du site peut annoncer des pages noindex ` +
             `(famille ${f.nom}).`,
         ).toBe(true);
       }
@@ -231,12 +256,18 @@ describe("S2-4 · la page et le plan du site appellent le même prédicat d'inde
   }
 
   it("blog : le plan du site ne retient que tier-1 + note ≥ 70, la page déduit son robots du tier", () => {
-    const sitemap = sansCommentaires(source("src/app/sitemap.ts"));
-    const page = sansCommentaires(source("src/app/[locale]/blog/[slug]/page.tsx"));
+    const sitemap = sansCommentairesStrict(source("src/app/sitemap.ts"));
+    const page = sansCommentairesStrict(source("src/app/[locale]/blog/[slug]/page.tsx"));
     expect(sitemap).toContain('indexationTier: "tier_1_indexable"');
     expect(sitemap).toContain("BLOG_SITEMAP_MIN_QUALITY_SCORE");
     expect(page).toContain('view.tier === "tier-2-noindex-follow"');
     expect(page).toContain('view.tier === "tier-3-noindex-nofollow"');
+  });
+
+  it("livres : `livresPublies()` filtre bien sur `estPublie` (même règle que la page)", () => {
+    expect(sansCommentairesStrict(source("src/content/livres.ts"))).toContain(
+      "LIVRES.filter(estPublie)",
+    );
   });
 
   it("commentaires périmés corrigés (S2-4)", () => {
@@ -245,6 +276,9 @@ describe("S2-4 · la page et le plan du site appellent le même prédicat d'inde
     expect(brut("src/app/sitemap.ts")).not.toContain("Les pages restent LIVE + indexables");
     expect(brut("src/app/sitemap-news-evergreen.xml/route.ts")).not.toContain(
       "l'actu reste LIVE + indexable",
+    );
+    expect(brut("src/app/sitemap-news-evergreen.xml/route.ts")).not.toContain(
+      "l'actu reste indexable",
     );
     expect(brut("src/app/[locale]/presse/[slug]/page.tsx")).not.toContain("body < 250 mots");
   });
