@@ -93,7 +93,7 @@ CREATE UNIQUE INDEX "lots_releve_mensuel_un_en_cours"
 -- PDF ne changent ; un relevé `envoye` ne revient jamais à un autre statut. Une erreur se corrige par un rectificatif.
 CREATE FUNCTION "releves_mensuels_apporteur_garde_update"() RETURNS trigger AS $$
 BEGIN
-  IF OLD."statut" <> 'prepare'
+  IF (OLD."statut" <> 'prepare' OR OLD."pris_at" IS NOT NULL OR OLD."email_job_id" IS NOT NULL)
      AND (NEW."numero" IS DISTINCT FROM OLD."numero"
           OR NEW."apporteur_id" IS DISTINCT FROM OLD."apporteur_id"
           OR NEW."periode" IS DISTINCT FROM OLD."periode"
@@ -102,16 +102,27 @@ BEGIN
           OR NEW."contenu" IS DISTINCT FROM OLD."contenu"
           OR NEW."empreinte_sha256" IS DISTINCT FROM OLD."empreinte_sha256"
           OR NEW."pdf_r2_key" IS DISTINCT FROM OLD."pdf_r2_key"
-          OR NEW."pdf_sha256" IS DISTINCT FROM OLD."pdf_sha256") THEN
+          OR NEW."pdf_sha256" IS DISTINCT FROM OLD."pdf_sha256"
+          OR (OLD."pris_at" IS NOT NULL AND NEW."pris_at" IS DISTINCT FROM OLD."pris_at")
+          OR (OLD."email_job_id" IS NOT NULL AND NEW."email_job_id" IS DISTINCT FROM OLD."email_job_id")) THEN
     RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé qui n''est plus « prepare » est figé (rectificatif requis)';
   END IF;
   IF OLD."statut" = 'envoye' AND NEW."statut" <> 'envoye' THEN
     RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé envoyé ne change plus de statut';
   END IF;
   -- Un relevé pris pour envoi ne revient jamais à « prepare » (sinon le contenu serait réécrit après coup).
-  -- `ecarte` → `prepare` (désécarter) reste permis : une ligne écartée n'est jamais partie.
   IF OLD."statut" IN ('envoi_en_cours', 'echec', 'envoye') AND NEW."statut" = 'prepare' THEN
     RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé pris pour envoi ne revient jamais à « prepare »';
+  END IF;
+  -- Une ligne en plein envoi (e-mail peut-être déjà enfilé) ne s'écarte pas : seule la reprise (§ 6.4) tranche
+  -- entre `envoye` et `echec`. Sans cela : envoi_en_cours → ecarte → prepare contournait le figement.
+  IF OLD."statut" = 'envoi_en_cours' AND NEW."statut" = 'ecarte' THEN
+    RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé en cours d''envoi ne s''écarte pas';
+  END IF;
+  -- Désécarter (`ecarte` → `prepare`) n'est permis qu'à une ligne qui n'a JAMAIS été prise ni portée par un job.
+  IF NEW."statut" = 'prepare' AND OLD."statut" <> 'prepare'
+     AND (OLD."pris_at" IS NOT NULL OR OLD."email_job_id" IS NOT NULL) THEN
+    RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé déjà pris pour envoi ne revient jamais à « prepare »';
   END IF;
   RETURN NEW;
 END;
@@ -124,7 +135,7 @@ CREATE TRIGGER "releves_mensuels_apporteur_garde_update"
 -- Une ligne qui n'est plus `prepare` (pièce d'information envoyée, écartée avec motif) n'est jamais supprimée.
 CREATE FUNCTION "releves_mensuels_apporteur_refuse_delete"() RETURNS trigger AS $$
 BEGIN
-  IF OLD."statut" <> 'prepare' THEN
+  IF OLD."statut" <> 'prepare' OR OLD."pris_at" IS NOT NULL OR OLD."email_job_id" IS NOT NULL THEN
     RAISE EXCEPTION 'releves_mensuels_apporteur : suppression interdite d''un relevé qui n''est plus « prepare »';
   END IF;
   RETURN OLD;
@@ -145,5 +156,7 @@ ALTER TABLE "releves_mensuels_apporteur"
     CHECK ("statut" <> 'ecarte' OR "motif_ecart" IS NOT NULL),
   ADD CONSTRAINT "releves_mensuels_apporteur_envoye_complet"
     CHECK ("statut" <> 'envoye' OR ("envoye_at" IS NOT NULL AND "email_job_id" IS NOT NULL)),
+  ADD CONSTRAINT "releves_mensuels_apporteur_prise_tracee"
+    CHECK ("statut" NOT IN ('envoi_en_cours', 'echec', 'envoye') OR "pris_at" IS NOT NULL),
   ADD CONSTRAINT "releves_mensuels_apporteur_empreinte_format"
     CHECK ("empreinte_sha256" ~ '^[0-9a-f]{64}$');

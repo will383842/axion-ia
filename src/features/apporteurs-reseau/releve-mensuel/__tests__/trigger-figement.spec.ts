@@ -60,8 +60,31 @@ describe("trigger de figement du relevé mensuel", () => {
     );
   });
 
+  it("ferme le détour envoi_en_cours → ecarte → prepare → modification → suppression", () => {
+    // 1. on n'écarte pas une ligne en plein envoi
+    expect(garde).toMatch(
+      /OLD\."statut"\s*=\s*'envoi_en_cours'\s+AND\s+NEW\."statut"\s*=\s*'ecarte'[\s\S]*?RAISE EXCEPTION/,
+    );
+    // 2. désécarter est refusé dès que la ligne a été prise ou porte un job
+    expect(garde).toMatch(
+      /NEW\."statut"\s*=\s*'prepare'[\s\S]*?OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL[\s\S]*?RAISE EXCEPTION/,
+    );
+    // 3. une ligne prise est figée même si son statut est `prepare`, et ses traces ne s'effacent pas
+    expect(garde).toMatch(/OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL\)\s+AND \(NEW\."numero"/);
+    expect(garde).toMatch(/OLD\."pris_at" IS NOT NULL AND NEW\."pris_at" IS DISTINCT FROM OLD\."pris_at"/);
+    expect(garde).toMatch(/OLD\."email_job_id" IS NOT NULL AND NEW\."email_job_id" IS DISTINCT FROM OLD\."email_job_id"/);
+    // 4. la suppression est refusée pour une ligne prise
+    expect(corps("releves_mensuels_apporteur_refuse_delete")).toMatch(
+      /OLD\."pris_at" IS NOT NULL OR OLD\."email_job_id" IS NOT NULL/,
+    );
+    // 5. toute ligne envoi_en_cours / echec / envoye porte la trace de sa prise
+    expect(sql).toMatch(
+      /"releves_mensuels_apporteur_prise_tracee"\s+CHECK \("statut" NOT IN \('envoi_en_cours', 'echec', 'envoye'\) OR "pris_at" IS NOT NULL\)/,
+    );
+  });
+
   it("pose les contraintes CHECK et n'a pas d'index redondant sur apporteur_id", () => {
-    for (const c of ["periode_format", "rang_coherent", "ecart_motive", "envoye_complet", "empreinte_format"]) {
+    for (const c of ["periode_format", "rang_coherent", "ecart_motive", "envoye_complet", "prise_tracee", "empreinte_format"]) {
       expect(sql).toContain(`"releves_mensuels_apporteur_${c}"`);
     }
     expect(sql).not.toContain("releves_mensuels_apporteur_apporteur_id_idx");
