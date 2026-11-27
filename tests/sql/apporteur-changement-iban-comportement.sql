@@ -230,37 +230,37 @@ DECLARE
   axb1 bytea := '\x41584231' || decode(repeat('00', 40), 'hex');
   rid uuid := gen_random_uuid();
 BEGIN
-  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille)
-  VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 44);
-  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille)
-  VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 10485760);
+  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier)
+  VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 44, 'rib.pdf');
+  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier)
+  VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 10485760, 'rib.pdf');
   BEGIN
-    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille)
-    VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 10485761);
+    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier)
+    VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 10485761, 'rib.pdf');
     RAISE EXCEPTION 'AXT99 RIB au dela de 10 Mo accepte';
   EXCEPTION WHEN check_violation THEN NULL; END;
   BEGIN
-    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille)
-    VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 0);
+    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier)
+    VALUES (gen_random_uuid(), axb1, h, 'application/pdf', 0, 'rib.pdf');
     RAISE EXCEPTION 'AXT99 RIB vide accepte';
   EXCEPTION WHEN check_violation THEN NULL; END;
   -- des octets en clair (un PDF) : refuses
   BEGIN
-    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille)
-    VALUES (gen_random_uuid(), '\x255044462d312e34'::bytea, h, 'application/pdf', 8);
+    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier)
+    VALUES (gen_random_uuid(), '\x255044462d312e34'::bytea, h, 'application/pdf', 8, 'rib.pdf');
     RAISE EXCEPTION 'AXT99 RIB en clair accepte';
   EXCEPTION WHEN check_violation THEN NULL; END;
   -- purge : octets nuls ET purge_at pose, ensemble ; jamais l'un sans l'autre
   BEGIN
-    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille)
-    VALUES (gen_random_uuid(), NULL, h, 'application/pdf', 44);
+    INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier)
+    VALUES (gen_random_uuid(), NULL, h, 'application/pdf', 44, 'rib.pdf');
     RAISE EXCEPTION 'AXT99 RIB sans octets et sans purge accepte';
   EXCEPTION WHEN check_violation THEN NULL; END;
-  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, purge_at)
-  VALUES (gen_random_uuid(), NULL, h, 'application/pdf', 44, now());
+  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier, purge_at)
+  VALUES (gen_random_uuid(), NULL, h, 'application/pdf', 44, 'rib.pdf', now());
   -- ni suppression, ni remplacement des octets ; seule la purge passe.
-  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille)
-  VALUES (rid, axb1, h, 'application/pdf', 44);
+  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier)
+  VALUES (rid, axb1, h, 'application/pdf', 44, 'rib.pdf');
   BEGIN
     DELETE FROM apporteur_changements_iban_rib WHERE demande_id = rid;
     RAISE EXCEPTION 'AXT99 DELETE RIB accepte';
@@ -392,11 +392,11 @@ BEGIN
     UPDATE apporteur_changements_iban SET confirmation_navigateur = 'x' WHERE id = d;
     RAISE EXCEPTION 'AXT99 navigateur de confirmation pose sans confirmation';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%avec sa transition%' THEN RAISE; END IF; END;
-  UPDATE apporteur_changements_iban SET avis_envoye_at = now() WHERE id = d;
+  -- l'avis ne se pose pas avant la confirmation (une demande encore « a_confirmer » n'a pas d'avis).
   BEGIN
-    UPDATE apporteur_changements_iban SET avis_envoye_at = now() + interval '1 hour' WHERE id = d;
-    RAISE EXCEPTION 'AXT99 avis_envoye_at reecrit';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%avec sa transition%' THEN RAISE; END IF; END;
+    UPDATE apporteur_changements_iban SET avis_envoye_at = now() WHERE id = d;
+    RAISE EXCEPTION 'AXT99 avis_envoye_at pose avant la confirmation';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%avant la confirmation%' THEN RAISE; END IF; END;
   -- confirmation SANS preuve (hachage nul) : la preuve ne se pose pas non plus plus tard.
   -- confirmee_at antidatee de 10 jours : la base la remplace par son horloge.
   UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '10 days' WHERE id = d;
@@ -407,6 +407,16 @@ BEGIN
   BEGIN
     UPDATE apporteur_changements_iban SET confirmation_ip_hash = 'x' WHERE id = d;
     RAISE EXCEPTION 'AXT99 preuve de confirmation posee apres coup';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%avec sa transition%' THEN RAISE; END IF; END;
+  -- avis_envoye_at : date de la base, jamais celle de l'appelant (futur ou passé ignoré), posée une seule fois.
+  UPDATE apporteur_changements_iban SET avis_envoye_at = now() + interval '5 days' WHERE id = d;
+  SELECT avis_envoye_at INTO v FROM apporteur_changements_iban WHERE id = d;
+  IF abs(extract(epoch FROM clock_timestamp() - v)) > 5 THEN
+    RAISE EXCEPTION 'AXT99 avis_envoye_at fourni par l appelant conserve : %', v;
+  END IF;
+  BEGIN
+    UPDATE apporteur_changements_iban SET avis_envoye_at = now() + interval '1 hour' WHERE id = d;
+    RAISE EXCEPTION 'AXT99 avis_envoye_at reecrit';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%avec sa transition%' THEN RAISE; END IF; END;
   -- traitee_at dans le futur : ecrasee, donc la validation reste refusee faute de 72 h reelles.
   BEGIN
@@ -505,7 +515,7 @@ BEGIN;
 DO $$
 DECLARE axb1 bytea := '\x41584231' || decode(repeat('00', 40), 'hex'); rid uuid := gen_random_uuid();
 BEGIN
-  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille) VALUES (rid, axb1, repeat('e',64), 'application/pdf', 44);
+  INSERT INTO apporteur_changements_iban_rib (demande_id, octets, sha256, type_mime, taille, nom_fichier) VALUES (rid, axb1, repeat('e',64), 'application/pdf', 44, 'rib.pdf');
   BEGIN
     UPDATE apporteur_changements_iban_rib SET octets = '\x41584231ff'::bytea WHERE demande_id = rid;
     RAISE EXCEPTION 'AXT99 octets du RIB remplaces';

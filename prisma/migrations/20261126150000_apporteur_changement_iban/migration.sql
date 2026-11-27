@@ -176,6 +176,14 @@ BEGIN
     NEW."demandee_at" := maintenant;
     RETURN NEW;
   END IF;
+  -- `avis_envoye_at` : l'avis part une fois la demande confirmée. La base pose SA date au passage de NULL à une
+  -- valeur (la valeur fournie est ignorée : ni futur, ni antidatage) et refuse de la poser avant la confirmation.
+  IF OLD."avis_envoye_at" IS NULL AND NEW."avis_envoye_at" IS NOT NULL THEN
+    IF OLD."confirmee_at" IS NULL AND NEW."statut" <> 'confirmee' THEN
+      RAISE EXCEPTION 'apporteur_changements_iban : l''avis ne se pose pas avant la confirmation';
+    END IF;
+    NEW."avis_envoye_at" := maintenant;
+  END IF;
   IF NEW."statut" IS DISTINCT FROM OLD."statut" THEN
     IF NEW."statut" = 'confirmee' THEN
       NEW."confirmee_at" := maintenant;
@@ -218,9 +226,12 @@ CREATE TABLE "apporteur_changements_iban_rib" (
   "demande_id" UUID NOT NULL,
   "octets" BYTEA,
   "sha256" CHAR(64) NOT NULL,
-  "type_mime" VARCHAR(100) NOT NULL,
+  "type_mime" VARCHAR(80) NOT NULL,
   "taille" INTEGER NOT NULL,
-  "nom_fichier" VARCHAR(255),
+  -- Même gabarit que `pieces_apporteur` (`PieceApporteur`) : le RIB devient la pièce RIB du dossier à la validation.
+  -- RÈGLE : le nom est NEUTRE, toujours « rib.pdf » (ou l'extension réelle), JAMAIS le nom d'origine du fichier :
+  -- il est stocké en clair et peut contenir l'IBAN (« RIB_FR76….pdf »).
+  "nom_fichier" VARCHAR(200) NOT NULL,
   "depose_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "purge_at" TIMESTAMPTZ(3),
   CONSTRAINT "apporteur_changements_iban_rib_pkey" PRIMARY KEY ("demande_id")

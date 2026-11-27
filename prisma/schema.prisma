@@ -16659,9 +16659,10 @@ model ApporteurChangementIbanRib {
   demandeId  String    @id @map("demande_id") @db.Uuid
   octets     Bytes?
   sha256     String    @db.Char(64)
-  typeMime   String    @map("type_mime") @db.VarChar(100)
+  typeMime   String    @map("type_mime") @db.VarChar(80)
   taille     Int
-  nomFichier String?   @map("nom_fichier") @db.VarChar(255)
+  /// Même gabarit que `PieceApporteur`. NEUTRE : toujours « rib.pdf », jamais le nom d'origine (il peut contenir l'IBAN).
+  nomFichier String    @map("nom_fichier") @db.VarChar(200)
   deposeAt   DateTime  @default(now()) @map("depose_at") @db.Timestamptz(3)
   purgeAt    DateTime? @map("purge_at") @db.Timestamptz(3)
 

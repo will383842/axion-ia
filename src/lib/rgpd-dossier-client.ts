@@ -231,10 +231,23 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   },
 ];
 
+/**
+ * Modèles du changement d'IBAN : déclarés ci-dessus pour la garde de concordance, mais NON annoncés dans la
+ * notice de l'export tant que la fonction n'est pas en service (lot 8 du chantier : durées arrêtées, allumage).
+ * Une notice ne promet pas un droit d'accès sur des données que personne ne collecte encore.
+ * Au lot 8 : vider cette liste.
+ */
+export const MODELES_IBAN_HORS_NOTICE_JUSQU_AU_LOT_8: ReadonlyArray<string> = [
+  "ApporteurChangementIban",
+  "ApporteurChangementIbanRib",
+  "ApporteurIbanHistorique",
+  "ApporteurVirementCompte",
+];
+
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */
-export const NOTICE_EXCLUSIONS_DOSSIER = EXCLUSIONS_EXPORT_DOSSIER.map(
-  (e) => `dossier client — ${e.modele} (${e.motif})`,
-);
+export const NOTICE_EXCLUSIONS_DOSSIER = EXCLUSIONS_EXPORT_DOSSIER.filter(
+  (e) => !MODELES_IBAN_HORS_NOTICE_JUSQU_AU_LOT_8.includes(e.modele),
+).map((e) => `dossier client — ${e.modele} (${e.motif})`);
 
 export interface ExportDossierClient {
   readonly personnes: ReadonlyArray<{

@@ -2237,7 +2237,7 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
     modele: "ApporteurChangementIbanRib",
     motif:
-      "RIB joint à une demande de changement de compte : devenu la pièce RIB du dossier si la demande est validée ; purgé 90 jours après la clôture si elle est refusée, expirée ou annulée ; gardé 5 ans si elle est contestée, comme preuve d'une tentative de fraude (art. 17(3)(e) RGPD).",
+      "RIB joint à une demande de changement de compte : devenu la pièce RIB du dossier si la demande est validée ; si elle est refusée, expirée, annulée ou contestée, la durée de conservation n'est pas encore arrêtée (décision D-7, avis du délégué à la protection des données attendu ; fixée avec le lot « RGPD » du chantier, avant l'allumage), et le RIB peut être gardé comme preuve d'une tentative de fraude (art. 17(3)(e) RGPD).",
   },
   {
     // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).

@@ -53,6 +53,14 @@ La preuve dure reste l'existence des quatre tables (`\dt apporteur_*`) et de leu
 - **Pas de purge en fin de conservation dans ce lot.** Les déclencheurs interdisent de réécrire `iban` et de
   supprimer une ligne (demandes, historique). Quand la durée de conservation sera arrêtée (décision D-7, lot 8),
   la purge passera par une migration qui ajoute la sortie voulue au déclencheur : elle n'est pas devinée ici.
+- **Textes RGPD : aucune durée affirmée.** Tant que D-7 n'est pas tranchée (avis du délégué), ni l'exception
+  d'effacement (`rgpd-erase.ts`) ni la notice de l'export ne citent « 90 jours » ou « 5 ans » pour le RIB joint ;
+  la notice de l'export (`NOTICE_EXCLUSIONS_DOSSIER`) ne mentionne pas ces quatre modèles avant le lot 8
+  (liste `MODELES_IBAN_HORS_NOTICE_JUSQU_AU_LOT_8`, à vider à l'allumage).
+- **RIB joint : nom de fichier neutre.** Colonnes alignées sur `pieces_apporteur` (`type_mime` 80, `nom_fichier`
+  200 NOT NULL). Le lot 4 écrit toujours « rib.pdf », jamais le nom d'origine (il peut contenir l'IBAN).
+- **`avis_envoye_at`** est posée par la base (`clock_timestamp()`) au passage de NULL à une valeur, et refusée
+  avant la confirmation : le lot 4 n'a aucune date à fournir et l'écrit après l'envoi réel de l'e-mail.
 
 ## Pour les lots suivants (piège de format)
 
