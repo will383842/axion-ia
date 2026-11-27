@@ -49,7 +49,7 @@ export const HENDAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hendaye et sur la Côte Basque ?",
-      a: "Oui, Axion-IA intervient à Hendaye et sur toute la Côte Basque (Saint-Jean-de-Luz, Bayonne, Anglet, Biarritz). Consultants accessibles via la gare SNCF Hendaye (TGV Paris-Hendaye) et l'aéroport Biarritz Pays Basque.",
+      a: "Oui, Axion-IA intervient à Hendaye et sur toute la Côte Basque (Saint-Jean-de-Luz, Bayonne, Anglet, Biarritz).",
     },
     {
       q: "Tarifs audit IA à Hendaye  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const HENDAYE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Hendaye ?",
-      a: "Nos consultants interviennent sur site à Hendaye et sur la Côte Basque sud. Déplacement direct sur votre hôtel, commerce ou bureau. Gare TGV Hendaye (terminus Paris-Hendaye), aéroport Biarritz à 30 min.",
+      a: "Nos consultants interviennent sur site à Hendaye et sur la Côte Basque sud. Nous travaillons directement dans votre hôtel, votre commerce ou vos bureaux.",
     },
   ],
 };

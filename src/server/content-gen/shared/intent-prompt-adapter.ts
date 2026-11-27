@@ -42,8 +42,8 @@ Ce contenu vise à être résumé par Google AI Overview ou Perplexity.
 Règles supplémentaires obligatoires :
 - Définition précise + sourcée OBLIGATOIRE dans le 1er paragraphe (40-50 mots max)
 - Structure factuelle canonique : qu'est-ce que / pourquoi / comment / quand
-- Citations sources autorité (INSEE, Stanford AI Index, McKinsey, BPI France, EU AI Act) avec liens <a>
-- Minimum 2 sources externes d'autorité mentionnées avec URL rel="noopener noreferrer"
+- Citations : uniquement les sources fournies dans le contexte, avec leur lien <a> ; aucun chiffre sans source fournie avec son adresse, sinon pas de chiffre
+- Citations sources autorité : celles fournies, avec URL rel="noopener noreferrer" (jamais de source inventée)
 - Ajouter schema JSON-LD ItemList pour les étapes numérotées
 - Pas d'opinion non sourcée — chaque affirmation = source citable
 - Le champ directAnswer DOIT répondre en 2 phrases max à la question principale`;

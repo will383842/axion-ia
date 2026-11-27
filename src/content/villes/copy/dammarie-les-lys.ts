@@ -238,7 +238,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
     },
     {
       q: "Aidez-vous les sous-traitants aéronautiques proches de Villaroche ?",
-      a: "Oui. Le pôle aéronautique de Villaroche (Safran Aircraft Engines) est à 15 min. Pour ses PME et TPE sous-traitantes, l'IA sert la gestion documentaire technique, les devis, la planification et le suivi qualité.",
+      a: "Oui. Le pôle aéronautique de Villaroche (Safran Aircraft Engines) se trouve à proximité. Pour ses PME et TPE sous-traitantes, l'IA sert la gestion documentaire technique, les devis, la planification et le suivi qualité.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Dammarie-les-Lys ?",
@@ -246,7 +246,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Dammarie-les-Lys ?",
-      a: "Nos consultants se déplacent sur site (Melun à 8 min, Paris Gare de Lyon à 45 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions ?",

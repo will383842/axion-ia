@@ -49,7 +49,7 @@ export const CERNAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cernay ?",
-      a: "Oui, Axion-IA intervient à Cernay et dans la vallée de la Thur (Thann, Wittelsheim, Vieux-Thann). Consultants via A36 (15 min) ou gare de Cernay-Ville. Position piémont vosgien entre Mulhouse (20 min) et la route des Vins.",
+      a: "Oui, Axion-IA intervient à Cernay et dans la vallée de la Thur (Thann, Wittelsheim, Vieux-Thann).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et viticoles ?",
@@ -65,7 +65,7 @@ export const CERNAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Cernay ?",
-      a: "Nos consultants se déplacent via autoroute A36 (15 min) ou gare de Cernay-Ville. Position piémont vosgien stratégique entre Mulhouse, vallée de la Thur et route des Vins.",
+      a: "Une mission à Cernay démarre par un échange de cadrage, puis se déroule sur site ou à distance, avec des livrables remis et documentés.",
     },
   ],
 };

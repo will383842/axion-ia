@@ -65,7 +65,7 @@ export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises proches du campus universitaire ?",
-      a: "Oui, la proximité du campus (5 min) fait de Mignaloux-Beauvoir un territoire connecté à l'écosystème recherche/innovation. Nous accompagnons spin-offs, PME tech, prestataires R&D et startups sur leurs projets IA.",
+      a: "Oui. Nous accompagnons spin-offs, PME tech, prestataires R&D et startups sur leurs projets IA.",
     },
   ],
 };

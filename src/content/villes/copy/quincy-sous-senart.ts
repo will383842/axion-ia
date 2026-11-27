@@ -65,7 +65,7 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Quincy-sous-Sénart ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Zone Sénart à 10 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Quincy-sous-Sénart, comme partout en France, ou à distance.",
     },
   ],
 };

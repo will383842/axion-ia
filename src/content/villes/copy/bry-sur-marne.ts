@@ -49,7 +49,7 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bry-sur-Marne dans le Val-de-Marne ?",
-      a: "Oui, Axion-IA intervient à Bry-sur-Marne et dans tout l'est du Val-de-Marne (Villiers-sur-Marne, Noisy-le-Grand, Champigny, Chennevières, Le Perreux). Nos consultants se déplacent sur site ou en visio, RER A direct.",
+      a: "Oui, Axion-IA intervient à Bry-sur-Marne et dans tout l'est du Val-de-Marne (Villiers-sur-Marne, Noisy-le-Grand, Champigny, Chennevières, Le Perreux). Nos consultants interviennent sur site ou en visio.",
     },
     {
       q: "Quel est le prix d'un audit IA à Bry-sur-Marne ?",

@@ -49,7 +49,7 @@ export const HONFLEUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Honfleur et sur l'estuaire de la Seine ?",
-      a: "Oui, Axion-IA intervient à Honfleur et tout l'estuaire (Deauville, Trouville, Villerville, Pont-Audemer). Consultants depuis Caen (1h A13) ou Le Havre (25 min pont de Normandie).",
+      a: "Oui, Axion-IA intervient à Honfleur et tout l'estuaire (Deauville, Trouville, Villerville, Pont-Audemer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôteliers-restaurateurs de Honfleur ?",
@@ -65,7 +65,7 @@ export const HONFLEUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Honfleur ?",
-      a: "Nos consultants viennent de Caen (1h A13) ou Le Havre (25 min pont de Normandie). Déplacement direct sur site (hôtel, restaurant, galerie, commerce).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (hôtel, restaurant, galerie, commerce).",
     },
   ],
 };

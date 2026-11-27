@@ -52,6 +52,41 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "TeamMember",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+  },
+  {
+    modele: "TeamQuestionnaireInvite",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+  },
+  {
+    modele: "TeamQuestionnaireSubmission",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+  },
+  {
+    modele: "ApporteurChangementIban",
+    motif:
+      "vos demandes de changement de compte bancaire déposées depuis votre espace d'apporteur : leur date, leur état et les quatre derniers caractères du compte demandé vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com) ; l'IBAN d'une demande refusée ou contestée n'est pas rendu, car il peut être celui d'un tiers.",
+  },
+  {
+    modele: "ApporteurChangementIbanRib",
+    motif:
+      "le RIB joint à une demande de changement de compte : il peut porter les coordonnées d'un tiers ; sa copie vous est rendue sur demande écrite sous un mois (contact@axion-ia.com), tiers occultés.",
+  },
+  {
+    modele: "ApporteurIbanHistorique",
+    motif:
+      "l'historique de vos comptes bancaires successifs : les comptes validés vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com).",
+  },
+  {
+    modele: "ApporteurVirementCompte",
+    motif:
+      "le compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement vous a été déclaré, par autofacture : rendu sur demande écrite sous un mois (contact@axion-ia.com).",
+  },
+  {
     modele: "ConsoleCommande",
     motif:
       "la copie, transmise à notre console des automatisations, de ce que vous avez choisi en " +
@@ -211,10 +246,23 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   },
 ];
 
+/**
+ * Modèles du changement d'IBAN : déclarés ci-dessus pour la garde de concordance, mais NON annoncés dans la
+ * notice de l'export tant que la fonction n'est pas en service (lot 8 du chantier : durées arrêtées, allumage).
+ * Une notice ne promet pas un droit d'accès sur des données que personne ne collecte encore.
+ * Au lot 8 : vider cette liste.
+ */
+export const MODELES_IBAN_HORS_NOTICE_JUSQU_AU_LOT_8: ReadonlyArray<string> = [
+  "ApporteurChangementIban",
+  "ApporteurChangementIbanRib",
+  "ApporteurIbanHistorique",
+  "ApporteurVirementCompte",
+];
+
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */
-export const NOTICE_EXCLUSIONS_DOSSIER = EXCLUSIONS_EXPORT_DOSSIER.map(
-  (e) => `dossier client — ${e.modele} (${e.motif})`,
-);
+export const NOTICE_EXCLUSIONS_DOSSIER = EXCLUSIONS_EXPORT_DOSSIER.filter(
+  (e) => !MODELES_IBAN_HORS_NOTICE_JUSQU_AU_LOT_8.includes(e.modele),
+).map((e) => `dossier client — ${e.modele} (${e.motif})`);
 
 export interface ExportDossierClient {
   readonly personnes: ReadonlyArray<{

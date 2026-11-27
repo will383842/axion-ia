@@ -53,7 +53,7 @@ export const BEYNOST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beynost et sur la Côtière de l'Ain ?",
-      a: "Oui, Axion-IA se déplace sur site à Beynost, Miribel, Montluel, Meximieux et toute la Côtière. Consultants venant de Lyon (20 min). Priorité aux TPE et PME, ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Beynost, Miribel, Montluel, Meximieux et toute la Côtière. Nous intervenons partout en France, sur place ou à distance. Priorité aux TPE et PME, ETI en complément.",
     },
     {
       q: "Travaillez-vous avec les plateformes logistiques de la Côtière ?",
@@ -73,7 +73,7 @@ export const BEYNOST_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Beynost ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Beynost, comme partout en France, ou à distance.",
     },
   ],
 };

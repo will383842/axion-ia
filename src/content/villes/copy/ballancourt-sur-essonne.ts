@@ -49,7 +49,7 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ballancourt-sur-Essonne ?",
-      a: "Oui, Axion-IA intervient à Ballancourt-sur-Essonne et toute la vallée de l'Essonne (Mennecy à 10 min, Corbeil-Essonnes à 15 min, Évry-Courcouronnes à 20 min, Paris à 45 min).",
+      a: "Oui. Nous intervenons sur place à Ballancourt-sur-Essonne et dans toute la vallée de l'Essonne (Mennecy, Corbeil-Essonnes, Évry-Courcouronnes), comme partout en France, ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",

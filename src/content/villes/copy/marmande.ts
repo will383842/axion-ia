@@ -49,7 +49,7 @@ export const MARMANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marmande et dans le Marmandais ?",
-      a: "Oui, Axion-IA intervient à Marmande et dans tout le Marmandais (Tonneins, Casteljaloux, Sainte-Bazeille, Meilhan-sur-Garonne). Consultants accessibles via la gare SNCF Marmande (TER Bordeaux-Agen).",
+      a: "Oui, Axion-IA intervient à Marmande et dans tout le Marmandais (Tonneins, Casteljaloux, Sainte-Bazeille, Meilhan-sur-Garonne).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Marmande  ?",
@@ -65,7 +65,7 @@ export const MARMANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Marmande ?",
-      a: "Nos consultants interviennent sur site à Marmande et dans le Marmandais. Déplacement direct sur votre exploitation, usine ou bureau. Gare SNCF Marmande desservie par TER Bordeaux-Agen.",
+      a: "Nos consultants interviennent sur site à Marmande et dans le Marmandais. Déplacement direct sur votre exploitation, usine ou bureau.",
     },
   ],
 };

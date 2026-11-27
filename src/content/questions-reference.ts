@@ -11,7 +11,7 @@
  *  - une page qui pose une de ces questions l'IMPORTE (`faqItems`) au lieu de la recopier.
  *
  * Décisions de Williams du 18/11/2026 reprises ici : l'audit convient aux entreprises de 2 à 250 salariés, la formation de l'après-midi va jusqu'à 15 personnes
- * (correction du 20/11/2026) ; audit le matin (2 à 4 h selon l'entreprise), formation de 4 h l'après-midi ;
+ * (correction du 20/11/2026) ; audit le matin (2 à 4 h selon la structuration de l’entreprise), formation de 4 h l'après-midi ;
  * garantie gardée (« Si la Journée IA n'identifie pas des gains d'au moins 3 fois son prix, elle
  * est remboursée », distincte d'une « garantie de résultat », qu'on ne donne pas) ; les {{PRIX}}
  * sont déduits d'un devis d'automatisation ou de mise en place signé dans les 60 jours suivant
@@ -19,7 +19,16 @@
  *
  * Volontairement absent : l'audit approfondi (durée non décidée) et le nom du fondateur.
  */
-import { remplacerJetons } from "./journee-ia-commun";
+import {
+  DELAI_RAPPORT_JOURS_OUVRES,
+  MULTIPLE_GARANTIE,
+  remplacerJetons,
+  seuilGarantieEur,
+} from "./journee-ia-commun";
+import { formatAmount } from "./pricing";
+
+/** Seuil de la garantie (3 fois le prix HT de la journée), calculé, jamais tapé. */
+const SEUIL = formatAmount(seuilGarantieEur(), "fr");
 
 /** Phrase unique sur l'audit approfondi : importée par la page /prix-audit-ia pour ne jamais diverger. */
 export const PHRASE_AUDIT_APPROFONDI =
@@ -42,15 +51,14 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-commencer",
     question: "Par où commencer avec l’IA dans une PME ?",
     reponse:
-      "Pour commencer avec l’IA dans une PME, partez de vos tâches, pas d’un outil. Axion-IA cartographie l’entreprise service par service, chiffre vos plus gros gains en heures et en euros, puis retient 3 à 5 priorités. Le premier pas est gratuit : un Diagnostic IA de 45 minutes, en visio ou par téléphone, avant de décider de la Journée IA.",
+      "Pour commencer avec l’IA dans une PME, partez de vos tâches, pas d’un outil. Axion-IA cartographie l’entreprise service par service, repère vos plus gros gains, retient 3 à 5 priorités, puis les chiffre en heures et en euros dans le rapport. Le premier pas est gratuit : un Diagnostic IA de 45 minutes, en visio ou par téléphone, avant de décider de la Journée IA.",
     sujet: "PME",
     source: "src/app/[locale]/_accueil/contenu.ts (faq-commencer)",
   },
   "ref-journee-prix": {
     id: "ref-journee-prix",
     question: "Combien coûte la Journée IA ?",
-    reponse:
-      "La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous 3 jours ouvrés. Si la Journée IA n’identifie pas des gains d’au moins 3 fois son prix, elle est remboursée.",
+    reponse: `La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique. L’audit du matin convient aux entreprises de 2 à 250 salariés (2 à 4 h selon la structuration de l’entreprise) ; la formation de 4 h l’après-midi accueille jusqu’à 15 personnes. La journée comprend aussi le rapport détaillé, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés, avec vos 3 à 5 priorités chiffrées et le plan d’action sur 90 jours. Si les gains identifiés dans ce rapport, sur 12 mois, n'atteignent pas ${MULTIPLE_GARANTIE} fois son prix HT, soit ${SEUIL}, elle est remboursée sur demande écrite.`,
     sujet: "Journée IA",
     source: "src/content/pricing.ts, src/content/journee-ia-commun.ts",
   },
@@ -81,8 +89,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
   "ref-audit-contenu": {
     id: "ref-audit-contenu",
     question: "Que contient un audit IA pour une PME ?",
-    reponse:
-      "Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives et chiffre chacune en heures et en euros. Il les classe par rentabilité et par rapidité de mise en place, retient 3 à 5 priorités écrites, puis se prolonge par un rapport chiffré avec un plan d’action sur 90 jours, remis sous 3 jours ouvrés dans le cadre de la Journée IA.",
+    reponse: `Un audit IA en PME cartographie l’entreprise service par service, repère les tâches répétitives, les classe par rentabilité et retient 3 à 5 priorités. Le rapport chiffre ensuite chacune en heures et en euros, avec un plan d’action sur 90 jours, remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés dans le cadre de la Journée IA.`,
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts (DESCRIPTION_SERVICE_JOURNEE_IA, RAPPORT_COMPLET)",
   },
@@ -105,7 +112,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-audit-vs-formation",
     question: "Audit IA ou formation IA : par quoi commencer ?",
     reponse:
-      "Audit IA et formation IA se complètent, et le mieux est de les enchaîner. L’audit décrit votre situation et fixe les priorités ; la formation change les pratiques des équipes sur leurs propres dossiers. La Journée IA d’Axion-IA fait les deux le même jour, dans vos locaux : l’audit du matin oriente la formation de l’après-midi, avec 3 à 5 priorités écrites le soir.",
+      "Audit IA et formation IA se complètent, et le mieux est de les enchaîner. L’audit décrit votre situation et fixe les priorités ; la formation change les pratiques des équipes sur leurs propres dossiers. La Journée IA d’Axion-IA fait les deux le même jour, dans vos locaux : l’audit du matin oriente la formation de l’après-midi, avec 3 à 5 priorités.",
     sujet: "audit IA",
     source: "src/content/journee-ia-commun.ts (DESCRIPTION_SERVICE_JOURNEE_IA)",
   },
@@ -121,7 +128,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-automatiser-premier",
     question: "Quelles tâches automatiser en premier dans une PME ?",
     reponse:
-      "Dans une PME, les premières tâches à automatiser avec l’IA sont celles qui reviennent souvent, suivent des règles claires et prennent un temps mesurable : devis, relances, comptes rendus, tri des e-mails. Commencez par un ou deux flux seulement, relisez les résultats, puis étendez. La Journée IA chiffre ces tâches en heures et en euros et les classe par rentabilité.",
+      "Dans une PME, les premières tâches à automatiser avec l’IA sont celles qui reviennent souvent, suivent des règles claires et prennent un temps mesurable : devis, relances, comptes rendus, tri des e-mails. Commencez par un ou deux flux seulement, relisez les résultats, puis étendez. La Journée IA les repère et les classe par rentabilité ; le rapport les chiffre en heures et en euros.",
     sujet: "automatiser",
     source: "src/app/[locale]/_accueil/contenu.ts, src/content/implementation-fr-overrides.ts",
   },

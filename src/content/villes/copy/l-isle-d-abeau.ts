@@ -64,8 +64,8 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
       a: "Pour le siège CAPI et services publics à L'Isle-d'Abeau, nous proposons audit Stratégique, intervention 1-2 jours équipes, implémentation (agents conversationnels usagers, automatisations workflow, classification documents administratifs). RGPD strict, hébergement UE garanti.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (40 min A43) ou Paris (TGV Lyon 2h + voiture). Pour les multi-jours, hébergement local possible (hôtels CAPI).",
+      q: "Comment se déroule une mission Axion-IA à L'Isle-d'Abeau ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

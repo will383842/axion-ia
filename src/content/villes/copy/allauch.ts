@@ -73,7 +73,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio depuis Allauch, code versionné et livrable à chaque sprint.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio, code versionné et livrable à chaque sprint.",
           },
           {
             step: "Recette + mise en ligne",
@@ -159,7 +159,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio depuis Allauch, code versionné et livrable à chaque sprint.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de produits provençaux, vitrine multi-centres, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio, code versionné et livrable à chaque sprint.",
           },
           {
             step: "Recette + mise en ligne",
@@ -233,7 +233,7 @@ export const ALLAUCH_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Allauch ?",
-      a: "Nous nous déplaçons sur site à Allauch sous 5 jours ouvrés après la prise de contact. Les déplacements vers la zone de Fontvieille ou les centres urbains sont inclus dans le périmètre Aix-Marseille.",
+      a: "Nous nous déplaçons sur site à Allauch sous 5 jours ouvrés après la prise de contact.",
     },
     {
       q: "Axion-IA couvre-t-il les communes voisines d'Allauch ?",

@@ -65,7 +65,7 @@ export const BOURG_SAINT_MAURICE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bourg-Saint-Maurice ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Interventions possibles en station ou en vallée. Pour les missions multi-jours, hébergement local. Visio possible hors saison.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions possibles en station ou en vallée. Visio possible hors saison.",
     },
   ],
 };

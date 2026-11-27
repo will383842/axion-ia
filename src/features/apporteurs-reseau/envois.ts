@@ -31,6 +31,7 @@ export type GabaritApporteur =
   | "apporteur-dossier-a-verifier"
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
+  | "apporteur-regime-tva"
   | "apporteur-manquement"
   | "apporteur-resiliation-notifiee"
   | "apporteur-resiliation-effective"
@@ -38,6 +39,7 @@ export type GabaritApporteur =
   | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
+  | "apporteur-presentation-recue-rendez-vous"
   | "apporteur-presentation-refusee"
   | "apporteur-presentation-non-retenue"
   | "entreprise-prise-de-contact-apporteur"
@@ -47,7 +49,28 @@ export type GabaritApporteur =
   | "apporteur-attribution-confirmee"
   | "apporteur-releve"
   | "apporteur-virement-fait"
-  | "apporteur-lien-espace";
+  | "apporteur-lien-espace"
+  | "apporteur-compte-a-confirmer"
+  | "apporteur-compte-demande-bloquee"
+  | "apporteur-compte-change"
+  | "apporteur-compte-refuse"
+  | "apporteur-compte-expire";
+
+function GABARITS_COMPTE_BANCAIRE_LISTE(): GabaritApporteur[] {
+  return [
+    "apporteur-compte-a-confirmer",
+    "apporteur-compte-demande-bloquee",
+    "apporteur-compte-change",
+    "apporteur-compte-refuse",
+    "apporteur-compte-expire",
+  ];
+}
+
+/**
+ * E-mails de SÉCURITÉ du compte bancaire : exclus d'`avecLienEspace` (plan §6.1). Aucun ne porte le
+ * lien personnel de l'espace ; le lien neuf part dans un e-mail séparé (`apporteur-lien-espace`).
+ */
+const GABARITS_SANS_LIEN_ESPACE: ReadonlySet<string> = new Set(GABARITS_COMPTE_BANCAIRE_LISTE());
 
 export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-lien",
@@ -57,6 +80,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   // INTERNE envoyée à Williams, pas un e-mail à l'apporteur — elle ne se coupe jamais.
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
+  "apporteur-regime-tva",
   "apporteur-manquement",
   "apporteur-resiliation-notifiee",
   "apporteur-resiliation-effective",
@@ -64,6 +88,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
+  "apporteur-presentation-recue-rendez-vous",
   "apporteur-presentation-refusee",
   "apporteur-presentation-non-retenue",
   "entreprise-prise-de-contact-apporteur",
@@ -74,6 +99,8 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-releve",
   "apporteur-virement-fait",
   "apporteur-lien-espace",
+  // Changement de compte bancaire (lot 4 du plan changement d'IBAN) : jamais de repli (`gabaritRepli`), voir §6.1.
+  ...GABARITS_COMPTE_BANCAIRE_LISTE(),
 ];
 
 export interface EnvoiApporteur {
@@ -109,6 +136,7 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   // INTERNE envoyée à Williams, pas un e-mail à l'apporteur — elle ne se coupe jamais.
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
+  "apporteur-regime-tva",
   "apporteur-manquement",
   "apporteur-resiliation-notifiee",
   "apporteur-resiliation-effective",
@@ -116,6 +144,7 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
+  "apporteur-presentation-recue-rendez-vous",
   "apporteur-presentation-refusee",
   "apporteur-presentation-non-retenue",
   "apporteur-vigilance",
@@ -151,6 +180,7 @@ async function apporteurDeLEnvoi(e: EnvoiApporteur): Promise<string | null> {
  */
 export async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
   return avecLienEspaceRecalcule(e.payload, async () => {
+    if (GABARITS_SANS_LIEN_ESPACE.has(e.gabarit)) return null;
     if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
       return null;
     }

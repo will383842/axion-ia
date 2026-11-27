@@ -120,7 +120,7 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises du Castres-Mazamet Technopole ?",
-            a: "Oui. Le technopole concentre environ 500 emplois numériques (cloud, infogérance, hébergement, conception web) et des acteurs comme Albiant IT, Thales ou Consort NT. Nous outillons ces équipes avec des plateformes SaaS IA-native, des chatbots RAG et des intégrations sur leurs propres produits, depuis Le Causse Espace d'Entreprises ou le campus La Borde Basse.",
+            a: "Oui. Le technopole concentre environ 500 emplois numériques (cloud, infogérance, hébergement, conception web) et des acteurs comme Albiant IT, Thales ou Consort NT. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Vos sites et plateformes sont-ils conformes au RGPD et hébergés en Europe ?",
@@ -132,7 +132,7 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour obtenir un devis et où nous rencontrez-vous ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Nous nous déplaçons sur site à Castres et dans le sud du Tarn — Campus Chartreuse, zones de Mélou et de la Chartreuse, centre-ville — l'A69 Castres-Toulouse facilitant aussi les échanges avec le bassin toulousain.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet. Nous intervenons sur site à Castres et dans le sud du Tarn (Campus Chartreuse, zones de Mélou et de la Chartreuse, centre-ville), ou à distance.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const CASTRES_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and where do you meet us?",
-            a: "The quote is delivered from 24 to 48 hours depending on project complexity. We travel on site in Castres and the southern Tarn — Campus Chartreuse, Mélou and Chartreuse zones, town centre — with the A69 Castres-Toulouse motorway also easing exchanges with the Toulouse area.",
+            a: "The quote is delivered from 24 to 48 hours depending on project complexity. Axion-IA works anywhere in France, on site or remotely, including in Castres and the southern Tarn — Campus Chartreuse, Mélou and Chartreuse zones, town centre.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const CASTRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Castres et dans le Tarn ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Castres et de tout le sud du Tarn (Mazamet, Labruguière, Aussillon, Saïx). Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Castres et de tout le sud du Tarn (Mazamet, Labruguière, Aussillon, Saïx). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Travaillez-vous avec la filière pharmaceutique et cosmétique locale ?",
@@ -243,10 +243,6 @@ export const CASTRES_COPY: VilleCopy = {
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",
       a: "Oui. Toutes nos implémentations à Castres respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
-    },
-    {
-      q: "Comment se déroule une mission à Castres ?",
-      a: "Toulouse est à environ 1h15 par l'autoroute Castres-Toulouse. Nous nous déplaçons sur site à Castres.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

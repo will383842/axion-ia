@@ -188,7 +188,7 @@ export function ProviderFormClient({
           </div>
           <div className="admin-field">
             <label htmlFor={`cap-${row.id}`} className="admin-label">
-              Plafond mensuel du fournisseur (USD), partagé blog, Qualiopi et chatbot
+              Plafond mensuel du fournisseur (USD), partagé contenu via Claude, Qualiopi et chatbot
             </label>
             <input
               id={`cap-${row.id}`}
@@ -240,7 +240,7 @@ export function ProviderFormClient({
       </form>
       {row.provider === "anthropic" && saveBlogAction && (
         <form onSubmit={handleSaveBlog} className="mt-[var(--space-admin-4)]">
-          <h3 className="admin-h2">Plafonds du blog Claude</h3>
+          <h3 className="admin-h2">Contenu via Claude : plafonds</h3>
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor={`blog-jour-${row.id}`} className="admin-label">
@@ -260,7 +260,7 @@ export function ProviderFormClient({
             </div>
             <div className="admin-field">
               <label htmlFor={`blog-mois-${row.id}`} className="admin-label">
-                Plafond mensuel du blog (USD)
+                Plafond mensuel du contenu via Claude (USD)
               </label>
               <input
                 id={`blog-mois-${row.id}`}
@@ -316,7 +316,7 @@ export function ProviderFormClient({
           )}
           {blogOk && (
             <p role="status" className="admin-meta-small mt-[var(--space-admin-3)]">
-              Plafonds du blog enregistrés.
+              Plafonds du contenu via Claude enregistrés.
             </p>
           )}
           <div className="admin-filters-actions">
@@ -326,7 +326,7 @@ export function ProviderFormClient({
               disabled={isBlogPending}
               aria-busy={isBlogPending}
             >
-              {isBlogPending ? "Enregistrement…" : "Enregistrer les plafonds du blog"}
+              {isBlogPending ? "Enregistrement…" : "Enregistrer les plafonds du contenu via Claude"}
             </button>
           </div>
         </form>

@@ -12,6 +12,7 @@ import {
   calculerStatutEncaissement,
   planifierFacturationDevis,
   ACTIVITES_EXONERABLES,
+  htPourTtcAvoir,
 } from "./facture-libre-pur";
 import { computeTotauxFacture } from "@/server/qualiopi/legal/tva";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
@@ -274,5 +275,42 @@ describe("planifierFacturationDevis — acompte / solde / totalité", () => {
     expect(plan.ok).toBe(true);
     if (!plan.ok) return;
     expect(plan.lignes[0]?.prixUnitaireHtCents).toBe(300_000);
+  });
+});
+
+describe("htPourTtcAvoir (garantie Journée IA : le remboursement saisi est un TTC)", () => {
+  const ht = (ttc: number) => {
+    const r = htPourTtcAvoir(ttc, "assujetti", 20, 20);
+    return r.ok ? r.htCents : r.message;
+  };
+  it("1 788,00 € TTC → 1 490,00 € HT ; 600,00 € → 500,00 € ; 1 000,00 € → 833,33 €", () => {
+    expect(ht(178_800)).toBe(149_000);
+    expect(ht(60_000)).toBe(50_000);
+    expect(ht(100_000)).toBe(83_333);
+  });
+  it("un TTC inatteignable à 20 % (0,03 €) est refusé avec les deux voisins", () => {
+    expect(ht(3)).toMatch(/impossible au taux de 20 %.*0,02 € ou 0,04 €/);
+  });
+  it("sans TVA (taux 0), le TTC est le HT", () => {
+    const r = htPourTtcAvoir(12_345, "franchise_293b", 0, 20);
+    expect(r).toEqual({ ok: true, htCents: 12_345 });
+  });
+  it("refuse 0, négatif et non entier", () => {
+    for (const v of [0, -5, 1.5]) expect(htPourTtcAvoir(v, "assujetti", 20, 20).ok).toBe(false);
+  });
+  it("quand ok, les totaux de l'avoir valent EXACTEMENT -TTC (10 000 montants)", () => {
+    for (let ttc = 1; ttc <= 10_000; ttc++) {
+      const r = htPourTtcAvoir(ttc, "assujetti", 20, 20);
+      if (!r.ok) {
+        expect(ttc % 6).toBe(3);
+        continue;
+      }
+      const t = computeTotauxFacture(
+        construireLignesAvoir([], r.htCents, "m", 20),
+        "assujetti",
+        20,
+      );
+      expect(t.totalTtcCents).toBe(-ttc);
+    }
   });
 });

@@ -58,7 +58,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           "Rueil-Malmaison est un terrain B2B atypique : trois sièges d'envergure mondiale ou nationale (Schneider Electric, plus grand siège mondial de Danone, PSA/Stellantis) concentrés autour de la gare RER A, et tout un écosystème de fournisseurs, sous-traitants et cabinets qui ont besoin d'un site et d'outils web à la hauteur de ces donneurs d'ordre.",
           "Le quartier Rueil-sur-Seine concentre plus de 70 % des emplois de la ville : nos sites web et SaaS y ciblent en priorité les bureaux d'études, sociétés d'ingénierie et cabinets de conseil qui travaillent pour l'énergie (mouvance Schneider Electric, VINCI Energies), l'agroalimentaire (mouvance Danone) et la mobilité (mouvance Stellantis).",
           "Nous revendiquons l'ensemble de la chaîne — UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et briques IA — pour ne pas renvoyer un cabinet rueillois vers trois prestataires différents : un seul interlocuteur du design au déploiement.",
-          "Rueil-Malmaison est à ~8 km de La Défense et desservie par le Mobipôle RER A : nos consultants se déplacent sur site à Rueil et dans l'Ouest parisien (Nanterre, Suresnes, Puteaux, Chatou, Croissy) pour les ateliers de cadrage, puis itèrent à distance.",
+          "Axion IA intervient partout en France, sur site ou à distance, y compris à Rueil-Malmaison et dans l'Ouest parisien (Nanterre, Suresnes, Puteaux, Chatou, Croissy) pour les ateliers de cadrage.",
         ],
         methodology: [
           {
@@ -132,11 +132,11 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je avoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité de votre projet. Nous démarrons par un atelier de cadrage sur site à Rueil-Malmaison ou à proximité du Mobipôle RER A, puis vous remettons un périmètre et un devis détaillés.",
+            a: "À partir de 24 à 48 h selon la complexité de votre projet. Nous démarrons par un atelier de cadrage sur site à Rueil-Malmaison, puis vous remettons un périmètre et un devis détaillés.",
           },
         ],
         guarantees:
-          "Nous nous engageons sur un code sur mesure intégralement transféré, sans verrou éditeur ni dépendance technique. Hébergement en Union européenne et conformité RGPD par défaut. UX/UI, responsive mobile, e-commerce multi-CMS et briques IA sont assurés par un seul interlocuteur, du cadrage à Rueil-Malmaison jusqu'à la mise en ligne. Devis à partir de 24 à 48 h selon la complexité ; frais de déplacement éventuels calculés au cas par cas selon la zone. Vos équipes repartent autonomes, documentation et runbook remis.",
+          "Nous nous engageons sur un code sur mesure intégralement transféré, sans verrou éditeur ni dépendance technique. Hébergement en Union européenne et conformité RGPD par défaut. UX/UI, responsive mobile, e-commerce multi-CMS et briques IA sont assurés par un seul interlocuteur, du cadrage à Rueil-Malmaison jusqu'à la mise en ligne. Devis à partir de 24 à 48 h selon la complexité. Vos équipes repartent autonomes, documentation et runbook remis.",
       },
       en: {
         hero: "In Rueil-Malmaison, Axion-IA designs AI-augmented websites and SaaS platforms for the ecosystem orbiting the Rueil-sur-Seine business district — home to more than 70% of the city's jobs and nearly 187 companies, steps from the Mobipôle RER A hub. Between Schneider Electric's headquarters (rue Joseph Monier), Danone's largest global headquarters (the Convergence building, rue des Deux Gares) and the PSA/Stellantis group head office, a dense fabric of consulting firms, engineering offices, design bureaus, commercial real-estate players and service providers thrives. We build them showcase sites, client portals and AI-native business applications — RAG chatbot, semantic search, booking and lead qualification — with custom code, EU GDPR-compliant hosting and no vendor lock-in.",
@@ -144,13 +144,13 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           "Rueil-Malmaison is an unusual B2B ground: three headquarters of global or national scale (Schneider Electric, Danone's largest worldwide HQ, PSA/Stellantis) clustered around the RER A station, plus an entire ecosystem of suppliers, subcontractors and firms needing a website and web tools worthy of those clients.",
           "The Rueil-sur-Seine district concentrates over 70% of the city's jobs: our websites and SaaS target first the engineering offices, design bureaus and consulting firms working for energy (Schneider Electric, VINCI Energies orbit), food (Danone orbit) and mobility (Stellantis orbit).",
           "We own the whole chain — UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and AI components — so a Rueil firm never has to juggle three providers: one contact from design to deployment.",
-          "Rueil-Malmaison is ~8 km from La Défense and served by the Mobipôle RER A hub: our consultants travel on site in Rueil and across western Paris (Nanterre, Suresnes, Puteaux, Chatou, Croissy) for framing workshops, then iterate remotely.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Rueil-Malmaison and across western Paris (Nanterre, Suresnes, Puteaux, Chatou, Croissy) for framing workshops.",
         ],
         methodology: [
           {
             step: "Framing in Rueil-Malmaison",
             detail:
-              "Kick-off workshop at your Rueil-sur-Seine offices (or near the Mobipôle RER A hub): we map your real user journeys, brand constraints toward major clients (Schneider Electric, Danone, Stellantis) and the priority AI use cases for your site or SaaS.",
+              "Kick-off workshop at your Rueil-sur-Seine offices: we map your real user journeys, brand constraints toward major clients (Schneider Electric, Danone, Stellantis) and the priority AI use cases for your site or SaaS.",
           },
           {
             step: "Architecture & UX/UI mockups",
@@ -222,7 +222,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "We commit to custom code fully transferred to you, with no vendor lock-in or imposed technical dependency. Hosting in the European Union and GDPR compliance by default. UX/UI, mobile responsive, multi-CMS e-commerce and AI components are handled by a single contact, from framing in Rueil-Malmaison to go-live. Quote from 24 to 48 hours depending on complexity; any travel costs calculated case by case by zone. Your teams leave autonomous, documentation and runbook delivered.",
+          "We commit to custom code fully transferred to you, with no vendor lock-in or imposed technical dependency. Hosting in the European Union and GDPR compliance by default. UX/UI, mobile responsive, multi-CMS e-commerce and AI components are handled by a single contact, from framing in Rueil-Malmaison to go-live. Quote from 24 to 48 hours depending on complexity. Your teams leave autonomous, documentation and runbook delivered.",
       },
     },
   },
@@ -250,7 +250,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rueil-Malmaison ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 8 km de La Défense. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

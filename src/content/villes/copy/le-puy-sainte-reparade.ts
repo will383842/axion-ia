@@ -49,7 +49,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Puy-Sainte-Réparade et dans la vallée de la Durance ?",
-      a: "Oui, Axion-IA intervient au Puy-Sainte-Réparade et dans toute la vallée de la Durance (Pertuis à 15 min, Aix à 20 min, Saint-Cannat, Rognes, Meyrargues). Couverture complète nord aixois.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris au Puy-Sainte-Réparade. Couverture complète nord aixois.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Puy-Sainte-Réparade ?",
@@ -65,7 +65,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Puy-Sainte-Réparade ?",
-      a: "Nos consultants interviennent sur site au Puy-Sainte-Réparade sous 5 jours ouvrés. Aix à 20 min, gare TGV à 30 min.",
+      a: "Nos consultants interviennent sur site au Puy-Sainte-Réparade sous 5 jours ouvrés.",
     },
   ],
 };

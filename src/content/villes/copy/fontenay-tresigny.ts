@@ -49,7 +49,7 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-Trésigny et dans la Brie ?",
-      a: "Oui, Axion-IA intervient à Fontenay-Trésigny et dans toute la Brie seine-et-marnaise (Rozay-en-Brie à 10 min, Tournan-en-Brie à 10 min, Marne-la-Vallée à 25 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Fontenay-Trésigny et dans toute la Brie seine-et-marnaise (Rozay-en-Brie, Tournan-en-Brie, Marne-la-Vallée). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Fontenay-Trésigny  ?",
@@ -65,7 +65,7 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Fontenay-Trésigny ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fontenay-Trésigny, comme partout en France, ou à distance.",
     },
   ],
 };

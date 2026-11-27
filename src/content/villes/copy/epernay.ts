@@ -229,8 +229,8 @@ export const EPERNAY_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Épernay ?",
-      a: "Oui, nos consultants se rendent directement dans vos caves, bureaux ou domaines à Épernay et dans la vallée de la Marne. La première rencontre se fait sur site, afin de comprendre votre activité viticole avant toute recommandation.",
+      q: "Intervenez-vous à Épernay ?",
+      a: "Oui. Nous intervenons directement dans vos caves, bureaux ou domaines à Épernay et dans la vallée de la Marne. La première rencontre se fait sur site, afin de comprendre votre activité viticole avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Épernay ?",

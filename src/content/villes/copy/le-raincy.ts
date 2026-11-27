@@ -49,7 +49,7 @@ export const LE_RAINCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Raincy et dans l'est de la Seine-Saint-Denis ?",
-      a: "Oui, Axion-IA intervient au Raincy et dans tout l'est du 93 (Villemomble, Gagny, Montfermeil, Livry-Gargan, Rosny-sous-Bois, Clichy-sous-Bois). Accès rapide par RER E depuis Paris Gare de l'Est (25 min).",
+      a: "Oui, Axion-IA intervient au Raincy et dans tout l'est du 93 (Villemomble, Gagny, Montfermeil, Livry-Gargan, Rosny-sous-Bois, Clichy-sous-Bois).",
     },
     {
       q: "Quel est le tarif d'un audit IA au Raincy ?",
@@ -64,8 +64,8 @@ export const LE_RAINCY_COPY: VilleCopy = {
       a: "Pour les commerçants et artisans du Raincy : agents conversationnels vitrine en ligne, automatisation gestion stocks et commandes fournisseurs, outils planning et réservation, classification comptable automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
-      q: "Comment se passe le déplacement pour une mission au Raincy ?",
-      a: "Nos consultants se déplacent dans vos locaux au Raincy, accessibles en 25 min depuis Paris (RER E Gare de l'Est). Intervention sur vos cas métier réels, équipes autonomes en fin de journée.",
+      q: "Comment se déroule une intervention au Raincy ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur vos cas métier réels, équipes autonomes en fin de journée.",
     },
   ],
 };

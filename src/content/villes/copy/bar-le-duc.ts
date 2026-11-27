@@ -49,7 +49,7 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bar-le-Duc et en Meuse ?",
-      a: "Oui, Axion-IA intervient à Bar-le-Duc et sur toute la Meuse (Verdun, Commercy, Ligny-en-Barrois, Saint-Mihiel). Gare Meuse TGV à 25 min, Paris à 1h05 en TGV.",
+      a: "Oui, Axion-IA intervient à Bar-le-Duc et sur toute la Meuse (Verdun, Commercy, Ligny-en-Barrois, Saint-Mihiel).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Bar-le-Duc  ?",

@@ -226,7 +226,7 @@ export const STAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Stains et dans Plaine Commune ?",
-      a: "Oui, Axion-IA intervient à Stains et dans tout le territoire Plaine Commune (Saint-Denis, Aubervilliers, Pierrefitte-sur-Seine, La Courneuve, Saint-Ouen). Couverture intégrale 93 et accès rapide.",
+      a: "Oui, Axion-IA intervient à Stains et dans tout le territoire Plaine Commune (Saint-Denis, Aubervilliers, Pierrefitte-sur-Seine, La Courneuve, Saint-Ouen).",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Stains ?",

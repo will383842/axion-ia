@@ -49,7 +49,7 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Wantzenau et dans l''Eurométropole de Strasbourg ?",
-      a: "Oui, Axion-IA intervient à La Wantzenau et sur toute l''Eurométropole de Strasbourg (Hoenheim, Schiltigheim, Bischheim, Reichstett). Strasbourg centre à 15 min, Paris à 1h45 en TGV.",
+      a: "Oui, Axion-IA intervient à La Wantzenau et sur toute l''Eurométropole de Strasbourg (Hoenheim, Schiltigheim, Bischheim, Reichstett).",
     },
     {
       q: "Quel est le tarif d''un audit IA à La Wantzenau ?",

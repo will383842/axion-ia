@@ -10,7 +10,12 @@
  * par le worker : importé par un composant client, il rendrait toujours `false`, sans erreur (la
  * variable n'est pas `NEXT_PUBLIC_`).
  *
- * Lot 2 (2026-11-25) : rien ne lit encore cette fonction.
+ * ⛔ Fenêtre app/worker (AGENTS.md, lot S3) : le gabarit `apporteur-presentation-recue-rendez-vous`
+ * est un NOUVEAU nom, et il est émis SANS `gabaritRepli`. Le repli naturel,
+ * `apporteur-presentation-recue`, annoncerait l'ancienne règle (« 30 jours », confirmation par le
+ * silence) : ce serait faux. N'allumer `APPORTEURS_VALIDATION_RDV` QU'UNE FOIS le worker en ligne
+ * sur un commit qui contient ce gabarit ; un worker antérieur reporterait le job 9 fois puis
+ * échouerait.
  */
 export function validationParRendezVousActive(): boolean {
   return process.env.APPORTEURS_VALIDATION_RDV === "true";

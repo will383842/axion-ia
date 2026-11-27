@@ -13,14 +13,14 @@
 import { UnrecoverableError } from "bullmq";
 import { Prisma } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
+import { BLOG_TYPES, tousLesTypes, typesClaudeAutorises } from "./types-claude";
+import { CLES_PILOTAGE, lireSousPlafondsPilotage } from "./blog-claude-plafonds";
 
-/** Types de contenu dont le texte passe par la porte (filtre I3 du cumul). */
-export const BLOG_TYPES: ReadonlySet<string> = new Set([
-  "blog_article",
-  "blog_from_keywords",
-  "blog_from_title",
-  "blog_from_rss",
-]);
+/**
+ * Les 4 types blog (défaut de `CONTENT_GEN_CLAUDE_TYPES`). Ré-exporté pour compatibilité ;
+ * l'ensemble des types AUTORISÉS se lit dans `types-claude.ts`.
+ */
+export { BLOG_TYPES };
 
 /** Bornes de GARDE du dépôt (pas les plafonds réels, posés en base). */
 export const BORNE_DURE_JOUR_USD = 20;
@@ -38,7 +38,15 @@ export type CodeRefusBlogClaude =
   | "reserve_qualiopi"
   | "juge_limite"
   | "base_indisponible"
-  | "credit_refuse";
+  | "credit_refuse"
+  | "plafond_job"
+  | "plafond_pilotage_jour"
+  | "plafond_pilotage_mois";
+
+/** Origine (`inputPayload.origine` du job porteur) soumise aux sous-plafonds du pilotage SEO. */
+export const ORIGINE_PILOTAGE = "pilotage";
+/** Modèles admis pour un appel du pilotage : Sonnet 5.5 ou Opus 5.5 (jamais Haiku). */
+const MODELES_PILOTAGE: ReadonlySet<string> = new Set(["claude-sonnet-5-5", "claude-opus-5-5"]);
 
 /** Refus de la porte : NON relançable par BullMQ (UnrecoverableError). */
 export class BlogClaudeRefusError extends UnrecoverableError {
@@ -140,8 +148,20 @@ function enNombre(v: unknown): number {
   return Number.NaN;
 }
 
-function filtreBlogSql(): Prisma.Sql {
-  return Prisma.sql`"jobId" IN (SELECT id FROM content_gen_jobs WHERE "contentType"::text IN (${Prisma.join([...BLOG_TYPES])}))`;
+/**
+ * Filtre du cumul : TOUT job de contenu (toute l'énumération `ContentType`), pas seulement
+ * les types actuellement autorisés. Le budget (jour, mois) est celui de tout le contenu via
+ * Claude : si le dirigeant réduit la liste de types en cours de mois, ce qui a déjà été
+ * dépensé sur les types retirés reste compté (on compte large, jamais trop peu). Les lignes
+ * Qualiopi / chatbot n'ont pas de job de contenu : elles restent hors du cumul.
+ */
+function filtreContenuSql(): Prisma.Sql {
+  return Prisma.sql`"jobId" IN (SELECT id FROM content_gen_jobs WHERE "contentType"::text IN (${Prisma.join([...tousLesTypes()])}))`;
+}
+
+/** Cumul (même base que `filtreContenuSql`) des seuls jobs porteurs du pilotage SEO. */
+function filtrePilotageSql(): Prisma.Sql {
+  return Prisma.sql`"jobId" IN (SELECT id FROM content_gen_jobs WHERE "inputPayload"->>'origine' = ${ORIGINE_PILOTAGE})`;
 }
 
 /** Arrondi au centime SUPÉRIEUR (le compteur mensuel est un Decimal(10,2) : on compte large). */
@@ -158,15 +178,28 @@ export function auCentimeSuperieur(v: number): number {
 export const TRANSACTION_MAX_WAIT_MS = 10_000;
 export const TRANSACTION_TIMEOUT_MS = 15_000;
 
-async function cumulBlog(tx: Prisma.TransactionClient, depuis: Date): Promise<number> {
+async function cumulContenu(tx: Prisma.TransactionClient, depuis: Date): Promise<number> {
   const rows = await tx.$queryRaw<Array<{ total: number | string | null }>>(
     Prisma.sql`SELECT COALESCE(SUM("costUsd"), 0)::float8 AS total
       FROM cost_ledger
-      WHERE provider::text = 'anthropic' AND "timestamp" >= ${depuis} AND ${filtreBlogSql()}`,
+      WHERE provider::text = 'anthropic' AND "timestamp" >= ${depuis} AND ${filtreContenuSql()}`,
   );
   const total = Number(rows[0]?.total ?? 0);
   if (!Number.isFinite(total)) {
-    throw new BlogClaudeRefusError("Cumul du blog illisible", "base_indisponible");
+    throw new BlogClaudeRefusError("Cumul du contenu via Claude illisible", "base_indisponible");
+  }
+  return total;
+}
+
+async function cumulPilotage(tx: Prisma.TransactionClient, depuis: Date): Promise<number> {
+  const rows = await tx.$queryRaw<Array<{ total: number | string | null }>>(
+    Prisma.sql`SELECT COALESCE(SUM("costUsd"), 0)::float8 AS total
+      FROM cost_ledger
+      WHERE provider::text = 'anthropic' AND "timestamp" >= ${depuis} AND ${filtrePilotageSql()}`,
+  );
+  const total = Number(rows[0]?.total ?? 0);
+  if (!Number.isFinite(total)) {
+    throw new BlogClaudeRefusError("Cumul du pilotage via Claude illisible", "base_indisponible");
   }
   return total;
 }
@@ -184,14 +217,28 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
       async (tx) => {
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('blog_claude_cap'))`;
 
-        // Le job doit exister ET être un job de blog : sinon la ligne échapperait au cumul.
+        // Le job doit exister ET être d'un type AUTORISÉ (`CONTENT_GEN_CLAUDE_TYPES`) :
+        // sinon la ligne échapperait au cumul ou l'appel dépasserait la liste voulue.
+        const autorises = [...typesClaudeAutorises()];
+        if (autorises.length === 0) {
+          throw new BlogClaudeRefusError("Aucun type de contenu autorisé", "config_invalide");
+        }
         const job = await tx.$queryRaw<Array<unknown>>(
-          Prisma.sql`SELECT 1 FROM content_gen_jobs WHERE id = ${p.jobId} AND "contentType"::text IN (${Prisma.join([...BLOG_TYPES])})`,
+          Prisma.sql`SELECT "inputPayload"->>'plafondJobUsd' AS "plafondJobUsd", "inputPayload"->>'origine' AS "origine" FROM content_gen_jobs WHERE id = ${p.jobId} AND "contentType"::text IN (${Prisma.join(autorises)})`,
         );
         if (!Array.isArray(job) || job.length === 0) {
           throw new BlogClaudeRefusError(
-            "Job inconnu ou hors blog : appel refusé",
+            "Job inconnu ou d'un type non autorisé : appel refusé",
             "config_invalide",
+          );
+        }
+
+        const origine = (job[0] as { origine?: unknown } | undefined)?.origine;
+        const estPilotage = origine === ORIGINE_PILOTAGE;
+        if (estPilotage && !MODELES_PILOTAGE.has(p.model)) {
+          throw new BlogClaudeRefusError(
+            "Modèle refusé pour le pilotage (Sonnet 5.5 ou Opus 5.5 seulement)",
+            "modele_interdit",
           );
         }
 
@@ -207,14 +254,61 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
           select: { id: true },
         });
 
+        // Plafond PAR JOB (optionnel, posé par le script d'essai : `inputPayload.plafondJobUsd`).
+        const brut = (job[0] as { plafondJobUsd?: unknown } | undefined)?.plafondJobUsd;
+        if (brut !== undefined && brut !== null) {
+          const plafondJob = Number(brut);
+          if (!(Number.isFinite(plafondJob) && plafondJob > 0)) {
+            throw new BlogClaudeRefusError("Plafond du job illisible", "config_invalide");
+          }
+          const lignes = await tx.$queryRaw<Array<{ total: number | string | null }>>(
+            Prisma.sql`SELECT COALESCE(SUM("costUsd"), 0)::float8 AS total FROM cost_ledger WHERE "jobId" = ${p.jobId}`,
+          );
+          if (Number(lignes[0]?.total ?? 0) > plafondJob) {
+            throw new BlogClaudeRefusError("Plafond du job atteint", "plafond_job");
+          }
+        }
+
         // Cumuls recalculés EN INCLUANT la ligne qui vient d'être posée.
-        const cumulJourUsd = await cumulBlog(tx, minuitParis(maintenant));
-        const cumulMoisBlogUsd = await cumulBlog(tx, debutMoisParis(maintenant));
+        const cumulJourUsd = await cumulContenu(tx, minuitParis(maintenant));
+        const cumulMoisBlogUsd = await cumulContenu(tx, debutMoisParis(maintenant));
         if (cumulJourUsd > p.plafondJourUsd) {
-          throw new BlogClaudeRefusError("Plafond du jour du blog atteint", "plafond_jour");
+          throw new BlogClaudeRefusError(
+            "Plafond du jour du contenu via Claude atteint",
+            "plafond_jour",
+          );
         }
         if (cumulMoisBlogUsd > p.plafondMoisBlogUsd) {
-          throw new BlogClaudeRefusError("Plafond du mois du blog atteint", "plafond_mois");
+          throw new BlogClaudeRefusError(
+            "Plafond du mois du contenu via Claude atteint",
+            "plafond_mois",
+          );
+        }
+
+        // Sous-plafonds du pilotage SEO : EN PLUS des plafonds communs, jamais à leur place. La lecture
+        // de la base qui échoue est un refus sûr (catch général : `base_indisponible`).
+        if (estPilotage) {
+          const lignesConfig = await tx.contentGenConfig.findMany({
+            where: { key: { in: [CLES_PILOTAGE.jour, CLES_PILOTAGE.mois] } },
+            select: { key: true, value: true },
+          });
+          const valeur = (cle: string): unknown => lignesConfig.find((l) => l.key === cle)?.value;
+          const sous = lireSousPlafondsPilotage(
+            valeur(CLES_PILOTAGE.jour),
+            valeur(CLES_PILOTAGE.mois),
+          );
+          if ((await cumulPilotage(tx, minuitParis(maintenant))) > sous.jour) {
+            throw new BlogClaudeRefusError(
+              "Sous-plafond du jour du pilotage atteint",
+              "plafond_pilotage_jour",
+            );
+          }
+          if ((await cumulPilotage(tx, debutMoisParis(maintenant))) > sous.mois) {
+            throw new BlogClaudeRefusError(
+              "Sous-plafond du mois du pilotage atteint",
+              "plafond_pilotage_mois",
+            );
+          }
         }
 
         // Le blog ne doit jamais couper Qualiopi (même ligne `anthropic`).
@@ -231,7 +325,7 @@ export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
           p.plafondMoisGlobalUsd - p.reserveQualiopiUsd
         ) {
           throw new BlogClaudeRefusError(
-            "Réserve Qualiopi entamée : appel du blog refusé",
+            "Réserve Qualiopi entamée : appel du contenu via Claude refusé",
             "reserve_qualiopi",
           );
         }
@@ -305,4 +399,22 @@ export async function solderReservation(
       err instanceof Error ? err.message : String(err),
     );
   }
+}
+
+/**
+ * Coût cumulé d'UN job (toutes les lignes du registre portant son `jobId`, réservations
+ * comprises : on compte large). Lecture seule, sans verrou : sert au plafond par article de
+ * l'équipe éditoriale. Lève si la base répond mal ou si le total est illisible : l'appelant
+ * traite l'erreur comme « plafond non vérifiable » (relecture humaine), jamais comme zéro.
+ */
+export async function coutCumuleJobUsd(jobId: string): Promise<number> {
+  const agg = await prisma.costLedger.aggregate({
+    where: { jobId },
+    _sum: { costUsd: true },
+  });
+  const total = enNombre(agg._sum.costUsd ?? 0);
+  if (!Number.isFinite(total) || total < 0) {
+    throw new BlogClaudeRefusError("Coût cumulé du job illisible", "base_indisponible");
+  }
+  return total;
 }

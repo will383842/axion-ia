@@ -241,8 +241,8 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
       a: "Pour les sièges d'entreprises à Montigny et SQY, nous proposons des formats adaptés : audit stratégique ETI, interventions par direction (DSI, finance, RH, marketing), implémentation par chantier prioritaire, coaching CODIR. Durée 1 jour à plusieurs semaines selon le scope.",
     },
     {
-      q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris (30 min RER) pour les missions sur site à Montigny. Pour les multi-jours, repas et hébergement local possibles selon vos préférences.",
+      q: "Comment se déroule une mission à Montigny-le-Bretonneux ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Montigny-le-Bretonneux, comme partout en France, ou à distance.",
     },
   ],
 };

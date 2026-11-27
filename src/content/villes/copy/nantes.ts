@@ -185,7 +185,7 @@ export const NANTES_COPY: VilleCopy = {
         whyHere: [
           "Nantes is a strategic hub for Axion-IA: aeronautics, shipbuilding, agri-food, French Tech digital and biotech concentrate AI cases with strong ROI potential.",
           "Nantes B2B fabric well-represented in our references: industrial mid-caps (aeronautics, composites, naval), agri-food SMEs, French Tech scale-ups, Euronantes consulting firms.",
-          "Our consultants travel across the whole Nantes metropolis — Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais — and the wider basin (Saint-Nazaire, Rennes, Angers).",
+          "Axion-IA works anywhere in France, on site or remotely, including across the whole Nantes metropolis — Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais — and the wider basin (Saint-Nazaire, Rennes, Angers).",
           "Read-outs always in person at your premises: ideation workshop, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
           "Your action plan is executable with any vendor or in-house — no Axion-IA lock-in.",
@@ -364,7 +364,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -456,7 +456,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -1012,7 +1012,7 @@ export const NANTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nantes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre nantais. Aucun supplément géographique : le tarif est identique à celui pratiqué partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre nantais.",
     },
     {
       q: "Avez-vous des cas clients dans la région nantaise ?",
@@ -1032,7 +1032,7 @@ export const NANTES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans le bassin Saint-Nazaire pour l'industrie navale ?",
-      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles depuis notre base nantaise.",
+      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_OMER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Omer ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV Calais-Fréthun à 35 min. Hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Omer, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const REMIREMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Remiremont et dans le sud-vosgien ?",
-      a: "Oui, Axion-IA intervient à Remiremont et sur tout le sud des Vosges (Plombières-les-Bains, Le Thillot, Saint-Nabord, La Bresse, Gérardmer). Accès direct par TER ligne Épinal-Mulhouse.",
+      a: "Oui, Axion-IA intervient à Remiremont et sur tout le sud des Vosges (Plombières-les-Bains, Le Thillot, Saint-Nabord, La Bresse, Gérardmer).",
     },
     {
       q: "Combien coûte un audit IA à Remiremont  ?",

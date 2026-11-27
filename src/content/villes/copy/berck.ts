@@ -65,7 +65,7 @@ export const BERCK_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Berck ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Berck, comme partout en France, ou à distance.",
     },
   ],
 };

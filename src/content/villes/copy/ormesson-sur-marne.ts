@@ -49,7 +49,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ormesson-sur-Marne et bords de Marne ?",
-      a: "Oui, Axion-IA intervient à Ormesson-sur-Marne et tout le secteur bords de Marne (Sucy-en-Brie, Noiseau, Créteil à 15 min, Paris à 35 min). Aéroport Orly à 25 min.",
+      a: "Oui, Axion-IA intervient à Ormesson-sur-Marne et dans tout le secteur des bords de Marne (Sucy-en-Brie, Noiseau, Créteil).",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Ormesson-sur-Marne ?",
@@ -64,8 +64,8 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Gare de Lyon (35 min RER A via Sucy-Bonneuil). Aéroport Orly à 25 min.",
+      q: "Comment se déroule une mission Axion-IA à Ormesson-sur-Marne ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

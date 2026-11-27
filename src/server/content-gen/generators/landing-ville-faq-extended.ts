@@ -14,6 +14,7 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
+import { consigneJourneeIAForcee } from "../knowledge/journee-ia-fiche";
 import { FORMULE_SUR_DEVIS, JETON_PRIX_JOURNEE_IA } from "../brand/consigne-prix";
 
 // ---------------------------------------------------------------------------
@@ -117,7 +118,7 @@ OBLIGATIONS :
 - Mention naturelle "${safeVille}" dans au moins 2-3 réponses (contexte géo)
 - Réponses directes, factuel, 1-2 phrases MAX par réponse (AEO direct answer)
 - Brand voice : sobre, factuel, opérationnel
-- Output JSON strict : { "faqs": [...] }`;
+- Output JSON strict : { "faqs": [...] }${consigneJourneeIAForcee()}`;
 
   const userPrompt = `Génère une FAQ géolocalisée étendue (5-8 Q/R) pour la ville ${safeVille} (${safeRegion}), verticale ${safeVerticale}.
 
@@ -165,6 +166,7 @@ ${factsContext}
       jobId: `faq-ext-${villeSlug}-${safeVerticale}`,
       contentType: "landing_ville",
       role: "text",
+      blogClaudeRole: "court",
       systemPrompt,
       userPrompt,
       maxTokens: 1200,

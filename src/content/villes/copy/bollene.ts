@@ -49,7 +49,7 @@ export const BOLLENE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bollène et dans la vallée du Rhône ?",
-      a: "Oui, Axion-IA intervient à Bollène et dans tout le nord Vaucluse / sud Drôme (Pierrelatte, Suze-la-Rousse, Mondragon, Lapalud, Saint-Paul-Trois-Châteaux). Accès direct via A7 sortie 19.",
+      a: "Oui, Axion-IA intervient à Bollène et dans tout le nord Vaucluse / sud Drôme (Pierrelatte, Suze-la-Rousse, Mondragon, Lapalud, Saint-Paul-Trois-Châteaux).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Bollène  ?",
@@ -64,8 +64,8 @@ export const BOLLENE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat, sous-traitance industrielle (Tricastin) et commerce de proximité sur automatisation devis, gestion documentaire qualité, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Bollène ?",
-      a: "Bollène est à 10 min de Pierrelatte et 25 min d'Orange via A7. Nos consultants se déplacent dans vos locaux ou domaines. Coûts de déplacement à part, tarification transparente.",
+      q: "Comment se déroule une mission à Bollène ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bollène, comme partout en France, ou à distance.",
     },
   ],
 };

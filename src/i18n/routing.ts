@@ -146,6 +146,9 @@ export const routing = defineRouting({
     // Consolide /equipe/manon (persona) + /politique-confidentialite §IA + /sous-processeurs.
     "/transparence": { fr: "/transparence", en: "/transparency" },
 
+    // Hub équipe (FR uniquement, comme `/livres`) ; la fiche `[slug]` suit.
+    "/equipe": { fr: "/equipe", en: "/team" },
+
     // City Domination 2026-05-18 P1-14 (audit A11 P0) — déclaration explicite
     // de /equipe/[slug] dans pathnames. La page existe (`src/app/[locale]/
     // equipe/[slug]/page.tsx`) mais sans entry routing.ts, les Link<typedRoutes>
@@ -319,6 +322,7 @@ export const routing = defineRouting({
     // formation collective retirée le 2026-06-12 et redirigée 301 vers
     // `/formations` (cf. next.config.ts).
     "/diagnostic": "/diagnostic",
+    "/questionnaire-barometre-ia-2027": "/questionnaire-barometre-ia-2027",
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },
@@ -357,6 +361,12 @@ export const routing = defineRouting({
     // « slugs identiques » la couvre) et qui n'expose pas la route au bug de
     // boucle 307 de next-intl, lequel ne frappe que les mappings `fr ≠ en`.
     "/ressources": { fr: "/ressources", en: "/ressources" },
+    // Baromètre 2027 IA TPE/PME (FR seul). noindex + hors sitemap tant que
+    // BAROMETRE_DATE_OUVERTURE (constante, cf. `sitemap.ts`). Slug identique en EN.
+    "/ressources/barometre-ia-tpe-pme-2027": {
+      fr: "/ressources/barometre-ia-tpe-pme-2027",
+      en: "/ressources/barometre-ia-tpe-pme-2027",
+    },
 
     // Banque d'images / Image bank (Sprint M? — axionia-image-bank skill v1.0).
     // CC BY 4.0, indexable Google Images / Bing / LLMs. Pages publiques uniquement

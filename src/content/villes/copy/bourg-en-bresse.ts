@@ -58,7 +58,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
           "Bourg-en-Bresse vit d'un tissu très typé : la filière volaille de Bresse AOP (seule volaille au monde sous AOC et AOP, bague d'identification par bête, 275 communes), l'usine Renault Trucks / Volvo (117 ha, ~1 350 salariés, camions haut de gamme >16 t) et sa sous-traitance, et la proximité du cluster plasturgie Plastipolis / Polymeris — autant de besoins web spécifiques que nous traitons.",
           "Pour les éleveurs et transformateurs de volaille AOP, nous construisons des boutiques e-commerce avec calendrier de commandes pour les fêtes, fiches produits valorisant la bague et le cahier des charges, et un assistant IA qui répond aux questions de conservation et de cuisson — pas un template générique.",
           "Pour les ateliers de plasturgie de l'écosystème Plastics Vallée et les fournisseurs de Renault Trucks, nous développons des portails techniques : catalogues de pièces injectées, demandes de devis RFQ qualifiées par IA, espaces clients B2B, configurateurs reliés à votre ERP.",
-          "Nous nous déplaçons sur les zones d'activités de l'agglomération (Parc Cadran à 35 ha sur l'A40, CENORD, Norelan, Bourg Sud) et auprès des acteurs touristiques du Monastère royal de Brou et du pôle salons Ekinox / Ainterexpo, ou travaillons depuis Lyon à 1h par l'A40/A42.",
+          "Nous intervenons partout en France, sur place ou à distance.",
         ],
         methodology: [
           {
@@ -128,7 +128,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place à Bourg-en-Bresse et dans l'Ain ?",
-            a: "Oui. Nous nous déplaçons dans l'agglomération — Parc Cadran, CENORD, Norelan, centre-ville, exploitations de la Bresse — et auprès des acteurs touristiques de Brou ou du pôle salons Ekinox / Ainterexpo. Le lancement se fait à Bourg-en-Bresse, puis les itérations en visio depuis Lyon (1h, A40/A42).",
+            a: "Oui. Nous nous déplaçons dans l'agglomération — Parc Cadran, CENORD, Norelan, centre-ville, exploitations de la Bresse — et auprès des acteurs touristiques de Brou ou du pôle salons Ekinox / Ainterexpo.",
           },
           {
             q: "Vos sites respectent-ils le RGPD et où sont hébergées les données ?",
@@ -144,7 +144,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
           "Bourg-en-Bresse runs on a highly distinctive fabric: the Bresse AOP poultry industry (the only poultry in the world holding both AOC and AOP, an identification ring per bird, 275 communes), the Renault Trucks / Volvo plant (117 ha, ~1,350 staff, high-range trucks over 16 t) and its subcontractors, and the nearby Plastipolis / Polymeris plastics cluster — each with specific web needs we handle.",
           "For Bresse AOP poultry farmers and processors, we build e-commerce stores with holiday order calendars, product sheets showcasing the ring and the AOP specification, and an AI assistant answering storage and cooking questions — not a generic template.",
           "For plastics workshops in the Plastics Vallée ecosystem and Renault Trucks suppliers, we develop technical portals: injected-parts catalogues, AI-qualified RFQ requests, B2B customer areas, configurators connected to your ERP.",
-          "We travel to the agglomeration's business zones (Parc Cadran, 35 ha on the A40, CENORD, Norelan, Bourg Sud) and to the tourism players around the Royal Monastery of Brou and the Ekinox / Ainterexpo events hub, or work remotely.",
+          "We work with the agglomeration's business zones (Parc Cadran, 35 ha, CENORD, Norelan, Bourg Sud) and the tourism players around the Royal Monastery of Brou and the Ekinox / Ainterexpo events hub. Axion-IA works anywhere in France, on site or remotely.",
         ],
         methodology: [
           {
@@ -214,7 +214,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Bourg-en-Bresse and the Ain?",
-            a: "Yes. We travel within the agglomeration — Parc Cadran, CENORD, Norelan, town centre, Bresse farms — and to tourism players at Brou or the Ekinox / Ainterexpo events hub. Kick-off happens in Bourg-en-Bresse, then iterations by video from Lyon (1h, A40/A42).",
+            a: "Yes. We work on site across the agglomeration — Parc Cadran, CENORD, Norelan, town centre, Bresse farms — and with tourism players at Brou or the Ekinox / Ainterexpo events hub. Kick-off happens on site in Bourg-en-Bresse, then iterations by video.",
           },
           {
             q: "Are your sites GDPR-compliant and where is data hosted?",

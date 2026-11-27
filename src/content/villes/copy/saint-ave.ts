@@ -49,7 +49,7 @@ export const SAINT_AVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Avé et sur l'agglomération de Vannes ?",
-      a: "Oui, Axion-IA intervient à Saint-Avé et dans toute l'agglomération de Vannes. Vannes centre à 10 min, gare TGV à 15 min, voie express RN 165 à 5 min.",
+      a: "Oui, Axion-IA intervient à Saint-Avé et dans toute l'agglomération de Vannes.",
     },
     {
       q: "Tarifs audit IA à Saint-Avé  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const SAINT_AVE_COPY: VilleCopy = {
       a: "Oui, gestion clientèle, facturation, agenda, marketing local, fidélisation, automatisation administrative pour libéraux et commerces de proximité de Saint-Avé.",
     },
     {
-      q: "Comment accéder à Saint-Avé ?",
-      a: "Gare TGV de Vannes à 15 min (Paris-Montparnasse à 2 h 30 en TGV direct). Nantes à 1 h 30 via RN 165. Aéroport Lorient à 50 min.",
+      q: "Comment se déroule une mission à Saint-Avé ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Avé, comme partout en France, ou à distance.",
     },
   ],
 };

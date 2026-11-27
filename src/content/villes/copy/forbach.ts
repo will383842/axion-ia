@@ -36,8 +36,8 @@ export const FORBACH_COPY: VilleCopy = {
       en: "Audit sur place 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention en groupe sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Intervention en groupe sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Intervention en groupe sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}.",
+      en: "Intervention en groupe sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA code-first à Forbach : intégrations API métier, agents internes multilingues FR/DE, automatisations pour commerces, industries et services. À partir de {{price:impl-poc|entry}}.",
@@ -232,7 +232,7 @@ export const FORBACH_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Forbach ?",
-      a: "Williams se déplace à Forbach sous 5 jours ouvrés après validation du devis (TGV Paris-Forbach 1h45 disponible). Audit livrable sous 5 jours après visite. Implémentation : 2 à 6 semaines selon périmètre.",
+      a: "Williams intervient sur site à Forbach sous 5 jours ouvrés après validation du devis. Audit livrable sous 5 jours après visite. Implémentation : 2 à 6 semaines selon périmètre.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Forbach ?",

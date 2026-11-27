@@ -49,7 +49,7 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crépy-en-Valois ?",
-      a: "Oui, Axion-IA intervient à Crépy-en-Valois et dans tout le Valois (Senlis, Villers-Cotterêts, Nanteuil-le-Haudouin). Consultants accessibles via TER Crépy-en-Valois ou autoroute A1.",
+      a: "Oui, Axion-IA intervient à Crépy-en-Valois et dans tout le Valois (Senlis, Villers-Cotterêts, Nanteuil-le-Haudouin).",
     },
     {
       q: "Quels tarifs pour un audit IA à Crépy-en-Valois ?",
@@ -61,7 +61,7 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Crépy-en-Valois ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Crépy-en-Valois. Déplacements sur site inclus pour les entreprises de toute l'agglomération du Valois.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Crépy-en-Valois.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Crépy-en-Valois ?",

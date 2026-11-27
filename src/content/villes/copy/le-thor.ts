@@ -49,7 +49,7 @@ export const LE_THOR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Thor et dans la vallée de la Sorgue ?",
-      a: "Oui, Axion-IA intervient au Thor et dans toute la vallée de la Sorgue (L'Isle-sur-la-Sorgue, Châteauneuf-de-Gadagne, Avignon, Cavaillon). Proximité d'Avignon TGV via N100.",
+      a: "Oui, Axion-IA intervient au Thor et dans toute la vallée de la Sorgue (L'Isle-sur-la-Sorgue, Châteauneuf-de-Gadagne, Avignon, Cavaillon). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Thor ?",
@@ -64,8 +64,8 @@ export const LE_THOR_COPY: VilleCopy = {
       a: "Oui, nous intervenons en négoce agroalimentaire sur optimisation logistique, gestion stocks frais, prévision demande, content marketing export multilingue et automatisation des certifications qualité.",
     },
     {
-      q: "Comment se déplace Axion-IA au Thor ?",
-      a: "Le Thor est à 20 min d'Avignon et 10 min de L'Isle-sur-la-Sorgue via N100. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission au Thor ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Thor, comme partout en France, ou à distance.",
     },
   ],
 };

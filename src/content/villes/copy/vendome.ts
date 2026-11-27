@@ -53,7 +53,7 @@ export const VENDOME_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Vendôme ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, en journée sur site ou en visio selon vos besoins. Vendôme est desservie par la gare TGV Vendôme-Villiers.",
+      a: "Nous intervenons partout en France, sur place ou à distance, en journée sur site ou en visio selon vos besoins.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du Vendômois ?",
@@ -65,7 +65,7 @@ export const VENDOME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vendôme ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local bords du Loir.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vendôme, comme partout en France, ou à distance.",
     },
   ],
 };

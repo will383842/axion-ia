@@ -28,21 +28,22 @@
 import { Text } from "@react-email/components";
 import { emailStyles } from "./_layout";
 import { liensKitApporteur } from "@/lib/commercial-application/kit-apporteur";
+import { SITE_URL } from "@/lib/site-url";
 
 const COPY = {
   fr: {
     intro: "Pour découvrir le réseau et ce que vous pourrez recommander :",
     document: "Le document de présentation",
     documentDetail: " — statut, commissions, fonctionnement (13 pages)",
-    catalogue: "Le catalogue complet de nos prestations",
-    catalogueDetail: " — formations, audit IA, accompagnement 1-to-1, implémentation",
+    catalogue: "Nos formations et prestations",
+    catalogueDetail: " — formations, audit IA, implémentation",
   },
   en: {
     intro: "To discover the network and what you will be able to recommend:",
     document: "The presentation document",
     documentDetail: " — status, commissions, how it works (13 pages, in French)",
-    catalogue: "Our full catalogue of services",
-    catalogueDetail: " — training, AI audit, 1-to-1 coaching, implementation",
+    catalogue: "Our training and services",
+    catalogueDetail: " — training, AI audit, implementation",
   },
 } as const;
 
@@ -60,7 +61,9 @@ export function BlocKitApporteur({
   intro?: string;
 }) {
   const t = COPY[locale];
-  const { documentUrl, catalogueUrl } = liensKitApporteur(locale);
+  const { documentUrl } = liensKitApporteur(locale);
+  // Le catalogue a disparu : le lien mène à la page des formations et prestations.
+  const catalogueUrl = `${SITE_URL.replace(/\/+$/, "")}/${locale}/formations`;
   return (
     <>
       <Text style={emailStyles.paragraphStyle}>{intro ?? t.intro}</Text>

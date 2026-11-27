@@ -38,16 +38,34 @@ export const APPORTEUR_CRONS_QUEUE_NAME = "apporteur-crons";
 
 export type { ApporteurCronJobData, ApporteurCronJobType };
 
+// Lié au type : ajouter un `ApporteurCronJobType` sans l'ajouter ici casse `pnpm typecheck`
+// (le Record est exhaustif), au lieu de laisser le NOUVEAU worker ignorer son propre job.
+const NOMS_PAR_TYPE: Record<ApporteurCronJobType, true> = {
+  "relance-invitation": true,
+  "reponses-entrantes": true,
+  "invitation-auto": true,
+  "reseau-quotidien": true,
+  "reseau-facturation": true,
+};
+export const NOMS_CONNUS = Object.keys(NOMS_PAR_TYPE) as readonly ApporteurCronJobType[];
+
 async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
   // 🔑 Aiguillage par le NOM du job (celui que `bootRepeatableJobs` pose),
-  // repli sur `data.type`. Un job sans nom connu reste un passage des rappels :
-  // c'est ce que faisait ce processeur avant qu'il ait deux passages.
-  const type =
-    job.name === "invitation-auto" || job.data?.type === "invitation-auto"
-      ? "invitation-auto"
-      : job.name === "reponses-entrantes" || job.data?.type === "reponses-entrantes"
-        ? "reponses-entrantes"
-        : "relance-invitation";
+  // repli sur `data.type`. Un job sans nom connu est journalisé et ignoré (voir plus bas) :
+  // il ne retombe plus sur les rappels d'invitation.
+  const est = (nom: string): boolean => job.name === nom || job.data?.type === nom;
+  // Un nom inconnu est journalisé et IGNORÉ : il retombait sur les rappels d'invitation,
+  // arrêtés le 26/10 (lot 0 du relevé mensuel : un ancien worker ne doit rien lancer
+  // d'un nom qu'il ne connaît pas).
+  if (!NOMS_CONNUS.some(est)) {
+    console.warn(`[apporteur-crons] job au nom inconnu ignoré : « ${String(job.name)} »`);
+    return;
+  }
+  const type = est("invitation-auto")
+    ? "invitation-auto"
+    : est("reponses-entrantes")
+      ? "reponses-entrantes"
+      : "relance-invitation";
   if (job.name === "reseau-facturation" || job.data?.type === "reseau-facturation") {
     await passerFacturation();
     return;

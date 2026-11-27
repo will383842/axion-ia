@@ -74,7 +74,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis Beaupréau : catalogue B2B, e-commerce multi-CMS, chatbot RAG ancré sur vos fiches, recherche sémantique, automatisation des devis et plannings d'atelier. Démos hebdomadaires en visio depuis Cholet ou Angers.",
+              "Greffe IA sur l'existant ou build IA-native depuis Beaupréau : catalogue B2B, e-commerce multi-CMS, chatbot RAG ancré sur vos fiches, recherche sémantique, automatisation des devis et plannings d'atelier. Démos hebdomadaires en visio ou Angers.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis Beaupréau : catalogue B2B, e-commerce multi-CMS, chatbot RAG ancré sur vos fiches, recherche sémantique, automatisation des devis et plannings d'atelier. Démos hebdomadaires en visio depuis Cholet ou Angers.",
+              "Greffe IA sur l'existant ou build IA-native depuis Beaupréau : catalogue B2B, e-commerce multi-CMS, chatbot RAG ancré sur vos fiches, recherche sémantique, automatisation des devis et plannings d'atelier. Démos hebdomadaires en visio ou Angers.",
           },
           {
             step: "Recette + mise en ligne",

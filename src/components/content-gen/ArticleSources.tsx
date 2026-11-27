@@ -53,6 +53,18 @@ export function estUrlServable(url: string | null | undefined): boolean {
   }
 }
 
+/** Source que le bloc affiche réellement (URL servable + libellé non vide). */
+export function sourceAffichable(s: { name?: string | null; url: string }): boolean {
+  return estUrlServable(s.url) && (s.name?.trim().length ?? 0) > 0;
+}
+
+/** Vrai si `ArticleSources` rendra au moins une source (sinon le bloc du corps doit rester). */
+export function aDesSourcesAffichables(
+  items: ReadonlyArray<{ name?: string | null; url: string }> | null | undefined,
+): boolean {
+  return !!items && items.some(sourceAffichable);
+}
+
 /**
  * Brique partagée — Sources & méthodologie (chantier templates 2026-06-21).
  *
@@ -79,7 +91,7 @@ export function ArticleSources({ items, locale, lastVerified }: ArticleSourcesPr
   // Deux barrières désormais : le constructeur `URL` (qui refuse ce qui n'est
   // pas analysable) et un rejet explicite des caractères qui n'ont rien à faire
   // dans une URL servie. `URL` seul ne suffit pas — il tolère la backtick.
-  const validItems = items.filter((s) => estUrlServable(s.url) && (s.name?.trim().length ?? 0) > 0);
+  const validItems = items.filter(sourceAffichable);
   if (validItems.length === 0) return null;
   const isFr = locale === "fr";
 

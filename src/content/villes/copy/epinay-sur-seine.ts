@@ -62,7 +62,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
           {
             step: "Cadrage à Épinay-sur-Seine",
             detail:
-              "Kick-off sur site, dans vos locaux d'Épinay — siège logistique près de la gare, magasin avenue De Lattre de Tassigny, studio ou atelier du quartier Orgemont. On cartographie vos parcours utilisateurs réels (commande, suivi de livraison, prise de contact) et vos contraintes métier.",
+              "Kick-off sur site, dans vos locaux d'Épinay — siège logistique, magasin avenue De Lattre de Tassigny, studio ou atelier du quartier Orgemont. On cartographie vos parcours utilisateurs réels (commande, suivi de livraison, prise de contact) et vos contraintes métier.",
           },
           {
             step: "Architecture et design UX/UI",
@@ -114,7 +114,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Axion-IA conçoit-il des sites web et SaaS à Épinay-sur-Seine ?",
-            a: "Oui. Nous concevons sites web, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les entreprises d'Épinay-sur-Seine et du territoire Plaine Commune. Kick-off sur site dans vos locaux, du siège logistique près de la gare RER C au commerce de l'avenue De Lattre de Tassigny.",
+            a: "Oui. Nous concevons sites web, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les entreprises d'Épinay-sur-Seine et du territoire Plaine Commune. Kick-off sur site dans vos locaux, du siège logistique au commerce de l'avenue De Lattre de Tassigny.",
           },
           {
             q: "Pouvez-vous construire une plateforme de suivi de livraison pour un opérateur logistique épinaysien ?",
@@ -200,7 +200,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Does Axion-IA build websites and SaaS in Épinay-sur-Seine?",
-            a: "Yes. We build AI-augmented websites, e-commerce stores and SaaS platforms for Épinay-sur-Seine businesses and the wider Plaine Commune area. On-site kick-off at your premises, from the logistics HQ near the RER C station to the store on Avenue De Lattre de Tassigny.",
+            a: "Yes. We build AI-augmented websites, e-commerce stores and SaaS platforms for Épinay-sur-Seine businesses and the wider Plaine Commune area. On-site kick-off at your premises, from the logistics HQ to the store on Avenue De Lattre de Tassigny.",
           },
           {
             q: "Can you build a delivery-tracking platform for an Épinay logistics operator?",
@@ -240,7 +240,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Épinay-sur-Seine ?",
-      a: "Nos consultants se déplacent sur site sous 5 jours ouvrés après validation. Accès direct depuis Paris par le RER C, le tramway T8 ou T11, ou par l'A86 et l'A15.",
+      a: "Nous intervenons dans vos locaux à Épinay-sur-Seine, partout en France, sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment Axion-IA assure la conformité RGPD à Épinay-sur-Seine ?",

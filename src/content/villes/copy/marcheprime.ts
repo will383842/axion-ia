@@ -49,7 +49,7 @@ export const MARCHEPRIME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marcheprime ?",
-      a: "Oui, Axion-IA intervient à Marcheprime et sur le corridor Bordeaux-Arcachon (Le Barp, Cestas, Biganos, Mios). Depuis Bordeaux (30 min A63) ou Paris (TGV 2h + 30 min).",
+      a: "Oui, Axion-IA intervient à Marcheprime et sur le corridor Bordeaux-Arcachon (Le Barp, Cestas, Biganos, Mios).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Marcheprime  ?",
@@ -65,7 +65,7 @@ export const MARCHEPRIME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Marcheprime ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Gare TER Marcheprime. Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Livrables documentés, tarifs publics.",
     },
   ],
 };

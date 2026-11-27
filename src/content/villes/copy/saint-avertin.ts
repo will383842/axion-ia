@@ -49,7 +49,7 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Avertin et Tours sud ?",
-      a: "Oui, Axion-IA intervient à Saint-Avertin et tout le sud de Tours Métropole (Chambray-lès-Tours, Larçay, Véretz). Tours centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Saint-Avertin et tout le sud de Tours Métropole (Chambray-lès-Tours, Larçay, Véretz).",
     },
     {
       q: "Travaillez-vous avec les cabinets conseil et professions libérales ?",
@@ -64,8 +64,8 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 {{price:intervention-membre-equipe|flat}}. Agents conversationnels, gestion stocks, fidélisation clients, automatisation commandes.",
     },
     {
-      q: "Comment accéder à Saint-Avertin ?",
-      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 15 min. Consultants sur site Tours Métropole. Frais de déplacement en sus.",
+      q: "Comment se déroule une mission à Saint-Avertin ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Avertin, comme partout en France, ou à distance.",
     },
   ],
 };

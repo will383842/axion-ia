@@ -78,7 +78,7 @@ function isGuideArticle(templateVariant: string | null, slug: string): boolean {
  * Chaque étape capture le titre + le texte qui suit jusqu'au prochain marqueur.
  * Retourne tableau vide si aucun pattern matché (fallback Article JSON-LD).
  */
-function parseStepsFromBody(body: string): ReadonlyArray<GuideStep> {
+export function parseStepsFromBody(body: string): ReadonlyArray<GuideStep> {
   if (!body || body.length < 50) return [];
 
   // Pattern 1+2 : "Étape N" / "Step N"

@@ -49,7 +49,7 @@ export const LE_PLESSIS_BOUCHARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Plessis-Bouchard et dans Val-et-Forêt ?",
-      a: "Oui, Axion-IA intervient au Plessis-Bouchard et dans toute l'agglomération Val-et-Forêt (Franconville, Beauchamp, Montlignon, Saint-Prix). Nos consultants se déplacent depuis Paris Gare du Nord (25 min en Transilien H).",
+      a: "Oui, Axion-IA intervient au Plessis-Bouchard et dans toute l'agglomération Val-et-Forêt (Franconville, Beauchamp, Montlignon, Saint-Prix). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA au Plessis-Bouchard ?",
@@ -65,7 +65,7 @@ export const LE_PLESSIS_BOUCHARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA au Plessis-Bouchard ?",
-      a: "Nos consultants se déplacent au Plessis-Bouchard depuis Paris (25 min Transilien H, gare de Franconville-Le Plessis-Bouchard). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
     },
   ],
 };

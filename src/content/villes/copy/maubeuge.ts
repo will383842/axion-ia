@@ -56,7 +56,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           "La supply-chain automobile autour de la Manufacture Renault de Maubeuge (Kangoo E-TECH Electric, R4 E-Tech) génère un besoin réel de portails fournisseurs, de configurateurs de pièces et de suivi de commandes en ligne pour les sous-traitants de rang 1 et 2 du Val de Sambre.",
           "La filière métallurgie-énergie (Vallourec et ses tubes sans soudure à Aulnoye-Aymeries, Interfit, Cerec à Recquignies) et le nucléaire (Framatome, SRMS sur Grévaux-les-Guides) imposent des plateformes capables d'indexer de la documentation technique dense : nous y déployons du search sémantique et des chatbots RAG sur normes, fiches matières et procédures.",
           "Les PME industrielles locales nommées — Carnière/Défossez (automobile et électroménager), CBM (emballage industriel), Aciérie et Fonderie de la Haute Sambre — ont des sites souvent vitrines : nous les transformons en outils commerciaux avec catalogue produit, demande de devis automatisée et espace client B2B.",
-          "Position transfrontalière à 7 km de la Belgique via la N2 et campus de Douzies (IUT informatique rattaché à Valenciennes) : nous construisons des plateformes bilingues prêtes pour la clientèle belge et mobilisons un vivier technique local.",
+          "Position transfrontalière avec la Belgique et campus de Douzies (IUT informatique rattaché à Valenciennes) : nous construisons des plateformes bilingues prêtes pour la clientèle belge et mobilisons un vivier technique local.",
         ],
         methodology: [
           {
@@ -126,7 +126,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Maubeuge ?",
-            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge (7 km via la N2) nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
+            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
           },
           {
             q: "Où sont hébergées les données et combien de temps pour démarrer ?",
@@ -142,7 +142,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           "The automotive supply chain around the Renault Maubeuge plant (Kangoo E-TECH Electric, R4 E-Tech) creates real demand for supplier portals, parts configurators and online order tracking for tier-1 and tier-2 subcontractors of the Val de Sambre.",
           "The metallurgy-energy sector (Vallourec's seamless tubes at Aulnoye-Aymeries, Interfit, Cerec at Recquignies) and nuclear players (Framatome, SRMS on Grévaux-les-Guides) require platforms able to index dense technical documentation: we deploy semantic search and RAG chatbots over standards, material sheets and procedures.",
           "Named local industrial SMEs — Carnière/Défossez (automotive and home appliances), CBM (industrial packaging), Aciérie et Fonderie de la Haute Sambre — often have brochure-only sites: we turn them into sales tools with product catalogue, automated quote requests and a B2B client area.",
-          "A cross-border location 7 km from Belgium via the N2 and the Douzies campus (computer-science IUT attached to Valenciennes): we build bilingual platforms ready for Belgian customers and draw on a local technical talent pool.",
+          "A cross-border location next to Belgium and the Douzies campus (computer-science IUT attached to Valenciennes): we build bilingual platforms ready for Belgian customers and draw on a local technical talent pool.",
         ],
         methodology: [
           {
@@ -212,7 +212,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Maubeuge ?",
-            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge (7 km via la N2) nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
+            a: "Oui : Louvroil, Feignies, Rousies, Assevent, Aulnoye-Aymeries, Recquignies et l'ensemble de l'Agglomération Maubeuge Val de Sambre. Le kick-off se fait sur site, sur le parc de Grévaux-les-Guides, à La Marlière ou dans vos locaux. La proximité belge nous permet aussi de livrer des plateformes bilingues pour votre clientèle transfrontalière.",
           },
           {
             q: "Où sont hébergées les données et combien de temps pour démarrer ?",
@@ -236,7 +236,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Maubeuge ?",
-      a: "Williams se déplace sur site à Maubeuge dans un délai de 5 jours ouvrés après validation de votre demande, via TER ou la N2.",
+      a: "Williams intervient sur site à Maubeuge dans un délai de 5 jours ouvrés après validation de votre demande.",
     },
     {
       q: "Axion-IA respecte-t-elle le RGPD lors des interventions à Maubeuge ?",

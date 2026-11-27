@@ -49,7 +49,7 @@ export const DONGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Donges ?",
-      a: "Oui, Axion-IA intervient à Donges et tout l'estuaire de la Loire (Montoir-de-Bretagne, Saint-Nazaire, Trignac, Savenay). Couverture complète Loire-Atlantique, gare TER Donges desservie.",
+      a: "Oui, Axion-IA intervient à Donges et tout l'estuaire de la Loire (Montoir-de-Bretagne, Saint-Nazaire, Trignac, Savenay). Couverture complète Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les PME sous-traitantes industrielles ?",
@@ -65,7 +65,7 @@ export const DONGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Donges ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Donges desservie. Hébergement local pour missions multi-jours.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Donges, comme partout en France, ou à distance.",
     },
   ],
 };

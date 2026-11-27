@@ -29,6 +29,16 @@ interface Payload {
   entreprise?: string;
   /** Fin de la protection, déjà formatée en heure de Paris : « 8 avril 2027 ». */
   finProtection?: string;
+  /**
+   * Confirmée seulement, FACULTATIF (un job déjà en file n'en porte pas) : date du rendez-vous
+   * tenu ou de la signature, déjà formatée en heure de Paris.
+   */
+  dateValidation?: string;
+  /**
+   * Confirmée seulement, FACULTATIF : date de la confirmation (réputée ou saisie) d'une présentation
+   * des contrats antérieurs à la 2.8 — le mot « validation » est réservé à la règle du rendez-vous.
+   */
+  dateConfirmation?: string;
   variante?: VarianteAttribution;
   /**
    * Prolongée seulement : le motif DÉJÀ RÉDIGÉ par l'appelant (« Un devis est en cours avec
@@ -52,7 +62,7 @@ export const COPY_ATTRIBUTION = {
     title: "Votre attribution est confirmée",
     preview: "L'attribution est désormais définitive.",
     texte: (e: string) =>
-      `L'attribution de ${e || "l'entreprise que vous nous avez présentée"} est désormais définitive : elle vous est réservée.`,
+      `L'attribution de ${e || "l'entreprise que vous nous avez présentée"} est désormais définitive : elle vous est attribuée.`,
   },
   prolongee: {
     subject: (e: string) => (e ? `${e} : protection prolongée` : "Votre protection est prolongée"),
@@ -62,9 +72,11 @@ export const COPY_ATTRIBUTION = {
       `La protection de ${e || "l'entreprise que vous nous avez présentée"} arrivait à son terme. ${motif} : elle est prolongée une fois, de trois mois.`,
   },
   motifParDefaut: "Un échange est en cours avec elle",
+  validation: (d: string) => (d ? `Date de la validation : ${d}.` : ""),
+  confirmation: (d: string) => (d ? `Date de la confirmation : ${d}.` : ""),
   fin: (d: string) => (d ? `Fin de la protection : ${d}.` : ""),
   commission:
-    "Une attribution ne fait naître aucune commission par elle-même : la commission naît d'une commande de l'entreprise, une fois la prestation réalisée et entièrement payée.",
+    "Une attribution ne fait naître aucune commission par elle-même : la commission naît d'une commande de l'entreprise, une fois la commande entièrement payée.",
   bonjour: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
 } as const;
 
@@ -89,6 +101,11 @@ export function ApporteurAttributionConfirmeeEmail({ locale, payload }: Props) {
     v === "prolongee"
       ? COPY_ATTRIBUTION.prolongee.texte(e, texte(p.motifTexte) || COPY_ATTRIBUTION.motifParDefaut)
       : COPY_ATTRIBUTION.confirmee.texte(e);
+  const validation =
+    v === "confirmee"
+      ? COPY_ATTRIBUTION.validation(texte(p.dateValidation)) ||
+        COPY_ATTRIBUTION.confirmation(texte(p.dateConfirmation))
+      : "";
   const fin = COPY_ATTRIBUTION.fin(texte(p.finProtection));
   return (
     <EmailLayout
@@ -101,6 +118,7 @@ export function ApporteurAttributionConfirmeeEmail({ locale, payload }: Props) {
     >
       <Text style={emailStyles.paragraphStyle}>{COPY_ATTRIBUTION.bonjour(prenom)}</Text>
       <Text style={emailStyles.paragraphStyle}>{corps}</Text>
+      {validation ? <Text style={emailStyles.paragraphStyle}>{validation}</Text> : null}
       {fin ? <Text style={emailStyles.paragraphStyle}>{fin}</Text> : null}
       <Text style={emailStyles.paragraphStyle}>{COPY_ATTRIBUTION.commission}</Text>
     </EmailLayout>

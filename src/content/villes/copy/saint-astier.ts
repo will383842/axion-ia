@@ -49,7 +49,7 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Astier ?",
-      a: "Oui, Axion-IA intervient à Saint-Astier et dans la vallée de l'Isle (Mussidan, Neuvic, Montpon-Ménestérol). Gare SNCF Saint-Astier ligne Bordeaux–Périgueux.",
+      a: "Oui, Axion-IA intervient à Saint-Astier et dans la vallée de l'Isle (Mussidan, Neuvic, Montpon-Ménestérol).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Astier  ?",
@@ -61,7 +61,7 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Saint-Astier ?",
-      a: "Intervention sous 5 jours ouvrés. Périgueux à 20 min, Bordeaux à 1h30 A89. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous du coaching IA individuel en vallée de l'Isle ?",

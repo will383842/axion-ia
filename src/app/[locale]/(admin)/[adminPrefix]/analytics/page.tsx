@@ -145,6 +145,14 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
       helpUrl: "https://www.bing.com/webmasters/about",
       envVar: "BING_SITE_VERIFICATION",
     },
+    {
+      name: "Pinterest",
+      status: "ok",
+      detail: "Balise meta p:domain_verify posée en dur (constante, aucune variable)",
+      externalUrl: "https://www.pinterest.com/axion_ia/",
+      helpUrl: "https://help.pinterest.com/fr/business/article/confirm-your-website",
+      envVar: "(aucune : constante dans le layout)",
+    },
   ];
   return (
     <AnalyticsV2

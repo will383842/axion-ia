@@ -49,7 +49,7 @@ export const GOURNAY_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gournay-sur-Marne et dans l'est du Grand Paris ?",
-      a: "Oui, Axion-IA intervient à Gournay-sur-Marne et dans tout l'est du Grand Paris (Chelles, Noisy-le-Grand, Champs-sur-Marne, Neuilly-sur-Marne). Nos consultants se déplacent depuis Paris (Gare de l'Est à 25 min en RER E).",
+      a: "Oui, Axion-IA intervient à Gournay-sur-Marne et dans tout l'est du Grand Paris (Chelles, Noisy-le-Grand, Champs-sur-Marne, Neuilly-sur-Marne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commerces et restaurants des bords de Marne ?",
@@ -65,7 +65,7 @@ export const GOURNAY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Gournay-sur-Marne ?",
-      a: "Nos consultants se déplacent à Gournay-sur-Marne depuis Paris (25 min RER E via Chelles-Gournay). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
     },
   ],
 };

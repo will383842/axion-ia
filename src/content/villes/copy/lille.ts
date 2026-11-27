@@ -181,7 +181,7 @@ export const LILLE_COPY: VilleCopy = {
         whyHere: [
           "Lille is a priority location for Axion-IA: densest retail/e-commerce fabric in France outside Île-de-France, international group HQs (Decathlon, Auchan, La Redoute) and 466 EuraTechnologies start-ups.",
           "Lille B2B sectors over-represented in our mandates: omnichannel retail, logistics supply chain, IT/SaaS EuraTechnologies, banking/insurance Euralille, agri-food industry (Bonduelle, Euralimentaire).",
-          "Our consultants travel across the full Lille metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul and surrounding communes.",
+          "Axion-IA works anywhere in France, on site or remotely, including across the full Lille metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul and surrounding communes.",
           "Read-outs always in person: ideation workshop at your offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "Public pricing displayed: you know exactly what you pay before signing, no opaque quote to negotiate.",
           "No lock-in: your action plan is executable with any vendor or in-house after our audit.",
@@ -357,7 +357,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -449,7 +449,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -804,10 +804,6 @@ export const LILLE_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — beginner or advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
-          },
-          {
             q: "Can we organise several individual coachings for different managers at the same Lille group?",
             a: "Yes. Some Lille HQs organise several individual sessions for their directors or BU managers rather than a group training. Volume discount possible — to be specified at framing.",
           },
@@ -995,7 +991,7 @@ export const LILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lille ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Lille et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il à EuraTechnologies et dans toute la métropole lilloise ?",
@@ -1012,10 +1008,6 @@ export const LILLE_COPY: VilleCopy = {
     {
       q: "Avez-vous des références dans le retail et l'e-commerce lillois ?",
       a: "Oui. Plusieurs de nos références lilloise concernent le retail omnicanal, l'e-commerce et la logistique. Les cas clients récents sont consultables dans la rubrique Cas concrets, filtrables par secteur et par taille d'entreprise.",
-    },
-    {
-      q: "Lille est-elle bien desservie pour accueillir des consultants Axion-IA ?",
-      a: "Excellemment. Lille-Europe est la seule gare française directement connectée à Londres (Eurostar 82 min), Bruxelles (Thalys 38 min) et Paris (TGV 62 min). Le métro Ilévia permet de rejoindre Villeneuve-d'Ascq et Roubaix en moins de 20 minutes. Aucun surcoût de déplacement dans la métropole.",
     },
   ],
 };

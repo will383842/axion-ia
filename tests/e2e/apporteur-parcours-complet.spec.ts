@@ -184,7 +184,7 @@ test.describe("@apporteur parcours complet", () => {
     });
 
     await test.step("5. dossier en ligne : pièce d'identité (PNG fictif) et RIB", async () => {
-      await expect(page.getByRole("heading", { name: "Vos documents" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Vos pièces" })).toBeVisible();
       const png = await imageFictive();
       await page.getByLabel(/Pièce d'identité : choisir un fichier/).setInputFiles({
         name: "identite-fictive.png",

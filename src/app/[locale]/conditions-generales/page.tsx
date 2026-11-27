@@ -56,6 +56,21 @@ export const revalidate = 3600;
 // 2026-11-27 : articles 47.5 (déplacement compris en Auvergne-Rhône-Alpes), 47.6 (acompte acquis en cas
 // d'annulation par le Client) et 47.10 (e) (vérification par Axion-IA, plus de déclaration du Client).
 // Le texte du 26/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-28 : décision du dirigeant — l'acompte versé reste acquis en cas d'annulation par le Client,
+// SANS condition de délai, pour tout ce qui est vendu (articles 6.5, 42.1, 46.2, 47.6, 49.5, 49.6) ; la
+// règle « annulée à plus de 15 jours ouvrés, acomptes remboursés » est supprimée. Rétractation légale
+// réservée (49.2, 53.2). Le texte du 27/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-29 : décision du dirigeant (26/11) — la personne morale non professionnelle (53.3) perd aussi son
+// acompte si elle annule, comme le Client professionnel, avec la clause RÉCIPROQUE exigée par R.212-2 2° (applicable aux non-professionnels par R.212-5) du code
+// de la consommation (annulation par Axion-IA hors force majeure : acompte rendu + indemnité égale). La personne
+// physique de l'article 49.2 reste remboursée en totalité. Le texte du 28/11 est archivé (@/content/cgv-archives).
+//
+// 2026-11-30 : décision du dirigeant (26/11) — Axion-IA n'annule jamais, elle REPORTE : si elle ne peut pas tenir une date,
+// report sans frais avec au moins 2 nouvelles dates sous 6 mois (première date réputée acceptée sans réponse, bon d'achat possible) (article 46.4, clause unique à laquelle
+// renvoient 6.5, 17.4, 49, 50.2 et 53.3). Remboursement (et indemnité égale, personne morale non professionnelle seule)
+// uniquement en dernier recours (aucune date convenue sous 6 mois et bon d'achat non choisi). Le texte du 29/11 est archivé (@/content/cgv-archives).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

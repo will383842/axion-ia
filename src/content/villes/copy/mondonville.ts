@@ -14,9 +14,9 @@ export const MONDONVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Au cœur du pôle aéronautique toulousain.",
   ecosystemEn:
-    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Au cœur du pôle aéronautique toulousain.",
   distancesFr:
     "Toulouse centre à 20 min (D902). Aéroport Toulouse-Blagnac à 10 min. Gare Matabiau à 25 min. Cornebarrieu à 5 min. Aussonne à 5 min.",
   distancesEn:
@@ -49,7 +49,7 @@ export const MONDONVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mondonville ?",
-      a: "Oui, Axion-IA intervient à Mondonville et dans tout le nord-ouest de Toulouse (Cornebarrieu, Aussonne, Beauzelle). Nos consultants se déplacent en 20 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Mondonville et dans tout le nord-ouest de Toulouse (Cornebarrieu, Aussonne, Beauzelle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Mondonville ?",
@@ -61,7 +61,7 @@ export const MONDONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Mondonville ?",
-      a: "Nos consultants se déplacent à Mondonville depuis Toulouse (20 min D902). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "Proposez-vous du coaching individuel à Mondonville ?",

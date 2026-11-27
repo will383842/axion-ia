@@ -65,7 +65,7 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pont-Évêque ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Vienne).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Pont-Évêque, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -253,7 +253,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Villeurbanne, Vénissieux, Saint-Priest, Écully)?",
-            a: "Yes. The Métropole de Lyon is our full territory. Our consultants travel to all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
+            a: "Yes. The Métropole de Lyon is our full territory. Axion-IA works anywhere in France, on site or remotely, in all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -351,7 +351,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -443,7 +443,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -991,7 +991,7 @@ export const LYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lyon ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Sur place pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille — aucune pondération régionale ni surcoût Auvergne-Rhône-Alpes.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Sur place pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille.",
     },
     {
       q: "Avez-vous des cas clients dans la Métropole de Lyon ?",
@@ -1003,7 +1003,7 @@ export const LYON_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans les communes de la Métropole hors Lyon intra-muros ?",
-      a: "Oui. La Métropole entière est notre zone d'intervention : Villeurbanne (cluster IT), Écully (Centrale Lyon, Groupe SEB, EM Lyon), Bron (Eurexpo), Saint-Priest (Renault Trucks), Vénissieux, Caluire-et-Cuire, et les autres communes. Aucun supplément de zone.",
+      a: "Oui. La Métropole entière est notre zone d'intervention : Villeurbanne (cluster IT), Écully (Centrale Lyon, Groupe SEB, EM Lyon), Bron (Eurexpo), Saint-Priest (Renault Trucks), Vénissieux, Caluire-et-Cuire, et les autres communes.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Lyon ?",

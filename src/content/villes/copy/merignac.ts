@@ -132,7 +132,7 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants se déplacent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
+            a: "À partir de 24 à 48 h selon la complexité. Après un premier échange sur votre périmètre — site vitrine, e-commerce, portail fournisseurs ou SaaS — nous vous transmettons un devis chiffré. Nos consultants interviennent à Mérignac et dans toute la métropole bordelaise pour le cadrage.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const MERIGNAC_COPY: VilleCopy = {
           },
           {
             q: "How long until I get a quote?",
-            a: "From 24 to 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Our consultants travel to Mérignac and across the Bordeaux metropolitan area for framing.",
+            a: "From 24 to 48 hours depending on complexity. After an initial discussion of your scope — showcase site, e-commerce, supplier portal or SaaS — we send you a costed quote. Axion-IA works anywhere in France, on site or remotely, including in Mérignac and across the Bordeaux metropolitan area.",
           },
         ],
         guarantees:
@@ -245,8 +245,8 @@ export const MERIGNAC_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la gestion des demandes.",
     },
     {
-      q: "Comment se passe une mission depuis Bordeaux centre ?",
-      a: "Mérignac est à 10 km de Bordeaux centre, relié par le tramway A et la rocade. Nous couvrons toute la métropole bordelaise.",
+      q: "Comment se déroule une mission Axion-IA à Mérignac ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

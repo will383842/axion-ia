@@ -1,14 +1,16 @@
 /**
  * KB sectorielle — Verticale Web & Digital IA / Sites Web Augmentés (P6 2026-05-22).
  *
- * 60 facts vérifiés sur la création et l'augmentation de sites web par l'IA en France.
- * Sources : Nielsen Norman Group, Think with Google, Numeum (ex-Syntec Numérique),
- *           BPI France, DGE, McKinsey, HubSpot, Semrush, Axion-IA terrain.
+ * Fiches sourcées (60 avant le 26/11/2026) sur la création et l'augmentation de sites web par l'IA en France.
+ * Sources : celles déclarées par chaque fiche (`source` et `sourceUrl`).
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *
  * Usage : seed via `prisma/seeds/content-gen/seed-kb-facts.ts`
  * Indexation FTS Postgres déjà en place via KbEntry.content + tsvector.
+ *
+ * ⚠️ 26/11/2026 : les faits tiers chiffrés sans adresse profonde et les « retours terrain » chiffrés
+ * ont été retirés (docs/content-gen/KB-QUARANTAINE-2026-11-26.md). Le nombre de faits n'est plus un objectif.
  */
 
 import type { KbFact } from "./audits";
@@ -44,52 +46,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     confidence: 0.95,
   },
   // ── Marché et tendances FR ───────────────────────────────────────────────
-  {
-    id: "web-004",
-    text: "En 2025, 38 % des PME françaises prévoient d'intégrer une fonctionnalité IA sur leur site web dans les 12 mois — chatbot en tête (61 % des projets), suivi par la personnalisation de contenu (29 %) (BPI France, Baromètre Numérique PME 2025).",
-    source: "BPI France — Baromètre Numérique PME 2025",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.8,
-  },
-  {
-    id: "web-005",
-    text: "Le marché des chatbots d'entreprise en France atteindra 1,2 milliard d'euros en 2026, contre 480 millions en 2023 — une croissance de 150 % en 3 ans portée par les LLM de nouvelle génération (Xerfi, Étude IA conversationnelle B2B 2025).",
-    source: "Xerfi — Étude IA conversationnelle B2B 2025",
-    sourceUrl: "https://www.xerfi.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.75,
-  },
-  {
-    id: "web-006",
-    text: "67 % des internautes français déclarent qu'un chatbot répondant en moins de 5 secondes améliore significativement leur expérience sur un site B2B (Nielsen Norman Group, UX IA Report 2025).",
-    source: "Nielsen Norman Group — UX IA Report 2025",
-    sourceUrl: "https://www.nngroup.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.78,
-  },
-  {
-    id: "web-007",
-    text: "Les sites web intégrant un chatbot IA voient leur taux de conversion moyen augmenter de 23 % et leur taux de rebond diminuer de 18 % — selon une méta-analyse HubSpot portant sur 450 sites B2B européens en 2024.",
-    source: "HubSpot — Méta-analyse Chatbot B2B Europe 2024",
-    sourceUrl: "https://blog.hubspot.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.72,
-  },
   // ── SEO IA et contenu ────────────────────────────────────────────────────
-  {
-    id: "web-008",
-    text: "La génération automatique de contenu SEO par IA permet aux PME de publier 5 à 20× plus d'articles par mois sans augmenter leur équipe rédactionnelle — à condition de mettre en place un workflow de validation humaine (Google, Quality Rater Guidelines 2025).",
-    source: "Google — Quality Rater Guidelines 2025",
-    sourceUrl: "https://developers.google.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.82,
-  },
   {
     id: "web-009",
     text: "Google distingue explicitement le contenu IA 'utile et validé humainement' (indexable) du contenu IA 'spam à grande échelle' (pénalisé HCU) depuis l'update Helpful Content 2024 — la transparence sur l'IA est désormais un signal de confiance positif.",
@@ -99,62 +56,8 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     verticales: ["sites_web_augmentes"],
     confidence: 0.9,
   },
-  {
-    id: "web-010",
-    text: "Les sites utilisant des FAQ dynamiques générées par IA (et balisées FAQ schema.org) obtiennent des Featured Snippets dans 34 % des cas sur des requêtes longue traîne — vs 12 % sans balisage structuré (Semrush, Étude SERP Features 2025).",
-    source: "Semrush — Étude SERP Features 2025",
-    sourceUrl: "https://www.semrush.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.73,
-  },
   // ── Performance technique ────────────────────────────────────────────────
-  {
-    id: "web-011",
-    text: "Un chatbot IA bien configuré réduit de 40 à 60 % le volume de demandes entrantes par email ou téléphone pour les entreprises de services — libérant du temps commercial pour les dossiers complexes (McKinsey, Digital Operations Survey 2025).",
-    source: "McKinsey — Digital Operations Survey 2025",
-    sourceUrl: "https://www.mckinsey.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.78,
-  },
-  {
-    id: "web-012",
-    text: "Les Core Web Vitals (LCP ≤ 2,5s, INP ≤ 200ms, CLS ≤ 0,1) sont un facteur de classement Google depuis 2021 et restent déterminants en 2026 — les sites avec 'Good' CWV ont en moyenne 24 % de trafic organique supplémentaire (Ahrefs, CWV Study 2025).",
-    source: "Ahrefs — Core Web Vitals Impact Study 2025",
-    sourceUrl: "https://ahrefs.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.8,
-  },
-  {
-    id: "web-013",
-    text: "Next.js (framework React) est le framework le plus utilisé pour les sites web IA en France en 2025 (33 % des nouveaux projets web B2B IA selon Numeum, ex-Syntec Numérique) — pour sa compatibilité native avec les API IA et son support SSR/ISR.",
-    source: "Numeum (ex-Syntec Numérique) — Observatoire des technologies web 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.72,
-  },
   // ── ROI et budget ────────────────────────────────────────────────────────
-  {
-    id: "web-014",
-    text: "Le ROI moyen d'un chatbot IA B2B est atteint en 4 à 8 mois pour les sites avec plus de 500 visiteurs/mois — calculé sur la réduction du support client (40 % des tickets résolus automatiquement) et l'augmentation des leads qualifiés (+23 %).",
-    source: "HubSpot — ROI Chatbot B2B Report 2025",
-    sourceUrl: "https://blog.hubspot.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.73,
-  },
-  {
-    id: "web-015",
-    text: "Le coût moyen d'un chatbot IA sur site web en France se situe entre 3 000 € et 25 000 € selon la complexité (base de connaissance, intégrations CRM, langues), avec un abonnement mensuel de 200 à 800 € pour l'API LLM sous-jacente (DGE, Étude coûts IA PME 2025)." /* price-exempt: coût marché DGE, pas un tarif Axion */,
-    source: "DGE — Étude coûts IA PME 2025",
-    sourceUrl: "https://www.entreprises.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.75,
-  },
   {
     id: "web-016",
     text: "Chaque projet web IA Axion-IA démarre par un appel de cadrage gratuit et sans engagement (réservable en ligne) pour identifier les cas d'usage IA prioritaires — le chiffrage précis fait ensuite l'objet d'un devis fixe.",
@@ -193,34 +96,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     confidence: 0.8,
   },
   // ── Personnalisation et UX ────────────────────────────────────────────────
-  {
-    id: "web-020",
-    text: "La personnalisation IA du contenu web (recommandations d'articles, adaptation du message selon le profil visiteur) augmente le temps passé sur site de 35 % en moyenne et réduit le taux de rebond de 22 % (Think with Google, Personalization Report 2025).",
-    source: "Think with Google — Personalization Report 2025",
-    sourceUrl: "https://www.thinkwithgoogle.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.76,
-  },
-  {
-    id: "web-021",
-    text: "Les moteurs de recherche interne IA (recherche sémantique plutôt que mots-clés exacts) multiplient par 2,8 le taux de satisfaction des visiteurs sur les sites B2B disposant de plus de 50 pages de contenu (Nielsen Norman Group, Search UX 2025).",
-    source: "Nielsen Norman Group — Search UX 2025",
-    sourceUrl: "https://www.nngroup.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.77,
-  },
   // ── Codage et développement IA ────────────────────────────────────────────
-  {
-    id: "web-022",
-    text: "Le développement assisté par IA (GitHub Copilot, Claude Code, Cursor) réduit de 30 à 55 % le temps de développement pour les fonctionnalités web standards — selon des études menées par GitHub sur 1 millions+ de développeurs en 2024.",
-    source: "GitHub — Copilot Productivity Study 2024",
-    sourceUrl: "https://github.blog",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.82,
-  },
   {
     id: "web-023",
     // 🔴 Vérification E2E 2026-07-26 (F55, 2e passage). Le premier passage avait
@@ -236,15 +112,6 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     verticales: ["sites_web_augmentes"],
     confidence: 0.95,
   },
-  {
-    id: "web-024",
-    text: "Une API Claude (Anthropic) coûte en moyenne 0,003 $ par requête conversationnelle pour un chatbot de service client standard — rendant économiquement viable un chatbot à partir de 200 conversations/mois pour une PME.",
-    source: "Anthropic — API Pricing Documentation 2026",
-    sourceUrl: "https://www.anthropic.com/pricing",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.9,
-  },
   // ── Intégrations et automatisation ───────────────────────────────────────
   {
     id: "web-025",
@@ -254,15 +121,6 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["sites_web_augmentes"],
     confidence: 0.95,
-  },
-  {
-    id: "web-026",
-    text: "L'automatisation des flux web IA via Make (ex-Integromat) ou n8n permet de connecter un chatbot site web à des dizaines d'outils SaaS (CRM, Slack, email, Notion) sans code supplémentaire — réduisant les coûts d'intégration de 60 à 80 %.",
-    source: "Make — Rapport usage automatisation IA 2025",
-    sourceUrl: "https://www.make.com",
-    verifiedAt: "2026-05-01",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.76,
   },
   {
     id: "web-027",
@@ -284,24 +142,6 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   // ── AI Overviews et SGE en France ─────────────────────────────────────────
   {
-    id: "web-029",
-    text: "Google AI Overviews (anciennement SGE) est déployé en France depuis 2024 et réduit le CTR organique des résultats de recherche de 15 à 34 % selon les requêtes — les sites avec données structurées (JSON-LD) et contenu de référence sont moins impactés.",
-    source: "Search Engine Journal — AI Overviews Impact on Organic CTR 2024",
-    sourceUrl: "https://www.searchenginejournal.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.79,
-  },
-  {
-    id: "web-030",
-    text: "BrightEdge Research (2024) indique que les sites ayant un balisage JSON-LD complet (Organization, Product, FAQPage, HowTo) apparaissent dans les AI Overviews Google 4,7× plus souvent que les sites sans données structurées.",
-    source: "BrightEdge — AI Overviews and Structured Data Impact Study 2024",
-    sourceUrl: "https://www.brightedge.com/resources",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.77,
-  },
-  {
     id: "web-031",
     text: "Le schéma Speakable (schema.org/speakableSpecification) indique aux moteurs de recherche et assistants vocaux les passages prioritaires à lire — son adoption est recommandée par Google pour optimiser la présence dans les réponses IA et la recherche vocale.",
     source: "Google Search Central — Speakable Schema and Voice Search 2025",
@@ -310,34 +150,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     verticales: ["sites_web_augmentes"],
     confidence: 0.88,
   },
-  {
-    id: "web-032",
-    text: "En France, la recherche vocale représente 27 % des requêtes Google sur mobile en 2024 selon Statista — et les requêtes vocales sont en moyenne 3× plus longues que les requêtes textuelles, favorisant le contenu conversationnel optimisé pour les featured snippets.",
-    source: "Statista — Voice Search Usage in France 2024",
-    sourceUrl: "https://www.statista.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.75,
-  },
   // ── Contenu IA généré et SEO ───────────────────────────────────────────────
-  {
-    id: "web-033",
-    text: "SEMrush (2024) révèle que 47 % des sites web dans le top 100 de leur secteur utilisent déjà de l'IA pour générer ou optimiser du contenu — la différence avec les sites purement humains s'efface au profit de l'expertise de fond et de l'expérience utilisateur.",
-    source: "SEMrush — State of Content Marketing and AI 2024",
-    sourceUrl: "https://www.semrush.com/blog",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.77,
-  },
-  {
-    id: "web-034",
-    text: "Les sites utilisant une stratégie de contenu IA + validation humaine publient en moyenne 8,4× plus de contenu par mois que leurs concurrents sans IA — et obtiennent 2,1× plus de trafic organique sur 12 mois selon BrightEdge (2024).",
-    source: "BrightEdge — Content Velocity and AI Impact Study 2024",
-    sourceUrl: "https://www.brightedge.com/resources",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.75,
-  },
   // ── CTR et évolution SEO 2024-2026 ────────────────────────────────────────
   {
     id: "web-035",
@@ -347,15 +160,6 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["sites_web_augmentes"],
     confidence: 0.78,
-  },
-  {
-    id: "web-036",
-    text: "Les requêtes « zero-click » (réponse fournie directement dans les SERP sans clic) représentent 65 % des recherches Google en 2024 — rendant l'optimisation pour les Featured Snippets et les AI Overviews plus stratégique que jamais (SparkToro, Zero-Click Search Study 2024).",
-    source: "SparkToro — Zero-Click Search Study 2024",
-    sourceUrl: "https://sparktoro.com/blog",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.79,
   },
   // ── JSON-LD et AEO/GEO ────────────────────────────────────────────────────
   {
@@ -377,53 +181,8 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     confidence: 0.95,
   },
   // ── Chatbots et taux de conversion ────────────────────────────────────────
-  {
-    id: "web-039",
-    text: "HubSpot Research (2025) indique que les sites B2B avec un chatbot IA proactif (qui s'adresse au visiteur après 30 secondes de navigation sans action) obtiennent 31 % de leads supplémentaires par rapport aux sites avec un chatbot passif (déclenchement uniquement sur action utilisateur).",
-    source: "HubSpot Research — Proactive vs Reactive Chatbot Impact 2025",
-    sourceUrl: "https://blog.hubspot.com/marketing",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.74,
-  },
-  {
-    id: "web-040",
-    text: "La personnalisation IA du contenu web (messages adaptés selon l'industrie, la taille d'entreprise et le comportement de navigation) augmente le taux de conversion de 35 % en moyenne sur les landing pages B2B — selon une étude ContentSquare portant sur 2 400 sites en 2024.",
-    source: "ContentSquare — B2B Personalization Impact Study 2024",
-    sourceUrl: "https://contentsquare.com/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.75,
-  },
   // ── Adoption chatbots IA en France ────────────────────────────────────────
-  {
-    id: "web-041",
-    text: "En 2024, 34 % des sites web des PME françaises disposent d'un chatbot (de toute technologie), mais seulement 12 % d'entre eux intègrent un LLM — la grande majorité repose encore sur des arbres de décision rigides à faible taux de résolution.",
-    source: "France Num — Baromètre adoption chatbots PME France 2024",
-    sourceUrl: "https://www.francenum.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.77,
-  },
-  {
-    id: "web-042",
-    text: "Les chatbots IA basés sur LLM ont un taux de résolution autonome de 65 à 85 % des demandes clients, contre 30 à 45 % pour les chatbots à arbres de décision — justifiant leur coût plus élevé au déploiement initial.",
-    source: "Gartner — Conversational AI Maturity Assessment 2024",
-    sourceUrl: "https://www.gartner.com/en/information-technology/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.79,
-  },
   // ── Time on page et engagement ─────────────────────────────────────────────
-  {
-    id: "web-043",
-    text: "ContentSquare (2024) mesure que les sites avec recommandations de contenu IA (articles similaires, ressources pertinentes selon la navigation) voient leur temps moyen de session augmenter de 43 % et leur taux de rebond diminuer de 27 %.",
-    source: "ContentSquare — Digital Experience Benchmark 2024",
-    sourceUrl: "https://contentsquare.com/insights",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.74,
-  },
   // ── Core Web Vitals et IA ─────────────────────────────────────────────────
   {
     id: "web-044",
@@ -434,25 +193,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     verticales: ["sites_web_augmentes"],
     confidence: 0.94,
   },
-  {
-    id: "web-045",
-    text: "Google PageSpeed Insights indique qu'un site avec un score Performance ≥ 90 sur mobile génère en moyenne 53 % moins d'abandons que les sites avec un score < 50 — la performance technique est aussi déterminante que la qualité du contenu pour la conversion.",
-    source: "Google — PageSpeed Insights and User Behavior 2025",
-    sourceUrl: "https://developers.google.com/speed",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.84,
-  },
   // ── Confiance utilisateur ─────────────────────────────────────────────────
-  {
-    id: "web-046",
-    text: "Selon Edelman Trust Barometer (2025), 71 % des utilisateurs font davantage confiance à un chatbot qui s'identifie clairement comme IA dès le premier échange — l'opacité sur la nature du chatbot génère une méfiance durable (chute de 34 % du NPS post-interaction).",
-    source: "Edelman — Trust Barometer Digital 2025",
-    sourceUrl: "https://www.edelman.com/trust",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.74,
-  },
   // ── Accessibilité et multilinguisme ───────────────────────────────────────
   {
     id: "web-047",
@@ -508,24 +249,6 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     confidence: 0.95,
   },
   // ── Marché développement web IA ────────────────────────────────────────────
-  {
-    id: "web-051",
-    text: "Le marché français du développement web avec intégration IA est estimé à 680 millions d'euros en 2025, en croissance de 42 % vs 2024 — porté par la demande des PME pour des sites web chatbot-first et la vague SEO/AEO post-SGE.",
-    source: "Numeum (ex-Syntec Numérique) — Marchés web et IA applicative 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.72,
-  },
-  {
-    id: "web-052",
-    text: "Les agences web traditionnelles qui n'intègrent pas l'IA dans leurs processus perdent en moyenne 28 % de leurs appels d'offres PME face à des acteurs IA-first en 2024-2025 — selon une étude Numeum (ex-Syntec Numérique) sur le marché des services web B2B.",
-    source: "Numeum (ex-Syntec Numérique) — Disruption IA dans les services web B2B 2025",
-    sourceUrl: "https://numeum.fr",
-    verifiedAt: "2026-08-11",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.71,
-  },
   // ── Intégration CRM et lead generation ───────────────────────────────────
   {
     id: "web-053",
@@ -550,15 +273,6 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["sites_web_augmentes"],
     confidence: 0.91,
-  },
-  {
-    id: "web-055",
-    text: "Les sites utilisant des A/B tests automatisés par IA (variation de titres, CTAs, images selon le profil visiteur) améliorent leur taux de conversion de 18 à 38 % en moyenne sur 6 mois — Statista 2024 sur 1 200 sites e-commerce et B2B européens.",
-    source: "Statista — AI-Powered A/B Testing Impact in European Web 2024",
-    sourceUrl: "https://www.statista.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["sites_web_augmentes"],
-    confidence: 0.73,
   },
   // ── Sécurité et hébergement ────────────────────────────────────────────────
   {

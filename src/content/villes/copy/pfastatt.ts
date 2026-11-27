@@ -49,7 +49,7 @@ export const PFASTATT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pfastatt et autour de Mulhouse ?",
-      a: "Oui, Axion-IA intervient à Pfastatt et sur toute Mulhouse Alsace Agglomération (Mulhouse, Illzach, Kingersheim, Wittenheim, Rixheim). Accès direct via A35 et gare TGV Mulhouse-Ville (Paris à 2h40).",
+      a: "Oui, Axion-IA intervient à Pfastatt et sur toute Mulhouse Alsace Agglomération (Mulhouse, Illzach, Kingersheim, Wittenheim, Rixheim).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Pfastatt  ?",

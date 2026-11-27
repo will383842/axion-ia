@@ -128,7 +128,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Joué-lès-Tours ?",
-            a: "Oui. Le kick-off et les étapes clés se font dans vos locaux — Parc de la Liodière, Deux Lions, ZI Gutenberg ou Cugnot. Joué est desservie par la ligne A du tramway (terminus L'Heure Tranquille) et se situe à environ 7 km des gares de Tours et Saint-Pierre-des-Corps. Le reste peut être mené à distance.",
+            a: "Oui. Le kick-off et les étapes clés se font dans vos locaux — Parc de la Liodière, Deux Lions, ZI Gutenberg ou Cugnot. Le reste peut être mené à distance.",
           },
           {
             q: "Sous quel délai obtient-on un devis et le site est-il conforme RGPD ?",
@@ -214,7 +214,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Joué-lès-Tours?",
-            a: "Yes. The kick-off and key stages take place at your premises — Liodière park, Deux Lions, Gutenberg or Cugnot industrial zones. Joué is served by tram line A (L'Heure Tranquille terminus) and sits about 7 km from the Tours and Saint-Pierre-des-Corps stations. The rest can be run remotely.",
+            a: "Yes. The kick-off and key stages take place at your premises — Liodière park, Deux Lions, Gutenberg or Cugnot industrial zones. Axion-IA works anywhere in France, on site or remotely, including in Joué-lès-Tours.",
           },
           {
             q: "How fast is a quote and is the site GDPR-compliant?",
@@ -238,7 +238,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Joué-lès-Tours ?",
-      a: "Oui. Joué-lès-Tours est à une dizaine de minutes du centre de Tours et à 7 km des gares de Tours et Saint-Pierre-des-Corps. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Le kick-off et les étapes clés se font dans vos locaux — Parc de la Liodière, Deux Lions, ZI Gutenberg ou Cugnot. Le reste peut être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Joué-lès-Tours ?",

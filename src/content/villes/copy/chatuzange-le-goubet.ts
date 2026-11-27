@@ -49,7 +49,7 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chatuzange-le-Goubet et bassin Romans ?",
-      a: "Oui, Axion-IA intervient à Chatuzange-le-Goubet et le bassin Romans (Romans-sur-Isère à 10 min, Bourg-de-Péage, Saint-Marcel-lès-Valence). Couverture Valence Romans Agglo. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Chatuzange-le-Goubet et dans le bassin romanais (Romans-sur-Isère, Bourg-de-Péage, Saint-Marcel-lès-Valence). Couverture Valence Romans Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs Drôme des Collines ?",
@@ -65,7 +65,7 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chatuzange-le-Goubet ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Chatuzange-le-Goubet, comme partout en France, ou à distance.",
     },
   ],
 };

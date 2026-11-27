@@ -125,11 +125,14 @@ const CODES_DOCTRINE_GRAVE: ReadonlySet<CodeInterdit> = new Set<CodeInterdit>([
   "stat-axion",
   "reservation-paiement",
   "tva-non-facturee",
+  "frais-deplacement",
+  "frais-venue",
 ]);
 
 const CODES_FAUX_CAS: ReadonlySet<CodeInterdit> = new Set<CodeInterdit>([
   "temoignage-axion",
   "citation-temoin",
+  "preuve-sociale-vague",
 ]);
 
 const CODES_PROMESSES: ReadonlySet<CodeInterdit> = new Set<CodeInterdit>([
@@ -138,6 +141,9 @@ const CODES_PROMESSES: ReadonlySet<CodeInterdit> = new Set<CodeInterdit>([
   "etiquette-tpe-pme",
   "slogan-recopie",
   "texte-admin",
+  "prix-barre",
+  "multiple-garantie",
+  "seuil-garantie-euros",
 ]);
 
 /** Un article publié, tel que la page le charge. */

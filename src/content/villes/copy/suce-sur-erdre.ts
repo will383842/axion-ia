@@ -49,7 +49,7 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sucé-sur-Erdre ?",
-      a: "Oui, Axion-IA intervient à Sucé-sur-Erdre et dans tout le nord nantais (La Chapelle-sur-Erdre, Nort-sur-Erdre, Carquefou, Treillières). Couverture complète Loire-Atlantique, Nantes à 20 min.",
+      a: "Oui, Axion-IA intervient à Sucé-sur-Erdre et dans tout le nord nantais (La Chapelle-sur-Erdre, Nort-sur-Erdre, Carquefou, Treillières).",
     },
     {
       q: "Accompagnez-vous les TPE et professions libérales ?",
@@ -61,7 +61,7 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sucé-sur-Erdre ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local en bords d'Erdre.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Sucé-sur-Erdre, comme partout en France, ou à distance.",
     },
     {
       q: "L'audit sur place est-il adapté aux petites structures ?",

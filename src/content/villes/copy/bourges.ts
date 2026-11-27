@@ -246,7 +246,7 @@ export const BOURGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Bourges ?",
-      a: "Nos consultants se déplacent sur site (Paris à 2h, Vierzon à 35 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Bourges ?",

@@ -14,9 +14,9 @@ export const BARBERAZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
   seoHook: "tertiaires services",
   ecosystemFr:
-    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les TPE artisanat BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Proximité immédiate de Saint-Alban-Leysse et accès rapide à l'aéroport Chambéry-Savoie (10 min).",
+    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les TPE artisanat BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Commune voisine de Saint-Alban-Leysse, au cœur du bassin chambérien.",
   ecosystemEn:
-    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les TPE artisanat BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Proximité immédiate de Saint-Alban-Leysse et accès rapide à l'aéroport Chambéry-Savoie (10 min).",
+    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les TPE artisanat BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Commune voisine de Saint-Alban-Leysse, au cœur du bassin chambérien.",
   distancesFr:
     "Chambéry centre à 5 min voiture. Saint-Alban-Leysse à 3 min. Aéroport Chambéry-Savoie à 10 min. Lyon à 1h20.",
   distancesEn:
@@ -61,11 +61,11 @@ export const BARBERAZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Barberaz ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement inclus.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée.",
     },
     {
       q: "Comment se déroule une mission IA à Barberaz ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

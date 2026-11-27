@@ -442,6 +442,7 @@ export async function generateVilleEconomicData(
       jobId: input.jobId ?? `economic-data-${input.villeSlug}-${Date.now()}-iter${iteration}`,
       contentType: "landing_ville",
       role: "text",
+      blogClaudeRole: "court",
       systemPrompt: SYSTEM_PROMPT,
       userPrompt,
       maxTokens: 2200,

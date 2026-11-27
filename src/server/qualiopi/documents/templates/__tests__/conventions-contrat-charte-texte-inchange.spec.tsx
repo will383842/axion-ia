@@ -210,7 +210,45 @@ function corps(
   const page = React.Children.toArray(
     (document.props as { children: React.ReactNode }).children,
   )[0] as React.ReactElement<{ children: React.ReactNode }>;
-  return collectPdfTextNormalized(page.props.children);
+  return neutraliserAnnulation(collectPdfTextNormalized(page.props.children));
+}
+
+/**
+ * 26/11/2026 — la section « 4. Conditions d'annulation » a changé de FOND (l'acompte versé reste
+ * acquis, sans condition de délai : convention v10, tripartite v8). Elle est exclue de la
+ * comparaison avec l'ancienne version ; son texte est verrouillé plus bas.
+ */
+function neutraliserAnnulation(texte: string): string {
+  // 26/11/2026 (v10 tripartite) : l'OPCO est informé d'un report à l'initiative de l'organisme (§ 5).
+  return (
+    texte
+      .replace(/4\. Conditions d'annulation.*?(?=5\. [A-ZÉ])/su, "")
+      // Même décision : plafond de responsabilité réservé (faute lourde, non-professionnel) et force majeure
+      // de l'organisme renvoyée à l'article 4 (section 8).
+      .replace(/ Cette limitation ne s'applique ni en cas de faute lourde.*?à l'article 4\./su, "")
+      .replace(
+        /sans délai\. Si l'empêchement est celui du client,.*?titre de la force majeure\./su,
+        "sans délai ; l'action est alors reportée à une date convenue entre les parties.",
+      )
+      .replace(
+        /\)\s*ou d'un report à l'initiative de l'organisme.*?l'article 4 s'applique\./su,
+        ").",
+      )
+  );
+}
+
+/** Section 4 du texte NON neutralisé, pour en verrouiller le contenu. */
+function sectionAnnulation(
+  Composant: (p: { data: Donnees; identite: OrganismeIdentite }) => React.ReactElement,
+  data: Donnees,
+  identite: OrganismeIdentite,
+): string {
+  const document = Composant({ data, identite });
+  const page = React.Children.toArray(
+    (document.props as { children: React.ReactNode }).children,
+  )[0] as React.ReactElement<{ children: React.ReactNode }>;
+  const texte = collectPdfTextNormalized(page.props.children);
+  return /4\. Conditions d'annulation.*?(?=5\. [A-ZÉ])/su.exec(texte)?.[0] ?? "";
 }
 
 describe("conventions et contrat — le texte du corps ne change pas d'un caractère", () => {
@@ -242,6 +280,38 @@ describe("conventions et contrat — le texte du corps ne change pas d'un caract
       expect(ajoutes).toEqual([]);
     });
   }
+});
+
+describe("section 4 : l'acompte versé reste acquis, sans condition de délai", () => {
+  const pieces = [
+    ["convention", ConventionPdf, CONVENTION],
+    ["convention tripartite", ConventionTripartitePdf, TRIPARTITE],
+  ] as const;
+  for (const [nom, Composant, data] of pieces) {
+    it(`${nom} : l'acompte est acquis, le barème au-delà est gardé, la TVA n'est pas exonérée`, () => {
+      const s = sectionAnnulation(Composant as never, data, IDENTITE).replace(/\s+/g, " ");
+      expect(s).toContain("reste acquis à l'organisme, quel que soit le délai d'annulation");
+      expect(s).toContain("aucune somme en plus de l'acompte versé");
+      expect(s).toContain("entre 8 et 15 jours ouvrés avant le début : 50 % du prix HT");
+      expect(s).toContain("à moins de 8 jours ouvrés avant le début : 100 % du prix HT");
+      expect(s).toContain("n'est jamais inférieure au montant hors taxes de l'acompte versé");
+      expect(s).toContain("article 1231-5 du Code civil");
+      expect(s).toContain("L.6354-1");
+      expect(s).toContain("sans exonération");
+      expect(s).not.toMatch(/ : 0 %/);
+      expect(s).not.toMatch(/acompte[^.]{0,40}(est|sera|sont) rembours/i);
+    });
+  }
+  it("convention : l'opérateur de compétences n'est cité qu'une fois la certification obtenue", () => {
+    const avant = sectionAnnulation(ConventionPdf as never, CONVENTION, IDENTITE);
+    const apres = sectionAnnulation(
+      ConventionPdf as never,
+      { ...CONVENTION, certificationObtenue: true },
+      IDENTITE,
+    );
+    expect(avant).not.toMatch(/opérateur de compétences/i);
+    expect(apres).toMatch(/opérateur de compétences/i);
+  });
 });
 
 describe("taux à la française", () => {

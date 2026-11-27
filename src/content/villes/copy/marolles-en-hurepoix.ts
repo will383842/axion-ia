@@ -49,7 +49,7 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marolles-en-Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Marolles-en-Hurepoix et tout le Hurepoix (Brétigny-sur-Orge, Arpajon, La Ville-du-Bois, Linas). Consultants depuis Paris (40 min RER C).",
+      a: "Oui, Axion-IA intervient à Marolles-en-Hurepoix et tout le Hurepoix (Brétigny-sur-Orge, Arpajon, La Ville-du-Bois, Linas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et artisans marollais ?",
@@ -64,8 +64,8 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires du sud-Essonne depuis Marolles : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (40 min Gare d'Austerlitz, gare de Marolles) ou en voiture par N20/A6 (45 min).",
+      q: "Comment se déroule une mission Axion-IA à Marolles-en-Hurepoix ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

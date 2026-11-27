@@ -224,8 +224,9 @@ export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNon
     case "CLIENT_CALL_CANCELED":
     case "CALENDLY_INVITEE_CANCELED": {
       const p = event.payload;
-      const qui =
-        p.cancelerType === "host"
+      const qui = p.annuleDepuisLeSite
+        ? "la personne, depuis le site (lien d'annulation)"
+        : p.cancelerType === "host"
           ? `l'hôte${p.canceledBy ? ` (${p.canceledBy})` : ""}`
           : p.canceledBy || (p.cancelerType === "invitee" ? "la personne invitée" : undefined);
       return [

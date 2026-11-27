@@ -49,7 +49,7 @@ export const GIGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gignac ?",
-      a: "Oui, Axion-IA intervient à Gignac et dans toute la vallée de l'Hérault (Saint-André-de-Sangonis, Aniane, Clermont-l'Hérault, Montpeyroux). Nos consultants viennent depuis Montpellier en 35 min.",
+      a: "Oui, Axion-IA intervient à Gignac et dans toute la vallée de l'Hérault (Saint-André-de-Sangonis, Aniane, Clermont-l'Hérault, Montpeyroux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les domaines viticoles Terrasses du Larzac ?",

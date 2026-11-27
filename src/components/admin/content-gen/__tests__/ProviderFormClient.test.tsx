@@ -46,7 +46,9 @@ describe("ProviderFormClient — plafonds du blog", () => {
     );
     expect((screen.getByLabelText("Plafond du jour (USD)") as HTMLInputElement).value).toBe("1");
     expect((screen.getByLabelText("Relectures max par jour") as HTMLInputElement).value).toBe("3");
-    await userEvent.click(screen.getByRole("button", { name: "Enregistrer les plafonds du blog" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Enregistrer les plafonds du contenu via Claude" }),
+    );
     await waitFor(() => expect(blog).toHaveBeenCalledTimes(1));
     const fd = blog.mock.calls[0]![0];
     expect([...fd.keys()].sort()).toEqual(["jour", "jugeMax", "mois", "reserve"]);
@@ -62,7 +64,9 @@ describe("ProviderFormClient — plafonds du blog", () => {
         saveBlogAction={blog}
       />,
     );
-    await userEvent.click(screen.getByRole("button", { name: "Enregistrer les plafonds du blog" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Enregistrer les plafonds du contenu via Claude" }),
+    );
     expect(await screen.findByText("Refus de test")).toBeTruthy();
   });
   it("le formulaire principal n'envoie aucun champ du blog", async () => {
@@ -102,9 +106,10 @@ describe("ProviderFormClient — plafonds du blog", () => {
         saveBlogAction={vi.fn(async () => ({ ok: true as const }))}
       />,
     );
-    expect((screen.getByLabelText("Plafond mensuel du blog (USD)") as HTMLInputElement).value).toBe(
-      "",
-    );
+    expect(
+      (screen.getByLabelText("Plafond mensuel du contenu via Claude (USD)") as HTMLInputElement)
+        .value,
+    ).toBe("");
   });
   it("bouton désactivé pendant l'envoi", async () => {
     let fin: (v: { ok: true }) => void = () => {};
@@ -117,7 +122,9 @@ describe("ProviderFormClient — plafonds du blog", () => {
         saveBlogAction={blog}
       />,
     );
-    await userEvent.click(screen.getByRole("button", { name: "Enregistrer les plafonds du blog" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Enregistrer les plafonds du contenu via Claude" }),
+    );
     const bouton = await screen.findByRole("button", { name: "Enregistrement…" });
     expect((bouton as HTMLButtonElement).disabled).toBe(true);
     fin({ ok: true });
@@ -135,7 +142,9 @@ describe("ProviderFormClient — plafonds du blog", () => {
         saveBlogAction={blog}
       />,
     );
-    await userEvent.click(screen.getByRole("button", { name: "Enregistrer les plafonds du blog" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Enregistrer les plafonds du contenu via Claude" }),
+    );
     expect(await screen.findByText("Panne de test")).toBeTruthy();
     expect(screen.queryByRole("status")).toBeNull();
   });
@@ -148,7 +157,11 @@ describe("ProviderFormClient — plafonds du blog", () => {
         saveBlogAction={vi.fn(async () => ({ ok: true as const }))}
       />,
     );
-    await userEvent.click(screen.getByRole("button", { name: "Enregistrer les plafonds du blog" }));
-    expect((await screen.findByRole("status")).textContent).toBe("Plafonds du blog enregistrés.");
+    await userEvent.click(
+      screen.getByRole("button", { name: "Enregistrer les plafonds du contenu via Claude" }),
+    );
+    expect((await screen.findByRole("status")).textContent).toBe(
+      "Plafonds du contenu via Claude enregistrés.",
+    );
   });
 });

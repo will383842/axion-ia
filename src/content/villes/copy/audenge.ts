@@ -65,7 +65,7 @@ export const AUDENGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Audenge ?",
-      a: "Nos consultants interviennent dans vos locaux à Audenge ou en visio. Gare TER Audenge accessible. Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Audenge ou en visio. Tarifs et planning convenus en amont.",
     },
   ],
 };

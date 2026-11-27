@@ -240,6 +240,8 @@ describe("réservation d'un échange apporteur sans fiche", () => {
       origine: "rendez-vous-apporteur",
       calendlyEventId: "evt_1",
       reponsesCalendly: "Votre réseau : dirigeants de PME",
+      // Message court et neutre : rien de technique à lire dans la fiche.
+      message: "Fiche créée à la réservation de l'échange",
     });
     // Aucun balayage d'invitation ou de rappel ne la reprend.
     const d = f["details"] as Record<string, unknown>;

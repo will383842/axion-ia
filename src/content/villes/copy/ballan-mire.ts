@@ -49,7 +49,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ballan-Miré et sud-ouest Tours ?",
-      a: "Oui, Axion-IA intervient à Ballan-Miré et tout le sud-ouest de Tours Métropole (Joué-lès-Tours à 8 min, Savonnières, Villandry à 10 min). Tours centre à 12 min.",
+      a: "Oui. Nous intervenons sur place à Ballan-Miré et dans tout le sud-ouest de Tours Métropole (Joué-lès-Tours, Savonnières, Villandry), comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Ballan-Miré ?",
@@ -65,7 +65,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ballan-Miré ?",
-      a: "Nos consultants interviennent sur site à Ballan-Miré (Tours centre à 12 min).",
+      a: "Axion IA intervient sur site à Ballan-Miré, après un échange de cadrage.",
     },
   ],
 };

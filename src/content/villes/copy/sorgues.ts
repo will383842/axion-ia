@@ -49,7 +49,7 @@ export const SORGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sorgues et dans l'agglomération d'Avignon ?",
-      a: "Oui, Axion-IA intervient à Sorgues et dans tout le Grand Avignon (Avignon, Le Pontet, Vedène, Bédarrides, Châteauneuf-du-Pape, Entraigues-sur-la-Sorgue). Accès direct via A7 et N7.",
+      a: "Oui, Axion-IA intervient à Sorgues et dans tout le Grand Avignon (Avignon, Le Pontet, Vedène, Bédarrides, Châteauneuf-du-Pape, Entraigues-sur-la-Sorgue).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Sorgues  ?",
@@ -65,7 +65,7 @@ export const SORGUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Sorgues ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

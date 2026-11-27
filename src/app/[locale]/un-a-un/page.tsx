@@ -1032,7 +1032,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "garantie",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel et le livrable écrit sous 7 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel et le livrable écrit sous 7 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; l'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure).",
                     },
                   ]
                 : [
@@ -1086,7 +1086,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "guarantee",
                       question: "Guarantee?",
                       answer:
-                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your own files and on what you apply afterwards. What we do commit to is written in the quote: a one-to-one day on your actual workstation and the written deliverable within 7 days. If something unexpected comes up on your side, the day can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
+                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your own files and on what you apply afterwards. What we do commit to is written in the quote: a one-to-one day on your actual workstation and the written deliverable within 7 days. If something unexpected comes up on your side, the day can be postponed once at no cost; the deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side).",
                     },
                   ]
             }

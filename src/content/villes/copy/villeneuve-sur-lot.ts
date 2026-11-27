@@ -226,7 +226,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-sur-Lot et Lot-et-Garonne ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-sur-Lot et tout le Lot-et-Garonne (Agen à 30 min, Marmande, Tonneins, Casseneuil). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Villeneuve-sur-Lot et dans tout le Lot-et-Garonne : Agen, Marmande, Tonneins, Casseneuil. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les arboriculteurs (pruneaux, fruits) ?",
@@ -242,7 +242,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villeneuve-sur-Lot ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Villeneuve ou Agen).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villeneuve-sur-Lot, comme partout en France, ou à distance.",
     },
   ],
 };

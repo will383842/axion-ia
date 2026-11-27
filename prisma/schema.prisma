@@ -1087,6 +1087,12 @@ model Article {
   /// Feature flag `OPENAI_EMBEDDINGS_ENABLED` gere l'activation prod.
   embedding Unsupported("vector(1536)")?
 
+  /// PR4 — Couche 4 dedup + voix de marque, fournisseur Voyage AI (voyage-3,
+  /// 1024 dim, index HNSW cosine). Colonne PARALLÈLE à `embedding` (OpenAI), jamais
+  /// mélangée : les deux espaces vectoriels ne sont pas comparables. Nullable,
+  /// rattrapée par `embeddings-backfill-worker`. Lue selon `CONTENT_EMBEDDING_PROVIDER`.
+  embeddingVoyage Unsupported("vector(1024)")? @map("embedding_voyage")
+
   /// Sprint S+2 City Domination — auto-tagging géographique (Phase C strat ville).
   /// Slugs des villes mentionnées dans le body article (détection via helper
   /// `extractMentionedCitiesFromText`). Permet au hub ville de filtrer les
@@ -2674,6 +2680,8 @@ enum CoverageScope {
   departement
   region
   multi
+  /// « France entière » : file globale des villes, sans ancre propre.
+  national
 }
 
 /// 12 types d'organisation cible (§ 25 v1.7 — audience mix).
@@ -5281,6 +5289,7 @@ model Client {
   // fiche absorbée par une fusion garde ses pièces et son SIREN.
   @@index([siren])
   @@map("clients")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// Devis commercial (CRM). Lignes snapshot ; pas de prix catalogue dupliqué.
@@ -5387,6 +5396,7 @@ model Devis {
   @@index([documentGenereId])
   @@index([choixSignatureId])
   @@map("devis")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// Bibliothèque des textes du devis à formules (avantages, inconvénients, prérequis,
@@ -8679,6 +8689,8 @@ model FactureFormation {
   @@index([statut, emiseAt])
   @@index([echeanceAt])
   @@map("factures_formation")
+  garantiesJourneeIaFacture GarantieJourneeIa[] @relation("GarantieJourneeIaFacture")
+  garantiesJourneeIaAvoir   GarantieJourneeIa[] @relation("GarantieJourneeIaAvoir")
 }
 
 // ============================================================
@@ -12786,6 +12798,7 @@ model AuditMission {
   @@index([dateDebut])
   @@index([dateDebut, dateFin])
   @@map("audit_missions")
+  garantiesJourneeIa GarantieJourneeIa[]
 }
 
 /// QR codes dynamiques (onglet admin "QR codes & liens").
@@ -16429,10 +16442,40 @@ model ApporteurReseau {
   pieces        PieceApporteur[]
   presentations PresentationEntreprise[]
   commissions   CommissionApporteur[]
+  relevesMensuels ReleveMensuelApporteur[]
 
   @@index([statut])
   @@index([parrainId])
   @@map("apporteurs_reseau")
+}
+
+/// Un message REÇU d'un apporteur après son invitation (2026-11-27) : un e-mail relevé dans la
+/// boîte Zoho dont l'expéditeur est l'adresse de sa fiche (`source = "email"`, idempotent par
+/// `zohoMessageId`), ou une demande d'aide envoyée depuis son espace (`source = "demande_aide"`).
+/// Sans clé étrangère (fenêtre app/worker) ; l'extrait est chiffré par `encryptPii`.
+/// rgpd: dossier-client
+model ApporteurMessageRecu {
+  id                String   @id @default(uuid()) @db.Uuid
+  apporteurId       String   @map("apporteur_id") @db.Uuid
+  /// `email` ou `demande_aide`.
+  source            String   @db.VarChar(20)
+  receivedAt        DateTime @map("received_at") @db.Timestamptz(3)
+  /// `hashEmailForLookup` de l'expéditeur (e-mails seulement).
+  fromEmailHash     String?  @map("from_email_hash") @db.VarChar(64)
+  subject           String   @db.VarChar(500)
+  /// Extrait du texte, chiffré par `encryptPii`.
+  excerpt           String?  @db.Text
+  /// Identifiant du message DANS Zoho — clé d'idempotence du relevé (absent pour une demande d'aide).
+  zohoMessageId     String?  @unique @map("zoho_message_id") @db.VarChar(64)
+  zohoFolderId      String?  @map("zoho_folder_id") @db.VarChar(64)
+  internetMessageId String?  @map("internet_message_id") @db.VarChar(500)
+  /// Réponse automatique (absence, accusé) : gardée, signalée.
+  auto              Boolean  @default(false)
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, receivedAt])
+  @@index([fromEmailHash])
+  @@map("apporteur_messages_recus")
 }
 
 /// SIRET de l'établissement sous lequel l'apporteur apporte des affaires (2026-10-08) : plusieurs
@@ -16596,6 +16639,107 @@ model ApporteurResiliation {
 
   @@index([effetLe, executeeAt])
   @@map("apporteur_resiliation")
+}
+
+/// Changement d'IBAN d'un apporteur APRÈS la signature (plan `docs/plans/apporteurs-changement-iban-2026-11-25.md`, lot 1).
+/// Une ligne par demande, jamais supprimée (déclencheur SQL). Table SÉPARÉE, sans clé étrangère ni énumération
+/// Postgres, à dessein : `apporteurs_reseau` ne change pas pendant la fenêtre app/worker, et tout lecteur tolère
+/// la table absente (P2021). `statut` est un texte contraint par CHECK (pas d'énumération : aucune valeur à
+/// propager entre les deux conteneurs). L'IBAN demandé n'est JAMAIS en clair (CHECK sur le format complet `enc:v2:`).
+/// rgpd: dossier-client
+model ApporteurChangementIban {
+  id                     String    @id @default(uuid()) @db.Uuid
+  apporteurId            String    @map("apporteur_id") @db.Uuid
+  /// a_confirmer | confirmee | validee | refusee | opposee | annulee | expiree (CHECK `apporteur_changements_iban_statut`).
+  statut                 String    @default("a_confirmer") @db.VarChar(16)
+  /// IBAN demandé, chiffré `enc:v2:` (donnée liée `changement-iban:<id>`). Jamais en clair (CHECK).
+  iban                   String    @db.Text
+  ibanEmpreinte          String    @map("iban_empreinte") @db.Char(64)
+  ibanFin4               String    @map("iban_fin4") @db.Char(4)
+  ancienIbanEmpreinte    String?   @map("ancien_iban_empreinte") @db.Char(64)
+  ancienIbanFin4         String?   @map("ancien_iban_fin4") @db.Char(4)
+  /// espace | console
+  origine                String    @db.VarChar(8)
+  demandeeAt             DateTime  @default(now()) @map("demandee_at") @db.Timestamptz(3)
+  demandeIpHash          String?   @map("demande_ip_hash") @db.VarChar(64)
+  /// Sortie de `resumerNavigateur` (« Chrome · Windows »), jamais le `User-Agent` entier.
+  demandeNavigateur      String?   @map("demande_navigateur") @db.VarChar(80)
+  avisEnvoyeAt           DateTime? @map("avis_envoye_at") @db.Timestamptz(3)
+  confirmeeAt            DateTime? @map("confirmee_at") @db.Timestamptz(3)
+  confirmationIpHash     String?   @map("confirmation_ip_hash") @db.VarChar(64)
+  confirmationNavigateur String?   @map("confirmation_navigateur") @db.VarChar(80)
+  opposeeAt              DateTime? @map("opposee_at") @db.Timestamptz(3)
+  annuleeAt              DateTime? @map("annulee_at") @db.Timestamptz(3)
+  expireeAt              DateTime? @map("expiree_at") @db.Timestamptz(3)
+  traiteeAt              DateTime? @map("traitee_at") @db.Timestamptz(3)
+  traiteePar             String?   @map("traitee_par") @db.Uuid
+  motifRefus             String?   @map("motif_refus") @db.Text
+  /// Les trois cases cochées et les alertes affichées. Jamais d'IBAN.
+  controles              Json?
+
+  @@index([apporteurId, demandeeAt], map: "apporteur_changements_iban_apporteur_idx")
+  @@index([statut, confirmeeAt], map: "apporteur_changements_iban_statut_idx")
+  @@map("apporteur_changements_iban")
+}
+
+/// RIB (pièce jointe) d'une demande de changement d'IBAN. Octets CHIFFRÉS (enveloppe de `pieces-chiffrement.ts`) ;
+/// `octets` passe à NULL à la purge (`purge_at` posé, CHECK de cohérence). Sans clé étrangère, comme la demande.
+/// rgpd: dossier-client
+model ApporteurChangementIbanRib {
+  demandeId  String    @id @map("demande_id") @db.Uuid
+  octets     Bytes?
+  sha256     String    @db.Char(64)
+  typeMime   String    @map("type_mime") @db.VarChar(80)
+  taille     Int
+  /// Même gabarit que `PieceApporteur`. NEUTRE : toujours « rib.pdf », jamais le nom d'origine (il peut contenir l'IBAN).
+  nomFichier String    @map("nom_fichier") @db.VarChar(200)
+  deposeAt   DateTime  @default(now()) @map("depose_at") @db.Timestamptz(3)
+  purgeAt    DateTime? @map("purge_at") @db.Timestamptz(3)
+
+  @@map("apporteur_changements_iban_rib")
+}
+
+/// Historique des comptes d'un apporteur : un compte par ligne, AJOUT SEUL (déclencheurs : ni DELETE ni TRUNCATE ;
+/// seule `en_vigueur_jusqua` passe de NULL à une date). L'ancien IBAN y est copié à la validation, jamais perdu.
+/// ⚠️ L'IBAN de la fiche est en `enc:v1` : on le DÉCHIFFRE puis on le rechiffre en v2 (donnée liée `iban-historique:<id>`) ; le CHECK refuse un v1 copié tel quel.
+/// rgpd: dossier-client
+model ApporteurIbanHistorique {
+  id              String    @id @default(uuid()) @db.Uuid
+  apporteurId     String    @map("apporteur_id") @db.Uuid
+  /// Chiffré `enc:v2:` (donnée liée `iban-historique:<id>`). Jamais en clair (CHECK).
+  iban            String    @db.Text
+  ibanEmpreinte   String    @map("iban_empreinte") @db.Char(64)
+  ibanFin4        String    @map("iban_fin4") @db.Char(4)
+  enVigueurDe     DateTime? @map("en_vigueur_de") @db.Timestamptz(3)
+  enVigueurJusqua DateTime? @map("en_vigueur_jusqua") @db.Timestamptz(3)
+  /// dossier_initial | changement
+  origine         String    @db.VarChar(16)
+  demandeId       String?   @map("demande_id") @db.Uuid
+  pieceRibId      String?   @map("piece_rib_id") @db.Uuid
+  creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, creeAt], map: "apporteur_iban_historique_apporteur_idx")
+  @@index([ibanEmpreinte], map: "apporteur_iban_historique_empreinte_idx")
+  @@map("apporteur_iban_historique")
+}
+
+/// Sur quel compte un virement est parti (déclaré par « Virement fait »). Ajout seul (déclencheurs).
+/// rgpd: dossier-client
+model ApporteurVirementCompte {
+  id                 String   @id @default(uuid()) @db.Uuid
+  autofactureNumero  String   @map("autofacture_numero") @db.VarChar(40)
+  apporteurId        String   @map("apporteur_id") @db.Uuid
+  ibanEmpreinte      String   @map("iban_empreinte") @db.Char(64)
+  ibanFin4           String   @map("iban_fin4") @db.Char(4)
+  /// Instant du « Virement fait » (celui de `commissions_apporteur.versee_at`) : une autofacture peut être versée en plusieurs fois.
+  verseAt            DateTime @map("verse_at") @db.Timestamptz(3)
+  declareAt          DateTime @default(now()) @map("declare_at") @db.Timestamptz(3)
+  declarePar         String   @map("declare_par") @db.VarChar(64)
+  premierSurCeCompte Boolean  @default(false) @map("premier_sur_ce_compte")
+
+  @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
+  @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
+  @@map("apporteur_virements_compte")
 }
 
 enum TypePieceApporteur {
@@ -16764,6 +16908,10 @@ model CommissionApporteur {
   /// Autofacture impossible faute de donnée de l'apporteur : ce qui manque, et depuis quand
   /// (première détection). Effacé à l'émission de l'autofacture.
   autofactureAttenteMotif  String?                   @map("autofacture_attente_motif") @db.VarChar(200)
+  /// Code fermé de la règle de commission appliquée (relevé mensuel, plan § 5.3). Posé au calcul, jamais rétroactivement : NULL = commission antérieure.
+  regleAppliquee           String?                   @map("regle_appliquee") @db.VarChar(40)
+  /// Version du contrat signée par l'apporteur au calcul ("2.6", "2.8"…). NULL = commission antérieure.
+  versionContrat           String?                   @map("version_contrat") @db.VarChar(10)
   autofactureAttenteDepuis DateTime?                 @map("autofacture_attente_depuis") @db.Timestamptz(3)
   /// Contestation ÉCRITE du client en cours (contrat 2.3, art. 4.2 bis) : ni facturée ni versée.
   litigeDepuis             DateTime?                 @map("litige_depuis") @db.Timestamptz(3)
@@ -16782,6 +16930,141 @@ model CommissionApporteur {
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])
   @@map("commissions_apporteur")
+}
+
+enum StatutReleveMensuel {
+  /// Calculé, vérifiable, recalculable (seul statut modifiable en contenu).
+  prepare
+  /// Pris par un lot (`prisAt`) ; repris après 10 minutes (plan § 6.4).
+  envoi_en_cours
+  /// E-mail enfilé ; l'état de remise se lit dans `EmailLog`.
+  envoye
+  /// L'enfilage a échoué : renvoyable par un clic.
+  echec
+  /// Écarté par un administrateur pour cette période (motif obligatoire).
+  ecarte
+
+  @@map("statut_releve_mensuel")
+}
+
+/// Relevé MENSUEL d'information d'un apporteur (plan docs/plans/PLAN-RELEVE-MENSUEL-APPORTEURS.md) : récapitule les
+/// autofactures et avoirs du mois, n'est PAS une facture. Instantané figé (`contenu`, `empreinteSha256`) ; après
+/// `prepare`, un trigger SQL refuse toute modification des colonnes figées. Une erreur se corrige par un
+/// rectificatif (`rang` + 1). Conservation alignée sur les autofactures : 10 ans après la clôture de l'exercice (L.123-22).
+/// rgpd: technique — montants, numéros de pièces et dénomination de l'entreprise présentée ; aucun contact de l'entreprise, aucune coordonnée de l'apporteur (elles ne figurent que dans le PDF)
+model ReleveMensuelApporteur {
+  id                String              @id @default(uuid()) @db.Uuid
+  /// REL-AAAA-MM-NNNN[-Rk], série distincte d'AXI-APP.
+  numero            String              @unique @db.VarChar(40)
+  apporteurId       String              @map("apporteur_id") @db.Uuid
+  apporteur         ApporteurReseau     @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  /// AAAA-MM (mois de Paris).
+  periode           String              @db.Char(7)
+  /// 0 = origine ; k = k-ième rectificatif.
+  rang              Int                 @default(0)
+  rectifieId        String?             @map("rectifie_id") @db.Uuid
+  rectifie          ReleveMensuelApporteur?  @relation("ReleveRectifie", fields: [rectifieId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  rectificatifs     ReleveMensuelApporteur[] @relation("ReleveRectifie")
+  statut            StatutReleveMensuel @default(prepare)
+  formatVersion     Int                 @default(1) @map("format_version")
+  /// 1er M+1 00:00 Paris : instant de coupure du relevé (plan § 5.2).
+  coupureAt         DateTime            @map("coupure_at") @db.Timestamptz(3)
+  contenu           Json
+  /// sha256 du JSON canonique de `contenu`.
+  empreinteSha256   String              @map("empreinte_sha256") @db.Char(64)
+  /// apporteurs/releves/<apporteurId>/<numero>-<empreinte8>.pdf : contient le numéro, jamais réécrite après l'envoi.
+  pdfR2Key          String?             @map("pdf_r2_key") @db.VarChar(300)
+  pdfSha256         String?             @map("pdf_sha256") @db.Char(64)
+  /// Totaux dénormalisés pour les statistiques (centimes ; jamais relus pour réémettre).
+  nbLignes          Int                 @default(0) @map("nb_lignes")
+  facturesHtCents   Int                 @default(0) @map("factures_ht_cents")
+  avoirsHtCents     Int                 @default(0) @map("avoirs_ht_cents")
+  viresTtcCents     Int                 @default(0) @map("vires_ttc_cents")
+  enAttenteHtCents  Int                 @default(0) @map("en_attente_ht_cents")
+  cumulAnneeHtCents Int                 @default(0) @map("cumul_annee_ht_cents")
+  emailJobId        String?             @unique @map("email_job_id") @db.VarChar(120)
+  prepareAt         DateTime            @default(now()) @map("prepare_at") @db.Timestamptz(3)
+  prisAt            DateTime?           @map("pris_at") @db.Timestamptz(3)
+  envoyeAt          DateTime?           @map("envoye_at") @db.Timestamptz(3)
+  /// "console:<adminId>" (jamais "automatique" avant le lot 5).
+  envoyePar         String?             @map("envoye_par") @db.VarChar(60)
+  lotId             String?             @map("lot_id") @db.Uuid
+  motifEcart        String?             @map("motif_ecart") @db.VarChar(300)
+  erreur            String?             @db.VarChar(300)
+  creeAt            DateTime            @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt             DateTime            @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@unique([apporteurId, periode, rang])
+  @@index([periode, statut])
+  @@map("releves_mensuels_apporteur")
+}
+
+/// Un lot d'envoi des relevés d'une période. L'index unique partiel `lots_releve_mensuel_un_en_cours`
+/// (SQL brut de la migration, absent du schéma Prisma) garantit UN SEUL lot vivant par période (plan § 6.3).
+/// rgpd: technique — compteurs et dates d'un lot d'envoi ; aucune donnée personnelle
+model LotReleveMensuel {
+  id            String    @id @default(uuid()) @db.Uuid
+  periode       String    @db.Char(7)
+  declenchePar  String    @map("declenche_par") @db.VarChar(60)
+  debutAt       DateTime  @default(now()) @map("debut_at") @db.Timestamptz(3)
+  finAt         DateTime? @map("fin_at") @db.Timestamptz(3)
+  /// Lot mort (processus tué) repris par le lot suivant.
+  abandonneAt   DateTime? @map("abandonne_at") @db.Timestamptz(3)
+  nbCibles      Int       @default(0) @map("nb_cibles")
+  nbEnvoyes     Int       @default(0) @map("nb_envoyes")
+  nbDejaEnvoyes Int       @default(0) @map("nb_deja_envoyes")
+  nbEchecs      Int       @default(0) @map("nb_echecs")
+  nbBloques     Int       @default(0) @map("nb_bloques")
+
+  @@index([periode])
+  @@map("lots_releve_mensuel")
+}
+
+/// Une pièce de la série AXI-APP (autofacture ou avoir d'autofacture) FIGÉE à son émission :
+/// régime et n° de TVA imprimés, totaux du PDF. Le virement, les avoirs, la compensation, la DAS2,
+/// « Mes commissions » et le cumul de vigilance lisent CE régime, jamais celui de la fiche.
+/// Sans clé étrangère (fenêtre app/worker). Totaux NULL = pièce reprise à la migration.
+/// rgpd: technique — numéros, montants, régime ; aucune donnée personnelle en clair
+model PieceAutofactureApporteur {
+  numero           String             @id @db.VarChar(40)
+  apporteurId      String             @map("apporteur_id") @db.Uuid
+  /// « facture » | « avoir » (contrôlé par le code).
+  genre            String             @db.VarChar(10)
+  regimeTva        RegimeTvaApporteur @map("regime_tva")
+  numeroTva        String?            @map("numero_tva") @db.VarChar(20)
+  totalHtCents     Int?               @map("total_ht_cents")
+  totalTvaCents    Int?               @map("total_tva_cents")
+  totalTtcCents    Int?               @map("total_ttc_cents")
+  /// Avoir : l'autofacture rectifiée (dont il prend le régime).
+  factureRectifiee String?            @map("facture_rectifiee") @db.VarChar(40)
+  emiseAt          DateTime           @map("emise_at") @db.Timestamptz(3)
+  /// « emission » | « reprise_migration » | « rattrapage » (contrôlé par le code).
+  origine          String             @db.VarChar(20)
+  creeAt           DateTime           @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@index([apporteurId])
+  @@map("pieces_autofacture_apporteur")
+}
+
+/// Changement de régime de TVA d'un apporteur APRÈS signature (contrat 2.8, art. 4.7 et 6.3).
+/// Régime applicable au jour J = le changement non annulé de plus grande `effetAu` ≤ J
+/// (à égalité, le plus récent saisi), sinon la fiche. Sans clé étrangère.
+/// rgpd: technique — régime et n° de TVA d'une entreprise ; auteur = id d'administrateur
+model ApporteurRegimeTvaChangement {
+  id             String              @id @default(uuid()) @db.Uuid
+  apporteurId    String              @map("apporteur_id") @db.Uuid
+  regimeAvant    RegimeTvaApporteur? @map("regime_avant")
+  numeroTvaAvant String?             @map("numero_tva_avant") @db.VarChar(20)
+  regimeTva      RegimeTvaApporteur  @map("regime_tva")
+  numeroTva      String?             @map("numero_tva") @db.VarChar(20)
+  /// Jour de Paris à compter duquel le régime s'applique aux autofactures établies.
+  effetAu        DateTime            @map("effet_au") @db.Date
+  saisiAt        DateTime            @default(now()) @map("saisi_at") @db.Timestamptz(3)
+  saisiPar       String?             @map("saisi_par") @db.Uuid
+  annuleAt       DateTime?           @map("annule_at") @db.Timestamptz(3)
+
+  @@index([apporteurId, effetAu])
+  @@map("apporteur_regime_tva_changements")
 }
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -18720,4 +19003,285 @@ model EmailManuelPieceJointe {
 
   @@index([emailManuelId], map: "emails_manuels_pieces_jointes_email_idx")
   @@map("emails_manuels_pieces_jointes")
+}
+
+/// Garantie « Journée IA » (CGV art. 47.10) — suivi des remboursements (PR 2/3, 2026-11-25).
+/// Une ligne par journée garantie. Règle retenue : « variante brief » — demande écrite du client sous
+/// 30 jours après la remise du rapport ; réponse d'Axion-IA sous 15 jours, sinon demande RÉPUTÉE
+/// ACCEPTÉE ; virement sous 30 jours après l'acceptation. Les échéances ne sont JAMAIS stockées :
+/// `calculerEcheances` les recalcule depuis les dates saisies. « Réputée acceptée » n'est jamais écrit
+/// par un robot. Montants en centimes. On archive (`archive_le`), on ne supprime jamais. `decision`
+/// est du texte (remboursement | refus | avoir), PAS une énumération Postgres (contrat
+/// app/worker, AGENTS.md « DEUX conteneurs »). Table additive : aucun code worker ne la lit en PR 2.
+/// rgpd: technique — dates, montants et décision d'un remboursement d'entreprise ; rattaché au client par identifiant, SIREN d'entreprise, notes internes sans coordonnées
+model GarantieJourneeIa {
+  id                    String            @id @default(uuid()) @db.Uuid
+  clientId              String            @map("client_id") @db.Uuid
+  client                Client            @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  devisId               String?           @map("devis_id") @db.Uuid
+  devis                 Devis?            @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  auditMissionId        String?           @unique @map("audit_mission_id") @db.Uuid
+  auditMission          AuditMission?     @relation(fields: [auditMissionId], references: [id], onDelete: SetNull)
+  factureId             String?           @map("facture_id") @db.Uuid
+  facture               FactureFormation? @relation("GarantieJourneeIaFacture", fields: [factureId], references: [id], onDelete: SetNull)
+  avoirId               String?           @map("avoir_id") @db.Uuid
+  avoir                 FactureFormation? @relation("GarantieJourneeIaAvoir", fields: [avoirId], references: [id], onDelete: SetNull)
+  /// SIREN figé à la création : contrôle « une seule fois » (47.10 e).
+  sirenSnapshot         String?           @map("siren_snapshot") @db.VarChar(14)
+  /// Prix et seuil HT en centimes, copiés du devis et figés.
+  prixHtCents           Int               @map("prix_ht_cents")
+  seuilHtCents          Int               @map("seuil_ht_cents")
+  totalGainsCents       Int?              @map("total_gains_cents")
+  montantRembourseCents Int?              @map("montant_rembourse_cents")
+  /// Décision « avoir » : montant de l'avoir offert, en euros HT (centimes), plafonné côté code à 4 470 €.
+  montantAvoirHtCents   Int?              @map("montant_avoir_ht_cents")
+  /// Dates = jour de Paris, sans heure.
+  dateJournee           DateTime          @map("date_journee") @db.Date
+  rapportRemisLe        DateTime?         @map("rapport_remis_le") @db.Date
+  demandeRecueLe        DateTime?         @map("demande_recue_le") @db.Date
+  decisionLe            DateTime?         @map("decision_le") @db.Date
+  avoirEmisLe           DateTime?         @map("avoir_emis_le") @db.Date
+  virementLe            DateTime?         @map("virement_le") @db.Date
+  /// remboursement | refus | avoir. Texte, pas d'énumération.
+  decision              String?           @db.VarChar(20)
+  motifDecision         String?           @map("motif_decision")
+  notes                 String?
+  archiveLe             DateTime?         @map("archive_le") @db.Timestamptz(3)
+  creePar               String?           @map("cree_par") @db.VarChar(80)
+  createdAt             DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([archiveLe, dateJournee], map: "garanties_journee_ia_archive_le_date_journee_idx")
+  @@index([clientId], map: "garanties_journee_ia_client_id_idx")
+  @@index([sirenSnapshot], map: "garanties_journee_ia_siren_snapshot_idx")
+  @@map("garanties_journee_ia")
+}
+
+/// Un challenge d'apporteurs (« Prime exceptionnelle de … » côté apporteur) : la règle, la
+/// période, le seuil et le montant, figés à la publication. INVITATION LIBRE : aucun objectif
+/// imposé à un apporteur, aucun classement, aucun compteur. Table autonome, sans clé étrangère
+/// (fenêtre app/worker) ; le brouillon n'est visible que dans la console.
+/// rgpd: technique — règle, période, seuil et montant d'un challenge ; identifiant de l'administrateur auteur ; aucune donnée d'apporteur
+model ChallengeApporteur {
+  id              String    @id @default(uuid()) @db.Uuid
+  titre           String    @db.VarChar(120)
+  /// Jours civils DE PARIS, bornes incluses (CHECK fin >= début en base).
+  debutLe         DateTime  @map("debut_le") @db.Date
+  finLe           DateTime  @map("fin_le") @db.Date
+  /// Dernier jour de paiement client retenu (règlement seulement) ; nul ou >= fin.
+  paiementJusquAu DateTime? @map("paiement_jusqu_au") @db.Date
+  /// Liste fermée : `journee-ia` (CHECK en base).
+  produit         String    @db.VarChar(40)
+  /// Liste fermée : `facturees_dans_la_periode` (CHECK en base).
+  critere         String    @db.VarChar(40)
+  /// 1 à 999 (CHECK en base).
+  seuil           Int
+  /// Montant HT de la prime, en centimes, > 0 (CHECK en base).
+  primeHtCents    Int       @map("prime_ht_cents")
+  /// Texte du règlement publié, figé à la publication.
+  reglement       String    @db.Text
+  /// Empreinte SHA-256 du règlement, posée à la publication.
+  reglementSha256 String?   @map("reglement_sha256") @db.Char(64)
+  /// `brouillon` (défaut) | `publie` | `archive` (CHECK en base).
+  statut          String    @default("brouillon") @db.VarChar(20)
+  publieAt        DateTime? @map("publie_at") @db.Timestamptz(3)
+  /// Instant de l'archivage ; un archivé arrêté avant son début n'est jamais lisible.
+  archiveAt       DateTime? @map("archive_at") @db.Timestamptz(3)
+  /// Identifiants texte d'administrateur, sans clé étrangère.
+  publiePar       String?   @map("publie_par") @db.VarChar(64)
+  creePar         String?   @map("cree_par") @db.VarChar(64)
+  creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt           DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([statut, debutLe], map: "challenges_apporteur_statut_debut_idx")
+  @@map("challenges_apporteur")
+}
+
+/// Questionnaire du Baromètre 2027 : une ligne par réponse, non nominative. Ni IP, ni e-mail, ni
+/// agent navigateur, ni horodatage précis (`jour` est tronqué au jour UTC). Effacement automatique
+/// 24 mois après le jour d'envoi de chaque réponse (exception déclarée dans le worker de purge).
+/// rgpd: technique — réponses non nominatives, sans identifiant de personne : l'export et l'effacement par personne n'existent pas (art. 11) ; retrait par code, effacement automatique à 24 mois
+model BarometreQuestionnaireReponse {
+  id                   String   @id @default(uuid()) @db.Uuid
+  campagne             String   @default("barometre-2027") @db.VarChar(40)
+  questionnaireVersion String   @map("questionnaire_version") @db.VarChar(20)
+  consentVersion       String   @map("consent_version") @db.VarChar(64)
+  codeRetraitHash      String   @unique @map("code_retrait_hash") @db.VarChar(64)
+  jour                 DateTime @db.Date
+  reponses             Json
+  texteUsage           String?  @map("texte_usage") @db.VarChar(1000)
+  texteQuestion        String?  @map("texte_question") @db.VarChar(1000)
+
+  @@index([campagne, jour], map: "barometre_questionnaire_reponses_campagne_jour_idx")
+  @@map("barometre_questionnaire_reponses")
+}
+
+/// Collaborateur affiché sur /fr/equipe/{slug} (personnes réelles uniquement). La plume IA reste dans
+/// AuthorProfile ; le fondateur reste servi en statique. Identité publique : PRÉNOM seul, aucun nom
+/// de famille, aucune adresse. Catégorie et statut sont des chaînes validées côté TypeScript
+/// (`src/lib/equipe/donnees/`), jamais des énumérations Postgres (liste extensible sans migration).
+/// Effacement : une demande d'effacement SUPPRIME la ligne (et, en chaîne, ses invitations et réponses) ;
+/// seul subsiste un `TeamMemberEvent` sans donnée personnelle ("demande reçue et traitée le…").
+/// rgpd: dossier-client
+model TeamMember {
+  id            String   @id @default(uuid()) @db.Uuid
+  /// Unique, figé après la 1re publication. L'unicité contre `previousSlugs`, les slugs d'AuthorProfile
+  /// et les slugs réservés est vérifiée en transaction par l'application (pas exprimable en SQL).
+  slug          String   @unique @db.VarChar(120)
+  previousSlugs String[] @default([]) @map("previous_slugs")
+
+  /// TEAM_CATEGORIES : direction | apporteur | developpeur | specialiste_ia | partenaire | autres
+  category String @db.VarChar(40)
+  /// TEAM_STATUSES : brouillon | a_valider | publie | retire
+  status   String @default("brouillon") @db.VarChar(20)
+
+  firstName            String   @map("first_name") @db.VarChar(80)
+  /// Nom de structure : catégorie partenaire seulement, avec accord.
+  organizationName     String?  @map("organization_name") @db.VarChar(160)
+  jobTitle             String   @map("job_title") @db.VarChar(120)
+  headline             String?  @db.VarChar(200)
+  bioMd                String?  @map("bio_md") @db.Text
+  skills               String[] @default([])
+  languages            String[] @default([])
+  /// Réponses propres à la catégorie, validées par le schéma Zod de la version du questionnaire.
+  categoryAnswers      Json?    @map("category_answers")
+  questionnaireVersion String?  @map("questionnaire_version") @db.VarChar(40)
+  linkedinUrl          String?  @map("linkedin_url") @db.VarChar(512)
+  websiteUrl           String?  @map("website_url") @db.VarChar(512)
+
+  // Lieu : ville OU département, jamais d'adresse.
+  citySlug       String? @map("city_slug") @db.VarChar(100)
+  departmentCode String? @map("department_code") @db.VarChar(3)
+  locationLabel  String? @map("location_label") @db.VarChar(120)
+  /// Centre de la ville ou du département, arrondi à 2 décimales.
+  latitude       Float?
+  longitude      Float?
+  showOnMap      Boolean @default(false) @map("show_on_map")
+
+  // Photo : original privé hors web-root ; variantes publiques produites à la publication.
+  // « Vraie photo » = photoKind "reelle" + consentement photo ; sinon avatar.
+  /// reelle | avatar
+  photoKind        String  @default("avatar") @map("photo_kind") @db.VarChar(20)
+  photoStoragePath String? @map("photo_storage_path") @db.VarChar(512)
+  photoUrl256      String? @map("photo_url_256") @db.VarChar(512)
+  photoUrl1024     String? @map("photo_url_1024") @db.VarChar(512)
+  photoAlt         String? @map("photo_alt") @db.VarChar(200)
+  avatarSeed       String? @map("avatar_seed") @db.VarChar(64)
+
+  // Consentements SÉPARÉS (preuve détaillée aussi dans ConsentEvent).
+  publicationConsentAt      DateTime? @map("publication_consent_at") @db.Timestamptz(3)
+  publicationConsentVersion String?   @map("publication_consent_version") @db.VarChar(64)
+  photoConsentAt            DateTime? @map("photo_consent_at") @db.Timestamptz(3)
+  photoConsentVersion       String?   @map("photo_consent_version") @db.VarChar(64)
+  linkedinConsentAt         DateTime? @map("linkedin_consent_at") @db.Timestamptz(3)
+  linkedinConsentVersion    String?   @map("linkedin_consent_version") @db.VarChar(64)
+  /// questionnaire | console (saisi depuis la console, avec une note de preuve)
+  consentSource             String?   @map("consent_source") @db.VarChar(20)
+  consentNote               String?   @map("consent_note") @db.Text
+
+  // Contact privé (jamais affiché) : lien de questionnaire et retrait.
+  contactEmailEnc   String? @map("contact_email_enc") @db.Text
+  /// À calculer avec `hashEmailForLookup` (HMAC, src/lib/security/email-hash.ts), sinon la demande par e-mail ne retrouve pas la fiche.
+  contactEmailHash  String? @map("contact_email_hash") @db.VarChar(64)
+  /// Jeton de retrait en un clic (empreinte SHA-256 seulement ; jeton d'au moins 128 bits, régénéré après usage).
+  withdrawTokenHash String? @unique @map("withdraw_token_hash") @db.VarChar(64)
+
+  // Cycle de vie
+  sortOrder          Int       @default(100) @map("sort_order")
+  publishedAt        DateTime? @map("published_at") @db.Timestamptz(3)
+  validatedAt        DateTime? @map("validated_at") @db.Timestamptz(3)
+  validatedByAdminId String?   @map("validated_by_admin_id") @db.VarChar(64)
+  withdrawnAt        DateTime? @map("withdrawn_at") @db.Timestamptz(3)
+  withdrawnBy        String?   @map("withdrawn_by") @db.VarChar(20)
+  /// Date de réception d'une demande d'effacement (la ligne est supprimée au traitement).
+  erasureRequestedAt DateTime? @map("erasure_requested_at") @db.Timestamptz(3)
+  /// Lien facultatif vers ApporteurReseau : simple colonne, SANS relation ni clé étrangère, pour ne pas
+  /// toucher ce modèle (coordonnées bancaires). La page publique ne le lit jamais.
+  apporteurReseauId  String?   @unique @map("apporteur_reseau_id") @db.Uuid
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  invites     TeamQuestionnaireInvite[]
+  submissions TeamQuestionnaireSubmission[]
+  events      TeamMemberEvent[]
+
+  @@index([status, category])
+  @@index([status, showOnMap])
+  @@index([contactEmailHash])
+  @@index([previousSlugs], type: Gin)
+  @@map("team_members")
+}
+
+/// Lien unique de questionnaire. Le jeton n'est jamais stocké en clair. Supprimée avec la fiche
+/// (effacement réel).
+/// rgpd: dossier-client
+model TeamQuestionnaireInvite {
+  id                   String      @id @default(uuid()) @db.Uuid
+  memberId             String?     @map("member_id") @db.Uuid
+  member               TeamMember? @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  category             String      @db.VarChar(40)
+  questionnaireVersion String      @map("questionnaire_version") @db.VarChar(40)
+  tokenHash            String      @unique @map("token_hash") @db.VarChar(64)
+  /// À calculer avec `hashEmailForLookup` ; l'effacement retrouve aussi les invitations sans fiche par cette empreinte.
+  emailHash            String?     @map("email_hash") @db.VarChar(64)
+  expiresAt            DateTime    @map("expires_at") @db.Timestamptz(3)
+  firstOpenedAt        DateTime?   @map("first_opened_at") @db.Timestamptz(3)
+  usedAt               DateTime?   @map("used_at") @db.Timestamptz(3)
+  revokedAt            DateTime?   @map("revoked_at") @db.Timestamptz(3)
+  failedAttempts       Int         @default(0) @map("failed_attempts")
+  createdByAdminId     String      @map("created_by_admin_id") @db.VarChar(64)
+  createdAt            DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  submissions TeamQuestionnaireSubmission[]
+
+  @@index([memberId])
+  @@index([emailHash])
+  @@map("team_questionnaire_invites")
+}
+
+/// Réponse brute au questionnaire : historique conservé, jamais écrasé tant que la personne est
+/// présente ; supprimée avec la fiche (effacement réel).
+/// rgpd: dossier-client
+model TeamQuestionnaireSubmission {
+  id                   String                  @id @default(uuid()) @db.Uuid
+  inviteId             String                  @map("invite_id") @db.Uuid
+  invite               TeamQuestionnaireInvite @relation(fields: [inviteId], references: [id], onDelete: Cascade)
+  memberId             String                  @map("member_id") @db.Uuid
+  member               TeamMember              @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  questionnaireVersion String                  @map("questionnaire_version") @db.VarChar(40)
+  answers              Json
+  /// Chemin du fichier privé : le fichier lui-même est supprimé par le code d'effacement.
+  photoStoragePath     String?                 @map("photo_storage_path") @db.VarChar(512)
+  /// recue | appliquee | refusee
+  status               String                  @default("recue") @db.VarChar(20)
+  reviewNote           String?                 @map("review_note") @db.Text
+  /// À calculer avec src/lib/security/ip-hash.ts (jamais un SHA-256 nu d'une adresse IP).
+  ipHash               String?                 @map("ip_hash") @db.VarChar(64)
+  userAgent            String?                 @map("user_agent") @db.VarChar(300)
+  submittedAt          DateTime                @default(now()) @map("submitted_at") @db.Timestamptz(3)
+  reviewedAt           DateTime?               @map("reviewed_at") @db.Timestamptz(3)
+
+  @@index([memberId, status])
+  @@index([inviteId])
+  @@map("team_questionnaire_submissions")
+}
+
+/// Journal de chaque action (création, publication, retrait, interrupteur carte, effacement).
+/// `memberId` devient NULL quand la fiche est effacée : la ligne reste comme trace « demande reçue et
+/// traitée le… ». ⛔ `details` ne contient JAMAIS de donnée personnelle (ni prénom, ni e-mail, ni
+/// slug, ni texte de réponse) : le journal survit à l'effacement.
+/// rgpd: technique — journal d'actions sans donnée personnelle (action, auteur technique, date) ; survit volontairement à l'effacement de la fiche
+model TeamMemberEvent {
+  id        String      @id @default(uuid()) @db.Uuid
+  memberId  String?     @map("member_id") @db.Uuid
+  member    TeamMember? @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  action    String      @db.VarChar(40)
+  /// Identifiant d'administrateur, « personne » ou « systeme » : jamais un nom.
+  actor     String      @db.VarChar(64)
+  details   Json?
+  createdAt DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([memberId, createdAt])
+  @@index([action, createdAt])
+  @@map("team_member_events")
 }

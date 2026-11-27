@@ -49,7 +49,7 @@ export const GARCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Garches et dans l'ouest parisien ?",
-      a: "Oui, Axion-IA intervient à Garches et dans tout l'ouest des Hauts-de-Seine (Saint-Cloud à 5 min, Rueil-Malmaison, Vaucresson, Marnes-la-Coquette). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Garches et dans tout l'ouest des Hauts-de-Seine (Saint-Cloud, Rueil-Malmaison, Vaucresson, Marnes-la-Coquette). Nous intervenons sur place à Garches, comme partout en France, ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions médicales à Garches ?",
@@ -61,11 +61,11 @@ export const GARCHES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les cabinets conseil des Hauts-de-Seine ?",
-      a: "Oui, nous accompagnons les PME et cabinets conseil de l'ouest Hauts-de-Seine sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, reporting augmenté, CRM intelligent. Proximité La Défense (10 min).",
+      a: "Oui, nous accompagnons les PME et cabinets conseil de l'ouest Hauts-de-Seine sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, reporting augmenté, CRM intelligent.",
     },
     {
       q: "Comment se déroule une mission à Garches ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare Garches — Marnes-la-Coquette sur le Transilien L.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Garches, comme partout en France, ou à distance.",
     },
   ],
 };

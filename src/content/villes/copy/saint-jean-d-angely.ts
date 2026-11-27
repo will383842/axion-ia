@@ -65,7 +65,7 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Jean-d'Angély ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, exploitation ou commerce à Saint-Jean-d'Angély, à 30 min de Saintes et 50 min de La Rochelle.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, exploitation ou commerce à Saint-Jean-d'Angély.",
     },
   ],
 };

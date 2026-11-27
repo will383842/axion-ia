@@ -65,7 +65,7 @@ export const RIORGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Riorges ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Roanne). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Riorges, comme partout en France, ou à distance.",
     },
   ],
 };

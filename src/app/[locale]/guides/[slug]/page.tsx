@@ -16,6 +16,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, permanentRedirect } from "next/navigation";
+import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import Image from "next/image";
 import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
 import { routing, type Locale } from "@/i18n/routing";
@@ -43,7 +44,8 @@ import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { unSeulBlocSources } from "@/server/content-gen/shared/sources-et-chapo";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
@@ -99,6 +101,11 @@ export default async function GuidePiliersPage({ params }: Props) {
     });
     if (hit?.currentPath) {
       permanentRedirect(hit.currentPath);
+    }
+    // S1 (404) : un ancien slug d'ARTICLE devenu guide n'est que dans `ArticleSlugHistory`.
+    const ancien = await findArticleSlugRedirect(slug, locale as "fr" | "en");
+    if (ancien && !(ancien.section === "guides" && ancien.newSlug === slug)) {
+      permanentRedirect(`/${locale}/${ancien.section}/${ancien.newSlug}`);
     }
     notFound();
   }
@@ -159,7 +166,11 @@ export default async function GuidePiliersPage({ params }: Props) {
     /<(?:p|h[1-6]|ul|ol|li|a|strong|em|blockquote|table|thead|tbody|tr|td|th|div|br|img|figure|figcaption|pre|code|hr)\b/i.test(
       guide.body,
     )
-      ? sanitizeContentGenHtml(guide.body)
+      ? // Audit B (2026-11-26) — un seul bloc « Sources » (cf. blog/[slug]).
+        unSeulBlocSources(
+          sanitizeContentGenHtml(guide.body),
+          aDesSourcesAffichables(guide.citations),
+        )
       : null;
 
   // Lot 9 audit blog 2026-10-24 : les liens internes des corps persistés sont

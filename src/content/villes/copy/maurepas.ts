@@ -124,7 +124,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
+            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Pouvez-vous automatiser nos échanges de sous-traitance auto ?",
@@ -210,7 +210,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
+            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
           },
           {
             q: "Pouvez-vous automatiser nos échanges de sous-traitance auto ?",
@@ -245,8 +245,8 @@ export const MAUREPAS_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et fournisseurs.",
     },
     {
-      q: "Comment se passe une mission depuis Versailles ou Paris ?",
-      a: "Maurepas est à 20 km de Versailles et à une quarantaine de minutes de Paris. Nous couvrons tout l'ouest des Yvelines.",
+      q: "Comment se déroule une mission Axion-IA à Maurepas ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

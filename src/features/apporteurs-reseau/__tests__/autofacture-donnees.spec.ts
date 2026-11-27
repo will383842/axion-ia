@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 
 import {
   ECHEANCE_JOURS,
+  aVirerPartielCents,
+  aVirerTtcCents,
+  compensationDeclenchee,
+  planCompensation,
+  totalTtcPieceCents,
   dateEncaissementRetenue,
   echeancePaiement,
   etatEcheances,
@@ -249,6 +254,161 @@ describe("avoir, parrainage, dates (validation juridique)", () => {
       dateEmission: new Date("2026-10-10T10:00:00Z"),
     });
     expect(r.ok && r.data.dateEmission).toContain("10 octobre 2026");
+    expect(r.ok && r.data.datePrestation).toContain("12 octobre 2026");
+  });
+});
+
+describe("L3 — TVA FIGÉE par pièce : virement, compensation, déclencheur", () => {
+  const lg = (statut: string, montantCents: number, avoirNumero: string | null = null) => ({
+    statut,
+    montantCents,
+    avoirNumero,
+  });
+
+  it("1. régimes tous assujettis : autofacture 500 € HT + avoir 100 € HT → 600 − 120 = 480 €", () => {
+    const r = { facture: "assujetti" as const, avoir: () => "assujetti" as const };
+    expect(aVirerPartielCents(r, [lg("due", 50_000), lg("reprise", -10_000, "A1")], [])).toEqual({
+      totalCents: 48_000,
+      partielPossible: true,
+    });
+    expect(aVirerTtcCents(r, [lg("due", 50_000), lg("reprise", -10_000, "A1")])).toBe(48_000);
+  });
+
+  it("2. régimes mêlés : autofacture FRANCHISE 1 000 € + avoir ASSUJETTI 500 € HT → 1 000 − 600 = 400 €", () => {
+    const r = { facture: "franchise_293b" as const, avoir: () => "assujetti" as const };
+    const lignes = [lg("due", 100_000), lg("reprise", -50_000, "A1")];
+    expect(aVirerTtcCents(r, lignes)).toBe(40_000);
+    expect(aVirerPartielCents(r, lignes, []).totalCents).toBe(40_000);
+  });
+
+  it("un régime unique (chaîne) se comporte comme avant", () => {
+    expect(aVirerTtcCents("assujetti", [lg("due", 50_000)])).toBe(60_000);
+    expect(aVirerTtcCents("franchise_293b", [lg("due", 50_000)])).toBe(50_000);
+  });
+
+  it("3. compensation en régimes mêlés : 41 667 imputés / 8 333 restants, virement 0", () => {
+    const plan = planCompensation(
+      "franchise_293b",
+      [50_000],
+      [{ id: "r1", montantCents: -50_000, piece: "AXI-APP-2026-0001", regime: "assujetti" }],
+    );
+    expect(plan).toEqual({
+      imputees: [],
+      scinder: { id: "r1", imputeCents: 41_667, resteCents: 8_333 },
+    });
+    // 41 667 HT assujetti = 41 667 + 8 333 de TVA = 50 000 TTC : l'avoir tient sous l'autofacture.
+    const ttcAvoir = totalTtcPieceCents("assujetti", [41_667]);
+    expect(ttcAvoir).toBe(50_000);
+    expect(50_000 - ttcAvoir).toBe(0);
+  });
+
+  it("4. sens inverse : dues assujetties (60 000 TTC), reprise 55 000 en franchise → pas de compensation, virement 5 000", () => {
+    const reprises = [
+      {
+        id: "r1",
+        montantCents: -55_000,
+        piece: "AXI-APP-2026-0001",
+        regime: "franchise_293b" as const,
+      },
+    ];
+    expect(compensationDeclenchee("assujetti", [50_000], reprises)).toBe(false);
+    expect(planCompensation("assujetti", [50_000], reprises)).toBeNull();
+    const r = { facture: "assujetti" as const, avoir: () => "franchise_293b" as const };
+    expect(aVirerTtcCents(r, [lg("due", 50_000), lg("reprise", -55_000, "A1")])).toBe(5_000);
+  });
+
+  it("9. le déclencheur est en TTC en régimes mêlés : 500 € franchise contre 450 € HT d'une pièce assujettie → compensation", () => {
+    const reprises = [
+      { id: "r1", montantCents: -45_000, piece: "AXI-APP-2026-0001", regime: "assujetti" as const },
+    ];
+    // En HT, 500 − 450 = +50 € (on n'entrerait pas) ; en TTC, 500 − 540 = −40 € (on entre).
+    expect(compensationDeclenchee("franchise_293b", [50_000], reprises)).toBe(true);
+  });
+
+  it("5. régime unique : le déclencheur reste le HT d'avant", () => {
+    expect(
+      compensationDeclenchee("assujetti", [50_000], [{ id: "r", montantCents: -50_000 }]),
+    ).toBe(true);
+    expect(
+      compensationDeclenchee("assujetti", [50_000], [{ id: "r", montantCents: -49_999 }]),
+    ).toBe(false);
+  });
+});
+
+describe("L2 — date de prestation = jour du paiement intégral du client (art. 4.7)", () => {
+  const ligne = (id: string, paiement: string | null, extra: object = {}) => ({
+    id,
+    activite: "formation",
+    palier: null,
+    parrainage: false,
+    montantCents: 50_000,
+    paiementIntegralAt: paiement ? new Date(paiement) : null,
+    ...extra,
+  });
+  const f = (commissions: object[], dateEmission = "2026-10-12T10:00:00Z") =>
+    construireDonneesAutofacture({
+      ...base,
+      apporteur,
+      dateEmission: new Date(dateEmission),
+      commissions: commissions as never,
+      totalAttenduCents: (commissions as Array<{ montantCents: number }>).reduce(
+        (s, c) => s + c.montantCents,
+        0,
+      ),
+    });
+
+  it("paiement intégral le samedi 10/10, autofacture établie le lundi 12/10 : « 10 octobre 2026 » (sans report)", () => {
+    const r = f([ligne("a", "2026-10-10T10:00:00Z")]);
+    expect(r.ok && r.data.datePrestation).toBe("10 octobre 2026");
+    expect(r.ok && r.data.dateEmission).toContain("12 octobre 2026");
+  });
+
+  it("deux commandes payées le 3/11 et le 5/11 : « du 3 novembre 2026 au 5 novembre 2026 », chaque ligne porte sa date", () => {
+    const r = f([ligne("a", "2026-11-03T10:00:00Z"), ligne("b", "2026-11-05T10:00:00Z")]);
+    expect(r.ok && r.data.datePrestation).toBe("du 3 novembre 2026 au 5 novembre 2026");
+    expect(r.ok && r.data.lignes[0]!.designation).toContain(
+      "encaissement intégral le 3 novembre 2026",
+    );
+    expect(r.ok && r.data.lignes[1]!.designation).toContain(
+      "encaissement intégral le 5 novembre 2026",
+    );
+  });
+
+  it("une commission plus une part de parrainage : la ligne de parrainage n'a AUCUNE date (art. 4.6)", () => {
+    const r = f([
+      ligne("a", "2026-11-03T10:00:00Z"),
+      ligne("b", "2026-11-05T10:00:00Z"),
+      ligne("p", "2026-11-20T10:00:00Z", { parrainage: true, montantCents: 5_000 }),
+    ]);
+    if (!r.ok) throw new Error(r.motif);
+    const parr = r.data.lignes.find((l) => l.designation.startsWith("Parrainage"))!;
+    expect(parr.designation).toBe("Parrainage (art. 4.6)");
+    expect(r.data.datePrestation).not.toContain("20 novembre");
+  });
+
+  it("un avoir n'imprime pas de date de prestation (il n'en a pas)", () => {
+    const r = construireDonneesAutofacture({
+      ...base,
+      apporteur,
+      commissions: [
+        {
+          id: "r",
+          activite: "reprise",
+          palier: null,
+          parrainage: false,
+          montantCents: -10_000,
+          statut: "reprise",
+          paiementIntegralAt: new Date("2026-10-10T10:00:00Z"),
+        },
+      ],
+      totalAttenduCents: 10_000,
+      avoir: { factureInitiale: "AXI-APP-2026-0001", dateFactureInitiale: null, imputation: "x" },
+    });
+    expect(r.ok && r.data.datePrestation).not.toBe("10 octobre 2026");
+  });
+
+  it("aucune date connue : repli sur l'encaissement retenu (jour ouvré), comme avant", () => {
+    const r = f([ligne("a", null)], "2026-10-10T10:00:00Z");
     expect(r.ok && r.data.datePrestation).toContain("12 octobre 2026");
   });
 });

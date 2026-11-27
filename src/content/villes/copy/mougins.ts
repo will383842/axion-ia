@@ -49,7 +49,7 @@ export const MOUGINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mougins et bassin cannois ?",
-      a: "Oui, Axion-IA intervient à Mougins et dans tout le bassin cannois (Cannes, Le Cannet, Mouans-Sartoux, Sophia Antipolis). Nos consultants sont à 25 min de l'aéroport Nice-Côte d'Azur.",
+      a: "Oui, Axion-IA intervient à Mougins et dans tout le bassin cannois (Cannes, Le Cannet, Mouans-Sartoux, Sophia Antipolis).",
     },
     {
       q: "Travaillez-vous avec les PME tech de Sophia Antipolis ?",
@@ -65,7 +65,7 @@ export const MOUGINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mougins ?",
-      a: "Nos consultants se déplacent sur site à Mougins, central entre Cannes (10 min), Sophia Antipolis (10 min) et Nice (30 min). Tarifs publics.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Tarifs publics.",
     },
   ],
 };

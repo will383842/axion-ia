@@ -49,7 +49,7 @@ export const APT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Apt et dans le Luberon ?",
-      a: "Oui, Axion-IA intervient à Apt et dans tout le Luberon (Roussillon, Gordes, Bonnieux, Cavaillon). Proximité de l'agglomération avignonnaise via N100, déplacements assurés malgré la ruralité.",
+      a: "Oui, Axion-IA intervient à Apt et dans tout le Luberon (Roussillon, Gordes, Bonnieux, Cavaillon). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Apt  ?",
@@ -64,8 +64,8 @@ export const APT_COPY: VilleCopy = {
       a: "Oui, nous intervenons en hôtellerie-restauration Luberon sur gestion des réservations, agents conversationnels multilingues, content marketing nature et patrimoine, e-réputation et optimisation Google Business.",
     },
     {
-      q: "Comment se déplace Axion-IA à Apt ?",
-      a: "Apt est à 55 min d'Avignon et 50 min d'Aix-en-Provence via N100. Nos consultants se déplacent dans vos locaux malgré la ruralité du Luberon.",
+      q: "Comment se déroule une mission à Apt ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Apt, comme partout en France, ou à distance.",
     },
   ],
 };

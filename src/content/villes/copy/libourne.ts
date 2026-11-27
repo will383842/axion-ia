@@ -121,7 +121,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerces et l'hôtellerie-restauration du centre-ville ?",
-            a: "Oui. Pour le cœur marchand de la bastille, les commerces desservis par le réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
+            a: "Oui. Pour le cœur marchand de la bastille, les commerces du réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -201,7 +201,7 @@ export const LIBOURNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerces et l'hôtellerie-restauration du centre-ville ?",
-            a: "Oui. Pour le cœur marchand de la bastille, les commerces desservis par le réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
+            a: "Oui. Pour le cœur marchand de la bastille, les commerces du réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -216,8 +216,8 @@ export const LIBOURNE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il physiquement à Libourne pour les audits et interventions ?",
-      a: "Oui. L'équipe Axion-IA se déplace sur site à Libourne et dans les communes du Libournais : Saint-Émilion, Pomerol, Fronsac, Arveyres, Génissac, Saint-Denis-de-Pile et Coutras. Les sessions peuvent aussi se tenir en format hybride. Un défraiement transport est appliqué hors Île-de-France selon les modalités précisées au devis.",
+      q: "Intervenez-vous à Libourne pour les audits et interventions ?",
+      a: "Oui. Nous intervenons à Libourne et dans les communes du Libournais : Saint-Émilion, Pomerol, Fronsac, Arveyres, Génissac, Saint-Denis-de-Pile et Coutras. Les sessions peuvent aussi se tenir en format hybride.",
     },
     {
       q: "Quels sont les tarifs pour une intervention IA d'une PME et ETI libournaise ?",

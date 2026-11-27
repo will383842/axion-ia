@@ -49,7 +49,7 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dompierre-sur-Mer ?",
-      a: "Oui, Axion-IA intervient à Dompierre-sur-Mer et toute l'agglomération de La Rochelle. Nos consultants accèdent facilement via la gare TGV de La Rochelle à 15 min (Paris 2h50 direct).",
+      a: "Oui, Axion-IA intervient à Dompierre-sur-Mer et toute l'agglomération de La Rochelle.",
     },
     {
       q: "Quels services IA pour les PME tertiaires à Dompierre-sur-Mer ?",
@@ -65,7 +65,7 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Dompierre-sur-Mer ?",
-      a: "Nos consultants accèdent à Dompierre-sur-Mer via la gare TGV de La Rochelle (15 min, Paris 2h50 direct). Mission sur site dans vos locaux, cabinet ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

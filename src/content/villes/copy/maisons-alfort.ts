@@ -36,8 +36,8 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
+      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
@@ -67,7 +67,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
           {
             step: "Atelier de conception à Maisons-Alfort",
             detail:
-              "Kick-off sur site dans vos locaux maisonnais — campus ENVA/ANSES, cabinet de la ligne 8, futur quartier de la gare Vert de Maisons — pour cadrer arborescence, design UX/UI, parcours mobile et périmètre e-commerce ou SaaS.",
+              "Kick-off sur site dans vos locaux maisonnais — campus ENVA/ANSES, cabinets libéraux, futur quartier Vert de Maisons — pour cadrer arborescence, design UX/UI, parcours mobile et périmètre e-commerce ou SaaS.",
           },
           {
             step: "Design et prototype",
@@ -231,8 +231,8 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
       a: "Les interventions Axion-IA à Maisons-Alfort démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Les tarifs publics complets sont disponibles sur axion-ia.com.",
     },
     {
-      q: "Sous quel délai Axion-IA se déplace-t-il à Maisons-Alfort ?",
-      a: "Notre équipe se déplace sur site à Maisons-Alfort sous 5 jours ouvrés après signature du devis. Un cadrage en visioconférence peut être organisé sous 48 h en cas d'urgence.",
+      q: "Sous quel délai Axion-IA intervient-il à Maisons-Alfort ?",
+      a: "Nous intervenons sur site à Maisons-Alfort sous 5 jours ouvrés après signature du devis. Un cadrage en visioconférence peut être organisé sous 48 h en cas d'urgence.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Maisons-Alfort ?",

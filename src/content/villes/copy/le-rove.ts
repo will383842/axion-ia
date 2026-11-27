@@ -49,7 +49,7 @@ export const LE_ROVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Rove et sur la Côte Bleue ?",
-      a: "Oui, Axion-IA intervient au Rove et dans toute la Côte Bleue (Ensuès-la-Redonne, Carry-le-Rouet, Sausset-les-Pins, Niolon, Marseille L'Estaque). Proximité Marseille via A55 et TER Côte Bleue.",
+      a: "Oui, Axion-IA intervient au Rove et dans toute la Côte Bleue (Ensuès-la-Redonne, Carry-le-Rouet, Sausset-les-Pins, Niolon, Marseille L'Estaque). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Rove ?",
@@ -64,8 +64,8 @@ export const LE_ROVE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en plaisance, plongée et locations sur gestion planning sorties mer et réservations, content marketing calanques (Niolon, La Vesse), fiches Google Business multilingues, agents conversationnels accueil, SAV.",
     },
     {
-      q: "Comment se déplace Axion-IA au Rove ?",
-      a: "Le Rove est à 20 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
+      q: "Comment se déroule une mission au Rove ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place au Rove, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const ORSAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orsay et sur le campus Paris-Saclay ?",
-      a: "Oui, Axion-IA intervient à Orsay et sur tout le campus Paris-Saclay (Palaiseau à 5 min, Massy TGV à 10 min, Paris centre à 30 min en RER B).",
+      a: "Oui, Axion-IA intervient à Orsay et sur tout le campus Paris-Saclay (Palaiseau, Massy).",
     },
     {
       q: "Travaillez-vous avec les startups deeptech du plateau de Saclay ?",
@@ -64,8 +64,8 @@ export const ORSAY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Paris centre (30 min RER B). Massy TGV (10 min). Aéroport Orly (20 min).",
+      q: "Comment se déroule une mission Axion-IA à Orsay ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const CHANTILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chantilly et dans le sud de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Chantilly et dans tout le sud de l'Oise (Gouvieux, Lamorlaye, Senlis, Creil). Consultants accessibles via gare SNCF Chantilly-Gouvieux (TER Paris-Nord en 25 min). Aéroport CDG à 25 min.",
+      a: "Oui, Axion-IA intervient à Chantilly et dans tout le sud de l'Oise (Gouvieux, Lamorlaye, Senlis, Creil).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chantilly  ?",

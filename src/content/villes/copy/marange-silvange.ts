@@ -49,7 +49,7 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marange-Silvange et dans le Pays de l'Orne ?",
-      a: "Oui, Axion-IA intervient à Marange-Silvange et dans tout le Pays de l'Orne (Hagondange, Amnéville, Rombas, Maizières-lès-Metz). Nos consultants se déplacent depuis Metz, accessibles en 15 min via A31.",
+      a: "Oui, Axion-IA intervient à Marange-Silvange et dans tout le Pays de l'Orne (Hagondange, Amnéville, Rombas, Maizières-lès-Metz). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Marange-Silvange  ?",
@@ -65,7 +65,7 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Marange-Silvange ?",
-      a: "Nos consultants interviennent depuis Metz en 15 min via A31. Marange-Silvange fait partie de l'aire d'attraction messine, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Marange-Silvange fait partie de l'aire d'attraction messine. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

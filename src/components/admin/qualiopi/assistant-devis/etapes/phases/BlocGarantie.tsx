@@ -8,7 +8,7 @@
  */
 import { useEffect, useId, type Dispatch } from "react";
 
-import type { ActionAssistant } from "../../etat";
+import { propositionEffective, type ActionAssistant } from "../../etat";
 import type { EtatAssistant } from "../../types";
 
 export interface PropsBlocGarantie {
@@ -74,6 +74,18 @@ export function BlocGarantie({ etat, dispatch, phraseGarantie }: PropsBlocGarant
             Revenir à la phrase d&apos;origine
           </button>
         </div>
+      ) : null}
+      {propositionEffective(etat) === "prix_unique" ? (
+        <label className="mt-3 flex min-h-[44px] items-center gap-2">
+          <input
+            type="checkbox"
+            checked={etat.garantieJournee}
+            onChange={(e) =>
+              dispatch({ type: "champs", patch: { garantieJournee: e.target.checked } })
+            }
+          />
+          Journée IA : imprimer la garantie de remboursement (CGV art. 47.10)
+        </label>
       ) : null}
     </section>
   );

@@ -49,7 +49,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Escaudain et bassin minier du Nord ?",
-      a: "Oui, Axion-IA intervient à Escaudain et tout le bassin minier (Denain à 5 min, Valenciennes à 15 min, Douai à 20 min, Lille à 45 min).",
+      a: "Oui, Axion-IA intervient à Escaudain et dans tout le bassin minier (Denain, Valenciennes, Douai, Lille).",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Escaudain ?",
@@ -65,7 +65,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Escaudain ?",
-      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Lille à 45 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Escaudain, comme partout en France, ou à distance.",
     },
   ],
 };

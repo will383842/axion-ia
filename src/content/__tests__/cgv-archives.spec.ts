@@ -27,6 +27,21 @@ describe("cgv-archives", () => {
     const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
     expect(sha).toBe("759812726cf76bd5c87fcab50a2c307534096478f79a6a5d84f8dbfb1d7c5074");
   });
+  it("la version 2026-11-27 est archivée à l'identique (empreinte du cliquet de cette version)", () => {
+    const fr = CGV_ARCHIVES["2026-11-27"].fr;
+    const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
+    expect(sha).toBe("e862de3fa32074b9298f5e23e164ea062c197ba6de124277baf1e532e9403d43");
+  });
+  it("la version 2026-11-28 est archivée à l'identique (empreinte du cliquet de cette version)", () => {
+    const fr = CGV_ARCHIVES["2026-11-28"].fr;
+    const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
+    expect(sha).toBe("5ada8e2212a962f2502b30504faf88cd6f9897326e8e612254fb91b2d27d03d9");
+  });
+  it("la version 2026-11-29 est archivée à l'identique (empreinte du cliquet de cette version)", () => {
+    const fr = CGV_ARCHIVES["2026-11-29"].fr;
+    const sha = createHash("sha256").update(JSON.stringify(fr), "utf8").digest("hex");
+    expect(sha).toBe("8179aecd6519eb4c3456f09f36aba1858246d04b7a661c2b72d6acad2e2a9841");
+  });
   it("texteArchiveCgv rend le libellé de la version 2026-11-19", () => {
     expect(texteArchiveCgv("2026-11-19")?.libelle).toBe("19 novembre 2026");
   });

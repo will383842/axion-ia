@@ -49,7 +49,7 @@ export const LAXOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Laxou et Métropole Grand Nancy ?",
-      a: "Oui, Axion-IA intervient à Laxou et toute la Métropole du Grand Nancy. Consultants depuis Metz (50 min), Strasbourg (1 h 40) ou Paris (1 h 30 via TGV).",
+      a: "Oui, Axion-IA intervient à Laxou et toute la Métropole du Grand Nancy. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Laxou  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const LAXOU_COPY: VilleCopy = {
       a: "Oui, agents conversationnels, gestion stocks, programmes fidélité, gestion documentaire, prise de rendez-vous augmentée, facturation intelligente pour TPE retail et professions libérales.",
     },
     {
-      q: "Comment accéder à Laxou depuis Paris ?",
-      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 5 min. Nancy centre à 10 min.",
+      q: "Comment se déroule une mission à Laxou ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Laxou, comme partout en France, ou à distance.",
     },
   ],
 };

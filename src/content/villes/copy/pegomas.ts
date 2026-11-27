@@ -65,7 +65,7 @@ export const PEGOMAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pégomas ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement vallée de la Siagne inclus dans le forfait.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

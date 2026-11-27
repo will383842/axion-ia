@@ -49,7 +49,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ferney-Voltaire et pays de Gex ?",
-      a: "Oui, Axion-IA intervient à Ferney-Voltaire et tout le pays de Gex (Saint-Genis-Pouilly à 5 min, Gex à 10 min, Divonne-les-Bains, Prévessin-Moëns). Genève à 10 min. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Ferney-Voltaire et dans tout le pays de Gex (Saint-Genis-Pouilly, Gex, Divonne-les-Bains, Prévessin-Moëns), ainsi qu'avec les entreprises de la zone frontalière genevoise. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME internationales pays de Gex ?",
@@ -65,7 +65,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ferney-Voltaire ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement à part, tarification transparente.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Ferney-Voltaire, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -130,7 +130,7 @@ export const ANTONY_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place à Antony et autour de La Croix-de-Berny ?",
-            a: "Oui. Le kick-off et la recette se font sur site — Antonypôle, La Croix-de-Berny (gare RER B) ou vos locaux — et nous couvrons aussi le sud des Hauts-de-Seine (Sceaux, Bourg-la-Reine, Châtenay-Malabry) ainsi que Massy et Fresnes. Les itérations se déroulent ensuite en hybride.",
+            a: "Oui. Le kick-off et la recette se font sur site — Antonypôle, La Croix-de-Berny ou vos locaux — et nous couvrons aussi le sud des Hauts-de-Seine (Sceaux, Bourg-la-Reine, Châtenay-Malabry) ainsi que Massy et Fresnes. Les itérations se déroulent ensuite en hybride.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const ANTONY_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Antony and around La Croix-de-Berny?",
-            a: "Yes. Kick-off and acceptance happen on site — Antonypôle, La Croix-de-Berny (RER B station) or your offices — and we also cover the south of Hauts-de-Seine (Sceaux, Bourg-la-Reine, Châtenay-Malabry) plus Massy and Fresnes. Iterations then run hybrid.",
+            a: "Yes. Kick-off and acceptance happen on site — Antonypôle, La Croix-de-Berny or your offices — and we also cover the south of Hauts-de-Seine (Sceaux, Bourg-la-Reine, Châtenay-Malabry) plus Massy and Fresnes. Iterations then run hybrid.",
           },
         ],
         guarantees:
@@ -240,7 +240,7 @@ export const ANTONY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur site à Antony ?",
-      a: "Nos consultants se déplacent sur site à Antony sous 5 jours ouvrés après validation. Accès direct depuis Paris par le RER B (5 stations) ou l'A86. Antony est à 8 km de la porte d'Orléans.",
+      a: "Nous intervenons sur site à Antony sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Antony ?",

@@ -49,7 +49,7 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fos-sur-Mer et dans le bassin portuaire ouest ?",
-      a: "Oui, Axion-IA intervient à Fos-sur-Mer et dans tout le bassin portuaire (Port-Saint-Louis-du-Rhône, Istres, Martigues, Port-de-Bouc, Saint-Mitre-les-Remparts). Proximité A55 et terminaux GPMM.",
+      a: "Oui, Axion-IA intervient à Fos-sur-Mer et dans tout le bassin portuaire (Port-Saint-Louis-du-Rhône, Istres, Martigues, Port-de-Bouc, Saint-Mitre-les-Remparts). Activité portuaire et terminaux GPMM.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Fos-sur-Mer  ?",
@@ -64,8 +64,8 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
       a: "Oui, nous intervenons en sous-traitance industrielle sur maintenance prédictive, contrôle qualité, gestion HSE documentaire, automatisation chiffrage, agents IA support technique terrain.",
     },
     {
-      q: "Comment se déplace Axion-IA à Fos-sur-Mer ?",
-      a: "Fos-sur-Mer est à 30 min de l'aéroport Marseille-Provence et 50 min de Marseille via A55. Nos consultants se déplacent dans vos locaux ou sur site portuaire.",
+      q: "Comment se déroule une mission à Fos-sur-Mer ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fos-sur-Mer, comme partout en France, ou à distance.",
     },
   ],
 };

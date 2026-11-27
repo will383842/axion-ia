@@ -49,7 +49,7 @@ export const CHATEAUNEUF_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Chateauneuf-sur-Loire et dans le Val de Loire orleanais ?",
-      a: "Oui, Axion-IA intervient a Chateauneuf-sur-Loire et dans tout le Val de Loire orleanais (Jargeau, Sully-sur-Loire, Checy, Saint-Denis-de-l'Hotel). Orleans centre a 20 min, Paris a 1h30.",
+      a: "Oui, Axion-IA intervient a Chateauneuf-sur-Loire et dans tout le Val de Loire orleanais (Jargeau, Sully-sur-Loire, Checy, Saint-Denis-de-l'Hotel), sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Chateauneuf-sur-Loire ?",

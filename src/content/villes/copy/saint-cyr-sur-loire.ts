@@ -49,7 +49,7 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Cyr-sur-Loire et Tours nord ?",
-      a: "Oui, Axion-IA intervient à Saint-Cyr-sur-Loire et tout le nord de Tours Métropole (Fondettes, La Membrolle-sur-Choisille, Mettray). Tours centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Saint-Cyr-sur-Loire et tout le nord de Tours Métropole (Fondettes, La Membrolle-sur-Choisille, Mettray).",
     },
     {
       q: "Travaillez-vous avec les commerces des zones Atlantes et Petite Arche ?",
@@ -64,8 +64,8 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 {{price:intervention-membre-equipe|flat}}. Gestion rendez-vous, automatisation administratif, classification documents.",
     },
     {
-      q: "Comment accéder à Saint-Cyr-sur-Loire ?",
-      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 20 min. Consultants sur site Tours Métropole. Frais de déplacement en sus.",
+      q: "Comment se déroule une mission à Saint-Cyr-sur-Loire ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Cyr-sur-Loire, comme partout en France, ou à distance.",
     },
   ],
 };

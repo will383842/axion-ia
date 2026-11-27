@@ -86,6 +86,12 @@ describe("requireHabilitation — refus côté serveur", () => {
     for (const role of ["super_admin", "admin"]) {
       connecteComme(role);
       for (const acte of ACTES_ENGAGEANTS) {
+        // `valider_changement_iban` : le `super_admin` seul (règle du dirigeant) ; `admin` y est refusé,
+        // ce que verrouille `habilitations.spec.ts` (et « le rôle admin refusé » ci-dessous).
+        if (role === "admin" && acte === "valider_changement_iban") {
+          await expect(requireHabilitation(acte)).rejects.toThrow(/^forbidden: /);
+          continue;
+        }
         await expect(
           requireHabilitation(acte),
           `${role} bloqué sur « ${acte} »`,

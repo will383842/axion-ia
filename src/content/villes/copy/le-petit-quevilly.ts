@@ -36,8 +36,8 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
       en: "À Le Petit-Quevilly, l'audit Axion-IA cible les éditeurs et agences de Seine Innopolis, les PME tertiaires de l'Actipôle des Chartreux et les commerçants locaux. Cartographie des tâches manuelles (devis, facturation, support, reporting). Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
-      en: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
+      fr: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, réalisée sur site.",
+      en: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, réalisée sur site.",
     },
     implementation: {
       fr: "L'implémentation au Petit-Quevilly s'adresse aux PME tech de Seine Innopolis et aux industriels héritiers de la chimie locale : outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement no-code. Dès {{price:impl-poc|entry}}, code livré et documenté.",
@@ -228,11 +228,11 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention IA au Petit-Quevilly ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publiés sur axion-ia.com/tarifs et identiques en Métropole Rouen Normandie.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publiés sur axion-ia.com/tarifs.",
     },
     {
-      q: "Axion-IA se déplace-t-il dans les communes autour de Le Petit-Quevilly ?",
-      a: "Oui. Nous intervenons sur les communes limitrophes Rouen, Le Grand-Quevilly et Sotteville-lès-Rouen, ainsi qu'à Saint-Étienne-du-Rouvray, Bihorel, Mont-Saint-Aignan et Canteleu — toutes desservies par la Métropole Rouen Normandie.",
+      q: "Intervenez-vous dans les communes autour du Petit-Quevilly ?",
+      a: "Oui. Nous intervenons sur les communes limitrophes Rouen, Le Grand-Quevilly et Sotteville-lès-Rouen, ainsi qu'à Saint-Étienne-du-Rouvray, Bihorel, Mont-Saint-Aignan et Canteleu, sur toute la Métropole Rouen Normandie.",
     },
     {
       q: "Quels délais pour un audit IA au Petit-Quevilly ?",

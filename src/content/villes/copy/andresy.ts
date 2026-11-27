@@ -49,7 +49,7 @@ export const ANDRESY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Andrésy et à la confluence Seine-Oise ?",
-      a: "Oui, Axion-IA intervient à Andrésy et tout le secteur confluence (Conflans-Sainte-Honorine à 5 min, Poissy à 10 min, Paris La Défense à 25 min, Paris Saint-Lazare à 35 min transilien J).",
+      a: "Oui. Axion-IA intervient à Andrésy et sur tout le secteur de la confluence : Conflans-Sainte-Honorine, Poissy et Paris La Défense.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans d'Andrésy ?",
@@ -65,7 +65,7 @@ export const ANDRESY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Andrésy ?",
-      a: "Conflans-Sainte-Honorine (5 min). Poissy (10 min). Paris La Défense (25 min). Paris Saint-Lazare (35 min transilien J).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Andrésy, comme partout en France, ou à distance.",
     },
   ],
 };

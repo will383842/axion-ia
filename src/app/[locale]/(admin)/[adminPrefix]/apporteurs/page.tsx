@@ -127,7 +127,8 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
                 <th className="p-[var(--space-admin-3)]">Entreprises</th>
                 <th className="p-[var(--space-admin-3)]">À verser</th>
                 <th className="p-[var(--space-admin-3)]">Versé</th>
-                <th className="p-[var(--space-admin-3)]">Depuis</th>
+                <th className="p-[var(--space-admin-3)]">Entrée</th>
+                <th className="p-[var(--space-admin-3)]">Contrat depuis</th>
               </tr>
             </thead>
             <tbody>
@@ -150,6 +151,7 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
                   <td className="p-[var(--space-admin-3)]">{a.entreprises}</td>
                   <td className="p-[var(--space-admin-3)]">{euros(a.commissionsDuesCents)}</td>
                   <td className="p-[var(--space-admin-3)]">{euros(a.commissionsVerseesCents)}</td>
+                  <td className="p-[var(--space-admin-3)]">{fr(a.creeAt)}</td>
                   <td className="p-[var(--space-admin-3)]">
                     {fr(a.signeParSocieteAt ?? a.creeAt)}
                   </td>

@@ -60,6 +60,17 @@ vi.mock("@/lib/r2-storage", () => ({
   isR2Configured: () => true,
   uploadToR2: (...a: unknown[]) => r2.upload(...a),
 }));
+// La copie embarquée du guide n'existe pas ici : l'application ne dépose rien sur R2 (le dépôt
+// automatique est couvert par documents-joints.spec.ts) ; les autres décomptes restent ceux d'avant.
+vi.mock("../guide-demarrage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../guide-demarrage")>()),
+  lireGuideDemarrage: async () => null,
+}));
+vi.mock("../documents-prives", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../documents-prives")>()),
+  lireFicheCommissions: async () => null,
+  lireLivret: async () => null,
+}));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string | null) => v }));
 vi.mock("@/lib/prisma", () => {
   const tx = { apporteurReseau: { update: (...a: unknown[]) => h.appUpdate(...a) } };
@@ -191,7 +202,7 @@ describe("D4 : renvoyer le contrat signé", () => {
     expect(r).toEqual({
       ok: true,
       message:
-        "Contrat signé renvoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+        "Contrat signé renvoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions, le livret et le guide de démarrage.",
     });
     const e = h.envoyer.mock.calls[0]![0];
     expect(e).toMatchObject({
@@ -318,7 +329,7 @@ describe("B3 : la contresignature fabrique le PDF depuis le texte archivé à la
     expect(await appliquerDecision(ID, "contresigner", null)).toEqual({
       ok: true,
       message:
-        "Contrat contresigné et envoyé. Pièces jointes : le contrat, la fiche des commissions et le livret.",
+        "Contrat contresigné et envoyé. Pièces jointes : le contrat, la fiche des commissions, le livret et le guide de démarrage.",
     });
   });
 
@@ -329,7 +340,7 @@ describe("B3 : la contresignature fabrique le PDF depuis le texte archivé à la
     });
     const r = await appliquerDecision(ID, "contresigner", null);
     expect(r.message).toBe(
-      "Contrat contresigné et envoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions et le livret.",
+      "Contrat contresigné et envoyé. Pièce jointe : le contrat seul. Non joints (absents ou illisibles sur le stockage) : la fiche des commissions, le livret et le guide de démarrage.",
     );
   });
 

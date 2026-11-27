@@ -65,7 +65,7 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou La Tour-du-Pin).",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

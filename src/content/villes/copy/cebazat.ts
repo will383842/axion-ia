@@ -65,7 +65,7 @@ export const CEBAZAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cébazat ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Cébazat, comme partout en France, ou à distance.",
     },
   ],
 };

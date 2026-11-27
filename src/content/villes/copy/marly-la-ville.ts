@@ -49,7 +49,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marly-la-Ville et nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à Marly-la-Ville et tout le nord Val-d'Oise (Fosses à 5 min, aéroport CDG à 10 min, Luzarches à 10 min, Paris à 40 min via A1).",
+      a: "Oui. Nous intervenons à Marly-la-Ville et dans tout le nord Val-d'Oise (Fosses, Luzarches), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Marly-la-Ville ?",
@@ -64,8 +64,8 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Roissy ou Paris ?",
-      a: "Aéroport CDG (10 min). Fosses (5 min). Paris centre (40 min via A1). Luzarches (10 min).",
+      q: "Comment se déroule une mission Axion-IA à Marly-la-Ville ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

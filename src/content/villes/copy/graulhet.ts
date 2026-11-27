@@ -49,7 +49,7 @@ export const GRAULHET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Graulhet ?",
-      a: "Oui, Axion-IA intervient à Graulhet et dans tout le bassin du Dadou (Briatexte, Busque, Puylaurens). Nos consultants se déplacent depuis Toulouse (1h) ou Albi (30 min).",
+      a: "Oui, Axion-IA intervient à Graulhet et dans tout le bassin du Dadou (Briatexte, Busque, Puylaurens). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Graulhet ?",

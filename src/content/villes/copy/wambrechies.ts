@@ -65,7 +65,7 @@ export const WAMBRECHIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wambrechies ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare Lille-Flandres et Lille-Europe TGV à 15 min. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
     },
   ],
 };

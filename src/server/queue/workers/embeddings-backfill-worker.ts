@@ -31,6 +31,9 @@ import {
   generateEmbedding,
 } from "@/lib/knowledge/embeddings";
 
+import { embedVoyageBatch } from "@/server/content-gen/dedup/voyage-embedder";
+import { buildVoyageEmbeddingText } from "@/server/content-gen/dedup/texte-a-vectoriser";
+
 export const EMBEDDINGS_BACKFILL_QUEUE = "embeddings-backfill";
 
 const QUEUE_NAME = EMBEDDINGS_BACKFILL_QUEUE;
@@ -45,10 +48,34 @@ const AVG_TOKENS_PER_ARTICLE = 695;
 const MAX_KB_VECTORS_PER_RUN = 600;
 const KB_PAUSE_MS = 250;
 
+// Rattrapage Voyage des articles (PR4) : lots de 20, plafond par passage.
+const VOYAGE_BATCH_SIZE = 20;
+const VOYAGE_DEFAULT_MAX_PER_RUN = 500;
+const VOYAGE_HARD_MAX_PER_RUN = 2000;
+const VOYAGE_PAUSE_MS = 300;
+const VOYAGE_MAX_CONSECUTIVE_FAILURES = 3;
+
 interface ArticleRow {
   id: string;
   title: string;
   content: string | null;
+}
+
+interface ArticleVoyageRow {
+  id: string;
+  title: string;
+  meta_description: string | null;
+  body_text: string | null;
+  body: string | null;
+}
+
+function texteVoyage(a: ArticleVoyageRow): string {
+  return buildVoyageEmbeddingText({
+    title: a.title,
+    metaDescription: a.meta_description,
+    bodyText: a.body_text,
+    bodyHtml: a.body,
+  });
 }
 
 interface KbStaleRow {
@@ -160,11 +187,203 @@ export async function rafraichirVecteursKbPerimes(): Promise<KbRefreshStats> {
   return { refreshed, errors, candidates: rows.length };
 }
 
-/** Passage de 03 h : vecteurs des articles (OpenAI), puis vecteurs périmés de la base (Voyage). */
+export interface VoyageBackfillStats {
+  processed: number;
+  skipped: number;
+  errors: number;
+  candidates: number;
+  skippedReason?: string;
+  stoppedReason?: string;
+}
+
+function plafondVoyageParPassage(): number {
+  const n = parseInt(process.env.VOYAGE_BACKFILL_MAX_PER_RUN ?? "", 10);
+  if (!Number.isFinite(n) || n <= 0) return VOYAGE_DEFAULT_MAX_PER_RUN;
+  return Math.min(n, VOYAGE_HARD_MAX_PER_RUN);
+}
+
+async function ecrireEmbeddingVoyage(
+  articleId: string,
+  vecteur: readonly number[],
+  stats: VoyageBackfillStats,
+): Promise<void> {
+  try {
+    const litteral = `[${vecteur.join(",")}]`;
+    await prisma.$executeRaw`
+      UPDATE articles
+      SET embedding_voyage = ${litteral}::vector
+      WHERE id = ${articleId}::uuid
+        AND embedding_voyage IS NULL
+    `;
+    stats.processed++;
+  } catch (err) {
+    stats.errors++;
+    console.error(
+      `[embeddings-backfill] écriture embedding_voyage article ${articleId} en échec:`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Rattrapage de `articles.embedding_voyage` (Voyage voyage-3, 1024 dim) sur les articles
+ * publiés qui n'en ont pas. Indépendant de CONTENT_EMBEDDING_PROVIDER : il doit pouvoir
+ * tourner AVANT la bascule (runbook R36). Allumé uniquement par
+ * `VOYAGE_ARTICLES_BACKFILL_ENABLED=true` ET `VOYAGE_API_KEY` : par défaut, rien ne part.
+ *
+ * - Par lots de 20, plafond par passage (500 par défaut, 2000 max).
+ * - Kill switch respecté (lecture fail-safe).
+ * - 429 : on s'arrête (le lendemain reprend où on en était, la colonne NULL fait foi).
+ * - Ne lève jamais : une panne Voyage laisse les colonnes NULL, rien d'autre.
+ */
+export async function rattraperEmbeddingsVoyage(): Promise<VoyageBackfillStats> {
+  const vide = (skippedReason: string): VoyageBackfillStats => ({
+    processed: 0,
+    skipped: 0,
+    errors: 0,
+    candidates: 0,
+    skippedReason,
+  });
+  if (process.env.VOYAGE_ARTICLES_BACKFILL_ENABLED !== "true") {
+    return vide("VOYAGE_ARTICLES_BACKFILL_ENABLED != true");
+  }
+  if (!process.env.VOYAGE_API_KEY) return vide("VOYAGE_API_KEY absente");
+  const killSwitch = await readKillSwitchFailSafe();
+  if (killSwitch.active) return vide("kill switch actif");
+
+  const max = plafondVoyageParPassage();
+  const articles = (await prisma.$queryRawUnsafe(
+    `SELECT a.id, t.title, t.meta_description, t.body_text, t.body
+     FROM articles a
+     JOIN article_translations t ON t.article_id = a.id AND t.locale = 'fr'
+     WHERE a.status = 'published'
+       AND a.embedding_voyage IS NULL
+       AND btrim(COALESCE(t.title, '')) <> ''
+     ORDER BY a.published_at DESC NULLS LAST
+     LIMIT ${max}`,
+  )) as ArticleVoyageRow[];
+
+  const stats: VoyageBackfillStats = {
+    processed: 0,
+    skipped: 0,
+    errors: 0,
+    candidates: articles.length,
+  };
+  let echecsConsecutifs = 0;
+
+  for (let i = 0; i < articles.length; i += VOYAGE_BATCH_SIZE) {
+    const lot = articles.slice(i, i + VOYAGE_BATCH_SIZE);
+    if (i > 0 && (await readKillSwitchFailSafe()).active) {
+      stats.stoppedReason = "kill switch";
+      break;
+    }
+    const out = await embedVoyageBatch(lot.map(texteVoyage));
+    if (!out.ok) {
+      // 4xx (hors 429) sur un lot de plusieurs articles : un seul article fautif le fait
+      // échouer chaque nuit. On réessaie article par article et on saute celui qui échoue.
+      const status = out.status;
+      if (out.reason === "http_error" && (status === 401 || status === 403)) {
+        // Clé refusée : inutile de réessayer article par article (rafale d'appels).
+        stats.errors += lot.length;
+        stats.stoppedReason = "auth";
+        break;
+      }
+      if (
+        out.reason === "http_error" &&
+        status !== undefined &&
+        status >= 400 &&
+        status < 500 &&
+        lot.length > 1
+      ) {
+        let unSeulOk = false;
+        for (const article of lot) {
+          const seul = await embedVoyageBatch([texteVoyage(article)]);
+          if (seul.ok && seul.embeddings[0]) {
+            unSeulOk = true;
+            await ecrireEmbeddingVoyage(article.id, seul.embeddings[0], stats);
+          } else if (!seul.ok && (seul.reason === "rate_limited" || seul.reason === "no_key")) {
+            stats.errors++;
+            stats.stoppedReason = seul.reason;
+            return stats;
+          } else if (!seul.ok && (seul.status === 401 || seul.status === 403)) {
+            stats.errors++;
+            stats.stoppedReason = "auth";
+            return stats;
+          } else {
+            stats.errors++;
+            console.error(
+              `[embeddings-backfill] article ${article.id} sauté : Voyage le refuse (HTTP ${status}).`,
+            );
+          }
+          await new Promise<void>((resolve) => setTimeout(resolve, VOYAGE_PAUSE_MS));
+        }
+        // Un lot où plus aucun article ne passe est une vraie panne : il compte comme échec.
+        echecsConsecutifs = unSeulOk ? 0 : echecsConsecutifs + 1;
+        if (echecsConsecutifs >= VOYAGE_MAX_CONSECUTIVE_FAILURES) {
+          stats.stoppedReason = `${echecsConsecutifs} lots consécutifs en échec (${out.reason})`;
+          break;
+        }
+        continue;
+      }
+      stats.errors += lot.length;
+      echecsConsecutifs++;
+      if (out.reason === "rate_limited" || out.reason === "no_key") {
+        stats.stoppedReason = out.reason;
+        break;
+      }
+      if (echecsConsecutifs >= VOYAGE_MAX_CONSECUTIVE_FAILURES) {
+        stats.stoppedReason = `${echecsConsecutifs} lots consécutifs en échec (${out.reason})`;
+        break;
+      }
+      continue;
+    }
+    echecsConsecutifs = 0;
+
+    for (let j = 0; j < lot.length; j++) {
+      const article = lot[j];
+      const vecteur = out.embeddings[j];
+      if (!article || !vecteur) {
+        stats.errors++;
+        continue;
+      }
+      await ecrireEmbeddingVoyage(article.id, vecteur, stats);
+    }
+    if (i + VOYAGE_BATCH_SIZE < articles.length) {
+      await new Promise<void>((resolve) => setTimeout(resolve, VOYAGE_PAUSE_MS));
+    }
+  }
+  return stats;
+}
+
+async function rattraperVoyageSansEchec(): Promise<void> {
+  try {
+    const stats = await rattraperEmbeddingsVoyage();
+    // On ne date que les passages qui ont eu du travail (pas de bruit quand tout est éteint).
+    if (stats.candidates > 0) {
+      await prisma.contentGenConfig.upsert({
+        where: { key: "embeddings_voyage_last_run" },
+        create: {
+          key: "embeddings_voyage_last_run",
+          value: { at: new Date().toISOString(), ...stats },
+        },
+        update: { value: { at: new Date().toISOString(), ...stats } },
+      });
+    }
+  } catch (err) {
+    // Une panne du rattrapage Voyage ne doit jamais faire échouer le passage.
+    console.error(
+      "[embeddings-backfill] rattrapage Voyage en échec:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/** Passage de 03 h : vecteurs des articles (OpenAI), rattrapage Voyage, puis vecteurs périmés de la base (Voyage). */
 async function runBackfill(job: Job): Promise<RunStats> {
   try {
     return await runBackfillArticles(job);
   } finally {
+    await rattraperVoyageSansEchec();
     // Même si la partie articles échoue (clé OpenAI absente...), la base est recalculée.
     await rafraichirBaseSansEchec();
   }

@@ -49,7 +49,7 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ensuès-la-Redonne et sur la Côte Bleue ?",
-      a: "Oui, Axion-IA intervient à Ensuès-la-Redonne et dans toute la Côte Bleue (Carry-le-Rouet, Le Rove, Sausset-les-Pins, Niolon, Méjean). Proximité Marseille via A55 et TER Côte Bleue.",
+      a: "Oui, Axion-IA intervient à Ensuès-la-Redonne et dans toute la Côte Bleue (Carry-le-Rouet, Le Rove, Sausset-les-Pins, Niolon, Méjean). Axion IA intervient partout en France, sur site ou à distance.",
     },
     {
       q: "Tarifs audit IA à Ensuès-la-Redonne  : quel budget prévoir ?",
@@ -64,8 +64,8 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en plaisance sur gestion planning sorties mer, réservations clubs nautiques, content marketing local (plongée, voile, kayak), fiches Google Business saisonnières, automatisation administrative.",
     },
     {
-      q: "Comment se déplace Axion-IA à Ensuès-la-Redonne ?",
-      a: "Ensuès-la-Redonne est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Ensuès-la-Redonne ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Ensuès-la-Redonne, comme partout en France, ou à distance.",
     },
   ],
 };

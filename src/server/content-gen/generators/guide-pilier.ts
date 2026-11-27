@@ -66,8 +66,8 @@ import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-citi
 
 const QUALITY_THRESHOLD = 60;
 
-const SYSTEM_PROMPT_OUTLINE =
-  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe).
+const SYSTEM_PROMPT_OUTLINE = injectBrandVoice(
+  `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
 - SIREN : [SIREN à compléter] · FR uniquement
@@ -96,10 +96,12 @@ Output STRICT JSON (zéro prose hors JSON) :
   "faq": [{"q": "...", "a": "..."}],
   "keyTakeaway": "...",
   "expertTake": "..."
-}`);
+}`,
+  "guide_pilier",
+);
 
-const SYSTEM_PROMPT_SECTION =
-  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe).
+const SYSTEM_PROMPT_SECTION = injectBrandVoice(
+  `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe).
 Doctrine v2.5 stricte (FR · Axion-IA-centric ≥ 95 %).
 
 Mission STEP 2 : tu rédiges UNE seule section d'un guide pilier (la section
@@ -114,7 +116,10 @@ Règles de structure du corps :
 - Commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
 - ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
-- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.`);
+- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.`,
+  "guide_pilier",
+  "section",
+);
 
 interface OutlineSection {
   readonly position: number;
@@ -254,6 +259,7 @@ ${sectionChiffresVerifies()}Rappel : 8-15 sections, output JSON strict (cf. syst
       jobId: input.jobId,
       contentType: "guide_pilier",
       role: "text",
+      blogClaudeRole: "ecriture",
       systemPrompt: SYSTEM_PROMPT_OUTLINE + getIntentPromptAddendum(input.targetSearchIntent),
       userPrompt: outlineUserPrompt,
       maxTokens: 2048,
@@ -297,6 +303,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
           jobId: input.jobId,
           contentType: "guide_pilier",
           role: "text",
+          blogClaudeRole: "ecriture",
           systemPrompt: SYSTEM_PROMPT_SECTION,
           userPrompt: sectionUserPrompt,
           maxTokens: 900,
@@ -378,6 +385,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       directAnswer: outline.directAnswer,
       bodyHtml: enrichedBody,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (outline.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       // faqJson conserve l'outline original pour audit trail + future re-gen
       // partielle d'une section donnée (V2 : admin /content-gen/jobs/[id] aurait

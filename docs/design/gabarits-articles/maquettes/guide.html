@@ -1,0 +1,94 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maquette gabarit « Guide pratique » · Axion-IA</title><meta name="robots" content="noindex"><style>
+:root{--bg:#faf8f3;--paper:#fff;--sand:#f0e9da;--sand-deep:#e6dcc4;--mocha:#2a2520;--mocha-fg:#f7f3ea;--ink:#1a1815;--soft:#524b41;--muted:#5a4f44;--primary:#1a4dd9;--primary-hover:#0f3aae;--terra:#b23f16;--terra-deep:#8c3010;--terra-soft:#f5e3d8;--field:#8a7f6c;--border:#e5ddc8;--focus:#1a4dd9;
+--f-sans:Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--f-serif:Fraunces,"Iowan Old Style","Palatino Linotype",Palatino,serif;--f-mono:Inconsolata,ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{color-scheme:light;scroll-padding-top:5.5rem;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 clamp(1.0625rem,1rem + .25vw,1.125rem)/1.75 var(--f-sans)}
+a{color:var(--primary);text-decoration:underline;text-underline-offset:.2em}a:hover{color:var(--primary-hover)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--paper);padding:.75rem 1rem;z-index:99}
+.top{background:var(--paper);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40}
+.top div{max-width:72rem;margin:auto;padding:.9rem 1rem;font-weight:600;font-size:1.1rem}
+.wrap{max-width:72rem;margin:auto;padding:0 1rem}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:.25rem .5rem;margin:1rem 0;padding:0;font-size:.9375rem;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:.5rem}.crumbs a{display:inline-block;padding:.25rem 0;min-height:1.5rem}
+.head{display:grid;gap:1.25rem;padding:.5rem 0 1.5rem}
+.kicker{font:600 .8125rem/1.3 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--terra-deep)}
+h1{font:600 clamp(2rem,1.35rem + 2.6vw,3.25rem)/1.08 var(--f-serif);letter-spacing:-.02em;margin:.5rem 0 0;overflow-wrap:break-word;text-wrap:balance}
+h1 em{color:var(--terra-deep);font-style:italic}
+.lead{font-size:clamp(1.1875rem,1.1rem + .4vw,1.4375rem);line-height:1.5;color:var(--soft);margin:0}
+.meta li{display:inline}.meta li+li::before{content:" · ";white-space:pre}.meta{display:block;font-size:.9375rem;color:var(--muted);margin:0;padding:0;list-style:none}
+.hero{aspect-ratio:16/10;border-radius:1rem;background:linear-gradient(135deg,var(--sand-deep),var(--terra-soft) 60%,#d9e2fb);display:grid;place-items:end start;padding:1rem;color:var(--ink);font-size:.9375rem;width:100%}
+.credit{font-size:.9375rem;color:var(--muted);margin:.5rem 0 0}
+.answer{background:var(--paper);border:2px solid var(--ink);border-left:.5rem solid var(--terra);border-radius:.75rem;padding:1.25rem 1.25rem;margin:0 0 1.5rem}
+.answer h2{font:600 .8125rem/1 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--terra-deep);margin:0 0 .5rem}
+.answer p{margin:0;font-size:1.1875rem;line-height:1.6}
+.layout{display:grid;gap:1.5rem;padding-bottom:3rem}
+.toc{background:var(--paper);border:1px solid var(--field);border-radius:.75rem}
+.toc summary{cursor:pointer;min-height:2.75rem;padding:.65rem 1rem;font-weight:600;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.toc summary::-webkit-details-marker{display:none}.toc summary::after{content:"+";font-size:1.5rem}
+.toc[open] summary::after{content:"–"}
+.toc ol{margin:0;padding:0 1rem 1rem 2.25rem}.toc li a{display:block;padding:.6rem 0;min-height:2.75rem;font-size:1rem;line-height:1.4}
+.toc-d{display:none}.toc-t{font-weight:600;margin:0;padding:.75rem 1rem 0}.toc-d ol{padding:.25rem 1rem 1rem 2.25rem;margin:0}.toc-d li a{display:block;padding:.6rem 0;min-height:2.75rem;line-height:1.4}
+.prose{max-width:68ch;min-width:0}
+.prose h2{font:600 clamp(1.5rem,1.2rem + 1.2vw,2.125rem)/1.2 var(--f-serif);letter-spacing:-.015em;margin:clamp(2.5rem,2rem + 2vw,3.5rem) 0 .75rem;overflow-wrap:break-word}
+.prose h3{font:600 clamp(1.1875rem,1.1rem + .5vw,1.5rem)/1.3 var(--f-sans);margin:2rem 0 .5rem}
+.prose p,.prose ul,.prose ol{margin:0 0 1.25em}.prose li{margin:.35em 0}
+.prose blockquote{margin:2rem 0;padding:1.25rem 1.5rem;background:var(--terra-soft);border-left:.3rem solid var(--terra);border-radius:.5rem;font:italic 500 1.25rem/1.5 var(--f-serif)}
+.prose blockquote cite{display:block;margin-top:.5rem;font:600 .9375rem var(--f-sans);color:var(--soft)}
+.note{background:var(--sand);border-radius:.75rem;padding:1rem 1.25rem;margin:1.75rem 0}
+.note strong{display:block;color:var(--terra-deep)}
+.tscroll{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--field);border-radius:.5rem;background:linear-gradient(to right,var(--paper) 30%,transparent) left/2rem 100% no-repeat local,linear-gradient(to left,var(--paper) 30%,transparent) right/2rem 100% no-repeat local,radial-gradient(farthest-side at 0 50%,rgba(42,37,32,.4),transparent) left/.75rem 100% no-repeat scroll,radial-gradient(farthest-side at 100% 50%,rgba(42,37,32,.4),transparent) right/.75rem 100% no-repeat scroll,var(--paper)}
+.tscroll:focus-visible{outline-offset:0}
+table{border-collapse:collapse;width:100%;min-width:34rem;font-size:1rem;line-height:1.45}
+caption{text-align:left;font-weight:600;padding:.75rem 1rem}
+th,td{padding:.75rem 1rem;text-align:left;vertical-align:top;border-top:1px solid var(--border)}
+thead th{background:var(--sand);color:var(--ink);border-top:0}
+tbody th{position:sticky;left:0;background:var(--paper);box-shadow:1px 0 0 var(--border);font-weight:600}
+.faq{margin:2rem 0}.faq details{background:var(--paper);border:1px solid var(--field);border-radius:.75rem;margin:.75rem 0}
+.faq summary{cursor:pointer;min-height:2.75rem;padding:.8rem 1rem;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}.faq summary::after{content:"+";font-size:1.4rem;line-height:1}
+.faq details[open] summary::after{content:"–"}.faq details p{margin:0;padding:0 1rem 1rem;color:var(--soft)}
+.box{background:var(--paper);border:1px solid var(--field);border-radius:.75rem;padding:1.25rem;margin:2rem 0}
+.box h2{margin:0 0 .5rem!important;font:600 1.125rem var(--f-sans)!important}
+.author{display:flex;gap:1rem;align-items:center}.avatar{flex:none;width:3.25rem;height:3.25rem;border-radius:50%;background:var(--mocha);color:var(--mocha-fg);display:grid;place-items:center;font-weight:600}
+.cta{background:var(--mocha);color:var(--mocha-fg);border-radius:1rem;padding:clamp(1.5rem,5vw,2.5rem);margin:2.5rem 0}
+.cta h2{font:600 clamp(1.5rem,1.2rem + 1.2vw,2rem)/1.2 var(--f-serif);margin:0 0 .5rem}.cta p{margin:0 0 1.25rem;color:var(--mocha-fg)}
+.btn{display:inline-flex;align-items:center;min-height:2.75rem;padding:.65rem 1.25rem;background:var(--terra);color:#fff;border-radius:.5rem;font-weight:600;text-decoration:none}
+.btn:hover{background:var(--terra-deep);color:#fff}.cta :focus-visible{outline-color:#eb8560}
+.related{display:grid;gap:1rem;margin:1rem 0}.related a{display:block;background:var(--paper);border:1px solid var(--field);border-radius:.75rem;padding:1rem;min-height:2.75rem;font-weight:600}
+.foot{background:var(--mocha);color:var(--mocha-fg);padding:2rem 1rem;font-size:.9375rem}
+.badge{display:inline-block;background:var(--sand);color:var(--ink);padding:.25rem .6rem;border-radius:999px;font-size:.8125rem;font-weight:600}
+@media(min-width:1024px){
+.head.has-media{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:3rem}
+.layout{grid-template-columns:15rem minmax(0,68ch);justify-content:start;gap:3rem;align-items:start}
+.tocwrap{position:sticky;top:6rem}.toc-m{display:none}.toc-d{display:block;max-height:calc(100vh - 8rem);overflow:auto}
+.related{grid-template-columns:repeat(3,1fr)}
+.layout>.full{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(forced-colors:active){:focus-visible{outline:2px solid CanvasText}}
+
+.steps{list-style:none;counter-reset:s;padding:0;margin:1.5rem 0}.steps>li{counter-increment:s;position:relative;padding:0 0 1.5rem 3.5rem;margin:0}
+.steps>li::before{content:counter(s);position:absolute;left:0;top:0;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--terra);color:#fff;font-weight:600;display:grid;place-items:center}
+.steps>li:not(:last-child)::after{content:"";position:absolute;left:1.2rem;top:2.75rem;bottom:.25rem;width:2px;background:var(--field)}
+.steps h3{margin:.1rem 0 .4rem!important}
+.prereq{background:var(--paper);border:2px solid var(--ink);border-radius:.75rem;padding:1rem 1.25rem;margin:0 0 1.5rem}.prereq h2{margin:0 0 .5rem!important;font:600 1.125rem var(--f-sans)!important}
+</style></head>
+<body data-gabarit="guide"><a class="skip" href="#contenu">Aller au contenu</a>
+<header class="top"><div>Axion-IA <span class="badge" style="margin-left:.5rem">Maquette · Guide pratique</span></div></header>
+<main id="contenu" tabindex="-1"><div class="wrap"><article>
+<nav class="crumbs" aria-label="Fil d'Ariane"><ol><li><a href="#">Accueil</a></li><li><a href="#">Blog</a></li><li><a href="#">Pratiques IA</a></li><li><span aria-current="page">Rédiger un compte rendu avec l'IA en cinq étapes</span></li></ol></nav>
+<header class="head has-media"><div><p class="kicker">Guide pratique · Pratiques IA</p><h1>Rédiger un compte rendu avec l'IA <em>en cinq étapes</em></h1><p class="lead" style="margin-top:1rem">Une marche à suivre simple, de la préparation à la relecture, pour gagner du temps sans perdre en fiabilité.</p>
+<ul class="meta" style="margin-top:1rem"><li>Par l'équipe éditoriale</li><li>Publié le <time datetime="2026-10-02">2 octobre 2026</time></li><li>Mis à jour le <time datetime="2026-11-12">12 novembre 2026</time></li><li>7 min de lecture</li></ul></div><div><div class="hero" role="img" aria-label="Illustration de l'article (exemple)">Image principale 16/10 · dimensions réservées</div><p class="credit">Photo : exemple de crédit photographe, via la source d'images</p></div></header>
+<section class="answer" aria-labelledby="rep"><h2 id="rep">Réponse directe</h2><p>En cinq étapes : définir l'objectif, préparer les données, lancer un essai, relire, puis documenter la consigne. Comptez environ trente minutes pour un premier résultat fiable.</p></section>
+
+<div class="layout"><div class="tocwrap"><nav class="toc-m" aria-label="Sommaire"><details class="toc"><summary>Sommaire</summary><ol><li><a href="#etape-1">Définir l'objectif</a></li><li><a href="#etape-2">Préparer les données</a></li><li><a href="#etape-3">Lancer un premier essai</a></li><li><a href="#etape-4">Relire et corriger</a></li><li><a href="#etape-5">Documenter</a></li><li><a href="#faq">Questions fréquentes</a></li><li><a href="#src">Sources et méthode</a></li></ol></details></nav><nav class="toc-d toc" aria-label="Sommaire"><p class="toc-t">Sommaire</p><ol><li><a href="#etape-1">Définir l'objectif</a></li><li><a href="#etape-2">Préparer les données</a></li><li><a href="#etape-3">Lancer un premier essai</a></li><li><a href="#etape-4">Relire et corriger</a></li><li><a href="#etape-5">Documenter</a></li><li><a href="#faq">Questions fréquentes</a></li><li><a href="#src">Sources et méthode</a></li></ol></nav></div>
+<div class="prose"><div class="prereq"><h2>Avant de commencer</h2><ul style="margin:0;padding-left:1.25rem"><li>Un document de référence à traiter</li><li>Un interlocuteur pour valider</li><li>30 minutes sans interruption</li></ul></div>
+<h2 id="etapes">Les étapes</h2><ol class="steps"><li><h3 id='etape-1'>Définir l'objectif</h3><p>Écrivez en une phrase ce que le résultat doit permettre. Un texte d'exemple volontairement neutre permet de juger la lecture : longueur de ligne, interlignage, rythme entre les paragraphes et poids des titres. </p></li><li><h3 id='etape-2'>Préparer les données</h3><p>Rassemblez uniquement ce qui est nécessaire. Un texte d'exemple volontairement neutre permet de juger la lecture : longueur de ligne, interlignage, rythme entre les paragraphes et poids des titres. </p></li><li><h3 id='etape-3'>Lancer un premier essai</h3><p>Travaillez sur un cas simple. Un texte d'exemple volontairement neutre permet de juger la lecture : longueur de ligne, interlignage, rythme entre les paragraphes et poids des titres. </p></li><li><h3 id='etape-4'>Relire et corriger</h3><p>Vérifiez chaque point important. Un texte d'exemple volontairement neutre permet de juger la lecture : longueur de ligne, interlignage, rythme entre les paragraphes et poids des titres. </p></li><li><h3 id='etape-5'>Documenter</h3><p>Gardez la consigne qui a fonctionné. Un texte d'exemple volontairement neutre permet de juger la lecture : longueur de ligne, interlignage, rythme entre les paragraphes et poids des titres. </p></li></ol>
+<div class="note"><strong>Erreur fréquente</strong>Valider un résultat sans l'avoir relu en entier.</div>
+<h2 id="aller-plus-loin">Pour aller plus loin</h2><p>Un texte d'exemple volontairement neutre permet de juger la lecture : longueur de ligne, interlignage, rythme entre les paragraphes et poids des titres. Un texte d'exemple volontairement neutre permet de juger la lecture : longueur de ligne, interlignage, rythme entre les paragraphes et poids des titres. </p>
+<section class="faq" aria-labelledby="faq"><h2 id="faq">Questions fréquentes</h2><details open><summary>Faut-il un budget spécifique pour démarrer ?</summary><p>Non : un premier essai se cadre sur un petit périmètre, avec un responsable et un objectif mesurable.</p></details><details><summary>Combien de temps faut-il compter ?</summary><p>Quelques semaines suffisent pour un premier retour d'expérience sur un usage précis.</p></details><details><summary>Comment limiter les risques ?</summary><p>En définissant les données autorisées, en relisant les productions et en gardant une trace des décisions.</p></details></section><section class="box" aria-labelledby="src"><h2 id="src">Sources et méthode</h2><ul style="margin:0;padding-left:1.25rem"><li><a href="#">Document de référence de l'éditeur (consulté le 5 novembre 2026)</a></li><li><a href="#">Guide officiel de bonnes pratiques</a></li></ul><p style="margin:.75rem 0 0">Méthode : lecture des sources, croisement de deux références minimum, relecture humaine.</p></section><section class="box" aria-labelledby="aut"><div class="author"><div class="avatar" aria-hidden="true">É</div><div><h2 id="aut">À propos de l'auteur</h2><p style="margin:0">Équipe éditoriale d'Axion-IA. Contenu rédigé avec assistance d'IA et relu avant publication.</p></div></div></section>
+<section class="cta" aria-labelledby="cta"><h2 id="cta">Besoin d'un coup de main ?</h2><p>Un échange court permet de valider votre première version.</p><a class="btn" href="#">Demander un audit</a></section>
+<section aria-labelledby="lies"><h2 id="lies">À lire aussi</h2><div class="related"><a href="#">Structurer ses premiers cas d'usage</a><a href="#">Bien choisir ses outils de rédaction</a><a href="#">Protéger les données de l'équipe</a></div></section></div></div>
+</article></div></main>
+<footer class="foot">Maquette statique de conception · texte d'exemple neutre, sans donnée client ni prix.</footer></body></html>

@@ -30,6 +30,7 @@
 
 "use server";
 
+import { rattacherOrphelinsDeLaFiche } from "@/server/calendly/rattachement-orphelins";
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
@@ -217,6 +218,9 @@ export async function submitLeadApporteurAction(
         userAgent,
       },
     });
+
+    // Rendez-vous déjà pris par cette personne (avant sa fiche) : rattachement rétroactif. Ne lève jamais.
+    await rattacherOrphelinsDeLaFiche(submission.id);
 
     // Registre de preuve du consentement — best-effort.
     await recordConsentEvent({

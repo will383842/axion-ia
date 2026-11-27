@@ -49,7 +49,7 @@ export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nanteuil-lès-Meaux et dans l'agglomération de Meaux ?",
-      a: "Oui, Axion-IA intervient à Nanteuil-lès-Meaux et dans tout le bassin meldois (Meaux, Trilport, Fublaines, Mareuil-lès-Meaux). Gare Meaux Transilien P à 10 min, Paris à 50 min.",
+      a: "Oui, Axion-IA intervient à Nanteuil-lès-Meaux et dans tout le bassin meldois (Meaux, Trilport, Fublaines, Mareuil-lès-Meaux).",
     },
     {
       q: "Tarifs audit IA à Nanteuil-lès-Meaux  : quel budget prévoir ?",

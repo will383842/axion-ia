@@ -84,6 +84,35 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     expect(commandeCouverte({ ...base, confirmee: false, signeeAt: d("2026-05-01") })).toBe(false);
   });
 
+  it("L7 · réservation : un devis émis AVANT la saisie ne couvre pas la commande", () => {
+    const reservation = { reserveeJusquAt: d("2026-03-01"), statut: "reservee" };
+    const base = {
+      recueAt: d("2026-01-10"),
+      confirmee: false,
+      protegeeJusquAt: null,
+      reservation,
+      signeeAt: d("2026-02-01"),
+    };
+    expect(commandeCouverte({ ...base, devisEmisAt: d("2026-01-05") })).toBe(false);
+    expect(commandeCouverte({ ...base, devisEmisAt: d("2026-01-10") })).toBe(true);
+    expect(commandeCouverte({ ...base, devisEmisAt: d("2026-01-20") })).toBe(true);
+    // Sans date d'émission, ou date illisible côté appelant (null) : comportement d'avant.
+    expect(commandeCouverte(base)).toBe(true);
+    expect(commandeCouverte({ ...base, devisEmisAt: null })).toBe(true);
+  });
+
+  it("L7 · la date d'émission ne touche PAS la branche protection (commission inchangée)", () => {
+    expect(
+      commandeCouverte({
+        recueAt: d("2026-01-10"),
+        protegeeJusquAt: d("2026-07-15"),
+        confirmee: true,
+        signeeAt: d("2026-05-01"),
+        devisEmisAt: d("2026-01-01"),
+      }),
+    ).toBe(true);
+  });
+
   it("formation : forfait réduit au prorata de la remise, jamais augmenté", () => {
     expect(
       calculerCommission({
@@ -108,16 +137,17 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     ).toEqual({ statut: "a_qualifier" });
   });
 
-  it("audit 30 %, intégration 15 %, 1-to-1 30 %, web aucune", () => {
+  it("audit 30 %, intégration 15 %, web 15 %, 1-to-1 aucune", () => {
     const m = (activite: "audit" | "implementation" | "un_a_un") => {
       const r = calculerCommission({ activite, factureHtCents: 190_000 });
       return r.statut === "calculee" ? r.montantCents : -1;
     };
     expect(m("audit")).toBe(57_000);
     expect(m("implementation")).toBe(28_500);
-    expect(m("un_a_un")).toBe(57_000);
-    expect(calculerCommission({ activite: "site_web", factureHtCents: 100_000 })).toEqual({
-      statut: "aucune",
+    expect(m("un_a_un")).toBe(-1); // aucune commission (25/11)
+    expect(calculerCommission({ activite: "site_web", factureHtCents: 100_000 })).toMatchObject({
+      statut: "calculee",
+      montantCents: 15_000,
     });
     expect(calculerCommission({ activite: null, factureHtCents: 100_000 })).toEqual({
       statut: "a_qualifier",

@@ -229,8 +229,8 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Décines-Charpieu ?",
-      a: "Oui, nos consultants se déplacent directement dans vos locaux à Décines-Charpieu et dans tout l'est lyonnais. La première rencontre se fait sur site afin de comprendre votre activité réelle avant toute recommandation.",
+      q: "Intervenez-vous à Décines-Charpieu ?",
+      a: "Oui. Nos consultants interviennent directement dans vos locaux à Décines-Charpieu et dans tout l'est lyonnais. La première rencontre se fait sur site afin de comprendre votre activité réelle avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Décines-Charpieu ?",

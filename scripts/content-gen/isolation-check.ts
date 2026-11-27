@@ -229,6 +229,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // consommateur non-éditorial devra rouvrir cette liste, et une liste qui
   // s'allonge à chaque usage légitime ne mesure plus rien.
   /^src\/server\/queue\/workers\/calendly-poll-worker\.ts$/,
+  // journee-ia-garantie-textes-publics.spec.ts (garantie Journée IA) : test qui
+  // LIT des textes publics pour vérifier la garantie. Le marqueur "content-gen"
+  // vient de chemins de fichiers cités en chaîne, pas d'un import du pipeline.
+  /^src\/app\/__tests__\/journee-ia-garantie-textes-publics\.spec\.ts$/,
   // prospection (feat/prospection 2026-07-04) — module autonome qui CONSOMME la
   // brique partagée `content-gen/_auth` (requireAdmin) via un import, et mentionne
   // "content-gen" dans un commentaire de contexte (robots.ts : « on ne réutilise
@@ -528,6 +532,17 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/seo\/job-posting\.ts$/,
   /^src\/server\/queue\/workers\/site-route-gsc-worker\.ts$/,
   /^src\/server\/site-explorer\/route-enumerator\.ts$/,
+  // Exceptions 2026-11-27 (pilotage SEO, P7 « opportunités »). CONSOMMATEURS LÉGITIMES
+  // en lecture seule de deux fonctions pures de content-gen, pas du code content-gen :
+  // - analyser.ts : `construireCarte` / `normaliserUrl`
+  //   (content-gen/strategie/carte-requetes) ;
+  // - detecteurs.ts : `normaliserUrl` seul (même module) ;
+  // - garde-fous.ts : `evaluerSujetCible` (content-gen/sujet-cible) + `normaliserUrl`.
+  // Trois fichiers NOMMÉS, volontairement : aucun autre fichier de seo-pilotage/ n'est
+  // exempté, un nouvel import de content-gen y reste donc signalé.
+  /^src\/server\/seo-pilotage\/opportunites\/analyser\.ts$/,
+  /^src\/server\/seo-pilotage\/opportunites\/detecteurs\.ts$/,
+  /^src\/server\/seo-pilotage\/opportunites\/garde-fous\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
   // secteurs). CONSOMMATEURS LÉGITIMES de la pain-matrix / KB content-gen (lecture
   // seule data) ou refs en commentaires — PAS du code content-gen core :

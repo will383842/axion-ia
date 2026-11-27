@@ -104,6 +104,9 @@ export interface ArticleJsonLdInput {
   readonly updatedAt: Date | string;
   readonly imageUrl?: string;
   readonly imageAlt?: string;
+  /** Dimensions réelles de la photo, quand elles sont connues (sinon non émises). */
+  readonly imageWidth?: number;
+  readonly imageHeight?: number;
   readonly authorIdRef?: string;
   readonly section?: string;
   readonly tags?: ReadonlyArray<string>;
@@ -218,11 +221,11 @@ function buildArticleBase(
           image: {
             "@type": "ImageObject",
             url: input.imageUrl,
-            // Rich Results 2026 exige width/height sur l'ImageObject (sinon warning
-            // « image dimensions missing »). Défaut OG standard 1200×630 — les héros
-            // sont des bannières larges ; suffit à valider le rich result.
-            width: 1200,
-            height: 630,
+            // Audit B (2026-11-26) — vraies dimensions seulement : 1200×630 inventés
+            // sur une photo d'un autre format étaient faux. Inconnues → omises.
+            ...(input.imageWidth && input.imageHeight
+              ? { width: input.imageWidth, height: input.imageHeight }
+              : {}),
             ...(input.imageAlt ? { caption: input.imageAlt } : {}),
           },
         }
@@ -267,6 +270,74 @@ export function buildArticleJsonLd(input: ArticleJsonLdInput): Record<string, un
 
 export function buildBlogPostingJsonLd(input: ArticleJsonLdInput): Record<string, unknown> {
   return buildArticleBase("BlogPosting", input);
+}
+
+// ============================================================
+// 4 bis. BlogPosting « équipe éditoriale » (PR 9) — JSON-LD serveur, 0 octet de JS client
+// ============================================================
+
+export interface BlogPostingEquipeInput extends ArticleJsonLdInput {
+  /** Sources citées : émises en `isBasedOn` (chargées par `blog/loader.ts`). */
+  readonly isBasedOn?: ReadonlyArray<{ readonly url: string; readonly name: string }>;
+  /**
+   * Relecteur humain (facultatif, JAMAIS renseigné par défaut : décision du dirigeant en
+   * attente). Absent = l'affichage actuel (auteur Manon, plume IA) reste strictement identique.
+   */
+  readonly relecteur?: { readonly name: string; readonly url?: string };
+  /** Date « maintenant » injectable (tests). */
+  readonly maintenant?: Date;
+}
+
+/**
+ * `dateModified` honnête : jamais antérieure à la publication, bornée à « maintenant », et
+ * repliée sur la publication si la date de mise à jour est illisible.
+ */
+export function dateModifieeHonnete(
+  publishedAt: Date | string,
+  updatedAt: Date | string,
+  maintenant: Date = new Date(),
+): string {
+  const pub = new Date(publishedAt);
+  const maj = new Date(updatedAt);
+  if (Number.isNaN(maj.getTime()) || maj.getTime() < pub.getTime()) return pub.toISOString();
+  // Dans le futur : bornée à « maintenant » (jamais une date qui n'est pas encore arrivée).
+  return new Date(Math.min(maj.getTime(), maintenant.getTime())).toISOString();
+}
+
+/**
+ * BlogPosting de l'équipe éditoriale. Interrupteur `CONTENT_EQUIPE_EDITORIALE` éteint : renvoie
+ * EXACTEMENT `buildBlogPostingJsonLd(input)`. Allumé : ajoute `isBasedOn`, rend `dateModified`
+ * honnête et, si un relecteur est fourni, `reviewedBy`. L'auteur n'est jamais modifié.
+ * Le BreadcrumbList est émis par `<Breadcrumbs>` et l'Organization par le site (`#organization`).
+ */
+export function buildBlogPostingEquipeJsonLd(
+  input: BlogPostingEquipeInput,
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): Record<string, unknown> {
+  const base = buildBlogPostingJsonLd(input);
+  if (env["CONTENT_EQUIPE_EDITORIALE"] !== "true") return base;
+  return {
+    ...base,
+    dateModified: dateModifieeHonnete(input.publishedAt, input.updatedAt, input.maintenant),
+    ...(input.isBasedOn && input.isBasedOn.length > 0
+      ? {
+          isBasedOn: input.isBasedOn.map((c) => ({
+            "@type": "CreativeWork",
+            url: c.url,
+            name: c.name,
+          })),
+        }
+      : {}),
+    ...(input.relecteur
+      ? {
+          reviewedBy: {
+            "@type": "Person",
+            name: input.relecteur.name,
+            ...(input.relecteur.url ? { url: input.relecteur.url } : {}),
+          },
+        }
+      : {}),
+  };
 }
 
 export function buildTechArticleJsonLd(input: ArticleJsonLdInput): Record<string, unknown> {

@@ -49,7 +49,7 @@ export const GIEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Gien et dans le Giennois ?",
-      a: "Oui, Axion-IA intervient a Gien et dans tout le Giennois (Poilly-lez-Gien, Saint-Martin-sur-Ocre, Briare, Coullons). Nos consultants rejoignent Gien via l'A77 ou la gare TER de Gien.",
+      a: "Oui, Axion-IA intervient a Gien et dans tout le Giennois (Poilly-lez-Gien, Saint-Martin-sur-Ocre, Briare, Coullons). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Gien ?",

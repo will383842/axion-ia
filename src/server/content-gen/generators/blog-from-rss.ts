@@ -53,7 +53,9 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { consigneLisibiliteV2 } from "../brand/consigne-lisibilite";
 import { consigneAngle } from "../brand/positionnement";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
@@ -77,7 +79,7 @@ Règles absolues :
 - Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les entreprises françaises") — angle conseil, en distinguant si utile les petites structures et les grands comptes.
 - CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
-- 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
+- 0 délai chiffré, 0 prix en dur.
 - Longueur : vise 550-750 mots (digest d'actualité commenté). Minimum STRICT 550 mots. Si la source est courte, développe l'analyse de marché et l'angle opérationnel Axion-IA (impacts concrets pour une entreprise de quelques dizaines de personnes, ce que ça change pour un dirigeant). N'INVENTE JAMAIS de faits pour rallonger : enrichis uniquement avec le contexte marché vérifiable et l'angle Axion-IA (section finale). Reste plus court qu'un guide, mais suffisamment développé pour être autonome et utile.
 - 4 à 6 questions FAQ réelles optimisées Featured Snippet — réponse answer-first : 1ère phrase directe autonome (≤ 25 mots, citable seule), puis 1-2 phrases ; 40 à 55 mots au total.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
@@ -92,7 +94,7 @@ Règles absolues :
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }
 
-${getBrandVoiceForContentType("blog_from_rss")}`;
+${getBrandVoiceForContentType("blog_from_rss")}${consigneLisibiliteV2("blog_from_rss")}`;
 
 export const blogFromRssGenerator: Generator = {
   contentType: "blog_from_rss",
@@ -204,6 +206,7 @@ ${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
 Pour le paragraphe final sur l'impact uniquement, ${consigneAngle(input.jobId)}
 L'introduction reste centrée sur l'information elle-même.
+${consigneJourneeIA(topic, input.primaryKeyword, ...(input.secondaryKeywords ?? []), input.rssItemTitle, input.rssItemSummary)}
 ${sectionChiffresVerifies()}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.

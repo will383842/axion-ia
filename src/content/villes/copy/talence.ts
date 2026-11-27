@@ -129,7 +129,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Talence, sur le Sud-Bordeaux ?",
-            a: "Oui. Nos consultants se déplacent à Talence et sur le périmètre TISD — Gradignan, Villenave-d'Ornon, Pessac, Bègles — et plus largement Bordeaux Métropole. Talence est desservie par le tramway B (stations Peixotto, Béthanie, Arts et Métiers) et la rocade A630 (sorties 16 et 17).",
+            a: "Oui. Axion IA intervient partout en France, sur site ou à distance, notamment à Talence et sur le périmètre TISD — Gradignan, Villenave-d'Ornon, Pessac, Bègles — et plus largement Bordeaux Métropole.",
           },
         ],
         guarantees:
@@ -215,7 +215,7 @@ export const TALENCE_COPY: VilleCopy = {
           },
           {
             q: "Do you work beyond Talence, across South Bordeaux?",
-            a: "Yes. Our consultants travel to Talence and across the TISD perimeter — Gradignan, Villenave-d'Ornon, Pessac, Bègles — and more broadly Bordeaux Métropole. Talence is served by tram B (Peixotto, Béthanie, Arts et Métiers stations) and the A630 ring road (exits 16 and 17).",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including across South Bordeaux — Talence, Pessac, Gradignan, Bègles and beyond.",
           },
         ],
         guarantees:

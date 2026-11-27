@@ -49,7 +49,7 @@ export const CHAMBLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chambly et dans le sud de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Chambly et dans tout le sud de l'Oise (Méru, Persan, Beaumont-sur-Oise, Neuilly-en-Thelle). Consultants accessibles via gare SNCF Chambly (TER Paris-Nord — Persan-Beaumont). Paris à 50 min.",
+      a: "Oui, Axion-IA intervient à Chambly et dans tout le sud de l'Oise (Méru, Persan, Beaumont-sur-Oise, Neuilly-en-Thelle).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chambly  ?",

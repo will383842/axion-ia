@@ -212,7 +212,9 @@ describe("buildAdminNav SSOT", () => {
     // +1 Conformité RGPD (2026-10-10, groupe Société & conformité).
     // +1 Audit de l'existant du blog (lot L10, 2026-10-24, pôle content_gen/qualite) : 177 + 1 = 178.
     // +1 lien externe Usine à contenu (Studio) (2026-11-20, groupe content) : 178 + 1 = 179.
-    expect(items.length).toBe(179);
+    // +1 Garantie Journée IA (suivi des remboursements, 2026-11-25, groupe finances) : 179 + 1 = 180.
+    // +1 Challenges apporteurs (2026-11-27, groupe apporteurs) et +1 Questionnaire Baromètre 2027 (groupe content_gen) : 180 + 2 = 182.
+    expect(items.length).toBe(182);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -547,12 +549,13 @@ describe("groupe Finances — action avant lecture (2026-09-23)", () => {
     // Contre-témoin : si le groupe perdait ou gagnait un item (masquage en
     // trop, doublon), l'assertion d'ordre échouerait pour la mauvaise
     // raison — on borne donc d'abord la population.
-    expect(visibles.length).toBe(6);
+    expect(visibles.length).toBe(7);
     expect(visibles.map((it) => it.label)).toEqual([
       "Facturation (Hub)",
       "Plans récurrents",
       "Rapprochement bancaire",
       "Alertes financement (sessions)",
+      "Garantie Journée IA (remboursements)",
       "Cockpit financier",
       "Tiime — facturation électronique",
     ]);
@@ -861,6 +864,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/content-gen/coverage",
   "/content-gen/jobs",
   "/content-gen/observatoire",
+  "/barometre-questionnaire",
   "/content-gen/review-queue",
   "/content-gen/publications",
   "/content-gen/publications-status",
@@ -913,6 +917,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/qualiopi/facturation/plans",
   "/qualiopi/facturation/rapprochement",
   "/qualiopi/financements",
+  "/garanties-journee-ia",
   "/qualiopi/cockpit-financier",
   "https://apps.tiime.fr/companies/635824/home",
   "https://studio.axion-ia.com",
@@ -980,6 +985,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/apporteurs",
   "/apporteurs/entreprises",
   "/apporteurs/commissions",
+  "/apporteurs/challenges",
   "/annonces",
   "/annonces/liens",
   "/synchro-crm",
@@ -1106,6 +1112,7 @@ describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
       `${BASE}/apporteurs`,
       `${BASE}/apporteurs/entreprises`,
       `${BASE}/apporteurs/commissions`,
+      `${BASE}/apporteurs/challenges`,
       `${BASE}/annonces`,
       `${BASE}/annonces/liens`,
     ];

@@ -56,7 +56,7 @@ const ServiceSectorSchema = z.enum([
   "un_a_un",
   "sites_web_augmentes",
 ]);
-const CoverageScopeSchema = z.enum(["national", "region", "departement", "ville"]);
+const CoverageScopeSchema = z.enum(["national", "region", "departement", "ville", "multi"]);
 const SlugStringSchema = z.string().min(1).max(120);
 const DepartmentCodeSchema = z.string().min(2).max(5);
 const PercentRecordSchema = z.record(z.string(), z.number().min(0).max(100));

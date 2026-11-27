@@ -7,7 +7,7 @@ import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
 
 // Refonte « Boîte de réception » 2026-07-29 — filtre « Catégorie ».
 //
-// Il expose `details.unifiedType`, le type fin réel (12 valeurs, cf.
+// Il expose `details.unifiedType`, le type fin réel (13 valeurs, cf.
 // UNIFIED_TYPE_LABELS).
 //
 // 🔴 Le sélecteur « Type » qui le précédait a été RETIRÉ le 2026-09-19. Il
@@ -21,6 +21,7 @@ import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
 // Les deux groupes reprennent la structure du formulaire public : projet IA
 // d'un côté, autres demandes de l'autre.
 const CLIENT_UNIFIED_TYPES = [
+  "journee_ia",
   "audit",
   "implementation",
   "formation",
@@ -50,9 +51,15 @@ interface FiltersProps {
    * contrôle sans effet est pire que ne pas l'afficher.
    */
   hideCategory?: boolean;
+  /** Liste apporteurs : masque « Statut » et « Statut réponse » (le suivi est dans la colonne Étape). */
+  hideStatuts?: boolean;
 }
 
-export function SubmissionFilters({ initial, hideCategory = false }: FiltersProps) {
+export function SubmissionFilters({
+  initial,
+  hideCategory = false,
+  hideStatuts = false,
+}: FiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [state, setState] = useState({
@@ -119,23 +126,25 @@ export function SubmissionFilters({ initial, hideCategory = false }: FiltersProp
           </div>
         )}
 
-        <div className="admin-field">
-          <label htmlFor="status" className="admin-label">
-            Statut
-          </label>
-          <select
-            id="status"
-            value={state.status}
-            onChange={(e) => setState({ ...state, status: e.target.value })}
-            className="admin-input"
-          >
-            <option value="all">Tous</option>
-            <option value="new">Nouveau</option>
-            <option value="in_progress">En cours</option>
-            <option value="processed">Traité</option>
-            <option value="archived">Archivé</option>
-          </select>
-        </div>
+        {hideStatuts ? null : (
+          <div className="admin-field">
+            <label htmlFor="status" className="admin-label">
+              Statut
+            </label>
+            <select
+              id="status"
+              value={state.status}
+              onChange={(e) => setState({ ...state, status: e.target.value })}
+              className="admin-input"
+            >
+              <option value="all">Tous</option>
+              <option value="new">Nouveau</option>
+              <option value="in_progress">En cours</option>
+              <option value="processed">Traité</option>
+              <option value="archived">Archivé</option>
+            </select>
+          </div>
+        )}
 
         <div className="admin-field">
           <label htmlFor="locale" className="admin-label">
@@ -195,22 +204,24 @@ export function SubmissionFilters({ initial, hideCategory = false }: FiltersProp
         </div>
 
         {/* Sprint Notif Infra 2026-05-26 / fix P1-2 — filtre statut réponse */}
-        <div className="admin-field">
-          <label htmlFor="replyStatus" className="admin-label">
-            Statut réponse
-          </label>
-          <select
-            id="replyStatus"
-            value={state.replyStatus}
-            onChange={(e) => setState({ ...state, replyStatus: e.target.value })}
-            className="admin-input"
-          >
-            <option value="all">Tous</option>
-            <option value="unanswered">Sans réponse</option>
-            <option value="answered">Répondus</option>
-            <option value="failed">Échec d&apos;envoi</option>
-          </select>
-        </div>
+        {hideStatuts ? null : (
+          <div className="admin-field">
+            <label htmlFor="replyStatus" className="admin-label">
+              Statut réponse
+            </label>
+            <select
+              id="replyStatus"
+              value={state.replyStatus}
+              onChange={(e) => setState({ ...state, replyStatus: e.target.value })}
+              className="admin-input"
+            >
+              <option value="all">Tous</option>
+              <option value="unanswered">Sans réponse</option>
+              <option value="answered">Répondus</option>
+              <option value="failed">Échec d&apos;envoi</option>
+            </select>
+          </div>
+        )}
 
         {/* Toggle archivés retiré 2026-07-10 : remplacé par les onglets
             Actifs / Archivés / Corbeille de SubmissionsV2. `includeArchived`

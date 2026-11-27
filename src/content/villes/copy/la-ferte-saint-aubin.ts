@@ -49,7 +49,7 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ferté-Saint-Aubin et en Sologne ?",
-      a: "Oui, Axion-IA intervient à La Ferté-Saint-Aubin et dans toute la Sologne nord (Lamotte-Beuvron, Nouan-le-Fuzelier, Ligny-le-Ribault, Marcilly-en-Villette). Couverture nationale, déplacement sur site inclus dans le forfait mission.",
+      a: "Oui, Axion-IA intervient à La Ferté-Saint-Aubin et dans toute la Sologne nord (Lamotte-Beuvron, Nouan-le-Fuzelier, Ligny-le-Ribault, Marcilly-en-Villette). Couverture nationale.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de La Ferté-Saint-Aubin ?",
@@ -65,7 +65,7 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à La Ferté-Saint-Aubin ?",
-      a: "Nos consultants se déplacent à La Ferté-Saint-Aubin depuis Orléans (20 min RN20 ou 15 min TER) ou Paris (1h30 train + TER). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
     },
   ],
 };

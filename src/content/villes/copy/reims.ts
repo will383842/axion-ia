@@ -24,7 +24,7 @@ export const REIMS_COPY: VilleCopy = {
   pitchFr:
     "Reims regroupe 5 701 établissements actifs, les sièges des grandes maisons de Champagne (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po et l'Université de Reims — à 45 minutes de Paris en TGV. Axion-IA y intervient sur site auprès des TPE, PME, ETI et GE du Grand Reims et du bassin Champagne.",
   pitchEn:
-    "Reims hosts 5,701 active businesses, the headquarters of major Champagne houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po and the University of Reims — 45 minutes from Paris by TGV. Axion-IA delivers on site to micro-businesses, SMEs, mid-caps and large enterprises across Greater Reims and the Champagne basin.",
+    "Reims hosts 5,701 active businesses, the headquarters of major Champagne houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po and the University of Reims. Axion-IA delivers on site to micro-businesses, SMEs, mid-caps and large enterprises across Greater Reims and the Champagne basin.",
 
   servicesContext: {
     audit: {
@@ -84,7 +84,7 @@ export const REIMS_COPY: VilleCopy = {
           "Les grandes maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) ont des équipes commerciales, export, marketing et RH éligibles à des cas IA structurés — comptes-rendus de dégustation, traduction multilingue automatique, qualification de leads B2B internationaux.",
           "L'industrie Pomacle-Bazancourt (bioraffinerie 3 Mt biomasse/an) et le pôle Bioeconomy For Change regroupent des ETI et PME industrielles avec des workflows qualité, R&D et supply chain candidats à l'automatisation IA.",
           "NEOMA Business School, Sciences Po Reims et l'URCA forment chaque année des milliers de jeunes professionnels : leurs équipes pédagogiques et administratives accélèrent significativement avec l'IA sur la gestion de contenu, le suivi étudiant, la production de rapports.",
-          "Aucun supplément géographique : le tarif est identique partout en France. Nous intervenons partout en France, sur place ou à distance.",
+          "Nous intervenons partout en France, sur place ou à distance.",
           "Restitutions toujours en présentiel dans vos locaux à Reims ou en bassin Champagne. Plan d'action remis en main propre, exécutable avec n'importe quel prestataire ou en interne.",
         ],
         methodology: [
@@ -170,13 +170,13 @@ export const REIMS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, 45 minutes from Paris by TGV, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
         whyHere: [
           "Reims concentrates high-value sectors — Champagne, agri-food, bioeconomy, higher education — where operational AI delivers measurable gains: traceability, export document generation, international commercial qualification.",
           "Major Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) have commercial, export, marketing and HR teams eligible for structured AI use cases — tasting notes, automatic multilingual translation, international B2B lead qualification.",
           "Pomacle-Bazancourt industry (3 Mt biomass/year biorefinery) and the Bioeconomy For Change hub group industrial SMEs and mid-caps with quality, R&D and supply chain workflows ripe for AI automation.",
           "NEOMA Business School, Sciences Po Reims and URCA train thousands of young professionals each year: their academic and administrative teams accelerate significantly with AI for content management, student tracking and report production.",
-          "No geographic surcharge: the same price anywhere in France. We work anywhere in France, on site or remotely.",
+          "We work on site in Reims, like everywhere in France, or remotely.",
           "Read-outs always in person at your Reims or Champagne basin offices. Action plan handed over face to face, executable with any vendor or in-house.",
         ],
         methodology: [
@@ -333,7 +333,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Vos consultants peuvent-ils venir dans le bassin Champagne (Épernay, Châlons, Troyes) ?",
-            a: "Oui. Nous couvrons l'ensemble du bassin Champagne-Ardenne, dont Épernay (~30 km de Reims), Châlons-en-Champagne (~45 km) et Troyes (~80 km). Nous intervenons partout en France, sur place ou à distance.",
+            a: "Oui. Nous couvrons l'ensemble du bassin Champagne-Ardenne, dont Épernay, Châlons-en-Champagne et Troyes. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Les outils installés sur les postes sont-ils adaptés au secteur Champagne ?",
@@ -349,7 +349,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -424,8 +424,8 @@ export const REIMS_COPY: VilleCopy = {
             a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
-            q: "Can your consultants come to the Champagne basin (Épernay, Châlons, Troyes)?",
-            a: "Yes. We cover the entire Champagne-Ardenne basin, including Épernay (~30 km from Reims), Châlons-en-Champagne (~45 km) and Troyes (~80 km). We work anywhere in France, on site or remotely.",
+            q: "Do you work in Reims?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Reims and across the Champagne basin.",
           },
           {
             q: "Are the tools installed on workstations adapted to the Champagne sector?",
@@ -441,7 +441,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -605,7 +605,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Can you integrate AI into ERP systems specific to the Champagne sector?",
-            a: "Yes. We work with existing stacks — viticultural ERPs, cellar management tools, export CRMs, messaging — via API integration or lightweight orchestration layers. No replacement of your existing systems.",
+            a: "Yes. We integrate with existing stacks — viticultural ERPs, cellar management tools, export CRMs, messaging — via API integration or lightweight orchestration layers. No replacement of your existing systems.",
           },
           {
             q: "Who maintains the solution after the mission?",
@@ -901,7 +901,7 @@ export const REIMS_COPY: VilleCopy = {
       en: {
         hero: "In Reims, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Reims kick-off, remote iterations.",
         whyHere: [
-          "Reims web & SaaS projects: Champagne & luxury houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm), premium e-commerce & export, schools (NEOMA, Sciences Po), 45 min from Paris by TGV.",
+          "Reims web & SaaS projects: Champagne & luxury houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm), premium e-commerce & export, schools (NEOMA, Sciences Po).",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
           "Augment the existing site (widget, API, plugin) or a bespoke AI-native platform, whichever pays off best at 18 months.",
           "Champagne e-commerce & export: premium multilingual sites, recommendation, shopping assistant, brand storytelling — the DNA of the Reims area internationally.",
@@ -990,7 +990,7 @@ export const REIMS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Reims ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Axion-IA intervient-il auprès des maisons de Champagne ?",
@@ -998,7 +998,7 @@ export const REIMS_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous le bassin Champagne au-delà de Reims ?",
-      a: "Oui. Nos interventions couvrent l'ensemble du bassin Champagne-Ardenne : Épernay (~30 km), Châlons-en-Champagne (~45 km), Troyes (~80 km), ainsi que les communes du Grand Reims (Bezannes, Tinqueux, Cormontreuil). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Nos interventions couvrent l'ensemble du bassin Champagne-Ardenne : Épernay, Châlons-en-Champagne, Troyes, ainsi que les communes du Grand Reims (Bezannes, Tinqueux, Cormontreuil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs rémois sont prioritaires pour l'IA opérationnelle ?",

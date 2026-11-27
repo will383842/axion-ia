@@ -140,7 +140,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais de consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -236,7 +236,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais de consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -421,8 +421,8 @@ export const ROUBAIX_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il physiquement à Roubaix pour les audits et interventions ?",
-      a: "Oui. Williams et l'équipe Axion-IA se déplacent sur site à Roubaix pour les audits, interventions collectives et implémentations. Le format présentiel est privilégié pour les sessions de travail sur vos outils et données réels. Les échanges de cadrage peuvent se tenir en visioconférence selon votre préférence.",
+      q: "Intervenez-vous à Roubaix pour les audits et interventions ?",
+      a: "Oui. Williams et l'équipe Axion-IA interviennent sur site à Roubaix pour les audits, interventions collectives et implémentations. Le format présentiel est privilégié pour les sessions de travail sur vos outils et données réels. Les échanges de cadrage peuvent se tenir en visioconférence selon votre préférence.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA d'une PME roubaisienne ?",

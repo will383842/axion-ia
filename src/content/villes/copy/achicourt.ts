@@ -65,7 +65,7 @@ export const ACHICOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Achicourt ?",
-      a: "Intervention sous 5 jours ouvrés. Gare d'Arras (TGV 50 min Paris), Lille à 45 min A1. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés. Nos consultants se déplacent sur site.",
     },
   ],
 };

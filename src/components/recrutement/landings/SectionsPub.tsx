@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import type { Chiffres } from "./chiffres";
 
 export function SectionsPub({
@@ -199,7 +200,10 @@ export function SectionsPub({
               <div>
                 <h3>Vous présentez</h3>
                 <p>
-                  Vous en parlez à un dirigeant que vous connaissez. Il est enregistré à votre nom.
+                  Vous en parlez à un dirigeant que vous connaissez. L&rsquo;entreprise vous est
+                  réservée 60 jours. Elle est validée à votre nom dès qu&rsquo;un premier
+                  rendez-vous avec nous est tenu, ou qu&rsquo;une commande est signée, pendant ces
+                  60 jours.
                 </p>
                 <span className="qui">Vous · 5 minutes</span>
               </div>
@@ -264,7 +268,7 @@ export function SectionsPub({
               <div className="corps">
                 <div className="ruban-j" aria-label="Déroulé de la journée">
                   <span className="matin">
-                    9 h – 12 h<i>Audit&nbsp;: leurs gains, chiffrés</i>
+                    2 à 4 h<i>Audit&nbsp;: leurs gains repérés et classés</i>
                   </span>
                   <span className="aprem">
                     13 h 30 – 17 h 30<i>Formation des équipes sur leurs dossiers</i>
@@ -302,7 +306,7 @@ export function SectionsPub({
                     </span>
                     <span className="t">
                       <b>Dans leurs locaux, partout en France.</b> Rapport et plan d’action sur 90
-                      jours sous 3 jours ouvrés.
+                      jours sous {DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.
                     </span>
                   </li>
                 </ul>
@@ -313,7 +317,7 @@ export function SectionsPub({
                 La seule phrase à retenir
               </p>
               <blockquote>
-                Je connais un organisme qui, en une journée dans votre entreprise, chiffre ce que
+                Je connais un organisme qui, en une journée dans votre entreprise, repère ce que
                 l’IA peut vous faire gagner et forme votre équipe. Je vous mets en relation&nbsp;?
               </blockquote>
               <p className="note">

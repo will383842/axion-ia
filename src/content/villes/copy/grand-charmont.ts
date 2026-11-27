@@ -49,7 +49,7 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Grand-Charmont et dans le Pays de Montbeliard ?",
-      a: "Oui, Axion-IA intervient a Grand-Charmont et dans tout le Pays de Montbeliard (Sochaux, Audincourt, Valentigney, Bethoncourt). Gare TGV Belfort-Montbeliard a 15 km.",
+      a: "Oui, Axion-IA intervient a Grand-Charmont et dans tout le Pays de Montbeliard (Sochaux, Audincourt, Valentigney, Bethoncourt).",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile du secteur ?",

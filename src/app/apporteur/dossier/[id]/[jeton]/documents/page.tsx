@@ -1,7 +1,7 @@
 // MES DOCUMENTS (2026-11-25).
 //
 // `/apporteur/dossier/<apporteurId>/<jeton>/documents` : tout ce qui a été remis à l'apporteur,
-// au même endroit — son contrat signé, la fiche des commissions, le livret d'accueil, la charte
+// au même endroit — son contrat signé, son guide de démarrage, la fiche des commissions, le livret d'accueil, la charte
 // de marque, ses outils de communication. Une ligne et une phrase simple par document.
 //
 // Même contrôle que son espace (`lireDossierParLien` : jeton et version du lien) ; AUCUN
@@ -10,24 +10,21 @@
 // comme la grille de référence et les outils.
 //
 // La liste vient du registre `documents-remis.ts` (pur). Seule chose constatée ici, côté
-// serveur : la présence du livret dans `public/` — le fichier n'est pas encore livré, sa ligne
-// apparaîtra d'elle-même le jour où il le sera.
+// serveur : la présence du livret (`lireLivret() !== null`) — sa ligne n'apparaît que si le
+// fichier est livré.
 //
 // Composant SERVEUR : aucun JavaScript envoyé au navigateur.
-
-import { existsSync } from "node:fs";
-import path from "node:path";
 
 import type { Metadata } from "next";
 
 import {
-  CHEMIN_LIVRET,
   DOCUMENTS_INTRO,
   DOCUMENTS_NON_SIGNE,
   DOCUMENTS_RESERVES,
   DOCUMENTS_TITRE,
   documentsRemis,
 } from "@/features/apporteurs-reseau/documents-remis";
+import { lireLivret } from "@/features/apporteurs-reseau/documents-prives";
 import { lireDossierParLien } from "@/features/apporteurs-reseau/donnees";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 import { etatDeLaPage } from "@/features/apporteurs-reseau/signature-regles";
@@ -45,15 +42,6 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ id: string; jeton: string }>;
-}
-
-/** Le livret est-il livré ? Lu à chaque demande, sur le disque du serveur. */
-function livretPresent(): boolean {
-  try {
-    return existsSync(path.join(process.cwd(), "public", ...CHEMIN_LIVRET.split("/")));
-  } catch {
-    return false;
-  }
 }
 
 const LIEN =
@@ -81,7 +69,7 @@ export default async function MesDocumentsPage({ params }: PageProps) {
     espace,
     sousContrat,
     contratSigneDisponible: dossier.aContratSigne,
-    livretDisponible: livretPresent(),
+    livretDisponible: (await lireLivret()) !== null,
   });
 
   return (
@@ -102,6 +90,11 @@ export default async function MesDocumentsPage({ params }: PageProps) {
               {d.nouvelOnglet ? "↓" : null} {d.action}
               {d.nouvelOnglet ? null : " →"}
             </a>
+            {d.telechargement ? (
+              <a href={d.telechargement} download className={`${LIEN} mt-1 ml-6`}>
+                ↓ {d.actionTelechargement}
+              </a>
+            ) : null}
           </li>
         ))}
       </ul>

@@ -49,7 +49,7 @@ export const SAINT_JEAN_LE_BLANC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Saint-Jean-le-Blanc et dans l'agglomeration orleanaise ?",
-      a: "Oui, Axion-IA intervient a Saint-Jean-le-Blanc et dans toute Orleans Metropole (Orleans, Saint-Jean-de-Braye, Olivet, Saint-Pryve-Saint-Mesmin). Orleans centre a 10 min, Paris a 1h20.",
+      a: "Oui, Axion-IA intervient a Saint-Jean-le-Blanc et dans toute Orleans Metropole (Orleans, Saint-Jean-de-Braye, Olivet, Saint-Pryve-Saint-Mesmin). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Saint-Jean-le-Blanc ?",

@@ -14,9 +14,9 @@ export const SAINT_ALBAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Alban (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Saint-Alban est une commune résidentielle du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'axe A62 et de la zone d'emploi nord toulousaine.",
+    "Saint-Alban est une commune résidentielle du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Zone d'emploi nord toulousaine voisine.",
   ecosystemEn:
-    "Saint-Alban est une commune résidentielle du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'axe A62 et de la zone d'emploi nord toulousaine.",
+    "Saint-Alban est une commune résidentielle du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Zone d'emploi nord toulousaine voisine.",
   distancesFr:
     "Toulouse centre à 12 min (D4). Gare Matabiau à 15 min. Aéroport Toulouse-Blagnac à 20 min. Launaguet à 5 min. L'Union à 8 min.",
   distancesEn:

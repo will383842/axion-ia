@@ -49,7 +49,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villecresnes et sud-est Val-de-Marne ?",
-      a: "Oui, Axion-IA intervient à Villecresnes et tout le sud-est du Val-de-Marne (Boissy-Saint-Léger à 5 min, Créteil à 15 min, Paris à 30 min). Aéroport Orly à 20 min.",
+      a: "Oui. Axion-IA intervient à Villecresnes et dans tout le sud-est du Val-de-Marne, notamment à Boissy-Saint-Léger et à Créteil.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Villecresnes ?",
@@ -65,7 +65,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villecresnes ?",
-      a: "Paris-Gare de Lyon (30 min RER A via Boissy-Saint-Léger). Aéroport Orly à 20 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villecresnes, comme partout en France, ou à distance.",
     },
   ],
 };

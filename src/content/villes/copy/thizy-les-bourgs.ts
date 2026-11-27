@@ -49,7 +49,7 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thizy-les-Bourgs et haut-Beaujolais ?",
-      a: "Oui, Axion-IA intervient à Thizy-les-Bourgs et tout le haut-Beaujolais (Amplepuis à 10 min, Tarare à 20 min, Cours-la-Ville). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Thizy-les-Bourgs et dans tout le haut-Beaujolais (Amplepuis, Tarare, Cours-la-Ville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME textile haut-Beaujolais ?",
@@ -65,7 +65,7 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Thizy-les-Bourgs ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Thizy-les-Bourgs, comme partout en France, ou à distance.",
     },
   ],
 };

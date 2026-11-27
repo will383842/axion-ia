@@ -65,7 +65,7 @@ export const PORTO_VECCHIO_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Porto-Vecchio ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Porto-Vecchio est à 25 min de l'aéroport Figari-Sud Corse (vols directs en saison).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

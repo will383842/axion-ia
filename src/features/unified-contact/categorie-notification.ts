@@ -17,6 +17,7 @@ export function notifCategoryFor(type: UnifiedContactType): NotificationCategory
       return "IMPLEMENTATION_REQUEST_SUBMITTED";
     case "formation":
     case "un_a_un":
+    case "journee_ia":
       return "INTERVENTION_REQUEST_SUBMITTED";
     case "devis":
       return "QUOTE_REQUEST_RECEIVED";

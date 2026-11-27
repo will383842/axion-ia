@@ -65,7 +65,7 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sainghin-en-Weppes ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation agricole, atelier, cabinet, commerce ou en visio. Proximité de Lille pour toute logistique mission multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation agricole, atelier, cabinet, commerce ou en visio.",
     },
   ],
 };

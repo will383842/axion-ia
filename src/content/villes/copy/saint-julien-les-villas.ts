@@ -64,8 +64,8 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
       a: "Oui, devis intelligents, planning chantiers, automatisation administrative, gestion documentaire cabinets, facturation augmentée pour artisans et professionnels libéraux.",
     },
     {
-      q: "Comment accéder à Saint-Julien-les-Villas ?",
-      a: "Paris-Est à 1 h 30 (TER + TGV via Troyes). Autoroute A5 accessible en 5 min. Reims à 1 h 20.",
+      q: "Comment se déroule une mission à Saint-Julien-les-Villas ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Julien-les-Villas, comme partout en France, ou à distance.",
     },
   ],
 };

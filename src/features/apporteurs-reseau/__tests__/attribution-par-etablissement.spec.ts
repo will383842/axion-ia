@@ -46,7 +46,7 @@ describe("contrat 2.6", () => {
   it("art. 3.2 : la déclaration porte le SIRET ; art. 3.3 : l'antériorité se juge par établissement", () => {
     expect(net).toContain("le **numéro SIRET de l'établissement** visité");
     expect(net).toContain(
-      "Aucune attribution ne peut porter sur un établissement que la Société connaît déjà",
+      "Aucune réservation ni aucune attribution ne peut porter sur un établissement que la Société connaît déjà",
     );
     expect(net).toContain(
       "*établissement* s'entend de l'établissement de l'entreprise identifié par son numéro SIRET",

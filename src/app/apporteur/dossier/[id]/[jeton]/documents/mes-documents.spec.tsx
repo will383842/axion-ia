@@ -1,26 +1,25 @@
 // « Mes documents » : la page de l'espace qui réunit ce qui a été remis à l'apporteur. Même
 // contrôle du lien que les pages sœurs ; le contrat, la charte et les outils seulement sous
-// contrat signé ; le livret seulement si son fichier existe ; jamais indexée.
+// contrat signé ; le livret seulement si lireLivret() rend un fichier ; jamais indexée.
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   dossier: null as Record<string, unknown> | null,
   livret: false,
-  cheminsLus: [] as string[],
+  appelsLivret: 0,
 }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/features/apporteurs-reseau/donnees", () => ({
   lireDossierParLien: vi.fn(async () => h.dossier),
 }));
-vi.mock("node:fs", async (importOriginal) => {
-  const reel = await importOriginal<typeof import("node:fs")>();
-  const existsSync = (p: import("node:fs").PathLike): boolean => {
-    h.cheminsLus.push(String(p));
-    return h.livret;
-  };
-  return { ...reel, existsSync, default: { ...reel, existsSync } };
-});
+vi.mock("@/features/apporteurs-reseau/documents-prives", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/features/apporteurs-reseau/documents-prives")>()),
+  lireLivret: vi.fn(async () => {
+    h.appelsLivret += 1;
+    return h.livret ? Buffer.from("%PDF-livret") : null;
+  }),
+}));
 
 import {
   DOCUMENTS_NON_SIGNE,
@@ -52,7 +51,7 @@ const signe = {
 beforeEach(() => {
   h.dossier = { ...signe };
   h.livret = false;
-  h.cheminsLus = [];
+  h.appelsLivret = 0;
 });
 
 describe("accès", () => {
@@ -91,16 +90,22 @@ describe("accès", () => {
     expect(texte(html)).toContain(DOCUMENTS_RESERVES.titre);
     expect(html).not.toContain(".pdf");
     expect(html).not.toContain("/contrat");
+    expect(html).not.toContain("/guide");
+    expect(html).not.toContain("/fiche-commissions");
+    expect(html).not.toContain("/livret");
   });
 });
 
 describe("dossier signé", () => {
-  it("le contrat, la fiche, la charte, les outils et le retour à l'espace", async () => {
+  it("le contrat, le guide, la fiche, la charte, les outils et le retour à l'espace", async () => {
     const html = await rendre();
     const t = texte(html);
     expect(html).toMatch(/<h1[^>]*>Mes documents<\/h1>/);
     expect(html).toContain(`href="${ESPACE}/contrat?dl=1"`);
-    expect(html).toContain('href="/documents/apporteurs/comment-ca-marche.pdf"');
+    expect(html).toContain(`href="${ESPACE}/guide"`);
+    expect(html).toMatch(new RegExp(`<a href="${ESPACE}/guide\\?dl=1"[^>]* download`));
+    expect(html).toContain(`href="${ESPACE}/fiche-commissions"`);
+    expect(html).not.toContain("comment-ca-marche");
     expect(html).toContain(`href="${ESPACE}/charte"`);
     expect(html).toContain(`href="${ESPACE}/outils"`);
     expect(html).toContain(`href="${ESPACE}"`);
@@ -110,8 +115,8 @@ describe("dossier signé", () => {
 
   it("chaque document est un titre de niveau 2 dans une liste", async () => {
     const html = await rendre();
-    expect(html.match(/<h2/g)).toHaveLength(4);
-    expect(html.match(/<li/g)).toHaveLength(4);
+    expect(html.match(/<h2/g)).toHaveLength(5);
+    expect(html.match(/<li/g)).toHaveLength(5);
     expect(html).not.toMatch(/<h[3-6]/);
   });
 
@@ -122,37 +127,36 @@ describe("dossier signé", () => {
     expect(html).toContain(`href="${ESPACE}/outils"`);
   });
 
-  it("le livret n'apparaît que si son fichier existe dans public/", async () => {
-    expect(await rendre()).not.toContain("livret-apporteur.pdf");
-    expect(h.cheminsLus).toHaveLength(1);
-    expect(h.cheminsLus[0]!.replace(/\\/g, "/")).toMatch(
-      /\/public\/documents\/apporteurs\/livret-apporteur\.pdf$/,
-    );
+  it("le livret n'apparaît que si lireLivret() rend un fichier", async () => {
+    expect(await rendre()).not.toContain(`${ESPACE}/livret`);
+    expect(h.appelsLivret).toBe(1);
     h.livret = true;
     const html = await rendre();
-    expect(html).toContain('href="/documents/apporteurs/livret-apporteur.pdf"');
-    expect(html.match(/<li/g)).toHaveLength(5);
+    expect(html).toContain(`href="${ESPACE}/livret"`);
+    expect(html).not.toContain("livret-apporteur.pdf");
+    expect(html.match(/<li/g)).toHaveLength(6);
   });
 
   it("aucun montant ni pourcentage, aucun mot interdit", async () => {
     h.livret = true;
     const t = texte(await rendre());
     expect(t).not.toMatch(/\d\s*(€|%|euros?)/i);
-    expect(t).not.toMatch(/grenoble|aucun gain garanti|conférence/i);
+    expect(t).not.toMatch(/gr[e]noble|aucun\s+gain\s+gar[a]nti|conférence|salari[ée]|obj[e]ctif/i);
   });
 });
 
 describe("dossier pas encore signé", () => {
   it.each(["dossier_en_cours", "a_completer", "a_verifier"])(
-    "%s : la fiche seulement, et la phrase qui annonce la suite",
+    "%s : le guide et la fiche, et la phrase qui annonce la suite",
     async (statut) => {
       h.dossier = { ...signe, statut, aContratSigne: false };
       const html = await rendre();
-      expect(html).toContain('href="/documents/apporteurs/comment-ca-marche.pdf"');
+      expect(html).toContain(`href="${ESPACE}/guide"`);
+      expect(html).toContain(`href="${ESPACE}/fiche-commissions"`);
       expect(html).not.toContain("/contrat");
       expect(html).not.toContain("/charte");
       expect(html).not.toContain("/outils");
-      expect(html.match(/<li/g)).toHaveLength(1);
+      expect(html.match(/<li/g)).toHaveLength(2);
       expect(texte(html)).toContain(DOCUMENTS_NON_SIGNE);
     },
   );

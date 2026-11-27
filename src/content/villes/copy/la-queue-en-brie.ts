@@ -49,7 +49,7 @@ export const LA_QUEUE_EN_BRIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Queue-en-Brie et est Val-de-Marne ?",
-      a: "Oui, Axion-IA intervient à La Queue-en-Brie et dans tout l'est du Val-de-Marne (Boissy-Saint-Léger à 10 min, Sucy-en-Brie, Noiseau, Ormesson-sur-Marne). Paris à 40 min RER A via Boissy.",
+      a: "Oui, Axion-IA intervient à La Queue-en-Brie et dans tout l'est du Val-de-Marne (Boissy-Saint-Léger, Sucy-en-Brie, Noiseau, Ormesson-sur-Marne).",
     },
     {
       q: "Accompagnez-vous les TPE artisans et paysagistes ?",

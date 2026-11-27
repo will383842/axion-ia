@@ -73,8 +73,8 @@ const MIN_WORD_COUNT = 850;
 // APPEL 1 — PLAN : ossature (métadonnées + FAQ + outline 8 sections). L'outline
 // DOIT prévoir une section « tableau comparatif » (la table elle-même est rédigée
 // à l'appel 2). PAS de bodyHtml ici.
-const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
+const SYSTEM_PROMPT_PLAN = injectBrandVoice(
+  `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent commercial_investigation : l'utilisateur compare des options). Le corps sera rédigé séparément. Règles :
 - L'article compare plusieurs options (outils, solutions SaaS, build-vs-buy, cabinet vs interne…). La section Axion-IA est UNE option parmi d'autres, évaluée factuellement.
 - AUCUNE NOTE sur un tiers : jamais de score /100, d'étoiles, de classement chiffré ni de « X/10 » attribué à un outil ou à une entreprise concurrente. On compare par critères observables (fonctions, prise en main, hébergement, support, cas d'usage), en termes qualitatifs.
@@ -89,13 +89,15 @@ Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent c
 - "expertTake" : 1-2 phrases = point de vue d'Axion-IA (voix collective, jamais une personne nommée), sans statistique inventée.
 - "outline" : **8 sections <h2>** couvrant une progression comparative logique : enjeu/contexte → critères de comparaison (lisibilité, coût, déploiement, support, cas d'usage) un par section → **UNE section dédiée « Tableau comparatif récapitulatif »** → recommandation par profil (petite structure, entreprise de taille moyenne, grande entreprise). Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un fait KB précis) }. OBLIGATOIRE : exactement une entrée d'outline doit être la section « tableau comparatif » (son brief précise que cette section contient un <table> récapitulatif 3-5 colonnes Option/Avantages/Inconvénients/Coût/Cible).
 - INTERDIT (marketing-hype, doctrine § 21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`,
+  "comparison",
+);
 
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
 // EXIGENCE INTENT : au moins une section (celle « tableau comparatif ») contient
 // un vrai <table> récapitulatif — sinon hard gate → retry BullMQ.
-const SYSTEM_PROMPT_EXPAND =
-  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article COMPARATIF FR (intent commercial_investigation) à partir d'un plan déjà validé. Règles absolues :
+const SYSTEM_PROMPT_EXPAND = injectBrandVoice(
+  `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article COMPARATIF FR (intent commercial_investigation) à partir d'un plan déjà validé. Règles absolues :
 - GROUNDING OBLIGATOIRE : développe CHAQUE section à partir des « Sources internes Axion-IA » fournies (méthodologie, étapes, livrables, ROI RÉELS) pour la partie Axion-IA. Si un fait précis manque, reste général et factuel SANS rien inventer (ni cas client fictif, ni chiffre non sourcé).
 - La section Axion-IA est présente comme UNE option parmi d'autres, évaluée factuellement. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - **TABLEAU COMPARATIF OBLIGATOIRE** : la section dédiée « tableau comparatif » de l'outline DOIT contenir un vrai <table> récapitulatif HTML (3-5 colonnes : Option / Avantages / Inconvénients / Coût / Cible), UN MINIMUM DE ${MIN_LIGNES_TABLEAU} LIGNES de données (une par option comparée, hors ligne d'en-tête). C'est le Featured Snippet de l'article : SANS ce <table>, l'article est REJETÉ et ré-généré. Si la tranche en cours contient cette section, le <table> est impératif.
@@ -108,7 +110,10 @@ const SYSTEM_PROMPT_EXPAND =
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies. ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
-- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`);
+- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`,
+  "comparison",
+  "section",
+);
 
 /** Vérifie que le body contient au moins 2 sections H2 (structure comparative). */
 function hasComparativeSections(bodyHtml: string): boolean {
@@ -212,6 +217,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         jobId: input.jobId,
         contentType: "comparison",
         role: "text",
+        blogClaudeRole: "ecriture",
         responseFormatJson: true,
         systemPrompt: planSystem,
         userPrompt:
@@ -259,8 +265,12 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
     let parsed: ComparisonParsed | null = null;
     let prevFeedback = input.improvementFeedback ?? "";
     const expandSystem =
-      applySystemPromptOverride(SYSTEM_PROMPT_EXPAND, input.templateOverride, "comparison") +
-      getIntentPromptAddendum(input.targetSearchIntent);
+      applySystemPromptOverride(
+        SYSTEM_PROMPT_EXPAND,
+        input.templateOverride,
+        "comparison",
+        "section",
+      ) + getIntentPromptAddendum(input.targetSearchIntent);
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -271,6 +281,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
       const expandResult = await expandOutlineChunked({
         jobId: input.jobId,
         contentType: "comparison",
+        blogClaudeRole: "ecriture",
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,
@@ -515,6 +526,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       directAnswer: parsed.directAnswer ?? "",
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
       // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
