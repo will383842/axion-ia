@@ -58,7 +58,8 @@ export async function chargerLignesBlocageCout(
   const lignes: LigneJobMesure[] = [];
   let curseur: string | undefined;
 
-  while (lignes.length < LIMITE_JOBS) {
+  // LIMITE + 1 : on ne prétend « partiel » que s'il y avait réellement plus de lignes.
+  while (lignes.length <= LIMITE_JOBS) {
     const lot = await prisma.contentGenJob.findMany({
       where: { createdAt: { gte: depuis }, status: { in: [...STATUTS_MESURES] } },
       select: {
@@ -110,7 +111,8 @@ export async function chargerLignesBlocageCout(
     }
     if (lot.length < TAILLE_LOT) break;
   }
-  if (lignes.length >= LIMITE_JOBS) {
+  if (lignes.length > LIMITE_JOBS) {
+    lignes.length = LIMITE_JOBS;
     console.warn(
       `⚠️ Plafond de ${LIMITE_JOBS} jobs atteint : rapport PARTIEL (jobs les plus anciens par id).`,
     );

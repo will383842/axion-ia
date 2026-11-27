@@ -75,7 +75,7 @@ export interface RapportBlocageCout {
   readonly coutArticle: StatCoutArticle;
   /** Issues du journal d'équipe (`publier`, `a_relire`…), comptées par valeur. */
   readonly issuesEquipe: Readonly<Record<string, number>>;
-  /** Coût de l'exécution tel que lu dans la colonne `costUsd`, tous jobs. */
+  /** Coût de l'exécution tel que lu dans la colonne `costUsd`, jobs menés à terme (échecs/annulés/en cours exclus). */
   readonly coutColonneTotalUsd: number;
   /** Jobs dont le blocage n'a pu être rattaché à aucun contrôle connu. */
   readonly bloquesSansCause: number;
@@ -182,6 +182,14 @@ function quantile(tries: ReadonlyArray<number>, q: number): number | null {
   if (tries.length === 0) return null;
   const idx = Math.min(tries.length - 1, Math.max(0, Math.ceil(q * tries.length) - 1));
   return tries[idx] ?? null;
+}
+
+function mediane(tries: ReadonlyArray<number>): number | null {
+  const n = tries.length;
+  if (n === 0) return null;
+  const milieu = Math.floor(n / 2);
+  const haut = tries[milieu] ?? 0;
+  return n % 2 === 1 ? haut : arrondi(((tries[milieu - 1] ?? 0) + haut) / 2);
 }
 
 function arrondi(n: number, d = 4): number {
@@ -317,7 +325,7 @@ export function calculerRapportBlocageCout(
     articlesAvecEquipe: coutsArticle.length,
     totalUsd: arrondi(totalUsd),
     moyenneUsd: coutsArticle.length === 0 ? null : arrondi(totalUsd / coutsArticle.length),
-    medianeUsd: quantile(tries, 0.5),
+    medianeUsd: mediane(tries),
     p90Usd: quantile(tries, 0.9),
     maxUsd: tries.length === 0 ? null : (tries[tries.length - 1] ?? null),
   };
@@ -362,7 +370,9 @@ export function formaterRapportBlocageCout(r: RapportBlocageCout, jours: number)
   l.push(
     `moyenne ${usd(a.moyenneUsd)} · médiane ${usd(a.medianeUsd)} · p90 ${usd(a.p90Usd)} · max ${usd(a.maxUsd)} · total ${usd(a.totalUsd)}`,
   );
-  l.push(`Coût colonne \`costUsd\` (tous jobs) : ${usd(r.coutColonneTotalUsd)}`);
+  l.push(
+    `Coût colonne \`costUsd\` (jobs menés jusqu'à la relecture ou la publication ; échecs, annulations et jobs en cours exclus, donc minoré) : ${usd(r.coutColonneTotalUsd)}`,
+  );
   l.push("");
   l.push("## Coût par rôle");
   if (r.roles.length === 0) l.push("Aucun journal d'équipe sur la période (équipe éteinte ?).");

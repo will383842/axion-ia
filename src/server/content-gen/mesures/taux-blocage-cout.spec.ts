@@ -161,7 +161,8 @@ describe("calculerRapportBlocageCout", () => {
     expect(r.coutArticle.articlesAvecEquipe).toBe(2);
     expect(r.coutArticle.moyenneUsd).toBe(1);
     expect(r.coutArticle.maxUsd).toBe(1.5);
-    expect(r.coutArticle.medianeUsd).toBe(0.5);
+    // nombre pair : moyenne des deux valeurs centrales (0,5 et 1,5)
+    expect(r.coutArticle.medianeUsd).toBe(1);
     expect(r.coutColonneTotalUsd).toBe(3.5);
     const rec = r.roles.find((x) => x.role === "redacteur-en-chef");
     expect(rec?.articles).toBe(2);

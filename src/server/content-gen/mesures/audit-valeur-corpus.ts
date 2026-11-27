@@ -35,6 +35,11 @@ export interface PageCorpus {
   readonly motsVariables?: ReadonlyArray<string>;
   /** Impressions sur la fenêtre ; `null` = Search Console n'a rien répondu pour cette page. */
   readonly impressions: number | null;
+  /**
+   * `false` : page non proposée à Google (noindex, hors sitemap). « Sans impressions » n'a alors
+   * aucun sens (0 par construction) : on ne le calcule pas. Absent = indexable.
+   */
+  readonly indexable?: boolean;
 }
 
 export interface Seuils {

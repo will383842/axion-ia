@@ -45,13 +45,15 @@ export async function chargerPagesCorpus(): Promise<PageCorpus[]> {
           templateVariant: true,
           qualityScore: true,
           publishedAt: true,
+          indexationTier: true,
         },
       },
     },
     orderBy: { slug: "asc" },
-    take: LIMITE_PAGES,
+    take: LIMITE_PAGES + 1,
   });
-  for (const t of traductions) {
+  const lues = traductions.slice(0, LIMITE_PAGES);
+  for (const t of lues) {
     pages.push({
       id: t.article.id,
       type: "article",
@@ -66,6 +68,7 @@ export async function chargerPagesCorpus(): Promise<PageCorpus[]> {
       publieLe: t.article.publishedAt,
       plan: extraireH2(t.body),
       impressions: null,
+      indexable: t.article.indexationTier === "tier_1_indexable",
     });
   }
 
@@ -90,7 +93,7 @@ export async function chargerPagesCorpus(): Promise<PageCorpus[]> {
       impressions: null,
     });
   }
-  if (traductions.length >= LIMITE_PAGES) {
+  if (traductions.length > LIMITE_PAGES) {
     console.warn(`⚠️ Plafond de ${LIMITE_PAGES} pages atteint : audit PARTIEL.`);
   }
   return pages;
@@ -123,7 +126,7 @@ export async function chargerAuditCorpus(maintenant: Date = new Date()): Promise
   const impr = await lireImpressionsParUrl(maintenant);
   const avecImpr = pages.map((p) => ({
     ...p,
-    impressions: impr === null ? null : (impr.get(cleUrl(p.url)) ?? 0),
+    impressions: impr === null || p.indexable === false ? null : (impr.get(cleUrl(p.url)) ?? 0),
   }));
   return auditerCorpus(avecImpr, maintenant);
 }
