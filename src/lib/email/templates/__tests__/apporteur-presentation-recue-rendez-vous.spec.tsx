@@ -53,9 +53,11 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(lu).toContain("s'il a été pris jusqu'à cette date incluse");
     expect(lu).toContain("6 mois");
     expect(lu).toContain("du jour de ce rendez-vous");
+    // « devis » → « commande » : à faire avec la page (textes-comment.ts, PR #2400), qui
+    // partage cette phrase mot pour mot (branchement-textes-lot7b.spec.ts).
     expect(lu).toContain("Un devis signé pendant ces 60 jours compte aussi");
     expect(lu).toContain("la réservation prend fin automatiquement");
-    expect(lu).toContain("après un nouveau contact");
+    expect(lu).toContain("après un délai de 30 jours et un nouveau contact avec elle");
     expect(lu).toContain("Une commission n'est due que sur une commande payée");
   });
 
@@ -70,10 +72,17 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(text).not.toMatch(/undefined|null/);
   });
 
-  it("ne reprend pas les « 30 jours » de l'accusé en service", async () => {
+  it("dit que l'entreprise a été contactée et qu'un rendez-vous annulé ou déplacé par Axion-IA compte comme tenu", async () => {
+    const lu = (await rendre(EXEMPLE)).text.replace(/\s+/g, " ");
+    expect(lu).toContain("Nous venons de lui écrire de votre part.");
+    expect(lu).toContain(
+      "Si nous devons annuler ou déplacer ce rendez-vous, il compte comme tenu.",
+    );
+  });
+
+  it("ne dit pas « à compter de votre saisie » quand la date est connue, et ne promet rien de plus", async () => {
     const { text } = await rendre(EXEMPLE);
-    expect(text).not.toContain("30 jours");
-    expect(text).not.toMatch(/\b30\b/);
+    expect(text).not.toContain("à compter de votre saisie");
   });
 
   it("ni « Grenoble » (hors adresse légale du pied), ni « gain garanti », ni chiffre de commission, ni conférence", async () => {

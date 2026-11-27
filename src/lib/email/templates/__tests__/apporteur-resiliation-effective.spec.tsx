@@ -24,14 +24,18 @@ describe("apporteur-resiliation-effective", () => {
     expect(r.html).not.toContain("https://exemple.test/espace");
   });
 
-  it("argent en jeu : porte le lien du mode restreint", async () => {
-    const r = await rendu({
-      prenom: "Claire",
-      effetLe: "25 décembre 2026",
-      argentEnJeu: true,
-      lien: "https://exemple.test/espace",
-    });
-    expect(r.html).toContain("https://exemple.test/espace");
+  it("ne dit jamais que l'espace reste accessible : le lien est coupé à la fin du contrat", async () => {
+    for (const argentEnJeu of [false, true]) {
+      const r = await rendu({
+        prenom: "Claire",
+        effetLe: "25 décembre 2026",
+        argentEnJeu,
+        lien: "https://exemple.test/espace",
+      });
+      expect(r.t).not.toContain("reste accessible");
+      expect(r.t).toContain("Votre accès à l'espace prend fin avec votre contrat");
+      expect(r.html).not.toContain("https://exemple.test/espace");
+    }
   });
 
   it("salue par le prénom seul", async () => {
