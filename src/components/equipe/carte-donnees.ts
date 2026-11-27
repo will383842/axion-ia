@@ -14,12 +14,16 @@ import {
 
 /** Rayon de la couronne (repère de la carte) : deux cibles voisines de 12 de rayon ne se recouvrent presque pas. */
 export const RAYON_COURONNE = 26;
+/** Rayon de la couronne dans l'encart d'outre-mer (cases plus étroites). */
+export const RAYON_COURONNE_ENCART = 22;
+/** Deux amas dont les centres sont plus proches que cela sont fusionnés (cibles de 12 de rayon sans recouvrement). */
+export const DISTANCE_FUSION = 2 * RAYON_COURONNE_ENCART;
 
 /** Les cinq départements d'outre-mer présentables dans l'encart. */
 export const CODES_OUTRE_MER = ["971", "972", "973", "974", "976"] as const;
 export type CodeOutreMer = (typeof CODES_OUTRE_MER)[number];
 
-export const ENCART = { x: 12, largeurFente: 62, hauteur: 104, marge: 12 } as const;
+export const ENCART = { x: 12, largeurFente: 76, hauteur: 104, marge: 12 } as const;
 /** Haut de l'encart d'outre-mer (bas-gauche, hors du tracé de la métropole). */
 export const ENCART_HAUT = HAUTEUR_CARTE - ENCART.hauteur - ENCART.marge;
 
@@ -27,6 +31,8 @@ export interface Amas {
   /** Identifiant stable (ancre de la liste) : « equipe-ville-… ». */
   ancre: string;
   libelle: string;
+  /** Lieu de chaque personne (slug → ville ou département) : l'intitulé d'un point ne reprend jamais la ville d'une autre personne. */
+  lieux: Readonly<Record<string, string>>;
   /** Centre du groupe sur la carte (ou dans l'encart). */
   centre: PointCarte;
   personnes: ReadonlyArray<FichePublique>;
@@ -44,6 +50,7 @@ export interface GroupeVille {
 
 export interface GroupeRegion {
   cle: string;
+  ancre: string;
   libelle: string;
   villes: ReadonlyArray<GroupeVille>;
 }
@@ -56,10 +63,24 @@ export interface DonneesCarte {
   outreMerPresent: boolean;
 }
 
-const normalise = (c: string | null | undefined): string => (c ?? "").trim().toUpperCase();
+/** Code département normalisé (« 1 » → « 01 », casse indifférente), comme `coordonneesDe`. */
+const normalise = (c: string | null | undefined): string => {
+  const v = (c ?? "").trim().toUpperCase();
+  return /^\d$/.test(v) ? `0${v}` : v;
+};
 const regionDe = new Map<string, { cle: string; libelle: string }>();
 for (const r of REGIONS) {
   for (const d of r.departements) regionDe.set(d.toUpperCase(), { cle: r.slug, libelle: r.nameFr });
+}
+
+/** Département d'une ville connue du jeu, si un seul département la porte. */
+function depDeLaVille(ville: string | undefined, villes: ReadonlyArray<VilleConnue>): string {
+  const cle = slugifier(ville);
+  if (!cle) return "";
+  const deps = new Set(
+    villes.filter((v) => slugifier(v.nameFr) === cle).map((v) => normalise(v.departement)),
+  );
+  return deps.size === 1 ? ([...deps][0] ?? "") : "";
 }
 
 const estOutreMer = (c: string): c is CodeOutreMer =>
@@ -91,8 +112,8 @@ export function preparerCarte(
   };
   const places: Place[] = [];
   for (const f of fiches.filter(estPlacable)) {
-    const lieu = { ville: f.ville ?? null, departement: f.departement ?? null };
-    const dep = normalise(f.departement);
+    const lieu = { ville: f.ville ?? null, departement: normalise(f.departement) || null };
+    const dep = normalise(f.departement) || depDeLaVille(f.ville, villes);
     const coord = coordonneesDe(lieu, villes);
     if (!coord) continue;
     const outreMer = estOutreMer(dep) ? dep : null;
@@ -125,6 +146,7 @@ export function preparerCarte(
   const regions: GroupeRegion[] = [...parRegion.entries()]
     .map(([cle, vs]) => ({
       cle,
+      ancre: `equipe-region-${cle}`,
       libelle: libellesRegion.get(cle) ?? cle,
       villes: [...vs.values()].sort((a, b) => a.libelle.localeCompare(b.libelle, "fr")),
     }))
@@ -132,33 +154,60 @@ export function preparerCarte(
       (a, b) => rangRegion(a.cle) - rangRegion(b.cle) || a.libelle.localeCompare(b.libelle, "fr"),
     );
 
-  // Carte : un amas par point projeté (métropole) ou par département d'outre-mer.
-  const groupes = new Map<string, Place[]>();
+  // Carte : un amas par point projeté (métropole) ou par département d'outre-mer ;
+  // en métropole, les amas trop proches (Île-de-France…) sont fusionnés.
+  type Groupe = { centre: PointCarte | null; outreMer: CodeOutreMer | null; ps: Place[] };
+  const groupes: Groupe[] = [];
   for (const p of places) {
-    const cle = p.outreMer ?? `${p.pos?.x}:${p.pos?.y}`;
-    groupes.set(cle, [...(groupes.get(cle) ?? []), p]);
+    const proche = groupes.find((g) =>
+      p.outreMer
+        ? g.outreMer === p.outreMer
+        : g.outreMer === null &&
+          g.centre !== null &&
+          p.pos !== null &&
+          Math.hypot(g.centre.x - p.pos.x, g.centre.y - p.pos.y) < DISTANCE_FUSION,
+    );
+    if (proche) proche.ps.push(p);
+    else groupes.push({ centre: p.pos, outreMer: p.outreMer, ps: [p] });
   }
-  const presentsOM = CODES_OUTRE_MER.filter((c) => groupes.has(c));
-  const amas: Amas[] = [...groupes.entries()].flatMap(([, ps]) => {
-    const premier = ps[0];
+  const presentsOM = CODES_OUTRE_MER.filter((c) => groupes.some((g) => g.outreMer === c));
+  const cleVilleDe = (p: Place) => `${p.dep || "x"}-${slugifier(p.ville) || "departement"}`;
+  const regionCleDe = (p: Place) => regionDe.get(p.dep)?.cle ?? "autres";
+  const amas: Amas[] = groupes.flatMap((g) => {
+    const premier = g.ps[0];
     if (!premier) return [];
-    const outreMer = premier.outreMer;
-    const centre = outreMer
-      ? {
-          x: ENCART.x + ENCART.largeurFente * (presentsOM.indexOf(outreMer) + 0.5),
-          y: ENCART_HAUT + 44,
-        }
-      : (premier.pos as PointCarte);
+    const centre =
+      g.outreMer !== null
+        ? {
+            x: ENCART.x + ENCART.largeurFente * (presentsOM.indexOf(g.outreMer) + 0.5),
+            y: ENCART_HAUT + 44,
+          }
+        : (g.centre as PointCarte);
+    const villesDuGroupe = new Set(g.ps.map(cleVilleDe));
+    const regionsDuGroupe = new Set(g.ps.map(regionCleDe));
+    const ancre =
+      villesDuGroupe.size === 1
+        ? `equipe-ville-${cleVilleDe(premier)}`
+        : regionsDuGroupe.size === 1
+          ? `equipe-region-${regionCleDe(premier)}`
+          : "equipe-liste";
+    const lieuDe = (p: Place) =>
+      p.ville || (p.outreMer ? (regionDe.get(p.outreMer)?.libelle ?? "") : `département ${p.dep}`);
     return [
       {
-        ancre: `equipe-ville-${premier.dep || "x"}-${slugifier(premier.ville) || "departement"}`,
-        libelle: outreMer
-          ? (regionDe.get(outreMer)?.libelle ?? premier.ville)
-          : premier.ville || `Département ${premier.dep}`,
+        ancre,
+        libelle:
+          villesDuGroupe.size === 1
+            ? lieuDe(premier)
+            : (regionDe.get(premier.dep)?.libelle ?? lieuDe(premier)),
+        lieux: Object.fromEntries(g.ps.map((p) => [p.f.slug, lieuDe(p)])),
         centre,
-        personnes: ps.map((p) => p.f),
-        decalages: decalagesCouronne(ps.length, RAYON_COURONNE),
-        outreMer,
+        personnes: g.ps.map((p) => p.f),
+        decalages: decalagesCouronne(
+          g.ps.length,
+          g.outreMer ? RAYON_COURONNE_ENCART : RAYON_COURONNE,
+        ),
+        outreMer: g.outreMer,
       },
     ];
   });

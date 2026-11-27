@@ -84,6 +84,25 @@ describe("preparerCarte", () => {
     expect(d.total).toBe(1);
     expect(d.amas[0]?.personnes.map((f) => f.slug)).toEqual(["ok"]);
   });
+  it("Île-de-France : les villes proches sont fusionnées, chaque point garde SA ville, « +N » mène à la région", () => {
+    const fiches = [
+      fiche({ slug: "a", ville: "Paris", departement: "75" }),
+      fiche({ slug: "b", ville: "Nanterre", departement: "92" }),
+      fiche({ slug: "c", ville: "Bobigny", departement: "93" }),
+    ];
+    const d = preparerCarte(fiches);
+    expect(d.amas).toHaveLength(1);
+    expect(d.amas[0]?.lieux).toEqual({ a: "Paris", b: "Nanterre", c: "Bobigny" });
+    expect(d.amas[0]?.ancre).toBe("equipe-region-ile-de-france");
+    const c = render(<CarteFrance fiches={fiches} />).container;
+    expect(c.querySelector("svg a[href='/fr/equipe/b']")?.getAttribute("aria-label")).toBe(
+      "B, Spécialiste IA, Nanterre",
+    );
+  });
+  it("département à un chiffre normalisé (« 1 » = Auvergne-Rhône-Alpes)", () => {
+    const d = preparerCarte([fiche({ slug: "a", ville: "Bourg", departement: "1" })]);
+    expect(d.regions[0]?.cle).toBe("auvergne-rhone-alpes");
+  });
   it("sans lieu exploitable : pas de point", () => {
     expect(preparerCarte([fiche({ slug: "a" })]).total).toBe(0);
   });
@@ -144,11 +163,11 @@ describe("CarteFrance (rendu HTML)", () => {
   });
   it("liste équivalente : régions puis villes, chaque nom est un lien HTML", () => {
     const c = rendu();
-    const section = c.querySelector("section[aria-label='Bretagne']")!;
+    const section = c.querySelector("div#equipe-region-bretagne")!;
     expect(section.textContent).toContain("Brest");
     const lien = section.querySelector("a[href='/fr/equipe/camille']");
     expect(lien?.textContent).toBe("Camille");
-    expect(c.querySelector("section[aria-label='Grand Est']")).not.toBeNull();
+    expect(c.querySelector("div#equipe-region-grand-est")).not.toBeNull();
   });
   it("« +N » mène à l'ancre de la ville dans la liste", () => {
     const sept = Array.from({ length: 7 }, (_, i) =>
@@ -167,7 +186,7 @@ describe("CarteFrance (rendu HTML)", () => {
       <CarteFrance fiches={[fiche({ slug: "r", ville: "Saint-Denis", departement: "974" })]} />,
     ).container;
     expect(c.querySelector("svg rect")).not.toBeNull();
-    expect(c.querySelector("section[aria-label='La Réunion']")).not.toBeNull();
+    expect(c.querySelector("div#equipe-region-la-reunion")).not.toBeNull();
   });
   it("aucun point : rien n'est rendu", () => {
     expect(render(<CarteFrance fiches={[]} />).container.innerHTML).toBe("");

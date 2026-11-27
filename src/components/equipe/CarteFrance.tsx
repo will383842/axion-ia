@@ -31,7 +31,7 @@ function Anneau() {
 }
 
 function intitule(f: FichePublique, amas: Amas): string {
-  const lieu = amas.libelle;
+  const lieu = amas.lieux[f.slug] ?? amas.libelle;
   return `${f.nom}, ${CATEGORIES[f.categorie].libelleSingulier}, ${lieu}`;
 }
 
@@ -180,10 +180,10 @@ export function CarteFrance({
           ))}
       </ul>
 
-      <div className="mx-auto mt-8 max-w-3xl">
+      <div id="equipe-liste" className="mx-auto mt-8 max-w-3xl scroll-mt-24">
         {d.regions.map((r) => (
-          <section key={r.cle} className="mt-4" aria-label={r.libelle}>
-            <p className="text-fg font-semibold">{r.libelle}</p>
+          <div key={r.cle} id={r.ancre} className="mt-4 scroll-mt-24">
+            <h3 className="text-fg text-base font-semibold">{r.libelle}</h3>
             <ul className="mt-1 space-y-1">
               {r.villes.map((v) => (
                 <li key={v.ancre} id={v.ancre} className="text-fg-soft scroll-mt-24 text-[15px]">
@@ -200,7 +200,7 @@ export function CarteFrance({
                 </li>
               ))}
             </ul>
-          </section>
+          </div>
         ))}
       </div>
     </div>
