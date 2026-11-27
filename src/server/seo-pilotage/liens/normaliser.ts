@@ -42,7 +42,7 @@ export function normaliserDomaine(brut: string): string | null {
   const u = lireUrl(brut);
   if (!u) return null;
   // Une adresse e-mail n'est pas un domaine : « jean@gmail.com » ne devient jamais « gmail.com ».
-  if (u.username || u.password || brut.includes("@")) return null;
+  if (u.username || u.password) return null;
   const hote = u.hostname
     .toLowerCase()
     .replace(/\.$/, "")
@@ -61,8 +61,11 @@ export function normaliserPageSource(brut: string): string | null {
     .toLowerCase()
     .replace(/\.$/, "")
     .replace(/^www\./, "");
+  // Un identifiant dans l'URL (« jean@gmail.com » lu comme URL) : pas un lien, on ne le « répare » pas.
+  if (u.username.includes("@") || /^[^/]*@/.test(brut.trim())) return null;
   if (estAdresseIp(hote) || !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(hote)) return null;
   if (estDomaineAxion(hote)) return null;
+  if (u.hostname.endsWith(".")) u.hostname = u.hostname.slice(0, -1);
   u.hash = "";
   u.username = "";
   u.password = "";
@@ -72,7 +75,16 @@ export function normaliserPageSource(brut: string): string | null {
 
 /** Chemin cible sur Axion IA (via `normaliserChemin`) ; null si l'hôte est étranger ou la valeur vide. */
 export function normaliserCible(brut: string): string | null {
-  return normaliserChemin(brut);
+  const s = (brut ?? "").trim();
+  // Une valeur sans schéma ni « / » initial (« autre.fr/x ») n'est pas un chemin d'Axion IA.
+  if (!(
+    s.startsWith("/") ||
+    /^https?:\/\//i.test(s) ||
+    /^(?:www\.)?axion-ia\.com(?:[/?#]|$)/i.test(s)
+  )) {
+    return null;
+  }
+  return normaliserChemin(s);
 }
 
 export function normaliserAncre(brut: string | null | undefined): string | null {

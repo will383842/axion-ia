@@ -104,3 +104,11 @@ describe("contournements fermés", () => {
     );
   });
 });
+
+describe("adresses sans schéma", () => {
+  it("refuse « autre-site.fr/page »", () => {
+    expect(controlerBrouillon(`${BON} Visitez autre-site.fr/page`, URL_PAGE).motifs).toContain(
+      "autre_url",
+    );
+  });
+});

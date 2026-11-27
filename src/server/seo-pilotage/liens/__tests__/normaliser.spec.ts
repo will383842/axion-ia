@@ -87,3 +87,25 @@ describe("durcissements", () => {
     expect(normaliserPageSource("http://localhost/x")).toBeNull();
   });
 });
+
+describe("durcissements, tour 2", () => {
+  it("garde les pages source dont le chemin contient @ (medium, youtube)", () => {
+    expect(normaliserPageSource("https://medium.com/@jean/article")).toBe(
+      "https://medium.com/@jean/article",
+    );
+    expect(normaliserPageSource("https://www.youtube.com/@chaine")).toBe(
+      "https://www.youtube.com/@chaine",
+    );
+  });
+  it("refuse une adresse e-mail comme page source", () => {
+    expect(normaliserPageSource("jean.dupont@gmail.com")).toBeNull();
+  });
+  it("retire le point final de l'hôte", () => {
+    expect(normaliserPageSource("https://exemple.fr./a")).toBe("https://exemple.fr/a");
+  });
+  it("refuse une cible étrangère sans schéma", () => {
+    expect(normaliserCible("autre.fr/x")).toBeNull();
+    expect(normaliserCible("n'importe quoi")).toBeNull();
+    expect(normaliserCible("axion-ia.com/fr/faq")).toBe("/fr/faq");
+  });
+});

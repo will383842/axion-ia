@@ -56,9 +56,10 @@ export function controlerBrouillon(
   if (MOTIF_ECHANGE.test(sansLien)) motifs.push("echange");
   const urls = m.match(/https?:\/\/\S+/gi) ?? [];
   // Adresse sans schéma (« www.autre-site.fr ») : aussi une URL.
-  const sansSchema = /(?<![\w@/.])www\.[a-z0-9-]+\.[a-z]{2,}/i.test(
-    sansLien.replace(/https?:\/\/\S+/gi, " "),
-  );
+  const sansSchema =
+    /(?<![\w@/.-])(?:[a-z0-9-]+\.)+(?:fr|com|org|net|eu|io|info|ai|co|be|ch)\b/i.test(
+      sansLien.replace(/https?:\/\/\S+/gi, " "),
+    );
   if (sansSchema || !urls.every((u) => u.replace(/[.,;:)»]+$/, "") === urlPage))
     motifs.push("autre_url");
   if (TUTOIEMENT.test(sansLien) || detecterTutoiement(sansLien).tutoie) motifs.push("tutoiement");

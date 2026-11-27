@@ -164,8 +164,8 @@ export function lireExportGsc(contenu: string): ResultatLecture {
 
   rows.forEach((brutes, k) => {
     const ligne = k + 2;
-    // Un caractère de plus que le plafond : une URL trop longue est REFUSÉE, jamais tronquée en silence.
-    const cellules = brutes.map((c) => c.slice(0, CELLULE_MAX + 1));
+    // Deux fois le plafond, pour que la normalisation juge la longueur réelle : une URL trop longue est REFUSÉE, jamais tronquée en silence.
+    const cellules = brutes.map((c) => c.slice(0, CELLULE_MAX * 2));
     const cle = cellules[iCle] ?? "";
     const val = cellules[iVal];
     switch (type) {

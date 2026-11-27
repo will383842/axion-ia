@@ -10,6 +10,10 @@ const INTERDITS = [
   /\/email\//,
   /["'](?:node:)?(?:http|https|http2|net|tls|child_process)["']/,
   /\bundici\b/,
+  /server\/queue/,
+  /bullmq/i,
+  /\bimport\s*\(/,
+  /\brequire\s*\(/,
   /\bfetch\b/,
   /XMLHttpRequest|WebSocket/,
   /zoho/i,
@@ -39,5 +43,13 @@ describe("module liens : aucun envoi", () => {
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/^\s*\/\/.*$/gm, "");
     for (const motif of INTERDITS) expect(code).not.toMatch(motif);
+  });
+});
+
+describe("le verrou attrape les chemins d'envoi du dépôt", () => {
+  it("file d'e-mails et imports dynamiques", () => {
+    const code = 'import { enqueueEmail } from "@/server/queue/queues";';
+    expect(INTERDITS.some((m) => m.test(code))).toBe(true);
+    expect(INTERDITS.some((m) => m.test('await import("x")'))).toBe(true);
   });
 });
