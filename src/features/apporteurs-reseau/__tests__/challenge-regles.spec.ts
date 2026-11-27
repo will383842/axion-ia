@@ -219,10 +219,22 @@ describe("texte de l'encart", () => {
       finLe: "2026-12-31",
     });
     expect(p.principale).toBe(
-      "Une prime de 2 000 € HT est versée à tout apporteur pour qui dix Journées IA ont été facturées entre le 1er et le 31 décembre 2026, à des entreprises qui lui sont attribuées selon son contrat.",
+      "Une prime de 2 000 € HT est versée à tout apporteur pour qui au moins dix Journées IA ont été facturées entre le 1er et le 31 décembre 2026 et payées en entier, à des entreprises qui lui sont attribuées selon son contrat. Cette prime ne se cumule pas avec une autre prime de challenge sur la même période.",
     );
     expect(p.rassurance).toContain("Rien n'est attendu de vous");
     expect(formulesInterdites(`${p.principale} ${p.rassurance}`)).toEqual([]);
+  });
+  it("date limite de paiement renseignée", () => {
+    expect(
+      phrasesDeLEncart({
+        produit: "journee-ia",
+        seuil: 10,
+        primeHtCents: 200_000,
+        debutLe: "2026-12-01",
+        finLe: "2026-12-31",
+        paiementJusquAu: "2027-01-15",
+      }).principale,
+    ).toContain("payées en entier, paiement reçu au plus tard le 15 janvier 2027,");
   });
   it("période à cheval sur deux mois, seuil 1", () => {
     expect(periodeEnLettres("2026-12-15", "2027-01-15")).toBe(
@@ -236,6 +248,6 @@ describe("texte de l'encart", () => {
         debutLe: "2026-12-01",
         finLe: "2026-12-31",
       }).principale,
-    ).toContain("une Journée IA a été facturée");
+    ).toContain("au moins une Journée IA a été facturée");
   });
 });

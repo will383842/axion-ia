@@ -114,7 +114,7 @@ export function FormulaireChallenge({ initial }: { initial: ValeursChallenge }) 
         hint="Texte publié tel quel. Il dit que rien n'est attendu de l'apporteur. Figé à la publication."
       />
       <div>
-        <button type="submit" disabled={enCours} className="admin-button-primary">
+        <button type="submit" disabled={enCours} className="admin-button">
           {enCours ? "Enregistrement…" : "Enregistrer le brouillon"}
         </button>
       </div>

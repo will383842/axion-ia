@@ -55,7 +55,7 @@ export default async function ChallengesPage({ params, searchParams }: PageProps
         description="Une invitation libre, jamais un objectif."
         actions={
           peutEcrire ? (
-            <Link href={`${base}/nouveau`} className="admin-button-primary">
+            <Link href={`${base}/nouveau`} className="admin-button">
               Nouveau challenge
             </Link>
           ) : null

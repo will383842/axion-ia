@@ -39,6 +39,7 @@ export interface VueEncartChallenge {
   primeHtCents: number;
   debutLe: string;
   finLe: string;
+  paiementJusquAu: string | null;
 }
 
 /** Ce que la page du règlement reçoit : le texte publié. */
@@ -74,6 +75,7 @@ export async function lireEncartChallenge(aujourdhui: string): Promise<VueEncart
       produit: true,
       seuil: true,
       primeHtCents: true,
+      paiementJusquAu: true,
       debutLe: true,
       finLe: true,
     },
@@ -87,6 +89,7 @@ export async function lireEncartChallenge(aujourdhui: string): Promise<VueEncart
     primeHtCents: c.primeHtCents,
     debutLe: enJour(c.debutLe),
     finLe: enJour(c.finLe),
+    paiementJusquAu: c.paiementJusquAu ? enJour(c.paiementJusquAu) : null,
   };
 }
 
@@ -282,8 +285,8 @@ export interface OptionsPublication {
 /**
  * Publie un brouillon : fige la règle (empreinte de la règle complète), refuse une période déjà
  * terminée, exige une confirmation si elle a déjà commencé, refuse un chevauchement avec un
- * challenge déjà publié du même produit (les archivés sont ignorés : point à trancher avant le
- * lot 7, non-cumul de deux primes). Transaction sérialisable : deux publications simultanées ne
+ * challenge publié ou archivé (après son début), tous produits : les primes de challenges sur une
+ * même période ne se cumulent pas (règle validée). Transaction sérialisable : deux publications simultanées ne
  * passent pas toutes les deux.
  */
 export async function publierChallenge(
@@ -303,11 +306,13 @@ export async function publierChallenge(
       if (moi.debutLe < options.aujourdhui && !options.confirmeDejaCommence)
         return refus("deja_commence");
       const memes = await tx.challengeApporteur.findMany({
-        where: { statut: "publie", produit: c.produit },
-        select: { debutLe: true, finLe: true },
+        where: { statut: { in: ["publie", "archive"] }, publieAt: { not: null } },
+        select: { statut: true, publieAt: true, archiveAt: true, debutLe: true, finLe: true },
       });
+      // Non-cumul : toute prime de challenge en vigueur sur la période compte, quel que soit le
+      // produit ; un archivé arrêté avant son début n'a jamais été en vigueur (ignoré).
       if (
-        memes.some((m) =>
+        memes.filter(estLisible).some((m) =>
           periodesSeChevauchent(moi, { debutLe: enJour(m.debutLe), finLe: enJour(m.finLe) }),
         )
       )

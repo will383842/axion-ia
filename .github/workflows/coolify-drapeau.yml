@@ -201,6 +201,9 @@ jobs:
           if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
+          if [[ "$CLE" =~ ^APPORTEUR_CHALLENGES_(CONSOLE|ESPACE)_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
           if [ "$CLE" = "GUIDES_RESEAU_FABRIQUE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi

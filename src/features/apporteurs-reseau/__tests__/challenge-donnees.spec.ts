@@ -4,7 +4,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   ligne: null as Record<string, unknown> | null,
-  publies: [] as Array<{ debutLe: Date; finLe: Date }>,
+  publies: [] as Array<{
+    statut?: string;
+    publieAt?: Date | null;
+    archiveAt?: Date | null;
+    debutLe: Date;
+    finLe: Date;
+  }>,
   count: 1,
   updateMany: vi.fn(),
   findMany: vi.fn(),
@@ -135,9 +141,56 @@ describe("publication", () => {
     expect(await publierChallenge(ID, "a", MAJ.toISOString(), OPTS)).toMatchObject({ ok: false });
     expect(h.updateMany).not.toHaveBeenCalled();
   });
-  it("le contrôle de chevauchement ne porte que sur les PUBLIÉS du même produit", async () => {
+  it("le contrôle de chevauchement porte sur les publiés ET archivés, sans filtre produit", async () => {
     await publierChallenge(ID, "a", MAJ.toISOString(), OPTS);
-    expect(h.findMany.mock.calls[0]![0].where).toEqual({ statut: "publie", produit: "journee-ia" });
+    expect(h.findMany.mock.calls[0]![0].where).toEqual({
+      statut: { in: ["publie", "archive"] },
+      publieAt: { not: null },
+    });
+  });
+  const PUB = new Date("2026-11-10T10:00:00.000Z");
+  it("refuse si un archivé APRÈS son début chevauche", async () => {
+    h.publies = [
+      {
+        statut: "archive",
+        publieAt: PUB,
+        archiveAt: new Date("2026-12-10T10:00:00.000Z"),
+        debutLe: j("2026-12-01"),
+        finLe: j("2026-12-31"),
+      },
+    ];
+    expect(await publierChallenge(ID, "a", MAJ.toISOString(), OPTS)).toMatchObject({
+      ok: false,
+      code: "chevauche",
+    });
+  });
+  it("accepte si l'archivé qui chevauche a été arrêté AVANT son début", async () => {
+    h.publies = [
+      {
+        statut: "archive",
+        publieAt: PUB,
+        archiveAt: new Date("2026-11-20T10:00:00.000Z"),
+        debutLe: j("2026-12-01"),
+        finLe: j("2026-12-31"),
+      },
+    ];
+    expect(await publierChallenge(ID, "a", MAJ.toISOString(), OPTS)).toEqual({ ok: true });
+  });
+  it("refuse un publié d'un AUTRE produit sur la même période (non-cumul)", async () => {
+    h.publies = [
+      {
+        statut: "publie",
+        publieAt: PUB,
+        archiveAt: null,
+        debutLe: j("2026-12-01"),
+        finLe: j("2026-12-31"),
+        produit: "autre-produit",
+      } as never,
+    ];
+    expect(await publierChallenge(ID, "a", MAJ.toISOString(), OPTS)).toMatchObject({
+      ok: false,
+      code: "chevauche",
+    });
   });
   it.each([
     ["recouvre le début (borne incluse)", "2026-11-01", "2026-12-01"],
@@ -145,7 +198,7 @@ describe("publication", () => {
     ["inclus dedans", "2026-12-10", "2026-12-20"],
     ["englobant", "2026-11-01", "2027-01-31"],
   ])("refuse si un publié %s", async (_n, debut, fin) => {
-    h.publies = [{ debutLe: j(debut), finLe: j(fin) }];
+    h.publies = [{ statut: "publie", publieAt: PUB, debutLe: j(debut), finLe: j(fin) }];
     const r = await publierChallenge(ID, "a", MAJ.toISOString(), OPTS);
     expect(r).toMatchObject({ ok: false, code: "chevauche" });
     expect(h.updateMany).not.toHaveBeenCalled();
@@ -154,7 +207,7 @@ describe("publication", () => {
     ["finit la veille", "2026-11-01", "2026-11-30"],
     ["commence le lendemain", "2027-01-01", "2027-01-31"],
   ])("accepte un publié qui %s", async (_n, debut, fin) => {
-    h.publies = [{ debutLe: j(debut), finLe: j(fin) }];
+    h.publies = [{ statut: "publie", publieAt: PUB, debutLe: j(debut), finLe: j(fin) }];
     expect(await publierChallenge(ID, "a", MAJ.toISOString(), OPTS)).toEqual({ ok: true });
   });
   it("refus si l'update ne touche aucune ligne (course)", async () => {

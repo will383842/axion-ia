@@ -103,6 +103,7 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
                 primeHtCents: c.primeHtCents,
                 debutLe: c.debutLe,
                 finLe: c.finLe,
+                paiementJusquAu: c.paiementJusquAu,
               }}
             />
             <pre className="mt-[var(--space-admin-3)] max-h-80 overflow-auto rounded-lg border p-3 whitespace-pre-wrap">
@@ -133,7 +134,7 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
                 </label>
               ) : null}
               <div>
-                <button type="submit" className="admin-button-primary">
+                <button type="submit" className="admin-button">
                   Publier le challenge
                 </button>
               </div>
@@ -144,7 +145,7 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
         <AdminCard as="section">
           <p>
             {c.statut === "publie"
-              ? "Ce challenge est publié. Son règlement ne peut plus être modifié. Pour corriger une erreur, archivez-le et créez-en un nouveau."
+              ? "Ce challenge est publié. Son règlement ne peut plus être modifié. Pour corriger une erreur avant le premier jour, archivez-le et créez-en un nouveau."
               : c.statut === "archive"
                 ? "Ce challenge est archivé : il n'est plus visible des apporteurs. Les droits déjà nés restent acquis."
                 : "Ce challenge est un brouillon : seul un administrateur peut le modifier."}

@@ -285,13 +285,17 @@ export function phrasesDeLEncart(c: {
   primeHtCents: number;
   debutLe: string;
   finLe: string;
+  paiementJusquAu?: string | null;
 }): { principale: string; rassurance: string } {
   const produit =
     c.seuil === 1
-      ? `une ${LIBELLE_PRODUIT[c.produit]} a été facturée`
-      : `${nombreEnLettres(c.seuil)} ${LIBELLE_PRODUIT_PLURIEL[c.produit]} ont été facturées`;
+      ? `au moins une ${LIBELLE_PRODUIT[c.produit]} a été facturée`
+      : `au moins ${nombreEnLettres(c.seuil)} ${LIBELLE_PRODUIT_PLURIEL[c.produit]} ont été facturées`;
+  const paiement = c.paiementJusquAu
+    ? `, paiement reçu au plus tard le ${jourEnLettres(c.paiementJusquAu, true)}`
+    : "";
   return {
-    principale: `Une prime de ${montantEnLettres(c.primeHtCents)} HT est versée à tout apporteur pour qui ${produit} ${periodeEnLettres(c.debutLe, c.finLe)}, à des entreprises qui lui sont attribuées selon son contrat.`,
+    principale: `Une prime de ${montantEnLettres(c.primeHtCents)} HT est versée à tout apporteur pour qui ${produit} ${periodeEnLettres(c.debutLe, c.finLe)} et payées en entier${paiement}, à des entreprises qui lui sont attribuées selon son contrat. Cette prime ne se cumule pas avec une autre prime de challenge sur la même période.`,
     rassurance:
       "Rien n'est attendu de vous : ne pas l'obtenir ne change rien à votre contrat ni à vos commissions.",
   };

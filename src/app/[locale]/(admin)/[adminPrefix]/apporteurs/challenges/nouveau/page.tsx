@@ -16,7 +16,7 @@ export default async function NouveauChallengePage({
   params: Promise<{ adminPrefix: string }>;
 }) {
   const { adminPrefix } = await params;
-  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  const acces = await gardePage("ecriture", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   if (!challengesConsoleActifs()) return <ChallengesEteints />;
   if (!peutEngager(acces.role, "facturer"))
