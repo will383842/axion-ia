@@ -262,3 +262,11 @@ Rendu de chaque gabarit (Vitest, `renderToStaticMarkup`) · exhaustivité `Recor
 - `case_study_local` : le générateur demande résultats chiffrés et témoignage (données non vérifiables) : à revoir côté générateur.
 - Répartition réelle du stock par type : non mesurable ici (pas d'accès à la base). Requête à exécuter avant de prioriser : `SELECT j.content_type, count(*) FROM articles a JOIN content_gen_jobs j ON j.id = a.generated_by_job_id WHERE a.status='published' AND NOT a.is_news GROUP BY 1`.
 - Alt de l'image principale (repli `alt=""`) : à traiter dans la PR images.
+
+## 14. Points repris à l'implémentation (relevés par le critique, non bloquants)
+
+- Guide : ids d'étapes uniques (`ancrerSousTitres`, test d'unicité) ; sommaire = une entrée par étape (corrigé dans la maquette).
+- Séparateur de la ligne de métadonnées : `content: " · " / ""` (non lu par les lecteurs d'écran).
+- Cibles tactiles des liens isolés (bandeau de données, termes liés) : ≥ 24 px de haut, 44 px visés.
+- Définition : ratios d'image 16/7 (mobile) et 4/3 (ordinateur) → `object-fit: cover` et `sizes` cohérent ; ratio réservé, donc aucun décalage.
+- Image avant la réponse directe en mobile : vérifier à la mesure post-déploiement que le LCP mobile reste ≤ 1 800 ms, sinon placer l'image après la réponse directe.
