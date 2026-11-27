@@ -10,8 +10,10 @@
  * « contrat signé » note les 16 premiers caractères du sha256 de chaque annexe jointe, et ce
  * script affiche le sha256 complet du fichier déposé. NOTER ce sha256 avec la date du dépôt.
  *
- * (Le guide de démarrage est aussi déposé tout seul par l'application s'il manque ; ce script sert
- * à le REMPLACER après un nouveau PDF dans `private/apporteurs/`.)
+ * 🔒 Ces PDF portent des montants et le dépôt GitHub est PUBLIC : ils ne sont PAS dans le dépôt
+ * (garde : `garde-pdf-apporteurs.spec.ts`). Le stockage R2 est leur SEULE source : l'application
+ * ne les dépose jamais elle-même. Absent de R2 : les routes de l'espace rendent 404 et les
+ * e-mails partent sans la pièce, avec une alerte.
  *
  * Usage :
  *   pnpm tsx scripts/apporteurs/deposer-document-joint.ts                 # liste les documents et leur état
