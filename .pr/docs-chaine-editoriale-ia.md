@@ -21,10 +21,10 @@ Elle ajoute un seul document : `docs/pilotage-seo-geo/CONCEPTION-CHAINE-EDITORIA
 - La recherche sur Google et les IA n'a pas pu lire les pages `developers.google.com` en texte intégral ; le document le dit et sépare faits sourcés, hypothèses et non vérifié.
 - **Décisions demandées à Will (§ 14)** : la règle « jamais partout en France » est **contraire** au code actuel, qui l'impose comme formule de remplacement de « Grenoble » ; la persona « Manon » ; l'arrêt de la publication automatique ; les données de demandes reçues autorisées ; le budget ; le relecteur.
 
-Une critique par un second agent a relevé des erreurs (tâche déjà livrée, coût du web sous-estimé, volume incohérent avec les plafonds, risque du corpus existant) : elles sont corrigées dans le document.
+Une critique par un second agent a relevé des erreurs (tâche déjà livrée, coût du web sous-estimé, volume incohérent avec les plafonds, risque du corpus existant) : elles sont corrigées dans le document, **mais la version corrigée n'a pas été relue une seconde fois par un agent Opus** : le dernier verdict rendu par l'agent critique est donc « à corriger ».
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
 https://claude.ai/code/session_01E7vxGdCcvz7RZcmTkuxruE
 
-VERDICT OPUS : BON
+VERDICT OPUS : À CORRIGER
