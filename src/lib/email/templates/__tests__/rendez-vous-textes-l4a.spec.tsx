@@ -48,7 +48,7 @@ describe("L4a — accusé 7a : un langage de fait, pas de reproche ni de « comp
   it("dit que la réservation prend fin automatiquement, sans « reproche »", async () => {
     const lu = await texte(ApporteurPresentationRecueRendezVousEmail);
     expect(lu).toContain(
-      "Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un délai de 30 jours et un nouveau contact avec elle.",
+      "Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un nouveau contact avec elle.",
     );
     expect(lu).not.toMatch(/reproche/i);
   });
