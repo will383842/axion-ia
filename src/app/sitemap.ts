@@ -73,6 +73,7 @@ import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
 import { barometreEstPublic } from "@/content/barometre-2027/donnees";
+import { communiqueIndexable } from "@/server/press/indexabilite";
 import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
@@ -1319,7 +1320,8 @@ async function buildPresseSitemap(_now: Date): Promise<MetadataRoute.Sitemap> {
   let rows: Array<{
     publishedAt: Date | null;
     createdAt: Date;
-    translations: Array<{ locale: string; slug: string }>;
+    pdfStoragePath: string | null;
+    translations: Array<{ locale: string; slug: string; body: string | null }>;
   }> = [];
   try {
     rows = await prisma.pressRelease.findMany({
@@ -1328,7 +1330,8 @@ async function buildPresseSitemap(_now: Date): Promise<MetadataRoute.Sitemap> {
       select: {
         publishedAt: true,
         createdAt: true,
-        translations: { select: { locale: true, slug: true } },
+        pdfStoragePath: true,
+        translations: { select: { locale: true, slug: true, body: true } },
       },
     });
   } catch {
@@ -1339,7 +1342,13 @@ async function buildPresseSitemap(_now: Date): Promise<MetadataRoute.Sitemap> {
   for (const row of rows) {
     const fr = row.translations.find((t) => t.locale === "fr");
     if (!fr) continue; // FR canonique requis (doctrine content-gen)
-    const en = row.translations.find((t) => t.locale === "en");
+    // S2-2 : même règle que la page `/presse/[slug]` (`communiqueIndexable`).
+    // Un communiqué court sans PDF est `noindex` → hors plan du site. La page
+    // teste `pdfUrl`, dérivé de `pdfStoragePath` (src/server/press/queries.ts).
+    const pdfUrl = row.pdfStoragePath;
+    if (!communiqueIndexable({ pdfUrl, body: fr.body })) continue;
+    const enRaw = row.translations.find((t) => t.locale === "en");
+    const en = enRaw && communiqueIndexable({ pdfUrl, body: enRaw.body }) ? enRaw : undefined;
     // `publishedAt` peut être null (brouillon promu) → fallback createdAt.
     const lastMod = (row.publishedAt ?? row.createdAt).toISOString().slice(0, 10);
     const frUrl = `${SITE_URL}/fr/presse/${fr.slug}`;
