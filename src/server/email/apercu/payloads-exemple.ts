@@ -27,6 +27,7 @@
  * console ouvrirait une page reelle au nom de quelqu'un.
  */
 
+import { euros } from "@/features/apporteurs-reseau/regles";
 import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
 import { SITE_URL } from "@/lib/site-url";
 
@@ -54,6 +55,9 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
     "Se présenter à l'accueil du bâtiment B, badge visiteur à retirer. Parking visiteurs au sous-sol -1.",
   consoleUrl: "https://exemple.invalid/lien-de-demonstration",
   contactName: "Camille Dupont",
+  // `apporteur-attribution-confirmee` (variante « confirmée ») : champ facultatif, donné pour que
+  // l'aperçu montre la ligne « Date de la validation ». Date fictive.
+  dateValidation: "8 octobre 2026",
   contactNom: "Camille Dupont",
   contactSurPlace: "Camille Dupont — 06 00 00 00 00",
   contestationAvantLabel: "18 septembre 2026",
@@ -142,6 +146,15 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   montantHtLabel: "1 450,00 €",
   montantTvaLabel: "290,00 €",
   montantTtcLabel: "1 740,00 €",
+  // `apporteur-releve-mensuel` (gabarit dormant) : exemple FICTIF, tout est facultatif.
+  mois: "octobre 2026",
+  totalMois: "1 450,00 €",
+  nombreCommissions: 3,
+  report: "290,00 €",
+  delaiForme: "30 jours",
+  delaiCalcul: "12 mois",
+  delaiReponse: "30 jours",
+  pdfR2Key: "exemple/releve-de-demonstration.pdf",
   cgvVersionLabel: "4 octobre 2026",
   newsletter: 120,
   nom: "Dupont",
@@ -226,6 +239,13 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   motif: "Motif d'exemple, saisi par l'administrateur.",
   argentEnJeu: true,
   lien: "https://exemple.invalid/lien-de-demonstration",
+  // Lot 2 « changement de compte bancaire » : fins de compte fictives (4 caractères, jamais d'IBAN).
+  nouveauFin: "5678",
+  ancienFin: "1234",
+  // Liens de la forme exigée par le gabarit (https, origine du site, chemin de demande) : sans
+  // eux l'e-mail 1 refuse de se rendre.
+  lienConfirmer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande-de-demonstration/signature-a`,
+  lienBloquer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande-de-demonstration/signature-b`,
   // Chantier QNC, L09 — réclamations (accusé et réponse signée).
   recueLe: "16 octobre 2026",
   reponseAvant: "6 novembre 2026",
@@ -266,6 +286,18 @@ export const VARIANTES_EXEMPLE: Readonly<
   "formateur-formation-annulee": {
     "lettre-non-signee": { etape: 2 },
     "sans-lettre": { etape: 3 },
+  },
+  // Annonces de l'avoir client (art. 4.5) : sans pièce jointe, montants en chaînes formatées.
+  // Exemples en centimes passés par euros() : aucun montant écrit en dur.
+  "apporteur-commission-avoir-client": {
+    reduite: {
+      variante: "reduite",
+      avant: euros(60_000),
+      apres: euros(30_000),
+      annulationLe: "12 novembre 2026",
+    },
+    annulee: { variante: "annulee", avant: euros(60_000), annulationLe: "12 novembre 2026" },
+    reprise: { variante: "reprise", repris: euros(30_000), annulationLe: "12 novembre 2026" },
   },
   // Lot G1 — F40 à l'approche du seuil de vigilance (étape 4), validée à part.
   "formateur-vigilance": {

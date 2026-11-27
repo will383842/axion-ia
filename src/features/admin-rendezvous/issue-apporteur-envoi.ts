@@ -34,6 +34,10 @@ import { trouverFicheDuRendezVous } from "@/server/calendly/rattachement-orpheli
 import { lienReservation } from "@/features/commercial-application/relances-invitation-apporteur";
 import { ouvrirDossierDepuisCandidature } from "@/features/apporteurs-reseau/donnees";
 import { retraitDe } from "@/features/apporteurs-reseau/retrait";
+import {
+  annexesDeLEnvoiDuLien,
+  type PieceJointe,
+} from "@/features/apporteurs-reseau/documents-joints";
 import { urlDossier, urlDossierExemple } from "@/features/apporteurs-reseau/jeton";
 import {
   gabaritDeLIssue,
@@ -71,6 +75,8 @@ export type PreparationIssue =
         destinataire: string;
         locale: "fr" | "en";
         payload: Record<string, unknown>;
+        /** « Retenu » avec dossier à signer : fiche, livret et guide (facultatifs). */
+        attachments?: PieceJointe[];
       } | null;
       /** Pourquoi aucun e-mail ne partira, quand l'issue en prévoit un d'ordinaire. */
       sansEmail: string | null;
@@ -355,9 +361,18 @@ export async function preparerIssueApporteur(input: {
     }
   }
 
+  // « Retenu » qui porte le lien du contrat à SIGNER : la fiche des commissions, le livret et le
+  // guide partent déjà en pièces jointes (facultatives : jamais d'erreur, liste vide si R2 est
+  // en panne). Dossier déjà signé : rien, la contresignature les envoie.
+  const annexes =
+    gabarit === "apporteur-issue-retenu" && dossierUrl && !dossierSigne
+      ? await annexesDeLEnvoiDuLien()
+      : null;
+
   const mot = input.motPersonnel?.trim();
   const payload: Record<string, unknown> = {
     contactName: nom ?? "",
+    ...(annexes?.payload ?? {}),
     ...(dossierUrl ? { dossierUrl } : {}),
     // Dossier déjà signé : la Bienvenue ne dit plus « Première étape : complétez… ».
     ...(dossierSigne ? { dossierSigne: true } : {}),
@@ -374,6 +389,7 @@ export async function preparerIssueApporteur(input: {
       destinataire: email.trim(),
       locale: ligne.locale === "en" ? "en" : "fr",
       payload,
+      ...(annexes && annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     },
     sansEmail: null,
   };
@@ -413,6 +429,9 @@ export async function envoyerIssue(
         entityType: "Submission",
         entityId: prep.fiche.id,
         jobId: jobIdIssue(prep.envoi.gabarit, cle),
+        ...(prep.envoi.attachments && prep.envoi.attachments.length > 0
+          ? { attachments: prep.envoi.attachments }
+          : {}),
       },
     );
     if (r.garePourValidation) return { statut: "en-validation" };

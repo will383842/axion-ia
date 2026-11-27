@@ -16,6 +16,10 @@
  * pour éviter doublons si le worker tick re-trigger plus tôt que prévu.
  */
 
+import {
+  plafondGenerationEffectif,
+  type PolitiquesRelecture,
+} from "@/server/content-gen/quality/relecture-obligatoire";
 import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
@@ -837,7 +841,12 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   // 2026-09-02 : un job clos à la main comptait comme une relance).
   const { requeuedToday: requeuedTodayAll, consumedToday } =
     await countConsumedToday(startOfDayUtcGlobal);
-  const capPerDay = resolveCapPerDay(dailyCap);
+  // C2 (2026-11) : relecture obligatoire → plafond abaissé à ARTICLES_MAX_JOUR_DEFAUT (3).
+  const politiquesRelecture = await readContentGenConfig<PolitiquesRelecture>("policies", {});
+  const capPerDay = plafondGenerationEffectif(
+    { maxPerDay: resolveCapPerDay(dailyCap) },
+    politiquesRelecture,
+  );
   const allowedNow = computeCampaignTickBudget({
     dailyTarget: capPerDay,
     createdToday: consumedToday,

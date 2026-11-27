@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+import { ContentType } from "../../../../prisma/generated/client";
+import { typesClaudeAutorises } from "../providers/types-claude";
 import {
   appliquerRemplacements,
   commenceParUnRenvoi,
@@ -199,6 +201,28 @@ describe("editerSeo", () => {
     expect(r.statut).toBe("desactive");
     expect(r.article).toBe(a);
     expect(generer).not.toHaveBeenCalled();
+  });
+  it("n'émet jamais un type hors énumération `ContentType`, et un type que la porte autorise", async () => {
+    const generer = vi.fn(async (_req: { contentType: string }, _role: string) =>
+      reponse(JSON.stringify({ remplacements: [] })),
+    );
+    const a = { ...bon(), metaTitre: "court" };
+    await editerSeo({ jobId: "j", article: a, brief: BRIEF }, { generer, env: ON });
+    const type = generer.mock.calls[0]?.[0].contentType as string;
+    expect(type).not.toBe("blog_edition_seo");
+    expect(Object.values(ContentType)).toContain(type);
+    expect(typesClaudeAutorises().has(type)).toBe(true);
+  });
+  it("reprend le type du job qui l'appelle quand il est fourni", async () => {
+    const generer = vi.fn(async (_req: { contentType: string }, _role: string) =>
+      reponse(JSON.stringify({ remplacements: [] })),
+    );
+    const a = { ...bon(), metaTitre: "court" };
+    await editerSeo(
+      { jobId: "j", article: a, brief: BRIEF },
+      { generer, env: ON, contentType: "blog_article" },
+    );
+    expect(generer.mock.calls[0]?.[0].contentType).toBe("blog_article");
   });
   it("article conforme : aucun appel", async () => {
     const generer = vi.fn();

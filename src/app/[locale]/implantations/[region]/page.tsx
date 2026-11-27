@@ -27,6 +27,7 @@ import { Link } from "@/i18n/navigation";
 
 import { REGIONS, getRegion } from "@/content/regions";
 import { getVillesByRegion } from "@/content/villes";
+import { villesPrincipalesIndexees } from "@/content/villes/principales-region";
 import {
   aVille,
   CHEMIN_JOURNEE_IA,
@@ -90,8 +91,8 @@ export default async function RegionPage({ params }: Props) {
 
   const villes = getVillesByRegion(region.slug);
   const parPopulation = [...villes].sort((a, b) => b.population - a.population);
-  // Villes principales : les plus peuplées qui ont une page rédigée (indexable à terme).
-  const principales = parPopulation.filter((v) => !!v.copy).slice(0, NB_VILLES_PRINCIPALES);
+  // Villes principales : les plus peuplées dont la page est INDEXÉE (S6-1) — jamais une page noindex.
+  const principales = villesPrincipalesIndexees(villes, NB_VILLES_PRINCIPALES);
   const departements = new Set(villes.map((v) => v.departementLabel ?? v.departement));
   const [ancre1, ancre2] = ancresJourneeIa(region.slug);
   const path = `/implantations/${region.slug}`;

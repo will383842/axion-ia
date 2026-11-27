@@ -32,6 +32,7 @@ import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { RendezVousApporteur } from "@/components/admin/contacts/RendezVousApporteur";
 import { ReponsesRecuesApporteur } from "@/components/admin/contacts/ReponsesRecuesApporteur";
 import { PiecesJointesMessage } from "@/components/admin/contacts/PiecesJointesMessage";
+import { BandeauProchaineEtape } from "@/components/admin/contacts/BandeauProchaineEtape";
 
 interface Props {
   adminPrefix: string;
@@ -156,11 +157,16 @@ export async function SubmissionDetailContent({
     submission.companyName && submission.companyName !== "—"
       ? submission.companyName
       : submission.contactName;
+  const role = (session.user as { role?: string | null }).role;
 
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title={`${typeLabel} · ${titreSociete}`}
+        title={
+          estContactApporteur
+            ? `Candidat apporteur · ${submission.contactName}`
+            : `${typeLabel} · ${titreSociete}`
+        }
         description={`Reçue le ${formatDateFrShort(submission.submittedAt)} · langue ${submission.locale.toUpperCase()}`}
         breadcrumbs={
           <a href={backHref} className="admin-link admin-back">
@@ -201,66 +207,39 @@ export async function SubmissionDetailContent({
               submissionId={submission.id}
               contactName={submission.contactName}
               contactEmail={submission.contactEmail}
-              defaultSubject={`Re: votre demande ${typeLabel}`}
+              defaultSubject={
+                estContactApporteur ? "Re: votre candidature" : `Re: votre demande ${typeLabel}`
+              }
             />
           </div>
         }
       />
       <div className="admin-detail-grid">
-        {candidatureSalariee ? <CadreCandidatureSalariee info={candidatureSalariee} /> : null}
         {estContactApporteur ? (
-          <BlocInvitationApporteur
-            submissionId={submission.id}
-            resultat={invitation}
-            details={details}
-          />
-        ) : null}
-        {/* L'échange réservé, juste sous l'invitation qui l'a provoqué
-            (2026-09-19). Le bloc décide lui-même du rôle avant de lire. */}
-        {estContactApporteur ? (
-          <RendezVousApporteur
-            submissionId={submission.id}
-            role={(session.user as { role?: string | null }).role}
-          />
-        ) : null}
-        {/* Ce que la personne a répondu à l'invitation, par e-mail (2026-09-27).
-            Rien tant qu'aucune réponse n'est arrivée. */}
-        {estContactApporteur ? <ReponsesRecuesApporteur submissionId={submission.id} /> : null}
-        {/* Les deux gestes de la fiche. Ils vivent SOUS l'invitation et sous
-            l'échange : c'est l'ordre dans lequel les décisions se prennent —
-            on invite, la personne réserve, puis on classe ou on enregistre
-            qu'elle ne veut plus rien recevoir. */}
-        {estContactApporteur ? (
-          <div className="admin-card p-[var(--space-admin-4)]">
-            <GestesApporteur
-              id={submission.id}
-              close={submission.status === "archived" || submission.archivedAt !== null}
-              reponduAilleurs={typeof details?.["reponduHorsCircuitAt"] === "string"}
+          <>
+            {/* Ordre de la fiche apporteur : où en est la personne, ce qu'elle a
+                répondu, l'échange et son résultat, qui elle est, les notes — puis,
+                repliés, l'invitation, les liens, l'historique et le technique. */}
+            <BandeauProchaineEtape
+              submissionId={submission.id}
+              adminPrefix={adminPrefix}
+              role={role}
+              details={details}
             />
-          </div>
-        ) : null}
-        {/* 2026-09-28 — deux raccourcis : ce qui est déjà parti chez la
-            personne (journal filtré sur son adresse, toute période), et la
-            trame à imprimer avant l'échange. */}
-        {estContactApporteur ? (
-          <div className="admin-card">
-            <div className="flex flex-wrap gap-[var(--space-admin-4)]">
-              {submission.contactEmail ? (
-                <a
-                  href={`/fr/${adminPrefix}/emails-envoyes?fenetre=0&destinataire=${encodeURIComponent(submission.contactEmail)}`}
-                  className="admin-link"
-                >
-                  E-mails envoyés à cette personne ›
-                </a>
-              ) : null}
-              <a
-                href={`/fr/${adminPrefix}/imprimes/trame-echange-apporteur`}
-                className="admin-link"
-              >
-                Trame d&apos;échange apporteur (à imprimer) ›
-              </a>
+            <ReponsesRecuesApporteur submissionId={submission.id} />
+            <RendezVousApporteur submissionId={submission.id} role={role} />
+            {/* Les gestes de la fiche : classer, ou noter que la personne ne veut plus rien recevoir. */}
+            <div className="admin-card p-[var(--space-admin-4)]">
+              <GestesApporteur
+                id={submission.id}
+                close={submission.status === "archived" || submission.archivedAt !== null}
+                reponduAilleurs={typeof details?.["reponduHorsCircuitAt"] === "string"}
+              />
             </div>
-          </div>
+            {candidatureSalariee ? <CadreCandidatureSalariee info={candidatureSalariee} /> : null}
+          </>
+        ) : candidatureSalariee ? (
+          <CadreCandidatureSalariee info={candidatureSalariee} />
         ) : null}
         {cvCandidat ? (
           <CvCandidatDetail
@@ -350,17 +329,59 @@ export async function SubmissionDetailContent({
         </div>
         <div className="admin-card admin-card-wide">
           {/* « Workflow admin » était un mot de développeur : ce bloc sert à
-              SUIVRE la demande — statut, notes, personne en charge. */}
-          <h2 className="admin-h2">Suivi</h2>
+              SUIVRE la demande — statut, notes, personne en charge. Sur une fiche
+              apporteur, l'étape du bandeau remplace le statut. */}
+          <h2 className="admin-h2">{estContactApporteur ? "Notes internes" : "Suivi"}</h2>
           <SubmissionUpdateForm
             id={submission.id}
             currentStatus={submission.status}
             currentInternalNotes={submission.internalNotes}
             currentAssignedTo={submission.assignedTo}
+            masquerStatut={estContactApporteur}
           />
         </div>
-        {accuse ? <BlocAccuse accuse={accuse} /> : null}
-        <ReplyHistory submissionId={submission.id} />
+        {estContactApporteur ? (
+          <>
+            <BlocInvitationApporteur
+              submissionId={submission.id}
+              resultat={invitation}
+              details={details}
+            />
+            <details className="admin-card admin-card-wide">
+              <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] select-none">
+                Liens : e-mails envoyés, trame d&apos;échange
+              </summary>
+              <div className="flex flex-wrap gap-[var(--space-admin-4)]">
+                {submission.contactEmail ? (
+                  <a
+                    href={`/fr/${adminPrefix}/emails-envoyes?fenetre=0&destinataire=${encodeURIComponent(submission.contactEmail)}`}
+                    className="admin-link"
+                  >
+                    E-mails envoyés à cette personne ›
+                  </a>
+                ) : null}
+                <a
+                  href={`/fr/${adminPrefix}/imprimes/trame-echange-apporteur`}
+                  className="admin-link"
+                >
+                  Trame d&apos;échange apporteur (à imprimer) ›
+                </a>
+              </div>
+            </details>
+            <details className="admin-card admin-card-wide">
+              <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] select-none">
+                Historique des réponses envoyées
+              </summary>
+              {accuse ? <BlocAccuse accuse={accuse} /> : null}
+              <ReplyHistory submissionId={submission.id} />
+            </details>
+          </>
+        ) : (
+          <>
+            {accuse ? <BlocAccuse accuse={accuse} /> : null}
+            <ReplyHistory submissionId={submission.id} />
+          </>
+        )}
         <details className="admin-card admin-card-wide">
           <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] select-none">
             Informations techniques (données brutes, IP, navigateur)

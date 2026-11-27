@@ -165,7 +165,7 @@ export async function lireFichePersonne(empreinte: string): Promise<FichePersonn
       intitule: estApporteur
         ? d?.etape === "premier-contact"
           ? "Premier contact apporteur"
-          : "Dossier apporteur"
+          : "Candidature apporteur"
         : "Message reçu",
       detail: d?.origine ?? null,
       quand: s.submittedAt,

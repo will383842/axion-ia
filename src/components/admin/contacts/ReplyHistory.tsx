@@ -62,7 +62,7 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
   if (replies.length === 0) {
     return (
       <div className="admin-card admin-card-wide">
-        <h2 className="admin-h2">Historique des réponses</h2>
+        <h2 className="admin-h2">Réponses envoyées depuis la console</h2>
         <p className="text-sm text-[color:var(--color-admin-fg-muted)]">
           Aucune réponse envoyée pour le moment.
         </p>
@@ -72,7 +72,7 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
 
   return (
     <div className="admin-card admin-card-wide">
-      <h2 className="admin-h2">Historique des réponses ({replies.length})</h2>
+      <h2 className="admin-h2">Réponses envoyées depuis la console ({replies.length})</h2>
       <ul className="mt-4 space-y-3">
         {replies.map((r) => {
           const status = STATUS_LABEL[r.deliveryStatus] ?? STATUS_LABEL.pending;

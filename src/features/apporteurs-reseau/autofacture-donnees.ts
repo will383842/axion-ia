@@ -7,7 +7,7 @@
  */
 
 import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
-import { PALIERS_FORMATION } from "./regles";
+import { PALIERS_FORMATION, PALIERS_FORMATION_LONGUE } from "./regles";
 import { PREFIXE_PALIER_COMPLEMENT } from "./commandes";
 import { sirenValide } from "./regles-dossier";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
@@ -141,8 +141,16 @@ export function designationCommission(c: CommissionPourAutofacture): string {
     paliers && c.prixPublicHtCents != null
       ? Math.round(c.prixPublicHtCents / paliers.prixCents)
       : 1;
+  // 3 jours ou plus : le prix public porté est celui de toutes les journées.
+  const longue = PALIERS_FORMATION_LONGUE.find((p) => p.id === c.palier);
+  const journees =
+    longue && c.prixPublicHtCents != null
+      ? Math.round(c.prixPublicHtCents / longue.prixJourCents)
+      : 0;
   const palier = c.palier
-    ? ` — palier ${c.palier}${sessions > 1 ? ` × ${sessions} sessions` : ""}`
+    ? ` — palier ${c.palier}${
+        journees > 0 ? ` × ${journees} journées` : sessions > 1 ? ` × ${sessions} sessions` : ""
+      }`
     : "";
   const prix =
     c.prixPublicHtCents != null && c.factureHtCents != null
@@ -430,7 +438,8 @@ export function echeancePaiement(emission: Date, paiementIntegral?: Date | null)
   return new Date(Date.UTC(a!, m! - 1, j! + ECHEANCE_JOURS, 12));
 }
 
-function estOuvre(d: Date): boolean {
+/** Jour OUVRÉ de Paris : ni samedi, ni dimanche, ni férié. Partagé avec le relevé mensuel. */
+export function estJourOuvreParis(d: Date): boolean {
   const jour = new Intl.DateTimeFormat("en-US", {
     timeZone: "Europe/Paris",
     weekday: "short",
@@ -444,7 +453,7 @@ function estOuvre(d: Date): boolean {
  */
 export function dateEncaissementRetenue(constateLe: Date): Date {
   const d = new Date(constateLe.getTime());
-  while (!estOuvre(d)) d.setTime(d.getTime() + 86_400_000);
+  while (!estJourOuvreParis(d)) d.setTime(d.getTime() + 86_400_000);
   return d;
 }
 

@@ -223,9 +223,14 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-regime-tva": "Apporteur : changement de régime de TVA (art. 4.7 et 6.3)",
   "apporteur-resiliation-notifiee": "Apporteur : résiliation du contrat notifiée (art. 11 et 12.5)",
   "apporteur-resiliation-effective": "Apporteur : résiliation du contrat prise d'effet",
+  "apporteur-compte-a-confirmer": "Apporteur : confirmer le changement de compte bancaire",
+  "apporteur-compte-demande-bloquee": "Apporteur : demande de changement de compte bloquée",
+  "apporteur-compte-change": "Apporteur : compte bancaire changé",
+  "apporteur-compte-refuse": "Apporteur : changement de compte refusé",
+  "apporteur-compte-expire": "Apporteur : demande de changement de compte non confirmée",
   "apporteur-manquement": "Apporteur : manquement ou fraude notifié avec les faits (art. 4.5 bis)",
   "apporteur-commission-avoir-client":
-    "Apporteur : commission facturée annulée par un avoir, après l'avoir du client (art. 4.5)",
+    "Apporteur : commission réduite, annulée, retenue ou reprise après l'avoir du client (art. 4.5)",
   "apporteur-contrat-signe": "Apporteur : contrat contresigné",
   "apporteur-presentation-recue": "Apporteur : entreprise bien reçue",
   "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",
@@ -238,6 +243,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
     "Apporteur : une commande ne lui est pas attribuée (motif, contestation ; art. 3.1)",
   "apporteur-attribution-confirmee": "Apporteur : attribution confirmée ou protection prolongée",
   "apporteur-releve": "Apporteur : commission facturée et autofacture",
+  "apporteur-releve-mensuel": "Apporteur : relevé mensuel de ses commissions (récapitulatif)",
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",
   "apporteur-lien-espace":
     "Apporteur : lien de son espace, à sa demande ou envoyé depuis la console",

@@ -49,7 +49,7 @@ export default async function ContactsCommercialPage({ params, searchParams }: P
       basePath="contacts/commercial"
       forcedTypes={COMMERCIAL_TYPES}
       perimetre="apporteurs"
-      title="Apporteurs"
+      title="Candidats apporteurs"
     />
   );
 }

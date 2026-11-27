@@ -122,8 +122,8 @@ export const COMMERCIAL_OPPORTUNITY = {
       en: '"You introduce. It\'s tracked. You get your commission, on an indicative scale."',
     },
     sub: {
-      fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom par notre équipe. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient, versée à l'encaissement de chaque facture.",
-      en: "No need to be a closer. Every company you introduce is logged under your name by our team. Whether it signs with you or contacts us directly, the commission is yours, paid when each invoice is collected.",
+      fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom par notre équipe et vous est réservée 60 jours. Un premier rendez-vous tenu avec nous, pris dans ce délai, ou un devis signé, la valide à votre nom, pour 6 mois. Qu'elle signe avec vous ou qu'elle nous contacte directement pendant ces 6 mois, la commission vous revient, versée quand le client a payé la totalité.",
+      en: "No need to be a closer. Every company you introduce is logged under your name by our team and reserved for you for 60 days. A first meeting held with us, booked within that period, or a signed quote, confirms it in your name, for 6 months. Whether it signs with you or contacts us directly during those 6 months, the commission is yours, paid once the client has paid in full.",
     },
   },
 } as const;
@@ -158,18 +158,18 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
     titleFr: "Vous déclarez vos entreprises",
     titleEn: "You declare your companies",
     textFr:
-      "Vous nous déclarez les entreprises démarchées avec votre nom et prénom — c'est cette déclaration qui sécurise vos commissions, versées à l'encaissement de chaque facture.",
+      "Vous nous déclarez les entreprises démarchées avec votre nom et prénom. Chacune vous est réservée 60 jours : un premier rendez-vous tenu avec nous, pris dans ce délai, ou un devis signé, la valide. Votre commission est versée quand le client a payé la totalité.",
     textEn:
-      "You declare prospected companies to us under your name — that declaration secures your commissions, paid when each invoice is collected.",
+      "You declare prospected companies to us under your name. Each one is reserved for you for 60 days: a first meeting held with us, booked within that period, or a signed quote, confirms it. Your commission is paid once the client has paid in full.",
   },
   {
-    titleFr: "Vos commissions, à l'encaissement",
-    titleEn: "Your commissions, on collection",
+    titleFr: "Vos commissions, une fois le client payé",
+    titleEn: "Your commissions, once the client has paid",
     textFr: COMMISSIONS_PUBLIQUES_AFFICHEES
-      ? "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous recommandez d'entreprises, plus vos commissions progressent."
+      ? "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits, sur la mise en service et sur les ventes en une fois. Rien sur les abonnements, la maintenance, les conférences ni l'accompagnement individuel. Plus vous recommandez d'entreprises, plus vos commissions progressent."
       : "Vous êtes payé à la commission sur chaque mission signée et payée ; son mode de calcul est détaillé dans votre contrat d'apporteur.",
     textEn: COMMISSIONS_PUBLIQUES_AFFICHEES
-      ? "As an indication: flat commission on trainings, a percentage of the invoice on audits and integrations. The more companies you introduce, the more your commissions grow."
+      ? "As an indication: flat commission on trainings, a percentage of the invoice on audits, setup fees and one-off sales. Nothing on subscriptions, maintenance, talks or one-to-one coaching. The more companies you introduce, the more your commissions grow."
       : "You are paid on commission for every engagement signed and paid; how it is calculated is set out in your referral agreement.",
   },
 ];
@@ -305,8 +305,8 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
       en: "How am I sure to get my commissions?",
     },
     a: {
-      fr: "Chaque entreprise démarchée est enregistrée à votre nom dès que vous nous la déclarez, et cette déclaration fait foi. Toute prestation facturée à l'une de vos entreprises vous ouvre droit à commission, versée à l'encaissement de la facture.",
-      en: "Every prospected company is logged under your name as soon as you declare it to us, and that declaration is what counts. Any service invoiced to one of your companies entitles you to a commission, paid when the invoice is collected.",
+      fr: "Chaque entreprise que vous nous déclarez vous est réservée 60 jours. Elle est validée à votre nom au premier rendez-vous tenu avec nous, s'il a été pris dans ce délai (un rendez-vous annulé par Axion-IA compte comme tenu), ou dès qu'un devis est signé. Les prestations de la grille commandées pendant les 6 mois qui suivent cette validation vous ouvrent droit à commission, versée quand le client a payé la totalité, au plus tard 30 jours après. Rien sur les abonnements, la maintenance, les conférences ni l'accompagnement individuel.",
+      en: "Every company you declare to us is reserved for you for 60 days. It is confirmed in your name at the first meeting held with us, if it was booked within that period (a meeting cancelled by Axion-IA counts as held), or as soon as a quote is signed. Services on the commission grid ordered during the 6 months following that confirmation entitle you to a commission, paid once the client has paid in full, at the latest 30 days later. Nothing on subscriptions, maintenance, talks or one-to-one coaching.",
     },
   },
 ];

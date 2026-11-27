@@ -192,6 +192,6 @@ describe("le parcours apporteur n'annonce aucun espace en libre-service tant qu'
       .join("\n");
     expect(tout).toMatch(/vous nous déclarez les entreprises démarchées/i);
     expect(tout).toMatch(/enregistrée à votre nom par notre équipe/i);
-    expect(tout).toMatch(/cette déclaration fait foi/i);
+    expect(tout).toMatch(/vous est réservée 60 jours/i);
   });
 });
