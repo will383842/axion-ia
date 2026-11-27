@@ -16,10 +16,13 @@
    le Studio, qui reste privé. Le « 100 % automatique » de la décision de Will s'entend
    après l'envoi : dès qu'une vidéo est publiée par le Studio, le site la choisit, la répartit
    et la retire tout seul, sans geste humain côté site.
-3. **« Validée » ne veut pas dire « publique ».** Dans le Studio, `validee` / `publiee`
-   décrivent les réseaux sociaux. Le seul signal fiable pour le site est l'état
-   `en-ligne` du kit de publication (`kit.site.etat`). Les vidéos « validées » ou « déjà
-   publiées » sur les réseaux deviennent éligibles **quand le Studio les a envoyées au site**.
+3. **« Validée » ne veut pas dire « publique », mais une vidéo validée peut partir au site
+   sans attendre les réseaux.** Dans le Studio, `validee` / `publiee` décrivent les réseaux
+   sociaux ; l'envoi au site, lui, dépend de `statut prete` + case « Sur le site » + contrôles,
+   **jamais** de l'étape éditoriale (`services/site-videos.ts:502-515,633`). Le seul signal
+   fiable pour le site est donc l'état `en-ligne` du kit (`kit.site.etat`). Pour que les
+   vidéos « validées non encore envoyées » rejoignent l'encart, il faut un petit
+   déclencheur côté Studio (§ 1.7).
 4. **Blocage : les deux contrats ne correspondent pas.** Le Studio envoie `versionContrat`,
    `idStudio`, `rubrique`… ; le site, en `.strict()`, attend `schemaVersion`,
    `studioVideoId`, `theme`… Tel quel, chaque envoi reçoit un 422. Il faut trancher quel
@@ -109,16 +112,37 @@ retrait-en-cours | retiree | echec`. **C'est le critère de l'encart.**
 
 ### 1.6 Écart de contrat (bloquant)
 
-| Point               | Studio (`contrat.ts:7-34`)        | Site (`src/server/videos/contrat.ts:46-97`, `.strict()`)                                          |
-| ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Version             | `versionContrat`                  | `schemaVersion`                                                                                   |
-| Identifiant         | `idStudio`                        | `studioVideoId`                                                                                   |
-| Thème               | `rubrique`                        | `theme` (liste fermée de 5)                                                                       |
-| Lien                | `lienService`                     | `lien{type,chemin}`                                                                               |
-| Fichiers            | `urlVideo`/`urlVignette`/`urlVtt` | `fichiers{video, affiche169, vignette43, vignette11, sousTitres}`                                 |
-| Chapitres           | `{debutSec, finSec, libelle}`     | `{titre, debutSecondes}`                                                                          |
-| Mention IA          | `contenuGenere`                   | `ia{voixGeneree, doubleNumerique}`                                                                |
-| Absents côté Studio | —                                 | `personnesALImage{williams}`, `attestations{aucunNomNiLogoDeClient:true}`, `serie`, `description` |
+Comparaison champ par champ, relue dans les deux dépôts (Studio : `src/domaine/site-videos/contrat.ts:7-34,
+corpsPasseport` ; site : `src/server/videos/contrat.ts:46-97`, tout objet `.strict()` donc un champ
+inconnu = 422).
+
+| Sujet | Studio (envoie) | Site (attend) | Écart |
+| ----- | --------------- | ------------- | ----- |
+| Version du contrat | `versionContrat: 1` | `schemaVersion: 1` | renommer |
+| Identifiant | `idStudio` (libre) | `studioVideoId`, `^[a-z0-9_-]{8,64}$` | renommer + format (minuscules seulement) |
+| Version de la page | `versionPasseport` | `version` (entier ≥ 1) | renommer |
+| Slug | `slugPropose` | `slug` (≤ 80, kebab) | renommer |
+| Langue | `langue` (libre) | `langue` = `"fr"` seulement | contrôle à ajouter |
+| Titre | `titre` ; Studio : 1 à 60 (SITE-11) | `titre` 20 à 100 | **bornes incompatibles** : 1-19 passe chez le Studio et fait 422 ; ramener à 20-60 |
+| Description | **absente** | `description` 80 à 300 | champ à créer |
+| Résumé | `resume` (non vide) | `resume` 400 à 1 500 | bornes à reprendre |
+| À retenir | `aRetenir[]` (3, SITE-10) | `aRetenir` exactement 3, 20 à 200 chacun | longueurs à reprendre |
+| Questions | `questions[]` (2 ou 3) | 2 ou 3 ; `question` 10-160, `reponse` 40-600 | longueurs à reprendre |
+| Thème | `rubrique` (texte libre) | `theme` ∈ liste fermée de 5 : `formations-ia`, `coaching-ia`, `audit-ia`, `automatisation`, `sites-web-ia` (`src/content/videos/themes.ts`) | liste fermée côté Studio |
+| Série | **absente** (le Studio a `serieId`, non envoyé) | `serie` `{slug, titre, rang}` ou `null` | envoyer `null` au début |
+| Lien | `lienService` (chaîne facultative) | `lien` `{type: service\|formation, chemin}`, obligatoire, liste blanche (`liens.ts`) | passer à l'objet ; devient obligatoire |
+| Durée | `dureeSec` (décimale, au dixième) | `dureeSecondes` entier 5 à 3 600 | renommer + arrondir |
+| Chapitres | `{debutSec, finSec, libelle}` | `{titre 2-120, debutSecondes}` ; aucun sous 30 s, débuts croissants | convertir, `finSec` supprimé |
+| Fichiers | `urlVideo`, `urlVignette`, `urlVtt` (adresses complètes), + `largeur`, `hauteur`, `largeurVignette`, `hauteurVignette` | `fichiers{video, affiche169, vignette43, vignette11, sousTitres}`, chacun `{chemin, octets, type}` ; vidéo avec `sha256`, `largeur`, `hauteur` ; images avec `largeur`, `hauteur` | objet à reconstruire ; 3 images au lieu d'une |
+| Clés de stockage | `medias/videos/<idStudio>/<slug>-v<version>-<sha8>.<ext>` (`contrat.ts:98,119`) | `/medias/videos/<slug>/v<version>/<fichier>` (`superRefine`) ; vérifié par `HEAD` | disposition incompatible (S-4) |
+| Transcription | `transcription` | `transcription` 1 à 100 000 ou `null` | compatible |
+| Mention IA | `contenuGenere` (un seul booléen) | `ia{voixGeneree, doubleNumerique}` | à scinder, dériver de `distribution` |
+| Personnes à l'image | **absent** | `personnesALImage{williams}` | à créer (jamais par défaut) |
+| Attestation | **absente** (case SITE-05 locale) | `attestations{aucunNomNiLogoDeClient: true}` | à envoyer quand la case est cochée |
+| Publication | `publieLe` | **inconnu** | à retirer |
+| Champs du Studio que le site refuse | `motsCles`, `generateur`, `credits` | — | **à retirer** de l'envoi |
+
+Seul l'identifiant de signature est déjà compatible (voir plus bas).
 
 Recommandation : **suivre le site** (en production, strict, portant les attestations).
 
@@ -134,6 +158,30 @@ Recommandation : **suivre le site** (en production, strict, portant les attestat
   `medias/videos/<idStudio>/<slug>-v<version>-<sha8>.<ext>` (`contrat.ts:98,119`) : disposition
   incompatible.
 - Les signatures, elles, sont compatibles (même chaîne, `v1=`, nonce 32 hex, fenêtre 300 s).
+
+### 1.7 « Validée mais pas encore envoyée » : comment l'encart les prend aussi
+
+Décision de Will : l'encart prend les vidéos validées, prêtes à publier ou déjà publiées. Le
+Studio n'a qu'une étape « validée » **pour les réseaux** ; mais l'envoi au site ne la lit pas
+(`exigerSelectionnable`, `site-videos.ts:502-509` : seulement `statut prete` et générateur
+autorisé ; `publierSansSession`, `:633` : case « Sur le site » cochée ; contrôles SITE-01 à 17).
+**Ce n'est donc pas impossible**, et aucun changement du modèle éditorial n'est nécessaire.
+
+Aujourd'hui seul `publicationAuto` (`:837-870`) coche la case et envoie, et seulement juste après
+les finitions d'une **nouvelle** vidéo, si le générateur et son réglage `cleSiteAuto` sont allumés.
+Une vidéo validée plus tard, ou antérieure, n'est jamais reprise. Proposition (PR Studio S-6) :
+
+1. appeler `publicationAuto(videoId)` aussi depuis `changerEtapeEditoriale` quand l'étape devient
+   `validee` (`services/videos.ts:495-508` ; pour une vidéo de version, après `validerVariante`) ;
+2. une passe de rattrapage, à lancer à la main une fois, sur toutes les vidéos `prete` dont l'étape
+   est `validee`, `programmee` ou `publiee` (modèle : `republierTout`, `site-videos.ts:225-239`) ;
+3. les contrôles restent bloquants : une vidéo qui n'a pas de page complète (SITE-10, le
+   passeport d'essai échoue toujours), pas de sous-titres, ou pas de case « Aucun client nommé »
+   reste « à relire avant le site » et ne part pas.
+
+**Le vrai obstacle n'est pas le statut mais le passeport web** (thème, résumé, à retenir,
+questions) : tant que Will ne l'écrit pas, ou que l'écriture par Claude (réglage éteint) n'est pas
+allumée, aucune vidéo ne part, validée ou non.
 
 ## 2. Le site : ce qui existe
 
@@ -360,22 +408,21 @@ le worker doit savoir lire avant que l'app n'émette (fenêtre app/worker, AGENT
 
 ### Studio (dépôt `studio-axion-ia-public`, PR séparées)
 
-La notion de « session f4 » **n'existe pas dans le dépôt du Studio** (« F4 » y désigne le lot
-facecam multicaméra, `docs/facecam/JOURNAL-F4.md`). Faute de définition vérifiable, la
-classification ci-dessous suit la règle écrite du Studio : sont **à annoncer** les PR qui touchent
-les fichiers partagés (`PLAN-LOTS-STUDIO.md:624` : `src/domaine/types.ts`, `formats/*`,
-`services/videos.ts`, `fournisseurs/index.ts`, fiche vidéo) ou la zone interface ; elles portent
-le label `sensible-a-fusionner` dès qu'elles envoient quelque chose. **À confirmer par Will**
-si la session « f4 » est bien celle qui tient ces zones.
+Classification « à annoncer » : suit la règle écrite du Studio. Sont **à annoncer** à la session qui
+met le Studio en ligne les PR qui touchent les fichiers partagés (`PLAN-LOTS-STUDIO.md:624` :
+`src/domaine/types.ts`, `formats/*`, `services/videos.ts`, `fournisseurs/index.ts`, fiche vidéo)
+ou la zone interface ; elles portent le label `sensible-a-fusionner` dès qu'elles envoient
+quelque chose.
 
 | PR      | Contenu                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Classe                                                                                                           |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | **S-0** | Décision de contrat (ADR croisé) : le contrat du site fait foi. Doc seule.                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Pas à annoncer                                                                                                   |
-| **S-1** | Aligner `corpsPasseport` sur le schéma du site ; liste fermée de thèmes ; champ `description` ; **bornes de longueur du site reprises dans les contrôles** (nouveaux SITE-xx bloquants, SITE-11 ramené à 20-60) ; retirer `generateur` et `credits` de l'envoi (le site ne les attend pas) ; contrôle « personnage qui témoigne » ; **test de contrat croisé** (JSON fixture du Studio validé par le schéma Zod du site, versionné dans les deux dépôts) ; régénérer `docs/site-videos/contrat/*.json`, `s4-contrat`, `s4-signature`. | **À annoncer à f4** (touche `types.ts` partagé), `sensible-a-fusionner`                                          |
-| **S-2** | Vignettes 4:3 et 1:1 + affiche 16:9 (décision D6) via le système de vignettes v2.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | **À annoncer à f4** (zone interface/miniatures)                                                                  |
-| **S-3** | `archiverVideos` appelle `retirerAvantSuppression` ; test rouge d'abord.                                                                                                                                                                                                                                                                                                                                                                                                                                                              | **À annoncer à f4** (`services/videos.ts` partagé)                                                               |
-| **S-4** | `StockagePublic` réel sur R2, seau public dédié, réglage éteint ; **adopter la disposition de clés du site** `/medias/videos/<slug>/v<version>/<fichier>` avec `sha256`, `octets`, dimensions (le site vérifie par `HEAD`).                                                                                                                                                                                                                                                                                                           | **À annoncer à f4** (`fournisseurs/index.ts`), `sensible-a-fusionner` ; seau + règle `/medias/*` = geste de Will |
+| **S-1** | Aligner `corpsPasseport` sur le schéma du site ; liste fermée de thèmes ; champ `description` ; **bornes de longueur du site reprises dans les contrôles** (nouveaux SITE-xx bloquants, SITE-11 ramené à 20-60) ; retirer `generateur` et `credits` de l'envoi (le site ne les attend pas) ; contrôle « personnage qui témoigne » ; **test de contrat croisé** (JSON fixture du Studio validé par le schéma Zod du site, versionné dans les deux dépôts) ; régénérer `docs/site-videos/contrat/*.json`, `s4-contrat`, `s4-signature`. | **À annoncer à la session qui met le Studio en ligne** (touche `types.ts` partagé), `sensible-a-fusionner`                                          |
+| **S-2** | Vignettes 4:3 et 1:1 + affiche 16:9 (décision D6) via le système de vignettes v2.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | **À annoncer à la session qui met le Studio en ligne** (zone interface/miniatures)                                                                  |
+| **S-3** | `archiverVideos` appelle `retirerAvantSuppression` ; test rouge d'abord.                                                                                                                                                                                                                                                                                                                                                                                                                                                              | **À annoncer à la session qui met le Studio en ligne** (`services/videos.ts` partagé)                                                               |
+| **S-4** | `StockagePublic` réel sur R2, seau public dédié, réglage éteint ; **adopter la disposition de clés du site** `/medias/videos/<slug>/v<version>/<fichier>` avec `sha256`, `octets`, dimensions (le site vérifie par `HEAD`).                                                                                                                                                                                                                                                                                                           | **À annoncer à la session qui met le Studio en ligne** (`fournisseurs/index.ts`), `sensible-a-fusionner` ; seau + règle `/medias/*` = geste de Will |
 | **S-5** | Branchement : `SITE_VIDEOS_URL`, `SITE_VIDEOS_SECRET`, `fournisseur.site = http`. Fiche manuelle datée de Will, aucun code.                                                                                                                                                                                                                                                                                                                                                                                                           | Pas à annoncer (config) mais geste de Will                                                                       |
+| **S-6** | Déclencheur « validée » et rattrapage des vidéos déjà validées ou publiées (§ 1.7). Test rouge d'abord. | **À annoncer à la session qui met le Studio en ligne** (`services/videos.ts`) |
 
 Aucune route de liste n'est demandée au Studio.
 
@@ -403,9 +450,15 @@ LCP/INP en médiane avant chaque allumage ; seuils calibrés sur le stock réel.
 
 1. Choisir le contrat qui fait foi (recommandation : le site).
 2. Choisir l'option de rendu A/B/C (recommandation : A).
-3. Créer le seau R2 public et la règle Cloudflare `/medias/*`.
+3. Le geste de Will (seau R2 public), en 3 étapes simples :
+   1. dans Cloudflare, créer un **nouveau seau R2 réservé aux vidéos publiques**, distinct du seau
+      privé du Studio, et y autoriser la lecture publique ;
+   2. dans Cloudflare, sur le domaine du site, ajouter une règle qui envoie tout `/medias/*` vers
+      ce seau (jamais vers le seau privé) ;
+   3. donner au Studio l'accès en écriture à ce seau (clés dans ses variables), puis dire « c'est
+      fait » : la session du Studio relie alors le dépôt réel (S-4), réglage éteint.
 4. Allumer les générateurs autorisés pour le site côté Studio (éteints par défaut).
-5. Confirmer la définition de « session f4 ».
+5. Confirmer quelle session met le Studio en ligne (elle reçoit les annonces des PR sensibles).
 6. Vérifier « Grenoble » dans la liste du dépôt privé du Studio.
 
 Risques : stock vidéo trop faible pour 100 contenus/jour (plafond saturé ⇒ « pas d'encart »,
