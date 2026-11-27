@@ -63,7 +63,7 @@ describe("images-fr.xml", () => {
       image("image-enrichie", { description: LONG }),
       image("image-resume-ia", { aiSummary: LONG }),
     ]);
-    const { GET } = await import("../images-fr.xml/route");
+    const { GET } = await import("@/app/sitemaps/images-fr.xml/route");
     const xml = await (await GET()).text();
     expect(xml).not.toContain("/galerie/image-vide");
     expect(xml).toContain("/galerie/image-enrichie");
@@ -72,7 +72,7 @@ describe("images-fr.xml", () => {
 
   it("la requête sélectionne description et aiSummary", async () => {
     findMany.mockResolvedValue([]);
-    const { GET } = await import("../images-fr.xml/route");
+    const { GET } = await import("@/app/sitemaps/images-fr.xml/route");
     await GET();
     const arg = findMany.mock.calls[0]?.[0];
     expect(arg.include.translations.select.description).toBe(true);
