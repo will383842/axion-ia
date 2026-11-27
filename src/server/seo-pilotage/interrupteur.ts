@@ -20,6 +20,17 @@ export function pilotageSeoActif(
   return env["CONTENT_PILOTAGE_SEO"] === "true";
 }
 
+/**
+ * Interrupteur de la collecte Bing Webmaster (P17), EN PLUS de `CONTENT_PILOTAGE_SEO` : seul
+ * `"true"` EXACT l'allume. Éteint par défaut ; la clé `BING_WMT_API_KEY` absente rend aussi le
+ * module inactif.
+ */
+export function pilotageBingActif(
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): boolean {
+  return env["CONTENT_PILOTAGE_BING"] === "true";
+}
+
 /** Au build GitHub Actions, la base est un stub : aucune collecte, aucune écriture. */
 export function buildStub(
   env: Readonly<Record<string, string | undefined>> = process.env,

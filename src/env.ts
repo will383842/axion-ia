@@ -549,6 +549,9 @@ export const env = createEnv({
     SENTRY_AUTH_TOKEN: z.string().optional(),
 
     INDEXNOW_KEY: z.string().min(8).max(128).optional(),
+    // Pilotage SEO P17 — clé API Bing Webmaster (lecture des statistiques). Optionnelle : absente,
+    // le module de collecte Bing reste inactif sans erreur. Jamais journalisée (elle voyage dans l'URL).
+    BING_WMT_API_KEY: z.string().min(1).optional(),
 
     // D3 cert 2026-05-08 — verification meta GSC + Bing Webmaster Tools.
     // Sans property vérifiée, pas de coverage report ni URL Inspection API.
@@ -913,6 +916,7 @@ export const env = createEnv({
     SENTRY_DSN: process.env.SENTRY_DSN,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     INDEXNOW_KEY: process.env.INDEXNOW_KEY,
+    BING_WMT_API_KEY: process.env.BING_WMT_API_KEY,
     GOOGLE_SITE_VERIFICATION: process.env.GOOGLE_SITE_VERIFICATION,
     GOOGLE_PSI_API_KEY: process.env.GOOGLE_PSI_API_KEY,
     BING_SITE_VERIFICATION: process.env.BING_SITE_VERIFICATION,

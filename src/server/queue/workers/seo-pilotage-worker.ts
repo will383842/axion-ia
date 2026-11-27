@@ -13,7 +13,7 @@
  * encore, elle ne doit rien exécuter par défaut.
  *
  * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (un jour d'historique par passage),
- * `purge` (dimanche). Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
+ * `purge` (dimanche), `ingestion-bing` (P17, 07 h 47 ; exige AUSSI `CONTENT_PILOTAGE_BING="true"` et la clé). Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
  * jamais un nom.
  *
  * Marqueur de déploiement (`grep` dans le conteneur du worker) : `seo-pilotage-worker`.
@@ -26,12 +26,18 @@ import {
   buildStub,
   estTableAbsente,
   lireModePilotage,
+  pilotageBingActif,
   pilotageSeoActif,
 } from "@/server/seo-pilotage/interrupteur";
 
 export const SEO_PILOTAGE_QUEUE_NAME = "seo-pilotage";
 
-export const TACHES_SEO_PILOTAGE = ["ingestion-gsc", "rattrapage-gsc", "purge"] as const;
+export const TACHES_SEO_PILOTAGE = [
+  "ingestion-gsc",
+  "rattrapage-gsc",
+  "purge",
+  "ingestion-bing",
+] as const;
 export type TacheSeoPilotage = (typeof TACHES_SEO_PILOTAGE)[number];
 
 export type IssueJob =
@@ -56,6 +62,9 @@ export async function runSeoPilotageJob(
     return { issue: "ignoree" };
   }
   if (!pilotageSeoActif()) return { issue: "saute", motif: "interrupteur_eteint" };
+  if (tache === "ingestion-bing" && !pilotageBingActif()) {
+    return { issue: "saute", motif: "interrupteur_bing_eteint" };
+  }
   if (buildStub()) {
     console.log("[seo-pilotage-worker] build stub : saut.");
     return { issue: "saute", motif: "stub" };
@@ -74,6 +83,21 @@ export async function runSeoPilotageJob(
         `[seo-pilotage-worker] purge (${mode}) : ${b.semainesCumulees} semaine(s) cumulée(s), ` +
           `${b.semainesEnAttente} en attente, ${b.joursSupprimes} ligne(s) de jour supprimée(s), ` +
           `${b.semainesSupprimees} ligne(s) de semaine supprimée(s), ${b.requetesRetirees} requête(s) retirée(s)`,
+      );
+      return { issue: "fait", tache };
+    }
+    if (tache === "ingestion-bing") {
+      const { tacheIngestionBing } = await import("@/server/seo-pilotage/bing");
+      const b = await tacheIngestionBing({ prisma });
+      if (b.issue === "saute") {
+        console.log(`[seo-pilotage-worker] ingestion-bing sauté : ${b.motif}`);
+        return { issue: "saute", motif: b.motif };
+      }
+      // Des nombres et des codes d'état seulement : jamais une requête, une URL ni la clé.
+      (b.erreurs.length > 0 ? console.error : console.warn)(
+        `[seo-pilotage-worker] ingestion-bing (${mode}) : ${b.pages} page(s)-semaine, ` +
+          `${b.requetes} requête(s)-semaine, ${b.jours} jour(s) d'exploration, ${b.filtrees} filtrée(s), ` +
+          `${b.isolees} isolée(s)${b.erreurs.length > 0 ? `, erreurs : ${b.erreurs.join(", ")}` : ""}`,
       );
       return { issue: "fait", tache };
     }

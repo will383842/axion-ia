@@ -19272,6 +19272,55 @@ model SeoOpportunite {
   @@map("seo_opportunites")
 }
 
+/// Bing Webmaster (P17) : une ligne par page publique et par semaine (lundi). `positionSum` =
+/// position moyenne × impressions. Aucune clé étrangère. Recalculée à chaque passage (upsert).
+/// rgpd: technique — agrégats par page publique du site ; aucune donnée sur une personne
+model BingPageSemaine {
+  id          Int      @id @default(autoincrement())
+  semaine     DateTime @db.Date
+  chemin      String   @db.VarChar(1000)
+  clics       Int      @default(0)
+  impressions Int      @default(0)
+  positionSum Float    @default(0) @map("position_sum")
+  misAJourLe  DateTime @default(now()) @map("mis_a_jour_le") @db.Timestamptz(3)
+
+  @@unique([semaine, chemin], map: "bing_page_semaines_semaine_chemin_key")
+  @@index([chemin, semaine], map: "bing_page_semaines_chemin_semaine_idx")
+  @@map("bing_page_semaines")
+}
+
+/// Bing Webmaster (P17) : requêtes de recherche par semaine. Le texte passe le filtre de données
+/// personnelles (e-mail, téléphone, nom connu) AVANT stockage ; une requête filtrée n'est que comptée.
+/// rgpd: technique — requêtes filtrées avant stockage
+model BingRequeteSemaine {
+  id          Int      @id @default(autoincrement())
+  semaine     DateTime @db.Date
+  texte       String   @db.VarChar(512)
+  clics       Int      @default(0)
+  impressions Int      @default(0)
+  positionSum Float    @default(0) @map("position_sum")
+  misAJourLe  DateTime @default(now()) @map("mis_a_jour_le") @db.Timestamptz(3)
+
+  @@unique([semaine, texte], map: "bing_requete_semaines_semaine_texte_key")
+  @@map("bing_requete_semaines")
+}
+
+/// Bing Webmaster (P17) : exploration et erreurs d'exploration du site, par jour.
+/// rgpd: technique — compteurs du site ; aucune donnée sur une personne
+model BingExplorationJour {
+  id               Int      @id @default(autoincrement())
+  date             DateTime @db.Date
+  pagesExplorees   Int      @default(0) @map("pages_explorees")
+  erreursExploration Int   @default(0) @map("erreurs_exploration")
+  pagesIndexees    Int      @default(0) @map("pages_indexees")
+  codes4xx         Int      @default(0) @map("codes_4xx")
+  codes5xx         Int      @default(0) @map("codes_5xx")
+  misAJourLe       DateTime @default(now()) @map("mis_a_jour_le") @db.Timestamptz(3)
+
+  @@unique([date], map: "bing_exploration_jours_date_key")
+  @@map("bing_exploration_jours")
+}
+
 /// Collaborateur affiché sur /fr/equipe/{slug} (personnes réelles uniquement). La plume IA reste dans
 /// AuthorProfile ; le fondateur reste servi en statique. Identité publique : PRÉNOM seul, aucun nom
 /// de famille, aucune adresse. Catégorie et statut sont des chaînes validées côté TypeScript

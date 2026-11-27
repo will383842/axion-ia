@@ -9,6 +9,7 @@ import {
 } from "../interrupteur";
 import {
   FUSEAU_SEO_PILOTAGE,
+  PATTERN_SEO_BING,
   PATTERN_SEO_INGESTION,
   PATTERN_SEO_PURGE,
   PATTERN_SEO_RATTRAPAGE,
@@ -48,10 +49,26 @@ describe("interrupteur du pilotage SEO", () => {
   });
 });
 
+describe("interrupteur Bing (P17)", () => {
+  it("éteint par défaut ; seul « true » exact l'allume", async () => {
+    const { pilotageBingActif } = await import("../interrupteur");
+    expect(pilotageBingActif({})).toBe(false);
+    for (const v of ["1", "TRUE", " true", "yes", ""]) {
+      expect(pilotageBingActif({ CONTENT_PILOTAGE_BING: v })).toBe(false);
+    }
+    expect(pilotageBingActif({ CONTENT_PILOTAGE_BING: "true" })).toBe(true);
+  });
+});
+
 describe("cadences du robot", () => {
   it("ne tombent pas sur la minute 0 de site-route-gsc et keyword-sync (04:00 UTC)", () => {
     const minutes = (p: string) => (p.split(" ")[0] as string).split(",").map(Number);
-    for (const p of [PATTERN_SEO_INGESTION, PATTERN_SEO_RATTRAPAGE, PATTERN_SEO_PURGE]) {
+    for (const p of [
+      PATTERN_SEO_INGESTION,
+      PATTERN_SEO_RATTRAPAGE,
+      PATTERN_SEO_PURGE,
+      PATTERN_SEO_BING,
+    ]) {
       expect(minutes(p)).not.toContain(0);
     }
     expect(FUSEAU_SEO_PILOTAGE).toBe("Europe/Paris");

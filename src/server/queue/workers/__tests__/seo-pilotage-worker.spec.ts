@@ -11,6 +11,8 @@ vi.mock("@/lib/prisma", () => ({
 const tacheIngestion = vi.fn();
 const tacheRattrapage = vi.fn();
 const tachePurge = vi.fn();
+const tacheBing = vi.fn();
+vi.mock("@/server/seo-pilotage/bing", () => ({ tacheIngestionBing: tacheBing }));
 vi.mock("@/server/seo-pilotage/ingestion", () => ({
   tacheIngestionGsc: tacheIngestion,
   tacheRattrapageGsc: tacheRattrapage,
@@ -31,6 +33,16 @@ describe("worker seo-pilotage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     delete process.env.CONTENT_PILOTAGE_SEO;
+    delete process.env.CONTENT_PILOTAGE_BING;
+    tacheBing.mockResolvedValue({
+      issue: "fait",
+      pages: 0,
+      requetes: 0,
+      jours: 0,
+      filtrees: 0,
+      isolees: 0,
+      erreurs: [],
+    });
     process.env.DATABASE_URL = "postgresql://u:p@db:5432/x";
     tacheIngestion.mockResolvedValue({ tache: "ingestion-gsc", issue: "termine", motif: "ok" });
     tacheRattrapage.mockResolvedValue({ tache: "rattrapage-gsc", issue: "termine", motif: "ok" });
@@ -98,6 +110,41 @@ describe("worker seo-pilotage", () => {
     expect(tacheIngestion).toHaveBeenCalledTimes(1);
     expect(tacheRattrapage).toHaveBeenCalledTimes(1);
     expect(tachePurge).toHaveBeenCalledTimes(1);
+  });
+
+  it("ingestion-bing : exige les DEUX interrupteurs, sinon aucune lecture de base ni appel", async () => {
+    expect(await runSeoPilotageJob(job("ingestion-bing"))).toEqual({
+      issue: "saute",
+      motif: "interrupteur_eteint",
+    });
+    process.env.CONTENT_PILOTAGE_SEO = "true"; // robot allumé, Bing éteint
+    for (const v of [undefined, "1", "TRUE", " true"]) {
+      if (v) process.env.CONTENT_PILOTAGE_BING = v;
+      expect(await runSeoPilotageJob(job("ingestion-bing"))).toEqual({
+        issue: "saute",
+        motif: "interrupteur_bing_eteint",
+      });
+    }
+    process.env.CONTENT_PILOTAGE_BING = "true"; // Bing seul, robot éteint
+    delete process.env.CONTENT_PILOTAGE_SEO;
+    expect(await runSeoPilotageJob(job("ingestion-bing"))).toMatchObject({ issue: "saute" });
+    expect(accesBase).not.toHaveBeenCalled();
+    expect(tacheBing).not.toHaveBeenCalled();
+  });
+
+  it("ingestion-bing allumé : lance la collecte ; saut propagé (clé absente, quota)", async () => {
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    process.env.CONTENT_PILOTAGE_BING = "true";
+    expect(await runSeoPilotageJob(job("ingestion-bing"))).toEqual({
+      issue: "fait",
+      tache: "ingestion-bing",
+    });
+    expect(tacheBing).toHaveBeenCalledTimes(1);
+    tacheBing.mockResolvedValueOnce({ issue: "saute", motif: "cle_absente" });
+    expect(await runSeoPilotageJob(job("ingestion-bing"))).toEqual({
+      issue: "saute",
+      motif: "cle_absente",
+    });
   });
 
   it("une tâche inconnue est journalisée et IGNORÉE, même allumé, sans rien lancer", async () => {
