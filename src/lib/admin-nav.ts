@@ -1225,7 +1225,7 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
     {
       href: `${base}/content-gen/pilotage`,
       label: "Pilotage SEO & IA",
-      icon: "Target",
+      icon: "Radar",
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
