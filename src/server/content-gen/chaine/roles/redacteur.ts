@@ -122,7 +122,7 @@ const titreH2 = (section: string) =>
 const RE_NOMBRE =
   /(?<![\p{L}\p{N}])(\d{1,3}(?:[  .]\d{3})+|\d+)(?:,(\d+))?(\s?(?:%|€|k€|m€|millions?|milliards?))?(?![\p{L}\p{N}])/giu;
 
-interface NombreTrouve {
+export interface NombreTrouve {
   readonly cle: string;
   readonly valeur: number;
   readonly notable: boolean;
@@ -130,7 +130,7 @@ interface NombreTrouve {
   readonly minutes: boolean;
 }
 
-function nombresDe(texte: string): NombreTrouve[] {
+export function nombresDe(texte: string): NombreTrouve[] {
   const sortie: NombreTrouve[] = [];
   for (const m of texte.matchAll(RE_NOMBRE)) {
     const entier = (m[1] ?? "").replace(/[  .]/g, "");
