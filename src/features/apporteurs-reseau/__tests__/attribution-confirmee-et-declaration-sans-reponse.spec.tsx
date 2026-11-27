@@ -48,6 +48,35 @@ describe("l'e-mail « attribution confirmée / protection prolongée »", () => 
     expect(html).not.toMatch(/jusqu['’]/);
   });
 
+  it("confirmée : « Date de la validation » rendue avant la fin de la protection", async () => {
+    const html = await rendu({
+      entreprise: "Danone",
+      finProtection: "8 avril 2027",
+      dateValidation: "8 octobre 2026",
+    });
+    expect(html).toContain("Date de la validation : 8 octobre 2026.");
+    expect(html.indexOf("Date de la validation")).toBeLessThan(
+      html.indexOf("Fin de la protection"),
+    );
+    expect(html).toContain("Fin de la protection : 8 avril 2027.");
+  });
+
+  it("un payload SANS dateValidation (job déjà en file) se rend sans erreur et sans la ligne", async () => {
+    const html = await rendu({ entreprise: "Danone", finProtection: "8 avril 2027" });
+    expect(html).not.toContain("Date de la validation");
+    expect(html).toContain("Fin de la protection : 8 avril 2027.");
+  });
+
+  it("prolongée : jamais de « Date de la validation », même si le champ est présent", async () => {
+    const html = await rendu({
+      entreprise: "Danone",
+      finProtection: "8 juillet 2027",
+      variante: "prolongee",
+      dateValidation: "8 octobre 2026",
+    });
+    expect(html).not.toContain("Date de la validation");
+  });
+
   it("prolongée : objet dédié et motif en clair", async () => {
     const p = {
       entreprise: "Danone",
@@ -74,6 +103,7 @@ describe("annoncerAttribution : une fois par événement, jamais pour un état i
       denomination: "Danone",
       protegeeJusquAt: new Date("2027-04-08T10:00:00Z"),
       motifProlongation: null,
+      confirmeeAt: new Date("2026-10-08T10:00:00Z"),
       apporteur: { prenom: "Ana", nom: "Bel", email: "ana@exemple.fr" },
     };
   });
@@ -87,6 +117,17 @@ describe("annoncerAttribution : une fois par événement, jamais pour un état i
       jobId: jobIdAnnonceAttribution(ID, "confirmee"),
       payload: { entreprise: "Danone", finProtection: "8 avril 2027", variante: "confirmee" },
     });
+  });
+
+  it("confirmée : le payload porte dateValidation = date du rendez-vous tenu (confirmeeAt)", async () => {
+    h.presentation = {
+      ...h.presentation!,
+      confirmeeAt: new Date("2026-10-07T09:00:00Z"),
+      valideeAt: new Date("2026-10-20T09:00:00Z"),
+    };
+    await annoncerAttribution(ID, "confirmee");
+    const e = h.envoyer.mock.calls[0]![0] as { payload: Record<string, unknown> };
+    expect(e.payload["dateValidation"]).toBe("7 octobre 2026");
   });
 
   it("déjà partie : rien n'est renvoyé", async () => {

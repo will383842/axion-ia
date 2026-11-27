@@ -53,6 +53,8 @@ interface SaisieCommune {
   canal?: "telephone" | "sur_place" | "annule_par_axion";
   /** L'administrateur qui valide (identifiant seul). */
   acteurId: string;
+  /** Motif d'une saisie manuelle (texte court), écrit dans `validationMotif`. */
+  motif?: string;
 }
 
 /**
@@ -66,7 +68,11 @@ export type SaisieValidation = SaisieCommune &
     | {
         rendezVousCle: string;
         propositionId: string;
-        /** Ignorée : la date de prise d'une proposition est celle de la proposition. */
+        /**
+         * Ignorée sauf pour la source « rencontre » (une rencontre n'a pas de date de prise
+         * fiable : le dirigeant la saisit). Pour toute autre source, la date de prise est celle de
+         * la proposition.
+         */
         prisAt?: Date;
       }
     | { rendezVousCle: null; prisAt: Date; propositionId?: undefined }
@@ -237,6 +243,7 @@ export async function validerParRendezVous(
         // Seuls le statut et la date de TENUE sont relus à la source : un rendez-vous affiché « à
         // traiter » peut avoir été annulé, reporté ou marqué absent depuis.
         let prisAt: Date;
+        let prisAtSaisi = false;
         let tenuAt = e.tenuAt;
         if (e.rendezVousCle) {
           const pr = await tx.propositionRendezVousPresentation.findUnique({
@@ -255,6 +262,15 @@ export async function validerParRendezVous(
             throw new Refus(MESSAGE_SANS_PROPOSITION);
           if (!dateValide(pr.prisAt)) throw new Refus("Date de prise du rendez-vous illisible.");
           prisAt = pr.prisAt;
+          // Rencontre : la date de prise saisie par le dirigeant remplace celle de la proposition,
+          // puis passe par `rendezVousRecevable` comme toute autre (pris_avant_saisie / pris_apres_reservation).
+          if (e.source === "rencontre" && e.rendezVousCle.startsWith("rencontre:")) {
+            if (e.prisAt !== undefined) {
+              if (!dateValide(e.prisAt)) throw new Refus("Date de prise du rendez-vous illisible.");
+              prisAt = e.prisAt;
+              prisAtSaisi = true;
+            }
+          }
           const src = await lireSourceRendezVous(tx, e.rendezVousCle);
           if (!src) throw new Refus(MESSAGE_RDV_INTROUVABLE);
           if (rendezVousNonTenu(src)) throw new Refus(MESSAGE_RDV_NON_TENU);
@@ -438,6 +454,7 @@ export async function validerParRendezVous(
             rendezVousPrisAt: prisAt,
             rendezVousAt: tenuAt,
             rendezVousCle: e.rendezVousCle,
+            validationMotif: e.motif?.trim() || null,
             validationSource: e.source,
             valideeAt: maintenant,
             valideeParId: e.acteurId,
@@ -466,6 +483,7 @@ export async function validerParRendezVous(
               rendezVousCle: e.rendezVousCle,
               canal: e.canal ?? null,
               prisAt: prisAt.toISOString(),
+              prisAtSaisi,
               tenuAt: tenuAt.toISOString(),
               apporteurRetire: retire,
             },

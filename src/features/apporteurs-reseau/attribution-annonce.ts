@@ -75,6 +75,7 @@ export async function annoncerAttribution(
         denomination: true,
         protegeeJusquAt: true,
         motifProlongation: true,
+        confirmeeAt: true,
         apporteur: { select: { prenom: true, nom: true, email: true } },
       },
     });
@@ -90,6 +91,8 @@ export async function annoncerAttribution(
           .join(" "),
         entreprise: p.denomination,
         finProtection: dateEnClair(p.protegeeJusquAt),
+        // Date du rendez-vous tenu ou de la signature (`confirmeeAt`), pas celle du clic (`valideeAt`).
+        ...(p.confirmeeAt ? { dateValidation: dateEnClair(p.confirmeeAt) } : {}),
         variante,
         ...(variante === "prolongee" && p.motifProlongation
           ? { motifTexte: MOTIF_EN_CLAIR[p.motifProlongation] ?? "" }
