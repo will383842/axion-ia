@@ -54,6 +54,19 @@ describe("trigger de figement du relevé mensuel", () => {
     );
   });
 
+  it("refuse tout retour vers `prepare` depuis un statut pris", () => {
+    expect(garde).toMatch(
+      /OLD\."statut"\s+IN\s*\(\s*'envoi_en_cours'\s*,\s*'echec'\s*,\s*'envoye'\s*\)\s+AND\s+NEW\."statut"\s*=\s*'prepare'[\s\S]*?RAISE EXCEPTION/,
+    );
+  });
+
+  it("pose les contraintes CHECK et n'a pas d'index redondant sur apporteur_id", () => {
+    for (const c of ["periode_format", "rang_coherent", "ecart_motive", "envoye_complet", "empreinte_format"]) {
+      expect(sql).toContain(`"releves_mensuels_apporteur_${c}"`);
+    }
+    expect(sql).not.toContain("releves_mensuels_apporteur_apporteur_id_idx");
+  });
+
   it("est branché en BEFORE UPDATE sur la table", () => {
     expect(sql).toMatch(
       /CREATE TRIGGER "releves_mensuels_apporteur_garde_update"\s+BEFORE UPDATE ON "releves_mensuels_apporteur"\s+FOR EACH ROW EXECUTE FUNCTION "releves_mensuels_apporteur_garde_update"\(\)/,

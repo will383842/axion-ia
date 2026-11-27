@@ -16442,11 +16442,11 @@ model ApporteurReseau {
   pieces        PieceApporteur[]
   presentations PresentationEntreprise[]
   commissions   CommissionApporteur[]
+  relevesMensuels ReleveMensuelApporteur[]
 
   @@index([statut])
   @@index([parrainId])
   @@map("apporteurs_reseau")
-  relevesMensuels               ReleveMensuelApporteur[]
 }
 
 /// SIRET de l'établissement sous lequel l'apporteur apporte des affaires (2026-10-08) : plusieurs
@@ -16965,7 +16965,6 @@ model ReleveMensuelApporteur {
 
   @@unique([apporteurId, periode, rang])
   @@index([periode, statut])
-  @@index([apporteurId])
   @@map("releves_mensuels_apporteur")
 }
 

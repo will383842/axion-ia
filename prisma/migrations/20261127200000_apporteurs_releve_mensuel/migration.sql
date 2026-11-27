@@ -73,9 +73,6 @@ CREATE UNIQUE INDEX "releves_mensuels_apporteur_email_job_id_key" ON "releves_me
 CREATE INDEX "releves_mensuels_apporteur_periode_statut_idx" ON "releves_mensuels_apporteur"("periode", "statut");
 
 -- CreateIndex
-CREATE INDEX "releves_mensuels_apporteur_apporteur_id_idx" ON "releves_mensuels_apporteur"("apporteur_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "releves_mensuels_apporteur_apporteur_id_periode_rang_key" ON "releves_mensuels_apporteur"("apporteur_id", "periode", "rang");
 
 -- CreateIndex
@@ -111,6 +108,11 @@ BEGIN
   IF OLD."statut" = 'envoye' AND NEW."statut" <> 'envoye' THEN
     RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé envoyé ne change plus de statut';
   END IF;
+  -- Un relevé pris pour envoi ne revient jamais à « prepare » (sinon le contenu serait réécrit après coup).
+  -- `ecarte` → `prepare` (désécarter) reste permis : une ligne écartée n'est jamais partie.
+  IF OLD."statut" IN ('envoi_en_cours', 'echec', 'envoye') AND NEW."statut" = 'prepare' THEN
+    RAISE EXCEPTION 'releves_mensuels_apporteur : un relevé pris pour envoi ne revient jamais à « prepare »';
+  END IF;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -132,3 +134,16 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER "releves_mensuels_apporteur_refuse_delete"
   BEFORE DELETE ON "releves_mensuels_apporteur"
   FOR EACH ROW EXECUTE FUNCTION "releves_mensuels_apporteur_refuse_delete"();
+
+-- ── Contraintes CHECK (tables neuves et vides : pose gratuite) ──────────────────────────────────────────────────
+ALTER TABLE "releves_mensuels_apporteur"
+  ADD CONSTRAINT "releves_mensuels_apporteur_periode_format"
+    CHECK ("periode" ~ '^[0-9]{4}-(0[1-9]|1[0-2])$'),
+  ADD CONSTRAINT "releves_mensuels_apporteur_rang_coherent"
+    CHECK ("rang" >= 0 AND ("rang" = 0) = ("rectifie_id" IS NULL)),
+  ADD CONSTRAINT "releves_mensuels_apporteur_ecart_motive"
+    CHECK ("statut" <> 'ecarte' OR "motif_ecart" IS NOT NULL),
+  ADD CONSTRAINT "releves_mensuels_apporteur_envoye_complet"
+    CHECK ("statut" <> 'envoye' OR ("envoye_at" IS NOT NULL AND "email_job_id" IS NOT NULL)),
+  ADD CONSTRAINT "releves_mensuels_apporteur_empreinte_format"
+    CHECK ("empreinte_sha256" ~ '^[0-9a-f]{64}$');
