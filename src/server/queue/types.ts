@@ -333,6 +333,16 @@ export interface VisioBalayageJobData {
 }
 
 /**
+ * Pilotage SEO (P4) — file `seo-pilotage`. La charge ne porte que le nom de la tâche et un
+ * horodatage. `tache` est une CHAÎNE LIBRE à dessein : le worker ignore (journalise) toute
+ * valeur qu'il ne connaît pas, pour tolérer une app plus récente que lui.
+ */
+export interface SeoPilotageJobData {
+  readonly tache: string;
+  readonly tick?: string;
+}
+
+/**
  * INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO). La charge ne porte
  * qu'un horodatage : la ressource du mois se retrouve par l'API au passage.
  */

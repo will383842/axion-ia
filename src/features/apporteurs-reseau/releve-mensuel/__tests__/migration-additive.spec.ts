@@ -58,12 +58,15 @@ describe("la migration du relevé mensuel est additive", () => {
       .filter((d) => /^\d{14}_/.test(d))
       .sort();
     expect(toutes).toContain(NOM);
-    // Seules les migrations additives de pilotage SEO et de la porte qualité Q1
-    // (nouvelles tables) peuvent la suivre.
+    // Seules les migrations additives de pilotage SEO et de chaîne éditoriale et de la porte qualité Q1 (nouvelles tables) peuvent la suivre.
     expect(toutes.slice(toutes.indexOf(NOM) + 1)).toEqual(
       toutes
         .slice(toutes.indexOf(NOM) + 1)
-        .filter((d) => d.endsWith("_pilotage_seo_mesure") || d.endsWith("_porte_qualite_tables")),
+        .filter((d) =>
+          ["_pilotage_seo_mesure", "_chaine_editoriale_tables", "_porte_qualite_tables"].some((s) =>
+            d.endsWith(s),
+          ),
+        ),
     );
     expect(NOM.slice(0, 14) > "20261127160000").toBe(true);
   });

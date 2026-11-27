@@ -96,6 +96,8 @@ export type WorkerName =
   // Onglet « Toutes les URLs » 2026-06-08
   | "site-route-discovery"
   | "site-route-gsc"
+  // Pilotage SEO (P4) — collecte Search Console, rattrapage, purge
+  | "seo-pilotage"
   // Chatbot (T-05) — ingestion RAG chat_kb_chunks
   | "chatbot-ingest"
   // Sprint v7 Phase 9 — GSC HCU monitoring daily cron

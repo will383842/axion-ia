@@ -51,7 +51,7 @@ import {
 } from "./jeton-changement-iban";
 import { urlDossier } from "./jeton";
 import { chiffrerContenuPiece, lireContenuPiece } from "./pieces-chiffrement";
-import { masquerCoordonnees, retraitDe } from "./retrait";
+import { argentEnJeu, masquerCoordonnees, retraitDe } from "./retrait";
 import { envoyer } from "./envois";
 import { signalerErreurReseau } from "./signaler";
 
@@ -160,12 +160,38 @@ export interface EntreeDemande {
   readonly rib: { readonly nom: string; readonly octets: Uint8Array };
   readonly ip: string | null;
   readonly userAgent: string | null;
+  /**
+   * Lot 9 : `console` = la demande est ouverte par un administrateur au nom d'un apporteur retiré
+   * ou résilié avec de l'argent encore dû. Mêmes barrières ensuite (confirmation par e-mail à la fiche,
+   * 72 h, rappel, validation `super_admin`). Absent = `espace`.
+   */
+  readonly origine?: "espace" | "console";
+  readonly acteur?: ActeurConsole;
+}
+
+/** Une fiche retirée ou résiliée n'est ouverte à une demande que depuis la console, et seulement si de l'argent est dû. */
+async function ficheOuverteAuChangement(
+  fiche: { statut: string; resilieAt: Date | null; refuseAt: Date | null },
+  apporteurId: string,
+  origine: "espace" | "console",
+): Promise<boolean> {
+  if (fiche.refuseAt) return false;
+  if (origine === "console") {
+    if (fiche.statut !== "signe" && fiche.statut !== "resilie") return false;
+    return argentEnJeu(apporteurId);
+  }
+  if (fiche.statut !== "signe" || fiche.resilieAt) return false;
+  return !(await retraitDe(apporteurId));
 }
 
 export async function demanderChangementIban(
   e: EntreeDemande,
 ): Promise<Succes<{ demandeId: string; fin4: string }> | Refus> {
   if (!ouvert()) return FERME;
+  const origine = e.origine ?? "espace";
+  if (origine === "console" && !peutEngager(e.acteur?.role ?? null, "facturer")) {
+    return refus("Réservé aux administrateurs.");
+  }
   const maintenant = new Date();
   const ipH = empreinteIp(e.ip);
   if (
@@ -187,10 +213,7 @@ export async function demanderChangementIban(
       refuseAt: true,
     },
   });
-  if (!fiche || fiche.statut !== "signe" || fiche.resilieAt || fiche.refuseAt) {
-    return refus("Cette demande n'est pas possible pour ce dossier.");
-  }
-  if (await retraitDe(e.apporteurId)) {
+  if (!fiche || !(await ficheOuverteAuChangement(fiche, e.apporteurId, origine))) {
     return refus("Cette demande n'est pas possible pour ce dossier.");
   }
   if (!decryptPii(fiche.telephone)?.trim()) {
@@ -271,7 +294,7 @@ export async function demanderChangementIban(
           ibanFin4: fin4,
           ancienIbanEmpreinte: ancienEmpreinte,
           ancienIbanFin4: quatreDerniersCaracteres(ancien),
-          origine: "espace",
+          origine,
           demandeIpHash: hashIp(e.ip),
           demandeNavigateur: resumerNavigateur(e.userAgent),
         },
@@ -492,10 +515,14 @@ export async function validerDemande(e: {
     where: { id: d.apporteurId },
     select: { statut: true, iban: true, telephone: true, resilieAt: true, refuseAt: true },
   });
-  if (!fiche || fiche.statut !== "signe" || fiche.resilieAt || fiche.refuseAt) {
-    return refus("Le dossier n'est plus dans un état qui permet ce changement.");
-  }
-  if (await retraitDe(d.apporteurId)) {
+  if (
+    !fiche ||
+    !(await ficheOuverteAuChangement(
+      fiche,
+      d.apporteurId,
+      d.origine === "console" ? "console" : "espace",
+    ))
+  ) {
     return refus("Le dossier n'est plus dans un état qui permet ce changement.");
   }
   // Contrôle par saisie : l'empreinte seule parle.
@@ -604,8 +631,10 @@ export async function validerDemande(e: {
       const maj = await tx.apporteurReseau.updateMany({
         where: {
           id: d.apporteurId,
-          statut: "signe",
-          resilieAt: null,
+          // Origine « console » (lot 9) : la fiche peut être retirée ou résiliée, jamais refusée.
+          ...(d.origine === "console"
+            ? { statut: { in: ["signe", "resilie"] } }
+            : { statut: "signe", resilieAt: null }),
           refuseAt: null,
           iban: fiche.iban,
         },

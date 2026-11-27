@@ -74,6 +74,11 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
         description="Les apporteurs du réseau : leur dossier, leur contrat, les entreprises qu'ils présentent et leurs commissions."
         actions={<NouvelApporteurForm base={base} />}
       />
+      <p>
+        <Link href={`${base}/changements-de-compte`} className="underline">
+          Changements de compte bancaire
+        </Link>
+      </p>
       {/* Retour d'une suppression définitive (2026-10-07) : la fiche n'existe plus. */}
       {sp.retrait ? (
         <p role="status" className="admin-alert admin-alert-success">
