@@ -30,7 +30,9 @@ import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { SITE_URL, buildProductMetadata } from "@/lib/seo";
+import { FOUNDER } from "@/lib/brand";
+import { WILLIAMS_FONCTION } from "@/content/equipe/williams";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 import { buildGrapheCollaborateur } from "@/lib/seo/collaborateur-jsonld";
 import { ProfilCollaborateur } from "@/components/equipe/ProfilCollaborateur";
@@ -71,17 +73,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       alternates: { fr: `/equipe/williams` },
       ogEyebrow: "Fondateur d'Axion-IA",
     });
-    // 🔑 Titre ABSOLU : le titre SEO est écrit tel quel (57 caractères), sans le suffixe
-    // « · Axion-IA » du gabarit racine. Et l'image de partage est celle du fichier
-    // `opengraph-image.tsx` voisin (le portrait) : on retire la carte générique
-    // `/api/og` pour qu'elle ne la concurrence pas.
-    const { images: _ogImages, ...openGraph } = (meta.openGraph ?? {}) as Record<string, unknown>;
-    const { images: _twImages, ...twitter } = (meta.twitter ?? {}) as Record<string, unknown>;
+    // 🔑 Titre ABSOLU : le titre SEO est écrit tel quel, sans le suffixe « · Axion-IA » du
+    // gabarit racine. Image de partage : le portrait (`/api/og/equipe-williams`), pour ce
+    // slug seulement ; les autres fiches gardent la carte générique `/api/og`.
+    const imageWilliams = {
+      url: `${SITE_URL}/api/og/equipe-williams`,
+      width: 1200,
+      height: 630,
+      alt: `${FOUNDER.fullName}, ${WILLIAMS_FONCTION}`,
+    };
     return {
       ...meta,
       title: { absolute: contenu.titreSeo },
-      openGraph: openGraph as Metadata["openGraph"],
-      twitter: twitter as Metadata["twitter"],
+      openGraph: { ...meta.openGraph, images: [imageWilliams] },
+      twitter: { ...meta.twitter, images: [imageWilliams] } as Metadata["twitter"],
     };
   }
 
@@ -121,7 +126,7 @@ export default async function PublicAuthorPage({ params }: Props) {
   // ── Fiche fondateur ────────────────────────────────────────────────────
   //
   // Séparée du chemin DB dès le début : elle n'a aucune requête à faire, et
-  // mélanger les deux gabarits obligeait à traiter `WILLIAMS_PROFILE` comme un
+  // mélanger les deux gabarits obligeait à le traiter comme un
   // `AuthorProfile` dégradé — c'est ce qui avait fini par lui donner la même
   // page pauvre qu'une persona.
   if (slug === "williams") {

@@ -29,6 +29,7 @@ import {
   WILLIAMS_JOURNEE_IA,
   WILLIAMS_SERVICES,
   WILLIAMS_LEAD,
+  WILLIAMS_DESCRIPTION_PERSON,
   buildWilliamsFaq,
 } from "@/content/equipe/williams";
 import {
@@ -102,10 +103,9 @@ describe("fiche fondateur — graphe d'entité", () => {
     expect((person.mainEntityOfPage as { "@id": string })["@id"]).toBe(page["@id"]);
   });
 
-  it("la description structurée est la réponse-première affichée, pas une variante", () => {
-    // Deux textes pour la même question, l'un dans le HTML et l'autre dans le
-    // schema, c'est la divergence qui finit par se voir en SERP.
-    expect(buildPersonWilliamsJsonLd("fr").description).toBe(WILLIAMS_LEAD);
+  it("la description de Person reformule la réponse de tête à la 3e personne", () => {
+    expect(buildPersonWilliamsJsonLd("fr").description).toBe(WILLIAMS_DESCRIPTION_PERSON);
+    expect(WILLIAMS_DESCRIPTION_PERSON).not.toMatch(/\bnous\b/i);
     expect(buildProfilePageWilliamsJsonLd().description).toBe(WILLIAMS_LEAD);
   });
 });

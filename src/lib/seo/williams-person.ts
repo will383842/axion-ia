@@ -25,9 +25,9 @@ import { BRAND, FOUNDER, FOUNDER_PERSON_ID, founderUrl } from "@/lib/brand";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   WILLIAMS_LEAD,
+  WILLIAMS_DESCRIPTION_PERSON,
   WILLIAMS_DOCTRINE,
   WILLIAMS_REVISION_DATE,
-  NATURE_AXION_IA,
 } from "@/content/equipe/williams";
 
 // Audit E-E-A-T 2026-06-22 (P1) — identité (nom, fonction, LinkedIn, knowsAbout)
@@ -45,17 +45,6 @@ export const WILLIAMS_LINKEDIN = FOUNDER.linkedin;
 const WILLIAMS_PHOTO = "/illustrations/home-founder-william.avif";
 const WILLIAMS_PHOTO_LARGEUR = 2048;
 const WILLIAMS_PHOTO_HAUTEUR = 2048;
-
-/**
- * Bio Markdown — conservée pour compatibilité avec la forme `AuthorProfile`
- * (le rendu de la fiche ne l'utilise plus : la page a son propre gabarit
- * éditorial). Elle reste la bio « courte » réutilisable ailleurs.
- */
-const WILLIAMS_BIO_MD = `**${FOUNDER.fullName}** dirige Axion-IA, la ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité avec l'équipe qu'elles ont déjà, grâce à l'IA mise en place de A à Z.
-
-L'équipe d'Axion-IA accompagne les TPE et PME : Journée IA, solutions IA sur mesure, automatisation des processus, formation des équipes et coaching des dirigeants.
-
-Profil LinkedIn : ${WILLIAMS_LINKEDIN}`;
 
 /**
  * `knowsAbout` étendu — le SSOT `FOUNDER.knowsAbout` porte les cinq domaines
@@ -84,26 +73,6 @@ const WILLIAMS_SKILLS = [
   "Automatisation et intégration de processus",
   "Formation et coaching de dirigeants",
 ].join(", ");
-
-/**
- * Profil statique exposé à la page `/equipe/[slug]` (mêmes champs que ceux lus
- * sur un `AuthorProfile`). isPersona/aiGenerated = false (personne réelle).
- */
-export const WILLIAMS_PROFILE = {
-  slug: FOUNDER.slug,
-  displayName: FOUNDER.fullName,
-  jobTitle: FOUNDER.jobTitleFr,
-  bioMd: WILLIAMS_BIO_MD,
-  photoUrl80: WILLIAMS_PHOTO,
-  photoUrl256: WILLIAMS_PHOTO,
-  photoUrl1024: WILLIAMS_PHOTO,
-  photoAlt: `${FOUNDER.fullName}, ${FOUNDER.jobTitleFr} — portrait`,
-  knowsAbout: [...FOUNDER.knowsAbout],
-  isPersona: false,
-  aiGenerated: false,
-  personaDisclaimer: null as string | null,
-  isActive: true,
-} as const;
 
 /** URL absolue du portrait — partagée par le `Person` et le `ProfilePage`. */
 export const WILLIAMS_PHOTO_URL = `${SITE_URL}${WILLIAMS_PHOTO}`;
@@ -148,7 +117,7 @@ export function buildPersonWilliamsJsonLd(_locale: string = "fr"): Record<string
     givenName: "Williams",
     familyName: "Jullin",
     jobTitle: FOUNDER.jobTitleFr,
-    description: WILLIAMS_LEAD,
+    description: WILLIAMS_DESCRIPTION_PERSON,
     // Sert exactement à ce que son nom dit : séparer cette personne d'un
     // homonyme dans un index d'entités.
     disambiguatingDescription: `${FOUNDER.jobTitleFr} — Spécialiste de l'intelligence artificielle en entreprise · transformations à gains rapides et mesurables`,

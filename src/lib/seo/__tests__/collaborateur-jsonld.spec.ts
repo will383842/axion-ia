@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { BRAND, FOUNDER_PERSON_ID } from "@/lib/brand";
-import { WILLIAMS_LEAD } from "@/content/equipe/williams";
+import { WILLIAMS_LEAD, WILLIAMS_DESCRIPTION_PERSON } from "@/content/equipe/williams";
 import { estIndexable, fichePublique, ficheDepuisWilliams } from "@/lib/equipe";
 import type { ContenuFiche, FicheCollaborateur } from "@/lib/equipe";
 import {
@@ -71,10 +71,18 @@ describe("garde d'entité — Williams Jullin", () => {
     );
   });
 
-  it("la description structurée est la réponse de tête affichée", () => {
+  it("la description de Person est à la 3e personne, sans « nous »", () => {
     const { publique, contenu } = williams();
-    expect(buildPersonCollaborateurJsonLd(publique, contenu).description).toBe(WILLIAMS_LEAD);
+    const description = buildPersonCollaborateurJsonLd(publique, contenu).description as string;
+    expect(description).toBe(WILLIAMS_DESCRIPTION_PERSON);
+    expect(description).not.toMatch(/\bnous\b|\bnotre\b|\bnos\b/i);
+    expect(description).toMatch(/^Williams Jullin dirige Axion-IA/);
     expect(publique.reponseQui).toBe(WILLIAMS_LEAD);
+  });
+
+  it("la fonction affichée est exactement Person.jobTitle", () => {
+    const { publique, contenu } = williams();
+    expect(publique.fonction).toBe(buildPersonCollaborateurJsonLd(publique, contenu).jobTitle);
   });
 
   it("le graphe : Person, ProfilePage, BreadcrumbList Accueil > Équipe > Williams Jullin, FAQPage", () => {

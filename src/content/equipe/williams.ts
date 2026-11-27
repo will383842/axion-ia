@@ -47,8 +47,8 @@ export const WILLIAMS_REVISION_DATE = "2026-11-27T00:00:00.000Z";
 /** Mot principal pour désigner Axion-IA (une seule source pour les trois endroits clés). */
 export const NATURE_AXION_IA = "startup";
 
-/** Fonction affichée sous le H1 et dans la figcaption. */
-export const WILLIAMS_FONCTION = "Fondateur et dirigeant d'Axion-IA";
+/** Fonction affichée sous le H1 et dans la figcaption : exactement `Person.jobTitle` (JSON-LD). */
+export const WILLIAMS_FONCTION = FOUNDER.jobTitleFr;
 
 /** Ce que l'équipe apporte, en une ligne. */
 export const WILLIAMS_TAGLINE = "Rentabilité et productivité des TPE et PME grâce à l'IA";
@@ -68,6 +68,12 @@ export const WILLIAMS_META_DESCRIPTION = `${FOUNDER.fullName} dirige Axion-IA : 
  * citation extraite du contexte doit rester vraie.
  */
 export const WILLIAMS_LEAD = `${FOUNDER.fullName} dirige Axion-IA, la ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité avec l'équipe qu'elles ont déjà : moins de ressaisies, des devis et des relances plus rapides, plus de temps pour vendre. Nous chiffrons d'abord, puis nous installons tout, sans que le dirigeant touche à la technique. La porte d'entrée est la Journée IA ; ensuite, l'équipe d'Axion-IA prend en charge tout le reste : mise en place, automatisations, formation des équipes et coaching du dirigeant, étape par étape.`;
+
+/**
+ * Description de l'entité Person (JSON-LD) : même sens que la réponse de tête, mais à la 3e
+ * personne et sans « nous », pour rester vraie hors contexte.
+ */
+export const WILLIAMS_DESCRIPTION_PERSON = `${FOUNDER.fullName} dirige Axion-IA, la ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité avec l'équipe qu'elles ont déjà : moins de ressaisies, des devis et des relances plus rapides, plus de temps pour vendre. Axion-IA chiffre d'abord, puis installe tout, sans que le dirigeant touche à la technique. La porte d'entrée est la Journée IA ; ensuite, l'équipe d'Axion-IA prend en charge tout le reste : mise en place, automatisations, formation des équipes et coaching du dirigeant, étape par étape.`;
 
 /**
  * Doctrine en une phrase — reprise en `abstract` du `ProfilePage`.
