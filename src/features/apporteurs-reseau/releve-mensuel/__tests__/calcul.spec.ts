@@ -874,18 +874,19 @@ describe("audit argent #2427 : ordre d'entrée, ex æquo, signes, année", () =>
     expect(new Set(dates).size).toBe(2);
   });
 
-  it("D3 : deux lignes indicatives ex æquo, empreinteContenu stable selon l'ordre d'entrée", () => {
-    const indic = (id: string, facture: string) =>
+  it("D3 : lignes indicatives qui ne diffèrent que par montantCents null / 0, empreinteContenu stable", () => {
+    const indic = (id: string, montantCents: number | null) =>
       commission({
         id,
         autofactureNumero: null,
         autofactureEmiseAt: null,
         statut: "en_attente_vigilance",
-        factureClientNumero: facture,
+        montantCents,
       });
-    const cs = [indic("1", "F-1"), indic("2", "F-2")];
+    const cs = [indic("1", null), indic("2", 0)];
     const a = calcul(cs, []).contenu;
     const b = calcul([...cs].reverse(), []).contenu;
+    expect(a.report.indicatif.lignes).toHaveLength(2);
     expect(empreinteContenu(a)).toBe(empreinteContenu(b));
   });
 
