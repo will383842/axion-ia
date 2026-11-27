@@ -25,7 +25,7 @@ vi.mock("@/features/commercial-application/relances-invitation-apporteur", () =>
   passerRelancesInvitation: (...a: unknown[]) => d.relances(...a),
 }));
 
-import { startApporteurCronsWorker } from "../apporteur-crons-worker";
+import { NOMS_CONNUS, startApporteurCronsWorker } from "../apporteur-crons-worker";
 
 type Processeur = (job: Record<string, unknown>) => Promise<void>;
 
@@ -58,5 +58,19 @@ describe("🔴 apporteur-crons : un nom inconnu est ignoré", () => {
   it("`relance-invitation` exact exécute les rappels", async () => {
     await processeur()({ name: "relance-invitation", data: { type: "relance-invitation" } });
     expect(d.relances).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("🔴 apporteur-crons : la liste des noms connus est liée au type", () => {
+  it("la liste exportée couvre chaque `ApporteurCronJobType` (le typecheck casse si un type manque)", () => {
+    expect([...NOMS_CONNUS].sort()).toEqual(
+      [
+        "invitation-auto",
+        "relance-invitation",
+        "reponses-entrantes",
+        "reseau-facturation",
+        "reseau-quotidien",
+      ].sort(),
+    );
   });
 });

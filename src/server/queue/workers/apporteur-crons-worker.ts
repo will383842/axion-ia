@@ -38,18 +38,21 @@ export const APPORTEUR_CRONS_QUEUE_NAME = "apporteur-crons";
 
 export type { ApporteurCronJobData, ApporteurCronJobType };
 
-const NOMS_CONNUS = [
-  "relance-invitation",
-  "reponses-entrantes",
-  "invitation-auto",
-  "reseau-quotidien",
-  "reseau-facturation",
-] as const;
+// Lié au type : ajouter un `ApporteurCronJobType` sans l'ajouter ici casse `pnpm typecheck`
+// (le Record est exhaustif), au lieu de laisser le NOUVEAU worker ignorer son propre job.
+const NOMS_PAR_TYPE: Record<ApporteurCronJobType, true> = {
+  "relance-invitation": true,
+  "reponses-entrantes": true,
+  "invitation-auto": true,
+  "reseau-quotidien": true,
+  "reseau-facturation": true,
+};
+export const NOMS_CONNUS = Object.keys(NOMS_PAR_TYPE) as readonly ApporteurCronJobType[];
 
 async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
   // 🔑 Aiguillage par le NOM du job (celui que `bootRepeatableJobs` pose),
-  // repli sur `data.type`. Un job sans nom connu reste un passage des rappels :
-  // c'est ce que faisait ce processeur avant qu'il ait deux passages.
+  // repli sur `data.type`. Un job sans nom connu est journalisé et ignoré (voir plus bas) :
+  // il ne retombe plus sur les rappels d'invitation.
   const est = (nom: string): boolean => job.name === nom || job.data?.type === nom;
   // Un nom inconnu est journalisé et IGNORÉ : il retombait sur les rappels d'invitation,
   // arrêtés le 26/10 (lot 0 du relevé mensuel : un ancien worker ne doit rien lancer
