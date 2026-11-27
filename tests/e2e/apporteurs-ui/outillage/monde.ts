@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { jetonDossier } from "@/features/apporteurs-reseau/jeton";
+import { setQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   passerFacturationApporteurs,
   passerReseauApporteurs,
@@ -80,7 +81,8 @@ async function apporteur(): Promise<unknown> {
       denomination: "Apporteur Fictif",
       statutJuridique: "micro_entrepreneur",
       regimeTva: (a["regime"] as "franchise_293b" | "assujetti" | undefined) ?? "franchise_293b",
-      ...(a["iban"] ? { iban: encryptPii(String(a["iban"]))! } : {}),
+      adresse: encryptPii("12 rue de l'Exemple 69001 Lyon")!,
+      iban: encryptPii(String(a["iban"] ?? "FR7630006000011234567890189"))!,
       signeParApporteurAt: maintenant,
       signeParSocieteAt: maintenant,
       signatureApporteur: { version, nom: `Test ${court}` },
@@ -99,7 +101,7 @@ async function commande_(): Promise<unknown> {
   const apporteurId = String(a["apporteurId"]);
   const siren = String(a["siren"] ?? sirenFictif());
   const siret = siretDe(siren);
-  const activite = String(a["activite"] ?? "formation");
+  const activite = a["activite"] === null ? null : String(a["activite"] ?? "formation");
   const montant = Number(a["montantHtCents"] ?? 149_000);
   const journeeIa = a["journeeIa"] === true;
   const payee = a["payee"] !== false;
@@ -147,7 +149,7 @@ async function commande_(): Promise<unknown> {
   const devis = await prisma.devis.create({
     data: {
       numero: `DEV-E2E-${u}`,
-      activite: activite as "formation",
+      activite: activite as "formation" | null,
       clientId: client.id,
       lignes,
       montantTotalHtCents: montant,
@@ -155,14 +157,14 @@ async function commande_(): Promise<unknown> {
       statut: "accepte",
       dateValidite: new Date(maintenant.getTime() + 30 * JOUR),
       sentAt: new Date(maintenant.getTime() - 10 * JOUR),
-      acceptedAt: new Date(maintenant.getTime() - 5 * JOUR),
+      acceptedAt: new Date(maintenant.getTime() - Number(a["accepteIlYAJours"] ?? 5) * JOUR),
       journeeIa,
     },
   });
   const facture = await prisma.factureFormation.create({
     data: {
       numero: `FAC-E2E-${u}`,
-      activite: activite as "formation",
+      activite: activite as "formation" | null,
       clientId: client.id,
       devisId: devis.id,
       destinataire: "entreprise",
@@ -176,7 +178,14 @@ async function commande_(): Promise<unknown> {
       paidAt: payee ? new Date(maintenant.getTime() - 1 * JOUR) : null,
     },
   });
-  return { presentationId, clientId: client.id, devisId: devis.id, factureId: facture.id, siren };
+  return {
+    presentationId,
+    clientId: client.id,
+    devisId: devis.id,
+    factureId: facture.id,
+    siren,
+    denomination: client.raisonSociale,
+  };
 }
 
 /** Un avoir total ou partiel sur une facture (créé « emis »). */
@@ -214,6 +223,24 @@ async function main(): Promise<void> {
     case "commande":
       sortie = await commande_();
       break;
+    case "identite-of": {
+      // Identité FICTIVE de l'organisme (SIRET + adresse du siège), requise pour émettre une facture/un avoir.
+      const admin = await prisma.adminUser.findFirstOrThrow({ select: { id: true } });
+      const session = {
+        userId: admin.id,
+        role: "super_admin",
+        email: "admin@exemple.invalid",
+      } as never;
+      await setQualiopiConfig("siret", siretDe(sirenFictif()) as never, session);
+      await setQualiopiConfig("adresse_siege", "1 rue Fictive 75001 Paris" as never, session);
+      sortie = { ok: true };
+      break;
+    }
+    case "purger-challenges": {
+      // Base de test LOCALE : les challenges des exécutions précédentes bloqueraient la période.
+      sortie = await prisma.challengeApporteur.deleteMany({});
+      break;
+    }
     case "avoir":
       sortie = await avoir();
       break;
