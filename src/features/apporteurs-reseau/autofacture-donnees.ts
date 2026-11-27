@@ -430,7 +430,8 @@ export function echeancePaiement(emission: Date, paiementIntegral?: Date | null)
   return new Date(Date.UTC(a!, m! - 1, j! + ECHEANCE_JOURS, 12));
 }
 
-function estOuvre(d: Date): boolean {
+/** Jour OUVRÉ de Paris : ni samedi, ni dimanche, ni férié. Partagé avec le relevé mensuel. */
+export function estJourOuvreParis(d: Date): boolean {
   const jour = new Intl.DateTimeFormat("en-US", {
     timeZone: "Europe/Paris",
     weekday: "short",
@@ -444,7 +445,7 @@ function estOuvre(d: Date): boolean {
  */
 export function dateEncaissementRetenue(constateLe: Date): Date {
   const d = new Date(constateLe.getTime());
-  while (!estOuvre(d)) d.setTime(d.getTime() + 86_400_000);
+  while (!estJourOuvreParis(d)) d.setTime(d.getTime() + 86_400_000);
   return d;
 }
 

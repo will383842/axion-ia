@@ -14,7 +14,8 @@ import { buildBarometreJsonLd } from "../jsonld";
 import * as donnees from "../donnees";
 import {
   BAROMETRE_PATH,
-  BAROMETRE_PUBLIC,
+  BAROMETRE_DATE_OUVERTURE,
+  barometreEstPublic,
   CHIFFRES_CLES,
   SOURCES,
   VARIABLES_MESUREES,
@@ -22,6 +23,7 @@ import {
 import sitemap from "@/app/sitemap";
 import { generateMetadata } from "@/app/[locale]/ressources/barometre-ia-tpe-pme-2027/page";
 
+const JSONLD = path.join(process.cwd(), "src/content/barometre-2027/jsonld.ts");
 const PAGE = path.join(
   process.cwd(),
   "src/app/[locale]/ressources/barometre-ia-tpe-pme-2027/page.tsx",
@@ -69,17 +71,44 @@ describe("Baromètre 2027 IA TPE/PME", () => {
       /Grenoble|Qualiopi|financement|brouillon|€|gain garanti|questionnaire|témoign/i;
     expect(JSON.stringify(donnees)).not.toMatch(interdit);
     expect(readFileSync(PAGE, "utf8")).not.toMatch(interdit);
+    expect(readFileSync(JSONLD, "utf8")).not.toMatch(interdit);
+    expect(JSON.stringify(buildBarometreJsonLd("fr"))).not.toMatch(interdit);
   });
 
-  it("BAROMETRE_PUBLIC vaut false : hors sitemap (aucune locale)", async () => {
-    expect(BAROMETRE_PUBLIC).toBe(false);
-    const entrees = await sitemap({ id: Promise.resolve("pages") });
-    expect(entrees.filter((e) => e.url.includes("barometre-ia-tpe-pme-2027"))).toEqual([]);
+  it("ouverture : 1er décembre 2026 00:00 heure de Paris, avant = faux, après = vrai", () => {
+    expect(Date.parse(BAROMETRE_DATE_OUVERTURE)).toBe(Date.parse("2026-11-30T23:00:00Z"));
+    expect(barometreEstPublic(new Date("2026-11-30T22:59:59.999Z"))).toBe(false);
+    expect(barometreEstPublic(new Date("2026-11-30T23:00:00.000Z"))).toBe(true);
+    expect(barometreEstPublic(new Date("2027-03-01T12:00:00Z"))).toBe(true);
   });
 
-  it("metadata : noindex et hreflang fr + x-default seulement", async () => {
-    const meta = await generateMetadata({ params: Promise.resolve({ locale: "fr" }) });
-    expect(meta.robots).toMatchObject({ index: false });
+  it("avant l'ouverture : hors sitemap ; après : présent", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    try {
+      vi.setSystemTime(new Date("2026-11-30T22:00:00Z"));
+      const avant = await sitemap({ id: Promise.resolve("pages") });
+      expect(avant.filter((e) => e.url.includes("barometre-ia-tpe-pme-2027"))).toEqual([]);
+      vi.setSystemTime(new Date("2026-12-01T00:30:00+01:00"));
+      const apres = await sitemap({ id: Promise.resolve("pages") });
+      expect(apres.some((e) => e.url.includes("barometre-ia-tpe-pme-2027"))).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("metadata : noindex avant l'ouverture, indexable après ; hreflang fr + x-default seulement", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    let meta;
+    try {
+      vi.setSystemTime(new Date("2026-11-30T22:00:00Z"));
+      meta = await generateMetadata({ params: Promise.resolve({ locale: "fr" }) });
+      expect(meta.robots).toMatchObject({ index: false });
+      vi.setSystemTime(new Date("2026-12-01T00:30:00+01:00"));
+      const apres = await generateMetadata({ params: Promise.resolve({ locale: "fr" }) });
+      expect(apres.robots).not.toMatchObject({ index: false });
+    } finally {
+      vi.useRealTimers();
+    }
     const langs = meta.alternates?.languages ?? {};
     expect(Object.keys(langs).sort()).toEqual(["fr", "x-default"]);
   });

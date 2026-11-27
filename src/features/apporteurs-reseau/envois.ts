@@ -50,7 +50,28 @@ export type GabaritApporteur =
   | "apporteur-releve"
   | "apporteur-releve-mensuel"
   | "apporteur-virement-fait"
-  | "apporteur-lien-espace";
+  | "apporteur-lien-espace"
+  | "apporteur-compte-a-confirmer"
+  | "apporteur-compte-demande-bloquee"
+  | "apporteur-compte-change"
+  | "apporteur-compte-refuse"
+  | "apporteur-compte-expire";
+
+function GABARITS_COMPTE_BANCAIRE_LISTE(): GabaritApporteur[] {
+  return [
+    "apporteur-compte-a-confirmer",
+    "apporteur-compte-demande-bloquee",
+    "apporteur-compte-change",
+    "apporteur-compte-refuse",
+    "apporteur-compte-expire",
+  ];
+}
+
+/**
+ * E-mails de SÉCURITÉ du compte bancaire : exclus d'`avecLienEspace` (plan §6.1). Aucun ne porte le
+ * lien personnel de l'espace ; le lien neuf part dans un e-mail séparé (`apporteur-lien-espace`).
+ */
+const GABARITS_SANS_LIEN_ESPACE: ReadonlySet<string> = new Set(GABARITS_COMPTE_BANCAIRE_LISTE());
 
 export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-lien",
@@ -80,6 +101,8 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-releve-mensuel",
   "apporteur-virement-fait",
   "apporteur-lien-espace",
+  // Changement de compte bancaire (lot 4 du plan changement d'IBAN) : jamais de repli (`gabaritRepli`), voir §6.1.
+  ...GABARITS_COMPTE_BANCAIRE_LISTE(),
 ];
 
 export interface EnvoiApporteur {
@@ -160,6 +183,7 @@ async function apporteurDeLEnvoi(e: EnvoiApporteur): Promise<string | null> {
  */
 export async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
   return avecLienEspaceRecalcule(e.payload, async () => {
+    if (GABARITS_SANS_LIEN_ESPACE.has(e.gabarit)) return null;
     if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
       return null;
     }

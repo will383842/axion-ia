@@ -571,6 +571,37 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur dont le contrat prend fin",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-compte-a-confirmer": {
+    categorie: "recrutement",
+    quand:
+      "À la demande de changement de compte bancaire (lien « Je confirme », valable 24 heures)",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-demande-bloquee": {
+    categorie: "recrutement",
+    quand: "Après une opposition (« Bloquer cette demande »)",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-change": {
+    categorie: "recrutement",
+    quand: "Après la validation du nouveau compte par le super administrateur",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-refuse": {
+    categorie: "recrutement",
+    quand: "Après le refus de la demande, avec le motif de l'administrateur",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-expire": {
+    categorie: "recrutement",
+    quand: "Demande non confirmée dans les 24 heures, au retour sur l'espace",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:

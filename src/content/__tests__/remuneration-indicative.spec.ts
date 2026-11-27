@@ -376,6 +376,8 @@ const GABARITS_APRES_SIGNATURE: readonly string[] = [
   // aucun barème ni montant.
   "apporteur-resiliation-notifiee.tsx",
   "apporteur-resiliation-effective.tsx",
+  // Lot 2 changement de compte bancaire : e-mails de sécurité, apporteur SIGNÉ ; aucun barème ni montant.
+  "apporteur-compte.tsx",
   // Relevé mensuel (lot 2, 2026-11-27) : récapitulatif à un apporteur SIGNÉ ; montants lus dans
   // le payload (relevé figé), aucun barème ni montant dans le gabarit.
   "apporteur-releve-mensuel.tsx",

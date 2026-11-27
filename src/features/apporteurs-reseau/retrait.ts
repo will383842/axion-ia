@@ -353,6 +353,12 @@ export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   "apporteur-releve",
   "apporteur-releve-mensuel",
   "apporteur-virement-fait",
+  // Changement de compte bancaire (plan §6.1) : un apporteur retiré du réseau les reçoit encore (c'est SON argent).
+  "apporteur-compte-a-confirmer",
+  "apporteur-compte-demande-bloquee",
+  "apporteur-compte-change",
+  "apporteur-compte-refuse",
+  "apporteur-compte-expire",
   // Une commission suspendue puis libérée reste de l'argent dû : l'apporteur retiré est prévenu.
   "apporteur-commission-suspension",
   // Le régime de TVA détermine ses autofactures : l'apporteur retiré en est informé.

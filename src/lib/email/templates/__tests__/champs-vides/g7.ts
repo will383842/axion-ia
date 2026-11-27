@@ -16,4 +16,7 @@ export const CHAMPS_VIDES_G7: readonly string[] = [
   "lead-apporteur-relance|vide|lien-vide", // champ : dossierUrl (bouton sans href)
   "apporteur-invitation-appel|vide|lien-vide", // champ : calendlyUrl (bouton sans href)
   "apporteur-invitation-relance|vide|lien-vide", // champ : calendlyUrl (bouton sans href)
+  // EXCEPTION VOULUE (relecture #2414, point 3) : e-mail de sécurité, il lève sans ses deux liens
+  // plutôt que de partir sans moyen de bloquer la demande. Ne pas « corriger » : le gabarit doit lever.
+  "apporteur-compte-a-confirmer|vide|rendu-leve", // champs : lienConfirmer, lienBloquer
 ];

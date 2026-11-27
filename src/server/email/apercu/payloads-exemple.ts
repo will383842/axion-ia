@@ -238,6 +238,13 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   motif: "Motif d'exemple, saisi par l'administrateur.",
   argentEnJeu: true,
   lien: "https://exemple.invalid/lien-de-demonstration",
+  // Lot 2 « changement de compte bancaire » : fins de compte fictives (4 caractères, jamais d'IBAN).
+  nouveauFin: "5678",
+  ancienFin: "1234",
+  // Liens de la forme exigée par le gabarit (https, origine du site, chemin de demande) : sans
+  // eux l'e-mail 1 refuse de se rendre.
+  lienConfirmer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande-de-demonstration/signature-a`,
+  lienBloquer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande-de-demonstration/signature-b`,
   // Chantier QNC, L09 — réclamations (accusé et réponse signée).
   recueLe: "16 octobre 2026",
   reponseAvant: "6 novembre 2026",
