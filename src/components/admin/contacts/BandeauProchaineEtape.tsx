@@ -97,9 +97,7 @@ export async function BandeauProchaineEtape({
     <div
       className="admin-card admin-card-wide"
       id="prochaine-etape"
-      style={
-        alerteEtape ? { borderLeft: "4px solid var(--color-admin-warning)" } : undefined
-      }
+      style={alerteEtape ? { borderLeft: "4px solid var(--color-admin-warning)" } : undefined}
     >
       <h2 className="admin-h2">Prochaine étape</h2>
       <p>{suite.phrase}</p>
