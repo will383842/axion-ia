@@ -414,6 +414,59 @@ describe("cas limites des compteurs, notes et sections", () => {
   });
 });
 
+describe("tour 3 : cohérence note / verdict / B04 / B17", () => {
+  const ctx = { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 };
+  const debut = { reecrituresFaites: 0, coutUsd: 0.5 };
+  const b04 = { id: "B04", etat: "non_evalue", preuve: "", raison: "" } as const;
+
+  it("B04 non évalué + note très basse : pas de relecture humaine, abandon et refus enregistré", () => {
+    const s = sortie("bloque", [b04], 40);
+    expect(actionApresVerdict(s, debut)).toEqual({ action: "abandonner", code: "autre" });
+    expect(refusDepuisVerdict(s, ctx).map((r) => r.code)).toEqual(["autre"]);
+  });
+
+  it("B04 non évalué + bonne note : relecture humaine, aucun refus", () => {
+    const s = sortie("bloque", [b04], 90);
+    expect(actionApresVerdict(s, debut).action).toBe("relecture_humaine");
+    expect(refusDepuisVerdict(s, ctx)).toEqual([]);
+  });
+
+  it("verdict publiable avec une note sous 85 : jamais relecture humaine, refus enregistré", () => {
+    const s = sortie("publiable", [], 40);
+    expect(actionApresVerdict(s, debut).action).not.toBe("relecture_humaine");
+    expect(refusDepuisVerdict(s, ctx).map((r) => r.code)).toEqual(["autre"]);
+  });
+
+  it("B04 non évalué + B17 en défaut → report", () => {
+    expect(actionApresVerdict(sortie("a_corriger", [b04, echec("B17")], 80), debut)).toEqual({
+      action: "reporter",
+    });
+  });
+
+  it("une section blanche n'est pas recopiée dans le refus", () => {
+    const [r] = refusDepuisVerdict(
+      sortie("a_corriger", [echec("B10", { section: "  " })], 80),
+      ctx,
+    );
+    expect(r?.section).toBeUndefined();
+  });
+
+  it("compteurs corrompus dans le refus : bornés, jamais NaN", () => {
+    const [r] = refusDepuisVerdict(sortie("a_corriger", [echec("B01")], 80), {
+      contenuId: "c1",
+      reecrituresFaites: Number.NaN,
+      coutUsd: Number.NaN,
+    });
+    expect(r?.tentative).toBe(3);
+    expect(r?.coutUsd).toBe(0);
+  });
+
+  it("verdict a_corriger à 90 sans défaut : raison honnête (pas « sous le seuil »)", () => {
+    const [r] = refusDepuisVerdict(sortie("a_corriger", [], 90), ctx);
+    expect(r?.raison).not.toMatch(/sous le seuil/);
+  });
+});
+
 describe("compteur unique et utilitaires", () => {
   it("la tentative en cours vaut réécritures faites + 1", () => {
     expect(tentativeEnCours(0)).toBe(1);

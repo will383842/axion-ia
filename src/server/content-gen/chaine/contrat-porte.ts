@@ -242,9 +242,14 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
   const base = {
     role: "porte" as const,
     contenuId: ctx.contenuId,
-    tentative: tentativeEnCours(ctx.reecrituresFaites),
+    // Compteurs corrompus : on borne (tentative maximale, coût 0) plutôt que d'écrire NaN.
+    tentative: tentativeEnCours(
+      Number.isInteger(ctx.reecrituresFaites) && ctx.reecrituresFaites >= 0
+        ? ctx.reecrituresFaites
+        : MAX_REECRITURES,
+    ),
     versionPorte: sortie.versionPorte,
-    coutUsd: ctx.coutUsd,
+    coutUsd: Number.isFinite(ctx.coutUsd) && ctx.coutUsd >= 0 ? ctx.coutUsd : 0,
     ...(ctx.versionPrompt !== undefined ? { versionPrompt: ctx.versionPrompt } : {}),
     ...(ctx.versionBrief !== undefined ? { versionBrief: ctx.versionBrief } : {}),
   };
@@ -260,17 +265,27 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
       critere: d.id,
       raison: d.resultat.raison,
       preuve: d.resultat.preuve,
-      ...(d.resultat.section !== undefined ? { section: d.resultat.section } : {}),
+      ...(sectionLocalisee(d.resultat.section) ? { section: d.resultat.section } : {}),
     });
   }
-  const nonEvalueHorsB17 = defauts.some((d) => d.etat === "non_evalue" && d.id !== "B17");
+  const nonEvalues = defauts.filter((d) => d.etat === "non_evalue" && d.id !== "B17");
+  // Mise en attente ou relecture humaine (B04 seul, note suffisante) : pas un refus.
+  const enAttente = nonEvalues.some((d) => d.id !== "B04");
+  const relecturePrevue =
+    nonEvalues.length > 0 &&
+    nonEvalues.every((d) => d.id === "B04") &&
+    sortie.note >= SEUIL_PUBLICATION_DEPART;
   const report =
     defauts.length > 0 && defauts.every((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE;
-  if (sortie.verdict !== "publiable" && refus.length === 0 && !nonEvalueHorsB17 && !report) {
+  const noteSousSeuil = sortie.verdict !== "publiable" || sortie.note < SEUIL_PUBLICATION_DEPART;
+  if (noteSousSeuil && refus.length === 0 && !enAttente && !relecturePrevue && !report) {
     refus.push({
       ...base,
       code: "autre",
-      raison: `Note de ${sortie.note} sur 100, sous le seuil de publication`,
+      raison:
+        sortie.note < SEUIL_PUBLICATION_DEPART
+          ? `Note de ${sortie.note} sur 100, sous le seuil de publication`
+          : `Verdict « ${sortie.verdict} » sans critère en défaut (sortie de la porte incohérente)`,
       preuve: "",
     });
   }
@@ -324,7 +339,11 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   if (defauts.length > 0 && defauts.every((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE) {
     return { action: "reporter" };
   }
-  if (sortie.verdict === "publiable" && defauts.length === 0) {
+  if (
+    sortie.verdict === "publiable" &&
+    sortie.note >= SEUIL_PUBLICATION_DEPART &&
+    defauts.length === 0
+  ) {
     return { action: "relecture_humaine" };
   }
   const echecs = defauts.filter(
@@ -335,8 +354,16 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   if (echecs.length === 0 && nonEvalues.length > 0) {
     // § 5 de la porte : « B04 non évalué = relecture humaine » (liste réglementaire pas encore activée).
     // Cette relecture est un autre chemin que `publicationAutorisee` (qui exige B04 « ok »).
-    if (nonEvalues.every((d) => d.id === "B04")) return { action: "relecture_humaine" };
-    return { action: "mettre_en_attente", criteres: nonEvalues.map((d) => d.id) };
+    if (nonEvalues.every((d) => d.id === "B04")) {
+      // B17 en défaut (plafond du jour, coupe-circuit) : le contenu attend d'abord.
+      if (defauts.some((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE) {
+        return { action: "reporter" };
+      }
+      // Seulement si la note le permet : un contenu faible n'est jamais envoyé « faute de mieux ».
+      if (sortie.note >= SEUIL_PUBLICATION_DEPART) return { action: "relecture_humaine" };
+    } else {
+      return { action: "mettre_en_attente", criteres: nonEvalues.map((d) => d.id) };
+    }
   }
   const aCorriger = echecs.filter((d) => CLASSE_CRITERE[d.id] !== "derogeable");
   // Une dérogation ne consomme aucune réécriture : elle passe avant le plafond.
