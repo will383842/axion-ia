@@ -11,7 +11,7 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { PointCarteSwitch } from "@/components/admin/collaborateurs/PointCarteSwitch";
-import { gardePageCollaborateurs } from "@/server/equipe-garde-page";
+import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 import {
   TEAM_CATEGORIES,
@@ -41,7 +41,10 @@ const LIBELLE_STATUT: Record<string, string> = {
 
 export default async function CollaborateursPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const acces = await gardePageCollaborateurs(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardeLectureEchanges(
+    `/${locale}/${adminPrefix}/login`,
+    () => "Les fiches collaborateurs sont réservées aux administrateurs.",
+  );
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }

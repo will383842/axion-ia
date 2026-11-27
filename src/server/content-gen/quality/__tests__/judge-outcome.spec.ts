@@ -19,7 +19,13 @@ const base: JudgeOutcomeInput = {
   reachedCap: false,
   doctrineCheckPassed: true,
   isRss: false,
-  policies: {},
+  // C2 : ces scénarios testent le ROUTAGE du verdict, donc partent du retour arrière explicite.
+  // Le comportement par défaut (relecture obligatoire) est prouvé dans relecture-obligatoire.spec.ts.
+  policies: {
+    publicationSansRelectureAutorisee: true,
+    factoryAutoPublishAllBlogTypes: true,
+    newsAutoPublish: true,
+  },
 };
 
 describe("resolveJudgeOutcome — le verdict publish n'est plus jeté", () => {
@@ -66,7 +72,11 @@ describe("resolveJudgeOutcome — garde-fous conservés", () => {
       resolveJudgeOutcome({
         ...base,
         isRss: true,
-        policies: { factoryAutoPublishAllBlogTypes: false },
+        policies: {
+          publicationSansRelectureAutorisee: true,
+          factoryAutoPublishAllBlogTypes: false,
+          newsAutoPublish: true,
+        },
       }),
     ).toBe("approved");
   });

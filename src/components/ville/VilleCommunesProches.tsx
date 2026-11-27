@@ -17,6 +17,7 @@ import { Link } from "@/i18n/navigation";
 import type { Ville } from "@/content/villes";
 import type { VerticaleSlug } from "@/components/services/types";
 import { getNearbyVilles } from "@/lib/geo";
+import { VILLES_INDEXEES } from "@/content/villes/villes-indexees";
 import { fmtPopulation } from "@/lib/intl";
 import { SITE_URL } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
@@ -78,19 +79,24 @@ export async function VilleCommunesProches(props: VilleCommunesProchesProps) {
 
   // 1) Idéal : tenter la même région (maillage SEO cohérent), trier par distance.
   // 2) Fallback automatique du helper : pas de filtre région → scan global.
+  const pageIndexee = VILLES_INDEXEES.has(ville.slug);
   let nearby = getNearbyVilles(ville.geo, MAX_NEARBY, {
     excludeSlug: ville.slug,
     sameRegion: ville.region,
-    // Audit maillage 2026-07-03 — ne mailler QUE vers des villes indexables
-    // (avec `copy`) : ne pas lier les pages indexables aux ~2 280 stubs noindex.
+    // S6-1 — une page INDEXÉE ne mène qu'à des pages indexées (`villes-indexees.ts`).
+    // `indexableOnly` (« a un copy ») est vrai pour les 2 157 communes depuis
+    // le 18/11/2026 : il ne protège plus des pages noindex. Les pages noindex
+    // gardent leur voisinage géographique habituel (aucun effet sur l'index).
     indexableOnly: true,
+    indexeesSeulement: pageIndexee,
   });
   if (nearby.length === 0) {
-    // Fallback : hors contrainte région (villes indexables les plus proches,
-    // même si en région limitrophe) — toujours indexable-only.
+    // Fallback : hors contrainte région (villes indexées les plus proches,
+    // même si en région limitrophe) — toujours indexées seulement.
     nearby = getNearbyVilles(ville.geo, MAX_NEARBY, {
       excludeSlug: ville.slug,
       indexableOnly: true,
+      indexeesSeulement: pageIndexee,
     });
   }
 
