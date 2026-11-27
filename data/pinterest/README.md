@@ -17,6 +17,13 @@ Toute publication passe par le calendrier du Studio (import en lot, puis « Vali
 - 9 épingles par lot ont été remplacées parce que le lien contenait un mot interdit à l'envoi. Elles pointent vers d'autres articles du blog (2 épingles par article, comme le reste). Les images de ces 18 épingles reprennent la même photo libre, avec un nouveau titre ; `credits-photos.csv` suit les nouveaux noms de fichiers.
 - Les textes alternatifs décrivent la photo réelle de l'image verticale et reprennent le titre inscrit dessus.
 
+## Corrections du 2e tour (relecture du contenu)
+
+- 4 épingles (2 articles) retirées parce que les articles figurent dans `SLUGS_EXCLUS_TEMOIGNAGE` (`src/server/crible-stock/exclusions.ts`) : remplacées par `3-quick-wins-ia-operationnels-2026` et `definition-prompt-engineering-audit-entreprise-sarcelles` (2 épingles chacun, même photo, nouveau titre). Aucune des 60 épingles ne pointe plus vers un slug de cette liste.
+- Liens : le site n'était pas joignable depuis la session (proxy 403, `curl` renvoie 000). Les 30 slugs ont donc été confirmés dans le dépôt (manifeste `src/content/og-blog-manifest.ts`, audit GEO du 14/08, `public/og/blog/`). 19 articles non confirmés par ce moyen ont été remplacés par des articles confirmés (38 épingles, tableau « Former ses équipes à l'IA », même photo, nouveau titre). Le code HTTP réel (200, sans redirection) reste à contrôler avant « Valider ce lot ».
+- Lot 1 n°18 : la photo montrait une étiquette « 5.99 » ; remplacée par une photo de convoyeur déjà présente sur la branche (lot 2, ancien n°7), texte alternatif réécrit.
+- Titres et descriptions des épingles remplacées s'appuient sur l'adresse et le sujet des articles (non relus).
+
 ## Tableaux et sections
 
 Le format du Studio n'accepte qu'un nom de tableau et refuse toute autre clé : il n'y a pas de champ « section ». Les épingles prévues pour une section sont donc placées sur le tableau parent. Les sections visées, à rattacher à la main sur Pinterest si on le souhaite :
