@@ -14,6 +14,11 @@ vi.mock("@/features/apporteurs-reseau/actions-apporteurs", () => ({
 }));
 
 import { BlocDecision } from "../BlocDecision";
+import { DecisionDossier } from "../DecisionDossier";
+
+const Page = ({ aVerifier }: { aVerifier: boolean }) => (
+  <BlocDecision>{aVerifier ? <DecisionDossier apporteurId={ID} /> : null}</BlocDecision>
+);
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const MESSAGE =
@@ -31,7 +36,7 @@ beforeEach(() => {
 describe("BlocDecision : confirmation après rechargement", () => {
   it("garde le message visible quand l'apporteur n'est plus à vérifier", async () => {
     const u = userEvent.setup();
-    const { rerender } = render(<BlocDecision apporteurId={ID} aVerifier />);
+    const { rerender } = render(<Page aVerifier />);
     await u.click(screen.getByRole("button", { name: "Oui, contresigner" }));
     await u.click(
       await screen.findByRole("button", { name: "Contresigner et envoyer le contrat" }),
@@ -39,14 +44,14 @@ describe("BlocDecision : confirmation après rechargement", () => {
     expect(await screen.findByRole("status")).toHaveTextContent(MESSAGE);
 
     // La page revalidée rend le même composant, sans le bloc de décision.
-    rerender(<BlocDecision apporteurId={ID} aVerifier={false} />);
+    rerender(<Page aVerifier={false} />);
     expect(screen.queryByRole("button", { name: "Oui, contresigner" })).toBeNull();
     expect(screen.getByRole("status")).toHaveTextContent("Contrat contresigné et envoyé.");
     expect(screen.getByRole("status")).toHaveTextContent("guide de démarrage");
   });
 
   it("n'affiche rien avant toute décision", () => {
-    render(<BlocDecision apporteurId={ID} aVerifier={false} />);
+    render(<Page aVerifier={false} />);
     expect(screen.queryByRole("status")).toBeNull();
   });
 });

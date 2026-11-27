@@ -5,46 +5,30 @@
 // l'apporteur n'est plus « à vérifier », donc le bloc de décision disparaît AVEC son état local, et
 // le message de réussite (« Contrat contresigné et envoyé. » + bilan des pièces jointes) avec lui.
 // Ce composant reste monté à la même place quel que soit le statut : il porte le message et le rend
-// sous le bloc (ou à sa place) après le rechargement.
+// au-dessus du bloc (ou à sa place) après le rechargement.
+//
+// Le bloc (carte, titre, DecisionDossier) reste rendu par le serveur et passé en `children` : seul
+// ce petit composant part au client (cliquet de poids de la console admin).
 
-import { useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
-import { AdminCard } from "@/components/admin/ui";
+const SignalerReussite = createContext<(message: string) => void>(() => {});
 
-import { DecisionDossier } from "./DecisionDossier";
+/** Pour `DecisionDossier` : remonte le message de réussite au parent qui survit au rechargement. */
+export const useSignalerReussite = () => useContext(SignalerReussite);
 
-export function BlocDecision({
-  apporteurId,
-  aVerifier,
-}: {
-  apporteurId: string;
-  aVerifier: boolean;
-}) {
+export function BlocDecision({ children }: { children?: ReactNode }) {
   const [confirmation, setConfirmation] = useState<string | null>(null);
-  let bloc: ReactNode = null;
-  if (aVerifier) {
-    bloc = (
-      <AdminCard as="section" elevation={2}>
-        <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
-          Dossier signé : à vérifier
-        </h2>
-        <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
-          Vérifiez chaque pièce, relisez le contrat signé, puis choisissez.
-        </p>
-        <DecisionDossier apporteurId={apporteurId} onReussite={setConfirmation} />
-      </AdminCard>
-    );
-  }
   return (
-    <>
+    <SignalerReussite.Provider value={setConfirmation}>
       {confirmation ? (
-        <AdminCard as="section" elevation={2}>
+        <section className="admin-card-v2 rounded-[var(--radius-admin-xl,16px)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-card,20px)] shadow-[var(--shadow-admin-2)]">
           <p role="status" className="font-semibold text-[color:var(--color-admin-success)]">
             {confirmation}
           </p>
-        </AdminCard>
+        </section>
       ) : null}
-      {bloc}
-    </>
+      {children}
+    </SignalerReussite.Provider>
   );
 }
