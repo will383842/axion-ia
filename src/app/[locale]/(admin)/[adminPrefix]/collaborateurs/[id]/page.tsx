@@ -9,6 +9,7 @@ import {
   CollaborateurForm,
   type FicheInitiale,
 } from "@/components/admin/collaborateurs/CollaborateurForm";
+import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { gardePageCollaborateurs } from "@/server/equipe-garde-page";
 import { prisma } from "@/lib/prisma";
 import { idSchema } from "@/lib/equipe/console/schemas";
@@ -25,7 +26,12 @@ export default async function CollaborateurPage({
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
 }) {
   const { locale, adminPrefix, id } = await params;
-  const acces = await gardePageCollaborateurs(`/${locale}/${adminPrefix}/login`);
+  const login = `/${locale}/${adminPrefix}/login`;
+  const lecture = await gardeLectureEchanges(login);
+  if (!lecture.autorise) {
+    return <AccesRefuse motif={lecture.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+  const acces = await gardePageCollaborateurs(login);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }

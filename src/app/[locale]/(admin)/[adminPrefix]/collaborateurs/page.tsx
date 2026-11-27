@@ -11,6 +11,11 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { PointCarteSwitch } from "@/components/admin/collaborateurs/PointCarteSwitch";
+import {
+  InvitationsQuestionnaire,
+  type LigneInvitation,
+} from "@/components/admin/collaborateurs/InvitationsQuestionnaire";
+import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { gardePageCollaborateurs } from "@/server/equipe-garde-page";
 import { prisma } from "@/lib/prisma";
 import {
@@ -41,7 +46,13 @@ const LIBELLE_STATUT: Record<string, string> = {
 
 export default async function CollaborateursPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const acces = await gardePageCollaborateurs(`/${locale}/${adminPrefix}/login`);
+  const login = `/${locale}/${adminPrefix}/login`;
+  // Garde de lecture du dossier client, AVANT toute lecture ; puis la garde administrateur (écriture).
+  const lecture = await gardeLectureEchanges(login);
+  if (!lecture.autorise) {
+    return <AccesRefuse motif={lecture.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+  const acces = await gardePageCollaborateurs(login);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
@@ -52,9 +63,11 @@ export default async function CollaborateursPage({ params, searchParams }: PageP
 
   let membres: Awaited<ReturnType<typeof lire>> | null = null;
   let aValider = 0;
+  let invitations: LigneInvitation[] = [];
   try {
     membres = await lire(categorie, statut);
     aValider = await prisma.teamMember.count({ where: { status: "a_valider" } });
+    invitations = await lireInvitations();
   } catch {
     membres = null; // table absente (migration en attente) : dit plus bas.
   }
@@ -65,6 +78,10 @@ export default async function CollaborateursPage({ params, searchParams }: PageP
         title="Collaborateurs"
         description="Fiches publiques de l'équipe. Une fiche ne se publie qu'avec l'accord de la personne."
         actions={<AdminButton href={`${base}/nouveau`}>Nouvelle fiche</AdminButton>}
+      />
+      <InvitationsQuestionnaire
+        categories={TEAM_CATEGORIES.map((c) => ({ slug: c.slug, libelle: c.singulier }))}
+        invitations={invitations}
       />
       <p className="mb-4">
         À valider : <strong>{aValider}</strong>
@@ -182,5 +199,47 @@ function lire(categorie: string | undefined, statut: string | undefined) {
       linkedinConsentAt: true,
       websiteUrl: true,
     },
+  });
+}
+
+const JOUR = (d: Date) => d.toISOString().slice(0, 10);
+
+async function lireInvitations(): Promise<LigneInvitation[]> {
+  const lignes = await prisma.teamQuestionnaireInvite.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 100,
+    select: {
+      id: true,
+      category: true,
+      firstName: true,
+      createdAt: true,
+      expiresAt: true,
+      firstOpenedAt: true,
+      usedAt: true,
+      revokedAt: true,
+      contactEmailEnc: true,
+    },
+  });
+  const maintenant = Date.now();
+  return lignes.map((l) => {
+    const statut: LigneInvitation["statut"] = l.usedAt
+      ? "remplie"
+      : l.revokedAt
+        ? "revoquee"
+        : l.expiresAt.getTime() <= maintenant
+          ? "expiree"
+          : l.firstOpenedAt
+            ? "ouverte"
+            : "envoyee";
+    return {
+      id: l.id,
+      categorieLibelle: TEAM_CATEGORIES.find((c) => c.slug === l.category)?.singulier ?? l.category,
+      prenom: l.firstName,
+      statut,
+      creeLe: JOUR(l.createdAt),
+      expireLe: JOUR(l.expiresAt),
+      active: statut === "envoyee" || statut === "ouverte",
+      renvoyable: statut !== "remplie" && l.contactEmailEnc !== null,
+    };
   });
 }
