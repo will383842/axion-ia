@@ -49,7 +49,7 @@ export const ESBLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Esbly et dans la vallée de la Marne ?",
-      a: "Oui, Axion-IA intervient à Esbly et dans toute la vallée de la Marne en Seine-et-Marne (Lagny-sur-Marne à 10 min, Meaux à 15 min, Crécy-la-Chapelle). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Esbly et dans toute la vallée de la Marne en Seine-et-Marne (Lagny-sur-Marne, Meaux, Crécy-la-Chapelle), sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Esbly  ?",
@@ -65,7 +65,7 @@ export const ESBLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Esbly ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Esbly, comme partout en France, ou à distance.",
     },
   ],
 };

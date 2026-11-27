@@ -49,7 +49,7 @@ export const TOULOUGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Toulouges et dans l'agglo Perpignan ?",
-      a: "Oui, Axion-IA intervient à Toulouges et toute Perpignan Méditerranée Métropole (Perpignan à 8 min, Le Soler à 5 min, Canohès, Pollestres). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Toulouges et dans toute Perpignan Méditerranée Métropole (Perpignan, Le Soler, Canohès, Pollestres). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires périurbaines ?",
@@ -65,7 +65,7 @@ export const TOULOUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Toulouges ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre bureau, cabinet ou atelier. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre bureau, cabinet ou atelier. Visio possible. Tarifs transparents.",
     },
   ],
 };

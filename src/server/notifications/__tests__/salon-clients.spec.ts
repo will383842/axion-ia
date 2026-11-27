@@ -149,6 +149,21 @@ describe("le message complet du salon « Clients »", () => {
     expect(texte).toContain("Téléphone : +33 6 39 98 12 35");
   });
 
+  it("annulation faite par le lien du site : dit la personne, pas l'hôte", () => {
+    const texte = formatNotificationClient({
+      category: "CLIENT_CALL_CANCELED",
+      payload: {
+        eventUri: "evt_9",
+        inviteeEmail: "camille@exemple.fr",
+        canceledBy: "Hôte Exemple",
+        cancelerType: "host",
+        annuleDepuisLeSite: true,
+      },
+    } as EvenementClient);
+    expect(texte).toContain("Annulé par : la personne, depuis le site (lien d'annulation)");
+    expect(texte).not.toContain("Hôte Exemple");
+  });
+
   it("annulation sans motif : le dit, plutôt que d'inventer", () => {
     const texte = formatNotificationClient({
       category: "CLIENT_CALL_CANCELED",

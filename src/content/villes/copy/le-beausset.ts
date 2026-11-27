@@ -63,7 +63,7 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission au Beausset ?",
-      a: "Intervention sous 5 jours ouvrés. Gare TGV Toulon à 30 min (Paris 3h50), aéroport Toulon-Hyères à 40 min. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés. Nos consultants se déplacent sur site.",
     },
   ],
 };

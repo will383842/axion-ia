@@ -49,7 +49,7 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oberhausbergen et dans l''Eurométropole de Strasbourg ?",
-      a: "Oui, Axion-IA intervient à Oberhausbergen et sur toute l''Eurométropole de Strasbourg (Mittelhausbergen, Niederhausbergen, Mundolsheim, Eckbolsheim). Strasbourg centre à 10 min, Paris à 1h45 en TGV.",
+      a: "Oui, Axion-IA intervient à Oberhausbergen et sur toute l''Eurométropole de Strasbourg (Mittelhausbergen, Niederhausbergen, Mundolsheim, Eckbolsheim).",
     },
     {
       q: "Quel est le tarif d''un audit IA à Oberhausbergen ?",

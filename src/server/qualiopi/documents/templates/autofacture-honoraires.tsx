@@ -149,6 +149,12 @@ export interface AutofactureData {
    * ne se paie pas, il vient en déduction (`imputation`).
    */
   avoir?: { factureInitiale: string; dateFactureInitiale: string | null; imputation: string };
+  /**
+   * `"apporteur"` : présentation propre au réseau d'apporteurs. Absent = rendu des formateurs,
+   * inchangé. En franchise 293 B, la pièce n'imprime alors ni « TVA (0 %) » ni « Total TTC » (il n'y
+   * a pas de TVA, donc pas de TTC) et dit « L'apporteur » là où le gabarit dit « Le sous-traitant ».
+   */
+  presentation?: "apporteur";
   estCopie?: boolean;
   estSpecimen?: boolean;
   specimenMotif?: string;
@@ -164,6 +170,9 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
   const delaiJours = data.delaiContestationJours ?? DELAI_CONTESTATION_JOURS;
   const avoir = data.avoir;
   const piece = avoir ? "Cet avoir" : "Cette facture";
+  const apporteur = data.presentation === "apporteur";
+  const sansTva = apporteur && data.regimeHonoraires === "franchise_293b";
+  const qualiteFournisseur = apporteur ? "L'apporteur" : "Le sous-traitant";
 
   return (
     <Document>
@@ -195,7 +204,7 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
             <Text style={styles.legalLine}>{data.mandatReference}</Text>
           ) : null}
           <Text style={styles.legalLine}>
-            {`Le sous-traitant conserve la qualité de fournisseur et demeure seul redevable, le cas échéant, de la TVA mentionnée sur ${avoir ? "le présent avoir" : "la présente facture"}.`}
+            {`${qualiteFournisseur} conserve la qualité de fournisseur et demeure seul redevable, le cas échéant, de la TVA mentionnée sur ${avoir ? "le présent avoir" : "la présente facture"}.`}
           </Text>
           <Text style={styles.legalLine}>
             {`${piece} lui est ${avoir ? "transmis" : "transmise"} dès son émission. Il dispose de ${delaiJours} jours pour en contester le contenu, soit jusqu'au ${data.contestationAvant} inclus ; à défaut, ${avoir ? "il est réputé accepté" : "elle est réputée acceptée"}. ${data.mandatFin ?? "Le mandat de facturation est révocable à tout moment par écrit, sans effet rétroactif sur les factures déjà émises."} Catégorie de l'opération : prestation de services.`}
@@ -287,14 +296,22 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
             <Text style={styles.totalLabel}>{avoir ? "Total HT de l'avoir" : "Total HT"}</Text>
             <Text style={styles.totalValue}>{formatEurosFromCents(totaux.totalHtCents)}</Text>
           </View>
-          {totaux.ventilation.map((v) => (
+          {(sansTva ? [] : totaux.ventilation).map((v) => (
             <View key={v.tauxPercent} style={styles.totalRow}>
               <Text style={styles.totalLabel}>{`TVA (${v.tauxPercent} %)`}</Text>
               <Text style={styles.totalValue}>{formatEurosFromCents(v.montantTvaCents)}</Text>
             </View>
           ))}
           <View style={styles.totalTtcRow}>
-            <Text style={styles.totalTtcLabel}>{avoir ? "Avoir TTC" : "Total TTC"}</Text>
+            <Text style={styles.totalTtcLabel}>
+              {sansTva
+                ? avoir
+                  ? "Total de l'avoir"
+                  : "Total à payer"
+                : avoir
+                  ? "Avoir TTC"
+                  : "Total TTC"}
+            </Text>
             <Text style={styles.totalTtcValue}>{formatEurosFromCents(totaux.totalTtcCents)}</Text>
           </View>
         </View>

@@ -49,7 +49,7 @@ export const STIRING_WENDEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Stiring-Wendel ?",
-      a: "Oui, Axion-IA intervient à Stiring-Wendel et dans l'agglomération Sarrebruck-Forbach (Forbach, Petite-Rosselle, Behren-lès-Forbach). Consultants via A4 ou gare SNCF Forbach. Position frontalière avec la Sarre allemande (15 min).",
+      a: "Oui, Axion-IA intervient à Stiring-Wendel et dans l'agglomération Sarrebruck-Forbach (Forbach, Petite-Rosselle, Behren-lès-Forbach).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et logistiques ?",
@@ -65,7 +65,7 @@ export const STIRING_WENDEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Stiring-Wendel ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Stiring-Wendel, au cœur de l'agglomération frontalière Sarrebruck-Forbach, est à 10 min de l'autoroute A4, proche de la gare SNCF de Forbach et à 15 min de Sarrebruck.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

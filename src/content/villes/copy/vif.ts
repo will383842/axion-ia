@@ -49,7 +49,7 @@ export const VIF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vif et sud-grenoblois rural ?",
-      a: "Oui, Axion-IA intervient à Vif et tout le sud grenoblois rural (Varces-Allières-et-Risset, Saint-Paul-de-Varces, Le Gua, Miribel-Lanchâtre, Monestier-de-Clermont à 30 min). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Vif et dans tout le sud grenoblois rural : Varces-Allières-et-Risset, Saint-Paul-de-Varces, Le Gua, Miribel-Lanchâtre et Monestier-de-Clermont. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les agriculteurs et éleveurs vifards ?",
@@ -65,7 +65,7 @@ export const VIF_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention rurale ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours en zone rurale, un hébergement local est possible.",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

@@ -352,7 +352,7 @@ export const METZ_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjÃ  bloqué. Très tardive : session reportable une fois sans frais.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -444,7 +444,7 @@ export const METZ_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot blocked. Very late: session rebookable once free of charge.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -992,7 +992,7 @@ export const METZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel Ã  Metz ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique Ã  Metz et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Avez-vous des cas clients dans l'Eurométropole de Metz ?",
@@ -1008,7 +1008,7 @@ export const METZ_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes de l'Eurométropole hors Metz intra-muros ?",
-      a: "Oui. L'Eurométropole entière est notre zone d'intervention : Montigny-lès-Metz, Woippy, Marly, Longeville-lès-Metz, Le Ban-Saint-Martin, zones industrielles de Trémery et Actipôle Nord. Aucun supplément de zone.",
+      a: "Oui. L'Eurométropole entière est notre zone d'intervention : Montigny-lès-Metz, Woippy, Marly, Longeville-lès-Metz, Le Ban-Saint-Martin, zones industrielles de Trémery et Actipôle Nord.",
     },
     {
       q: "Travaillez-vous avec les startups et structures du Technopôle Metz 2000 ?",

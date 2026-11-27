@@ -49,7 +49,7 @@ export const PROVINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Provins et dans l'est Seine-et-Marne ?",
-      a: "Oui, Axion-IA intervient a Provins et dans tout l'est de la Seine-et-Marne (Coulommiers a 30 min, Meaux a 50 min, Nangis). Paris a 1h20, gare Transilien P directe.",
+      a: "Oui, Axion-IA intervient a Provins et dans tout l'est de la Seine-et-Marne. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme UNESCO et des spectacles medievaux ?",

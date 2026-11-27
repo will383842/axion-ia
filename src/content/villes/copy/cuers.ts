@@ -65,7 +65,7 @@ export const CUERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Cuers ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, cave, atelier ou commerce. A57 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels, domaine viticole, cave, atelier ou commerce.",
     },
   ],
 };

@@ -14,9 +14,9 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challes-les-Eaux (73). Nous accompagnons TPE et PME : établissements thermaux et de bien-être, hôteliers de cure, professionnels de santé, commerçants et prestataires de services.",
   seoHook: "thermalisme bien-être & hôtellerie cure",
   ecosystemFr:
-    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu TPE commerces de proximité actif, prestataires de services tournés vers le bassin de Chambéry. Proximité immédiate de La Ravoire et accès rapide à l'aéroport Chambéry-Savoie.",
+    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu TPE commerces de proximité actif, prestataires de services tournés vers le bassin de Chambéry et la commune voisine de La Ravoire.",
   ecosystemEn:
-    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu TPE commerces de proximité actif, prestataires de services tournés vers le bassin de Chambéry. Proximité immédiate de La Ravoire et accès rapide à l'aéroport Chambéry-Savoie.",
+    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu TPE commerces de proximité actif, prestataires de services tournés vers le bassin de Chambéry et la commune voisine de La Ravoire.",
   distancesFr:
     "Chambéry centre à 10 min voiture. La Ravoire à 5 min. Aéroport Chambéry-Savoie à 15 min. Lyon à 1h30.",
   distancesEn:

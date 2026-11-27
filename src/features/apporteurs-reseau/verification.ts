@@ -25,8 +25,9 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
-import { bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
+import { annexesDeLEnvoiDuLien, bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
+import { alerterContresignature } from "./alerte-telegram";
 import { apercu } from "./apercu-envoi";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
 import { urlDossier } from "./jeton";
@@ -38,6 +39,14 @@ import { retraitDe } from "./retrait";
 
 const dossierUrlSi = (url: string | null): { dossierUrl?: string } =>
   url ? { dossierUrl: url } : {};
+
+/**
+ * E-mail « contrat signé » : la règle par rendez-vous n'est annoncée que si elle s'applique
+ * vraiment à cet apporteur (`regleDe` : contrat 2.8 ET drapeau APPORTEURS_VALIDATION_RDV allumé).
+ * Absent : le gabarit garde l'ancien texte (tolère la fenêtre app/worker dans les deux sens).
+ */
+const regleRendezVousSi = (regle: string | null | undefined): { regleRendezVous?: true } =>
+  regle === "rendez_vous" ? { regleRendezVous: true } : {};
 
 export type Decision = "contresigner" | "a_completer" | "refuser";
 
@@ -249,7 +258,11 @@ export async function preparerDecision(
         gabarit,
         // Le lien du dossier porte le formulaire « Déclarer une entreprise » (bouton de l'e-mail).
         payload: avecTexteLibre(
-          { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
+          {
+            contactName: d.prenom,
+            ...dossierUrlSi(urlDossier(d.id, d.versionLien)),
+            ...regleRendezVousSi(d.regleAttribution),
+          },
           texte,
         ),
       },
@@ -483,13 +496,25 @@ export async function appliquerDecision(
         signalerErreurReseau("contresignature : trace de la vérification du nom", err);
       }
     }
-    // Le contrat, toujours ; la fiche des commissions et le livret s'ils sont déposés sur R2.
+    // Le contrat, toujours ; la fiche des commissions, le livret et le guide de démarrage s'ils sont sur R2 (le guide y est déposé tout seul s'il manque).
     const pieces = await piecesDuContratSigne(cle);
     const r = await envoyer({
       ...prep.envoi,
       jobId: `apporteur-contrat-signe-${apporteurId}`,
       attachments: pieces,
     });
+    // Salon Telegram « Apporteurs » : jamais bloquant, la contresignature est actée.
+    try {
+      const qui = await lireDossier(apporteurId);
+      await alerterContresignature({
+        apporteurId,
+        prenom: qui?.prenom ?? "",
+        nom: qui?.nom ?? "",
+        envoi: r,
+      });
+    } catch (err) {
+      signalerErreurReseau("contresignature : alerte Telegram", err);
+    }
     return {
       ok: true,
       message:
@@ -566,7 +591,11 @@ export async function renvoyerContratSigne(
     entityType: "ApporteurReseau",
     entityId: d.id,
     gabarit: "apporteur-contrat-signe",
-    payload: { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
+    payload: {
+      contactName: d.prenom,
+      ...dossierUrlSi(urlDossier(d.id, d.versionLien)),
+      ...regleRendezVousSi(d.regleAttribution),
+    },
     jobId: `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`,
     attachments: pieces,
   });
@@ -613,6 +642,9 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     const dejaEnvoyeLe = await dernierLienEnvoyeLe(d.id, "apporteur-lien-espace");
     return { ok: true as const, envoi, url, dejaEnvoyeLe };
   }
+  // Fiche des commissions, livret, guide : joints dès ce premier e-mail (pas de contrat signé
+  // ici, il n'existe pas encore). Facultatifs : une panne de R2 ne retient pas le lien.
+  const annexes = await annexesDeLEnvoiDuLien();
   const envoi: EnvoiApporteur = {
     gabarit: "apporteur-dossier-lien",
     destinataire: d.email,
@@ -621,11 +653,13 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
         contactName: d.prenom,
         dossierUrl: url,
         ...(mot?.trim() ? { motPersonnel: mot.trim() } : {}),
+        ...annexes.payload,
       },
       texte,
     ),
     entityType: "ApporteurReseau",
     entityId: d.id,
+    ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
   };
   const dejaEnvoyeLe = await dernierLienEnvoyeLe(d.id);
   return { ok: true as const, envoi, url, dejaEnvoyeLe };
@@ -700,6 +734,8 @@ export async function envoyerLien(
   mot: string | null,
   texte?: string,
   confirmerRenvoi = false,
+  /** Identifiant de job FIXE (anti-doublon) ; par défaut horodaté, comportement historique. */
+  jobId?: string,
 ) {
   const prep = await preparerLien(apporteurId, mot, texte);
   if (!prep.ok) return prep;
@@ -711,7 +747,7 @@ export async function envoyerLien(
   }
   const r = await envoyer({
     ...prep.envoi,
-    jobId: `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
+    jobId: jobId ?? `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
   });
   return {
     ok: true as const,

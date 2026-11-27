@@ -229,8 +229,8 @@ export const DIEPPE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à Dieppe ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Dieppe et sur la côte d'Albâtre. La première rencontre se déroule sur site, afin de bien saisir votre activité et sa saisonnalité avant toute recommandation.",
+      q: "Intervenez-vous à Dieppe ?",
+      a: "Oui. Nos consultants interviennent directement dans vos locaux à Dieppe et sur la côte d'Albâtre. La première rencontre se déroule sur site, afin de bien saisir votre activité et sa saisonnalité avant toute recommandation.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Dieppe ?",

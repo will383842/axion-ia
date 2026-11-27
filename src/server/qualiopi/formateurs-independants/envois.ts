@@ -27,7 +27,7 @@ import {
 } from "@/lib/email/templates/formateur-independant-textes";
 import {
   extrairePreEntete,
-  rendreLiensInertes,
+  rendreLiensOuvrables,
   type ApercuLecteur,
 } from "@/lib/email/apercu-lecteur";
 import { enveloppeExpedition } from "@/lib/email/enveloppe";
@@ -174,7 +174,7 @@ export function apercu(
 /**
  * L'aperçu destiné au NAVIGATEUR de la console (lot I2-4b) : le même rendu que le
  * worker (`renderEmailTemplate(gabarit, "fr", payload, { destinataire })`, avec le vrai
- * destinataire), puis `masquerSecretsEmail` et `rendreLiensInertes`. Le lien de
+ * destinataire), puis `masquerSecretsEmail` et `rendreLiensOuvrables`. Le lien de
  * connexion, le lien d'opposition et tout jeton n'en sortent JAMAIS en clair.
  *
  * ⚠️ Ni journal, ni cache : le HTML rendu porte des liens personnels avant masquage.
@@ -188,7 +188,7 @@ export async function apercuLecteurFormateur(
   const masque = masquerSecretsEmail({ subject: r.subject, html: r.html, text: r.text });
   const enveloppe = enveloppeExpedition();
   return {
-    html: rendreLiensInertes(masque.html),
+    html: rendreLiensOuvrables(masque.html),
     texte: masque.text,
     objet: masque.subject,
     de: enveloppe.from,

@@ -250,7 +250,7 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Mantes-la-Jolie ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 35 min de Paris-Saint-Lazare. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

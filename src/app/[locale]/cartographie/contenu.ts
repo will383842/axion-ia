@@ -8,7 +8,12 @@ import {
   DATE_MISE_A_JOUR_CARTOGRAPHIE,
   DEFINITION_CARTOGRAPHIE,
 } from "@/content/cartographie-date";
-import { DEROULE_JOURNEE_IA, RAPPORT_COMPLET, remplacerJetons } from "@/content/journee-ia-commun";
+import {
+  DEROULE_JOURNEE_IA,
+  DELAI_RAPPORT_JOURS_OUVRES,
+  RAPPORT_COMPLET,
+  remplacerJetons,
+} from "@/content/journee-ia-commun";
 
 import { CONTENU as ACCUEIL } from "../_accueil/contenu";
 import { CONTENU as JOURNEE } from "../journee-ia/contenu";
@@ -23,10 +28,10 @@ export const TITRE = "Cartographie de l’entreprise pour l’IA · Axion-IA";
 export const DEFINITION = DEFINITION_CARTOGRAPHIE;
 
 export const DESCRIPTION_META =
-  "La cartographie de l’entreprise, c’est le matin de la Journée IA : votre entreprise passée en revue service par service, vos gains chiffrés en heures et en euros.";
+  "La cartographie de l’entreprise, c’est le matin de la Journée IA : votre entreprise passée en revue service par service, vos gains repérés et classés par priorité, puis chiffrés en heures et en euros dans le rapport.";
 
 export const OG_IMAGE_ALT =
-  "La cartographie de l’entreprise d’Axion-IA : service par service, gains chiffrés en heures et en euros";
+  "La cartographie de l’entreprise d’Axion-IA : service par service, gains classés par priorité";
 
 /** « Par vos tâches, pas par un outil », tel que la FAQ de l'accueil le dit. */
 const REPONSE_COMMENCER =
@@ -56,7 +61,7 @@ export const TEXTES = {
         texte: "La cartographie, service par service. " + MATIN,
       },
       { moment: "17 h 30", texte: `${PRIORITES}.` },
-      { moment: "Sous 3 jours ouvrés", texte: "Le rapport complet." },
+      { moment: `Sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés`, texte: "Le rapport complet." },
     ],
   },
   recu: {
@@ -107,7 +112,7 @@ export const FAQ = [
     id: "faq-outil",
     question: "Faut-il choisir un outil avant ?",
     reponse:
-      "Non. Par vos tâches, pas par un outil : la cartographie part de ce que chaque service fait au quotidien, puis chiffre en heures et en euros les tâches qui reviennent. La mise en place vient ensuite.",
+      "Non. Par vos tâches, pas par un outil : la cartographie part de ce que chaque service fait au quotidien, puis repère et classe les tâches qui reviennent ; le rapport les chiffre en heures et en euros. La mise en place vient ensuite.",
   },
   {
     id: "faq-gratuit",

@@ -49,7 +49,7 @@ export const LE_RHEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Rheu ?",
-      a: "Oui, Axion-IA intervient au Rheu et dans tout l'ouest de Rennes Métropole (Mordelles, L'Hermitage, Vezin-le-Coquet, Pacé). Nos consultants accèdent via rocade ouest (15 min depuis Rennes centre).",
+      a: "Oui, Axion-IA intervient au Rheu et dans tout l'ouest de Rennes Métropole (Mordelles, L'Hermitage, Vezin-le-Coquet, Pacé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires du Rheu ?",
@@ -65,7 +65,7 @@ export const LE_RHEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Rheu ?",
-      a: "Nos consultants interviennent au Rheu depuis Rennes (15 min via rocade ouest). Intervention sur site dans vos bureaux, atelier ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos bureaux, atelier ou cabinet.",
     },
   ],
 };

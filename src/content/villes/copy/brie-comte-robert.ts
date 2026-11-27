@@ -49,7 +49,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brie-Comte-Robert et Brie française ?",
-      a: "Oui, Axion-IA intervient à Brie-Comte-Robert et toute la Brie française (Melun à 20 min, Créteil à 20 min, Paris à 35 min). Accès rapide Francilienne et A5.",
+      a: "Oui, Axion-IA intervient à Brie-Comte-Robert et dans toute la Brie française (Melun, Créteil, Paris).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Brie-Comte-Robert ?",
@@ -65,7 +65,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Brie-Comte-Robert ?",
-      a: "Melun (20 min). Créteil (20 min). Paris centre (35 min A5/Francilienne). Orly (20 min). RER D Combs-la-Ville (10 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Brie-Comte-Robert, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Sud Grésivaudan).",
+      a: "Sur place ou à distance, selon votre besoin.",
     },
   ],
 };

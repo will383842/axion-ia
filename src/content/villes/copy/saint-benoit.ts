@@ -49,7 +49,7 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Benoît et Grand Poitiers sud ?",
-      a: "Oui, Axion-IA intervient à Saint-Benoît et toute l'agglomération Grand Poitiers sud (Poitiers centre à 10 min, Ligugé, Vivonne, Fontaine-le-Comte). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Saint-Benoît et dans toute l'agglomération Grand Poitiers sud (Poitiers centre, Ligugé, Vivonne, Fontaine-le-Comte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Saint-Benoît ?",
@@ -65,7 +65,7 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Benoît ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement Poitiers centre.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Saint-Benoît, comme partout en France, ou à distance.",
     },
   ],
 };

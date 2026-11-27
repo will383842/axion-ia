@@ -49,7 +49,7 @@ export const SAINT_CLAUDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Claude et dans le Haut-Jura ?",
-      a: "Oui, Axion-IA intervient à Saint-Claude et dans tout le Haut-Jura (Morez, Les Rousses, Lavans-lès-Saint-Claude, Septmoncel). Couverture également Lons-le-Saunier à 1h, Oyonnax à 30 min et Genève à 1h15.",
+      a: "Oui, Axion-IA intervient à Saint-Claude et dans tout le Haut-Jura (Morez, Les Rousses, Lavans-lès-Saint-Claude, Septmoncel).",
     },
     {
       q: "Travaillez-vous avec les entreprises de tournerie et plasturgie ?",

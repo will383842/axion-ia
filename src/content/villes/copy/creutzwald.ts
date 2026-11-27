@@ -49,7 +49,7 @@ export const CREUTZWALD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Creutzwald ?",
-      a: "Oui, Axion-IA intervient à Creutzwald et dans le bassin de la Moselle-est (Forbach, Saint-Avold, Carling). Consultants via A4 ou gares SNCF de Forbach. Position frontalière avec l'Allemagne (Sarrebruck à 25 min).",
+      a: "Oui, Axion-IA intervient à Creutzwald et dans le bassin de la Moselle-est (Forbach, Saint-Avold, Carling).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et logistiques ?",
@@ -65,7 +65,7 @@ export const CREUTZWALD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Creutzwald ?",
-      a: "Nos consultants se déplacent via autoroute A4 (accès 20 min) ou gares SNCF de Forbach. Position frontalière stratégique avec Sarrebruck (25 min) et Luxembourg (1h).",
+      a: "Nous intervenons sur place à Creutzwald, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -120,7 +120,7 @@ export const SOISSONS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous pour les entreprises de la zone d'activités Le Plateau à Courmelles ?",
-            a: "Oui. La ZA Le Plateau (180 ha, près de 580 salariés, labellisée site industriel clés en main) regroupe des distributeurs et industriels comme OREXAD, HBS WICONA, HOUTCT ou BASTIDE. Pour ce type d'acteurs B2B, nous développons des catalogues en ligne, des configurateurs de devis et des espaces clients dotés de recherche produit et de génération de devis par IA.",
+            a: "Oui. La ZA Le Plateau, avec 180 ha, près de 580 salariés et un label de site industriel clés en main, regroupe des distributeurs et industriels comme OREXAD, HBS WICONA, HOUTCT ou BASTIDE. Pour ce type d'acteurs B2B, nous développons des catalogues en ligne, des configurateurs de devis et des espaces clients dotés de recherche produit et de génération de devis par IA.",
           },
           {
             q: "Quel délai pour un devis sur mon projet de site ou SaaS à Soissons ?",

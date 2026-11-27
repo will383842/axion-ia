@@ -29,10 +29,13 @@ import { alerterPieceVigilance } from "./alerte-vigilance";
 import { chiffrerContenuPiece } from "./pieces-chiffrement";
 import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
+import { numeroTvaValide } from "./regles-dossier";
 import { signalerErreurReseau } from "./signaler";
 import { enregistrerSiret, siretDe } from "./siret-apporteur";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
 import { argentEnJeu, retraitDe } from "./retrait";
+import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
+import { regleDe, versionAuMoins, type RegleAttribution } from "./regle-attribution";
 
 // Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée
 // personnelle — la garde est celle du dépôt commun (FAC-6), le canal celui du réseau.
@@ -223,6 +226,10 @@ export interface DossierVue {
   signeParSocieteAt: Date | null;
   /** Le contrat signé des deux parties existe (téléchargeable par l'apporteur). */
   aContratSigne: boolean;
+  /** `regleDe(signature, interrupteur)` : « rendez_vous » ou `null` (contrat 2.6, inchangé). */
+  regleAttribution?: RegleAttribution;
+  /** Contrat signé en 2.8 ou après : la commission ne dépend plus de la réalisation (art. 4.2), interrupteur ou non. */
+  contratDepuis2_8?: boolean;
   pieces: PieceVue[];
 }
 
@@ -275,6 +282,8 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     signeParApporteurAt: a.signeParApporteurAt,
     signeParSocieteAt: a.signeParSocieteAt,
     aContratSigne: !!a.contratSigneCle,
+    regleAttribution: regleDe(a.signatureApporteur, validationParRendezVousActive()),
+    contratDepuis2_8: versionAuMoins(a.signatureApporteur, "2.8"),
     pieces: a.pieces.map((p) => ({ ...p, type: p.type as TypePiece })),
   };
 }
@@ -381,10 +390,7 @@ export async function enregistrerActivite(
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   if (!estStatutJuridique(s.statutJuridique))
     return { ok: false, message: "Choisissez votre statut." };
-  if (
-    s.regimeTva === "assujetti" &&
-    !/^FR[0-9A-Z]{2}\d{9}$/.test((s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase())
-  ) {
+  if (s.regimeTva === "assujetti" && !numeroTvaValide(s.numeroTva)) {
     return { ok: false, message: "Indiquez votre numéro de TVA (FR suivi de 11 caractères)." };
   }
   if (s.iban !== null && s.iban !== "" && !ibanValide(s.iban)) {

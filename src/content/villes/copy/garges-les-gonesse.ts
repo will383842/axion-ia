@@ -11,9 +11,9 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Garges-lès-Gonesse (41 791 habitants, Val-d'Oise), quatrième ville française de plus de 20 000 habitants pour la jeunesse de sa population. Située à 15 km au nord de Paris, membre de la communauté d'agglomération Roissy Pays de France depuis 2016, la commune est desservie par la gare Garges-Sarcelles (RER D et terminus du tramway T5). Notre cabinet national y intervient pour mener audits IA et automatisations en code custom, adaptés aux dirigeants locaux.",
   directAnswerFr:
-    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   seoHook: "RER D, tramway T5 & aéroport Paris-Le Bourget",
   ecosystemFr:
     "Garges-lès-Gonesse appartient à l'agglomération Roissy Pays de France, à proximité immédiate de l'aéroport Paris-Le Bourget et de la zone aéroportuaire de Roissy-Charles-de-Gaulle. Le tissu économique local mêle commerce de détail (hypermarché Cora historique de 1969), services logistiques et artisanat. La commune borde Sarcelles, Arnouville, Bonneuil-en-France ainsi que Dugny et Stains en Seine-Saint-Denis — autant de TPE et PME éligibles à nos accompagnements IA.",
@@ -130,7 +130,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Garges-lès-Gonesse ?",
-            a: "Oui. Nous couvrons Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) ainsi que Dugny et Stains (Seine-Saint-Denis), qui bordent Garges et partagent le tissu logistique et commercial de Roissy Pays de France, accessible par le RER D (gare Garges-Sarcelles) et le tramway T5.",
+            a: "Oui. Nous couvrons Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) ainsi que Dugny et Stains (Seine-Saint-Denis), qui bordent Garges et partagent le tissu logistique et commercial de Roissy Pays de France.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Do you work in towns neighboring Garges-lès-Gonesse?",
-            a: "Yes. We cover Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) as well as Dugny and Stains (Seine-Saint-Denis), which border Garges and share the Roissy Pays de France logistics and retail fabric, reachable via the RER D (Garges-Sarcelles station) and the T5 tram.",
+            a: "Yes. We cover Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) as well as Dugny and Stains (Seine-Saint-Denis), which border Garges and share the Roissy Pays de France logistics and retail fabric. Axion-IA works anywhere in France, on site or remotely.",
           },
         ],
         guarantees:
@@ -231,8 +231,8 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
       a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour le format d'une journée à Garges-lès-Gonesse. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Garges-lès-Gonesse (95140) ?",
-      a: "Oui, nos consultants prennent le RER D jusqu'à la gare Garges-Sarcelles ou le tramway T5.",
+      q: "Comment se déroule une mission à Garges-lès-Gonesse (95140) ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Garges-lès-Gonesse (95140), comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Garges-lès-Gonesse ?",

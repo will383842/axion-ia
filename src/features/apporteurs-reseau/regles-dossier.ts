@@ -36,7 +36,7 @@ export const ACCEPTATIONS = [
   {
     cle: "art_4_5",
     texte:
-      "J'accepte l'article 4.5 (recalcul et reprise d'une commission : avoir, remboursement, geste commercial ou prestation non réalisée, pendant vingt-quatre mois).",
+      "J'accepte l'article 4.5 (recalcul et reprise d'une commission en cas d'avoir, de remboursement partiel ou total ou d'annulation d'un encaissement, pendant vingt-quatre mois) et l'article 3.2 (réservation de soixante jours, puis validation au premier rendez-vous tenu ou à la signature d'un devis).",
   },
   {
     cle: "art_5_2",
@@ -51,6 +51,25 @@ export const ACCEPTATIONS = [
       "J'accepte l'article 14 : en cas de litige entre commerçants, les tribunaux du siège d'Axion-IA sont seuls compétents, sous réserve des juridictions spécialisées prévues par la loi.",
   },
 ] as const;
+
+/**
+ * Libellé de la case « art. 4.5 » dans le contrat 2.6 et avant. Les preuves déjà signées gardent
+ * CE texte, mot pour mot (certificat et PDF) : ne jamais le modifier.
+ */
+export const LIBELLE_ART_4_5_AVANT_2_8 =
+  "J'accepte l'article 4.5 (recalcul et reprise d'une commission : avoir, remboursement, geste commercial ou prestation non réalisée, pendant vingt-quatre mois).";
+
+/** Le contrat est-il de la version 2.8 ou d'une version postérieure ? (comparaison par composante) */
+export function estDepuis2_8(version: string): boolean {
+  const [maj = 0, min = 0] = version.split(".").map((x) => Number.parseInt(x, 10) || 0);
+  return maj > 2 || (maj === 2 && min >= 8);
+}
+
+/** Texte d'une case d'acceptation tel que le signataire de cette version l'a lu. */
+export function texteAcceptation(cle: string, version: string): string | undefined {
+  if (cle === "art_4_5" && !estDepuis2_8(version)) return LIBELLE_ART_4_5_AVANT_2_8;
+  return ACCEPTATIONS.find((a) => a.cle === cle)?.texte;
+}
 
 /** Pièces : celles qu'il faut pour signer, et l'assurance, facultative. */
 export const PIECES_POUR_SIGNER = ["identite", "rib"] as const;
@@ -88,3 +107,16 @@ export { PAYS_SEPA, ibanValide } from "@/lib/iban";
 
 // SIREN : validateur neutre (FAC-5), ré-exporté ici pour les appelants du réseau.
 export { sirenValide } from "@/lib/siret";
+
+/** Numéro de TVA intracommunautaire normalisé : espaces retirés, majuscules. */
+export function normaliserNumeroTva(v: string): string {
+  return v.replace(/\s+/g, "").toUpperCase();
+}
+
+/**
+ * Format d'un numéro de TVA intracommunautaire français (« FR » + 2 caractères + 9 chiffres). Le même
+ * contrôle au dossier de l'apporteur et au changement de régime de la console. Pas de VIES.
+ */
+export function numeroTvaValide(v: string | null | undefined): boolean {
+  return /^FR[0-9A-Z]{2}\d{9}$/.test(normaliserNumeroTva(v ?? ""));
+}

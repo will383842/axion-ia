@@ -9,18 +9,18 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   pitchEn:
     "La Garenne-Colombes (92) est une commune résidentielle et tertiaire des Hauts-de-Seine, collée à La Défense et Courbevoie. Son tissu est dense en TPE de services, indépendants, cabinets (conseil, comptabilité, droit), commerces de proximité et PME tournées vers les grands comptes voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME garennoises, plus marginalement les ETI, pour transformer un quotidien administratif chargé en flux automatisés et fiables.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
   seoHook: "tertiaire & services proche La Défense",
   ecosystemFr:
     "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
   ecosystemEn:
     "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
   distancesFr:
-    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nos consultants rejoignent la commune en moins de 20 min depuis Paris intra-muros.",
+    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nos consultants rejoignent la commune en moins de 20 min depuis Paris intra-muros.",
+    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Conseil de gestion et stratégie",
     "Activités comptables et juridiques",
@@ -55,7 +55,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
       fr: {
         hero: "À La Garenne-Colombes (Hauts-de-Seine), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour deux mondes que la commune juxtapose sur moins de deux kilomètres carrés : d'un côté les filiales de grands comptes installées à l'ouest, dans l'orbite de Paris La Défense — Sage à l'Atrium Défense (Place de Belgique), Hyundai Motor France à la Tour Nova (boulevard National), Bayer sur le même axe — qui ont besoin de portails métier, d'espaces clients et d'agents conversationnels reliés à leurs systèmes ; de l'autre les TPE, commerces de la rue de l'Aigle, cabinets et professions libérales du centre-ville qui veulent un site vitrine ou e-commerce qui prend les rendez-vous et répond aux demandes tout seul. Code sur mesure, hébergement Europe RGPD, zéro verrou éditeur.",
         whyHere: [
-          "Le quartier des Champs-Philippe / Charlebourg, intégré à l'aménagement Défense Seine Arche et desservi par le tramway T2 (Charlebourg, Les Fauvelles, Faubourg de l'Arche), concentre des filiales de grands groupes — Sage, Hyundai Motor France, Bayer — dont les équipes marketing et digitales commandent des portails clients, des configurateurs et des assistants reliés à leur CRM/ERP.",
+          "Le quartier des Champs-Philippe / Charlebourg, intégré à l'aménagement Défense Seine Arche, concentre des filiales de grands groupes — Sage, Hyundai Motor France, Bayer — dont les équipes marketing et digitales commandent des portails clients, des configurateurs et des assistants reliés à leur CRM/ERP.",
           "L'Atrium Défense (10 Place de Belgique, immeuble Foster + Partners) et la Tour Nova (71 boulevard National) hébergent des directions France qui pilotent leur présence web depuis La Garenne-Colombes : nous y intervenons sur des plateformes SaaS internes, des espaces partenaires et des chatbots RAG branchés sur leur documentation produit.",
           "À 800 mètres de ces tours, le centre-ville et la rue de l'Aigle forment un tissu dense de commerces de proximité, restaurants, artisans et professions libérales : pour eux, nous construisons des sites vitrines et e-commerce multi-CMS (Shopify, WordPress/WooCommerce, Wix, sur-mesure) avec prise de rendez-vous automatisée et assistant de réponse.",
           "La double identité de la ville — sièges France à l'ouest, commerce indépendant au centre — impose deux savoir-faire que nous couvrons sans sous-traiter : UX/UI et responsive mobile pour les vitrines garennoises, plateformes SaaS IA-native et intégrations data pour les filiales du périmètre Défense.",
@@ -136,12 +136,12 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24-48 h selon la complexité, frais de déplacement depuis Paris indiqués séparément du forfait. Hébergement en Europe par défaut et conformité RGPD : vous restez propriétaire de vos données, de votre code et de vos contenus. Le site et ses agents IA sont portables — repris en interne ou par tout prestataire de votre choix, sans verrou éditeur ni contrat de maintenance imposé. Nous couvrons l'ensemble de la chaîne sans sous-traiter : UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, Wix, sur-mesure) et couche IA (chatbot RAG, search sémantique, agents), des commerces de la rue de l'Aigle aux filiales France du quartier Champs-Philippe.",
+          "Devis remis à partir de 24-48 h selon la complexité. Hébergement en Europe par défaut et conformité RGPD : vous restez propriétaire de vos données, de votre code et de vos contenus. Le site et ses agents IA sont portables — repris en interne ou par tout prestataire de votre choix, sans verrou éditeur ni contrat de maintenance imposé. Nous couvrons l'ensemble de la chaîne sans sous-traiter : UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, Wix, sur-mesure) et couche IA (chatbot RAG, search sémantique, agents), des commerces de la rue de l'Aigle aux filiales France du quartier Champs-Philippe.",
       },
       en: {
         hero: "In La Garenne-Colombes (Hauts-de-Seine), Axion-IA builds AI-augmented websites and SaaS platforms for the two worlds the town packs into under two square kilometres: on one side, the large-group subsidiaries installed to the west, in the orbit of Paris La Défense — Sage at Atrium Défense (Place de Belgique), Hyundai Motor France at Tour Nova (boulevard National), Bayer on the same axis — which need business portals, customer areas and conversational agents wired into their systems; on the other, the small businesses, the shops on rue de l'Aigle, the firms and independent professionals of the town centre who want a showcase or e-commerce site that books appointments and answers enquiries on its own. Custom code, EU hosting under GDPR, zero vendor lock-in.",
         whyHere: [
-          "The Champs-Philippe / Charlebourg district, folded into the Défense Seine Arche development and served by tram line T2 (Charlebourg, Les Fauvelles, Faubourg de l'Arche), concentrates subsidiaries of major groups — Sage, Hyundai Motor France, Bayer — whose marketing and digital teams commission customer portals, configurators and assistants connected to their CRM/ERP.",
+          "The Champs-Philippe / Charlebourg district, folded into the Défense Seine Arche development, concentrates subsidiaries of major groups — Sage, Hyundai Motor France, Bayer — whose marketing and digital teams commission customer portals, configurators and assistants connected to their CRM/ERP.",
           "Atrium Défense (10 Place de Belgique, a Foster + Partners building) and Tour Nova (71 boulevard National) house France head offices that steer their web presence from La Garenne-Colombes: there we deliver internal SaaS platforms, partner areas and RAG chatbots plugged into their product documentation.",
           "800 metres from those towers, the town centre and rue de l'Aigle form a dense fabric of local shops, restaurants, craftspeople and independent professionals: for them we build showcase and e-commerce sites across CMS platforms (Shopify, WordPress/WooCommerce, Wix, custom) with automated appointment booking and a response assistant.",
           "The town's dual identity — France head offices to the west, independent retail in the centre — demands two skill sets we cover without subcontracting: UX/UI and mobile responsive for the local showcases, AI-native SaaS platforms and data integrations for the subsidiaries of the La Défense perimeter.",
@@ -222,15 +222,15 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24-48 h depending on complexity, travel costs from Paris shown separately from the package. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
+          "Quote delivered from 24-48 h depending on complexity. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
       },
     },
   },
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il à La Garenne-Colombes ?",
-      a: "Oui. Nos consultants rejoignent La Garenne-Colombes en moins de 20 min depuis Paris et interviennent directement dans vos locaux, ainsi qu'à Courbevoie, Colombes, Bois-Colombes et sur La Défense.",
+      q: "Comment se déroule une mission à La Garenne-Colombes ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à La Garenne-Colombes, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et indépendants garennois ?",
@@ -250,7 +250,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence à La Garenne-Colombes : nos experts IA se déplacent depuis Paris, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

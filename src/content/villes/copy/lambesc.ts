@@ -49,7 +49,7 @@ export const LAMBESC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lambesc et dans le pays d'Aix ?",
-      a: "Oui, Axion-IA intervient à Lambesc et dans tout le pays d'Aix (Saint-Cannat, Rognes, Le Puy-Sainte-Réparade, La Roque-d'Anthéron, Pélissanne). Proximité gare TGV Aix et technopôle Arbois.",
+      a: "Oui, Axion-IA intervient à Lambesc et dans tout le pays d'Aix (Saint-Cannat, Rognes, Le Puy-Sainte-Réparade, La Roque-d'Anthéron, Pélissanne).",
     },
     {
       q: "Combien coûte un audit IA à Lambesc  ?",
@@ -64,8 +64,8 @@ export const LAMBESC_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Lambesc) ou en visio. Format flexible adapté aux cadres et professions libérales.",
     },
     {
-      q: "Comment se déplace Axion-IA à Lambesc ?",
-      a: "Lambesc est à 20 min d'Aix et 15 min de Salon via D7n. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Lambesc ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Lambesc, comme partout en France, ou à distance.",
     },
   ],
 };

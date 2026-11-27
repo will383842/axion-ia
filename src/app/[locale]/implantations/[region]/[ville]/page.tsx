@@ -18,12 +18,13 @@
  * (`buildImplantationsSitemap` filtre sur `getIndexableVilles`). Règle inchangée.
  */
 
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import { EncartEnVideo } from "@/components/videos/EncartEnVideo";
 import { THEME_GENERIQUE_VILLES } from "@/server/videos/encarts";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowRight, ArrowUpRight, MapPin, Building2 } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
@@ -148,6 +149,11 @@ export default async function VillePage({ params }: Props) {
   const { locale, region: regionSlug, ville: villeSlug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   const ville = await resolveVilleWithCopy(villeSlug);
+  // S1 (404) : ville connue mais dans une autre région (ancien découpage, lien mal tapé) →
+  // 308 vers la bonne adresse plutôt qu'un 404. Ville inconnue : 404 inchangé.
+  if (ville && ville.region !== regionSlug && getRegion(ville.region)) {
+    permanentRedirect(`/${locale}/implantations/${ville.region}/${ville.slug}`);
+  }
   if (!ville || ville.region !== regionSlug) notFound();
   const region = getRegion(regionSlug);
   if (!region) notFound();
@@ -250,7 +256,7 @@ export default async function VillePage({ params }: Props) {
                 {h1Ville(ville)}
               </h1>
               <p className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
-                {`Une journée chez vous, ${aVille(ville.nameFr)}, comme partout en France : le matin, nous chiffrons vos plus gros gains ; l’après-midi, nous formons vos équipes sur leurs propres dossiers.`}
+                {`Une journée chez vous, ${aVille(ville.nameFr)}, comme partout en France : le matin, nous repérons vos plus gros gains ; l’après-midi, nous formons vos équipes sur leurs propres dossiers.`}
               </p>
               <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                 <span className="inline-flex items-center gap-2">
@@ -357,7 +363,7 @@ export default async function VillePage({ params }: Props) {
             {
               titre: "Le matin : l’audit",
               texte:
-                "2 à 4 h d’audit dans vos locaux : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et chiffrons vos plus gros gains, en heures et en euros.",
+                "Audit dans vos locaux (de 2 à 4 h selon la structuration de l’entreprise) : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et repérons vos plus gros gains, classés par priorité ; le rapport les chiffre en heures et en euros.",
             },
             {
               titre: "L’après-midi : la formation",
@@ -366,8 +372,7 @@ export default async function VillePage({ params }: Props) {
             },
             {
               titre: "Ensuite : le rapport",
-              texte:
-                "Rapport chiffré sous 3 jours ouvrés : vos gains, les tâches à automatiser classées par rentabilité et votre plan d’action sur 90 jours.",
+              texte: `Rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés : vos gains, les tâches à automatiser classées par rentabilité et votre plan d’action sur 90 jours.`,
             },
           ].map((etape, i) => (
             <li
@@ -452,8 +457,8 @@ export default async function VillePage({ params }: Props) {
               {`Votre Journée IA ${aVille(ville.nameFr)} commence par 45 minutes gratuites`}
             </h2>
             <p className="text-paper/85 text-base leading-relaxed sm:text-lg">
-              Diagnostic IA de 45 minutes, en visio ou par téléphone : une première tâche chiffrée,
-              et la date de votre journée fixée ensemble.
+              Diagnostic IA de 45 minutes, gratuit et facultatif, en visio ou par téléphone : une
+              première tâche chiffrée, et la date de votre journée fixée ensemble.
             </p>
             <Link
               href={lienRendezVous(depuisVille(ville.slug, "bas")) as never}
@@ -486,7 +491,7 @@ function VilleStub({ ville, region, breadcrumbItems }: VilleStubProps) {
       titleAs="h1"
       eyebrow={`Implantations · ${region.nameFr}`}
       title={h1Ville(ville)}
-      description={`Nous menons la Journée IA dans les locaux de votre entreprise ${aVille(ville.nameFr)} (${libelleDepartement(ville)}), comme partout en France : audit le matin, formation de vos équipes l’après-midi, rapport chiffré sous 3 jours ouvrés.`}
+      description={`Nous menons la Journée IA dans les locaux de votre entreprise ${aVille(ville.nameFr)} (${libelleDepartement(ville)}), comme partout en France : audit le matin, formation de vos équipes l’après-midi, rapport chiffré sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés.`}
     >
       <div className="mb-8">
         <Breadcrumbs items={breadcrumbItems} />

@@ -49,7 +49,7 @@ export const WITTELSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wittelsheim ?",
-      a: "Oui, Axion-IA intervient à Wittelsheim et dans le bassin potassique mulhousien (Mulhouse, Cernay, Wittenheim, Staffelfelden). Consultants via A36 (10 min) ou gare de Mulhouse-Ville (20 min). Proximité de l'aéroport Bâle-Mulhouse (25 min).",
+      a: "Oui, Axion-IA intervient à Wittelsheim et dans le bassin potassique mulhousien (Mulhouse, Cernay, Wittenheim, Staffelfelden).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et logistiques ?",
@@ -65,7 +65,7 @@ export const WITTELSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Wittelsheim ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Wittelsheim, dans le bassin potassique reconverti à l'ouest de Mulhouse, est à 10 min de l'autoroute A36 et 20 min de la gare de Mulhouse-Ville, avec un accès vers la Suisse et l'Allemagne via Bâle-Mulhouse.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

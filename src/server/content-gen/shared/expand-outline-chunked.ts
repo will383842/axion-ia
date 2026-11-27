@@ -44,8 +44,8 @@ export interface ExpandOutlineChunkedOpts {
   }) => string;
   readonly maxTokens?: number;
   readonly temperature?: number;
-  /** Texte du blog via Claude (porte inerte tant que l'interrupteur est éteint). */
-  readonly blogClaudeRole?: "ecriture";
+  /** Contenu via Claude (porte inerte tant que l'interrupteur est éteint). */
+  readonly blogClaudeRole?: "ecriture" | "relecture" | "court";
 }
 
 export interface ExpandOutlineChunkedResult {

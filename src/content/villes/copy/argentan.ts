@@ -49,7 +49,7 @@ export const ARGENTAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Argentan et plaine normande ?",
-      a: "Oui, Axion-IA intervient à Argentan et toute la plaine normande ornaise (Flers à 40 km, Alençon à 50 km, Sées, Gacé). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui. Axion-IA intervient à Argentan et dans toute la plaine normande ornaise : Flers, Alençon, Sées et Gacé. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires d'Argentan ?",
@@ -65,7 +65,7 @@ export const ARGENTAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Argentan ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Argentan, comme partout en France, ou à distance.",
     },
   ],
 };

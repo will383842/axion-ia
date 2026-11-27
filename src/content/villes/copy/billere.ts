@@ -9,9 +9,9 @@ export const BILLERE_COPY: VilleCopy = {
   pitchEn:
     "Billère (64), commune résidentielle de l'agglomération de Pau en Béarn, 14 384 habitants. Tissu de TPE artisans, PME de services, commerces de proximité et professions libérales adossé au bassin d'emploi palois. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération Pau Béarn Pyrénées.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure.",
   seoHook: "services aux & commerces proximité",
   ecosystemFr:
     "Billère est une commune résidentielle de 14 384 habitants directement limitrophe ouest de Pau. Tissu économique de proximité : TPE artisans BTP, commerces de quartier, professions libérales (santé, juridique), PME de services tertiaires. Bassin d'emploi commun avec Pau, accès direct à la zone Hélioparc (technopole).",
@@ -34,8 +34,8 @@ export const BILLERE_COPY: VilleCopy = {
       en: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes. Déplacement inclus dans l'agglo Pau.",
-      en: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes. Déplacement inclus dans l'agglo Pau.",
+      fr: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à Billère : automatisation processus gestion cabinet libéral, chatbot accueil patients/clients, classification documents, optimisation planning et facturation PME paloise.",
@@ -49,7 +49,7 @@ export const BILLERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Billère et dans l'agglo de Pau ?",
-      a: "Oui, Axion-IA intervient à Billère et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Lescar, Lons, Jurançon, Idron, Gan). Déplacement sur site inclus dans l'agglo paloise.",
+      a: "Oui, Axion-IA intervient à Billère et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Lescar, Lons, Jurançon, Idron, Gan).",
     },
     {
       q: "Quels services IA pour les professions libérales de Billère ?",
@@ -65,7 +65,7 @@ export const BILLERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Billère ?",
-      a: "Nos consultants accèdent à Billère via la gare de Pau (TGV 4h20 Paris direct) ou l'aéroport Pau-Pyrénées (15 min). Mission sur site dans vos locaux, cabinet ou commerce. Agglo Pau : déplacement inclus.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

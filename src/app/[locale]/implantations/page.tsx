@@ -275,8 +275,8 @@ export default async function ImplantationsHub({ params }: Props) {
               Votre Journée IA commence par 45 minutes gratuites
             </h2>
             <p className="text-paper/85 text-base leading-relaxed sm:text-lg">
-              Diagnostic IA gratuit de 45 minutes, en visio ou par téléphone : une première tâche
-              chiffrée, et la date de votre journée fixée ensemble.
+              Diagnostic IA gratuit et facultatif de 45 minutes, en visio ou par téléphone : une
+              première tâche chiffrée, et la date de votre journée fixée ensemble.
             </p>
             <Link
               href={lienRendezVous("implantations-bas") as never}

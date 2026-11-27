@@ -49,7 +49,7 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Gilles et dans l'ouest rennais ?",
-      a: "Oui, Axion-IA intervient à Saint-Gilles et dans toute la couronne ouest de Rennes Métropole (Pacé, Mordelles, Le Rheu, L'Hermitage, Montfort-sur-Meu). Gare TGV de Rennes à 20 min, Paris en 1h25.",
+      a: "Oui, Axion-IA intervient à Saint-Gilles et dans toute la couronne ouest de Rennes Métropole (Pacé, Mordelles, Le Rheu, L'Hermitage, Montfort-sur-Meu).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Gilles (35)  ?",

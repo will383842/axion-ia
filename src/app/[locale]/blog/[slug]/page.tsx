@@ -9,6 +9,7 @@ import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
+import { CHEMIN_JOURNEE_IA } from "@/content/journee-ia-commun";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -43,7 +44,7 @@ import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
-import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleSources, aDesSourcesAffichables } from "@/components/content-gen/ArticleSources";
 import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
 import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
@@ -60,12 +61,17 @@ import { getVille } from "@/content/villes";
 // en texte échappé → balises visibles, 0 titre/lien/mise en forme).
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { buildToc } from "@/lib/knowledge/article-enrich";
+import {
+  chapoDeRepli,
+  compterMotsTexte,
+  unSeulBlocSources,
+} from "@/server/content-gen/shared/sources-et-chapo";
 // H3 (audit grounding 2026-06-05) — résout les tokens prix {{price:...}} au
 // rendu (no-op si aucun) : filet anti-fuite de token brut + cohérence SSOT.
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 // VIS-09 — articles DB (content-gen, auteur Manon) émis via la factory
 // BlogPosting (type correct + author @id résolu + AI Act + image hero).
-import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
+import { buildBlogPostingEquipeJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
@@ -287,8 +293,8 @@ export default async function BlogArticle({ params }: Props) {
     // indéfiniment (même doctrine anti-307 que proxy.ts). `permanentRedirect()`
     // émet le 308 attendu par le commentaire d'origine.
     const redirectInfo = await findArticleSlugRedirect(slug, loc as "fr" | "en");
-    if (redirectInfo && !redirectInfo.isNews) {
-      permanentRedirect(`/${loc}/blog/${redirectInfo.newSlug}`);
+    if (redirectInfo && !(redirectInfo.section === "blog" && redirectInfo.newSlug === slug)) {
+      permanentRedirect(`/${loc}/${redirectInfo.section}/${redirectInfo.newSlug}`);
     }
 
     // Audit indexation 2026-05-15 P0-7 — soft-410 si Article archived/draft.
@@ -329,7 +335,8 @@ export default async function BlogArticle({ params }: Props) {
     permanentRedirect(`/${loc}/actualites/${slug}`);
   }
 
-  const wordCount = view.body.trim().split(/\s+/).length;
+  // Audit B (2026-11-26) — mots du TEXTE, pas du HTML (balises et attributs gonflaient le total).
+  const wordCount = compterMotsTexte(view.body);
 
   // 🔴 GEO-071 (audit GEO/AEO 2026-08-14) — la VRAIE date de vérification des
   // sources, ou `null`.
@@ -368,7 +375,19 @@ export default async function BlogArticle({ params }: Props) {
   // Les articles FS legacy (auteurs humains, ex. "will") gardent /blog/auteur/<slug>.
   const authorSlug = view.author.toLowerCase();
   const authorHref = isDbHtml ? `/equipe/${authorSlug}` : `/blog/auteur/${authorSlug}`;
-  const dbBody = isDbHtml ? buildToc(sanitizeContentGenHtml(view.body)) : null;
+  // Audit B (2026-11-26) — un seul bloc « Sources » : la section du corps tombe quand
+  // les citations en base alimentent « Sources & méthodologie ». Avant `buildToc`,
+  // pour que le H2 parasite quitte aussi le sommaire.
+  const dbBody = isDbHtml
+    ? buildToc(
+        unSeulBlocSources(
+          sanitizeContentGenHtml(view.body),
+          aDesSourcesAffichables(view.citations),
+        ),
+      )
+    : null;
+  // Chapô : excerpt, sinon meta-description (stock publié avant le correctif du worker).
+  const chapo = chapoDeRepli(view.excerpt, view.metaDescription);
   // H3 — body DB avec tokens prix résolus (no-op si aucun token).
   // AUDIT 2026-07-21 — `collapsePriceProseDuplicates` recolle « commence à
   // À partir de … » (le mode `range` porte sa propre amorce). Défaut
@@ -406,7 +425,7 @@ export default async function BlogArticle({ params }: Props) {
   // image hero). Articles FS legacy (auteur humain réel) → helper générique
   // avec le vrai auteur (NE PAS attribuer à Manon).
   const articleJsonLd = isDbHtml
-    ? buildBlogPostingJsonLd({
+    ? buildBlogPostingEquipeJsonLd({
         title: view.title,
         // 🔴 GEO-044 (audit GEO/AEO 2026-08-14) — `view.excerpt` est VIDE sur les
         // 126 articles : le worker de publication ne l'écrit jamais. Le JSON-LD
@@ -433,12 +452,21 @@ export default async function BlogArticle({ params }: Props) {
         urlSegment: "blog",
         wordCount,
         ...(heroImageAbs
-          ? { imageUrl: heroImageAbs, imageAlt: view.featuredImageAlt ?? view.title }
+          ? {
+              imageUrl: heroImageAbs,
+              imageAlt: view.featuredImageAlt ?? view.title,
+              ...(view.featuredImageWidth && view.featuredImageHeight
+                ? { imageWidth: view.featuredImageWidth, imageHeight: view.featuredImageHeight }
+                : {}),
+            }
           : {}),
         ...(view.tags.length > 0 ? { tags: [...view.tags] } : {}),
         ...(view.category ? { section: view.category } : {}),
         ...(view.citations.length > 0
-          ? { citations: view.citations.map((c) => ({ url: c.url, title: c.name })) }
+          ? {
+              citations: view.citations.map((c) => ({ url: c.url, title: c.name })),
+              isBasedOn: view.citations.map((c) => ({ url: c.url, name: c.name })),
+            }
           : {}),
       })
     : {
@@ -493,7 +521,9 @@ export default async function BlogArticle({ params }: Props) {
   // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).
   // VIS-03 — Préfère le directAnswer généré (snippet 0) ; fallback excerpt/body.
   // H3 — tokens prix résolus (no-op si aucun).
-  const rawTldr = view.directAnswer ?? deriveTldr(view.excerpt, view.body);
+  const rawTldr =
+    view.directAnswer ??
+    deriveTldr(view.excerpt === view.metaDescription ? null : view.excerpt, view.body);
   const tldrText = rawTldr ? collapsePriceProseDuplicates(resolvePriceTokens(rawTldr, loc)) : null;
 
   // V-14 sprint UX 2026-05-22 — Articles connexes : DB+FS merge via helper.
@@ -548,7 +578,7 @@ export default async function BlogArticle({ params }: Props) {
         eyebrow={view.category}
         title={titleParts.lead}
         titleEm={titleParts.em}
-        description={view.excerpt}
+        description={chapo || undefined}
         // P2-3 — Photo hero À DROITE du titre (Will 2026-06-24 : « pas sous le
         // héro »). LCP critique → priority. Ratio 4/3 réservé (CLS = 0). Rendue
         // uniquement si Article.featuredImage existe (articles FS → décoration SVG).
@@ -808,13 +838,15 @@ export default async function BlogArticle({ params }: Props) {
 
       <CtaBlock
         spacing="compact"
-        title={isFr ? "Mettre en pratique" : "Put it to work"}
+        title={isFr ? "Une journée pour passer à l’action" : "One day to get started"}
         description={
-          isFr ? `Démarrez par notre formation en groupe.` : `Start with our group training.`
+          isFr
+            ? "La Journée IA identifie, chez vous, les tâches à automatiser en priorité."
+            : "The AI Day identifies which of your tasks to automate first."
         }
         cta={
-          <Cta href="/formations" size="lg">
-            {isFr ? "Voir nos formations" : "See our trainings"} →
+          <Cta href={CHEMIN_JOURNEE_IA} size="lg">
+            {isFr ? "Découvrir la Journée IA" : "Discover the AI Day"} →
           </Cta>
         }
         tone="dark"

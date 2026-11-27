@@ -14,9 +14,9 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condat-sur-Vienne (87). Nous accompagnons TPE artisans, PME des zones d'activités sud Limoges, commerçants, professions libérales et exploitants agricoles périurbains. Audit sur place sur mesure.",
   seoHook: "commerce grande & services aux",
   ecosystemFr:
-    "Condat-sur-Vienne est située au confluent de la Vienne et de la Briance, en couronne sud de Limoges Métropole. Zones d'activités commerciales et artisanales dynamiques, TPE BTP, PME services aux entreprises, commerces, agriculture périurbaine. Proximité autoroute A20 (sortie Condat) favorise la logistique et le transport.",
+    "Condat-sur-Vienne est située au confluent de la Vienne et de la Briance, en couronne sud de Limoges Métropole. Zones d'activités commerciales et artisanales dynamiques, TPE BTP, PME services aux entreprises, commerces, agriculture périurbaine. Un tissu favorable à la logistique et au transport.",
   ecosystemEn:
-    "Condat-sur-Vienne est située au confluent de la Vienne et de la Briance, en couronne sud de Limoges Métropole. Zones d'activités commerciales et artisanales dynamiques, TPE BTP, PME services aux entreprises, commerces, agriculture périurbaine. Proximité autoroute A20 (sortie Condat) favorise la logistique et le transport.",
+    "Condat-sur-Vienne est située au confluent de la Vienne et de la Briance, en couronne sud de Limoges Métropole. Zones d'activités commerciales et artisanales dynamiques, TPE BTP, PME services aux entreprises, commerces, agriculture périurbaine. Un tissu favorable à la logistique et au transport.",
   distancesFr:
     "Limoges centre à 10 min voiture (A20 sortie Condat). Gare Limoges-Bénédictins à 15 min. Aéroport Limoges-Bellegarde à 20 min. Solignac à 5 min.",
   distancesEn:
@@ -64,8 +64,8 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises des zones d'activités de Condat-sur-Vienne et environs sur leurs cas IA : automatisation gestion commerciale, agents conversationnels, classification documents, optimisation logistique.",
     },
     {
-      q: "Comment accédez-vous à Condat-sur-Vienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct autoroute. Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
+      q: "Comment se déroule une mission à Condat-sur-Vienne ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Condat-sur-Vienne, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -19,9 +19,10 @@
  * le journalise et le signale. Un worker plus ancien ignore ce champ et garde son comportement
  * d'avant (il exige toutes les pièces) : rien ne casse dans la fenêtre app/worker.
  *
- * Les fichiers des annexes ne sont PAS dans le dépôt : ils se déposent à leur clé fixe avec
- * `scripts/apporteurs/deposer-document-joint.ts`, après relecture par le dirigeant. Tant qu'ils
- * n'y sont pas, rien ne change : le contrat part seul.
+ * 🔒 La fiche, le livret et le GUIDE DE DÉMARRAGE ne sont PAS dans le dépôt (public, ils portent
+ * des montants) : ils sont déposés UNE fois sur R2 à la main (`deposer-document-joint.ts`), à
+ * la clé déclarée ci-dessous. Absent de R2 : la pièce n'est pas jointe, l'e-mail part sans elle,
+ * une alerte est journalisée (console + Sentry). Jamais de dépôt automatique.
  *
  * ⚠️ Aucun `server-only` ici : le script de dépôt (tsx, hors Next) lit ces déclarations.
  * ⚠️ Journaux sans donnée personnelle : jamais la clé d'un contrat (elle porte l'identifiant du
@@ -30,6 +31,13 @@
 
 import { enteteObjetR2, isR2Configured } from "@/lib/r2-storage";
 
+import {
+  CLE_R2_FICHE_COMMISSIONS,
+  CLE_R2_GUIDE,
+  CLE_R2_LIVRET,
+  PREFIXE_DOCUMENTS_APPORTEURS,
+} from "./documents-prives";
+import { NOM_FICHIER_GUIDE } from "./guide-demarrage";
 import { signalerErreurReseau } from "./signaler";
 
 /** Une pièce jointe telle que la file d'e-mails l'attend : jamais de binaire, la clé R2. */
@@ -53,20 +61,26 @@ export interface DocumentAnnexe {
   libelleConsole: string;
 }
 
-export const PREFIXE_DOCUMENTS_APPORTEURS = "documents-apporteurs/";
+export { PREFIXE_DOCUMENTS_APPORTEURS };
 
 export const DOCUMENTS_ANNEXES = [
   {
     id: "fiche-commissions",
     nomFichier: "Fiche-des-commissions-Axion-IA.pdf",
-    cleR2: `${PREFIXE_DOCUMENTS_APPORTEURS}fiche-des-commissions.pdf`,
+    cleR2: CLE_R2_FICHE_COMMISSIONS,
     libelleConsole: "la fiche des commissions",
   },
   {
     id: "livret",
     nomFichier: "Livret-apporteur-Axion-IA.pdf",
-    cleR2: `${PREFIXE_DOCUMENTS_APPORTEURS}livret-apporteur.pdf`,
+    cleR2: CLE_R2_LIVRET,
     libelleConsole: "le livret",
+  },
+  {
+    id: "guide-demarrage",
+    nomFichier: NOM_FICHIER_GUIDE,
+    cleR2: CLE_R2_GUIDE,
+    libelleConsole: "le guide de démarrage",
   },
 ] as const satisfies readonly DocumentAnnexe[];
 
@@ -109,12 +123,22 @@ async function enteteDansLeDelai(cle: string): ReturnType<typeof enteteObjetR2> 
  * Taille de l'objet s'il est joignable, sinon `null`. Ne lève jamais. `libelle` est ce qui
  * s'écrit au journal : jamais une clé de contrat.
  */
-async function tailleSiJoignable(cle: string, libelle: string): Promise<number | null> {
+async function tailleSiJoignable(
+  cle: string,
+  libelle: string,
+  signalerAbsence = false,
+): Promise<number | null> {
   try {
     if (!isR2Configured()) return null;
     const entete = await enteteDansLeDelai(cle);
     if (!entete) {
       console.warn(`[apporteurs-documents] ${libelle} : absent de R2, non joint`);
+      if (signalerAbsence) {
+        signalerErreurReseau(
+          "documents joints : annexe absente de R2",
+          new Error(`${libelle} absent du stockage privé, e-mail envoyé sans cette pièce`),
+        );
+      }
       return null;
     }
     if (entete.taille <= 0) {
@@ -140,7 +164,7 @@ export async function documentsAnnexesAJoindre(octetsDejaPris = 0): Promise<Piec
   let cumul = octetsDejaPris;
   for (const doc of DOCUMENTS_ANNEXES) {
     const libelle = `document « ${doc.id} »`;
-    const taille = await tailleSiJoignable(doc.cleR2, libelle);
+    const taille = await tailleSiJoignable(doc.cleR2, libelle, true);
     if (taille === null) continue;
     if (cumul + taille > TAILLE_MAX_PIECES_OCTETS) {
       console.warn(`[apporteurs-documents] ${libelle} : trop lourd pour cet e-mail, non joint`);
@@ -180,6 +204,28 @@ export async function pieceContratDeLAccuse(cleContrat: string): Promise<PieceJo
   return [
     { filename: NOM_CONTRAT_APPORTEUR, r2Key: cleContrat, contentType: PDF, facultative: true },
   ];
+}
+
+/**
+ * Les annexes d'un e-mail qui porte le LIEN du contrat à signer (lien du dossier, rappels,
+ * « Retenu »), avant toute signature : il n'y a pas encore de contrat signé à joindre.
+ * `payload` est le champ FACULTATIF `annexesJointes` (identifiants des annexes réellement
+ * jointes) que le gabarit lit pour écrire sa phrase ; absent si aucune pièce. Un worker plus
+ * ancien l'ignore. Ne lève jamais.
+ */
+export async function annexesDeLEnvoiDuLien(): Promise<{
+  attachments: PieceJointe[];
+  payload: { annexesJointes?: string[] };
+}> {
+  const attachments = await documentsAnnexesAJoindre();
+  const ids = idsAnnexesJointes(attachments);
+  return { attachments, payload: ids.length > 0 ? { annexesJointes: ids } : {} };
+}
+
+/** Identifiants (dans l'ordre de `DOCUMENTS_ANNEXES`) des annexes présentes dans ces pièces. */
+export function idsAnnexesJointes(pieces: readonly PieceJointe[]): string[] {
+  const cles = new Set(pieces.map((p) => p.r2Key));
+  return DOCUMENTS_ANNEXES.filter((d) => cles.has(d.cleR2)).map((d) => d.id);
 }
 
 const enListe = (noms: readonly string[]): string =>

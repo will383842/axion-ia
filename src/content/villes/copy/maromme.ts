@@ -49,7 +49,7 @@ export const MAROMME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Maromme et dans l'agglo de Rouen ?",
-      a: "Oui, Axion-IA intervient a Maromme et dans toute la metropole rouennaise (Rouen, Deville-les-Rouen, Notre-Dame-de-Bondeville, Canteleu). Consultants depuis Rouen (10 min) ou Paris (1h20).",
+      a: "Oui, Axion-IA intervient a Maromme et dans toute la metropole rouennaise (Rouen, Deville-les-Rouen, Notre-Dame-de-Bondeville, Canteleu). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Maromme ?",

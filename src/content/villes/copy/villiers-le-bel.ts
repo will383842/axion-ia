@@ -227,7 +227,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villiers-le-Bel et dans Roissy Pays de France ?",
-      a: "Oui, nous intervenons à Villiers-le-Bel et dans les communes voisines de Sarcelles, Arnouville, Gonesse, Écouen, Bouqueval et Le Plessis-Gassot. Accès rapide via RER D ou voiture.",
+      a: "Oui, nous intervenons à Villiers-le-Bel et dans les communes voisines de Sarcelles, Arnouville, Gonesse, Écouen, Bouqueval et Le Plessis-Gassot.",
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Villiers-le-Bel ?",
@@ -239,7 +239,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention sur site à Villiers-le-Bel ?",
-      a: "Délai standard : 5 jours ouvrés après cadrage. Intervention rapide possible sous 48-72h en Val-d'Oise selon la disponibilité consultant Paris (RER D ~25 min).",
+      a: "Délai standard : 5 jours ouvrés après cadrage. Intervention rapide possible sous 48-72h en Val-d'Oise selon la disponibilité de nos consultants.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Villiers-le-Bel ?",

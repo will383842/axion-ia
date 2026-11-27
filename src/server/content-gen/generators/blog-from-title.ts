@@ -22,6 +22,10 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { coutErreurTronquee, estSortieJsonTronquee } from "../providers/IProvider";
 import { UnrecoverableError } from "bullmq";
 import { interrupteurBlogClaude } from "../providers/blog-claude";
+import {
+  MAX_TOKENS_EXPANSION_CLAUDE,
+  MAX_TOKENS_PLAN_CLAUDE,
+} from "../providers/blog-claude-budgets";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
@@ -35,12 +39,15 @@ import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
+import { equipeEditorialeActive } from "../fact-check/equipe-editoriale-drapeau";
+import { consigneRedactionEquipe } from "../equipe/redaction";
 import { expandOutlineChunked } from "../shared/expand-outline-chunked";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { consigneAngle } from "../brand/positionnement";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
@@ -72,12 +79,20 @@ const MIN_WORD_COUNT = 850;
 // ARCHITECTURE 2-APPELS (2026-06-25)
 // ───────────────────────────────────────────────────────────────────────────
 
+// Consigne du plan (équipe éditoriale, derrière CONTENT_EQUIPE_EDITORIALE) : contrat vérifié par equipe/plan.ts.
+const CONSIGNE_PLAN_EQUIPE = `## Contrat de plan (obligatoire — prime sur « 8 sections » ci-dessus)
+- "directAnswer" : 40 à 60 mots, placée juste sous le titre, qui contient le mot-clé principal.
+- "outline" : 5 à 8 sections <h2>, chacune répondant à une sous-question du brief ; ajoute à chaque entrée "questionCouverte" (la sous-question) et, si tu en as une, "preuve" (texte ou identifiant de preuve).
+- Pas de <h3> sauf si un <h2> en a au moins deux ; <h4> à <h6> seulement si nécessaire ; jamais de saut de niveau.
+- Chaque question du brief est traitée UNE fois : dans un <h2> OU dans la FAQ, jamais les deux.
+`;
+
 // APPEL 1 — PLAN : produit l'ossature (métadonnées + FAQ + outline 8 sections).
 // PAS de bodyHtml ici (c'est l'appel 2 qui développe). Le TITRE est IMPOSÉ par
 // l'utilisateur : on demande au modèle de le reproduire exactement, puis on le
 // force côté code (le LLM ne peut pas dévier).
-const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
+const SYSTEM_PROMPT_PLAN = injectBrandVoice(
+  `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps sera rédigé séparément). Règles :
 - Le TITRE est fourni par l'utilisateur : reproduis-le EXACTEMENT dans le champ "title" (aucune modification).
 - 100 % centré Axion-IA, ancré sur les « Sources internes Axion-IA » fournies (faits KB). Rien d'inventé : ni cas client fictif, ni chiffre non sourcé.
@@ -92,12 +107,14 @@ Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps se
 - "expertTake" : 1-2 phrases = prise de position d'expert, sans statistique inventée.
 - "outline" : **8 sections <h2>** couvrant une progression logique : enjeu/contexte sectoriel → méthodologie Axion-IA étape par étape → livrables concrets → ROI & preuves → cas d'usage réels → erreurs à éviter → mise en œuvre. Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un fait KB précis) }. PAS de section définitionnelle creuse.
 - INTERDIT (marketing-hype, doctrine § 21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`,
+  "blog_from_title",
+);
 
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
 // C'est ici que se joue la LONGUEUR : chaque section doit faire 130-190 mots.
-const SYSTEM_PROMPT_EXPAND =
-  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
+const SYSTEM_PROMPT_EXPAND = injectBrandVoice(
+  `Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
 - GROUNDING OBLIGATOIRE : développe CHAQUE section à partir des « Sources internes Axion-IA » fournies (méthodologie, étapes, livrables, ROI RÉELS). Si un fait précis manque, reste général et factuel SANS rien inventer (ni cas client fictif, ni chiffre non sourcé).
 - INTERDIT : section purement définitionnelle. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - LONGUEUR DÉTERMINANTE POUR LE RANG : développe EXACTEMENT les sections de l'outline fourni (une <h2> par entrée, dans l'ordre), **chacune de 130 à 190 mots** (2-3 paragraphes pleins). Corps total visé : **900 à 1300 mots**. JAMAIS une section de 2 phrases. Développe pleinement, ne résume pas.
@@ -108,7 +125,10 @@ const SYSTEM_PROMPT_EXPAND =
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies. ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
-- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des 8 sections, rien d'autre).`);
+- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des 8 sections, rien d'autre).`,
+  "blog_from_title",
+  "section",
+);
 
 export const blogFromTitleGenerator: Generator = {
   contentType: "blog_from_title",
@@ -163,7 +183,8 @@ export const blogFromTitleGenerator: Generator = {
     let lastPromptHash = ""; // P0-3 AI Act art. 50
     const glossaryContext = getGlossaryContext([mandatoryTitle].filter(Boolean));
 
-    type OutlineSection = { h2: string; brief: string };
+    // questionCouverte / preuve : facultatifs (circuit équipe éditoriale) — un job ou un plan sans eux reste valide.
+    type OutlineSection = { h2: string; brief: string; questionCouverte?: string; preuve?: string };
     type PlanParsed = {
       title: string;
       metaTitle: string;
@@ -193,7 +214,8 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Avis d'expert
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile, sans chiffre inventé.
 ${consigneAngle(input.jobId)}
-${sectionChiffresVerifies()}## Output attendu (JSON)
+${consigneJourneeIA(mandatoryTitle)}
+${sectionChiffresVerifies()}${equipeEditorialeActive() ? CONSIGNE_PLAN_EQUIPE : ""}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;
@@ -212,7 +234,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
             planAttempt === 0
               ? planUserPrompt
               : `${planUserPrompt}\n\n## Correction\nLe "metaTitle" DOIT couvrir le mot-clé du titre "${safeTitle}" (≤ 60 caractères ; « IA » accepté pour « intelligence artificielle »).`,
-          maxTokens: 2600,
+          maxTokens: interrupteurBlogClaude() ? MAX_TOKENS_PLAN_CLAUDE : 2600,
           temperature: 0.6,
         });
       } catch (err) {
@@ -274,8 +296,12 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
     let parsed: BlogFromTitleParsed | null = null;
     let prevFeedback = input.improvementFeedback ?? "";
     const expandSystem =
-      applySystemPromptOverride(SYSTEM_PROMPT_EXPAND, input.templateOverride, "blog_from_title") +
-      getIntentPromptAddendum(input.targetSearchIntent);
+      applySystemPromptOverride(
+        SYSTEM_PROMPT_EXPAND,
+        input.templateOverride,
+        "blog_from_title",
+        "section",
+      ) + getIntentPromptAddendum(input.targetSearchIntent);
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -293,7 +319,9 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,
-        maxTokens: input.templateOverride?.maxTokens ?? 5000,
+        maxTokens:
+          input.templateOverride?.maxTokens ??
+          (interrupteurBlogClaude() ? MAX_TOKENS_EXPANSION_CLAUDE : 5000),
         temperature: input.templateOverride?.temperature ?? (iteration === 0 ? 0.7 : 0.5),
         buildUserPrompt: ({ chunkText, isFirst, isLast }) =>
           `Rédige le CORPS HTML (sections de l'article) pour le titre : "${safeTitle}" (intent ${safeIntent}, audience ${safeAudienceSize}).
@@ -305,7 +333,7 @@ ${chunkText}
 ## Sources internes Axion-IA (grounding obligatoire)
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
-${glossaryContext ? `\n${glossaryContext}` : ""}
+${glossaryContext ? `\n${glossaryContext}` : ""}${consigneRedactionEquipe({ plan: { sections: plan.outline ?? [] }, dossier: input.dossierPreuves })}
 ## Output attendu (JSON)
 { bodyHtml }  (UNIQUEMENT les <h2> de CES sections, rien d'autre)`,
       });
@@ -500,6 +528,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       directAnswer: parsed.directAnswer ?? "",
       bodyHtml: parsed.bodyHtml,
       bodyText,
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
       // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le

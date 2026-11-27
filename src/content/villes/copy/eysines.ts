@@ -239,8 +239,8 @@ export const EYSINES_COPY: VilleCopy = {
       a: `Pour les TPE, PME et ETI d'Eysines, l'Audit sur place est planifié sous 5 jours ouvrés. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
-      q: "Couvrez-vous Bordeaux, Le Bouscat et Mérignac depuis Eysines ?",
-      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes d'Eysines : Bordeaux, Le Bouscat, Bruges, Le Haillan, Mérignac, Le Taillan-Médoc et Blanquefort.",
+      q: "Intervenez-vous à Bordeaux, Le Bouscat et Mérignac ?",
+      a: "Oui, nous intervenons dans vos locaux dans les communes limitrophes d'Eysines : Bordeaux, Le Bouscat, Bruges, Le Haillan, Mérignac, Le Taillan-Médoc et Blanquefort.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Eysines ?",

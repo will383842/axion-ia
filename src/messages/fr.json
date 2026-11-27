@@ -463,12 +463,12 @@
       "step2Title": "2. Nous convenons d'une date",
       "step2Body": "Nous vous rappelons pour caler un créneau qui vous arrange et préparer les sujets ensemble.",
       "step3Title": "3. Nous venons tourner",
-      "step3Body": "L'équipe se déplace dans vos locaux avec le matériel. Comptez environ une heure sur place."
+      "step3Body": "Nous tournons dans vos locaux, avec le matériel. Comptez environ une heure sur place."
     },
     "included": {
       "title": "Ce qui est compris",
-      "item1": "Le déplacement de l'équipe dans vos locaux",
-      "item2": "Le tournage et la prise de son",
+      "item1": "Le tournage dans vos locaux, matériel fourni",
+      "item2": "La prise de son et d'image",
       "item3": "Le montage de l'épisode",
       "item4": "Les fichiers vidéo et audio, libres d'usage"
     },
@@ -481,7 +481,7 @@
       "phone": "Téléphone",
       "city": "Ville",
       "postalCode": "Code postal",
-      "locationHint": "Nous nous déplaçons : dites-nous où vous êtes installé.",
+      "locationHint": "Nous tournons chez vous : dites-nous où vous êtes installé.",
       "activity": "En quelques mots, votre activité",
       "activityPlaceholder": "Ce que fait votre entreprise, depuis quand, combien vous êtes…",
       "consent": "J'accepte qu'Axion-IA conserve ces informations pour me recontacter au sujet de ce tournage, conformément au RGPD.",

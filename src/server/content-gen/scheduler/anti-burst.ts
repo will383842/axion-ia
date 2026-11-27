@@ -21,6 +21,11 @@
  */
 
 import type { ContentType } from "../../../../prisma/generated/client";
+import {
+  equipeEditorialeActive,
+  type EnvEquipeEditoriale,
+} from "../fact-check/equipe-editoriale-drapeau";
+import { plafondsCoherents } from "../providers/blog-claude-plafonds";
 
 export interface AntiBurstInput {
   /** Cibles/jour par type. Type absent ou target=0 → ignoré. */
@@ -142,4 +147,83 @@ export function computeCampaignTickBudget(input: CampaignTickBudgetInput): numbe
 export function msSinceStartOfDay(now: Date = new Date()): number {
   const startOfDay = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   return now.getTime() - startOfDay;
+}
+
+// ── Rythme de l'équipe éditoriale (derrière CONTENT_EQUIPE_EDITORIALE) ────────
+
+/** Clés `ContentGenConfig` : lecture tolérante, aucune migration. */
+export const CLE_ARTICLES_MAX_JOUR = "equipe_articles_max_jour";
+export const CLE_MAJ_MAX_JOUR = "equipe_maj_max_jour";
+export const ARTICLES_MAX_JOUR_DEFAUT = 3;
+export const MAJ_MAX_JOUR_DEFAUT = 1;
+/** Borne de garde : au-delà, la clé est jugée aberrante et le défaut s'applique. */
+export const BORNE_RYTHME_MAX_JOUR = 20;
+
+export interface RythmeEquipe {
+  readonly articlesMaxJour: number;
+  readonly majMaxJour: number;
+}
+
+/** Entier ≥ 0 sinon valeur par défaut (clé absente, texte, négatif, décimal). */
+function entierOuDefaut(v: unknown, defaut: number): number {
+  return typeof v === "number" && Number.isInteger(v) && v >= 0 && v <= BORNE_RYTHME_MAX_JOUR
+    ? v
+    : defaut;
+}
+
+export function resoudreRythmeEquipe(config: unknown): RythmeEquipe {
+  const o =
+    config && typeof config === "object" && !Array.isArray(config)
+      ? (config as Record<string, unknown>)
+      : {};
+  return {
+    articlesMaxJour: entierOuDefaut(o[CLE_ARTICLES_MAX_JOUR], ARTICLES_MAX_JOUR_DEFAUT),
+    majMaxJour: entierOuDefaut(o[CLE_MAJ_MAX_JOUR], MAJ_MAX_JOUR_DEFAUT),
+  };
+}
+
+export interface DecisionRythmeEquipe {
+  readonly autorise: boolean;
+  readonly raison?: string;
+}
+
+/**
+ * Refuse un nouvel article (au-delà de 3/jour) ou une mise à jour (au-delà de 1/jour).
+ * Interrupteur éteint : toujours autorisé (comportement d'avant). Si les plafonds USD
+ * sont fournis, refuse aussi l'incohérence jour > mois.
+ */
+export function decisionRythmeEquipe(input: {
+  readonly nature: "article" | "maj";
+  readonly creesAujourdhui: number;
+  readonly rythme: RythmeEquipe | null | undefined;
+  readonly env?: EnvEquipeEditoriale;
+  readonly plafondJourUsd?: number;
+  readonly plafondMoisUsd?: number;
+}): DecisionRythmeEquipe {
+  if (!equipeEditorialeActive(input.env)) return { autorise: true };
+  if (
+    input.plafondJourUsd !== undefined &&
+    input.plafondMoisUsd !== undefined &&
+    !plafondsCoherents(input.plafondJourUsd, input.plafondMoisUsd)
+  ) {
+    return { autorise: false, raison: "plafond du jour supérieur au plafond du mois" };
+  }
+  if (!Number.isInteger(input.creesAujourdhui) || input.creesAujourdhui < 0) {
+    return { autorise: false, raison: "compteur du jour invalide" };
+  }
+  const r = resoudreRythmeEquipe({
+    [CLE_ARTICLES_MAX_JOUR]: input.rythme?.articlesMaxJour,
+    [CLE_MAJ_MAX_JOUR]: input.rythme?.majMaxJour,
+  });
+  const max = input.nature === "article" ? r.articlesMaxJour : r.majMaxJour;
+  if (input.creesAujourdhui >= max) {
+    return {
+      autorise: false,
+      raison:
+        input.nature === "article"
+          ? `plafond de ${max} nouvel(s) article(s) par jour atteint`
+          : `plafond de ${max} mise(s) à jour par jour atteint`,
+    };
+  }
+  return { autorise: true };
 }

@@ -219,7 +219,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote within 24 to 48 hours depending on complexity. Custom-code development, European Union hosting and GDPR compliance by default (minimisation, processing register). We own the full chain: UX/UI, responsive mobile, multi-CMS e-commerce and AI building blocks. You keep full control of your site or platform — code, content and data transferable, with no vendor lock-in or no-code dependency. Travel costs to Draguignan and the Dracénie are calculated case by case by zone.",
+          "Quote within 24 to 48 hours depending on complexity. Custom-code development, European Union hosting and GDPR compliance by default (minimisation, processing register). We own the full chain: UX/UI, responsive mobile, multi-CMS e-commerce and AI building blocks. You keep full control of your site or platform — code, content and data transferable, with no vendor lock-in or no-code dependency.",
       },
     },
   },
@@ -227,11 +227,11 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Draguignan ?",
-      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour Draguignan.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Draguignan ?",
-      a: "Nous nous engageons à intervenir sur site à Draguignan dans un délai de 5 jours ouvrés après validation de la demande. Pour les TPE et PME de la Dracénie, l'accès se fait via la gare TGV Les Arcs–Draguignan ou A8 sortie Le Muy.",
+      a: "Nous nous engageons à intervenir sur site à Draguignan dans un délai de 5 jours ouvrés après validation de la demande.",
     },
     {
       q: "Quelles communes proches de Draguignan couvrez-vous ?",

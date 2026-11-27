@@ -52,7 +52,7 @@ const CARDS: ReadonlyArray<AudienceCard> = [
     titleFr: "La Journée IA : par où commencer",
     titleEn: "The AI Day: where to start",
     bodyFr:
-      "Nous venons chez vous, nous chiffrons avec vos équipes le temps perdu sur les tâches qui reviennent, et nous les formons sur leurs propres dossiers.",
+      "Nous venons chez vous, nous repérons avec vos équipes le temps perdu sur les tâches qui reviennent, et nous les formons sur leurs propres dossiers.",
     bodyEn:
       "We come to your company, work out with your teams the time lost on recurring tasks, and train them on their own files.",
     metaFr: `${TARIF_JOURNEE} HT · 1 journée dans votre entreprise`,

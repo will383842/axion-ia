@@ -53,8 +53,8 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
         whyHere: [
           "Port industriel de 33 hectares au confluent Seine-Yonne, l'un des principaux ports du sud francilien : la logistique fluviale, le vrac, les conteneurs et le transport appellent des portails de suivi de flux en temps réel, des espaces clients sécurisés et des automatisations de devis-facturation avec recherche sémantique sur les bordereaux, taillés pour les opérateurs et transporteurs du port.",
           "PME industrielles héritières des manufactures de faïence Creil-Montereau et de la sidérurgie locale (SAM Montereau, Soletanche Bachy et son pôle géotechnique) : on greffe l'IA sur l'existant — recherche sémantique sur catalogues et fiches techniques, configurateurs produit, agents de planification atelier — sans imposer la refonte lourde que ces équipes industrielles ne peuvent pas se permettre.",
-          "Tissu majoritairement TPE BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (gare ligne Paris-Laroche-Migennes, parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
-          "Ville desservie en 1h depuis Paris-Gare-de-Lyon, reliée par l'A5 et la RD606 (ex-RN6) mais profondément ancrée dans le Pays de Montereau et le sud 77 : tous nos sites et briques IA sont hébergeables en UE, conformes RGPD et AI Act — vos données clients, industrielles et logistiques restent maîtrisées et ne transitent jamais hors UE sans DPA.",
+          "Tissu majoritairement TPE BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
+          "Axion IA intervient partout en France, sur site ou à distance, et reste ancrée dans le Pays de Montereau et le sud 77 : tous nos sites et briques IA sont hébergeables en UE, conformes RGPD et AI Act — vos données clients, industrielles et logistiques restent maîtrisées et ne transitent jamais hors UE sans DPA.",
         ],
         methodology: [
           {
@@ -139,8 +139,8 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
         whyHere: [
           "Port industriel de 33 hectares au confluent Seine-Yonne, l'un des principaux ports du sud francilien : la logistique fluviale, le vrac, les conteneurs et le transport appellent des portails de suivi de flux en temps réel, des espaces clients sécurisés et des automatisations de devis-facturation avec recherche sémantique sur les bordereaux, taillés pour les opérateurs et transporteurs du port.",
           "PME industrielles héritières des manufactures de faïence Creil-Montereau et de la sidérurgie locale (SAM Montereau, Soletanche Bachy et son pôle géotechnique) : on greffe l'IA sur l'existant — recherche sémantique sur catalogues et fiches techniques, configurateurs produit, agents de planification atelier — sans imposer la refonte lourde que ces équipes industrielles ne peuvent pas se permettre.",
-          "Tissu majoritairement TPE BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (gare ligne Paris-Laroche-Migennes, parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
-          "Ville desservie en 1h depuis Paris-Gare-de-Lyon, reliée par l'A5 et la RD606 (ex-RN6) mais profondément ancrée dans le Pays de Montereau et le sud 77 : tous nos sites et briques IA sont hébergeables en UE, conformes RGPD et AI Act — vos données clients, industrielles et logistiques restent maîtrisées et ne transitent jamais hors UE sans DPA.",
+          "Tissu majoritairement TPE BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
+          "Axion IA intervient partout en France, sur site ou à distance, et reste ancrée dans le Pays de Montereau et le sud 77 : tous nos sites et briques IA sont hébergeables en UE, conformes RGPD et AI Act — vos données clients, industrielles et logistiques restent maîtrisées et ne transitent jamais hors UE sans DPA.",
         ],
         methodology: [
           {
@@ -226,7 +226,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montereau-Fault-Yonne et autour ?",
-      a: "Oui, Axion-IA intervient à Montereau-Fault-Yonne et dans les communes du Pays de Montereau : Varennes-sur-Seine, La Grande-Paroisse, Saint-Germain-Laval, Cannes-Écluse, Marolles-sur-Seine, Forges. Gare directe Paris en 1h.",
+      a: "Oui, Axion-IA intervient à Montereau-Fault-Yonne et dans les communes du Pays de Montereau : Varennes-sur-Seine, La Grande-Paroisse, Saint-Germain-Laval, Cannes-Écluse, Marolles-sur-Seine, Forges.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Montereau-Fault-Yonne ?",
@@ -238,7 +238,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Montereau-Fault-Yonne ?",
-      a: "Williams se déplace à Montereau-Fault-Yonne sous 5 jours ouvrés en moyenne. Accès via gare directe (Paris-Lyon 1h) ou A5 / RD606. Mission dans vos locaux industriels, au port fluvial ou en boutique.",
+      a: "Williams intervient à Montereau-Fault-Yonne sous 5 jours ouvrés en moyenne. Mission dans vos locaux industriels, au port fluvial ou en boutique.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Montereau-Fault-Yonne ?",

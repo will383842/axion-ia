@@ -792,45 +792,29 @@ describe("relecture de la PR 1359 (a1)", () => {
   });
 });
 
-describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé avant la réalisation", () => {
+describe("règle du 25/11 : la commission sort au paiement intégral, sans condition de réalisation", () => {
   const enAttente = (id: string, montant = 40_000) =>
     ligne(id, "due", montant, { prestationRealiseeAt: null, prestationRealiseePar: null });
 
-  it("passage horaire : une prestation non réalisée n'est pas facturée ; marquée réalisée, elle l'est", async () => {
+  it("passage horaire : payée à 100 %, prestation NON livrée → facturée quand même (règle du 25/11)", async () => {
     etat.lignes = [enAttente("c1")];
-    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
-    expect(lignes()[0]!.autofactureNumero).toBeNull();
-    expect(
-      await marquerPrestationRealisee("c1", new Date("2026-10-05T12:00:00Z"), MARDI, "admin-1"),
-    ).toEqual({ ok: true });
     expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 1 });
-    expect(
-      etat.journal.some((j) => j["action"] === "commission_apporteur.prestation_realisee"),
-    ).toBe(true);
+    expect(lignes()[0]!.autofactureNumero).not.toBeNull();
   });
 
-  it("« Virement fait » SANS numéro : ne facture ni ne verse une prestation non réalisée", async () => {
+  it("« Virement fait » SANS numéro : facture puis verse, sans condition de réalisation", async () => {
     etat.lignes = [enAttente("c1")];
-    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
-    expect(lignes()[0]!.autofactureNumero).toBeNull();
-    expect(lignes()[0]!.statut).toBe("due");
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: true });
+    expect(lignes()[0]!.autofactureNumero).not.toBeNull();
+    expect(lignes()[0]!.statut).toBe("versee");
   });
 
-  it("« Virement fait » AVEC numéro : refusé si une ligne de l'autofacture n'est pas réalisée", async () => {
-    etat.lignes = [ligne("c1", "due", 40_000)];
+  it("« Virement fait » AVEC numéro : accepté même si la prestation n'est pas livrée", async () => {
+    etat.lignes = [enAttente("c1")];
     await facturerCommissionsDues(MARDI);
-    lignes()[0]!.prestationRealiseeAt = null; // donnée incohérente : le verrou tient quand même
     const r = await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001");
-    expect(r).toMatchObject({ ok: false });
-    expect((r as { message: string }).message).toContain("En attente de réalisation");
-    expect(lignes()[0]!.statut).toBe("due");
-  });
-
-  it("colonne absente (worker avant la migration) : RIEN n'est facturé ni versé", async () => {
-    etat.colonneLitigeAbsente = true; // le simulateur refuse alors toute requête brute
-    etat.lignes = [ligne("c1", "due", 40_000)];
-    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
-    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    expect(r).toMatchObject({ ok: true });
+    expect(lignes()[0]!.statut).toBe("versee");
   });
 
   it("« Annuler » : possible tant que la commission n'est pas facturée, refusé ensuite", async () => {
@@ -972,7 +956,8 @@ describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réal
     expect(await annulerRealisation("c1", "admin-1")).toEqual({ ok: true });
     expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
     expect(lignes()[0]!.prestationRealiseeAt).toBeNull();
-    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
+    // Règle du 25/11 : la réalisation ne conditionne plus la facturation.
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 1 });
     // Le bouton, lui, peut toujours la reposer.
     expect(await marquerPrestationRealisee("c1", FIN, MARDI, "admin-1")).toEqual({ ok: true });
   });
@@ -1065,16 +1050,16 @@ describe("réduire ou annuler une commission pas encore facturée (point 4)", ()
   it("réduire : la commission est RECALCULÉE depuis le prix conservé, la part du parrain par sa règle", async () => {
     etat.lignes = avecParrain();
     const r = await reduireCommission("c1", 80_005, "prix conservé : 800,05 € HT", "admin-1");
-    expect(r).toMatchObject({ ok: true, montantCents: 24_001 });
+    expect(r).toMatchObject({ ok: true, montantCents: 24_002 });
     expect(lignes().find((l) => l.id === "c1")!).toMatchObject({
-      montantCents: 24_001,
+      montantCents: 24_002,
       factureHtCents: 80_005,
     });
     expect(lignes().find((l) => l.id === "p1")!.montantCents).toBe(2_400); // 10 % arrondi inférieur
     expect(etat.journal[0]).toMatchObject({
       adminUserId: "admin-1",
       action: "commission_apporteur.reduite",
-      changes: { avantCents: 30_000, apresCents: 24_001, prixConserveHtCents: 80_005 },
+      changes: { avantCents: 30_000, apresCents: 24_002, prixConserveHtCents: 80_005 },
     });
   });
 
@@ -1292,5 +1277,22 @@ describe("compensation (art. 12.4) et avoir déjà émis", () => {
     expect((r as { totalCents: number }).totalCents).toBeGreaterThanOrEqual(0);
     const reprises = lignes().filter((x) => x.statut === "reprise");
     expect(reprises.reduce((s, x) => s + (x.montantCents ?? 0), 0)).toBe(-13_004);
+  });
+});
+
+describe("L1 — l'alerte « À virer » et l'e-mail disent le régime de TVA de la pièce", () => {
+  it("assujetti : « TVA comprise » dans l'alerte et `regimeTva` dans la charge de l'e-mail", async () => {
+    etat.lignes = [ligne("c1", "due", 50_000, { apporteurId: "APP4" })];
+    await facturerCommissionsDues(MARDI);
+    expect(etat.alertes.at(-1)!.payload["message"]).toContain("(TVA comprise)");
+    expect(etat.envoyes[0]!["payload"]).toMatchObject({ regimeTva: "assujetti" });
+  });
+  it("franchise : « sans TVA, franchise 293 B »", async () => {
+    etat.lignes = [ligne("c1", "due", 50_000)];
+    await facturerCommissionsDues(MARDI);
+    const m = String(etat.alertes.at(-1)!.payload["message"]);
+    expect(m).toContain("sans TVA, franchise 293 B");
+    expect(m).not.toContain("TVA comprise");
+    expect(etat.envoyes[0]!["payload"]).toMatchObject({ regimeTva: "franchise_293b" });
   });
 });

@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import createNextIntlPlugin from "next-intl/plugin";
+import { readdirSync } from "node:fs";
+import { etendreRedirections } from "./src/lib/redirections/etendre";
 import { CAS_CONCRETS_AFFICHES } from "./src/content/preuves-sociales";
 
 // next-intl plugin wires `src/i18n/request.ts` so Server Components can
@@ -276,653 +278,674 @@ const nextConfig: NextConfig = {
   // au niveau edge, sans frapper le rendu Next. Évite que `routing.pathnames`
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
-    return [
-      // V2-10 PR-4 (2026-11-20) : l'ancien formulaire de l'Observatoire est fermé, le Score IA
-      // TPE-PME (servi à /fr/diagnostic) devient le seul canal. 301 explicite (pas `permanent`,
-      // qui donne un 308). Ni la page, ni le formulaire, ni aucune donnée ne sont supprimés.
-      // L'EN (désactivé) atterrit sur la cible FR, comme le fait déjà le proxy pour tout /en/*.
-      // Garde : tests/unit/redirects/observatoire-participer.spec.ts.
-      {
-        source: "/:locale(fr|en)/observatoire-ia/participer",
-        destination: "/fr/diagnostic#observatoire",
-        statusCode: 301,
-      },
-      {
-        source: "/observatoire-ia/participer",
-        destination: "/fr/diagnostic#observatoire",
-        statusCode: 301,
-      },
-      // Cas concrets éteints (2026-11-08, retrait juridique) : URLs déjà indexées → 301 vers la
-      // page la plus proche (/fr/methodologie), plutôt qu'un 404 sec. Les notFound() des pages
-      // restent en filet. Les redirections ne sont posées que tant que l'interrupteur
-      // `CAS_CONCRETS_AFFICHES` est à false. ⚠️ Une 301 est mise en mémoire par les navigateurs
-      // et par Google : même si l'interrupteur repasse à true et que ces règles disparaissent
-      // de la config, ceux qui l'ont déjà vue continueront d'être renvoyés vers /fr/methodologie
-      // (purge du cache navigateur / réexploration Google nécessaires pour revenir en arrière).
-      // Garde : src/content/__tests__/cas-concrets-eteints.spec.ts.
-      ...(CAS_CONCRETS_AFFICHES
-        ? []
-        : [
-            { source: "/fr/cas-concrets", destination: "/fr/methodologie", statusCode: 301 },
-            {
-              source: "/fr/cas-concrets/:path+",
-              destination: "/fr/methodologie",
-              statusCode: 301,
-            },
-            { source: "/en/case-studies/:path*", destination: "/fr/methodologie", statusCode: 301 },
-          ]),
-      // ⛔ R7 (08/11/2026, ordre de Williams : plus aucun prix public hors Journée IA à
-      // 1 490 € HT). Fichiers STATIQUES de `public/` porteurs de prix : servis hors du
-      // middleware et des pages, l'interrupteur `PRIX_PUBLICS_AFFICHES` ne les atteint pas.
-      // Une redirection TEMPORAIRE passe AVANT le système de fichiers : elle les masque sans les
-      // supprimer (un QR imprimé, un e-mail déjà envoyé y pointent).
-      //   · `/catalogue/*` — le feuilletoir : un prix par offre, p. 36 « Tous nos tarifs ».
-      //     `:path+` exige un segment : `/catalogue` nu reste au middleware (→ /fr/catalogue,
-      //     qui redirige elle-même tant que les prix sont masqués).
-      //   · le PDF « Devenir apporteur d'affaires » : commissions et prix de vente.
-      // Garde : `src/content/__tests__/fichiers-publics-a-prix-masques.spec.ts`.
-      // Les fichiers vivent désormais sous docs/pdf-hors-ligne-certification/ (ils ne sont plus
-      // dans public/) : la redirection est donc un filet pour les anciennes adresses, pas un
-      // masque. Pour rétablir : retirer ces entrées, REMETTRE les fichiers dans public/ depuis
-      // l'archive, ET repasser l'interrupteur (décision Williams).
-      // Entrée explicite `/catalogue/index.html` conservée : exigée par
-      // tests/unit/ci/public-sans-certification-ni-opco.spec.ts (le motif `:path+` la couvre aussi).
-      {
-        source: "/catalogue/index.html",
-        destination: "/fr/formations",
-        permanent: false,
-      },
-      {
-        source: "/catalogue/:path+",
-        destination: "/fr/formations",
-        // 307 et non 308 : masquage réversible (R7) ; une 308 se met en cache pour
-        // toujours et survivrait au rétablissement.
-        permanent: false,
-      },
-      {
-        source: "/imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",
-        destination: "/fr/apporteur-affaires",
-        // 307 et non 308 : masquage réversible (R7) ; une 308 se met en cache pour
-        // toujours et survivrait au rétablissement.
-        permanent: false,
-      },
-      // Alias de vocabulaire pour les apporteurs d'affaires (LinkedIn, 09/2026).
-      // Les publications disent « apporteur d'affaires » ; l'ecart avec une URL
-      // qui dit « commercial » se voit, et c'est le vocabulaire que Will a
-      // demande d'aligner (plan-recrutement-apporteurs-daffaires.md §3.2).
-      //
-      // 🔴 CE QU'ON NE FAIT PAS : renommer `/devenir-commercial-ia`. Cette URL
-      // n'est pas une page, c'est un module : elle porte le JobPosting Google
-      // for Jobs, 40 pages de villes et les 301 des villes T3/T4 vers leur hub,
-      // trois fichiers de sitemap, et le referencement de « devenir commercial
-      // IA » — la requete reellement tapee. La renommer produirait une cascade
-      // de 404 sur des URLs indexees.
-      //
-      // On AJOUTE donc une entree courte qui redirige vers l'existant. Les deux
-      // vivent, aucune ne casse. Le formulaire de candidature reste unique :
-      // meme `/apporteur-affaires-independant-formation-ia-entreprise` y envoie.
-      //
-      // ⚠️ Ne pas ajouter ces deux chemins a un sitemap : une URL qui repond 301
-      // n'a rien a y faire, seule la destination s'indexe.
-      // 2026-10-19 : deux offres d'emploi dont l'adresse citait la certification
-      // qualité changent de slug (retrait des mentions Qualiopi) : 301 pour les
-      // liens et les index existants.
-      {
-        source: "/:locale(fr|en)/carrieres/responsable-qualite-qualiopi",
-        destination: "/:locale/carrieres/responsable-qualite",
-        permanent: true,
-      },
-      // 2026-11-18 : les 3 offres consacrées au financement sont archivées (poste qu'Axion-IA
-      // ne propose pas) : 301 permanent vers le hub carrières, anciens slugs compris (un seul
-      // saut, pas de chaîne). La page renvoie aussi 404 pour toute offre `archived`.
-      {
-        source:
-          "/:locale(fr|en)/carrieres/:slug(assistant-financements-qualiopi|assistant-financements|assistant-dossiers-financement-clients|charge-subventions)",
-        destination: "/fr/carrieres",
-        permanent: true,
-      },
-      {
-        source:
-          "/:locale(fr|en)/carrieres/:slug(assistant-financements|assistant-dossiers-financement-clients|charge-subventions)/postuler",
-        destination: "/fr/carrieres",
-        permanent: true,
-      },
-      // 2026-11-18 : la page « financement OPCO / France Travail » est retirée du site
-      // (décision du dirigeant). 301 permanent vers le catalogue des formations ; ne pas
-      // recréer la page ni ses liens (garde : tests/unit/ci/page-financement-retiree.spec.ts).
-      {
-        source: "/:locale(fr|en)/financement-opco-france-travail",
-        destination: "/fr/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/apporteur/candidature",
-        destination: "/:locale/devenir-commercial-ia/candidature",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/apporteur",
-        destination: "/:locale/apporteur-affaires-independant-formation-ia-entreprise",
-        permanent: true,
-      },
-      // Taxonomies blog SUPPRIMÉES (tag/secteur/service/taille/auteur) — leurs
-      // routes n'existent plus, toute URL résiduelle connue de Google servait un
-      // 404 sec (vérifié en prod le 2026-08-01, audit indexation GSC). 301 de
-      // consolidation vers le hub /blog : convertit le budget de crawl gaspillé
-      // en signal permanent. `:rest*` couvre aussi les hubs nus (/blog/tag).
-      // La taxonomie VIVANTE (/blog/categorie) n'est PAS dans le motif.
-      {
-        source: "/:locale(fr|en)/blog/:taxo(tag|secteur|service|taille|auteur)/:rest*",
-        destination: "/:locale/blog",
-        permanent: true,
-      },
-      // Pagination blog déplacée de `?page=N` vers `/blog/page/N` (audit
-      // indexation GSC 2026-07-31, P1 « BYPASS /fr/blog ») : `searchParams`
-      // rendait le hub dynamique → non cacheable CDN. 301 des anciennes URLs
-      // `?page=N` (N ≥ 2) pour préserver l'index Google — la capture nommée
-      // `num` CONSOMME le query param (sinon Next le repasserait à la
-      // destination). Pas de règle pour `?page=1` : un query non consommé
-      // serait ré-appendu → boucle de 301 ; la route `/blog` ignore désormais
-      // toute query et sert la page 1 avec sa canonique `/blog`, Google
-      // consolide seul.
-      {
-        source: "/:locale(fr|en)/blog",
-        has: [{ type: "query", key: "page", value: "(?<num>[2-9]\\d*)" }],
-        destination: "/:locale/blog/page/:num",
-        permanent: true,
-      },
-      // Boilerplate presse : le TXT statique de `public/press/` est retiré au
-      // profit d'une génération depuis les SSOT (`/api/presse/boilerplate`).
-      // Le fichier figé avait divergé du site — il annonçait « fondé en 2024 »
-      // quand le JSON-LD publie `foundingDate: 2026`. Redirection permanente
-      // plutôt que 404 : des journalistes ont pu enregistrer le lien depuis la
-      // salle de presse. `permanent: true` ⇒ 308 (vérifié en recette), pas 301.
-      {
-        source: "/press/axion-ia-boilerplate-fr-en.txt",
-        destination: "/api/presse/boilerplate",
-        permanent: true,
-      },
-      // Suppression page /reserver (Will 2026-06-26) — le calendrier de booking
-      // est retiré ; toute prise de contact passe désormais par /appel
-      // (réservation d'un appel) ou /contact. 301 vers /appel pour préserver les
-      // liens entrants (favoris, chatbot historique, backlinks). Le pathname
-      // `/reserver` a été retiré de routing.ts → cette règle edge porte le SEO.
-      {
-        source: "/fr/reserver",
-        destination: "/fr/appel",
-        permanent: true,
-      },
-      // Tour France IA (2026-10-27) : la landing quitte `/tourdefrance-ia` pour
-      // `/tour-france-ia`, et sa page de visio `/fr/appel/tour-de-france-ia` pour
-      // `/fr/appel/tour-france-ia`. Les anciennes adresses ont été publiées du 26 au
-      // 27/10 : ne JAMAIS retirer ces 308. Les redirections de `next.config`
-      // passent AVANT le proxy : la règle 0bis ne les localise pas en
-      // `/fr/tourdefrance-ia`. Gardées par `src/app/tour-france-ia/__tests__/`.
-      {
-        source: "/tourdefrance-ia",
-        destination: "/tour-france-ia",
-        permanent: true,
-      },
-      {
-        source: "/tourdefrance-ia/:path*",
-        destination: "/tour-france-ia/:path*",
-        permanent: true,
-      },
-      {
-        source: "/fr/appel/tour-de-france-ia",
-        destination: "/fr/appel/tour-france-ia",
-        permanent: true,
-      },
-      {
-        source: "/sitemap-tourdefrance-ia.xml",
-        destination: "/sitemap-tour-france-ia.xml",
-        permanent: true,
-      },
-      // Tunnel apporteurs : `/facebook` → `/apporteur-affaires` (Will 2026-09-04).
-      // L'URL partait dans les publicités Meta ; le mot « facebook » n'y disait
-      // rien au prospect et ne qualifiait pas le sujet. La redirection est
-      // PERMANENTE et couvre `/facebook/merci` (`:rest*`) : des liens ont pu
-      // circuler entre la mise en ligne du 2026-09-03 et ce renommage.
-      // ⚠️ Le canal d'attribution reste `facebook` (`LEAD_APPORTEUR_SOURCE`) —
-      // seul le slug public change.
-      {
-        source: "/:locale(fr|en)/facebook/:rest*",
-        destination: "/:locale/apporteur-affaires/:rest*",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/facebook",
-        destination: "/:locale/apporteur-affaires",
-        permanent: true,
-      },
-      // Slug EN legacy de l'ancien /reserver (`/book`) → /appel EN (`/book-a-call`).
-      // Pendant que EN est désactivé, proxy.ts (mapEnToFr) 301 déjà /en/book →
-      // /fr/appel ; cette règle couvre le cas EN réactivé.
-      {
-        source: "/en/book",
-        destination: "/en/book-a-call",
-        permanent: true,
-      },
-      // Refonte offre AXION (2026-07, PR #327) PUIS refonte catalogue
-      // 2026-07-19 (générales / métiers / secteurs). Les destinations des
-      // anciens slugs (pré-#327) sont REMAPPÉES directement vers le catalogue
-      // actuel pour éviter les 301 chaînés (ancien → AXION → actuel).
-      ...[
-        ["ia-express", "ia-pour-bien-commencer"],
-        ["art-du-prompt", "ia-pour-les-equipes"],
-        ["ia-securite", "ia-pour-bien-commencer"],
-        ["ia-conformite", ""],
-        ["ia-fondamentaux", "ia-pour-bien-commencer-journee"],
-        ["ia-commercial", "ia-pour-les-commerciaux"],
-        ["ia-au-bureau", "ia-pour-les-equipes"],
-        ["ia-integration-metier", "ia-pour-les-equipes"],
-        ["ia-commercial-avance", "ia-pour-les-commerciaux"],
-        ["claude-decouverte", "ia-pour-bien-commencer"],
-        ["claude-createur", "ia-pour-les-equipes"],
-        ["claude-architecte", "ia-pour-l-automatisation"],
-        // Sans équivalent direct → hub /formations
-        ["ia-sur-le-terrain", ""],
-        ["automatisations-decouverte", "ia-pour-l-automatisation"],
-        ["ia-transformation-equipe", "seminaire-ia-toute-l-entreprise-1j"],
-        ["agents-automatisations", "ia-pour-l-automatisation"],
-        ["agents-automatisations-avance", "ia-pour-l-automatisation"],
-      ].map(([from, to]) => ({
-        source: `/fr/formations/${from}`,
-        destination: to ? `/fr/formations/${to}` : "/fr/formations",
-        permanent: true,
-      })),
-      // Refonte catalogue 2026-07-19 (Will) — les 17 formations AXIONs (hors
-      // séminaire, conservé) sont remplacées par les 21 nouvelles (4 générales,
-      // 9 métiers, 8 secteurs). 301 de chaque ancien slug vers la formation la
-      // plus proche, ou vers le hub.
-      ...[
-        ["bien-demarrer-avec-l-ia-4h", "ia-pour-bien-commencer"],
-        ["bien-demarrer-avec-l-ia-journee-7h", "ia-pour-bien-commencer-journee"],
-        ["prompts-avances-et-assistants-ia-4h", "ia-pour-les-equipes"],
-        ["gagner-du-temps-au-quotidien-avec-l-ia-7h", "ia-pour-les-equipes"],
-        ["claude-prise-en-main-complete-7h", "ia-pour-bien-commencer-journee"],
-        ["claude-maitrise-avancee-et-autonomie-2j", "ia-pour-les-equipes"],
-        ["claude-code-creer-un-projet-3j", "ia-pour-l-it"],
-        ["ia-act-conformite-et-securite-7h", ""],
-        ["referent-ia-piloter-gouvernance-ia-7h", ""],
-        ["ia-rh-recrutement-talents-7h", "ia-pour-les-rh"],
-        ["ia-assistanat-mails-comptes-rendus-documents-7h", "ia-pour-les-equipes"],
-        ["ia-marketing-contenus-seo-image-de-marque-7h", "ia-pour-le-marketing"],
-        ["ia-vente-prospection-developpement-commercial-7h", "ia-pour-les-commerciaux"],
-        ["ia-finance-reporting-analyses-pilotage-7h", "ia-pour-la-finance"],
-        ["ia-supply-chain-achats-stocks-7h", "ia-pour-les-achats"],
-        ["conduite-du-changement-ia-7h", ""],
-        ["deployer-l-ia-en-entreprise-2j", "ia-pour-l-automatisation"],
-      ].map(([from, to]) => ({
-        source: `/:locale(fr|en)/formations/${from}`,
-        destination: to ? `/:locale/formations/${to}` : "/:locale/formations",
-        permanent: true,
-      })),
-      // Refonte 2026-07-19 — l'axe durée disparaît : les 4 listings
-      // /formations/duree/<slug> 301 vers le hub (les 2 listings par catégorie
-      // /formations/metiers et /formations/secteurs les remplacent).
-      {
-        source: "/:locale(fr|en)/formations/duree/:path*",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      // FAQ — slugs legacy faibles → slugs keyword-rich (perfection FAQ 2026-05-31).
-      // 301 pour préserver toute URL déjà connue de Google. Cf. FAQ_GLOBAL ids.
-      {
-        source: "/:locale(fr|en)/faq/definition",
-        destination: "/:locale/faq/definition-axion-ia",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/faq/modules",
-        destination: "/:locale/faq/les-3-modules-axion-ia",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/faq/tools",
-        destination: "/:locale/faq/outils-ia",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/faq/billing",
-        destination: "/:locale/faq/facturation",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/faq/secteurs",
-        destination: "/:locale/faq/secteurs-ia",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/faq/data-security",
-        destination: "/:locale/faq/securite-donnees-ia",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/audit/flash",
-        destination: "/:locale/audit/tpe-1-jour",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/audit/process",
-        destination: "/:locale/audit/cible",
-        permanent: true,
-      },
-      // 2026-11 (décision de Will) — doublons de contenu que Google hésitait à départager :
-      //   · /formations/entreprise (landing « toutes nos formations ») → le hub /formations ;
-      //   · /formations/tarifs (grille) → la page /tarifs, seule page tarifs.
-      // 301 permanent. La source `/en/...` pointe DIRECTEMENT vers `/fr/...` (EN désactivé) :
-      // un seul saut, jamais EN → FR → destination. Les formes sans préfixe locale sont
-      // aplaties par `src/lib/legacy-redirects.ts` (proxy). Les fichiers de page restent dans
-      // le dépôt (gardes qui les lisent) mais ne sont plus servis : la redirection passe avant.
-      // Garde : src/lib/legacy-redirects.test.ts.
-      {
-        source: "/:locale(fr|en)/formations/entreprise",
-        destination: "/fr/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/formations/tarifs",
-        destination: "/fr/tarifs",
-        permanent: true,
-      },
-      {
-        source: "/en/training/pricing",
-        destination: "/fr/tarifs",
-        permanent: true,
-      },
-      // /sitemap.xml → /sitemap-index.xml (Sprint X bugs SEO 2026-05-14).
-      // Next 16 réserve `/sitemap.xml` à la convention metadata `app/sitemap.ts`
-      // qui ne génère que `/sitemap/<id>.xml` (pas d'index racine). On expose
-      // l'index à `/sitemap-index.xml` et on redirige 301 le chemin canonique
-      // pour les outils qui sondent encore /sitemap.xml par habitude
-      // (Bing, vieux crawlers, scripts externes).
-      {
-        source: "/sitemap.xml",
-        destination: "/sitemap-index.xml",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/audit/cibl%C3%A9",
-        destination: "/:locale/audit/cible",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/audit/ciblé",
-        destination: "/:locale/audit/cible",
-        permanent: true,
-      },
-      // Nettoyage doublons/cannibalisation blog Grenoble 2026-07-03 (audit contenu).
-      // Le moteur avait généré, sur les mêmes mots-clés « X IA Grenoble », d'anciens
-      // brouillons courts (2–5 k car., juin) PUIS des versions longues (12–18 k, fin
-      // juin-juillet). Les deux restaient publiés → cannibalisation. On archive les
-      // courts (retirés du sitemap + IndexNow URL_DELETED en base) et on 301 chaque
-      // ancien slug vers la version canonique longue. Aucune chaîne : tout le cluster
-      // audit pointe directement vers `cabinet-audit-ia-grenoble-faq`.
-      {
-        source: "/:locale(fr|en)/blog/cours-ia-grenoble-entreprise",
-        destination: "/:locale/blog/cours-ia-grenoble-entreprise-faq",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/chatbot-ia-grenoble-entreprise",
-        destination: "/:locale/blog/chatbot-ia-grenoble-entreprise-guide",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/coaching-ia-dirigeants-grenoble",
-        destination: "/:locale/blog/coaching-ia-dirigeant-grenoble",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/formation-intelligence-artificielle-grenoble-pme",
-        destination: "/:locale/blog/formation-intelligence-artificielle-entreprise-grenoble",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/formation-prompt-engineering-grenoble",
-        destination: "/:locale/blog/formation-intelligence-artificielle-entreprise-grenoble",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/audit-ia-grenoble-guide",
-        destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/audit-intelligence-artificielle-grenoble-entreprise",
-        destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/audit-intelligence-artificielle-grenoble-entreprise-faq",
-        destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/mentor-ia-dirigeant-grenoble",
-        destination: "/:locale/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/blog/mentor-ia-dirigeant-auvergne-rhone-alpes",
-        destination: "/:locale/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble",
-        permanent: true,
-      },
-      // Slug cassé `glossaire/formation-ia-colombes` (contenait un `/` → 2 segments,
-      // ne matchait pas la route `/blog/[slug]` mono-segment → 404). Le slug est
-      // renommé en base vers `formation-ia-colombes` ; ce 301 couvre l'ancien chemin
-      // au cas où il aurait été lié/soumis quelque part.
-      {
-        source: "/:locale(fr|en)/blog/glossaire/formation-ia-colombes",
-        destination: "/:locale/blog/formation-ia-colombes",
-        permanent: true,
-      },
-      // Refonte villes 2026-05-26 — les 10 750 pages `/implantations/[region]/[ville]/[verticale]`
-      // ont été supprimées (risque doorway HCU 2024 + cannibalisation des pages services).
-      // 5 redirects 301 par verticale vers la page service canonique correspondante.
-      // L'autorité crawl Google est ainsi transférée vers les pages commerciales principales.
-      // Note : `audits` (pluriel ville) → `/audit` (singulier service). `implementations` → `/implementation`.
-      // `sites-web-ia` → `/sites-web-augmentes`.
-      {
-        source: "/:locale(fr|en)/implantations/:region/:ville/audits",
-        destination: "/:locale/audit",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/implantations/:region/:ville/interventions",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/implantations/:region/:ville/implementations",
-        destination: "/:locale/implementation",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/implantations/:region/:ville/un-a-un",
-        destination: "/:locale/un-a-un",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/implantations/:region/:ville/sites-web-ia",
-        destination: "/:locale/sites-web-augmentes",
-        permanent: true,
-      },
-      // Audit GEO/AEO 2026-08-14 (GEO-012) — `/implementations` (pluriel) est codé
-      // en dur dans les prompts générateurs et dans les citations KB, mais la seule
-      // route réelle est `/implementation` (singulier) : ~la moitié du corpus blog
-      // envoyait ses liens in-body sur un 404. Filet de redirect top-level.
-      // ⚠️ Ne matche QUE `implementations` : les 2 157 pages villes `/implantations/*`
-      // (« implAntations », sans `e`) ne sont pas capturées — segment littéral distinct.
-      {
-        source: "/:locale(fr|en)/implementations",
-        destination: "/:locale/implementation",
-        permanent: true,
-      },
-      // EN miroir (path `/locations` au lieu de `/implantations`)
-      {
-        source: "/:locale(fr|en)/locations/:region/:ville/audits",
-        destination: "/:locale/audit",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/locations/:region/:ville/interventions",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/locations/:region/:ville/implementations",
-        destination: "/:locale/implementation",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/locations/:region/:ville/un-a-un",
-        destination: "/:locale/un-a-un",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/locations/:region/:ville/sites-web-ia",
-        destination: "/:locale/sites-web-augmentes",
-        permanent: true,
-      },
-      // Fusion 2026-06-01 (Will) — `/codage-developpement` (+ sa sous-page
-      // `/web-digital`) fusionnés dans `/sites-web-augmentes` (page hub unique
-      // anti-cannibalisation keyword). 301 plus spécifique d'abord. L'autorité
-      // crawl est transférée vers la page service canonique.
-      {
-        source: "/:locale(fr|en)/codage-developpement/web-digital",
-        destination: "/:locale/sites-web-augmentes",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/codage-developpement",
-        destination: "/:locale/sites-web-augmentes",
-        permanent: true,
-      },
-      // Formats Claude 1-to-1 retirés (Will 2026-06-13, centrés outil) → 301 vers
-      // la prestation 1-to-1 équivalente (zéro lien mort, autorité SEO transférée).
-      {
-        source: "/:locale(fr|en)/interventions/claude-dirigeant",
-        destination: "/:locale/interventions/dirigeant-vision-strategique",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/claude-implementation-individuel",
-        destination: "/:locale/interventions/coaching-decouverte",
-        permanent: true,
-      },
-      // Refonte /formations 2026-06-11 (Will) — l'offre de formations COLLECTIVES
-      // de /interventions/* est remplacée par /formations (public/live). 301 des
-      // anciennes URLs collectives → /formations (zéro lien mort, autorité SEO
-      // transférée). Le 1-to-1 (/interventions/{dirigeants,individuel,coaching*,
-      // dirigeant-vision-strategique,demande}) RESTE intact (chemins exacts).
-      {
-        source: "/:locale(fr|en)/interventions",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/collectives",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/collectives/4h",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/collectives/1-jour",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/collectives/2-jours",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/collectives/3-jours-plus",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/essentielle",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/approfondie",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/gagner-du-temps",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/intervention-claude",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/demarrage-ia-express",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      // Formats 1-to-1 supprimés (Will 2026-06-11) → hubs famille survivants.
-      // Slugs EN (executive-productivity / advanced-coaching) gérés par le proxy
-      // en-to-fr (→ slug FR) puis ces règles (convention identique aux collectives).
-      {
-        source: "/:locale(fr|en)/interventions/dirigeant-productivite",
-        destination: "/:locale/interventions/dirigeants",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/coaching-avance",
-        destination: "/:locale/interventions/individuel",
-        permanent: true,
-      },
-      // Pages formation par ville (verticale per-ville migrée /interventions → /formations).
-      {
-        source: "/:locale(fr|en)/interventions/par-ville/:ville",
-        destination: "/:locale/formations/par-ville/:ville",
-        permanent: true,
-      },
-      {
-        source: "/en/interventions/by-city/:ville",
-        destination: "/en/formations/by-city/:ville",
-        permanent: true,
-      },
-      // Anciens slugs déjà redirigés (conférence, atelier) → repointés /formations.
-      {
-        source: "/:locale(fr|en)/interventions/conference",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/conference-pleniere",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/conference-keynote",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/:locale(fr|en)/interventions/atelier-ia-cible",
-        destination: "/:locale/formations",
-        permanent: true,
-      },
-      {
-        source: "/en/interventions/targeted-ai-workshop",
-        destination: "/fr/formations",
-        permanent: true,
-      },
-    ];
+    return etendreRedirections(
+      [
+        // Ancienne fiche PDF d'apporteur retirée du dépôt public (PR #2399) : les e-mails déjà
+        // envoyés pointaient dessus. 302 (temporaire, pas mis en mémoire) vers la page publique
+        // des apporteurs, plutôt qu'un 404 sec ; la fiche actuelle s'ouvre par le lien personnel.
+        {
+          source: "/documents/apporteurs/comment-ca-marche.pdf",
+          destination: "/fr/apporteur-affaires",
+          statusCode: 302,
+        },
+        // V2-10 PR-4 (2026-11-20) : l'ancien formulaire de l'Observatoire est fermé, le Score IA
+        // TPE-PME (servi à /fr/diagnostic) devient le seul canal. 301 explicite (pas `permanent`,
+        // qui donne un 308). Ni la page, ni le formulaire, ni aucune donnée ne sont supprimés.
+        // L'EN (désactivé) atterrit sur la cible FR, comme le fait déjà le proxy pour tout /en/*.
+        // Garde : tests/unit/redirects/observatoire-participer.spec.ts.
+        {
+          source: "/:locale(fr|en)/observatoire-ia/participer",
+          destination: "/fr/diagnostic#observatoire",
+          statusCode: 301,
+        },
+        {
+          source: "/observatoire-ia/participer",
+          destination: "/fr/diagnostic#observatoire",
+          statusCode: 301,
+        },
+        // Cas concrets éteints (2026-11-08, retrait juridique) : URLs déjà indexées → 301 vers la
+        // page la plus proche (/fr/methodologie), plutôt qu'un 404 sec. Les notFound() des pages
+        // restent en filet. Les redirections ne sont posées que tant que l'interrupteur
+        // `CAS_CONCRETS_AFFICHES` est à false. ⚠️ Une 301 est mise en mémoire par les navigateurs
+        // et par Google : même si l'interrupteur repasse à true et que ces règles disparaissent
+        // de la config, ceux qui l'ont déjà vue continueront d'être renvoyés vers /fr/methodologie
+        // (purge du cache navigateur / réexploration Google nécessaires pour revenir en arrière).
+        // Garde : src/content/__tests__/cas-concrets-eteints.spec.ts.
+        ...(CAS_CONCRETS_AFFICHES
+          ? []
+          : [
+              { source: "/fr/cas-concrets", destination: "/fr/methodologie", statusCode: 301 },
+              {
+                source: "/fr/cas-concrets/:path+",
+                destination: "/fr/methodologie",
+                statusCode: 301,
+              },
+              {
+                source: "/en/case-studies/:path*",
+                destination: "/fr/methodologie",
+                statusCode: 301,
+              },
+            ]),
+        // ⛔ R7 (08/11/2026, ordre de Williams : plus aucun prix public hors Journée IA à
+        // 1 490 € HT). Fichiers STATIQUES de `public/` porteurs de prix : servis hors du
+        // middleware et des pages, l'interrupteur `PRIX_PUBLICS_AFFICHES` ne les atteint pas.
+        // Une redirection TEMPORAIRE passe AVANT le système de fichiers : elle les masque sans les
+        // supprimer (un QR imprimé, un e-mail déjà envoyé y pointent).
+        //   · `/catalogue/*` — le feuilletoir : un prix par offre, p. 36 « Tous nos tarifs ».
+        //     `:path+` exige un segment : `/catalogue` nu reste au middleware (→ /fr/catalogue,
+        //     qui redirige elle-même tant que les prix sont masqués).
+        //   · le PDF « Devenir apporteur d'affaires » : commissions et prix de vente.
+        // Garde : `src/content/__tests__/fichiers-publics-a-prix-masques.spec.ts`.
+        // Les fichiers vivent désormais sous docs/pdf-hors-ligne-certification/ (ils ne sont plus
+        // dans public/) : la redirection est donc un filet pour les anciennes adresses, pas un
+        // masque. Pour rétablir : retirer ces entrées, REMETTRE les fichiers dans public/ depuis
+        // l'archive, ET repasser l'interrupteur (décision Williams).
+        // Entrée explicite `/catalogue/index.html` conservée : exigée par
+        // tests/unit/ci/public-sans-certification-ni-opco.spec.ts (le motif `:path+` la couvre aussi).
+        {
+          source: "/catalogue/index.html",
+          destination: "/fr/formations",
+          permanent: false,
+        },
+        {
+          source: "/catalogue/:path+",
+          destination: "/fr/formations",
+          // 307 et non 308 : masquage réversible (R7) ; une 308 se met en cache pour
+          // toujours et survivrait au rétablissement.
+          permanent: false,
+        },
+        {
+          source: "/imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",
+          destination: "/fr/apporteur-affaires",
+          // 307 et non 308 : masquage réversible (R7) ; une 308 se met en cache pour
+          // toujours et survivrait au rétablissement.
+          permanent: false,
+        },
+        // Alias de vocabulaire pour les apporteurs d'affaires (LinkedIn, 09/2026).
+        // Les publications disent « apporteur d'affaires » ; l'ecart avec une URL
+        // qui dit « commercial » se voit, et c'est le vocabulaire que Will a
+        // demande d'aligner (plan-recrutement-apporteurs-daffaires.md §3.2).
+        //
+        // 🔴 CE QU'ON NE FAIT PAS : renommer `/devenir-commercial-ia`. Cette URL
+        // n'est pas une page, c'est un module : elle porte le JobPosting Google
+        // for Jobs, 40 pages de villes et les 301 des villes T3/T4 vers leur hub,
+        // trois fichiers de sitemap, et le referencement de « devenir commercial
+        // IA » — la requete reellement tapee. La renommer produirait une cascade
+        // de 404 sur des URLs indexees.
+        //
+        // On AJOUTE donc une entree courte qui redirige vers l'existant. Les deux
+        // vivent, aucune ne casse. Le formulaire de candidature reste unique :
+        // meme `/apporteur-affaires-independant-formation-ia-entreprise` y envoie.
+        //
+        // ⚠️ Ne pas ajouter ces deux chemins a un sitemap : une URL qui repond 301
+        // n'a rien a y faire, seule la destination s'indexe.
+        // 2026-10-19 : deux offres d'emploi dont l'adresse citait la certification
+        // qualité changent de slug (retrait des mentions Qualiopi) : 301 pour les
+        // liens et les index existants.
+        {
+          source: "/:locale(fr|en)/carrieres/responsable-qualite-qualiopi",
+          destination: "/:locale/carrieres/responsable-qualite",
+          permanent: true,
+        },
+        // 2026-11-18 : les 3 offres consacrées au financement sont archivées (poste qu'Axion-IA
+        // ne propose pas) : 301 permanent vers le hub carrières, anciens slugs compris (un seul
+        // saut, pas de chaîne). La page renvoie aussi 404 pour toute offre `archived`.
+        {
+          source:
+            "/:locale(fr|en)/carrieres/:slug(assistant-financements-qualiopi|assistant-financements|assistant-dossiers-financement-clients|charge-subventions)",
+          destination: "/fr/carrieres",
+          permanent: true,
+        },
+        {
+          source:
+            "/:locale(fr|en)/carrieres/:slug(assistant-financements|assistant-dossiers-financement-clients|charge-subventions)/postuler",
+          destination: "/fr/carrieres",
+          permanent: true,
+        },
+        // 2026-11-18 : la page « financement OPCO / France Travail » est retirée du site
+        // (décision du dirigeant). 301 permanent vers le catalogue des formations ; ne pas
+        // recréer la page ni ses liens (garde : tests/unit/ci/page-financement-retiree.spec.ts).
+        {
+          source: "/:locale(fr|en)/financement-opco-france-travail",
+          destination: "/fr/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/apporteur/candidature",
+          destination: "/:locale/devenir-commercial-ia/candidature",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/apporteur",
+          destination: "/:locale/apporteur-affaires-independant-formation-ia-entreprise",
+          permanent: true,
+        },
+        // Taxonomies blog SUPPRIMÉES (tag/secteur/service/taille/auteur) — leurs
+        // routes n'existent plus, toute URL résiduelle connue de Google servait un
+        // 404 sec (vérifié en prod le 2026-08-01, audit indexation GSC). 301 de
+        // consolidation vers le hub /blog : convertit le budget de crawl gaspillé
+        // en signal permanent. `:rest*` couvre aussi les hubs nus (/blog/tag).
+        // La taxonomie VIVANTE (/blog/categorie) n'est PAS dans le motif.
+        {
+          source: "/:locale(fr|en)/blog/:taxo(tag|secteur|service|taille|auteur)/:rest*",
+          destination: "/:locale/blog",
+          permanent: true,
+        },
+        // Pagination blog déplacée de `?page=N` vers `/blog/page/N` (audit
+        // indexation GSC 2026-07-31, P1 « BYPASS /fr/blog ») : `searchParams`
+        // rendait le hub dynamique → non cacheable CDN. 301 des anciennes URLs
+        // `?page=N` (N ≥ 2) pour préserver l'index Google — la capture nommée
+        // `num` CONSOMME le query param (sinon Next le repasserait à la
+        // destination). Pas de règle pour `?page=1` : un query non consommé
+        // serait ré-appendu → boucle de 301 ; la route `/blog` ignore désormais
+        // toute query et sert la page 1 avec sa canonique `/blog`, Google
+        // consolide seul.
+        {
+          source: "/:locale(fr|en)/blog",
+          has: [{ type: "query", key: "page", value: "(?<num>[2-9]\\d*)" }],
+          destination: "/:locale/blog/page/:num",
+          permanent: true,
+        },
+        // Boilerplate presse : le TXT statique de `public/press/` est retiré au
+        // profit d'une génération depuis les SSOT (`/api/presse/boilerplate`).
+        // Le fichier figé avait divergé du site — il annonçait « fondé en 2024 »
+        // quand le JSON-LD publie `foundingDate: 2026`. Redirection permanente
+        // plutôt que 404 : des journalistes ont pu enregistrer le lien depuis la
+        // salle de presse. `permanent: true` ⇒ 308 (vérifié en recette), pas 301.
+        {
+          source: "/press/axion-ia-boilerplate-fr-en.txt",
+          destination: "/api/presse/boilerplate",
+          permanent: true,
+        },
+        // Suppression page /reserver (Will 2026-06-26) — le calendrier de booking
+        // est retiré ; toute prise de contact passe désormais par /appel
+        // (réservation d'un appel) ou /contact. 301 vers /appel pour préserver les
+        // liens entrants (favoris, chatbot historique, backlinks). Le pathname
+        // `/reserver` a été retiré de routing.ts → cette règle edge porte le SEO.
+        {
+          source: "/fr/reserver",
+          destination: "/fr/appel",
+          permanent: true,
+        },
+        // Tour France IA (2026-10-27) : la landing quitte `/tourdefrance-ia` pour
+        // `/tour-france-ia`, et sa page de visio `/fr/appel/tour-de-france-ia` pour
+        // `/fr/appel/tour-france-ia`. Les anciennes adresses ont été publiées du 26 au
+        // 27/10 : ne JAMAIS retirer ces 308. Les redirections de `next.config`
+        // passent AVANT le proxy : la règle 0bis ne les localise pas en
+        // `/fr/tourdefrance-ia`. Gardées par `src/app/tour-france-ia/__tests__/`.
+        {
+          source: "/tourdefrance-ia",
+          destination: "/tour-france-ia",
+          permanent: true,
+        },
+        {
+          source: "/tourdefrance-ia/:path*",
+          destination: "/tour-france-ia/:path*",
+          permanent: true,
+        },
+        {
+          source: "/fr/appel/tour-de-france-ia",
+          destination: "/fr/appel/tour-france-ia",
+          permanent: true,
+        },
+        {
+          source: "/sitemap-tourdefrance-ia.xml",
+          destination: "/sitemap-tour-france-ia.xml",
+          permanent: true,
+        },
+        // Tunnel apporteurs : `/facebook` → `/apporteur-affaires` (Will 2026-09-04).
+        // L'URL partait dans les publicités Meta ; le mot « facebook » n'y disait
+        // rien au prospect et ne qualifiait pas le sujet. La redirection est
+        // PERMANENTE et couvre `/facebook/merci` (`:rest*`) : des liens ont pu
+        // circuler entre la mise en ligne du 2026-09-03 et ce renommage.
+        // ⚠️ Le canal d'attribution reste `facebook` (`LEAD_APPORTEUR_SOURCE`) —
+        // seul le slug public change.
+        {
+          source: "/:locale(fr|en)/facebook/:rest*",
+          destination: "/:locale/apporteur-affaires/:rest*",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/facebook",
+          destination: "/:locale/apporteur-affaires",
+          permanent: true,
+        },
+        // Slug EN legacy de l'ancien /reserver (`/book`) → /appel EN (`/book-a-call`).
+        // Pendant que EN est désactivé, proxy.ts (mapEnToFr) 301 déjà /en/book →
+        // /fr/appel ; cette règle couvre le cas EN réactivé.
+        {
+          source: "/en/book",
+          destination: "/en/book-a-call",
+          permanent: true,
+        },
+        // Refonte offre AXION (2026-07, PR #327) PUIS refonte catalogue
+        // 2026-07-19 (générales / métiers / secteurs). Les destinations des
+        // anciens slugs (pré-#327) sont REMAPPÉES directement vers le catalogue
+        // actuel pour éviter les 301 chaînés (ancien → AXION → actuel).
+        ...[
+          ["ia-express", "ia-pour-bien-commencer"],
+          ["art-du-prompt", "ia-pour-les-equipes"],
+          ["ia-securite", "ia-pour-bien-commencer"],
+          ["ia-conformite", ""],
+          ["ia-fondamentaux", "ia-pour-bien-commencer-journee"],
+          ["ia-commercial", "ia-pour-les-commerciaux"],
+          ["ia-au-bureau", "ia-pour-les-equipes"],
+          ["ia-integration-metier", "ia-pour-les-equipes"],
+          ["ia-commercial-avance", "ia-pour-les-commerciaux"],
+          ["claude-decouverte", "ia-pour-bien-commencer"],
+          ["claude-createur", "ia-pour-les-equipes"],
+          ["claude-architecte", "ia-pour-l-automatisation"],
+          // Sans équivalent direct → hub /formations
+          ["ia-sur-le-terrain", ""],
+          ["automatisations-decouverte", "ia-pour-l-automatisation"],
+          ["ia-transformation-equipe", "seminaire-ia-toute-l-entreprise-1j"],
+          ["agents-automatisations", "ia-pour-l-automatisation"],
+          ["agents-automatisations-avance", "ia-pour-l-automatisation"],
+        ].map(([from, to]) => ({
+          source: `/fr/formations/${from}`,
+          destination: to ? `/fr/formations/${to}` : "/fr/formations",
+          permanent: true,
+        })),
+        // Refonte catalogue 2026-07-19 (Will) — les 17 formations AXIONs (hors
+        // séminaire, conservé) sont remplacées par les 21 nouvelles (4 générales,
+        // 9 métiers, 8 secteurs). 301 de chaque ancien slug vers la formation la
+        // plus proche, ou vers le hub.
+        ...[
+          ["bien-demarrer-avec-l-ia-4h", "ia-pour-bien-commencer"],
+          ["bien-demarrer-avec-l-ia-journee-7h", "ia-pour-bien-commencer-journee"],
+          ["prompts-avances-et-assistants-ia-4h", "ia-pour-les-equipes"],
+          ["gagner-du-temps-au-quotidien-avec-l-ia-7h", "ia-pour-les-equipes"],
+          ["claude-prise-en-main-complete-7h", "ia-pour-bien-commencer-journee"],
+          ["claude-maitrise-avancee-et-autonomie-2j", "ia-pour-les-equipes"],
+          ["claude-code-creer-un-projet-3j", "ia-pour-l-it"],
+          ["ia-act-conformite-et-securite-7h", ""],
+          ["referent-ia-piloter-gouvernance-ia-7h", ""],
+          ["ia-rh-recrutement-talents-7h", "ia-pour-les-rh"],
+          ["ia-assistanat-mails-comptes-rendus-documents-7h", "ia-pour-les-equipes"],
+          ["ia-marketing-contenus-seo-image-de-marque-7h", "ia-pour-le-marketing"],
+          ["ia-vente-prospection-developpement-commercial-7h", "ia-pour-les-commerciaux"],
+          ["ia-finance-reporting-analyses-pilotage-7h", "ia-pour-la-finance"],
+          ["ia-supply-chain-achats-stocks-7h", "ia-pour-les-achats"],
+          ["conduite-du-changement-ia-7h", ""],
+          ["deployer-l-ia-en-entreprise-2j", "ia-pour-l-automatisation"],
+        ].map(([from, to]) => ({
+          source: `/:locale(fr|en)/formations/${from}`,
+          destination: to ? `/:locale/formations/${to}` : "/:locale/formations",
+          permanent: true,
+        })),
+        // Refonte 2026-07-19 — l'axe durée disparaît : les 4 listings
+        // /formations/duree/<slug> 301 vers le hub (les 2 listings par catégorie
+        // /formations/metiers et /formations/secteurs les remplacent).
+        {
+          source: "/:locale(fr|en)/formations/duree/:path*",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        // FAQ — slugs legacy faibles → slugs keyword-rich (perfection FAQ 2026-05-31).
+        // 301 pour préserver toute URL déjà connue de Google. Cf. FAQ_GLOBAL ids.
+        {
+          source: "/:locale(fr|en)/faq/definition",
+          destination: "/:locale/faq/definition-axion-ia",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/faq/modules",
+          destination: "/:locale/faq/les-3-modules-axion-ia",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/faq/tools",
+          destination: "/:locale/faq/outils-ia",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/faq/billing",
+          destination: "/:locale/faq/facturation",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/faq/secteurs",
+          destination: "/:locale/faq/secteurs-ia",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/faq/data-security",
+          destination: "/:locale/faq/securite-donnees-ia",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/audit/flash",
+          destination: "/:locale/audit/tpe-1-jour",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/audit/process",
+          destination: "/:locale/audit/cible",
+          permanent: true,
+        },
+        // 2026-11 (décision de Will) — doublons de contenu que Google hésitait à départager :
+        //   · /formations/entreprise (landing « toutes nos formations ») → le hub /formations ;
+        //   · /formations/tarifs (grille) → la page /tarifs, seule page tarifs.
+        // 301 permanent. La source `/en/...` pointe DIRECTEMENT vers `/fr/...` (EN désactivé) :
+        // un seul saut, jamais EN → FR → destination. Les formes sans préfixe locale sont
+        // aplaties par `src/lib/legacy-redirects.ts` (proxy). Les fichiers de page restent dans
+        // le dépôt (gardes qui les lisent) mais ne sont plus servis : la redirection passe avant.
+        // Garde : src/lib/legacy-redirects.test.ts.
+        {
+          source: "/:locale(fr|en)/formations/entreprise",
+          destination: "/fr/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/formations/tarifs",
+          destination: "/fr/tarifs",
+          permanent: true,
+        },
+        {
+          source: "/en/training/pricing",
+          destination: "/fr/tarifs",
+          permanent: true,
+        },
+        // /sitemap.xml → /sitemap-index.xml (Sprint X bugs SEO 2026-05-14).
+        // Next 16 réserve `/sitemap.xml` à la convention metadata `app/sitemap.ts`
+        // qui ne génère que `/sitemap/<id>.xml` (pas d'index racine). On expose
+        // l'index à `/sitemap-index.xml` et on redirige 301 le chemin canonique
+        // pour les outils qui sondent encore /sitemap.xml par habitude
+        // (Bing, vieux crawlers, scripts externes).
+        {
+          source: "/sitemap.xml",
+          destination: "/sitemap-index.xml",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/audit/cibl%C3%A9",
+          destination: "/:locale/audit/cible",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/audit/ciblé",
+          destination: "/:locale/audit/cible",
+          permanent: true,
+        },
+        // Nettoyage doublons/cannibalisation blog Grenoble 2026-07-03 (audit contenu).
+        // Le moteur avait généré, sur les mêmes mots-clés « X IA Grenoble », d'anciens
+        // brouillons courts (2–5 k car., juin) PUIS des versions longues (12–18 k, fin
+        // juin-juillet). Les deux restaient publiés → cannibalisation. On archive les
+        // courts (retirés du sitemap + IndexNow URL_DELETED en base) et on 301 chaque
+        // ancien slug vers la version canonique longue. Aucune chaîne : tout le cluster
+        // audit pointe directement vers `cabinet-audit-ia-grenoble-faq`.
+        {
+          source: "/:locale(fr|en)/blog/cours-ia-grenoble-entreprise",
+          destination: "/:locale/blog/cours-ia-grenoble-entreprise-faq",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/chatbot-ia-grenoble-entreprise",
+          destination: "/:locale/blog/chatbot-ia-grenoble-entreprise-guide",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/coaching-ia-dirigeants-grenoble",
+          destination: "/:locale/blog/coaching-ia-dirigeant-grenoble",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/formation-intelligence-artificielle-grenoble-pme",
+          destination: "/:locale/blog/formation-intelligence-artificielle-entreprise-grenoble",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/formation-prompt-engineering-grenoble",
+          destination: "/:locale/blog/formation-intelligence-artificielle-entreprise-grenoble",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/audit-ia-grenoble-guide",
+          destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/audit-intelligence-artificielle-grenoble-entreprise",
+          destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/audit-intelligence-artificielle-grenoble-entreprise-faq",
+          destination: "/:locale/blog/cabinet-audit-ia-grenoble-faq",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/mentor-ia-dirigeant-grenoble",
+          destination: "/:locale/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/blog/mentor-ia-dirigeant-auvergne-rhone-alpes",
+          destination: "/:locale/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble",
+          permanent: true,
+        },
+        // Slug cassé `glossaire/formation-ia-colombes` (contenait un `/` → 2 segments,
+        // ne matchait pas la route `/blog/[slug]` mono-segment → 404). Le slug est
+        // renommé en base vers `formation-ia-colombes` ; ce 301 couvre l'ancien chemin
+        // au cas où il aurait été lié/soumis quelque part.
+        {
+          source: "/:locale(fr|en)/blog/glossaire/formation-ia-colombes",
+          destination: "/:locale/blog/formation-ia-colombes",
+          permanent: true,
+        },
+        // Refonte villes 2026-05-26 — les 10 750 pages `/implantations/[region]/[ville]/[verticale]`
+        // ont été supprimées (risque doorway HCU 2024 + cannibalisation des pages services).
+        // 5 redirects 301 par verticale vers la page service canonique correspondante.
+        // L'autorité crawl Google est ainsi transférée vers les pages commerciales principales.
+        // Note : `audits` (pluriel ville) → `/audit` (singulier service). `implementations` → `/implementation`.
+        // `sites-web-ia` → `/sites-web-augmentes`.
+        {
+          source: "/:locale(fr|en)/implantations/:region/:ville/audits",
+          destination: "/:locale/audit",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/implantations/:region/:ville/interventions",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/implantations/:region/:ville/implementations",
+          destination: "/:locale/implementation",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/implantations/:region/:ville/un-a-un",
+          destination: "/:locale/un-a-un",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/implantations/:region/:ville/sites-web-ia",
+          destination: "/:locale/sites-web-augmentes",
+          permanent: true,
+        },
+        // Audit GEO/AEO 2026-08-14 (GEO-012) — `/implementations` (pluriel) est codé
+        // en dur dans les prompts générateurs et dans les citations KB, mais la seule
+        // route réelle est `/implementation` (singulier) : ~la moitié du corpus blog
+        // envoyait ses liens in-body sur un 404. Filet de redirect top-level.
+        // ⚠️ Ne matche QUE `implementations` : les 2 157 pages villes `/implantations/*`
+        // (« implAntations », sans `e`) ne sont pas capturées — segment littéral distinct.
+        {
+          source: "/:locale(fr|en)/implementations",
+          destination: "/:locale/implementation",
+          permanent: true,
+        },
+        // EN miroir (path `/locations` au lieu de `/implantations`)
+        {
+          source: "/:locale(fr|en)/locations/:region/:ville/audits",
+          destination: "/:locale/audit",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/locations/:region/:ville/interventions",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/locations/:region/:ville/implementations",
+          destination: "/:locale/implementation",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/locations/:region/:ville/un-a-un",
+          destination: "/:locale/un-a-un",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/locations/:region/:ville/sites-web-ia",
+          destination: "/:locale/sites-web-augmentes",
+          permanent: true,
+        },
+        // Fusion 2026-06-01 (Will) — `/codage-developpement` (+ sa sous-page
+        // `/web-digital`) fusionnés dans `/sites-web-augmentes` (page hub unique
+        // anti-cannibalisation keyword). 301 plus spécifique d'abord. L'autorité
+        // crawl est transférée vers la page service canonique.
+        {
+          source: "/:locale(fr|en)/codage-developpement/web-digital",
+          destination: "/:locale/sites-web-augmentes",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/codage-developpement",
+          destination: "/:locale/sites-web-augmentes",
+          permanent: true,
+        },
+        // Formats Claude 1-to-1 retirés (Will 2026-06-13, centrés outil) → 301 vers
+        // la prestation 1-to-1 équivalente (zéro lien mort, autorité SEO transférée).
+        {
+          source: "/:locale(fr|en)/interventions/claude-dirigeant",
+          destination: "/:locale/interventions/dirigeant-vision-strategique",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/claude-implementation-individuel",
+          destination: "/:locale/interventions/coaching-decouverte",
+          permanent: true,
+        },
+        // Refonte /formations 2026-06-11 (Will) — l'offre de formations COLLECTIVES
+        // de /interventions/* est remplacée par /formations (public/live). 301 des
+        // anciennes URLs collectives → /formations (zéro lien mort, autorité SEO
+        // transférée). Le 1-to-1 (/interventions/{dirigeants,individuel,coaching*,
+        // dirigeant-vision-strategique,demande}) RESTE intact (chemins exacts).
+        {
+          source: "/:locale(fr|en)/interventions",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/collectives",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/collectives/4h",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/collectives/1-jour",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/collectives/2-jours",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/collectives/3-jours-plus",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/essentielle",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/approfondie",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/gagner-du-temps",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/intervention-claude",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/demarrage-ia-express",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        // Formats 1-to-1 supprimés (Will 2026-06-11) → hubs famille survivants.
+        // Slugs EN (executive-productivity / advanced-coaching) gérés par le proxy
+        // en-to-fr (→ slug FR) puis ces règles (convention identique aux collectives).
+        {
+          source: "/:locale(fr|en)/interventions/dirigeant-productivite",
+          destination: "/:locale/interventions/dirigeants",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/coaching-avance",
+          destination: "/:locale/interventions/individuel",
+          permanent: true,
+        },
+        // Pages formation par ville (verticale per-ville migrée /interventions → /formations).
+        {
+          source: "/:locale(fr|en)/interventions/par-ville/:ville",
+          destination: "/:locale/formations/par-ville/:ville",
+          permanent: true,
+        },
+        {
+          source: "/en/interventions/by-city/:ville",
+          destination: "/en/formations/by-city/:ville",
+          permanent: true,
+        },
+        // Anciens slugs déjà redirigés (conférence, atelier) → repointés /formations.
+        {
+          source: "/:locale(fr|en)/interventions/conference",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/conference-pleniere",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/conference-keynote",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/:locale(fr|en)/interventions/atelier-ia-cible",
+          destination: "/:locale/formations",
+          permanent: true,
+        },
+        {
+          source: "/en/interventions/targeted-ai-workshop",
+          destination: "/fr/formations",
+          permanent: true,
+        },
+      ],
+      {
+        // Dossiers racine de `src/app` (hors `[locale]`) : une règle sans langue ne doit jamais
+        // les recouvrir (tour-france-ia, qr, document, videos…).
+        racinesApp: readdirSync("./src/app", { withFileTypes: true })
+          .filter((d) => d.isDirectory() && !/^[[(_]/.test(d.name))
+          .map((d) => d.name),
+      },
+    );
   },
   async headers() {
     return [
@@ -1241,6 +1264,11 @@ const sentryBuildOptions = {
   hideSourceMaps: true,
   widenClientFileUpload: true,
   reactComponentAnnotation: { enabled: false },
+  // Perf (lot 1 socle [locale]) : pas d'injection du manifeste de routes côté
+  // client (~89 Ko brut, injecté 2 fois dans le First Load). Seul effet : les
+  // transactions navigateur Sentry ne sont plus paramétrées (/fr/a-propos au
+  // lieu de /:locale/a-propos).
+  routeManifestInjection: false as const,
 };
 
 const composedConfig = withNextIntl(bundleAnalyzer(nextConfig));

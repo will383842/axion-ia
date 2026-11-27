@@ -65,7 +65,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Soisy-sur-Seine ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Soisy-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

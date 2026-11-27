@@ -132,7 +132,7 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Saint-Quentin ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Les axes A26 et A29 et la liaison ferroviaire vers Paris-Nord nous permettent de venir lancer le projet sur site dans tout le Saint-Quentinois.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage.",
           },
         ],
         guarantees:
@@ -233,8 +233,8 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
       a: "Oui. Les PME de mécanique, de plasturgie et de travail des métaux, héritières du tissu industriel saint-quentinois, figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et de production documentaire, sans toucher à leurs lignes de fabrication.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Saint-Quentin ?",
-      a: "Oui, nos experts IA interviennent dans vos locaux, du centre historique aux ateliers et à la ZAC du Bois de la Chocque. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
+      q: "Intervenez-vous sur site à Saint-Quentin ?",
+      a: "Oui. Nous intervenons dans vos locaux, du centre historique aux ateliers et à la ZAC du Bois de la Chocque. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",
@@ -242,7 +242,7 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Quentin ?",
-      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. Les axes A26 et A29 et la liaison ferroviaire vers Paris-Nord nous permettent d'intervenir rapidement dans toute la Picardie.",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Saint-Quentin ?",

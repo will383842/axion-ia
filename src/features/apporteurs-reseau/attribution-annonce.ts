@@ -24,6 +24,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import { dejaEnvoye } from "./commissions";
+import { lireReservations, suitLaRegleRendezVous } from "./reservation-presentation";
 import { envoyer } from "./envois";
 import { RAPPEL_SANS_REPONSE_JOURS, ajouterJours } from "./regles";
 import { signalerErreurReseau } from "./signaler";
@@ -46,7 +47,7 @@ export function jobIdAnnonceAttribution(presentationId: string, variante: Varian
 }
 
 /** « 8 avril 2027 », heure de Paris. */
-function dateEnClair(d: Date): string {
+export function dateEnClair(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
     day: "numeric",
     month: "long",
@@ -74,12 +75,16 @@ export async function annoncerAttribution(
         denomination: true,
         protegeeJusquAt: true,
         motifProlongation: true,
+        confirmeeAt: true,
         apporteur: { select: { prenom: true, nom: true, email: true } },
       },
     });
     if (!p || p.statut !== "confirmee" || !p.protegeeJusquAt) return false;
     const email = decryptPii(p.apporteur.email) ?? "";
     if (!email) return false;
+    const enRendezVous = suitLaRegleRendezVous(
+      (await lireReservations([presentationId])).get(presentationId),
+    );
     const r = await envoyer({
       gabarit: "apporteur-attribution-confirmee",
       destinataire: email,
@@ -89,6 +94,14 @@ export async function annoncerAttribution(
           .join(" "),
         entreprise: p.denomination,
         finProtection: dateEnClair(p.protegeeJusquAt),
+        // Date du rendez-vous tenu ou de la signature (`confirmeeAt`), pas celle du clic (`valideeAt`).
+        // « Validation » est le mot de la 2.8 : réservé aux présentations qui ont une ligne
+        // `rendez_vous`. Les confirmations tacites ou saisies des contrats < 2.8 disent « confirmation ».
+        ...(p.confirmeeAt
+          ? enRendezVous
+            ? { dateValidation: dateEnClair(p.confirmeeAt) }
+            : { dateConfirmation: dateEnClair(p.confirmeeAt) }
+          : {}),
         variante,
         ...(variante === "prolongee" && p.motifProlongation
           ? { motifTexte: MOTIF_EN_CLAIR[p.motifProlongation] ?? "" }
@@ -116,6 +129,8 @@ export async function alerterDeclarationsSansReponse(maintenant: Date): Promise<
     select: { id: true, denomination: true, recueAt: true },
     take: 100,
   });
+  // Règle par rendez-vous : le texte suit la règle de la présentation (la ligne de réservation fait foi).
+  const reservations = await lireReservations(lignes.map((l) => l.id));
   const lien = `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", "apporteurs/entreprises")}`;
   let n = 0;
   for (const p of lignes) {
@@ -130,7 +145,9 @@ export async function alerterDeclarationsSansReponse(maintenant: Date): Promise<
           niveau: "important",
           code: "apporteur_declaration_sans_reponse",
           titre: `Déclaration sans réponse : ${p.denomination}`,
-          message: `${p.denomination} a été déclarée le ${dateEnClair(p.recueAt)} et n'a pas encore reçu de réponse (« Bien reçu » ou refus). Le contrat (art. 3.2) prévoit la prise de contact avec la personne déclarée dans les 30 jours de la déclaration ; à défaut, l'attribution est réputée confirmée trente jours plus tard. À traiter : ${lien}`,
+          message: reservations.has(p.id)
+            ? `${p.denomination} a été déclarée le ${dateEnClair(p.recueAt)} et n'a pas encore reçu de réponse (« Bien reçu » ou refus). Elle est réservée jusqu'au ${dateEnClair(reservations.get(p.id)!.reserveeJusquAt)} : sans rendez-vous pris avant cette date, la réservation s'achève d'elle-même (aucune confirmation par le silence). À traiter : ${lien}`
+            : `${p.denomination} a été déclarée le ${dateEnClair(p.recueAt)} et n'a pas encore reçu de réponse (« Bien reçu » ou refus). Le contrat (art. 3.2) prévoit la prise de contact avec la personne déclarée dans les 30 jours de la déclaration ; à défaut, l'attribution est réputée confirmée trente jours plus tard. À traiter : ${lien}`,
           cibleType: "PresentationEntreprise",
           cibleId: p.id,
           cibleLibelle: `Entreprise présentée : ${p.denomination}`,

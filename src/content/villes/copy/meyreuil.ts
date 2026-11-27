@@ -49,7 +49,7 @@ export const MEYREUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Meyreuil et est d'Aix-en-Provence ?",
-      a: "Oui, Axion-IA intervient à Meyreuil et tout l'est aixois (Gardanne, Trets, Fuveau, Le Tholonet). Proximité immédiate d'Aix-en-Provence centre (10 min) et des zones d'activités.",
+      a: "Oui, Axion-IA intervient à Meyreuil et tout l'est aixois (Gardanne, Trets, Fuveau, Le Tholonet).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Meyreuil  ?",
@@ -60,12 +60,12 @@ export const MEYREUIL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles AOC Côtes de Provence Sainte-Victoire sur des cas IA : gestion parcellaire prédictive, automatisation traçabilité, marketing digital assisté, agents IA vente directe.",
     },
     {
-      q: "Proposez-vous des sessions en visio depuis Meyreuil ?",
+      q: "Proposez-vous des sessions en visio ?",
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Meyreuil) ou en visio. Idéal pour les cadres et professions libérales en télétravail.",
     },
     {
-      q: "Comment se déplace Axion-IA à Meyreuil ?",
-      a: "Meyreuil est à 10 min d'Aix et 35 min de Marseille par A52. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Meyreuil ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Meyreuil, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bouc-Bel-Air ?",
-      a: "Oui, Axion-IA intervient à Bouc-Bel-Air et sur tout l'axe Aix-Marseille (Aix à 15 min, Marseille à 25 min, Gardanne, Plan de Campagne). Couverture complète du nord de Marseille.",
+      a: "Oui, Axion-IA intervient à Bouc-Bel-Air et sur tout l'axe Aix-Marseille (Aix, Marseille, Gardanne, Plan de Campagne). Couverture complète du nord de Marseille.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Bouc-Bel-Air ?",
@@ -65,7 +65,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bouc-Bel-Air ?",
-      a: "Nos consultants interviennent sur site à Bouc-Bel-Air sous 5 jours ouvrés. Position centrale entre Aix (15 min) et Marseille (25 min).",
+      a: "Nos consultants interviennent sur site à Bouc-Bel-Air sous 5 jours ouvrés.",
     },
   ],
 };

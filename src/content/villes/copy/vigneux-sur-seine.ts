@@ -58,7 +58,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
           "Le tissu de Vigneux est dominé par les TPE/PME de proximité — artisans du bâtiment, transporteurs et prestataires logistiques des ZA du Bac d'Ablon et du Clos de la Régale, commerces et restauration : nous construisons des sites vitrines et e-commerce avec demande de devis intelligente et prise de rendez-vous, calibrés pour des équipes réduites.",
           "Le renouvellement urbain de la Croix-Blanche (opération ANRU pilotée par l'agglomération Val d'Yerres Val de Seine, création/réhabilitation d'environ 400 logements, commerces et place végétalisée à l'horizon 2031) recompose l'offre commerciale locale : nous outillons commerçants et services pour exister en ligne face à cette nouvelle centralité.",
           "L'économie de loisirs fluviale — Île de loisirs du Port-aux-Cerises (plus d'un million de visiteurs par an, port de plaisance de 128 anneaux) et Port Premier sur la darse de la Seine — génère des besoins de réservation en ligne, billetterie et gestion de saisonnalité que nous intégrons nativement.",
-          "La gare RER D de Vigneux (Paris-Gare de Lyon à ~25 minutes) et la proximité d'Orly placent la commune sur des flux logistiques et de services : nous concevons des plateformes de suivi de commande, de planification de tournées et de portails clients pour les PME de transport et de services aux entreprises.",
+          "La commune s'inscrit dans des flux logistiques et de services : nous concevons des plateformes de suivi de commande, de planification de tournées et de portails clients pour les PME de transport et de services aux entreprises.",
         ],
         methodology: [
           {
@@ -116,7 +116,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Réalisez-vous des sites web et e-commerce à Vigneux-sur-Seine et dans le Val d'Yerres Val de Seine ?",
-            a: "Oui. Axion-IA conçoit sites vitrines, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les TPE et PME de Vigneux-sur-Seine et des communes voisines de l'agglomération Val d'Yerres Val de Seine. Nous nous déplaçons sur site (atelier, boutique, entrepôt des ZA du Bac d'Ablon ou du Clos de la Régale) ou travaillons à distance ; le RER D dessert la commune.",
+            a: "Oui. Axion-IA conçoit sites vitrines, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les TPE et PME de Vigneux-sur-Seine et des communes voisines de l'agglomération Val d'Yerres Val de Seine. Axion IA intervient partout en France, sur site (atelier, boutique, entrepôt des ZA du Bac d'Ablon ou du Clos de la Régale) ou à distance.",
           },
           {
             q: "Travaillez-vous avec les artisans et les acteurs du bâtiment de Vigneux ?",
@@ -144,7 +144,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
           "Vigneux's fabric is dominated by local micro and small businesses — building-trade craftspeople, carriers and logistics providers in the Bac d'Ablon and Clos de la Régale zones, shops and restaurants: we build showcase and e-commerce sites with smart quote requests and online booking, calibrated for small teams.",
           "The Croix-Blanche urban renewal (an ANRU operation led by the Val d'Yerres Val de Seine agglomeration, creating or refurbishing around 400 homes plus shops and a planted square by 2031) is reshaping the local retail offer: we equip shopkeepers and services to stand out online against this new centrality.",
           "The river-leisure economy — the Port-aux-Cerises lakeside park (over a million visitors a year, a 128-berth marina) and Port Premier on the Seine darse — drives needs for online booking, ticketing and seasonality management that we integrate natively.",
-          "Vigneux's RER D station (Paris-Gare de Lyon ~25 minutes away) and proximity to Orly place the town on logistics and service flows: we design order-tracking platforms, route-planning tools and client portals for transport SMEs and business-services firms.",
+          "Logistics and service flows are part of Vigneux's economy: Axion-IA works anywhere in France, on site or remotely, including in Vigneux-sur-Seine. We design order-tracking platforms, route-planning tools and client portals for transport SMEs and business-services firms.",
         ],
         methodology: [
           {
@@ -202,7 +202,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you build websites and e-commerce in Vigneux-sur-Seine and the Val d'Yerres Val de Seine?",
-            a: "Yes. Axion-IA designs showcase sites, e-commerce stores and AI-augmented SaaS platforms for small and mid-sized businesses in Vigneux-sur-Seine and the neighbouring communes of the Val d'Yerres Val de Seine agglomeration. We travel on site (workshop, shop, warehouse in the Bac d'Ablon or Clos de la Régale zones) or work remotely; the RER D serves the town.",
+            a: "Yes. Axion-IA designs showcase sites, e-commerce stores and AI-augmented SaaS platforms for small and mid-sized businesses in Vigneux-sur-Seine and the neighbouring communes of the Val d'Yerres Val de Seine agglomeration. Axion-IA works anywhere in France, on site (workshop, shop, warehouse in the Bac d'Ablon or Clos de la Régale zones) or remotely.",
           },
           {
             q: "Do you work with Vigneux building-trade craftspeople and contractors?",
@@ -246,7 +246,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vigneux-sur-Seine ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Vigneux-sur-Seine est desservie par le RER D, à 10 minutes d'Orly.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vigneux-sur-Seine, comme partout en France, ou à distance.",
     },
   ],
 };

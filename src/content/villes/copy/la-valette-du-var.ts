@@ -36,8 +36,8 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
       en: "Audit IA sur place 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la ZAC Valgora et commerces locaux.",
     },
     interventions: {
-      fr: "Intervention sur site à La Valette-du-Var dès {{price:intervention-4h|flat}} — déplacement consultant ZAC Valgora, centre-ville, et zones commerciales limitrophes (Toulon, La Garde).",
-      en: "Intervention sur site à La Valette-du-Var dès {{price:intervention-4h|flat}} — déplacement consultant ZAC Valgora, centre-ville, et zones commerciales limitrophes (Toulon, La Garde).",
+      fr: "Intervention sur site à La Valette-du-Var dès {{price:intervention-4h|flat}} — ZAC Valgora, centre-ville, et zones commerciales limitrophes (Toulon, La Garde).",
+      en: "Intervention sur site à La Valette-du-Var dès {{price:intervention-4h|flat}} — ZAC Valgora, centre-ville, et zones commerciales limitrophes (Toulon, La Garde).",
     },
     implementation: {
       fr: "Implémentation code custom à La Valette-du-Var dès {{price:impl-poc|entry}} — automatisations devis, facturation, SAV pour commerces et services tertiaires varois.",
@@ -231,8 +231,8 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
       a: "Audit sur place 4h dès {{price:audit-flash|flat}}, intervention terrain dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille tarifaire publique sur notre page Pricing, sans frais cachés ni abonnement obligatoire.",
     },
     {
-      q: "Vos consultants se déplacent-ils sur la ZAC Valgora et les communes proches ?",
-      a: "Oui. Nous intervenons à La Valette-du-Var (ZAC Valgora, centre, Avenue de l'Université) ainsi qu'à Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux — communes limitrophes intégrées dans nos déplacements.",
+      q: "Intervenez-vous sur la ZAC Valgora et dans les communes proches ?",
+      a: "Oui. Nous intervenons à La Valette-du-Var (ZAC Valgora, centre, Avenue de l'Université) ainsi qu'à Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux, comme partout en France.",
     },
     {
       q: "Quels délais pour une intervention IA à La Valette-du-Var ?",

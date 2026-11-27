@@ -52,10 +52,6 @@ export const BAILLARGUES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Baillargues et dans toutes les communes est Montpellier (Le Crès, Castries, Vendargues, Mudaison). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "La proximité de la gare TGV facilite-t-elle les missions ?",
-      a: "Oui, la gare TGV Montpellier Sud de France est à 5 min de Baillargues. Nous intervenons partout en France, sur place ou à distance. Missions multi-jours possibles aussi.",
-    },
-    {
       q: "Quels services pour les PME de services tertiaires ?",
       a: "Pour les PME tertiaires, audit IA complet, intervention formation équipes, implémentation agents IA métier (chatbot, automatisation CRM, classification emails). Coaching 1-to-1 dirigeant disponible.",
     },
@@ -66,6 +62,10 @@ export const BAILLARGUES_COPY: VilleCopy = {
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Baillargues ?",
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+    },
+    {
+      q: "Quel délai pour recevoir un devis à Baillargues ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

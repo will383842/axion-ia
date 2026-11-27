@@ -66,6 +66,7 @@ import {
   type ClientZohoMail,
   type MessageZoho,
 } from "@/server/zoho-mail/client";
+import { enregistrerMessagesApporteurs } from "@/features/apporteurs-reseau/messages-recus";
 import { GABARIT_INVITATION } from "./relance-invitation-etat";
 
 /** Retire les relances d'attente d'une adresse (`annulerRelancesLeadApporteur`). */
@@ -95,6 +96,8 @@ export interface CompteRenduReponses {
   /** Déjà enregistrés par un passage précédent (recouvrement). */
   readonly dejaConnues: number;
   readonly erreurs: number;
+  /** Messages d'un apporteur (tout état de dossier) enregistrés sur sa fiche (2026-11-27). */
+  readonly messagesApporteurs?: number;
   /** Le plafond de pages a été atteint avant de remonter jusqu'au curseur. */
   readonly tronque?: true;
 }
@@ -436,6 +439,12 @@ export async function passerReponsesEntrantes(
     await arreterRelancesAttente(opts.annulerRelances, h.adresse);
   }
 
+  // Tout e-mail d'un apporteur (adresse d'une fiche `ApporteurReseau`, quel que soit l'état du
+  // dossier, avec ou sans invitation) est tracé sur sa fiche. Un échec ou une table pas encore
+  // migrée garde le curseur en place : le passage suivant relit ces messages.
+  const suivi = await enregistrerMessagesApporteurs(liste.messages, client);
+  erreurs += suivi.erreurs + (suivi.tableAbsente ? 1 : 0);
+
   // Le curseur n'avance que sur un passage SANS erreur : un message raté est
   // relu au passage suivant (le recouvrement ne suffirait pas après 2 h).
   if (erreurs === 0) {
@@ -461,6 +470,7 @@ export async function passerReponsesEntrantes(
     enregistrees,
     dejaConnues,
     erreurs,
+    messagesApporteurs: suivi.enregistres,
     ...(liste.complet ? {} : { tronque: true as const }),
   };
 }

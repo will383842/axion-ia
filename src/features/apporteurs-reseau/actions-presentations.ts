@@ -18,6 +18,8 @@ import { validerTexteLibre } from "@/lib/email/templates/texte-libre-reseau";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { peutEngager } from "@/server/auth/habilitations";
 
+import { prisma } from "@/lib/prisma";
+
 import { lireEtablissementParSiret } from "./annuaire";
 import { siretValide } from "./etablissement-presentation";
 import { constaterManquement } from "./manquement";
@@ -36,6 +38,13 @@ import {
   type Civilite,
   type ReponsePresentation,
 } from "./presentations";
+import {
+  ecarterProposition,
+  MESSAGE_INTERRUPTEUR_ETEINT,
+  validerParRendezVous,
+  type SourceValidation,
+} from "./validation-rendez-vous";
+import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 
 export type EtatAction =
   { etat: "initial" } | { etat: "ok"; message: string } | { etat: "erreur"; message: string };
@@ -276,4 +285,169 @@ export async function noterPresentationAction(
   await noterPresentation(id, texte(fd, "note"));
   rafraichir();
   return { etat: "ok", message: "Note enregistrée." };
+}
+
+// ── Validation par rendez-vous (lot 6) : « il a eu lieu » ────────────────
+//
+// Réservé aux ADMINISTRATEURS, comme `confirmerAttributionMaintenantAction` et les actions de
+// retrait. L'outil propose, le dirigeant valide : aucune de ces actions ne tourne seule, et
+// aucune n'écrit à l'extérieur en dehors de l'annonce d'attribution existante.
+
+const ROLES_ADMIN = new Set(["super_admin", "admin"]);
+
+async function sessionAdministrateur(): Promise<{ id: string } | string> {
+  const session = await auth();
+  if (!session?.user?.id) return "Session expirée : reconnectez-vous.";
+  const role = (session.user as { role?: string }).role ?? "";
+  if (!ROLES_ADMIN.has(role)) return "Réservé aux administrateurs.";
+  return { id: session.user.id };
+}
+
+function sourceDeLaCle(cle: string): SourceValidation {
+  return cle.startsWith("calendly:") ? "calendly" : "rencontre";
+}
+
+const MESSAGE_CONFIRMER = "Confirmez d'abord.";
+
+/** « 2026-11-24T14:30 » (heure de Paris) → instant ; `null` si illisible. Le futur est refusé plus loin, par la règle. */
+function instantSaisi(brut: string): Date | null {
+  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(brut) ? fromParisLocalInput(brut) : null;
+}
+
+function messageValidation(r: Awaited<ReturnType<typeof validerParRendezVous>>): EtatAction {
+  if (!r.ok) return { etat: "erreur", message: r.message };
+  const suite = r.avertissements.length ? ` ⚠️ ${r.avertissements.join(" ")}` : "";
+  return { etat: "ok", message: `${r.message}${suite}` };
+}
+
+/** « Il a eu lieu » sur une proposition de l'outil. Les dates viennent de la base, jamais du client. */
+export async function validerPropositionAction(
+  _prev: EtatAction,
+  fd: FormData,
+): Promise<EtatAction> {
+  const acteur = await sessionAdministrateur();
+  if (typeof acteur === "string") return { etat: "erreur", message: acteur };
+  if (!validationParRendezVousActive())
+    return { etat: "erreur", message: MESSAGE_INTERRUPTEUR_ETEINT };
+  const id = texte(fd, "id").toLowerCase();
+  if (!UUID.test(id)) return { etat: "erreur", message: "Proposition inconnue." };
+  // Confirmation en deux temps, vérifiée par le serveur : l'écran ne suffit pas.
+  if (texte(fd, "confirmer") !== "oui") return { etat: "erreur", message: MESSAGE_CONFIRMER };
+  try {
+    const pr = await prisma.propositionRendezVousPresentation.findUnique({ where: { id } });
+    if (!pr) return { etat: "erreur", message: "Proposition inconnue." };
+    if (pr.ecarteeAt || pr.retenueAt)
+      return { etat: "erreur", message: "Cette proposition a déjà été traitée." };
+    // Date de tenue inconnue de l'outil (rendez-vous sans heure) : le dirigeant la renseigne.
+    const tenuAt = pr.rendezVousAt ?? instantSaisi(texte(fd, "tenuLe"));
+    if (!tenuAt)
+      return {
+        etat: "erreur",
+        message: "Indiquez la date et l'heure où le rendez-vous a eu lieu.",
+      };
+    // Rencontre : « Pris (convenu) le » obligatoire, jamais postérieur à la création de la
+    // proposition ni à maintenant (les bornes de la règle sont refaites dans la transaction).
+    let prisAt: Date | undefined;
+    if (pr.rendezVousCle.startsWith("rencontre:")) {
+      const brut = texte(fd, "prisLe");
+      if (!brut)
+        return { etat: "erreur", message: "Indiquez le jour où ce rendez-vous a été convenu." };
+      const saisi = instantSaisi(brut);
+      if (!saisi) return { etat: "erreur", message: "Date de prise du rendez-vous illisible." };
+      if (saisi.getTime() > pr.creeAt.getTime() || saisi.getTime() > Date.now())
+        return {
+          etat: "erreur",
+          message:
+            "La date de prise ne peut pas être postérieure à la création de la proposition ni à aujourd'hui.",
+        };
+      prisAt = saisi;
+    }
+    const r = await validerParRendezVous({
+      presentationId: pr.presentationId,
+      rendezVousCle: pr.rendezVousCle,
+      tenuAt,
+      source: sourceDeLaCle(pr.rendezVousCle),
+      propositionId: pr.id,
+      acteurId: acteur.id,
+      ...(prisAt ? { prisAt } : {}),
+    });
+    if (r.ok) rafraichir();
+    return messageValidation(r);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-validation-rdv" } });
+    return { etat: "erreur", message: "La validation a échoué. Réessayez dans un instant." };
+  }
+}
+
+/** « Ce n'est pas lui » : écarte la proposition (elle n'est jamais supprimée). */
+export async function ecarterPropositionAction(
+  _prev: EtatAction,
+  fd: FormData,
+): Promise<EtatAction> {
+  const acteur = await sessionAdministrateur();
+  if (typeof acteur === "string") return { etat: "erreur", message: acteur };
+  if (!validationParRendezVousActive())
+    return { etat: "erreur", message: MESSAGE_INTERRUPTEUR_ETEINT };
+  const id = texte(fd, "id").toLowerCase();
+  if (!UUID.test(id)) return { etat: "erreur", message: "Proposition inconnue." };
+  // Écarter peut libérer l'entreprise pour un autre apporteur : confirmation vérifiée ici.
+  if (texte(fd, "confirmer") !== "oui") return { etat: "erreur", message: MESSAGE_CONFIRMER };
+  try {
+    const r = await ecarterProposition(id, acteur.id);
+    if (!r.ok) return { etat: "erreur", message: r.message };
+    rafraichir();
+    return { etat: "ok", message: "Proposition écartée (elle reste conservée)." };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-ecarter-proposition" } });
+    return { etat: "erreur", message: "Impossible d'écarter. Réessayez." };
+  }
+}
+
+/**
+ * Saisie MANUELLE par le dirigeant d'un rendez-vous téléphonique, sur place, ou « Annulé par
+ * Axion IA » (réputé tenu à la date à laquelle il était FIXÉ : contrat 2.8, art. 3.2). Aucune réservation Calendly ne le porte.
+ * La date de PRISE (« pris le ») est OBLIGATOIRE : jamais réputée prise le jour où il a eu lieu.
+ * Un rendez-vous dans le futur est refusé par la règle. Confirmation en deux temps, vérifiée ici.
+ */
+export async function saisirRendezVousAction(_prev: EtatAction, fd: FormData): Promise<EtatAction> {
+  const acteur = await sessionAdministrateur();
+  if (typeof acteur === "string") return { etat: "erreur", message: acteur };
+  if (!validationParRendezVousActive())
+    return { etat: "erreur", message: MESSAGE_INTERRUPTEUR_ETEINT };
+  const presentationId = texte(fd, "presentationId").toLowerCase();
+  if (!UUID.test(presentationId)) return { etat: "erreur", message: "Choisissez l'entreprise." };
+  const canal = texte(fd, "canal");
+  if (canal !== "telephone" && canal !== "sur_place" && canal !== "annule_par_axion")
+    return {
+      etat: "erreur",
+      message: "Indiquez le type de rendez-vous : appel, sur place ou annulé par Axion IA.",
+    };
+  const tenuAt = instantSaisi(texte(fd, "tenuLe"));
+  if (!tenuAt) return { etat: "erreur", message: "Indiquez la date et l'heure du rendez-vous." };
+  const prisBrut = texte(fd, "prisLe");
+  if (!prisBrut)
+    return { etat: "erreur", message: "Indiquez le jour où ce rendez-vous a été convenu." };
+  const prisAt = instantSaisi(prisBrut);
+  if (!prisAt) return { etat: "erreur", message: "Date de prise du rendez-vous illisible." };
+  const motif = texte(fd, "motif").slice(0, 200);
+  if (!motif)
+    return { etat: "erreur", message: "Indiquez le motif de cette saisie (en quelques mots)." };
+  if (texte(fd, "confirmer") !== "oui") return { etat: "erreur", message: MESSAGE_CONFIRMER };
+  try {
+    const r = await validerParRendezVous({
+      presentationId,
+      motif,
+      rendezVousCle: null,
+      prisAt,
+      tenuAt,
+      source: "saisie",
+      canal,
+      acteurId: acteur.id,
+    });
+    if (r.ok) rafraichir();
+    return messageValidation(r);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-saisie-rdv" } });
+    return { etat: "erreur", message: "L'enregistrement a échoué. Réessayez dans un instant." };
+  }
 }

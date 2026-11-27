@@ -49,7 +49,7 @@ export const HAGONDANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hagondange ?",
-      a: "Oui, Axion-IA intervient à Hagondange et dans toute la vallée de l'Orne (Amnéville, Rombas, Moyeuvre-Grande, Gandrange). Gare SNCF Hagondange sur ligne Metz-Luxembourg, autoroute A31 sortie directe.",
+      a: "Oui, Axion-IA intervient à Hagondange et dans toute la vallée de l'Orne (Amnéville, Rombas, Moyeuvre-Grande, Gandrange).",
     },
     {
       q: "Travaillez-vous avec les entreprises issues de la reconversion industrielle ?",
@@ -65,7 +65,7 @@ export const HAGONDANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hagondange ?",
-      a: "Nos consultants arrivent via gare SNCF Hagondange ou autoroute A31. Metz à 20 min, Thionville à 15 min, Luxembourg à 55 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

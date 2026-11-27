@@ -49,7 +49,7 @@ export const AVALLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avallon et dans le Morvan ?",
-      a: "Oui, Axion-IA intervient à Avallon et tout le bassin nord-Morvan (Auxerre à 50 min, Dijon à 1h15, Paris-Bercy à 2h en train, A6 sortie 22 à 5 min).",
+      a: "Oui. Nous intervenons sur place à Avallon et dans tout le bassin nord-Morvan, comme partout en France, ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs du Morvan ?",
@@ -65,7 +65,7 @@ export const AVALLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Avallon ?",
-      a: "Paris-Bercy à 2h en train (gare Avallon). Dijon à 1h15 par A6. Auxerre à 50 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Avallon, comme partout en France, ou à distance.",
     },
   ],
 };

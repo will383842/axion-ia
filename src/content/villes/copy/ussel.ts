@@ -49,7 +49,7 @@ export const USSEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ussel et en haute Corrèze ?",
-      a: "Oui, Axion-IA intervient à Ussel et dans toute la haute Corrèze (Égletons, Meymac, Bort-les-Orgues). Gare SNCF à Ussel ; nous intervenons sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Ussel et dans toute la haute Corrèze (Égletons, Meymac, Bort-les-Orgues).",
     },
     {
       q: "Combien coûte un audit IA à Ussel  ?",
@@ -61,7 +61,7 @@ export const USSEL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Ussel ?",
-      a: "Intervention sous 5 à 7 jours ouvrés. Tulle à 1h, Brive à 1h20, Clermont à 1h30. Déplacements sur site ou sessions en visio.",
+      a: "Intervention sous 5 à 7 jours ouvrés. Déplacements sur site ou sessions en visio.",
     },
     {
       q: "Proposez-vous du coaching IA individuel à Ussel ?",

@@ -220,8 +220,14 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-non-commissionne": "Apporteur : produit hors grille constaté non commissionné (A1.7)",
   "apporteur-commission-suspension":
     "Apporteur : commission suspendue, puis libérée (contestation du client)",
+  "apporteur-regime-tva": "Apporteur : changement de régime de TVA (art. 4.7 et 6.3)",
   "apporteur-resiliation-notifiee": "Apporteur : résiliation du contrat notifiée (art. 11 et 12.5)",
   "apporteur-resiliation-effective": "Apporteur : résiliation du contrat prise d'effet",
+  "apporteur-compte-a-confirmer": "Apporteur : confirmer le changement de compte bancaire",
+  "apporteur-compte-demande-bloquee": "Apporteur : demande de changement de compte bloquée",
+  "apporteur-compte-change": "Apporteur : compte bancaire changé",
+  "apporteur-compte-refuse": "Apporteur : changement de compte refusé",
+  "apporteur-compte-expire": "Apporteur : demande de changement de compte non confirmée",
   "apporteur-manquement": "Apporteur : manquement ou fraude notifié avec les faits (art. 4.5 bis)",
   "apporteur-commission-avoir-client":
     "Apporteur : commission facturée annulée par un avoir, après l'avoir du client (art. 4.5)",
@@ -230,6 +236,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",
   "apporteur-presentation-non-retenue": "Apporteur : entreprise non retenue",
   "entreprise-prise-de-contact-apporteur": "Prise de contact avec une entreprise présentée",
+  "apporteur-presentation-recue-rendez-vous": "Apporteur : entreprise bien reçue (rendez-vous)",
   "apporteur-vigilance": "Apporteur : attestation URSSAF demandée",
   "apporteur-commande-signee": "Apporteur : une commande signée",
   "apporteur-commande-non-attribuee":

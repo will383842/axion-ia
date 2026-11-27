@@ -58,7 +58,7 @@ export const VITROLLES_COPY: VilleCopy = {
           "La chaîne de sous-traitance aéronautique de Vitrolles (autour d'Airbus Helicopters et du technocentre Henri-Fabre) a des besoins web spécifiques : portails fournisseurs, suivi de commandes pièces, espaces documentaires techniques — nous concevons ces plateformes avec recherche sémantique IA sur catalogues et nomenclatures.",
           "Le pôle logistique des Estroublans et de l'Anjoly (Daher Logistics, Géodis, GXO, CEVA) tourne autour du suivi de flux : nous construisons des portails clients de tracking, des espaces de réservation de créneaux et des tableaux de bord d'expédition, enrichis par l'IA pour les relances et la qualification automatique des demandes.",
           "Les enseignes du Centre Commercial Carrefour Grand Vitrolles (Griffon) et du commerce des parcs d'activités ont besoin de sites e-commerce et de prise de rendez-vous : nous déployons des boutiques multi-CMS (Shopify, WooCommerce, headless) avec recommandation produit et chatbot de pré-vente.",
-          "Vitrolles est à quelques minutes de l'aéroport Marseille-Provence, sur les axes A7/A55 et desservie par sa gare. Nous nous déplaçons sur site dans les parcs de l'Anjoly, Couperigne et des Estroublans pour cadrer le projet avec vos équipes avant toute ligne de code.",
+          "Axion IA intervient partout en France, sur site ou à distance, y compris à Vitrolles. Nous intervenons sur site dans les parcs de l'Anjoly, Couperigne et des Estroublans pour cadrer le projet avec vos équipes avant toute ligne de code.",
         ],
         methodology: [
           {
@@ -128,7 +128,7 @@ export const VITROLLES_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous sur site à Vitrolles ?",
-            a: "Oui. Nous intervenons directement dans vos locaux des parcs de l'Anjoly, de Couperigne, des Estroublans ou du Griffon, accessibles par l'A7/A55 et la gare de Vitrolles, pour cadrer le projet avec vos équipes avant le développement.",
+            a: "Oui. Nous intervenons directement dans vos locaux des parcs de l'Anjoly, de Couperigne, des Estroublans ou du Griffon, comme partout en France, pour cadrer le projet avec vos équipes avant le développement.",
           },
           {
             q: "Mes données et mon site restent-ils sous mon contrôle ?",
@@ -144,7 +144,7 @@ export const VITROLLES_COPY: VilleCopy = {
           "Vitrolles' aerospace subcontracting chain (around Airbus Helicopters and the Henri-Fabre technocentre) has specific web needs: supplier portals, parts order tracking, technical documentation spaces — we build these platforms with AI semantic search over catalogues and bills of materials.",
           "The Estroublans and Anjoly logistics hub (Daher Logistics, Géodis, GXO, CEVA) revolves around flow tracking: we build client tracking portals, slot-booking spaces and shipment dashboards, enriched by AI for follow-ups and automatic request qualification.",
           "Retailers at the Carrefour Grand Vitrolles shopping centre (Le Griffon) and across the business parks need e-commerce and booking sites: we deploy multi-CMS stores (Shopify, WooCommerce, headless) with product recommendation and pre-sale chatbot.",
-          "Vitrolles sits minutes from Marseille-Provence Airport, on the A7/A55 corridors and served by its own station. We travel on site to the Anjoly, Couperigne and Estroublans parks to frame the project with your teams before any line of code.",
+          "Axion-IA works anywhere in France, on site or remotely, including in Vitrolles. We work on site in the Anjoly, Couperigne and Estroublans parks to frame the project with your teams before any line of code.",
         ],
         methodology: [
           {
@@ -213,8 +213,8 @@ export const VITROLLES_COPY: VilleCopy = {
             a: "Yes. For the brands of the Le Griffon district and the business-park retail, we deploy multi-CMS e-commerce stores (Shopify, WooCommerce or custom headless) with product recommendation, click-and-collect and pre-sale chatbot.",
           },
           {
-            q: "Do you travel on site to Vitrolles?",
-            a: "Yes. We work directly at your premises in the Anjoly, Couperigne, Estroublans or Le Griffon areas, accessible via the A7/A55 and the Vitrolles station, to frame the project with your teams before development.",
+            q: "Do you work in Vitrolles?",
+            a: "Yes. Axion-IA works anywhere in France, on site or remotely, including in Vitrolles: directly at your premises in the Anjoly, Couperigne, Estroublans or Le Griffon areas, to frame the project with your teams before development.",
           },
           {
             q: "Do my data and my site stay under my control?",
@@ -229,7 +229,7 @@ export const VITROLLES_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il sur site à Vitrolles ?",
+      q: "Intervenez-vous à Vitrolles ?",
       a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Vitrolles, notamment dans la ZAC de l'Anjoly, et tout autour de l'étang de Berre, pour observer vos processus réels avant toute recommandation.",
     },
     {

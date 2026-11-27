@@ -14,9 +14,9 @@ export const BONDOUFLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
   seoHook: "logistique transport & commerce gros",
   ecosystemFr:
-    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",
+    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Zones d'activités de Lisses et Courcouronnes toutes proches.",
   ecosystemEn:
-    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",
+    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Zones d'activités de Lisses et Courcouronnes toutes proches.",
   distancesFr:
     "Paris centre à 40 min via A6. Évry-Courcouronnes à 10 min. Aéroport Orly à 20 min. Gare RER D Évry-Courcouronnes à 10 min. Francilienne N104 à 5 min.",
   distancesEn:
@@ -65,7 +65,7 @@ export const BONDOUFLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bondoufle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bondoufle, comme partout en France, ou à distance.",
     },
   ],
 };

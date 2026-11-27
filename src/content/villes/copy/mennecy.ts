@@ -49,7 +49,7 @@ export const MENNECY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mennecy et sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Mennecy et tout le sud Essonne (Corbeil-Essonnes à 10 min, Évry-Courcouronnes à 15 min, Paris à 45 min). Gare RER D Mennecy.",
+      a: "Oui. Nous intervenons à Mennecy et dans tout le sud Essonne (Corbeil-Essonnes, Évry-Courcouronnes), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Mennecy ?",
@@ -64,8 +64,8 @@ export const MENNECY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Évry ou Paris ?",
-      a: "Évry-Courcouronnes (15 min). Corbeil-Essonnes (10 min). Paris centre (45 min). Aéroport Orly (25 min).",
+      q: "Comment se déroule une mission Axion-IA à Mennecy ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const NOVES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noves et dans la Petite Crau ?",
-      a: "Oui, Axion-IA intervient à Noves et dans toute la Petite Crau (Châteaurenard à 10 min, Cavaillon à 15 min, Saint-Rémy, Avignon). Couverture complète Vallée du Rhône sud via A7.",
+      a: "Oui. Nous intervenons à Noves et dans la Petite Crau, avec une couverture complète de la Vallée du Rhône sud, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Noves  ?",
@@ -65,7 +65,7 @@ export const NOVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Noves ?",
-      a: "Nos consultants interviennent sur site à Noves sous 5 jours ouvrés. Avignon à 15 min, accès A7.",
+      a: "Nos consultants interviennent sur site à Noves sous 5 jours ouvrés.",
     },
   ],
 };

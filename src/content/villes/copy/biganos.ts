@@ -65,7 +65,7 @@ export const BIGANOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biganos ?",
-      a: "Nos consultants interviennent dans vos locaux à Biganos ou en visio. Gare TER Facture-Biganos accessible. Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Biganos ou en visio. Tarifs et planning convenus en amont.",
     },
   ],
 };

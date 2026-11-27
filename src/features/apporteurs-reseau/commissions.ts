@@ -13,22 +13,40 @@
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
+import { paiementIntegralLe, paiementsIntegrauxParFacture } from "./paiement-integral";
+import {
+  piecesFigees,
+  piecesFigeesDisponible,
+  regimeApplicableAu,
+  regimesDesPieces,
+  type RegimeFige,
+} from "./tva-pieces";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
+import type { Prisma, StatutCommissionApporteur } from "../../../prisma/generated/client";
 
 import {
   construireDonneesAutofacture,
+  jourParis,
+  regimeHonorairesApporteur,
   totalTtcPieceCents,
   type ApporteurPourAutofacture,
 } from "./autofacture-donnees";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
+import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import { regimeFactureDepuisHonoraires } from "@/server/qualiopi/remuneration/autofacture-pieces";
 import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommission,
+  DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
+  commissionJourneeIaCents,
+  PALIER_JOURNEE_IA,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
+  quantiteSessions,
+  type CalculCommission,
   etatVigilance,
   euros,
   PALIER_CONFERENCE,
@@ -175,23 +193,43 @@ export async function libererSiPiecesValides(
 }
 
 export async function cumulVigilanceCents(apporteurId: string, saufId?: string): Promise<number> {
-  const r = await prisma.commissionApporteur.aggregate({
-    where: {
-      apporteurId,
-      statut: { in: [...STATUTS_CUMUL] },
-      ...(saufId ? { id: { not: saufId } } : {}),
-    },
-    _sum: { montantCents: true },
-  });
+  const where = {
+    apporteurId,
+    statut: { in: [...STATUTS_CUMUL] },
+    ...(saufId ? { id: { not: saufId } } : {}),
+  };
+  const r = await prisma.commissionApporteur.aggregate({ where, _sum: { montantCents: true } });
   const ht = r._sum.montantCents ?? 0;
   // Art. 6.2 (analyse du 09/10) : la Société apprécie le cumul TOUTES TAXES COMPRISES, par
   // prudence. Un apporteur en franchise : TTC = HT. Régime illisible : le HT (comportement d'avant).
   try {
-    const a = await prisma.apporteurReseau.findUnique({
-      where: { id: apporteurId },
-      select: { regimeTva: true },
+    // Une commission pas encore facturée prend le régime applicable AUJOURD'HUI ; une commission
+    // facturée garde celui de SON autofacture (décision de Will : le régime est figé par pièce).
+    const auj = await regimeApplicableAu(apporteurId, jourParis(new Date()));
+    const base = totalTtcPieceCents(auj.regimeTva, [ht]);
+    if (!(await piecesFigeesDisponible())) return base;
+    const groupes = await prisma.commissionApporteur.groupBy({
+      by: ["autofactureNumero"],
+      where: { ...where, autofactureNumero: { not: null } },
+      _sum: { montantCents: true },
     });
-    return totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [ht]);
+    const regimes = await regimesDesPieces(groupes.map((g) => g.autofactureNumero!));
+    // Aucune pièce d'un autre régime que celui d'aujourd'hui : le calcul d'avant, à l'identique.
+    if (
+      !groupes.some(
+        (g) =>
+          regimes.has(g.autofactureNumero!) && regimes.get(g.autofactureNumero!) !== auj.regimeTva,
+      )
+    )
+      return base;
+    let reste = ht;
+    let total = 0;
+    for (const g of groupes) {
+      const somme = g._sum.montantCents ?? 0;
+      reste -= somme;
+      total += totalTtcPieceCents(regimes.get(g.autofactureNumero!) ?? auj.regimeTva, [somme]);
+    }
+    return total + totalTtcPieceCents(auj.regimeTva, [reste]);
   } catch {
     return ht;
   }
@@ -273,7 +311,11 @@ export async function qualifierCommission(
   quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
-  if (palier !== PALIER_CONFERENCE && !PALIERS_FORMATION.some((p) => p.id === palier))
+  if (
+    palier !== PALIER_CONFERENCE &&
+    palier !== PALIER_JOURNEE_IA &&
+    !PALIERS_FORMATION.some((p) => p.id === palier)
+  )
     return { ok: false, message: "Palier inconnu." };
   const c = await prisma.commissionApporteur.findUnique({
     where: { id },
@@ -290,16 +332,44 @@ export async function qualifierCommission(
   if (!c) return { ok: false, message: "Commission introuvable." };
   if (c.statut !== "a_qualifier" || c.parrainage)
     return { ok: false, message: "Cette commission n'est pas à qualifier." };
-  if (c.activite !== "formation" && c.activite !== "conference")
+  const journeeIa = palier === PALIER_JOURNEE_IA;
+  // Journée IA (A1.1) : Williams tranche une commande que le passage n'a pas su lire seul ; elle
+  // peut porter l'activité formation, audit, intégration ou aucune (« inconnue »).
+  // Journée IA : décision humaine, quelle que soit l'activité de la facture.
+  if (!journeeIa && c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
-  const calc = calculerCommission({
-    activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
-    factureHtCents: c.factureHtCents,
-    palier,
-    quantite,
-  });
+  const q = quantiteSessions(quantite);
+  // Conférence : la date de signature de la commande décide du forfait (avant le 26/11/2026) ou de 0 €.
+  let signeeAt: Date | null = null;
+  if (palier === PALIER_CONFERENCE) {
+    const fac = await prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+    });
+    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+  }
+  const calc: CalculCommission = journeeIa
+    ? {
+        statut: "calculee",
+        montantCents: commissionJourneeIaCents(c.factureHtCents, q),
+        palier: PALIER_JOURNEE_IA,
+        prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
+      }
+    : calculerCommission({
+        activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
+        factureHtCents: c.factureHtCents,
+        palier,
+        quantite,
+        signeeAt,
+      });
   if (calc.statut !== "calculee")
-    return { ok: false, message: "Calcul impossible pour ce palier." };
+    return {
+      ok: false,
+      message:
+        palier === PALIER_CONFERENCE
+          ? "Conférence signée à partir du 26/11/2026 : aucune commission (contrat 2.8)."
+          : "Calcul impossible pour ce palier.",
+    };
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },
@@ -332,7 +402,7 @@ export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
 /**
  * Une ligne « à qualifier » qui n'est pas une formation (activité de la facture inconnue) :
  * Williams la classe. 1-to-1, audit, intégration : la commission se calcule tout de suite sur le
- * HT facturé. Site web : aucune commission (annexe 1, A1.5), la ligne est close à 0 €. Formation :
+ * HT facturé. Site web : 15 % du HT facturé (annexe 1, A1.5 du contrat 2.8). Coaching : aucune commission, ligne close à 0 €. Formation :
  * l'activité est posée, le palier se choisit ensuite comme d'habitude.
  */
 export async function classerActiviteCommission(
@@ -367,8 +437,29 @@ export async function classerActiviteCommission(
       ? { ok: true, message: "Classée en formation : choisissez maintenant son palier." }
       : { ok: false, message: "Cette commission vient d'être modifiée." };
   }
-  const calc = calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+  // Développement web : jamais de commission rétroactive (4.1) — une commande signée avant la date
+  // d'effet est close à 0 €, comme au passage quotidien. Date illisible : close aussi (prudence).
+  let venteAnterieure = false;
+  // Conférence : une commande signée avant la date d'effet garde le forfait de l'ancien contrat.
+  let signeeAt: Date | null = null;
+  if (choisie === "site_web" || choisie === "conference") {
+    const fac = await prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+    });
+    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+    if (choisie === "site_web")
+      venteAnterieure = !signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
+  }
+  const calc: CalculCommission = venteAnterieure
+    ? { statut: "aucune" }
+    : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents, signeeAt });
   if (calc.statut === "aucune") {
+    // La vraie raison, jamais un message générique : une commande de développement web signée avant
+    // la date d'effet n'est pas « sans commission », elle est antérieure au contrat 2.8.
+    const raison = venteAnterieure
+      ? "Commande antérieure au contrat 2.8 (développement web) : aucune commission, ligne close à 0 €."
+      : "Aucune commission pour ce type de prestation : ligne close à 0 €.";
     const r = await prisma.commissionApporteur.updateMany({
       where: { id, statut: "a_qualifier" },
       data: {
@@ -384,7 +475,7 @@ export async function classerActiviteCommission(
     await clorePartParrainage(c.factureId, c.apporteurId, maintenant);
     return {
       ok: true,
-      message: "Aucune commission pour ce type de prestation : ligne close à 0 €.",
+      message: raison,
     };
   }
   if (calc.statut !== "calculee") return { ok: false, message: "Calcul impossible." };
@@ -445,7 +536,7 @@ async function qualifierPartParrainage(
   });
   if (!part || part.statut !== "a_qualifier") return;
   // La fenêtre de 6 mois a déjà été vérifiée à la création de la ligne.
-  const montant = Math.floor((montantFilleulCents * PARRAINAGE_BPS) / 10_000);
+  const montant = Math.round((montantFilleulCents * PARRAINAGE_BPS) / 10_000);
   const v = await statutApresVigilance(part.apporteurId, montant, maintenant, part.id);
   await prisma.commissionApporteur.updateMany({
     where: { id: part.id, statut: "a_qualifier" },
@@ -485,6 +576,11 @@ export interface CommissionVue {
   creeAt: Date;
   /** Encaissement (paiement soldant la facture), repli : création de la ligne. */
   encaisseeAt: Date;
+  /**
+   * Paiement INTÉGRAL de la commande (`paiementIntegralLe`, même source que l'autofacture, son PDF
+   * et l'alerte « à virer ») : le délai de 30 jours en part. Lu pour les lignes facturées.
+   */
+  paiementIntegralAt: Date | null;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli sur la dernière écriture). */
   emissionAt: Date;
 }
@@ -513,6 +609,12 @@ export async function lireCommissions(
   });
   const numero = new Map(factures.map((f) => [f.id, f.numero]));
   const paye = new Map(factures.map((f) => [f.id, f.paidAt]));
+  // Une seule source pour l'échéance de 30 jours : le paiement intégral de la commande.
+  const integral = new Map<string, Date | null>();
+  for (const l of lignes) {
+    if (l.statut !== "due" || !l.autofactureNumero || integral.has(l.factureId)) continue;
+    integral.set(l.factureId, await paiementIntegralLe([l.factureId]));
+  }
   return lignes.map((l) => ({
     id: l.id,
     apporteurId: l.apporteurId,
@@ -539,6 +641,7 @@ export async function lireCommissions(
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,
     encaisseeAt: paye.get(l.factureId) ?? l.creeAt,
+    paiementIntegralAt: integral.get(l.factureId) ?? null,
     emissionAt: l.autofactureEmiseAt ?? l.majAt,
   }));
 }
@@ -689,6 +792,23 @@ export async function originesDesReprises(
 }
 
 /**
+ * Le régime de TVA d'une pièce à établir : celui de la pièce si elle est DÉJÀ figée (régénération),
+ * sinon — pour un avoir — celui de l'autofacture rectifiée, sinon le régime applicable au jour
+ * d'émission (le changement daté du jour, sinon la fiche).
+ */
+async function regimeDeLaPiece(e: {
+  apporteurId: string;
+  numero: string;
+  maintenant?: Date;
+  avoir?: { factureInitiale: string };
+}): Promise<RegimeFige> {
+  const figees = await piecesFigees([e.numero, ...(e.avoir ? [e.avoir.factureInitiale] : [])]);
+  const p = figees.get(e.numero) ?? (e.avoir ? figees.get(e.avoir.factureInitiale) : undefined);
+  if (p) return { regimeTva: p.regimeTva, numeroTva: p.numeroTva };
+  return regimeApplicableAu(e.apporteurId, jourParis(e.maintenant ?? new Date()));
+}
+
+/**
  * Génère le PDF de l'autofacture (gabarit des formateurs, vendeur = l'apporteur), le dépose
  * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : l'appelant
  * n'enregistre alors AUCUNE facturation.
@@ -703,7 +823,22 @@ export async function genererPdfAutofacture(e: {
   maintenant?: Date;
   /** AVOIR : `commissionIds` = les reprises, `totalCents` = leur total POSITIF. */
   avoir?: { factureInitiale: string; dateFactureInitiale: string | null; imputation: string };
-}): Promise<{ r2Key: string; filename: string; totalTtcCents: number } | null> {
+  /**
+   * Régime de TVA à imprimer. Absent : celui de la PIÈCE si elle est déjà figée (régénération), sinon
+   * — pour un avoir — celui de l'autofacture qu'il rectifie, sinon le régime applicable au jour
+   * d'émission (changement daté ou fiche).
+   */
+  regime?: RegimeFige;
+}): Promise<{
+  r2Key: string;
+  filename: string;
+  totalTtcCents: number;
+  /** Ce que le PDF a imprimé : à FIGER sur la pièce (régime, n° de TVA, totaux). */
+  regimeTva: "assujetti" | "franchise_293b";
+  numeroTva: string | null;
+  totalHtCents: number;
+  totalTvaCents: number;
+} | null> {
   try {
     const [apporteur, commissions] = await Promise.all([
       prisma.apporteurReseau.findUnique({
@@ -723,6 +858,7 @@ export async function genererPdfAutofacture(e: {
         where: { id: { in: [...e.commissionIds] } },
         select: {
           id: true,
+          factureId: true,
           activite: true,
           palier: true,
           parrainage: true,
@@ -735,7 +871,10 @@ export async function genererPdfAutofacture(e: {
       }),
     ]);
     if (!apporteur) throw new Error("apporteur introuvable");
+    const regime = e.regime ?? (await regimeDeLaPiece(e));
     const origines = await originesDesReprises(commissions);
+    const paiements = await paiementsIntegrauxParFacture(commissions.map((l) => l.factureId));
+    const dates = [...paiements.values()].filter((d): d is Date => d !== null);
     const [
       { getOrganismeIdentite },
       { renderPdfToBuffer, storeAndSignPdf },
@@ -751,18 +890,21 @@ export async function genererPdfAutofacture(e: {
       numero: e.numero,
       periodeLibelle: e.periodeLibelle,
       dateEmission: e.maintenant ?? new Date(),
+      // L'échéance part du paiement intégral le plus ancien ; la date de prestation, de chaque commande.
+      paiementIntegral: dates.length ? new Date(Math.min(...dates.map((d) => d.getTime()))) : null,
       apporteur: {
         nom: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
         denomination: apporteur.denomination,
         siren: apporteur.siren,
         siret: await siretDe(e.apporteurId),
         adresse: decryptPii(apporteur.adresse),
-        regimeTva: apporteur.regimeTva,
-        numeroTva: apporteur.numeroTva,
+        regimeTva: regime.regimeTva,
+        numeroTva: regime.numeroTva,
         email: decryptPii(apporteur.email) ?? null,
       },
       commissions: commissions.map((l) => ({
         ...l,
+        paiementIntegralAt: paiements.get(l.factureId) ?? null,
         origineNumero: origines.get(l.id)?.numero ?? null,
         origineMois: origines.get(l.id)?.mois ?? null,
       })),
@@ -776,13 +918,21 @@ export async function genererPdfAutofacture(e: {
     );
     const r2Key = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
     if ((await storeAndSignPdf(buffer, r2Key)) === null) throw new Error("R2 non configuré");
+    // Totaux : la MÊME fonction que le gabarit, pour que la pièce figée retombe sur le PDF.
+    const honoraires = regimeHonorairesApporteur(regime.regimeTva)!;
+    const totaux = computeTotauxFacture(
+      construit.data.lignes.map((l) => ({ quantite: 1, prixUnitaireHtCents: l.montantHtCents })),
+      regimeFactureDepuisHonoraires(honoraires),
+      TAUX_TVA_STANDARD,
+    );
     return {
       r2Key,
       filename: `${e.numero}.pdf`,
-      totalTtcCents: totalTtcPieceCents(
-        apporteur.regimeTva,
-        construit.data.lignes.map((l) => l.montantHtCents),
-      ),
+      totalTtcCents: totaux.totalTtcCents,
+      regimeTva: regime.regimeTva as "assujetti" | "franchise_293b",
+      numeroTva: regime.regimeTva === "assujetti" ? regime.numeroTva : null,
+      totalHtCents: totaux.totalHtCents,
+      totalTvaCents: totaux.totalTtcCents - totaux.totalHtCents,
     };
   } catch (err) {
     console.error(`[reseau-apporteurs] autofacture ${e.numero} : PDF non généré :`, err);
@@ -847,6 +997,77 @@ export function construireCsvDas2(annee: number, lignes: readonly LigneDas2[]): 
   return `﻿${[entete.join(";"), ...corps].join("\r\n")}\r\n`;
 }
 
+/**
+ * Le total TTC de la DAS2 PIÈCE PAR PIÈCE, pour les apporteurs dont au moins une pièce n'a pas le
+ * régime de leur fiche ; absent de la carte = le calcul d'avant convient. Une pièce dont toutes les
+ * lignes sont versées dans l'année (somme HT = HT du PDF) compte pour le TTC de son PDF.
+ */
+async function das2ParPiece(
+  ou: Prisma.CommissionApporteurWhereInput,
+  apporteurIds: readonly string[],
+): Promise<Map<string, number>> {
+  const out = new Map<string, number>();
+  try {
+    if (apporteurIds.length === 0 || !(await piecesFigeesDisponible())) return out;
+    const lignes = await prisma.commissionApporteur.findMany({
+      where: { ...ou, apporteurId: { in: [...apporteurIds] } },
+      select: {
+        apporteurId: true,
+        statut: true,
+        montantCents: true,
+        autofactureNumero: true,
+        avoirNumero: true,
+      },
+    });
+    const numeros = [
+      ...new Set(
+        lignes.flatMap((l) => [l.autofactureNumero, l.avoirNumero]).filter((n): n is string => !!n),
+      ),
+    ];
+    const pieces = await piecesFigees(numeros);
+    const fiches = await prisma.apporteurReseau.findMany({
+      where: { id: { in: [...apporteurIds] } },
+      select: { id: true, regimeTva: true },
+    });
+    const regimeFiche = new Map(fiches.map((f) => [f.id, f.regimeTva as RegimeApporteur]));
+    type Groupe = { apporteurId: string; numero: string; avoir: boolean; ms: number[] };
+    const groupes = new Map<string, Groupe>();
+    for (const l of lignes) {
+      const m = l.montantCents ?? 0;
+      // Une reprise AVEC numéro d'avoir est une pièce d'avoir (déduite) ; sinon une ligne de
+      // l'autofacture, comme dans `aVirerTtcCents`.
+      const avoir = l.statut === "reprise" && !!l.avoirNumero;
+      const numero = avoir ? l.avoirNumero! : (l.autofactureNumero ?? "");
+      const cle = `${avoir ? "a" : "f"}:${numero}`;
+      const g = groupes.get(cle) ?? { apporteurId: l.apporteurId, numero, avoir, ms: [] };
+      g.ms.push(avoir ? Math.abs(m) : m);
+      groupes.set(cle, g);
+    }
+    const differents = new Set<string>();
+    for (const g of groupes.values()) {
+      const p = pieces.get(g.numero);
+      if (p && p.regimeTva !== regimeFiche.get(g.apporteurId)) differents.add(g.apporteurId);
+    }
+    for (const id of differents) {
+      let total = 0;
+      for (const g of groupes.values()) {
+        if (g.apporteurId !== id) continue;
+        const p = pieces.get(g.numero);
+        const ht = g.ms.reduce((s, m) => s + m, 0);
+        const ttc =
+          p && p.totalHtCents !== null && p.totalTtcCents !== null && p.totalHtCents === ht
+            ? p.totalTtcCents
+            : totalTtcPieceCents(p ? p.regimeTva : (regimeFiche.get(id) ?? null), g.ms);
+        total += g.avoir ? -ttc : ttc;
+      }
+      out.set(id, total);
+    }
+  } catch {
+    // Lecture impossible : le calcul d'avant.
+  }
+  return out;
+}
+
 /** Commissions VERSÉES dans l'année civile (Paris approximée en UTC), par apporteur. */
 export async function exportDas2(annee: number): Promise<string> {
   return construireCsvDas2(annee, await lignesDas2Apporteurs(annee));
@@ -857,28 +1078,33 @@ export async function exportDas2(annee: number): Promise<string> {
  * sortants (`server/paiements-sortants`, FAC-9) les relit telles quelles.
  */
 export async function lignesDas2Apporteurs(annee: number): Promise<LigneDas2[]> {
+  const ou: Prisma.CommissionApporteurWhereInput = {
+    // Les reprises imputées à un relevé viennent en déduction du versé de l'année. L'avoir qui
+    // NEUTRALISE une ligne retenue (art. 4.5 bis) n'en est pas une : la ligne n'a jamais été
+    // versée, il n'y a rien à déduire.
+    OR: [
+      { statut: "versee" },
+      {
+        statut: "reprise",
+        releveMois: { not: null },
+        NOT: { activite: ACTIVITE_NEUTRALISATION },
+      },
+    ],
+    verseeAt: {
+      gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000),
+      lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000),
+    },
+  };
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
-    where: {
-      // Les reprises imputées à un relevé viennent en déduction du versé de l'année. L'avoir qui
-      // NEUTRALISE une ligne retenue (art. 4.5 bis) n'en est pas une : la ligne n'a jamais été
-      // versée, il n'y a rien à déduire.
-      OR: [
-        { statut: "versee" },
-        {
-          statut: "reprise",
-          releveMois: { not: null },
-          NOT: { activite: ACTIVITE_NEUTRALISATION },
-        },
-      ],
-      verseeAt: {
-        gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000),
-        lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000),
-      },
-    },
+    where: ou,
     _sum: { montantCents: true },
     _count: { _all: true },
   });
+  const parPiece = await das2ParPiece(
+    ou,
+    g.map((x) => x.apporteurId),
+  );
   const apporteurs = await prisma.apporteurReseau.findMany({
     where: { id: { in: g.map((x) => x.apporteurId) } },
     select: {
@@ -902,9 +1128,12 @@ export async function lignesDas2Apporteurs(annee: number): Promise<LigneDas2[]> 
       siret: a ? (sirets.get(a.id) ?? null) : null,
       adresse: a?.adresse ?? null,
       // La DAS 2 se déclare TVA comprise (analyse du 09/10) : TTC pour un apporteur assujetti.
-      totalCents: totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [
-        x._sum.montantCents ?? 0,
-      ]),
+      // Régime de chaque PIÈCE (figé) : une commission facturée sans TVA en mars reste sans TVA
+      // dans la déclaration, même si l'apporteur est passé à la TVA depuis. Sans pièce d'un autre
+      // régime que la fiche, le calcul d'avant (un seul TTC sur le total), à l'identique.
+      totalCents:
+        parPiece.get(x.apporteurId) ??
+        totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [x._sum.montantCents ?? 0]),
       lignes: x._count._all,
     };
   });

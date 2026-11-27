@@ -229,8 +229,8 @@ export const PLAISIR_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il vraiment sur site à Plaisir ?",
-      a: "Oui. Nos experts IA viennent dans vos locaux à Plaisir, qu'il s'agisse d'un commerce du pôle Grand Plaisir, d'un atelier des Gâtines ou d'une PME de la Clef-Saint-Pierre. L'audit terrain reste le meilleur moyen de cibler les automatisations utiles.",
+      q: "Intervenez-vous à Plaisir ?",
+      a: "Oui. Nos experts IA interviennent dans vos locaux à Plaisir, qu'il s'agisse d'un commerce du pôle Grand Plaisir, d'un atelier des Gâtines ou d'une PME de la Clef-Saint-Pierre. L'audit terrain reste le meilleur moyen de cibler les automatisations utiles.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Plaisir ?",
@@ -238,7 +238,7 @@ export const PLAISIR_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps avant une première intervention à Plaisir ?",
-      a: "Nous nous engageons généralement à démarrer sous cinq jours ouvrés après validation, selon nos disponibilités. La proximité de Plaisir avec l'axe A12 nous permet d'être réactifs sur tout l'ouest des Yvelines.",
+      a: "Nous nous engageons généralement à démarrer sous cinq jours ouvrés après validation, selon nos disponibilités.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Plaisir ?",

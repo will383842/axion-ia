@@ -49,7 +49,7 @@ export const VALSERHONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valserhône et pays de Gex sud ?",
-      a: "Oui, Axion-IA intervient à Valserhône et tout le sud pays de Gex / haut-Bugey (Nantua, Oyonnax, Seyssel). TGV Paris direct gare Bellegarde. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Valserhône et tout le sud pays de Gex / haut-Bugey (Nantua, Oyonnax, Seyssel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de l'économie frontalière Genève ?",
@@ -65,7 +65,7 @@ export const VALSERHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Valserhône ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. TGV Paris direct gare Bellegarde. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs transparents.",
     },
   ],
 };

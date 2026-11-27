@@ -49,7 +49,7 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marsannay-la-Côte et Côte de Nuits ?",
-      a: "Oui, Axion-IA intervient à Marsannay-la-Côte et toute la Côte de Nuits (Gevrey-Chambertin, Nuits-Saint-Georges, Vougeot). Consultants depuis Dijon (10 min).",
+      a: "Oui, Axion-IA intervient à Marsannay-la-Côte et toute la Côte de Nuits (Gevrey-Chambertin, Nuits-Saint-Georges, Vougeot). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les domaines viticoles AOC ?",
@@ -64,8 +64,8 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Dijon ?",
-      a: "Dijon centre (10 min).",
+      q: "Comment se déroule une mission Axion-IA à Marsannay-la-Côte ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

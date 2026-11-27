@@ -25,11 +25,11 @@ export function faqPrincipale(p: Chiffres): QuestionReponse[] {
     },
     {
       question: `Que se passe-t-il après ma demande ?`,
-      reponse: `Vous remplissez un dossier de 3 minutes, sans CV. Vous recevez un e-mail de confirmation, puis, si nous poursuivons ensemble, une invitation à un échange de 15 minutes en visio et un contrat à lire avant de signer.`,
+      reponse: `Vous réservez un échange de 15 minutes en visio, sans CV, directement en ligne. Vous recevez un e-mail de confirmation, puis, si nous poursuivons ensemble, un contrat à lire avant de signer.`,
     },
     {
       question: `Comment suis-je payé ?`,
-      reponse: `Quand l’entreprise a réglé sa facture, la commission vous est due ; vous nous la facturez et nous la réglons. En cas de remise accordée à l’entreprise, elle est réduite au prorata ; en cas d’avoir, elle est reprise.`,
+      reponse: `Quand l’entreprise a réglé la totalité de sa facture, la commission vous est due ; vous nous la facturez et nous la réglons. En cas de remise accordée à l’entreprise, elle est réduite au prorata ; en cas d’avoir total, elle est annulée, et en cas d’avoir partiel, réduite au prorata.`,
     },
     {
       question: `Puis-je en parler sur mes réseaux ?`,

@@ -1,15 +1,25 @@
 /**
- * Pack SEO/GEO « Journée IA » du 10/11/2026 — tri et mapping vers la base de connaissance.
+ * Pack SEO/GEO « Journée IA » du 25/11/2026 (remplace celui du 10/11) — tri et mapping vers la base de connaissance.
  *
  * Module PUR (ni Prisma ni Next). Décision motivée : docs/knowledge/INTEGRATION-PACK-JOURNEE-IA.md.
  *
- *  - les 63 fiches questions/réponses (`faq_knowledge`) deviennent des BROUILLONS internes
+ *  - les 53 fiches questions/réponses (`faq_knowledge`) deviennent des BROUILLONS internes
  *    (type `faq`, statut `draft`, audience `team`, confidentialité `internal`), jamais publiés ;
  *  - les 623 expressions (`search_query`), 20 intentions de page, 18 sources et 10 décisions
  *    restent un référentiel éditorial HORS RAG : jamais servis comme des faits ;
  *  - toute fiche passe la porte de doctrine de la base (`verifierDoctrineTraduction`) PLUS
  *    les décisions du pack : un seul prix (Journée IA 1 490 € HT), pas de remise, pas de
  *    gain garanti, pas de Grenoble, « Williams » et jamais « Will ».
+ *
+ * Doctrine du site au 25/11/2026 (`journee-ia-commun.ts`, CGV art. 47.7 et 47.10), seule
+ * exception à « aucun montant autre que 1 490 € HT » et à « aucun remboursement » :
+ *  - la garantie : si les GAINS IDENTIFIÉS n'atteignent pas 3 fois le prix HT,
+ *    remboursement sur demande écrite, SANS montant en euros (4 470 € est rejeté) ; jamais une garantie de gain obtenu.
+ *    D03 révisée le 26/11/2026 : UNE fiche « garantie » conforme au texte encadré ci-dessous est
+ *    autorisée pour le chatbot (`chatbotAutorise`) ; « sans discussion », « 5 fois » et tout montant restent rejetés ;
+ *  - le seuil de déduction : un devis d'au moins 5 000 € HT signé sous 60 jours.
+ * Le lieu se dit « dans vos locaux, partout en France » et rien de plus : frais, distances,
+ * hébergement, repas et régions relèvent des CGV, jamais d'une fiche.
  */
 
 import { verifierDoctrineTraduction } from "./banned-words";
@@ -22,6 +32,8 @@ export interface LignePack {
 }
 
 export interface EntreeKnowledgeDraft {
+  /** D03 révisée : vrai pour la seule fiche garantie au texte encadré (la fiche reste un brouillon `team`). */
+  readonly chatbotAutorise: boolean;
   readonly entry: {
     readonly type: "faq";
     readonly domain: "editorial";
@@ -85,6 +97,78 @@ const REDUCTION =
   /(?<![\p{L}])(?:réduction|reduction|rabais|offert|offerte|offerts|offertes)(?![\p{L}])/iu;
 const TOUR_FRANCE_IA = /tour\s+(?:de\s+)?france\s+ia/i;
 
+/** Montant de la doctrine du site, admis seulement dans la phrase de la déduction. */
+const MONTANT_SEUIL_DEDUCTION = /^5[\s\u00a0\u202f]?000(?:[.,]00)?$/;
+const MULTIPLE_GARANTIE_RE = /\b(?:3|trois)\s+fois\b/i;
+const GAINS_IDENTIFIES = /gains?\s+identifi[ée]s?/i;
+const REMBOURSEMENT_GARANTI = /garanti[^.]*rembours/i;
+/** Multiple de garantie : seul « 3 fois » existe ; tout autre « N fois » / « Nx » dans une phrase de prix, de garantie ou de gains est rejeté. */
+const MULTIPLE_RE =
+  /(?<![\p{L}\d])([0-9]+|deux|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt)\s?(?:fois|x)(?![\p{L}\d])/giu;
+const CONTEXTE_MULTIPLE =
+  /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement|gains?)(?![\p{L}])/iu;
+const SANS_DISCUSSION =
+  /sans\s+(?:\p{L}+\s+){0,3}(?:discussions?|discuter|n[ée]gociations?|n[ée]gocier|questions?|conditions?|justif\p{L}*|d[ée]bat|contestation|formalit[ée]s?|exception)(?![\p{L}])|simple\s+demande|quoi qu[’']il arrive|aucune question|sur simple (?:mail|appel|e-?mail)|demande\s+[ée]crite\s+ou|par un simple appel/iu;
+const DEMANDE_ECRITE = /sur\s+demande\s+[ée]crite/i;
+const QUATRE_MILLE = /(?<!\d)4[\s\u00a0\u202f.,]?470(?!\d)/;
+function autreMultiple(texte: string): boolean {
+  for (const m of texte.matchAll(MULTIPLE_RE)) {
+    const n = (m[1] ?? "").toLowerCase();
+    if (n === "3" || n === "trois") continue;
+    const apres = texte.slice((m.index ?? 0) + m[0].length);
+    const phrase = phraseA(texte, m.index ?? 0);
+    // « N fois » en fin de phrase (« remboursé 5 fois. ») : seulement dans un contexte de prix ou de garantie.
+    if (/^\s*(?:[,;:.)]|$)/.test(apres) && CONTEXTE_MULTIPLE.test(phrase)) return true;
+    // « N fois le prix / la garantie / l'investissement / les gains… »
+    if (
+      /^\s*(?:(?:le|la|ce|son|leur|votre|notre|les|vos)\s+|l[’'])?(?:prix|garantie|tarif|co[uû]t|investissement|gains?)(?![\p{L}])/iu.test(
+        apres,
+      )
+    )
+      return true;
+    // « N fois plus / supérieur(e)s / moins / inférieur(e)s » : toute la phrase compte.
+    if (
+      /^\s*(?:plus|moins|sup[ée]rieur|inf[ée]rieur)/iu.test(apres) &&
+      /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement)(?![\p{L}])/iu.test(phrase)
+    )
+      return true;
+    // « Nx » : toute la phrase compte.
+    if (/x$/i.test(m[0]) && CONTEXTE_MULTIPLE.test(phrase)) return true;
+  }
+  return false;
+}
+/** Lieu : seule formule admise « dans vos locaux, partout en France ». */
+const DEPLACEMENT_ET_ANNEXES =
+  /d[ée]placement|d[ée]fraie|indemnit[ée]s?|\bis[èe]re\b|(?:se|nous|vous)\s+d[ée]pla[cç]|h[ée]bergement|\brepas\b|\bkm\b|kilom[èe]tre|auvergne|\bfrais\b|\brayon\b|\btrajets?\b|\bvenue\b|rh[ôo]ne[- ]alpes|\bsuppl[ée]ments?(?![\p{L}])|p[ée]age|(?:p[ée]age|carburant)[^.]*\bessence\b|\bessence\b[^.]*(?:p[ée]age|carburant|trajet)|\bcarburant\b|surco[ûu]t|pr[èe]s de chez vous|(?:intervention|pr[ée]sence|[ée]quipe|agence)s?\s+locale?s?\b|\ben sus\b|\bforfait\b|transport de l[’']intervenant|(?:venue|zone|distance|r[ée]gion|trajet)[^.]*sur devis|sur devis[^.]*(?:venue|zone|distance|r[ée]gion|trajet)/iu;
+/**
+ * Présence locale : « agence / bureaux / basé à Lyon », « nous sommes situés à / dans Lyon ».
+ * Le mot-clé se lit sans tenir compte de la casse (« NOUS SOMMES SITUÉS À LYON »), mais le lieu doit
+ * commencer par une majuscule pour ne pas attraper « agence de communication » ni « dans vos locaux ».
+ */
+const PRESENCE_LOCALE_RE =
+  /\b(?:agence|bureaux?|bas[ée]e?s?)\s+(?:à|en|de)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
+const PRESENCE_NOUS_RE =
+  /\b(?:nous\s+(?:sommes|[eê]tes)|nos\s+(?:locaux|bureaux)\s+sont|(?:notre\s+(?:[ée]quipe|soci[ée]t[ée]|si[èe]ge|entreprise)|axion(?:[- ]ia)?)\s+est)\s+(?:\p{L}+\s+)?(?:bas[ée]e?s?|implant[ée]e?s?|install[ée]e?s?|pr[ée]sent(?:e)?s?|situ[ée]e?s?)\s+(?:au\s+c(?:œ|oe)ur\s+de|à\s+proximit[ée]\s+de|à|en|dans)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
+const SIEGE_A_RE =
+  /\bsi[èe]ge\s+(?:social\s+)?(?:est\s+)?(?:à|en|dans)\s+(?:(?:le|la|les|l[’'])\s*)?(?=\p{L})/giu;
+function presenceLocale(texte: string): boolean {
+  for (const re of [PRESENCE_LOCALE_RE, PRESENCE_NOUS_RE, SIEGE_A_RE]) {
+    for (const m of texte.matchAll(re)) {
+      const lieu = texte.charAt((m.index ?? 0) + m[0].length);
+      if (/\p{Lu}/u.test(lieu)) return true;
+    }
+  }
+  return false;
+}
+const REGION_AURA = /\bAURA\b/;
+
+/** Phrase (jusqu'au point) qui contient la position donnée. */
+function phraseA(texte: string, pos: number): string {
+  const debut = Math.max(texte.lastIndexOf(". ", pos), texte.lastIndexOf("\n", pos)) + 1;
+  const fin = texte.indexOf(". ", pos);
+  return texte.slice(debut, fin === -1 ? undefined : fin + 1);
+}
+
 function texteDeLaFiche(l: LignePack): { titre: string; reponse: string } {
   const s = (v: unknown) => (typeof v === "string" ? v.trim() : "");
   return { titre: s(l.question), reponse: s(l.answer_draft) };
@@ -96,12 +180,30 @@ function reglesDuPack(texte: string): string[] {
   for (const m of texte.matchAll(MONTANT)) {
     const nombre = (m[1] ?? m[2] ?? "").trim();
     if (!PRIX_AUTORISE.test(nombre)) {
-      raisons.push(`prix non autorisé : « ${m[0]} »`);
-      continue;
+      const phrase = phraseA(texte, m.index ?? 0);
+      const deduction =
+        MONTANT_SEUIL_DEDUCTION.test(nombre) &&
+        /(?:au moins|minimum|au-delà de)[^.]*\bdevis|\bdevis\b[^.]*(?:au moins|minimum)/i.test(
+          phrase,
+        );
+      if (!deduction) {
+        raisons.push(`prix non autorisé : « ${m[0]} »`);
+        continue;
+      }
     }
     const suite = texte.slice((m.index ?? 0) + m[0].length);
     if (!HT_APRES.test(suite)) raisons.push(`prix sans « HT » juste après : « ${m[0]} »`);
   }
+  if (autreMultiple(texte) || QUATRE_MILLE.test(texte))
+    raisons.push("multiple de garantie : seule la garantie « 3 fois » le prix HT existe");
+  if (SANS_DISCUSSION.test(texte))
+    raisons.push("« sans discussion » interdit : le remboursement se demande par écrit");
+  if (/\bbarr[ée]e?s?(?![\p{L}])/iu.test(texte))
+    raisons.push("prix barré interdit : un seul prix affiché");
+  if (/\bcumulables?\b/i.test(texte)) raisons.push("déduction : jamais cumulable");
+  for (const m of texte.matchAll(/(\d+|[a-zé]+)\s+jours?\s+(ouvr[a-zé]*|calendaires?)/gi))
+    if ((m[1] !== "10" && m[1]?.toLowerCase() !== "dix") || !/^ouvr[ée]s?$/i.test(m[2] ?? ""))
+      raisons.push(`délai du rapport : 10 jours ouvrés, pas « ${m[0]} »`);
   if (/\bttc\b/i.test(texte)) raisons.push("« TTC » interdit : seul prix affiché = 1 490 € HT");
   if (MONTANT_K.test(texte)) raisons.push("montant en k€ interdit");
   if (NOMBRE_SANS_DEVISE_HT.test(texte)) raisons.push("nombre sans devise suivi de « HT »");
@@ -109,6 +211,12 @@ function reglesDuPack(texte: string): string[] {
   if (TOUR_FRANCE_IA.test(texte)) raisons.push("« Tour France IA » exclu de ce pack");
   if (/\bremises?\b/i.test(texte)) raisons.push("remise : un seul prix affiché, sans remise");
   if (/\bgrenoble\b/i.test(texte)) raisons.push("« Grenoble » interdit en communication");
+  if (
+    /financ(?:ement|er|é)|finan[cç]able|subvention|prise en charge (?:de la journ[ée]e|de la formation|par votre op|financi)|op[ée]rateur de comp[ée]tences/i.test(
+      texte,
+    )
+  )
+    raisons.push("financement : jamais évoqué (OPCO, CPF et assimilés compris)");
   if (/\bwill\b/i.test(texte)) raisons.push("écrire « Williams », jamais « Will »");
   if (
     /aucun gain (n[’']est )?garanti|aucune garantie de (gain|r[ée]sultat)|gains? non garantis?/i.test(
@@ -116,16 +224,128 @@ function reglesDuPack(texte: string): string[] {
     )
   )
     raisons.push("formule « Aucun gain garanti » interdite");
+  if (DEPLACEMENT_ET_ANNEXES.test(texte) || presenceLocale(texte) || REGION_AURA.test(texte))
+    raisons.push(
+      "lieu : seule formule admise « dans vos locaux, partout en France » (frais, distance, hébergement, repas, région : CGV)",
+    );
+  const garantieReelle =
+    REMBOURSEMENT_GARANTI.test(texte) &&
+    GAINS_IDENTIFIES.test(texte) &&
+    MULTIPLE_GARANTIE_RE.test(texte);
+  const texteSansGarantie = garantieReelle ? texte.replace(REMBOURSEMENT_GARANTI, "") : texte;
+  if (
+    !(GAINS_IDENTIFIES.test(texte) && MULTIPLE_GARANTIE_RE.test(texte)) &&
+    /(?:vous\s+(?:[êe]tes|serez)|[êe]tes)\s+rembours|remboursement\s+(?:int[ée]gral|total|automatique)/i.test(
+      texteSansGarantie,
+    )
+  )
+    raisons.push("remboursement : seule la garantie « 3 fois » sur gains identifiés existe");
   if (
     /(gains?|r[ée]sultats?|retour sur investissement|roi)\s+garanti|garantit?\s+(un|des|le|les)\s+(gains?|r[ée]sultats?)|gains?\s+assur[ée]s?|satisfait ou rembours|garanti[^.]*rembours/i.test(
-      texte,
+      texteSansGarantie,
     )
   ) {
     raisons.push(
       "promesse de gain ou de remboursement : gains identifiés et estimés, jamais garantis",
     );
   }
+  const phrases = texte.split(/(?<=[.!?])\s+|\n/);
+  for (const ph of phrases) {
+    if (
+      /\b(?:acomptes?|arrhes|annul\p{L}*|r[ée]tractation|d[ée]dit|d[ée]sistement|p[ée]nalit\p{L}*|versement)\b|[àa] la commande|report(?:er)?\s+la\s+(?:journ|date)/iu.test(
+        ph,
+      )
+    )
+      raisons.push("acompte, annulation et rétractation : relèvent des CGV, jamais d'une fiche");
+    if (/voyage|billet|\btrain\b|\bavion\b|[àa] votre charge/i.test(ph))
+      raisons.push("frais de voyage ou de transport : relèvent des CGV");
+    if (
+      /[x×]\s?\d|\b(?:double|triple|quadruple|quintuple|d[ée]cuple)\b|\d\s?%/iu.test(ph) &&
+      /(?<![\p{L}])(?:prix|garantie|tarif|rembours\p{L}*|investissement|gains?|rentabilis\p{L}*)(?![\p{L}])/iu.test(
+        ph,
+      )
+    )
+      raisons.push(
+        "multiple ou pourcentage de garantie : seule la garantie « 3 fois » le prix HT existe",
+      );
+    if (
+      /(?<![\p{L}\d])(?:\d+|deux|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt|cent)\s+fois(?![\p{L}])/iu.test(
+        ph.replace(/\b(?:3|trois)\s+fois\b/gi, ""),
+      ) &&
+      (/rentabilis\p{L}*/iu.test(ph) ||
+        /(?<![\p{L}])gains?(?![\p{L}])[^.]*\sfois\s+(?:plus|sup[ée]rieur)/iu.test(ph))
+    )
+      raisons.push("multiple de garantie : seule la garantie « 3 fois » le prix HT existe");
+    if (
+      /rapport/i.test(ph) &&
+      !/devis/i.test(ph) &&
+      /(?:sous|dans|en|d[ée]lai\s+de|d[ée]lai\s+d[’']environ|apr[èe]s)\s+(?:les\s+|le\s+|un\s+|une\s+)?(?:\d+|[a-zé]+)\s*(?:h\b|heures?|jours?|semaines?|mois)\b|lendemain|quinzaine|huitaine|dans le mois/iu.test(
+        ph.replace(/\b(?:10|dix)\s+jours\s+ouvr[ée]s\b/gi, ""),
+      )
+    )
+      raisons.push("délai du rapport : 10 jours ouvrés, aucun autre délai chiffré");
+    if (/mille\s+(?:\p{L}+[\s-]+){0,6}euros?/iu.test(ph))
+      raisons.push("montant en euros écrit en lettres interdit");
+    if (
+      /rembours/i.test(ph) &&
+      !DEMANDE_ECRITE.test(ph) &&
+      !/\b(?:aucun|aucune|jamais|pas|sans garantir|ne promettons)\b/i.test(ph)
+    )
+      raisons.push("remboursement : uniquement sur demande écrite, dans la garantie encadrée");
+    if (
+      /rembours\p{L}*[^.]*garanti|garanti[^.]*rembours/iu.test(ph) &&
+      !/rembours/i.test(ph.replace(/garanti/gi, ""))
+    )
+      raisons.push("remboursement garanti hors garantie encadrée");
+    if (/garanti|rembours/i.test(ph)) {
+      if (/€|\beuros?\b|\beur\b|mille\s+\p{L}*\s*(?:cent|euro)/iu.test(ph))
+        raisons.push("garantie : aucun montant en euros");
+      if (
+        /(?:d[ée]lai|sous|dans les|en)\s+(?:\d+|[a-zé]+)\s+(?:jours?|semaines?|mois|heures?)\b|\d+\s?h\b/iu.test(
+          ph,
+        )
+      )
+        raisons.push("garantie : aucun délai chiffré");
+      const encadree =
+        GAINS_IDENTIFIES.test(ph) && MULTIPLE_GARANTIE_RE.test(ph) && DEMANDE_ECRITE.test(ph);
+      const negation =
+        /\b(?:aucun|aucune|jamais|pas|sans garantir|ne promettons|n[’']annon[cç]ons)\b/i.test(ph);
+      const autreGarantie =
+        /(?:gains?|r[ée]sultats?|chiffre d[’']affaires)[^.]*(?:obtenus?|r[ée]els?|assur[ée]s?|garantis?)|garantis?[^.]*(?:obtenus?|r[ée]sultats?)|rembours\p{L}*\s+(?:int[ée]gral|total|automatique)|non\s+rembours/iu.test(
+          ph,
+        );
+      if (autreGarantie && !(negation && !encadree))
+        raisons.push("promesse de gain, de résultat ou de remboursement hors garantie encadrée");
+    }
+  }
   return raisons;
+}
+
+/**
+ * D03 révisée (26/11/2026) : une fiche « garantie » est autorisée pour le chatbot si, et seulement si,
+ * elle passe toute la porte ET porte le texte encadré : 3 fois le prix HT, sur les gains identifiés,
+ * remboursement sur demande écrite. Le reste (montant, autre multiple, « sans discussion », gain
+ * garanti) est déjà rejeté par `reglesDuPack`. Une fiche qui ne parle pas de garantie n'est pas concernée.
+ */
+/** Phrase de garantie encadrée (D03 révisée) : le chatbot n'est autorisé que sur la réponse qui la porte, rien d'autre. */
+export const PHRASE_GARANTIE_CHATBOT =
+  "La journée est garantie sur les gains identifiés dans le rapport : s’ils n’atteignent pas 3 fois le prix HT de la journée, vous êtes remboursé sur demande écrite.";
+export const REPONSE_GARANTIE_CHATBOT = `Non, nous ne promettons aucune augmentation de chiffre d’affaires et nous n’annonçons jamais un gain à l’avance : l’audit identifie et chiffre, avec ses hypothèses, les gains possibles. En revanche, ${PHRASE_GARANTIE_CHATBOT.charAt(0).toLowerCase()}${PHRASE_GARANTIE_CHATBOT.slice(1)} Ce ne sont jamais des gains obtenus qui sont garantis.`;
+const normaliserTexte = (t: string): string =>
+  t
+    .replace(/[\u00a0\u202f]/g, " ")
+    .replace(/['‘]/g, "’")
+    .replace(/\s+/g, " ")
+    .trim();
+
+/**
+ * D03 révisée (26/11/2026) : « texte exact ». Le marquage chatbot n'est posé que si la réponse est,
+ * à la normalisation des espaces et apostrophes près, IDENTIQUE au texte de référence, ET passe la porte.
+ * Toute divergence (un mot ajouté ou retiré) fait perdre le marquage : la fiche reste un brouillon.
+ */
+export function estGarantieChatbot(l: LignePack): boolean {
+  if (!controlerFiche(l).ok) return false;
+  return normaliserTexte(texteDeLaFiche(l).reponse) === normaliserTexte(REPONSE_GARANTIE_CHATBOT);
 }
 
 export function controlerFiche(l: LignePack): ControleFiche {
@@ -178,7 +398,9 @@ function sansAccent(t: string): string {
 /** Scénario non constaté, point à vérifier ou juridique : `factual_check` ne vaut alors rien. */
 export function estNonVerifiee(l: LignePack): boolean {
   const t = sansAccent([l.status, l.source].filter((v) => typeof v === "string").join(" "));
-  return /non constate|a verifier|juridique/.test(t);
+  return /non constate|a verifier|juridique|hypothese|analyse editoriale|methodologie axion proposee|illustrative/.test(
+    t,
+  );
 }
 
 export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {
@@ -186,18 +408,23 @@ export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {
   const slug = slugDeLaFiche(l.id);
   const s = (v: unknown, def = "non renseigné") => (typeof v === "string" && v ? v : def);
   const nonVerifiee = estNonVerifiee(l);
+  const chatbotAutorise = estGarantieChatbot(l);
   const note = [
     ...(nonVerifiee ? [MARQUE_NON_VERIFIE] : []),
-    `[pack Journée IA 2026-11-10] ${l.id}`,
+    `[pack Journée IA ${s(l.pack, s(l.source_date, "date inconnue"))}] ${l.id}`,
     `Source : ${s(l.source)}`,
     `Date de source : ${s(l.source_date)}`,
     `Nature : ${s(l.status)}`,
     `Garde de publication : ${s(l.publication_gate)}`,
     ...(nonVerifiee ? [] : [`Contrôle factuel à faire : ${s(l.factual_check)}`]),
     `Page cible : ${s(l.page_id)} — ${s(l.canonical_url)}`,
+    ...(chatbotAutorise
+      ? ["Chatbot : autorisée (D03 révisée le 26/11/2026, garantie au texte encadré)."]
+      : []),
     "Brouillon : relecture humaine requise avant toute publication. Jamais publié automatiquement.",
   ].join("\n");
   return {
+    chatbotAutorise,
     entry: {
       type: "faq",
       domain: "editorial",
@@ -276,7 +503,7 @@ export const SEUIL_QUASI_DOUBLON = 0.8;
 /** Décisions du pack qui contredisent les décisions de Williams : signalées, jamais importées. */
 const TRAITEMENT_CONTRADICTION: Record<string, string> = {
   D02: "Écartée : seul prix affiché = Journée IA 1 490 € HT, sans remise ni contrepartie tournage.",
-  D03: "Écartée : gains identifiés et estimés, jamais garantis ; garantie/CGV/devis = brouillons, aucune promesse juridique.",
+  D03: "Révisée le 26/11/2026 : une seule fiche garantie autorisée pour le chatbot, texte encadré (3 fois le prix HT sur les gains identifiés, remboursement sur demande écrite, aucun montant, jamais « sans discussion » ni un autre multiple) ; aucun gain obtenu n’est jamais garanti.",
 };
 
 export function analyserPack(lignes: readonly LignePack[]): RapportPack {
@@ -295,8 +522,15 @@ export function analyserPack(lignes: readonly LignePack[]): RapportPack {
     }
     vus.add(slug);
     const c = controlerFiche(l);
-    if (c.ok) aImporter.push(versEntreeKnowledge(l));
-    else rejets.push({ id: l.id, raisons: c.raisons });
+    if (c.ok) {
+      const e = versEntreeKnowledge(l);
+      // D03 révisée : UNE seule fiche garantie autorisée pour le chatbot ; les suivantes restent brouillons non chatbot.
+      aImporter.push(
+        e.chatbotAutorise && aImporter.some((x) => x.chatbotAutorise)
+          ? { ...e, chatbotAutorise: false }
+          : e,
+      );
+    } else rejets.push({ id: l.id, raisons: c.raisons });
   }
 
   const horsRag: Record<string, number> = {};
@@ -332,25 +566,49 @@ export function analyserPack(lignes: readonly LignePack[]): RapportPack {
   };
 }
 
-/** Sous-ensemble de PrismaClient dont l'import a besoin : aucune méthode d'écriture autre que `create`. */
+/**
+ * Sous-ensemble de PrismaClient dont l'import a besoin : lecture par slug, création, et mise à jour
+ * d'une fiche existante. Ni `delete`, ni `upsert` : rien n'est jamais supprimé.
+ */
 export interface ClientImport {
   readonly knowledgeEntry: {
     findUnique(a: {
       where: { slug: string };
-      select: { id: true };
-    }): Promise<{ id: string } | null>;
+      select: { id: true; status: true; deletedAt: true };
+    }): Promise<{ id: string; status?: string; deletedAt?: Date | null } | null>;
     create(a: {
       data: EntreeKnowledgeDraft["entry"] & {
         translations: { create: EntreeKnowledgeDraft["translation"][] };
       };
       select: { id: true };
     }): Promise<unknown>;
+    update(a: {
+      where: { id: string };
+      data: MiseAJourFiche;
+      select: { id: true };
+    }): Promise<unknown>;
   };
 }
 
+/** Champs réécrits sur une fiche déjà en base : le pack du 25/11 remplace celui du 10/11. */
+export type MiseAJourFiche = Omit<EntreeKnowledgeDraft["entry"], "slug"> & {
+  translations: {
+    updateMany: {
+      where: { locale: "fr" };
+      data: Omit<EntreeKnowledgeDraft["translation"], "locale" | "slug"> & { bodyJson: unknown };
+    };
+  };
+};
+
 export interface RapportImport {
   crees: number;
-  /** Fiche déjà en base (détectée avant, ou créée entre-temps : P2002 sur le slug de la fiche). */
+  /** Fiche déjà en base (slug identique) : contenu, titre et métadonnées remplacés, rien supprimé. */
+  misAJour: number;
+  /** Fiches existantes NON touchées : publiées, archivées, approuvées… ou supprimées (jamais dépubliées par l'import). */
+  ignoreesNonBrouillon: string[];
+  /** Slugs mis à jour (pour le rapport). */
+  slugsMisAJour: string[];
+  /** Fiche créée entre-temps par un autre processus (P2002 sur le slug de la fiche) : laissée telle quelle. */
   dejaPresents: number;
   /** P2002 sur (locale, slug) de la traduction : la fiche n'a PAS été créée. */
   conflitsSlugTraduction: string[];
@@ -363,22 +621,77 @@ function cibleTraduction(erreur: unknown): boolean {
   return /locale|translation/i.test(texte);
 }
 
+/** Seules les fiches encore à l'état de brouillon ou de relecture peuvent être remplacées. */
+function estRemplacable(d: { status?: string; deletedAt?: Date | null }): boolean {
+  return !d.deletedAt && (d.status === undefined || d.status === "draft" || d.status === "review");
+}
+
+function donneesDeMiseAJour(f: EntreeKnowledgeDraft, nullJson: unknown): MiseAJourFiche {
+  const { slug: _slug, ...entry } = f.entry;
+  const { locale: _locale, slug: _slugTraduction, ...traduction } = f.translation;
+  return {
+    ...entry,
+    translations: {
+      updateMany: { where: { locale: "fr" }, data: { ...traduction, bodyJson: nullJson } },
+    },
+  };
+}
+
+/** Lecture seule : quelles fiches du pack existent déjà (donc seraient mises à jour). */
+export async function planifierImport(
+  client: { readonly knowledgeEntry: Pick<ClientImport["knowledgeEntry"], "findUnique"> },
+  fiches: readonly EntreeKnowledgeDraft[],
+): Promise<{ aCreer: string[]; aMettreAJour: string[]; ignorees: string[] }> {
+  const plan = { aCreer: [] as string[], aMettreAJour: [] as string[], ignorees: [] as string[] };
+  for (const f of fiches) {
+    const deja = await client.knowledgeEntry.findUnique({
+      where: { slug: f.entry.slug },
+      select: { id: true, status: true, deletedAt: true },
+    });
+    if (!deja) plan.aCreer.push(f.entry.slug);
+    else if (estRemplacable(deja)) plan.aMettreAJour.push(f.entry.slug);
+    else plan.ignorees.push(f.entry.slug);
+  }
+  return plan;
+}
+
 /**
- * Crée seulement les fiches absentes. Ne met jamais à jour ni ne supprime : le client n'expose
- * que `findUnique` et `create`. Idempotent : une 2e exécution ne crée rien.
+ * Crée les fiches absentes et MET À JOUR celles dont le slug existe déjà (le pack du 25/11
+ * remplace l'ancien). Ne supprime jamais rien : le client n'expose ni `delete` ni `upsert`.
+ * Idempotent : une 2e exécution réécrit les mêmes valeurs. Une fiche publiée, archivée,
+ * approuvée ou supprimée n'est jamais touchée (listée dans `ignoreesNonBrouillon`).
+ * `nullJson` : valeur qui efface `bodyJson` (Prisma.DbNull), pour que l'éditeur rouvre le nouveau texte.
  */
 export async function importerBrouillons(
   client: ClientImport,
   fiches: readonly EntreeKnowledgeDraft[],
+  nullJson: unknown = null,
 ): Promise<RapportImport> {
-  const rapport: RapportImport = { crees: 0, dejaPresents: 0, conflitsSlugTraduction: [] };
+  const rapport: RapportImport = {
+    crees: 0,
+    ignoreesNonBrouillon: [],
+    misAJour: 0,
+    slugsMisAJour: [],
+    dejaPresents: 0,
+    conflitsSlugTraduction: [],
+  };
   for (const f of fiches) {
     const deja = await client.knowledgeEntry.findUnique({
       where: { slug: f.entry.slug },
-      select: { id: true },
+      select: { id: true, status: true, deletedAt: true },
     });
+    if (deja && !estRemplacable(deja)) {
+      rapport.ignoreesNonBrouillon.push(f.entry.slug);
+      continue;
+    }
     if (deja) {
-      rapport.dejaPresents++;
+      await client.knowledgeEntry.update({
+        where: { id: deja.id },
+        data: donneesDeMiseAJour(f, nullJson),
+        select: { id: true },
+      });
+      rapport.misAJour++;
+      rapport.slugsMisAJour.push(f.entry.slug);
       continue;
     }
     try {

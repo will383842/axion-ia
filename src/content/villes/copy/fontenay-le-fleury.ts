@@ -49,7 +49,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-le-Fleury et dans la plaine de Versailles ?",
-      a: "Oui, Axion-IA intervient à Fontenay-le-Fleury et toute la plaine de Versailles (Versailles à 5 min, Vélizy-Villacoublay à 10 min, Paris La Défense à 25 min, Paris Montparnasse à 30 min).",
+      a: "Oui. Nous intervenons à Fontenay-le-Fleury et dans toute la plaine de Versailles (Versailles, Vélizy-Villacoublay, Paris La Défense), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Fontenay-le-Fleury ?",
@@ -65,7 +65,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Fontenay-le-Fleury ?",
-      a: "Versailles (5 min). Vélizy-Villacoublay (10 min). Paris La Défense (25 min). Paris Montparnasse (30 min transilien N/U). Coûts de déplacement à part, tarification transparente.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Fontenay-le-Fleury, comme partout en France, ou à distance.",
     },
   ],
 };

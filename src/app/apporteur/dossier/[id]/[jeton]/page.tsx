@@ -35,11 +35,18 @@ import {
 } from "@/features/apporteurs-reseau/signature";
 
 import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-entreprise";
+import { RESERVATION_PROVISOIRE_JOURS } from "@/features/apporteurs-reseau/regle-attribution";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 
+import {
+  EncartChallenge,
+  LienReglementsPasses,
+  lireEncartPourEspace,
+} from "./challenge/EncartChallenge";
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
 import { DeclarationEntreprise } from "./DeclarationEntreprise";
+import { lignesComment } from "./textes-comment";
 import { DepotPiece } from "./DepotPiece";
 import { DossierEnLigne, type DossierPublic } from "./DossierEnLigne";
 import { ListeDeclarations } from "./ListeDeclarations";
@@ -127,6 +134,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     const vigilance = await vigilanceDemandeeA(dossier.id);
     // Préavis de résiliation en cours (lot L1b) : une ligne d'information, rien à faire.
     const fin = await lireResiliationEnCours(dossier.id);
+    const encartChallenge = await lireEncartPourEspace();
     return (
       <Coquille titre={titre}>
         <EcranEtat
@@ -146,8 +154,22 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             </a>
           ) : null}
         </EcranEtat>
-        <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
-        <ListeDeclarations declarations={declarations} />
+        {/* Challenge publié : la règle seulement (invitation libre). */}
+        <EncartChallenge vue={encartChallenge} id={dossier.id} jeton={jeton} />
+        <LienReglementsPasses id={dossier.id} jeton={jeton} />
+        <DeclarationEntreprise
+          id={dossier.id}
+          jeton={jeton}
+          lignesComment={lignesComment(
+            dossier.regleAttribution ?? null,
+            PROTECTION_MOIS,
+            RESERVATION_PROVISOIRE_JOURS,
+          )}
+        />
+        <ListeDeclarations
+          declarations={declarations}
+          contratDepuis2_8={dossier.contratDepuis2_8 === true}
+        />
         {/* Tout ce qui lui a été remis, au même endroit (2026-11-25). */}
         <a
           href={`/apporteur/dossier/${dossier.id}/${jeton}/documents`}

@@ -65,7 +65,7 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bures-sur-Yvette ?",
-      a: "Bures-sur-Yvette est desservie par le RER B (gare de Bures-sur-Yvette). Orsay et le campus Saclay sont à 10 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bures-sur-Yvette, comme partout en France, ou à distance.",
     },
   ],
 };

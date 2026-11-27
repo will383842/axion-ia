@@ -65,7 +65,7 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission en vallée de la Maurienne ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local en Maurienne. Visio possible pour les sessions coaching.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Visio possible pour les sessions coaching.",
     },
   ],
 };

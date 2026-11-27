@@ -49,7 +49,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montivilliers et agglo du Havre ?",
-      a: "Oui, Axion-IA intervient à Montivilliers et toute l'agglomération du Havre (Le Havre à 10 min, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher). Nos consultants viennent de Paris (TGV Le Havre 2h15).",
+      a: "Oui. Nous intervenons à Montivilliers et dans toute l'agglomération du Havre (Le Havre, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher).",
     },
     {
       q: "Travaillez-vous avec les PME logistiques du port du Havre ?",
@@ -64,8 +64,8 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
       a: "L'audit sur place propose un tarif d'entrée accessible pour les TPE. Pour les PME logistiques et tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris via TGV Le Havre (2h15) puis Montivilliers à 10 min du centre-ville.",
+      q: "Comment se déroule une mission Axion-IA à Montivilliers ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

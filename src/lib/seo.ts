@@ -1178,6 +1178,8 @@ export const ORGANIZATION_SAME_AS: readonly string[] = [
   "https://www.f6s.com/axion-ia1",
   "https://www.crunchbase.com/organization/axion-ia",
   "https://www.youtube.com/@Axion-IA-com",
+  // Profil pro Pinterest, créé le 26/11/2026.
+  "https://www.pinterest.com/axion_ia/",
 ];
 
 // Layout-level Organization JSON-LD — single source of truth for AEO/GEO 2026
@@ -1464,6 +1466,8 @@ interface ArticleJsonLdInput {
   authorSlug?: string;
   /** Author display name — defaults to "Will". */
   authorName?: string;
+  /** Auteur explicite (ex. l'organisation `{ "@id": ".../#organization" }`) : remplace le nœud Person. */
+  author?: { "@id": string };
   /** Image absolute URL. Defaults to OG dynamic. */
   image?: string;
   /** Tags / keywords. */
@@ -1493,7 +1497,7 @@ interface ArticleJsonLdInput {
   isBasedOn?: ReadonlyArray<{
     name: string;
     url: string;
-    type?: "Report" | "Article" | "Dataset" | "ScholarlyArticle";
+    type?: "Report" | "Article" | "Dataset" | "ScholarlyArticle" | "WebPage";
   }>;
   /**
    * Entités/concepts mentionnés (Things, technologies, entreprises). schema.org
@@ -1537,6 +1541,7 @@ export function buildArticleJsonLd({
   // d'autorité le plus large du dépôt, et il se perdait sur deux valeurs par défaut.
   authorSlug = FOUNDER.slug,
   authorName = FOUNDER.fullName,
+  author,
   image,
   keywords,
   articleSection,
@@ -1567,8 +1572,9 @@ export function buildArticleJsonLd({
      * est gérée par leurs propres fabriques, et leur poser cet `@id` fusionnerait deux
      * personnes distinctes.
      */
-    author:
-      authorSlug === FOUNDER.slug || authorSlug === "will"
+    author: author
+      ? author
+      : authorSlug === FOUNDER.slug || authorSlug === "will"
         ? { "@type": "Person", "@id": FOUNDER_PERSON_ID, name: authorName, url: founderUrl() }
         : {
             "@type": "Person",

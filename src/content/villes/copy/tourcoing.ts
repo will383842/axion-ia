@@ -36,8 +36,8 @@ export const TOURCOING_COPY: VilleCopy = {
       en: "Nous réalisons des audits IA à Tourcoing pour identifier les processus automatisables dans les PME textiles, commerciales ou IT du bassin — résultat livré sous forme de cartographie priorisée, sans jargon. Détail complet sur la sous-page /audits.",
     },
     interventions: {
-      fr: "Williams se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
-      en: "Williams se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
+      fr: "Williams intervient à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
+      en: "Williams intervient à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
     },
     implementation: {
       fr: "Nous déployons des outils IA sur mesure à Tourcoing — automatisation de relances, génération de devis, RAG (Retrieval-Augmented Generation) documentaire — intégrables aux SI existants des PME du Parc de la Marlière. Voir /implementations.",
@@ -51,7 +51,7 @@ export const TOURCOING_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
+        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams intervient dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
         whyHere: [
           "Tourcoing concentre près de 9 500 établissements actifs, avec une forte densité dans le textile-habillement et le commerce de détail : deux secteurs où devis, relances et gestion fournisseurs restent largement manuels. Nos sessions ciblent précisément ces tâches répétitives.",
           "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
@@ -132,14 +132,14 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très en amont, le créneau se reporte ou se rembourse intégralement. Quelques jours avant, une participation partielle aux frais consultant déjà bloqués peut s'appliquer. Très tardivement, la session est reportable une fois sur les semaines suivantes.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
           "Le créneau est garanti dès la confirmation de réservation. Les comptes et outils installés sont les vôtres : hébergement et usages restent sous votre contrôle, sans verrou Axion-IA et sans données transmises à des tiers sans accord explicite, conformément au RGPD. Si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation vous est offerte. Le vocabulaire, les exemples et les démos sont ajustés à votre secteur tourquennois — textile, commerce, IT ou santé — sans session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
+        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams intervient dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
         whyHere: [
           "Tourcoing concentre près de 9 500 établissements actifs, avec une forte densité dans le textile-habillement et le commerce de détail : deux secteurs où devis, relances et gestion fournisseurs restent largement manuels. Nos sessions ciblent précisément ces tâches répétitives.",
           "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
@@ -220,7 +220,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très en amont, le créneau se reporte ou se rembourse intégralement. Quelques jours avant, une participation partielle aux frais consultant déjà bloqués peut s'appliquer. Très tardivement, la session est reportable une fois sur les semaines suivantes.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -409,8 +409,8 @@ export const TOURCOING_COPY: VilleCopy = {
       a: "L'Audit sur place (4h) démarre à {{price:audit-flash|flat}} — il couvre l'identification des processus automatisables et la priorisation de 3 chantiers. Pour une PME textile ou commerciale de Tourcoing, ce format suffit généralement à poser un premier plan d'action concret. Les tarifs complets sont publics sur le site.",
     },
     {
-      q: "Axion-IA se déplace-t-il physiquement à Tourcoing ou tout est-il à distance ?",
-      a: "Nos interventions se déroulent sur site chez le client à Tourcoing — audit, session collective, accompagnement dirigeant. Nous sommes un cabinet national qui se déplace partout en France. Certains formats peuvent être hybrides selon la configuration de l'entreprise, mais le présentiel reste notre mode par défaut.",
+      q: "Intervenez-vous à Tourcoing ou tout est-il à distance ?",
+      a: "Oui. Nos interventions se déroulent sur site chez le client à Tourcoing — audit, session collective, accompagnement dirigeant. Certains formats peuvent être hybrides selon la configuration de l'entreprise, mais le présentiel reste notre mode par défaut.",
     },
     {
       q: "Une entreprise du secteur textile à Tourcoing peut-elle bénéficier d'une implémentation IA clés en main ?",

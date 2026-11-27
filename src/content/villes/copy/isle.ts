@@ -14,9 +14,9 @@ export const ISLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
   seoHook: "industrielles logistique & commerce proximité",
   ecosystemFr:
-    "Isle (7 995 hab) est une commune attractive au nord de Limoges, traversée par la Vienne. Zones d'activités économiques dynamiques (artisanat, PME industrielles, logistique). Tissu mixte : PME tertiaires, TPE artisans BTP, agriculture, commerces, services de proximité. Proximité directe Limoges centre (10 min) et aéroport Bellegarde (10 min).",
+    "Isle (7 995 hab) est une commune attractive au nord de Limoges, traversée par la Vienne. Zones d'activités économiques dynamiques (artisanat, PME industrielles, logistique). Tissu mixte : PME tertiaires, TPE artisans BTP, agriculture, commerces, services de proximité. Commune au contact direct de Limoges, au cœur d'un bassin d'emploi actif.",
   ecosystemEn:
-    "Isle (7 995 hab) est une commune attractive au nord de Limoges, traversée par la Vienne. Zones d'activités économiques dynamiques (artisanat, PME industrielles, logistique). Tissu mixte : PME tertiaires, TPE artisans BTP, agriculture, commerces, services de proximité. Proximité directe Limoges centre (10 min) et aéroport Bellegarde (10 min).",
+    "Isle (7 995 hab) est une commune attractive au nord de Limoges, traversée par la Vienne. Zones d'activités économiques dynamiques (artisanat, PME industrielles, logistique). Tissu mixte : PME tertiaires, TPE artisans BTP, agriculture, commerces, services de proximité. Commune au contact direct de Limoges, au cœur d'un bassin d'emploi actif.",
   distancesFr:
     "Limoges centre à 10 min. Gare Limoges-Bénédictins à 15 min (TGV Paris 3h). Aéroport Limoges-Bellegarde à 10 min. Zone d'activités nord à 5 min. Axe A20 Limoges-Paris accessible à 10 min. Saint-Junien à 25 min.",
   distancesEn:
@@ -64,8 +64,8 @@ export const ISLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Isle, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
     },
     {
-      q: "Comment se passe une mission à Isle depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Isle est proche de l'aéroport Bellegarde (10 min).",
+      q: "Comment se déroule une mission à Isle ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Isle, comme partout en France, ou à distance.",
     },
   ],
 };

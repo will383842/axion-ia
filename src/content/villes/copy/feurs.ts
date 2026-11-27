@@ -49,7 +49,7 @@ export const FEURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Feurs et plaine Forez ?",
-      a: "Oui, Axion-IA intervient à Feurs et toute la plaine du Forez (Montbrison à 15 min, Saint-Just-Saint-Rambert, Boën-sur-Lignon). Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Feurs et dans toute la plaine du Forez (Montbrison, Saint-Just-Saint-Rambert, Boën-sur-Lignon). Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'hippodrome de Feurs ?",
@@ -65,7 +65,7 @@ export const FEURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Feurs ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Feurs, comme partout en France, ou à distance.",
     },
   ],
 };

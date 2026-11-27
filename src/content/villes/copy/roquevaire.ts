@@ -49,7 +49,7 @@ export const ROQUEVAIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquevaire et dans la vallée de l'Huveaune ?",
-      a: "Oui, Axion-IA intervient à Roquevaire et dans toute la vallée de l'Huveaune (Aubagne à 10 min, Marseille à 25 min, Auriol, La Destrousse). Couverture complète bassin est marseillais.",
+      a: "Axion IA intervient partout en France, sur site ou à distance. Couverture complète bassin est marseillais.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Roquevaire  ?",

@@ -9,7 +9,7 @@ const texte = async (g: string, p: Record<string, unknown>, l: "fr" | "en" = "fr
   (await renderEmailTemplate(g as never, l, p)).text.replace(/\s+/g, " ");
 
 describe("textes alignés sur le contrat 2.3", () => {
-  it("« Retenu », « contrat signé », « commande signée » : prestation réalisée ET payée", async () => {
+  it("« Retenu », « contrat signé », « commande signée » : due dès le paiement intégral (règle du 25/11)", async () => {
     for (const [g, p] of [
       ["apporteur-issue-retenu", { contactName: "Claire Martin" }],
       ["apporteur-contrat-signe", { contactName: "Claire Martin" }],
@@ -17,14 +17,15 @@ describe("textes alignés sur le contrat 2.3", () => {
     ] as const) {
       const t = await texte(g, p);
       expect(t, g).not.toContain("réglé l'intégralité de sa facture");
-      expect(t, g).toMatch(/prestation (est|sera) réalisée/);
+      expect(t, g).not.toMatch(/prestation (est|sera) réalisée/);
+      expect(t, g).toMatch(/intégralité de sa commande/);
     }
   });
 
-  it("« Retenu » en anglais : plus de « by simple email », et le versement suit la réalisation", async () => {
+  it("« Retenu » en anglais : plus de « by simple email », et le versement suit le paiement intégral", async () => {
     const t = await texte("apporteur-issue-retenu", { contactName: "Claire Martin" }, "en");
     expect(t).not.toContain("by simple email");
-    expect(t).toContain("once the service has been delivered");
+    expect(t).toContain("once the company has paid its order in full");
   });
 
   it("parrainage : six mois après la signature du contrat par Axion-IA", async () => {

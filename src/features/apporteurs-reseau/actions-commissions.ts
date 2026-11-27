@@ -185,13 +185,16 @@ export async function classerActiviteAction(fd: FormData): Promise<void> {
   const refus = await sessionArgent();
   const id = texte(fd, "id");
   if (refus || !UUID.test(id)) redirect(retour);
+  let r: Awaited<ReturnType<typeof classerActiviteCommission>> | null = null;
   try {
-    await classerActiviteCommission(id, texte(fd, "activite"));
+    r = await classerActiviteCommission(id, texte(fd, "activite"));
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-classer" } });
   }
   revalidatePath(retour);
-  redirect(retour);
+  // Le motif renvoyé (ex. « Commande antérieure au contrat 2.8 ») arrive à l'écran.
+  if (r) versCommissions(r.ok ? "retour" : "erreur", r.message);
+  versCommissions("erreur", "Classement impossible. Réessayez.");
 }
 
 // ── Contestation écrite du client (contrat 2.3, art. 4.2 bis) ────────────

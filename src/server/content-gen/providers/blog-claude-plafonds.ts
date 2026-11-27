@@ -1,5 +1,5 @@
 /**
- * Plafonds du blog via Claude : validation commune à l'écran d'administration
+ * Plafonds du contenu via Claude (clés `blog_claude_*`, nom conservé : pas de migration) : validation commune à l'écran d'administration
  * et au script de pose.
  *
  * Module PUR : pas de base de données, pas de "use server", pas d'alias `@/`
@@ -38,7 +38,7 @@ export const LIBELLES_SCRIPT: LibellesPlafondsBlog = {
 
 export const LIBELLES_ECRAN: LibellesPlafondsBlog = {
   jour: "Plafond du jour",
-  mois: "Plafond mensuel du blog",
+  mois: "Plafond mensuel du contenu via Claude",
   reserve: "Réserve Qualiopi",
   jugeMax: "Relectures max par jour",
 };
@@ -121,4 +121,56 @@ export function lirePlafondsBlogExistants(extra: unknown): {
     reserve: nb(CLES_PLAFONDS_BLOG.reserve),
     jugeMax: nb(CLES_PLAFONDS_BLOG.juge),
   };
+}
+
+/** Valeurs par défaut (équipe éditoriale) quand les clés sont absentes de extraConfig. */
+export const PLAFOND_JOUR_DEFAUT_USD = 10;
+export const PLAFOND_MOIS_DEFAUT_USD = 200;
+
+/** Cohérence : le plafond du jour ne peut pas dépasser le plafond du mois. */
+export function plafondsCoherents(jour: number, mois: number): boolean {
+  return Number.isFinite(jour) && Number.isFinite(mois) && jour > 0 && mois > 0 && jour <= mois;
+}
+
+/**
+ * Plafonds jour/mois effectifs : lecture tolérante, et l'erreur va toujours vers le plus
+ * STRICT. Clé absente = défaut ; valeur hors bornes de garde = défaut plafonné à la borne
+ * la plus basse ; jour > mois = le jour est ramené au mois (jamais l'inverse).
+ */
+export function lirePlafondsBlogEffectifs(extra: unknown): { jour: number; mois: number } {
+  const lus = lirePlafondsBlogExistants(extra);
+  const valide = (v: number | null, defaut: number, borne: number): number =>
+    v !== null && v > 0 && v <= borne ? v : Math.min(defaut, borne);
+  const mois = valide(lus.mois, PLAFOND_MOIS_DEFAUT_USD, BORNE_MOIS_USD);
+  const jour = Math.min(valide(lus.jour, PLAFOND_JOUR_DEFAUT_USD, BORNE_JOUR_USD), mois);
+  return { jour, mois };
+}
+
+// ── Sous-plafonds du pilotage SEO (P0) ────────────────────────────────────────
+
+/**
+ * Clés `ContentGenConfig` (valeur : un nombre) des sous-plafonds des appels du pilotage SEO. Ils
+ * s'ajoutent aux plafonds communs (10 $/jour, 200 $/mois) : ils ne les remplacent jamais.
+ */
+export const CLES_PILOTAGE = {
+  jour: "pilotage_cout_max_jour_usd",
+  mois: "pilotage_cout_max_mois_usd",
+} as const;
+export const PILOTAGE_JOUR_DEFAUT_USD = 2;
+export const PILOTAGE_MOIS_DEFAUT_USD = 30;
+
+/**
+ * Sous-plafonds effectifs, lecture tolérante et orientée vers le plus STRICT : absent ou illisible =
+ * défaut ; 0 explicite = tout refusé ; au-delà de la borne de garde = défaut ; jour > mois = le
+ * jour est ramené au mois.
+ */
+export function lireSousPlafondsPilotage(
+  jourBrut: unknown,
+  moisBrut: unknown,
+): { jour: number; mois: number } {
+  const valide = (v: unknown, defaut: number, borne: number): number =>
+    typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= borne ? v : defaut;
+  const mois = valide(moisBrut, PILOTAGE_MOIS_DEFAUT_USD, BORNE_MOIS_USD);
+  const jour = Math.min(valide(jourBrut, PILOTAGE_JOUR_DEFAUT_USD, BORNE_JOUR_USD), mois);
+  return { jour, mois };
 }

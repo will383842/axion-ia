@@ -358,8 +358,7 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
 //   - Sous-tiers tarifaires par nombre de participants.
 //   - Conférence devient 1 jour (au lieu d'une ½ journée).
 //   - Nouveau format « Approfondie » 2 jours avec 3 sous-tiers.
-//   - Frais déplacement / hébergement / repas en sus systématiquement
-//     (cf. INTERVENTION_FEES_NOTE).
+//   - Frais annexes : jamais sur une page publique (CGV uniquement).
 // ============================================================================
 
 // ============================================================================
@@ -1455,8 +1454,8 @@ export const PRICING = {
 // 3 CATÉGORIES (offres générales / par métier / par secteur d'activité) et les
 // PRIX SONT PUBLICS — prix fixe HT par groupe (2 à 15 participants), identique
 // pour toutes les formations d'une même case (catégorie × durée). Fin de l'axe
-// gamme (IA/Claude) et des tranches 16-30 / 2-12. Intra-entreprise, hors frais
-// de déplacement. Source : `Downloads/Titres_Formations_Axion-IA.md`.
+// gamme (IA/Claude) et des tranches 16-30 / 2-12. Intra-entreprise.
+// Source : `Downloads/Titres_Formations_Axion-IA.md`.
 // ============================================================================
 
 /** Prix HT (€) d'une case, ou `undefined` si la combinaison n'existe pas. */

@@ -49,7 +49,7 @@ export const PARMAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Parmain et vallée de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Parmain et toute la vallée de l'Oise (L'Isle-Adam à 3 min, Beaumont-sur-Oise à 10 min, Cergy-Pontoise à 25 min, Paris à 45 min). Gare Transilien L'Isle-Adam–Parmain.",
+      a: "Oui, Axion-IA intervient à Parmain et dans toute la vallée de l'Oise (L'Isle-Adam, Beaumont-sur-Oise, Cergy-Pontoise).",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans de Parmain ?",
@@ -64,8 +64,8 @@ export const PARMAIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "L'Isle-Adam (3 min). Beaumont-sur-Oise (10 min). Cergy-Pontoise (25 min). Paris centre (45 min).",
+      q: "Comment se déroule une mission Axion-IA à Parmain ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

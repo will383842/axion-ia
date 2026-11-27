@@ -245,8 +245,8 @@ export const MONTLUCON_COPY: VilleCopy = {
       a: "Oui. Les TPE puis les PME sont notre public prioritaire à Montluçon. Nous adaptons les formats aux ateliers et commerces. Les ETI restent un public marginal de notre activité.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ou Moulins ?",
-      a: "Montluçon est à environ 100 km de Clermont-Ferrand et à 80 km de la gare TGV de Moulins. Nous intervenons sur tout le territoire.",
+      q: "Comment se déroule une mission Axion-IA à Montluçon ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

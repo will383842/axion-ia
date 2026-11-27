@@ -49,7 +49,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épinay-sur-Orge et dans la vallée de l'Orge ?",
-      a: "Oui, Axion-IA intervient à Épinay-sur-Orge et toute la vallée de l'Orge (Savigny-sur-Orge, Sainte-Geneviève-des-Bois, Longjumeau, Massy). Gare RER C directe.",
+      a: "Oui, Axion-IA intervient à Épinay-sur-Orge et toute la vallée de l'Orge (Savigny-sur-Orge, Sainte-Geneviève-des-Bois, Longjumeau, Massy).",
     },
     {
       q: "Travaillez-vous avec les professions libérales et professionnels de santé ?",
@@ -65,7 +65,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Épinay-sur-Orge ?",
-      a: "Nos consultants interviennent via RER C (35 min Paris centre, gare Épinay-sur-Orge directe). Massy TGV à 10 min. Aéroport Orly à 20 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Épinay-sur-Orge, comme partout en France, ou à distance.",
     },
   ],
 };

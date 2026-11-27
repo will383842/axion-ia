@@ -49,7 +49,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vic-le-Comte et sud Clermont ?",
-      a: "Oui, Axion-IA intervient à Vic-le-Comte et tout le sud clermontois (Issoire à 15 min, Le Cendre à 10 min, Clermont-Ferrand à 25 min). Aéroport Clermont à 30 min.",
+      a: "Oui. Axion-IA intervient à Vic-le-Comte et dans tout le sud clermontois, notamment à Issoire, au Cendre et à Clermont-Ferrand.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles vallée Allier ?",
@@ -65,7 +65,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vic-le-Comte ?",
-      a: "Clermont-Ferrand (25 min). Aéroport Clermont à 30 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Vic-le-Comte, comme partout en France, ou à distance.",
     },
   ],
 };

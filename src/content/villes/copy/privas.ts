@@ -65,7 +65,7 @@ export const PRIVAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Privas ?",
-      a: "Lyon (1h45) ou Valence (40 min).",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Privas, comme partout en France, ou à distance.",
     },
   ],
 };

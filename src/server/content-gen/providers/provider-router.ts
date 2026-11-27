@@ -12,6 +12,7 @@
  * Cf. _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 7.3 + § 0.4.
  */
 
+import { verifierPlafondJob } from "./plafond-job";
 import {
   ProviderError,
   type GenerationRequest,
@@ -22,6 +23,7 @@ import { clearProviderFailureStreak, recordPermanentProviderFailure } from "./qu
 import { openaiProvider } from "./openai";
 import { anthropicProvider } from "./anthropic";
 import { genererTexteBlogClaude, interrupteurBlogClaude } from "./blog-claude";
+import { typeClaudeAutorise } from "./types-claude";
 import { perplexityProvider } from "./perplexity";
 import { unsplashProvider } from "./unsplash";
 import type { ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
@@ -134,10 +136,20 @@ const ROLE_TO_PROVIDERS = {
  * - Telegram alert si fallback déclenché 5+ fois en 30s.
  */
 export async function generate(requete: GenerationRequest): Promise<GenerationResponse> {
-  // Porte « texte du blog via Claude » : inerte tant que CONTENT_GEN_BLOG_CLAUDE ≠ "true".
-  // Ni try/catch ni suite vers OpenAI : un refus ou un échec de Claude fait échouer l'appel.
-  if (requete.blogClaudeRole === "ecriture" && interrupteurBlogClaude()) {
-    return genererTexteBlogClaude(requete, "ecriture");
+  // Plafond de coût par job (équipe éditoriale) : sans garde inscrite pour ce job, aucun effet.
+  await verifierPlafondJob(requete.jobId);
+  // Porte « contenu via Claude » : inerte tant que CONTENT_GEN_BLOG_CLAUDE ≠ "true".
+  // Il faut TROIS conditions : demande explicitement marquée (`blogClaudeRole`), interrupteur
+  // allumé, et type de contenu dans la liste `CONTENT_GEN_CLAUDE_TYPES` (défaut : les 4 types
+  // blog). Le type SEUL ne suffit jamais (le chatbot émet `qa_derived` sans marquage : il
+  // reste sur OpenAI même avec « tous »). Ni try/catch ni suite vers OpenAI : un refus ou un
+  // échec de Claude fait échouer l'appel.
+  if (
+    requete.blogClaudeRole !== undefined &&
+    interrupteurBlogClaude() &&
+    typeClaudeAutorise(requete.contentType)
+  ) {
+    return genererTexteBlogClaude(requete, requete.blogClaudeRole);
   }
   // Interrupteur éteint : la requête transmise aux fournisseurs est celle d'avant
   // (le champ `blogClaudeRole` ne doit jamais atteindre OpenAI).

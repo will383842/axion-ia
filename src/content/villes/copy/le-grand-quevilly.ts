@@ -71,7 +71,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio depuis Rouen.",
+              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -157,7 +157,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio depuis Rouen.",
+              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,8 +230,8 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
       a: "Audit sur place dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tarifs publics sur axion-ia.com — pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il au Grand-Quevilly ?",
-      a: "Nous venons sur site via la route nationale 338 (Sud III) reliée à l'A13, ou par le tramway Georges-Braque depuis le centre de Rouen (20 minutes). Lignes de bus T4, F6, F9, 27, 42 également disponibles.",
+      q: "Intervenez-vous au Grand-Quevilly ?",
+      a: "Oui. Nous intervenons sur place au Grand-Quevilly, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA au Grand-Quevilly ?",

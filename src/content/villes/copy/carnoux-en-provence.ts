@@ -64,8 +64,8 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Carnoux) ou en visio. Format flexible adapté aux indépendants et freelances en télétravail.",
     },
     {
-      q: "Comment se déplace Axion-IA à Carnoux-en-Provence ?",
-      a: "Carnoux est à 25 min de Marseille par A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se déroule une mission à Carnoux-en-Provence ?",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Carnoux-en-Provence, comme partout en France, ou à distance.",
     },
   ],
 };

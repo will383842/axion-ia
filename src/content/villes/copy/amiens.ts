@@ -265,7 +265,7 @@ export const AMIENS_COPY: VilleCopy = {
         hero: "Les interventions IA Axion-IA à Amiens se déclinent en formats sur site d'une à plusieurs journées selon vos équipes et votre secteur — industrie, commerce, services, R&D. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
           "Amiens et son bassin concentrent un tissu d'entreprises manufacturières et de services où la montée en compétence IA génère des gains opérationnels immédiats : rédaction de rapports qualité, gestion documentaire fournisseurs, suivi de production.",
-          "Nos consultants se déplacent sur site à Amiens — centre-ville, zone industrielle nord, Pôle Jules Verne, zones d'activités périphériques. Pas d'aléa logistique.",
+          "Axion-IA intervient sur site à Amiens — centre-ville, zone industrielle nord, Pôle Jules Verne, zones d'activités périphériques.",
           "Le format collectif (1 journée) est calibré pour les équipes de quelques personnes à une centaine de collaborateurs, adapté aux TPE artisanales comme aux PME industrielles.",
           "Le format Conférence convient aux plénières d'entreprise et aux séminaires de rentrée : auditoriums d'entreprise, salles de séminaire des hôtels amiénois, campus UPJV ou UniLaSalle.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et les CODIR régionaux.",
@@ -347,7 +347,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
-            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+            a: "L'acompte prévu au devis, dès qu'il est versé, reste acquis en cas d'annulation, quel que soit le délai (hors rétractation légale, manquement ou report à notre initiative et force majeure). Au-delà de l'acompte, rien n'est dû à plus de 15 jours ouvrés avant la date ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus, et 100 % à moins de 8 jours ouvrés (jamais moins que l'acompte). La session est reportable une fois sans frais, dans les 3 mois.",
           },
         ],
         guarantees:
@@ -439,7 +439,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
           {
             q: "What happens with a cancellation?",
-            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+            a: "The deposit set in the quote, once paid, is kept in the event of cancellation, whatever the notice (except statutory withdrawal and cancellation on our side). Beyond the deposit, nothing more is due more than 15 working days before the date; between 8 and 15 working days, 50% of the price excl. VAT is due, and 100% under 8 working days (never less than the deposit). The session can be rescheduled once free of charge, within 3 months.",
           },
         ],
         guarantees:
@@ -987,7 +987,7 @@ export const AMIENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Amiens ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Amiens que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre.",
     },
     {
       q: "Intervenez-vous sur les zones industrielles d'Amiens (Pôle Jules Verne, zone nord) ?",

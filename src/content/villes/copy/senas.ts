@@ -65,7 +65,7 @@ export const SENAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Sénas ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Sénas est sur l'axe A7, à 15 min de Salon-de-Provence et 35 min d'Aix.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux.",
     },
   ],
 };

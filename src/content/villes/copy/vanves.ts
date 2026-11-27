@@ -10,9 +10,9 @@ export const VANVES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Vanves, commune des Hauts-de-Seine de 28 622 habitants intégrée à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest. Frontalière du 15e arrondissement de Paris, avec une densité de 18 347 hab/km², la ville accueille notamment le siège du groupe Hachette Livre et la mutuelle Audiens, rue Jean-Bleuzen. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, OCR, knowledge base, relances), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   directAnswerFr:
-    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams intervient sur site pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams intervient sur site pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   seoHook: "édition, services & PME sud-ouest parisien",
   ecosystemFr:
     "Vanves combine un tissu de TPE-PME dense (commerce de proximité, services aux entreprises, professions libérales, agences) et l'effet d'entraînement d'un grand voisin éditorial — le groupe Hachette Livre (filiale Lagardère) et la mutuelle Audiens sont implantés rue Jean-Bleuzen. La proximité immédiate du Parc des Expositions de la Porte de Versailles, des bureaux d'Issy-les-Moulineaux et du 15e arrondissement parisien crée un bassin d'opportunités B2B pour les entreprises vanvéennes.",
@@ -142,7 +142,7 @@ export const VANVES_COPY: VilleCopy = {
           "Unique publishing cluster: the HQ of Hachette Livre (58 rue Jean-Bleuzen, ~1,000 staff) and Éditions Hazan feed a fabric of publishers, prepress providers, rights agencies and freelancers in Vanves — for whom a catalogue portal, an editorial knowledge base or semantic search over book backlists delivers immediate value.",
           "Audiovisual and media hub: France 3 Paris Île-de-France / France Télévisions (66 rue Jean-Bleuzen), CMI Media Régions and the live streaming studio French Virtual Studio (70 rue Jean-Bleuzen) drive demand for production platforms, rushes management and media portals that we know how to build.",
           "Social protection and services: the presence of Audiens, the social protection group for culture, press and audiovisual sectors, structures a pool of SMEs and professional services (legal, accounting, consulting) around rue Jean-Bleuzen, candidates for SaaS client portals and back-office automation.",
-          "Bordering the 15th arrondissement and the Paris Expo Porte de Versailles exhibition centre (being modernised by VIPARIS), accessible via metro line 13 (Plateau de Vanves) and Vanves-Malakoff station: a B2B and events flow that pushes Vanves businesses toward high-performance sites and online booking or registration platforms.",
+          "Bordering the 15th arrondissement and the Paris Expo Porte de Versailles exhibition centre (being modernised by VIPARIS): a B2B and events flow that pushes Vanves businesses toward high-performance sites and online booking or registration platforms.",
         ],
         methodology: [
           {
@@ -231,12 +231,12 @@ export const VANVES_COPY: VilleCopy = {
       a: "L'Audit sur place 4h sur site à Vanves démarre à {{price:audit-flash|flat}}. Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, devis signé avant démarrage, aucun abonnement.",
     },
     {
-      q: "Williams se déplace-t-il à Vanves ?",
-      a: "Oui, Williams se déplace sur site à Vanves sous 5 jours ouvrés (souvent moins). Nous intervenons partout en France, sur place ou à distance.",
+      q: "Intervenez-vous à Vanves ?",
+      a: "Oui. Nous intervenons sur place à Vanves, comme partout en France, ou à distance.",
     },
     {
       q: "Quelles communes proches de Vanves couvrez-vous ?",
-      a: "Lors d'un déplacement à Vanves, nous couvrons aussi Malakoff, Issy-les-Moulineaux, Clamart, Châtillon, Montrouge et Paris 15e — toutes à moins de 15 minutes via la ligne 13 ou l'A86.",
+      a: "À Vanves, nous couvrons aussi Malakoff, Issy-les-Moulineaux, Clamart, Châtillon, Montrouge et Paris 15e.",
     },
     {
       q: "Quels secteurs vanvéens Axion-IA accompagne-t-il en priorité ?",

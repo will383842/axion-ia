@@ -246,7 +246,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Châteauroux ?",
-      a: "Châteauroux est à environ 2h de Paris-Austerlitz en train et à 1h30 de Limoges par l'A20. Nous nous déplaçons sur site.",
+      a: "Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

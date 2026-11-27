@@ -50,7 +50,7 @@ export const GRABELS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grabels ?",
-      a: "Oui, Axion-IA intervient à Grabels et dans tout le nord-ouest Montpellier. Nos consultants se déplacent depuis Montpellier en 10 min via tramway T5 ou voiture.",
+      a: "Oui, Axion-IA intervient à Grabels et dans tout le nord-ouest Montpellier. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quelles communes proches couvrez-vous autour de Grabels ?",

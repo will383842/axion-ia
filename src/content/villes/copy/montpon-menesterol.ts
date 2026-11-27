@@ -49,7 +49,7 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montpon-Ménestérol ?",
-      a: "Oui, Axion-IA intervient à Montpon-Ménestérol et dans l'ouest périgourdin (Mussidan, Ribérac, Saint-Astier). Gare SNCF Montpon ligne Bordeaux–Périgueux.",
+      a: "Oui, Axion-IA intervient à Montpon-Ménestérol et dans l'ouest périgourdin (Mussidan, Ribérac, Saint-Astier).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Montpon-Ménestérol  ?",
@@ -61,7 +61,7 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Montpon-Ménestérol ?",
-      a: "Intervention sous 5 jours ouvrés. Périgueux à 40 min, Bordeaux à 1h15 A89. Déplacements sur site ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Déplacements sur site ou sessions en visio selon vos préférences.",
     },
     {
       q: "Proposez-vous du coaching IA individuel dans la Double ?",

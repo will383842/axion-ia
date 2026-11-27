@@ -571,6 +571,37 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur dont le contrat prend fin",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-compte-a-confirmer": {
+    categorie: "recrutement",
+    quand:
+      "À la demande de changement de compte bancaire (lien « Je confirme », valable 24 heures)",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-demande-bloquee": {
+    categorie: "recrutement",
+    quand: "Après une opposition (« Bloquer cette demande »)",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-change": {
+    categorie: "recrutement",
+    quand: "Après la validation du nouveau compte par le super administrateur",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-refuse": {
+    categorie: "recrutement",
+    quand: "Après le refus de la demande, avec le motif de l'administrateur",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
+  "apporteur-compte-expire": {
+    categorie: "recrutement",
+    quand: "Demande non confirmée dans les 24 heures, au retour sur l'espace",
+    destinataire: "l'apporteur qui a demandé le changement",
+    source: "features/apporteurs-reseau/changement-iban.ts",
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:
@@ -583,6 +614,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand:
       "Console Commissions : « suspendre » (contestation écrite du client) puis « Lever la suspension »",
     destinataire: "l'apporteur dont la commission est suspendue, puis libérée",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-regime-tva": {
+    categorie: "recrutement",
+    quand:
+      "Console, fiche apporteur : « Changer le régime de TVA » enregistré (ou annulé avant sa date d'effet)",
+    destinataire: "l'apporteur dont le régime de TVA change",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-dossier-recu": {
@@ -600,6 +638,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-presentation-recue": {
     categorie: "recrutement",
     quand: "Bouton « Bien reçu » d'une entreprise présentée, après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-presentation-recue-rendez-vous": {
+    categorie: "recrutement",
+    quand:
+      "Bouton « Bien reçu » d'une entreprise présentée par un apporteur sous la validation par rendez-vous (interrupteur allumé ET contrat signé ≥ 2.8), après aperçu",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
@@ -645,7 +690,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-attribution-confirmee": {
     categorie: "recrutement",
     quand:
-      "Quand une attribution devient définitive (console, ou confirmation réputée acquise au passage quotidien) et quand la protection est prolongée de trois mois",
+      "Quand une attribution devient définitive (rendez-vous tenu ou commande signée validé en console, ou confirmation réputée acquise au passage quotidien), avec la date de la validation et la fin de la protection ; et quand la protection est prolongée de trois mois",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/attribution-annonce.ts",
   },

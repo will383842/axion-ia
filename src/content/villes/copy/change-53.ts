@@ -65,7 +65,7 @@ export const CHANGE_53_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Changé ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Laval à 5 km, accès A81 direct. Tarifs publics.",
+      a: "Nos consultants interviennent directement dans vos locaux à Changé. Tarifs publics.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MAZAMET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mazamet et en Montagne Noire ?",
-      a: "Oui, Axion-IA intervient à Mazamet et dans tout le bassin mazamétain (Aussillon, Labruguière, Pont-de-l'Arn, Montagne Noire). Nos consultants se déplacent depuis Toulouse (1h15) ou Castres (15 min).",
+      a: "Oui, Axion-IA intervient à Mazamet et dans tout le bassin mazamétain (Aussillon, Labruguière, Pont-de-l'Arn, Montagne Noire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Mazamet ?",

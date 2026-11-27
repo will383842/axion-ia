@@ -49,7 +49,7 @@ export const PLABENNEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plabennec et dans le Pays de Léon ?",
-      a: "Oui, Axion-IA intervient à Plabennec et dans tout le Pays de Léon (Lesneven, Landerneau, Plouescat, Saint-Pol-de-Léon, Lannilis). Couverture également Brest Métropole (20 min) et accès Morlaix à 45 min.",
+      a: "Oui, Axion-IA intervient à Plabennec et dans tout le Pays de Léon (Lesneven, Landerneau, Plouescat, Saint-Pol-de-Léon, Lannilis).",
     },
     {
       q: "Travaillez-vous avec les entreprises agroalimentaires et maraîchères du Léon ?",
@@ -65,7 +65,7 @@ export const PLABENNEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Plabennec ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

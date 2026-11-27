@@ -65,7 +65,7 @@ export const SOMAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Somain ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Somain est desservie par sa gare SNCF (TER Lille–Valenciennes) et l'autoroute A21, à 15 min de Douai et 20 min de Valenciennes. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio.",
     },
   ],
 };

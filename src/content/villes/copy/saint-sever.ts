@@ -65,7 +65,7 @@ export const SAINT_SEVER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Sever ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Accès facile A65 via Aire-sur-l'Adour. Mission sur site dans votre établissement.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre établissement.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const BRIOUDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Brioude ?",
-      a: "Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Brioude, comme partout en France, ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const FONDETTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fondettes et ouest Tours ?",
-      a: "Oui, Axion-IA intervient à Fondettes et tout l'ouest de Tours Métropole (La Riche à 5 min, Luynes, Saint-Cyr-sur-Loire). Tours centre à 10 min.",
+      a: "Oui. Nous intervenons à Fondettes et dans tout l'ouest de Tours Métropole (La Riche, Luynes, Saint-Cyr-sur-Loire), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Fondettes ?",
@@ -65,7 +65,7 @@ export const FONDETTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fondettes ?",
-      a: "Nos consultants interviennent sur site à Fondettes (Tours centre à 10 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Axion IA intervient partout en France, sur site ou à distance, y compris à Fondettes.",
     },
   ],
 };

@@ -7,6 +7,15 @@ import { mapEnToFr } from "./en-to-fr-redirect";
 // toutes les URLs observées dans GSC + le full surface des slugs déclarés
 // dans `src/i18n/routing.ts`.
 describe("mapEnToFr", () => {
+  describe("équipe — hub et fiches", () => {
+    it("/en/team → /fr/equipe", () => {
+      expect(mapEnToFr("/en/team")).toBe("/fr/equipe");
+    });
+    it("/en/team/williams → /fr/equipe/williams", () => {
+      expect(mapEnToFr("/en/team/williams")).toBe("/fr/equipe/williams");
+    });
+  });
+
   describe("audit — sous-routes FR ≠ EN", () => {
     it("/en/audit/strategic-pme → /fr/audit/strategique-pme", () => {
       expect(mapEnToFr("/en/audit/strategic-pme")).toBe("/fr/audit/strategique-pme");
@@ -226,6 +235,26 @@ describe("mapEnToFr", () => {
     });
     it("/en → /fr", () => {
       expect(mapEnToFr("/en")).toBe("/fr");
+    });
+  });
+
+  // S1 (404) — traduction dérivée de `routing.pathnames`.
+  describe("S1 — chemins EN qui partaient en 404", () => {
+    it.each([
+      ["/en/careers", "/fr/carrieres"],
+      ["/en/careers/x/apply", "/fr/carrieres/x/postuler"],
+      ["/en/careers/widget", "/fr/carrieres/widget"],
+      ["/en/team/x", "/fr/equipe/x"],
+      ["/en/books", "/fr/livres"],
+      ["/en/books/y", "/fr/livres/y"],
+      ["/en/implementation/by-function", "/fr/implementation/par-fonction"],
+      ["/en/gallery/x/download", "/fr/galerie/x/telecharger"],
+      ["/en/formations/by-city/lyon", "/fr/formations/par-ville/lyon"],
+    ])("%s → %s", (en, fr) => {
+      expect(mapEnToFr(en)).toBe(fr);
+    });
+    it("la page des prix n'est pas touchée par la dérivation", () => {
+      expect(mapEnToFr("/en/pricing")).toBe("/fr/pricing");
     });
   });
 });

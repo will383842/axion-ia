@@ -49,7 +49,7 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jouy-en-Josas et dans la vallée de la Bièvre ?",
-      a: "Oui, Axion-IA intervient à Jouy-en-Josas et dans toute la vallée de la Bièvre (Vélizy-Villacoublay à 5 min, Versailles à 10 min, Bièvres, Les Loges-en-Josas). Couverture sud-ouest Yvelines et accès rapide depuis Paris (35 min RER C).",
+      a: "Oui. Nous intervenons à Jouy-en-Josas et dans toute la vallée de la Bièvre (Vélizy-Villacoublay, Versailles, Bièvres, Les Loges-en-Josas). Nous couvrons le sud-ouest des Yvelines, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les startups et PME proches d'HEC Paris ?",
@@ -65,7 +65,7 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Jouy-en-Josas ?",
-      a: "Nos consultants interviennent à Jouy-en-Josas depuis Paris ou Versailles (10-35 min). Gare Petit Jouy — Les Loges sur le RER C.",
+      a: "Nous intervenons sur place à Jouy-en-Josas, comme partout en France, ou à distance selon les phases de la mission.",
     },
   ],
 };

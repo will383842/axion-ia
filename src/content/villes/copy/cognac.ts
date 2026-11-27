@@ -49,7 +49,7 @@ export const COGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cognac et dans le bassin cognaçais ?",
-      a: "Oui, Axion-IA intervient à Cognac et tout le bassin cognaçais (Jarnac, Segonzac, Châteauneuf-sur-Charente). Nos consultants accèdent facilement via la gare de Cognac ou l'axe Angoulême-Saintes.",
+      a: "Oui, Axion-IA intervient à Cognac et tout le bassin cognaçais (Jarnac, Segonzac, Châteauneuf-sur-Charente).",
     },
     {
       q: "Quels services IA pour la filière cognac et viticole ?",
@@ -65,7 +65,7 @@ export const COGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Cognac ?",
-      a: "Nos consultants accèdent à Cognac par TER via Angoulême ou voiture (N141). Mission sur site dans vos locaux, chai, distillerie ou bureau.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, chai, distillerie ou bureau.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const CARROS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carros et dans la ZI Carros-Le Broc ?",
-      a: "Oui, Axion-IA intervient à Carros et dans toute la zone industrielle Carros-Le Broc (450+ entreprises). Couverture moyen-pays niçois (Castagniers, Gattières, Le Broc, La Roquette-sur-Var) et accès direct.",
+      a: "Oui, Axion-IA intervient à Carros et dans toute la zone industrielle Carros-Le Broc (450+ entreprises). Couverture du moyen-pays niçois (Castagniers, Gattières, Le Broc, La Roquette-sur-Var).",
     },
     {
       q: "Travaillez-vous avec les TPE et PME industrielles de Carros ?",

@@ -179,7 +179,7 @@ export function ApercuEmailDevis({
               piecesJointes: donnees.piecesJointes,
             }}
             titre={`Aperçu : ${donnees.objet}`}
-            liensInertes
+            liensOuvrables
           />
         ) : null}
       </div>

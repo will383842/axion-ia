@@ -56,7 +56,7 @@ vi.mock("@/lib/prisma", () => {
   const tx = {
     $executeRaw: vi.fn(async () => 1),
     $queryRaw: vi.fn(async (q: { sql: string }) =>
-      q.sql.includes("SELECT 1 FROM content_gen_jobs")
+      q.sql.includes("FROM content_gen_jobs WHERE id")
         ? [{ "?column?": 1 }]
         : [{ total: reg.totaux.shift() ?? 0 }],
     ),
@@ -285,6 +285,20 @@ describe("plafonds invalides = refus avant tout appel", () => {
     await expect(assertPlafondsClaude(REQ, "ecriture")).rejects.toMatchObject({ code: "eteint" });
     expect(reg.lignes).toHaveLength(0);
   });
+  it("assertPlafondsClaude : les frais fixes (recherches web) s'ajoutent au coût RÉSERVÉ", async () => {
+    await assertPlafondsClaude(REQ, "court", new Date(), 0);
+    await assertPlafondsClaude(REQ, "court", new Date(), 0.5);
+    expect(reg.lignes).toHaveLength(2);
+    expect(reg.lignes[1]!.costUsd - reg.lignes[0]!.costUsd).toBeGreaterThanOrEqual(0.49);
+  });
+  it("assertPlafondsClaude : frais fixes négatifs ou non finis = refus avant écriture", async () => {
+    for (const f of [-1, Number.NaN, Number.POSITIVE_INFINITY]) {
+      await expect(assertPlafondsClaude(REQ, "court", new Date(), f)).rejects.toMatchObject({
+        code: "config_invalide",
+      });
+    }
+    expect(reg.lignes).toHaveLength(0);
+  });
   it("alerte non envoyée : la clé Redis est libérée pour un nouvel essai", async () => {
     notifyMock.mockResolvedValue({ ok: false });
     const { alerterBlogClaude } = await import("../anthropic-credit-alert");
@@ -309,8 +323,12 @@ describe("plafonds invalides = refus avant tout appel", () => {
 });
 
 describe("modèles exacts, jamais de temperature", () => {
-  it("écriture = sonnet 5.5, relecture = opus 5.5", () => {
-    expect(MODELES).toEqual({ ecriture: "claude-sonnet-5-5", relecture: "claude-opus-5-5" });
+  it("écriture et court = sonnet 5.5, relecture = opus 5.5", () => {
+    expect(MODELES).toEqual({
+      ecriture: "claude-sonnet-5-5",
+      relecture: "claude-opus-5-5",
+      court: "claude-sonnet-5-5",
+    });
   });
   it("transmet le modèle du rôle, sans temperature ni preferredProvider, avec réservation", async () => {
     sdk.mockResolvedValue(REPONSE);

@@ -122,7 +122,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis site web ou SaaS à Aulnay-sous-Bois ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nous nous déplaçons sur site à Aulnay (RER B, A1/A3) pour comprendre vos flux avant de chiffrer.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nous intervenons sur site à Aulnay pour comprendre vos flux avant de chiffrer.",
           },
           {
             q: "Gérez-vous les contraintes de traçabilité des industriels de la ZI Les Mardelles ?",
@@ -208,7 +208,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
           },
           {
             q: "What's the lead time for a website or SaaS quote in Aulnay-sous-Bois?",
-            a: "The quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. We travel on site in Aulnay (RER B, A1/A3) to understand your flows before pricing.",
+            a: "The quote is issued from 24-48 h depending on project complexity, after an initial framing exchange. Axion-IA works anywhere in France, on site or remotely, including in Aulnay, to understand your flows before pricing.",
           },
           {
             q: "Do you handle the traceability constraints of ZI Les Mardelles manufacturers?",
@@ -232,11 +232,11 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Aulnay-sous-Bois (93600) ?",
-      a: "Nous intervenons sous 5 à 10 jours ouvrés à Aulnay-sous-Bois. Le RER B (14 km de Paris) et l'A1/A3 facilitent un déplacement rapide sur Garonor ou Parinor.",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Aulnay-sous-Bois, notamment sur les zones de Garonor et de Parinor.",
     },
     {
       q: "Intervenez-vous dans les communes proches d'Aulnay-sous-Bois ?",
-      a: "Oui, nous nous déplaçons aussi à Sevran, Le Blanc-Mesnil, Villepinte, Gonesse, Bondy, Livry-Gargan et Les Pavillons-sous-Bois, au même tarif.",
+      a: "Oui, nous nous déplaçons aussi à Sevran, Le Blanc-Mesnil, Villepinte, Gonesse, Bondy, Livry-Gargan et Les Pavillons-sous-Bois.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Aulnay-sous-Bois ?",

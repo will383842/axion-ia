@@ -49,7 +49,7 @@ export const CLAYE_SOUILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Claye-Souilly et dans le nord-est 77 ?",
-      a: "Oui, Axion-IA intervient a Claye-Souilly et dans tout le nord-est de la Seine-et-Marne (Mitry-Mory, Villeparisis, Dammartin-en-Goele, Meaux). Aeroport Roissy-CDG a 15 min, Paris a 35 min.",
+      a: "Oui, Axion-IA intervient a Claye-Souilly et dans tout le nord-est de la Seine-et-Marne (Mitry-Mory, Villeparisis, Dammartin-en-Goele, Meaux). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les enseignes des zones commerciales ?",

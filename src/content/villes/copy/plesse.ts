@@ -65,7 +65,7 @@ export const PLESSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Plessé ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

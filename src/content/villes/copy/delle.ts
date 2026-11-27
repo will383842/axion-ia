@@ -49,7 +49,7 @@ export const DELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Delle et frontière suisse ?",
-      a: "Oui, Axion-IA intervient à Delle et tout le bassin transfrontalier sud Territoire de Belfort (Belfort à 25 min en train, Montbéliard à 30 min, Bâle à 45 min, Boncourt Suisse à 5 min).",
+      a: "Oui. Nous intervenons à Delle et dans tout le bassin transfrontalier sud du Territoire de Belfort (Belfort, Montbéliard, Boncourt côté suisse), sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitance ?",
@@ -65,7 +65,7 @@ export const DELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Delle ?",
-      a: "Belfort à 25 min en train (ligne Belfort-Delle). Montbéliard à 30 min. Bâle à 45 min. EuroAirport à 50 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Delle, comme partout en France, ou à distance.",
     },
   ],
 };

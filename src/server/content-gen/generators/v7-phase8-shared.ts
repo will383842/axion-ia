@@ -33,16 +33,19 @@
 
 import { hashPrompt } from "../provenance/provenance-logger";
 import { buildPh3PromptAugmentation } from "../prompt-augmentation";
+import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { consigneLisibiliteV2 } from "../brand/consigne-lisibilite";
 import { consigneAngle } from "../brand/positionnement";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
 import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
+import { controlerLisibiliteV2 } from "../quality/lisibilite-v2";
 import { seoContentKind } from "./seo-content-kind";
 import { appendSourcesSection } from "../quality/article-quality";
 import { computeSeoScore, buildAuxBodyText } from "../quality/seo-score";
@@ -171,7 +174,7 @@ export async function runV7Phase8Pipeline(
 
   // PH3b — augmentation pain-matrix + ancrage local APPENDUE APRÈS la brand-voice
   // (jamais en remplacement). No-op (chaîne vide) si flag QUALITY_PROFILES_ENABLED OFF.
-  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}${buildPh3PromptAugmentation(input)}`;
+  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}${consigneLisibiliteV2(config.contentTypeSlug)}${buildPh3PromptAugmentation(input)}${consigneJourneeIA(input.primaryKeyword, ...(input.secondaryKeywords ?? []), input.rssItemTitle, input.rssItemSummary)}`;
 
   let bestParsed: ParsedOutput | null = null;
   let bestScore = -1;
@@ -243,6 +246,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON strict, sans balise markdown
       jobId: input.jobId,
       contentType: config.contentTypeSlug as ContentType,
       role: "text",
+      blogClaudeRole: "ecriture",
       systemPrompt: systemPromptWithBrandVoice,
       userPrompt,
       maxTokens: 8000,
@@ -373,6 +377,10 @@ ${sectionChiffresVerifies()}## Output attendu (JSON strict, sans balise markdown
       issues.push(`wordCount=${wordCount} < ${MIN_WORD_COUNT} requis — étoffer chaque section`);
     if (seo.score < 60) issues.push("densité keyword faible OU balises H2/H3 insuffisantes");
     if (readability.score < 60) issues.push("phrases trop longues — viser 15-20 mots/phrase max");
+    // Lisibilité V2 (CONTENU_LISIBILITE_V2) : liste vide si l'interrupteur est éteint.
+    for (const p of controlerLisibiliteV2(parsed.bodyHtml, process.env, config.contentTypeSlug)) {
+      issues.push(p.message);
+    }
     if (!doctrine.passed)
       issues.push(
         `violations doctrine : ${doctrine.blockingViolations.map((v) => v.pattern).join(", ")}`,

@@ -49,7 +49,7 @@ export const PAMIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pamiers et en Ariège ?",
-      a: "Oui, Axion-IA intervient à Pamiers et dans tout le département de l'Ariège (Foix, Saint-Girons, Lavelanet, Mirepoix). Pamiers est le premier bassin économique ariégeois, accessible depuis Toulouse (1h A66).",
+      a: "Oui, Axion-IA intervient à Pamiers et dans tout le département de l'Ariège (Foix, Saint-Girons, Lavelanet, Mirepoix).",
     },
     {
       q: "Quels secteurs accompagnez-vous à Pamiers ?",
@@ -64,8 +64,8 @@ export const PAMIERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME métallurgie et fonderie du bassin pamiséen sur des cas IA industriels concrets : contrôle qualité visuel, prédiction maintenance, optimisation process de production, classification documents techniques.",
     },
     {
-      q: "Pamiers est-elle accessible pour vos consultants ?",
-      a: "Oui, Pamiers est desservie par la gare SNCF (ligne Toulouse-Latour-de-Carol) et l'autoroute A66 (1h depuis Toulouse). Nos consultants interviennent sur site, format atelier pratique dans vos locaux.",
+      q: "Quel délai pour recevoir un devis à Pamiers ?",
+      a: "Devis et calendrier fournis en 48 h, après un premier échange de cadrage.",
     },
   ],
 };

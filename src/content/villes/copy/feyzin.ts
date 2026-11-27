@@ -49,7 +49,7 @@ export const FEYZIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Feyzin et Vallée de la Chimie ?",
-      a: "Oui, Axion-IA intervient à Feyzin et toute la Vallée de la Chimie (Saint-Fons à 5 min, Solaize, Pierre-Bénite). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Feyzin et dans toute la Vallée de la Chimie (Saint-Fons, Solaize, Pierre-Bénite). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants Seveso ?",
@@ -65,7 +65,7 @@ export const FEYZIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Feyzin ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Feyzin, comme partout en France, ou à distance.",
     },
   ],
 };

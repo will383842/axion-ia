@@ -49,7 +49,7 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Yrieix-sur-Charente ?",
-      a: "Oui, Axion-IA intervient à Saint-Yrieix-sur-Charente et toute l'agglomération GrandAngoulême. La gare TGV d'Angoulême est à 8 min.",
+      a: "Oui, Axion-IA intervient à Saint-Yrieix-sur-Charente et toute l'agglomération GrandAngoulême.",
     },
     {
       q: "Quels services IA pour les commerces de Saint-Yrieix-sur-Charente ?",
@@ -65,7 +65,7 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Yrieix ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce à Saint-Yrieix-sur-Charente, commune à 8 min de la gare TGV d'Angoulême.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, cabinet ou commerce à Saint-Yrieix-sur-Charente.",
     },
   ],
 };

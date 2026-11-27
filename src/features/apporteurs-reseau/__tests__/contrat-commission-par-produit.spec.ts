@@ -13,10 +13,10 @@ describe("contrat 2.1 : commission par produit et produits nouveaux", () => {
     expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.1);
   });
 
-  it("A1.7 : produits listés, produits créés après la signature, non-rétroactivité, motivation", () => {
-    expect(texte).toContain("A1.7 — Produits créés après la signature");
+  it("A1.8 : produits listés, produits créés après la signature, non-rétroactivité, motivation", () => {
+    expect(texte).toContain("A1.8 — Produits créés après la signature");
     expect(texte).toContain(
-      "conserve la commission que lui attribue le présent contrat tant que la Société le propose",
+      "conserve la commission que lui attribue le présent contrat tant que la Société la propose",
     );
     expect(texte).toContain(
       "sa commission est celle que la grille de référence publiée par la Société lui attribue à la date de la vente",
@@ -34,13 +34,13 @@ describe("contrat 2.1 : commission par produit et produits nouveaux", () => {
     );
   });
 
-  it("4.1, 13.1 et 17 renvoient à A1.7 (pas d'avenant pour un produit nouveau)", () => {
-    expect(texte).toContain("Les produits créés après la signature relèvent de l'annexe 1, A1.7.");
+  it("4.1, 13.1 et 17 renvoient à A1.8 (pas d'avenant pour un produit nouveau)", () => {
+    expect(texte).toContain("Les produits créés après la signature relèvent de l'annexe 1, A1.8.");
     expect(texte).toContain(
-      "La publication de la commission d'un produit créé après la signature (annexe 1, A1.7) n'est pas une modification du contrat.",
+      "La publication de la commission d'un produit créé après la signature (annexe 1, A1.8) n'est pas une modification du contrat.",
     );
     expect(texte).toContain(
-      "et de la grille de référence publiée, pour les seuls produits créés après la signature (annexe 1, A1.7)",
+      "et de la grille de référence publiée, pour les seuls produits créés après la signature (annexe 1, A1.8)",
     );
   });
 });

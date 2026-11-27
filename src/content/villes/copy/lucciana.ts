@@ -49,7 +49,7 @@ export const LUCCIANA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lucciana et dans la plaine orientale ?",
-      a: "Oui, Axion-IA intervient à Lucciana et dans toute l'agglomération bastiaise et la plaine orientale (Bastia à 20 min, Aléria à 45 min). Aéroport Bastia-Poretta sur la commune.",
+      a: "Oui. Nous intervenons à Lucciana et dans toute l'agglomération bastiaise et la plaine orientale, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitants viticoles et arboricoles de la plaine orientale ?",
@@ -64,8 +64,8 @@ export const LUCCIANA_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis le continent ?",
-      a: "Aéroport Bastia-Poretta sur la commune même, port de Bastia à 20 min. Vols et ferries quotidiens depuis le continent.",
+      q: "Comment se déroule une mission Axion-IA à Lucciana ?",
+      a: "Nous intervenons partout en France, sur place dans vos locaux ou à distance en visio. Après le cadrage de votre besoin, nous planifions l'intervention et livrons un résultat actionnable.",
     },
   ],
 };

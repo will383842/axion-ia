@@ -103,6 +103,25 @@ describe("F2 — kill switch décidé sur la chaîne texte RÉELLE, pas sur role
     expect(TEXT_CHAIN_PROVIDERS).toEqual(["openai"]);
   });
 
+  it.each(["true", "false"])(
+    "kill switch décidé sur openai SEUL, CONTENT_GEN_BLOG_CLAUDE=%s (app et worker identiques)",
+    async (flag) => {
+      vi.stubEnv("CONTENT_GEN_BLOG_CLAUDE", flag);
+      primeOverCapOpenai();
+      providerCountMock.mockResolvedValue(0);
+
+      await expect(assertCostCapAvailable("openai", 0.1)).rejects.toMatchObject({
+        code: "cost_cap_reached",
+      });
+
+      expect(providerCountMock).toHaveBeenCalledWith({
+        where: { provider: { in: ["openai"] }, enabled: true },
+      });
+      expect(upsertedConfigKeys()).toContain("kill_switch");
+      vi.unstubAllEnvs();
+    },
+  );
+
   it("cap openai atteint + chaîne texte épuisée → kill switch posé avec auto:true/source:cost_cap", async () => {
     primeOverCapOpenai();
     // Après désactivation d'openai, plus AUCUN provider de la chaîne texte

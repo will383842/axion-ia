@@ -49,7 +49,7 @@ export const ENGHIEN_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Enghien-les-Bains et ses environs ?",
-      a: "Oui, Axion-IA intervient à Enghien-les-Bains et dans tout le sud Val-d'Oise (Montmorency, Deuil-la-Barre, Soisy-sous-Montmorency, Épinay-sur-Seine). Paris Gare du Nord à 15 min en Transilien H.",
+      a: "Oui, Axion-IA intervient à Enghien-les-Bains et dans tout le sud Val-d'Oise (Montmorency, Deuil-la-Barre, Soisy-sous-Montmorency, Épinay-sur-Seine).",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs d'Enghien-les-Bains ?",

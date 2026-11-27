@@ -49,7 +49,7 @@ export const VILLEPREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villepreux et plaine de Versailles ?",
-      a: "Oui, Axion-IA intervient à Villepreux et dans toute la plaine de Versailles (Versailles à 10 min, Saint-Quentin-en-Yvelines à 10 min, Paris-Montparnasse à 35 min via Transilien N).",
+      a: "Oui. Axion-IA intervient à Villepreux et dans toute la plaine de Versailles, notamment à Versailles et à Saint-Quentin-en-Yvelines.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Villepreux ?",
@@ -65,7 +65,7 @@ export const VILLEPREUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villepreux ?",
-      a: "Paris-Montparnasse (35 min Transilien N), gare Villepreux-Les Clayes sur place. Versailles et Saint-Quentin-en-Yvelines à 10 min. Tarifs publics.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Villepreux, comme partout en France, ou à distance.",
     },
   ],
 };

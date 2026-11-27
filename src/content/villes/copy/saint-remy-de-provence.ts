@@ -49,7 +49,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Rémy-de-Provence et dans les Alpilles ?",
-      a: "Oui, Axion-IA intervient à Saint-Rémy-de-Provence et dans tout le massif des Alpilles (Les Baux-de-Provence, Maussane, Eygalières, Mouriès, Mausanne, Tarascon). Proximité gare TGV Avignon.",
+      a: "Oui, Axion-IA intervient à Saint-Rémy-de-Provence et dans tout le massif des Alpilles (Les Baux-de-Provence, Maussane, Eygalières, Mouriès, Mausanne, Tarascon).",
     },
     {
       q: "Combien coûte un audit IA à Saint-Rémy-de-Provence  ?",
@@ -65,7 +65,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention à Saint-Rémy-de-Provence ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

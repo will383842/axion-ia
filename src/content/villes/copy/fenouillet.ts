@@ -14,9 +14,9 @@ export const FENOUILLET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat",
   ecosystemFr:
-    "Fenouillet est une commune commerçante du nord de Toulouse, avec une zone commerciale importante. Tissu TPE artisans, PME commerciales et de services, professions libérales. Proximité d'Aucamville et de l'axe A62.",
+    "Fenouillet est une commune commerçante du nord de Toulouse, avec une zone commerciale importante. Tissu TPE artisans, PME commerciales et de services, professions libérales.",
   ecosystemEn:
-    "Fenouillet est une commune commerçante du nord de Toulouse, avec une zone commerciale importante. Tissu TPE artisans, PME commerciales et de services, professions libérales. Proximité d'Aucamville et de l'axe A62.",
+    "Fenouillet est une commune commerçante du nord de Toulouse, avec une zone commerciale importante. Tissu TPE artisans, PME commerciales et de services, professions libérales.",
   distancesFr:
     "Toulouse centre à 12 min (D4). Gare Matabiau à 15 min. Aéroport Toulouse-Blagnac à 18 min. Aucamville à 3 min. Beauzelle à 8 min.",
   distancesEn:

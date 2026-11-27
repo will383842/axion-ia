@@ -64,7 +64,7 @@ export const VAUCRESSON_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de Vaucresson et du secteur Rueil-Versailles : agents conversationnels client, automatisation workflows administratifs et RH, CRM augmentés, analyse prédictive commerciale. Conformité RGPD intégrée, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe le déplacement pour une mission à Vaucresson ?",
+      q: "Comment se déroule une intervention à Vaucresson ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Interventions dans vos locaux sur vos cas métier réels.",
     },
   ],

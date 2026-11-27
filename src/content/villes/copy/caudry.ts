@@ -49,7 +49,7 @@ export const CAUDRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caudry et dans le Cambrésis ?",
-      a: "Oui, Axion-IA intervient à Caudry et sur tout le Cambrésis (Cambrai, Le Cateau-Cambrésis, Solesmes, Walincourt-Selvigny). Cambrai à 15 min, Lille à 1h, Paris à 50 min en TGV depuis Cambrai-TGV.",
+      a: "Oui, Axion-IA intervient à Caudry et sur tout le Cambrésis (Cambrai, Le Cateau-Cambrésis, Solesmes, Walincourt-Selvigny).",
     },
     {
       q: "Quel est le tarif d''un audit IA à Caudry ?",

@@ -49,7 +49,7 @@ export const HERBIGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Herbignac et en Brière ?",
-      a: "Oui, Axion-IA intervient à Herbignac et tout le nord Brière (Guérande, Pontchâteau, Assérac, Saint-Lyphard). Consultants depuis Saint-Nazaire (25 min) ou Nantes (1h10). Couverture complète du secteur.",
+      a: "Oui, Axion-IA intervient à Herbignac et tout le nord Brière (Guérande, Pontchâteau, Assérac, Saint-Lyphard). Nous intervenons partout en France, sur place ou à distance. Couverture complète du secteur.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",

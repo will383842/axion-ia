@@ -8,7 +8,7 @@
 // La réduction n'est JAMAIS tapée à la main : on saisit le prix HT net conservé, et la commission
 // est RECALCULÉE par la règle du contrat (`calculerCommission` : forfait au prorata pour une
 // formation, art. 4.1 bis ; pourcentage du HT net sinon). La part du PARRAIN née de la même
-// facture suit, par la règle existante (`PARRAINAGE_BPS`, arrondi à l'inférieur, art. 4.6) :
+// facture suit, par la règle existante (`PARRAINAGE_BPS`, arrondi au plus proche, art. 4.6) :
 //   · encore modifiable → réduite ou annulée avec elle ;
 //   · déjà VERSÉE → reprise de la différence (conditions de l'art. 4.5) ;
 //   · facturée mais pas encore versée → AVERTISSEMENT explicite (à reprendre après son versement).
@@ -20,9 +20,13 @@ import { prisma } from "@/lib/prisma";
 
 import {
   calculerCommission,
+  commissionJourneeIaCents,
+  PALIER_JOURNEE_IA,
+  PRIX_REFERENCE_JOURNEE_IA_CENTS,
   euros,
   PALIER_CONFERENCE,
   PARRAINAGE_BPS,
+  TAUX_BPS,
   type ActiviteCommission,
 } from "./regles";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
@@ -79,7 +83,7 @@ const DEJA_FACTUREE =
 
 /** Part du parrain recalculée sur le nouveau montant du filleul (art. 4.6). */
 export const partDuParrain = (commissionFilleulCents: number): number =>
-  Math.floor((Math.max(0, commissionFilleulCents) * PARRAINAGE_BPS) / 10_000);
+  Math.round((Math.max(0, commissionFilleulCents) * PARRAINAGE_BPS) / 10_000);
 
 /** Nombre de sessions retenu à la création (formation) : prix public ÷ prix du palier. */
 function quantiteDe(l: { palier: string | null; prixPublicHtCents: number | null }): number {
@@ -98,9 +102,27 @@ export function commissionPourPrixConserve(
   prixHtCents: number,
   montantActuelCents?: number,
 ): number | null {
+  // Journée IA (A1.1) : 500 € par journée au prorata du prix net conservé, arrondi au plus proche.
+  // Avoir total (prix net 0) → 0 ; avoir partiel → prorata. Le nombre de journées se déduit du prix
+  // de référence enregistré à la création de la ligne.
+  if (l.palier === PALIER_JOURNEE_IA) {
+    const q = l.prixPublicHtCents
+      ? Math.max(1, Math.round(l.prixPublicHtCents / PRIX_REFERENCE_JOURNEE_IA_CENTS))
+      : 1;
+    return commissionJourneeIaCents(prixHtCents, q);
+  }
   // Conférence : forfait fixe sans prorata (A1.4 bis), seulement plafonné au prix HT facturé.
   if (l.activite === "conference" || l.palier === PALIER_CONFERENCE)
     return montantActuelCents === undefined ? null : Math.min(montantActuelCents, prixHtCents);
+  // Anciennes lignes de coaching créées à 30 % avant la décision du 25/11 : réduites à leur taux
+  // d'origine sur le prix net (plafonnées au montant actuel), jamais laissées intactes.
+  if (l.activite === "un_a_un")
+    return montantActuelCents === undefined
+      ? null
+      : Math.min(
+          montantActuelCents,
+          Math.round((Math.max(0, prixHtCents) * TAUX_BPS.un_a_un) / 10_000),
+        );
   const calc = calculerCommission({
     activite: l.activite as ActiviteCommission,
     factureHtCents: prixHtCents,

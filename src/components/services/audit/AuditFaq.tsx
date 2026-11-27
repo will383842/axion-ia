@@ -9,6 +9,7 @@
  * (cf. `buildFaqJsonLd`).
  */
 
+import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
 import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
@@ -38,8 +39,7 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
     {
       id: "duree-reservation",
       question: "Comment démarre un audit IA avec Axion-IA ?",
-      answer:
-        "Un audit IA avec Axion-IA démarre par un rendez-vous de cadrage gratuit de 45 minutes, en visio ou par téléphone. Pour la plupart des entreprises, nous planifions ensuite La Journée IA dans vos locaux, avec un rapport complet remis sous 3 jours ouvrés. Pour un audit plus approfondi, vous recevez d'abord un devis écrit sous 48 h ouvrées.",
+      answer: `Un audit IA avec Axion-IA démarre par un rendez-vous de cadrage gratuit de 45 minutes, en visio ou par téléphone. Pour la plupart des entreprises, nous planifions ensuite La Journée IA dans vos locaux, avec un rapport complet remis sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Pour un audit plus approfondi, vous recevez d'abord un devis écrit sous 48 h ouvrées.`,
     },
     {
       id: "remote-onsite",
@@ -68,8 +68,7 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
     {
       id: "starting-point",
       question: "Que faire si je ne sais pas par où commencer avec l'IA ?",
-      answer:
-        "Si vous ne savez pas par où commencer avec l'IA, commencez par La Journée IA : l'audit du matin chiffre vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous 3 jours ouvrés. Le module Implémentation peut ensuite prendre le relais, sur devis écrit.",
+      answer: `Si vous ne savez pas par où commencer avec l'IA, commencez par La Journée IA : l'audit du matin repère et classe vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous ${DELAI_RAPPORT_JOURS_OUVRES} jours ouvrés. Le module Implémentation peut ensuite prendre le relais, sur devis écrit.`,
     },
     ...faqItems(["ref-audit-contenu", "ref-audit-prix", "ref-audit-vs-info"]).map(
       ({ id, question, answer }) => ({

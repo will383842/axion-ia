@@ -49,7 +49,7 @@ export const NOYELLES_GODAULT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Noyelles-Godault et dans la zone commerciale ?",
-      a: "Oui, Axion-IA intervient a Noyelles-Godault et aupres des entreprises de la zone commerciale (Henin-Beaumont, Dourges, Courcelles-les-Lens). Consultants depuis Lille (40 min TER) ou Paris (TGV 1h10).",
+      a: "Oui, Axion-IA intervient a Noyelles-Godault et aupres des entreprises de la zone commerciale (Henin-Beaumont, Dourges, Courcelles-les-Lens). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les enseignes retail de Noyelles-Godault ?",

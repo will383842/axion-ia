@@ -34,8 +34,13 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // erreur DB transitoire ne doit pas « dé-geler » silencieusement un arrêt
 // d'urgence (l'ancien read retombait sur {active:false} en cas d'erreur).
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import {
+  factCheckClaudeActif,
+  factCheckClaudePasse,
+} from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 
 const QUEUE_NAME = "content-fact-check";
 
@@ -180,6 +185,33 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     return;
   }
 
+  // PR 5 — type vérifié AVANT publication par Claude (preuve `factCheckClaudePasse` écrite
+  // par le worker de génération) : ni Perplexity ni correction OpenAI ici. Sans preuve (job
+  // généré avant l'allumage), le contrôle d'avant s'applique, mais la publication, elle,
+  // est refusée par le worker de publication. Drapeau éteint
+  // (défaut) : `factCheckClaudeActif` rend faux, le code d'avant s'exécute à l'identique.
+  // (Lecture en base SEULEMENT drapeau allumé : éteint, aucune requête de plus.)
+  if (process.env["CONTENT_GEN_FACTCHECK_CLAUDE"] === "true") {
+    // Pas de `.catch` : base illisible = le job échoue et BullMQ le rejoue ; jamais de
+    // repli silencieux vers Perplexity.
+    const jobPourType = await prisma.contentGenJob.findUnique({
+      where: { id: contentGenJobId },
+      select: { contentType: true, outputJsonRaw: true },
+    });
+    // Saut SEULEMENT sur preuve (marqueur écrit par le worker de génération). Sans preuve
+    // (job généré avant l'allumage), le contrôle d'avant s'applique : jamais « non vérifié ».
+    if (
+      jobPourType &&
+      factCheckClaudeActif(jobPourType.contentType) &&
+      factCheckClaudePasse(jobPourType.outputJsonRaw)
+    ) {
+      console.log(
+        `[fact-check] article ${articleId} : vérifié avant publication par Claude, Perplexity/OpenAI non appelés`,
+      );
+      return;
+    }
+  }
+
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" } } },
@@ -291,11 +323,17 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     const refutedSentences = claims
       .filter((_, i) => verdicts[i]?.status === "refuted")
       .map((c) => c.sentence);
-    const correctedHtml = await correctRefutedClaimsInPlace({
+    const correctedBrut = await correctRefutedClaimsInPlace({
       jobId: contentGenJobId,
       bodyHtml: translation.body,
       refutedSentences,
     });
+    // Offre « Journée IA » : un texte réécrit par le LLM qui en parle n'est jamais mis en
+    // ligne sans relecture ; l'article reste inchangé et signalé (branche « échec » ci-dessous).
+    const correctedHtml =
+      correctedBrut && exigeRelectureHumaine({ output: { bodyHtml: correctedBrut } })
+        ? null
+        : correctedBrut;
     const listPath = article.isNews ? "/fr/actualites" : "/fr/blog";
     if (correctedHtml) {
       const correctedText = correctedHtml

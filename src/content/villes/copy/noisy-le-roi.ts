@@ -49,7 +49,7 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noisy-le-Roi et dans l'ouest Yvelines ?",
-      a: "Oui, Axion-IA intervient à Noisy-le-Roi et dans tout l'ouest yvelinois (Versailles à 10 min, Saint-Germain-en-Laye à 15 min, Bailly, Villepreux, Fontenay-le-Fleury). Accès rapide Paris et La Défense via A13.",
+      a: "Oui, Axion-IA intervient à Noisy-le-Roi et dans tout l'ouest yvelinois (Versailles, Saint-Germain-en-Laye, Bailly, Villepreux, Fontenay-le-Fleury).",
     },
     {
       q: "Accompagnez-vous les professions libérales à Noisy-le-Roi ?",
@@ -65,7 +65,7 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Noisy-le-Roi ?",
-      a: "Nos consultants interviennent à Noisy-le-Roi depuis Paris ou Versailles (10-35 min). Intervention dans vos locaux ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux ou en visio.",
     },
   ],
 };

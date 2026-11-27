@@ -49,7 +49,7 @@ export const FROUARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Frouard et autour de Nancy ?",
-      a: "Oui, Axion-IA intervient à Frouard et sur toute la Métropole du Grand Nancy (Nancy, Champigneulles, Pompey, Maxéville, Laxou). Accès direct via A31 et TER, Paris à 1h30 en TGV depuis la gare Lorraine.",
+      a: "Oui, Axion-IA intervient à Frouard et sur toute la Métropole du Grand Nancy (Nancy, Champigneulles, Pompey, Maxéville, Laxou).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Frouard  ?",

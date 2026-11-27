@@ -31,8 +31,8 @@ export const COUERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
-      en: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      fr: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams intervient sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      en: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams intervient sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Couëron pour les TPE/PME industrielles, commerciales ou tertiaires de Nantes Métropole. Débogage de pipelines IA, refonte de prompts, intégration LLM en code custom.",
@@ -230,12 +230,12 @@ export const COUERON_COPY: VilleCopy = {
       a: "Nos audits Sur place à Couëron démarrent à {{price:audit-flash|flat}} pour 4 heures sur site. Tarifs publics consultables sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour les missions plus longues.",
     },
     {
-      q: "Williams se déplace-t-il à Couëron pour intervenir sur site ?",
-      a: "Oui. Williams se déplace à Couëron (44220) et dans tout Nantes Métropole — Indre, Saint-Herblain, Sautron, Saint-Étienne-de-Montluc, Saint-Jean-de-Boiseau, Le Pellerin — sans frais kilométriques additionnels.",
+      q: "Intervenez-vous à Couëron pour intervenir sur site ?",
+      a: "Oui. Nous intervenons sur place à Couëron, comme partout en France, ou à distance.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Couëron ?",
-      a: "Williams se déplace à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit sur place, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
+      a: "Williams intervient à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit sur place, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Couëron ?",
@@ -247,7 +247,7 @@ export const COUERON_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions de coaching 1-to-1 pour dirigeants couëronnais ?",
-      a: "Oui. Sessions un-à-un à Couëron à partir de {{price:intervention-dirigeants|flat}} (1h30), sur site ou en visio. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA sans dépendance no-code.",
+      a: "Oui. Sessions un-à-un d'1 h 30 à Couëron, à partir de {{price:intervention-dirigeants|flat}}, sur site ou en visio. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA sans dépendance no-code.",
     },
   ],
 };

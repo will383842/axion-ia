@@ -49,7 +49,7 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Verpillière et CAPI ?",
-      a: "Oui, Axion-IA intervient à La Verpillière et toute la Communauté d'agglomération Porte de l'Isère (Villefontaine, L'Isle-d'Abeau, Bourgoin-Jallieu, Vaulx-Milieu, Saint-Quentin-Fallavier). Couverture également aéroport Lyon-Saint-Exupéry (10 min).",
+      a: "Oui, Axion-IA intervient à La Verpillière et toute la Communauté d'agglomération Porte de l'Isère (Villefontaine, L'Isle-d'Abeau, Bourgoin-Jallieu, Vaulx-Milieu, Saint-Quentin-Fallavier).",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques Saint-Exupéry ?",
@@ -65,7 +65,7 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

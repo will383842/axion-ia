@@ -49,7 +49,7 @@ export const GENTILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gentilly dans le Val-de-Marne ?",
-      a: "Oui, Axion-IA intervient à Gentilly et dans tout le sud parisien (Arcueil, Le Kremlin-Bicêtre, Montrouge, Cachan, Villejuif). Nos consultants se déplacent sur site ou en visio, RER B direct.",
+      a: "Oui, Axion-IA intervient à Gentilly et dans tout le sud parisien (Arcueil, Le Kremlin-Bicêtre, Montrouge, Cachan, Villejuif). Nos consultants interviennent sur site ou en visio.",
     },
     {
       q: "Quel est le prix d'un audit IA à Gentilly ?",

@@ -49,7 +49,7 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Souffelweyersheim ?",
-      a: "Oui, Axion-IA intervient à Souffelweyersheim et dans toute la zone nord de l'eurométropole strasbourgeoise (Schiltigheim, Bischheim, Hoenheim, Reichstett). Consultants via tramway CTS ligne B ou autoroute A35. Strasbourg centre à 10 min.",
+      a: "Oui, Axion-IA intervient à Souffelweyersheim et dans toute la zone nord de l'eurométropole strasbourgeoise (Schiltigheim, Bischheim, Hoenheim, Reichstett).",
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique et commerce de gros ?",
@@ -65,7 +65,7 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Souffelweyersheim ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Souffelweyersheim est desservie par la ligne B du tramway CTS et l'autoroute A35, à 10 min de Strasbourg centre et 25 min de l'aéroport d'Entzheim.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

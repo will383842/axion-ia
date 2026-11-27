@@ -229,8 +229,8 @@ export const AGDE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il au Cap d'Agde et dans la station balnéaire ?",
-      a: "Oui, nos experts IA seniors interviennent directement au Cap d'Agde, au Grau d'Agde, à la Tamarissière et dans le centre historique d'Agde. Nous intervenons partout en France, sur place ou à distance, pour les hôtels, campings, restaurants et conciergeries de la station.",
+      q: "Intervenez-vous au Cap d'Agde et dans la station balnéaire ?",
+      a: "Oui, nos experts IA seniors interviennent directement au Cap d'Agde, au Grau d'Agde, à la Tamarissière et dans le centre historique d'Agde, pour les hôtels, campings, restaurants et conciergeries de la station, comme partout en France.",
     },
     {
       q: "Quels cas d'usage IA pour les caves AOC Languedoc et Picpoul-de-Pinet autour d'Agde ?",

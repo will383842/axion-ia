@@ -65,7 +65,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bully-les-Mines ?",
-      a: "Nous intervenons partout en France, sur place ou à distance.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Bully-les-Mines, comme partout en France, ou à distance.",
     },
   ],
 };

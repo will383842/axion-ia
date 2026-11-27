@@ -7,13 +7,14 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import type { ApporteurReseauStatut } from "../../../prisma/generated/client";
+import type { ApporteurReseauStatut, EmailLogStatus } from "../../../prisma/generated/client";
 
 import { lireContenuPiece } from "./pieces-chiffrement";
-import { STATUTS_CUMUL, piecesVigilanceConformes } from "./commissions";
+import { STATUTS_CUMUL, cumulVigilanceCents, piecesVigilanceConformes } from "./commissions";
 import { lireDossier } from "./donnees";
 import { SEUIL_VIGILANCE_CENTS } from "./regles";
 import { idsRetires } from "./retrait";
+import { lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
 
 export const LIBELLE_STATUT_APPORTEUR: Readonly<Record<ApporteurReseauStatut, string>> = {
   dossier_en_cours: "Dossier en cours",
@@ -209,9 +210,12 @@ export async function lireFicheApporteur(id: string) {
       select: { id: true },
     }),
   ]);
-  const cumulVigilanceCents = commissions
+  // Art. 6.2 : le cumul est apprécié TOUTES TAXES COMPRISES, au régime de chaque pièce (figé) — la
+  // MÊME fonction que la décision (`cumulVigilanceCents`), pour que la console et elle ne divergent pas.
+  const cumulHt = commissions
     .filter((c) => (STATUTS_CUMUL as readonly string[]).includes(c.statut))
     .reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  const cumulTtc = await cumulVigilanceCents(id).catch(() => cumulHt);
   const nom = (x: { prenom: string; nom: string }) =>
     `${decryptPii(x.prenom) ?? ""} ${decryptPii(x.nom) ?? ""}`.trim();
   return {
@@ -222,6 +226,7 @@ export async function lireFicheApporteur(id: string) {
     aContratApporteur: !!a?.contratCle,
     aContratSigne: !!a?.contratSigneCle,
     submissionId: a?.submissionId ?? null,
+    creeAt: a?.creeAt ?? null,
     signature: sansTexteArchive(a?.signatureApporteur),
     filleuls: (a?.filleuls ?? []).map((f) => ({ id: f.id, nom: nom(f), statut: f.statut })),
     parrainsPossibles: parrains.map((p) => ({ id: p.id, nom: nom(p) })),
@@ -229,7 +234,7 @@ export async function lireFicheApporteur(id: string) {
     commissions: commissions as CommissionDeLApporteur[],
     /** Cumul vers le seuil de 5 000 € (art. 5.4) et état des deux pièces demandées. */
     vigilance: {
-      cumulCents: cumulVigilanceCents,
+      cumulCents: cumulTtc,
       seuilCents: SEUIL_VIGILANCE_CENTS,
       piecesConformes: piecesVigilanceConformes(piecesVigilance, new Date()),
       piecesEnAttente: piecesVigilance.filter((p) => p.statut === "deposee").length,
@@ -257,4 +262,324 @@ export async function lireOctetsPiece(apporteurId: string, pieceId: string) {
     // Déchiffrée ici, seul point de lecture (aperçu console et antivirus à l'ouverture).
     octets: lireContenuPiece(p.contenu.octets),
   };
+}
+
+// ── Validation par rendez-vous (lot 6) ───────────────────────────────────
+
+export type MotifProposition = "email_exact" | "meme_entreprise" | "meme_siren";
+
+/** Pourquoi l'outil a rapproché ce rendez-vous de cette entreprise, en clair. */
+export const LIBELLE_MOTIF_PROPOSITION: Readonly<Record<MotifProposition, string>> = {
+  email_exact: "Même adresse e-mail que la personne présentée",
+  meme_entreprise: "Même entreprise (même domaine professionnel ou même fiche client)",
+  meme_siren: "Même SIREN (une fiche client de cette entreprise a réservé)",
+};
+
+export interface PropositionVue {
+  id: string;
+  presentationId: string;
+  denomination: string;
+  siren: string;
+  apporteur: string;
+  /** Rendez-vous Calendly ou rencontre ; `null` sinon (jamais pour une proposition). */
+  rendezVousCle: string;
+  motif: string;
+  motifLibelle: string;
+  apporteurCite: boolean;
+  recueAt: Date;
+  prisAt: Date;
+  rendezVousAt: Date | null;
+  /** Le rendez-vous a-t-il déjà eu lieu (date passée) ? Sinon le dirigeant attend. */
+  tenuPasse: boolean;
+  /** Annulé, reporté ou absent depuis la proposition : à écarter, ou à saisir « Annulé par Axion IA ». */
+  nonTenu: boolean;
+}
+
+/**
+ * Les propositions du rapprochement que le dirigeant n'a ni retenues ni écartées, pour des
+ * présentations encore « réservées » (filtre posé avant la borne de 200).
+ * Table absente (fenêtre app/worker) : liste vide.
+ */
+/** Au-delà, la liste est tronquée : l'écran le dit (`lignes.length >= LIMITE_PROPOSITIONS`). */
+export const LIMITE_PROPOSITIONS = 200;
+
+export async function lirePropositionsATraiter(
+  maintenant: Date = new Date(),
+): Promise<PropositionVue[]> {
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
+  // Le filtre « présentation réservée » est posé AVANT la borne : une proposition inerte (présentation
+  // déjà traitée) ne doit jamais masquer, en tête de file, celle qui attend vraiment le dirigeant.
+  // (Pas de relation Prisma entre les deux modèles : on lit d'abord les identifiants.)
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: { statut: "reservee" },
+    select: {
+      id: true,
+      denomination: true,
+      siren: true,
+      recueAt: true,
+      apporteur: { select: { prenom: true, nom: true } },
+    },
+  });
+  if (presentations.length === 0) return [];
+  let propositions;
+  try {
+    propositions = await prisma.propositionRendezVousPresentation.findMany({
+      where: {
+        ecarteeAt: null,
+        retenueAt: null,
+        presentationId: { in: presentations.map((p) => p.id) },
+      },
+      orderBy: [{ creeAt: "asc" }, { id: "asc" }],
+      take: LIMITE_PROPOSITIONS,
+    });
+  } catch (err) {
+    if ((err as { code?: unknown } | null)?.code === "P2021") return [];
+    throw err;
+  }
+  if (propositions.length === 0) return [];
+  const parId = new Map(presentations.map((p) => [p.id, p]));
+  // Rendez-vous annulé / absent / reporté depuis la proposition : il ne se valide pas (état relu à
+  // la source dans la transaction), mais il RESTE VISIBLE, marqué `nonTenu` : il retient l'ancien
+  // apporteur tant que le dirigeant ne l'a pas écarté (ou saisi « Annulé par Axion IA »).
+  const ecartes = new Set<string>();
+  for (const cle of new Set(propositions.map((p) => p.rendezVousCle))) {
+    const src = await lireSourceRendezVous(prisma, cle);
+    if (src && rendezVousNonTenu(src)) ecartes.add(cle);
+  }
+  const sorties: PropositionVue[] = [];
+  for (const pr of propositions) {
+    const p = parId.get(pr.presentationId);
+    if (!p) continue; // la présentation n'est plus « réservée » : plus rien à proposer
+    sorties.push({
+      id: pr.id,
+      presentationId: p.id,
+      denomination: p.denomination,
+      siren: p.siren,
+      apporteur:
+        `${decryptPii(p.apporteur.prenom) ?? ""} ${decryptPii(p.apporteur.nom) ?? ""}`.trim(),
+      rendezVousCle: pr.rendezVousCle,
+      motif: pr.motif,
+      motifLibelle:
+        LIBELLE_MOTIF_PROPOSITION[pr.motif as MotifProposition] ?? "Rapprochement de l'outil",
+      apporteurCite: pr.apporteurCite,
+      recueAt: p.recueAt,
+      prisAt: pr.prisAt,
+      rendezVousAt: pr.rendezVousAt,
+      nonTenu: ecartes.has(pr.rendezVousCle),
+      tenuPasse: !!pr.rendezVousAt && pr.rendezVousAt.getTime() <= maintenant.getTime(),
+    });
+  }
+  return sorties;
+}
+
+/** Une entreprise « réservée » qui attend un rendez-vous (pour la saisie manuelle du dirigeant). */
+export interface ReservationOuverteVue {
+  presentationId: string;
+  denomination: string;
+  siren: string;
+  apporteur: string;
+  recueAt: Date;
+  reserveeJusquAt: Date;
+  /** Fin de la réservation SANS validation (rattrapage possible), sinon `null`. */
+  echueAt: Date | null;
+}
+
+/** Mention de la console pour une réservation échue : la validation reste possible. */
+export const LIBELLE_RESERVATION_ECHUE = (dateEnClair: string): string =>
+  `Réservation terminée le ${dateEnClair} ; validation encore possible si le rendez-vous a été pris avant cette date`;
+
+export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[]> {
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
+  let lignes;
+  try {
+    // Deux lectures bornées : les réservations en cours (les plus proches du terme d'abord), puis les
+    // échues non validées (les plus récentes d'abord) : une longue file d'anciennes échues ne
+    // masque jamais les réservations en cours.
+    const select = { presentationId: true, reserveeJusquAt: true, echueAt: true } as const;
+    const [enCours, echues] = await Promise.all([
+      prisma.presentationReservation.findMany({
+        where: { regle: "rendez_vous", valideeAt: null, echueAt: null },
+        orderBy: [{ reserveeJusquAt: "asc" }],
+        take: 300,
+        select,
+      }),
+      prisma.presentationReservation.findMany({
+        where: { regle: "rendez_vous", valideeAt: null, echueAt: { not: null } },
+        orderBy: [{ echueAt: "desc" }],
+        take: 100,
+        select,
+      }),
+    ]);
+    lignes = [...enCours, ...echues];
+  } catch (err) {
+    if ((err as { code?: unknown } | null)?.code === "P2021") return [];
+    throw err;
+  }
+  if (lignes.length === 0) return [];
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: {
+      id: { in: lignes.map((l) => l.presentationId) },
+      // En cours, ou échue sans validation et jamais confirmée (rattrapage).
+      OR: [{ statut: "reservee" }, { statut: "terminee", confirmeeAt: null }],
+    },
+    select: {
+      id: true,
+      statut: true,
+      denomination: true,
+      siren: true,
+      recueAt: true,
+      apporteur: { select: { prenom: true, nom: true } },
+    },
+  });
+  const parId = new Map(presentations.map((p) => [p.id, p]));
+  const sorties: ReservationOuverteVue[] = [];
+  for (const l of lignes) {
+    const p = parId.get(l.presentationId);
+    if (!p) continue;
+    // `terminee` sans échéance (résiliation) : rien à rattraper.
+    if (p.statut === "terminee" && !l.echueAt) continue;
+    sorties.push({
+      presentationId: p.id,
+      denomination: p.denomination,
+      siren: p.siren,
+      apporteur:
+        `${decryptPii(p.apporteur.prenom) ?? ""} ${decryptPii(p.apporteur.nom) ?? ""}`.trim(),
+      recueAt: p.recueAt,
+      reserveeJusquAt: l.reserveeJusquAt,
+      echueAt: l.echueAt ?? null,
+    });
+  }
+  return sorties;
+}
+
+export interface ChangementRegimeTvaVu {
+  id: string;
+  regimeTva: "assujetti" | "franchise_293b";
+  numeroTva: string | null;
+  regimeAvant: "assujetti" | "franchise_293b" | null;
+  /** « AAAA-MM-JJ » (jour de Paris). */
+  effetAu: string;
+  saisiAt: Date;
+  annule: boolean;
+}
+
+/**
+ * L'historique des changements de régime de TVA d'un apporteur (le plus récent d'abord). Table
+ * absente (migration pas encore passée) : liste vide, la fiche reste lisible.
+ */
+export async function lireChangementsRegimeTva(
+  apporteurId: string,
+): Promise<ChangementRegimeTvaVu[]> {
+  try {
+    const l = await prisma.apporteurRegimeTvaChangement.findMany({
+      where: { apporteurId },
+      orderBy: [{ effetAu: "desc" }, { saisiAt: "desc" }],
+      take: 50,
+      select: {
+        id: true,
+        regimeTva: true,
+        numeroTva: true,
+        regimeAvant: true,
+        effetAu: true,
+        saisiAt: true,
+        annuleAt: true,
+      },
+    });
+    return l.map((c) => ({
+      id: c.id,
+      regimeTva: c.regimeTva,
+      numeroTva: c.numeroTva,
+      regimeAvant: c.regimeAvant,
+      effetAu: c.effetAu.toISOString().slice(0, 10),
+      saisiAt: c.saisiAt,
+      annule: c.annuleAt !== null,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Libellé lisible d'un gabarit quand la copie du journal (donc l'objet réel) est absente :
+ * « apporteur-lien-espace » → « Lien espace ». Le préfixe « apporteur- » est retiré, les tirets
+ * deviennent des espaces, la première lettre passe en capitale. Jamais le nom technique brut.
+ */
+export function libelleGabaritApporteur(template: string): string {
+  const sans = template
+    .replace(/^apporteur-/, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
+  if (!sans) return "E-mail";
+  return sans.charAt(0).toUpperCase() + sans.slice(1);
+}
+
+/** Nombre maximal d'e-mails relus dans l'historique de la fiche. */
+export const LIMITE_HISTORIQUE_EMAILS = 50;
+
+export interface EmailDeLApporteur {
+  id: string;
+  template: string;
+  /** Objet réel, relu dans la copie du journal ; null si la copie n'existe pas (ou plus). */
+  objet: string | null;
+  status: EmailLogStatus;
+  /** Date d'envoi si partie, sinon date de création de la ligne. */
+  date: Date;
+  error: string | null;
+}
+
+/**
+ * Historique des e-mails envoyés à un apporteur (lecture seule), lus dans `EmailLog`.
+ *
+ * Deux clés de traçabilité posées par `envoyer()` rattachent un e-mail à l'apporteur :
+ * `ApporteurReseau` / id de l'apporteur, et `PresentationEntreprise` / id d'une de SES
+ * présentations (annonce d'attribution…). Mais certains e-mails posés sur ces clés ne lui
+ * sont PAS adressés (alerte interne à Axion, courrier à l'entreprise présentée) : on ne garde
+ * donc que ceux dont le DESTINATAIRE est son adresse actuelle (`recipient` est en `citext`).
+ * Limite assumée : un e-mail parti vers une ancienne adresse n'apparaît pas. Sans adresse, la
+ * liste est vide plutôt que de montrer des courriers d'autrui. Plus récents d'abord, 50 au plus.
+ */
+export async function lireHistoriqueEmailsApporteur(
+  apporteurId: string,
+  email: string | null,
+): Promise<EmailDeLApporteur[]> {
+  if (!email) return [];
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: { apporteurId },
+    select: { id: true },
+  });
+  const lignes = await prisma.emailLog.findMany({
+    where: {
+      recipient: email,
+      OR: [
+        { entityType: "ApporteurReseau", entityId: apporteurId },
+        ...(presentations.length > 0
+          ? [
+              {
+                entityType: "PresentationEntreprise",
+                entityId: { in: presentations.map((p) => p.id) },
+              },
+            ]
+          : []),
+      ],
+    },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    take: LIMITE_HISTORIQUE_EMAILS,
+    select: {
+      id: true,
+      template: true,
+      status: true,
+      createdAt: true,
+      sentAt: true,
+      error: true,
+      contenu: { select: { subject: true } },
+    },
+  });
+  return lignes.map((l) => ({
+    id: l.id,
+    template: l.template,
+    objet: l.contenu?.subject ?? null,
+    status: l.status,
+    date: l.sentAt ?? l.createdAt,
+    error: l.error,
+  }));
 }

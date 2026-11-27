@@ -49,7 +49,7 @@ export const BIDART_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bidart et sur la Côte Basque ?",
-      a: "Oui, Axion-IA intervient à Bidart et sur toute la Côte Basque (Biarritz, Guéthary, Saint-Jean-de-Luz, Anglet). Nos consultants accèdent via l'aéroport Biarritz Pays Basque (5 min) ou la gare de Biarritz (8 min).",
+      a: "Oui, Axion-IA intervient à Bidart et sur toute la Côte Basque (Biarritz, Guéthary, Saint-Jean-de-Luz, Anglet).",
     },
     {
       q: "Quels services IA pour les hébergeurs et écoles de surf à Bidart ?",
@@ -65,7 +65,7 @@ export const BIDART_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Bidart ?",
-      a: "Nos consultants accèdent à Bidart via l'aéroport Biarritz Pays Basque (5 min) ou par l'A63. Mission sur site dans vos hébergements, restaurants, ateliers ou écoles de surf.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos hébergements, restaurants, ateliers ou écoles de surf.",
     },
   ],
 };

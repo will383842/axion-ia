@@ -65,7 +65,7 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Quesnoy-sur-Deûle ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare Lille Flandres à 15 min, gare TGV Lille Europe à 18 min.",
+      a: "Après un premier échange de cadrage, nous intervenons sur place à Quesnoy-sur-Deûle, comme partout en France, ou à distance.",
     },
   ],
 };
