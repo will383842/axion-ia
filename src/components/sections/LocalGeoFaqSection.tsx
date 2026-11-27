@@ -141,33 +141,33 @@ const FAQS_BY_SERVICE: Record<
       id: "implementation-onsite",
       fr: {
         q: "L'implémentation IA peut-elle se faire à distance ou faut-il être sur site ?",
-        a: "Hybride dans la majorité des cas : kick-off et déploiement initial sur site, itérations à distance, recette finale sur site. Pour les cabinets et PME en région, des jalons clés sur site sont possibles.",
+        a: "En général hybride : kick-off et déploiement initial sur site, itérations à distance, recette finale sur site. Pour les cabinets et PME en région, des jalons clés sur site sont possibles.",
       },
       en: {
         q: "Can AI implementation be done remotely or does it require on-site presence?",
-        a: "Hybrid in most cases: on-site kick-off and initial deployment, remote iterations, on-site final acceptance. For regional firms and SMEs, key milestones on site are possible.",
+        a: "Generally hybrid: on-site kick-off and initial deployment, remote iterations, on-site final acceptance. For regional firms and SMEs, key milestones on site are possible.",
       },
     },
     {
       id: "implementation-coverage",
       fr: {
         q: "Quelles régions sont les plus actives en implémentation IA ?",
-        a: "Île-de-France (sièges grandes entreprises, scale-ups), Auvergne-Rhône-Alpes (industrie lyonnaise), Hauts-de-France (logistique Lille), Pays de la Loire (ETI familiales Nantes-Cholet), Occitanie (aéronautique Toulouse). Toute région métropolitaine reste éligible.",
+        a: "Île-de-France (sièges grandes entreprises, scale-ups), Auvergne-Rhône-Alpes (industrie lyonnaise), Hauts-de-France (logistique Lille), Pays de la Loire (ETI familiales Nantes-Cholet), Occitanie (aéronautique Toulouse). Nous intervenons dans toutes les régions, sur devis.",
       },
       en: {
         q: "Which regions are most active in AI implementation?",
-        a: "Île-de-France (large-enterprise HQs, scale-ups), Auvergne-Rhône-Alpes (Lyon industry), Hauts-de-France (Lille logistics), Pays de la Loire (Nantes-Cholet family mid-caps), Occitanie (Toulouse aerospace). Every metropolitan region remains eligible.",
+        a: "Île-de-France (large-enterprise HQs, scale-ups), Auvergne-Rhône-Alpes (Lyon industry), Hauts-de-France (Lille logistics), Pays de la Loire (Nantes-Cholet family mid-caps), Occitanie (Toulouse aerospace). We work in every region, on quote.",
       },
     },
     {
       id: "implementation-international",
       fr: {
         q: "Implémentez-vous chez des filiales internationales ?",
-        a: "Pour les sièges français de groupes pilotant leurs filiales depuis Paris, oui : oui, sur devis. Pour des déploiements purement à l'étranger, c'est étudié au cas par cas, sur devis.",
+        a: "Pour les sièges français de groupes pilotant leurs filiales depuis Paris, oui, sur devis. Pour des déploiements purement à l'étranger, c'est étudié au cas par cas, sur devis.",
       },
       en: {
         q: "Do you deploy at international subsidiaries?",
-        a: "For French headquarters of groups steering their subsidiaries from Paris, yes : yes, on quote. For purely abroad deployments, it is studied case by case, on quote.",
+        a: "For French headquarters of groups steering their subsidiaries from Paris, yes, on quote. For purely abroad deployments, it is studied case by case, on quote.",
       },
     },
   ],

@@ -53,7 +53,7 @@ function fautesPages(motif: RegExp): string[] {
 const PAGES_INTERDITES: ReadonlyArray<readonly [string, RegExp]> = [
   [
     "premier pôle / terrain d'intervention",
-    /premiers? (?:p[ôo]les?|terrains?)\b|top (?:engagement )?(?:hubs?|ground)/iu,
+    /premiers?[\s\u00a0\u202f](?:p[ôo]les?|terrains?)\b|top (?:engagement )?(?:hubs?|ground)/iu,
   ],
   ["part importante de nos missions", /part importante de nos missions|significant share of our/iu],
   ["mêmes conditions que Paris", /m[êe]mes conditions que|same terms as/iu],
@@ -64,13 +64,16 @@ const PAGES_INTERDITES: ReadonlyArray<readonly [string, RegExp]> = [
   ["au cœur de notre activité", /au c(?:œ|oe)ur de notre activit[ée]|heart of our development/iu],
   [
     "majorité de nos projets / accompagnements",
-    /majorité de nos (?:projets|accompagnements)|most of our (?:projects|1-to-1)/iu,
+    /majorité de nos (?:projets|accompagnements)|dans la majorité des cas|most of our (?:projects|1-to-1)|in most cases/iu,
   ],
   [
     "même tarif quel que soit le lieu",
     /same rate regardless|regardless of location|quel que soit le lieu|m[êe]me tarif/iu,
   ],
-  ["douze régions", /(?:douze|12) r[ée]gions|(?:twelve|12) (?:metropolitan )?regions/iu],
+  [
+    "douze régions",
+    /(?:douze|12)[\s\u00a0\u202f]r[ée]gions|(?:twelve|12) (?:metropolitan )?regions/iu,
+  ],
   [
     "éligibilité selon un seuil de 5 000 habitants",
     /(?:5[\s\u00a0\u202f]?000 habitants|5,000 inhabitants)[^".]{0,30}(?:éligible|eligible)|(?:éligible|eligible)[^".]{0,40}(?:5[\s\u00a0\u202f]?000 habitants|5,000 inhabitants)/iu,
@@ -321,6 +324,19 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
       "même tarif quel que soit le lieu": "Same rate regardless of location.",
       "douze régions": "Douze régions métropolitaines couvertes.",
     };
+    const EXEMPLES_EN: Record<string, string> = {
+      "premier pôle / terrain d'intervention":
+        "Paris and Greater Paris are among our top engagement hubs.",
+      "part importante de nos missions": "Paris hosts a significant share of our missions.",
+      "mêmes conditions que Paris": "covered on the same terms as Paris",
+      "consultants mobiles": "Our consultants are mobile across Greater Paris.",
+      "au cœur de notre activité": "at the heart of our development activity",
+      "majorité de nos projets / accompagnements":
+        "Most of our projects run full-remote. Hybrid in most cases.",
+      "douze régions": "Twelve metropolitan regions covered.",
+    };
+    for (const [nom, phrase] of Object.entries(EXEMPLES_EN))
+      expect(PAGES_INTERDITES.find(([n]) => n === nom)![1].test(phrase), `EN ${nom}`).toBe(true);
     for (const [nom, phrase] of Object.entries(EXEMPLES))
       expect(PAGES_INTERDITES.find(([n]) => n === nom)![1].test(phrase), nom).toBe(true);
     const seuil = PAGES_INTERDITES.find(([n]) => n.startsWith("éligibilité"))![1];
@@ -342,6 +358,9 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
   for (const [nom, motif] of [...FRAIS, ...PRESENCE, ...ANGLAIS])
     it(`pages géographiques sans frais, surcoût ni trajet : ${nom}`, () =>
       vide(fautesPages(motif)));
+
+  it("le nom de la ville du siège n'apparaît dans aucune page géographique", () =>
+    vide(fautesPages(/Grenoble/u)));
 
   it("« Grenoble » n'apparaît que sur la page de Grenoble", () => {
     expect(fautes(/Grenoble/u, (f) => f === "copy/grenoble.ts")).toEqual([]);
