@@ -48,7 +48,7 @@ afterEach(() => {
   process.env = ORIG_ENV;
 });
 
-const attente = () => vi.fn(async () => undefined);
+const attente = () => vi.fn(async (_ms: number): Promise<void> => undefined);
 
 describe("gscSearchAnalytics", () => {
   it("envoie dataState final, byPage et les dimensions demandées", async () => {
