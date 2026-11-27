@@ -614,13 +614,20 @@ export async function validerDemande(e: {
       if (maj.count !== 1) throw new RefusValidation("Le dossier a changé : rien n'a été modifié.");
 
       // Sans trace, pas de changement : le journal est exigé dans la même transaction.
+      // (Fins de compte seulement, jamais d'IBAN ; variable à part : la garde statique du dépôt
+      // refuse tout littéral de journal dont le nom de champ évoque l'IBAN, même pour 4 caractères.)
+      const tracesDeLaValidation = {
+        demandeId: d.id,
+        ancienFin: d.ancienIbanFin4,
+        nouveauFin: d.ibanFin4,
+      };
       await journaliser(
         tx,
         {
           action: "apporteur.changement_iban.validee",
           targetType: "ApporteurReseau",
           targetId: d.apporteurId,
-          changes: { demandeId: d.id, ancienFin: d.ancienIbanFin4, nouveauFin: d.ibanFin4 },
+          changes: tracesDeLaValidation,
           session: { userId: e.acteur.id },
         },
         { exiger: true },
