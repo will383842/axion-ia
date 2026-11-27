@@ -26,6 +26,10 @@ import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import * as gabarits from "@/lib/email/templates";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import {
+  GABARITS_A_PHRASE_PIECES_JOINTES,
+  payloadSansAnnexesOmises,
+} from "@/lib/email/templates/_annexes-jointes";
+import {
   estJetonOpposition,
   jetonOpposition,
   lireJetonOpposition,
@@ -533,15 +537,24 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       if (retenu) return;
 
       try {
+        // Pièces résolues AVANT le rendu : la phrase « pièces jointes » de certains gabarits ne
+        // cite que les annexes réellement parties (une facultative omise au GET n'est pas promise).
+        const payloadRendu = payloadPourRendu(template, payload);
+        const resolues = await resoudrePiecesJointes(job.data.attachments);
+        const payloadDuRendu = GABARITS_A_PHRASE_PIECES_JOINTES.has(template)
+          ? payloadSansAnnexesOmises(
+              payloadRendu,
+              resolues.omises.map((o) => o.filename),
+            )
+          : payloadRendu;
         const {
           subject: subjectRendu,
           html,
           text,
           famille,
-        } = await renderEmailTemplate(template, locale, payloadPourRendu(template, payload), {
+        } = await renderEmailTemplate(template, locale, payloadDuRendu, {
           destinataire: to,
         });
-        const resolues = await resoudrePiecesJointes(job.data.attachments);
         const attachments = resolues.pieces.length > 0 ? resolues.pieces : undefined;
         const notePieces = notePiecesFacultatives(resolues);
         const noteCloture = [noteRepli, notePieces].filter(Boolean).join(" ");

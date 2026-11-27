@@ -396,8 +396,11 @@ describe("🔴 les clés des annexes ne sont servies par aucune route", () => {
         readFileSync(join(racine, f), "utf-8"),
       ),
     );
+    // + l'envoi du lien (« Retenu », relances) : il JOINT les annexes à l'e-mail, il ne les sert pas.
     expect(lecteurs.sort()).toEqual([
+      "src/features/admin-rendezvous/issue-apporteur-envoi.ts",
       "src/features/apporteurs-reseau/documents-joints.ts",
+      "src/features/apporteurs-reseau/passage-quotidien.ts",
       "src/features/apporteurs-reseau/signature.ts",
       "src/features/apporteurs-reseau/verification.ts",
     ]);
