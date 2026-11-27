@@ -101,7 +101,9 @@
   --hauteur-barre-mobile: 4.75rem;
   --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
   --focus-clair: var(--color-primary);
-  --focus-sombre: var(--color-terracotta-on-mocha);
+  /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
+     terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
+  --focus-sombre: var(--color-mocha-fg);
 }
 
 /* 02 — BASE ---------------------------------------------------------------- */
@@ -109,6 +111,8 @@
 html {
   color-scheme: light;
   scroll-padding-top: calc(var(--header-h) + 1rem);
+  /* téléphone : un élément qui reçoit le focus ne passe jamais sous la barre d'action fixe (2.4.11) */
+  scroll-padding-bottom: calc(var(--hauteur-barre-mobile) + env(safe-area-inset-bottom) + 1rem);
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -148,7 +152,7 @@ h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
   margin: -0.75rem 0; border-radius: var(--radius-md); color: var(--color-terracotta-deep); text-decoration: none;
   font: 600 1rem/1 var(--font-mono); opacity: 0; transition: opacity 0.15s; }
 section:hover .ancre, .ancre:focus-visible { opacity: 1; }
-@media (hover: none) { .ancre { opacity: 0.6; } }
+@media (hover: none) { .ancre { opacity: 1; } } /* à 0,6 le « # » tombait à 3,1:1 */
 .prose h3 { font: 600 clamp(1.1875rem, 1.1rem + 0.45vw, 1.4375rem) / 1.3 var(--font-sans);
   margin: 2.25rem 0 0.5rem; color: var(--color-ink); }
 .prose p, .prose ul, .prose ol { margin: 0 0 1.1em; }
@@ -161,6 +165,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .reponse-courte { font-size: 1.1875rem; line-height: 1.55; color: var(--color-ink); }
 .reponse-courte strong { box-shadow: inset 0 -0.45em 0 var(--color-terracotta-soft); }
 .terme-glossaire { text-decoration-style: dotted; text-decoration-thickness: 2px; }
+/* Liens dans le texte : padding vertical d'un élément en ligne = zone cliquable ≥ 24 px (2.5.8)
+   sans toucher à la hauteur de ligne ; :where() garde la spécificité au plus bas */
+:where(main, .pied-site) a:where(:not([class])), .prose a.terme-glossaire { padding-block: 0.25em; }
 .chiffre-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
 /* 04 — UTILITAIRES & FOCUS ------------------------------------------------- */
@@ -169,6 +176,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .lien-evitement { position: absolute; left: 1rem; top: -10rem; z-index: 100; padding: 0.75rem 1rem;
   background: var(--color-paper); color: var(--color-fg); border-radius: var(--radius-md); }
 .lien-evitement:focus { top: 1rem; }
+/* posé sur l'en-tête mocha : l'anneau est tracé DANS le lien, sur fond papier */
+.lien-evitement:focus-visible { outline-offset: -6px; box-shadow: 0 0 0 3px var(--color-mocha-fg); }
 .conteneur { width: 100%; max-width: var(--largeur-page); margin-inline: auto; padding-inline: var(--gouttiere); }
 @media (min-width: 640px) { :root { --gouttiere: 24px; } }
 @media (min-width: 1280px) { :root { --gouttiere: 40px; } }
@@ -203,7 +212,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   font: 600 1.375rem/1 var(--font-serif); letter-spacing: -0.01em; }
 .site-logo em { color: var(--color-terracotta-on-mocha); font-weight: 500; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
-.site-nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
 @media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
 
 .bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
@@ -211,7 +220,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   margin: 0; padding: 0.75rem 0 0; font-size: 0.875rem; }
 .fil-ariane li { display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; }
 .fil-ariane li + li::before { content: "/"; color: var(--color-terracotta-on-mocha); }
-.fil-ariane a { display: inline-flex; align-items: center; min-height: 44px; }
+.fil-ariane a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
 .fil-ariane [aria-current] { max-width: 26ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* 07 — HÉROS D'ARTICLE : bandeau mocha plein + aplat terracotta ------------ */
@@ -271,6 +280,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .mise-en-page { position: relative; }
 .article { min-width: 0; }
 @media (min-width: 1024px) {
+  html { scroll-padding-bottom: 1rem; }
   body { padding-bottom: 0; }
   .mise-en-page {
     display: grid; justify-content: space-between; align-items: start;
@@ -317,7 +327,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
   /* Ordinateur : toujours déplié, même si le <details> est fermé */
   .sommaire details::details-content { content-visibility: visible; display: block; }
-  .sommaire summary { pointer-events: none; min-height: 0; padding: 1rem 1rem 0.35rem; }
+  .sommaire summary { pointer-events: none; min-height: 44px; padding: 1rem 1rem 0.35rem; }
   .sommaire summary::after { display: none; }
   .sommaire ol a { font-size: 0.875rem; }
 }
@@ -355,7 +365,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .act { width: 100%; min-height: 56px; padding: 0.35rem 0.25rem; flex-direction: column; gap: 0.2rem;
   border-radius: var(--radius-lg); font-size: 0.8125rem; line-height: 1.1; position: relative; }
 .act .icone { width: 20px; height: 20px; }
-.act.btn--terracotta, .act.btn--contour { background: var(--color-bg); color: var(--color-fg); border-color: var(--color-border); }
+.act.btn--terracotta, .act.btn--contour { background: var(--color-bg); color: var(--color-fg); border-color: var(--color-border-field); } /* 3,7:1 */
 .act.btn--terracotta .icone { color: var(--color-terracotta-deep); }
 .act__pastille { position: absolute; top: -0.55rem; right: 0.35rem; padding: 0.1rem 0.45rem; border-radius: var(--radius-full);
   background: var(--color-mocha); color: var(--color-mocha-fg); font: 600 0.6875rem/1.3 var(--font-mono); }
@@ -614,8 +624,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .cta-fin { position: relative; overflow: hidden; isolation: isolate; margin: 4rem 0 2rem;
   padding: clamp(1.75rem, 1rem + 3vw, 3.5rem); border-radius: var(--radius-2xl);
   background: var(--color-mocha); color: var(--color-mocha-fg); }
-.cta-fin::before { content: ""; position: absolute; z-index: -1; width: 24rem; aspect-ratio: 1; border-radius: 50%;
-  top: -12rem; right: -8rem; background: var(--color-terracotta); }
+/* Disque décoratif : sur téléphone, petit et rejeté dans l'angle (il passait sous le titre :
+   terracotta-on-mocha sur terracotta = 2,2:1) ; grand à partir de 760 px, où le titre reste à gauche */
+.cta-fin::before { content: ""; position: absolute; z-index: -1; width: 9rem; aspect-ratio: 1; border-radius: 50%;
+  top: -5.5rem; right: -4.5rem; background: var(--color-terracotta); }
 .cta-fin__surtitre { margin: 0 0 0.75rem; }
 .cta-fin__titre { margin: 0 0 0.75rem; max-width: 18ch; font: 600 clamp(2rem, 1.3rem + 2.8vw, 3.25rem) / 1.05 var(--font-serif); letter-spacing: -0.025em; }
 .cta-fin__titre em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
@@ -631,6 +643,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .rassurance li { display: inline-flex; align-items: center; gap: 0.45rem; }
 .rassurance .icone { width: 1.1rem; height: 1.1rem; color: var(--color-terracotta-on-mocha); }
 @media (min-width: 760px) {
+  .cta-fin::before { width: 24rem; top: -12rem; right: -8rem; }
   .cta-fin__actions { grid-template-columns: 1.25fr 1fr 1fr; }
   .deroule { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 }
@@ -737,7 +750,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 }
 @media (forced-colors: active) {
   .progression, .heros::before, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
-  .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume__liste li, .cta-milieu, .cta-fin, .citation,
+  .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
   .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
     border: 2px solid CanvasText; }
   .btn, .partage a, .partage-icones a { border: 2px solid ButtonText; }
@@ -841,6 +854,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
 .feuille-route__surtitre { margin: 0 0 0.5rem; }
 .feuille-route h2 { margin: 0 0 1.25rem; font: 600 clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem) / 1.1 var(--font-serif); letter-spacing: -0.02em; }
+/* a11y : le h2 sans classe héritait de l'encre du socle (.prose > section > h2) = 1,25:1 sur mocha */
+.prose > section.feuille-route > h2 { margin: 0 0 1.25rem; color: var(--color-mocha-fg); }
 .feuille-route h2 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .feuille-route ol { list-style: none; margin: 0; padding: 0; counter-reset: f; display: grid; }
 .feuille-route li { counter-increment: f; display: grid; grid-template-columns: 2.75rem 1fr; gap: 0.85rem; align-items: center;
@@ -1023,7 +1038,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="chapitre__position"><span>Chapitre 1 sur 7</span><span class="chapitre__duree">≈ 2 min</span><span class="chapitre__reste">≈ 14 min restantes</span></p>
         <span class="chapitre__barre" style="--p: 14%" aria-hidden="true"></span>
         <h2 id="step-1" data-speakable="true">Par où commencer quand on part de zéro ?</h2>
-        <a class="lien-fleche" href="#step-2">Aller au chapitre suivant<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+        <a class="lien-fleche" href="#step-2">Aller au chapitre suivant<span class="visuellement-masque"> (chapitre 2)</span><svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
       </div>
       <div class="chapitre__corps">
         <p class="reponse-courte" data-speakable="true">Commencez par <strong>observer une semaine de travail</strong>, pas par choisir un outil.</p>
@@ -1054,7 +1069,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="chapitre__position"><span>Chapitre 2 sur 7</span><span class="chapitre__duree">≈ 2 min</span><span class="chapitre__reste">≈ 12 min restantes</span></p>
         <span class="chapitre__barre" style="--p: 29%" aria-hidden="true"></span>
         <h2 id="step-2" data-speakable="true">Comment repérer les tâches à confier à l'IA ?</h2>
-        <a class="lien-fleche" href="#step-3">Aller au chapitre suivant<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+        <a class="lien-fleche" href="#step-3">Aller au chapitre suivant<span class="visuellement-masque"> (chapitre 3)</span><svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
       </div>
       <div class="chapitre__corps">
         <p class="reponse-courte" data-speakable="true">Gardez les tâches <strong>fréquentes, pénibles et faciles à vérifier</strong> : elles réussissent le plus souvent.</p>
@@ -1095,7 +1110,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="chapitre__position"><span>Chapitre 3 sur 7</span><span class="chapitre__duree">≈ 3 min</span><span class="chapitre__reste">≈ 10 min restantes</span></p>
         <span class="chapitre__barre" style="--p: 43%" aria-hidden="true"></span>
         <h2 id="step-3" data-speakable="true">Quels outils choisir et avec quel budget de temps ?</h2>
-        <a class="lien-fleche" href="#step-4">Aller au chapitre suivant<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+        <a class="lien-fleche" href="#step-4">Aller au chapitre suivant<span class="visuellement-masque"> (chapitre 4)</span><svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
       </div>
       <div class="chapitre__corps">
         <p class="reponse-courte" data-speakable="true">Pour un premier usage, <strong>un assistant d'IA généraliste suffit</strong> le plus souvent ; l'outil métier vient ensuite.</p>
@@ -1135,7 +1150,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="chapitre__position"><span>Chapitre 4 sur 7</span><span class="chapitre__duree">≈ 2 min</span><span class="chapitre__reste">≈ 7 min restantes</span></p>
         <span class="chapitre__barre" style="--p: 57%" aria-hidden="true"></span>
         <h2 id="step-4" data-speakable="true">Comment protéger les données de l'entreprise ?</h2>
-        <a class="lien-fleche" href="#step-5">Aller au chapitre suivant<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+        <a class="lien-fleche" href="#step-5">Aller au chapitre suivant<span class="visuellement-masque"> (chapitre 5)</span><svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
       </div>
       <div class="chapitre__corps">
         <p class="reponse-courte" data-speakable="true">Fixez <strong>une règle simple avant le premier essai</strong> : ce qui peut être saisi dans l'outil, et ce qui ne le peut pas.</p>
@@ -1167,7 +1182,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="chapitre__position"><span>Chapitre 5 sur 7</span><span class="chapitre__duree">≈ 2 min</span><span class="chapitre__reste">≈ 5 min restantes</span></p>
         <span class="chapitre__barre" style="--p: 71%" aria-hidden="true"></span>
         <h2 id="step-5" data-speakable="true">Comment former et embarquer l'équipe ?</h2>
-        <a class="lien-fleche" href="#step-6">Aller au chapitre suivant<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+        <a class="lien-fleche" href="#step-6">Aller au chapitre suivant<span class="visuellement-masque"> (chapitre 6)</span><svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
       </div>
       <div class="chapitre__corps">
         <p class="reponse-courte" data-speakable="true">Formez <strong>sur les vraies tâches de chacun</strong>, pas sur des démonstrations génériques.</p>
@@ -1210,7 +1225,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="chapitre__position"><span>Chapitre 6 sur 7</span><span class="chapitre__duree">≈ 2 min</span><span class="chapitre__reste">≈ 3 min restantes</span></p>
         <span class="chapitre__barre" style="--p: 86%" aria-hidden="true"></span>
         <h2 id="step-6" data-speakable="true">Comment savoir si ça marche ?</h2>
-        <a class="lien-fleche" href="#step-7">Aller au chapitre suivant<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+        <a class="lien-fleche" href="#step-7">Aller au chapitre suivant<span class="visuellement-masque"> (chapitre 7)</span><svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
       </div>
       <div class="chapitre__corps">
         <p class="reponse-courte" data-speakable="true">Comparez <strong>avec le point de départ noté au chapitre 1</strong> : temps passé, qualité, corrections.</p>
@@ -1336,7 +1351,7 @@ Consigne à garder                : ______________________________</pre>
     <ul class="carte-action__liste">
       <li><a class="btn btn--bleu act" href="/fr/appel?rdv=diagnostic&amp;depuis=guide-pilier-colonne" data-cta="diagnostic" aria-label="Diagnostic IA, 45 min, gratuit">
         <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>
-        <span class="btn__texte"><span class="act__libelle"><span class="act__long">Diagnostic IA, 45 min</span><span class="act__court">Diagnostic</span></span><span class="btn__sous">Gratuit · en visio ou par téléphone · sans engagement</span></span>
+        <span class="btn__texte"><span class="act__libelle"><span class="act__long">Diagnostic IA, 45 min</span><span class="act__court">Diagnostic IA</span></span><span class="btn__sous">Gratuit · en visio ou par téléphone · sans engagement</span></span>
         <span class="act__pastille" aria-hidden="true">45 min</span>
         <svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></li>
       <li><a class="btn btn--terracotta act" href="/fr/journee-ia" data-cta="journee" aria-label="Découvrir la Journée IA">
