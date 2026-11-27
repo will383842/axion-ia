@@ -270,7 +270,7 @@ const ACCENTS_MAP: Record<string, string> = {
   æ: "ae",
 };
 
-function slugifyHeading(text: string): string {
+export function slugifyHeading(text: string): string {
   const base = text
     .toLowerCase()
     .replace(/[àâäáãéèêëîïíôöóõûüùúçñœæ]/g, (c) => ACCENTS_MAP[c] ?? c)

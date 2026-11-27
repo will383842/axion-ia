@@ -20,7 +20,7 @@ export const commentRendezVous = (jours: number, mois: number) =>
     "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
     `Cette entreprise vous est gardée ${jours} jours à compter de votre déclaration.`,
     `Elle est validée à votre nom dès qu'un premier rendez-vous avec Axion-IA a eu lieu, s'il a été pris pendant ces ${jours} jours. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
-    `Un devis signé pendant ces ${jours} jours compte aussi.`,
+    `Une commande signée pendant ces ${jours} jours compte aussi.`,
     "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
     "Une commission n'est due que sur une commande payée.",
   ] as const;

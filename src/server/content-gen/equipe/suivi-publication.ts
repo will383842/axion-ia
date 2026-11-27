@@ -23,6 +23,8 @@ export const REFRESH_FIXE_JOURS = 14;
 export const SEUIL_BAISSE_POSITION = 3;
 export const AGE_MAX_FILET_JOURS = 180;
 export const ESSAIS_MAX = 3;
+/** Impressions minimales sur 28 jours pour qu'une baisse de position compte. */
+export const PLANCHER_IMPRESSIONS_BAISSE = 100;
 
 export type Jalon = "inspection-j3" | "inspection-j7" | "positions-j28" | "positions-j90";
 
@@ -128,12 +130,16 @@ export interface SignauxArticle {
   readonly preuveExpireLe: Date | null;
   readonly liensCasses: number;
   readonly cannibalisation: boolean;
+  /** Impressions de la page sur 28 jours ; absent ou null = baisse de position ignorée. */
+  readonly impressions28j?: number | null;
 }
 
 /** Règles pures de déclenchement d'une mise à jour. */
 export function declencheursMiseAJour(s: Omit<SignauxArticle, "id">, maintenant: Date): Raison[] {
   const raisons: Raison[] = [];
   if (
+    s.impressions28j != null &&
+    s.impressions28j >= PLANCHER_IMPRESSIONS_BAISSE &&
     s.positionActuelle !== null &&
     s.positionReference !== null &&
     s.positionActuelle > 0 &&
