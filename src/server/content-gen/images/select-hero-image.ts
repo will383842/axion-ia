@@ -40,6 +40,8 @@ export interface SelectHeroImageInput extends AssignHeroImageInput {
   /** Pour la traçabilité cost/audit du provider Unsplash. */
   readonly jobId: string;
   readonly contentType: string;
+  /** Simulation : ne réserve aucune photo (aperçu du rattrapage). */
+  readonly dryRun?: boolean;
 }
 
 export interface SelectedHero {
@@ -162,7 +164,7 @@ async function selectHeroQuality(input: SelectHeroImageInput): Promise<SelectedH
 
   let accept: (url: string) => Promise<boolean>;
   try {
-    accept = makePhotoGate(await loadUsedPhotoKeys());
+    accept = makePhotoGate(await loadUsedPhotoKeys(), { reserve: input.dryRun !== true });
   } catch {
     return null; // mémoire des doublons illisible → image en attente plutôt qu'un doublon
   }

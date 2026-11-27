@@ -142,6 +142,7 @@ export async function backfillHeroImages(
       jobId: a.generatedByJobId ?? `backfill-${a.id}`,
       contentType,
       primaryKeyword,
+      dryRun,
       ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
     });
 

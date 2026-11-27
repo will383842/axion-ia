@@ -44,10 +44,22 @@ describe("interrupteur CONTENT_IMAGES_QUALITE", () => {
 describe("clé de photo", () => {
   it("extrait photo-<ts>-<hash> d'une URL et du HTML", () => {
     expect(photoKeyFromUrl("https://images.unsplash.com/photo-1-ab?ixid=x")).toBe("photo-1-ab");
+    expect(photoKeyFromUrl("https://images.unsplash.com/premium_photo-9-z?q=1")).toBe(
+      "premium_photo-9-z",
+    );
     expect(photoKeyFromUrl("/image-bank/x.webp")).toBeNull();
     const html =
       '<img src="https://images.unsplash.com/photo-1-ab?x"><img src="https://images.unsplash.com/photo-2-cd">';
     expect(photoKeysFromHtml(html)).toEqual(["photo-1-ab", "photo-2-cd"]);
+  });
+});
+
+describe("termes multi-mots", () => {
+  it("« immobilier » retrouve « real estate »", () => {
+    const { terms } = buildTopic("immobilier");
+    expect(relevanceScore(photo({ id: "r", alt_description: "a real estate agent" }), terms)).toBe(
+      1,
+    );
   });
 });
 

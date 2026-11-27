@@ -8,9 +8,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 const redisSets = new Set<string>();
 vi.mock("@/lib/redis", () => ({
   redis: {
-    smembers: async () => [...redisSets],
-    sadd: async (_k: string, v: string) => (redisSets.has(v) ? 0 : (redisSets.add(v), 1)),
-    expire: async () => 1,
+    keys: async () => [...redisSets].map((k) => `cg:img:res:${k}`),
+    set: async (k: string) => {
+      const key = k.replace("cg:img:res:", "");
+      if (redisSets.has(key)) return null;
+      redisSets.add(key);
+      return "OK";
+    },
     zremrangebyscore: async () => 0,
     zrange: async () => [],
     zadd: async () => 1,
@@ -139,6 +143,19 @@ describe("hero qualité", () => {
       [raw("d", { alt_description: "a dog running on a beach" })],
     ];
     expect(await selectHeroImage(HERO_IN)).toBeNull();
+  });
+
+  it("dry-run : ne réserve aucune photo", async () => {
+    responses = [[raw("a")]];
+    const hero = await selectHeroImage({ ...HERO_IN, dryRun: true });
+    expect(hero?.url).toContain("photo-a-hh");
+    expect(redisSets.size).toBe(0);
+  });
+
+  it("photo réservée par un autre job (Redis) jamais reprise", async () => {
+    redisSets.add("photo-a-hh");
+    responses = [[raw("a", { likes: 99 }), raw("b", { likes: 1 })]];
+    expect((await selectHeroImage(HERO_IN))?.url).toContain("photo-b-hh");
   });
 
   it("base indisponible → null (pas de doublon risqué)", async () => {

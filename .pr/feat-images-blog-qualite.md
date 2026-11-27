@@ -34,3 +34,9 @@ L'identifiant d'API n'est stocké nulle part ; la clé commune est `photo-<ts>-<
 - Quota Unsplash : au plus 3 recherches par hero, 2 par image de corps (inchangé en ordre de grandeur).
 - La requête générique est notée sur ses propres mots (photo « IA/business » valide), avec le même anti-doublon.
 - « Admin » = garde existante `requireAdmin` (admin, super_admin, editor).
+
+## Relecture Opus
+
+Tour 1 : « À CORRIGER » (l'aperçu dry-run réservait des photos ; réservation Redis sans expiration réelle ; « real estate » jamais reconnu ; tests manquants). Tout a été corrigé : dry-run sans réservation, une clé Redis par photo avec TTL 7 j, termes multi-mots, tests ajoutés (dry-run, réservation Redis, `articleIds`, `premium_photo-`). Restent mineurs et assumés : une photo reste réservée si l'attribution manque (cas rare) ; la page article reste en cache ISR jusqu'à 1 h après un remplacement (comme le rattrapage existant). Le test `kb-ingest/url-extractor.spec.ts` échoue déjà sur `main` (sans lien).
+
+VERDICT OPUS : BON

@@ -219,7 +219,9 @@ export function relevanceScore(p: CandidatePhoto, terms: readonly TopicTerm[]): 
   if (bag.size === 0) return 0; // aucune description → pertinence inconnue → refus
   // Tolère les pluriels simples (« robots » ↔ « robot »).
   const has = (w: string): boolean =>
-    bag.has(w) || bag.has(`${w}s`) || bag.has(w.replace(/s$/, ""));
+    w.includes(" ")
+      ? w.split(" ").every((x) => bag.has(x))
+      : bag.has(w) || bag.has(`${w}s`) || bag.has(w.replace(/s$/, ""));
   let hit = 0;
   for (const t of terms) if (t.words.some(has)) hit++;
   return hit / terms.length;

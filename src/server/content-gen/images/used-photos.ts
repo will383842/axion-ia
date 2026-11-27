@@ -17,7 +17,7 @@ import { prisma } from "../../../lib/prisma";
 import { redis } from "../../../lib/redis";
 import { PHOTO_KEY_REGEX_SOURCE, photoKeyFromUrl } from "./photo-quality";
 
-const RESERVED_SET_KEY = "cg:img:reserved";
+const RESERVED_PREFIX = "cg:img:res:";
 const RESERVED_TTL_SEC = 7 * 24 * 60 * 60;
 
 export async function loadUsedPhotoKeys(): Promise<Set<string>> {
@@ -40,8 +40,10 @@ export async function loadUsedPhotoKeys(): Promise<Set<string>> {
   for (const r of rows ?? []) if (r.key) used.add(r.key);
 
   try {
-    const reserved = (await redis.smembers(RESERVED_SET_KEY)) as string[] | null;
-    if (Array.isArray(reserved)) for (const k of reserved) used.add(k);
+    const reserved = (await redis.keys(`${RESERVED_PREFIX}*`)) as string[] | null;
+    if (Array.isArray(reserved)) {
+      for (const k of reserved) used.add(k.slice(RESERVED_PREFIX.length));
+    }
   } catch {
     // Redis indisponible → la base fait foi.
   }
@@ -53,20 +55,26 @@ export async function loadUsedPhotoKeys(): Promise<Set<string>> {
  * clé n'est ni dans `used` ni déjà réservée par un autre job, puis la réserve.
  * `used` est mis à jour : une même photo n'est jamais reprise dans un même article.
  */
-export function makePhotoGate(used: Set<string>): (urlRegular: string) => Promise<boolean> {
+export function makePhotoGate(
+  used: Set<string>,
+  opts: { reserve?: boolean } = {},
+): (urlRegular: string) => Promise<boolean> {
+  const reserve = opts.reserve !== false;
   return async (urlRegular: string): Promise<boolean> => {
     const key = photoKeyFromUrl(urlRegular);
     if (!key) return false; // URL non reconnue → impossible de dédoublonner → refus
     if (used.has(key)) return false;
-    try {
-      const added = await redis.sadd(RESERVED_SET_KEY, key);
-      if (added === 0) {
-        used.add(key); // déjà réservée ailleurs
-        return false;
+    if (reserve) {
+      try {
+        // Une clé par photo, TTL propre de 7 j (NX : un seul job gagne la photo).
+        const ok = await redis.set(`${RESERVED_PREFIX}${key}`, "1", "EX", RESERVED_TTL_SEC, "NX");
+        if (ok !== "OK") {
+          used.add(key); // déjà réservée ailleurs
+          return false;
+        }
+      } catch {
+        // Redis indisponible → échec ouvert sur la réservation seulement.
       }
-      await redis.expire(RESERVED_SET_KEY, RESERVED_TTL_SEC);
-    } catch {
-      // Redis indisponible → échec ouvert sur la réservation seulement.
     }
     used.add(key);
     return true;

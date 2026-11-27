@@ -43,6 +43,18 @@ describe("computeDuplicates", () => {
   });
 });
 
+describe("backfill ciblé", () => {
+  it("articleIds cible exactement ces articles publiés", async () => {
+    const findMany = vi.fn().mockResolvedValue([]);
+    vi.resetModules();
+    vi.doMock("@/lib/prisma", () => ({ prisma: { article: { findMany } } }));
+    vi.doUnmock("@/server/content-gen/images/backfill-hero");
+    const { backfillHeroImages } = await import("../backfill-hero");
+    await backfillHeroImages({ articleIds: ["x"], limit: 1 });
+    expect(findMany.mock.calls[0]?.[0].where).toEqual({ status: "published", id: { in: ["x"] } });
+  });
+});
+
 describe("actions du rapport : admin seulement", () => {
   beforeEach(() => {
     auth.mockReset();
