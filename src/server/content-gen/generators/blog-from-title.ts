@@ -40,6 +40,7 @@ import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { equipeEditorialeActive } from "../fact-check/equipe-editoriale-drapeau";
+import { consigneRedactionEquipe } from "../equipe/redaction";
 import { expandOutlineChunked } from "../shared/expand-outline-chunked";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
@@ -323,7 +324,7 @@ ${chunkText}
 ## Sources internes Axion-IA (grounding obligatoire)
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}
-${glossaryContext ? `\n${glossaryContext}` : ""}
+${glossaryContext ? `\n${glossaryContext}` : ""}${consigneRedactionEquipe({ plan: { sections: plan.outline ?? [] }, dossier: input.dossierPreuves })}
 ## Output attendu (JSON)
 { bodyHtml }  (UNIQUEMENT les <h2> de CES sections, rien d'autre)`,
       });

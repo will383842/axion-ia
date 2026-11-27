@@ -3,7 +3,9 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  CHEMIN_FICHE_COMMISSIONS,
   CHEMIN_LIVRET,
+  DOCUMENTS_NON_SIGNE,
   DOCUMENTS_REMIS,
   documentsRemis,
   type ContexteDocuments,
@@ -52,12 +54,13 @@ describe("ce que voit l'apporteur", () => {
     expect(docs.map((d) => [d.cle, d.href])).toEqual([
       ["contrat", `${ESPACE}/contrat?dl=1`],
       ["guide", `${ESPACE}/guide`],
-      ["fiche-commissions", "/documents/apporteurs/comment-ca-marche.pdf"],
-      ["livret", CHEMIN_LIVRET],
+      ["fiche-commissions", `${ESPACE}/fiche-commissions`],
+      ["livret", `${ESPACE}/livret`],
       ["charte", `${ESPACE}/charte`],
       ["outils", `${ESPACE}/outils`],
     ]);
-    expect(CHEMIN_LIVRET).toBe("/documents/apporteurs/livret-apporteur.pdf");
+    expect(CHEMIN_FICHE_COMMISSIONS(ESPACE)).toBe(`${ESPACE}/fiche-commissions`);
+    expect(CHEMIN_LIVRET(ESPACE)).toBe(`${ESPACE}/livret`);
   });
 
   it("contrat signé mais fichier absent : pas de ligne contrat", () => {
@@ -70,8 +73,9 @@ describe("ce que voit l'apporteur", () => {
     ]);
   });
 
-  it("dossier pas encore signé : ni contrat, ni charte, ni outils", () => {
+  it("dossier pas encore signé : le guide, la fiche et le livret ; ni contrat, ni charte, ni outils", () => {
     expect(cles(ctx({ sousContrat: false, contratSigneDisponible: false }))).toEqual([
+      "guide",
       "fiche-commissions",
       "livret",
     ]);
@@ -79,7 +83,7 @@ describe("ce que voit l'apporteur", () => {
     expect(cles(ctx({ sousContrat: false }))).not.toContain("contrat");
   });
 
-  it("livret absent de public/ : pas de ligne livret", () => {
+  it("livret illisible (lireLivret() === null) : pas de ligne livret", () => {
     expect(cles(ctx({ livretDisponible: false }))).not.toContain("livret");
   });
 
@@ -108,8 +112,21 @@ describe("le guide de démarrage", () => {
     });
   });
 
-  it("avant la signature : aucune ligne guide", () => {
-    expect(guide(ctx({ sousContrat: false, contratSigneDisponible: false }))).toBeUndefined();
+  it("avant la signature : la ligne guide est là aussi", () => {
+    expect(guide(ctx({ sousContrat: false, contratSigneDisponible: false }))).toMatchObject({
+      href: `${ESPACE}/guide`,
+      telechargement: `${ESPACE}/guide?dl=1`,
+    });
+  });
+
+  it("le texte « pas encore signé » n'annonce que le contrat signé, la charte et les outils", () => {
+    expect(DOCUMENTS_NON_SIGNE).toBe(
+      "Votre contrat signé, la charte de marque et vos outils de communication s'ajouteront ici dès que votre contrat sera signé.",
+    );
+  });
+
+  it("aucun document ne pointe vers le fichier public comment-ca-marche.pdf", () => {
+    for (const d of documentsRemis(ctx())) expect(d.href).not.toContain("comment-ca-marche");
   });
 
   it("la phrase est celle de la couverture du guide validé, sans montant", () => {

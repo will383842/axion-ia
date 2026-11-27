@@ -6,8 +6,9 @@
  * se tenir après) ; la protection de six mois part du jour du rendez-vous tenu ; un rendez-vous
  * pris AVANT la saisie ne compte pas.
  *
- * Lot 2 (2026-11-25) : ces fonctions ne sont lues par AUCUN appelant. Les contrats 2.6 et
- * antérieurs restent sous la confirmation par le silence (`regles.ts`, art. 3.2).
+ * Les contrats 2.6 et antérieurs restent sous la confirmation par le silence (`regles.ts`, art. 3.2).
+ * `basculeVersRendezVous` (26/11/2026, décision de Will) : une présentation EN ATTENTE, faite sous
+ * l'ancienne règle par un apporteur déjà en 2.8, passe à la règle du rendez-vous.
  *
  * ⚠️ Module PUR : ni base, ni environnement, ni `server-only`. L'interrupteur vit à part
  * (`interrupteur-rendez-vous.ts`) et se passe en argument (`regleDe(signature, actif)`).
@@ -73,6 +74,81 @@ export function finReservation(recueAt: Date): Date {
 /** Fin de la protection : six mois à compter du rendez-vous TENU. */
 export function finDeProtectionRendezVous(rendezVousAt: Date): Date {
   return ajouterMois(rendezVousAt, PROTECTION_MOIS);
+}
+
+/** Délai minimal laissé à l'apporteur, à compter de la bascule, pour obtenir le rendez-vous (contrat 2.8, art. 13.5). */
+export const DELAI_MINIMAL_BASCULE_JOURS = 30;
+
+/**
+ * Marqueur de la clause transitoire de l'article 13.5 dans le TEXTE SIGNÉ archivé. La bascule ne
+ * vaut que pour un apporteur dont le texte signé contient cette clause : une 2.8 signée avant
+ * son ajout (même numéro de version, autre texte) n'a pas accepté cette exception.
+ */
+export const MARQUEUR_CLAUSE_BASCULE =
+  "Par exception, les présentations encore en attente d'attribution";
+
+/** Le texte signé archivé porte-t-il la clause transitoire ? Sans texte archivé : non. */
+export function texteSigneContientClauseBascule(signature: unknown): boolean {
+  if (typeof signature !== "object" || signature === null || Array.isArray(signature)) return false;
+  if (!Object.hasOwn(signature, "texte")) return false;
+  const texte = (signature as { texte?: unknown }).texte;
+  return typeof texte === "string" && texte.includes(MARQUEUR_CLAUSE_BASCULE);
+}
+
+/**
+ * Terme de la réservation d'une présentation BASCULÉE : le plus tardif du terme normal (fin du
+ * 60e jour depuis la saisie) et de la date de bascule + 30 jours (art. 13.5, clause transitoire).
+ */
+export function termeApresBascule(recueAt: Date, maintenant: Date): Date {
+  const normal = finReservation(recueAt);
+  // Fin du jour annoncé (minuit, heure de Paris) : le jour de la bascule est le jour 1.
+  const minimal = finDuNiemeJourParis(maintenant, DELAI_MINIMAL_BASCULE_JOURS + 1);
+  return normal.getTime() >= minimal.getTime() ? normal : minimal;
+}
+
+export type MotifBasculeRefusee =
+  | "interrupteur"
+  | "version"
+  | "statut_apporteur"
+  | "silence_acquis"
+  | "deja_reglee"
+  | "rebond"
+  | "terme_depasse";
+
+/**
+ * Cette présentation EN ATTENTE (`reservee`, sans ligne de réservation) passe-t-elle de l'ancienne
+ * règle (silence) à la règle du rendez-vous ? Oui si l'interrupteur est allumé, l'apporteur est
+ * `signe` à la version 2.8 ou plus, la date du silence n'est pas déjà atteinte (la présentation est alors
+ * acquise, la confirmation tacite la traite) et le terme (`finReservation`) n'est pas déjà dépassé. Une prise de contact revenue en
+ * erreur suspend l'ancienne règle sans limite : la présentation peut avoir plus de 60 jours, elle
+ * n'est pas basculée (l'appelant la signale). Ne modifie rien, rend le terme à enregistrer
+ * (`termeApresBascule` : au moins 30 jours à compter de la bascule). Le texte signé archivé doit
+ * contenir la clause transitoire (`MARQUEUR_CLAUSE_BASCULE`), sinon motif « version ».
+ */
+export function basculeVersRendezVous(e: {
+  statut: string;
+  recueAt: Date;
+  apporteur: { statut: string; signature: unknown };
+  /** La date de confirmation par le silence est atteinte : la présentation est déjà acquise (art. 3.2). */
+  silenceAtteint: boolean;
+  aUneLigne: boolean;
+  rebond: boolean;
+  actif: boolean;
+  maintenant: Date;
+}): { bascule: true; reserveeJusquAt: Date } | { bascule: false; motif: MotifBasculeRefusee } {
+  if (e.actif !== true) return { bascule: false, motif: "interrupteur" };
+  if (e.statut !== "reservee" || e.aUneLigne) return { bascule: false, motif: "deja_reglee" };
+  if (e.apporteur.statut !== "signe") return { bascule: false, motif: "statut_apporteur" };
+  if (!versionAuMoins(e.apporteur.signature, VERSION_REGLE_RENDEZ_VOUS))
+    return { bascule: false, motif: "version" };
+  if (!texteSigneContientClauseBascule(e.apporteur.signature))
+    return { bascule: false, motif: "version" };
+  if (e.rebond) return { bascule: false, motif: "rebond" };
+  if (e.silenceAtteint) return { bascule: false, motif: "silence_acquis" };
+  const terme = finReservation(e.recueAt);
+  if (!(terme.getTime() >= e.maintenant.getTime()))
+    return { bascule: false, motif: "terme_depasse" };
+  return { bascule: true, reserveeJusquAt: termeApresBascule(e.recueAt, e.maintenant) };
 }
 
 export type MotifRendezVousRefuse =

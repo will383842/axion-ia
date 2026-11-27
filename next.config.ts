@@ -1241,6 +1241,11 @@ const sentryBuildOptions = {
   hideSourceMaps: true,
   widenClientFileUpload: true,
   reactComponentAnnotation: { enabled: false },
+  // Perf (lot 1 socle [locale]) : pas d'injection du manifeste de routes côté
+  // client (~89 Ko brut, injecté 2 fois dans le First Load). Seul effet : les
+  // transactions navigateur Sentry ne sont plus paramétrées (/fr/a-propos au
+  // lieu de /:locale/a-propos).
+  routeManifestInjection: false as const,
 };
 
 const composedConfig = withNextIntl(bundleAnalyzer(nextConfig));

@@ -11,6 +11,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { ChangerRegimeTva } from "@/components/admin/apporteurs/fiche/ChangerRegimeTva";
 import { CorrigerNom } from "@/components/admin/apporteurs/fiche/CorrigerNom";
+import { BlocDecision } from "@/components/admin/apporteurs/fiche/BlocDecision";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
 import {
   NomEtEntreprise,
@@ -149,17 +150,19 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
         }
       />
 
-      {aVerifier ? (
-        <AdminCard as="section" elevation={2}>
-          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
-            Dossier signé : à vérifier
-          </h2>
-          <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
-            Vérifiez chaque pièce, relisez le contrat signé, puis choisissez.
-          </p>
-          <DecisionDossier apporteurId={d.id} />
-        </AdminCard>
-      ) : null}
+      <BlocDecision>
+        {aVerifier ? (
+          <AdminCard as="section" elevation={2}>
+            <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
+              Dossier signé : à vérifier
+            </h2>
+            <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
+              Vérifiez chaque pièce, relisez le contrat signé, puis choisissez.
+            </p>
+            <DecisionDossier apporteurId={d.id} />
+          </AdminCard>
+        ) : null}
+      </BlocDecision>
 
       {/* Le nom du contrat correspond-il à l'entreprise ? (10/10) Registre relu à l'affichage. */}
       {voitPii && (d.siren || siret) ? (

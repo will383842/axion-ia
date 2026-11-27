@@ -45,13 +45,12 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useAnalyticsConsent } from "./CookieConsent";
 import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
 
 export function LinkedInInsight() {
-  const partnerId = env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID;
+  const partnerId = process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID || undefined;
   const consent = useAnalyticsConsent();
   const pathname = usePathname();
   if (!partnerId) return null;
