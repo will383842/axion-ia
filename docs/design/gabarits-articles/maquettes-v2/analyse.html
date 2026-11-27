@@ -46,6 +46,37 @@
    20 FAQ, sources, auteur, partage, liens · 21 Préférences utilisateur
    ========================================================================== */
 
+/* 00 — POLICES : les fichiers de production eux-mêmes (chemin relatif, aucun réseau).
+   Sans eux la maquette s'affichait en Georgia/Times : ce n'était pas la typographie du site. */
+@font-face {
+  font-family: "Manrope";
+  src: url("../../../../src/fonts/manrope-latin-var.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../../../src/fonts/fraunces-latin-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../../../src/fonts/fraunces-latin-var-italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inconsolata";
+  src: url("../../../../src/fonts/inconsolata-latin-var.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 01 — JETONS (seul endroit avec des hexadécimaux) ------------------------- */
 :root {
   --color-bg: #faf8f3;
@@ -92,9 +123,13 @@
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --font-mono: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --ombre-douce: 0 1px 2px color-mix(in srgb, var(--color-mocha) 8%, transparent),
+  --ombre-douce:
+    0 1px 2px color-mix(in srgb, var(--color-mocha) 8%, transparent),
     0 14px 34px -14px color-mix(in srgb, var(--color-mocha) 28%, transparent);
   --ombre-bloc: 6px 6px 0 var(--color-terracotta);
+  --ombre-legere:
+    0 1px 2px color-mix(in srgb, var(--color-mocha) 4%, transparent),
+    0 4px 8px color-mix(in srgb, var(--color-mocha) 6%, transparent);
   --gouttiere: 16px;
   /* Largeurs en em, jamais en ch : ch dépend de la police (Manrope 0,610 em, repli Arial 0,577 em ;
      Fraunces 600 0,675 em, repli Times 0,561 em) et ferait refluer le texte au swap = CLS. */
@@ -114,7 +149,11 @@
 }
 
 /* 02 — BASE ---------------------------------------------------------------- */
-*, *::before, *::after { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 html {
   color-scheme: light;
   scroll-padding-top: calc(var(--header-h) + 1rem);
@@ -123,6 +162,10 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+/* le fond plein écran du héros déborde de la colonne : on le rogne au niveau de la page (clip ne casse pas position: sticky) */
+html {
+  overflow-x: clip;
 }
 body {
   margin: 0;
@@ -133,730 +176,3119 @@ body {
   /* place réservée à la barre d'action fixe du téléphone (rien n'est masqué) */
   padding-bottom: calc(var(--hauteur-barre-mobile) + env(safe-area-inset-bottom));
 }
-img, svg { display: block; max-width: 100%; }
-a { color: var(--color-primary); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
-a:hover { color: var(--color-primary-hover); text-decoration-thickness: 2px; }
-.icone { width: 1.25em; height: 1.25em; flex: none; display: inline-block; fill: none;
-  stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: var(--color-primary);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration-thickness: 2px;
+}
+.icone {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+  display: inline-block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 /* 03 — TYPOGRAPHIE (fluide, hiérarchie forte) ------------------------------ */
-h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
-.prose { max-width: var(--largeur-lecture); }
-.prose > section > h2:not([class]), .prose h2.titre-section {
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  text-wrap: balance;
+}
+p,
+li,
+dd,
+figcaption,
+blockquote {
+  text-wrap: pretty;
+}
+.prose,
+.prose p {
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+}
+.prose {
+  max-width: var(--largeur-lecture);
+}
+.prose > section > h2:not([class]),
+.prose h2.titre-section {
   font: 600 clamp(1.625rem, 1.2rem + 1.6vw, 2.375rem) / 1.14 var(--font-serif);
-  letter-spacing: -0.02em; color: var(--color-ink);
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
   margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 1rem;
   scroll-margin-top: calc(var(--header-h) + 1rem);
 }
 /* Repère de section (numéro décoratif + ancre partageable), AVANT le h2 :
    le texte du titre reste propre pour les extracteurs */
-.num-section { display: flex; align-items: center; gap: 0.75rem; margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 0.5rem;
-  font: 600 0.875rem/1 var(--font-mono); color: var(--color-terracotta-deep); letter-spacing: 0.06em; }
-.num-section::before { content: ""; order: 1; flex: 0 1 5rem; height: 2px;
-  background: linear-gradient(90deg, var(--color-terracotta), transparent); }
-.num-section + h2 { margin-top: 0 !important; }
-.ancre { order: 2; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;
-  margin: -0.75rem 0; border-radius: var(--radius-md); color: var(--color-terracotta-deep); text-decoration: none;
-  font: 600 1rem/1 var(--font-mono); opacity: 0; transition: opacity 0.15s; }
-section:hover .ancre, .ancre:focus-visible { opacity: 1; }
-@media (hover: none) { .ancre { opacity: 1; } } /* à 0,6 le « # » tombait à 3,1:1 */
-.prose h3 { font: 600 clamp(1.1875rem, 1.1rem + 0.45vw, 1.4375rem) / 1.3 var(--font-sans);
-  margin: 2.25rem 0 0.5rem; color: var(--color-ink); }
-.prose p, .prose ul, .prose ol { margin: 0 0 1.1em; }
-.prose li { margin: 0.35em 0; }
-.prose strong { font-weight: 600; color: var(--color-ink); }
+.num-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 0.5rem;
+  font: 600 0.875rem/1 var(--font-mono);
+  color: var(--color-terracotta-deep);
+  letter-spacing: 0.06em;
+}
+.num-section::before {
+  content: "";
+  order: 1;
+  flex: 0 1 5rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-terracotta), transparent);
+}
+.num-section + h2 {
+  margin-top: 0 !important;
+}
+.ancre {
+  order: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -0.75rem 0;
+  border-radius: var(--radius-md);
+  color: var(--color-terracotta-deep);
+  text-decoration: none;
+  font: 600 1rem/1 var(--font-mono);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+section:hover .ancre,
+.ancre:focus-visible {
+  opacity: 1;
+}
+@media (hover: none) {
+  .ancre {
+    opacity: 1;
+  }
+} /* à 0,6 le « # » tombait à 3,1:1 */
+.prose h3 {
+  font: 600 clamp(1.25rem, 1.12rem + 0.55vw, 1.5rem) / 1.3 var(--font-sans);
+  letter-spacing: -0.01em;
+  margin: 2.25rem 0 0.5rem;
+  color: var(--color-ink);
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 1.1em;
+}
+.prose li {
+  margin: 0.35em 0;
+}
+.prose strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
 /* Surlignage : 1 par section, la phrase qu'on veut voir citée */
-.prose mark { background: linear-gradient(transparent 55%, var(--color-ochre-soft) 55%);
-  color: inherit; padding: 0 0.1em; }
+.prose mark {
+  background: linear-gradient(transparent 55%, var(--color-ochre-soft) 55%);
+  color: inherit;
+  padding: 0 0.1em;
+}
+/* Colonne de TEXTE étroite (≈ 70 caractères par ligne) ; tableaux, schémas et figures gardent toute la largeur */
+@media (min-width: 1024px) {
+  body {
+    font-size: 1.1875rem;
+  }
+  .prose > section > :is(p, ul, ol, h2, h3, h4, .num-section, .reponse-courte) {
+    max-width: 35em;
+  }
+}
+/* h4 : défini une fois pour tous les modèles */
+.prose h4 {
+  font: 600 clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem) / 1.35 var(--font-sans);
+  margin: 1.5rem 0 0.4rem;
+  color: var(--color-ink);
+}
 /* Micro-réponse : la 1re phrase sous chaque H2 répond seule */
-.reponse-courte { font-size: 1.1875rem; line-height: 1.55; color: var(--color-ink); }
-.reponse-courte strong { box-shadow: inset 0 -0.45em 0 var(--color-terracotta-soft); }
-.terme-glossaire { text-decoration-style: dotted; text-decoration-thickness: 2px; }
+.reponse-courte {
+  font-size: clamp(1.1875rem, 1.1rem + 0.45vw, 1.3125rem);
+  line-height: 1.55;
+  color: var(--color-ink);
+}
+.reponse-courte strong {
+  box-shadow: inset 0 -0.45em 0 var(--color-terracotta-soft);
+}
+.terme-glossaire {
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+}
 /* Liens dans le texte : padding vertical d'un élément en ligne = zone cliquable ≥ 24 px (2.5.8)
    sans toucher à la hauteur de ligne ; :where() garde la spécificité au plus bas */
-:where(main, .pied-site) a:where(:not([class])), .prose a.terme-glossaire { padding-block: 0.25em; }
-.chiffre-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+:where(main, .pied-site) a:where(:not([class])),
+.prose a.terme-glossaire {
+  padding-block: 0.25em;
+}
+.chiffre-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
 
 /* 04 — UTILITAIRES & FOCUS ------------------------------------------------- */
-.visuellement-masque { position: absolute !important; width: 1px; height: 1px; overflow: hidden;
-  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
-.lien-evitement { position: absolute; left: 1rem; top: -10rem; z-index: 100; padding: 0.75rem 1rem;
-  background: var(--color-paper); color: var(--color-fg); border-radius: var(--radius-md); }
-.lien-evitement:focus { top: 1rem; }
+.visuellement-masque {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.lien-evitement {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--color-paper);
+  color: var(--color-fg);
+  border-radius: var(--radius-md);
+}
+.lien-evitement:focus {
+  top: 1rem;
+}
 /* posé sur l'en-tête mocha : l'anneau est tracé DANS le lien, sur fond papier */
-.lien-evitement:focus-visible { outline-offset: -6px; box-shadow: 0 0 0 3px var(--color-mocha-fg); }
-.conteneur { width: 100%; max-width: var(--largeur-page); margin-inline: auto; padding-inline: var(--gouttiere); }
-@media (min-width: 640px) { :root { --gouttiere: 24px; } }
-@media (min-width: 1280px) { :root { --gouttiere: 40px; } }
+.lien-evitement:focus-visible {
+  outline-offset: -6px;
+  box-shadow: 0 0 0 3px var(--color-mocha-fg);
+}
+.conteneur {
+  width: 100%;
+  max-width: var(--largeur-page);
+  margin-inline: auto;
+  padding-inline: var(--gouttiere);
+}
+@media (min-width: 640px) {
+  :root {
+    --gouttiere: 24px;
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --gouttiere: 40px;
+  }
+}
 
-:focus-visible { outline: 3px solid var(--focus-clair); outline-offset: 3px; border-radius: var(--radius-sm); }
-.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
-.sur-terracotta :focus-visible { outline-color: var(--color-mocha-fg); }
-.sur-sombre a:not(.btn) { color: var(--color-mocha-fg); }
-.sur-sombre a:not(.btn):hover { color: var(--color-terracotta-on-mocha); }
+:focus-visible {
+  outline: 3px solid var(--focus-clair);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+.sur-sombre :focus-visible {
+  outline-color: var(--focus-sombre);
+}
+.sur-terracotta :focus-visible {
+  outline-color: var(--color-mocha-fg);
+}
+.sur-sombre a:not(.btn) {
+  color: var(--color-mocha-fg);
+}
+.sur-sombre a:not(.btn):hover {
+  color: var(--color-terracotta-on-mocha);
+}
+.sur-terracotta a:not(.btn) {
+  color: var(--color-mocha-fg);
+}
+.sur-terracotta a:not(.btn):hover {
+  color: var(--color-paper);
+  text-decoration-thickness: 2px;
+}
 
 /* 05 — BARRE DE PROGRESSION DE LECTURE (CSS pur, invisible sans support) --- */
-.progression { display: none; }
+.progression {
+  display: none;
+}
 @supports (animation-timeline: scroll()) {
   .progression {
-    display: block; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 60;
-    background: linear-gradient(90deg, var(--color-terracotta), var(--color-terracotta-on-mocha));
-    transform-origin: 0 50%; transform: scaleX(0);
+    display: block;
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 4px;
+    z-index: 60;
+    background: var(--color-mocha-fg);
+    box-shadow: 0 1px 0 var(--color-terracotta-deep);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
     animation: progression-lecture linear both;
     animation-timeline: scroll(root block);
   }
-  @keyframes progression-lecture { to { transform: scaleX(1); } }
+  @keyframes progression-lecture {
+    to {
+      transform: scaleX(1);
+    }
+  }
 }
 
 /* 06 — BANDEAU MAQUETTE, EN-TÊTE DU SITE, FIL D'ARIANE --------------------- */
-.bandeau-maquette { background: var(--color-ochre-soft); color: var(--color-ochre-deep); text-align: center;
-  font: 600 0.8125rem/1.4 var(--font-sans); padding: 0.4rem 1rem; }
-/* Simule l'en-tête collant du site (hauteur = --header-h, comme en production) */
-.site-entete { position: sticky; top: 0; z-index: 40; height: var(--header-h);
-  background: var(--color-mocha); color: var(--color-mocha-fg); border-bottom: 1px solid var(--color-border-on-mocha); }
-.site-entete .conteneur { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.site-logo { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none;
-  font: 600 1.375rem/1 var(--font-serif); letter-spacing: -0.01em; }
-.site-logo em { color: var(--color-terracotta-on-mocha); font-weight: 500; }
-.site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
-.site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
-@media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
-/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
-.site-entete .site-entete__cta { display: none; }
-@media (min-width: 1024px) {
-  .site-entete .conteneur { justify-content: flex-start; }
-  .site-nav { margin-left: auto; }
-  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
-  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+.bandeau-maquette {
+  background: var(--color-ochre-soft);
+  color: var(--color-ochre-deep);
+  text-align: center;
+  font: 600 0.8125rem/1.4 var(--font-sans);
+  padding: 0.4rem 1rem;
 }
-/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
-@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
+/* EN-TÊTE DU SITE — copie fidèle de src/components/nav/Header.tsx + NavLink.tsx (refonte 2026-11-11) :
+   barre TERRACOTTA (bg-terracotta, 95 % + flou si supporté), filet bas mocha/30, logo dans un badge blanc
+   arrondi, onglets ivoire, « La Journée IA » en pastille mocha cerclée ivoire, loupe et « Nous écrire » en
+   pastilles blanches, « Réserver un appel » en bleu plein. Hauteur 5 rem à toutes les tailles (--header-h).
+   Contrastes mesurés : ivoire sur terracotta 5,24:1 ; blanc 5,81:1 ; terracotta sur blanc 5,81:1 ;
+   ivoire sur mocha 13,70:1 ; blanc sur bleu 6,76:1. */
+.site-entete {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--header-h);
+  background: var(--color-terracotta);
+  color: var(--color-mocha-fg);
+  border-bottom: 1px solid var(--color-terracotta-deep);
+}
+@supports (backdrop-filter: blur(1px)) {
+  .site-entete {
+    background: color-mix(in srgb, var(--color-terracotta) 95%, transparent);
+    backdrop-filter: blur(12px);
+  }
+}
+.site-entete::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--color-mocha) 30%, transparent);
+}
+.site-entete__rangee {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 100%;
+  width: 100%;
+  max-width: 120rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .site-entete__rangee {
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 992px) {
+  .site-entete__rangee {
+    padding-inline: 2.5rem;
+  }
+}
+.site-entete :focus-visible {
+  outline: 2px solid var(--color-mocha-fg);
+  outline-offset: 2px;
+  border-radius: var(--radius-lg);
+}
+.site-logo {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: none;
+  min-height: 44px;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-paper);
+  color: var(--color-fg);
+  text-decoration: none;
+  box-shadow: var(--ombre-legere);
+  transition: box-shadow 0.15s;
+}
+.site-logo:hover {
+  color: var(--color-fg);
+  box-shadow: var(--ombre-douce);
+}
+.site-logo__nom {
+  font: 500 1.5rem/1 var(--font-serif);
+  letter-spacing: -0.025em;
+}
+.site-logo__tiret {
+  margin-inline: 0.125rem;
+  color: color-mix(in srgb, var(--color-fg) 70%, transparent);
+}
+.site-logo em {
+  font-style: italic;
+  color: var(--color-terracotta);
+}
+.site-logo__devise {
+  display: none;
+  margin-top: 0.25rem;
+  font: 600 0.75rem/1 var(--font-sans);
+  color: var(--color-fg-muted);
+}
+@media (min-width: 1366px) {
+  .site-logo__devise {
+    display: block;
+  }
+}
+.site-nav {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+}
+.site-nav__lien {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding-inline: 0.75rem;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  font: 600 1rem/1 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-mocha-fg);
+  text-decoration: none;
+}
+.site-nav__lien::after {
+  content: "";
+  position: absolute;
+  inset: auto 0.75rem 0.375rem;
+  height: 2px;
+  background: var(--color-mocha-fg);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.15s;
+}
+.site-nav__lien:hover {
+  color: var(--color-mocha-fg);
+}
+.site-nav__lien:hover::after {
+  transform: scaleX(1);
+}
+.site-nav__lien .icone {
+  width: 1rem;
+  height: 1rem;
+}
+.site-nav__phare {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-inline: 1rem;
+  border: 1px solid var(--color-mocha-fg);
+  border-radius: var(--radius-full);
+  background: var(--color-mocha);
+  white-space: nowrap;
+  font: 600 1rem/1 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-mocha-fg);
+  text-decoration: none;
+}
+.site-nav__phare:hover {
+  background: var(--color-mocha-soft);
+  color: var(--color-mocha-fg);
+}
+.site-nav__phare::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-terracotta-on-mocha);
+}
+.site-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.site-pastille {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--color-paper);
+  color: var(--color-terracotta);
+  box-shadow: var(--ombre-legere);
+  white-space: nowrap;
+  font: 600 1rem/1 var(--font-sans);
+  text-decoration: none;
+  transition: box-shadow 0.15s;
+}
+.site-pastille:hover {
+  color: var(--color-terracotta);
+  box-shadow: var(--ombre-douce);
+}
+.site-pastille--loupe {
+  width: 44px;
+  padding: 0;
+}
+.site-pastille--texte {
+  padding-inline: 1rem;
+}
+.site-pastille .icone,
+.site-reserver .icone {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.site-reserver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-inline: 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  white-space: nowrap;
+  font: 600 0.9375rem/1 var(--font-sans);
+  text-decoration: none;
+  box-shadow: var(--ombre-legere);
+  transition: background-color 0.15s;
+}
+.site-reserver:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-primary-fg);
+}
+.site-reserver__long {
+  display: none;
+}
+@media (max-width: 379px) {
+  .site-reserver .icone {
+    display: none;
+  }
+}
+@media (min-width: 992px) {
+  .site-reserver {
+    padding-inline: 1.25rem;
+    font-size: 1rem;
+  }
+  .site-reserver__court {
+    display: none;
+  }
+  .site-reserver__long {
+    display: inline;
+  }
+}
+/* Tiroir de téléphone : <details> natif, zéro JavaScript */
+.site-menu {
+  position: relative;
+}
+.site-menu summary {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-mocha-fg);
+  border-radius: var(--radius-full);
+  color: var(--color-mocha-fg);
+  cursor: pointer;
+  list-style: none;
+}
+.site-menu summary::-webkit-details-marker {
+  display: none;
+}
+.site-menu summary:hover,
+.site-menu[open] summary {
+  background: var(--color-terracotta-deep);
+}
+.site-menu__panneau {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.75rem);
+  z-index: 50;
+  width: min(20rem, calc(100vw - 2rem));
+  padding: 0.5rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--ombre-douce);
+}
+.site-menu__panneau a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  font: 600 1.0625rem/1.2 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+  text-decoration: none;
+}
+.site-menu__panneau a:hover {
+  background: var(--color-sand);
+  color: var(--color-fg);
+}
+.site-menu__panneau :focus-visible {
+  outline-color: var(--color-primary);
+}
+@media (min-width: 1280px) {
+  .site-nav {
+    display: flex;
+  }
+  .site-pastille {
+    display: inline-flex;
+  }
+  .site-pastille--texte {
+    height: 44px;
+  }
+  .site-menu {
+    display: none;
+  }
+  .site-entete__rangee {
+    gap: 1.5rem;
+  }
+  .site-actions {
+    gap: 0.75rem;
+  }
+}
+@media (min-width: 1366px) {
+  .site-entete__rangee {
+    gap: 2rem;
+  }
+}
 
-.bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
-.fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
-  margin: 0; padding: 0.75rem 0 0; font-size: 0.875rem; }
-.fil-ariane li { display: inline-flex; flex: none; align-items: center; gap: 0.5rem; min-width: 0; }
-.fil-ariane li + li::before { content: "/"; color: var(--color-terracotta-on-mocha); }
-.fil-ariane a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+.bande-ariane {
+  background: var(--color-bg);
+  color: var(--color-fg-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+.fil-ariane ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0 0.5rem;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.fil-ariane li {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.fil-ariane li + li::before {
+  content: "/";
+  color: var(--color-border-strong);
+}
+.fil-ariane a {
+  color: var(--color-fg-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
 /* Toujours sur une ligne : la page courante se tronque (…) au lieu de passer à la ligne,
    sinon la hauteur du fil dépend de la police et le swap décale tout l'article. */
-.fil-ariane [aria-current] { display: block; flex: 0 1 auto; max-width: 16em; overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap; }
-.fil-ariane [aria-current]::before { margin-right: 0.5rem; }
-
-/* 07 — HÉROS D'ARTICLE : bandeau mocha plein + aplat terracotta ------------ */
-.heros {
-  position: relative; isolation: isolate; color: var(--color-mocha-fg);
-  /* fond plein écran sans débordement : border-image peint hors de la boîte */
-  border-image: conic-gradient(var(--color-mocha) 0 0) fill 0 / / 0 100vmax;
-  clip-path: inset(0 -100vmax);
-  padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
+.fil-ariane [aria-current] {
+  display: block;
+  flex: 0 1 auto;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
-   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
-.heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
-  width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
-  background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
-.heros > * { max-width: 56rem; }
-.surtitre { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.25rem; padding: 0; list-style: none; }
-.pastille { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2rem; padding: 0.3rem 0.85rem;
-  border-radius: var(--radius-full); font: 600 0.8125rem/1.2 var(--font-sans);
-  letter-spacing: 0.06em; text-transform: uppercase; }
+.fil-ariane a:hover {
+  color: var(--color-fg);
+  text-decoration: underline;
+}
+.fil-ariane [aria-current] {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+.fil-ariane [aria-current]::before {
+  margin-right: 0.5rem;
+}
+
+/* 07 — HÉROS D'ARTICLE : aplat TERRACOTTA de la charte (retour demandé par Will) ----
+   Contrastes MESURÉS (formule WCAG, scripts de la session) sur le terracotta #b23f16, le point le plus
+   clair du fond : ivoire #f7f3ea 5,24:1 · blanc 5,81:1 · terracotta-soft 4,66:1 · sable 4,81:1.
+   Sur le bas du fond (mélange terracotta → terracotta-deep) tout est PLUS contrasté. Règle de décor :
+   tout ce qui passe sous du texte est plus FONCÉ que le terracotta, jamais plus clair.
+   Le mocha-fg-muted (#b5aa9c) donnerait 2,6:1 ici : il n'est pas utilisé dans le héros. */
+.heros {
+  position: relative;
+  isolation: isolate;
+  color: var(--color-mocha-fg);
+  padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(5.5rem, 4rem + 7vw, 9rem);
+}
+/* Fond plein écran sans débordement : un pseudo-élément qui déborde, rogné par clip-path.
+   Dégradé vertical (donc indépendant de la largeur) : terracotta franc sur les 60 % du haut,
+   puis un fondu vers le terracotta-deep qui accueille le visuel qui chevauche. */
+.heros {
+  clip-path: inset(0 -100vmax);
+}
+.heros::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0 -100vmax;
+  background: linear-gradient(
+    180deg,
+    var(--color-terracotta) 0%,
+    var(--color-terracotta) 58%,
+    color-mix(in srgb, var(--color-terracotta) 55%, var(--color-terracotta-deep)) 100%
+  );
+}
+/* Rayures terracotta-deep en haut à droite (décor plus sombre que le fond). */
+.heros::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  top: 0;
+  width: clamp(8rem, 22vw, 18rem);
+  height: 1.5rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-terracotta-deep) 0 6px,
+    transparent 6px 14px
+  );
+}
+.heros > * {
+  max-width: 56rem;
+}
+.surtitre {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+.pastille {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
 /* Téléphone : pastilles resserrées. Mesuré à 360 px : trois pastilles tenaient sur deux rangées
    à 18 px près en Manrope, et le repli (MAJUSCULES ~7 % plus larges) en faisait trois ; au swap,
    tout le héros remontait (CLS 0,097). Cette marge rend le nombre de rangées identique. */
-@media (max-width: 479px) { .pastille { padding: 0.3rem 0.7rem; font-size: 0.75rem; letter-spacing: 0.04em; } }
-.pastille--pleine { background: var(--color-terracotta); color: var(--color-paper); }
-.pastille--contour { background: var(--color-mocha-soft); color: var(--color-mocha-fg); border: 1.5px solid var(--color-border-on-mocha); }
-.pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
-.heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
-  letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+@media (max-width: 479px) {
+  .pastille {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+}
+/* Pastille de type : blanc, texte terracotta-deep (8,25:1 mesuré) ; pastille de catégorie : terracotta-deep + texte ivoire (7,45:1) */
+.pastille--pleine {
+  background: var(--color-paper);
+  color: var(--color-terracotta-deep);
+}
+.pastille--contour {
+  background: var(--color-terracotta-deep);
+  color: var(--color-mocha-fg);
+  border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 45%, transparent);
+}
+.pastille--claire {
+  background: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.heros h1 {
+  font: 500 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.07 var(--font-serif);
+  letter-spacing: -0.028em;
+  color: var(--color-paper);
+  max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */
+}
 /* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
 /* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
    métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
-@media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
-.heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
-.chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
-  border-left: 4px solid var(--color-terracotta-on-mocha);
-  font: 400 clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem) / 1.5 var(--font-sans); color: var(--color-mocha-fg); }
-.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin: 1.5rem 0 0; padding: 0;
-  list-style: none; font-size: 0.9375rem; color: var(--color-mocha-fg-muted); }
-.meta li { display: inline-flex; align-items: center; gap: 0.45rem; }
-.meta .icone { color: var(--color-terracotta-on-mocha); }
-.meta a { font-weight: 600; }
-.avatar { display: inline-grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%;
-  background: var(--color-terracotta-on-mocha); color: var(--color-mocha); font: 600 1.0625rem/1 var(--font-serif); }
-.meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
-  background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
-.meta .meta__lecture .icone { color: var(--color-mocha); }
+@media (min-width: 1024px) {
+  .heros h1 {
+    font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem);
+  }
+}
+/* Mots en italique : sable très clair (sable #f0e9da : 4,81:1 sur terracotta, 6,83:1 sur terracotta-deep) ;
+   le soulignement dessiné en dégradé (décor) les fait ressortir sans dépendre de la couleur seule. */
+.heros h1 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-soft);
+  background: linear-gradient(var(--color-terracotta-deep), var(--color-terracotta-deep)) 0 92% /
+    100% 0.09em no-repeat;
+}
+.chapo {
+  margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0;
+  max-width: 44rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--color-terracotta-soft);
+  font: 400 clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem) / 1.5 var(--font-sans);
+  color: var(--color-paper);
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  color: var(--color-mocha-fg);
+}
+.meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.meta .icone {
+  color: var(--color-terracotta-soft);
+}
+.meta a {
+  font-weight: 600;
+}
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-paper);
+  color: var(--color-terracotta-deep);
+  font: 600 1.0625rem/1 var(--font-serif);
+}
+.meta__lecture {
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  background: var(--color-paper);
+  color: var(--color-terracotta-deep);
+}
+.meta .meta__lecture .icone {
+  color: var(--color-terracotta-deep);
+}
 /* Pied du héros : partage compact à gauche, signe du modèle à droite */
-.heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
-.heros__pied .partage-icones { margin: 0; flex: none; }
+.heros__pied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin: 1.25rem 0 0;
+}
+.heros__pied .partage-icones {
+  margin: 0;
+  flex: none;
+}
 /* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
    Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
-.heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
-  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
-  font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
-.signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--color-mocha-fg); white-space: normal; text-align: left; }
+.heros__signe {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex: 0 1 auto;
+  min-width: 0;
+  height: 44px;
+  overflow: hidden;
+  color: var(--color-terracotta-soft);
+  font: 600 1.75rem/1 var(--font-serif);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.signe__legende {
+  display: none;
+  font: 600 0.75rem/1.3 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-mocha-fg);
+  white-space: normal;
+  text-align: left;
+}
 @media (min-width: 640px) {
-  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
-    background: var(--color-mocha-soft); font-size: 2.75rem; }
-  .signe__legende { display: block; width: 8.5rem; }
+  .heros__signe {
+    height: 5.5rem;
+    padding: 0 1.25rem;
+    border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 40%, transparent);
+    border-radius: var(--radius-xl);
+    background: var(--color-terracotta-deep);
+    font-size: 2.75rem;
+  }
+  .signe__legende {
+    display: block;
+    width: 8.5rem;
+  }
 }
 /* Partage compact (icônes) sous la méta */
-.partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
-.partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
-  border: 1.5px solid var(--color-border-on-mocha); color: var(--color-mocha-fg); }
-.partage-icones a:hover { background: var(--color-mocha-fg); color: var(--color-mocha); }
+.partage-icones {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.partage-icones a {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 60%, transparent);
+  color: var(--color-mocha-fg);
+}
+.partage-icones a:hover {
+  background: var(--color-mocha-fg);
+  color: var(--color-terracotta-deep);
+}
 
 /* 08 — VISUEL PRINCIPAL (ratio 16/10 réservé : CLS = 0) -------------------- */
-.visuel { margin: calc(-1 * clamp(4.5rem, 3rem + 6vw, 7.5rem)) 0 2rem; position: relative; }
-.visuel__cadre { position: relative; aspect-ratio: 16 / 10; width: 100%; overflow: hidden;
-  border-radius: var(--radius-2xl); box-shadow: var(--ombre-douce);
-  background: linear-gradient(140deg, var(--color-terracotta) 0%, var(--color-terracotta-deep) 50%, var(--color-mocha) 100%); }
-.visuel__cadre svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.visuel figcaption { margin-top: 0.6rem; font-size: 0.875rem; color: var(--color-fg-muted); }
+.visuel {
+  margin: calc(-1 * clamp(4.5rem, 3rem + 6vw, 7.5rem)) 0 2rem;
+  position: relative;
+}
+.visuel__cadre {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--ombre-douce);
+  border: 6px solid var(--color-bg); /* passe-partout ivoire : l'image ne se fond pas dans le héros terracotta */
+  background: linear-gradient(
+    140deg,
+    var(--color-terracotta) 0%,
+    var(--color-terracotta-deep) 50%,
+    var(--color-mocha) 100%
+  );
+}
+.visuel__cadre svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.visuel figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+}
 
 /* 09 — GRILLE : colonne de lecture 68ch + colonne latérale collante --------- */
-.mise-en-page { position: relative; }
-.article { min-width: 0; }
+.mise-en-page {
+  position: relative;
+}
+.article {
+  min-width: 0;
+}
 @media (min-width: 1024px) {
-  html { scroll-padding-bottom: 1rem; }
-  body { padding-bottom: 0; }
+  html {
+    scroll-padding-bottom: 1rem;
+  }
+  body {
+    padding-bottom: 0;
+  }
   .mise-en-page {
-    display: grid; justify-content: space-between; align-items: start;
+    display: grid;
+    justify-content: space-between;
+    align-items: start;
     grid-template-columns: minmax(0, var(--largeur-lecture)) minmax(17rem, 20rem);
-    grid-template-rows: auto auto 1fr; column-gap: clamp(2.5rem, 4vw, 5rem);
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(2.5rem, 4vw, 5rem);
   }
   /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
-  .article { grid-column: 1 / -1; grid-row: 1 / -1; display: grid;
-    grid-template-columns: subgrid; grid-template-rows: subgrid; }
+  .article {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+  }
   /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
      Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
-  .heros { grid-column: 1; grid-row: 1; min-width: 0; }
-  .article__ouverture { grid-column: 1; grid-row: 2; min-width: 0; }
-  .article__corps { grid-column: 1; grid-row: 3; min-width: 0; }
+  .heros {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .article__ouverture {
+    grid-column: 1;
+    grid-row: 2;
+    min-width: 0;
+  }
+  .article__corps {
+    grid-column: 1;
+    grid-row: 3;
+    min-width: 0;
+  }
   /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
      puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
      de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
      margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
      (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
-  .action { grid-column: 2; grid-row: 1 / -1; align-self: start; z-index: 2;
-    position: sticky; top: calc(var(--header-h) + 1rem);
-    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem); }
-  .action .carte-action { min-height: var(--hauteur-carte); }
+  .action {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: start;
+    z-index: 2;
+    position: sticky;
+    top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem);
+  }
+  .action .carte-action {
+    min-height: var(--hauteur-carte);
+  }
   /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
-  .sommaire { grid-column: 2; grid-row: 2 / 4; align-self: start;
-    position: sticky; top: var(--sommaire-haut);
-    max-height: var(--sommaire-max); overflow-y: auto; overscroll-behavior: contain;
-    scroll-timeline: --sommaire block; }
+  .sommaire {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    align-self: start;
+    position: sticky;
+    top: var(--sommaire-haut);
+    max-height: var(--sommaire-max);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-timeline: --sommaire block;
+  }
 }
 
 /* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
-.sommaire { margin: 0 0 2rem; }
-.sommaire details { background: var(--color-paper); border: 2px solid var(--color-mocha); border-radius: var(--radius-lg); }
-.sommaire summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  min-height: 52px; padding: 0.5rem 1rem; cursor: pointer; list-style: none;
-  font: 600 0.8125rem/1.2 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-terracotta-deep); }
-.sommaire summary::-webkit-details-marker { display: none; }
-.sommaire summary::after { content: "+"; display: grid; place-items: center; width: 1.75rem; height: 1.75rem;
-  border-radius: 50%; background: var(--color-mocha); color: var(--color-mocha-fg); font: 400 1.25rem/1 var(--font-sans); }
-.sommaire details[open] summary::after { content: "–"; }
-.sommaire ol { list-style: none; margin: 0; padding: 0 0.5rem 0.75rem; counter-reset: s; }
-.sommaire li { counter-increment: s; }
-.sommaire ol a { display: flex; gap: 0.65rem; align-items: center; min-height: 44px; padding: 0.3rem 0.5rem;
-  border-radius: var(--radius-md); color: var(--color-fg); text-decoration: none; font-size: 0.9375rem; line-height: 1.3; }
-.sommaire ol a::before { content: counter(s, decimal-leading-zero); min-width: 1.5rem;
-  font: 600 0.8125rem/1 var(--font-mono); color: var(--color-terracotta-deep); }
-.sommaire ol a:hover { background: var(--color-sand); color: var(--color-ink); }
+.sommaire {
+  margin: 0 0 2rem;
+}
+.sommaire details {
+  background: var(--color-paper);
+  border: 2px solid var(--color-mocha);
+  border-radius: var(--radius-lg);
+}
+.sommaire summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.sommaire summary::-webkit-details-marker {
+  display: none;
+}
+.sommaire summary::after {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  font: 400 1.25rem/1 var(--font-sans);
+}
+.sommaire details[open] summary::after {
+  content: "–";
+}
+.sommaire ol {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem 0.75rem;
+  counter-reset: s;
+}
+.sommaire li {
+  counter-increment: s;
+}
+.sommaire ol a {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--radius-md);
+  color: var(--color-fg);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+}
+.sommaire ol a::before {
+  content: counter(s, decimal-leading-zero);
+  min-width: 1.5rem;
+  font: 600 0.8125rem/1 var(--font-mono);
+  color: var(--color-terracotta-deep);
+}
+.sommaire ol a:hover {
+  background: var(--color-sand);
+  color: var(--color-ink);
+}
 @media (min-width: 1024px) {
   /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
-  .sommaire { margin: 1rem 0 0; }
+  .sommaire {
+    margin: 1rem 0 0;
+  }
   /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
-  .sommaire { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
-  .sommaire details { border: 0; border-radius: var(--radius-xl); }
+  .sommaire {
+    background: var(--color-paper);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+  .sommaire details {
+    border: 0;
+    border-radius: var(--radius-xl);
+  }
   /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
      sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
      reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
   @supports selector(::details-content) {
-    .sommaire details::details-content { content-visibility: visible; display: block; }
-    .sommaire summary { pointer-events: none; min-height: 44px; padding: 1rem 1rem 0.35rem; }
-    .sommaire summary::after { display: none; }
+    .sommaire details::details-content {
+      content-visibility: visible;
+      display: block;
+    }
+    .sommaire summary {
+      pointer-events: none;
+      min-height: 44px;
+      padding: 1rem 1rem 0.35rem;
+    }
+    .sommaire summary::after {
+      display: none;
+    }
   }
-  .sommaire ol a { font-size: 0.875rem; }
+  .sommaire ol a {
+    font-size: 0.875rem;
+  }
   /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
      total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
      (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
-  .sommaire ol::after { content: "↓ suite du sommaire" / "";
-    position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
-    border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
-    background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
-    font: 600 0.75rem/1.2 var(--font-mono); letter-spacing: 0.02em; color: var(--color-terracotta-deep); }
-  @supports (animation-timeline: scroll()) {
-    .sommaire ol::after { animation: sommaire-suite linear both; animation-timeline: --sommaire; }
-    @keyframes sommaire-suite { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  .sommaire ol::after {
+    content: "↓ suite du sommaire" / "";
+    position: sticky;
+    bottom: 0;
+    display: block;
+    margin: -2.75rem -0.5rem -0.75rem;
+    padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(
+      color-mix(in srgb, var(--color-paper) 0%, transparent),
+      var(--color-paper) 55%
+    );
+    font: 600 0.75rem/1.2 var(--font-mono);
+    letter-spacing: 0.02em;
+    color: var(--color-terracotta-deep);
   }
-  .sommaire ol { padding-bottom: 0.75rem; }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after {
+      animation: sommaire-suite linear both;
+      animation-timeline: --sommaire;
+    }
+    @keyframes sommaire-suite {
+      0%,
+      88% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
+  .sommaire ol {
+    padding-bottom: 0.75rem;
+  }
 }
 
 /* 11 — BOUTONS ------------------------------------------------------------- */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.65rem;
-  min-height: 48px; padding: 0.7rem 1.3rem; border: 2px solid transparent; border-radius: var(--radius-full);
-  font: 600 1rem/1.2 var(--font-sans); text-align: center; text-decoration: none; cursor: pointer;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.15s; }
-.btn:hover { transform: translateY(-1px); text-decoration: none; }
-.btn--bleu { background: var(--color-primary); color: var(--color-primary-fg); }
-.btn--bleu:hover { background: var(--color-primary-hover); color: var(--color-primary-fg); }
-.btn--terracotta { background: var(--color-terracotta); color: var(--color-paper); }
-.btn--terracotta:hover { background: var(--color-terracotta-deep); color: var(--color-paper); }
-.btn--contour { background: transparent; color: var(--color-fg); border-color: var(--color-fg); }
-.btn--contour:hover { background: var(--color-fg); color: var(--color-paper); }
-.btn--contour-clair { background: transparent; color: var(--color-mocha-fg); border-color: var(--color-mocha-fg-muted); }
-.btn--contour-clair:hover { background: var(--color-mocha-fg); color: var(--color-ink); border-color: var(--color-mocha-fg); }
-.btn__texte { display: grid; gap: 0.1rem; text-align: left; }
-.btn__sous { font-weight: 400; font-size: 0.8125rem; line-height: 1.35; }
-.fleche { margin-left: auto; transition: transform 0.15s; }
-.btn:hover .fleche, .lien-fleche:hover .fleche { transform: translateX(3px); }
-.lien-fleche { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; font-weight: 600; }
-.lien-fleche .fleche { margin-left: 0; flex: none; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 48px;
+  padding: 0.7rem 1.3rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  font: 600 1rem/1.2 var(--font-sans);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s,
+    transform 0.15s;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.btn--bleu {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+}
+.btn--bleu:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-primary-fg);
+}
+.btn--terracotta {
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+}
+.btn--terracotta:hover {
+  background: var(--color-terracotta-deep);
+  color: var(--color-paper);
+}
+.btn--contour {
+  background: transparent;
+  color: var(--color-fg);
+  border-color: var(--color-fg);
+}
+.btn--contour:hover {
+  background: var(--color-fg);
+  color: var(--color-paper);
+}
+.btn--contour-clair {
+  background: transparent;
+  color: var(--color-mocha-fg);
+  border-color: var(--color-mocha-fg-muted);
+}
+.btn--contour-clair:hover {
+  background: var(--color-mocha-fg);
+  color: var(--color-ink);
+  border-color: var(--color-mocha-fg);
+}
+.btn__texte {
+  display: grid;
+  gap: 0.1rem;
+  text-align: left;
+}
+.btn__sous {
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+.fleche {
+  margin-left: auto;
+  transition: transform 0.15s;
+}
+.btn:hover .fleche,
+.lien-fleche:hover .fleche {
+  transform: translateX(3px);
+}
+.lien-fleche {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  font-weight: 600;
+}
+.lien-fleche .fleche {
+  margin-left: 0;
+  flex: none;
+}
 
 /* 12 — CARTE D'ACTION (ordinateur) = BARRE FIXE (téléphone) : un seul <aside> */
 /* Téléphone d'abord : barre fixe en bas, 3 cellules, centre en bleu */
-.carte-action { position: fixed; inset: auto 0 0 0; z-index: 50;
-  background: var(--color-paper); border-top: 1px solid var(--color-border-strong);
+.carte-action {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 50;
+  background: var(--color-paper);
+  border-top: 1px solid var(--color-border-strong);
   padding: 0.5rem var(--gouttiere) calc(0.5rem + env(safe-area-inset-bottom));
-  box-shadow: 0 -10px 24px -12px color-mix(in srgb, var(--color-mocha) 30%, transparent); }
-.carte-action__titre, .carte-action__sous-titre, .carte-action__rassurance, .act__long, .act .btn__sous, .act .fleche { display: none; }
-.carte-action__liste { list-style: none; margin: 0 auto; padding: 0; max-width: 32rem;
-  display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 0.4rem; }
-.act { width: 100%; min-height: 56px; padding: 0.35rem 0.25rem; flex-direction: column; gap: 0.2rem;
-  border-radius: var(--radius-lg); font-size: 0.8125rem; line-height: 1.1; position: relative; }
-.act .icone { width: 20px; height: 20px; }
-.act.btn--terracotta, .act.btn--contour { background: var(--color-bg); color: var(--color-fg); border-color: var(--color-border-field); } /* 3,7:1 */
-.act.btn--terracotta .icone { color: var(--color-terracotta-deep); }
-.act__pastille { position: absolute; top: -0.55rem; right: 0.35rem; padding: 0.1rem 0.45rem; border-radius: var(--radius-full);
-  background: var(--color-mocha); color: var(--color-mocha-fg); font: 600 0.6875rem/1.3 var(--font-mono); }
-.act__libelle { display: block; }
+  box-shadow: 0 -10px 24px -12px color-mix(in srgb, var(--color-mocha) 30%, transparent);
+}
+.carte-action__titre,
+.carte-action__sous-titre,
+.carte-action__rassurance,
+.act__long,
+.act .btn__sous,
+.act .fleche {
+  display: none;
+}
+.carte-action__liste {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 32rem;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  gap: 0.4rem;
+}
+.act {
+  width: 100%;
+  min-height: 56px;
+  padding: 0.35rem 0.25rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.8125rem;
+  line-height: 1.1;
+  position: relative;
+}
+.act .icone {
+  width: 20px;
+  height: 20px;
+}
+.act.btn--terracotta,
+.act.btn--contour {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  border-color: var(--color-border-field);
+} /* 3,7:1 */
+.act.btn--terracotta .icone {
+  color: var(--color-terracotta-deep);
+}
+.act__pastille {
+  position: absolute;
+  top: -0.55rem;
+  right: 0.35rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  font: 600 0.6875rem/1.3 var(--font-mono);
+}
+.act__libelle {
+  display: block;
+}
 /* Barre claire sur téléphone : anneau de focus bleu, même si la carte porte .sur-sombre */
-.carte-action.sur-sombre :focus-visible { outline-color: var(--focus-clair); }
+.carte-action.sur-sombre :focus-visible {
+  outline-color: var(--focus-clair);
+}
 /* Téléphone : Journée IA · Diagnostic (au centre) · Message */
-.carte-action__liste > li:nth-child(1) { order: 2; }
-.carte-action__liste > li:nth-child(2) { order: 1; }
-.carte-action__liste > li:nth-child(3) { order: 3; }
+.carte-action__liste > li:nth-child(1) {
+  order: 2;
+}
+.carte-action__liste > li:nth-child(2) {
+  order: 1;
+}
+.carte-action__liste > li:nth-child(3) {
+  order: 3;
+}
 @media (min-width: 1024px) {
-  .carte-action.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
-  .carte-action { position: relative; inset: auto; z-index: auto; border: 0; border-radius: var(--radius-xl);
-    padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
+  .carte-action.sur-sombre :focus-visible {
+    outline-color: var(--focus-sombre);
+  }
+  .carte-action {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    border: 0;
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 1.25rem 1.25rem;
+    color: var(--color-mocha-fg);
     /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
        (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
-    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
-  .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
-    border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
-  .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
-  .carte-action__titre em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
-  .carte-action__sous-titre { display: block; margin: 0 0 1rem; font-size: 0.875rem; color: var(--color-mocha-fg-muted); }
-  .carte-action__liste { grid-template-columns: 1fr; gap: 0.6rem; max-width: none; }
-  .carte-action__liste > li { order: 0 !important; } /* ordinateur : ordre du DOM */
-  .act { flex-direction: row; justify-content: flex-start; align-items: center; gap: 0.75rem; min-height: 56px;
-    padding: 0.7rem 0.9rem; font-size: 0.9375rem; line-height: 1.25; text-align: left; }
-  .act__long { display: inline; }
-  .act__court, .act__pastille { display: none; }
-  .act .btn__sous { display: block; }
-  .act .fleche { display: inline-block; }
-  .act.btn--terracotta { background: var(--color-terracotta); color: var(--color-paper); border-color: var(--color-terracotta); }
-  .act.btn--terracotta .icone { color: currentColor; }
-  .act.btn--contour { background: transparent; color: var(--color-mocha-fg); border-color: var(--color-mocha-fg-muted); }
-  .act.btn--contour:hover { background: var(--color-mocha-fg); color: var(--color-ink); }
-  .act.btn--bleu { min-height: 64px; box-shadow: 0 0 0 2px var(--color-primary-soft); }
-  .carte-action__rassurance { display: grid; gap: 0.3rem; list-style: none; margin: 1rem 0 0; padding: 0.9rem 0 0;
-    border-top: 1px solid var(--color-border-on-mocha); font-size: 0.8125rem; line-height: 1.35; color: var(--color-mocha-fg-muted); }
-  .carte-action__rassurance li { display: flex; gap: 0.5rem; align-items: center; }
-  .carte-action__rassurance .icone { width: 1rem; height: 1rem; color: var(--color-terracotta-on-mocha); }
+    background: var(--color-mocha-soft);
+    box-shadow:
+      0 0 0 1px var(--color-border-on-mocha),
+      6px 6px 0 var(--color-terracotta-deep);
+  }
+  .carte-action::before {
+    content: "";
+    position: absolute;
+    inset: 0 1.25rem auto;
+    height: 5px;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    background: var(--color-terracotta-on-mocha);
+  }
+  .carte-action__titre {
+    display: block;
+    margin: 0.25rem 0 0.3rem;
+    font: 600 1.375rem/1.18 var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+  .carte-action__titre em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-terracotta-on-mocha);
+  }
+  .carte-action__sous-titre {
+    display: block;
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    color: var(--color-mocha-fg-muted);
+  }
+  .carte-action__liste {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    max-width: none;
+  }
+  .carte-action__liste > li {
+    order: 0 !important;
+  } /* ordinateur : ordre du DOM */
+  .act {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 56px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9375rem;
+    line-height: 1.25;
+    text-align: left;
+  }
+  .act__long {
+    display: inline;
+  }
+  .act__court,
+  .act__pastille {
+    display: none;
+  }
+  .act .btn__sous {
+    display: block;
+  }
+  .act .fleche {
+    display: inline-block;
+  }
+  .act.btn--terracotta {
+    background: var(--color-terracotta);
+    color: var(--color-paper);
+    border-color: var(--color-terracotta);
+  }
+  .act.btn--terracotta .icone {
+    color: currentColor;
+  }
+  .act.btn--contour {
+    background: transparent;
+    color: var(--color-mocha-fg);
+    border-color: var(--color-mocha-fg-muted);
+  }
+  .act.btn--contour:hover {
+    background: var(--color-mocha-fg);
+    color: var(--color-ink);
+  }
+  .act.btn--bleu {
+    min-height: 64px;
+    box-shadow: 0 0 0 2px var(--color-primary-soft);
+  }
+  .carte-action__rassurance {
+    display: grid;
+    gap: 0.3rem;
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0.9rem 0 0;
+    border-top: 1px solid var(--color-border-on-mocha);
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--color-mocha-fg-muted);
+  }
+  .carte-action__rassurance li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .carte-action__rassurance .icone {
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-terracotta-on-mocha);
+  }
 }
 
 /* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
 @media (min-width: 1024px) and (max-height: 1000px) {
-  :root { --hauteur-carte: 24rem; }
-  .carte-action { padding-top: 1.15rem; }
-  .carte-action__titre { font-size: 1.1875rem; }
-  .carte-action__sous-titre { margin-bottom: 0.75rem; }
-  .act:not(.btn--bleu) .btn__sous { display: none; }
-  .act { min-height: 48px; padding-block: 0.5rem; }
-  .act.btn--bleu { min-height: 56px; }
-  .carte-action__rassurance { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin-top: 0.75rem; padding-top: 0.65rem; }
+  :root {
+    --hauteur-carte: 24rem;
+  }
+  .carte-action {
+    padding-top: 1.15rem;
+  }
+  .carte-action__titre {
+    font-size: 1.1875rem;
+  }
+  .carte-action__sous-titre {
+    margin-bottom: 0.75rem;
+  }
+  .act:not(.btn--bleu) .btn__sous {
+    display: none;
+  }
+  .act {
+    min-height: 48px;
+    padding-block: 0.5rem;
+  }
+  .act.btn--bleu {
+    min-height: 56px;
+  }
+  .carte-action__rassurance {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.85rem;
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+  }
 }
 /* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
    l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
 @media (min-width: 1024px) and (max-height: 860px) {
-  :root { --hauteur-carte: 18.75rem; }
-  .carte-action__rassurance { display: none; }
+  :root {
+    --hauteur-carte: 18.75rem;
+  }
+  .carte-action__rassurance {
+    display: none;
+  }
 }
 
 /* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
 /* Base : fond doux + filet épais + pastille icône + libellé texte réel */
-.encadre { --fond: var(--color-sand); --accent: var(--color-mocha); --libelle: var(--color-fg);
-  position: relative; margin: 2.25rem 0; padding: 1.25rem 1.25rem 1.35rem 1.5rem;
-  background: var(--fond); border-left: 6px solid var(--accent); border-radius: var(--radius-lg); }
-.encadre__titre { display: flex; align-items: center; gap: 0.65rem; margin: 0 0 0.65rem;
-  font: 600 0.8125rem/1.2 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--libelle); }
-.encadre__icone { display: inline-grid; place-items: center; flex: none; width: 2.25rem; height: 2.25rem;
-  border-radius: 50%; background: var(--accent); color: var(--color-paper); }
-.encadre__icone .icone { width: 1.15rem; height: 1.15rem; }
-.encadre p { margin: 0 0 0.75em; }
-.encadre > :last-child { margin-bottom: 0; }
-.encadre ul { margin: 0; padding-left: 1.2rem; }
-.encadre--retenir { --fond: var(--color-sage-soft); --accent: var(--color-sage); }
-.encadre--exemple { --fond: var(--color-plum-soft); --accent: var(--color-plum); --libelle: var(--color-plum-deep); }
-.encadre--modele  { --fond: var(--color-primary-soft); --accent: var(--color-primary); --libelle: var(--color-primary-hover); }
-.encadre--modele pre { margin: 0; padding: 1rem; overflow-x: auto; white-space: pre-wrap; border-radius: var(--radius-md);
-  background: var(--color-paper); font: 400 1rem/1.5 var(--font-mono); }
-.encadre--saviez  { --fond: var(--color-sand); --accent: var(--color-mocha); }
-.encadre--bon     { --fond: var(--color-paper); --accent: var(--color-terracotta-deep); --libelle: var(--color-terracotta-deep);
-  border: 2px dashed var(--color-border-strong); border-left: 6px solid var(--accent); }
+.encadre {
+  --fond: var(--color-sand);
+  --accent: var(--color-mocha);
+  --libelle: var(--color-fg);
+  position: relative;
+  margin: 2.25rem 0;
+  padding: 1.25rem 1.25rem 1.35rem 1.5rem;
+  background: var(--fond);
+  border-left: 6px solid var(--accent);
+  border-radius: var(--radius-lg);
+}
+.encadre__titre {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 0 0.65rem;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--libelle);
+}
+.encadre__icone {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--color-paper);
+}
+.encadre__icone .icone {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+.encadre p {
+  margin: 0 0 0.75em;
+}
+.encadre > :last-child {
+  margin-bottom: 0;
+}
+.encadre ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.encadre--retenir {
+  --fond: var(--color-sage-soft);
+  --accent: var(--color-sage);
+}
+.encadre--exemple {
+  --fond: var(--color-plum-soft);
+  --accent: var(--color-plum);
+  --libelle: var(--color-plum-deep);
+}
+.encadre--modele {
+  --fond: var(--color-primary-soft);
+  --accent: var(--color-primary);
+  --libelle: var(--color-primary-hover);
+}
+.encadre--modele pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+  font: 400 1rem/1.5 var(--font-mono);
+}
+.encadre--saviez {
+  --fond: var(--color-sand);
+  --accent: var(--color-mocha);
+}
+.encadre--bon {
+  --fond: var(--color-paper);
+  --accent: var(--color-terracotta-deep);
+  --libelle: var(--color-terracotta-deep);
+  border: 1.5px solid var(--color-border-strong);
+  border-left: 6px solid var(--accent);
+}
 /* Attention : bande hachurée en tête, impossible à rater */
-.encadre--attention { --fond: var(--color-ochre-soft); --accent: var(--color-ochre-deep); --libelle: var(--color-ochre-deep);
-  border-left: 0; padding-top: 1.85rem; overflow: hidden; }
-.encadre--attention::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 10px;
-  background: repeating-linear-gradient(-45deg, var(--color-ochre) 0 10px, var(--color-mocha) 10px 20px); }
-.encadre__micro { margin-top: 0.85rem !important; font-size: 0.9375rem; font-weight: 600; }
+.encadre--attention {
+  --fond: var(--color-ochre-soft);
+  --accent: var(--color-ochre-deep);
+  --libelle: var(--color-ochre-deep);
+  border-left: 0;
+  padding-top: 1.85rem;
+  overflow: hidden;
+}
+.encadre--attention::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-ochre) 0 10px,
+    var(--color-mocha) 10px 20px
+  );
+}
+.encadre__micro {
+  margin-top: 0.85rem !important;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
 
 /* En bref (réponse directe) : le bloc le plus visible après le titre */
-.en-bref { position: relative; margin: 0 0 2.5rem; padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) clamp(1.25rem, 1rem + 1vw, 2rem);
-  background: var(--color-paper); border: 2px solid var(--color-ink); border-left: 10px solid var(--color-terracotta);
-  border-radius: var(--radius-xl); box-shadow: 8px 8px 0 var(--color-sand-deep); }
-.en-bref__titre { display: inline-flex; align-items: center; gap: 0.5rem; margin: 0 0 0.75rem;
-  font: 600 0.8125rem/1.2 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-terracotta-deep); }
-.en-bref__titre .icone { width: 1.5rem; height: 1.5rem; padding: 0.2rem; border-radius: 50%;
-  background: var(--color-terracotta); color: var(--color-paper); }
-.en-bref p { margin: 0; font: 400 clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem) / 1.55 var(--font-sans); color: var(--color-ink); }
-.en-bref strong { font-weight: 600; box-shadow: inset 0 -0.42em 0 var(--color-terracotta-soft); }
+.en-bref {
+  position: relative;
+  margin: 0 0 2.5rem;
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) clamp(1.25rem, 1rem + 1vw, 2rem);
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-border-strong);
+  border-left: 10px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+  box-shadow: 8px 8px 0 var(--color-sand-deep);
+}
+.en-bref .en-bref__titre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.en-bref__titre .icone {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+}
+.en-bref p {
+  margin: 0;
+  font: 400 clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem) / 1.55 var(--font-sans);
+  color: var(--color-ink);
+}
+.en-bref strong {
+  font-weight: 600;
+  box-shadow: inset 0 -0.42em 0 var(--color-terracotta-soft);
+}
 
 /* Chiffre clé : chiffre géant Fraunces dans une phrase complète + source */
-.chiffre-cle { display: grid; gap: 0.5rem 1.5rem; align-items: center; margin: 2.5rem 0; padding: 1.5rem;
-  background: var(--color-terracotta-soft); border: 2px solid var(--color-terracotta); border-radius: var(--radius-xl); }
-.chiffre-cle .encadre__titre { --accent: var(--color-terracotta); --libelle: var(--color-terracotta-deep); grid-column: 1 / -1; margin: 0; }
-.chiffre-cle__phrase { margin: 0; font-size: 1.125rem; line-height: 1.5; color: var(--color-ink); }
-.chiffre { display: block; font: 600 clamp(4rem, 2.5rem + 6vw, 6.5rem) / 0.95 var(--font-serif);
-  letter-spacing: -0.04em; color: var(--color-terracotta-deep); margin-bottom: 0.35rem; }
-.source { display: block; margin-top: 0.6rem; font-size: 0.8125rem; line-height: 1.45; color: var(--color-fg-muted); font-style: normal; }
+.chiffre-cle {
+  display: grid;
+  gap: 0.5rem 1.5rem;
+  align-items: center;
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: var(--color-terracotta-soft);
+  border: 2px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+}
+.chiffre-cle .encadre__titre {
+  --accent: var(--color-terracotta);
+  --libelle: var(--color-terracotta-deep);
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.chiffre-cle__phrase {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+.prose .chiffre,
+.chiffre {
+  color: var(--color-terracotta-deep);
+}
+.chiffre {
+  display: block;
+  font: 600 clamp(4rem, 2.5rem + 6vw, 6.5rem) / 0.95 var(--font-serif);
+  letter-spacing: -0.04em;
+  color: var(--color-terracotta-deep);
+  margin-bottom: 0.35rem;
+}
+.source {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--color-fg-muted);
+  font-style: normal;
+}
 
 /* 14 — CITATION MISE EN AVANT (pull quote géante) -------------------------- */
-.citation { position: relative; margin: 3rem 0; padding: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
-  background: var(--color-terracotta-soft); border-radius: var(--radius-2xl); }
-.citation::before { content: "«"; position: absolute; top: -0.25em; left: 0.15em; pointer-events: none;
-  font: 500 clamp(6rem, 4rem + 8vw, 10rem) / 1 var(--font-serif); color: var(--color-terracotta); }
-.citation blockquote { margin: 0; position: relative; }
-.citation blockquote p { margin: 0; padding-top: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+.citation {
+  position: relative;
+  margin: 3rem 0;
+  padding: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
+  background: var(--color-terracotta-soft);
+  border-radius: var(--radius-2xl);
+}
+.citation::before {
+  content: "«";
+  position: absolute;
+  top: -0.25em;
+  left: 0.15em;
+  pointer-events: none;
+  font: 500 clamp(6rem, 4rem + 8vw, 10rem) / 1 var(--font-serif);
+  color: var(--color-terracotta);
+}
+.citation blockquote {
+  margin: 0;
+  position: relative;
+}
+.citation blockquote p {
+  margin: 0;
+  padding-top: clamp(1.5rem, 1rem + 2vw, 2.5rem);
   font: italic 500 clamp(1.5rem, 1.15rem + 1.7vw, 2.375rem) / 1.22 var(--font-serif);
-  letter-spacing: -0.015em; color: var(--color-ink); text-wrap: balance; }
-.citation figcaption { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.25rem;
-  font-size: 0.9375rem; color: var(--color-fg-soft); }
-.citation figcaption::before { content: ""; width: 3rem; height: 3px; background: var(--color-terracotta); }
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+.citation figcaption {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--color-fg-soft);
+}
+.citation figcaption::before {
+  content: "";
+  width: 3rem;
+  height: 3px;
+  background: var(--color-terracotta);
+}
 
 /* 15 — CARTES, SCHÉMA FLÉCHÉ, CHIFFRES EN RANGÉE, FRISE -------------------- */
-.cartes { list-style: none; margin: 2rem 0; padding: 0; display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
-.carte { position: relative; padding: 1.25rem; background: var(--color-paper);
-  border: 1px solid var(--color-border); border-radius: var(--radius-xl); box-shadow: var(--ombre-douce); }
-.carte__icone { display: inline-grid; place-items: center; width: 3rem; height: 3rem; margin-bottom: 0.85rem;
-  border-radius: var(--radius-lg); background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
-.carte__titre { margin: 0 0 0.35rem; font: 600 1.125rem/1.3 var(--font-sans); color: var(--color-ink); }
-.carte p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: var(--color-fg-soft); }
+.cartes {
+  list-style: none;
+  margin: 2rem 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+.carte {
+  position: relative;
+  padding: 1.25rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--ombre-douce);
+}
+.carte__icone {
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.85rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.carte__titre {
+  margin: 0 0 0.35rem;
+  font: 600 1.125rem/1.3 var(--font-sans);
+  color: var(--color-ink);
+}
+.carte p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--color-fg-soft);
+}
 
 /* Schéma en 3 temps (ex. constat → causes → leviers), flèches entre colonnes */
-.schema { margin: 2.5rem 0; }
-.schema__liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.75rem; }
-.schema__etape { position: relative; padding: 1.25rem; border-radius: var(--radius-xl); background: var(--color-paper);
-  border-top: 6px solid var(--color-mocha); box-shadow: var(--ombre-douce); }
-.schema__etape:nth-child(2) { border-top-color: var(--color-terracotta); }
-.schema__etape:nth-child(3) { border-top-color: var(--color-sage); background: var(--color-sage-soft); }
-.schema__etape + .schema__etape::before { content: ""; position: absolute; left: 50%; top: -1.6rem;
-  width: 1.1rem; height: 1.1rem; translate: -50% 0; rotate: 45deg;
-  border: solid var(--color-terracotta); border-width: 0 4px 4px 0; }
-.schema__libelle { display: inline-block; margin: 0 0 0.5rem; padding: 0.15rem 0.6rem; border-radius: var(--radius-full);
-  background: var(--color-mocha); color: var(--color-mocha-fg); font: 600 0.75rem/1.5 var(--font-sans);
-  letter-spacing: 0.08em; text-transform: uppercase; }
-.schema__etape p { margin: 0; font-size: 0.9375rem; line-height: 1.5; }
-.schema__etape .schema__libelle { margin-bottom: 0.75rem; font-size: 0.75rem; }
-.schema__etape ul { margin: 0; padding-left: 1.1rem; font-size: 0.9375rem; line-height: 1.5; }
-.schema figcaption { margin-top: 0.75rem; font-size: 0.875rem; color: var(--color-fg-muted); }
+.schema {
+  margin: 2.5rem 0;
+}
+.schema__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.75rem;
+}
+.schema__etape {
+  position: relative;
+  padding: 1.25rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-paper);
+  border-top: 6px solid var(--color-mocha);
+  box-shadow: var(--ombre-douce);
+}
+.schema__etape:nth-child(2) {
+  border-top-color: var(--color-terracotta);
+}
+.schema__etape:nth-child(3) {
+  border-top-color: var(--color-sage);
+  background: var(--color-sage-soft);
+}
+.schema__etape + .schema__etape::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -1.6rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  translate: -50% 0;
+  rotate: 45deg;
+  border: solid var(--color-terracotta);
+  border-width: 0 4px 4px 0;
+}
+.schema__libelle {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  font: 600 0.75rem/1.5 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.schema__etape p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.schema__etape .schema__libelle {
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+}
+.schema__etape ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.schema figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+}
 @media (min-width: 640px) {
-  .schema__liste { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-  .schema__etape + .schema__etape::before { left: -1.55rem; top: 50%; translate: 0 -50%; rotate: -45deg; }
+  .schema__liste {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .schema__etape + .schema__etape::before {
+    left: -1.55rem;
+    top: 50%;
+    translate: 0 -50%;
+    rotate: -45deg;
+  }
 }
 
 /* Chiffres géants en rangée, sur bandeau mocha */
-.chiffres { margin: 2.5rem 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem); border-radius: var(--radius-2xl);
-  background: var(--color-mocha); color: var(--color-mocha-fg); }
-.chiffres__titre { margin: 0 0 1.25rem; font: 600 1.125rem/1.3 var(--font-sans); }
-.chiffres__liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); }
-.chiffres__liste li { margin: 0; padding-top: 0.75rem; border-top: 3px solid var(--color-terracotta-on-mocha); }
-.chiffres__valeur { display: block; font: 600 clamp(2.75rem, 2rem + 3vw, 3.75rem) / 1 var(--font-serif);
-  letter-spacing: -0.03em; color: var(--color-terracotta-on-mocha); }
-.chiffres__libelle { display: block; margin-top: 0.4rem; font-size: 0.9375rem; line-height: 1.45; }
-.chiffres .source { color: var(--color-mocha-fg-muted); margin-top: 1.25rem; }
+.chiffres {
+  margin: 2.5rem 0;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+.chiffres__titre {
+  margin: 0 0 1.25rem;
+  font: 600 1.125rem/1.3 var(--font-sans);
+}
+.chiffres__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+}
+.chiffres__liste li {
+  margin: 0;
+  padding-top: 0.75rem;
+  border-top: 3px solid var(--color-terracotta-on-mocha);
+}
+.chiffres__valeur {
+  display: block;
+  font: 600 clamp(2.75rem, 2rem + 3vw, 3.75rem) / 1 var(--font-serif);
+  letter-spacing: -0.03em;
+  color: var(--color-terracotta-on-mocha);
+}
+.chiffres__libelle {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.chiffres .source {
+  color: var(--color-mocha-fg-muted);
+  margin-top: 1.25rem;
+}
 
 /* Frise / étapes numérotées : pastilles + ligne verticale pointillée */
-.etapes { list-style: none; margin: 2rem 0; padding: 0; counter-reset: etape; }
-.etapes li { counter-increment: etape; position: relative; margin: 0; padding: 0 0 1.75rem 4rem; min-height: 3rem; }
-.etapes li::before { content: counter(etape); position: absolute; left: 0; top: 0; z-index: 1;
-  display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%;
-  background: var(--color-terracotta); color: var(--color-paper); font: 600 1.125rem/1 var(--font-mono);
-  box-shadow: 0 0 0 5px var(--color-bg); }
-.etapes li::after { content: ""; position: absolute; left: calc(1.375rem - 1.5px); top: 2.75rem; bottom: 0; width: 3px;
-  background: repeating-linear-gradient(var(--color-border-strong) 0 6px, transparent 6px 11px); }
-.etapes li:last-child { padding-bottom: 0; }
-.etapes li:last-child::after { display: none; }
-.etapes li:last-child::before { background: var(--color-mocha); }
-.etapes__titre { display: block; padding-top: 0.5rem; font: 600 1.1875rem/1.3 var(--font-sans); color: var(--color-ink); }
-.etapes__duree { display: inline-block; margin: 0.35rem 0 0.2rem; padding: 0.1rem 0.6rem; border-radius: var(--radius-full);
-  background: var(--color-sand); font: 600 0.875rem/1.5 var(--font-mono); color: var(--color-fg-soft); }
-.etapes p { margin: 0.25rem 0 0; color: var(--color-fg-soft); }
+.etapes {
+  list-style: none;
+  margin: 2rem 0;
+  padding: 0;
+  counter-reset: etape;
+}
+.etapes li {
+  counter-increment: etape;
+  position: relative;
+  margin: 0;
+  padding: 0 0 1.75rem 4rem;
+  min-height: 3rem;
+}
+.etapes li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+  font: 600 1.125rem/1 var(--font-mono);
+  box-shadow: 0 0 0 5px var(--color-bg);
+}
+.etapes li::after {
+  content: "";
+  position: absolute;
+  left: calc(1.375rem - 1.5px);
+  top: 2.75rem;
+  bottom: 0;
+  width: 3px;
+  background: repeating-linear-gradient(var(--color-border-strong) 0 6px, transparent 6px 11px);
+}
+.etapes li:last-child {
+  padding-bottom: 0;
+}
+.etapes li:last-child::after {
+  display: none;
+}
+.etapes li:last-child::before {
+  background: var(--color-mocha);
+}
+.etapes__titre {
+  display: block;
+  padding-top: 0.5rem;
+  font: 600 1.1875rem/1.3 var(--font-sans);
+  color: var(--color-ink);
+}
+.etapes__duree {
+  display: inline-block;
+  margin: 0.35rem 0 0.2rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--color-sand);
+  font: 600 0.875rem/1.5 var(--font-mono);
+  color: var(--color-fg-soft);
+}
+.etapes p {
+  margin: 0.25rem 0 0;
+  color: var(--color-fg-soft);
+}
 
 /* 16 — TABLEAU VISUEL : vrai <table>, défilant, focusable, 1re colonne collante */
-.tableau { margin: 2.5rem 0; }
-.tableau__defilant { overflow-x: auto; background: var(--color-paper);
-  border: 2px solid var(--color-mocha); border-radius: var(--radius-lg); }
-.tableau table { width: 100%; min-width: 36rem; border-collapse: separate; border-spacing: 0; font-size: 0.9375rem; line-height: 1.45; }
-.tableau caption { caption-side: top; text-align: left; padding: 1rem 0 0.85rem; background: var(--color-paper);
-  font: 600 1.0625rem/1.35 var(--font-sans); color: var(--color-ink); }
+.tableau {
+  margin: 2.5rem 0;
+}
+.tableau__defilant {
+  overflow-x: auto;
+  background: var(--color-paper);
+  border: 2px solid var(--color-mocha);
+  border-radius: var(--radius-lg);
+}
+.tableau table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.tableau caption {
+  caption-side: top;
+  text-align: left;
+  padding: 1rem 0 0.85rem;
+  background: var(--color-paper);
+  font: 600 1.0625rem/1.35 var(--font-sans);
+  color: var(--color-ink);
+}
 /* la légende reste lisible pendant le défilement horizontal */
-.tableau caption > span { display: block; position: sticky; left: 0; padding-inline: 1rem;
-  max-width: calc(100vw - 2 * var(--gouttiere) - 4px); }
-.tableau th, .tableau td { padding: 0.85rem 1rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--color-border); }
-.tableau thead th { background: var(--color-mocha); color: var(--color-mocha-fg); border-bottom: 0;
-  font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.tableau tbody tr:nth-child(odd) > * { background: var(--color-paper); }
-.tableau tbody tr:nth-child(even) > * { background: var(--color-bg); }
-.tableau tbody tr:last-child > * { border-bottom: 0; }
-.tableau :is(th, td):first-child { position: sticky; left: 0; z-index: 1; box-shadow: inset -2px 0 0 var(--color-border); }
-.tableau thead th:first-child { z-index: 2; box-shadow: inset -2px 0 0 var(--color-border-on-mocha); }
-.tableau tbody th { min-width: 10rem; font-weight: 600; color: var(--color-ink); }
-.verdict { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 600; color: var(--color-ink); white-space: nowrap; }
-.verdict .icone { width: 1.4rem; height: 1.4rem; padding: 0.2rem; border-radius: 50%; stroke-width: 3; color: var(--color-paper); }
-.verdict--oui .icone { background: var(--color-sage); }
-.verdict--partiel .icone { background: var(--color-ochre-deep); }
-.verdict--non .icone { background: var(--color-terracotta); }
-.tableau__note { margin: 0.6rem 0 0; font-size: 0.8125rem; color: var(--color-fg-muted); }
+.tableau caption > span {
+  display: block;
+  position: sticky;
+  left: 0;
+  padding-inline: 1rem;
+  max-width: calc(100vw - 2 * var(--gouttiere) - 4px);
+}
+.tableau th,
+.tableau td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+.tableau thead th {
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  border-bottom: 0;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tableau tbody tr:nth-child(odd) > * {
+  background: var(--color-paper);
+}
+.tableau tbody tr:nth-child(even) > * {
+  background: var(--color-bg);
+}
+.tableau tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.tableau :is(th, td):first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  box-shadow: inset -2px 0 0 var(--color-border);
+}
+.tableau thead th:first-child {
+  z-index: 2;
+  box-shadow: inset -2px 0 0 var(--color-border-on-mocha);
+}
+.tableau tbody th {
+  min-width: 7.5rem;
+  max-width: 12rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+.verdict .icone {
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  stroke-width: 3;
+  color: var(--color-paper);
+}
+.verdict--oui .icone {
+  background: var(--color-sage);
+}
+.verdict--partiel .icone {
+  background: var(--color-ochre-deep);
+}
+.verdict--non .icone {
+  background: var(--color-terracotta);
+}
+.tableau__defilant {
+  background:
+    linear-gradient(90deg, var(--color-paper) 30%, transparent) 0 0 / 2rem 100% no-repeat local,
+    linear-gradient(270deg, var(--color-paper) 30%, transparent) 100% 0 / 2rem 100% no-repeat local,
+    linear-gradient(90deg, color-mix(in srgb, var(--color-mocha) 18%, transparent), transparent) 0
+      0 / 0.75rem 100% no-repeat scroll,
+    linear-gradient(270deg, color-mix(in srgb, var(--color-mocha) 18%, transparent), transparent)
+      100% 0 / 0.75rem 100% no-repeat scroll,
+    var(--color-paper);
+}
+@media (max-width: 639px) {
+  .tableau th,
+  .tableau td {
+    padding: 0.7rem 0.75rem;
+  }
+  .tableau table {
+    font-size: 0.875rem;
+  }
+}
+@media (min-width: 640px) {
+  .tableau__note .sur-telephone {
+    display: none;
+  }
+}
+.tableau__note {
+  margin: 0.6rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
 
 /* 17 — CHECKLIST, RELANCE DE LECTURE, SÉPARATEURS -------------------------- */
-.checklist { list-style: none; margin: 1.75rem 0; padding: 0.5rem; display: grid; gap: 0.35rem;
-  background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
-.checklist li { position: relative; display: flex; gap: 0.85rem; align-items: flex-start; margin: 0; padding: 0.75rem;
-  border-radius: var(--radius-lg); }
-.checklist li:nth-child(odd) { background: var(--color-bg); }
+.checklist {
+  list-style: none;
+  margin: 1.75rem 0;
+  padding: 0.5rem;
+  display: grid;
+  gap: 0.35rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+.checklist li {
+  position: relative;
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: var(--radius-lg);
+}
+.checklist li:nth-child(odd) {
+  background: var(--color-bg);
+}
 /* case cochée dessinée en CSS : décor (le texte porte le sens) */
-.checklist li::before { content: ""; flex: none; width: 1.6rem; height: 1.6rem; margin-top: 0.1rem;
-  border-radius: var(--radius-md); background: var(--color-sage); }
-.checklist li::after { content: ""; position: absolute; left: 1.3rem; top: 1rem; width: 0.45rem; height: 0.85rem;
-  border: solid var(--color-paper); border-width: 0 3px 3px 0; transform: rotate(45deg); }
+.checklist li::before {
+  content: "";
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: 0.1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-sage);
+}
+.checklist li::after {
+  content: "";
+  position: absolute;
+  left: 1.3rem;
+  top: 1rem;
+  width: 0.45rem;
+  height: 0.85rem;
+  border: solid var(--color-paper);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
 
 /* « Dans la suite : … » — relance en fin de section */
-.relance { display: flex; align-items: center; gap: 0.6rem; margin: 2rem 0 0 !important; padding: 0.75rem 0 0;
-  border-top: 1px dashed var(--color-border-strong); font-size: 0.9375rem; color: var(--color-fg-soft); }
-.relance strong { color: var(--color-terracotta-deep); }
-.relance .icone { color: var(--color-terracotta-deep); }
+.relance {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2rem 0 0 !important;
+  padding: 0.75rem 0 0;
+  border-top: 1px dashed var(--color-border-strong);
+  font-size: 0.9375rem;
+  color: var(--color-fg-soft);
+}
+.relance strong {
+  color: var(--color-terracotta-deep);
+}
+.relance .icone {
+  color: var(--color-terracotta-deep);
+}
 
-.separateur { border: 0; margin: 3.5rem auto; height: 1.25rem; width: 10rem;
+.separateur {
+  border: 0;
+  margin: 3.5rem auto;
+  height: 1.25rem;
+  width: 10rem;
   background:
-    radial-gradient(circle, var(--color-terracotta) 0 0.4rem, transparent 0.45rem) center / 1.25rem 1.25rem no-repeat,
-    linear-gradient(var(--color-border-strong), var(--color-border-strong)) center / 100% 2px no-repeat; }
-.separateur--vague { width: 100%; height: 0.75rem;
-  background: radial-gradient(circle at 50% 0, transparent 0.45rem, var(--color-sand-deep) 0.5rem 0.62rem, transparent 0.67rem) 0 0 / 1.5rem 0.75rem repeat-x; }
+    radial-gradient(circle, var(--color-terracotta) 0 0.4rem, transparent 0.45rem) center / 1.25rem
+      1.25rem no-repeat,
+    linear-gradient(var(--color-border-strong), var(--color-border-strong)) center / 100% 2px
+      no-repeat;
+}
+.separateur--vague {
+  width: 100%;
+  height: 0.75rem;
+  background: radial-gradient(
+      circle at 50% 0,
+      transparent 0.45rem,
+      var(--color-sand-deep) 0.5rem 0.62rem,
+      transparent 0.67rem
+    )
+    0 0 / 1.5rem 0.75rem repeat-x;
+}
 
 /* 18 — RÉSUMÉ VISUEL DE FIN « Ce qu'il faut retenir » ---------------------- */
-.resume { margin: 3.5rem 0 1rem; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border-radius: var(--radius-2xl); background: var(--color-sand); }
-.resume__titre { margin: 0 0 1.25rem; font: 600 clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem) / 1.15 var(--font-serif); letter-spacing: -0.02em; }
-.resume__titre em { font-style: italic; font-weight: 500; color: var(--color-terracotta-deep); }
-.resume__liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.85rem; counter-reset: r;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
-.resume__liste li { counter-increment: r; margin: 0; padding: 1rem 1.1rem 1.15rem; background: var(--color-paper);
-  border-top: 5px solid var(--color-terracotta); border-radius: var(--radius-lg); font-size: 1rem; line-height: 1.45; color: var(--color-ink); }
-.resume__liste li:nth-child(2) { border-top-color: var(--color-primary); }
-.resume__liste li:nth-child(3) { border-top-color: var(--color-sage); }
-.resume__liste li:nth-child(4) { border-top-color: var(--color-ochre-deep); }
-.resume__liste li:nth-child(5) { border-top-color: var(--color-plum); }
-.resume__liste li::before { content: counter(r, decimal-leading-zero); display: block; margin-bottom: 0.4rem;
-  font: 600 2rem/1 var(--font-serif); color: var(--color-terracotta-deep); }
-.micro-appel { margin: 0 0 3rem; }
+.resume {
+  margin: 3.5rem 0 1rem;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-sand);
+}
+.resume__titre {
+  margin: 0 0 1.25rem;
+  font: 600 clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem) / 1.15 var(--font-serif);
+  letter-spacing: -0.02em;
+}
+.resume__titre em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-deep);
+}
+.resume__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+  counter-reset: r;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+.resume__liste li {
+  counter-increment: r;
+  margin: 0;
+  padding: 1rem 1.1rem 1.15rem;
+  background: var(--color-paper);
+  border-top: 5px solid var(--color-terracotta);
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+.resume__liste li:nth-child(2) {
+  border-top-color: var(--color-primary);
+}
+.resume__liste li:nth-child(3) {
+  border-top-color: var(--color-sage);
+}
+.resume__liste li:nth-child(4) {
+  border-top-color: var(--color-ochre-deep);
+}
+.resume__liste li:nth-child(5) {
+  border-top-color: var(--color-plum);
+}
+.resume__liste li::before {
+  content: counter(r, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.4rem;
+  font: 600 2rem/1 var(--font-serif);
+  color: var(--color-terracotta-deep);
+}
+.micro-appel {
+  margin: 0 0 3rem;
+}
 
 /* 19 — ENCARTS D'APPEL À L'ACTION ------------------------------------------ */
 /* Milieu : fond doux selon le modèle (--fond), filet terracotta, 1 bouton + 1 lien */
-.cta-milieu { --fond: var(--color-plum-soft); --deco: var(--color-plum);
-  position: relative; overflow: hidden; isolation: isolate; margin: 3.5rem 0; display: grid; gap: 0.85rem;
-  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem); padding-right: clamp(1.5rem, 8vw, 9rem);
-  background: var(--fond); border-left: 8px solid var(--color-terracotta); border-radius: var(--radius-xl); }
-.cta-milieu--sage { --fond: var(--color-sage-soft); --deco: var(--color-sage); }
-.cta-milieu--ochre { --fond: var(--color-ochre-soft); --deco: var(--color-ochre); }
-.cta-milieu::after { content: ""; position: absolute; z-index: -1; right: -3.5rem; top: 50%; translate: 0 -50%;
-  width: 11rem; aspect-ratio: 1; border-radius: 50%; border: 1.75rem solid var(--deco); opacity: 0.22; }
-.cta-milieu__surtitre { margin: 0; font: 600 0.8125rem/1.2 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-terracotta-deep); }
-.cta-milieu__titre { margin: 0; font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem) / 1.15 var(--font-serif); letter-spacing: -0.015em; color: var(--color-ink); }
-.cta-milieu p { margin: 0; max-width: 26.8em; /* = 44ch Manrope */ }
-.cta-milieu__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; margin-top: 0.4rem; }
+.cta-milieu {
+  --fond: var(--color-plum-soft);
+  --deco: var(--color-plum);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 3.5rem 0;
+  display: grid;
+  gap: 0.85rem;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  padding-right: clamp(1.5rem, 8vw, 9rem);
+  background: var(--fond);
+  border-left: 8px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+}
+.cta-milieu--sage,
+.cta-milieu--ochre {
+  --fond: var(--color-paper);
+  --deco: var(--color-terracotta);
+}
+/* Style UNIQUE de l'appel d'action du milieu : il ne ressemble jamais à un encadré de contenu */
+.cta-milieu,
+.cta-milieu--sage,
+.cta-milieu--ochre {
+  --fond: var(--color-paper);
+  --deco: var(--color-terracotta);
+  border: 2px solid var(--color-mocha);
+  border-left: 8px solid var(--color-terracotta);
+  box-shadow: 6px 6px 0 var(--color-sand-deep);
+}
+.cta-milieu::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -3.5rem;
+  top: 50%;
+  translate: 0 -50%;
+  width: 11rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.75rem solid var(--deco);
+  opacity: 0.22;
+}
+.cta-milieu__surtitre {
+  margin: 0;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.cta-milieu__titre {
+  margin: 0;
+  font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem) / 1.15 var(--font-serif);
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+.cta-milieu p {
+  margin: 0;
+  max-width: 26.8em; /* = 44ch Manrope */
+}
+.cta-milieu__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin-top: 0.4rem;
+}
 
 /* Fin : grand bloc mocha, 3 actions, déroulé du diagnostic, réassurance factuelle */
-.cta-fin { position: relative; overflow: hidden; isolation: isolate; margin: 4rem 0 2rem;
-  padding: clamp(1.75rem, 1rem + 3vw, 3.5rem); border-radius: var(--radius-2xl);
-  background: var(--color-mocha); color: var(--color-mocha-fg); }
+.cta-fin {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 4rem 0 2rem;
+  padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
 /* Disque décoratif : sur téléphone, petit et rejeté dans l'angle (il passait sous le titre :
    terracotta-on-mocha sur terracotta = 2,2:1) ; grand à partir de 760 px, où le titre reste à gauche */
-.cta-fin::before { content: ""; position: absolute; z-index: -1; width: 9rem; aspect-ratio: 1; border-radius: 50%;
-  top: -5.5rem; right: -4.5rem; background: var(--color-terracotta); }
-.cta-fin__surtitre { margin: 0 0 0.75rem; }
-.cta-fin__titre { margin: 0 0 0.75rem; max-width: 12.15em; /* = 18ch Fraunces */ font: 600 clamp(2rem, 1.3rem + 2.8vw, 3.25rem) / 1.05 var(--font-serif); letter-spacing: -0.025em; }
-.cta-fin__titre em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
-.cta-fin__phrase { max-width: 30.5em; /* = 50ch Manrope */ margin: 0 0 1.75rem; font-size: 1.125rem; color: var(--color-mocha-fg-muted); }
-.cta-fin__actions { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
-.cta-fin__actions .btn { width: 100%; height: 100%; min-height: 60px; justify-content: flex-start; border-radius: var(--radius-lg); }
-.deroule { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: 1rem; counter-reset: d; }
-.deroule li { counter-increment: d; display: grid; align-content: start; grid-template-columns: auto 1fr; gap: 0 0.85rem; margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--color-mocha-fg-muted); }
-.deroule li::before { content: counter(d, decimal-leading-zero); grid-row: span 2; font: 600 1.75rem/1 var(--font-mono); color: var(--color-terracotta-on-mocha); }
-.deroule strong { color: var(--color-mocha-fg); font-weight: 600; }
-.rassurance { list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; margin: 1.75rem 0 0; padding: 1.25rem 0 0;
-  border-top: 1px solid var(--color-border-on-mocha); font-size: 0.875rem; color: var(--color-mocha-fg-muted); }
-.rassurance li { display: inline-flex; align-items: center; gap: 0.45rem; }
-.rassurance .icone { width: 1.1rem; height: 1.1rem; color: var(--color-terracotta-on-mocha); }
+.cta-fin::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 9rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  top: -5.5rem;
+  right: -4.5rem;
+  background: var(--color-terracotta);
+}
+.cta-fin__surtitre {
+  margin: 0 0 0.75rem;
+}
+.cta-fin__titre {
+  margin: 0 0 0.75rem;
+  max-width: 12.15em; /* = 18ch Fraunces */
+  font: 600 clamp(2rem, 1.3rem + 2.8vw, 3.25rem) / 1.05 var(--font-serif);
+  letter-spacing: -0.025em;
+}
+.cta-fin__titre em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-on-mocha);
+}
+.cta-fin__phrase {
+  max-width: 30.5em; /* = 50ch Manrope */
+  margin: 0 0 1.75rem;
+  font-size: 1.125rem;
+  color: var(--color-mocha-fg-muted);
+}
+.cta-fin__actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.cta-fin__actions .btn {
+  width: 100%;
+  height: 100%;
+  min-height: 60px;
+  justify-content: flex-start;
+  border-radius: var(--radius-lg);
+}
+.deroule {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  counter-reset: d;
+}
+.deroule li {
+  counter-increment: d;
+  display: grid;
+  align-content: start;
+  grid-template-columns: auto 1fr;
+  gap: 0 0.85rem;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-mocha-fg-muted);
+}
+.deroule li::before {
+  content: counter(d, decimal-leading-zero);
+  grid-row: span 2;
+  font: 600 1.75rem/1 var(--font-mono);
+  color: var(--color-terracotta-on-mocha);
+}
+.deroule strong {
+  color: var(--color-mocha-fg);
+  font-weight: 600;
+}
+.rassurance {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin: 1.75rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--color-border-on-mocha);
+  font-size: 0.875rem;
+  color: var(--color-mocha-fg-muted);
+}
+.rassurance li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.rassurance .icone {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--color-terracotta-on-mocha);
+}
 @media (min-width: 760px) {
-  .cta-fin::before { width: 24rem; top: -12rem; right: -8rem; }
-  .cta-fin__actions { grid-template-columns: 1.25fr 1fr 1fr; }
-  .deroule { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .cta-fin::before {
+    width: 24rem;
+    top: -12rem;
+    right: -8rem;
+  }
+  .cta-fin__actions {
+    grid-template-columns: 1.25fr 1fr 1fr;
+  }
+  .deroule {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
 }
 
 /* 20 — FAQ, SOURCES, AUTEUR, PARTAGE, ALLER PLUS LOIN, À LIRE AUSSI ------- */
-.bloc-titre { margin: 0 0 1.25rem; font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem) / 1.2 var(--font-serif); letter-spacing: -0.015em; color: var(--color-ink); }
-.faq { margin: 3.5rem 0; }
-.faq details { margin-bottom: 0.6rem; background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-.faq details[open] { border-color: var(--color-mocha); box-shadow: inset 5px 0 0 var(--color-terracotta); }
-.faq summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 56px;
-  padding: 0.85rem 1.1rem 0.85rem 1.25rem; cursor: pointer; list-style: none;
-  font-weight: 600; font-size: 1.0625rem; line-height: 1.4; color: var(--color-ink); }
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%;
-  background: var(--color-sand); color: var(--color-terracotta-deep); font: 400 1.375rem/1 var(--font-sans); }
-.faq details[open] summary::after { content: "–"; background: var(--color-terracotta); color: var(--color-paper); }
-.faq-answer { padding: 0 1.25rem 1.15rem; }
-.faq-answer p { margin: 0 0 0.75em; }
-.faq-answer p:last-child { margin: 0; }
+.bloc-titre {
+  margin: 0 0 1.25rem;
+  font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem) / 1.2 var(--font-serif);
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+.faq {
+  margin: 3.5rem 0;
+}
+.faq details {
+  margin-bottom: 0.6rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.faq details[open] {
+  border-color: var(--color-mocha);
+  box-shadow: inset 5px 0 0 var(--color-terracotta);
+}
+.faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 56px;
+  padding: 0.85rem 1.1rem 0.85rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq summary::after {
+  content: "+";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-sand);
+  color: var(--color-terracotta-deep);
+  font: 400 1.375rem/1 var(--font-sans);
+}
+.faq details[open] summary::after {
+  content: "–";
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+}
+.faq-answer {
+  padding: 0 1.25rem 1.15rem;
+}
+.faq-answer p {
+  margin: 0 0 0.75em;
+}
+.faq-answer p:last-child {
+  margin: 0;
+}
 
-.sources { margin: 3rem 0; padding: 1.5rem; background: var(--color-paper); border: 1px solid var(--color-border-strong); border-radius: var(--radius-xl); }
-.sources__titre { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.85rem; font: 600 1.375rem/1.3 var(--font-serif); }
-.sources__titre .icone { color: var(--color-terracotta-deep); }
-.sources ol { margin: 0 0 1.25rem; padding-left: 1.5rem; font-size: 0.9375rem; line-height: 1.55; }
-.sources li { margin: 0.45rem 0; padding-left: 0.25rem; }
-.sources li::marker { font-family: var(--font-mono); font-weight: 600; color: var(--color-terracotta-deep); }
-.sources h3 { margin: 0 0 0.35rem; font: 600 1rem/1.4 var(--font-sans); }
-.sources p { margin: 0 0 0.75rem; font-size: 0.9375rem; color: var(--color-fg-soft); }
-.citer { margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md); background: var(--color-bg);
-  font: 400 0.9375rem/1.5 var(--font-mono); color: var(--color-fg); }
+.sources {
+  margin: 3rem 0;
+  padding: 1.5rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+}
+.sources__titre {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.85rem;
+  font: 600 1.375rem/1.3 var(--font-serif);
+}
+.sources__titre .icone {
+  color: var(--color-terracotta-deep);
+}
+.sources ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.sources li {
+  margin: 0.45rem 0;
+  padding-left: 0.25rem;
+}
+.sources li::marker {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-terracotta-deep);
+}
+.sources h3 {
+  margin: 0 0 0.35rem;
+  font: 600 1rem/1.4 var(--font-sans);
+}
+.sources p {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-fg-soft);
+}
+.citer {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  font: 400 0.9375rem/1.5 var(--font-mono);
+  color: var(--color-fg);
+}
 
-.auteur { display: grid; grid-template-columns: auto 1fr; gap: 1rem 1.25rem; align-items: start; margin: 2.5rem 0;
-  padding: 1.5rem; background: var(--color-sand); border-radius: var(--radius-xl); }
-.auteur .avatar { width: 4rem; height: 4rem; font-size: 1.5rem; background: var(--color-mocha); color: var(--color-mocha-fg); }
-.auteur__titre { margin: 0; font: 600 1.25rem/1.25 var(--font-serif); }
-.auteur__titre a { color: var(--color-ink); }
-.auteur__role { margin: 0.15rem 0 0.5rem; font-size: 0.875rem; color: var(--color-fg-muted); }
-.auteur p { margin: 0; font-size: 0.9375rem; line-height: 1.6; }
-.mention-ia { grid-column: 1 / -1; display: flex; gap: 0.6rem; align-items: flex-start; margin: 0 !important;
-  padding-top: 1rem; border-top: 1px solid var(--color-border-strong); font-size: 0.875rem !important; color: var(--color-fg-soft); }
-.mention-ia .icone { margin-top: 0.15rem; color: var(--color-terracotta-deep); }
+.auteur {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 1.25rem;
+  align-items: start;
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: var(--color-sand);
+  border-radius: var(--radius-xl);
+}
+.auteur .avatar {
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+.auteur__titre {
+  margin: 0;
+  font: 600 1.25rem/1.25 var(--font-serif);
+}
+.auteur__titre a {
+  color: var(--color-ink);
+}
+.auteur__role {
+  margin: 0.15rem 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+}
+.auteur p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.mention-ia {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin: 0 !important;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border-strong);
+  font-size: 0.875rem !important;
+  color: var(--color-fg-soft);
+}
+.mention-ia .icone {
+  margin-top: 0.15rem;
+  color: var(--color-terracotta-deep);
+}
 
-.partage { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 2rem 0; }
-.partage__titre { margin: 0 0.25rem 0 0; font-size: 0.9375rem; font-weight: 600; }
-.partage ul { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
-.partage a { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0.4rem 1rem; border-radius: var(--radius-full);
-  background: var(--color-paper); border: 1.5px solid var(--color-border-field); color: var(--color-fg);
-  font-size: 0.9375rem; font-weight: 600; text-decoration: none; }
-.partage a:hover { background: var(--color-mocha); border-color: var(--color-mocha); color: var(--color-mocha-fg); }
+.partage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2rem 0;
+}
+.partage__titre {
+  margin: 0 0.25rem 0 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.partage ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.partage a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-border-field);
+  color: var(--color-fg);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.partage a:hover {
+  background: var(--color-mocha);
+  border-color: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
 
 /* Aller plus loin : tuiles de maillage interne (4 max) */
-.plus-loin { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
-.plus-loin a { display: flex; align-items: center; gap: 0.85rem; min-height: 64px; padding: 0.85rem 1rem; height: 100%;
-  background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
-  color: var(--color-ink); text-decoration: none; font-weight: 600; line-height: 1.3; }
-.plus-loin a:hover { border-color: var(--color-mocha); box-shadow: var(--ombre-douce); }
-.plus-loin small { display: block; font-weight: 400; font-size: 0.8125rem; color: var(--color-fg-muted); }
-.plus-loin .icone { color: var(--color-terracotta-deep); width: 1.5rem; height: 1.5rem; }
+.plus-loin {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+}
+.plus-loin a {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 64px;
+  padding: 0.85rem 1rem;
+  height: 100%;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink);
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.plus-loin a:hover {
+  border-color: var(--color-mocha);
+  box-shadow: var(--ombre-douce);
+}
+.plus-loin small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+.plus-loin .icone {
+  color: var(--color-terracotta-deep);
+  width: 1.5rem;
+  height: 1.5rem;
+}
 
 /* À lire aussi : cartes entièrement cliquables, visuel à ratio réservé */
-.lies { margin: 4rem 0 0; }
-.lies__surtitre { margin: 0 0 0.35rem; }
-.lies__liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
-.lie { position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden;
-  background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl);
-  transition: transform 0.15s, box-shadow 0.15s; }
-.lie:hover { transform: translateY(-3px); box-shadow: var(--ombre-douce); }
-.lie__visuel { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: linear-gradient(135deg, var(--color-mocha), var(--color-mocha-soft)); }
-.lie__visuel::after { content: ""; position: absolute; width: 45%; aspect-ratio: 1; border-radius: 50%; right: -8%; top: -20%; background: var(--color-terracotta); }
-.lies__liste li:nth-child(2) .lie__visuel { background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary)); }
-.lies__liste li:nth-child(2) .lie__visuel::after { background: var(--color-primary-soft); }
-.lies__liste li:nth-child(3) .lie__visuel { background: linear-gradient(135deg, var(--color-sage), var(--color-mocha-soft)); }
-.lies__liste li:nth-child(3) .lie__visuel::after { background: var(--color-ochre); }
-.lie__corps { display: grid; gap: 0.5rem; padding: 1rem 1.1rem 1.25rem; }
-.lie__corps .pastille { justify-self: start; min-height: 1.6rem; font-size: 0.6875rem; }
-.lie__titre { margin: 0; font: 600 1.125rem/1.3 var(--font-serif); }
-.lie__titre a { color: var(--color-ink); text-decoration: none; }
-.lie__titre a::after { content: ""; position: absolute; inset: 0; } /* carte entièrement cliquable */
-.lie__titre a:focus-visible { outline: none; }
-.lie:has(a:focus-visible) { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
-.lie__meta { font-size: 0.8125rem; color: var(--color-fg-muted); }
+.lies {
+  margin: 4rem 0 0;
+}
+.lies__surtitre {
+  margin: 0 0 0.35rem;
+}
+.lies__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+.lie {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.lie:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ombre-douce);
+}
+.lie__visuel {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-mocha), var(--color-mocha-soft));
+}
+.lie__visuel::after {
+  content: "";
+  position: absolute;
+  width: 45%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  right: -8%;
+  top: -20%;
+  background: var(--color-terracotta);
+}
+.lies__liste li:nth-child(2) .lie__visuel {
+  background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary));
+}
+.lies__liste li:nth-child(2) .lie__visuel::after {
+  background: var(--color-primary-soft);
+}
+.lies__liste li:nth-child(3) .lie__visuel {
+  background: linear-gradient(135deg, var(--color-sage), var(--color-mocha-soft));
+}
+.lies__liste li:nth-child(3) .lie__visuel::after {
+  background: var(--color-ochre);
+}
+.lie__corps {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem 1.25rem;
+}
+.lie__corps .pastille {
+  justify-self: start;
+  min-height: 1.6rem;
+  font-size: 0.6875rem;
+}
+.lie__titre {
+  margin: 0;
+  font: 600 1.125rem/1.3 var(--font-serif);
+}
+.lie__titre a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.lie__titre a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+} /* carte entièrement cliquable */
+.lie__titre a:focus-visible {
+  outline: none;
+}
+.lie:has(a:focus-visible) {
+  outline: 3px solid var(--focus-clair);
+  outline-offset: 3px;
+}
+.lie__meta {
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
 /* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
 @media (max-width: 639px) {
-  .lie { flex-direction: row; }
-  .lie__visuel { flex: 0 0 6rem; aspect-ratio: auto; min-height: 7.5rem; }
-  .lie__visuel::after { width: 80%; right: -25%; top: -15%; }
-  .lie__corps { align-content: center; padding: 0.85rem 1rem; }
-  .lie__titre { font-size: 1.0625rem; }
+  .lie {
+    flex-direction: row;
+  }
+  .lie__visuel {
+    flex: 0 0 6rem;
+    aspect-ratio: auto;
+    min-height: 7.5rem;
+  }
+  .lie__visuel::after {
+    width: 80%;
+    right: -25%;
+    top: -15%;
+  }
+  .lie__corps {
+    align-content: center;
+    padding: 0.85rem 1rem;
+  }
+  .lie__titre {
+    font-size: 1.0625rem;
+  }
 }
 
 /* Guide gratuit (capture e-mail existante, une seule par page) */
-.guide-gratuit { display: grid; gap: 1rem; margin: 3rem 0 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
-  border-radius: var(--radius-2xl); background: var(--color-primary-soft); border: 2px solid var(--color-primary); }
-.guide-gratuit__titre { margin: 0 0 0.5rem; font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif); }
-.guide-gratuit p { margin: 0; }
-.guide-gratuit form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
+.guide-gratuit {
+  display: grid;
+  gap: 1rem;
+  margin: 3rem 0 0;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-primary-soft);
+  border: 2px solid var(--color-primary);
+}
+.guide-gratuit__titre {
+  margin: 0 0 0.5rem;
+  font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif);
+}
+.guide-gratuit p {
+  margin: 0;
+}
+.guide-gratuit form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
+}
 /* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
-.guide-gratuit > *, .guide-gratuit label { min-width: 0; }
-.guide-gratuit input { width: 100%; min-width: 0; }
-.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 min(15rem, 100%); font-size: 0.875rem; font-weight: 600; }
-.guide-gratuit input { min-height: 48px; padding: 0.6rem 0.9rem; border: 1.5px solid var(--color-border-field);
-  border-radius: var(--radius-md); background: var(--color-paper); color: var(--color-fg); font: 400 1rem/1.3 var(--font-sans); }
-@media (min-width: 760px) { .guide-gratuit { grid-template-columns: 1fr 1fr; align-items: center; } }
+.guide-gratuit > *,
+.guide-gratuit label {
+  min-width: 0;
+}
+.guide-gratuit input {
+  width: 100%;
+  min-width: 0;
+}
+.guide-gratuit label {
+  display: grid;
+  gap: 0.3rem;
+  flex: 1 1 min(15rem, 100%);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.guide-gratuit input {
+  min-height: 48px;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--color-border-field);
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+  color: var(--color-fg);
+  font: 400 1rem/1.3 var(--font-sans);
+}
+@media (min-width: 760px) {
+  .guide-gratuit {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
 
-.pied-site { margin-top: 4rem; padding: 2rem 0; background: var(--color-mocha); color: var(--color-mocha-fg-muted); font-size: 0.875rem; }
+.pied-site {
+  margin-top: 4rem;
+  padding: 2rem 0;
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg-muted);
+  font-size: 0.875rem;
+}
 
 /* 21 — PRÉFÉRENCES : mouvement réduit, couleurs forcées, impression ------- */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .progression { display: none !important; animation: none !important; }
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-  .btn:hover, .lie:hover { transform: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  .progression {
+    display: none !important;
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .btn:hover,
+  .lie:hover {
+    transform: none;
+  }
   /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
-  .sommaire ol::after { animation: sommaire-suite linear both !important; animation-timeline: --sommaire !important; }
+  .sommaire ol::after {
+    animation: sommaire-suite linear both !important;
+    animation-timeline: --sommaire !important;
+  }
 }
 @media (forced-colors: active) {
-  .progression, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
-  .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
-  .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
-    border: 2px solid CanvasText; }
-  .btn, .partage a, .partage-icones a { border: 2px solid ButtonText; }
-  .pastille, .meta__lecture, .avatar, .encadre__icone, .act__pastille, .etapes li::before { border: 1px solid CanvasText; }
-  .checklist li::before { background: Canvas; box-shadow: inset 0 0 0 2px CanvasText; }
-  .checklist li::after { border-color: CanvasText; }
-  .schema__etape + .schema__etape::before { border-color: CanvasText; }
-  .verdict .icone { border: 1px solid CanvasText; }
-  :focus-visible { outline-color: Highlight; }
+  .progression,
+  .heros::after,
+  .cta-milieu::after,
+  .cta-fin::before,
+  .lie__visuel::after {
+    display: none;
+  }
+  .encadre,
+  .en-bref,
+  .chiffre-cle,
+  .chiffres,
+  .carte,
+  .schema__etape,
+  .resume,
+  .resume__liste li,
+  .cta-milieu,
+  .cta-fin,
+  .citation,
+  .carte-action,
+  .sommaire details,
+  .faq details,
+  .sources,
+  .auteur,
+  .lie,
+  .tableau__defilant,
+  .guide-gratuit,
+  .plus-loin a {
+    border: 2px solid CanvasText;
+  }
+  .btn,
+  .partage a,
+  .partage-icones a {
+    border: 2px solid ButtonText;
+  }
+  .pastille,
+  .meta__lecture,
+  .avatar,
+  .encadre__icone,
+  .act__pastille,
+  .etapes li::before {
+    border: 1px solid CanvasText;
+  }
+  .checklist li::before {
+    background: Canvas;
+    box-shadow: inset 0 0 0 2px CanvasText;
+  }
+  .checklist li::after {
+    border-color: CanvasText;
+  }
+  .schema__etape + .schema__etape::before {
+    border-color: CanvasText;
+  }
+  .verdict .icone {
+    border: 1px solid CanvasText;
+  }
+  :focus-visible {
+    outline-color: Highlight;
+  }
 }
 @media print {
-  .progression, .action, .bandeau-maquette, .site-entete, .partage, .partage-icones, .cta-milieu, .guide-gratuit { display: none !important; }
-  body { padding: 0; background: none; }
-  .heros { border-image: none; color: var(--color-ink); padding-bottom: 1rem; }
-  .heros h1, .chapo, .meta { color: var(--color-ink); }
-  .visuel { margin-top: 0; }
+  .progression,
+  .action,
+  .bandeau-maquette,
+  .site-entete,
+  .partage,
+  .partage-icones,
+  .cta-milieu,
+  .guide-gratuit {
+    display: none !important;
+  }
+  body {
+    padding: 0;
+    background: none;
+  }
+  .heros {
+    border-image: none;
+    color: var(--color-ink);
+    padding-bottom: 1rem;
+  }
+  .heros h1,
+  .chapo,
+  .meta,
+  .meta a,
+  .heros h1 em,
+  .heros .pastille {
+    color: var(--color-ink);
+  }
+  .heros h1 em {
+    background: none;
+  }
+  .heros::before,
+  .heros::after,
+  .heros__signe,
+  .bande-ariane,
+  .cta-fin,
+  .lies,
+  .sommaire,
+  .progression {
+    display: none !important;
+  }
+  .visuel {
+    margin-top: 0;
+  }
+  .visuel__cadre {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .sources a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  .encadre,
+  .tableau,
+  figure {
+    break-inside: avoid;
+  }
+}
+
+/* 22 — FINITIONS (revue design v3) ----------------------------------------- */
+.resume__liste:has(> li:nth-child(4):last-child) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.resume__liste > li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.chiffre,
+.chiffres__valeur {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.lien-fleche {
+  text-wrap: balance;
+}
+@media (max-width: 639px) {
+  /* Héros plus court : une seule date (la mise à jour), pas de rangée de partage ni de signe décoratif */
+  .heros__pied {
+    display: none;
+  }
+  .meta:has([data-aeo="freshness"]) li:has(time):not([data-aeo="freshness"]) {
+    display: none;
+  }
+  .heros {
+    padding-bottom: clamp(4.25rem, 3.5rem + 4vw, 5.5rem);
+  }
+}
+
+/* 23 — AJOUTS « TENDANCES 2027 » : relecteur, historique, vidéo ----------------- */
+.relu {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0 !important;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-sage-soft);
+  color: var(--color-fg);
+}
+.relu .icone {
+  margin-top: 0.15rem;
+  color: var(--color-sage);
+}
+.relu em {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+.historique {
+  margin-top: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+}
+.historique summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.historique ul {
+  margin: 0;
+  padding: 0 1rem 0.9rem 2.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.encart-video {
+  margin: 3rem 0;
+  padding: 1.25rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-sand);
+}
+.encart-video__repere {
+  margin: 0 0 0.35rem;
+  font: 600 0.75rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.encart-video__titre {
+  margin: 0 0 0.9rem;
+  font: 600 1.375rem/1.25 var(--font-serif);
+  letter-spacing: -0.01em;
+}
+.encart-video__cadre {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+.encart-video__cadre .icone {
+  width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  fill: currentColor;
+  stroke: none;
+}
+.encart-video__texte {
+  margin-top: 0.75rem;
+}
+.encart-video__texte summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.encart-video__texte p {
+  margin: 0.25rem 0 0;
+  font-size: 0.9375rem;
+}
+.neutralite {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0 0 2rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-sand);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.neutralite .icone {
+  margin-top: 0.15rem;
+  color: var(--color-terracotta-deep);
+}
+@page {
+  margin: 18mm 16mm;
 }
 /* ===== FIN SOCLE ===== */
 
@@ -877,8 +3309,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 @media (forced-colors: active) { .visuel__cadre svg { forced-color-adjust: auto; } }
 /* Signe du modèle dans le héros (décor aria-hidden) */
 .signe__semaines { display: none; gap: 0.3rem; }
-.signe__semaines i { width: 0.7rem; height: 2.25rem; border-radius: var(--radius-sm); background: var(--color-border-on-mocha); }
-.signe__semaines i:last-child { background: var(--color-terracotta-on-mocha); }
+.signe__semaines i { width: 0.7rem; height: 2.25rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-mocha-fg) 35%, transparent); }
+.signe__semaines i:last-child { background: var(--color-paper); }
 @media (min-width: 640px) { .signe__semaines { display: flex; } }
 </style>
 </head>
@@ -919,25 +3351,44 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
 <p class="bandeau-maquette">Maquette v2 — modèle Analyse · document de travail, non publié</p>
 
-<header class="site-entete sur-sombre">
-  <div class="conteneur">
-    <a class="site-logo" href="/fr">Axion<em>-IA</em></a>
+<header class="site-entete">
+  <div class="site-entete__rangee">
+    <a class="site-logo" href="/fr" aria-label="Axion-IA, accueil">
+      <span class="site-logo__nom">Axion<span class="site-logo__tiret" aria-hidden="true">-</span><em>IA</em></span>
+      <span class="site-logo__devise">Partenaire IA des PME et TPE</span>
+    </a>
     <nav class="site-nav" aria-label="Navigation principale">
-      <a href="/fr/journee-ia">Journée IA</a>
-      <a href="/fr/formations">Formations</a>
-      <a href="/fr/blog">Blog</a>
+      <a class="site-nav__lien" href="/fr">Accueil</a>
+      <a class="site-nav__phare" href="/fr/journee-ia">La Journée IA</a>
+      <a class="site-nav__lien" href="/fr/prestations">Nos prestations<svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></a>
+      <a class="site-nav__lien" href="/fr/tarifs">Tarifs</a>
     </nav>
-    <a class="btn btn--bleu site-entete__cta" href="/fr/appel?rdv=diagnostic&amp;depuis=analyse-entete" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
+    <div class="site-actions">
+      <a class="site-pastille site-pastille--loupe" href="/fr/recherche" aria-label="Rechercher sur le site"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></a>
+      <a class="site-pastille site-pastille--texte" href="/fr/contact?depuis=analyse-ecrire"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Nous écrire</a>
+      <a class="site-reserver" href="/fr/appel?rdv=diagnostic&amp;depuis=analyse-entete" aria-label="Réserver un appel" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span class="site-reserver__court">Réserver</span><span class="site-reserver__long">Réserver un appel</span></a>
+      <details class="site-menu">
+        <summary aria-label="Menu"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h16"/></svg></summary>
+        <nav class="site-menu__panneau" aria-label="Menu principal">
+          <a href="/fr">Accueil</a>
+          <a href="/fr/journee-ia">La Journée IA</a>
+          <a href="/fr/prestations">Nos prestations</a>
+          <a href="/fr/tarifs">Tarifs</a>
+          <a href="/fr/contact?depuis=analyse-ecrire">Nous écrire</a>
+          <a href="/fr/recherche">Rechercher sur le site</a>
+        </nav>
+      </details>
+    </div>
   </div>
 </header>
 
-<div class="bande-ariane sur-sombre">
+<div class="bande-ariane">
   <div class="conteneur">
     <nav class="fil-ariane" aria-label="Fil d'Ariane">
       <ol>
         <li><a href="/fr">Accueil</a></li>
         <li><a href="/fr/blog">Blog</a></li>
-        <li aria-current="page">Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai</li>
+        <li aria-current="page">Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai</li>
       </ol>
     </nav>
   </div>
@@ -949,13 +3400,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 <article class="article" id="article">
 
   <!-- 1. EN-TÊTE HÉROS -->
-  <header class="heros sur-sombre">
+  <header class="heros sur-terracotta">
     <ul class="surtitre" aria-label="Type et catégorie">
       <li class="pastille pastille--pleine">Analyse</li>
       <li class="pastille pastille--contour">Organisation &amp; IA</li>
     </ul>
-    <h1>Pourquoi tant de projets d'IA en PME <em>s'arrêtent au premier essai</em></h1>
-    <p class="chapo">Pour les dirigeants qui ont déjà testé un outil d'IA et l'ont vu s'éteindre. En moins de dix minutes&nbsp;: les vraies causes, et ce qui distingue les essais qui durent.</p>
+    <h1>Pourquoi tant de projets d’IA en PME <em>s’arrêtent au premier essai</em></h1>
+    <p class="chapo">Pour les dirigeants qui ont déjà testé un outil d’IA et l’ont vu s’éteindre. En moins de dix minutes&nbsp;: les vraies causes, et ce qui distingue les essais qui durent.</p>
     <ul class="meta">
       <li><span class="avatar" aria-hidden="true">M</span><span>Par <a href="/fr/equipe/manon" rel="author">Manon</a></span></li>
       <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-publie"/></svg><time datetime="2026-11-20">Publié le 20 novembre 2026</time></li>
@@ -968,7 +3419,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
         <li><a href="mailto:?subject=Pourquoi%20tant%20de%20projets%20d%27IA%20en%20PME%20s%27arr%C3%AAtent&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
       </ul>
-      <div class="heros__signe signe--analyse" aria-hidden="true"><span class="signe__semaines"><i></i><i></i><i></i><i></i></span><span class="signe__grand">4 sem.</span><span class="signe__legende">d'essai, puis une décision</span></div>
+      <div class="heros__signe signe--analyse" aria-hidden="true"><span class="signe__semaines"><i></i><i></i><i></i><i></i></span><span class="signe__grand">4 sem.</span><span class="signe__legende">d’essai, puis une décision</span></div>
     </div>
   </header>
 
@@ -998,7 +3449,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
     <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
       <p class="en-bref__titre" id="en-bref-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-eclair"/></svg>En bref</p>
-      <p>Quand un projet d'IA s'arrête en PME, <strong>l'outil est rarement en cause</strong>. Il manque le plus souvent un usage précis, une personne responsable et du temps prévu pour changer les habitudes. Les projets qui durent partent d'une tâche répétitive, l'essaient quelques semaines avec une équipe volontaire, puis décident sur ce qu'ils ont observé.</p>
+      <p>Quand un projet d’IA s’arrête en PME, <strong>l’outil est rarement en cause</strong>. Il manque le plus souvent un usage précis, une personne responsable et du temps prévu pour changer les habitudes. Les projets qui durent partent d’une tâche répétitive, l’essaient quelques semaines avec une équipe volontaire, puis décident sur ce qu’ils ont observé.</p>
     </aside>
   </div>
 
@@ -1007,12 +3458,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <details>
       <summary>Sommaire · 7 questions</summary>
       <ol>
-        <li><a href="#qu-appelle-t-on-un-projet-d-ia-arrete">Qu'appelle-t-on un projet «&nbsp;arrêté&nbsp;»&#8239;?</a></li>
+        <li><a href="#qu-appelle-t-on-un-projet-d-ia-arrete">Qu’appelle-t-on un projet «&nbsp;arrêté&nbsp;»&#8239;?</a></li>
         <li><a href="#est-ce-un-probleme-d-outil-ou-d-organisation">Outil ou organisation&#8239;?</a></li>
         <li><a href="#qui-doit-porter-le-projet-dans-une-petite-equipe">Qui doit porter le projet&#8239;?</a></li>
-        <li><a href="#combien-de-temps-laisser-a-un-premier-essai">Combien de temps laisser à l'essai&#8239;?</a></li>
+        <li><a href="#combien-de-temps-laisser-a-un-premier-essai">Combien de temps laisser à l’essai&#8239;?</a></li>
         <li><a href="#comment-choisir-la-premiere-tache-a-confier-a-l-ia">Quelle première tâche choisir&#8239;?</a></li>
-        <li><a href="#que-faire-quand-l-equipe-n-adhere-pas">Et si l'équipe n'adhère pas&#8239;?</a></li>
+        <li><a href="#que-faire-quand-l-equipe-n-adhere-pas">Et si l’équipe n’adhère pas&#8239;?</a></li>
         <li><a href="#quand-faut-il-arreter-pour-de-bon">Quand arrêter pour de bon&#8239;?</a></li>
       </ol>
     </details>
@@ -1023,22 +3474,22 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
     <section aria-labelledby="qu-appelle-t-on-un-projet-d-ia-arrete">
       <div class="num-section"><span aria-hidden="true">01 / 07</span><a class="ancre" href="#qu-appelle-t-on-un-projet-d-ia-arrete" aria-label="Lien vers la section «&nbsp;Qu'appelle-t-on un projet d'IA arrêté&#8239;?&nbsp;»">#</a></div>
-      <h2 id="qu-appelle-t-on-un-projet-d-ia-arrete" data-speakable="true">Qu'appelle-t-on un projet d'IA «&nbsp;arrêté&nbsp;»&#8239;?</h2>
-      <p class="reponse-courte" data-speakable="true">Un projet arrêté, c'est <strong>un outil payé ou installé que plus personne n'ouvre</strong> au bout de quelques semaines, sans qu'aucune décision n'ait été prise.</p>
-      <p>Le scénario est presque toujours le même. Un abonnement est ouvert, deux ou trois personnes l'essaient avec curiosité. Puis le quotidien reprend le dessus, et l'outil glisse au fond des favoris.</p>
-      <p>Personne n'a décidé d'arrêter. C'est justement le problème&nbsp;: sans décision, il n'y a pas non plus d'apprentissage. On ne sait pas si l'IA «&nbsp;ne marche pas&nbsp;», ou si elle n'a jamais vraiment été essayée.</p>
+      <h2 id="qu-appelle-t-on-un-projet-d-ia-arrete" data-speakable="true">Qu’appelle-t-on un projet d’IA «&nbsp;arrêté&nbsp;»&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Un projet arrêté, c’est <strong>un outil payé ou installé que plus personne n’ouvre</strong> au bout de quelques semaines, sans qu’aucune décision n’ait été prise.</p>
+      <p>Le scénario est presque toujours le même. Un abonnement est ouvert, deux ou trois personnes l’essaient avec curiosité. Puis le quotidien reprend le dessus, et l’outil glisse au fond des favoris.</p>
+      <p>Personne n’a décidé d’arrêter. C’est justement le problème&nbsp;: sans décision, il n’y a pas non plus d’apprentissage. On ne sait pas si l’IA «&nbsp;ne marche pas&nbsp;», ou si elle n’a jamais vraiment été essayée.</p>
 
       <div class="chiffre-cle">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-graphe"/></svg></span>Chiffre clé</p>
-        <p class="chiffre-cle__phrase"><strong class="chiffre">≈ 10 %</strong> des sociétés françaises de 10 personnes ou plus utilisaient au moins une technologie d'intelligence artificielle en 2023.<span class="source">Source&nbsp;: Insee, enquête sur les technologies de l'information et de la communication dans les entreprises (TIC), 2023. Valeur arrondie.</span></p>
+        <p class="chiffre-cle__phrase"><strong class="chiffre">≈ 10 %</strong> des sociétés françaises de 10 personnes ou plus utilisaient au moins une technologie d’intelligence artificielle en 2023.<span class="source">Source&nbsp;: Insee, enquête sur les technologies de l’information et de la communication dans les entreprises (TIC), 2023. Valeur arrondie.</span></p>
       </div>
 
-      <p>L'usage reste donc minoritaire. Et derrière chaque entreprise qui «&nbsp;utilise l'IA&nbsp;», combien d'essais abandonnés en route&#8239;? Les enquêtes publiques ne le mesurent pas. Le schéma ci-dessous résume ce que l'on observe le plus souvent sur le terrain.</p>
+      <p>L’usage reste donc minoritaire. Et derrière chaque entreprise qui «&nbsp;utilise l’IA&nbsp;», combien d’essais abandonnés en route&#8239;? Les enquêtes publiques ne le mesurent pas. Le schéma ci-dessous résume ce que l’on observe le plus souvent sur le terrain.</p>
 
       <figure class="schema">
         <ol class="schema__liste">
-          <li class="schema__etape"><p class="schema__libelle">Constat</p><p>L'outil est installé, puis délaissé au bout de quelques semaines.</p></li>
-          <li class="schema__etape"><p class="schema__libelle">Causes</p><ul><li>pas d'usage précis</li><li>pas de responsable</li><li>pas de temps prévu</li></ul></li>
+          <li class="schema__etape"><p class="schema__libelle">Constat</p><p>L’outil est installé, puis délaissé au bout de quelques semaines.</p></li>
+          <li class="schema__etape"><p class="schema__libelle">Causes</p><ul><li>pas d’usage précis</li><li>pas de responsable</li><li>pas de temps prévu</li></ul></li>
           <li class="schema__etape"><p class="schema__libelle">Leviers</p><ul><li>une tâche répétitive</li><li>un porteur nommé</li><li>quatre semaines, puis décider</li></ul></li>
         </ol>
         <figcaption>Constat, causes, leviers&nbsp;: la lecture de cet article en un coup d'œil.</figcaption>
@@ -1047,12 +3498,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
     <section aria-labelledby="est-ce-un-probleme-d-outil-ou-d-organisation">
       <div class="num-section"><span aria-hidden="true">02 / 07</span><a class="ancre" href="#est-ce-un-probleme-d-outil-ou-d-organisation" aria-label="Lien vers la section «&nbsp;Est-ce un problème d'outil ou d'organisation&#8239;?&nbsp;»">#</a></div>
-      <h2 id="est-ce-un-probleme-d-outil-ou-d-organisation" data-speakable="true">Est-ce un problème d'outil ou d'organisation&#8239;?</h2>
-      <p class="reponse-courte" data-speakable="true">Dans la grande majorité des cas, <strong>c'est l'organisation qui cède</strong>, pas l'outil. Les assistants du marché savent tous rédiger, résumer et classer.</p>
-      <p>Un indice parle de lui-même&nbsp;: les mêmes outils sont accessibles à toutes les entreprises, quelle que soit leur taille. Pourtant, leur usage varie énormément selon l'effectif.</p>
+      <h2 id="est-ce-un-probleme-d-outil-ou-d-organisation" data-speakable="true">Est-ce un problème d’outil ou d’organisation&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Dans la grande majorité des cas, <strong>c’est l’organisation qui cède</strong>, pas l’outil. Les assistants du marché savent tous rédiger, résumer et classer.</p>
+      <p>Un indice parle de lui-même&nbsp;: les mêmes outils sont accessibles à toutes les entreprises, quelle que soit leur taille. Pourtant, leur usage varie énormément selon l’effectif.</p>
 
       <div class="chiffres">
-        <p class="chiffres__titre">Part des entreprises de l'Union européenne utilisant l'IA, selon leur taille (2024)</p>
+        <p class="chiffres__titre">Part des entreprises de l’Union européenne utilisant l’IA, selon leur taille (2024)</p>
         <ul class="chiffres__liste">
           <li><span class="chiffres__valeur">≈ 41 %</span><span class="chiffres__libelle">des grandes entreprises (250 salariés et plus)</span></li>
           <li><span class="chiffres__valeur">≈ 21 %</span><span class="chiffres__libelle">des moyennes entreprises (50 à 249 salariés)</span></li>
@@ -1061,12 +3512,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="source">Source&nbsp;: Eurostat, «&nbsp;Use of artificial intelligence in enterprises&nbsp;», données 2024. Valeurs arrondies, à revérifier à la source avant publication.</p>
       </div>
 
-      <p>L'écart ne tient pas au prix des outils. Il tient au temps disponible pour les essayer, et à la présence de quelqu'un dont c'est le travail. Une grande entreprise a souvent une équipe dédiée. <mark>Une PME doit trouver ce temps sur l'agenda de personnes déjà très occupées.</mark></p>
-      <p>Changer d'outil ne règle donc rien. Si le premier essai a calé faute de temps, le second calera pour la même raison.</p>
+      <p>L’écart ne tient pas au prix des outils. Il tient au temps disponible pour les essayer, et à la présence de quelqu’un dont c’est le travail. Une grande entreprise a souvent une équipe dédiée. <mark>Une PME doit trouver ce temps sur l’agenda de personnes déjà très occupées.</mark></p>
+      <p>Changer d’outil ne règle donc rien. Si le premier essai a calé faute de temps, le second calera pour la même raison.</p>
 
       <div class="encadre encadre--retenir">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-epingle"/></svg></span>À retenir</p>
-        <p>Avant de changer d'outil, posez trois questions&nbsp;: quelle tâche précise, qui s'en occupe, et combien d'heures sont prévues chaque semaine&#8239;? Si l'une reste sans réponse, le problème est là.</p>
+        <p>Avant de changer d’outil, posez trois questions&nbsp;: quelle tâche précise, qui s’en occupe, et combien d’heures sont prévues chaque semaine&#8239;? Si l’une reste sans réponse, le problème est là.</p>
       </div>
     </section>
 
@@ -1083,14 +3534,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section aria-labelledby="qui-doit-porter-le-projet-dans-une-petite-equipe">
       <div class="num-section"><span aria-hidden="true">03 / 07</span><a class="ancre" href="#qui-doit-porter-le-projet-dans-une-petite-equipe" aria-label="Lien vers la section «&nbsp;Qui doit porter le projet dans une petite équipe&#8239;?&nbsp;»">#</a></div>
       <h2 id="qui-doit-porter-le-projet-dans-une-petite-equipe" data-speakable="true">Qui doit porter le projet dans une petite équipe&#8239;?</h2>
-      <p class="reponse-courte" data-speakable="true">Le bon porteur est <strong>la personne qui fait la tâche</strong>, pas forcément la plus à l'aise avec l'informatique.</p>
-      <p>Dans une PME, le réflexe est de confier l'IA au «&nbsp;geek&nbsp;» de l'équipe. Il teste avec plaisir, mais sur des tâches qui ne sont pas les siennes. Il ne sait pas ce qu'un bon résultat doit contenir.</p>
-      <p>La personne qui rédige les devis, elle, voit tout de suite si une proposition tient la route. C'est elle qui peut dire «&nbsp;ça me fait gagner du temps&nbsp;» ou «&nbsp;je passe plus de temps à corriger&nbsp;».</p>
-      <p>Le dirigeant garde un rôle clé&nbsp;: il protège le temps prévu. Une heure bloquée chaque semaine dans l'agenda, et respectée, vaut mieux qu'un grand lancement.</p>
+      <p class="reponse-courte" data-speakable="true">Le bon porteur est <strong>la personne qui fait la tâche</strong>, pas forcément la plus à l’aise avec l’informatique.</p>
+      <p>Dans une PME, le réflexe est de confier l’IA au «&nbsp;geek&nbsp;» de l’équipe. Il teste avec plaisir, mais sur des tâches qui ne sont pas les siennes. Il ne sait pas ce qu’un bon résultat doit contenir.</p>
+      <p>La personne qui rédige les devis, elle, voit tout de suite si une proposition tient la route. C’est elle qui peut dire «&nbsp;ça me fait gagner du temps&nbsp;» ou «&nbsp;je passe plus de temps à corriger&nbsp;».</p>
+      <p>Le dirigeant garde un rôle clé&nbsp;: il protège le temps prévu. Une heure bloquée chaque semaine dans l’agenda, et respectée, vaut mieux qu’un grand lancement.</p>
 
       <div class="encadre encadre--exemple">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mallette"/></svg></span>Exemple concret · exemple type, pas un client</p>
-        <p>Une entreprise de menuiserie de 12 personnes veut accélérer ses comptes rendus de chantier. L'assistante administrative porte l'essai. Le chef d'atelier lui dicte ses notes vocales&#8239;; elle les fait mettre au propre par l'assistant d'IA, puis relit.</p>
+        <p>Une entreprise de menuiserie de 12 personnes veut accélérer ses comptes rendus de chantier. L’assistante administrative porte l’essai. Le chef d’atelier lui dicte ses notes vocales&#8239;; elle les fait mettre au propre par l’assistant d’IA, puis relit.</p>
         <p>Au bout de quatre semaines, elle sait précisément ce qui marche (la mise en forme) et ce qui ne marche pas (les cotes, toujours à vérifier). La décision devient simple.</p>
       </div>
 
@@ -1100,28 +3551,28 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section aria-labelledby="combien-de-temps-laisser-a-un-premier-essai">
       <div class="num-section"><span aria-hidden="true">04 / 07</span><a class="ancre" href="#combien-de-temps-laisser-a-un-premier-essai" aria-label="Lien vers la section «&nbsp;Combien de temps laisser à un premier essai&#8239;?&nbsp;»">#</a></div>
       <h2 id="combien-de-temps-laisser-a-un-premier-essai" data-speakable="true">Combien de temps laisser à un premier essai&#8239;?</h2>
-      <p class="reponse-courte" data-speakable="true">Comptez <strong>environ quatre semaines</strong>&nbsp;: assez pour dépasser l'effet de nouveauté, assez court pour garder l'attention de l'équipe.</p>
-      <p>Une semaine ne suffit pas. Les premiers jours, on apprend surtout à formuler ses demandes, et les résultats sont inégaux. À l'inverse, un essai sans date de fin n'aboutit jamais&nbsp;: il n'y a pas de moment pour décider.</p>
+      <p class="reponse-courte" data-speakable="true">Comptez <strong>environ quatre semaines</strong>&nbsp;: assez pour dépasser l’effet de nouveauté, assez court pour garder l’attention de l’équipe.</p>
+      <p>Une semaine ne suffit pas. Les premiers jours, on apprend surtout à formuler ses demandes, et les résultats sont inégaux. À l’inverse, un essai sans date de fin n’aboutit jamais&nbsp;: il n’y a pas de moment pour décider.</p>
       <p>Voici un déroulé qui fonctionne dans une petite équipe. Il demande une à deux heures par semaine au porteur.</p>
 
       <ol class="etapes">
-        <li><span class="etapes__titre">Choisir la tâche et noter le point de départ</span><span class="etapes__duree">Semaine 1</span><p>Combien de temps prend la tâche aujourd'hui&#8239;? Combien de fois par semaine&#8239;? Une estimation honnête suffit.</p></li>
-        <li><span class="etapes__titre">Essayer sur de vrais dossiers</span><span class="etapes__duree">Semaines 2 et 3</span><p>Le porteur utilise l'outil sur son travail réel et garde ses meilleures consignes dans un document partagé.</p></li>
+        <li><span class="etapes__titre">Choisir la tâche et noter le point de départ</span><span class="etapes__duree">Semaine 1</span><p>Combien de temps prend la tâche aujourd’hui&#8239;? Combien de fois par semaine&#8239;? Une estimation honnête suffit.</p></li>
+        <li><span class="etapes__titre">Essayer sur de vrais dossiers</span><span class="etapes__duree">Semaines 2 et 3</span><p>Le porteur utilise l’outil sur son travail réel et garde ses meilleures consignes dans un document partagé.</p></li>
         <li><span class="etapes__titre">Comparer avec le point de départ</span><span class="etapes__duree">Semaine 4</span><p>Temps passé, qualité, corrections&nbsp;: on compare aux notes de la semaine 1, sans enjoliver.</p></li>
         <li><span class="etapes__titre">Décider&nbsp;: continuer, ajuster ou arrêter</span><span class="etapes__duree">Fin de semaine 4</span><p>Une réunion de trente minutes, une décision écrite. Même «&nbsp;arrêter&nbsp;» est un bon résultat.</p></li>
       </ol>
 
       <figure class="citation">
-        <blockquote><p>Un essai sans date de fin n'échoue jamais officiellement. Il s'éteint, et l'équipe n'en retient rien.</p></blockquote>
-        <figcaption>L'idée à garder de cette section</figcaption>
+        <blockquote><p>Un essai sans date de fin n’échoue jamais officiellement. Il s’éteint, et l’équipe n’en retient rien.</p></blockquote>
+        <figcaption>L’idée à garder de cette section</figcaption>
       </figure>
     </section>
 
     <section aria-labelledby="comment-choisir-la-premiere-tache-a-confier-a-l-ia">
       <div class="num-section"><span aria-hidden="true">05 / 07</span><a class="ancre" href="#comment-choisir-la-premiere-tache-a-confier-a-l-ia" aria-label="Lien vers la section «&nbsp;Comment choisir la première tâche à confier à l'IA&#8239;?&nbsp;»">#</a></div>
-      <h2 id="comment-choisir-la-premiere-tache-a-confier-a-l-ia" data-speakable="true">Comment choisir la première tâche à confier à l'IA&#8239;?</h2>
-      <p class="reponse-courte" data-speakable="true">Choisissez <strong>une tâche fréquente, pénible et facile à vérifier</strong>. Si une erreur se voit en dix secondes, c'est un bon candidat.</p>
-      <p>Le piège est de viser trop haut&nbsp;: «&nbsp;l'IA va gérer notre service client&nbsp;». Un premier essai doit pouvoir réussir sur une petite surface. Le reste viendra ensuite, avec une équipe convaincue.</p>
+      <h2 id="comment-choisir-la-premiere-tache-a-confier-a-l-ia" data-speakable="true">Comment choisir la première tâche à confier à l’IA&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Choisissez <strong>une tâche fréquente, pénible et facile à vérifier</strong>. Si une erreur se voit en dix secondes, c’est un bon candidat.</p>
+      <p>Le piège est de viser trop haut&nbsp;: «&nbsp;l’IA va gérer notre service client&nbsp;». Un premier essai doit pouvoir réussir sur une petite surface. Le reste viendra ensuite, avec une équipe convaincue.</p>
       <p>Avant de vous lancer, vérifiez que la tâche coche ces cases&nbsp;:</p>
 
       <ul class="checklist">
@@ -1129,41 +3580,41 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <li><span><strong>Elle prend du temps</strong> sans demander de vraie expertise.</span></li>
         <li><span><strong>Le résultat se vérifie vite</strong> par la personne qui la fait.</span></li>
         <li><span><strong>Elle ne touche pas</strong> à des données sensibles au départ.</span></li>
-        <li><span><strong>Une erreur reste rattrapable</strong> avant d'arriver chez un client.</span></li>
+        <li><span><strong>Une erreur reste rattrapable</strong> avant d’arriver chez un client.</span></li>
       </ul>
 
       <p>Les comptes rendus, les relances, les premières versions de courriers ou de devis types remplissent souvent ces conditions. La comptabilité ou les contrats, rarement&nbsp;: on y reviendra plus tard.</p>
 
       <div class="encadre encadre--saviez">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ampoule"/></svg></span>Le saviez-vous&#8239;?</p>
-        <p>Depuis le 2 février 2025, l'article 4 du règlement européen sur l'IA demande aux entreprises qui utilisent des systèmes d'IA de veiller à un niveau suffisant de maîtrise de l'IA chez leurs équipes. Le texte n'impose ni format ni certification. Un essai bien encadré est une bonne occasion de s'y mettre.</p>
+        <p>Depuis le 2 février 2025, l’article 4 du règlement européen sur l’IA demande aux entreprises qui utilisent des systèmes d’IA de veiller à un niveau suffisant de maîtrise de l’IA chez leurs équipes. Le texte n’impose ni format ni certification. Un essai bien encadré est une bonne occasion de s’y mettre.</p>
       </div>
     </section>
 
     <section aria-labelledby="que-faire-quand-l-equipe-n-adhere-pas">
       <div class="num-section"><span aria-hidden="true">06 / 07</span><a class="ancre" href="#que-faire-quand-l-equipe-n-adhere-pas" aria-label="Lien vers la section «&nbsp;Que faire quand l'équipe n'adhère pas&#8239;?&nbsp;»">#</a></div>
-      <h2 id="que-faire-quand-l-equipe-n-adhere-pas" data-speakable="true">Que faire quand l'équipe n'adhère pas&#8239;?</h2>
-      <p class="reponse-courte" data-speakable="true">Écoutez d'abord&nbsp;: <strong>une réticence cache souvent une crainte précise</strong>, qu'on peut traiter, plutôt qu'un refus de principe.</p>
-      <p>Les craintes reviennent toujours un peu les mêmes. Peur d'être remplacé. Peur de perdre la main sur un travail dont on est fier. Peur, aussi, de passer pour quelqu'un qui «&nbsp;ne s'adapte pas&nbsp;».</p>
-      <p>Une réunion où chacun dit ce qu'il redoute fait souvent plus qu'une démonstration. Montrez ensuite que l'IA prend la partie ingrate de la tâche, et que la relecture reste entre les mains de la personne.</p>
+      <h2 id="que-faire-quand-l-equipe-n-adhere-pas" data-speakable="true">Que faire quand l’équipe n’adhère pas&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Écoutez d’abord&nbsp;: <strong>une réticence cache souvent une crainte précise</strong>, qu’on peut traiter, plutôt qu’un refus de principe.</p>
+      <p>Les craintes reviennent toujours un peu les mêmes. Peur d’être remplacé. Peur de perdre la main sur un travail dont on est fier. Peur, aussi, de passer pour quelqu’un qui «&nbsp;ne s’adapte pas&nbsp;».</p>
+      <p>Une réunion où chacun dit ce qu’il redoute fait souvent plus qu’une démonstration. Montrez ensuite que l’IA prend la partie ingrate de la tâche, et que la relecture reste entre les mains de la personne.</p>
 
       <div class="encadre encadre--attention">
-        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg></span>Attention · ce qu'on surestime souvent</p>
+        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg></span>Attention · ce qu’on surestime souvent</p>
         <ul>
-          <li><strong>La formation éclair.</strong> Une démonstration d'une heure ne suffit pas à changer une habitude.</li>
-          <li><strong>L'enthousiasme du premier jour.</strong> Il retombe toujours&nbsp;: prévoyez la semaine 3.</li>
-          <li><strong>L'obligation d'utiliser l'outil.</strong> Imposer sans écouter fabrique des contournements.</li>
+          <li><strong>La formation éclair.</strong> Une démonstration d’une heure ne suffit pas à changer une habitude.</li>
+          <li><strong>L’enthousiasme du premier jour.</strong> Il retombe toujours&nbsp;: prévoyez la semaine 3.</li>
+          <li><strong>L’obligation d’utiliser l’outil.</strong> Imposer sans écouter fabrique des contournements.</li>
         </ul>
       </div>
 
-      <p>Enfin, donnez de la visibilité aux petits succès. Un compte rendu bouclé en dix minutes au lieu de quarante, raconté en réunion d'équipe, convainc mieux que n'importe quel discours.</p>
+      <p>Enfin, donnez de la visibilité aux petits succès. Un compte rendu bouclé en dix minutes au lieu de quarante, raconté en réunion d’équipe, convainc mieux que n’importe quel discours.</p>
     </section>
 
     <section aria-labelledby="quand-faut-il-arreter-pour-de-bon">
       <div class="num-section"><span aria-hidden="true">07 / 07</span><a class="ancre" href="#quand-faut-il-arreter-pour-de-bon" aria-label="Lien vers la section «&nbsp;Quand faut-il arrêter pour de bon&#8239;?&nbsp;»">#</a></div>
       <h2 id="quand-faut-il-arreter-pour-de-bon" data-speakable="true">Quand faut-il arrêter pour de bon&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Arrêtez quand <strong>la relecture prend plus de temps que la tâche elle-même</strong>, après un essai mené sérieusement.</p>
-      <p>Arrêter n'est pas un échec, si la décision est prise en connaissance de cause. Le tableau suivant aide à trancher à la fin des quatre semaines.</p>
+      <p>Arrêter n’est pas un échec, si la décision est prise en connaissance de cause. Le tableau suivant aide à trancher à la fin des quatre semaines.</p>
 
       <div class="tableau">
         <div class="tableau__defilant" role="region" aria-labelledby="tableau-decision" tabindex="0">
@@ -1175,67 +3626,84 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <tbody>
               <tr><th scope="row">Le temps passé baisse nettement</th><td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span></td><td><span class="verdict verdict--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>Non</span></td><td><span class="verdict verdict--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>Non</span></td></tr>
               <tr><th scope="row">Gain réel, mais beaucoup de corrections</th><td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span></td><td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span></td><td><span class="verdict verdict--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>Non</span></td></tr>
-              <tr><th scope="row">L'outil n'est utilisé qu'une semaine sur deux</th><td><span class="verdict verdict--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>Non</span></td><td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span></td><td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span></td></tr>
+              <tr><th scope="row">L’outil n’est utilisé qu’une semaine sur deux</th><td><span class="verdict verdict--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>Non</span></td><td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span></td><td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span></td></tr>
               <tr><th scope="row">La relecture prend plus de temps que la tâche</th><td><span class="verdict verdict--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>Non</span></td><td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span></td><td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="tableau__note">Sur téléphone, faites défiler le tableau vers la droite. Grille de lecture éditoriale, à adapter à votre tâche. «&nbsp;Partiel&nbsp;»&nbsp;: à discuter en équipe.</p>
+        <p class="tableau__note"><span class="sur-telephone">Sur téléphone, faites défiler le tableau vers la droite. Grille de lecture éditoriale, à adapter à votre tâche. «&nbsp;Partiel&nbsp;»&nbsp;: à discuter en équipe.</p>
       </div>
 
       <p>Dans le doute, ajustez une seule chose&nbsp;: la consigne, la tâche ou la personne. Puis relancez deux semaines. Changer tout à la fois empêche de savoir ce qui a joué.</p>
 
       <div class="encadre encadre--bon">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-info"/></svg></span>Bon à savoir</p>
-        <p>Si vous arrêtez, pensez aux données confiées à l'outil pendant l'essai. Vérifiez la durée de conservation prévue par le fournisseur et supprimez l'historique si besoin. La CNIL publie des recommandations utiles sur ce point.</p>
+        <p>Si vous arrêtez, pensez aux données confiées à l’outil pendant l’essai. Vérifiez la durée de conservation prévue par le fournisseur et supprimez l’historique si besoin. La CNIL publie des recommandations utiles sur ce point.</p>
       </div>
     </section>
 
     <!-- 5. RÉSUMÉ DE FIN -->
     <section class="resume" aria-labelledby="ce-qu-il-faut-retenir" data-aeo="key-point">
-      <h2 class="resume__titre" id="ce-qu-il-faut-retenir">Ce qu'il faut <em>retenir</em></h2>
+      <h2 class="resume__titre" id="ce-qu-il-faut-retenir">Ce qu’il faut <em>retenir</em></h2>
       <ol class="resume__liste">
-        <li>Un projet s'arrête faute d'usage, de porteur et de temps.</li>
-        <li>Confiez l'essai à la personne qui fait la tâche.</li>
+        <li>Un projet s’arrête faute d’usage, de porteur et de temps.</li>
+        <li>Confiez l’essai à la personne qui fait la tâche.</li>
         <li>Quatre semaines, un point de départ noté, une décision écrite.</li>
         <li>Commencez par une tâche fréquente et facile à vérifier.</li>
       </ol>
     </section>
-    <p class="micro-appel"><a class="lien-fleche" href="/fr/journee-ia" data-cta="journee">Le relevé service par service, c'est le matin de la Journée IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
+    <p class="micro-appel"><a class="lien-fleche" href="/fr/journee-ia" data-cta="journee">Le relevé service par service, c’est le matin de la Journée IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
 
     <!-- 6. FAQ -->
     <section class="faq" id="faq" aria-labelledby="faq-titre" data-aeo="people-also-ask">
       <h2 class="bloc-titre" id="faq-titre">Questions fréquentes</h2>
       <details data-faq-q>
         <summary>Faut-il un budget important pour un premier essai&#8239;?</summary>
-        <div class="faq-answer" data-faq-a><p>Non. Un premier essai demande surtout du temps&nbsp;: une à deux heures par semaine pour le porteur, pendant quatre semaines. Beaucoup d'assistants d'IA proposent une offre d'essai ou d'entrée de gamme.</p></div>
+        <div class="faq-answer" data-faq-a><p>Non. Un premier essai demande surtout du temps&nbsp;: une à deux heures par semaine pour le porteur, pendant quatre semaines. Beaucoup d’assistants d’IA proposent une offre d’essai ou d’entrée de gamme.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Peut-on mener l'essai sans compétence technique&#8239;?</summary>
-        <div class="faq-answer" data-faq-a><p>Oui. Les assistants actuels se pilotent en langage courant. La compétence utile est la connaissance du métier&nbsp;: savoir ce qu'un bon résultat doit contenir.</p></div>
+        <summary>Peut-on mener l’essai sans compétence technique&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Oui. Les assistants actuels se pilotent en langage courant. La compétence utile est la connaissance du métier&nbsp;: savoir ce qu’un bon résultat doit contenir.</p></div>
       </details>
       <details data-faq-q>
         <summary>Combien de personnes impliquer au départ&#8239;?</summary>
-        <div class="faq-answer" data-faq-a><p>Une ou deux personnes volontaires suffisent. Élargir trop tôt dilue l'attention&#8239;; mieux vaut un premier usage solide, qu'on montre ensuite au reste de l'équipe.</p></div>
+        <div class="faq-answer" data-faq-a><p>Une ou deux personnes volontaires suffisent. Élargir trop tôt dilue l’attention&#8239;; mieux vaut un premier usage solide, qu’on montre ensuite au reste de l’équipe.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Que faire des données clients pendant l'essai&#8239;?</summary>
-        <div class="faq-answer" data-faq-a><p>Commencez par des tâches sans données sensibles. Avant d'aller plus loin, vérifiez les conditions du fournisseur, le lieu d'hébergement et la possibilité de désactiver l'entraînement sur vos contenus.</p></div>
+        <summary>Que faire des données clients pendant l’essai&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Commencez par des tâches sans données sensibles. Avant d’aller plus loin, vérifiez les conditions du fournisseur, le lieu d’hébergement et la possibilité de désactiver l’entraînement sur vos contenus.</p></div>
       </details>
     </section>
 
     <!-- 7. SOURCES & MÉTHODE -->
-    <section class="sources" id="sources" aria-labelledby="sources-titre">
+        <!-- ENCART VIDÉO (facultatif) : seulement si une vraie vidéo existe ; chargée au clic, transcription dans le DOM -->
+    <section class="encart-video" aria-labelledby="video-titre" data-aeo="video-slot">
+      <p class="encart-video__repere">Emplacement facultatif · maquette</p>
+      <h2 class="encart-video__titre" id="video-titre">En vidéo, l’essentiel en deux minutes</h2>
+      <div class="encart-video__cadre" role="img" aria-label="Emplacement réservé à une vidéo YouTube d’Axion-IA, chargée seulement au clic"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m9 7 8 5-8 5z"/></svg></div>
+      <details class="encart-video__texte">
+        <summary>Lire la transcription</summary>
+        <p>Le texte de la vidéo est repris ici, en entier ou résumé : il reste lisible sans lecteur vidéo et citable par les moteurs. Cet encart n’apparaît que si une vidéo réelle est publiée.</p>
+      </details>
+    </section>
+
+<section class="sources" id="sources" aria-labelledby="sources-titre">
       <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
       <ol>
-        <li><a href="https://www.insee.fr/fr/statistiques?q=technologies+de+l%27information+entreprises">Insee, «&nbsp;Les technologies de l'information et de la communication dans les entreprises&nbsp;», enquête TIC, 2023</a></li>
+        <li><a href="https://www.insee.fr/fr/statistiques?q=technologies+de+l%27information+entreprises">Insee, «&nbsp;Les technologies de l’information et de la communication dans les entreprises&nbsp;», enquête TIC, 2023</a></li>
         <li><a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Use_of_artificial_intelligence_in_enterprises">Eurostat, «&nbsp;Use of artificial intelligence in enterprises&nbsp;», Statistics Explained, données 2024</a></li>
-        <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l'intelligence artificielle, article 4, Journal officiel de l'Union européenne, 2024</a></li>
+        <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l’intelligence artificielle, article 4, Journal officiel de l’Union européenne, 2024</a></li>
         <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
       </ol>
       <h3>Méthode</h3>
-      <p>Les chiffres viennent des seules sources publiques ci-dessus, arrondis et datés. Le déroulé en quatre semaines, la grille de décision et l'exemple de menuiserie sont des repères éditoriaux d'Axion-IA, construits pour illustrer&nbsp;: ce ne sont ni des mesures ni un cas client.</p>
-      <p class="citer"><strong>Citer cet article&nbsp;:</strong> Manon, «&nbsp;Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai&nbsp;», Axion-IA, 20 novembre 2026, https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai</p>
+      <p>Les chiffres viennent des seules sources publiques ci-dessus, arrondis et datés. Le déroulé en quatre semaines, la grille de décision et l’exemple de menuiserie sont des repères éditoriaux d’Axion-IA, construits pour illustrer&nbsp;: ce ne sont ni des mesures ni un cas client.</p>
+      <p class="citer"><strong>Citer cet article&nbsp;:</strong> Manon, «&nbsp;Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai&nbsp;», Axion-IA, 20 novembre 2026, https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai</p>
+          <details class="historique" data-aeo="update-history">
+        <summary>Historique des mises à jour</summary>
+        <ul>
+          <li><time datetime="2026-11-26">26 novembre 2026</time> : exemple de maquette. En production, une ligne par mise à jour réelle, avec ce qui a changé (chiffre actualisé, source remplacée, section ajoutée). Absent tant qu’aucune mise à jour n’a eu lieu.</li>
+        </ul>
+      </details>
     </section>
 
     <!-- 8. AUTEUR + MENTION IA -->
@@ -1243,14 +3711,15 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <span class="avatar" aria-hidden="true">M</span>
       <div>
         <h2 class="auteur__titre" id="auteur-titre"><a href="/fr/equipe/manon" rel="author">Manon</a></h2>
-        <p class="auteur__role">Plume IA d'Axion-IA</p>
-        <p>Manon prépare les analyses du blog d'Axion-IA à partir de sources publiques et des retours des intervenants, qui relisent chaque article.</p>
+        <p class="auteur__role">Plume IA d’Axion-IA</p>
+        <p class="relu" data-aeo="reviewer"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2.5 4.5 5.5v6c0 4.5 3.2 8.2 7.5 10 4.3-1.8 7.5-5.5 7.5-10v-6z"/><path d="m8.5 12 2.5 2.5 4.5-4.5"/></svg><span><strong>Relu et validé par</strong> [Prénom Nom], [fonction] chez Axion-IA, le 26 novembre 2026. <em>Emplacement de maquette : ce bloc n’est affiché que si un relecteur réel est enregistré ; jamais de nom générique.</em></span></p>
+        <p>Manon prépare les analyses du blog d’Axion-IA à partir de sources publiques et des retours des intervenants, qui relisent chaque article.</p>
       </div>
-      <p class="mention-ia" data-aeo="ai-disclosure"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ia"/></svg><span>Cet article a été rédigé avec l'aide d'outils d'intelligence artificielle, puis vérifié et relu par l'équipe d'Axion-IA.</span></p>
+      <p class="mention-ia" data-aeo="ai-disclosure"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ia"/></svg><span>Cet article a été rédigé avec l’aide d’outils d’intelligence artificielle, puis vérifié et relu par l’équipe d’Axion-IA.</span></p>
     </section>
 
     <div class="partage" data-aeo="share-bar">
-      <p class="partage__titre">Partager l'article</p>
+      <p class="partage__titre">Partager l’article</p>
       <ul>
         <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg>LinkedIn</a></li>
         <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Twitter</a></li>
@@ -1261,11 +3730,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   </div>
 </article>
 
-<!-- COLONNE D'ACTION : un seul <aside>, après l'article.
+<!-- COLONNE D'ACTION : un seul <aside>, après l’article.
      Ordinateur : carte collante en colonne droite. Téléphone : barre fixe en bas. -->
 <aside class="action" aria-label="Passer à l'action">
   <div class="carte-action sur-sombre">
-    <p class="carte-action__titre">Passer de la lecture <em>à l'action</em></p>
+    <p class="carte-action__titre">Passer de la lecture <em>à l’action</em></p>
     <p class="carte-action__sous-titre">Pour votre PME, partout en France.</p>
     <ul class="carte-action__liste">
       <li><a class="btn btn--bleu act" href="/fr/appel?rdv=diagnostic&amp;depuis=analyse-colonne" data-cta="diagnostic" aria-label="Diagnostic IA, 45 min, gratuit">
@@ -1275,7 +3744,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></li>
       <li><a class="btn btn--terracotta act" href="/fr/journee-ia" data-cta="journee" aria-label="Découvrir la Journée IA">
         <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg>
-        <span class="btn__texte"><span class="act__libelle"><span class="act__long">Découvrir la Journée IA</span><span class="act__court">Journée IA</span></span><span class="btn__sous">Audit le matin, vos équipes formées l'après-midi, dans vos locaux.</span></span>
+        <span class="btn__texte"><span class="act__libelle"><span class="act__long">Découvrir la Journée IA</span><span class="act__court">Journée IA</span></span><span class="btn__sous">Audit le matin, vos équipes formées l’après-midi, dans vos locaux.</span></span>
         <svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></li>
       <li><a class="btn btn--contour act" href="/fr/contact" data-cta="message" aria-label="Écrire un message">
         <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg>
@@ -1298,10 +3767,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   <section class="lies" aria-labelledby="plus-loin-titre">
     <h2 class="bloc-titre" id="plus-loin-titre">Aller plus loin</h2>
     <ul class="plus-loin">
-      <li><a href="/fr/guides/mettre-en-place-ia-pme"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-boussole"/></svg><span>Le guide complet<small>Mettre en place l'IA dans une PME</small></span></a></li>
-      <li><a href="/fr/formations"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg><span>Formations<small>Former vos équipes à l'IA</small></span></a></li>
+      <li><a href="/fr/guides/mettre-en-place-ia-pme"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-boussole"/></svg><span>Le guide complet<small>Mettre en place l’IA dans une PME</small></span></a></li>
+      <li><a href="/fr/formations"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg><span>Formations<small>Former vos équipes à l’IA</small></span></a></li>
       <li><a href="/fr/observatoire-ia"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-graphe"/></svg><span>Observatoire IA<small>Les chiffres publics, suivis</small></span></a></li>
-      <li><a href="/fr/glossaire"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg><span>Glossaire<small>Les termes de l'IA, simplement</small></span></a></li>
+      <li><a href="/fr/glossaire"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg><span>Glossaire<small>Les termes de l’IA, simplement</small></span></a></li>
     </ul>
   </section>
 
@@ -1309,9 +3778,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <p class="pastille pastille--claire lies__surtitre">Articles connexes</p>
     <h2 class="bloc-titre" id="lies-titre">À lire aussi</h2>
     <ul class="lies__liste">
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Guide</span><h3 class="lie__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l'IA, en 6 étapes</a></h3><span class="lie__meta">8 min de lecture</span></div></article></li>
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier&nbsp;: lequel choisir&#8239;?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Sélection</span><h3 class="lie__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu'une PME peut confier à l'IA</a></h3><span class="lie__meta">7 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Guide</span><h3 class="lie__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l’IA, en 6 étapes</a></h3><span class="lie__meta">8 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d’IA généraliste ou outil métier&nbsp;: lequel choisir&#8239;?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Sélection</span><h3 class="lie__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu’une PME peut confier à l’IA</a></h3><span class="lie__meta">7 min de lecture</span></div></article></li>
     </ul>
   </section>
 
@@ -1327,9 +3796,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   </section>
 
   <section class="cta-fin sur-sombre" aria-labelledby="cta-fin-titre">
-    <p class="pastille pastille--pleine cta-fin__surtitre">Passer à l'action</p>
+    <p class="pastille pastille--pleine cta-fin__surtitre">Passer à l’action</p>
     <h2 class="cta-fin__titre" id="cta-fin-titre">Votre analyse, <em>sur vos chiffres</em></h2>
-    <p class="cta-fin__phrase">L'article donne le cadre&#8239;; vos priorités se relèvent sur place, service par service.</p>
+    <p class="cta-fin__phrase">L’article donne le cadre&#8239;; vos priorités se relèvent sur place, service par service.</p>
     <ul class="cta-fin__actions">
       <li><a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=analyse-fin" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg><span class="btn__texte">Diagnostic IA, 45 min<span class="btn__sous">Gratuit · 45 minutes · Sans engagement</span></span></a></li>
       <li><a class="btn btn--terracotta" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg><span class="btn__texte">Découvrir la Journée IA<span class="btn__sous">Dans vos locaux, partout en France</span></span></a></li>
@@ -1343,7 +3812,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <ul class="rassurance">
       <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Annulable en un clic</li>
       <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-carte"/></svg>Partout en France</li>
-      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-bouclier"/></svg>Données hébergées dans l'Union européenne</li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-bouclier"/></svg>Données hébergées dans l’Union européenne</li>
       <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Une attestation de formation par personne (Journée IA)</li>
       <!-- Qualiopi : rendu seulement si certification publiée (QualiopiReassuranceBand) -->
     </ul>

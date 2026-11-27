@@ -6,6 +6,10 @@
 <title>Maquettes v2 — modèles d'articles</title>
 <meta name="robots" content="noindex">
 <style>
+@font-face { font-family: "Manrope"; src: url("../../../../src/fonts/manrope-latin-var.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("../../../../src/fonts/fraunces-latin-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("../../../../src/fonts/fraunces-latin-var-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inconsolata"; src: url("../../../../src/fonts/inconsolata-latin-var.woff2") format("woff2"); font-weight: 200 900; font-display: swap; }
 :root {
   --color-bg: #faf8f3; --color-paper: #ffffff; --color-sand: #f0e9da;
   --color-mocha: #2a2520; --color-mocha-fg: #f7f3ea; --color-terracotta-on-mocha: #eb8560;
@@ -18,14 +22,15 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--color-bg); color: var(--color-fg);
   font: 400 1.0625rem/1.65 "Manrope", system-ui, sans-serif; }
-header { background: var(--color-mocha); color: var(--color-mocha-fg); padding: 3rem 1rem 3.5rem; }
+header { background: linear-gradient(180deg, var(--color-terracotta) 0 58%, color-mix(in srgb, var(--color-terracotta) 55%, var(--color-terracotta-deep))); color: var(--color-mocha-fg); padding: 3rem 1rem 3.5rem; }
+/* Contrastes mesurés : ivoire sur terracotta 5,24:1 ; blanc 5,81:1 ; terracotta-soft 4,66:1 */
 .contenu { max-width: 72rem; margin: 0 auto; }
-.surtitre { display: inline-block; background: var(--color-terracotta); color: var(--color-paper);
+.surtitre { display: inline-block; background: var(--color-paper); color: var(--color-terracotta-deep);
   border-radius: var(--radius-full); padding: .25rem .9rem; font-weight: 600; font-size: .875rem;
   letter-spacing: .06em; text-transform: uppercase; }
-h1 { font-family: "Fraunces", Georgia, serif; font-weight: 600; line-height: 1.08;
+h1 { font-family: "Fraunces", Georgia, serif; font-weight: 500; line-height: 1.08; color: var(--color-paper);
   font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); margin: 1rem 0; }
-h1 em { color: var(--color-terracotta-on-mocha); }
+h1 em { color: var(--color-terracotta-soft); }
 header p { max-width: 46rem; font-size: 1.1875rem; margin: 0; }
 main { padding: 2.5rem 1rem 4rem; }
 .grille { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem;
@@ -50,11 +55,11 @@ a:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; 
 /* Aperçu (décor aria-hidden) : le bandeau du héros en miniature, avec le signe propre au modèle
    et, à droite, la carte d'action (bleu · terracotta · contour) telle qu'elle apparaît dès le premier écran */
 .apercu { position: relative; display: flex; align-items: center; gap: .85rem; height: 6.25rem; margin: -1.5rem -1.5rem .5rem;
-  padding: 0 7rem 0 1.25rem; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--color-mocha); }
-.apercu__signe { font: 600 2.5rem/1 "Fraunces", Georgia, serif; letter-spacing: -.02em; color: var(--color-terracotta-on-mocha); white-space: nowrap; }
+  padding: 0 7rem 0 1.25rem; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--color-terracotta); }
+.apercu__signe { font: 600 2.5rem/1 "Fraunces", Georgia, serif; letter-spacing: -.02em; color: var(--color-terracotta-soft); white-space: nowrap; }
 .apercu__legende { font: 600 .75rem/1.3 "Manrope", system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--color-mocha-fg); }
 .apercu::after { content: ""; position: absolute; right: 1.1rem; top: 1rem; bottom: 1rem; width: 4.75rem; border-radius: 10px;
-  box-shadow: 0 0 0 1px var(--color-border-on-mocha), 4px 4px 0 var(--color-terracotta);
+  box-shadow: 0 0 0 1px var(--color-border-on-mocha), 4px 4px 0 var(--color-terracotta-deep);
   background: linear-gradient(var(--color-primary) 0 0) .5rem .7rem / calc(100% - 1rem) .8rem no-repeat,
     linear-gradient(var(--color-terracotta) 0 0) .5rem 1.85rem / calc(100% - 1rem) .8rem no-repeat,
     linear-gradient(var(--color-mocha-fg) 0 0) .5rem 3rem / calc(100% - 1rem) 1.5px no-repeat, var(--color-mocha-soft); }
@@ -67,7 +72,7 @@ a:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; 
     <span class="surtitre">Maquettes v2</span>
     <h1>Modèles de pages d'articles&nbsp;: <em>plus visuels, plus de rendez-vous</em></h1>
     <p>Dix modèles&nbsp;: les huit modèles du blog, plus les actualités et les guides. Chaque page a désormais
-    des encadrés de couleur, un en-tête contrasté et trois boutons toujours visibles&nbsp;: Journée IA,
+    des encadrés de couleur, un grand titre terracotta et trois boutons toujours visibles&nbsp;: Journée IA,
     Diagnostic IA de 45 min, Écrire un message.</p>
   </div>
 </header>
@@ -76,7 +81,7 @@ a:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; 
     <ul class="grille">
       <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">4 sem.</span><span class="apercu__legende">d'essai, puis une décision</span></div><span class="code">analyse · /blog/[slug]</span>
         <h2><a href="analyse.html">Analyse (modèle par défaut)</a></h2>
-        <p>Un grand en-tête sombre et une réponse «&nbsp;En bref&nbsp;» dès le haut de la page. Ensuite, un encadré coloré
+        <p>Un grand titre terracotta et une réponse «&nbsp;En bref&nbsp;» dès le haut de la page. Ensuite, un encadré coloré
         toutes les deux ou trois sections&nbsp;: à retenir, exemple, chiffre clé, citation, schéma.</p></li>
       <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">1→6</span><span class="apercu__legende">étapes en frise</span></div><span class="code">guide · /blog/[slug]</span>
         <h2><a href="guide.html">Guide pratique</a></h2>
