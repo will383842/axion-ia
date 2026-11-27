@@ -27,6 +27,7 @@ vi.mock("@/lib/pii-crypto", () => ({
 const h = vi.hoisted(() => ({
   recueAt: new Date("2026-10-04T00:00:00Z"),
   updateMany: vi.fn(async (_a?: unknown) => ({ count: 1 })),
+  reservations: [] as Array<Record<string, unknown>>,
 }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -34,12 +35,16 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(async () => ({ recueAt: h.recueAt })),
       updateMany: (a: unknown) => h.updateMany(a),
     },
+    presentationReservation: { findMany: async () => h.reservations },
   },
 }));
 
 import { confirmerPresentation } from "../presentations";
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+  h.reservations = [];
+});
 
 describe("confirmation saisie en console (contrat 2.2)", () => {
   it("réponse le 20/11 à une déclaration du 04/10 : protégée jusqu'au 04/04, pas au 20/05", async () => {
@@ -52,5 +57,19 @@ describe("confirmation saisie en console (contrat 2.2)", () => {
     const data = (h.updateMany.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
     expect(data["confirmeeAt"]).toEqual(new Date("2026-11-20T10:00:00Z"));
     expect(data["protegeeJusquAt"]).toEqual(new Date("2027-04-04T00:00:00Z"));
+  });
+});
+
+describe("présentation régie par la règle du rendez-vous (contrat 2.8, art. 3.4)", () => {
+  it("confirmerPresentation refuse côté serveur et n'écrit rien", async () => {
+    h.reservations = [{ presentationId: "P1", regle: "rendez_vous" }];
+    const r = await confirmerPresentation(
+      "P1",
+      new Date("2026-11-20T10:00:00Z"),
+      new Date("2026-11-21T10:00:00Z"),
+    );
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("règle par rendez-vous");
+    expect(h.updateMany).not.toHaveBeenCalled();
   });
 });

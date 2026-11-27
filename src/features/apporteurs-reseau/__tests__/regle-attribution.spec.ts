@@ -33,6 +33,7 @@ import {
   regleDe,
   rendezVousRecevable,
   reservationOccupe,
+  versReservationProvisoire,
   versionAuMoins,
 } from "../regle-attribution";
 import {
@@ -769,5 +770,67 @@ describe("l'interrupteur APPORTEURS_VALIDATION_RDV", () => {
     expect(validationParRendezVousActive()).toBe(false);
     vi.stubEnv("APPORTEURS_VALIDATION_RDV", undefined);
     expect(validationParRendezVousActive()).toBe(false);
+  });
+});
+
+describe("E1 · contrat 2.8 : 30 jours sans nouvelle déclaration après la fin d'une réservation non validée", () => {
+  // Le passage quotidien (7 h UTC) pose echueAt le lendemain du terme, vers 8 h/9 h Paris.
+  const ECHUE = new Date(ajouterJours(FIN, 1).getTime() + 8 * 3_600_000);
+  const terminee = { statut: "terminee" as const, protegeeJusquAt: null };
+  const ligne = (o: Record<string, unknown> = {}) =>
+    versReservationProvisoire(SAISIE, {
+      reserveeJusquAt: FIN,
+      echueAt: ECHUE,
+      valideeAt: null,
+      rendezVousPrisAt: null,
+      ...o,
+    });
+
+  it("une présentation échue occupe encore l'entreprise pendant 30 jours après echueAt", () => {
+    expect(presentationOccupe(terminee, ECHUE, ligne())).toBe(true);
+    expect(presentationOccupe(terminee, ajouterJours(ECHUE, 28), ligne())).toBe(true);
+    expect(presentationOccupe(terminee, ajouterJours(ECHUE, 31), ligne())).toBe(false);
+    expect(presentationOccupe(terminee, ajouterJours(ECHUE, 31), ligne())).toBe(false);
+  });
+
+  it("sans ligne, ou ligne validée, une présentation `terminee` n'occupe rien (comme avant)", () => {
+    expect(presentationOccupe(terminee, ECHUE, null)).toBe(false);
+    expect(presentationOccupe(terminee, ECHUE)).toBe(false);
+    expect(presentationOccupe(terminee, ECHUE, ligne({ valideeAt: ECHUE }))).toBe(false);
+  });
+
+  it("une ligne ramenée par une résiliation (sans echueAt) n'ouvre pas de fenêtre de 30 jours", () => {
+    expect(presentationOccupe(terminee, j(70), ligne({ echueAt: null }))).toBe(false);
+  });
+
+  it("un autre statut (dementie…) n'occupe jamais, ligne échue ou non", () => {
+    expect(presentationOccupe({ statut: "dementie", protegeeJusquAt: null }, ECHUE, ligne())).toBe(
+      false,
+    );
+  });
+
+  it("🔑 point 2 : la fenêtre de 30 jours finit à minuit Paris (jour d'échéance = jour 1), pas 30 × 24 h après l'heure du passage", () => {
+    // Terme le 8 mai ; le passage de 7 h UTC pose echueAt le 9 mai à 9 h Paris.
+    const echue = new Date("2026-05-09T07:00:00.000Z");
+    const l = ligne({ echueAt: echue })!;
+    // Jour 30 = 7 juin : occupée à 23 h 59 Paris, libre le 8 juin à 0 h Paris.
+    expect(reservationOccupe(l, new Date("2026-06-07T21:59:00.000Z"))).toBe(true);
+    expect(reservationOccupe(l, new Date("2026-06-07T22:00:00.000Z"))).toBe(false);
+    // L'ancien calcul (echueAt + 30 × 24 h) gardait l'entreprise jusqu'au 8 juin 9 h Paris.
+    expect(reservationOccupe(l, new Date("2026-06-08T05:00:00.000Z"))).toBe(false);
+    expect(presentationOccupe(terminee, new Date("2026-06-07T21:59:00.000Z"), l)).toBe(true);
+    expect(presentationOccupe(terminee, new Date("2026-06-07T22:00:00.000Z"), l)).toBe(false);
+  });
+
+  it("🔑 point 2 : le passage à l'heure d'été (fin mars) ne décale pas la fin", () => {
+    // Échue le 20 mars à 8 h Paris (UTC+1) → jour 30 = 18 avril ; libre le 19 avril à 0 h Paris (UTC+2).
+    const l = ligne({ echueAt: new Date("2026-03-20T07:00:00.000Z") })!;
+    expect(reservationOccupe(l, new Date("2026-04-18T21:59:00.000Z"))).toBe(true);
+    expect(reservationOccupe(l, new Date("2026-04-18T22:00:00.000Z"))).toBe(false);
+  });
+
+  it("reservationOccupe lit la même fenêtre", () => {
+    expect(reservationOccupe(ligne()!, ajouterJours(ECHUE, 10))).toBe(true);
+    expect(reservationOccupe(ligne()!, ajouterJours(ECHUE, 40))).toBe(false);
   });
 });
