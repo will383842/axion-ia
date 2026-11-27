@@ -210,6 +210,16 @@ describe("garde-fous ajoutés après relecture", () => {
     expect((await executerMiseAJour(demande(), d)).statut).toBe("relecture-humaine");
     expect(d.enregistrer).not.toHaveBeenCalled();
   });
+  it("phrase refusée gardée par le rédacteur : relecture humaine", async () => {
+    const d = deps({
+      reecrire: vi.fn().mockResolvedValue({
+        sections: ["<h2>Pourquoi ?</h2><p>Un chiffre faux de 87 %. Et une ajoutée.</p>"],
+        coutUsd: 0,
+      }),
+    });
+    expect((await executerMiseAJour(demande(), d)).statut).toBe("relecture-humaine");
+    expect(d.enregistrer).not.toHaveBeenCalled();
+  });
   it("chiffre nouveau introduit par la réécriture : refusé", async () => {
     const d = deps({
       reecrire: vi.fn().mockResolvedValue({
