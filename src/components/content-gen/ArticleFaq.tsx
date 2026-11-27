@@ -15,6 +15,14 @@ interface ArticleFaqProps {
   readonly locale: Locale;
   /** Date de dernière révision → dateModified du FAQPage (fraîcheur AEO). */
   readonly dateModified?: string | null;
+  /** `v1` (défaut) : rendu historique, inchangé. `v2` : gabarits d'articles. */
+  readonly variante?: "v1" | "v2";
+  /** Ouvre la première question (V2 : FAQ qui est le corps de l'article). */
+  readonly premiereOuverte?: boolean;
+  /** Niveau du titre de la section (2 par défaut ; jamais de titre dans un `<summary>`). */
+  readonly niveauTitre?: 2 | 3;
+  /** Titre déjà traduit (défaut : texte historique FR/EN). */
+  readonly titre?: string;
 }
 
 /**
@@ -31,7 +39,15 @@ interface ArticleFaqProps {
  *
  * Sélecteurs `data-faq-q` / `data-faq-a` = cibles Speakable de `buildFaqJsonLd`.
  */
-export function ArticleFaq({ items, locale, dateModified }: ArticleFaqProps) {
+export function ArticleFaq({
+  items,
+  locale,
+  dateModified,
+  variante = "v1",
+  premiereOuverte = false,
+  niveauTitre = 2,
+  titre,
+}: ArticleFaqProps) {
   if (!items || items.length === 0) return null;
   const isFr = locale === "fr";
 
@@ -57,6 +73,32 @@ export function ArticleFaq({ items, locale, dateModified }: ArticleFaqProps) {
     items: prepared.map((p) => ({ question: p.question, answer: p.answerText })),
     ...(dateModified ? { dateModified } : {}),
   });
+
+  if (variante === "v2") {
+    // Gabarits d'articles : un seul niveau de conteneur, `<details>` natifs,
+    // padding porté par le `<summary>` (≥ 44 px), pas de titre dans le `<summary>`.
+    const Titre = niveauTitre === 3 ? "h3" : "h2";
+    return (
+      <section className="art-faq" aria-labelledby="faq">
+        <Titre id="faq">
+          {titre ?? (isFr ? "Questions fréquentes" : "Frequently asked questions")}
+        </Titre>
+        {prepared.map((p, i) => (
+          <details key={i} open={premiereOuverte && i === 0}>
+            <summary data-faq-q>
+              <span>{p.question}</span>
+            </summary>
+            <div
+              data-faq-a
+              className="faq-answer art-faq-reponse"
+              dangerouslySetInnerHTML={{ __html: p.answerHtml }}
+            />
+          </details>
+        ))}
+        <JsonLd data={faqJsonLd} />
+      </section>
+    );
+  }
 
   return (
     <Section spacing="compact">

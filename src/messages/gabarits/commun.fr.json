@@ -1,0 +1,39 @@
+{
+  "reponseDirecte": "Réponse directe",
+  "sommaire": "Sommaire",
+  "surtitre": {
+    "analyse": "Analyse",
+    "guide": "Guide pratique",
+    "comparatif": "Comparatif",
+    "selection": "Sélection",
+    "cas": "Étude de cas",
+    "definition": "Définition",
+    "faq": "Questions-réponses",
+    "chiffres": "Chiffres"
+  },
+  "faqTitre": "Questions fréquentes",
+  "avantDeCommencer": "Avant de commencer",
+  "etape": "Étape {numero}",
+  "contexte": "Contexte",
+  "definition": "Définition",
+  "donneesAu": "Données au <dateBalise>{date}</dateBalise>",
+  "voirObservatoire": "Consulter l'Observatoire",
+  "nouvelleFenetre": "(nouvelle fenêtre)",
+  "cta": {
+    "audit": {
+      "titre": "Faire le point sur vos usages de l'IA",
+      "description": "Un audit pour repérer, chez vous, ce qui vaut la peine d'être automatisé.",
+      "bouton": "Découvrir l'audit"
+    },
+    "journeeIa": {
+      "titre": "Une journée pour passer à l'action",
+      "description": "La Journée IA identifie, chez vous, les tâches à automatiser en priorité.",
+      "bouton": "Découvrir la Journée IA"
+    },
+    "rdv": {
+      "titre": "Parler de votre projet",
+      "description": "Échangez avec l'équipe pour cadrer vos besoins.",
+      "bouton": "Prendre rendez-vous"
+    }
+  }
+}

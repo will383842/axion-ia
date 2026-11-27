@@ -23,6 +23,19 @@ interface ArticleTOCProps {
   readonly locale: "fr" | "en";
   /** If true, renders in sticky left-rail mode (default). */
   readonly sticky?: boolean;
+  /**
+   * `v1` (défaut) : rendu historique, inchangé. `v2` : gabarits d'articles —
+   * deux `<nav aria-label>` (un `<details>` replié sur mobile, un rail sur
+   * ordinateur ; l'un est masqué par CSS, donc absent de l'arbre d'accessibilité),
+   * `<ol>` imbriqués pour les H3, pastilles `aria-hidden`.
+   */
+  readonly variante?: "v1" | "v2";
+  /** Cibles tactiles ≥ 44 px (WCAG 2.5.5). Faux par défaut (V1 inchangée). */
+  readonly cibleTactile?: boolean;
+  /** Niveau de titre le plus profond affiché (3 par défaut : H2 et H3). */
+  readonly niveauMax?: 2 | 3;
+  /** Libellé du sommaire déjà traduit (défaut : texte historique FR/EN). */
+  readonly libelle?: string;
 }
 
 /** Extrait les headings h2/h3 depuis un body HTML ou markdown brut. */
@@ -61,11 +74,21 @@ export function extractTocItems(bodyHtml: string): TocItem[] {
   return items;
 }
 
-export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOCProps) {
+export function ArticleTOC({
+  items: tousLesItems,
+  pageUrl,
+  locale,
+  sticky = true,
+  variante = "v1",
+  cibleTactile = false,
+  niveauMax = 3,
+  libelle,
+}: ArticleTOCProps) {
+  const items = niveauMax === 3 ? tousLesItems : tousLesItems.filter((i) => i.level <= niveauMax);
   if (items.length < 2) return null;
 
   const isFr = locale === "fr";
-  const label = isFr ? "Sommaire" : "Table of contents";
+  const label = libelle ?? (isFr ? "Sommaire" : "Table of contents");
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
@@ -80,6 +103,54 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
       url: `${pageUrl}#${item.anchor}`,
     })),
   };
+
+  if (variante === "v2") {
+    // Numérotation des seuls H2 ; un H3 s'imbrique sous le H2 qui le précède.
+    const groupes: Array<{ item: TocItem; enfants: TocItem[] }> = [];
+    for (const item of items) {
+      const dernier = groupes[groupes.length - 1];
+      if (item.level === 3 && dernier) dernier.enfants.push(item);
+      else groupes.push({ item, enfants: [] });
+    }
+    const liste = (
+      <ol>
+        {groupes.map((g, i) => (
+          <li key={g.item.anchor}>
+            <a href={`#${g.item.anchor}`}>
+              <span aria-hidden="true" className="art-toc-pastille">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {g.item.title}
+            </a>
+            {g.enfants.length > 0 ? (
+              <ol>
+                {g.enfants.map((e) => (
+                  <li key={e.anchor}>
+                    <a href={`#${e.anchor}`}>{e.title}</a>
+                  </li>
+                ))}
+              </ol>
+            ) : null}
+          </li>
+        ))}
+      </ol>
+    );
+    return (
+      <>
+        <JsonLd data={itemListJsonLd} />
+        <nav aria-label={label} className="art-toc-m not-prose">
+          <details className="art-toc">
+            <summary>{label}</summary>
+            {liste}
+          </details>
+        </nav>
+        <nav aria-label={label} className="art-toc-d art-toc not-prose">
+          <p className="art-toc-titre">{label}</p>
+          {liste}
+        </nav>
+      </>
+    );
+  }
 
   // En-tête moderne : icône « liste » dans une pastille terracotta + label.
   const tocHeader = (
@@ -105,7 +176,7 @@ export function ArticleTOC({ items, pageUrl, locale, sticky = true }: ArticleTOC
             href={`#${item.anchor}`}
             className={`group/toc hover:bg-paper flex items-baseline gap-2.5 rounded-lg px-2 py-1.5 transition-colors ${
               item.level === 3 ? "pl-5" : ""
-            }`}
+            }${cibleTactile ? " min-h-11" : ""}`}
           >
             <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-bold tabular-nums">
               {String(i + 1).padStart(2, "0")}

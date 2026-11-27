@@ -1,4 +1,14 @@
 @import "tailwindcss";
+/* Gabarits d'articles (S2) : feuilles bornées à [data-gabarit], donc sans effet sur la V1. */
+@import "../styles/article-v2/base.css";
+@import "../styles/article-v2/analyse.css";
+@import "../styles/article-v2/guide.css";
+@import "../styles/article-v2/comparatif.css";
+@import "../styles/article-v2/selection.css";
+@import "../styles/article-v2/cas.css";
+@import "../styles/article-v2/definition.css";
+@import "../styles/article-v2/faq.css";
+@import "../styles/article-v2/chiffres.css";
 /* Tailwind lit tout le dépôt : il tirait du CSS de noms de scripts et de préfixes de journaux
    (ex. `[qualiopi:seed]`) écrits hors du site. On exclut ce qui n'est pas du site. */
 @source not "../../package.json";
@@ -148,6 +158,13 @@
 }
 
 @theme {
+  /* ----- Typographie fluide des gabarits d'articles (S2, PLAN §6) ----- */
+  --article-h1: clamp(2rem, 1.35rem + 2.6vw, 3.25rem);
+  --article-chapo: clamp(1.1875rem, 1.1rem + 0.4vw, 1.4375rem);
+  --article-h2: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem);
+  --article-h3: clamp(1.1875rem, 1.1rem + 0.5vw, 1.5rem);
+  --article-corps: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+  --article-espace-h2: clamp(2.5rem, 2rem + 2vw, 3.5rem);
   /* ----- Surfaces : 4 tons éditoriaux (sans noir) ----- */
   --color-bg: #faf8f3; /* canvas — ivoire chaud (était blanc froid) */
   --color-paper: #ffffff; /* papier blanc pur — cards, sections de contraste */

@@ -1,0 +1,39 @@
+{
+  "reponseDirecte": "Direct answer",
+  "sommaire": "Contents",
+  "surtitre": {
+    "analyse": "Analysis",
+    "guide": "Practical guide",
+    "comparatif": "Comparison",
+    "selection": "Shortlist",
+    "cas": "Case study",
+    "definition": "Definition",
+    "faq": "Questions and answers",
+    "chiffres": "Figures"
+  },
+  "faqTitre": "Frequently asked questions",
+  "avantDeCommencer": "Before you start",
+  "etape": "Step {numero}",
+  "contexte": "Context",
+  "definition": "Definition",
+  "donneesAu": "Data as of <dateBalise>{date}</dateBalise>",
+  "voirObservatoire": "Visit the Observatory",
+  "nouvelleFenetre": "(new window)",
+  "cta": {
+    "audit": {
+      "titre": "Take stock of how you use AI",
+      "description": "An audit to spot what is worth automating in your organisation.",
+      "bouton": "Discover the audit"
+    },
+    "journeeIa": {
+      "titre": "One day to take action",
+      "description": "The AI Day identifies which tasks to automate first in your organisation.",
+      "bouton": "Discover the AI Day"
+    },
+    "rdv": {
+      "titre": "Talk about your project",
+      "description": "Speak with the team to define your needs.",
+      "bouton": "Book a call"
+    }
+  }
+}
