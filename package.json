@@ -292,9 +292,9 @@
       "running": false
     },
     {
-      "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés) — relevé de 600 à 604 KB le 27/11/2026 puis à 608 KB (main a grossi de 200 B) : nouveaux écrans challenges, mesuré 602,9 kB ; 610 KB le 27/11 au soir (PR17 console équipe éditoriale, +424 o) ; 612 KB le 27/11 au soir (écrans relevés mensuels des apporteurs, mesuré 610,19 kB) ; changement de compte bancaire des apporteurs : liste, détail et demande de la console (mesuré 610,17 kB en CI avant fusion avec main)",
+      "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés) — relevé de 600 à 604 KB le 27/11/2026 puis à 608 KB (main a grossi de 200 B) : nouveaux écrans challenges, mesuré 602,9 kB ; 610 KB le 27/11 au soir (PR17 console équipe éditoriale, +424 o) ; 612 KB le 27/11 au soir (écrans relevés mensuels des apporteurs, mesuré 610,19 kB) ; changement de compte bancaire des apporteurs : liste, détail et demande de la console (mesuré 610,17 kB en CI avant fusion avec main); 614 KB le 27/11/2026 (mesuré 612,22 kB en CI sur la PR du changement de compte bancaire, après fusion de main)",
       "path": ".next/static/chunks/app/**/[(]admin[)]/**/page-*.js",
-      "limit": "612 KB",
+      "limit": "614 KB",
       "running": false
     },
     {
