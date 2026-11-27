@@ -16,6 +16,7 @@ import {
   DESCRIPTION_PAGE,
   DUREE,
   FERME,
+  texteFerme,
   FORMULAIRE,
   H1,
   LIBELLES_QUESTIONS,
@@ -127,7 +128,7 @@ export default async function QuestionnaireBarometrePage({ params }: Props) {
             <h2 id="bq-ferme" className="text-lg font-semibold">
               {FERME.titre}
             </h2>
-            <p className="mt-2 text-sm">{FERME.texte}</p>
+            <p className="mt-2 text-sm">{texteFerme(new Date())}</p>
           </section>
         )}
 

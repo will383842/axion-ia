@@ -66,7 +66,7 @@ describe("purge du questionnaire du Baromètre", () => {
     });
   });
 
-  it("une réponse envoyée la veille de la limite est visée, celle du lendemain ne l'est pas", async () => {
+  it("la limite du jour J est J − 24 mois à minuit UTC (inclus : `lte`)", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2029-01-13T03:00:00.000Z"));
     await executerPurgeRetention();

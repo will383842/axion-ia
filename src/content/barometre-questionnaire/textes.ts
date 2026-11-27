@@ -2,7 +2,12 @@
 // Les valeurs d'options sont des slugs ASCII stables ; seuls les libellés sont lus par les personnes.
 
 import { STUDY_REGIONS } from "@/content/observatoire/study";
-import { CONSERVATION_MOIS, N_MIN_PUBLICATION } from "@/lib/barometre-questionnaire/constantes";
+import {
+  CONSERVATION_MOIS,
+  DATE_DEBUT_COLLECTE,
+  N_MIN_PUBLICATION,
+  SEUIL_PUBLICATION_REPONSES,
+} from "@/lib/barometre-questionnaire/constantes";
 
 export interface OptionQ {
   readonly value: string;
@@ -17,11 +22,22 @@ export const DESCRIPTION_PAGE =
 export const H1 = "L'IA dans les TPE et PME : le questionnaire du Baromètre 2027";
 export const DUREE = "Durée : 5 minutes maximum. 14 questions fermées + 2 questions ouvertes.";
 
+const RETRAIT_FERME =
+  "Si vous avez déjà répondu, vous pouvez retirer vos réponses avec votre code de retrait, ci-dessous.";
+
 export const FERME = {
   titre: "Le questionnaire est fermé.",
-  texte:
-    "La collecte n'est pas encore ouverte : elle ouvre le 1er décembre 2026, puis reste ouverte en continu. Si vous avez déjà répondu, vous pouvez retirer vos réponses avec votre code de retrait, ci-dessous.",
+  texte: `La collecte n'est pas encore ouverte : elle ouvre le 1er décembre 2026, puis reste ouverte en continu. ${RETRAIT_FERME}`,
+  /** Une fois le 1er décembre 2026 passé, aucune date n'est affichée (l'interrupteur peut rester éteint). */
+  texteSansDate: `La collecte n'est pas ouverte pour le moment. ${RETRAIT_FERME}`,
 } as const;
+
+/** Texte « fermé » adapté à la date : jamais une date de début déjà passée. */
+export function texteFerme(now: Date): string {
+  return now.getTime() >= Date.parse(`${DATE_DEBUT_COLLECTE}T00:00:00.000Z`)
+    ? FERME.texteSansDate
+    : FERME.texte;
+}
 
 /** Mention d'information, affichée en tête du formulaire. */
 export const RGPD: ReadonlyArray<{ titre: string; texte: string }> = [
@@ -51,8 +67,7 @@ export const RGPD: ReadonlyArray<{ titre: string; texte: string }> = [
   },
   {
     titre: "Destinataire",
-    texte:
-      "l'éditeur seul lit les réponses brutes. Les résultats publiés sont agrégés : publiés à partir de 100 réponses, puis mis à jour régulièrement.",
+    texte: `l'éditeur seul lit les réponses brutes. Les résultats publiés sont agrégés : publiés à partir de ${SEUIL_PUBLICATION_REPONSES} réponses, puis mis à jour régulièrement.`,
   },
   {
     titre: "Hébergement et transferts",
