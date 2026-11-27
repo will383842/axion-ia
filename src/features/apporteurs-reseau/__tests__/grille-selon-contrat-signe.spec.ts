@@ -13,7 +13,8 @@ import {
 // Décision du dirigeant (27/11, définitive) : chaque apporteur garde la grille de la version de
 // contrat qu'il a SIGNÉE tant qu'il n'a pas signé l'avenant 2.8. Les annexes 1 des contrats 2.3, 2.4,
 // 2.5 et 2.6 sont identiques (grille « version 2 ») ; la 2.8 porte la grille « version 3 ». La 2.7
-// n'existe pas. Exception pour TOUS : formation de 3 jours ou plus = 1 000 € HT au plus, au prorata.
+// n'existe pas. Formation de 3 jours ou plus : v2 = 500 € par journée au prorata, SANS plafond (annexe 1
+// du 2.6, A1.1) ; v3 = 1 000 € HT au plus, au prorata. Le plafond n'est PAS commun aux deux grilles.
 
 const DECLAREE = new Date("2026-10-20T10:00:00Z");
 const COMMANDE = new Date("2026-12-10T10:00:00Z");
@@ -233,8 +234,8 @@ describe("signataire 2.6 (grille v2) contre signataire 2.8 (grille v3) : montant
   });
 });
 
-describe("formation de 3 jours ou plus : plafond 1 000 € HT pour TOUS (décision du 27/11)", () => {
-  it("trois familles, prix d'une journée 1 900 € / 1 900 € / 2 200 €, plafond 1 000 €", () => {
+describe("formation de 3 jours ou plus : v2 = 500 € par journée, v3 = plafond 1 000 € (décision du 27/11, Q1)", () => {
+  it("trois familles, prix d'une journée 1 900 € / 1 900 € / 2 200 €, plafond v3 1 000 €", () => {
     expect(PLAFOND_FORMATION_LONGUE_CENTS).toBe(100_000);
     expect(PALIERS_FORMATION_LONGUE.map((p) => [p.id, p.prixJourCents])).toEqual([
       ["formation-generale-3j-plus", 190_000],
@@ -255,57 +256,99 @@ describe("formation de 3 jours ou plus : plafond 1 000 € HT pour TOUS (décisi
     palier = "formation-generale-3j-plus",
   ) => calc(g, { activite: "formation", palier, factureHtCents: ht, quantite: journees });
 
-  it("3 jours générale au prix de référence (5 700 €) : 1 000 € dans les deux grilles", () => {
-    for (const g of ["v2", "v3"] as const) {
-      expect(longue(g, 570_000, 3)).toEqual({
+  describe("grille v2 (2.3 à 2.6 sans avenant) : annexe 1 du 2.6, 500 € par journée, aucune limite", () => {
+    it("3 jours générale au prix de base (5 700 €) : 1 500 €", () => {
+      expect(longue("v2", 570_000, 3)).toEqual({
+        statut: "calculee",
+        montantCents: 150_000,
+        palier: "formation-generale-3j-plus",
+        prixPublicCents: 570_000,
+      });
+    });
+
+    it("3 jours générale à prix réduit (4 560 €, remise 20 %) : prorata, 1 200 €", () => {
+      expect(montant(longue("v2", 456_000, 3))).toBe(120_000);
+    });
+
+    it("5 jours 9 500 € : 2 500 € ; 8 550 € (remise 10 %) : 2 250 € (exemple du 2.6)", () => {
+      expect(montant(longue("v2", 950_000, 5))).toBe(250_000);
+      expect(montant(longue("v2", 855_000, 5))).toBe(225_000);
+    });
+
+    it("vendue plus cher que la référence : le forfait plein, jamais plus", () => {
+      expect(montant(longue("v2", 900_000, 3))).toBe(150_000);
+    });
+
+    it("3 jours secteur 6 600 € : 1 500 € ; 5 940 € (remise 10 %) : 1 350 €", () => {
+      expect(montant(longue("v2", 660_000, 3, "formation-secteur-3j-plus"))).toBe(150_000);
+      expect(montant(longue("v2", 594_000, 3, "formation-secteur-3j-plus"))).toBe(135_000);
+    });
+  });
+
+  describe("grille v3 (2.8 ou avenant signé) : plafond 1 000 € HT, au prorata", () => {
+    it("3 jours générale au prix de base (5 700 €) : 1 000 €", () => {
+      expect(longue("v3", 570_000, 3)).toEqual({
         statut: "calculee",
         montantCents: 100_000,
         palier: "formation-generale-3j-plus",
         prixPublicCents: 570_000,
       });
+    });
+
+    it("5 jours générale 9 500 € : 1 000 €", () => {
+      expect(montant(longue("v3", 950_000, 5))).toBe(100_000);
+    });
+
+    it("3 jours vendue 4 560 € (remise 20 %) : 800 € ; plus cher que la référence : 1 000 €", () => {
+      expect(montant(longue("v3", 456_000, 3))).toBe(80_000);
+      expect(montant(longue("v3", 900_000, 3))).toBe(100_000);
+    });
+
+    it("3 jours secteur 6 600 € : 1 000 € ; 5 940 € (remise 10 %) : 900 €", () => {
+      expect(montant(longue("v3", 660_000, 3, "formation-secteur-3j-plus"))).toBe(100_000);
+      expect(montant(longue("v3", 594_000, 3, "formation-secteur-3j-plus"))).toBe(90_000);
+    });
+
+    it("le calcul historique (calculerCommission, v3) connaît aussi ce palier", () => {
+      expect(
+        montant(
+          calculerCommission({
+            activite: "formation",
+            palier: "formation-metier-3j-plus",
+            factureHtCents: 456_000,
+            quantite: 3,
+          }),
+        ),
+      ).toBe(80_000);
+    });
+  });
+
+  it("moins de 3 journées sur ce palier : à qualifier, dans les deux grilles", () => {
+    for (const g of ["v2", "v3"] as const) {
+      expect(longue(g, 380_000, 2)).toEqual({ statut: "a_qualifier" });
+      expect(
+        calc(g, {
+          activite: "formation",
+          palier: "formation-generale-3j-plus",
+          factureHtCents: 380_000,
+        }),
+      ).toEqual({ statut: "a_qualifier" });
     }
   });
 
-  it("5 jours générale 9 500 € : 1 000 € (et non 2 500 € comme l'annexe 2.6)", () => {
-    expect(montant(longue("v2", 950_000, 5))).toBe(100_000);
-    expect(montant(longue("v3", 950_000, 5))).toBe(100_000);
-  });
-
-  it("3 jours générale vendue 4 560 € (remise 20 %) : 800 €", () => {
-    expect(montant(longue("v2", 456_000, 3))).toBe(80_000);
-    expect(montant(longue("v3", 456_000, 3))).toBe(80_000);
-  });
-
-  it("vendue plus cher que la référence : 1 000 €, jamais plus", () => {
-    expect(montant(longue("v2", 900_000, 3))).toBe(100_000);
-  });
-
-  it("3 jours secteur 6 600 € : 1 000 € ; 5 940 € (remise 10 %) : 900 €", () => {
-    expect(montant(longue("v3", 660_000, 3, "formation-secteur-3j-plus"))).toBe(100_000);
-    expect(montant(longue("v3", 594_000, 3, "formation-secteur-3j-plus"))).toBe(90_000);
-  });
-
-  it("moins de 3 journées sur ce palier : à qualifier (incohérent, un humain tranche)", () => {
-    expect(longue("v2", 380_000, 2)).toEqual({ statut: "a_qualifier" });
-    expect(
-      calc("v3", {
-        activite: "formation",
-        palier: "formation-generale-3j-plus",
-        factureHtCents: 380_000,
-      }),
-    ).toEqual({ statut: "a_qualifier" });
-  });
-
-  it("le calcul historique (grille v3) connaît aussi ce palier", () => {
-    expect(
-      montant(
-        calculerCommission({
-          activite: "formation",
-          palier: "formation-metier-3j-plus",
-          factureHtCents: 456_000,
-          quantite: 3,
-        }),
-      ),
-    ).toBe(80_000);
+  it("2.6 sans avenant → v2 (1 500 €) ; 2.6 avec avenant en vigueur → v3 (1 000 €) ; 2.8 → v3", () => {
+    const avenant = new Date("2026-12-01T00:00:00Z");
+    const grille = (version: string, avenantEffet: Date | null) =>
+      grilleDeLaCommande({
+        signature: sig(version),
+        declareeAt: new Date("2026-12-05T10:00:00Z"),
+        commandeSigneeAt: COMMANDE,
+        avenant28EffetAt: avenantEffet,
+      });
+    const sans = grille("2.6", null) as GrilleCommission;
+    const avec = grille("2.6", avenant) as GrilleCommission;
+    expect([sans, avec, grille("2.8", null)]).toEqual(["v2", "v3", "v3"]);
+    expect(montant(longue(sans, 570_000, 3))).toBe(150_000);
+    expect(montant(longue(avec, 570_000, 3))).toBe(100_000);
   });
 });

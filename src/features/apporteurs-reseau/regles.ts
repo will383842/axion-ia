@@ -358,13 +358,21 @@ export const PALIERS_FORMATION = [
 export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 
 /**
- * Formation de 3 jours ou plus (décision du dirigeant du 27/11/2026) : **1 000 € HT au plus, pour
- * TOUS les apporteurs** (grille v2 comme v3), réduit au prorata en cas de remise (art. 4.1 bis). Ces
- * formations sont « sur devis » : le prix de référence est le nombre de journées × le prix public
- * d'une journée de la même famille (méthode de l'exemple de l'annexe 1 du contrat 2.6, « cinq
- * journées vendues 9 500 € au prix public »). Hors de `PALIERS_FORMATION` : la grille publique ne
- * change pas. Sur ces paliers, la quantité est le NOMBRE DE JOURNÉES (3 au moins).
+ * Formation de 3 jours ou plus (décision du dirigeant du 27/11/2026, Q1) : la règle dépend de la
+ * grille du contrat SIGNÉ.
+ * - Grille v3 (contrat 2.8, ou avenant 2.8 signé) : **1 000 € HT au plus**, réduit au prorata en
+ *   cas de remise (art. 4.1 bis).
+ * - Grille v2 (contrats 2.3 à 2.6 sans avenant) : le plafond de 1 000 € NE S'APPLIQUE PAS. Annexe 1
+ *   du contrat 2.6, A1.1 : « Forfait de 500 € HT par journée de formation vendue, au prix public,
+ *   réduit au prorata en cas de remise » et « cinq journées de formation générale vendues 9 500 € HT
+ *   (au prix public) donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles donnent
+ *   2 500 € × 8 550 ÷ 9 500 = 2 250 €. Aucune limite n'est fixée au nombre de journées. » Donc 3 jours
+ *   au prix de base = 1 500 €.
+ * Ces formations sont « sur devis » : le prix de référence est le nombre de journées × le prix public
+ * d'une journée de la même famille (méthode de l'exemple ci-dessus). Hors de `PALIERS_FORMATION` : la
+ * grille publique ne change pas. Sur ces paliers, la quantité est le NOMBRE DE JOURNÉES (3 au moins).
  */
+export const FORFAIT_JOURNEE_FORMATION_V2_CENTS = 50_000;
 export const PLAFOND_FORMATION_LONGUE_CENTS = 100_000;
 export const JOURNEES_MIN_FORMATION_LONGUE = 3;
 export const PALIERS_FORMATION_LONGUE = [
@@ -399,11 +407,15 @@ export function estPalierFormation(id: string | null | undefined): boolean {
   return libellePalierFormation(id) !== null;
 }
 
-/** Commission d'une formation de 3 jours ou plus : 1 000 € × min(1, HT ÷ référence). */
+/**
+ * Commission d'une formation de 3 jours ou plus : v3 = 1 000 € × min(1, HT ÷ référence) ;
+ * v2 = 500 € × journées × min(1, HT ÷ référence), sans plafond (annexe 1 du contrat 2.6, A1.1).
+ */
 function commissionFormationLongue(
   p: (typeof PALIERS_FORMATION_LONGUE)[number],
   htCents: number,
   journees: number | undefined,
+  grille: GrilleCommission,
 ): CalculCommission {
   if (
     typeof journees !== "number" ||
@@ -414,12 +426,13 @@ function commissionFormationLongue(
     return { statut: "a_qualifier" };
   const reference = p.prixJourCents * journees;
   const ht = Math.max(0, htCents);
+  const pleinCents =
+    grille === "v2"
+      ? FORFAIT_JOURNEE_FORMATION_V2_CENTS * journees
+      : PLAFOND_FORMATION_LONGUE_CENTS;
   return {
     statut: "calculee",
-    montantCents:
-      ht >= reference
-        ? PLAFOND_FORMATION_LONGUE_CENTS
-        : Math.round((PLAFOND_FORMATION_LONGUE_CENTS * ht) / reference),
+    montantCents: ht >= reference ? pleinCents : Math.round((pleinCents * ht) / reference),
     palier: p.id,
     prixPublicCents: reference,
   };
@@ -652,7 +665,7 @@ export function calculerCommission(e: {
   }
   if (e.activite === "formation") {
     const longue = PALIERS_FORMATION_LONGUE.find((x) => x.id === e.palier);
-    if (longue) return commissionFormationLongue(longue, e.factureHtCents, e.quantite);
+    if (longue) return commissionFormationLongue(longue, e.factureHtCents, e.quantite, "v3");
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
     const ht = Math.max(0, e.factureHtCents);
@@ -684,7 +697,8 @@ export function calculerCommission(e: {
  * - v3 (contrat 2.8) : `calculerCommission`, inchangé ;
  * - v2 (contrats 2.3 à 2.6, annexe 1 « version 2 ») : coaching 30 % du HT (A1.2), conférence 500 € par
  *   conférence sans prorata et jamais plus que le HT (A1.4 bis), développement web aucune (A1.5) ;
- *   formations, audit et intégration identiques à la v3 (3 jours ou plus : plafond commun du 27/11).
+ *   formations de 3 jours ou plus : 500 € par journée au prorata, SANS plafond (A1.1 du 2.6) ;
+ *   autres formations, audit et intégration identiques à la v3. Le plafond de 1 000 € est v3 seul.
  */
 export function calculerCommissionSelonGrille(
   e: Parameters<typeof calculerCommission>[0] & { grille: GrilleCommission },
@@ -708,7 +722,11 @@ export function calculerCommissionSelonGrille(
       prixPublicCents: null,
     };
   if (e.activite === "site_web") return { statut: "aucune" };
-  // Formations, audit, intégration : même calcul ; `signeeAt` ne joue que pour la v3.
+  if (e.activite === "formation") {
+    const longue = PALIERS_FORMATION_LONGUE.find((x) => x.id === e.palier);
+    if (longue) return commissionFormationLongue(longue, e.factureHtCents, e.quantite, "v2");
+  }
+  // Autres formations, audit, intégration : même calcul ; `signeeAt` ne joue que pour la v3.
   return calculerCommission({ ...e, signeeAt: null });
 }
 

@@ -224,7 +224,25 @@ describe("décision du 27/11 : la grille du contrat SIGNÉ (signataire 2.6 sans 
     expect(r.message).toMatch(/ce type de prestation/);
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
   });
-  it("formation 5 jours générale 9 500 € : 1 000 € (plafond du 27/11) ; 3 jours à 4 560 € : 800 €", async () => {
+  it("formation 3 jours ou plus, signataire 2.6 : 500 € par journée au prorata, sans plafond (A1.1 du 2.6)", async () => {
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 950_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 5)).toEqual({
+      ok: true,
+      montantCents: 250_000,
+    });
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 570_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 3)).toEqual({
+      ok: true,
+      montantCents: 150_000,
+    });
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 456_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 3)).toEqual({
+      ok: true,
+      montantCents: 120_000,
+    });
+  });
+  it("formation 3 jours ou plus, signataire 2.8 (grille v3) : plafond 1 000 €, au prorata", async () => {
+    etat.version = "2.8";
     etat.commission = { ...ligne, activite: "formation", factureHtCents: 950_000 };
     expect(await qualifierCommission("C1", "formation-generale-3j-plus", 5)).toEqual({
       ok: true,
