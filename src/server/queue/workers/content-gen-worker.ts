@@ -65,6 +65,31 @@ import {
   MARQUEUR_FACT_CHECK_CLAUDE,
 } from "@/server/content-gen/fact-check/fact-check-claude";
 import { equipeEditorialeActive } from "@/server/content-gen/fact-check/equipe-editoriale-drapeau";
+import { coutCumuleJobUsd } from "@/server/content-gen/providers/blog-claude-ledger";
+import { produireBrief } from "@/server/content-gen/equipe/strategie";
+import {
+  decider as deciderGardien,
+  type DecisionGardien,
+} from "@/server/content-gen/equipe/gardien";
+import { chargerCarteRequetes } from "@/server/content-gen/strategie/carte-requetes-source";
+import type { Brief } from "@/server/content-gen/equipe/brief";
+import type { GeneratorOutput } from "@/server/content-gen/generators/types";
+import {
+  SuiviEquipe,
+  apresEcriture,
+  avantEcriture,
+  premiereEcriture,
+  type JournalEquipe,
+} from "@/server/content-gen/equipe/orchestration";
+import {
+  conformiteSortie,
+  consigneRenvoi,
+  editerSeoSortie,
+  enChefSortie,
+  mailler,
+} from "@/server/content-gen/equipe/circuit-article";
+import type { BarriereRelecture } from "@/server/content-gen/quality/barrieres-publication";
+import type { LienControle } from "@/server/content-gen/equipe/maillage";
 import {
   constituerDossierPreuves,
   PLAFOND_RECHERCHES_PHASE_A,
@@ -648,7 +673,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // éteint par défaut) : dossier de preuves AVANT la rédaction. Une erreur n'arrête pas la
     // génération : la phase B tournera sans dossier et marquera tout à retirer (fail-closed).
     let dossierPreuves: DossierPreuves | undefined;
-    if (equipeEditorialeActive() && factCheckClaudeActif(contentType)) {
+    const constituerPhaseA = async (): Promise<{ coutUsd: number; detail?: string }> => {
       try {
         dossierPreuves = await constituerDossierPreuves({
           jobId: contentGenJobId,
@@ -661,6 +686,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           `Dossier de preuves : ${dossierPreuves.preuves.length} preuve(s), ${dossierPreuves.refusees} refusée(s)`,
           { recherches: dossierPreuves.recherches, cout_usd: dossierPreuves.coutUsd },
         );
+        return {
+          coutUsd: dossierPreuves.coutUsd,
+          detail: `${dossierPreuves.preuves.length} preuve(s), ${dossierPreuves.refusees} refusée(s)`,
+        };
       } catch (err) {
         await logStep(
           contentGenJobId,
@@ -676,40 +705,153 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           coutUsd: 0,
           sources: [],
         };
+        return { coutUsd: 0, detail: "dossier indisponible" };
       }
+    };
+
+    // PR 12 — équipe éditoriale (`CONTENT_EQUIPE_EDITORIALE` = « true », types Claude seulement).
+    // Éteint : aucune de ces variables n'est utilisée et le chemin d'avant est inchangé.
+    const equipeOrchestree =
+      equipeEditorialeActive() && interrupteurBlogClaude() && typeClaudeAutorise(contentType);
+    const suiviEquipe = equipeOrchestree
+      ? new SuiviEquipe(() => coutCumuleJobUsd(contentGenJobId))
+      : undefined;
+    let briefEquipe: Brief | undefined;
+    let decisionGardienEquipe: DecisionGardien | undefined;
+    if (suiviEquipe) {
+      const titreBrief = title ?? resolvedKeyword ?? contentType;
+      const briefRepli = (prevOutput?.["equipe"] as { brief?: Brief } | undefined)?.brief;
+      const reprise = improvementFeedback !== undefined;
+      const carte = reprise ? undefined : await chargerCarteRequetes();
+      const avant = await avantEcriture(suiviEquipe, {
+        // Reprise de la boucle qualité : même article, déjà arbitré (pas de second brief payé).
+        brief: async () =>
+          reprise
+            ? {
+                statut: "brief" as const,
+                coutUsd: 0,
+                brief:
+                  briefRepli ??
+                  ({
+                    motCle: resolvedKeyword ?? titreBrief,
+                    entites: [],
+                    questions: [],
+                  } as unknown as Brief),
+              }
+            : produireBrief(
+                {
+                  jobId: contentGenJobId,
+                  sujet: titreBrief,
+                  ...(resolvedKeyword ? { motCleVise: resolvedKeyword } : {}),
+                  siPossede: "mise-a-jour",
+                },
+                { carte: carte! },
+              ),
+        gardien: async (brief) =>
+          reprise
+            ? { decision: "feu_vert" as const, raison: "Reprise de la boucle qualité" }
+            : deciderGardien(brief, {
+                carte: carte!,
+                // Aucun embedding du brief avant l'écriture : la carte des requêtes et la FAQ du
+                // site font ce contrôle ; la comparaison sémantique reste faite par le dedup Voyage.
+                voisins: async () => [],
+              }),
+        dossier: async () =>
+          factCheckClaudeActif(contentType)
+            ? constituerPhaseA()
+            : { coutUsd: 0, detail: "sans fact-check" },
+      });
+      if (avant.statut === "arret") {
+        const journal = await suiviEquipe.journal(avant.issue, 0, avant.raison);
+        await logStep(
+          contentGenJobId,
+          "validation",
+          `Équipe éditoriale : arrêt avant écriture (${avant.issue}) — ${avant.raison}`,
+          {
+            issue: avant.issue,
+          },
+        );
+        await prisma.contentGenJob.update({
+          where: { id: contentGenJobId },
+          data: {
+            status: "cancelled",
+            errorMessage: `Équipe éditoriale (${avant.issue}) : ${avant.raison}`.slice(0, 1000),
+            completedAt: new Date(),
+            outputJsonRaw: { equipe: journal } as never,
+          },
+        });
+        return;
+      }
+      briefEquipe = avant.brief;
+      decisionGardienEquipe = { decision: "feu_vert", raison: "gardien passé" };
+    } else if (equipeEditorialeActive() && factCheckClaudeActif(contentType)) {
+      await constituerPhaseA();
     }
 
     const startedAt = Date.now();
-    let output = await generator.generate({
-      jobId: contentGenJobId,
-      contentType,
-      targetSearchIntent,
-      ...(dossierPreuves ? { dossierPreuves } : {}),
-      ...(templateOverride ? { templateOverride } : {}),
-      ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
-      ...(dbJob.anchorDepartementCode
-        ? { anchorDepartementCode: dbJob.anchorDepartementCode }
-        : {}),
-      ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
-      // PH3b — secteur/vertical (pain-matrix), injectés par une campagne pilote
-      // via inputPayload. Absents = pas de contexte douleur (augmentation no-op).
-      ...(typeof inputPayload["targetSecteur"] === "string"
-        ? { targetSecteur: inputPayload["targetSecteur"] }
-        : {}),
-      ...(typeof inputPayload["vertical"] === "string"
-        ? { vertical: inputPayload["vertical"] }
-        : {}),
-      ...(dbJob.targetAudienceSize ? { targetAudienceSize: dbJob.targetAudienceSize } : {}),
-      ...(dbJob.targetAudienceOrganisation
-        ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
-        : {}),
-      ...(resolvedKeyword ? { primaryKeyword: resolvedKeyword } : {}),
-      ...(improvementFeedback ? { improvementFeedback } : {}),
-      ...(rssSourceName ? { rssSourceName } : {}),
-      ...(rssItemTitle ? { rssItemTitle } : {}),
-      ...(rssItemSummary ? { rssItemSummary } : {}),
-      ...(rssItemLink ? { rssItemLink } : {}),
-    });
+    const genererArticle = (feedbackRenvoi?: string) =>
+      generator.generate({
+        jobId: contentGenJobId,
+        contentType,
+        targetSearchIntent,
+        ...(dossierPreuves ? { dossierPreuves } : {}),
+        ...(templateOverride ? { templateOverride } : {}),
+        ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
+        ...(dbJob.anchorDepartementCode
+          ? { anchorDepartementCode: dbJob.anchorDepartementCode }
+          : {}),
+        ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
+        // PH3b — secteur/vertical (pain-matrix), injectés par une campagne pilote
+        // via inputPayload. Absents = pas de contexte douleur (augmentation no-op).
+        ...(typeof inputPayload["targetSecteur"] === "string"
+          ? { targetSecteur: inputPayload["targetSecteur"] }
+          : {}),
+        ...(typeof inputPayload["vertical"] === "string"
+          ? { vertical: inputPayload["vertical"] }
+          : {}),
+        ...(dbJob.targetAudienceSize ? { targetAudienceSize: dbJob.targetAudienceSize } : {}),
+        ...(dbJob.targetAudienceOrganisation
+          ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
+          : {}),
+        ...(resolvedKeyword ? { primaryKeyword: resolvedKeyword } : {}),
+        ...(improvementFeedback || feedbackRenvoi
+          ? {
+              improvementFeedback: [improvementFeedback, feedbackRenvoi]
+                .filter((x): x is string => Boolean(x))
+                .join("\n\n"),
+            }
+          : {}),
+        ...(rssSourceName ? { rssSourceName } : {}),
+        ...(rssItemTitle ? { rssItemTitle } : {}),
+        ...(rssItemSummary ? { rssItemSummary } : {}),
+        ...(rssItemLink ? { rssItemLink } : {}),
+      });
+    let output: GeneratorOutput;
+    if (suiviEquipe) {
+      const premiere = await premiereEcriture(suiviEquipe, async () => {
+        const o = await genererArticle();
+        return { output: o, decision: "écrit", coutUsd: o.totalCostUsd };
+      });
+      if ("arret" in premiere) {
+        const journal = await suiviEquipe.journal("plafond", 0, premiere.arret);
+        await logStep(contentGenJobId, "validation", `Équipe éditoriale : ${premiere.arret}`, {
+          issue: "plafond",
+        });
+        await prisma.contentGenJob.update({
+          where: { id: contentGenJobId },
+          data: {
+            status: "cancelled",
+            errorMessage: `Équipe éditoriale (plafond) : ${premiere.arret}`.slice(0, 1000),
+            completedAt: new Date(),
+            outputJsonRaw: { equipe: journal } as never,
+          },
+        });
+        return;
+      }
+      output = premiere.output;
+    } else {
+      output = await genererArticle();
+    }
 
     // B.5 — Validation keyword dans le titre (warning si absent, pas de blocage).
     if (resolvedKeyword && output.title) {
@@ -786,83 +928,215 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       total_cost_usd: output.totalCostUsd,
     });
 
-    // 4bis-pre0. Réparation directAnswer (P0 auto-publish 2026-07-03) — le gate de
-    // complétude `data-quality-gate` exige ≥ 40 mots ; le PLAN des générateurs le
-    // rend parfois trop court et la boucle d'expansion n'étoffe QUE le corps. On
-    // ré-génère UNIQUEMENT le directAnswer sous plancher via un appel LLM court.
-    // Fail-open & non-régressif (cf. ensure-direct-answer.ts) : aucune altération
-    // si déjà conforme, jamais plus court que l'original.
-    try {
-      const daRepair = await ensureDirectAnswer({
-        current: output.directAnswer,
-        title: output.title || resolvedKeyword || rssItemTitle || "",
-        bodyText: output.bodyText,
-        generate: async (req) => {
-          const r = await routerGenerate({
+    // Retouches déterministes du texte (réparation directAnswer, plancher d'intent) : une
+    // fonction pour pouvoir les rejouer sur le texte d'un renvoi de l'équipe éditoriale.
+    const retoucherSortie = async (entree: GeneratorOutput): Promise<GeneratorOutput> => {
+      let output = entree;
+      // 4bis-pre0. Réparation directAnswer (P0 auto-publish 2026-07-03) — le gate de
+      // complétude `data-quality-gate` exige ≥ 40 mots ; le PLAN des générateurs le
+      // rend parfois trop court et la boucle d'expansion n'étoffe QUE le corps. On
+      // ré-génère UNIQUEMENT le directAnswer sous plancher via un appel LLM court.
+      // Fail-open & non-régressif (cf. ensure-direct-answer.ts) : aucune altération
+      // si déjà conforme, jamais plus court que l'original.
+      try {
+        const daRepair = await ensureDirectAnswer({
+          current: output.directAnswer,
+          title: output.title || resolvedKeyword || rssItemTitle || "",
+          bodyText: output.bodyText,
+          generate: async (req) => {
+            const r = await routerGenerate({
+              jobId: contentGenJobId,
+              contentType,
+              role: "text",
+              blogClaudeRole: "court",
+              systemPrompt: req.systemPrompt,
+              userPrompt: req.userPrompt,
+              maxTokens: req.maxTokens,
+              temperature: req.temperature,
+            });
+            return { output: r.output, costUsd: r.costUsd };
+          },
+        });
+        if (daRepair.repaired) {
+          output = {
+            ...output,
+            directAnswer: daRepair.directAnswer,
+            totalCostUsd: output.totalCostUsd + daRepair.costUsd,
+          };
+          await logStep(
+            contentGenJobId,
+            "direct_answer_repair",
+            `directAnswer ré-généré (${daRepair.directAnswer.split(/\s+/).filter(Boolean).length} mots, +$${daRepair.costUsd.toFixed(4)})`,
+            { cost_usd: daRepair.costUsd },
+          );
+        }
+      } catch {
+        // Fail-open : aucune altération si la réparation échoue.
+      }
+
+      // 4bis-pre. Intent enforcement déterministe (2026-06-27) — plancher AVANT la
+      // validation d'intent : garantit ≥ 3 sources externes (intents AEO/info) + un
+      // CTA reconnu (transactional). Évite que des contenus par ailleurs bons soient
+      // déviés en needs_review (blockingFail → tier_3) sur des faux positifs de
+      // détection. Fail-open : aucune altération si la sélection échoue. NB : on ne
+      // touche QUE bodyHtml/citations (navigationnel) — bodyText (prose) reste tel
+      // quel pour le plagiat/readability déjà scorés par le generator.
+      try {
+        const enforced = enforceIntentRequirements({
+          intent: targetSearchIntent,
+          bodyHtml: output.bodyHtml,
+          citations: output.citations,
+          ...(output.selectedExternalLinkIds
+            ? { excludeLinkIds: output.selectedExternalLinkIds }
+            : {}),
+          ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
+          ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
+        });
+        if (enforced.changed) {
+          output = { ...output, bodyHtml: enforced.bodyHtml, citations: enforced.citations };
+          await logStep(
+            contentGenJobId,
+            "intent_enforcement",
+            `Plancher intent appliqué (+${enforced.sourcesInjected} sources, CTA=${enforced.ctaInjected})`,
+            {
+              intent: targetSearchIntent,
+              sources_injected: enforced.sourcesInjected,
+              cta_injected: enforced.ctaInjected,
+            },
+          );
+        }
+      } catch (err) {
+        await logStep(contentGenJobId, "intent_enforcement", "Enforcement skipped (fail-open)", {
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+      return output;
+    };
+    output = await retoucherSortie(output);
+
+    // PR 12 — suite de l'équipe éditoriale : vérificateur (phase B) → mailleur → éditeur SEO →
+    // conformité (sur le texte final) → rédacteur en chef (publier / renvoyer / abandonner).
+    // Elle remplace, sans les doubler, le fact-check et la fidélité par Claude plus bas.
+    // Éteint : `suiviEquipe` est absent, ce bloc est ignoré.
+    let journalEquipe: JournalEquipe | undefined;
+    const barrieresEquipe: BarriereRelecture[] = [];
+    let sourcesFactCheck: ReadonlyArray<{ url: string; title: string }> | null = null;
+    let factCheckClaudeAboutiSansReserve = false;
+    let coutFactCheckUsd = 0;
+    const nomCampagneJourneeIA = dbJob.campaignId
+      ? ((
+          await prisma.coverageCampaign
+            .findUnique({ where: { id: dbJob.campaignId }, select: { name: true } })
+            .catch(() => null)
+        )?.name ?? null)
+      : null;
+    if (suiviEquipe && briefEquipe) {
+      const briefFin = briefEquipe;
+      let liensRapport: ReadonlyArray<LienControle> = [];
+      let barriereB: BarriereRelecture | null = null;
+      const depsFidelite = {
+        rechercherFiches: rechercherFichesPertinentes,
+        juger: jugerAvecClaude,
+        faitsOffre: faitsReferenceOffre,
+      };
+      const fin = await apresEcriture<GeneratorOutput>(suiviEquipe, output, {
+        verificateurB: async (o) => {
+          if (!factCheckClaudeActif(contentType)) {
+            return { output: o, decision: "fact-check Claude éteint" };
+          }
+          const d = await decisionFactCheckClaude(
+            {
+              jobId: contentGenJobId,
+              contentType,
+              texte: [o.title, o.directAnswer, o.bodyHtml, ...o.faq.map((f) => f.answer)].join(
+                ". ",
+              ),
+            },
+            undefined,
+            dossierPreuves ? { dossier: dossierPreuves } : {},
+          );
+          sourcesFactCheck = d.sources;
+          coutFactCheckUsd += d.coutUsd;
+          factCheckClaudeAboutiSansReserve = d.barriere === null;
+          barriereB = d.barriere;
+          await logStep(
+            contentGenJobId,
+            "validation",
+            d.barriere
+              ? `Fact-check par Claude : ${d.barriere.libelle}`
+              : `Fact-check par Claude : ${d.affirmations} affirmation(s) vérifiée(s), ${d.sources.length} source(s)`,
+            { affirmations: d.affirmations, recherches: d.recherches, cout_usd: d.coutUsd },
+          );
+          return {
+            output: o,
+            decision: d.barriere ? "non vérifié" : "vérifié",
+            coutUsd: d.coutUsd,
+            ...(d.barriere ? { detail: d.barriere.libelle } : {}),
+          };
+        },
+        mailleur: async (o) => {
+          const r = await mailler(o);
+          liensRapport = r.liens;
+          return r;
+        },
+        editeurSeo: (o) => editerSeoSortie(contentGenJobId, o, briefFin),
+        conformite: (o) =>
+          conformiteSortie(contentGenJobId, contentType, o, depsFidelite, {
+            financementPublicAutorise: financementPublicCitable(),
+          }),
+        enChef: (o, ctx) =>
+          enChefSortie(o, {
             jobId: contentGenJobId,
             contentType,
-            role: "text",
-            blogClaudeRole: "court",
-            systemPrompt: req.systemPrompt,
-            userPrompt: req.userPrompt,
-            maxTokens: req.maxTokens,
-            temperature: req.temperature,
-          });
-          return { output: r.output, costUsd: r.costUsd };
+            brief: briefFin,
+            dossier: dossierPreuves,
+            gardien: decisionGardienEquipe,
+            liens: liensRapport,
+            conformite: ctx.conformite,
+            renvoisFaits: ctx.renvoisFaits,
+            coutDepenseUsd: ctx.coutDepenseUsd,
+            journeeIA: {
+              output: o,
+              inputPayload: dbJob.inputPayload,
+              campaignName: nomCampagneJourneeIA,
+            },
+          }),
+        renvoyer: async (o, renvois) => {
+          const reecrire = renvois.some((r) =>
+            ["redacteur", "architecte", "verificateur"].includes(r.role),
+          );
+          if (!reecrire) {
+            return { output: o, decision: "reprise du mailleur / de l'éditeur SEO" };
+          }
+          const nouveau = await retoucherSortie(await genererArticle(consigneRenvoi(renvois)));
+          return {
+            output: nouveau,
+            decision: "réécrit",
+            coutUsd: nouveau.totalCostUsd,
+            detail: renvois.map((r) => `${r.role}:${r.criteres.join("+")}`).join(" ; "),
+          };
         },
       });
-      if (daRepair.repaired) {
-        output = {
-          ...output,
-          directAnswer: daRepair.directAnswer,
-          totalCostUsd: output.totalCostUsd + daRepair.costUsd,
-        };
-        await logStep(
-          contentGenJobId,
-          "direct_answer_repair",
-          `directAnswer ré-généré (${daRepair.directAnswer.split(/\s+/).filter(Boolean).length} mots, +$${daRepair.costUsd.toFixed(4)})`,
-          { cost_usd: daRepair.costUsd },
-        );
+      output = fin.output;
+      if (fin.statut === "stop") {
+        barrieresEquipe.push({
+          code: "equipe-editoriale",
+          libelle: `Équipe éditoriale (${fin.issue}) : ${fin.raison}`,
+          detail: { issue: fin.issue, causes: fin.causes.slice(0, 5) },
+        });
       }
-    } catch {
-      // Fail-open : aucune altération si la réparation échoue.
-    }
-
-    // 4bis-pre. Intent enforcement déterministe (2026-06-27) — plancher AVANT la
-    // validation d'intent : garantit ≥ 3 sources externes (intents AEO/info) + un
-    // CTA reconnu (transactional). Évite que des contenus par ailleurs bons soient
-    // déviés en needs_review (blockingFail → tier_3) sur des faux positifs de
-    // détection. Fail-open : aucune altération si la sélection échoue. NB : on ne
-    // touche QUE bodyHtml/citations (navigationnel) — bodyText (prose) reste tel
-    // quel pour le plagiat/readability déjà scorés par le generator.
-    try {
-      const enforced = enforceIntentRequirements({
-        intent: targetSearchIntent,
-        bodyHtml: output.bodyHtml,
-        citations: output.citations,
-        ...(output.selectedExternalLinkIds
-          ? { excludeLinkIds: output.selectedExternalLinkIds }
-          : {}),
-        ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
-        ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
-      });
-      if (enforced.changed) {
-        output = { ...output, bodyHtml: enforced.bodyHtml, citations: enforced.citations };
-        await logStep(
-          contentGenJobId,
-          "intent_enforcement",
-          `Plancher intent appliqué (+${enforced.sourcesInjected} sources, CTA=${enforced.ctaInjected})`,
-          {
-            intent: targetSearchIntent,
-            sources_injected: enforced.sourcesInjected,
-            cta_injected: enforced.ctaInjected,
-          },
-        );
-      }
-    } catch (err) {
-      await logStep(contentGenJobId, "intent_enforcement", "Enforcement skipped (fail-open)", {
-        error: err instanceof Error ? err.message : String(err),
-      });
+      if (barriereB) barrieresEquipe.push(barriereB);
+      journalEquipe = await suiviEquipe.journal(
+        fin.statut === "publier" ? "publier" : fin.issue,
+        fin.renvois,
+        fin.statut === "stop" ? fin.raison : undefined,
+      );
+      await logStep(
+        contentGenJobId,
+        "validation",
+        `Équipe éditoriale : ${journalEquipe.issue} (${fin.renvois} renvoi(s), ${journalEquipe.coutTotalUsd.toFixed(2)} $)`,
+        { issue: journalEquipe.issue, renvois: fin.renvois, cout_usd: journalEquipe.coutTotalUsd },
+      );
     }
 
     // 4bis. Anti-plagiarism shingling Jaccard (§ 10.1 master prompt v1.7).
@@ -1025,6 +1299,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       corpus,
       ancreVille: Boolean(dbJob.anchorVilleSlug),
     });
+    barrieresRelecture.push(...barrieresEquipe);
 
     // Vague 3 (11/11/2026) — contrôle de FIDÉLITÉ aux fiches (`CONTENT_FIDELITY_CHECK`, ÉTEINT
     // par défaut ; « dry-run » = journal seul). Actif : envoie en RELECTURE, jamais de
@@ -1076,7 +1351,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // publication par défaut. Coût compté dans le budget Claude existant (porte blog-claude).
     let coutFideliteLlmUsd = 0;
     let statutFideliteLlm: string | null = null;
-    if (controleFideliteLlmActif()) {
+    if (controleFideliteLlmActif() && !suiviEquipe) {
       let d: DecisionFideliteLlm;
       try {
         d = await decisionFideliteLlm(
@@ -1115,7 +1390,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         { fiches: d.fiches, cout_usd: d.coutUsd, ...(d.barriere?.detail ?? {}) },
       );
       if (d.barriere) barrieresRelecture.push(d.barriere);
-    } else if (modeFidelite === "actif") {
+    } else if (modeFidelite === "actif" && !suiviEquipe) {
       await logStep(
         contentGenJobId,
         "validation",
@@ -1129,10 +1404,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // vérifiée, une erreur, un plafond atteint ou une recherche indisponible ajoutent une
     // barrière de relecture (article NON publié) ; jamais de repli sur OpenAI/Perplexity.
     // Les sources trouvées (URL) sont gardées dans `sourcesFactCheck` du résultat persisté.
-    let sourcesFactCheck: ReadonlyArray<{ url: string; title: string }> | null = null;
-    let factCheckClaudeAboutiSansReserve = false;
-    let coutFactCheckUsd = 0;
-    if (factCheckClaudeActif(contentType)) {
+    if (factCheckClaudeActif(contentType) && !suiviEquipe) {
       const decisionFc = await decisionFactCheckClaude(
         {
           jobId: contentGenJobId,
@@ -1168,13 +1440,6 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
 
     // Offre « Journée IA » : jamais de publication automatique, quelle que soit la note.
     // Le job part en relecture humaine (`blockingFail`), l'approbation manuelle reste possible.
-    const nomCampagneJourneeIA = dbJob.campaignId
-      ? ((
-          await prisma.coverageCampaign
-            .findUnique({ where: { id: dbJob.campaignId }, select: { name: true } })
-            .catch(() => null)
-        )?.name ?? null)
-      : null;
     const barriereJourneeIa = barriereJourneeIA({
       output,
       inputPayload: dbJob.inputPayload,
@@ -1427,6 +1692,8 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       topicFingerprint,
       // PR 5 — sources du fact-check par Claude (clé ABSENTE tant que le drapeau est éteint).
       ...(sourcesFactCheck ? { sourcesFactCheck, coutFactCheckUsd } : {}),
+      // PR 12 — journal de l'équipe éditoriale (clé ABSENTE tant que le drapeau est éteint).
+      ...(journalEquipe ? { equipe: { ...journalEquipe, brief: briefEquipe } } : {}),
       ...(statutFideliteLlm
         ? { fideliteLlm: { statut: statutFideliteLlm, coutUsd: coutFideliteLlmUsd } }
         : {}),
@@ -1550,7 +1817,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         doctrineCheckPassed: !blockingFail,
         tokensInput: 0, // détaillé via CostLedger
         tokensOutput: output.totalTokens,
-        costUsd: output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
+        costUsd: journalEquipe
+          ? Math.max(
+              output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
+              journalEquipe.coutTotalUsd,
+            )
+          : output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
         outputJsonRaw: persistedOutput as never,
       },
     });
