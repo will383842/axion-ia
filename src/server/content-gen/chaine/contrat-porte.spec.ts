@@ -233,6 +233,9 @@ describe("actionApresVerdict", () => {
       { id: "B02", etat: "non_evalue", preuve: "", raison: "source en panne" },
     ]);
     expect(actionApresVerdict(s, debut).action).toBe("mettre_en_attente");
+    expect(refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 })).toEqual(
+      [],
+    );
   });
 
   it("dérogeable seul avec une note sous 70 → pas de dérogation proposée", () => {

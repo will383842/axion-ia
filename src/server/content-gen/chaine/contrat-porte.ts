@@ -273,6 +273,8 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
   const defauts = defautsBloquants(sortie);
   // Report (B17 en défaut, note ≥ 70) : le contenu attend, aucune ligne de refus.
   if (reportAttendu(defauts, sortie.note)) return [];
+  // Bloquant hors B04 non jugé (source en panne) : mise en attente, donc aucune ligne de refus.
+  if (defauts.some((d) => d.etat === "non_evalue" && d.id !== "B17" && d.id !== "B04")) return [];
   const refus: RefusEnregistrable[] = [];
   for (const d of defauts) {
     if (d.etat !== "echec" || !d.resultat || CLASSE_CRITERE[d.id] === "report") continue;
@@ -333,7 +335,7 @@ export type ActionApresVerdict =
 /**
  * Ce que fait la chaîne d'un verdict. Ordre des règles :
  * 1. note invalide → mise en attente ;
- * 2. B17 en défaut (seul ou non), note ≥ 70 → report (ni réécriture ni abandon) ;
+ * 2. B17 en échec, ou illisible sans autre critère manquant, note ≥ 70 → report (ni réécriture ni abandon) ;
  * 3. publiable et sans défaut → relecture humaine (jamais de publication directe) ;
  * 4. bloquant (hors B17) non évalué ou absent, sans échec → mise en attente,
  *    sauf B04 seul : relecture humaine (§ 5 de la porte) ; un non évalué hors B04
