@@ -10,7 +10,7 @@
 //
 // Deuxième exception, décision de l'éditeur (conservation de 24 mois validée le 2026-11-27) :
 // les RÉPONSES AU QUESTIONNAIRE DU BAROMÈTRE 2027 (`barometreQuestionnaireReponse`, non
-// nominatives), effacées 24 mois après la fin de l'enquête. Voir le bloc 7 du handler.
+// nominatives), effacées 24 mois après LEUR date d'envoi (collecte sans date de fin). Voir le bloc 7 du handler.
 //
 // Pour le reste, il ne garde que des purges purement TECHNIQUES, où ne figure
 // ni personne ni échange :
@@ -316,18 +316,17 @@ export async function executerPurgeRetention(): Promise<void> {
 
   // ── 7. Réponses au questionnaire du Baromètre 2027 ─────────────────────────────
   // 🛑 Seconde exception à « aucun effacement automatique de données de personnes » : décision
-  // de l'éditeur, conservation de 24 mois validée le 2026-11-27. La limite est la fin de
-  // l'enquête + 24 mois (aujourd'hui en 2029) : AVANT elle, aucune requête n'est envoyée.
+  // de l'éditeur, conservation de 24 mois validée le 2026-11-27. La collecte n'a pas
+  // de date de fin : chaque réponse s'efface 24 mois après SON jour d'envoi (aucune ligne n'est
+  // concernée avant fin 2028 ; seules les lignes échues sont visées).
   // Ce bloc est borné à la campagne `barometre-2027` et ne touche aucune autre table. Les
   // réponses étant non nominatives, seules des statistiques agrégées restent ensuite.
   try {
-    const limite = limiteEffacement();
-    if (Date.now() >= limite.getTime()) {
-      const res = await prisma.barometreQuestionnaireReponse.deleteMany({
-        where: { campagne: CAMPAGNE },
-      });
-      counts.questionnaireBarometre = res.count;
-    }
+    const limite = limiteEffacement(new Date());
+    const res = await prisma.barometreQuestionnaireReponse.deleteMany({
+      where: { campagne: CAMPAGNE, jour: { lte: limite } },
+    });
+    counts.questionnaireBarometre = res.count;
   } catch (err) {
     captureWorkerError("retention-purge", "retention-purge", undefined, err);
   }

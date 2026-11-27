@@ -162,14 +162,6 @@ describe("le catalogue décrit le code réel", () => {
     // `newsletter-confirm-optin` : dormant depuis le lot L2 (amendement de Will
     // du 24/09, plus aucun double opt-in pour une inscription neuve).
     expect([...DORMANTS].sort(), "la liste des gabarits dormants a changé").toEqual([
-      // Lot 2 « changement de compte bancaire » : gabarits livrés SANS émetteur ; le lot 4 les
-      // branche (leur `source` passe alors à `features/apporteurs-reseau/envois.ts`) et ces
-      // cinq lignes disparaissent d'ici.
-      "apporteur-compte-a-confirmer",
-      "apporteur-compte-change",
-      "apporteur-compte-demande-bloquee",
-      "apporteur-compte-expire",
-      "apporteur-compte-refuse",
       "cancellation-confirmed-by-user",
       "force-majeure-notice",
       "newsletter-confirm-optin",

@@ -6,7 +6,18 @@
 // dans `title` est tout de même repassée par `masquerSecretsTexte`, pour qu'un
 // lien non masqué ne laisse jamais son jeton dans la page.
 
-import { masquerSecretsTexte } from "@/lib/email/masquer-secrets";
+import { MASQUE_SECRET, masquerSecretsTexte } from "@/lib/email/masquer-secrets";
+
+/** Une pièce jointe vue par l'aperçu : nom, poids, et lien « Ouvrir » (route admin protégée). */
+export interface PieceJointeApercu {
+  nom: string;
+  /** Poids en octets du fichier que l'envoi joindra. */
+  taille?: number | null | undefined;
+  /** Adresse de la route admin qui sert ce fichier ; absente = pas de bouton « Ouvrir ». */
+  href?: string | null | undefined;
+  /** Précision à afficher (ex. « ne sera pas jointe : introuvable »). */
+  remarque?: string | null | undefined;
+}
 
 export interface ApercuLecteur {
   html: string;
@@ -16,7 +27,8 @@ export interface ApercuLecteur {
   a?: string | null | undefined;
   repondreA?: string | null | undefined;
   preEntete?: string | null | undefined;
-  piecesJointes?: readonly string[] | null | undefined;
+  /** Noms seuls (anciens appelants) ou pièces décrites. `[]` = « Aucune pièce jointe ». */
+  piecesJointes?: readonly (string | PieceJointeApercu)[] | null | undefined;
 }
 
 const ORIGINE_SITE = "https://axion-ia.com";
@@ -57,20 +69,37 @@ function echapperAttribut(v: string): string {
  * `formaction` de toute balise. L'URL (masquée) reste lisible dans `title`.
  * Le texte du lien n'est pas touché.
  */
-export function rendreLiensInertes(html: string): string {
+export function rendreLiensInertes(
+  html: string,
+  options: { garder?: (adresse: string) => boolean } = {},
+): string {
   return html.replace(BALISE, (balise, nom: string, attrs: string) => {
     const n = nom.toLowerCase();
     let reste = attrs.replace(ATTRIBUT_ACTION, "");
     let titre = "";
+    let gardeUnLien = false;
     if (n === "a" || n === "area") {
       reste = reste.replace(
         ATTRIBUT_LIEN,
-        (_m, dbl: string | undefined, sgl: string | undefined, nu: string | undefined) => {
+        (m, dbl: string | undefined, sgl: string | undefined, nu: string | undefined) => {
           const url = dbl ?? sgl ?? nu ?? "";
+          // Lien ouvrable (aperçu) : seulement une balise <a>, jamais une zone d'image.
+          if (n === "a" && options.garder?.(decoderEntites(url).trim()) === true) {
+            gardeUnLien = true;
+            return m;
+          }
           if (titre === "" && url.trim() !== "") titre = masquerSecretsTexte(url.trim()).sortie;
           return "";
         },
       );
+    }
+    if (gardeUnLien) {
+      // Nouvel onglet, sans rien transmettre à la page ouverte.
+      reste = reste
+        .replace(/\s(?:target|rel)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>"']+)/gi, "")
+        .replace(/\s*\/\s*$/, "");
+      const fermeture = /\/\s*$/.test(attrs) ? " /" : "";
+      return `<${nom}${reste} target="_blank" rel="noopener noreferrer"${fermeture}>`;
     }
     if (reste === attrs) return balise;
     const fermeture = /\/\s*$/.test(reste) ? " /" : "";
@@ -122,4 +151,93 @@ export function compterImagesBloquees(html: string): number {
     if (!autorisees.includes(origine)) n++;
   }
   return n;
+}
+
+/** L'adresse est-elle un lien PUBLIC, ouvrable sans risque depuis l'aperçu ? `http(s)` et aucun secret masqué. */
+export function estLienOuvrable(adresse: string): boolean {
+  if (!/^https?:\/\//i.test(adresse)) return false;
+  let lisible = adresse;
+  try {
+    lisible = decodeURIComponent(adresse);
+  } catch {
+    // adresse mal encodée : on garde la forme brute
+  }
+  return !lisible.includes(MASQUE_SECRET) && !adresse.includes(MASQUE_SECRET);
+}
+
+/**
+ * Pour l'aperçu AVANT ENVOI, APRÈS `masquerSecretsEmail` : garde `href` sur les liens publics
+ * (ouverts dans un nouvel onglet), retire-le sur tout le reste (lien personnel du destinataire :
+ * son jeton est masqué ; `mailto:`, `tel:`…), formulaires compris. Le jeton n'atteint donc jamais le
+ * navigateur : un lien à usage unique ne peut pas être consommé depuis l'aperçu.
+ * `exclure` : préfixes d'adresses à ne jamais rendre ouvrables, ex. un lien fictif d'aperçu.
+ */
+export function rendreLiensOuvrables(html: string, options: { exclure?: readonly string[] } = {}) {
+  const exclure = options.exclure ?? [];
+  return rendreLiensInertes(html, {
+    garder: (adresse) => estLienOuvrable(adresse) && !exclure.some((x) => adresse.startsWith(x)),
+  });
+}
+
+export interface LienEmail {
+  /** Texte du bouton ou du lien, tel que le lit le destinataire. */
+  texte: string;
+  /** Adresse complète (masquée si personnelle). */
+  adresse: string;
+  /** `ouvrable` : cliquable ; `personnel` : lien propre au destinataire, jamais cliquable ; `autre` : `mailto:`, `tel:`… */
+  genre: "ouvrable" | "personnel" | "autre";
+}
+
+const LIEN_COMPLET = /<a\b((?:"[^"]*"|'[^']*'|[^>"'])*)>([\s\S]*?)<\/a\s*>/gi;
+const ATTRIBUT_TITRE = /(?<=[\s"'/])title\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>"']+))/i;
+
+function texteDuLien(interieur: string): string {
+  const alt = /\balt\s*=\s*(?:"([^"]*)"|'([^']*)')/i.exec(interieur);
+  const brut = decoderEntites(interieur.replace(/<[^>]*>/g, " "))
+    .replace(INVISIBLES, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (brut !== "") return brut;
+  const image = decoderEntites((alt?.[1] ?? alt?.[2] ?? "").trim());
+  return image !== "" ? `(image : ${image})` : "(lien sans texte)";
+}
+
+/**
+ * Les liens de l'e-mail, dans l'ordre : texte → adresse. À appeler sur le HTML déjà masqué (et
+ * traité par `rendreLiensOuvrables`) : un lien dont `href` a été retiré garde son adresse masquée
+ * dans `title` et sort `personnel`. Sans doublon (même texte, même adresse).
+ */
+export function extraireLiens(html: string): LienEmail[] {
+  const vus = new Set<string>();
+  const liens: LienEmail[] = [];
+  for (const m of html.matchAll(LIEN_COMPLET)) {
+    const attrs = m[1] ?? "";
+    const href = new RegExp(ATTRIBUT_LIEN.source, "i").exec(attrs);
+    const titre = ATTRIBUT_TITRE.exec(attrs);
+    const adresseHref = decoderEntites((href?.[1] ?? href?.[2] ?? href?.[3] ?? "").trim());
+    const adresseTitre = decoderEntites((titre?.[1] ?? titre?.[2] ?? titre?.[3] ?? "").trim());
+    const adresse = adresseHref !== "" ? adresseHref : adresseTitre;
+    if (adresse === "" || adresse.startsWith("#")) continue;
+    let genre: LienEmail["genre"];
+    if (adresseHref !== "") genre = estLienOuvrable(adresseHref) ? "ouvrable" : "autre";
+    else genre = /^https?:\/\//i.test(adresse) ? "personnel" : "autre";
+    const texte = texteDuLien(m[2] ?? "");
+    const cle = `${texte}\u0000${adresse}`;
+    if (vus.has(cle)) continue;
+    vus.add(cle);
+    liens.push({
+      texte,
+      adresse: genre === "ouvrable" ? adresse : masquerSecretsTexte(adresse).sortie,
+      genre,
+    });
+  }
+  return liens;
+}
+
+/** « 1,2 Mo », « 340 Ko », « 812 octets » : le poids d'un fichier en français. */
+export function libelleTaille(octets: number): string {
+  if (octets < 1024) return `${octets} octet${octets > 1 ? "s" : ""}`;
+  const nombre = (n: number) => n.toFixed(1).replace(".", ",").replace(/,0$/, "");
+  if (octets < 1_048_576) return `${nombre(octets / 1024)} Ko`;
+  return `${nombre(octets / 1_048_576)} Mo`;
 }
