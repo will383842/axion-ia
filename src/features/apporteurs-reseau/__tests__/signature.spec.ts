@@ -16,6 +16,12 @@ vi.mock("../annuaire", () => ({
   lireRegistre: (...a: unknown[]) => lireEntrepriseParSiren(...a),
 }));
 
+const alerterSignatureApporteur = vi.fn();
+vi.mock("../alerte-telegram", () => ({
+  alerterSignatureApporteur: (...a: unknown[]) => alerterSignatureApporteur(...a),
+  alerterContresignature: vi.fn(),
+}));
+
 const captureMessage = vi.fn();
 vi.mock("@sentry/nextjs", () => ({
   captureMessage: (...a: unknown[]) => captureMessage(...a),
@@ -441,6 +447,16 @@ describe("dossier en ligne — signerContrat", () => {
     const r = await signerContrat(entree);
     expect(r.ok).toBe(true);
     expect(envoyer.mock.calls[0]![0]).toMatchObject({ gabarit: "apporteur-dossier-a-verifier" });
+  });
+
+  it("Telegram : une alerte vers le salon Apporteurs, même clé que l'e-mail ; la signature reste actée si elle échoue", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    alerterSignatureApporteur.mockResolvedValue("echec");
+    const r = await signerContrat(entree);
+    expect(r.ok).toBe(true);
+    expect(alerterSignatureApporteur).toHaveBeenCalledTimes(1);
+    const arg = alerterSignatureApporteur.mock.calls[0]![0] as { cleSignature: string };
+    expect(arg.cleSignature).toBe((envoyer.mock.calls[0]![0] as { jobId: string }).jobId);
   });
 
   it("D3 : l'alerte suit le destinataire d'alertes internes configuré", async () => {

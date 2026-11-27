@@ -217,6 +217,9 @@ export type TelegramGroup =
   | "questionnaire-audit"
   // Tour France IA (2026-10-29) : mini-demandes et villes ouvertes.
   | "tour"
+  // Réseau d'apporteurs (2026-11-27) : signature et contresignature d'un contrat. Aucune
+  // catégorie du hub n'y mène : les messages partent de `apporteurs-reseau/alerte-telegram.ts`.
+  | "apporteurs"
   | "system";
 
 /**
@@ -470,6 +473,7 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   incidents: "TELEGRAM_CHAT_ID_INCIDENTS",
   "questionnaire-audit": "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT",
   tour: "TELEGRAM_CHAT_ID_TOUR",
+  apporteurs: "TELEGRAM_CHAT_ID_APPORTEURS",
   system: "TELEGRAM_CHAT_ID_SYSTEM",
 };
 
@@ -525,6 +529,8 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   ],
   // Tour France IA (2026-10-29) : même repli que le questionnaire (Clients, Système, général).
   tour: ["TELEGRAM_CHAT_ID_CLIENTS", "TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
+  // Apporteurs (2026-11-27) : même repli que la presse (Messages, puis le salon général).
+  apporteurs: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   // Le salon général (`TELEGRAM_CHAT_ID`) se nomme « 🔧 Axion-IA — Technique » dans Telegram.
   system: ["TELEGRAM_CHAT_ID"],
 };
