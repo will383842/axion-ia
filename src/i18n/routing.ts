@@ -146,6 +146,9 @@ export const routing = defineRouting({
     // Consolide /equipe/manon (persona) + /politique-confidentialite §IA + /sous-processeurs.
     "/transparence": { fr: "/transparence", en: "/transparency" },
 
+    // Hub équipe (FR uniquement, comme `/livres`) ; la fiche `[slug]` suit.
+    "/equipe": { fr: "/equipe", en: "/team" },
+
     // City Domination 2026-05-18 P1-14 (audit A11 P0) — déclaration explicite
     // de /equipe/[slug] dans pathnames. La page existe (`src/app/[locale]/
     // equipe/[slug]/page.tsx`) mais sans entry routing.ts, les Link<typedRoutes>
