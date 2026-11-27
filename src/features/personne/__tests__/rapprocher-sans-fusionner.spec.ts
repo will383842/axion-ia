@@ -241,7 +241,7 @@ describe("la fiche personne rapproche sans fusionner", () => {
     expect(f.compte.autre).toBe(0);
     const parId = Object.fromEntries(f.traces.map((t) => [t.id, t]));
     expect(parId["sub-premier"]?.intitule).toBe("Premier contact apporteur");
-    expect(parId["sub-dossier"]?.intitule).toBe("Dossier apporteur");
+    expect(parId["sub-dossier"]?.intitule).toBe("Candidature apporteur");
     expect(parId["sub-premier"]?.chemin).toBe("contacts/commercial/sub-premier");
     expect(parId["sub-dossier"]?.chemin).toBe("contacts/commercial/sub-dossier");
   });
