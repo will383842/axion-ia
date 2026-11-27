@@ -553,6 +553,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/seo-pilotage\/interrupteur\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/jour\.spec\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/taches\.spec\.ts$/,
+  // Exception 2026-11-27 (pilotage SEO, S10-1 liens reçus). CONSOMMATEUR en lecture seule :
+  // liens/brouillon.ts réutilise le contrôle de vouvoiement et les motifs du chargé de liens
+  // (content-gen/quality, content-gen/equipe) ; son test aussi. Fichiers NOMMÉS.
+  /^src\/server\/seo-pilotage\/liens\/brouillon\.ts$/,
+  /^src\/server\/seo-pilotage\/liens\/__tests__\/brouillon\.spec\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
   // secteurs). CONSOMMATEURS LÉGITIMES de la pain-matrix / KB content-gen (lecture
   // seule data) ou refs en commentaires — PAS du code content-gen core :
