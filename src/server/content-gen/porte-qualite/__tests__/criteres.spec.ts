@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { validateDataQuality } from "../../quality/data-quality-gate";
-import { evaluerPorte as evaluerBrut } from "../porte";
+import { evaluerPorteAvec as evaluerBrut } from "../porte";
 import { CRITERES } from "../registre";
 import {
   contenuValide,
@@ -100,6 +100,18 @@ describe("B03 faits canoniques (prix)", () => {
     const corps =
       corpsValide() +
       "<p>L'abonnement ChatGPT Team coûte 25 € par mois. Votre OPCO peut prendre en charge la formation jusqu'à 3 000 €.</p>";
+    expect(r("B03", { corpsHtml: corps }).statut).toBe("ok");
+  });
+  it("un titre « Nos… » ou la méta ne contaminent pas le paragraphe suivant", () => {
+    const h = corpsValide() + "<h2>Nos offres</h2><p>Un abonnement ChatGPT coûte 25 €</p>";
+    expect(r("B03", { corpsHtml: h }).statut).toBe("ok");
+    expect(
+      r("B03", { titre: "Nos conseils pour PME", metaDescription: "ChatGPT coûte 25 € par mois." })
+        .statut,
+    ).toBe("ok");
+  });
+  it("limite assumée : un prix sans mot d'offre dans sa phrase n'est pas jugé par B03", () => {
+    const corps = corpsValide() + "<p>La formule intra coûte 2 000 € par personne.</p>";
     expect(r("B03", { corpsHtml: corps }).statut).toBe("ok");
   });
   it("ne juge pas un montant étranger à l'offre (aide, amende) : c'est B02", () => {
@@ -216,12 +228,28 @@ describe("B13 maillage sortant", () => {
     expect(x.preuves).toContain("/fr/blog/a");
   });
   it("exige le lien vers la page propriétaire quand elle est connue", () => {
-    expect(r("B13", {}, { pageProprietaire: "/fr/guide-ia-pme" }).statut).toBe("echec");
-    expect(r("B13", {}, { pageProprietaire: "/fr/contact" }).statut).toBe("ok");
+    expect(
+      r("B13", {}, { pageProprietaire: { etat: "ok", valeur: "/fr/guide-ia-pme" } }).statut,
+    ).toBe("echec");
+    expect(r("B13", {}, { pageProprietaire: { etat: "ok", valeur: "/fr/contact" } }).statut).toBe(
+      "ok",
+    );
+  });
+  it("page propriétaire indisponible = non évalué ; URL hors site = échec", () => {
+    expect(
+      r("B13", {}, { pageProprietaire: { etat: "indisponible", raison: "carte absente" } }).statut,
+    ).toBe("non_evalue");
+    expect(
+      r("B13", {}, { pageProprietaire: { etat: "ok", valeur: "https://autre.example/x" } }).statut,
+    ).toBe("echec");
   });
   it("chemin relatif de page propriétaire accepté (fr/contact)", () => {
-    expect(r("B13", {}, { pageProprietaire: "fr/contact" }).statut).toBe("ok");
-    expect(r("B13", {}, { pageProprietaire: "fr/autre" }).statut).toBe("echec");
+    expect(r("B13", {}, { pageProprietaire: { etat: "ok", valeur: "fr/contact" } }).statut).toBe(
+      "ok",
+    );
+    expect(r("B13", {}, { pageProprietaire: { etat: "ok", valeur: "fr/autre" } }).statut).toBe(
+      "echec",
+    );
   });
   it("lien externe jamais compté comme interne", () => {
     expect(

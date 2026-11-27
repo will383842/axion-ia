@@ -49,19 +49,23 @@ const PHRASE_OFFRE = /axion|journ[ée]e ia|diagnostic ia|\bnotre\b|\bnos\b|\bnou
  * relèvent de B02 (Q3) : sinon faux positifs massifs (cf. content-gen-worker, contrôle
  * déjà retiré des fautes dures pour cette raison). Chaque phrase est jugée à part :
  * un même montant licite dans une phrase ne couvre pas la phrase suivante.
- * Les durées et le programme de la Journée IA arrivent ensuite.
+ * Limite assumée : le prix d'une offre écrit sans aucun de ces mots dans sa phrase
+ * n'est pas jugé ici (B02, Q3). Les durées et le programme de la Journée IA arrivent ensuite.
  */
 export function evaluerB03(c: ContenuPorte): ResultatBrut {
-  const texte = texteDe(
-    nettoyer(
-      Object.entries(surfaceDuContenu(c))
-        .filter(([k, v]) => k !== "corpsTexte" && Boolean(v))
-        .map(([, v]) => v)
-        .join("\n"),
-    ),
-  );
-  const ecarts = texte
-    .split(/(?<=[.!?])\s+/)
+  // Chaque champ est lu à part, et chaque fin de bloc (titre, paragraphe, item…)
+  // coupe la phrase : un titre « Nos offres » ne contamine pas le paragraphe suivant.
+  const phrases = Object.entries(surfaceDuContenu(c))
+    .filter(([k, v]) => k !== "corpsTexte" && Boolean(v))
+    .flatMap(([, v]) =>
+      texteDe(
+        nettoyer(v as string).replace(
+          /<\/(?:h[1-6]|p|li|td|th|tr|dd|dt|blockquote|figcaption|div|section)\s*>/gi,
+          "$&. ",
+        ),
+      ).split(/(?<=[.!?])\s+/),
+    );
+  const ecarts = phrases
     .filter((phrase) => PHRASE_OFFRE.test(phrase))
     .flatMap((phrase) => findNonSsotPrices(phrase));
   if (ecarts.length === 0) return OK;

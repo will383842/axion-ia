@@ -26,12 +26,25 @@ export function evaluerB13(c: ContenuPorte, x: ContextePorte, r: ReglagesPorte):
     );
   }
   // Chemin relatif (« fr/diagnostic ») accepté : on le ramène à « /fr/diagnostic ».
-  const brut = x.pageProprietaire?.trim();
-  const proprietaire = brut
-    ? cheminInterne(/^(\/|https?:)/i.test(brut) ? brut : `/${brut}`, x.hotesInternes)
-    : null;
-  if (proprietaire && !chemins.includes(proprietaire)) {
-    return echec(`Aucun lien vers la page propriétaire du thème (${proprietaire}).`, chemins);
+  if (x.pageProprietaire.etat === "indisponible") {
+    return {
+      statut: "non_evalue",
+      raison: `Page propriétaire du thème inconnue : ${x.pageProprietaire.raison}`,
+      preuves: chemins,
+    };
+  }
+  const brut = x.pageProprietaire.valeur?.trim();
+  if (brut) {
+    const proprietaire = cheminInterne(
+      /^(\/|https?:)/i.test(brut) ? brut : `/${brut}`,
+      x.hotesInternes,
+    );
+    if (proprietaire === null) {
+      return echec(`Page propriétaire illisible ou hors du site (${brut}).`, chemins);
+    }
+    if (!chemins.includes(proprietaire)) {
+      return echec(`Aucun lien vers la page propriétaire du thème (${proprietaire}).`, chemins);
+    }
   }
   if (x.etatLiens.etat === "indisponible") {
     return {

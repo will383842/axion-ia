@@ -40,7 +40,16 @@ export interface OptionsPorte {
   readonly idsAttendus?: ReadonlyArray<string>;
 }
 
-export function evaluerPorte(
+/** Entrée publique : registre complet, bloquants B01 à B16 tous exigés. Rien d'autre n'est réglable. */
+export function evaluerPorte(contenu: ContenuPorte, contexte: ContextePorte): VerdictPorte {
+  return evaluerPorteAvec(contenu, contexte);
+}
+
+/**
+ * TESTS UNIQUEMENT (volontairement absente de `index.ts`) : permet un registre ou une
+ * liste d'attendus réduits. Ne jamais l'appeler depuis le code de production.
+ */
+export function evaluerPorteAvec(
   contenu: ContenuPorte,
   contexte: ContextePorte,
   options: OptionsPorte = {},

@@ -63,8 +63,8 @@ export interface ContextePorte {
   readonly hotesInternes: ReadonlyArray<string>;
   /** Santé des liens internes (chemin normalisé → état). */
   readonly etatLiens: Source<Readonly<Record<string, EtatLien>>>;
-  /** Chemin de la page « propriétaire » du thème, si connue. */
-  readonly pageProprietaire: string | null;
+  /** Page « propriétaire » du thème : `ok` + `null` = le thème n'en a pas ; `indisponible` = non évalué. */
+  readonly pageProprietaire: Source<string | null>;
   /** Corps actuellement publié (`null` = jamais publié). */
   readonly corpsDejaPublie: Source<string | null>;
   /** Pénalités de la note issues de critères pas encore branchés (Q3 et suivants). */

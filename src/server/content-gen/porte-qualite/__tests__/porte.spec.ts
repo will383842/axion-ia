@@ -3,14 +3,14 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CRITERES, CLASSES_PAR_ID, IDS_BLOQUANTS_PREVUS } from "../registre";
 import { calculerNote, MAX_PENALITES } from "../note";
-import { evaluerPorte as evaluerBrut } from "../porte";
+import { evaluerPorte as evaluerBrut, evaluerPorteAvec } from "../porte";
 import type { ContenuPorte, ContextePorte, Critere } from "../types";
 import { REGLAGES_PAR_DEFAUT, ReglagesPorteSchema, VERSION_PORTE } from "../reglages";
 import { contenuValide, contexteValide, corpsValide } from "./fixtures";
 
 /** Registre du squelette : on exige seulement ce qui est codé (sinon « publiable » est impossible). */
 const evaluerPorte = (c: ContenuPorte, x: ContextePorte, registre?: ReadonlyArray<Critere>) =>
-  evaluerBrut(c, x, {
+  evaluerPorteAvec(c, x, {
     registre,
     idsAttendus: (registre ?? CRITERES).map((k) => k.id),
   });
@@ -97,6 +97,17 @@ describe("seuils du registre dérivés des réglages", () => {
     const b08 = CRITERES.find((c) => c.id === "B08")!;
     expect(b08.seuil(REGLAGES_PAR_DEFAUT)).toBe("40 à 60 mots");
     expect(b08.seuil({ ...REGLAGES_PAR_DEFAUT, motsMaxReponseDirecte: 80 })).toBe("40 à 80 mots");
+  });
+});
+
+describe("API publique", () => {
+  it("evaluerPorte n'accepte aucune option : toujours B01 à B16 exigés, donc jamais publiable au squelette", () => {
+    expect(evaluerBrut.length).toBe(2);
+    expect(evaluerBrut(contenuValide(), contexteValide()).verdict).toBe("bloque");
+  });
+  it("même avec un registre vide, les attendus par défaut ne sont pas vides", () => {
+    const v = evaluerPorteAvec(contenuValide(), contexteValide(), { registre: [] });
+    expect(v.verdict).toBe("bloque");
   });
 });
 

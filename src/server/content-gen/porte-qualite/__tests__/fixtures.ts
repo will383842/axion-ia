@@ -58,7 +58,7 @@ export function contexteValide(surcharge: Partial<ContextePorte> = {}): Contexte
     financementPublicAutorise: false,
     hotesInternes: ["axion-ia.com", "www.axion-ia.com"],
     etatLiens: LIENS_SAINS,
-    pageProprietaire: null,
+    pageProprietaire: { etat: "ok", valeur: null },
     corpsDejaPublie: { etat: "ok", valeur: null },
     penalites: {},
     ...surcharge,
