@@ -487,16 +487,40 @@ export interface EmailDeLApporteur {
 }
 
 /**
- * Historique des e-mails envoyés à un apporteur (lecture seule) : les lignes d'`EmailLog`
- * portant la clé de traçabilité posée par `envoyer()` (`entityType = "ApporteurReseau"`,
- * `entityId` = id de l'apporteur). Plus récents d'abord, 50 au plus. Le destinataire n'est
- * pas lu : la fiche l'affiche déjà.
+ * Historique des e-mails envoyés à un apporteur (lecture seule), lus dans `EmailLog`.
+ *
+ * Deux clés de traçabilité posées par `envoyer()` rattachent un e-mail à l'apporteur :
+ * `ApporteurReseau` / id de l'apporteur, et `PresentationEntreprise` / id d'une de SES
+ * présentations (annonce d'attribution…). Mais certains e-mails posés sur ces clés ne lui
+ * sont PAS adressés (alerte interne à Axion, courrier à l'entreprise présentée) : on ne garde
+ * donc que ceux dont le DESTINATAIRE est son adresse actuelle (`recipient` est en `citext`).
+ * Limite assumée : un e-mail parti vers une ancienne adresse n'apparaît pas. Sans adresse, la
+ * liste est vide plutôt que de montrer des courriers d'autrui. Plus récents d'abord, 50 au plus.
  */
 export async function lireHistoriqueEmailsApporteur(
   apporteurId: string,
+  email: string | null,
 ): Promise<EmailDeLApporteur[]> {
+  if (!email) return [];
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: { apporteurId },
+    select: { id: true },
+  });
   const lignes = await prisma.emailLog.findMany({
-    where: { entityType: "ApporteurReseau", entityId: apporteurId },
+    where: {
+      recipient: email,
+      OR: [
+        { entityType: "ApporteurReseau", entityId: apporteurId },
+        ...(presentations.length > 0
+          ? [
+              {
+                entityType: "PresentationEntreprise",
+                entityId: { in: presentations.map((p) => p.id) },
+              },
+            ]
+          : []),
+      ],
+    },
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
     take: LIMITE_HISTORIQUE_EMAILS,
     select: {

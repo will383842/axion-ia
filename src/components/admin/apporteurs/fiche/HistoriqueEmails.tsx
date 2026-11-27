@@ -31,9 +31,14 @@ export function HistoriqueEmails({
       <h2 className="mb-[var(--space-admin-3)] font-semibold">
         Historique des e-mails ({emails.length})
       </h2>
+      <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        Seuls les e-mails adressés à l&apos;adresse actuelle sont listés. L&apos;objet vient de la
+        copie du journal ; sans copie, le nom du gabarit s&apos;affiche. Le contenu complet
+        s&apos;ouvre dans le journal des e-mails.
+      </p>
       {emails.length === 0 ? (
         <p className="text-[color:var(--color-admin-fg-muted)]">
-          Aucun e-mail envoyé à cet apporteur pour l&apos;instant.
+          Aucun e-mail envoyé à l&apos;adresse actuelle de cet apporteur pour l&apos;instant.
         </p>
       ) : (
         <div className="overflow-x-auto">
@@ -60,6 +65,11 @@ export function HistoriqueEmails({
                   </td>
                   <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
                     {LIBELLES_STATUT_EMAIL[e.status] ?? e.status}
+                    {e.error && (e.status === "failed" || e.status === "bounced") ? (
+                      <div className="text-[color:var(--color-admin-fg-muted)]">
+                        {e.error.slice(0, 200)}
+                      </div>
+                    ) : null}
                   </td>
                   <td className="py-[var(--space-admin-2)]">
                     <Link href={`${base}/emails-envoyes/${e.id}`} className="underline">

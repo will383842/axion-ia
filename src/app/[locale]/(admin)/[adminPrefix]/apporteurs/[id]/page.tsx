@@ -119,7 +119,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   const voitPii = peutOuvrirDossierApporteur(acces.role);
   // Historique des e-mails : administrateurs seulement (les objets citent des montants, des noms).
   const voitEmails = acces.role === "admin" || acces.role === "super_admin";
-  const emails = voitEmails ? await lireHistoriqueEmailsApporteur(d.id) : [];
+  const emails = voitEmails ? await lireHistoriqueEmailsApporteur(d.id, d.email) : [];
   const MASQUE = "Réservé aux rôles autorisés";
   const purgees = new Set(fiche.piecesPurgeesIds);
   const pieces: PieceAffichee[] = d.pieces.map((p) => ({
