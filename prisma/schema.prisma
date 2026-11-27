@@ -18934,3 +18934,22 @@ model GarantieJourneeIa {
   @@index([sirenSnapshot], map: "garanties_journee_ia_siren_snapshot_idx")
   @@map("garanties_journee_ia")
 }
+
+/// Questionnaire du Baromètre 2027 : une ligne par réponse, non nominative. Ni IP, ni e-mail, ni
+/// agent navigateur, ni horodatage précis (`jour` est tronqué au jour UTC). Effacement automatique
+/// 24 mois après la fin de l'enquête (exception déclarée dans le worker de purge).
+/// rgpd: technique — réponses non nominatives, sans identifiant de personne : l'export et l'effacement par personne n'existent pas (art. 11) ; retrait par code, effacement automatique à 24 mois
+model BarometreQuestionnaireReponse {
+  id                   String   @id @default(uuid()) @db.Uuid
+  campagne             String   @default("barometre-2027") @db.VarChar(40)
+  questionnaireVersion String   @map("questionnaire_version") @db.VarChar(20)
+  consentVersion       String   @map("consent_version") @db.VarChar(64)
+  codeRetraitHash      String   @unique @map("code_retrait_hash") @db.VarChar(64)
+  jour                 DateTime @db.Date
+  reponses             Json
+  texteUsage           String?  @map("texte_usage") @db.VarChar(1000)
+  texteQuestion        String?  @map("texte_question") @db.VarChar(1000)
+
+  @@index([campagne, jour], map: "barometre_questionnaire_reponses_campagne_jour_idx")
+  @@map("barometre_questionnaire_reponses")
+}
