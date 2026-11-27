@@ -156,3 +156,21 @@ describe("cleUrl", () => {
     );
   });
 });
+
+describe("pages noindex", () => {
+  it("jamais signalées « sans impressions », même avec 0 impression", () => {
+    const r = auditerCorpus(
+      [
+        page({ id: "noindex", impressions: 0, indexable: false }),
+        page({ id: "indexe", impressions: 0 }),
+      ],
+      NOW,
+    );
+    const ids = r.signalements.filter((s) => s.famille === "sans-impressions").map((s) => s.id);
+    expect(ids).toEqual(["indexe"]);
+  });
+  it("Search Console disponible s'apprécie sur les pages indexables seulement", () => {
+    const r = auditerCorpus([page({ id: "noindex", impressions: 0, indexable: false })], NOW);
+    expect(r.impressionsDisponibles).toBe(false);
+  });
+});

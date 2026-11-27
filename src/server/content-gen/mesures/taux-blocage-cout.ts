@@ -75,7 +75,7 @@ export interface RapportBlocageCout {
   readonly coutArticle: StatCoutArticle;
   /** Issues du journal d'équipe (`publier`, `a_relire`…), comptées par valeur. */
   readonly issuesEquipe: Readonly<Record<string, number>>;
-  /** Coût de l'exécution tel que lu dans la colonne `costUsd`, jobs menés à terme (échecs/annulés/en cours exclus). */
+  /** Coût de l'exécution tel que lu dans la colonne `costUsd`, jobs déjà passés en relecture/publication (file, génération, contrôle qualité, échecs, annulés exclus). */
   readonly coutColonneTotalUsd: number;
   /** Jobs dont le blocage n'a pu être rattaché à aucun contrôle connu. */
   readonly bloquesSansCause: number;
@@ -371,7 +371,7 @@ export function formaterRapportBlocageCout(r: RapportBlocageCout, jours: number)
     `moyenne ${usd(a.moyenneUsd)} · médiane ${usd(a.medianeUsd)} · p90 ${usd(a.p90Usd)} · max ${usd(a.maxUsd)} · total ${usd(a.totalUsd)}`,
   );
   l.push(
-    `Coût colonne \`costUsd\` (jobs menés jusqu'à la relecture ou la publication ; échecs, annulations et jobs en cours exclus, donc minoré) : ${usd(r.coutColonneTotalUsd)}`,
+    `Coût colonne \`costUsd\` (jobs arrivés jusqu'à la relecture ou la publication ; jobs en file, en génération, en contrôle qualité, en échec ou annulés exclus, donc minoré) : ${usd(r.coutColonneTotalUsd)}`,
   );
   l.push("");
   l.push("## Coût par rôle");

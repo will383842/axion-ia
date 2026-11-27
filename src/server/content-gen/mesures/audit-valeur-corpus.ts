@@ -147,7 +147,7 @@ export function auditerCorpus(
   seuils: Seuils = SEUILS_DEFAUT,
 ): RapportCorpus {
   const signalements: Signalement[] = [];
-  const impressionsDisponibles = pages.some((p) => p.impressions !== null);
+  const impressionsDisponibles = pages.some((p) => p.indexable !== false && p.impressions !== null);
 
   for (const p of pages) {
     const base = { id: p.id, type: p.type, url: p.url, titre: p.titre } as const;
@@ -163,7 +163,8 @@ export function auditerCorpus(
       signalements.push({ ...base, famille: "faible-valeur", motif: raisons.join(" ; ") });
     }
 
-    if (p.impressions !== null && p.impressions === 0) {
+    // Page noindex : 0 impression par construction, jamais un signal.
+    if (p.indexable !== false && p.impressions !== null && p.impressions === 0) {
       if (p.publieLe !== null && joursEntre(p.publieLe, maintenant) >= seuils.ancienneteMinJours) {
         signalements.push({
           ...base,
