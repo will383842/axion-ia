@@ -287,19 +287,19 @@ interface FooterColumnProps {
 function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
   return (
     <div>
-      {/* GEO-124 (audit GEO/AEO 2026-08-14) — `h2`/`h3` et non `h3`/`h4` : les
-          colonnes du pied sont des sections de premier niveau du document. La
-          taille est imposée par les classes, pas par la balise. */}
-      <h2 className="text-fg-soft mb-2 text-[13px] font-semibold tracking-[0.06em] uppercase">
+      {/* F0 (2026-11) — des `<p>`, et non des titres : le pied de page ne doit
+          injecter aucun h1-h6 dans la hiérarchie des titres de chaque page.
+          Chaque liste porte son intitulé en `aria-label` (lecteurs d'écran). */}
+      <p className="text-fg-soft mb-2 text-[13px] font-semibold tracking-[0.06em] uppercase">
         {title}
-      </h2>
-      <FooterLinkList items={items} />
+      </p>
+      <FooterLinkList items={items} label={title} />
       {subgroup ? (
         <>
-          <h3 className="text-fg-soft mt-4 mb-1 text-xs font-semibold tracking-[0.06em] uppercase">
+          <p className="text-fg-soft mt-4 mb-1 text-xs font-semibold tracking-[0.06em] uppercase">
             {subgroup.title}
-          </h3>
-          <FooterLinkList items={subgroup.items} />
+          </p>
+          <FooterLinkList items={subgroup.items} label={subgroup.title} />
         </>
       ) : null}
     </div>
@@ -307,9 +307,10 @@ function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
 }
 
 // Cibles tactiles de 44 px (`min-h-11`), WCAG 2.5.5.
-function FooterLinkList({ items }: { items: ReadonlyArray<{ href: string; label: string }> }) {
+type LienPied = ReadonlyArray<{ href: string; label: string }>;
+function FooterLinkList({ items, label }: { items: LienPied; label: string }) {
   return (
-    <ul>
+    <ul aria-label={label}>
       {items.map((item) => (
         <li key={item.href}>
           {/*
