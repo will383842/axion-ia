@@ -51,7 +51,8 @@ export const RGPD: ReadonlyArray<{ titre: string; texte: string }> = [
   },
   {
     titre: "Destinataire",
-    texte: "l'éditeur seul lit les réponses brutes. Les résultats publiés sont agrégés : publiés à partir de 100 réponses, puis mis à jour régulièrement.",
+    texte:
+      "l'éditeur seul lit les réponses brutes. Les résultats publiés sont agrégés : publiés à partir de 100 réponses, puis mis à jour régulièrement.",
   },
   {
     titre: "Hébergement et transferts",
