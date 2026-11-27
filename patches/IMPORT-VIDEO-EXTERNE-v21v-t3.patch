@@ -1,0 +1,264 @@
+From 16a904a8d0ad92ed95430bf8017312b5efa7e06f Mon Sep 17 00:00:00 2001
+From: claude <noreply@anthropic.com>
+Date: Fri, 27 Nov 2026 19:22:11 +0000
+Subject: [PATCH] =?UTF-8?q?IMPORT-VIDEO-EXTERNE-v21v=20:=20corrections=20R?=
+ =?UTF-8?q?1+R2=20(robot=20cr=C3=A9dits=20API)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/app/(studio)/videos/[id]/page.tsx |  5 ++-
+ src/domaine/import-video-externe.ts   |  6 +++
+ src/services/fabrication.ts           | 11 ++++-
+ src/services/import-video-externe.ts  |  2 +-
+ src/services/modifications.ts         |  4 ++
+ tests/import-video-externe.test.ts    | 62 ++++++++++++++++++++++++++-
+ 6 files changed, 84 insertions(+), 6 deletions(-)
+
+diff --git a/src/app/(studio)/videos/[id]/page.tsx b/src/app/(studio)/videos/[id]/page.tsx
+index ca182a7d..cfa3f0e3 100644
+--- a/src/app/(studio)/videos/[id]/page.tsx
++++ b/src/app/(studio)/videos/[id]/page.tsx
+@@ -50,6 +50,7 @@ import { exigerSession } from "@/services/auth";
+ import { listerPartages } from "@/services/partages";
+ import { obtenirKit, resultatsVideo, telechargementsVideo } from "@/services/publications";
+ import { listerConnexions, lireReglages } from "@/services/reglages";
++import { estVideoImportee } from "@/domaine/import-video-externe";
+ import { estimerReexport } from "@/services/fabrication";
+ import { exemplesModification, historiqueModifications } from "@/services/modifications";
+ import { commandeEnEssai, moteurDeCommande } from "@/moteurs";
+@@ -128,7 +129,7 @@ export default async function PageVideo({ params }: { params: Promise<{ id: stri
+   // Plan facecam v4 (lot D) : « Votre vidéo » face caméra (null pour tous les autres formats : page inchangée).
+   const facecam = v.formatId === "facecam" ? await vueVotreVideo(v.id) : null;
+   // « Demander une modification » (17/10) : exemples que le format et la vidéo permettent vraiment.
+-  const exemplesRetouche = prete && !facecam ? await exemplesModification(id) : { exemples: [] };
++  const exemplesRetouche = prete && !facecam && !estVideoImportee(v) ? await exemplesModification(id) : { exemples: [] };
+   // Lot J : options payantes qui attendent « Confirmer » (Décor IA, 3 caméras réelles…), tous formats.
+   const optionsPayantes = await cartesEnAttente(v.id);
+   const extraits = await proprietesExtraitsDeLaVideo(v.id).catch(() => null); // X4-13b : éteint → rien, jamais bloquant
+@@ -223,7 +224,7 @@ export default async function PageVideo({ params }: { params: Promise<{ id: stri
+             contenu: (
+               <div className="space-y-4">
+                 <RetoucheChatGenerateur videoId={v.id} formatId={v.formatId} {...(d.versionCourante ? { versionId: d.versionCourante.id } : {})} />
+-                {!facecam && <DemanderModification videoId={v.id} historique={modifications} possible={prete && !enFabrication} essai={fabricationSimulee} sansPrix={trouverFormat(v.formatId)?.sansPrix === true} {...exemplesRetouche} />}
++                {!facecam && !estVideoImportee(v) && <DemanderModification videoId={v.id} historique={modifications} possible={prete && !enFabrication} essai={fabricationSimulee} sansPrix={trouverFormat(v.formatId)?.sansPrix === true} {...exemplesRetouche} />}
+                 <OngletRetouches
+                 videoId={v.id}
+                 possible={prete && !enFabrication}
+diff --git a/src/domaine/import-video-externe.ts b/src/domaine/import-video-externe.ts
+index 05fe280c..033f7fc6 100644
+--- a/src/domaine/import-video-externe.ts
++++ b/src/domaine/import-video-externe.ts
+@@ -16,6 +16,12 @@ export const DUREE_MIN_IMPORT_SEC = 3;
+ export const DUREE_MAX_IMPORT_SEC = 600;
+ export const TITRE_MAX_IMPORT = 120;
+ 
++/** Phrase du refus de toute refabrication d'une vidéo importée (retouche, modification, nouveau format, nouvelle fabrication). */
++export const IMPORTEE_PAS_REFABRICABLE = "Cette vidéo vient d'être importée : elle ne peut pas être retouchée ni refaite ici. Modifiez-la dans votre outil, puis importez-la à nouveau.";
++
++/** Vrai pour une vidéo importée : le Studio n'a pas de plan ni de moteur pour la refabriquer. */
++export const estVideoImportee = (video: { origineVideo?: string } | null | undefined): boolean => video?.origineVideo === "importee";
++
+ const RESEAUX_VALIDES: readonly IdReseau[] = ["linkedin", "instagram", "facebook", "tiktok", "youtube", "youtube-shorts", "pinterest"];
+ 
+ export interface DemandeImportVideo {
+diff --git a/src/services/fabrication.ts b/src/services/fabrication.ts
+index b716ef4a..8b8297bd 100644
+--- a/src/services/fabrication.ts
++++ b/src/services/fabrication.ts
+@@ -4,6 +4,7 @@
+  * CommandeFabrication versionnée (contrat v2). Un moteur ne lit que la commande.
+  * Le moteur est FIGÉ au lancement (`commande.moteurId`) : tout travail lancé lit `moteurDeCommande`.
+  */
++import { estVideoImportee, IMPORTEE_PAS_REFABRICABLE } from "@/domaine/import-video-externe";
+ import "server-only";
+ import type {
+   CommandeFabrication,
+@@ -826,6 +827,7 @@ async function lancerSousVerrou(videoId: Id, options: OptionsLancement): Promise
+   const d = depots();
+   const video = await d.videos.obtenir(videoId);
+   if (!video) throw new ErreurStudio("INTROUVABLE", "Cette vidéo n'existe plus.");
++  if (estVideoImportee(video)) throw new ErreurStudio("FABRICATION_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
+   const deja = await d.travaux.trouver((t) => t.cibleId === videoId && (t.statut === "en_cours" || t.statut === "en_file"));
+   if (deja) return { travailId: deja.id, versionId: deja.versionId ?? "" };
+   // Brique 6 : le texte fabriqué est celui que Will a relu (une lettre changée depuis : refus, avant toute dépense).
+@@ -1065,6 +1067,10 @@ export async function estimerRetoucheVideo(videoId: Id, planIds: Id[], operation
+   const video = await d.videos.obtenir(videoId);
+   const courante = video?.versionChoisieId ? await d.versions.obtenir(video.versionChoisieId) : null;
+   if (!video || !courante) throw new ErreurStudio("INTROUVABLE", "Aucune version à retoucher.");
++  // Vidéo importée : aucun plan, et le moteur de repli serait la simulation. Refus AVANT tout (rien n'est payé ni créé).
++  if (estVideoImportee(video)) throw new ErreurStudio("RETOUCHE_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
++  // Vidéo importée : aucun plan, et le moteur de repli serait la simulation. Refus AVANT tout (rien n'est payé ni créé).
++  if (estVideoImportee(video)) throw new ErreurStudio("RETOUCHE_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
+   if (!planIds.length) return { total: centimes(0), dureeSec: 0 };
+   const ids = await plansDeLaCommande(courante.id, courante.commande, planIds);
+   await preparerReglagesMoteur(courante.commande);
+@@ -1078,7 +1084,7 @@ export async function estimerReexport(videoId: Id, ratio: Ratio): Promise<Montan
+   const d = depots();
+   const video = await d.videos.obtenir(videoId);
+   const courante = video?.versionChoisieId ? await d.versions.obtenir(video.versionChoisieId) : null;
+-  if (!video || !courante) return centimes(0);
++  if (!video || !courante || estVideoImportee(video)) return centimes(0);
+   return (await moteurDeCommande(courante.commande).estimerReexport(courante.commande, ratio)).total;
+ }
+ 
+@@ -1113,6 +1119,8 @@ async function retoucheSousVerrou(videoId: Id, planIds: Id[], consigne: string,
+   const video = await d.videos.obtenir(videoId);
+   const courante = video?.versionChoisieId ? await d.versions.obtenir(video.versionChoisieId) : null;
+   if (!video || !courante) throw new ErreurStudio("INTROUVABLE", "Aucune version à retoucher.");
++  // Vidéo importée : aucun plan, et le moteur de repli serait la simulation. Refus AVANT tout (rien n'est payé ni créé).
++  if (estVideoImportee(video)) throw new ErreurStudio("RETOUCHE_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
+   // E2E-2 argent n° 3 : la même retouche déjà en cours (double envoi, deux onglets) n'est ni relancée ni repayée.
+   const memes = (a: Id[], b: Id[]) => a.length === b.length && [...a].sort().join("|") === [...b].sort().join("|");
+   for (const r of await d.retouches.lister((x) => x.videoId === videoId && x.statut === "en_cours" && x.consigne === consigne && memes(x.planIds, planIds))) {
+@@ -1186,6 +1194,7 @@ async function reexportSousVerrou(videoId: Id, ratio: Ratio, options: { confirme
+   const video = await d.videos.obtenir(videoId);
+   const courante = video?.versionChoisieId ? await d.versions.obtenir(video.versionChoisieId) : null;
+   if (!video || !courante) throw new ErreurStudio("INTROUVABLE", "Aucune version à exporter.");
++  if (estVideoImportee(video)) throw new ErreurStudio("REEXPORT_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
+   const deja = await d.travaux.trouver((t) => t.cibleId === videoId && t.type === "reexport" && t.parametres?.ratio === ratio && (t.statut === "en_cours" || t.statut === "en_file"));
+   if (deja) return { travailId: deja.id };
+   const moteur = moteurDeCommande(courante.commande);
+diff --git a/src/services/import-video-externe.ts b/src/services/import-video-externe.ts
+index 58a29fda..7484d7d9 100644
+--- a/src/services/import-video-externe.ts
++++ b/src/services/import-video-externe.ts
+@@ -66,7 +66,7 @@ export async function creerVideoImportee(donnees: DonneesImportVideo, fichier: F
+     // Aucune mention IA ajoutée : la vidéo est telle que livrée.
+     mentionIA: { incrustee: false, position: "bas-droite", dureeSec: 0, texte: "", dansLegende: false },
+     versionChoisieId: versionId,
+-    reseau: controle.reseaux[0],
++    // Pas de `reseau` ici : ce champ marque une « version par réseau » ; les réseaux de la Sortie font foi (une ligne chacun).
+     langue: "fr-FR",
+     origineVideo: "importee",
+     terminee: h.creeLe,
+diff --git a/src/services/modifications.ts b/src/services/modifications.ts
+index f7d61167..14b1ec0a 100644
+--- a/src/services/modifications.ts
++++ b/src/services/modifications.ts
+@@ -13,6 +13,7 @@
+  * ceux que la vidéo permet vraiment.
+  */
+ import "server-only";
++import { estVideoImportee, IMPORTEE_PAS_REFABRICABLE } from "@/domaine/import-video-externe";
+ import { RETOUCHE_PAS_DISPONIBLE } from "@/domaine/voix-phrases";
+ import type { CommandeFabrication, Id, Montant } from "@/domaine/types";
+ import type { DemandeModification } from "@/fournisseurs";
+@@ -156,6 +157,7 @@ export async function exemplesModification(videoId: Id): Promise<{ exemples: str
+   if (!video || !courante) return { exemples: [] };
+   // Réglage `casConcret.retouches` : relu avant d'interroger le moteur (son refus est synchrone).
+   await preparerReglagesMoteur(courante.commande);
++  if (estVideoImportee(video)) return { exemples: [], note: IMPORTEE_PAS_REFABRICABLE };
+   if (!retouchable(video, courante.commande)) return { exemples: [], note: NOTE_SANS_RETOUCHE };
+   if (idMoteurDeCommande(courante.commande) === ID_MOTEUR_CAS_CONCRET) return { exemples: await exemplesRetouche(videoId) };
+   if (idMoteurDeCommande(courante.commande) === "montage-tableau") {
+@@ -254,6 +256,8 @@ export async function proposerModification(videoId: Id, texte: string, dep: Depe
+   const video = await d.videos.obtenir(videoId);
+   const courante = video?.versionChoisieId ? await d.versions.obtenir(video.versionChoisieId) : null;
+   if (!video || !courante) throw new ErreurStudio("INTROUVABLE", "Aucune version à modifier.");
++  // Vidéo importée : refus AVANT tout appel fournisseur (la lecture de la demande est payante en réel), rien d'enregistré.
++  if (estVideoImportee(video)) throw new ErreurStudio("RETOUCHE_INDISPONIBLE", IMPORTEE_PAS_REFABRICABLE);
+   const plans = (await d.plans.lister((p) => p.versionId === courante.id)).sort((a, b) => a.ordre - b.ordre);
+   const demande: DemandeModification = {
+     texte: demandeTexte,
+diff --git a/tests/import-video-externe.test.ts b/tests/import-video-externe.test.ts
+index 7db4b4ff..a4835ffe 100644
+--- a/tests/import-video-externe.test.ts
++++ b/tests/import-video-externe.test.ts
+@@ -21,6 +21,10 @@ const { reinitialiserDepots, depots } = await import("@/donnees/memoire");
+ const { creerVideoImportee } = await import("@/services/import-video-externe");
+ const { controlerImportVideo, TAILLE_MAX_IMPORT_OCTETS, DUREE_MAX_IMPORT_SEC } = await import("@/domaine/import-video-externe");
+ const { listerAPublier, videoEnEssai } = await import("@/services/publications");
++const { vueAPublier } = await import("@/services/a-publier");
++const { lancerRetouche, reexporter, lancerFabrication, estimerReexport } = await import("@/services/fabrication");
++const { proposerModification, exemplesModification } = await import("@/services/modifications");
++const { DUREE_MIN_IMPORT_SEC } = await import("@/domaine/import-video-externe");
+ const { importerVideoExterne, ratioDeLaTaille } = await import("@/services/import-video-externe");
+ const { commandeEnEssai } = await import("@/moteurs");
+ const auth = await import("@/services/auth");
+@@ -87,13 +91,23 @@ describe("import d'une vidéo déjà faite", () => {
+     expect(await compte()).toEqual([avant[0] + 1, avant[1] + 1, avant[2] + 1, avant[3]]);
+   });
+ 
+-  it("la vidéo importée apparaît dans listerAPublier", async () => {
++  it("la vidéo importée apparaît dans listerAPublier (une carte par vidéo)", async () => {
+     const { videoId } = await creerVideoImportee(BASE, fichier());
+     const liste = await listerAPublier();
+     expect(liste.map((c) => c.id)).toContain(videoId);
+     expect(liste.find((c) => c.id === videoId)).toMatchObject({ titre: "Ma vidéo", etapeEditoriale: "validee" });
+   });
+ 
++  it("chaque réseau coché a sa ligne dans À publier", async () => {
++    await auth.seConnecter(MDP_TEST, false);
++    const coches = ["instagram", "linkedin", "tiktok"];
++    const { videoId } = await creerVideoImportee({ ...BASE, reseaux: coches }, fichier());
++    expect((await depots().videos.obtenir(videoId))?.reseau).toBeUndefined();
++    const lignes = (await vueAPublier()).lignes.filter((l) => l.videoId === videoId);
++    expect(lignes.map((l) => l.reseau).sort()).toEqual([...coches].sort());
++    for (const l of lignes) expect([...(l.reseauxVideo ?? [])].sort()).toEqual([...coches].sort());
++  });
++
+   it("sans case cochée rien n'est créé", async () => {
+     const avant = await compte();
+     await expect(creerVideoImportee({ ...BASE, valide: false }, fichier())).rejects.toMatchObject({ code: "NON_VALIDEE" });
+@@ -108,7 +122,19 @@ describe("import d'une vidéo déjà faite", () => {
+ });
+ 
+ describe("la vidéo importée n'est pas un essai", () => {
+-  it("la vidéo importée n'est pas un essai et peut partir", async () => {
++  it("la ligne À publier d'une vidéo importée n'a aucun blocage (ni essai, ni exemple) et n'est pas d'origine usine", async () => {
++    await auth.seConnecter(MDP_TEST, false);
++    const { videoId } = await creerVideoImportee(BASE, fichier());
++    const lignes = (await vueAPublier()).lignes.filter((l) => l.videoId === videoId);
++    expect(lignes.length).toBeGreaterThan(0);
++    for (const l of lignes) {
++      expect(l.blocage).toBeUndefined();
++      expect(l.blocageVideo).toBeUndefined();
++      expect(l.origineUsine).toBeUndefined();
++    }
++  });
++
++  it("la vidéo importée n'est pas un essai (commande et vidéo)", async () => {
+     const { videoId } = await creerVideoImportee(BASE, fichier());
+     const video = (await depots().videos.obtenir(videoId))!;
+     const version = (await depots().versions.obtenir(video.versionChoisieId!))!;
+@@ -222,3 +248,35 @@ describe("importerVideoExterne : session et fichier réellement arrivé", () =>
+     expect(await depots().evenements.compter((e) => e.type === "videos")).toBe(journalAvant + 1);
+   });
+ });
++
++describe("bornes exactes (incluses)", () => {
++  it("3 s et 600 s sont acceptées, juste en dessous / au-dessus refusées", async () => {
++    expect((await creerVideoImportee({ ...BASE, dureeSec: DUREE_MIN_IMPORT_SEC }, fichier())).videoId).toBeTruthy();
++    expect((await creerVideoImportee({ ...BASE, dureeSec: DUREE_MAX_IMPORT_SEC }, fichier())).videoId).toBeTruthy();
++    await expect(creerVideoImportee({ ...BASE, dureeSec: DUREE_MIN_IMPORT_SEC - 0.5 }, fichier())).rejects.toMatchObject({ code: "TROP_COURTE" });
++    await expect(creerVideoImportee({ ...BASE, dureeSec: DUREE_MAX_IMPORT_SEC + 0.5 }, fichier())).rejects.toMatchObject({ code: "TROP_LONGUE" });
++  });
++  it("1 Go pile est accepté, 1 octet de plus refusé", async () => {
++    expect((await creerVideoImportee(BASE, fichier({ taille: TAILLE_MAX_IMPORT_OCTETS }))).videoId).toBeTruthy();
++    await expect(creerVideoImportee(BASE, fichier({ taille: TAILLE_MAX_IMPORT_OCTETS + 1 }))).rejects.toMatchObject({ code: "TROP_LOURD" });
++  });
++});
++
++describe("une vidéo importée ne peut être ni retouchée ni refabriquée", () => {
++  it("retouche, modification, nouveau format et fabrication refusés, sans version ni travail ni fournisseur", async () => {
++    await auth.seConnecter(MDP_TEST, false);
++    const { videoId } = await creerVideoImportee(BASE, fichier());
++    const d = depots();
++    const avant = [await d.versions.compter(() => true), await d.travaux.compter(() => true), await d.retouches.compter(() => true)];
++    sondes.fournisseurs.length = 0;
++    await expect(lancerRetouche(videoId, [], "Demande : coupe")).rejects.toMatchObject({ code: "RETOUCHE_INDISPONIBLE" });
++    await expect(proposerModification(videoId, "coupe le début")).rejects.toMatchObject({ code: "RETOUCHE_INDISPONIBLE" });
++    await expect(reexporter(videoId, "1:1")).rejects.toMatchObject({ code: "REEXPORT_INDISPONIBLE" });
++    await expect(lancerFabrication(videoId)).rejects.toMatchObject({ code: "FABRICATION_INDISPONIBLE" });
++    expect((await estimerReexport(videoId, "1:1")).centimes).toBe(0);
++    expect(await exemplesModification(videoId)).toMatchObject({ exemples: [] });
++    expect([await d.versions.compter(() => true), await d.travaux.compter(() => true), await d.retouches.compter(() => true)]).toEqual(avant);
++    expect(sondes.fournisseurs).toEqual([]);
++    expect((await d.videos.obtenir(videoId))?.statut).toBe("prete");
++  });
++});
+-- 
+2.56.1
+
