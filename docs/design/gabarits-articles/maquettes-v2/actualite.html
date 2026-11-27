@@ -97,7 +97,9 @@
     0 14px 34px -14px color-mix(in srgb, var(--color-mocha) 28%, transparent);
   --ombre-bloc: 6px 6px 0 var(--color-terracotta);
   --gouttiere: 16px;
-  --largeur-lecture: 68ch;
+  /* Largeurs en em, jamais en ch : ch dépend de la police (Manrope 0,610 em, repli Arial 0,577 em ;
+     Fraunces 600 0,675 em, repli Times 0,561 em) et ferait refluer le texte au swap = CLS. */
+  --largeur-lecture: 41.5em; /* = 68ch Manrope */
   --largeur-page: 80rem;
   --hauteur-barre-mobile: 4.75rem;
   --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
@@ -248,7 +250,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .pastille--contour { background: var(--color-mocha-soft); color: var(--color-mocha-fg); border: 1.5px solid var(--color-border-on-mocha); }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
-  letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 19ch; }
+  letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 12.8em; /* = 19ch Fraunces, stable au swap */ }
 .heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
   border-left: 4px solid var(--color-terracotta-on-mocha);
@@ -326,10 +328,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* marges de la colonne : haut aligné, bas = place réservée à la carte en fin d'article */
   .sommaire { margin: 1.5rem 0 calc(var(--hauteur-carte) + 2rem); }
   .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
-  /* Ordinateur : toujours déplié, même si le <details> est fermé */
-  .sommaire details::details-content { content-visibility: visible; display: block; }
-  .sommaire summary { pointer-events: none; min-height: 44px; padding: 1rem 1rem 0.35rem; }
-  .sommaire summary::after { display: none; }
+  /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
+     sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
+     reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
+  @supports selector(::details-content) {
+    .sommaire details::details-content { content-visibility: visible; display: block; }
+    .sommaire summary { pointer-events: none; min-height: 44px; padding: 1rem 1rem 0.35rem; }
+    .sommaire summary::after { display: none; }
+  }
   .sommaire ol a { font-size: 0.875rem; }
 }
 
@@ -618,7 +624,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   width: 11rem; aspect-ratio: 1; border-radius: 50%; border: 1.75rem solid var(--deco); opacity: 0.22; }
 .cta-milieu__surtitre { margin: 0; font: 600 0.8125rem/1.2 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-terracotta-deep); }
 .cta-milieu__titre { margin: 0; font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem) / 1.15 var(--font-serif); letter-spacing: -0.015em; color: var(--color-ink); }
-.cta-milieu p { margin: 0; max-width: 44ch; }
+.cta-milieu p { margin: 0; max-width: 26.8em; /* = 44ch Manrope */ }
 .cta-milieu__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; margin-top: 0.4rem; }
 
 /* Fin : grand bloc mocha, 3 actions, déroulé du diagnostic, réassurance factuelle */
@@ -630,9 +636,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .cta-fin::before { content: ""; position: absolute; z-index: -1; width: 9rem; aspect-ratio: 1; border-radius: 50%;
   top: -5.5rem; right: -4.5rem; background: var(--color-terracotta); }
 .cta-fin__surtitre { margin: 0 0 0.75rem; }
-.cta-fin__titre { margin: 0 0 0.75rem; max-width: 18ch; font: 600 clamp(2rem, 1.3rem + 2.8vw, 3.25rem) / 1.05 var(--font-serif); letter-spacing: -0.025em; }
+.cta-fin__titre { margin: 0 0 0.75rem; max-width: 12.15em; /* = 18ch Fraunces */ font: 600 clamp(2rem, 1.3rem + 2.8vw, 3.25rem) / 1.05 var(--font-serif); letter-spacing: -0.025em; }
 .cta-fin__titre em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
-.cta-fin__phrase { max-width: 50ch; margin: 0 0 1.75rem; font-size: 1.125rem; color: var(--color-mocha-fg-muted); }
+.cta-fin__phrase { max-width: 30.5em; /* = 50ch Manrope */ margin: 0 0 1.75rem; font-size: 1.125rem; color: var(--color-mocha-fg-muted); }
 .cta-fin__actions { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
 .cta-fin__actions .btn { width: 100%; height: 100%; min-height: 60px; justify-content: flex-start; border-radius: var(--radius-lg); }
 .deroule { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: 1rem; counter-reset: d; }
