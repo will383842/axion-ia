@@ -33,7 +33,7 @@ describe("worker content-gen : interrupteur de l'équipe éditoriale", () => {
     expect(SOURCE).toContain("if (factCheckClaudeActif(contentType) && !suiviEquipe) {");
     // Éteint, la phase A d'avant est appelée comme avant.
     expect(SOURCE).toMatch(
-      /else if \(equipeEditorialeActive\(\) && factCheckClaudeActif\(contentType\)\) \{\s*await constituerPhaseA\(\);/,
+      /else if \(\s*equipeEditorialeActive\(\) &&\s*factCheckClaudeActif\(contentType\) &&\s*\(await equipeEnMarche\(\)\)\s*\) \{\s*await constituerPhaseA\(\);/,
     );
   });
 

@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const authMock = vi.fn();
 const reviewFindUnique = vi.fn();
+const reviewFindMany = vi.fn();
 const activityCount = vi.fn();
 const approveMock = vi.fn();
 const requestEditsMock = vi.fn();
@@ -17,7 +18,7 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     reviewQueue: {
       findUnique: (a: unknown) => reviewFindUnique(a),
-      findMany: vi.fn(async () => []),
+      findMany: (a: unknown) => reviewFindMany(a),
     },
     activityLog: { count: (a: unknown) => activityCount(a) },
   },
@@ -53,6 +54,7 @@ const aRelire = {
 beforeEach(() => {
   vi.clearAllMocks();
   admin();
+  reviewFindMany.mockResolvedValue([]);
   reviewFindUnique.mockResolvedValue(aRelire);
   activityCount.mockResolvedValue(0);
 });
@@ -128,5 +130,47 @@ describe("Renvoyer en correction", () => {
     activityCount.mockResolvedValue(1);
     await expect(renvoyerArticleEquipe("r1")).rejects.toThrow("renvoi_deja_fait");
     expect(requestEditsMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("cas limites", () => {
+  it("approveReview qui échoue : aucune trace « publier »", async () => {
+    approveMock.mockRejectedValueOnce(new Error("boom"));
+    await expect(publierArticleEquipe("r1")).rejects.toThrow("boom");
+    expect(logMock).not.toHaveBeenCalled();
+  });
+  it("review introuvable", async () => {
+    reviewFindUnique.mockResolvedValue(null);
+    await expect(publierArticleEquipe("r1")).rejects.toThrow("review_not_found");
+  });
+  it("la liste filtre sur outputJsonRaw.equipe.issue = a_relire (pending et needs_edits)", async () => {
+    reviewFindMany.mockResolvedValue([
+      {
+        id: "r1",
+        status: "needs_edits",
+        jobId: "j1",
+        createdAt: new Date(),
+        job: {
+          outputJsonRaw: {
+            title: "T",
+            equipe: {
+              issue: "a_relire",
+              coutTotalUsd: 1.5,
+              entrees: [{ role: "gardien", decision: "ok" }],
+            },
+          },
+        },
+      },
+    ]);
+    const p = await getPilotageEquipe();
+    const where = reviewFindMany.mock.calls[0]![0].where;
+    expect(where.status).toEqual({ in: ["pending", "needs_edits"] });
+    expect(where.job.outputJsonRaw).toEqual({ path: ["equipe", "issue"], equals: "a_relire" });
+    expect(p.aRelire[0]).toMatchObject({ titre: "T", coutUsd: 1.5, statut: "needs_edits" });
+    expect(p.aRelire[0]!.journal).toHaveLength(1);
+  });
+  it("quota non numérique refusé côté serveur", async () => {
+    await expect(definirQuotasEquipe({ articlesMaxJour: NaN, majMaxJour: 1 })).rejects.toThrow();
+    expect(persistMock).not.toHaveBeenCalled();
   });
 });

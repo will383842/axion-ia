@@ -75,7 +75,8 @@ export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire }: P
           Quotas par jour
         </h2>
         <label className="block text-sm">
-          Nouveaux articles (0 à 10)
+          Nouveaux articles (0 à 10 ; réglage enregistré, application à la création pas encore
+          branchée)
           <input
             type="number"
             min={0}
@@ -102,13 +103,19 @@ export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire }: P
           type="button"
           disabled={enCours}
           className="rounded border px-3 py-1"
-          onClick={() =>
+          onClick={() => {
+            const ok = (v: string, max: number) =>
+              v.trim() !== "" && Number.isInteger(Number(v)) && Number(v) >= 0 && Number(v) <= max;
+            if (!ok(articles, 10) || !ok(maj, 5)) {
+              setMessage("Échec : saisir deux entiers (articles 0 à 10, mises à jour 0 à 5).");
+              return;
+            }
             agir(
               () =>
                 definirQuotasEquipe({ articlesMaxJour: Number(articles), majMaxJour: Number(maj) }),
               "Quotas enregistrés.",
-            )
-          }
+            );
+          }}
         >
           Enregistrer les quotas
         </button>
@@ -151,6 +158,11 @@ export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire }: P
                 ))}
               </ol>
             </details>
+            {a.statut !== "pending" && (
+              <p className="text-sm">
+                Déjà renvoyé en correction : en attente du retour de la boucle qualité.
+              </p>
+            )}
             <div className="flex gap-2">
               <button
                 type="button"
@@ -164,7 +176,7 @@ export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire }: P
               </button>
               <button
                 type="button"
-                disabled={enCours || a.renvoisConsole >= 1}
+                disabled={enCours || a.statut !== "pending" || a.renvoisConsole >= 1}
                 className="rounded border px-3 py-1"
                 onClick={() =>
                   agir(() => renvoyerArticleEquipe(a.reviewId), "Article renvoyé en correction.")

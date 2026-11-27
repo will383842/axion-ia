@@ -56,6 +56,8 @@ export interface ArticleARelire {
   readonly coutUsd: number | null;
   readonly journal: ReadonlyArray<EntreeJournalRole>;
   readonly renvoisConsole: number;
+  /** « pending » = actions possibles ; « needs_edits » = déjà renvoyé en correction. */
+  readonly statut: string;
   readonly creeLe: Date;
 }
 
@@ -110,13 +112,14 @@ export async function getPilotageEquipe(): Promise<PilotageEquipe> {
     lireQuotas(),
     prisma.reviewQueue.findMany({
       where: {
-        status: "pending",
+        status: { in: ["pending", "needs_edits"] },
         job: { outputJsonRaw: { path: ["equipe", "issue"], equals: "a_relire" } },
       },
       orderBy: { createdAt: "asc" },
       take: 100,
       select: {
         id: true,
+        status: true,
         jobId: true,
         createdAt: true,
         job: { select: { outputJsonRaw: true } },
@@ -128,6 +131,7 @@ export async function getPilotageEquipe(): Promise<PilotageEquipe> {
       const j = lireJournalEquipe(l.job.outputJsonRaw);
       return {
         reviewId: l.id,
+        statut: l.status,
         jobId: l.jobId,
         titre: extractJobTitle(l.job.outputJsonRaw),
         causes: j.causes,

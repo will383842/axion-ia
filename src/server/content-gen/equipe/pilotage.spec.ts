@@ -7,7 +7,9 @@ vi.mock("../config-store", () => ({
 
 import { equipeEnMarche, etatEquipe, lireMarche, marcheConsole, validerQuotas } from "./pilotage";
 
-beforeEach(() => lireMock.mockReset());
+beforeEach(() => {
+  lireMock.mockReset();
+});
 
 describe("lireMarche (lecture tolérante)", () => {
   it("absent, faux ou forme inattendue = arrêt", () => {

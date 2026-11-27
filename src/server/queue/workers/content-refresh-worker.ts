@@ -331,7 +331,7 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     return { scannedCount: 0, flaggedCount: 0, refreshedCount: 0, checkedAt };
   }
 
-  // PR 17 : variable allumée ET console sur marche (arrêt console = comportement d'avant).
+  // PR 17 : variable allumée ET console sur marche (arrêt console : la tâche d'équipe et la mise à jour ne tournent pas ; le balayage d'avant reste).
   const equipeMarche = equipeEditorialeActive() && (await equipeEnMarche());
   if (job.data.tache && job.data.tache !== "mise-a-jour" && equipeMarche) {
     return runTacheEquipe(job.data.tache, checkedAt);

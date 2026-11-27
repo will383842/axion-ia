@@ -888,7 +888,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       decisionGardienEquipe = angleGardien
         ? { decision: "reorienter", angle: angleGardien, raison: "gardien : angle proposé" }
         : { decision: "feu_vert", raison: "gardien passé" };
-    } else if (equipeEditorialeActive() && factCheckClaudeActif(contentType)) {
+    } else if (
+      equipeEditorialeActive() &&
+      factCheckClaudeActif(contentType) &&
+      (await equipeEnMarche())
+    ) {
       await constituerPhaseA();
     }
 
