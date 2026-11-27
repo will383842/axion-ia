@@ -14,6 +14,12 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
 import { listPublicEntriesForFeed } from "@/server/exporters/knowledge-rss";
 import { getKbTypeMeta } from "@/content/knowledge/types";
+import {
+  BAROMETRE_DESCRIPTION,
+  BAROMETRE_PATH,
+  BAROMETRE_TITRE,
+  BAROMETRE_PUBLIC,
+} from "@/content/barometre-2027/donnees";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -74,6 +80,16 @@ export default async function RessourcesHubPage({ params }: Props) {
         }
       >
         <Container className="max-w-3xl">
+          {isFr && BAROMETRE_PUBLIC ? (
+            <a
+              href={`/${locale}${BAROMETRE_PATH}`}
+              className="border-border hover:border-primary mb-6 block rounded-lg border p-4"
+            >
+              <span className="text-fg-soft text-xs tracking-wide uppercase">Baromètre</span>
+              <span className="text-fg block text-lg font-semibold">{BAROMETRE_TITRE}</span>
+              <span className="text-fg-soft mt-1 block text-sm">{BAROMETRE_DESCRIPTION}</span>
+            </a>
+          ) : null}
           <ul className="divide-border border-border divide-y border-y">
             {entries.length === 0 ? (
               <li className="text-fg-soft py-8 text-center">
