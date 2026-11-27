@@ -16446,6 +16446,7 @@ model ApporteurReseau {
   @@index([statut])
   @@index([parrainId])
   @@map("apporteurs_reseau")
+  relevesMensuels               ReleveMensuelApporteur[]
 }
 
 /// SIRET de l'établissement sous lequel l'apporteur apporte des affaires (2026-10-08) : plusieurs
@@ -16878,6 +16879,10 @@ model CommissionApporteur {
   /// Autofacture impossible faute de donnée de l'apporteur : ce qui manque, et depuis quand
   /// (première détection). Effacé à l'émission de l'autofacture.
   autofactureAttenteMotif  String?                   @map("autofacture_attente_motif") @db.VarChar(200)
+  /// Code fermé de la règle de commission appliquée (relevé mensuel, plan § 5.3). Posé au calcul, jamais rétroactivement : NULL = commission antérieure.
+  regleAppliquee           String?                   @map("regle_appliquee") @db.VarChar(40)
+  /// Version du contrat signée par l'apporteur au calcul ("2.6", "2.8"…). NULL = commission antérieure.
+  versionContrat           String?                   @map("version_contrat") @db.VarChar(10)
   autofactureAttenteDepuis DateTime?                 @map("autofacture_attente_depuis") @db.Timestamptz(3)
   /// Contestation ÉCRITE du client en cours (contrat 2.3, art. 4.2 bis) : ni facturée ni versée.
   litigeDepuis             DateTime?                 @map("litige_depuis") @db.Timestamptz(3)
@@ -16896,6 +16901,93 @@ model CommissionApporteur {
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])
   @@map("commissions_apporteur")
+}
+
+enum StatutReleveMensuel {
+  /// Calculé, vérifiable, recalculable (seul statut modifiable en contenu).
+  prepare
+  /// Pris par un lot (`prisAt`) ; repris après 10 minutes (plan § 6.4).
+  envoi_en_cours
+  /// E-mail enfilé ; l'état de remise se lit dans `EmailLog`.
+  envoye
+  /// L'enfilage a échoué : renvoyable par un clic.
+  echec
+  /// Écarté par un administrateur pour cette période (motif obligatoire).
+  ecarte
+
+  @@map("statut_releve_mensuel")
+}
+
+/// Relevé MENSUEL d'information d'un apporteur (plan docs/plans/PLAN-RELEVE-MENSUEL-APPORTEURS.md) : récapitule les
+/// autofactures et avoirs du mois, n'est PAS une facture. Instantané figé (`contenu`, `empreinteSha256`) ; après
+/// `prepare`, un trigger SQL refuse toute modification des colonnes figées. Une erreur se corrige par un
+/// rectificatif (`rang` + 1). Conservation alignée sur les autofactures : 10 ans après la clôture de l'exercice (L.123-22).
+/// rgpd: technique — montants, numéros de pièces et dénomination de l'entreprise présentée ; aucun contact de l'entreprise, aucune coordonnée de l'apporteur (elles ne figurent que dans le PDF)
+model ReleveMensuelApporteur {
+  id                String              @id @default(uuid()) @db.Uuid
+  /// REL-AAAA-MM-NNNN[-Rk], série distincte d'AXI-APP.
+  numero            String              @unique @db.VarChar(40)
+  apporteurId       String              @map("apporteur_id") @db.Uuid
+  apporteur         ApporteurReseau     @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  /// AAAA-MM (mois de Paris).
+  periode           String              @db.Char(7)
+  /// 0 = origine ; k = k-ième rectificatif.
+  rang              Int                 @default(0)
+  rectifieId        String?             @map("rectifie_id") @db.Uuid
+  statut            StatutReleveMensuel @default(prepare)
+  formatVersion     Int                 @default(1) @map("format_version")
+  /// 1er M+1 00:00 Paris : instant de coupure du relevé (plan § 5.2).
+  coupureAt         DateTime            @map("coupure_at") @db.Timestamptz(3)
+  contenu           Json
+  /// sha256 du JSON canonique de `contenu`.
+  empreinteSha256   String              @map("empreinte_sha256") @db.Char(64)
+  /// apporteurs/releves/<apporteurId>/<numero>-<empreinte8>.pdf : contient le numéro, jamais réécrite après l'envoi.
+  pdfR2Key          String?             @map("pdf_r2_key") @db.VarChar(300)
+  pdfSha256         String?             @map("pdf_sha256") @db.Char(64)
+  /// Totaux dénormalisés pour les statistiques (centimes ; jamais relus pour réémettre).
+  nbLignes          Int                 @default(0) @map("nb_lignes")
+  facturesHtCents   Int                 @default(0) @map("factures_ht_cents")
+  avoirsHtCents     Int                 @default(0) @map("avoirs_ht_cents")
+  viresTtcCents     Int                 @default(0) @map("vires_ttc_cents")
+  enAttenteHtCents  Int                 @default(0) @map("en_attente_ht_cents")
+  cumulAnneeHtCents Int                 @default(0) @map("cumul_annee_ht_cents")
+  emailJobId        String?             @unique @map("email_job_id") @db.VarChar(120)
+  prepareAt         DateTime            @default(now()) @map("prepare_at") @db.Timestamptz(3)
+  prisAt            DateTime?           @map("pris_at") @db.Timestamptz(3)
+  envoyeAt          DateTime?           @map("envoye_at") @db.Timestamptz(3)
+  /// "console:<adminId>" (jamais "automatique" avant le lot 5).
+  envoyePar         String?             @map("envoye_par") @db.VarChar(60)
+  lotId             String?             @map("lot_id") @db.Uuid
+  motifEcart        String?             @map("motif_ecart") @db.VarChar(300)
+  erreur            String?             @db.VarChar(300)
+  creeAt            DateTime            @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt             DateTime            @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@unique([apporteurId, periode, rang])
+  @@index([periode, statut])
+  @@index([apporteurId])
+  @@map("releves_mensuels_apporteur")
+}
+
+/// Un lot d'envoi des relevés d'une période. L'index unique partiel `lots_releve_mensuel_un_en_cours`
+/// (SQL brut de la migration, absent du schéma Prisma) garantit UN SEUL lot vivant par période (plan § 6.3).
+/// rgpd: technique — compteurs et dates d'un lot d'envoi ; aucune donnée personnelle
+model LotReleveMensuel {
+  id            String    @id @default(uuid()) @db.Uuid
+  periode       String    @db.Char(7)
+  declenchePar  String    @map("declenche_par") @db.VarChar(60)
+  debutAt       DateTime  @default(now()) @map("debut_at") @db.Timestamptz(3)
+  finAt         DateTime? @map("fin_at") @db.Timestamptz(3)
+  /// Lot mort (processus tué) repris par le lot suivant.
+  abandonneAt   DateTime? @map("abandonne_at") @db.Timestamptz(3)
+  nbCibles      Int       @default(0) @map("nb_cibles")
+  nbEnvoyes     Int       @default(0) @map("nb_envoyes")
+  nbDejaEnvoyes Int       @default(0) @map("nb_deja_envoyes")
+  nbEchecs      Int       @default(0) @map("nb_echecs")
+  nbBloques     Int       @default(0) @map("nb_bloques")
+
+  @@index([periode])
+  @@map("lots_releve_mensuel")
 }
 
 /// Une pièce de la série AXI-APP (autofacture ou avoir d'autofacture) FIGÉE à son émission :
