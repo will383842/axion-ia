@@ -187,7 +187,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // retenue ». Champs tous facultatifs.
     // RELEVÉ À 94 : `apporteur-compte` (lot 2 changement de compte bancaire, sans émetteur ; un
     // fichier, cinq gabarits). Champs tous facultatifs.
-    expect(tous.length).toBe(94);
+    // RELEVÉ À 95 : `apporteur-releve-mensuel` (relevé mensuel, lot 2, gabarit dormant sans
+    // émetteur). Champs tous facultatifs.
+    expect(tous.length).toBe(95);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
