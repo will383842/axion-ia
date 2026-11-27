@@ -31,7 +31,7 @@ import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { ArticleTOC, type TocItem } from "@/components/seo/ArticleTOC";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
@@ -207,14 +207,7 @@ export default async function GuidePiliersPage({ params }: Props) {
       />
 
       <JsonLd data={jsonLd} />
-      {/* AEO/GEO 2026 — BreadcrumbList (chaîne d'attribution Claude/Perplexity/SGE). */}
-      <JsonLd
-        data={buildBreadcrumbJsonLd({
-          locale: locale as Locale,
-          items: breadcrumbItems.map((b) => ({ name: b.label, href: b.href })),
-        })}
-        scriptId="jsonld-breadcrumb-guide"
-      />
+      {/* BreadcrumbList : émis une seule fois, par <Breadcrumbs> ci-dessous (avec « Accueil »). */}
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
