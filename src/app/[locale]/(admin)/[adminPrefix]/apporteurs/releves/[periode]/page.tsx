@@ -8,7 +8,8 @@ import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { BandeauAnomalies } from "@/components/admin/apporteurs/releves/BandeauAnomalies";
 import { BoutonPreparer } from "@/components/admin/apporteurs/releves/ActionsPreparation";
-import { moisLisible } from "@/components/admin/apporteurs/releves/format";
+import { BoutonEnvoyerATous } from "@/components/admin/apporteurs/releves/BoutonEnvoyerATous";
+import { dateHeureParis, moisLisible } from "@/components/admin/apporteurs/releves/format";
 import { TableauReleves } from "@/components/admin/apporteurs/releves/TableauReleves";
 import {
   periodeEstClose,
@@ -41,6 +42,16 @@ export default async function VerificationRelevesPage({ params }: PageProps) {
   const peutAgir = peutEngager(acces.role, "facturer") && periodeEstClose(periode, new Date());
   const vue = await lireVuePeriode(periode, voitIdentite);
   const anomalies = anomaliesDePeriode(vue);
+  // Relevés d'ORIGINE seulement : le bouton global ne vise jamais un rectificatif.
+  const origines = vue.releves.filter((r) => r.rang === 0 && r.statut !== "ecarte");
+  const toutEnvoyeLe =
+    origines.length > 0 &&
+    origines.every((r) => r.statut === "envoye") &&
+    !anomalies.some((a) => a.code === "completude")
+      ? dateHeureParis(
+          new Date(Math.max(...origines.map((r) => (r.envoyeAt ? r.envoyeAt.getTime() : 0)))),
+        )
+      : null;
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-5)]">
@@ -59,6 +70,19 @@ export default async function VerificationRelevesPage({ params }: PageProps) {
         }
       />
       <BandeauAnomalies anomalies={anomalies} />
+      {peutAgir ? (
+        <AdminCard as="section">
+          <BoutonEnvoyerATous
+            periode={periode}
+            libelleMois={moisLisible(periode)}
+            aEnvoyer={origines.filter((r) => r.statut === "prepare").length}
+            dejaEnvoyes={origines.filter((r) => r.statut === "envoye").length}
+            echecs={origines.filter((r) => r.statut === "echec").length}
+            bloque={anomalies.some((a) => a.code === "completude")}
+            toutEnvoyeLe={toutEnvoyeLe}
+          />
+        </AdminCard>
+      ) : null}
       <AdminCard as="section">
         <TableauReleves
           base={base}

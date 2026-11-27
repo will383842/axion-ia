@@ -16,12 +16,22 @@ vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-preparation", () =>
   retablirReleveAction: async () => ({ etat: "initial" }),
 }));
 
+vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-envoi", () => ({
+  envoyerATousAction: async () => ({ etat: "initial" }),
+  renvoyerEchecsAction: async () => ({ etat: "initial" }),
+}));
+
 import { BandeauAnomalies } from "../BandeauAnomalies";
 import { CartesReleves } from "../CartesReleves";
 import { eur } from "../format";
 import { ListePeriodes } from "../ListePeriodes";
 import { SerieDouzeMois } from "../SerieDouzeMois";
-import { TableauReleves } from "../TableauReleves";
+import { BoutonEnvoyerATous } from "../BoutonEnvoyerATous";
+import { ordreAffichage, TableauReleves } from "../TableauReleves";
+import {
+  anomaliesDePeriode,
+  type ReleveEcran,
+} from "@/features/apporteurs-reseau/releve-mensuel/statistiques";
 
 describe("BandeauAnomalies", () => {
   it("ne rend rien sans anomalie", () => {
@@ -148,5 +158,81 @@ describe("TableauReleves", () => {
       <TableauReleves base="/fr/x" periode="2026-10" releves={[ligne]} peutVoirPdf />,
     );
     expect(html).not.toMatch(/<button|<form|Envoyer/);
+  });
+});
+
+describe("BoutonEnvoyerATous (lot 4a)", () => {
+  const props = {
+    periode: "2026-10",
+    libelleMois: "octobre 2026",
+    aEnvoyer: 3,
+    dejaEnvoyes: 1,
+    echecs: 0,
+    bloque: false,
+    toutEnvoyeLe: null,
+  };
+  it("affiche les compteurs, le bouton et la saisie de confirmation de la période", () => {
+    const html = renderToStaticMarkup(<BoutonEnvoyerATous {...props} />);
+    expect(html).toContain("Déjà envoyés : 1 ; à envoyer : 3");
+    expect(html).toContain("Envoyer les relevés à tout le monde");
+    expect(html).toContain('placeholder="2026-10"');
+    expect(html).not.toContain("Renvoyer les échecs");
+  });
+  it("désactivé quand un apporteur attendu n'a pas de relevé (complétude)", () => {
+    const html = renderToStaticMarkup(<BoutonEnvoyerATous {...props} bloque />);
+    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Envoyer les relevés à tout le monde/);
+    expect(html).toContain("Envoi bloqué");
+  });
+  it("après un envoi complet : bouton désactivé « sont partis le … », plus de formulaire d'envoi", () => {
+    const html = renderToStaticMarkup(
+      <BoutonEnvoyerATous {...props} aEnvoyer={0} dejaEnvoyes={4} toutEnvoyeLe="3 nov. 2026" />,
+    );
+    expect(html).toContain("Tous les relevés de octobre 2026 sont partis le 3 nov. 2026");
+    expect(html).not.toContain('name="confirmation"');
+  });
+  it("propose « Renvoyer les échecs » seulement s'il y en a", () => {
+    expect(renderToStaticMarkup(<BoutonEnvoyerATous {...props} echecs={2} />)).toContain(
+      "Renvoyer les échecs",
+    );
+  });
+});
+
+describe("e-mail non remis : montré EN PREMIER", () => {
+  const ligne = (over: Partial<ReleveEcran>): ReleveEcran => ({
+    id: "r",
+    numero: "REL-2026-10-0001",
+    apporteurId: "a",
+    apporteurNom: "A",
+    rang: 0,
+    statut: "envoye",
+    nbLignes: 0,
+    facturesHtCents: 0,
+    avoirsHtCents: 0,
+    tvaCents: 0,
+    ttcCents: 0,
+    viresTtcCents: 0,
+    enAttenteHtCents: 0,
+    cumulAnneeHtCents: 0,
+    empreinteCourte: "abcd1234",
+    pdfDisponible: true,
+    emailPresent: true,
+    erreur: null,
+    motifEcart: null,
+    envoyeAt: null,
+    ...over,
+  });
+  it("échec et remise échouée passent avant les relevés sains, même avec un numéro plus grand", () => {
+    const ordre = ordreAffichage([
+      ligne({ id: "ok", numero: "REL-2026-10-0001" }),
+      ligne({ id: "remise", numero: "REL-2026-10-0002", statutEmail: "bounced" }),
+      ligne({ id: "echec", numero: "REL-2026-10-0003", statut: "echec" }),
+    ]).map((r) => r.id);
+    expect(ordre.slice(0, 2).sort()).toEqual(["echec", "remise"]);
+    expect(ordre[2]).toBe("ok");
+  });
+  it("le bandeau d'anomalies annonce l'e-mail non remis", () => {
+    const a = anomaliesDePeriode({ cibles: [], releves: [ligne({ statutEmail: "failed" })] });
+    expect(a.map((x) => x.code)).toContain("echec_envoi");
+    expect(a[0]!.detail).toMatch(/non remis/);
   });
 });

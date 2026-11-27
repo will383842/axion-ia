@@ -2,7 +2,10 @@
 import Link from "next/link";
 
 import { AdminBadge } from "@/components/admin/ui";
-import type { ReleveEcran } from "@/features/apporteurs-reseau/releve-mensuel/statistiques";
+import {
+  remiseEchouee,
+  type ReleveEcran,
+} from "@/features/apporteurs-reseau/releve-mensuel/statistiques";
 import { ActionsLigneReleve } from "./ActionsPreparation";
 import { eur } from "./format";
 
@@ -26,7 +29,8 @@ const TON: Record<
 
 /** Ce qui demande une action (échec, erreur) passe EN PREMIER ; le reste garde l'ordre des numéros. */
 export function ordreAffichage(releves: readonly ReleveEcran[]): ReleveEcran[] {
-  const rang = (r: ReleveEcran): number => (r.statut === "echec" ? 0 : r.erreur ? 1 : 2);
+  const rang = (r: ReleveEcran): number =>
+    r.statut === "echec" || remiseEchouee(r) ? 0 : r.erreur ? 1 : 2;
   return [...releves].sort((a, b) => rang(a) - rang(b) || a.numero.localeCompare(b.numero));
 }
 
@@ -98,6 +102,11 @@ export function TableauReleves({
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.enAttenteHtCents)}</td>
               <td className="pr-[var(--space-admin-3)]">
                 <AdminBadge tone={TON[r.statut]}>{LIBELLE[r.statut]}</AdminBadge>
+                {remiseEchouee(r) ? (
+                  <span className="block text-[color:var(--color-admin-destructive)]">
+                    E-mail non remis ({r.statutEmail})
+                  </span>
+                ) : null}
                 {r.erreur ? (
                   <span className="block text-[color:var(--color-admin-destructive)]">
                     {r.erreur}

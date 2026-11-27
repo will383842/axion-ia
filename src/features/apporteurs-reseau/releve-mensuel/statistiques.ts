@@ -79,7 +79,14 @@ export interface ReleveEcran {
   erreur: string | null;
   motifEcart: string | null;
   envoyeAt: Date | null;
+  /** Statut de l'`EmailLog` du `jobId` (remise réelle) ; `null` : pas de journal (pas encore, ou jamais envoyé). */
+  statutEmail?: string | null;
 }
+
+/** Remise échouée lue dans le journal d'e-mails : un relevé « envoyé » que l'apporteur n'a pas reçu. */
+export const STATUTS_EMAIL_ECHOUES: readonly string[] = ["failed", "bounced", "cancelled"];
+export const remiseEchouee = (r: { statut: string; statutEmail?: string | null }): boolean =>
+  r.statut === "envoye" && !!r.statutEmail && STATUTS_EMAIL_ECHOUES.includes(r.statutEmail);
 
 export interface AnomalieEcran {
   code: "completude" | "email_absent" | "pdf_absent" | "donnees_modifiees" | "echec_envoi";
@@ -193,6 +200,12 @@ export function anomaliesDePeriode(e: {
     }
     if (!r.pdfDisponible) {
       anomalies.push({ code: "pdf_absent", detail: `${r.numero} : PDF non stocké.` });
+    }
+    if (remiseEchouee(r)) {
+      anomalies.push({
+        code: "echec_envoi",
+        detail: `${r.numero} : e-mail non remis (${r.statutEmail}).`,
+      });
     }
     if (r.erreur?.startsWith(PREFIXE_ERREUR_DONNEES_MODIFIEES)) {
       anomalies.push({ code: "donnees_modifiees", detail: `${r.numero} : ${r.erreur}.` });
@@ -466,11 +479,23 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
         erreur: true,
         motifEcart: true,
         envoyeAt: true,
+        emailJobId: true,
         apporteur: { select: { prenom: true, nom: true, denomination: true, email: true } },
       },
     }),
     lireCiblesPeriode(periode, voitIdentite),
   ]);
+  // Remise réelle : `EmailLog` par `jobId` (la plus récente fait foi, tri croissant).
+  const jobIds = lignes.map((l) => l.emailJobId).filter((j): j is string => !!j);
+  const journal = jobIds.length
+    ? await prisma.emailLog.findMany({
+        where: { jobId: { in: jobIds } },
+        orderBy: { createdAt: "asc" },
+        select: { jobId: true, status: true },
+      })
+    : [];
+  const statutParJob = new Map<string, string>();
+  for (const j of journal) if (j.jobId) statutParJob.set(j.jobId, j.status);
   return {
     cibles,
     releves: lignes.map((l) => ({
@@ -497,6 +522,7 @@ export async function lireVuePeriode(periode: string, voitIdentite: boolean): Pr
       erreur: l.erreur,
       motifEcart: l.motifEcart,
       envoyeAt: l.envoyeAt,
+      statutEmail: l.emailJobId ? (statutParJob.get(l.emailJobId) ?? null) : null,
     })),
   };
 }
