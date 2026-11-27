@@ -3,31 +3,29 @@ docs(seo-geo): conception de l'encart vidéo automatique « Regardez cette vidé
 ## Ce que fait cette PR
 
 Elle ajoute un seul document, `docs/pilotage-seo-geo/CONCEPTION-ENCART-VIDEO.md`. Aucun code.
-C'est le plan pour que le site choisisse, répartisse et retire tout seul une vidéo du Studio
+C'est le plan pour que le site récupère tout seul les vidéos du Studio, les répartisse et les retire
 dans nos contenus.
 
 ## Ce qu'il faut savoir
 
-- Le chantier existe déjà des deux côtés (lots W1-W4 sur le site, S1-S4 dans le Studio). Il s'agit
-  de refaire le **choix** de la vidéo, pas de tout reconstruire.
-- **Blocage** : les deux contrats ne se parlent pas. Le Studio et le site n'utilisent pas les mêmes
-  noms de champs, ni les mêmes longueurs, ni la même disposition des fichiers. Chaque envoi
-  recevrait une erreur 422. Le plan recommande de suivre le contrat du site.
-- « Validée » dans le Studio veut dire « validée pour les réseaux ». Une vidéo ne sert à
-  l'encart que si elle a été envoyée au site (état « en ligne »).
-- Aucune adresse publique stable n'existe encore pour les vidéos : geste de Will (seau R2 public).
-- « Lecture au clic » contredit la règle écrite du composant (« jamais de lecteur dans l'article »).
-  Trois options sont chiffrées ; la recommandée (A) mène au clic vers la page vidéo, sans JavaScript.
-- Le plan dit honnêtement qu'un VideoObject sur une vidéo secondaire apporte peu et peut nuire.
-- Deux chiffres du brief étaient périmés (cliquet public 294 KB, terracotta public #b23f16).
-- Le mot « session f4 » n'existe pas dans le dépôt du Studio : la classe « à annoncer » suit la
-  règle écrite du Studio (fichiers partagés), à confirmer par Will.
+- Le chantier existe déjà des deux côtés. Il s'agit de refaire le **choix** de la vidéo.
+- **Blocage** : le Studio et le site ne se parlent pas. Ce ne sont pas seulement les noms de champs :
+  les longueurs, la disposition des fichiers, les **adresses appelées** (retrait, réglages) et les
+  **réponses** attendues diffèrent. Pire : le retrait du Studio recevrait un 404 qu'il lit comme un
+  succès, donc **sans aucun signal d'erreur**. Le plan suit le contrat du site, champ par champ
+  (§ 1.6), et prévoit un test croisé sur les trois appels.
+- **Vidéos validées mais pas encore envoyées** : c'est possible. L'envoi au site ne lit pas l'étape
+  « validée pour les réseaux » (il lit « prête » + case « Sur le site »). Le plan ajoute un
+  déclencheur à la validation et un rattrapage des vidéos déjà validées ou publiées (S-6), avec
+  garde-fous : ne jamais republier une vidéo retirée ou décochée par Will.
+- **Un retrait est définitif côté site** (409 si on republie). Décision à confirmer : on le garde.
+- Geste de Will (seau public) : trois étapes simples au § 10.
+- « Lecture au clic » : option A recommandée (clic vers la page vidéo, aucun JavaScript).
+- Web Vitals : aucun JavaScript au premier chargement, image à dimensions réservées (CLS = 0).
 
 ## Découpage proposé
 
-Studio : S-0 à S-5 (contrat, vignettes, archivage qui retire, stockage public, branchement).
-Site : E0 à E8 (bug « implémentations », répartiteur pur, migration, embeddings, file de travail,
-console, rendu, villes, lecture sur place facultative).
+Studio : S-0 à S-6. Site : E0 à E8 (E4b = émetteur de l'app, après le worker).
 
 ## Non fait
 
@@ -35,13 +33,14 @@ Aucun code, aucune migration, rien allumé, rien envoyé au Studio.
 
 ## Relecture
 
-Un sous-agent opus a relu le plan : un bloquant (écart de contrat sous-estimé) et sept points
-importants (bande de pertinence, concurrence, revalidation du worker, ordre migration/worker,
-drapeau côté worker, faux témoignage, délais de retrait). Tout a été reporté dans le document.
-La version corrigée n'a pas été relue une seconde fois.
+Trois relectures par un sous-agent opus, avec vérification des références dans les deux dépôts. Les
+deux premières ont trouvé des bloquants (routes et réponses, garde-fou S-6), corrigés. La troisième
+n'a plus trouvé de bloquant, mais deux points importants (déclencheurs de validation, ordre E3) et sept
+mineurs : tous appliqués ensuite, sans quatrième relecture. `prettier --check` passe (avec la config
+du dépôt sans son plugin Tailwind, absent ici, sans effet sur du Markdown).
 
 VERDICT OPUS : À CORRIGER
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
-https://claude.ai/code/session_01E7vxGczccpwnW4UEaNpAtD
+https://claude.ai/code/session_01E7vxGdMG5sqava7FDtMhfZ
