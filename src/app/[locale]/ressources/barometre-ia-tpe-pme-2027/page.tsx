@@ -2,7 +2,7 @@
 //
 // Server component statique, zéro JS client, aucune image. Tous les chiffres
 // viennent de `src/content/barometre-2027/donnees.ts` (fichier unique).
-// Tant que BAROMETRE_2027_PUBLIC n'est pas "true" : noindex, et hors sitemap
+// Tant que BAROMETRE_PUBLIC (constante du code) vaut false : noindex, et hors sitemap
 // (cf. `src/app/sitemap.ts`).
 
 import type { Metadata } from "next";
@@ -38,7 +38,7 @@ import {
   SOURCES,
   USAGES,
   VOCABULAIRE,
-  barometrePublic,
+  BAROMETRE_PUBLIC,
   type Tableau,
 } from "@/content/barometre-2027/donnees";
 
@@ -58,9 +58,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: BAROMETRE_DESCRIPTION,
     ogType: "article",
   });
-  if (barometrePublic()) return meta;
-  return {
+  // FR seul : pas d'alternative EN, hreflang réduit à fr et x-default.
+  const frUrl = meta.alternates?.languages?.fr ?? `/fr${BAROMETRE_PATH}`;
+  const base: Metadata = {
     ...meta,
+    alternates: {
+      ...meta.alternates,
+      languages: { fr: frUrl, "x-default": frUrl },
+    },
+  };
+  if (BAROMETRE_PUBLIC) return base;
+  return {
+    ...base,
     robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
   };
 }
@@ -154,7 +163,9 @@ export default async function BarometrePage({ params }: Props) {
               <TableauDonnees t={EVOLUTION} />
               <TableauDonnees t={PAR_TAILLE} />
               <TableauDonnees t={PAR_SECTEUR} />
-              <h3 className="text-lg font-semibold">Autres écarts relevés en 2026</h3>
+              <h3 className="text-lg font-semibold">
+                Autres écarts relevés par le Baromètre France Num 2026 (rapport p. 54)
+              </h3>
               <ul className="mt-2 list-disc space-y-1 pl-5">
                 {AUTRES_ECARTS.map((e) => (
                   <li key={e}>{e}</li>

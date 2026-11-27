@@ -88,7 +88,7 @@ const APP_LOCALE = join(APP, "[locale]");
  * Elles portent `robots: { index: false }` pour la même raison.
  */
 const HORS_AUDIT = [
-  // Baromètre 2027 : noindex et hors sitemap tant que BAROMETRE_2027_PUBLIC !== "true"
+  // Baromètre 2027 : noindex et hors sitemap tant que BAROMETRE_PUBLIC === false
   // (validation éditeur en attente). À ajouter à routes-publiques.json à la publication.
   "/ressources/barometre-ia-tpe-pme-2027",
   // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page redirige (308) vers

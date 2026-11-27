@@ -358,7 +358,7 @@ export const routing = defineRouting({
     // boucle 307 de next-intl, lequel ne frappe que les mappings `fr ≠ en`.
     "/ressources": { fr: "/ressources", en: "/ressources" },
     // Baromètre 2027 IA TPE/PME (FR seul). noindex + hors sitemap tant que
-    // BAROMETRE_2027_PUBLIC !== "true" (cf. `sitemap.ts`). Slug identique en EN.
+    // BAROMETRE_PUBLIC === false (constante, cf. `sitemap.ts`). Slug identique en EN.
     "/ressources/barometre-ia-tpe-pme-2027": {
       fr: "/ressources/barometre-ia-tpe-pme-2027",
       en: "/ressources/barometre-ia-tpe-pme-2027",

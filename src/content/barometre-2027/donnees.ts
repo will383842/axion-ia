@@ -17,10 +17,14 @@ export const BAROMETRE_DATE_MODIFICATION = "2026-11-26";
 /** Date de consultation de toutes les sources. */
 export const BAROMETRE_DATE_CONSULTATION = "26 novembre 2026";
 
-/** La page reste en noindex et hors sitemap tant que la variable n'est pas "true". */
-export function barometrePublic(): boolean {
-  return process.env.BAROMETRE_2027_PUBLIC === "true";
-}
+/**
+ * Interrupteur de publication (modèle : CAS_CONCRETS_AFFICHES / PRIX_PUBLICS_AFFICHES).
+ * Constante dans le code, pas variable d'environnement : la page est générée au build,
+ * une variable Coolify posée au runtime ne la changerait pas. Tant qu'elle vaut `false` :
+ * noindex, hors sitemap, hors page Ressources. Pour publier : PR qui la passe à `true`
+ * et met la vraie date de publication.
+ */
+export const BAROMETRE_PUBLIC = false;
 
 export interface ChiffreCle {
   /** Valeur mise en avant, telle que publiée. */
@@ -219,7 +223,7 @@ export const ENSEIGNEMENTS: readonly { titre: string; texte: string }[] = [
     titre:
       "Les compétences et la confiance dans les données sont les points d'attention récurrents.",
     texte:
-      "31 % des utilisateurs d'IA n'ont ni compétence ni projet d'en acquérir ; en Europe, le manque de compétences est le frein le plus cité (7,76 % de l'ensemble des entreprises, soit 70,31 % des entreprises qui ont envisagé l'IA sans l'adopter, Eurostat, UE27, 2025) ; 53 % des dirigeants craignent la perte de données.",
+      "31 % des utilisateurs d'IA n'ont ni compétence ni projet d'en acquérir ; en Europe, le manque de compétences est le frein le plus cité (7,76 % de l'ensemble des entreprises, soit 70,31 % des entreprises qui ont envisagé l'IA sans l'adopter, Eurostat, unité PC_ENT_AI_EC, UE27, 2025) ; 53 % des dirigeants craignent la perte de données.",
   },
 ];
 
@@ -238,6 +242,8 @@ export interface SourceBarometre {
   nom: string;
   url: string;
   detail: string;
+  /** Type schema.org de la source, repris dans `isBasedOn`. */
+  type: "WebPage" | "Report" | "Dataset";
 }
 
 export const SOURCES: readonly SourceBarometre[] = [
@@ -246,18 +252,21 @@ export const SOURCES: readonly SourceBarometre[] = [
     nom: "Baromètre France Num 2026, page de synthèse",
     url: "https://www.francenum.gouv.fr/guides-et-conseils/strategie-numerique/comprendre-le-numerique/barometre-france-num-2026-le",
     detail: "Publiée le 17 septembre 2026, mise à jour le 12 novembre 2026.",
+    type: "WebPage",
   },
   {
     id: "france-num-rapport",
     nom: "Baromètre France Num 2026, rapport complet (PDF)",
     url: "https://www.francenum.gouv.fr/files/2026-09/Barom%C3%A8tre%20France%20Num%202026%20-%20Rapport%20final.pdf",
     detail: "Document daté du 02/10/2026.",
+    type: "Report",
   },
   {
     id: "eurostat-isoc-eb-ai",
     nom: "Eurostat, « Artificial intelligence by size class of enterprise » (isoc_eb_ai)",
     url: "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
     detail: "Tableau consulté ; données lues via l'API de diffusion d'Eurostat.",
+    type: "Dataset",
   },
 ];
 

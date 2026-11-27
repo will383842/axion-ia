@@ -22,8 +22,11 @@ export function buildBarometreJsonLd(locale: Locale) {
     datePublished: BAROMETRE_DATE_PUBLICATION,
     dateModified: BAROMETRE_DATE_MODIFICATION,
     articleSection: "Baromètre",
+    // Auteur : l'organisation, pas une personne (cohérent avec `creator` du Dataset).
+    author: { "@id": `${SITE_URL}/#organization` },
     keywords: ["baromètre IA", "TPE", "PME", "adoption de l'IA", "France Num", "Eurostat"],
     citations: SOURCES.map((s) => ({ name: s.nom, url: s.url })),
+    isBasedOn: SOURCES.map((s) => ({ name: s.nom, url: s.url, type: s.type })),
   });
   const dataset = {
     "@context": "https://schema.org",
@@ -35,10 +38,10 @@ export function buildBarometreJsonLd(locale: Locale) {
     inLanguage: "fr-FR",
     datePublished: BAROMETRE_DATE_PUBLICATION,
     dateModified: BAROMETRE_DATE_MODIFICATION,
-    spatialCoverage: "France",
+    spatialCoverage: ["France", "Union européenne"],
     creator: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
     publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
-    isBasedOn: SOURCES.map((s) => ({ "@type": "Dataset", name: s.nom, url: s.url })),
+    isBasedOn: SOURCES.map((s) => ({ "@type": s.type, name: s.nom, url: s.url })),
     citation: SOURCES.map((s) => ({ "@type": "CreativeWork", name: s.nom, url: s.url })),
     variableMeasured: VARIABLES_MESUREES.map((v) => ({
       "@type": "PropertyValue",
