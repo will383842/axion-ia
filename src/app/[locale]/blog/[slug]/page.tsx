@@ -293,8 +293,8 @@ export default async function BlogArticle({ params }: Props) {
     // indéfiniment (même doctrine anti-307 que proxy.ts). `permanentRedirect()`
     // émet le 308 attendu par le commentaire d'origine.
     const redirectInfo = await findArticleSlugRedirect(slug, loc as "fr" | "en");
-    if (redirectInfo && !redirectInfo.isNews) {
-      permanentRedirect(`/${loc}/blog/${redirectInfo.newSlug}`);
+    if (redirectInfo && !(redirectInfo.section === "blog" && redirectInfo.newSlug === slug)) {
+      permanentRedirect(`/${loc}/${redirectInfo.section}/${redirectInfo.newSlug}`);
     }
 
     // Audit indexation 2026-05-15 P0-7 — soft-410 si Article archived/draft.
