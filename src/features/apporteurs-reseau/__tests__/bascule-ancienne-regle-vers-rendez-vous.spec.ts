@@ -457,49 +457,21 @@ describe("étape « bascule-regle-rendez-vous »", () => {
     expect(DELAI_MINIMAL_BASCULE_JOURS).toBe(30);
   });
 
-  it("e-mail de bascule non parti : alerte interne par présentation, reprise au passage suivant sans doublon", async () => {
+  it("décision du 27/11 : à la bascule, AUCUN e-mail n'est envoyé à l'apporteur ; la présentation passe à la règle du rendez-vous (≥ 30 jours)", async () => {
     allume();
     db.pres.push(paul());
-    vi.mocked(envoyer).mockResolvedValueOnce("echec" as never);
-    await passerReseauApporteurs(VINGT_SIX);
-    expect(
-      db.alertes.filter((a) => a.jobId === "apporteur-bascule-email-non-parti-P1"),
-    ).toHaveLength(1);
+    const b = await passerReseauApporteurs(VINGT_SIX);
     await passerReseauApporteurs(j(VINGT_SIX, 1));
-    const envois = vi
-      .mocked(envoyer)
-      .mock.calls.map((c) => c[0])
-      .filter((e) => e.gabarit === "apporteur-presentation-regle-rendez-vous");
-    expect(envois).toHaveLength(2); // l'échec, puis la reprise
-    expect(
-      db.alertes.filter((a) => a.jobId === "apporteur-bascule-email-non-parti-P1"),
-    ).toHaveLength(1);
-  });
-
-  it("l'apporteur est prévenu par e-mail (une fois par présentation), avec l'entreprise et la date limite", async () => {
-    allume();
-    db.pres.push(paul());
-    await passerReseauApporteurs(VINGT_SIX);
-    const appels = vi
-      .mocked(envoyer)
-      .mock.calls.map((c) => c[0])
-      .filter((e) => e.gabarit === "apporteur-presentation-regle-rendez-vous");
-    expect(appels).toHaveLength(1);
-    expect(appels[0]).toMatchObject({
-      destinataire: "a@b.fr",
-      entityId: "P1",
-      jobId: "apporteur-bascule-regle-P1",
-      payload: { entreprise: "Acme", dateLimite: "8 janvier 2027" },
-    });
-    expect(appels[0]!.payload).not.toHaveProperty("gabaritRepli");
-    // Deux passages : la clé idempotente (dejaEnvoye) empêche un second envoi.
-    db.jobIds.add("apporteur-bascule-regle-P1");
-    await passerReseauApporteurs(j(VINGT_SIX, 1));
-    expect(
-      vi
-        .mocked(envoyer)
-        .mock.calls.filter((c) => c[0].gabarit === "apporteur-presentation-regle-rendez-vous"),
-    ).toHaveLength(1);
+    expect(b.basculees).toBe(1);
+    // La ligne de réservation existe, terme d'au moins 30 jours après la bascule.
+    expect(db.res).toHaveLength(1);
+    expect(db.res[0]!.reserveeJusquAt.getTime()).toBeGreaterThanOrEqual(j(VINGT_SIX, 30).getTime());
+    // Aucun envoi à l'apporteur : ni `envoyer`, ni file d'e-mails vers lui.
+    expect(vi.mocked(envoyer)).not.toHaveBeenCalled();
+    expect(db.alertes.some((a) => a.to === "a@b.fr")).toBe(false);
+    expect(db.alertes.some((a) => String(a.gabarit).startsWith("apporteur-presentation"))).toBe(
+      false,
+    );
   });
 
   it("apporteur qui passe en 2.8 APRÈS une première exécution : la bascule a lieu au passage suivant", async () => {

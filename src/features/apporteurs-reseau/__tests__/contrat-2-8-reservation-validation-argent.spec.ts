@@ -118,7 +118,7 @@ describe("contrat 2.8", () => {
   it("article 13.5 : la clause transitoire existe et son délai est celui du code", () => {
     expect(texte).toContain(MARQUEUR_CLAUSE_BASCULE);
     expect(texte).toContain(
-      "passent à la règle du premier rendez-vous tenu (article 3.2) ; l'Apporteur dispose d'au moins trente jours à compter de ce jour pour obtenir ce rendez-vous, et il en est informé par courrier électronique",
+      "passent à la règle du premier rendez-vous tenu (article 3.2) ; l'Apporteur dispose d'au moins trente jours à compter de ce jour pour obtenir ce rendez-vous.",
     );
     // « trente jours » écrit au contrat = DELAI_MINIMAL_BASCULE_JOURS (30).
     expect(DELAI_MINIMAL_BASCULE_JOURS).toBe(30);

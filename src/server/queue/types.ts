@@ -196,8 +196,6 @@ export type EmailJobName =
   | "entreprise-prise-de-contact-apporteur"
   // Lot 7b : accusé « 60 jours, rendez-vous » (branché).
   | "apporteur-presentation-recue-rendez-vous"
-  // Bascule vers la règle du rendez-vous (art. 13.5) ; sans gabaritRepli.
-  | "apporteur-presentation-regle-rendez-vous"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
   | "apporteur-commande-non-attribuee"

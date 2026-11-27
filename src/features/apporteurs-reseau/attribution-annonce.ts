@@ -106,51 +106,6 @@ export async function annoncerAttribution(
   }
 }
 
-export const jobIdAnnonceBascule = (presentationId: string): string =>
-  `apporteur-bascule-regle-${presentationId}`;
-
-/**
- * Bascule d'une présentation en attente vers la règle du rendez-vous (contrat 2.8, art. 13.5) :
- * prévient l'apporteur de la nouvelle règle, de l'entreprise concernée et de la date limite.
- * UNE fois par présentation (clé d'idempotence). Ne LÈVE jamais ; PAS de `gabaritRepli`.
- * Rend vrai si l'e-mail part (ou attend validation) maintenant.
- */
-export async function annoncerBascule(presentationId: string, terme: Date): Promise<boolean> {
-  try {
-    const jobId = jobIdAnnonceBascule(presentationId);
-    if (await dejaEnvoye(jobId)) return false;
-    const p = await prisma.presentationEntreprise.findUnique({
-      where: { id: presentationId },
-      select: {
-        id: true,
-        denomination: true,
-        apporteur: { select: { prenom: true, nom: true, email: true } },
-      },
-    });
-    if (!p) return false;
-    const email = decryptPii(p.apporteur.email) ?? "";
-    if (!email) return false;
-    const r = await envoyer({
-      gabarit: "apporteur-presentation-regle-rendez-vous",
-      destinataire: email,
-      payload: {
-        contactName: [decryptPii(p.apporteur.prenom), decryptPii(p.apporteur.nom)]
-          .filter(Boolean)
-          .join(" "),
-        entreprise: p.denomination,
-        dateLimite: dateEnClair(terme),
-      },
-      entityType: "PresentationEntreprise",
-      entityId: p.id,
-      jobId,
-    });
-    return r === "envoye" || r === "en-validation";
-  } catch (err) {
-    signalerErreurReseau("annonce de bascule vers la règle du rendez-vous", err);
-    return false;
-  }
-}
-
 /**
  * Les déclarations sans réponse de Williams (« Bien reçu » ou refus) depuis
  * `RAPPEL_SANS_REPONSE_JOURS` jours : une alerte INTERNE chacune, une seule fois.
