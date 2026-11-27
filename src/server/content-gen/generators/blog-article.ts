@@ -313,7 +313,12 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
     let parsed: BlogArticleParsed | null = null;
     let prevFeedback = input.improvementFeedback ?? "";
     const expandSystem =
-      applySystemPromptOverride(SYSTEM_PROMPT_EXPAND, input.templateOverride, "blog_article") +
+      applySystemPromptOverride(
+        SYSTEM_PROMPT_EXPAND,
+        input.templateOverride,
+        "blog_article",
+        "section",
+      ) +
       getIntentPromptAddendum(input.targetSearchIntent) +
       ph3Aug +
       getFinancingPromptFact();

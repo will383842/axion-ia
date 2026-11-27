@@ -10,7 +10,7 @@ Que tout dirigeant de petite ou moyenne entreprise comprenne facilement les arti
 
 ## Ce qui change quand il est allumé
 
-Bloc commun ajouté à tous les types : réponse d'abord en 2 phrases, phrases courtes (20 mots en moyenne, jamais plus de 30), paragraphes courts, jargon expliqué, un exemple de PME par section (étiqueté illustratif, sans chiffre, sans nom), intertitres en questions (5 à 10 mots, au moins la moitié), encadrés balisés « À retenir », « En bref », « Exemple », « Chiffre clé », transitions qui relancent la lecture, conclusion avec 3 actions concrètes, appel vers le Diagnostic IA gratuit de 45 minutes puis la Journée IA, sans prix.
+Bloc commun ajouté à tous les types : réponse d'abord en 2 phrases, phrases courtes (20 mots en moyenne, jamais plus de 30), paragraphes courts, jargon expliqué, un exemple de PME par section (étiqueté illustratif, sans chiffre, sans nom), intertitres en questions (5 à 10 mots, au moins la moitié), encadrés balisés « À retenir », « En bref », « Exemple », « Chiffre clé », transitions qui relancent la lecture, conclusion avec 3 actions concrètes, appel vers le Diagnostic IA gratuit de 45 minutes puis la Journée IA (si sa fiche est présente), sans prix.
 
 Blocs spécifiques par type :
 - Actualité (`blog_from_rss`) : courte et factuelle, « Ce que cela change pour vous », ligne finale vers le Diagnostic seul.
@@ -58,4 +58,3 @@ Documenté dans `docs/design/gabarits-articles/BALISAGE-ENCADRES.md` (classes `a
 - Le formatage prettier des 8 générateurs (appel à deux arguments) est à refaire : l'outil n'était pas disponible.
 - Le bloc rallonge les prompts (coût en jetons légèrement supérieur).
 
-VERDICT OPUS : À CORRIGER

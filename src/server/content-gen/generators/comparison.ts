@@ -260,7 +260,12 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
     let parsed: ComparisonParsed | null = null;
     let prevFeedback = input.improvementFeedback ?? "";
     const expandSystem =
-      applySystemPromptOverride(SYSTEM_PROMPT_EXPAND, input.templateOverride, "comparison") +
+      applySystemPromptOverride(
+        SYSTEM_PROMPT_EXPAND,
+        input.templateOverride,
+        "comparison",
+        "section",
+      ) +
       getIntentPromptAddendum(input.targetSearchIntent);
 
     while (iteration < MAX_QUALITY_ITERATIONS) {

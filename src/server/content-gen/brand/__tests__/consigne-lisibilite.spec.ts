@@ -117,8 +117,9 @@ describe("allumé", () => {
   it("portée « section » : pas d'appel final ni de réponse d'ouverture, interdits gardés", () => {
     const c = consigneLisibiliteV2("guide_pilier", ON, "section");
     expect(c).toContain(MARQUEUR_LISIBILITE_V2);
-    expect(c).toMatch(/ne répétez ni l'introduction, ni l'appel à l'action/);
-    expect(c).not.toMatch(/Diagnostic IA/);
+    expect(c).toMatch(/Ne répétez ni l'introduction, ni l'appel à l'action/);
+    expect(c).toMatch(/priment sur toute consigne précédente/);
+    expect(c).not.toMatch(/Chiffre clé.*sans source/);
     expect(c).toMatch(/aucun faux témoignage/);
     expect(consigneLisibiliteV2("guide_pilier", {}, "section")).toBe("");
   });

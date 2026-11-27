@@ -48,7 +48,7 @@ Le lecteur type est un dirigeant de petite ou moyenne entreprise, pressé, sans 
    - Chiffre clé : ${ENCADRES_LISIBILITE.chiffreCle} UNIQUEMENT si un chiffre figure dans les sources fournies, avec sa source ; sinon n'en mettez aucun.
 7. TRANSITIONS QUI RELANCENT : terminez chaque section par une phrase qui ouvre la suivante (une question, ou « Reste un point : … »). Pas de « En conclusion » au milieu du texte.
 8. CONCLUSION ACTIONNABLE : une dernière section « Par où commencer ? » avec 3 actions concrètes, à faire cette semaine, en liste numérotée <ol>, chacune commençant par un verbe, et seulement des actions de préparation faisables sans compétence technique (lister des tâches, choisir un usage, désigner un référent).
-9. APPEL À L'ACTION SANS PRIX : proposez, avec sobriété et sans pression, le Diagnostic IA gratuit de ${DUREE_RDV}, sans engagement, comme premier pas, puis la Journée IA d'Axion-IA UNIQUEMENT si sa fiche figure plus haut dans ce prompt (citée sans montant) ; un seul paragraphe, aucune réservation ni paiement en ligne. Jamais de prix, de frais de déplacement, de promesse de résultat ni de délai chiffré hors des durées données plus haut.
+9. APPEL À L'ACTION SANS PRIX : proposez, avec sobriété et sans pression, le Diagnostic IA gratuit de ${DUREE_RDV}, sans engagement, comme premier pas, puis la Journée IA d'Axion-IA UNIQUEMENT si une fiche Journée IA figure dans ce prompt ou dans la demande (citée sans montant) ; un seul paragraphe, aucune réservation ni paiement en ligne. Jamais de prix, de frais de déplacement, de promesse de résultat ni de délai chiffré hors des durées données plus haut.
 10. HONNÊTETÉ : aucun chiffre sans source fournie, aucun faux témoignage, aucun témoignage ni cas client inventé, aucune promesse de gain. Écrivez « souvent », « selon les cas » plutôt que d'inventer un pourcentage.
 Vérification interne avant de répondre : relisez à voix haute ; coupez toute phrase de plus de 30 mots ; supprimez tout mot que le lecteur devrait chercher.`;
 
@@ -56,7 +56,7 @@ Vérification interne avant de répondre : relisez à voix haute ; coupez toute 
 export type PorteeLisibiliteV2 = "article" | "section";
 
 const COMMUN_SECTION = `${MARQUEUR_LISIBILITE_V2} (rédaction par morceaux)
-Lecteur : dirigeant de petite ou moyenne entreprise, pressé, sans formation technique. Ces règles de FORME s'appliquent aux sections demandées dans cet appel ; ne répétez ni l'introduction, ni l'appel à l'action, ni la conclusion : d'autres appels s'en chargent. Les interdits restent absolus (aucun prix, aucun chiffre sans source, aucun faux témoignage).
+Lecteur : dirigeant de petite ou moyenne entreprise, pressé, sans formation technique. Ces règles de FORME s'appliquent aux sections demandées dans cet appel et priment sur toute consigne précédente de forme (par exemple « réponse en une phrase » : écrivez 2 ou 3 phrases courtes). Ne répétez ni l'introduction, ni l'appel à l'action, ni la conclusion, sauf si la section demandée est elle-même la conclusion « Par où commencer ? » (3 actions de préparation en liste numérotée, puis un paragraphe vers le Diagnostic IA gratuit). Les interdits restent absolus (aucun prix, aucun chiffre sans source, aucun faux témoignage).
 - Phrases de 20 mots en moyenne au plus, jamais plus de 30 ; une idée par phrase ; paragraphes de 2 à 4 phrases et 70 mots au plus. La réponse autonome sous un titre s'écrit en 2 ou 3 phrases courtes.
 - Mots simples ; tout terme technique est expliqué en une demi-phrase à sa première apparition.
 - Un exemple concret de petite ou moyenne entreprise par section, signalé comme illustratif, sans nom, sans ville, sans chiffre, sans citation.
@@ -108,7 +108,7 @@ const SPECIFIQUE: Readonly<Record<string, string>> = {
   barometer_insight:
     "Type analyse de l'Observatoire : commencez par le chiffre vérifié le plus parlant, traduit en une phrase simple ; chaque chiffre garde sa source ; encadré « Chiffre clé » seulement pour un chiffre de l'Observatoire ; puis « Ce que cela signifie pour votre entreprise ».",
   landing_ville:
-    "Type page ville : parlez des entreprises du territoire en mots simples, avec la réalité locale fournie seulement ; un exemple local illustratif ; appel vers la Journée IA et le Diagnostic IA.",
+    "Type page ville : parlez des entreprises du territoire en mots simples, avec la réalité locale fournie seulement ; un exemple local illustratif ; appel vers le Diagnostic IA gratuit (et la Journée IA si sa fiche est fournie).",
 };
 
 /**

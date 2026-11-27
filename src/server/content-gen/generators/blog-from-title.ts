@@ -291,7 +291,12 @@ ${sectionChiffresVerifies()}${equipeEditorialeActive() ? CONSIGNE_PLAN_EQUIPE : 
     let parsed: BlogFromTitleParsed | null = null;
     let prevFeedback = input.improvementFeedback ?? "";
     const expandSystem =
-      applySystemPromptOverride(SYSTEM_PROMPT_EXPAND, input.templateOverride, "blog_from_title") +
+      applySystemPromptOverride(
+        SYSTEM_PROMPT_EXPAND,
+        input.templateOverride,
+        "blog_from_title",
+        "section",
+      ) +
       getIntentPromptAddendum(input.targetSearchIntent);
 
     while (iteration < MAX_QUALITY_ITERATIONS) {

@@ -17,7 +17,10 @@
 import { prisma } from "@/lib/prisma";
 import type { ContentType } from "../../../prisma/generated/client";
 import { injectBrandVoiceForType } from "@/server/content-gen/brand/brand-voice";
-import { avecConsigneLisibiliteV2 } from "@/server/content-gen/brand/consigne-lisibilite";
+import {
+  avecConsigneLisibiliteV2,
+  type PorteeLisibiliteV2,
+} from "@/server/content-gen/brand/consigne-lisibilite";
 import {
   BLOC_POSITIONNEMENT,
   MARQUEUR_POSITIONNEMENT,
@@ -163,6 +166,7 @@ export function applySystemPromptOverride(
   codeSystemPrompt: string,
   override: TemplateOverride | undefined,
   contentType: string,
+  portee: PorteeLisibiliteV2 = "article",
 ): string {
   if (!override?.systemPrompt) return codeSystemPrompt;
   // Defense-in-depth : re-garde au point d'injection (l'override peut avoir été
@@ -181,6 +185,8 @@ export function applySystemPromptOverride(
   const avecVoix = avecConsigneLisibiliteV2(
     injectBrandVoiceForType(override.systemPrompt, contentType),
     contentType,
+    process.env,
+    portee,
   );
   if (avecVoix.includes(MARQUEUR_POSITIONNEMENT)) return avecVoix;
   return `${avecVoix}

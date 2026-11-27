@@ -288,6 +288,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         SYSTEM_PROMPT_EXPAND,
         input.templateOverride,
         "blog_from_keywords",
+        "section",
       ) + getIntentPromptAddendum(input.targetSearchIntent);
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
