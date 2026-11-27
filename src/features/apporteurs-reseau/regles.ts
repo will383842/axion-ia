@@ -563,6 +563,53 @@ export function calculerCommission(e: {
 }
 
 /**
+ * Codes de la « règle appliquée » (relevé mensuel, plan § 5.3) : liste FERMÉE, posée au calcul sur
+ * `CommissionApporteur.regleAppliquee`, jamais recalculée ensuite. `formation_3j_plus` est réservé
+ * et volontairement absent tant que la question Q7 n'est pas tranchée.
+ */
+export const CODES_REGLE_APPLIQUEE = [
+  "forfait_palier",
+  "prorata_remise",
+  "forfait_sessions",
+  "taux_ht",
+  "plafond_base",
+  "parrainage_10",
+  "tarif_avant_date_effet",
+  "journee_ia",
+] as const;
+export type RegleAppliquee = (typeof CODES_REGLE_APPLIQUEE)[number];
+
+/**
+ * `calculerCommission` + le code de la règle qui a produit le montant. Le calcul rendu est EXACTEMENT
+ * celui de `calculerCommission` (aucun montant ne change) ; `regle` vaut `null` quand rien n'est calculé.
+ */
+export function calculerCommissionAvecRegle(e: Parameters<typeof calculerCommission>[0]): {
+  calcul: CalculCommission;
+  regle: RegleAppliquee | null;
+} {
+  const calcul = calculerCommission(e);
+  if (calcul.statut !== "calculee") return { calcul, regle: null };
+  if (e.activite === "conference" || e.palier === PALIER_CONFERENCE)
+    return { calcul, regle: "tarif_avant_date_effet" };
+  if (e.activite !== "formation") return { calcul, regle: "taux_ht" };
+  const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
+  if (!p) return { calcul, regle: null };
+  const q = quantiteSessions(e.quantite);
+  if (Math.max(0, e.factureHtCents) < p.prixCents * q) return { calcul, regle: "prorata_remise" };
+  return { calcul, regle: q > 1 ? "forfait_sessions" : "forfait_palier" };
+}
+
+/**
+ * Version du contrat signée par l'apporteur (« 2.6 », « 2.8 »…), lue dans `signatureApporteur`.
+ * `null` si absente ou illisible : rien n'est inventé.
+ */
+export function versionContratSignee(signature: unknown): string | null {
+  if (!signature || typeof signature !== "object" || Array.isArray(signature)) return null;
+  const v = (signature as { version?: unknown }).version;
+  return typeof v === "string" && /^\d{1,3}\.\d{1,3}$/.test(v) ? v : null;
+}
+
+/**
  * Lignes d'abonnement, de maintenance, d'hébergement ou de licence portées par un devis (règle du
  * 25/11 : rien dessus ; seule la mise en service donne 15 %). Repère : désignation. Pur.
  */

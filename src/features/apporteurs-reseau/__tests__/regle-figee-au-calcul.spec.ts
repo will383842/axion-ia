@@ -21,18 +21,56 @@ const APRES = new Date("2026-12-01T10:00:00.000Z");
 type Entree = Parameters<typeof calculerCommission>[0];
 
 const CAS: Array<[string, Entree, string | null]> = [
-  ["formation au prix public", { activite: "formation", palier: "formation-generale-1j", factureHtCents: 190_000 }, "forfait_palier"],
-  ["formation remisée", { activite: "formation", palier: "formation-generale-1j", factureHtCents: 152_000 }, "prorata_remise"],
-  ["formation plusieurs sessions", { activite: "formation", palier: "formation-generale-1j", factureHtCents: 380_000, quantite: 2 }, "forfait_sessions"],
-  ["formation sessions remisées", { activite: "formation", palier: "formation-generale-1j", factureHtCents: 300_000, quantite: 2 }, "prorata_remise"],
+  [
+    "formation au prix public",
+    { activite: "formation", palier: "formation-generale-1j", factureHtCents: 190_000 },
+    "forfait_palier",
+  ],
+  [
+    "formation remisée",
+    { activite: "formation", palier: "formation-generale-1j", factureHtCents: 152_000 },
+    "prorata_remise",
+  ],
+  [
+    "formation plusieurs sessions",
+    {
+      activite: "formation",
+      palier: "formation-generale-1j",
+      factureHtCents: 380_000,
+      quantite: 2,
+    },
+    "forfait_sessions",
+  ],
+  [
+    "formation sessions remisées",
+    {
+      activite: "formation",
+      palier: "formation-generale-1j",
+      factureHtCents: 300_000,
+      quantite: 2,
+    },
+    "prorata_remise",
+  ],
   ["audit", { activite: "audit", factureHtCents: 190_000 }, "taux_ht"],
   ["intégration", { activite: "implementation", factureHtCents: 190_000 }, "taux_ht"],
   ["développement web", { activite: "site_web", factureHtCents: 100_000 }, "taux_ht"],
-  ["conférence avant la date d'effet", { activite: "conference", factureHtCents: 80_000, signeeAt: AVANT }, "tarif_avant_date_effet"],
-  ["conférence après : aucune", { activite: "conference", factureHtCents: 80_000, signeeAt: APRES }, null],
+  [
+    "conférence avant la date d'effet",
+    { activite: "conference", factureHtCents: 80_000, signeeAt: AVANT },
+    "tarif_avant_date_effet",
+  ],
+  [
+    "conférence après : aucune",
+    { activite: "conference", factureHtCents: 80_000, signeeAt: APRES },
+    null,
+  ],
   ["un à un : aucune", { activite: "un_a_un", factureHtCents: 80_000 }, null],
   ["à qualifier", { activite: null, factureHtCents: 80_000 }, null],
-  ["palier inconnu : à qualifier", { activite: "formation", palier: "inconnu", factureHtCents: 80_000 }, null],
+  [
+    "palier inconnu : à qualifier",
+    { activite: "formation", palier: "inconnu", factureHtCents: 80_000 },
+    null,
+  ],
 ];
 
 describe("lot R — calculerCommissionAvecRegle", () => {
@@ -68,7 +106,12 @@ describe("lot R — calculerCommissionAvecRegle", () => {
   it("balayage de montants : aucun écart avec calculerCommission", () => {
     for (const activite of ["formation", "audit", "implementation", "site_web"] as const) {
       for (let ht = 0; ht <= 400_000; ht += 7_919) {
-        const e: Entree = { activite, palier: "formation-secteur-2j", factureHtCents: ht, quantite: 1 };
+        const e: Entree = {
+          activite,
+          palier: "formation-secteur-2j",
+          factureHtCents: ht,
+          quantite: 1,
+        };
         expect(calculerCommissionAvecRegle(e).calcul).toEqual(calculerCommission(e));
       }
     }
@@ -93,7 +136,7 @@ describe("lot R — chaque création de commission pose la règle (source)", () 
     const s = lire("passage-quotidien.ts");
     expect(s).toMatch(/calculerCommissionAvecRegle/);
     expect(s).toMatch(/regleAppliquee:/);
-    expect(s).toMatch(/versionContrat:/);
+    expect(s).toMatch(/versionContrat[:,]/);
     expect(s).toMatch(/parrainage_10/);
   });
   it("reprises, compléments, avoirs : aucun code de règle inventé, aucune écriture rétroactive", () => {
