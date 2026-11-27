@@ -10,7 +10,6 @@ import {
   type FicheInitiale,
 } from "@/components/admin/collaborateurs/CollaborateurForm";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
-import { gardePageCollaborateurs } from "@/server/equipe-garde-page";
 import { prisma } from "@/lib/prisma";
 import { idSchema } from "@/lib/equipe/console/schemas";
 
@@ -26,12 +25,10 @@ export default async function CollaborateurPage({
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
 }) {
   const { locale, adminPrefix, id } = await params;
-  // Garde de lecture en PREMIÈRE instruction : les fiches sont réservées aux mêmes rôles que les échanges du dossier client.
-  const lecture = await gardeLectureEchanges(`/${locale}/${adminPrefix}/login`);
-  if (!lecture.autorise) {
-    return <AccesRefuse motif={lecture.motif} retourHref={`/${locale}/${adminPrefix}`} />;
-  }
-  const acces = await gardePageCollaborateurs(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardeLectureEchanges(
+    `/${locale}/${adminPrefix}/login`,
+    () => "Les fiches collaborateurs sont réservées aux administrateurs.",
+  );
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }

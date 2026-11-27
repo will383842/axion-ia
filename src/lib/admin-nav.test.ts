@@ -214,7 +214,9 @@ describe("buildAdminNav SSOT", () => {
     // +1 lien externe Usine à contenu (Studio) (2026-11-20, groupe content) : 178 + 1 = 179.
     // +1 Garantie Journée IA (suivi des remboursements, 2026-11-25, groupe finances) : 179 + 1 = 180.
     // +1 Challenges apporteurs (2026-11-27, groupe apporteurs) et +1 Questionnaire Baromètre 2027 (groupe content_gen) : 180 + 2 = 182.
-    expect(items.length).toBe(183);
+    // +1 Relevés mensuels apporteurs (2026-11-27, groupe apporteurs, lot 3e).
+    // +1 Collaborateurs (fiches publiques de l'équipe, 2026-11-27, groupe content) : 183 + 1 = 184.
+    expect(items.length).toBe(184);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -986,6 +988,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/apporteurs",
   "/apporteurs/entreprises",
   "/apporteurs/commissions",
+  "/apporteurs/releves",
   "/apporteurs/challenges",
   "/annonces",
   "/annonces/liens",
@@ -1113,6 +1116,7 @@ describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
       `${BASE}/apporteurs`,
       `${BASE}/apporteurs/entreprises`,
       `${BASE}/apporteurs/commissions`,
+      `${BASE}/apporteurs/releves`,
       `${BASE}/apporteurs/challenges`,
       `${BASE}/annonces`,
       `${BASE}/annonces/liens`,

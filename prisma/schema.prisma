@@ -2764,6 +2764,58 @@ model ContentGenConfig {
   @@map("content_gen_config")
 }
 
+/// Porte qualité (CONCEPTION-PORTE-QUALITE.md § 13, PR Q1) — un verdict par évaluation
+/// d'un contenu. Table NOUVELLE, aucune lecture ni écriture branchée en Q1.
+/// Pas de clé étrangère volontaire : le verdict survit à la suppression du contenu (audit),
+/// et aucune table existante n'est touchée (fenêtre app/worker). `verdict` : publiable |
+/// a_corriger | bloque | reporte ; `mode` : ombre | reel | maj. Colonnes en texte libre,
+/// pas d'énumération (règle 6 du § 3).
+/// rgpd: technique — verdict de qualité d'un contenu éditorial ; aucune donnée sur une personne
+model ContentQualityVerdict {
+  id                String   @id @default(cuid())
+  jobId             String?  @map("job_id")
+  articleId         String?  @map("article_id") @db.Uuid
+  contentKind       String   @map("content_kind") @db.VarChar(40)
+  versionPorte      String   @map("version_porte") @db.VarChar(40)
+  mode              String   @db.VarChar(20)
+  verdict           String   @db.VarChar(20)
+  note              Int?
+  criteres          Json?
+  seuilsFiges       Json?    @map("seuils_figes")
+  embeddingVoisinId String?  @map("embedding_voisin_id")
+  cosinusMax        Float?   @map("cosinus_max")
+  decidePar         String?  @map("decide_par")
+  motifDerogation   String?  @map("motif_derogation")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([jobId])
+  @@index([articleId])
+  @@index([verdict, createdAt])
+  @@index([createdAt])
+  @@map("content_quality_verdicts")
+}
+
+/// Porte qualité (§ 13, PR Q1) — instantané hebdomadaire d'une cohorte (contenus publiés la
+/// même semaine). Écrit plus tard par le worker, lu par l'écran. Un nombre absent est NULL
+/// (« indisponible »), jamais 0.
+/// rgpd: technique — compteurs agrégés par semaine ; aucune donnée sur une personne
+model PorteCohorte {
+  id           String   @id @default(cuid())
+  semaine      DateTime @unique @db.Date
+  publies      Int?
+  indexes7j    Int?     @map("indexes_7j")
+  indexes14j   Int?     @map("indexes_14j")
+  indexes28j   Int?     @map("indexes_28j")
+  impressions  Int?
+  noteMoyenne  Float?   @map("note_moyenne")
+  derogations  Int?
+  versionPorte String?  @map("version_porte") @db.VarChar(40)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("porte_cohortes")
+}
+
 /// City Domination 2026-05-18 P1-9 (audit A10) — Audit trail SOC2 immuable
 /// pour toute modification de ContentGenConfig + autres settings admin
 /// content-gen. Append-only : pas d'UPDATE/DELETE exposés via le helper
@@ -3424,6 +3476,8 @@ model CostLedger {
   tokensOutput Int         @default(0)
   costUsd      Decimal     @db.Decimal(10, 4)
   timestamp    DateTime    @default(now())
+  /// Chaîne éditoriale (C3) : rôle R1…R8 qui a dépensé. Nullable, texte libre (aucune énumération).
+  role         String?     @db.VarChar(40)
 
   @@index([provider, timestamp])
   @@index([jobId])
@@ -16442,6 +16496,7 @@ model ApporteurReseau {
   pieces        PieceApporteur[]
   presentations PresentationEntreprise[]
   commissions   CommissionApporteur[]
+  relevesMensuels ReleveMensuelApporteur[]
 
   @@index([statut])
   @@index([parrainId])
@@ -16907,6 +16962,10 @@ model CommissionApporteur {
   /// Autofacture impossible faute de donnée de l'apporteur : ce qui manque, et depuis quand
   /// (première détection). Effacé à l'émission de l'autofacture.
   autofactureAttenteMotif  String?                   @map("autofacture_attente_motif") @db.VarChar(200)
+  /// Code fermé de la règle de commission appliquée (relevé mensuel, plan § 5.3). Posé au calcul, jamais rétroactivement : NULL = commission antérieure.
+  regleAppliquee           String?                   @map("regle_appliquee") @db.VarChar(40)
+  /// Version du contrat signée par l'apporteur au calcul ("2.6", "2.8"…). NULL = commission antérieure.
+  versionContrat           String?                   @map("version_contrat") @db.VarChar(10)
   autofactureAttenteDepuis DateTime?                 @map("autofacture_attente_depuis") @db.Timestamptz(3)
   /// Contestation ÉCRITE du client en cours (contrat 2.3, art. 4.2 bis) : ni facturée ni versée.
   litigeDepuis             DateTime?                 @map("litige_depuis") @db.Timestamptz(3)
@@ -16925,6 +16984,94 @@ model CommissionApporteur {
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])
   @@map("commissions_apporteur")
+}
+
+enum StatutReleveMensuel {
+  /// Calculé, vérifiable, recalculable (seul statut modifiable en contenu).
+  prepare
+  /// Pris par un lot (`prisAt`) ; repris après 10 minutes (plan § 6.4).
+  envoi_en_cours
+  /// E-mail enfilé ; l'état de remise se lit dans `EmailLog`.
+  envoye
+  /// L'enfilage a échoué : renvoyable par un clic.
+  echec
+  /// Écarté par un administrateur pour cette période (motif obligatoire).
+  ecarte
+
+  @@map("statut_releve_mensuel")
+}
+
+/// Relevé MENSUEL d'information d'un apporteur (plan docs/plans/PLAN-RELEVE-MENSUEL-APPORTEURS.md) : récapitule les
+/// autofactures et avoirs du mois, n'est PAS une facture. Instantané figé (`contenu`, `empreinteSha256`) ; après
+/// `prepare`, un trigger SQL refuse toute modification des colonnes figées. Une erreur se corrige par un
+/// rectificatif (`rang` + 1). Conservation alignée sur les autofactures : 10 ans après la clôture de l'exercice (L.123-22).
+/// rgpd: technique — montants, numéros de pièces et dénomination de l'entreprise présentée ; aucun contact de l'entreprise, aucune coordonnée de l'apporteur (elles ne figurent que dans le PDF)
+model ReleveMensuelApporteur {
+  id                String              @id @default(uuid()) @db.Uuid
+  /// REL-AAAA-MM-NNNN[-Rk], série distincte d'AXI-APP.
+  numero            String              @unique @db.VarChar(40)
+  apporteurId       String              @map("apporteur_id") @db.Uuid
+  apporteur         ApporteurReseau     @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  /// AAAA-MM (mois de Paris).
+  periode           String              @db.Char(7)
+  /// 0 = origine ; k = k-ième rectificatif.
+  rang              Int                 @default(0)
+  rectifieId        String?             @map("rectifie_id") @db.Uuid
+  rectifie          ReleveMensuelApporteur?  @relation("ReleveRectifie", fields: [rectifieId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  rectificatifs     ReleveMensuelApporteur[] @relation("ReleveRectifie")
+  statut            StatutReleveMensuel @default(prepare)
+  formatVersion     Int                 @default(1) @map("format_version")
+  /// 1er M+1 00:00 Paris : instant de coupure du relevé (plan § 5.2).
+  coupureAt         DateTime            @map("coupure_at") @db.Timestamptz(3)
+  contenu           Json
+  /// sha256 du JSON canonique de `contenu`.
+  empreinteSha256   String              @map("empreinte_sha256") @db.Char(64)
+  /// apporteurs/releves/<apporteurId>/<numero>-<empreinte8>.pdf : contient le numéro, jamais réécrite après l'envoi.
+  pdfR2Key          String?             @map("pdf_r2_key") @db.VarChar(300)
+  pdfSha256         String?             @map("pdf_sha256") @db.Char(64)
+  /// Totaux dénormalisés pour les statistiques (centimes ; jamais relus pour réémettre).
+  nbLignes          Int                 @default(0) @map("nb_lignes")
+  facturesHtCents   Int                 @default(0) @map("factures_ht_cents")
+  avoirsHtCents     Int                 @default(0) @map("avoirs_ht_cents")
+  viresTtcCents     Int                 @default(0) @map("vires_ttc_cents")
+  enAttenteHtCents  Int                 @default(0) @map("en_attente_ht_cents")
+  cumulAnneeHtCents Int                 @default(0) @map("cumul_annee_ht_cents")
+  emailJobId        String?             @unique @map("email_job_id") @db.VarChar(120)
+  prepareAt         DateTime            @default(now()) @map("prepare_at") @db.Timestamptz(3)
+  prisAt            DateTime?           @map("pris_at") @db.Timestamptz(3)
+  envoyeAt          DateTime?           @map("envoye_at") @db.Timestamptz(3)
+  /// "console:<adminId>" (jamais "automatique" avant le lot 5).
+  envoyePar         String?             @map("envoye_par") @db.VarChar(60)
+  lotId             String?             @map("lot_id") @db.Uuid
+  motifEcart        String?             @map("motif_ecart") @db.VarChar(300)
+  erreur            String?             @db.VarChar(300)
+  creeAt            DateTime            @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt             DateTime            @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@unique([apporteurId, periode, rang])
+  @@index([periode, statut])
+  @@map("releves_mensuels_apporteur")
+}
+
+/// Un lot d'envoi des relevés d'une période. L'index unique partiel `lots_releve_mensuel_un_en_cours`
+/// (SQL brut de la migration, absent du schéma Prisma) garantit UN SEUL lot vivant par période (plan § 6.3).
+/// rgpd: technique — compteurs et dates d'un lot d'envoi ; aucune donnée personnelle
+model LotReleveMensuel {
+  id            String    @id @default(uuid()) @db.Uuid
+  periode       String    @db.Char(7)
+  declenchePar  String    @map("declenche_par") @db.VarChar(60)
+  debutAt       DateTime  @default(now()) @map("debut_at") @db.Timestamptz(3)
+  finAt         DateTime? @map("fin_at") @db.Timestamptz(3)
+  /// Lot mort (processus tué) repris par le lot suivant.
+  abandonneAt   DateTime? @map("abandonne_at") @db.Timestamptz(3)
+  nbCibles      Int       @default(0) @map("nb_cibles")
+  nbEnvoyes     Int       @default(0) @map("nb_envoyes")
+  nbDejaEnvoyes Int       @default(0) @map("nb_deja_envoyes")
+  nbEchecs      Int       @default(0) @map("nb_echecs")
+  nbBloques     Int       @default(0) @map("nb_bloques")
+
+  @@index([periode])
+  @@map("lots_releve_mensuel")
 }
 
 /// Une pièce de la série AXI-APP (autofacture ou avoir d'autofacture) FIGÉE à son émission :
@@ -19023,6 +19170,160 @@ model BarometreQuestionnaireReponse {
   @@map("barometre_questionnaire_reponses")
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// PILOTAGE SEO & GEO — couche « mesure » (PR P2, migration 20261127230000_pilotage_seo_mesure)
+// Sept tables NOUVELLES, aucune colonne ajoutée à une table existante. `siteRouteId` est une
+// simple colonne nullable SANS clé étrangère (pas de contrainte vers `site_routes`, aucune
+// cascade). `categorie` et `typePage` sont figés à l'import. Les tables étant neuves,
+// la règle « colonne nullable ou à défaut » (D8b) ne s'applique pas ; l'app et le worker
+// tolèrent la table absente (P2021). Rétention VISÉE, la purge
+// n'existe PAS dans cette PR (elle sera écrite en PR P4 ; aucune donnée n'est écrite avant) :
+//   GscPageRequeteJour 90 jours · GscPageRequeteSemaine 25 mois · GscPageJour et SeoOpportunite :
+//   durée à fixer après mesure de la volumétrie (première semaine).
+//   GscRequete : règle de purge du texte à arrêter en P4, en cohérence avec les 25 mois (une
+//   requête absente depuis 90 jours ne doit pas perdre son texte si ses lignes hebdomadaires
+//   restent conservées ; sinon supprimer ces lignes avec elle).
+// ════════════════════════════════════════════════════════════════════════════
+
+/// Un passage d'import Search Console pour un jour D et un type de recherche : sert
+/// l'idempotence et la reprise (« en échec » repris au passage suivant). Ne porte aucun
+/// identifiant ni secret : `erreurCode` est un code court (ex. `quotaExceeded`).
+/// rgpd: technique — journal d'exécution d'un import ; aucune donnée sur une personne
+model GscImportRun {
+  id            String    @id @default(cuid())
+  jour          DateTime  @db.Date
+  typeRecherche String    @default("web") @map("type_recherche") @db.VarChar(20)
+  /// en_cours | reussi | partiel | echec (chaîne, pas d'énumération Postgres).
+  statut        String    @default("en_cours") @db.VarChar(20)
+  nbLignesPage  Int       @default(0) @map("nb_lignes_page")
+  nbLignesReq   Int       @default(0) @map("nb_lignes_requete")
+  tentatives    Int       @default(1)
+  erreurCode    String?   @map("erreur_code") @db.VarChar(80)
+  debutLe       DateTime  @default(now()) @map("debut_le") @db.Timestamptz(3)
+  finLe         DateTime? @map("fin_le") @db.Timestamptz(3)
+
+  @@unique([jour, typeRecherche], map: "gsc_import_runs_jour_type_recherche_key")
+  @@index([statut, jour], map: "gsc_import_runs_statut_jour_idx")
+  @@map("gsc_import_runs")
+}
+
+/// Totaux exacts d'une page pour un jour (appel `byPage`, requêtes anonymisées comprises).
+/// `positionSum` = position × impressions : les cumuls et moyennes restent exacts.
+/// rgpd: technique — agrégats par page publique du site ; aucune donnée sur une personne
+model GscPageJour {
+  id                    Int      @id @default(autoincrement())
+  date                  DateTime @db.Date
+  typeRecherche         String   @default("web") @map("type_recherche") @db.VarChar(20)
+  chemin                String   @db.VarChar(1000)
+  clics                 Int      @default(0)
+  impressions           Int      @default(0)
+  positionSum           Float    @default(0) @map("position_sum")
+  /// Impressions retrouvées dans le détail par requête (le reste est anonymisé par Google).
+  impressionsDetaillees Int      @default(0) @map("impressions_detaillees")
+  /// Requêtes écartées par le filtre de données personnelles : comptées, jamais stockées.
+  requetesFiltrees      Int      @default(0) @map("requetes_filtrees")
+  /// Pas de clé étrangère : la route peut disparaître sans toucher à l'historique.
+  siteRouteId           String?  @map("site_route_id")
+  categorie             String?  @db.VarChar(40)
+  typePage              String?  @map("type_page") @db.VarChar(40)
+  creeLe                DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@unique([date, typeRecherche, chemin], map: "gsc_page_jours_date_type_recherche_chemin_key")
+  @@index([chemin, date], map: "gsc_page_jours_chemin_date_idx")
+  @@map("gsc_page_jours")
+}
+
+/// Dictionnaire des requêtes (texte unique). Le texte passe le filtre de données personnelles
+/// AVANT stockage (e-mail, téléphone, nom connu) ; ligne purgée sous 3 impressions cumulées
+/// sur 90 jours (seul l'agrégat de la page reste).
+/// rgpd: technique — texte de requêtes non rattaché à un visiteur ; filtré des e-mails, téléphones et noms connus en base AVANT stockage (un nom inconnu de la base peut subsister) ; purge du texte des requêtes rares prévue en P4
+model GscRequete {
+  id         Int      @id @default(autoincrement())
+  texte      String   @unique @db.VarChar(512)
+  premiereLe DateTime @map("premiere_le") @db.Date
+  derniereLe DateTime @map("derniere_le") @db.Date
+
+  @@index([derniereLe], map: "gsc_requetes_derniere_le_idx")
+  @@map("gsc_requetes")
+}
+
+/// Détail page × requête × jour. Conservation visée : 90 jours (purge en P4). `requeteId` sans clé étrangère : la
+/// purge du texte (P4) supprimera d'abord ces lignes, sans cascade.
+/// rgpd: technique — mesure agrégée par page et requête anonyme ; purge à 90 jours prévue en P4
+model GscPageRequeteJour {
+  id            Int      @id @default(autoincrement())
+  date          DateTime @db.Date
+  typeRecherche String   @default("web") @map("type_recherche") @db.VarChar(20)
+  chemin        String   @db.VarChar(1000)
+  requeteId     Int      @map("requete_id")
+  clics         Int      @default(0)
+  impressions   Int      @default(0)
+  positionSum   Float    @default(0) @map("position_sum")
+
+  @@unique([date, typeRecherche, chemin, requeteId], map: "gsc_page_requete_jours_cle_key")
+  @@index([requeteId, date], map: "gsc_page_requete_jours_requete_id_date_idx")
+  @@index([chemin, date], map: "gsc_page_requete_jours_chemin_date_idx")
+  @@map("gsc_page_requete_jours")
+}
+
+/// Cumul par semaine ISO (le lundi) du détail page × requête. Conservation visée : 25 mois (purge en P4).
+/// rgpd: technique — mesure agrégée par page et requête anonyme ; purge à 25 mois prévue en P4
+model GscPageRequeteSemaine {
+  id            Int      @id @default(autoincrement())
+  semaine       DateTime @db.Date
+  typeRecherche String   @default("web") @map("type_recherche") @db.VarChar(20)
+  chemin        String   @db.VarChar(1000)
+  requeteId     Int      @map("requete_id")
+  clics         Int      @default(0)
+  impressions   Int      @default(0)
+  positionSum   Float    @default(0) @map("position_sum")
+
+  @@unique([semaine, typeRecherche, chemin, requeteId], map: "gsc_page_requete_semaines_cle_key")
+  @@index([requeteId, semaine], map: "gsc_page_requete_semaines_requete_id_semaine_idx")
+  @@map("gsc_page_requete_semaines")
+}
+
+/// Résultat d'une inspection d'URL : une ligne n'est écrite que si un champ change.
+/// rgpd: technique — état d'indexation d'une page publique ; aucune donnée sur une personne
+model GscInspection {
+  id                  String    @id @default(cuid())
+  chemin              String    @db.VarChar(1000)
+  inspecteLe          DateTime  @default(now()) @map("inspecte_le") @db.Timestamptz(3)
+  verdict             String?   @db.VarChar(40)
+  couverture          String?   @db.VarChar(200)
+  canoniqueGoogle     String?   @map("canonique_google") @db.VarChar(1000)
+  canoniqueDeclaree   String?   @map("canonique_declaree") @db.VarChar(1000)
+  dernierPassageRobot DateTime? @map("dernier_passage_robot") @db.Timestamptz(3)
+  siteRouteId         String?   @map("site_route_id")
+
+  @@index([chemin, inspecteLe], map: "gsc_inspections_chemin_inspecte_le_idx")
+  @@index([inspecteLe], map: "gsc_inspections_inspecte_le_idx")
+  @@map("gsc_inspections")
+}
+
+/// Instantané hebdomadaire des opportunités détectées. `etat` : ouverte | ecartee | traitee
+/// (chaîne, pas d'énumération Postgres). `details` ne contient que des mesures et des
+/// `requeteId` (jamais le texte d'une requête : il survivrait à la purge de `gsc_requetes`).
+/// rgpd: technique — opportunités d'amélioration de pages publiques ; aucune donnée sur une personne
+model SeoOpportunite {
+  id          String   @id @default(cuid())
+  semaine     DateTime @db.Date
+  detecteur   String   @db.VarChar(60)
+  cible       String   @db.VarChar(1000)
+  typePage    String?  @map("type_page") @db.VarChar(40)
+  categorie   String?  @db.VarChar(40)
+  priorite    Float    @default(0)
+  etat        String   @default("ouverte") @db.VarChar(20)
+  details     Json?
+  siteRouteId String?  @map("site_route_id")
+  creeLe      DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  misAJourLe  DateTime @updatedAt @map("mis_a_jour_le") @db.Timestamptz(3)
+
+  @@unique([semaine, detecteur, cible], map: "seo_opportunites_semaine_detecteur_cible_key")
+  @@index([etat, priorite], map: "seo_opportunites_etat_priorite_idx")
+  @@map("seo_opportunites")
+}
+
 /// Collaborateur affiché sur /fr/equipe/{slug} (personnes réelles uniquement). La plume IA reste dans
 /// AuthorProfile ; le fondateur reste servi en statique. Identité publique : PRÉNOM seul, aucun nom
 /// de famille, aucune adresse. Catégorie et statut sont des chaînes validées côté TypeScript
@@ -19191,4 +19492,200 @@ model TeamMemberEvent {
   @@index([memberId, createdAt])
   @@index([action, createdAt])
   @@map("team_member_events")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Chaîne éditoriale IA (C3) : tables NOUVELLES, additives, non branchées.
+// Aucune énumération Postgres : statuts, intentions, rôles et codes de raison sont du TEXTE
+// (listes fermées côté code : equipe/brief.ts, puis le module de codes de C4). Un worker plus
+// ancien ne lit ni n'écrit ces tables. Voir docs/pilotage-seo-geo/CONCEPTION-CHAINE-EDITORIALE-IA.md.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Réserve de besoins réels (R1). Une requête déjà couverte par une URL est refusée côté code.
+/// rgpd: technique — questions génériques de lecteurs et références de source ; aucune identité ni coordonnée d'une personne (à passer en dossier-client si une source nominative était un jour ingérée)
+model ContenuBesoin {
+  id           String    @id @default(cuid())
+  question     String    @db.VarChar(300)
+  /// information | comparaison | decision (INTENTIONS de equipe/brief.ts)
+  intention    String?   @db.VarChar(20)
+  /// search-console | demandes-agregees | page-lue | dirigeant-pme | manuel
+  source       String    @db.VarChar(40)
+  sourceRef    String?   @db.VarChar(500)
+  /// Force du signal (échelle définie par R1) ; null = inconnue, jamais 0.
+  forceSignal  Float?
+  /// nouveau | en_brief | couvert | ecarte (STATUTS_BESOIN)
+  statut       String    @default("nouveau") @db.VarChar(20)
+  urlCouverte  String?   @db.VarChar(500)
+  raisonEcarte String?   @db.VarChar(40)
+  observeLe    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  briefs ContenuBrief[]
+
+  @@index([statut, createdAt])
+  @@map("contenu_besoins")
+}
+
+/// Brief (R2) : le contrat de tout le reste. Étend le schéma de equipe/brief.ts (champ `brief`
+/// = briefSchema validé en JSON) ; les colonnes dédiées servent aux requêtes et à la console.
+/// rgpd: technique — briefs éditoriaux (plan, intention, longueur) et questions génériques de lecteurs reprises de la réserve de besoins ; aucune colonne ne nomme une personne
+model ContenuBrief {
+  id                 String   @id @default(cuid())
+  besoinId           String?
+  /// Job de génération porteur, si le contenu en a un (pas de clé étrangère : table existante).
+  jobId              String?
+  /// brouillon | valide | pas_d_angle | pas_de_matiere | abandonne (STATUTS_BRIEF)
+  statut             String   @default("brouillon") @db.VarChar(20)
+  motCle             String?  @db.VarChar(200)
+  /// Intention de recherche = `intention` du brief (INTENTIONS), recopiée pour les requêtes.
+  intentionRecherche String?  @db.VarChar(20)
+  angleUnique        String?  @db.VarChar(500)
+  /// Plan de titres H1/H2/H3 : [{ niveau: 1|2|3, titre }] (planTitresSchema).
+  planTitres         Json?
+  longueurMinMots    Int?
+  longueurMaxMots    Int?
+  /// Brief complet validé par briefSchema.
+  brief              Json?
+  /// Version du prompt du stratège employé (traçabilité des refus).
+  versionPrompt      String?  @db.VarChar(60)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  besoin    ContenuBesoin?    @relation(fields: [besoinId], references: [id], onDelete: SetNull)
+  faits     ContenuFait[]
+  refus     ContenuRefus[]
+  resultats ContenuResultat[]
+
+  @@index([besoinId])
+  @@index([jobId])
+  @@index([statut, createdAt])
+  @@map("contenu_briefs")
+}
+
+/// Dossier de preuves (R3) et faits vérifiés gouvernés (lus par C5 pour CHIFFRES_VERIFIES).
+/// rgpd: technique — données publiques sourcées (énoncé, extrait, URL, éditeur) ; une personnalité publique peut y être citée dans son rôle public, aucune donnée privée ni coordonnée ; seul nom interne : `verifiePar` (membre de l'équipe)
+model ContenuFait {
+  id              String    @id @default(cuid())
+  briefId         String?
+  enonce          String    @db.VarChar(1000)
+  /// Extrait EXACT de la source : sans lui, pas de fait.
+  extrait         String
+  url             String    @db.VarChar(1000)
+  editeur         String?   @db.VarChar(200)
+  datePublication DateTime?
+  dateLecture     DateTime
+  /// haute | moyenne | basse
+  confiance       String?   @db.VarChar(10)
+  /// Valeur chiffrée telle qu'affichée (« 12 % »), lue par C5 pour CHIFFRES_VERIFIES.
+  valeur          String?   @db.VarChar(100)
+  verifiePar      String?   @db.VarChar(120)
+  /// propose | verifie | retire : « verifie » seulement après relecture humaine.
+  statut          String    @default("propose") @db.VarChar(20)
+  verifieLe       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
+
+  @@index([briefId])
+  @@index([statut])
+  @@map("contenu_faits")
+}
+
+/// Refus enregistré (machine ou humain), un seul mécanisme (§ 7.1 et § 8 de la conception).
+/// rgpd: technique — codes et motifs de refus d'un contenu ; aucune donnée sur une personne, seul le nom de l'auteur (membre de l'équipe) d'un refus humain figure
+model ContenuRefus {
+  id             String   @id @default(cuid())
+  briefId        String?
+  jobId          String?
+  tentative      Int      @default(1)
+  /// R1…R8 ou « humain ».
+  role           String   @db.VarChar(40)
+  /// Liste fermée de codes de raison (module partagé, C4) ; texte ici.
+  code           String   @db.VarChar(40)
+  /// Critère exact de la porte (B01…B17, W01…W10) quand il existe.
+  critere        String?  @db.VarChar(10)
+  detail         String?
+  sectionEnCause String?  @db.VarChar(300)
+  /// Preuve du refus (§ 8 : critère, raison, preuve, tentative, version de la porte).
+  preuve         String?
+  /// Auteur d'un refus humain.
+  saisiPar       String?  @db.VarChar(120)
+  coutDepenseUsd Decimal? @db.Decimal(10, 4)
+  versionPrompt  String?  @db.VarChar(60)
+  versionBrief   String?  @db.VarChar(60)
+  versionPorte   String?  @db.VarChar(60)
+  createdAt      DateTime @default(now())
+
+  brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
+
+  @@index([briefId])
+  @@index([jobId])
+  @@index([code, createdAt])
+  @@index([role, createdAt])
+  @@map("contenu_refus")
+}
+
+/// Suivi d'un contenu publié : une ligne par contenu et par date de mesure.
+/// Toute mesure absente reste NULL (jamais 0) ; l'écran dit « indisponible ».
+/// rgpd: technique — mesures d'audience agrégées d'une URL publiée ; aucune donnée sur une personne
+model ContenuResultat {
+  id           String   @id @default(cuid())
+  /// URL canonique du contenu publié (pas de clé étrangère : le contenu vit dans plusieurs tables).
+  url          String   @db.VarChar(1000)
+  briefId      String?
+  jobId        String?
+  /// j3 | j7 | j28 | j90
+  echeance     String   @db.VarChar(10)
+  mesureLe     DateTime @db.Date
+  indexe       Boolean?
+  affichages   Int?
+  clics        Int?
+  position     Float?
+  affichagesIa Int?
+  citationsIa  Int?
+  visitesIa    Int?
+  rendezVous   Int?
+  /// Échantillon et intervalle des citations IA, source par mesure.
+  details      Json?
+  createdAt    DateTime @default(now())
+
+  brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
+
+  @@unique([url, echeance, mesureLe])
+  @@index([briefId])
+  @@index([mesureLe])
+  @@map("contenu_resultats")
+}
+
+/// Proposition de l'analyste hebdomadaire : rien ne s'applique seul (§ 7.4).
+/// rgpd: technique — propositions de l'analyste hebdomadaire sur des contenus ; aucune donnée sur une personne, seul le nom du décideur de l'équipe figure
+model ContenuProposition {
+  id                 String    @id @default(cuid())
+  /// Semaine analysée (lundi, date seule).
+  semaine            DateTime  @db.Date
+  /// brief | prompt | sujet | regle-abandon
+  type               String    @db.VarChar(20)
+  role               String?   @db.VarChar(40)
+  constat            String
+  hypothese          String
+  /// Changement exact (diff du prompt ou du brief).
+  changement         String
+  effetAttendu       String?
+  risque             String?
+  critereEvaluation  String?   @db.VarChar(300)
+  /// a_relire | appliquee | refusee | reportee (STATUTS_PROPOSITION)
+  statut             String    @default("a_relire") @db.VarChar(20)
+  decidePar          String?   @db.VarChar(120)
+  decideLe           DateTime?
+  /// Version de gabarit créée à l'application (retour arrière via ContentTemplateHistory).
+  templateVersionRef String?   @db.VarChar(100)
+  resultatMesure     Json?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([semaine])
+  @@index([statut])
+  @@map("contenu_propositions")
 }

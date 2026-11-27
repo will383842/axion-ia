@@ -69,3 +69,25 @@ L'IBAN de la fiche (`apporteurs_reseau.iban`) est chiffré en `enc:v1`. L'histor
 puis le rechiffre en v2**, elle ne copie pas la chaîne. Un v1 copié tel quel est refusé par la base. Le statut des
 demandes est un texte contraint (et non l'énumération nouvelle que le plan §3.2 proposait) : aucune valeur à
 propager entre les deux conteneurs.
+
+## Lots 5, 6 et 9 (espace, console, compléments) : retour arrière
+
+Tout est sous `APPORTEUR_CHANGEMENT_IBAN_ENABLED` : **éteindre l'interrupteur** suffit. L'espace affiche « Pour changer de
+compte, écrivez-nous » ; les pages des liens de l'e-mail répondent « Ce lien ne fonctionne plus » ; la console garde les demandes
+visibles et plus aucune ne se valide. Aucune migration dans ces lots, aucune nouvelle forme de tâche BullMQ, aucun nouvel e-mail.
+
+Le script `scripts/apporteurs/reprise-historique-iban.ts` (essai à blanc par défaut) ne modifie aucune fiche ; ses lignes
+`dossier_initial` restent (ajout seul), comme le reste de l'historique.
+
+**Lots 7 (virements, gel) et 8 (RGPD, purge, alerte 10 jours) : NON livrés** : ils attendent des décisions du dirigeant (D-4, D-6, D-7).
+**Ne jamais allumer l'interrupteur avant le lot 7** (plan §9, point 5).
+
+## Lot 7 : `IBAN_EMPREINTE_SECRET` absent au moment d'un virement
+
+« Virement fait » reste possible sans ce secret : le virement est gardé, mais la preuve du compte payé
+(empreinte + 4 derniers caractères) n'est pas écrite. Ce cas est signalé : message Sentry de niveau
+`warning` (« IBAN_EMPREINTE_SECRET absent ») et ligne de journal `[apporteurs]`. Poser le secret sur
+l'application ; les virements déjà faits sans preuve ne se rattrapent pas automatiquement.
+
+La seconde lecture du gel se fait DANS la transaction du versement : une demande ouverte entre le
+premier contrôle et l'écriture refuse le virement et n'écrit rien.

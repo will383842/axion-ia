@@ -92,16 +92,23 @@ import {
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
-import { executerResiliationsEchues } from "./resiliation";
+import { executerResiliationsEchues, renvoyerEmailsEffetManques } from "./resiliation";
+import { alerteSurveillance } from "./surveillance-passages";
 import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
   ajouterMois,
   htLignesRecurrentesRestantesCents,
   plafondBaseCommissionnableCents,
-  calculerCommission,
+  calculerCommissionSelonGrilleAvecRegle,
+  regleApresPlafond,
+  grilleDeLaCommande,
+  MESSAGE_GRILLE_INCONNUE,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
+  versionContratSignee,
+  type CalculCommission,
+  type RegleAppliquee,
   commandeCouverte,
   CONFIRMATION_TACITE_JOURS,
   dateConfirmationTaciteAvecContact,
@@ -322,7 +329,9 @@ type NomEtape =
   | "hors-grille"
   | "declarations-sans-reponse"
   | "commandes-a-attribuer"
-  | "resiliations-echues";
+  | "resiliations-echues"
+  | "emails-effet-resiliation"
+  | "a-verifier-en-retard";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -366,6 +375,10 @@ async function passer(
   const etapes: Array<[NomEtape, () => Promise<void>]> = [
     // Lot L1b (en PREMIER : les étapes suivantes ne traitent plus l'apporteur comme « signe » le jour de l'effet) : la résiliation notifiée prend effet à sa date (préavis de 30 jours en 11.1).
     ["resiliations-echues", async () => void (await executerResiliationsEchues(maintenant))],
+    // #2464 pt 9 : l'e-mail de prise d'effet qui n'est pas parti est renvoyé (idempotent, clé de journal).
+    ["emails-effet-resiliation", async () => void (await renvoyerEmailsEffetManques(maintenant))],
+    // #2464 pt 10 : contrat signé par l'apporteur, pas contresigné depuis plus de 2 jours ouvrés.
+    ["a-verifier-en-retard", async () => void (await alerterAVerifierEnRetard(maintenant))],
     // AVANT la confirmation par le silence : une présentation qui bascule aujourd'hui ne doit pas
     // être confirmée par le silence dans le même passage.
     ["bascule-regle-rendez-vous", () => etapeBasculeRegleRendezVous(maintenant, bilan)],
@@ -414,6 +427,17 @@ async function passer(
       bilan.erreurs += 1;
       console.error(`[reseau-apporteurs] étape « ${nom} » en échec :`, err);
       signalerErreurReseau(`passage quotidien : ${nom}`, err);
+      // #2464 pt 5 : le job finit « vert » quoi qu'il arrive ; l'étape en erreur prévient donc
+      // Williams, une fois par jour et par étape (jamais l'apporteur). Fail-soft.
+      await alerteSurveillance({
+        code: "apporteur_etape_en_erreur",
+        cle: `etape-${nom}`,
+        titre: `Réseau d'apporteurs : l'étape « ${nom} » du passage est en erreur`,
+        message: `L'étape « ${nom} » a levé une erreur ; les autres étapes ont continué. Détail dans Sentry (service apporteur-crons). Elle sera rejouée au prochain passage.`,
+        cibleId: nom,
+        maintenant,
+        niveau: "important",
+      });
     }
   }
   return bilan;
@@ -948,7 +972,15 @@ const SELECT_PRESENTATION_PROTEGEE = {
   confirmeeAt: true,
   protegeeJusquAt: true,
   apporteur: {
-    select: { prenom: true, nom: true, email: true, parrainId: true, signeParSocieteAt: true },
+    select: {
+      prenom: true,
+      nom: true,
+      email: true,
+      parrainId: true,
+      signeParSocieteAt: true,
+      // La version signée décide de la grille (décision du 27/11).
+      signatureApporteur: true,
+    },
   },
 } as const;
 
@@ -1006,6 +1038,8 @@ type ProtegeeLue = {
     email: string;
     parrainId: string | null;
     signeParSocieteAt: Date | null;
+    /** Lue seulement pour poser `versionContrat` à la création (relevé mensuel, lot R). */
+    signatureApporteur?: unknown;
   };
 };
 
@@ -1188,8 +1222,6 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
-    // Développement web : jamais de commission rétroactive sur une commande signée avant la date d'effet.
-    if (f.activite === "site_web" && signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS) continue;
     const siret = siretDeLaCommande({
       devisSiret: f.devisId ? siretsDevis.get(f.devisId) : null,
       clientSiret: f.client?.siret,
@@ -1258,20 +1290,61 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       Math.max(0, commande.baseApresAvoirsCents - recurrentCents),
       plafondBase,
     );
+    // Grille de la version signée par l'apporteur (décision du 27/11) ; date d'effet de l'avenant
+    // 2.8 : lot S1 (table de l'avenant), `null` tant qu'il n'existe pas.
+    const grille = grilleDeLaCommande({
+      signature: p.apporteur.signatureApporteur,
+      declareeAt: p.recueAt,
+      commandeSigneeAt: signeeAt,
+      avenant28EffetAt: null,
+    });
+    // Développement web (grille v3) : jamais de commission rétroactive avant la date d'effet.
+    if (
+      grille === "v3" &&
+      f.activite === "site_web" &&
+      signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS
+    )
+      continue;
+    if (grille === null)
+      // ESCALADE, jamais un 0 € silencieux : la ligne naît « à qualifier » (ci-dessous) et Williams
+      // est prévenu une fois.
+      await alerteInterne({
+        jobId: `apporteur-grille-inconnue-${commande.factureCleId}-${p.apporteurId}`,
+        code: "apporteur_grille_inconnue",
+        titre: "Commission à calculer à la main : version du contrat signé inconnue",
+        message: `Une commande payée de l'entreprise SIREN ${siren} revient à un apporteur dont la version de contrat signée n'a pas de grille connue. La commission est « à qualifier » : ${MESSAGE_GRILLE_INCONNUE} (Apporteurs › Commissions).`,
+        cibleType: "FactureFormation",
+        cibleId: commande.factureCleId,
+        niveau: "critique",
+        maintenant,
+      });
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
-    const calc =
-      f.devis?.journeeIa === true
-        ? calculerCommissionJourneeIa({
-            activite: (f.activite ?? null) as ActiviteCommission | null,
-            lignes: f.devis.lignes,
-            netHtCents: commande.baseApresAvoirsCents,
-          })
-        : calculerCommission({
-            activite: (f.activite ?? null) as ActiviteCommission | null,
-            factureHtCents: baseCommissionnable,
-            palier: null,
-            signeeAt,
-          });
+    // La règle appliquée est posée à la création (relevé mensuel, lot R) : le calcul est celui
+    // d'avant, seul un code est ajouté. Jamais rétroactif.
+    const baseAvantPlafond = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
+    let regle: RegleAppliquee | null = null;
+    let calc: CalculCommission;
+    if (grille === null) {
+      calc = { statut: "a_qualifier" };
+    } else if (f.devis?.journeeIa === true) {
+      calc = calculerCommissionJourneeIa({
+        activite: (f.activite ?? null) as ActiviteCommission | null,
+        lignes: f.devis.lignes,
+        netHtCents: commande.baseApresAvoirsCents,
+      });
+      regle = "journee_ia";
+    } else {
+      const r = calculerCommissionSelonGrilleAvecRegle({
+        activite: (f.activite ?? null) as ActiviteCommission | null,
+        factureHtCents: baseCommissionnable,
+        palier: null,
+        signeeAt,
+        grille,
+      });
+      calc = r.calcul;
+      regle = regleApresPlafond(r.regle, baseAvantPlafond, plafondBase);
+    }
+    const versionContrat = versionContratSignee(p.apporteur.signatureApporteur);
     if (calc.statut === "aucune") continue;
     // JAMAIS deux apporteurs commissionnés pour une même entreprise : si une autre personne a déjà
     // une commission (hors part de parrain) sur cette commande, rien n'est créé et Williams tranche.
@@ -1327,6 +1400,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
               prixPublicHtCents: calc.prixPublicCents,
               montantCents: calc.montantCents,
               statut: v.statut,
+              regleAppliquee: regle,
+              versionContrat,
             },
             select: { id: true },
           });
@@ -1367,6 +1442,11 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           commandeSigneeAt: signeeAt,
         });
         const v = await statutApresVigilance(parrainId, part, maintenant);
+        // Version signée par le PARRAIN (un apporteur signé), pas celle du filleul.
+        const parrain = await prisma.apporteurReseau.findUnique({
+          where: { id: parrainId },
+          select: { signatureApporteur: true },
+        });
         await prisma.commissionApporteur.create({
           data: {
             ...base,
@@ -1374,6 +1454,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
             parrainage: true,
             montantCents: part,
             statut: v.statut,
+            regleAppliquee: "parrainage_10",
+            versionContrat: versionContratSignee(parrain?.signatureApporteur),
           },
           select: { id: true },
         });
@@ -1909,56 +1991,72 @@ async function traiterReservationsEchues(
   for (const l of lignes) {
     const p = parId.get(l.presentationId);
     if (!p) continue;
-    // Rendez-vous pris et pas encore tenu (ligne), puis propositions non écartées : chacun garde
-    // l'entreprise s'il a été PRIS pendant la réservation.
-    const propositions = await lirePropositionsOuvertes(p.id);
-    const enAttente = l.rendezVousPrisAt && !l.rendezVousAt ? [l.rendezVousPrisAt] : [];
-    const retient = (prisAt: Date) =>
-      reservationOccupe(
-        {
-          recueAt: p.recueAt,
-          reserveeJusquAt: l.reserveeJusquAt,
-          rendezVousEnAttentePrisAt: prisAt,
-        },
-        maintenant,
-      );
-    const parProposition = propositions.some(retient);
-    if (parProposition || enAttente.some(retient)) {
-      bilan.echeancesSuspendues += 1;
-      if (parProposition) {
-        await alerteInterne({
-          jobId: `apporteur-echeance-suspendue-${p.id}`,
-          code: "apporteur_echeance_suspendue",
-          titre: `Réservation arrivée à échéance, rendez-vous à trancher : ${p.denomination}`,
-          message: `La réservation de ${p.denomination} s'est achevée le ${dateEnClair(l.reserveeJusquAt)}, mais un rendez-vous pris pendant ces 60 jours vous est proposé. Tant que vous ne l'avez ni retenu ni écarté, l'entreprise reste réservée à son apporteur. À traiter dans la console (Apporteurs › Entreprises présentées).`,
-          cibleType: "PresentationEntreprise",
-          cibleId: p.id,
-          maintenant,
-        });
-      }
-      continue;
-    }
+    // Une erreur sur UNE ligne n'arrête plus la page (critique #2464, point 22) : Sentry, compteur,
+    // et la ligne revient au passage suivant (rien n'a été écrit pour elle).
     try {
-      const echue = await prisma.$transaction(async (tx) => {
-        const r = await tx.presentationReservation.updateMany({
-          where: { presentationId: p.id, echueAt: null, valideeAt: null },
-          data: { echueAt: maintenant },
-        });
-        if (r.count !== 1) return false;
-        const q = await tx.presentationEntreprise.updateMany({
-          where: { id: p.id, statut: "reservee" },
-          data: { statut: "terminee" },
-        });
-        if (q.count !== 1) throw new Annule();
-        return true;
-      });
-      if (echue) {
-        bilan.reservationsEchues += 1;
-        await alerterReservationEchue(p.id, p.denomination, l.reserveeJusquAt, maintenant);
-      }
+      await traiterUneReservationEchue(l, p, maintenant, bilan);
     } catch (err) {
-      if (!(err instanceof Annule)) throw err;
+      bilan.erreurs += 1;
+      signalerErreurReseau("passage quotidien : réservation échue (une ligne)", err);
     }
+  }
+}
+
+async function traiterUneReservationEchue(
+  l: ReservationEchue,
+  p: { id: string; denomination: string; recueAt: Date },
+  maintenant: Date,
+  bilan: BilanPassageReseau,
+): Promise<void> {
+  // Rendez-vous pris et pas encore tenu (ligne), puis propositions non écartées : chacun garde
+  // l'entreprise s'il a été PRIS pendant la réservation.
+  const propositions = await lirePropositionsOuvertes(p.id);
+  const enAttente = l.rendezVousPrisAt && !l.rendezVousAt ? [l.rendezVousPrisAt] : [];
+  const retient = (prisAt: Date) =>
+    reservationOccupe(
+      {
+        recueAt: p.recueAt,
+        reserveeJusquAt: l.reserveeJusquAt,
+        rendezVousEnAttentePrisAt: prisAt,
+      },
+      maintenant,
+    );
+  const parProposition = propositions.some(retient);
+  if (parProposition || enAttente.some(retient)) {
+    bilan.echeancesSuspendues += 1;
+    if (parProposition) {
+      await alerteInterne({
+        jobId: `apporteur-echeance-suspendue-${p.id}`,
+        code: "apporteur_echeance_suspendue",
+        titre: `Réservation arrivée à échéance, rendez-vous à trancher : ${p.denomination}`,
+        message: `La réservation de ${p.denomination} s'est achevée le ${dateEnClair(l.reserveeJusquAt)}, mais un rendez-vous pris pendant ces 60 jours vous est proposé. Tant que vous ne l'avez ni retenu ni écarté, l'entreprise reste réservée à son apporteur. À traiter dans la console (Apporteurs › Entreprises présentées).`,
+        cibleType: "PresentationEntreprise",
+        cibleId: p.id,
+        maintenant,
+      });
+    }
+    return;
+  }
+  try {
+    const echue = await prisma.$transaction(async (tx) => {
+      const r = await tx.presentationReservation.updateMany({
+        where: { presentationId: p.id, echueAt: null, valideeAt: null },
+        data: { echueAt: maintenant },
+      });
+      if (r.count !== 1) return false;
+      const q = await tx.presentationEntreprise.updateMany({
+        where: { id: p.id, statut: "reservee" },
+        data: { statut: "terminee" },
+      });
+      if (q.count !== 1) throw new Annule();
+      return true;
+    });
+    if (echue) {
+      bilan.reservationsEchues += 1;
+      await alerterReservationEchue(p.id, p.denomination, l.reserveeJusquAt, maintenant);
+    }
+  } catch (err) {
+    if (!(err instanceof Annule)) throw err;
   }
 }
 
@@ -2080,4 +2178,38 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     });
     if (r === "envoye") bilan.rappelsDossier += 1;
   }
+}
+
+// ── #2464 pt 10 : contrat signé, jamais contresigné ──────────────────────
+
+/** Délai (jours ouvrés) après la signature de l'apporteur avant la relance INTERNE. */
+export const A_VERIFIER_JOURS_OUVRES = 2;
+
+/**
+ * Un apporteur « à vérifier » depuis plus de 2 jours ouvrés : alerte INTERNE (pas d'e-mail à
+ * l'apporteur), une fois par jour et par apporteur tant que ce n'est pas traité. Se tait sinon.
+ */
+async function alerterAVerifierEnRetard(maintenant: Date): Promise<number> {
+  const lignes = await prisma.apporteurReseau.findMany({
+    where: { statut: "a_verifier", signeParApporteurAt: { not: null, lte: maintenant } },
+    select: { id: true, signeParApporteurAt: true },
+    take: 200,
+  });
+  let n = 0;
+  for (const l of lignes) {
+    const signe = l.signeParApporteurAt!;
+    if (maintenant.getTime() <= ajouterJoursOuvres(signe, A_VERIFIER_JOURS_OUVRES).getTime())
+      continue;
+    const partie = await alerteSurveillance({
+      code: "apporteur_a_verifier_en_retard",
+      cle: `a-verifier-${l.id}`,
+      titre: "Apporteur à vérifier depuis plus de 2 jours ouvrés",
+      message: `Un apporteur a signé le ${dateEnClair(signe)} et attend toujours la vérification des pièces et la contresignature (console › Apporteurs › fiche ${l.id}). Rien n'est envoyé à l'apporteur.`,
+      cibleId: l.id,
+      maintenant,
+      niveau: "important",
+    });
+    if (partie) n += 1;
+  }
+  return n;
 }

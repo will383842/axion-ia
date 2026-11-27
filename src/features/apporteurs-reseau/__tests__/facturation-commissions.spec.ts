@@ -55,6 +55,7 @@ const etat = vi.hoisted(() => ({
     siren: string,
   ) => unknown,
   sentry: [] as string[],
+  messagesSentry: [] as Array<{ message: string; level: string | undefined }>,
 }));
 
 vi.mock("../annuaire", () => ({
@@ -66,12 +67,22 @@ vi.mock("@/server/queue/lib/sentry-worker", () => ({
   }),
 }));
 
-vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+vi.mock("@sentry/nextjs", () => ({
+  captureException: vi.fn(),
+  captureMessage: vi.fn((m: string, o: { level?: string }) => {
+    etat.messagesSentry.push({ message: m, level: o.level });
+  }),
+}));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("@/lib/destinataires-internes", () => ({
   destinataireAlertesInternes: () => "will@interne",
 }));
 vi.mock("../jeton", () => ({ urlDossier: () => null }));
+// Cas calibrés sur la grille v3 ; la grille v2 est couverte par avoir-grille-contrat-signe.spec.ts.
+vi.mock("../commissions", async (orig) => ({
+  ...(await orig<typeof import("../commissions")>()),
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })),
+}));
 vi.mock("../envois", () => ({
   envoyer: vi.fn(async (e: Record<string, unknown>) => {
     etat.envoyes.push(e);
@@ -136,6 +147,10 @@ const lignes = () => etat.lignes as Ligne[];
 
 vi.mock("@/lib/prisma", () => {
   const prisma = {
+    // Lot 7 : tables du changement de compte, vides dans ces scénarios (aucune demande, aucun historique).
+    apporteurChangementIban: { findMany: vi.fn(async () => []) },
+    apporteurIbanHistorique: { findMany: vi.fn(async () => []) },
+    apporteurVirementCompte: { count: vi.fn(async () => 0), create: vi.fn(async () => ({})) },
     // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
     apporteurReseauSiret: { findUnique: vi.fn(async () => null) },
     apporteurReseau: {
@@ -246,6 +261,9 @@ import {
   oublierCacheRegistre,
 } from "../facturation";
 import { annulerCommission, reduireCommission } from "../ajustement";
+import { grilleDeLaLigne } from "../commissions";
+import { MESSAGE_GRILLE_INCONNUE } from "../regles";
+import { MESSAGE_GEL } from "../virement-compte";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import {
   annulerRealisation,
@@ -303,6 +321,7 @@ beforeEach(() => {
   etat.maintenant = MARDI;
   etat.apporteurs = {};
   etat.sentry = [];
+  etat.messagesSentry = [];
   etat.registre = (siren: string) => ({ ok: true, entreprise: { siren, active: true } });
   oublierCacheRegistre();
   oublierLitigeDisponible();
@@ -540,6 +559,41 @@ describe("« Virement fait »", () => {
       dateVirement: "8 octobre 2026",
     });
     expect(String(etat.confirmations[0]!["montant"])).toContain("400");
+  });
+
+  it("une demande de changement de compte ouverte ENTRE le premier contrôle et l'écriture : refus, rien n'est écrit", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    const { prisma } = await import("@/lib/prisma");
+    const demande = {
+      id: "d1",
+      apporteurId: "APP1",
+      statut: "confirmee",
+      demandeeAt: new Date(),
+      confirmeeAt: new Date(),
+    };
+    // 1er appel (avant tout calcul) : pas de gel ; 2e appel (dans la transaction du versement) : gel.
+    vi.mocked(prisma.apporteurChangementIban.findMany)
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([demande] as never);
+    const r = await marquerVerse("APP1", new Date("2026-10-08T14:00:00Z"), "AXI-APP-2026-0001");
+    expect(r).toEqual({ ok: false, message: MESSAGE_GEL });
+    expect(lignes()[0]!.statut).toBe("due");
+    expect(lignes()[0]!.verseeAt).toBeNull();
+    expect(etat.confirmations).toEqual([]);
+  });
+
+  it("IBAN_EMPREINTE_SECRET absent : le virement est gardé, mais signalé (Sentry, niveau warning)", async () => {
+    delete process.env["IBAN_EMPREINTE_SECRET"];
+    etat.apporteurs = { APP1: { iban: "FR7630006000011234567890189" } };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    const r = await marquerVerse("APP1", new Date("2026-10-08T14:00:00Z"), "AXI-APP-2026-0001");
+    expect(r).toMatchObject({ ok: true, totalCents: 40_000 });
+    expect(lignes()[0]!.statut).toBe("versee");
+    expect(etat.messagesSentry).toHaveLength(1);
+    expect(etat.messagesSentry[0]).toMatchObject({ level: "warning" });
+    expect(JSON.stringify(etat.messagesSentry)).not.toContain("FR7630006000011234567890189");
   });
 
   it("aucune confirmation quand il n'y a rien à confirmer", async () => {
@@ -1061,6 +1115,41 @@ describe("réduire ou annuler une commission pas encore facturée (point 4)", ()
       action: "commission_apporteur.reduite",
       changes: { avantCents: 30_000, apresCents: 24_002, prixConserveHtCents: 80_005 },
     });
+  });
+
+  const formation3j = () =>
+    ligne("c1", "due", 150_000, {
+      activite: "formation",
+      palier: "formation-generale-3j-plus",
+      prixPublicHtCents: 570_000,
+      factureHtCents: 570_000,
+    });
+
+  it("réduire · grille v2 (signataire 2.6) : 3 j à 5 700 € puis prix conservé 4 560 € → 1 200 €, sans plafond de 1 000 €", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementationOnce(async () => ({
+      grille: "v2",
+      signeeAt: null,
+    }));
+    etat.lignes = [formation3j()];
+    const r = await reduireCommission("c1", 456_000, "prix conservé : 4 560 € HT");
+    expect(r).toMatchObject({ ok: true, montantCents: 120_000 });
+  });
+
+  it("réduire · grille v3 (contrôle) : même ligne → 800 €", async () => {
+    etat.lignes = [formation3j()];
+    const r = await reduireCommission("c1", 456_000, "prix conservé : 4 560 € HT");
+    expect(r).toMatchObject({ ok: true, montantCents: 80_000 });
+  });
+
+  it("réduire · grille inconnue : refus avec MESSAGE_GRILLE_INCONNUE, la ligne ne bouge pas", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementationOnce(async () => ({
+      grille: null,
+      signeeAt: null,
+    }));
+    etat.lignes = [formation3j()];
+    const r = await reduireCommission("c1", 456_000, "prix conservé : 4 560 € HT");
+    expect(r).toEqual({ ok: false, message: MESSAGE_GRILLE_INCONNUE });
+    expect(lignes()[0]!.montantCents).toBe(150_000);
   });
 
   it("réduire : refusé sans motif, à un prix supérieur ou nul, sur une part de parrain, ou une fois facturée", async () => {

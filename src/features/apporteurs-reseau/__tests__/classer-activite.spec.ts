@@ -4,6 +4,8 @@ const etat = vi.hoisted(() => ({
   commission: null as Record<string, unknown> | null,
   parrainId: null as string | null,
   signeeAt: new Date("2026-12-01T00:00:00Z") as Date | null,
+  // Version signée par l'apporteur de la présentation (décision du 27/11 : elle choisit la grille).
+  version: "2.8" as unknown,
   maj: [] as Array<{ where: Record<string, unknown>; data: Record<string, unknown> }>,
 }));
 
@@ -26,6 +28,12 @@ vi.mock("@/lib/prisma", () => ({
     factureFormation: {
       findUnique: vi.fn(async () => ({ emiseAt: etat.signeeAt, devis: null })),
     },
+    presentationEntreprise: {
+      findUnique: vi.fn(async () => ({
+        recueAt: new Date("2026-10-20T00:00:00Z"),
+        apporteur: { signatureApporteur: { version: etat.version } },
+      })),
+    },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     apporteurReseau: {
       findUnique: vi.fn(async () => ({ parrainId: etat.parrainId })),
@@ -40,6 +48,7 @@ import { montantEnCentimes } from "../resiliation";
 const ligne = {
   id: "C1",
   apporteurId: "APP1",
+  presentationId: "P1",
   factureId: "F1",
   parrainage: false,
   activite: "inconnue",
@@ -52,6 +61,7 @@ beforeEach(() => {
   etat.parrainId = null;
   etat.maj = [];
   etat.signeeAt = new Date("2026-12-01T00:00:00Z");
+  etat.version = "2.8";
 });
 
 describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou classée « aucune »", () => {
@@ -180,4 +190,92 @@ describe("Journée IA « à qualifier » : réglée à 500 € par journée au p
       montantCents: 50_000,
     });
   });
+});
+
+describe("décision du 27/11 : la grille du contrat SIGNÉ (signataire 2.6 sans avenant)", () => {
+  beforeEach(() => {
+    etat.version = "2.6";
+  });
+  it("coaching 1 390 € HT : 417 € (30 %, annexe 1 de la 2.6), la ligne devient due", async () => {
+    etat.commission = { ...ligne, factureHtCents: 139_000 };
+    const r = await classerActiviteCommission("C1", "un_a_un");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({
+      activite: "un_a_un",
+      montantCents: 41_700,
+      statut: "due",
+    });
+  });
+  it("conférence signée après le 26/11 : 500 €", async () => {
+    etat.commission = { ...ligne, factureHtCents: 240_000 };
+    const r = await classerActiviteCommission("C1", "conference");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 50_000, statut: "due" });
+    etat.maj.length = 0;
+    etat.commission = { ...ligne, activite: "conference", factureHtCents: 240_000 };
+    expect(await qualifierCommission("C1", "conference", 1)).toEqual({
+      ok: true,
+      montantCents: 50_000,
+    });
+  });
+  it("développement web : aucune commission (A1.5 de la 2.6), ligne close à 0 €", async () => {
+    const r = await classerActiviteCommission("C1", "site_web");
+    expect(r.ok).toBe(true);
+    expect(r.message).toMatch(/ce type de prestation/);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 0, statut: "versee" });
+  });
+  it("formation 3 jours ou plus, signataire 2.6 : 500 € par journée au prorata, sans plafond (A1.1 du 2.6)", async () => {
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 950_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 5)).toEqual({
+      ok: true,
+      montantCents: 250_000,
+    });
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 570_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 3)).toEqual({
+      ok: true,
+      montantCents: 150_000,
+    });
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 456_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 3)).toEqual({
+      ok: true,
+      montantCents: 120_000,
+    });
+  });
+  it("formation 3 jours ou plus, signataire 2.8 (grille v3) : plafond 1 000 €, au prorata", async () => {
+    etat.version = "2.8";
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 950_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 5)).toEqual({
+      ok: true,
+      montantCents: 100_000,
+    });
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 456_000 };
+    expect(await qualifierCommission("C1", "formation-generale-3j-plus", 3)).toEqual({
+      ok: true,
+      montantCents: 80_000,
+    });
+  });
+  it("palier 3 jours ou plus avec 2 journées : refus explicite, rien n'est écrit", async () => {
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 380_000 };
+    const r = await qualifierCommission("C1", "formation-generale-3j-plus", 2);
+    expect(r).toMatchObject({ ok: false, message: expect.stringMatching(/3 au moins/) });
+    expect(etat.maj).toHaveLength(0);
+  });
+});
+
+describe("version signée inconnue : ESCALADE, jamais 0 € silencieux", () => {
+  it.each([["2.7"], ["2.2"], [undefined]])(
+    "version %j : classer et qualifier refusent",
+    async (v) => {
+      etat.version = v;
+      const r = await classerActiviteCommission("C1", "un_a_un");
+      expect(r).toMatchObject({
+        ok: false,
+        message: expect.stringMatching(/Version du contrat signé inconnue/),
+      });
+      etat.commission = { ...ligne, activite: "formation", factureHtCents: 190_000 };
+      const q = await qualifierCommission("C1", "formation-generale-1j", 1);
+      expect(q).toMatchObject({ ok: false, message: expect.stringMatching(/inconnue/) });
+      expect(etat.maj).toHaveLength(0);
+    },
+  );
 });

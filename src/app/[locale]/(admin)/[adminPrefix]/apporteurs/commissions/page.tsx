@@ -43,11 +43,18 @@ import {
   PALIER_JOURNEE_IA,
   FORFAIT_JOURNEE_IA_CENTS,
   PALIERS_FORMATION,
+  PALIERS_FORMATION_LONGUE,
+  PLAFOND_FORMATION_LONGUE_CENTS,
+  FORFAIT_JOURNEE_FORMATION_V2_CENTS,
+  libellePalierFormation,
 } from "@/features/apporteurs-reseau/regles";
 import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
 import { lireCommandesAAttribuer } from "@/features/apporteurs-reseau/commandes-a-attribuer";
 import { relanceAttributionDue } from "@/features/apporteurs-reseau/etablissement-presentation";
 import { peutEngager } from "@/server/auth/habilitations";
+import { ouvrirRibAVirerAction } from "@/features/apporteurs-reseau/actions-commissions";
+import { changementIbanActif } from "@/features/apporteurs-reseau/interrupteur-changement-iban";
+import { enrichirVirements } from "@/features/apporteurs-reseau/virement-compte";
 import { gardePage } from "@/server/auth/garde-page";
 import type { StatutCommissionApporteur } from "../../../../../../../prisma/generated/client";
 
@@ -128,6 +135,12 @@ const PALIERS = [
     libelle: p.libelle,
     detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
   })),
+  // Décision du 27/11 : 500 € par journée (contrats 2.3 à 2.6), 1 000 € au plus (2.8 ou avenant), au prorata ; quantité = nombre de journées (3 au moins).
+  ...PALIERS_FORMATION_LONGUE.map((p) => ({
+    id: p.id,
+    libelle: p.libelle,
+    detail: `${euros(FORFAIT_JOURNEE_FORMATION_V2_CENTS)} HT par journée (contrats 2.3 à 2.6), ${euros(PLAFOND_FORMATION_LONGUE_CENTS)} HT au plus (2.8 ou avenant), plein si ${euros(p.prixJourCents)} HT par journée ou plus, sinon au prorata (quantité = journées)`,
+  })),
   {
     id: PALIER_JOURNEE_IA,
     libelle: "Journée IA, forfait par journée",
@@ -154,6 +167,9 @@ export default async function CommissionsApporteursPage({ params, searchParams }
     lireCommissions(onglet, page),
     lireVirementsAFaire(),
   ]);
+  // Lot 7 : gel (demande de changement de compte ouverte) et compte à virer masqué, par ligne.
+  const enrichis = await enrichirVirements(virements, maintenant);
+  const controleFin4 = changementIbanActif();
   const annee = maintenant.getUTCFullYear();
 
   return (
@@ -236,37 +252,74 @@ export default async function CommissionsApporteursPage({ params, searchParams }
           </p>
         ) : (
           <ul className="flex flex-col divide-y divide-[color:var(--color-admin-border)]">
-            {virements.map((v) => (
-              <li
-                key={v.numero}
-                className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)] py-[var(--space-admin-3)]"
-              >
-                <div>
-                  <Link
-                    href={`/fr/${adminPrefix}/apporteurs/${v.apporteurId}`}
-                    className="font-medium"
-                  >
-                    {v.apporteur}
-                  </Link>
-                  <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                    {euros(v.totalCents)} · {v.lignes} ligne(s) ·{" "}
-                    <LienPdf numero={v.numero} base={base} />
-                  </p>
-                  <Echeances
-                    emission={v.emissionAt}
-                    maintenant={maintenant}
-                    paiementIntegral={v.paiementIntegralAt}
-                  />
-                </div>
-                {peutPayer ? (
-                  <VerserForm
-                    apporteurId={v.apporteurId}
-                    numero={v.numero}
-                    montant={euros(v.totalCents)}
-                  />
-                ) : null}
-              </li>
-            ))}
+            {virements.map((v) => {
+              const e = enrichis.get(v.numero);
+              const gel = e?.gel ?? null;
+              return (
+                <li
+                  key={v.numero}
+                  className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)] py-[var(--space-admin-3)]"
+                  style={gel ? { opacity: 0.6 } : undefined}
+                >
+                  <div>
+                    <Link
+                      href={`/fr/${adminPrefix}/apporteurs/${v.apporteurId}`}
+                      className="font-medium"
+                    >
+                      {v.apporteur}
+                    </Link>
+                    <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                      {euros(v.totalCents)} · {v.lignes} ligne(s) ·{" "}
+                      <LienPdf numero={v.numero} base={base} />
+                    </p>
+                    <Echeances
+                      emission={v.emissionAt}
+                      maintenant={maintenant}
+                      paiementIntegral={v.paiementIntegralAt}
+                    />
+                    {gel ? (
+                      <p
+                        role="status"
+                        className={`text-[length:var(--text-admin-sm)] ${gel.rouge ? "font-semibold" : ""}`}
+                        style={gel.rouge ? { color: "var(--color-admin-destructive)" } : undefined}
+                      >
+                        <strong>Virements gelés.</strong> Changement de compte demandé le{" "}
+                        {dateFr(gel.demandeeAt)}. Aucun virement ne part pour cet apporteur tant que
+                        le nouveau compte n&apos;est pas validé ou la demande refusée. Plus proche
+                        échéance parmi les lignes gelées : {dateFr(gel.plusProcheEcheance)}
+                        {gel.rouge ? " (à 5 jours ou moins, ou dépassée)" : ""}.
+                      </p>
+                    ) : e?.compteFin4 ? (
+                      <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                        Compte de la fiche : se termine par {e.compteFin4}
+                      </p>
+                    ) : null}
+                  </div>
+                  {peutPayer && !gel ? (
+                    <div className="flex flex-col gap-[var(--space-admin-2)]">
+                      <form action={ouvrirRibAVirerAction}>
+                        <input type="hidden" name="apporteurId" value={v.apporteurId} />
+                        <button type="submit" className="admin-button-secondary">
+                          Ouvrir le RIB à virer
+                        </button>
+                        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                          L&apos;IBAN n&apos;est jamais affiché dans cette page : lisez-le sur le
+                          RIB. Cette ouverture est enregistrée.
+                        </p>
+                      </form>
+                      <VerserForm
+                        apporteurId={v.apporteurId}
+                        numero={v.numero}
+                        montant={euros(v.totalCents)}
+                        fin4Exigee={controleFin4 || e?.precedentFin4 != null}
+                        compteFin4={e?.compteFin4 ?? null}
+                        precedentFin4={e?.precedentFin4 ?? null}
+                      />
+                    </div>
+                  ) : null}
+                </li>
+              );
+            })}
           </ul>
         )}
       </AdminCard>
@@ -516,7 +569,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                       ? "Conférence"
                       : c.palier === PALIER_JOURNEE_IA
                         ? "Journée IA"
-                        : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
+                        : (libellePalierFormation(c.palier) ??
                           (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
                   </p>
                 ) : null}

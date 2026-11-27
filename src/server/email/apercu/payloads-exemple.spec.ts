@@ -185,7 +185,11 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // et `miseEnDemeureLe` ont leur valeur d'exemple.
     // RELEVÉ À 93 : `apporteur-presentation-non-retenue`, l'e-mail à l'apporteur « entreprise non
     // retenue ». Champs tous facultatifs.
-    expect(tous.length).toBe(93);
+    // RELEVÉ À 94 : `apporteur-compte` (lot 2 changement de compte bancaire, sans émetteur ; un
+    // fichier, cinq gabarits). Champs tous facultatifs.
+    // RELEVÉ À 95 : `apporteur-releve-mensuel` (relevé mensuel, lot 2, gabarit dormant sans
+    // émetteur). Champs tous facultatifs.
+    expect(tous.length).toBe(95);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

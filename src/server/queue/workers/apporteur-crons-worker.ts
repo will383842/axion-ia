@@ -38,16 +38,34 @@ export const APPORTEUR_CRONS_QUEUE_NAME = "apporteur-crons";
 
 export type { ApporteurCronJobData, ApporteurCronJobType };
 
+// Lié au type : ajouter un `ApporteurCronJobType` sans l'ajouter ici casse `pnpm typecheck`
+// (le Record est exhaustif), au lieu de laisser le NOUVEAU worker ignorer son propre job.
+const NOMS_PAR_TYPE: Record<ApporteurCronJobType, true> = {
+  "relance-invitation": true,
+  "reponses-entrantes": true,
+  "invitation-auto": true,
+  "reseau-quotidien": true,
+  "reseau-facturation": true,
+};
+export const NOMS_CONNUS = Object.keys(NOMS_PAR_TYPE) as readonly ApporteurCronJobType[];
+
 async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
   // 🔑 Aiguillage par le NOM du job (celui que `bootRepeatableJobs` pose),
-  // repli sur `data.type`. Un job sans nom connu reste un passage des rappels :
-  // c'est ce que faisait ce processeur avant qu'il ait deux passages.
-  const type =
-    job.name === "invitation-auto" || job.data?.type === "invitation-auto"
-      ? "invitation-auto"
-      : job.name === "reponses-entrantes" || job.data?.type === "reponses-entrantes"
-        ? "reponses-entrantes"
-        : "relance-invitation";
+  // repli sur `data.type`. Un job sans nom connu est journalisé et ignoré (voir plus bas) :
+  // il ne retombe plus sur les rappels d'invitation.
+  const est = (nom: string): boolean => job.name === nom || job.data?.type === nom;
+  // Un nom inconnu est journalisé et IGNORÉ : il retombait sur les rappels d'invitation,
+  // arrêtés le 26/10 (lot 0 du relevé mensuel : un ancien worker ne doit rien lancer
+  // d'un nom qu'il ne connaît pas).
+  if (!NOMS_CONNUS.some(est)) {
+    console.warn(`[apporteur-crons] job au nom inconnu ignoré : « ${String(job.name)} »`);
+    return;
+  }
+  const type = est("invitation-auto")
+    ? "invitation-auto"
+    : est("reponses-entrantes")
+      ? "reponses-entrantes"
+      : "relance-invitation";
   if (job.name === "reseau-facturation" || job.data?.type === "reseau-facturation") {
     await passerFacturation();
     return;
@@ -59,6 +77,7 @@ async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
   if (type === "invitation-auto") {
     await passerInvitations();
     await passerArchivage(job);
+    await passerSurveillance(job);
     return;
   }
   if (type === "reponses-entrantes") {
@@ -130,10 +149,40 @@ async function passerArchivage(job: Job<ApporteurCronJobData>): Promise<void> {
   }
 }
 
+async function noterReussite(nom: "reseau-quotidien" | "reseau-facturation"): Promise<void> {
+  try {
+    const { noterPassageReussi } =
+      await import("@/features/apporteurs-reseau/surveillance-passages");
+    await noterPassageReussi(nom);
+  } catch (err) {
+    console.error("[apporteur-crons] horodatage du passage en échec :", err);
+  }
+}
+
+/**
+ * Contrôle de fraîcheur des passages d'argent (#2464 pt 5), au rythme de `invitation-auto`
+ * (5 min). Se tait si tout est à jour ; sinon alerte INTERNE, une fois par jour. Ne fait jamais
+ * échouer le passage des invitations.
+ */
+async function passerSurveillance(job: Job<ApporteurCronJobData>): Promise<void> {
+  try {
+    const { verifierPassages } = await import("@/features/apporteurs-reseau/surveillance-passages");
+    const signales = await verifierPassages();
+    if (signales.length > 0) {
+      console.warn(`[apporteur-crons] passage(s) en retard signalé(s) : ${signales.join(", ")}`);
+    }
+  } catch (err) {
+    console.error("[apporteur-crons] surveillance des passages en échec :", err);
+    captureWorkerError("apporteur-crons", APPORTEUR_CRONS_QUEUE_NAME, job, err);
+  }
+}
+
 async function passerReseau(): Promise<void> {
   const { passerReseauApporteurs } = await import("@/features/apporteurs-reseau/passage-quotidien");
   const r = await passerReseauApporteurs();
   const { erreurs, ...faits } = r;
+  // #2464 pt 5 : seul un passage SANS étape en erreur compte comme réussi.
+  if (erreurs === 0) await noterReussite("reseau-quotidien");
   if (Object.values(faits).some((n) => n > 0) || erreurs > 0) {
     console.warn(`[apporteur-crons] réseau quotidien : ${JSON.stringify(r)}`);
   }
@@ -144,6 +193,7 @@ async function passerFacturation(): Promise<void> {
     await import("@/features/apporteurs-reseau/passage-quotidien");
   const r = await passerFacturationApporteurs();
   const { erreurs, ...faits } = r;
+  if (erreurs === 0) await noterReussite("reseau-facturation");
   if (Object.values(faits).some((n) => n > 0) || erreurs > 0) {
     console.warn(`[apporteur-crons] réseau facturation : ${JSON.stringify(r)}`);
   }

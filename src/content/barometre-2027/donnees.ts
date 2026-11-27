@@ -12,19 +12,26 @@ export const BAROMETRE_PATH = `/ressources/${BAROMETRE_SLUG}`;
 export const BAROMETRE_TITRE = "Baromètre 2027 : l'IA dans les TPE et PME françaises";
 export const BAROMETRE_DESCRIPTION =
   "40 % des TPE et PME françaises utilisent l'IA en 2026, contre 13 % en 2024. Adoption par taille et par secteur, usages, impact déclaré, comparaison avec l'Europe : chiffres publics sourcés.";
-export const BAROMETRE_DATE_PUBLICATION = "2026-11-26";
-export const BAROMETRE_DATE_MODIFICATION = "2026-11-26";
+export const BAROMETRE_DATE_PUBLICATION = "2026-12-01";
+export const BAROMETRE_DATE_MODIFICATION = "2026-12-01";
 /** Date de consultation de toutes les sources. */
 export const BAROMETRE_DATE_CONSULTATION = "26 novembre 2026";
 
 /**
- * Interrupteur de publication (modèle : CAS_CONCRETS_AFFICHES / PRIX_PUBLICS_AFFICHES).
- * Constante dans le code, pas variable d'environnement : la page est générée au build,
- * une variable Coolify posée au runtime ne la changerait pas. Tant qu'elle vaut `false` :
- * noindex, hors sitemap, hors page Ressources. Pour publier : PR qui la passe à `true`
- * et met la vraie date de publication.
+ * Ouverture publique : 1er décembre 2026, 00:00 heure de Paris (UTC+1 en hiver, soit le
+ * 30 novembre 2026 à 23:00 UTC). Constante dans le code, pas variable d'environnement.
+ * Avant cet instant : noindex, hors sitemap, hors page Ressources (comportement inchangé).
+ * À partir de cet instant : indexable, dans le sitemap, lien dans Ressources. La page étant
+ * générée au build puis revalidée (ISR), le basculement se voit au plus tard à la
+ * revalidation qui suit l'instant d'ouverture (1 h pour la page et Ressources ; le sitemap
+ * suit sa propre revalidation).
  */
-export const BAROMETRE_PUBLIC = false;
+export const BAROMETRE_DATE_OUVERTURE = "2026-12-01T00:00:00+01:00";
+
+/** Vrai à partir de l'instant d'ouverture (inclus). */
+export function barometreEstPublic(now: Date = new Date()): boolean {
+  return now.getTime() >= Date.parse(BAROMETRE_DATE_OUVERTURE);
+}
 
 export interface ChiffreCle {
   /** Valeur mise en avant, telle que publiée. */

@@ -79,10 +79,18 @@ export function VerserForm({
   apporteurId,
   numero,
   montant,
+  fin4Exigee = false,
+  compteFin4 = null,
+  precedentFin4 = null,
 }: {
   apporteurId: string;
   numero: string;
   montant: string;
+  /** Lot 7 : les quatre derniers caractères lus sur le RIB ouvert sont demandés (interrupteur allumé ou choix du compte). */
+  fin4Exigee?: boolean;
+  compteFin4?: string | null;
+  /** Lot 7 : 10 jours après une validation, le compte précédent est proposé. */
+  precedentFin4?: string | null;
 }) {
   const [etat, action, enCours] = useActionState(marquerVerseAction, INITIAL);
   if (etat.etat === "ok") return <Retour etat={etat} />;
@@ -90,6 +98,35 @@ export function VerserForm({
     <form action={action} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
       <input type="hidden" name="apporteurId" value={apporteurId} />
       <input type="hidden" name="numero" value={numero} />
+      {precedentFin4 ? (
+        <fieldset className="text-[length:var(--text-admin-sm)]">
+          <legend>Sur quel compte ce virement est-il parti ?</legend>
+          <label className="mr-[var(--space-admin-3)] inline-flex items-center gap-[var(--space-admin-2)]">
+            <input type="radio" name="compte" value="actuel" required />
+            Compte actuel (se termine par {compteFin4 ?? "?"})
+          </label>
+          <label className="inline-flex items-center gap-[var(--space-admin-2)]">
+            <input type="radio" name="compte" value="precedent" required />
+            Compte précédent (se termine par {precedentFin4})
+          </label>
+        </fieldset>
+      ) : null}
+      {fin4Exigee ? (
+        <label className="inline-flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+          Quatre derniers caractères de l&apos;IBAN lus sur le RIB
+          <input
+            type="text"
+            name="fin4"
+            required
+            maxLength={4}
+            minLength={4}
+            pattern="[A-Za-z0-9]{4}"
+            autoComplete="off"
+            className="admin-input"
+            style={{ width: "5rem" }}
+          />
+        </label>
+      ) : null}
       <label className="inline-flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
         <input type="checkbox" name="confirmer" value="oui" required />
         Virement de {montant} fait
