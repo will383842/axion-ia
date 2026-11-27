@@ -30,6 +30,7 @@
  * reste verte en ne regardant rien.
  */
 
+import { SITE_URL } from "@/lib/site-url";
 import { describe, it, expect } from "vitest";
 import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES, familleDuHtml } from "./index";
 import { REGIME_FAMILLE, type FamilleEmail } from "./_layout";
@@ -52,6 +53,9 @@ import {
 const TITRE_LONG = "Intelligence artificielle appliquée aux PME et ETI";
 
 const PAYLOAD: Record<string, unknown> = {
+  // E-mail 1 de changement de compte : exige https, l'hôte du site et le chemin de demande.
+  lienConfirmer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande/signature-a`,
+  lienBloquer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande/signature-b`,
   contactName: "Jean Dupont",
   stagiairePrenomNom: "Marie Leroy",
   destinataireNom: "Sophie Martin",

@@ -9,10 +9,14 @@
 //  - aucun lien personnel de l'espace (`/apporteur/dossier/<id>/<jeton>`) : les liens de
 //    l'e-mail 1 pointent vers `/apporteur/dossier/compte/<idDemande>/<signature>` ;
 //  - aucun gabarit de repli (champ de reprise de la charge), et c'est voulu : voir la section 6.1 du plan (un repli neutre
-//    redonnerait le lien personnel, ou dirait faux). Verrouillé par `apporteur-compte.spec.tsx`.
+//    redonnerait le lien personnel, ou dirait faux). Verrouillé par `apporteur-compte.spec.tsx`
+//    pour CE fichier ; la charge est posée par l'émetteur (`envois.ts`, lot 4) : le test est à
+//    étendre à ce fichier-là au lot 4 (voir l'ADR 0078).
+//  - le lien personnel de l'espace est coupé dès le rendu : `GABARITS_SANS_LIEN_ESPACE` (index.tsx).
 
 import { Link, Text } from "@react-email/components";
 
+import { SITE_URL } from "@/lib/site-url";
 import { salutation } from "../salutation";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -32,9 +36,15 @@ interface Payload {
   lienBloquer?: string;
 }
 
-const IBAN_GLOBAL = /\b[A-Z]{2}\d{2}(?:\s?[A-Z0-9]{4}){2,7}(?:\s?[A-Z0-9]{1,4})?\b/g;
-const LIEN_PERSONNEL =
-  /\/apporteur\/dossier\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?:[/?#]|$)/i;
+/**
+ * Forme d'un IBAN dans un texte libre : insensible à la casse, séparateurs admis (espaces,
+ * points, tirets) entre les caractères, et au moins 6 chiffres dans la suite (sinon « le 29
+ * novembre 2026 nous versons » serait pris pour un IBAN). SEUL motif de ce lot : le test l'importe d'ici.
+ */
+export const IBAN_GLOBAL =
+  /\b[A-Z]{2}[\s.-]*\d{2}(?=(?:[\s.-]*[A-Z]*\d){6})(?:[\s.-]*[A-Z0-9]){10,30}\b/gi;
+/** Chemin exact d'un lien de demande : `/apporteur/dossier/compte/<idDemande>/<signature>` (plan 6.1). */
+const CHEMIN_DEMANDE = /^\/apporteur\/dossier\/compte\/[A-Za-z0-9_-]+\/[A-Za-z0-9_.-]+$/;
 
 export const COPY_COMPTE = {
   aConfirmer: {
@@ -116,12 +126,26 @@ function sansIban(v: unknown): string {
   return v.replace(IBAN_GLOBAL, "[IBAN retiré]").trim();
 }
 
-/** Un lien n'est rendu que s'il est une adresse web et n'est PAS le lien personnel de l'espace. */
+/**
+ * Un lien n'est rendu que s'il est en `https://`, sur l'origine du site, au chemin exact d'une
+ * demande de compte (liste blanche : le lien personnel de l'espace est donc refusé d'office).
+ */
 function lienSur(v: unknown): string | null {
   if (typeof v !== "string") return null;
-  const l = v.trim();
-  if (!/^https?:\/\//i.test(l) || LIEN_PERSONNEL.test(l)) return null;
-  return l;
+  try {
+    const u = new URL(v.trim());
+    const ok =
+      u.protocol === "https:" &&
+      u.host === new URL(SITE_URL).host &&
+      u.username === "" &&
+      u.password === "" &&
+      u.search === "" &&
+      u.hash === "" &&
+      CHEMIN_DEMANDE.test(u.pathname);
+    return ok ? u.href : null;
+  } catch {
+    return null;
+  }
 }
 
 function prenomDe(p: Payload): string {
@@ -140,13 +164,18 @@ export function ApporteurCompteAConfirmerEmail({ locale, payload }: Props) {
   const c = COPY_COMPTE.aConfirmer;
   const confirmer = lienSur(p.lienConfirmer);
   const bloquer = lienSur(p.lienBloquer);
+  // E-mail de sécurité : sans les deux liens valides, il ne part pas (le worker échoue franchement,
+  // la demande ne peut pas être validée). Jamais de « Bloquer cette demande » sans lien.
+  if (!confirmer || !bloquer) {
+    throw new Error("apporteur-compte-a-confirmer : lienConfirmer et lienBloquer valides requis");
+  }
   return (
     <EmailLayout
       famille="B"
       preview={c.preview}
       title={c.title}
       locale={locale === "fr" ? "fr" : "en"}
-      {...(confirmer ? { cta: { label: c.confirmer, href: confirmer } } : {})}
+      cta={{ label: c.confirmer, href: confirmer }}
       sansReseauxSociaux
       signature="fondateur-court"
     >
@@ -157,7 +186,7 @@ export function ApporteurCompteAConfirmerEmail({ locale, payload }: Props) {
       <Text style={para}>
         <strong>{c.pasVous}</strong>
         {` ${c.bloquerIntro} `}
-        {bloquer ? <Link href={bloquer}>{c.bloquer}</Link> : c.bloquer}
+        <Link href={bloquer}>{c.bloquer}</Link>
         {` ${c.inchange}`}
       </Text>
       <Text style={para}>{c.jamais}</Text>

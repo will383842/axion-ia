@@ -29,11 +29,16 @@ Les cinq gabarits `apporteur-compte-*` n'ont **pas** de repli.
 2. L'émetteur (lot 4) refuse d'émettre si l'interrupteur est éteint.
 3. Test `apporteur-compte.spec.tsx` : le gabarit ne contient aucun `gabaritRepli` et cite
    la section 6.1 du plan, pour qu'une session future ne « corrige » pas ce choix.
+   **Limite connue** : ce test ne lit que le fichier du gabarit. Un `gabaritRepli` se poserait
+   dans la charge, chez l'émetteur (`envois.ts`) : le lot 4 doit étendre ce verrou à ce fichier.
 
 ## 4. Autres règles verrouillées par le lot
 
 - Jamais d'IBAN entier : le gabarit ramène toute fin de compte à 4 caractères et retire
   d'un motif libre toute suite qui a la forme d'un IBAN.
-- Aucun lien personnel de l'espace dans le rendu.
+- Aucun lien personnel de l'espace dans le rendu, même si la charge porte `lienEspace` :
+  `GABARITS_SANS_LIEN_ESPACE` (`templates/index.tsx`) coupe le bouton et « Lien perdu ? ».
+- E-mail 1 : sans `lienConfirmer` et `lienBloquer` valides (https, origine du site, chemin
+  `/apporteur/dossier/compte/<id>/<signature>`), le rendu lève : l'e-mail ne part pas.
 - Trois objets (« demande bloquée », « refusée », « annulée ») dépassent les 45 caractères du
   référentiel : textes validés mot pour mot, dérogation écrite dans `familles-email.spec.tsx`.
