@@ -36,16 +36,16 @@ Sept principes, non négociables :
 
 **Une seule file nouvelle : `seo-pilotage`.** Elle a un seul worker et une charge minimale `{ tache, tick }`. Le worker **ignore** toute `tache` qu'il ne connaît pas, en le journalisant, ce qui est l'inverse du défaut actuel de `content-refresh` (AUDIT § 5 bis-4).
 
-| Tâche            | Fréquence (heure de Paris)                       | Rôle                                                 |
-| ---------------- | ------------------------------------------------ | ---------------------------------------------------- |
-| `ingestion-gsc`  | tous les jours, 06:30                            | Import Search Analytics du dernier jour final        |
-| `rattrapage-gsc` | 1 jour d'historique par passage, jusqu'à 16 mois | Remplir l'historique, une seule fois                 |
-| `inspection`     | tous les jours, 07:00                            | Rotation de l'inspection d'URL, sous quota partagé   |
-| `opportunites`   | le lundi, 05:00                                  | Calcul des opportunités, après la fin de l'ingestion |
-| `robots-ia`      | tous les jours                                   | Collecte Cloudflare (si le jeton est disponible)     |
-| `panel-geo`      | le mardi                                         | Panel de questions GEO                               |
-| `mesure-effets`  | tous les jours                                   | Mesure de l'effet des modifications                  |
-| `purge`          | le dimanche                                      | Purge par lots                                       |
+| Tâche            | Fréquence (heure de Paris)                                              | Rôle                                                                   |
+| ---------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `ingestion-gsc`  | tous les jours, 06:30                                                   | Import Search Analytics du dernier jour final                          |
+| `rattrapage-gsc` | 1 jour d'historique par passage, jusqu'à 16 mois                        | Remplir l'historique, une seule fois                                   |
+| `inspection`     | tous les jours, 07:00                                                   | Rotation de l'inspection d'URL, sous quota partagé                     |
+| `opportunites`   | le lundi, 05:00                                                         | Calcul des opportunités, après la fin de l'ingestion                   |
+| `robots-ia`      | tous les jours                                                          | Collecte Cloudflare (si le jeton est disponible)                       |
+| `panel-geo`      | tous les jours ouvrés, 3 questions par jour, sur un cycle de 2 semaines | Panel de questions GEO, étalé pour rester sous le sous-plafond du jour |
+| `mesure-effets`  | tous les jours                                                          | Mesure de l'effet des modifications                                    |
+| `purge`          | le dimanche                                                             | Purge par lots                                                         |
 
 Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucune API.
 
@@ -65,7 +65,7 @@ Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucu
   - erreur sur un lot : le jour est noté « en échec » dans `GscImportRun` et repris au passage suivant.
 - **Position** : on stocke `positionSum = position × impressions`, ce qui rend les cumuls exacts.
 - **Chemins** : `normaliserChemin` traite l'hôte, `www`, le slash final, la query string et le fragment. Les anciennes URL `/en/…` (301) sont rattachées à leur équivalent FR via `mapEnToFr`, ou isolées.
-- **Type de page** : `typePageDepuisChemin` est **dérivé** de `site-explorer/categories.ts` (une seule source de vérité). Valeurs : article, actualité, guide, ville, offre, faq, institutionnel, conversion, galerie, autre.
+- **Type de page** : `typePageDepuisChemin` part de `site-explorer/categories.ts`, mais cette source n'a **ni `faq`, ni `guide`, ni `actualite`** (seulement commercial, villes, contenu, aide, legal, conversion, transversal, galerie, autre). Il faut donc une **table de correspondance par préfixe de chemin**, écrite une fois dans `src/server/seo-pilotage/donnees/types-page.ts` et testée contre `categories.ts` : `/blog/` pour article, l'actualité, `/guide…` pour guide, `/faq` et l'aide pour faq, `implantations` pour ville, la catégorie `commercial` pour offre, `transversal` et `legal` pour institutionnel. Valeurs : article, actualité, guide, ville, offre, faq, institutionnel, conversion, galerie, autre.
 - **Filtre de données personnelles à l'ingestion, avant tout stockage** :
   - requêtes contenant un e-mail, un numéro de téléphone ou un nom de personne connu en base (formateurs, salariés, clients, candidats, via jointure) : **non stockées**, seulement comptées dans l'agrégat de la page ;
   - requêtes à moins de 10 impressions sur la journée : regroupées sous « autres », jamais stockées en texte.
@@ -107,13 +107,13 @@ Le rapport hebdomadaire (lundi 07:00 UTC) **lit** les tables : il n'appelle aucu
 
 ### 3.4 GEO : trois indicateurs, présentés pour ce qu'ils sont
 
-| Indicateur                             | Source                                                                                                                                                                                         | Coût                                                                 | Limite affichée à l'écran                                                                                   |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **Visites venues des IA**              | Plausible, `visites-ia.ts` (existe). Ajout : page d'arrivée × IA, tendance sur 12 semaines                                                                                                     | 0                                                                    | Sous-comptage : applications sans référent ; AI Overviews et AI Mode comptés comme « Google »               |
-| **Passages des robots d'IA**           | API GraphQL Analytics de Cloudflare, agrégats `{jour, robot, famille de chemins, nombre}`. Ni IP ni user-agent brut                                                                            | 0 (droit `Analytics:Read` à ajouter au jeton : **décision de Will**) | Rétention et champs selon l'offre Cloudflare : **à vérifier**. Le passage d'un robot ≠ une citation         |
-| **Présence dans les réponses (panel)** | 40 questions **figées** (versionnées dans le code), posées à **Claude + `web_search`** (`content-gen/clients/claude-search.ts`), 2 fois chacune, toutes les deux semaines, localisation France | ~0,03 $ par question en Haiku : **≈ 5 $/mois**                       | « Échantillon de N questions, réponses d'API ≠ ce que voit l'utilisateur, tendance sur 4 passages minimum » |
+| Indicateur                             | Source                                                                                                                                                                                                                                                                                                                                                                                                                       | Coût                                                                                          | Limite affichée à l'écran                                                                                                                                                               |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Visites venues des IA**              | Plausible, `visites-ia.ts` (existe). Ajout : page d'arrivée × IA, tendance sur 12 semaines                                                                                                                                                                                                                                                                                                                                   | 0                                                                                             | Sous-comptage : applications sans référent ; AI Overviews et AI Mode comptés comme « Google »                                                                                           |
+| **Passages des robots d'IA**           | API GraphQL Analytics de Cloudflare, agrégats `{jour, robot, famille de chemins, nombre}`. Ni IP ni user-agent brut                                                                                                                                                                                                                                                                                                          | 0 (droit `Analytics:Read` à ajouter au jeton : **décision de Will**)                          | Rétention et champs selon l'offre Cloudflare : **à vérifier**. Le passage d'un robot ≠ une citation                                                                                     |
+| **Présence dans les réponses (panel)** | 30 questions **figées** (versionnées dans le code), posées à **Claude Sonnet 5.5 + `web_search`** (`max_uses: 2`, localisation France), **une fois par cycle de 2 semaines**, étalées à 3 questions par jour ouvré. Une **nouvelle fonction d'appel** est nécessaire (`geo/panel.ts`) : `content-gen/clients/claude-search.ts` est un outil de vérification de faits, dont on ne reprend que le motif HTTP et la réservation | ~0,10-0,15 $ par question (les résultats de recherche comptent en entrée) : **≈ 7-10 $/mois** | « Échantillon de N questions, réponses d'API de Claude ≠ ce que voit l'utilisateur, **ne représente ni ChatGPT, ni Perplexity, ni Gemini, ni Copilot**, tendance sur 4 cycles minimum » |
 
-- **Moteurs du panel.** En V1, Claude seul : c'est le seul déjà branché, avec une porte de coût. Perplexity (Sonar) et OpenAI (outil de recherche web) sont techniquement possibles, mais **payants hors plafond Claude** : décision de Will (§ 10).
+- **Moteurs du panel.** En V1, Claude seul : c'est le seul déjà branché, avec une porte de coût. ⚠️ La porte (`assertPlafondsClaude`) n'admet **que Sonnet 5.5 et Opus 5.5** (`MODELES`), et Haiku 5.5 n'a pas de prix déclaré (`anthropic.ts`) : **Haiku est exclu**. Perplexity (Sonar) et OpenAI (outil de recherche web) sont techniquement possibles, mais **payants hors plafond Claude** : décision de Will (§ 10). Pour ChatGPT, Perplexity, Gemini et Copilot, la mesure reste **indirecte** (visites référées, passages des robots) : l'écran l'écrit en toutes lettres.
 - **Gemini avec ancrage Google.** Ses conditions limitent le stockage des résultats : exclu tant qu'elles ne sont pas validées.
 - **AI Overviews / AI Mode.** Il n'existe **aucune API**, et à notre connaissance la Search Console les fond dans « Web » (**à revérifier**). Aucun scraping d'interface grand public.
 - **Stockage du panel** : question, moteur, date, URL citées, présence d'`axion-ia.com` et rang, domaines concurrents cités. **Pas le texte intégral.**
@@ -212,7 +212,7 @@ Les signalements sont listés à part. Un coefficient de valeur métier par cat�
 - **Contrôle de conformité de chaque texte proposé** : `controlerConformite` (interdits, Grenoble, prix hors source de vérité, vouvoiement). Un **chiffre nouveau** entraîne un refus.
 - **Une seule modification par page tous les 28 jours.** Verrou : un index unique partiel sur le journal.
 - **Quota** : `pilotage_modifs_max_jour` = 3, distinct de `equipe_maj_max_jour`.
-- **Pas de date seule** : une écriture de méta ou de FAQ **réécrit l'ancien `updatedAt`** (AUDIT § 5 bis-3).
+- **Pas de date seule** : une écriture de méta ou de FAQ **réécrit l'ancien `ArticleTranslation.updatedAt`**, qui est la date réellement publiée (AUDIT § 5 bis-3). ⚠️ `mise-a-jour-reel.ts` écrit aujourd'hui `Article.updatedAt`, alors que le blog lit `ArticleTranslation.updatedAt` (bougé automatiquement par `@updatedAt`) : la date « gérée » n'est pas celle qui est publiée. P13 corrige ce point.
 - **Pages modifiées** : `revalidatePath` et purge Cloudflare ciblée, avec le même mécanisme que les surcharges d'aperçu. Le comportement exact est à vérifier dans la PR.
 - **Arrêt d'urgence** : `readKillSwitchFailSafe` est lu avant chaque écriture.
 
@@ -257,18 +257,18 @@ Règles de la file :
 
 **Tout appel passe par la porte existante** (`assertPlafondsClaude` puis `reserverCout` et `solderReservation`). Le coût est donc compté dans les **mêmes 10 $/jour et 200 $/mois**, et la réserve Qualiopi est respectée. Deux réglages s'y ajoutent dans `ContentGenConfig` :
 
-- **`pilotage_cout_max_jour_usd`**, défaut 1 $ ;
-- **`pilotage_cout_max_mois_usd`**, défaut 20 $.
+- **`pilotage_cout_max_jour_usd`**, défaut 2 $ ;
+- **`pilotage_cout_max_mois_usd`**, défaut 30 $.
 
-Le pilotage ne peut donc **jamais prendre plus de 10 % du budget mensuel** de la production.
+Le pilotage ne peut donc **jamais prendre plus de 15 % du budget mensuel** de la production. ⚠️ La réservation se fait au **coût maximal possible** (jetons de recherche × `max_uses` × marge) : ~0,25 $ par question du panel avec `max_uses: 2`, contre ~0,6 $ avec la valeur actuelle de 5. C'est pourquoi le panel est étalé sur plusieurs jours et borné à 2 recherches.
 
-| Poste                                                                                     | Estimation                            |
-| ----------------------------------------------------------------------------------------- | ------------------------------------- |
-| Panel GEO (40 questions × 2 passages, toutes les deux semaines, Haiku 5.5 + `web_search`) | ≈ 5 $/mois                            |
-| Propositions titre/méta/FAQ (Sonnet 5.5, ≤ 3 par jour, remplacements ciblés)              | ≈ 3-6 $/mois                          |
-| Classement des intentions inconnues (Haiku, par lots, mis en cache)                       | < 1 $/mois                            |
-| Mises à jour d'articles                                                                   | Déjà comptées par l'équipe éditoriale |
-| **Total**                                                                                 | **≈ 10-12 $/mois**                    |
+| Poste                                                                                                 | Estimation                                       |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Panel GEO (30 questions, 1 passage par cycle de 2 semaines, Sonnet 5.5 + `web_search`, `max_uses: 2`) | ≈ 7-10 $/mois                                    |
+| Propositions titre/méta/FAQ (Sonnet 5.5, ≤ 3 par jour, remplacements ciblés)                          | ≈ 3-6 $/mois                                     |
+| Classement des intentions inconnues (Sonnet 5.5, par lots de 100, mis en cache)                       | < 1 $/mois                                       |
+| Mises à jour d'articles                                                                               | Déjà comptées par l'équipe éditoriale            |
+| **Total**                                                                                             | **≈ 12-17 $/mois**, sous le sous-plafond de 30 $ |
 
 Mesure, opportunités et score de citabilité : **0 $** (aucun modèle).
 
@@ -322,24 +322,24 @@ Une **section** ajoutée à `content-weekly-report-worker.ts`. Pas de second e-m
 | `pilotage_seo.retour_auto`                 | idem                                        | `false`         | Active le retour arrière automatique                                                                                                                             |
 | `pilotage_seo.panel_geo`                   | idem                                        | `false`         | Active le panel GEO                                                                                                                                              |
 | `pilotage_seo.part_temoin`                 | idem                                        | `0.2`           | Part des pages tirées dans le groupe témoin                                                                                                                      |
-| `pilotage_cout_max_jour_usd` / `_mois_usd` | idem                                        | 1 / 20          | Sous-plafonds de coût du pilotage                                                                                                                                |
+| `pilotage_cout_max_jour_usd` / `_mois_usd` | idem                                        | 2 / 30          | Sous-plafonds de coût du pilotage                                                                                                                                |
 | `pilotage_modifs_max_jour`                 | idem                                        | 3               | Quota de modifications par jour                                                                                                                                  |
 
 Dépendances entre interrupteurs :
 
-- Les propositions qui utilisent l'éditeur SEO ou le mode mise à jour exigent en plus `CONTENT_EQUIPE_EDITORIALE=true` et `CONTENT_GEN_BLOG_CLAUDE=true`.
+- **Tout appel à Claude** (panel GEO, classement des intentions, propositions) exige en plus `CONTENT_GEN_BLOG_CLAUDE=true`, vérifié par `assertPlafondsClaude`. Les propositions qui utilisent l'éditeur SEO ou le mode mise à jour exigent aussi `CONTENT_EQUIPE_EDITORIALE=true`.
 - Le kill switch global coupe tout ce qui écrit ou dépense.
 
 ## 9. Arbitrages entre experts
 
-| Sujet                                          | Avis                                                                                       | Décision                                                                                                                                                                                                                                             |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Nouveau worker ?                               | Critique : « zéro worker ». Expert boucle : « file séparée obligatoire » (AUDIT § 5 bis-4) | **Une** file et **un** worker nouveaux, qui **en retirent deux** (`site-route-gsc`, `content-keyword-sync`). Bilan : −1                                                                                                                              |
-| Branches `feat/equipe-ed-*` à attendre ?       | Critique : « attendre leur fusion »                                                        | **Faux** : les PR 2, 14, 16 et 18 sont fusionnées (#2351, #2359, #2389, #2379). Il reste des branches distantes périmées (voir DECOUPAGE)                                                                                                            |
-| Type de contenu dédié au panel (`geo_panel`) ? | Expert GEO : oui. Expert boucle : non (énumération = migration et risque app/worker)       | **Non** : job porteur (§ 6)                                                                                                                                                                                                                          |
-| Coût du panel                                  | Critique : 10-40 $/semaine. Expert GEO : 5-20 $/mois                                       | Le critique s'appuyait sur `src/server/clients/claude-search.ts`, qui **n'a pas** de recherche web, et sur un Sonnet à 30 k jetons. Retenu : Haiku, 40 questions, toutes les deux semaines, ≈ 5 $/mois, **plafonné à 20 $/mois** par le sous-plafond |
-| Historique sans migration ?                    | Expert données : impossible proprement                                                     | **Migration additive** (tables nouvelles seulement), justifiée § 3 de DECOUPAGE                                                                                                                                                                      |
-| Noindex automatique du `tier-lifecycle`        | Critique : risque sur bruit                                                                | Il a déjà un plancher de 100 impressions (`tier-decisions.ts:68`). On le **laisse**, mais il lit désormais la table d'historique (28 j homogènes)                                                                                                    |
+| Sujet                                          | Avis                                                                                       | Décision                                                                                                                                                                                                                                                                                                                               |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nouveau worker ?                               | Critique : « zéro worker ». Expert boucle : « file séparée obligatoire » (AUDIT § 5 bis-4) | **Une** file et **un** worker nouveaux, qui **en retirent deux** (`site-route-gsc`, `content-keyword-sync`). Bilan : −1                                                                                                                                                                                                                |
+| Branches `feat/equipe-ed-*` à attendre ?       | Critique : « attendre leur fusion »                                                        | **Faux** : les PR 2, 14, 16 et 18 sont fusionnées (#2351, #2359, #2389, #2379). Il reste des branches distantes périmées (voir DECOUPAGE)                                                                                                                                                                                              |
+| Type de contenu dédié au panel (`geo_panel`) ? | Expert GEO : oui. Expert boucle : non (énumération = migration et risque app/worker)       | **Non** : job porteur (§ 6)                                                                                                                                                                                                                                                                                                            |
+| Coût du panel                                  | Critique : 10-40 $/semaine. Expert GEO : 5-20 $/mois                                       | Le critique s'appuyait sur `src/server/clients/claude-search.ts`, qui **n'a pas** de recherche web. La relecture a montré que Haiku est refusé par la porte : retenu **Sonnet 5.5**, 30 questions, `max_uses: 2`, un passage par cycle de 2 semaines étalé à 3 par jour : ≈ 7-10 $/mois, **plafonné** par le sous-plafond de 30 $/mois |
+| Historique sans migration ?                    | Expert données : impossible proprement                                                     | **Migration additive** (tables nouvelles seulement), justifiée dans DECOUPAGE, P2                                                                                                                                                                                                                                                      |
+| Noindex automatique du `tier-lifecycle`        | Critique : risque sur bruit                                                                | Il a déjà un plancher de 100 impressions (`tier-decisions.ts:68`). On le **laisse**, mais il lit désormais la table d'historique (28 j homogènes)                                                                                                                                                                                      |
 
 ## 10. Questions ouvertes pour Will
 
@@ -348,7 +348,7 @@ Dépendances entre interrupteurs :
 3. Une clé Bing Webmaster ?
 4. Panel GEO : Claude seul en V1, ou ajouter Perplexity / OpenAI (payants **hors** plafond Claude) ?
 5. Coefficient de valeur métier par type de page (ex. villes et offres × 1,5) ?
-6. Liste des 40 questions du panel, à valider : un premier jet est fourni dans la PR 9.
+6. Liste des 30 questions du panel, à valider : un premier jet est fourni dans la P11.
 7. Persona d'auteur (« Manon ») contre une personne réelle pour l'E-E-A-T : décision éditoriale, hors code.
 8. **Hors chantier, mais signalé** : l'envoi d'articles à l'API Google Indexing (réservée à `JobPosting` et `BroadcastEvent`) est à arrêter.
 

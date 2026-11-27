@@ -38,7 +38,7 @@ Facultatif           P17 Bing Webmaster (après P4)
   - Vérifier que l'orchestrateur, les balayages de `content-gen/recovery` et le moniteur « chaîne à l'arrêt » ignorent ce job porteur.
   - `mise-a-jour-reel.ts` crée son job porteur au lieu de `maj-<id>`.
   - `edition-seo.ts` envoie un type d'énumération existant, et non `blog_edition_seo`.
-  - Sous-plafonds `pilotage_cout_max_jour_usd` et `pilotage_cout_max_mois_usd`, lus par le helper.
+  - Sous-plafonds `pilotage_cout_max_jour_usd` (2 $) et `pilotage_cout_max_mois_usd` (30 $), lus par le helper. Modèle imposé par la porte : Sonnet 5.5 ou Opus 5.5 (Haiku exclu).
 - **Fichiers** :
   - `src/server/content-gen/providers/job-porteur.ts` (nouveau) ;
   - `equipe/mise-a-jour-reel.ts`, `equipe/edition-seo.ts` ;
@@ -97,7 +97,7 @@ Facultatif           P17 Bing Webmaster (après P4)
 
 ### P3 · Module pur des données (`src/server/seo-pilotage/donnees/`)
 
-- **Fonctions** : `normaliserChemin`, `typePageDepuisChemin` (dérivé de `site-explorer/categories.ts`, pas recopié), `positionSum` et moyennes, `partAnonymisee`, cumul en semaine ISO, `filtrerDonneesPersonnelles`, `filtrerInterdits`.
+- **Fonctions** : `normaliserChemin`, `typePageDepuisChemin` (table de correspondance par préfixe de chemin dans `types-page.ts`, car `categories.ts` n'a ni faq, ni guide, ni actualité ; testée contre `categories.ts` pour ne jamais diverger), `positionSum` et moyennes, `partAnonymisee`, cumul en semaine ISO, `filtrerDonneesPersonnelles`, `filtrerInterdits`.
   - `filtrerDonneesPersonnelles` filtre les e-mails, les téléphones, une liste de noms injectée et les requêtes à moins de 10 impressions.
 - **Tests** :
   - variantes d'hôte, de slash, de query et de fragment ;
@@ -205,8 +205,8 @@ Facultatif           P17 Bing Webmaster (après P4)
 ### P11 · Panel GEO (Claude + `web_search`)
 
 - **Fichiers** :
-  - `src/server/seo-pilotage/geo/panel-questions.ts` : 40 questions **versionnées**, **à valider par Will** ;
-  - `geo/panel.ts` : réutilise `content-gen/clients/claude-search.ts` et le job porteur de P0 ;
+  - `src/server/seo-pilotage/geo/panel-questions.ts` : 30 questions **versionnées**, **à valider par Will** ;
+  - `geo/panel.ts` : **nouvelle fonction d'appel** (Sonnet 5.5 + `web_search`, `max_uses: 2`, `user_location` France). Elle reprend de `content-gen/clients/claude-search.ts` le motif HTTP et la réservation, pas le prompt de vérification de faits, et utilise le job porteur de P0. Le panel est étalé à 3 questions par jour ouvré ;
   - **migration additive** `GeoPanelReponse` : question, version, moteur, date, URL citées, présence et rang, domaines cités, **sans texte intégral** ;
   - tâche `panel-geo`.
 - **Tests** :
@@ -233,7 +233,7 @@ Facultatif           P17 Bing Webmaster (après P4)
 - **Fichiers** :
   - **migration additive** `SeoModification` (index unique partiel « une modification en cours par cible ») ;
   - `src/server/seo-pilotage/actions/{journal,annuler}.ts` ;
-  - `equipe/mise-a-jour-reel.ts` : `enregistrer` écrit l'« avant » du corps dans le journal, dans la même transaction (comble l'absence de retour arrière) ;
+  - `equipe/mise-a-jour-reel.ts` : `enregistrer` écrit l'« avant » du corps dans le journal, dans la même transaction (comble l'absence de retour arrière), et pose la date sur `ArticleTranslation.updatedAt` (la date réellement publiée) au lieu de `Article.updatedAt` seul ;
   - Server Action « Annuler ».
 - **Tests** :
   - écriture atomique ;
@@ -292,14 +292,14 @@ Facultatif           P17 Bing Webmaster (après P4)
 
 ## 3. Recouvrements avec les branches en cours
 
-| Branche                                                                          | État le 27/11                                                                                 | Recouvrement                                                                                                                 | Conduite                                                                                                                                                   |
-| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `feat/equipe-ed-pr12-orchestration`                                              | **Ouverte** (18 fichiers)                                                                     | `providers/blog-claude-ledger.ts`, `equipe/circuit-article.ts` (branche `editerSeo`), `content-gen-worker.ts`                | **P0 attend sa fusion** et traite avec elle le type `blog_edition_seo`. P14 réutilise `circuit-article`.                                                   |
-| `feat/equipe-ed-pr2`, `pr14`, `pr16`, `pr18`                                     | **Fusionnées** (#2351, #2359, #2389, #2379) ; branches distantes périmées                     | `content-keyword-sync-worker.ts`, `suivi-publication.ts`, `mise-a-jour*.ts`, `content-refresh-worker.ts`, `charge-de-liens*` | Partir de `main`, ignorer les branches distantes. Diffs minimaux dans P0b, P5 et P13.                                                                      |
-| `chore/equipe-ed-pr0` et `feat/equipe-ed-pr1`, `pr3`, `pr4`, `pr5`, `pr7`, `pr8` | Fusionnées (#2356, #2354, #2357, #2362, #2363, #2352, #2353) ; branches distantes résiduelles | Aucun fichier commun direct                                                                                                  | —                                                                                                                                                          |
-| `feat/images-blog-qualite`                                                       | Ouverte                                                                                       | `content-gen/images/*`, `content-publish-worker.ts`                                                                          | Aucun fichier commun. P14 ne republie rien par `content-publish`.                                                                                          |
-| `feat/gabarits-articles-conception`                                              | Conception (docs)                                                                             | Gabarits d'articles, dont FAQ et définition. `templateVariant` intervient dans la construction des URL d'article             | P12 aligne ses critères sur ces gabarits. P14 produit les FAQ au format du gabarit FAQ. Les URL sont construites par `buildArticlePath`, jamais à la main. |
-| `geo/*` (llms.txt, pages offres, villes, glossaire…) et `fix/seo-*`              | Nombreuses, diverses                                                                          | `src/app/_llms/*`, pages offres et villes                                                                                    | Le chantier **lit** ces pages et ne les modifie pas. P12 peut signaler des écarts de faits, que ces branches corrigent.                                    |
+| Branche                                                                                                  | État le 27/11                                                                                                      | Recouvrement                                                                                                                 | Conduite                                                                                                                                                   |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `feat/equipe-ed-pr12-orchestration`                                                                      | **Ouverte** (18 fichiers)                                                                                          | `providers/blog-claude-ledger.ts`, `equipe/circuit-article.ts` (branche `editerSeo`), `content-gen-worker.ts`                | **P0 attend sa fusion** et traite avec elle le type `blog_edition_seo`. P14 réutilise `circuit-article`.                                                   |
+| `feat/equipe-ed-pr2`, `pr14`, `pr16`, `pr18`                                                             | **Fusionnées** (#2351, #2359, #2389, #2379) ; branches distantes périmées                                          | `content-keyword-sync-worker.ts`, `suivi-publication.ts`, `mise-a-jour*.ts`, `content-refresh-worker.ts`, `charge-de-liens*` | Partir de `main`, ignorer les branches distantes. Diffs minimaux dans P0b, P5 et P13.                                                                      |
+| `chore/equipe-ed-pr0` et `feat/equipe-ed-pr1`, `pr3`, `pr4`, `pr5`, `pr7`, `pr8`, `pr10`, `pr11`, `pr13` | Fusionnées (#2356, #2354, #2357, #2362, #2363, #2352, #2353, #2358, #2372, #2364) ; branches distantes résiduelles | Aucun fichier commun direct                                                                                                  | —                                                                                                                                                          |
+| `feat/images-blog-qualite`                                                                               | Ouverte                                                                                                            | `content-gen/images/*`, `content-publish-worker.ts`, `providers/unsplash.ts`, `actions/content-gen/hero-backfill.ts`         | Aucun fichier commun. P14 ne republie rien par `content-publish`.                                                                                          |
+| `feat/gabarits-articles-conception`                                                                      | Conception (docs)                                                                                                  | Gabarits d'articles, dont FAQ et définition. `templateVariant` intervient dans la construction des URL d'article             | P12 aligne ses critères sur ces gabarits. P14 produit les FAQ au format du gabarit FAQ. Les URL sont construites par `buildArticlePath`, jamais à la main. |
+| `geo/*` (llms.txt, pages offres, villes, glossaire…) et `fix/seo-*`                                      | Nombreuses, diverses                                                                                               | `src/app/_llms/*`, pages offres et villes                                                                                    | Le chantier **lit** ces pages et ne les modifie pas. P12 peut signaler des écarts de faits, que ces branches corrigent.                                    |
 
 ## 4. Estimation
 
