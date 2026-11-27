@@ -1,9 +1,9 @@
 /**
  * PR S1 — la page /blog/[slug] n'a gagné qu'UNE insertion, derrière l'interrupteur.
  * Vérifié sur le code source (la page complète n'est pas montable en test unitaire,
- * cf. fin-article-journee-ia.spec.ts) et par le diff contre la version d'origine.
+ * cf. fin-article-journee-ia.spec.ts). Pas de comparaison à origin/main : la CI clone
+ * en profondeur 1 et, après fusion, origin/main contient déjà l'insertion.
  */
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
@@ -34,42 +34,6 @@ describe("aiguillage dans page.tsx", () => {
     expect(v1).toContain("Mis à jour le ");
     expect(v1).not.toContain("data-gabarit");
     expect(v1).not.toContain("ArticleGabarit");
-  });
-
-  it("generateMetadata est identique à la version d'origine", () => {
-    let origine: string;
-    try {
-      origine = execFileSync("git", ["show", `origin/main:${PAGE}`], { encoding: "utf8" });
-    } catch {
-      return; // pas d'historique git disponible : le test ne s'applique pas
-    }
-    const bloc = (s: string) =>
-      s.slice(
-        s.indexOf("export async function generateMetadata"),
-        s.indexOf("export default async function"),
-      );
-    expect(bloc(src)).toBe(bloc(origine));
-  });
-
-  it("hors insertion, la page ne diffère de l'origine que par les imports ajoutés", () => {
-    let origine: string;
-    try {
-      origine = execFileSync("git", ["show", `origin/main:${PAGE}`], { encoding: "utf8" });
-    } catch {
-      return;
-    }
-    const debut = src.indexOf("  // Gabarits d'articles (PR S1)");
-    const fin = src.indexOf("  return (\n    <>\n      {/* Refonte templates 2026-06-22");
-    const sansInsertion = src.slice(0, debut) + src.slice(fin);
-    const sansImports = (s: string) =>
-      s
-        .split("\n")
-        .filter(
-          (l) =>
-            !/gabaritsV2Actifs|gabaritPourType|ArticleGabarit|^\s*chargerTypeContenu,$/.test(l),
-        )
-        .join("\n");
-    expect(sansImports(sansInsertion)).toBe(sansImports(origine));
   });
 
   it("aucun use client dans le socle", () => {
