@@ -19450,6 +19450,7 @@ model TeamMemberEvent {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// Réserve de besoins réels (R1). Une requête déjà couverte par une URL est refusée côté code.
+/// rgpd: technique — questions génériques de lecteurs et références de source ; aucune identité ni coordonnée d'une personne (à passer en dossier-client si une source nominative était un jour ingérée)
 model ContenuBesoin {
   id           String    @id @default(cuid())
   question     String    @db.VarChar(300)
@@ -19476,6 +19477,7 @@ model ContenuBesoin {
 
 /// Brief (R2) : le contrat de tout le reste. Étend le schéma de equipe/brief.ts (champ `brief`
 /// = briefSchema validé en JSON) ; les colonnes dédiées servent aux requêtes et à la console.
+/// rgpd: technique — briefs éditoriaux (plan, intention, longueur) ; aucune donnée sur une personne, seul le nom d'un membre de l'équipe peut figurer comme auteur
 model ContenuBrief {
   id                 String   @id @default(cuid())
   besoinId           String?
@@ -19501,7 +19503,7 @@ model ContenuBrief {
   besoin          ContenuBesoin?    @relation(fields: [besoinId], references: [id], onDelete: SetNull)
   faits           ContenuFait[]
   refus           ContenuRefus[]
-  ContenuResultat ContenuResultat[]
+  resultats       ContenuResultat[]
 
   @@index([besoinId])
   @@index([jobId])
@@ -19510,6 +19512,7 @@ model ContenuBrief {
 }
 
 /// Dossier de preuves (R3) et faits vérifiés gouvernés (lus par C5 pour CHIFFRES_VERIFIES).
+/// rgpd: technique — faits publics sourcés (énoncé, extrait, URL) ; aucune donnée sur une personne, seul le nom du relecteur de l'équipe figure
 model ContenuFait {
   id              String    @id @default(cuid())
   briefId         String?
@@ -19522,10 +19525,10 @@ model ContenuFait {
   dateLecture     DateTime
   /// haute | moyenne | basse
   confiance       String?   @db.VarChar(10)
-  /// propose | verifie | retire : « verifie » seulement après relecture humaine.
-  /// Valeur chiffrée telle qu\'affichée (« 12 % »), lue par C5 pour CHIFFRES_VERIFIES.
+  /// Valeur chiffrée telle qu'affichée (« 12 % »), lue par C5 pour CHIFFRES_VERIFIES.
   valeur          String?   @db.VarChar(100)
   verifiePar      String?   @db.VarChar(120)
+  /// propose | verifie | retire : « verifie » seulement après relecture humaine.
   statut          String    @default("propose") @db.VarChar(20)
   verifieLe       DateTime?
   createdAt       DateTime  @default(now())
@@ -19539,6 +19542,7 @@ model ContenuFait {
 }
 
 /// Refus enregistré (machine ou humain), un seul mécanisme (§ 7.1 et § 8 de la conception).
+/// rgpd: technique — codes et motifs de refus d'un contenu ; aucune donnée sur une personne, seul le nom du décideur de l'équipe figure
 model ContenuRefus {
   id             String   @id @default(cuid())
   briefId        String?
@@ -19573,6 +19577,7 @@ model ContenuRefus {
 
 /// Suivi d'un contenu publié : une ligne par contenu et par date de mesure.
 /// Toute mesure absente reste NULL (jamais 0) ; l'écran dit « indisponible ».
+/// rgpd: technique — mesures d'audience agrégées d'une URL publiée ; aucune donnée sur une personne
 model ContenuResultat {
   id           String   @id @default(cuid())
   /// URL canonique du contenu publié (pas de clé étrangère : le contenu vit dans plusieurs tables).
@@ -19603,6 +19608,7 @@ model ContenuResultat {
 }
 
 /// Proposition de l'analyste hebdomadaire : rien ne s'applique seul (§ 7.4).
+/// rgpd: technique — propositions de l'analyste hebdomadaire sur des contenus ; aucune donnée sur une personne, seul le nom du décideur de l'équipe figure
 model ContenuProposition {
   id                 String    @id @default(cuid())
   /// Semaine analysée (lundi, date seule).
