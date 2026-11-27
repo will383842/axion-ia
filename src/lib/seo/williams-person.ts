@@ -26,8 +26,8 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   WILLIAMS_LEAD,
   WILLIAMS_DOCTRINE,
-  WILLIAMS_TAGLINE,
   WILLIAMS_REVISION_DATE,
+  NATURE_AXION_IA,
 } from "@/content/equipe/williams";
 
 // Audit E-E-A-T 2026-06-22 (P1) — identité (nom, fonction, LinkedIn, knowsAbout)
@@ -51,9 +51,9 @@ const WILLIAMS_PHOTO_HAUTEUR = 2048;
  * (le rendu de la fiche ne l'utilise plus : la page a son propre gabarit
  * éditorial). Elle reste la bio « courte » réutilisable ailleurs.
  */
-const WILLIAMS_BIO_MD = `**${FOUNDER.fullName}** est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle qui intervient partout en France.
+const WILLIAMS_BIO_MD = `**${FOUNDER.fullName}** dirige Axion-IA, la ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité avec l'équipe qu'elles ont déjà, grâce à l'IA mise en place de A à Z.
 
-Axion-IA accompagne les PME et les TPE sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation de solutions IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats concrets et mesurés.
+L'équipe d'Axion-IA accompagne les TPE et PME : Journée IA, solutions IA sur mesure, automatisation des processus, formation des équipes et coaching des dirigeants.
 
 Profil LinkedIn : ${WILLIAMS_LINKEDIN}`;
 
@@ -80,7 +80,7 @@ const WILLIAMS_KNOWS_ABOUT = [
 const WILLIAMS_SKILLS = [
   "Audit IA d'entreprise",
   "Cadrage et priorisation de cas d'usage IA",
-  "Implémentation IA sur mesure en code propriétaire",
+  "Solutions IA sur mesure",
   "Automatisation et intégration de processus",
   "Formation et coaching de dirigeants",
 ].join(", ");
@@ -151,7 +151,7 @@ export function buildPersonWilliamsJsonLd(_locale: string = "fr"): Record<string
     description: WILLIAMS_LEAD,
     // Sert exactement à ce que son nom dit : séparer cette personne d'un
     // homonyme dans un index d'entités.
-    disambiguatingDescription: `${FOUNDER.jobTitleFr} — ${WILLIAMS_TAGLINE}`,
+    disambiguatingDescription: `${FOUNDER.jobTitleFr} — Spécialiste de l'intelligence artificielle en entreprise · transformations à gains rapides et mesurables`,
     url: founderUrl(),
     mainEntityOfPage: { "@id": `${founderUrl()}#profilepage` },
     image: buildWilliamsImageObject(),

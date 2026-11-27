@@ -25,8 +25,9 @@ import { describe, it, expect } from "vitest";
 import { routing } from "@/i18n/routing";
 import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import {
-  WILLIAMS_EXPERTISES,
   WILLIAMS_IDENTITE,
+  WILLIAMS_JOURNEE_IA,
+  WILLIAMS_SERVICES,
   WILLIAMS_LEAD,
   buildWilliamsFaq,
 } from "@/content/equipe/williams";
@@ -38,21 +39,27 @@ import {
 const CHEMINS_DECLARES = new Set(Object.keys(routing.pathnames));
 
 describe("fiche fondateur — liens internes", () => {
-  const cibles = WILLIAMS_EXPERTISES.flatMap((e) =>
-    [e.href, e.hrefSecondaire].filter((h): h is string => typeof h === "string"),
-  );
+  const cibles = [
+    ...WILLIAMS_SERVICES.items.flatMap((e) => e.liens.map((l) => l.href)),
+    WILLIAMS_JOURNEE_IA.lien.href,
+  ];
 
-  it("chaque carte métier pointe une route réellement déclarée", () => {
+  it("chaque lien de service pointe une route réellement déclarée", () => {
     expect(cibles.length).toBeGreaterThan(0);
     const orphelins = cibles.filter((href) => !CHEMINS_DECLARES.has(href));
     expect(orphelins, `chemins absents de routing.pathnames : ${orphelins.join(", ")}`).toEqual([]);
   });
 
-  it("chaque carte porte au moins un lien sortant libellé", () => {
-    for (const e of WILLIAMS_EXPERTISES) {
-      expect(e.href, `${e.id} sans href`).toBeTruthy();
-      expect(e.hrefLabel.length, `${e.id} sans libellé de lien`).toBeGreaterThan(0);
+  it("chaque service porte au moins un lien sortant libellé", () => {
+    for (const e of WILLIAMS_SERVICES.items) {
+      expect(e.liens.length, `${e.id} sans lien`).toBeGreaterThan(0);
+      for (const l of e.liens)
+        expect(l.libelle.length, `${e.id} : lien sans libellé`).toBeGreaterThan(0);
     }
+  });
+
+  it("aucun lien vers une page de tarifs", () => {
+    expect(cibles.filter((h) => /tarif|prix|pricing/i.test(h))).toEqual([]);
   });
 });
 

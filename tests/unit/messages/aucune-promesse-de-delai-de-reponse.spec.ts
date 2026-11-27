@@ -46,7 +46,7 @@ const FICHIERS = [
   "src/components/sections/AuditConversionBlocks.tsx",
   "src/components/sections/AuditDetailPage.tsx",
   "src/components/sections/ContactHeroSchema.tsx",
-  "src/components/sections/FounderProfile.tsx",
+  "src/components/equipe/ProfilCollaborateur.tsx",
   "src/components/sections/InterventionDetailPage.tsx",
   "src/components/sections/PricingGridVille.tsx",
   "src/components/sections/ProductPageTemplate.tsx",
