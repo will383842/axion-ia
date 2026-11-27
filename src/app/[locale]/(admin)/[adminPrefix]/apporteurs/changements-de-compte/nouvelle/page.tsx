@@ -50,11 +50,22 @@ export default async function NouvelleDemandePage({
             <input type="hidden" name="apporteurId" value={apporteurId} />
             <label>
               Nouvel IBAN (saisi par vous)
-              <input name="iban" autoComplete="off" maxLength={60} required className="admin-input" />
+              <input
+                name="iban"
+                autoComplete="off"
+                maxLength={60}
+                required
+                className="admin-input"
+              />
             </label>
             <label>
               RIB du nouveau compte (PDF, PNG ou JPG, 10 Mo au plus)
-              <input name="rib" type="file" accept="application/pdf,image/png,image/jpeg" required />
+              <input
+                name="rib"
+                type="file"
+                accept="application/pdf,image/png,image/jpeg"
+                required
+              />
             </label>
             <button type="submit" className="admin-button">
               Ouvrir la demande
