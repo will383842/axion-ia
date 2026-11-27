@@ -10,6 +10,7 @@ import { composerRequetes, type LigneRequetePage } from "./requetes";
 import { etatSourceSearchConsole, fenetres28Jours } from "./sources";
 import { composerVueEnsemble, type AgregatType } from "./vue";
 import { positionMoyenne } from "../donnees/agregats";
+import { filtrerInterdits } from "../donnees/interdits";
 
 type Lecteur = Pick<
   PrismaClient,
@@ -159,7 +160,7 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
   const joursDans = (fen: { debut: string; fin: string }): number =>
     new Set(reussis.filter((j) => j >= fen.debut && j <= fen.fin)).size;
   const fenetreCouranteComplete = joursDans(f.courante) >= JOURS_FENETRE;
-  const comparaisonPossible = joursDans(f.precedente) >= JOURS_FENETRE;
+  const comparaisonPossible = fenetreCouranteComplete && joursDans(f.precedente) >= JOURS_FENETRE;
 
   const vue = await ouNull(async () => {
     const [c, p] = await Promise.all([
@@ -226,7 +227,9 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
         positionSum: l._sum.positionSum ?? 0,
       });
     }
-    return composerRequetes(entree);
+    // Les requêtes sont stockées telles quelles : on masque ici celles qui portent un mot
+    // interdit (ville interdite en communication, etc.), comme pour les propositions.
+    return composerRequetes(filtrerInterdits(entree).retenues);
   });
 
   return {

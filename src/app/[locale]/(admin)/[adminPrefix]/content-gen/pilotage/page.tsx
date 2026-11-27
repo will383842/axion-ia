@@ -23,7 +23,7 @@ interface PageProps {
 export default async function PilotageSeoPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
-  const acces = await gardePage("ecriture", `/fr/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}/content-gen`} />;
   }

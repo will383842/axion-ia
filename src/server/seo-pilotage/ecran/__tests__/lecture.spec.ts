@@ -187,4 +187,54 @@ describe("lireModelePilotage", () => {
     expect(m.comparaisonPossible).toBe(true);
     expect(m.vue?.[0]?.variationClics).toBeCloseTo(20);
   });
+
+  it("fenêtre courante incomplète (27 jours) : aucune évolution, même si la précédente est complète", async () => {
+    // jours 2026-11-25 … avec un trou : on retire le jour 2026-11-10 (dans la fenêtre courante)
+    const jours = Array.from({ length: 56 }, (_, i) => ({
+      jour: new Date(Date.UTC(2026, 10, 25 - i)),
+      statut: "reussi",
+    })).filter((j) => j.jour.toISOString().slice(0, 10) !== "2026-11-10");
+    const groupBy = vi
+      .fn()
+      .mockResolvedValue([
+        { typePage: "article", _sum: { clics: 12, impressions: 400, positionSum: 3200 } },
+      ]);
+    const m = await lireModelePilotage({
+      prisma: fauxPrisma({
+        gscImportRun: { findMany: vi.fn().mockResolvedValue(jours) },
+        gscPageJour: { groupBy },
+      }),
+      env: { CONTENT_PILOTAGE_SEO: "true" },
+      aujourdhui: "2026-11-27",
+    });
+    if (m.etat !== "actif") throw new Error("attendu actif");
+    expect(m.fenetreCouranteComplete).toBe(false);
+    expect(m.comparaisonPossible).toBe(false);
+    expect(m.vue?.[0]?.variationClics).toBeNull();
+  });
+
+  it("requêtes : celles qui portent un mot interdit ne sont jamais montrées", async () => {
+    const jour = vi.fn().mockResolvedValue([
+      { requeteId: 1, chemin: "/fr/a", _sum: { clics: 2, impressions: 50, positionSum: 300 } },
+      { requeteId: 2, chemin: "/fr/b", _sum: { clics: 2, impressions: 50, positionSum: 300 } },
+    ]);
+    const m = await lireModelePilotage({
+      prisma: fauxPrisma({
+        gscImportRun: {
+          findMany: vi.fn().mockResolvedValue([{ jour: new Date("2026-11-25"), statut: "reussi" }]),
+        },
+        gscPageRequeteJour: { groupBy: jour },
+        gscRequete: {
+          findMany: vi.fn().mockResolvedValue([
+            { id: 1, texte: "formation ia" },
+            { id: 2, texte: "formation ia grenoble" },
+          ]),
+        },
+      }),
+      env: { CONTENT_PILOTAGE_SEO: "true" },
+      aujourdhui: "2026-11-27",
+    });
+    if (m.etat !== "actif") throw new Error("attendu actif");
+    expect(m.requetes?.map((r) => r.requete)).toEqual(["formation ia"]);
+  });
 });

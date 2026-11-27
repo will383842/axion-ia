@@ -322,6 +322,11 @@ function Opportunites({ lignes }: { readonly lignes: OpportuniteEcran[] | null }
   );
 }
 
+/** Pour un import en échec ou en cours, les compteurs valent 0 par défaut sans rien mesurer. */
+function comptesMesures(statut: string): boolean {
+  return statut === "reussi" || statut === "partiel";
+}
+
 function Sante({ modele }: { readonly modele: ModeleActif }) {
   if (modele.imports === null) return <Indisponible quoi="L'historique des imports" />;
   const colonnes: AdminTableColumn<ImportEcran>[] = [
@@ -334,16 +339,23 @@ function Sante({ modele }: { readonly modele: ModeleActif }) {
           <AdminBadge tone="success">Réussi</AdminBadge>
         ) : l.statut === "en_cours" ? (
           <AdminBadge tone="info">En cours</AdminBadge>
+        ) : l.statut === "partiel" ? (
+          <AdminBadge tone="warning">Partiel</AdminBadge>
         ) : (
           <AdminBadge tone="destructive">Échec</AdminBadge>
         ),
     },
-    { key: "p", header: "Lignes de pages", align: "right", cell: (l) => nombre(l.nbLignesPage) },
+    {
+      key: "p",
+      header: "Lignes de pages",
+      align: "right",
+      cell: (l) => (comptesMesures(l.statut) ? nombre(l.nbLignesPage) : "—"),
+    },
     {
       key: "r",
       header: "Lignes de requêtes",
       align: "right",
-      cell: (l) => nombre(l.nbLignesRequete),
+      cell: (l) => (comptesMesures(l.statut) ? nombre(l.nbLignesRequete) : "—"),
     },
     { key: "t", header: "Essais", align: "right", cell: (l) => nombre(l.tentatives) },
     { key: "e", header: "Erreur", cell: (l) => l.erreurCode ?? "—" },
