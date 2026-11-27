@@ -4,7 +4,8 @@
  * énumération Postgres, aucun DROP / DELETE / UPDATE / ALTER. Compatible avec les deux conteneurs
  * (app et worker) : rien ne lit ces tables dans cette PR.
  *
- * Chaque règle a son CONTRE-TÉMOIN : un texte muté qui doit faire rougir la même fonction.
+ * Les règles de la migration ont leur CONTRE-TÉMOIN (texte muté qui doit faire rougir la même fonction).
+ * Le test du Proxy du stub prouve qu'il est générique, pas que chaque accesseur existe (le typecheck le fait).
  */
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -94,8 +95,11 @@ describe("pilotage SEO P2 — migration additive", () => {
     ["un ALTER … DROP", `${sqlBrut}\nALTER TABLE "gsc_page_jours" DROP COLUMN "clics";`],
     ["un DELETE", `${sqlBrut}\nDELETE FROM "gsc_requetes";`],
     [
-      "une clé étrangère",
-      `${sqlBrut}\nCREATE INDEX IF NOT EXISTS "a" ON "gsc_requetes"("id"); -- x\nALTER TABLE "gsc_page_jours" ADD CONSTRAINT f FOREIGN KEY ("a") REFERENCES "site_routes"("id");`,
+      "une clé étrangère dans un CREATE TABLE",
+      sqlBrut.replace(
+        '"site_route_id" TEXT,',
+        '"site_route_id" TEXT REFERENCES "site_routes"("id"),',
+      ),
     ],
     [
       "un index sur une table existante",
@@ -107,6 +111,15 @@ describe("pilotage SEO P2 — migration additive", () => {
     ],
   ])("contre-témoin : %s fait rougir", (_n, texte) => {
     expect(fautesMigration(texte).length).toBeGreaterThan(0);
+  });
+
+  it("contre-témoin : la règle « clé étrangère » est la seule à rougir sur une FK en CREATE", () => {
+    const muté = sqlBrut.replace(
+      '"site_route_id" TEXT,',
+      '"site_route_id" TEXT REFERENCES "site_routes"("id"),',
+    );
+    expect(muté).not.toBe(sqlBrut);
+    expect(fautesMigration(muté)).toEqual(["clé étrangère"]);
   });
 
   it("le SQL ne contient aucune énumération et aucun trigger", () => {
@@ -148,7 +161,7 @@ describe("pilotage SEO P2 — schéma Prisma", () => {
     }
   });
 
-  it("aucune relation ni énumération dans les sept modèles (pas de clé étrangère)", () => {
+  it("aucune relation (@relation) dans les sept modèles : pas de clé étrangère", () => {
     for (const nom of MODELES) {
       expect(corpsModele(nom), nom).not.toMatch(/@relation/);
     }
@@ -165,8 +178,11 @@ describe("pilotage SEO P2 — schéma Prisma", () => {
     expect(maps).toEqual([...TABLES].sort());
   });
 
-  it("aucun modèle existant n'est modifié : le bloc ajouté est en fin de fichier et distinct", () => {
+  it("le bloc ajouté est annoncé par un en-tête distinct en fin de fichier", () => {
     expect(schema).toContain("PILOTAGE SEO & GEO — couche « mesure » (PR P2");
+    expect(schema.lastIndexOf("model SeoOpportunite")).toBeGreaterThan(
+      schema.indexOf("PILOTAGE SEO & GEO"),
+    );
   });
 });
 
@@ -178,7 +194,7 @@ describe("pilotage SEO P2 — Proxy du stub Prisma (build GH Actions)", () => {
     vi.resetModules();
   });
 
-  it("groupBy et aggregate répondent à vide sur les sept modèles ; une mutation lève", async () => {
+  it("le Proxy générique répond à vide (groupBy, aggregate) sur les accesseurs des sept modèles ; une mutation lève", async () => {
     process.env.DATABASE_URL = "postgresql://stub:stub@stub.invalid:5432/stub";
     vi.resetModules();
     const { prisma } = (await import("@/lib/prisma")) as {

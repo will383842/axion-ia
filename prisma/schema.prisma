@@ -18998,9 +18998,9 @@ model BarometreQuestionnaireReponse {
 // PILOTAGE SEO & GEO — couche « mesure » (PR P2, migration 20261127170000_pilotage_seo_mesure)
 // Sept tables NOUVELLES, aucune colonne ajoutée à une table existante. `siteRouteId` est une
 // simple colonne nullable SANS clé étrangère (pas de contrainte vers `site_routes`, aucune
-// cascade). `categorie` et `typePage` sont figés à l'import. Les colonnes de données
-// ci-dessous sont nullables ou portent une valeur par défaut : l'app et le worker tolèrent
-// la table absente (P2021). Rétention (purge faite par le worker du pilotage, PR P4) :
+// cascade). `categorie` et `typePage` sont figés à l'import. Les tables étant neuves,
+// la règle « colonne nullable ou à défaut » (D8b) ne s'applique pas ; l'app et le worker
+// tolèrent la table absente (P2021). Rétention (purge faite par le worker du pilotage, PR P4) :
 //   GscPageJour 28 mois · GscPageRequeteJour 90 jours · GscPageRequeteSemaine 25 mois
 //   GscRequete : texte purgé sous 3 impressions cumulées sur 90 jours.
 // ════════════════════════════════════════════════════════════════════════════
