@@ -1,13 +1,20 @@
-import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { FICHIER_PRIVE_GUIDE, NOM_FICHIER_GUIDE, lireGuideDemarrage } from "../guide-demarrage";
+const h = vi.hoisted(() => ({ r2: vi.fn(), configure: true, signaler: vi.fn() }));
+vi.mock("@/lib/r2-storage", () => ({
+  isR2Configured: () => h.configure,
+  getObjectBufferR2: (...a: unknown[]) => h.r2(...a),
+}));
+vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
-// Le guide de démarrage validé par le dirigeant (25/11/2026) : un PDF PRIVÉ, servi seulement
-// par la route contrôlée de l'espace de l'apporteur, jamais par `public/`.
+import { CLE_R2_GUIDE, CLE_R2_LIVRET, lireLivret } from "../documents-prives";
+import { NOM_FICHIER_GUIDE, lireGuideDemarrage } from "../guide-demarrage";
+
+// Le guide de démarrage : un PDF PRIVÉ qui porte des montants. Le dépôt GitHub est public : il
+// n'y est PLUS, il est lu depuis R2 seulement, et servi par la route contrôlée de l'espace.
 const racine = process.cwd();
 const INTERDITS = [
   /gr[e]noble/i,
@@ -17,24 +24,18 @@ const INTERDITS = [
   /sans\s+discussion/i,
   /5\s+fois/i,
 ];
-const SHA256_GUIDE = "4357be38fc0e8faa0fcb6aac623b8d20a9f14c8bccf8261e66d8efdcf2b61c5d";
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  h.configure = true;
+});
 
 describe("le guide de démarrage", () => {
-  const chemin = join(racine, FICHIER_PRIVE_GUIDE);
-
-  it("est un PDF de taille raisonnable, sous private/", () => {
-    expect(FICHIER_PRIVE_GUIDE.startsWith("private/apporteurs/")).toBe(true);
-    const buf = readFileSync(chemin);
-    expect(buf.subarray(0, 5).toString()).toBe("%PDF-");
-    expect(buf.byteLength).toBeGreaterThan(100_000);
-    expect(buf.byteLength).toBeLessThanOrEqual(2 * 1_048_576);
-  });
-
-  it("est exactement celui qui a été validé (un remplacement doit être voulu)", () => {
-    expect(createHash("sha256").update(readFileSync(chemin)).digest("hex")).toBe(SHA256_GUIDE);
-  });
-
-  it("n'est jamais dans public/", () => {
+  it("n'est jamais dans le dépôt : ni sous private/, ni sous public/", () => {
+    expect(existsSync(join(racine, "private/apporteurs/guide-demarrage-apporteur.pdf"))).toBe(
+      false,
+    );
     const sousPublic = readdirSync(join(racine, "public"), { recursive: true, encoding: "utf-8" });
     expect(sousPublic.filter((f) => /guide-demarrage/i.test(f))).toEqual([]);
   });
@@ -46,20 +47,38 @@ describe("le guide de démarrage", () => {
     for (const re of INTERDITS) expect(t).not.toMatch(re);
   });
 
-  it("lireGuideDemarrage rend le PDF", async () => {
+  it("lireGuideDemarrage lit R2 à la clé fixe et rend le PDF", async () => {
+    h.r2.mockResolvedValue(Buffer.from("%PDF-1.7 guide"));
     const buf = await lireGuideDemarrage();
+    expect(h.r2).toHaveBeenCalledWith(CLE_R2_GUIDE);
     expect(buf?.subarray(0, 5).toString()).toBe("%PDF-");
   });
 
   it("le nom montré à l'apporteur est sûr", () => {
     expect(NOM_FICHIER_GUIDE).toMatch(/^[A-Za-z0-9-]+\.pdf$/);
   });
+});
 
-  it("le module ne touche ni aux clés R2 des annexes ni à leur déclaration", () => {
-    const src = readFileSync(
-      join(racine, "src/features/apporteurs-reseau/guide-demarrage.ts"),
-      "utf-8",
-    );
-    expect(src).not.toMatch(/documents-apporteurs\/|documents-joints/);
+describe("🔴 lecture R2 : repli sans crash", () => {
+  it("objet absent : null, alerte journalisée et signalée, aucune exception", async () => {
+    h.r2.mockResolvedValue(null);
+    expect(await lireGuideDemarrage()).toBeNull();
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("absent"));
+    expect(h.signaler).toHaveBeenCalledTimes(1);
+  });
+
+  it("objet vide ou qui n'est pas un PDF : null", async () => {
+    h.r2.mockResolvedValue(Buffer.alloc(0));
+    expect(await lireLivret()).toBeNull();
+    h.r2.mockResolvedValue(Buffer.from("<html>pas un pdf"));
+    expect(await lireLivret()).toBeNull();
+    expect(h.r2).toHaveBeenCalledWith(CLE_R2_LIVRET);
+  });
+
+  it("R2 qui lève ou non configuré : null, rien n'est levé", async () => {
+    h.r2.mockRejectedValue(new Error("réseau"));
+    expect(await lireGuideDemarrage()).toBeNull();
+    h.configure = false;
+    expect(await lireGuideDemarrage()).toBeNull();
   });
 });
