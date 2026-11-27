@@ -1,0 +1,62 @@
+/**
+ * S10-1 · Contrôle du texte d'un brouillon de prise de contact (§ 5 et § 6). Module PUR.
+ *
+ * Les motifs reprennent ceux de `messageValide` du chargé de liens (`charge-de-liens.ts`, qu'on
+ * ne modifie pas ici) : vouvoiement, aucun prix, aucune promesse de résultat, aucune proposition
+ * d'échange ou d'achat, nom de la ville du siège interdit, une seule URL (la page proposée).
+ * Un test garde les deux contrôles d'accord. Rien n'est envoyé : ce module ne fait que juger un texte.
+ */
+import { detecterTutoiement } from "../../content-gen/quality/vouvoiement";
+
+export const BROUILLON_MAX = 700;
+
+/**
+ * Phrase d'information et d'opposition (RGPD, article 14) pour une adresse nominative.
+ * TEXTE PROVISOIRE, à valider par Will (S10 § 6, question 3).
+ */
+export const MENTION_INFORMATION =
+  "Vous recevez ce message car votre adresse est publiée par votre organisation pour ce type de demande. Vous pouvez vous opposer à ce traitement à tout moment : répondez simplement « ne plus me contacter » et nous en tiendrons compte.";
+
+const TUTOIEMENT = /\b(?:tu|toi|ton|ta|tes)\b/i;
+const MOTIF_ECHANGE = /échange|echange|backlink|achat|acheter|sponsoris/i;
+const MOTIF_INTERDIT = /€|\beuros?\b|\bprix\b|\btarifs?\b|grenoble|garanti|promet|\d+\s?%/i;
+
+export type MotifRefus =
+  | "vide"
+  | "trop_long"
+  | "url_absente"
+  | "autre_url"
+  | "interdit"
+  | "echange"
+  | "tutoiement"
+  | "mention_absente";
+
+export interface ResultatBrouillon {
+  readonly valide: boolean;
+  readonly motifs: MotifRefus[];
+}
+
+export function avecMentionInformation(texte: string): string {
+  return texte.includes(MENTION_INFORMATION) ? texte : `${texte.trim()}\n\n${MENTION_INFORMATION}`;
+}
+
+export function controlerBrouillon(
+  texte: string,
+  urlPage: string,
+  options: { readonly nominatif?: boolean } = {},
+): ResultatBrouillon {
+  const m = texte.trim();
+  const motifs: MotifRefus[] = [];
+  if (m.length === 0) motifs.push("vide");
+  if (m.length > BROUILLON_MAX) motifs.push("trop_long");
+  if (m.length > 0 && !m.includes(urlPage)) motifs.push("url_absente");
+  // L'adresse de la page (slug) ne doit pas déclencher les motifs interdits : on la retire avant.
+  const sansLien = m.split(urlPage).join(" ");
+  if (MOTIF_INTERDIT.test(sansLien)) motifs.push("interdit");
+  if (MOTIF_ECHANGE.test(sansLien)) motifs.push("echange");
+  const urls = m.match(/https?:\/\/\S+/gi) ?? [];
+  if (!urls.every((u) => u.replace(/[.,;:)»]+$/, "") === urlPage)) motifs.push("autre_url");
+  if (TUTOIEMENT.test(sansLien) || detecterTutoiement(sansLien).tutoie) motifs.push("tutoiement");
+  if (options.nominatif && !m.includes(MENTION_INFORMATION)) motifs.push("mention_absente");
+  return { valide: motifs.length === 0, motifs };
+}

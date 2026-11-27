@@ -1,0 +1,87 @@
+import { describe, expect, it } from "vitest";
+import { messageValide } from "@/server/content-gen/equipe/charge-de-liens";
+import {
+  BROUILLON_MAX,
+  MENTION_INFORMATION,
+  avecMentionInformation,
+  controlerBrouillon,
+} from "../brouillon";
+
+const URL_PAGE = "https://axion-ia.com/fr/blog/ia-pme";
+const BON = `Bonjour, nous avons publié un article qui peut intéresser vos lecteurs. Vous pouvez le consulter ici : ${URL_PAGE}. Cordialement.`;
+
+describe("controlerBrouillon", () => {
+  it("accepte un texte sobre, vouvoyé, avec la seule URL proposée", () => {
+    expect(controlerBrouillon(BON, URL_PAGE)).toEqual({ valide: true, motifs: [] });
+  });
+  it("refuse un texte vide, trop long, ou sans l'URL proposée", () => {
+    expect(controlerBrouillon("  ", URL_PAGE).motifs).toContain("vide");
+    expect(controlerBrouillon(`${BON} ${"a".repeat(BROUILLON_MAX)}`, URL_PAGE).motifs).toContain(
+      "trop_long",
+    );
+    expect(
+      controlerBrouillon("Bonjour, voici notre article. Cordialement.", URL_PAGE).motifs,
+    ).toContain("url_absente");
+  });
+  it("refuse une seconde URL", () => {
+    const r = controlerBrouillon(`${BON} Voir aussi https://exemple.fr/autre`, URL_PAGE);
+    expect(r.valide).toBe(false);
+    expect(r.motifs).toContain("autre_url");
+  });
+  it.each([
+    ["un prix", "Cette offre est à 500 € seulement."],
+    ["le mot prix", "Nos prix sont bas."],
+    ["un pourcentage", "Gagnez 30% de trafic."],
+    ["une promesse", "Nous garantissons un résultat."],
+    ["un échange", "Proposons un échange de liens."],
+    ["backlink", "Un backlink serait apprécié."],
+    ["un achat", "Nous pouvons acheter ce lien."],
+    ["sponsoring", "Un lien sponsorisé ?"],
+    ["la ville du siège", "Notre équipe de Grenoble vous écrit."],
+  ])("refuse %s", (_nom, ajout) => {
+    const r = controlerBrouillon(`${BON} ${ajout}`, URL_PAGE);
+    expect(r.valide).toBe(false);
+  });
+  it("refuse le tutoiement", () => {
+    expect(controlerBrouillon(`${BON} Tu peux le lire, toi aussi.`, URL_PAGE).motifs).toContain(
+      "tutoiement",
+    );
+  });
+  it("ne déclenche pas les motifs à cause de l'URL elle-même (slug)", () => {
+    const url = "https://axion-ia.com/fr/blog/prix-et-achat-grenoble";
+    const texte = `Bonjour, voici notre article : ${url}. Cordialement.`;
+    expect(controlerBrouillon(texte, url).valide).toBe(true);
+  });
+  it("va dans le même sens que messageValide du chargé de liens", () => {
+    const corpus = [
+      BON,
+      `${BON} Tarifs sur demande.`,
+      `${BON} Un échange ?`,
+      `${BON} https://exemple.fr/x`,
+      `${BON} Tu peux regarder, toi, ton avis compte, tes idées aussi.`,
+      "Sans lien",
+    ];
+    for (const t of corpus) {
+      expect(controlerBrouillon(t, URL_PAGE).valide).toBe(messageValide(t, URL_PAGE));
+    }
+  });
+});
+
+describe("adresse nominative : mention d'information (RGPD art. 14)", () => {
+  it("exige la mention quand le destinataire est nominatif", () => {
+    const sans = controlerBrouillon(BON, URL_PAGE, { nominatif: true });
+    expect(sans.valide).toBe(false);
+    expect(sans.motifs).toContain("mention_absente");
+    const avec = controlerBrouillon(avecMentionInformation(BON), URL_PAGE, { nominatif: true });
+    expect(avec).toEqual({ valide: true, motifs: [] });
+  });
+  it("n'exige pas la mention pour un canal d'organisation", () => {
+    expect(controlerBrouillon(BON, URL_PAGE, { nominatif: false }).valide).toBe(true);
+  });
+  it("la mention est une phrase d'information et d'opposition, sans URL, qui tient dans la limite", () => {
+    expect(MENTION_INFORMATION).toMatch(/opposer|opposition/i);
+    expect(MENTION_INFORMATION).not.toMatch(/https?:/);
+    expect(avecMentionInformation(BON).length).toBeLessThanOrEqual(BROUILLON_MAX);
+    expect(avecMentionInformation(avecMentionInformation(BON))).toBe(avecMentionInformation(BON));
+  });
+});
