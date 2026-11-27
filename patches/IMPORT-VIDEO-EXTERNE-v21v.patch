@@ -1,0 +1,463 @@
+From f7cc3cf3f3ad46bf57156d52eb93d79d202533ce Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 27 Nov 2026 16:51:23 +0000
+Subject: [PATCH] =?UTF-8?q?IMPORT-VIDEO-EXTERNE=20:=20importer=20une=20vid?=
+ =?UTF-8?q?=C3=A9o=20d=C3=A9j=C3=A0=20faite=20dans=20=C3=80=20publier=20(r?=
+ =?UTF-8?q?obot=20cr=C3=A9dits=20API)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/app/(studio)/a-publier/actions-import.ts |  16 +++
+ src/app/(studio)/a-publier/page.tsx          |   2 +
+ src/components/publication/ImporterVideo.tsx |  93 +++++++++++++++++
+ src/domaine/import-video-externe.ts          |  62 +++++++++++
+ src/domaine/types.ts                         |   2 +
+ src/services/import-video-externe.ts         | 104 +++++++++++++++++++
+ tests/import-video-externe.test.ts           |  97 +++++++++++++++++
+ 7 files changed, 376 insertions(+)
+ create mode 100644 src/app/(studio)/a-publier/actions-import.ts
+ create mode 100644 src/components/publication/ImporterVideo.tsx
+ create mode 100644 src/domaine/import-video-externe.ts
+ create mode 100644 src/services/import-video-externe.ts
+ create mode 100644 tests/import-video-externe.test.ts
+
+diff --git a/src/app/(studio)/a-publier/actions-import.ts b/src/app/(studio)/a-publier/actions-import.ts
+new file mode 100644
+index 00000000..d3d6497b
+--- /dev/null
++++ b/src/app/(studio)/a-publier/actions-import.ts
+@@ -0,0 +1,16 @@
++"use server";
++
++/** Action serveur de l'import d'une vidéo déjà faite (page « À publier »). Le fichier est déjà arrivé (`envoyerFichier`) : seul son identifiant part ici. */
++import { revalidatePath } from "next/cache";
++import { essayer, type Resultat } from "@/services/_commun";
++import { exigerSession } from "@/services/auth";
++import { importerVideoExterne, type DonneesImportVideo } from "@/services/import-video-externe";
++
++export async function importerVideoAction(donnees: DonneesImportVideo): Promise<Resultat<{ videoId: string }>> {
++  await exigerSession();
++  return essayer(async () => {
++    const r = await importerVideoExterne(donnees);
++    revalidatePath("/a-publier");
++    return r;
++  });
++}
+diff --git a/src/app/(studio)/a-publier/page.tsx b/src/app/(studio)/a-publier/page.tsx
+index f9e88018..47445ce8 100644
+--- a/src/app/(studio)/a-publier/page.tsx
++++ b/src/app/(studio)/a-publier/page.tsx
+@@ -1,6 +1,7 @@
+ import type { Metadata } from "next";
+ import Link from "next/link";
+ import { notFound } from "next/navigation";
++import { ImporterVideo } from "@/components/publication/ImporterVideo";
+ import { ListeAPublier } from "@/components/publication/ListeAPublier";
+ import { filtreDepuis, nombreAffichees } from "@/components/publication/liste-a-publier";
+ import { Bouton } from "@/components/ui/Bouton";
+@@ -30,6 +31,7 @@ export default async function PageAPublier({ searchParams }: { searchParams: Pro
+         sousTitre="Voici tout ce qui est prêt à partir. Rien n'est envoyé sans votre accord : vous relisez, puis vous validez."
+         actions={
+           <>
++            <ImporterVideo />
+             <Bouton asChild variante="secondaire" icone="oeil">
+               <Link href="/videos?etape=a_relire">À relire ({vue.nbARelire ?? 0})</Link>
+             </Bouton>
+diff --git a/src/components/publication/ImporterVideo.tsx b/src/components/publication/ImporterVideo.tsx
+new file mode 100644
+index 00000000..1b78702d
+--- /dev/null
++++ b/src/components/publication/ImporterVideo.tsx
+@@ -0,0 +1,93 @@
++"use client";
++
++/** Bouton « Importer une vidéo déjà faite » + petit formulaire. Le fichier n'est envoyé qu'une fois la case cochée ; les contrôles décisifs sont côté serveur. */
++import { useRouter } from "next/navigation";
++import { useState } from "react";
++import { importerVideoAction } from "@/app/(studio)/a-publier/actions-import";
++import { Bouton } from "@/components/ui/Bouton";
++import { envoyerFichier } from "@/lib/envoi-multipart";
++
++const RESEAUX: { id: string; nom: string }[] = [
++  { id: "instagram", nom: "Instagram" },
++  { id: "tiktok", nom: "TikTok" },
++  { id: "facebook", nom: "Facebook" },
++  { id: "linkedin", nom: "LinkedIn" },
++  { id: "youtube-shorts", nom: "YouTube Shorts" },
++  { id: "youtube", nom: "YouTube" },
++  { id: "pinterest", nom: "Pinterest" },
++];
++
++/** Durée et taille lues dans le navigateur (le serveur borne ensuite la durée annoncée). */
++function lireMetadonnees(fichier: File): Promise<{ dureeSec: number; largeur: number; hauteur: number }> {
++  return new Promise((resolve, reject) => {
++    const url = URL.createObjectURL(fichier);
++    const v = document.createElement("video");
++    v.preload = "metadata";
++    v.onloadedmetadata = () => {
++      resolve({ dureeSec: v.duration, largeur: v.videoWidth, hauteur: v.videoHeight });
++      URL.revokeObjectURL(url);
++    };
++    v.onerror = () => {
++      URL.revokeObjectURL(url);
++      reject(new Error("illisible"));
++    };
++    v.src = url;
++  });
++}
++
++export function ImporterVideo() {
++  const routeur = useRouter();
++  const [ouvert, setOuvert] = useState(false);
++  const [fichier, setFichier] = useState<File | null>(null);
++  const [titre, setTitre] = useState("");
++  const [reseaux, setReseaux] = useState<string[]>([]);
++  const [valide, setValide] = useState(false);
++  const [message, setMessage] = useState("");
++  const [enCours, setEnCours] = useState(false);
++
++  async function envoyer() {
++    if (!valide) return setMessage("Cochez « Je valide cette vidéo » pour l'ajouter. Rien n'a été ajouté.");
++    if (!fichier) return setMessage("Choisissez une vidéo (mp4, mov ou webm).");
++    setEnCours(true);
++    setMessage("");
++    try {
++      const meta = await lireMetadonnees(fichier).catch(() => ({ dureeSec: 0, largeur: 0, hauteur: 0 }));
++      const entiteId = `imp-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
++      const { fichierId } = await envoyerFichier(fichier, { typeEntite: "video", entiteId });
++      const r = await importerVideoAction({ fichierId, entiteId, titre, reseaux, valide, ...meta });
++      if (!r.ok) return setMessage(r.message);
++      setOuvert(false);
++      setFichier(null);
++      setTitre("");
++      setReseaux([]);
++      setValide(false);
++      routeur.refresh();
++    } catch {
++      setMessage("Le fichier n'a pas pu être envoyé. Vérifiez la connexion et recommencez.");
++    } finally {
++      setEnCours(false);
++    }
++  }
++
++  if (!ouvert) return <Bouton variante="secondaire" onClick={() => setOuvert(true)}>Importer une vidéo déjà faite</Bouton>;
++  return (
++    <form className="flex flex-col gap-2" onSubmit={(e) => { e.preventDefault(); void envoyer(); }}>
++      <label>Vidéo (mp4, mov, webm) <input type="file" accept=".mp4,.mov,.webm,video/mp4,video/quicktime,video/webm" onChange={(e) => setFichier(e.target.files?.[0] ?? null)} /></label>
++      <label>Titre <input type="text" value={titre} maxLength={120} onChange={(e) => setTitre(e.target.value)} /></label>
++      <fieldset>
++        <legend>Réseaux visés</legend>
++        {RESEAUX.map((r) => (
++          <label key={r.id}>
++            <input type="checkbox" checked={reseaux.includes(r.id)} onChange={(e) => setReseaux(e.target.checked ? [...reseaux, r.id] : reseaux.filter((x) => x !== r.id))} /> {r.nom}{" "}
++          </label>
++        ))}
++      </fieldset>
++      <label><input type="checkbox" checked={valide} onChange={(e) => setValide(e.target.checked)} /> Je valide cette vidéo</label>
++      {message && <p role="alert">{message}</p>}
++      <div className="flex gap-2">
++        <Bouton type="submit" variante="principal" disabled={enCours}>{enCours ? "Envoi en cours…" : "Ajouter à « À publier »"}</Bouton>
++        <Bouton type="button" variante="discret" onClick={() => setOuvert(false)}>Annuler</Bouton>
++      </div>
++    </form>
++  );
++}
+diff --git a/src/domaine/import-video-externe.ts b/src/domaine/import-video-externe.ts
+new file mode 100644
+index 00000000..05fe280c
+--- /dev/null
++++ b/src/domaine/import-video-externe.ts
+@@ -0,0 +1,62 @@
++/**
++ * IMPORT D'UNE VIDÉO DÉJÀ FAITE (hors du Studio) : règles pures, sans lecture ni écriture.
++ * Bornes claires, refus en français simple. Le service `import-video-externe.ts` les applique, rien d'autre ne décide.
++ */
++import type { IdReseau } from "./types";
++
++export const FORMATS_IMPORT = [
++  { extension: "mp4", mime: "video/mp4" },
++  { extension: "mov", mime: "video/quicktime" },
++  { extension: "webm", mime: "video/webm" },
++] as const;
++
++/** Bornes : 1 Go au plus, de 3 secondes à 10 minutes. */
++export const TAILLE_MAX_IMPORT_OCTETS = 1024 * 1024 * 1024;
++export const DUREE_MIN_IMPORT_SEC = 3;
++export const DUREE_MAX_IMPORT_SEC = 600;
++export const TITRE_MAX_IMPORT = 120;
++
++const RESEAUX_VALIDES: readonly IdReseau[] = ["linkedin", "instagram", "facebook", "tiktok", "youtube", "youtube-shorts", "pinterest"];
++
++export interface DemandeImportVideo {
++  nom: string;
++  mime: string;
++  taille: number;
++  dureeSec: number;
++  titre: string;
++  reseaux: readonly string[];
++  /** La case « Je valide cette vidéo ». */
++  valide: boolean;
++}
++
++export type ControleImport = { ok: true; titre: string; reseaux: IdReseau[] } | { ok: false; code: string; message: string };
++
++const extensionDe = (nom: string) => (/\.([A-Za-z0-9]{1,8})$/.exec(nom.trim())?.[1] ?? "").toLowerCase();
++
++/** Le format est reconnu par l'extension ET par le type annoncé (un type vide est toléré, jamais un type d'un autre genre). */
++export function formatImportAccepte(nom: string, mime: string): boolean {
++  const f = FORMATS_IMPORT.find((x) => x.extension === extensionDe(nom));
++  if (!f) return false;
++  const m = (mime ?? "").trim().toLowerCase();
++  return m === "" || m === f.mime || (f.extension === "mp4" && m === "video/x-m4v");
++}
++
++function libelleDuree(sec: number): string {
++  return sec >= 60 ? `${Math.round(sec / 60)} minutes` : `${sec} secondes`;
++}
++
++export function controlerImportVideo(d: DemandeImportVideo): ControleImport {
++  const refus = (code: string, message: string): ControleImport => ({ ok: false, code, message });
++  if (d.valide !== true) return refus("NON_VALIDEE", "Cochez « Je valide cette vidéo » pour l'ajouter. Rien n'a été ajouté.");
++  if (!formatImportAccepte(d.nom, d.mime)) return refus("FORMAT", "Ce format n'est pas accepté. Choisissez une vidéo mp4, mov ou webm.");
++  if (!Number.isFinite(d.taille) || d.taille <= 0) return refus("TAILLE", "Ce fichier est vide. Choisissez une autre vidéo.");
++  if (d.taille > TAILLE_MAX_IMPORT_OCTETS) return refus("TROP_LOURD", "Cette vidéo est trop lourde (1 Go au plus). Réduisez son poids puis recommencez.");
++  if (!Number.isFinite(d.dureeSec) || d.dureeSec <= 0) return refus("DUREE_INCONNUE", "La durée de cette vidéo n'a pas pu être lue. Essayez un autre fichier.");
++  if (d.dureeSec < DUREE_MIN_IMPORT_SEC) return refus("TROP_COURTE", `Cette vidéo est trop courte (${libelleDuree(DUREE_MIN_IMPORT_SEC)} au moins).`);
++  if (d.dureeSec > DUREE_MAX_IMPORT_SEC) return refus("TROP_LONGUE", `Cette vidéo est trop longue (${libelleDuree(DUREE_MAX_IMPORT_SEC)} au plus).`);
++  const titre = (d.titre ?? "").trim().slice(0, TITRE_MAX_IMPORT);
++  if (!titre) return refus("TITRE", "Donnez un titre à cette vidéo.");
++  const reseaux = Array.from(new Set(d.reseaux)).filter((r): r is IdReseau => (RESEAUX_VALIDES as readonly string[]).includes(r));
++  if (!reseaux.length) return refus("RESEAUX", "Choisissez au moins un réseau.");
++  return { ok: true, titre, reseaux };
++}
+diff --git a/src/domaine/types.ts b/src/domaine/types.ts
+index ddf1df1e..abba295b 100644
+--- a/src/domaine/types.ts
++++ b/src/domaine/types.ts
+@@ -817,6 +817,8 @@ export interface Video extends EntiteBase {
+   reseau?: IdReseau;
+   /** Version par réseau (VarianteReseau) : son état d'écriture FAIT FOI, `etapeEditoriale` n'en est qu'une copie. */
+   varianteId?: Id;
++  /** Vidéo faite hors du Studio puis importée dans « À publier » (aucune fabrication, aucun sous-titre ajouté). Absent : fabriquée ici. */
++  origineVideo?: "importee";
+ }
+ 
+ export type StatutVersion = "maquette" | "en_fabrication" | "prete" | "echec" | "annulee";
+diff --git a/src/services/import-video-externe.ts b/src/services/import-video-externe.ts
+new file mode 100644
+index 00000000..5585a4ec
+--- /dev/null
++++ b/src/services/import-video-externe.ts
+@@ -0,0 +1,104 @@
++/**
++ * IMPORT D'UNE VIDÉO DÉJÀ FAITE : le fichier est déjà dans le stockage (envoyé par le navigateur, `/api/depots`) ; ici on le
++ * contrôle puis on crée une vidéo « prête » à l'étape « validée », marquée `origineVideo: "importee"`.
++ * Rien de payant (aucun fournisseur n'est appelé), rien d'envoyé vers un réseau, ni sous-titres ni mention IA ajoutés.
++ * `creerVideoImportee` est le cœur testable (pas de session) ; `importerVideoExterne` y ajoute la session et le contrôle du fichier.
++ */
++import "server-only";
++import { controlerImportVideo, type DemandeImportVideo } from "@/domaine/import-video-externe";
++import type { Fichier, Id, Ratio, Sortie, Video, VersionVideo, CommandeFabrication } from "@/domaine/types";
++import { nouvelId } from "@/lib/ids";
++import { depots, ErreurStudio, horodatage, journaliser } from "./_commun";
++import { exigerSession } from "./auth";
++import { fichierEnvoye } from "./fichiers";
++
++/** Format « neutre » : la vidéo n'a pas été fabriquée ici. */
++export const FORMAT_VIDEO_IMPORTEE = "video-importee";
++
++export interface DonneesImportVideo {
++  fichierId: string;
++  /** Identifiant sous lequel le navigateur a envoyé le fichier (destination « video »). */
++  entiteId: string;
++  titre: string;
++  reseaux: string[];
++  valide: boolean;
++  dureeSec: number;
++  largeur?: number;
++  hauteur?: number;
++}
++
++/** Ratio le plus proche de la taille lue ; à défaut, le vertical. */
++export function ratioDeLaTaille(largeur?: number, hauteur?: number): Ratio {
++  if (!largeur || !hauteur || largeur <= 0 || hauteur <= 0) return "9:16";
++  const r = largeur / hauteur;
++  const choix: [Ratio, number][] = [["9:16", 9 / 16], ["4:5", 4 / 5], ["1:1", 1], ["16:9", 16 / 9]];
++  return choix.sort((a, b) => Math.abs(a[1] - r) - Math.abs(b[1] - r))[0][0];
++}
++
++export async function creerVideoImportee(donnees: DonneesImportVideo, fichier: Fichier): Promise<{ videoId: Id }> {
++  const demande: DemandeImportVideo = { nom: fichier.nom, mime: fichier.mime, taille: fichier.taille, dureeSec: donnees.dureeSec, titre: donnees.titre, reseaux: donnees.reseaux, valide: donnees.valide };
++  const controle = controlerImportVideo(demande);
++  if (!controle.ok) throw new ErreurStudio(controle.code, controle.message);
++  const d = depots();
++  const videoId = nouvelId("v");
++  const versionId = nouvelId("ver");
++  const sortieId = nouvelId("s");
++  const ratio = ratioDeLaTaille(donnees.largeur, donnees.hauteur);
++  const dureeSec = Math.round(donnees.dureeSec);
++  const h = horodatage();
++  const video: Video = {
++    id: videoId,
++    titre: controle.titre,
++    sujet: controle.titre,
++    formatId: FORMAT_VIDEO_IMPORTEE,
++    versionFormat: 1,
++    profilRenduVersion: 1,
++    marqueId: "marque-axion",
++    statut: "prete",
++    etapeEditoriale: "validee",
++    dureeCibleSec: dureeSec,
++    ratios: [ratio],
++    distribution: [],
++    entrees: {},
++    reglages: {},
++    styles: {},
++    // Aucune mention IA ajoutée : la vidéo est telle que livrée.
++    mentionIA: { incrustee: false, position: "bas-droite", dureeSec: 0, texte: "", dansLegende: false },
++    versionChoisieId: versionId,
++    reseau: controle.reseaux[0],
++    langue: "fr-FR",
++    origineVideo: "importee",
++    terminee: h.creeLe,
++    ...h,
++  };
++  const commande = { versionContrat: 2, moteurId: "import-externe", videoId, formatId: FORMAT_VIDEO_IMPORTEE, versionFormat: 1, profilRenduVersion: 1, dureeCibleSec: dureeSec, ratios: [ratio], origine: "studio", entrees: {}, reglages: {}, plans: [], prononciations: [], distribution: [], styles: {}, briques: {}, script: { blocs: [], texteComplet: "" } } as unknown as CommandeFabrication;
++  const version: VersionVideo = { id: versionId, videoId, numero: 1, commande, statut: "prete", choisie: true, ...h };
++  const sortie: Sortie = {
++    id: sortieId,
++    videoId,
++    versionId,
++    ratio,
++    reseaux: controle.reseaux,
++    resolution: donnees.largeur && donnees.hauteur ? `${donnees.largeur}x${donnees.hauteur}` : "",
++    fichierId: fichier.id,
++    vignetteFichierId: "",
++    dureeSec,
++    taille: fichier.taille,
++    rapportQualite: { note: 0, verifie: { image: false, son: false, sousTitres: false, mentionIA: false, droits: false }, alertes: [], niveauSonoreLufs: 0 },
++    ...h,
++  };
++  await d.videos.enregistrer(video);
++  await d.versions.enregistrer(version);
++  await d.sorties.enregistrer(sortie);
++  return { videoId };
++}
++
++/** Action métier : session, case cochée AVANT tout, fichier réellement arrivé, puis création. */
++export async function importerVideoExterne(donnees: DonneesImportVideo): Promise<{ videoId: Id }> {
++  await exigerSession();
++  if (donnees.valide !== true) throw new ErreurStudio("NON_VALIDEE", "Cochez « Je valide cette vidéo » pour l'ajouter. Rien n'a été ajouté.");
++  const fichier = await fichierEnvoye(donnees.fichierId, "video", donnees.entiteId);
++  const r = await creerVideoImportee(donnees, fichier);
++  await journaliser("videos", `Vidéo importée : ${donnees.titre.trim().slice(0, 80)}`, { type: "video", id: r.videoId });
++  return r;
++}
+diff --git a/tests/import-video-externe.test.ts b/tests/import-video-externe.test.ts
+new file mode 100644
+index 00000000..2d676e9a
+--- /dev/null
++++ b/tests/import-video-externe.test.ts
+@@ -0,0 +1,97 @@
++/**
++ * IMPORT-VIDEO-EXTERNE : importer une vidéo déjà faite dans « À publier ».
++ * Dépôts en mémoire, aucun envoi, aucun fournisseur appelé.
++ */
++import { beforeEach, describe, expect, it, vi } from "vitest";
++import { mockHeaders, mockNavigation, reinitialiserRequete } from "./helpers/next-mocks";
++import type { Fichier } from "@/domaine/types";
++
++vi.mock("next/headers", () => mockHeaders);
++vi.mock("next/navigation", () => mockNavigation);
++
++/** Compte les fournisseurs demandés : l'import ne doit en demander AUCUN. */
++const sondes = vi.hoisted(() => ({ fournisseurs: [] as string[] }));
++vi.mock("@/services/_commun", async (original) => {
++  const reel = await original<typeof import("@/services/_commun")>();
++  return { ...reel, fournisseur: async (t: string) => (sondes.fournisseurs.push(t), (reel.fournisseur as (t: string) => Promise<unknown>)(t)) };
++});
++
++const { reinitialiserDepots, depots } = await import("@/donnees/memoire");
++const { creerVideoImportee } = await import("@/services/import-video-externe");
++const { controlerImportVideo, TAILLE_MAX_IMPORT_OCTETS, DUREE_MAX_IMPORT_SEC } = await import("@/domaine/import-video-externe");
++const { listerAPublier } = await import("@/services/publications");
++
++const MO = 1024 * 1024;
++function fichier(p: Partial<Fichier> = {}): Fichier {
++  return { id: "f-essai1", cleStockage: "studio/dev/video/imp-1/f-essai1.mp4", nom: "ma-video.mp4", mime: "video/mp4", taille: 20 * MO, origine: "depot", statut: "pret", creeLe: "2026-11-27T10:00:00.000Z", modifieLe: "2026-11-27T10:00:00.000Z", ...p };
++}
++const BASE = { fichierId: "f-essai1", entiteId: "imp-1", titre: "Ma vidéo", reseaux: ["instagram", "linkedin"], valide: true, dureeSec: 30, largeur: 1080, hauteur: 1920 };
++
++/** Les dépôts en mémoire portent le jeu de démonstration : on compare avant / après. */
++async function compte() {
++  const d = depots();
++  return [await d.videos.compter(() => true), await d.versions.compter(() => true), await d.sorties.compter(() => true), await d.publications.compter(() => true)];
++}
++
++beforeEach(() => {
++  reinitialiserDepots();
++  reinitialiserRequete();
++  sondes.fournisseurs.length = 0;
++});
++
++describe("import d'une vidéo déjà faite", () => {
++  it("refuse un format inconnu", async () => {
++    const avant = await compte();
++    for (const f of [fichier({ nom: "film.avi", mime: "video/x-msvideo" }), fichier({ nom: "doc.pdf", mime: "application/pdf" }), fichier({ nom: "faux.mp4", mime: "image/png" })]) {
++      await expect(creerVideoImportee(BASE, f)).rejects.toMatchObject({ code: "FORMAT", message: expect.stringContaining("mp4, mov ou webm") });
++    }
++    expect(await compte()).toEqual(avant);
++  });
++
++  it("accepte mp4, mov et webm", () => {
++    for (const [nom, mime] of [["a.mp4", "video/mp4"], ["a.MOV", "video/quicktime"], ["a.webm", "video/webm"]]) {
++      expect(controlerImportVideo({ ...BASE, nom, mime, taille: MO }).ok).toBe(true);
++    }
++  });
++
++  it("refuse un fichier trop lourd ou trop long (et trop court), avec un message simple", async () => {
++    const avant = await compte();
++    await expect(creerVideoImportee(BASE, fichier({ taille: TAILLE_MAX_IMPORT_OCTETS + 1 }))).rejects.toMatchObject({ code: "TROP_LOURD", message: expect.stringContaining("trop lourde") });
++    await expect(creerVideoImportee({ ...BASE, dureeSec: DUREE_MAX_IMPORT_SEC + 1 }, fichier())).rejects.toMatchObject({ code: "TROP_LONGUE" });
++    await expect(creerVideoImportee({ ...BASE, dureeSec: 1 }, fichier())).rejects.toMatchObject({ code: "TROP_COURTE" });
++    await expect(creerVideoImportee({ ...BASE, dureeSec: 0 }, fichier())).rejects.toMatchObject({ code: "DUREE_INCONNUE" });
++    expect(await compte()).toEqual(avant);
++  });
++
++  it("crée une vidéo prête et validée marquée importée, sans mention IA", async () => {
++    const avant = await compte();
++    const { videoId } = await creerVideoImportee(BASE, fichier());
++    const v = await depots().videos.obtenir(videoId);
++    expect(v).toMatchObject({ statut: "prete", etapeEditoriale: "validee", origineVideo: "importee", titre: "Ma vidéo", ratios: ["9:16"] });
++    expect(v?.mentionIA.incrustee).toBe(false);
++    expect(v?.briquesAllumees).toBeUndefined();
++    const sorties = await depots().sorties.lister((s) => s.videoId === videoId);
++    expect(sorties).toHaveLength(1);
++    expect(sorties[0]).toMatchObject({ fichierId: "f-essai1", reseaux: ["instagram", "linkedin"], versionId: v?.versionChoisieId });
++    expect(await compte()).toEqual([avant[0] + 1, avant[1] + 1, avant[2] + 1, avant[3]]);
++  });
++
++  it("la vidéo importée apparaît dans listerAPublier", async () => {
++    const { videoId } = await creerVideoImportee(BASE, fichier());
++    const liste = await listerAPublier();
++    expect(liste.map((c) => c.id)).toContain(videoId);
++    expect(liste.find((c) => c.id === videoId)).toMatchObject({ titre: "Ma vidéo", etapeEditoriale: "validee" });
++  });
++
++  it("sans case cochée rien n'est créé", async () => {
++    const avant = await compte();
++    await expect(creerVideoImportee({ ...BASE, valide: false }, fichier())).rejects.toMatchObject({ code: "NON_VALIDEE" });
++    expect(await compte()).toEqual(avant);
++  });
++
++  it("aucun fournisseur payant n'est appelé", async () => {
++    await creerVideoImportee(BASE, fichier());
++    await listerAPublier();
++    expect(sondes.fournisseurs.filter((t) => t !== "stockage")).toEqual([]);
++  });
++});
+-- 
+2.56.1
+
