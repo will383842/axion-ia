@@ -39,6 +39,7 @@ vi.mock("../presentations", () => ({
 }));
 vi.mock("../reservation-presentation", () => ({
   lireReservations: async () => new Map(),
+  lireIdsEnGrace: async () => [],
 }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
 vi.mock("@/server/queue/queues", () => ({

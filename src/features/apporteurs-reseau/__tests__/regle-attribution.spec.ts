@@ -33,6 +33,7 @@ import {
   regleDe,
   rendezVousRecevable,
   reservationOccupe,
+  versReservationProvisoire,
   versionAuMoins,
 } from "../regle-attribution";
 import {
@@ -769,5 +770,46 @@ describe("l'interrupteur APPORTEURS_VALIDATION_RDV", () => {
     expect(validationParRendezVousActive()).toBe(false);
     vi.stubEnv("APPORTEURS_VALIDATION_RDV", undefined);
     expect(validationParRendezVousActive()).toBe(false);
+  });
+});
+
+describe("E1 · contrat 2.8 : 30 jours sans nouvelle déclaration après la fin d'une réservation non validée", () => {
+  const ECHUE = ajouterJours(FIN, 1); // l'échéance est passée au lendemain du terme
+  const terminee = { statut: "terminee" as const, protegeeJusquAt: null };
+  const ligne = (o: Record<string, unknown> = {}) =>
+    versReservationProvisoire(SAISIE, {
+      reserveeJusquAt: FIN,
+      echueAt: ECHUE,
+      valideeAt: null,
+      rendezVousPrisAt: null,
+      ...o,
+    });
+
+  it("une présentation échue occupe encore l'entreprise pendant 30 jours après echueAt", () => {
+    expect(presentationOccupe(terminee, ECHUE, ligne())).toBe(true);
+    expect(presentationOccupe(terminee, ajouterJours(ECHUE, 29), ligne())).toBe(true);
+    expect(presentationOccupe(terminee, ajouterJours(ECHUE, 30), ligne())).toBe(false);
+    expect(presentationOccupe(terminee, ajouterJours(ECHUE, 31), ligne())).toBe(false);
+  });
+
+  it("sans ligne, ou ligne validée, une présentation `terminee` n'occupe rien (comme avant)", () => {
+    expect(presentationOccupe(terminee, ECHUE, null)).toBe(false);
+    expect(presentationOccupe(terminee, ECHUE)).toBe(false);
+    expect(presentationOccupe(terminee, ECHUE, ligne({ valideeAt: ECHUE }))).toBe(false);
+  });
+
+  it("une ligne ramenée par une résiliation (sans echueAt) n'ouvre pas de fenêtre de 30 jours", () => {
+    expect(presentationOccupe(terminee, j(70), ligne({ echueAt: null }))).toBe(false);
+  });
+
+  it("un autre statut (dementie…) n'occupe jamais, ligne échue ou non", () => {
+    expect(presentationOccupe({ statut: "dementie", protegeeJusquAt: null }, ECHUE, ligne())).toBe(
+      false,
+    );
+  });
+
+  it("reservationOccupe lit la même fenêtre", () => {
+    expect(reservationOccupe(ligne()!, ajouterJours(ECHUE, 10))).toBe(true);
+    expect(reservationOccupe(ligne()!, ajouterJours(ECHUE, 40))).toBe(false);
   });
 });

@@ -11,6 +11,9 @@
 
 import { prisma } from "@/lib/prisma";
 
+import { JOURS_SANS_DECLARATION_APRES_FIN } from "./regle-attribution";
+import { ajouterJours } from "./regles";
+
 /** La seule règle posée par ce lot : validation au premier rendez-vous tenu. */
 const REGLE_RENDEZ_VOUS = "rendez_vous";
 
@@ -62,6 +65,32 @@ export async function lireReservations(ids: readonly string[]): Promise<Map<stri
     if (!tableAbsente(err)) throw err;
   }
   return m;
+}
+
+/**
+ * E1 (contrat 2.8) : les présentations dont la réservation a pris fin SANS validation depuis moins de
+ * 30 jours. Elles sont `terminee` mais occupent encore leur entreprise : les lecteurs d'occupation
+ * (`statut in [reservee, confirmee]`) y ajoutent `id in <ces ids>`. Table absente : aucune.
+ */
+export async function lireIdsEnGrace(
+  maintenant: Date,
+  db: Pick<typeof prisma, "presentationReservation"> = prisma,
+): Promise<string[]> {
+  try {
+    const ls = await db.presentationReservation.findMany({
+      where: {
+        regle: "rendez_vous",
+        valideeAt: null,
+        echueAt: { gt: ajouterJours(maintenant, -JOURS_SANS_DECLARATION_APRES_FIN) },
+      },
+      select: { presentationId: true },
+      take: 2000,
+    });
+    return ls.map((l) => l.presentationId);
+  } catch (err) {
+    if (!tableAbsente(err)) throw err;
+    return [];
+  }
 }
 
 /**

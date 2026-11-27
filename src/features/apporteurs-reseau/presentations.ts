@@ -51,7 +51,11 @@ import {
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
-import { enregistrerReservation, lireReservations } from "./reservation-presentation";
+import {
+  enregistrerReservation,
+  lireIdsEnGrace,
+  lireReservations,
+} from "./reservation-presentation";
 import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
 
@@ -88,6 +92,9 @@ export function presentationOccupe(
   reservation?: ReservationProvisoire | null,
 ): boolean {
   if (p.statut === "reservee") return !reservation || reservationOccupe(reservation, maintenant);
+  // Contrat 2.8 : une réservation terminée sans validation occupe encore 30 jours (E1).
+  if (p.statut === "terminee")
+    return !!reservation?.echueAt && reservationOccupe(reservation, maintenant);
   if (p.statut === "confirmee")
     return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
   return false;
@@ -104,16 +111,22 @@ export async function lireSignalements(
   etablissement: Etablissement = { siret: null, entreprise: false, exclus: [] },
 ): Promise<Signalement[]> {
   const out: Signalement[] = [];
+  const enGrace = await lireIdsEnGrace(maintenant);
   const [presentations, tousClients] = await Promise.all([
     prisma.presentationEntreprise.findMany({
       where: {
         siren,
-        statut: { in: ["reservee", "confirmee"] },
+        // E1 : une réservation terminée sans validation occupe encore 30 jours.
+        OR: [
+          { statut: { in: ["reservee", "confirmee"] } },
+          { statut: "terminee", id: { in: enGrace } },
+        ],
         ...(saufId ? { id: { not: saufId } } : {}),
       },
       select: {
         id: true,
         statut: true,
+        recueAt: true,
         protegeeJusquAt: true,
         apporteur: { select: { prenom: true, nom: true } },
       },
@@ -127,13 +140,24 @@ export async function lireSignalements(
     etablissement.siret && !etablissement.entreprise
       ? tousClients.filter((c) => !c.siret || c.siret.replace(/\s+/g, "") === etablissement.siret)
       : tousClients;
+  const lignesGrace = await lireReservations(
+    presentations.filter((p) => p.statut === "terminee").map((p) => p.id),
+  );
   for (const p of presentations) {
-    if (!presentationOccupe(p, maintenant)) continue;
+    const enFenetre = p.statut === "terminee";
+    if (
+      !presentationOccupe(
+        p,
+        maintenant,
+        enFenetre ? versReservationProvisoire(p.recueAt, lignesGrace.get(p.id)) : undefined,
+      )
+    )
+      continue;
     if (!memePerimetre(etablissement, etabs.get(p.id)!)) continue;
     out.push({
       type: "deja_presentee",
       apporteur: nomComplet(p.apporteur.prenom, p.apporteur.nom),
-      statut: p.statut as "reservee" | "confirmee",
+      statut: enFenetre ? "reservee" : (p.statut as "reservee" | "confirmee"),
       jusquAu: p.protegeeJusquAt,
     });
   }
@@ -285,7 +309,15 @@ export async function creerPresentation(
   // son SIREN (réservée, ou protégée et non échue) n'est pas enregistrée une seconde fois — la
   // saisie console ne doit pas ouvrir une seconde réservation de 30 jours.
   const siennes = await prisma.presentationEntreprise.findMany({
-    where: { apporteurId: s.apporteurId, siren, statut: { in: ["reservee", "confirmee"] } },
+    where: {
+      apporteurId: s.apporteurId,
+      siren,
+      // E1 : une réservation terminée sans validation occupe encore 30 jours.
+      OR: [
+        { statut: { in: ["reservee", "confirmee"] } },
+        { statut: "terminee", id: { in: await lireIdsEnGrace(maintenant) } },
+      ],
+    },
     select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   // Contrat 2.6 : par établissement — un AUTRE établissement de la même entreprise se déclare.

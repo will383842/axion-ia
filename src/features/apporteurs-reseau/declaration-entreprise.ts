@@ -32,7 +32,7 @@ import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./d
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
 import { versReservationProvisoire } from "./regle-attribution";
-import { lireReservations } from "./reservation-presentation";
+import { lireIdsEnGrace, lireReservations } from "./reservation-presentation";
 import {
   etatPrestation,
   horsGrilleEnCours,
@@ -116,7 +116,15 @@ export async function declarerEntreprise(
   // Doublon de l'apporteur lui-même : il a déjà déclaré CET établissement (contrat 2.6), ou une
   // déclaration couvre toute l'entreprise. Un autre établissement de l'entreprise se déclare.
   const siennes = await prisma.presentationEntreprise.findMany({
-    where: { apporteurId, siren: d.siret.slice(0, 9), statut: { in: ["reservee", "confirmee"] } },
+    where: {
+      apporteurId,
+      siren: d.siret.slice(0, 9),
+      // E1 : une réservation terminée sans validation occupe encore 30 jours.
+      OR: [
+        { statut: { in: ["reservee", "confirmee"] } },
+        { statut: "terminee", id: { in: await lireIdsEnGrace(maintenant) } },
+      ],
+    },
     select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   const etabs = await lireEtablissements(siennes.map((p) => p.id));
