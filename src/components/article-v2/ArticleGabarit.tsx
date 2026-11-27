@@ -91,6 +91,7 @@ export function ArticleGabarit(p: ArticleGabaritProps) {
 
   return (
     <div data-gabarit={p.gabarit}>
+      <div className="reading-progress" aria-hidden="true" />
       <link
         rel="alternate"
         type="text/markdown"
