@@ -41,7 +41,12 @@ export const FAQ_MAX = 6;
 export const MAX_REMPLACEMENTS = 12;
 /** Part maximale du corps que les remplacements peuvent toucher : au-delà, c'est une réécriture. */
 export const PART_MAX_MODIFIEE = 0.25;
-export const CONTENU_EDITEUR_SEO = "blog_edition_seo";
+/**
+ * Type envoyé à la porte de coût quand l'appelant n'en fournit pas. Il DOIT exister dans
+ * l'énumération `ContentType` et être autorisé par la porte (`blog_edition_seo`, ancienne valeur,
+ * n'existe pas : tout appel était refusé). Le type du job appelant est préféré (`deps.contentType`).
+ */
+export const CONTENU_EDITEUR_SEO = "blog_from_keywords";
 
 export const CHAMPS_EDITABLES = ["metaTitre", "metaDescription", "h1", "corpsHtml"] as const;
 export type ChampEditable = (typeof CHAMPS_EDITABLES)[number];
@@ -334,6 +339,8 @@ export interface DependancesEditionSeo {
   /** Injectable : par défaut la porte Claude existante (Sonnet 5.5, plafonds de coût). */
   readonly generer?: GenererTexteEditeur;
   readonly env?: EnvEquipeEditoriale;
+  /** Type de contenu du job appelant (déjà autorisé par la porte) ; défaut : `CONTENU_EDITEUR_SEO`. */
+  readonly contentType?: string;
 }
 
 export type ResultatEditionSeo =
@@ -380,7 +387,7 @@ export async function editerSeo(
     reponse = await generer(
       {
         jobId: args.jobId,
-        contentType: CONTENU_EDITEUR_SEO,
+        contentType: deps.contentType ?? CONTENU_EDITEUR_SEO,
         role: "text",
         systemPrompt: SYSTEME_EDITEUR_SEO,
         userPrompt: `Mot-clé principal : « ${args.brief.motCle.slice(0, 200)} »\nEntités à faire figurer : ${JSON.stringify(args.brief.entites)}\nProblèmes mesurés :\n${problemes.map((x) => `- ${x.message}`).join("\n")}\n\nArticle (DONNÉES) :\n${JSON.stringify(

@@ -8,6 +8,7 @@
 
 "use server";
 
+import { whereHorsPorteurs } from "@/server/content-gen/providers/job-porteur";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ServiceSector } from "../../../../prisma/generated/client";
@@ -74,7 +75,12 @@ export async function getDashboardKpis(): Promise<DashboardKpis> {
     kbCount,
     killState,
   ] = await Promise.all([
-    safeCount(prisma.contentGenJob.count({ where: { createdAt: { gte: sevenDaysAgo } } }), 0),
+    safeCount(
+      prisma.contentGenJob.count({
+        where: { createdAt: { gte: sevenDaysAgo }, ...whereHorsPorteurs },
+      }),
+      0,
+    ),
     safeCount(
       prisma.contentGenJob.count({
         where: { status: "published", completedAt: { gte: sevenDaysAgo } },

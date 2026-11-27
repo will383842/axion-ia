@@ -84,6 +84,35 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     expect(commandeCouverte({ ...base, confirmee: false, signeeAt: d("2026-05-01") })).toBe(false);
   });
 
+  it("L7 · réservation : un devis émis AVANT la saisie ne couvre pas la commande", () => {
+    const reservation = { reserveeJusquAt: d("2026-03-01"), statut: "reservee" };
+    const base = {
+      recueAt: d("2026-01-10"),
+      confirmee: false,
+      protegeeJusquAt: null,
+      reservation,
+      signeeAt: d("2026-02-01"),
+    };
+    expect(commandeCouverte({ ...base, devisEmisAt: d("2026-01-05") })).toBe(false);
+    expect(commandeCouverte({ ...base, devisEmisAt: d("2026-01-10") })).toBe(true);
+    expect(commandeCouverte({ ...base, devisEmisAt: d("2026-01-20") })).toBe(true);
+    // Sans date d'émission, ou date illisible côté appelant (null) : comportement d'avant.
+    expect(commandeCouverte(base)).toBe(true);
+    expect(commandeCouverte({ ...base, devisEmisAt: null })).toBe(true);
+  });
+
+  it("L7 · la date d'émission ne touche PAS la branche protection (commission inchangée)", () => {
+    expect(
+      commandeCouverte({
+        recueAt: d("2026-01-10"),
+        protegeeJusquAt: d("2026-07-15"),
+        confirmee: true,
+        signeeAt: d("2026-05-01"),
+        devisEmisAt: d("2026-01-01"),
+      }),
+    ).toBe(true);
+  });
+
   it("formation : forfait réduit au prorata de la remise, jamais augmenté", () => {
     expect(
       calculerCommission({

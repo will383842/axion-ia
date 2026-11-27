@@ -1193,7 +1193,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           liensRapport = r.liens;
           return r;
         },
-        editeurSeo: (o) => editerSeoSortie(contentGenJobId, o, briefFin),
+        editeurSeo: (o) => editerSeoSortie(contentGenJobId, o, briefFin, { contentType }),
         conformite: (o) =>
           conformiteSortie(contentGenJobId, contentType, o, depsFidelite, {
             financementPublicAutorise: financementPublicCitable(),
