@@ -7,7 +7,7 @@
  */
 import React from "react";
 import { createHash } from "node:crypto";
-import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const r2 = vi.hoisted(() => ({ uploadToR2: vi.fn(async (key: string) => ({ key })) }));
 vi.mock("@/lib/r2-storage", () => ({
@@ -15,12 +15,10 @@ vi.mock("@/lib/r2-storage", () => ({
   isR2Configured: () => true,
 }));
 
-import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
 import { MENTION_PAS_UNE_FACTURE } from "../types";
 import { contenuExemple } from "./fixtures";
 import { ReleveMensuelPdf, rendreEtStockerPdfReleve, textesDuReleve } from "../pdf";
 
-beforeAll(() => registerPdfTestFontsFallback());
 beforeEach(() => r2.uploadToR2.mockClear());
 
 describe("PDF du relevé : n'est pas une facture", () => {
