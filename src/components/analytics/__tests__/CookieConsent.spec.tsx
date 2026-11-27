@@ -22,7 +22,8 @@ vi.mock("@/i18n/navigation", () => ({
     <a href={href}>{children}</a>
   ),
 }));
-vi.mock("@/env", () => ({ env: { NEXT_PUBLIC_CLARITY_PROJECT_ID: "test-project" } }));
+// Clarity lit `process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID` en littéral (plus de `@/env`) :
+// la valeur est posée par `vi.stubEnv` dans le `beforeEach` ci-dessous.
 vi.mock("next/script", () => ({
   default: ({ id }: { id: string }) => <script data-testid={id} />,
 }));
@@ -42,12 +43,14 @@ function readCookieRaw(): string | null {
 const banner = () => screen.queryByRole("dialog");
 
 beforeEach(() => {
+  vi.stubEnv("NEXT_PUBLIC_CLARITY_PROJECT_ID", "test-project");
   window.localStorage.clear();
   clearCookie();
   __resetConsentSnapshotForTests();
 });
 
 afterEach(() => {
+  vi.unstubAllEnvs();
   vi.restoreAllMocks();
 });
 
