@@ -113,5 +113,11 @@
     "resume": "Read the summary",
     "lire": "Watch the video"
   },
-  "progression": "Reading progress"
+  "progression": "Reading progress",
+  "relance": "To go further:",
+  "relu": "Reviewed and approved by",
+  "historique": "Update history",
+  "resumeTitre": "What to remember",
+  "checklist": "Checklist",
+  "chiffreSource": "Source"
 }

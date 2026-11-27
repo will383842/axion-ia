@@ -113,5 +113,11 @@
     "resume": "Lire le résumé",
     "lire": "Regarder la vidéo"
   },
-  "progression": "Progression de la lecture"
+  "progression": "Progression de la lecture",
+  "relance": "Pour aller plus loin :",
+  "relu": "Relu et validé par",
+  "historique": "Historique des mises à jour",
+  "resumeTitre": "Ce qu’il faut retenir",
+  "checklist": "Liste de contrôle",
+  "chiffreSource": "Source"
 }

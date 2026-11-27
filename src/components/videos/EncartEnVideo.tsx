@@ -9,6 +9,7 @@
  * de vidéo publiée.
  */
 import { useId } from "react";
+import { useTranslations } from "next-intl";
 
 import { CarteVideo } from "@/components/videos/CarteVideo";
 import { mentionIa } from "@/server/videos/mention-ia";
@@ -62,10 +63,11 @@ function EncartRendu({ video }: { video: VideoPubliee }) {
  */
 function EncartArticleV2({ video }: { video: VideoPubliee }) {
   const idTitre = `${useId()}-titre`;
+  const t = useTranslations("articleGabarits.commun.video");
   const v = video.fichiers.vignette43;
   return (
     <section className="encart-video" aria-labelledby={idTitre} data-aeo="video-slot">
-      <p className="encart-video__repere">En vidéo</p>
+      <p className="encart-video__repere">{t("repere")}</p>
       <h2 className="encart-video__titre" id={idTitre}>
         {video.titre}
       </h2>
@@ -79,10 +81,10 @@ function EncartArticleV2({ video }: { video: VideoPubliee }) {
           loading="lazy"
           decoding="async"
         />
-        <span className="encart-video__lire">Regarder la vidéo</span>
+        <span className="encart-video__lire">{t("lire")}</span>
       </a>
       <details className="encart-video__texte">
-        <summary>Lire le résumé</summary>
+        <summary>{t("resume")}</summary>
         <p>{video.resume}</p>
       </details>
     </section>
