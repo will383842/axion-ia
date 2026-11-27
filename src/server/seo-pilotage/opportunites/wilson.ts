@@ -1,8 +1,8 @@
-/** Intervalle de Wilson. z = 1,645 : intervalle bilatéral à 90 %. */
+/** Intervalle de Wilson. z = 1,645 : bilatéral à 90 % (borne haute unilatérale à 95 %, choix prudent : à valider). */
 export const Z_90 = 1.645;
 
 function wilson(clics: number, impressions: number, z: number): { bas: number; haut: number } {
-  if (!(impressions > 0)) return { bas: 0, haut: 1 };
+  if (!(impressions > 0) || !Number.isFinite(clics)) return { bas: 0, haut: 1 };
   const n = impressions;
   const p = Math.min(Math.max(clics, 0), n) / n;
   const z2 = z * z;

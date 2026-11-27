@@ -79,3 +79,24 @@ describe("CHEMINS_PROTEGES dérivés des imports", () => {
     expect(CHEMINS_PROTEGES.length).toBeGreaterThan(5);
   });
 });
+
+describe("périmètre des protections", () => {
+  it("la catégorie legal est entièrement protégée", () => {
+    for (const s of [
+      "accessibilite",
+      "preferences-cookies",
+      "mes-donnees",
+      "desabonnement",
+      "confirmation",
+    ]) {
+      expect(estCheminProtege(`https://axion-ia.com/fr/${s}`)).toBe(true);
+    }
+  });
+  it("les gabarits dynamiques formations / implantations restent optimisables", () => {
+    expect(estCheminProtege("https://axion-ia.com/fr/formations")).toBe(true);
+    expect(estCheminProtege("https://axion-ia.com/fr/formations/chatgpt")).toBe(false);
+    expect(
+      estCheminProtege("https://axion-ia.com/fr/implantations/auvergne-rhone-alpes/lyon"),
+    ).toBe(false);
+  });
+});

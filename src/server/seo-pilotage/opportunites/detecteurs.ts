@@ -1,3 +1,4 @@
+import { normaliserUrl } from "@/server/content-gen/strategie/carte-requetes";
 import { ctrReference, type CourbeCtr } from "./courbe-ctr";
 import {
   classerIntention,
@@ -78,7 +79,10 @@ export function respectePlancherRequete(l: LigneRequete): boolean {
   return (
     l.impressions >= SEUILS.requeteImpressionsMin &&
     l.semainesPresentes >= SEUILS.requeteSemainesMin &&
-    Number.isFinite(l.position)
+    Number.isFinite(l.position) &&
+    Number.isFinite(l.impressions) &&
+    Number.isFinite(l.clics) &&
+    l.clics >= 0
   );
 }
 
@@ -93,7 +97,7 @@ export function detecterQuasiGagnante(
     if (l.position < SEUILS.quasiPositionMin || l.position > SEUILS.quasiPositionMax) continue;
     if (l.impressions < SEUILS.quasiImpressionsMin) continue;
     const proprio = o.proprietaire(l.requete);
-    if (proprio === null || proprio !== l.url) continue;
+    if (proprio === null || normaliserUrl(proprio) !== normaliserUrl(l.url)) continue;
     const ctrActuel = l.clics / l.impressions;
     const titre = l.position <= SEUILS.quasiPositionTitreMax;
     const cible = titre ? Math.max(1, l.position - 2) : SEUILS.quasiPositionTitreMax;
@@ -233,14 +237,22 @@ export function detecterCannibalisation(
   const propositions: Proposition[] = [];
   const signalements: Signalement[] = [];
   for (const h of historiques) {
-    const total = h.urls.reduce((s, u) => s + u.impressions, 0);
-    if (total < SEUILS.cannibImpressionsMin || h.bascules < SEUILS.cannibBasculesMin) continue;
-    const significatives = h.urls.filter((u) => u.impressions / total >= SEUILS.cannibPartMin);
+    const groupes = new Map<string, number>();
+    for (const u of h.urls) {
+      const k = normaliserUrl(u.url);
+      if (!k || !Number.isFinite(u.impressions) || u.impressions < 0) continue;
+      groupes.set(k, (groupes.get(k) ?? 0) + u.impressions);
+    }
+    const urls = [...groupes].map(([url, impressions]) => ({ url, impressions }));
+    const total = urls.reduce((s, u) => s + u.impressions, 0);
+    if (!(total >= SEUILS.cannibImpressionsMin) || !(h.bascules >= SEUILS.cannibBasculesMin))
+      continue;
+    const significatives = urls.filter((u) => u.impressions / total >= SEUILS.cannibPartMin);
     if (significatives.length < 2) continue;
     const fallback = [...significatives].sort(
       (a, b) => b.impressions - a.impressions || a.url.localeCompare(b.url),
     )[0]!.url;
-    const proprio = o.proprietaire(h.requete) ?? fallback;
+    const proprio = normaliserUrl(o.proprietaire(h.requete) ?? "") || fallback;
     for (const u of significatives) {
       if (u.url === proprio) continue;
       propositions.push(
@@ -287,18 +299,29 @@ export function detecterDeclin(
   o: { site: TendanceSite },
 ): SortiePartielle {
   const propositions: Proposition[] = [];
-  const ratioSite = o.site.clicsPrecedents > 0 ? o.site.clics / o.site.clicsPrecedents : 1;
+  const ratioSite =
+    o.site.clicsPrecedents > 0 && Number.isFinite(o.site.clics)
+      ? o.site.clics / o.site.clicsPrecedents
+      : 1;
   for (const p of pages) {
+    if (![p.clics, p.clicsPrecedents, p.position, p.positionPrecedente].every(Number.isFinite))
+      continue;
     if (!(p.clicsPrecedents > 0)) continue;
-    const attendus = p.clicsPrecedents * ratioSite;
+    // Normalisation par la tendance du site ET par la saisonnalité de N−1 (une baisse
+    // déjà vue l'an dernier à la même période est attendue ; une hausse n'excuse rien).
+    let ratioN1 = 1;
+    if (
+      p.clicsAnneePrecedente !== undefined &&
+      p.clicsAnneePrecedentePrecedents !== undefined &&
+      Number.isFinite(p.clicsAnneePrecedente) &&
+      p.clicsAnneePrecedentePrecedents > 0
+    ) {
+      ratioN1 = Math.min(1, Math.max(0, p.clicsAnneePrecedente / p.clicsAnneePrecedentePrecedents));
+    }
+    const attendus = p.clicsPrecedents * ratioSite * ratioN1;
     const perdus = attendus - p.clics;
     if (!(attendus > 0) || perdus / attendus < SEUILS.declinBaisseMin) continue;
     if (perdus < SEUILS.declinClicsPerdusMin) continue;
-    // Saisonnalité : si l'an dernier la même période a chuté autant, la baisse est attendue.
-    if (p.clicsAnneePrecedente !== undefined && p.clicsAnneePrecedentePrecedents) {
-      const baisseN1 = 1 - p.clicsAnneePrecedente / p.clicsAnneePrecedentePrecedents;
-      if (baisseN1 >= SEUILS.declinBaisseMin) continue;
-    }
     if (p.position - p.positionPrecedente < SEUILS.declinPositionDegradeeMin) continue; // demande en baisse : aucune action
     propositions.push(
       prop("e", "mise_a_jour", {
@@ -326,6 +349,7 @@ export function detecterJamaisAffichee(pages: readonly PageVue[]): SortiePartiel
   const signalements: Signalement[] = [];
   for (const p of pages) {
     if (p.typePage === "legal" || p.typePage === "conversion") continue;
+    if (!Number.isFinite(p.ageJours) || !Number.isFinite(p.impressions90j)) continue;
     if (p.ageJours <= SEUILS.jamaisAgeMinJours || p.impressions90j !== 0) continue;
     propositions.push(
       prop("f", "inspection", {

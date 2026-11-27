@@ -64,7 +64,7 @@ export const VILLES_PAR_DEFAUT: ReadonlySet<string> = new Set([
 ]);
 
 /** Villes qui sont aussi des mots courants : comptées seulement derrière une préposition de lieu. */
-const HOMONYMES = new Set(["nice", "tours", "orange", "reims"]);
+const HOMONYMES = new Set(["nice", "tours", "orange"]);
 const PREPOSITION_LIEU = /(?:^| )(?:a|sur|pres de|dans|autour de|vers|en)$/;
 
 export const MARQUES = ["axion", "axionia"] as const;

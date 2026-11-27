@@ -234,3 +234,64 @@ describe("f · jamais affichée", () => {
     expect(detecterJamaisAffichee([v({ typePage: "conversion" })]).propositions).toEqual([]);
   });
 });
+
+describe("robustesse", () => {
+  it("(a) URL brute avec barre finale / majuscules : toujours reconnue", () => {
+    const r = detecterQuasiGagnante([l({ position: 8, url: "https://Axion-ia.com/fr/blog/X/" })], {
+      proprietaire: () => "https://axion-ia.com/fr/blog/x",
+    });
+    expect(r.length).toBeGreaterThan(0);
+  });
+  it("(d) deux graphies d'une même URL ne sont pas une cannibalisation, pas d'auto-lien", () => {
+    const r = detecterCannibalisation(
+      [
+        {
+          requete: "agent ia",
+          bascules: 5,
+          urls: [
+            { url: "https://axion-ia.com/fr/blog/A", impressions: 80 },
+            { url: "https://axion-ia.com/fr/blog/a/", impressions: 80 },
+          ],
+        },
+      ],
+      { proprietaire: () => "https://axion-ia.com/fr/blog/a" },
+    );
+    expect(r.propositions).toEqual([]);
+  });
+  it("NaN : aucun signal", () => {
+    const courbe = null;
+    expect(
+      detecterQuasiGagnante([l({ position: 8, clics: NaN })], { proprietaire: proprio }),
+    ).toEqual([]);
+    expect(
+      detecterCtrAnormal([l({ position: 3, clics: NaN, impressions: 500 })], { courbe }),
+    ).toEqual([]);
+    const p = { url: U, clics: NaN, clicsPrecedents: 100, position: 9, positionPrecedente: 5 };
+    expect(detecterDeclin([p], { site: { clics: 1, clicsPrecedents: 1 } }).propositions).toEqual(
+      [],
+    );
+    expect(
+      detecterDeclin([{ ...p, clics: 10, positionPrecedente: NaN }], {
+        site: { clics: 1, clicsPrecedents: 1 },
+      }).propositions,
+    ).toEqual([]);
+  });
+  it("(e) N−1 normalise : une chute bien plus forte que celle de l'an dernier reste signalée", () => {
+    const p = {
+      url: U,
+      clics: 20,
+      clicsPrecedents: 100,
+      position: 9,
+      positionPrecedente: 5,
+      clicsAnneePrecedente: 60,
+      clicsAnneePrecedentePrecedents: 100,
+    };
+    expect(
+      detecterDeclin([p], { site: { clics: 1, clicsPrecedents: 1 } }).propositions,
+    ).toHaveLength(1);
+  });
+  it("(a) 10 : titre/méta ; 10,5 : mise à jour", () => {
+    const r = detecterQuasiGagnante([l({ position: 10.5 })], { proprietaire: proprio });
+    expect(r.map((x) => x.action)).toContain("mise_a_jour");
+  });
+});

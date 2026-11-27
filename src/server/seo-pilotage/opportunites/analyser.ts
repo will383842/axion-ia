@@ -1,4 +1,8 @@
-import { construireCarte, type EntreeCarte } from "@/server/content-gen/strategie/carte-requetes";
+import {
+  construireCarte,
+  normaliserUrl,
+  type EntreeCarte,
+} from "@/server/content-gen/strategie/carte-requetes";
 import { construireCourbeCtr } from "./courbe-ctr";
 import {
   detecterCannibalisation,
@@ -61,7 +65,14 @@ export function analyser(e: EntreeAnalyse): Sortie {
     signalements.push(...s.signalements);
   }
 
-  const filtre = appliquerGardeFous(propositions, signalements);
+  // Une même (page, requête, action) vue par plusieurs détecteurs n'est comptée qu'une fois.
+  const meilleures = new Map<string, Proposition>();
+  for (const p of propositions) {
+    const k = `${normaliserUrl(p.url)}|${p.requete ?? ""}|${p.action}|${p.pageCible ?? ""}`;
+    const deja = meilleures.get(k);
+    if (!deja || p.priorite > deja.priorite) meilleures.set(k, p);
+  }
+  const filtre = appliquerGardeFous([...meilleures.values()], signalements);
   return {
     propositions: classer(filtre.propositions),
     signalements: [...filtre.signalements].sort(

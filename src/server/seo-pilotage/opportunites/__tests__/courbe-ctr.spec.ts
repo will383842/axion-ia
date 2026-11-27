@@ -49,3 +49,25 @@ describe("courbe CTR du site", () => {
     ).toBeNull();
   });
 });
+
+describe("domaine de la courbe", () => {
+  it("n'extrapole pas hors des tranches mesurées", () => {
+    const c = construireCourbeCtr([
+      l("a", 1, 1000, 300),
+      l("b", 3, 1000, 100),
+      l("c", 6, 1000, 50),
+    ])!;
+    expect(c.ctrAttendu(18)).toBe(0);
+    expect(c.ctrAttendu(45)).toBe(0);
+    expect(c.ctrAttendu(3)).toBeGreaterThan(0);
+  });
+  it("une ligne NaN n'empoisonne pas la courbe", () => {
+    const c = construireCourbeCtr([
+      l("a", 1, 1000, 300),
+      l("b", 3, 1000, 100),
+      l("c", 6, 1000, 50),
+      l("d", 3, 1000, NaN),
+    ])!;
+    expect(Number.isFinite(c.ctrAttendu(3))).toBe(true);
+  });
+});

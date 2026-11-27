@@ -32,7 +32,7 @@ export function regressionIsotone(valeurs: readonly number[], poids: readonly nu
 }
 
 export interface CourbeCtr {
-  /** CTR attendu à cette position (tranche valide la plus proche). */
+  /** CTR attendu à cette position (tranche valide la plus proche) ; 0 hors du domaine mesuré. */
   ctrAttendu(position: number): number;
   readonly tranches: readonly { position: number; ctr: number; impressions: number }[];
 }
@@ -62,7 +62,7 @@ export function construireCourbeCtr(lignes: readonly LigneRequete[]): CourbeCtr 
   const parTranche = new Map<number, { imp: number; clics: number }>();
   for (const l of lignes) {
     if (estRequeteMarque(l.requete)) continue;
-    if (!(l.impressions > 0) || !Number.isFinite(l.position)) continue;
+    if (!(l.impressions > 0) || !Number.isFinite(l.position) || !Number.isFinite(l.clics)) continue;
     const p = Math.round(l.position);
     if (p < 1 || p > POSITION_MAX_COURBE) continue;
     const t = parTranche.get(p) ?? { imp: 0, clics: 0 };
@@ -86,6 +86,13 @@ export function construireCourbeCtr(lignes: readonly LigneRequete[]): CourbeCtr 
   return {
     tranches,
     ctrAttendu(position) {
+      // Hors du domaine mesuré : aucune attente (0), le détecteur reste muet.
+      if (!Number.isFinite(position)) return 0;
+      if (
+        position < tranches[0]!.position - 0.5 ||
+        position > tranches[tranches.length - 1]!.position + 0.5
+      )
+        return 0;
       let meilleur = tranches[0]!;
       for (const t of tranches) {
         if (Math.abs(t.position - position) < Math.abs(meilleur.position - position)) meilleur = t;

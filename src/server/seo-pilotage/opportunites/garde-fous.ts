@@ -21,12 +21,13 @@ export const CHEMINS_PROTEGES: readonly string[] = [
   "/audit",
   "/un-a-un",
   "/journee-ia",
-  "/formations",
+  "/formations/entreprise",
+  "/formations/metiers",
+  "/formations/secteurs",
   "/catalogue",
   "/cartographie",
   "/methodologie",
   "/a-propos",
-  "/implantations",
   "/apporteur-affaires/video",
   "/reclamations",
   "/mentions-legales",
@@ -36,7 +37,21 @@ export const CHEMINS_PROTEGES: readonly string[] = [
   "/reglement-interieur",
   "/rgpd",
   "/cookies",
+  // Catégorie `legal` de `site-explorer/categories.ts` (verrouillée par test).
+  "/preferences-cookies",
+  "/accessibilite",
+  "/mes-donnees",
+  "/desabonnement",
+  "/confirmation",
+  "/sous-processeurs",
 ];
+
+/**
+ * Protégés en correspondance EXACTE : leurs sous-routes sont des gabarits
+ * dynamiques (`/formations/[slug]`, `/implantations/[region]/[ville]`) qui
+ * restent optimisables. Choix provisoire, à arbitrer par Will.
+ */
+export const CHEMINS_PROTEGES_EXACTS: readonly string[] = ["/formations", "/implantations"];
 
 function cheminSansLocale(url: string): string | null {
   const n = normaliserUrl(url);
@@ -48,11 +63,13 @@ function cheminSansLocale(url: string): string | null {
 export function estCheminProtege(url: string): boolean {
   const c = cheminSansLocale(url);
   if (c === null) return true; // URL illisible : par prudence, protégée
+  if (CHEMINS_PROTEGES_EXACTS.includes(c)) return true;
   return CHEMINS_PROTEGES.some((p) => (p === "" ? c === "" : c === p || c.startsWith(`${p}/`)));
 }
 
 const OPTIONS = { actualite: false, financementPublicAutorise: false } as const;
 
+/** Les filtres d'interdits écartent EN SILENCE toute proposition dont la requête porte un interdit (OPCO, CPF, Qualiopi…), même sur une page existante : choix voulu, par prudence légale. */
 /** Raisons de `evaluerSujetCible` qui écartent une requête pour tout type d'action. */
 const RAISONS_ECARTEES_TOUJOURS = new Set(["grenoble"]);
 
