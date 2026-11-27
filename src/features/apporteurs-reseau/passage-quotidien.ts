@@ -99,12 +99,15 @@ import {
   ajouterMois,
   htLignesRecurrentesRestantesCents,
   plafondBaseCommissionnableCents,
-  calculerCommissionSelonGrille,
+  calculerCommissionSelonGrilleAvecRegle,
+  regleApresPlafond,
   grilleDeLaCommande,
   MESSAGE_GRILLE_INCONNUE,
-  type CalculCommission,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
+  versionContratSignee,
+  type CalculCommission,
+  type RegleAppliquee,
   commandeCouverte,
   CONFIRMATION_TACITE_JOURS,
   dateConfirmationTaciteAvecContact,
@@ -1017,6 +1020,7 @@ type ProtegeeLue = {
     email: string;
     parrainId: string | null;
     signeParSocieteAt: Date | null;
+    /** Lue seulement pour poser `versionContrat` à la création (relevé mensuel, lot R). */
     signatureApporteur?: unknown;
   };
 };
@@ -1297,22 +1301,32 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
         maintenant,
       });
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
-    const calc: CalculCommission =
-      grille === null
-        ? { statut: "a_qualifier" }
-        : f.devis?.journeeIa === true
-          ? calculerCommissionJourneeIa({
-              activite: (f.activite ?? null) as ActiviteCommission | null,
-              lignes: f.devis.lignes,
-              netHtCents: commande.baseApresAvoirsCents,
-            })
-          : calculerCommissionSelonGrille({
-              activite: (f.activite ?? null) as ActiviteCommission | null,
-              factureHtCents: baseCommissionnable,
-              palier: null,
-              signeeAt,
-              grille,
-            });
+    // La règle appliquée est posée à la création (relevé mensuel, lot R) : le calcul est celui
+    // d'avant, seul un code est ajouté. Jamais rétroactif.
+    const baseAvantPlafond = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
+    let regle: RegleAppliquee | null = null;
+    let calc: CalculCommission;
+    if (grille === null) {
+      calc = { statut: "a_qualifier" };
+    } else if (f.devis?.journeeIa === true) {
+      calc = calculerCommissionJourneeIa({
+        activite: (f.activite ?? null) as ActiviteCommission | null,
+        lignes: f.devis.lignes,
+        netHtCents: commande.baseApresAvoirsCents,
+      });
+      regle = "journee_ia";
+    } else {
+      const r = calculerCommissionSelonGrilleAvecRegle({
+        activite: (f.activite ?? null) as ActiviteCommission | null,
+        factureHtCents: baseCommissionnable,
+        palier: null,
+        signeeAt,
+        grille,
+      });
+      calc = r.calcul;
+      regle = regleApresPlafond(r.regle, baseAvantPlafond, plafondBase);
+    }
+    const versionContrat = versionContratSignee(p.apporteur.signatureApporteur);
     if (calc.statut === "aucune") continue;
     // JAMAIS deux apporteurs commissionnés pour une même entreprise : si une autre personne a déjà
     // une commission (hors part de parrain) sur cette commande, rien n'est créé et Williams tranche.
@@ -1368,6 +1382,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
               prixPublicHtCents: calc.prixPublicCents,
               montantCents: calc.montantCents,
               statut: v.statut,
+              regleAppliquee: regle,
+              versionContrat,
             },
             select: { id: true },
           });
@@ -1408,6 +1424,11 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           commandeSigneeAt: signeeAt,
         });
         const v = await statutApresVigilance(parrainId, part, maintenant);
+        // Version signée par le PARRAIN (un apporteur signé), pas celle du filleul.
+        const parrain = await prisma.apporteurReseau.findUnique({
+          where: { id: parrainId },
+          select: { signatureApporteur: true },
+        });
         await prisma.commissionApporteur.create({
           data: {
             ...base,
@@ -1415,6 +1436,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
             parrainage: true,
             montantCents: part,
             statut: v.statut,
+            regleAppliquee: "parrainage_10",
+            versionContrat: versionContratSignee(parrain?.signatureApporteur),
           },
           select: { id: true },
         });

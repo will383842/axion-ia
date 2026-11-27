@@ -25,6 +25,7 @@ import { randomUUID } from "node:crypto";
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
+import { jobIdSansDeuxPoints } from "@/server/email/envoi-monde";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import {
@@ -32,6 +33,7 @@ import {
   commissionPourPrixConserve,
   partDuParrain,
   reduireCommission,
+  type SurEcritureParrain,
 } from "./ajustement";
 import { alerteInterne } from "./alerte-interne";
 import { dateFr } from "./autofacture-donnees";
@@ -47,6 +49,7 @@ import {
 } from "./commandes";
 import { dejaEnvoye, grilleDeLaLigne, statutApresVigilance } from "./commissions";
 import {
+  euros,
   ajouterMois,
   htLignesRecurrentesRestantesCents,
   plafondBaseCommissionnableCents,
@@ -90,6 +93,8 @@ const CHAMPS_LIGNE = {
   presentationId: true,
   litigeDepuis: true,
   litigeMotif: true,
+  regleAppliquee: true,
+  versionContrat: true,
 } as const;
 
 /** Les avoirs de moins de 24 mois (art. 4.5 : la reprise court de la date de CHAQUE annulation). */
@@ -217,6 +222,73 @@ async function prevenirRetenue(apporteurId: string, numeroAvoir: string, avoir?:
   }
 }
 
+/** Ce que l'apporteur apprend d'un ajustement fait APRÈS l'avoir du client (art. 4.5), sans pièce jointe. */
+interface AjustementAnnonce {
+  /** L'apporteur à prévenir (le PARRAIN pour une part de parrainage). */
+  apporteurId: string;
+  ligneId: string;
+  type: "reduite" | "annulee" | "reprise";
+  avantCents: number;
+  apresCents?: number;
+  reprisCents?: number;
+  /** Date de l'avoir (heure de Paris à l'affichage). */
+  annulationLe: Date;
+  /** `reprise` : l'identifiant de la ligne de reprise écrite (clé d'idempotence). */
+  repriseId?: string;
+}
+
+/**
+ * Annonce à l'apporteur une réduction, une annulation (avant facturation) ou une reprise (déjà
+ * versée) qui vient d'être ÉCRITE. Appelée seulement après une écriture réussie, qu'elle ne défait
+ * jamais ; ne lève jamais. Une clé par état atteint : jamais de date du jour (l'étape tourne aussi
+ * à l'heure), donc un second passage sur le même état n'envoie rien. Le motif interne (qui porte
+ * des montants) n'est jamais transmis ; le payload ne porte que des chaînes.
+ */
+async function prevenirAjustement(e: AjustementAnnonce): Promise<void> {
+  try {
+    const jobBrut =
+      e.type === "reduite"
+        ? `apporteur-commission-reduite-${e.ligneId}-${e.apresCents ?? 0}`
+        : e.type === "annulee"
+          ? `apporteur-commission-annulee-${e.ligneId}`
+          : e.repriseId
+            ? `apporteur-commission-reprise-${e.repriseId}`
+            : null;
+    if (!jobBrut) {
+      signalerErreurReseau(
+        "avoir client : annonce de reprise",
+        new Error(`Reprise sans identifiant (ligne ${e.ligneId}) : e-mail non envoyé.`),
+      );
+      return;
+    }
+    const jobId = jobIdSansDeuxPoints(jobBrut) ?? jobBrut;
+    if (await dejaEnvoye(jobId)) return;
+    const a = await prisma.apporteurReseau.findUnique({
+      where: { id: e.apporteurId },
+      select: { prenom: true, email: true },
+    });
+    const destinataire = a ? (decryptPii(a.email) ?? "") : "";
+    if (!a || !destinataire) return;
+    await envoyer({
+      gabarit: "apporteur-commission-avoir-client",
+      destinataire,
+      payload: {
+        contactName: decryptPii(a.prenom) ?? "",
+        variante: e.type,
+        avant: euros(e.avantCents),
+        ...(e.apresCents !== undefined ? { apres: euros(e.apresCents) } : {}),
+        ...(e.reprisCents !== undefined ? { repris: euros(e.reprisCents) } : {}),
+        annulationLe: dateFr(e.annulationLe),
+      },
+      entityType: "ApporteurReseau",
+      entityId: e.apporteurId,
+      jobId,
+    });
+  } catch (err) {
+    signalerErreurReseau("avoir client : annonce", err);
+  }
+}
+
 type FactureLue = FactureDeCommande & { createdAt: Date | null; lignes?: unknown };
 
 const CHAMPS = {
@@ -300,6 +372,9 @@ type LigneLue = {
   litigeDepuis: Date | null;
   litigeMotif: string | null;
   creeAt?: Date | null;
+  /** Relevé mensuel : repris sur le complément (jamais recalculés). */
+  regleAppliquee?: string | null;
+  versionContrat?: string | null;
 };
 
 const motifRetour = (net: number) =>
@@ -512,8 +587,8 @@ async function reprendreSurLaLigne(
   motif: string,
   annulationLe: Date,
   maintenant: Date,
-): Promise<boolean> {
-  if (cents <= 0) return false;
+): Promise<{ ok: boolean; repriseId?: string }> {
+  if (cents <= 0) return { ok: false };
   // `enregistrerReprise` relit sous verrou : un passage concurrent ne reprend pas deux fois.
   const r = await enregistrerReprise({
     commissionId: id,
@@ -523,8 +598,11 @@ async function reprendreSurLaLigne(
     annulationLe,
     maintenant,
   });
-  if (!r.ok) await alerterRepriseRefusee(id, cents, r.message, maintenant);
-  return r.ok;
+  if (!r.ok) {
+    await alerterRepriseRefusee(id, cents, r.message, maintenant);
+    return { ok: false };
+  }
+  return { ok: true, ...(r.repriseId ? { repriseId: r.repriseId } : {}) };
 }
 
 /**
@@ -569,6 +647,8 @@ async function completer(
         factureHtCents: 0,
         montantCents: aCompleter,
         statut: v.statut,
+        regleAppliquee: l.regleAppliquee ?? null,
+        versionContrat: l.versionContrat ?? null,
         ...contestation,
       },
       select: { id: true },
@@ -710,6 +790,8 @@ export async function reprendreApresAvoirsClients(
       presentationId: true,
       litigeDepuis: true,
       litigeMotif: true,
+      regleAppliquee: true,
+      versionContrat: true,
     },
   });
   if (lignes.length === 0) return bilan;
@@ -759,6 +841,8 @@ export async function reprendreApresAvoirsClients(
       // plus ancien ne profite jamais du délai d'un avoir récent.
       const recents = avoirsDansLeDelai(actifs as FactureLue[], maintenant);
       const annulationLe = dateDeLAnnulation(recents) ?? maintenant;
+      // La part du PARRAIN ajustée avec celle du filleul (non facturé) lui est annoncée aussi.
+      const surParrain: SurEcritureParrain = (e) => prevenirAjustement({ ...e, annulationLe });
       const motif = `Art. 4.5 : facture du client annulée ou réduite par un avoir (prix net ${(net / 100).toFixed(2).replace(".", ",")} € HT).`;
 
       // Le FILLEUL d'abord : s'il n'est pas encore facturé, `ajustement.ts` porte la part du parrain
@@ -837,6 +921,14 @@ export async function reprendreApresAvoirsClients(
             if (cible <= 0) bilan.annulees += 1;
             else bilan.reduites += 1;
             await tracer(l.id, { avantCents: montant, apresCents: cible, motif });
+            await prevenirAjustement({
+              apporteurId: l.apporteurId,
+              ligneId: l.id,
+              type: cible <= 0 ? "annulee" : "reduite",
+              avantCents: montant,
+              ...(cible > 0 ? { apresCents: cible } : {}),
+              annulationLe,
+            });
           }
           continue;
         }
@@ -872,11 +964,22 @@ export async function reprendreApresAvoirsClients(
           if (sansAvoirActif) continue;
           const r =
             net <= 0
-              ? await annulerCommission(l.id, motif)
-              : await reduireCommission(l.id, net, motif);
+              ? await annulerCommission(l.id, motif, null, surParrain)
+              : await reduireCommission(l.id, net, motif, null, surParrain);
           if (r.ok) {
             if (net <= 0) bilan.annulees += 1;
             else bilan.reduites += 1;
+            const apresCents = net <= 0 ? undefined : r.montantCents;
+            if (net <= 0 || apresCents !== undefined) {
+              await prevenirAjustement({
+                apporteurId: l.apporteurId,
+                ligneId: l.id,
+                type: net <= 0 ? "annulee" : "reduite",
+                avantCents: montant,
+                ...(apresCents !== undefined ? { apresCents } : {}),
+                annulationLe,
+              });
+            }
           } else if (
             net > 0 &&
             (r.message === MESSAGE_GRILLE_INCONNUE || (await grilleDe(l)) === null)
@@ -970,19 +1073,27 @@ export async function reprendreApresAvoirsClients(
           if (aRetirer <= 0) break;
           if (c.statut !== "versee") continue;
           const part = Math.min(aRetirer, c.montantCents - c.reprisCents);
-          if (
-            part > 0 &&
-            (await reprendreSurLaLigne(
-              c.id,
-              l.apporteurId,
-              part,
-              motif,
-              annulationLigne,
-              maintenant,
-            ))
-          ) {
+          if (part <= 0) continue;
+          const rc = await reprendreSurLaLigne(
+            c.id,
+            l.apporteurId,
+            part,
+            motif,
+            annulationLigne,
+            maintenant,
+          );
+          if (rc.ok) {
             aRetirer -= part;
             bilan.reprises += 1;
+            await prevenirAjustement({
+              apporteurId: l.apporteurId,
+              ligneId: c.id,
+              type: "reprise",
+              avantCents: c.montantCents,
+              reprisCents: part,
+              annulationLe: annulationLigne,
+              ...(rc.repriseId ? { repriseId: rc.repriseId } : {}),
+            });
           }
         }
         // 3. Un complément facturé, pas encore versé, est retenu s'il part en entier ; une réduction
@@ -1056,10 +1167,26 @@ export async function reprendreApresAvoirsClients(
               `il reste ${((aRetirer - Math.max(0, part)) / 100).toFixed(2).replace(".", ",")} € à reprendre au-delà de ce que la ligne et ses compléments peuvent porter.`,
               maintenant,
             );
-          if (
-            await reprendreSurLaLigne(l.id, l.apporteurId, part, motif, annulationLigne, maintenant)
-          )
+          const rl = await reprendreSurLaLigne(
+            l.id,
+            l.apporteurId,
+            part,
+            motif,
+            annulationLigne,
+            maintenant,
+          );
+          if (rl.ok) {
             bilan.reprises += 1;
+            await prevenirAjustement({
+              apporteurId: l.apporteurId,
+              ligneId: l.id,
+              type: "reprise",
+              avantCents: montant,
+              reprisCents: part,
+              annulationLe: annulationLigne,
+              ...(rl.repriseId ? { repriseId: rl.repriseId } : {}),
+            });
+          }
         }
       }
     } catch (err) {

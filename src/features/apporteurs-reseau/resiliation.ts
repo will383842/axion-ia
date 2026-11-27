@@ -546,8 +546,9 @@ export async function enregistrerReprise(e: {
   /** Date de l'annulation (remboursement, avoir) ; par défaut aujourd'hui. */
   annulationLe?: Date;
   maintenant?: Date;
-}): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
+}): Promise<{ ok: true; message: string; repriseId?: string } | { ok: false; message: string }> {
   const maintenant = e.maintenant ?? new Date();
+  let repriseId = undefined as string | undefined;
   const origine = await prisma.commissionApporteur.findUnique({
     where: { id: e.commissionId },
     select: {
@@ -558,6 +559,8 @@ export async function enregistrerReprise(e: {
       parrainage: true,
       montantCents: true,
       autofactureNumero: true,
+      regleAppliquee: true,
+      versionContrat: true,
     },
   });
   if (!origine || (e.apporteurId && origine.apporteurId !== e.apporteurId))
@@ -605,7 +608,7 @@ export async function enregistrerReprise(e: {
       }
       // `factureId` n'a pas de clé étrangère : la ligne de reprise porte son propre identifiant, la
       // ligne d'origine est conservée telle quelle (art. 4.5) et la contrainte d'unicité est tenue.
-      await tx.commissionApporteur.create({
+      const creee = await tx.commissionApporteur.create({
         data: {
           apporteurId: origine.apporteurId,
           presentationId: origine.presentationId,
@@ -616,9 +619,13 @@ export async function enregistrerReprise(e: {
           factureHtCents: 0,
           montantCents: -e.demandeeCents,
           statut: "reprise",
+          // Relevé mensuel : la reprise garde la règle de la commission d'origine (aucun calcul).
+          regleAppliquee: origine.regleAppliquee,
+          versionContrat: origine.versionContrat,
         },
         select: { id: true },
       });
+      repriseId = creee?.id;
       const a = await tx.apporteurReseau.findUnique({
         where: { id: origine.apporteurId },
         select: { noteInterne: true },
@@ -635,6 +642,7 @@ export async function enregistrerReprise(e: {
   if (refusTardif) return refusTardif;
   return {
     ok: true,
+    ...(repriseId ? { repriseId } : {}),
     message: `Reprise de ${euros(e.demandeeCents)} enregistrée : elle sera déduite de la prochaine autofacture de cet apporteur.`,
   };
 }
