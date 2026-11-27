@@ -89,6 +89,8 @@ vi.mock("../litige", () => ({ litigeDisponible: async () => d.litige }));
 vi.mock("../commissions", () => ({
   statutApresVigilance: vi.fn(async () => ({ statut: "due", demander: false })),
   dejaEnvoye: vi.fn(async () => false),
+  // Les cas de ce fichier sont calibrés sur la grille v3 ; la grille v2 est couverte par avoir-grille-contrat-signe.spec.ts.
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })),
 }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn(async () => ({ enqueued: true })) }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => d.envoyer(...(a as [])) }));
@@ -109,6 +111,9 @@ vi.mock("../ajustement", async (orig) => {
 });
 
 import { dateDeLAnnulation, reprendreApresAvoirsClients } from "../avoir-client";
+import { grilleDeLaLigne } from "../commissions";
+import { MESSAGE_GRILLE_INCONNUE } from "../regles";
+import { enqueueEmail } from "@/server/queue/queues";
 
 const LE = new Date("2026-10-09T11:10:00Z");
 const DATE_AVOIR = new Date("2026-03-02T08:00:00Z");
@@ -157,6 +162,7 @@ beforeEach(() => {
   d.reprisesDeja = [];
   d.filleulHorsGroupe = null;
   d.litige = true;
+  vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: "v3", signeeAt: null }));
 });
 
 describe("règle unique de l'avoir : la commission suit l'argent gardé, pour TOUS les produits", () => {
@@ -974,5 +980,131 @@ describe("commande mixte : mise en service + maintenance", () => {
         expect.objectContaining({ montantCents: expect.any(Number) }),
       );
     });
+  });
+});
+
+describe("grille du contrat signé câblée dans le passage des avoirs (relecture du 27/11, A et B)", () => {
+  const formation3j = (over: Record<string, unknown> = {}) =>
+    ligne({
+      activite: "formation",
+      palier: "formation-generale-3j-plus",
+      prixPublicHtCents: 570_000,
+      factureHtCents: 570_000,
+      montantCents: 150_000,
+      ...over,
+    });
+  const avoirPartiel = () => {
+    d.factures = [
+      { ...facture, montantHtCents: 570_000 },
+      avoir(-114_000), // net 4 560 €
+    ];
+  };
+
+  it("v2 · 3 j · ligne versée · avoir partiel (net 4 560 €) : la cible est 1 200 €, reprise de 300 € (et non 800 € / 700 €)", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: "v2", signeeAt: null }));
+    avoirPartiel();
+    d.lignes = [formation3j({ statut: "versee", verseeAt: LE })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(
+      expect.objectContaining({ commissionId: "c1", demandeeCents: 30_000 }),
+    );
+  });
+
+  it("v2 · part de parrain (filleul facturé) : 10 % de 1 200 € = 120 € (12 000), jamais 80 €", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: "v2", signeeAt: null }));
+    avoirPartiel();
+    d.lignes = [
+      formation3j({ id: "filleul", autofactureNumero: "AXI-APP-2026-0001" }),
+      formation3j({
+        id: "parrain",
+        parrainage: true,
+        apporteurId: "p1",
+        montantCents: 15_000,
+      }),
+    ];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.maj).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: "parrain" }),
+        data: { montantCents: 12_000 },
+      }),
+    );
+  });
+
+  it("v3 (contrôle) : la même ligne versée est ramenée à 800 € (reprise de 700 €)", async () => {
+    avoirPartiel();
+    d.lignes = [formation3j({ statut: "versee", verseeAt: LE })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(
+      expect.objectContaining({ commissionId: "c1", demandeeCents: 70_000 }),
+    );
+  });
+
+  it("grille inconnue + avoir actif : aucun montant inventé, UNE alerte critique par ligne", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: null, signeeAt: null }));
+    avoirPartiel();
+    d.lignes = [formation3j({ statut: "versee", verseeAt: LE })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).not.toHaveBeenCalled();
+    expect(d.maj).not.toHaveBeenCalled();
+    const alertes = vi
+      .mocked(enqueueEmail)
+      .mock.calls.filter(
+        (c) => (c[3] as { code?: string }).code === "apporteur_grille_inconnue_avoir",
+      );
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]![3]).toMatchObject({
+      niveau: "critique",
+      cibleId: "c1",
+      message: expect.stringContaining(MESSAGE_GRILLE_INCONNUE),
+    });
+    expect(alertes[0]![4]).toMatchObject({ jobId: "apporteur-grille-inconnue-avoir-c1" });
+  });
+
+  it("grille inconnue, part de parrain non facturée, filleul facturé : le passage ne réduit rien et alerte", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: null, signeeAt: null }));
+    avoirPartiel();
+    d.lignes = [
+      formation3j({ id: "filleul", autofactureNumero: "AXI-APP-2026-0001" }),
+      formation3j({ id: "parrain", parrainage: true, apporteurId: "p1", montantCents: 15_000 }),
+    ];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.maj).not.toHaveBeenCalled();
+    expect(
+      vi
+        .mocked(enqueueEmail)
+        .mock.calls.some(
+          (c) =>
+            (c[3] as { code?: string; cibleId?: string }).code ===
+              "apporteur_grille_inconnue_avoir" &&
+            (c[3] as { cibleId?: string }).cibleId === "parrain",
+        ),
+    ).toBe(true);
+  });
+
+  it("grille inconnue, ligne due non facturée (non parrain), avoir partiel : exactement 1 alerte", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: null, signeeAt: null }));
+    d.reduire.mockResolvedValueOnce({ ok: false, message: MESSAGE_GRILLE_INCONNUE } as never);
+    avoirPartiel();
+    d.lignes = [formation3j({ id: "ligne1" })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).toHaveBeenCalledTimes(1);
+    expect(d.maj).not.toHaveBeenCalled();
+    const alertes = vi
+      .mocked(enqueueEmail)
+      .mock.calls.filter(
+        (c) => (c[3] as { code?: string }).code === "apporteur_grille_inconnue_avoir",
+      );
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]![3]).toMatchObject({ niveau: "critique", cibleId: "ligne1" });
+    expect(alertes[0]![4]).toMatchObject({ jobId: "apporteur-grille-inconnue-avoir-ligne1" });
+  });
+
+  it("sans avoir actif : grille inconnue n'alerte pas", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: null, signeeAt: null }));
+    d.factures = [{ ...facture, montantHtCents: 570_000 }];
+    d.lignes = [formation3j({ statut: "versee", verseeAt: LE })];
+    await reprendreApresAvoirsClients(LE);
+    expect(vi.mocked(enqueueEmail)).not.toHaveBeenCalled();
   });
 });
