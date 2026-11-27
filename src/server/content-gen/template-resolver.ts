@@ -17,6 +17,7 @@
 import { prisma } from "@/lib/prisma";
 import type { ContentType } from "../../../prisma/generated/client";
 import { injectBrandVoiceForType } from "@/server/content-gen/brand/brand-voice";
+import { avecConsigneLisibiliteV2 } from "@/server/content-gen/brand/consigne-lisibilite";
 import {
   BLOC_POSITIONNEMENT,
   MARQUEUR_POSITIONNEMENT,
@@ -177,7 +178,10 @@ export function applySystemPromptOverride(
   }
   // Le prompt modèle remplace celui du code : on y remet le bloc de positionnement
   // s'il n'y est pas déjà (idempotent). Ce chemin n'est pas celui du chatbot.
-  const avecVoix = injectBrandVoiceForType(override.systemPrompt, contentType);
+  const avecVoix = avecConsigneLisibiliteV2(
+    injectBrandVoiceForType(override.systemPrompt, contentType),
+    contentType,
+  );
   if (avecVoix.includes(MARQUEUR_POSITIONNEMENT)) return avecVoix;
   return `${avecVoix}
 

@@ -68,7 +68,7 @@ Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles a
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
 - Output JSON strict :
-  { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×4-5], tags, keyTakeaway, expertTake }`);
+  { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×4-5], tags, keyTakeaway, expertTake }`, "qa_derived");
 
 /** Injecte le QAPage JSON-LD + structure Speakable dans le bodyHtml final. */
 function buildQABodyHtml(

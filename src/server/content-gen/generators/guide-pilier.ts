@@ -96,7 +96,7 @@ Output STRICT JSON (zéro prose hors JSON) :
   "faq": [{"q": "...", "a": "..."}],
   "keyTakeaway": "...",
   "expertTake": "..."
-}`);
+}`, "guide_pilier");
 
 const SYSTEM_PROMPT_SECTION =
   injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe).
@@ -114,7 +114,7 @@ Règles de structure du corps :
 - Commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
 - ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
-- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.`);
+- Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.`, "guide_pilier");
 
 interface OutlineSection {
   readonly position: number;

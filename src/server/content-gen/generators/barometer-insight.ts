@@ -92,7 +92,7 @@ const SYSTEM_PROMPT_PLAN =
 - "expertTake" : 1-2 phrases = prise de position d'expert, sans statistique inventée.
 - "outline" : **8 sections <h2>** couvrant une progression logique d'analyse des données : enjeu/contexte → lecture des constats chiffrés majeurs → implications terrain pour le dirigeant → erreurs à éviter → recommandations opérationnelles. Chaque section d'un constat chiffré doit commencer par le chiffre (phrase autoportante). Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un chiffre PRÉCIS du bloc « DONNÉES VÉRIFIÉES » quand pertinent) }. PAS de section définitionnelle creuse.
 - INTERDIT (marketing-hype, doctrine § 21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`, "barometer_insight");
 
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
 // C'est ici que se joue la LONGUEUR : chaque section doit faire 130-190 mots.
@@ -110,7 +110,7 @@ const SYSTEM_PROMPT_EXPAND =
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies (INSEE, France Num, BPI France, etc.).
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
-- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections, rien d'autre).`);
+- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections, rien d'autre).`, "barometer_insight");
 
 function buildVerifiedDataBlock(s: BarometerSnapshotPayload): string {
   const lines: string[] = [

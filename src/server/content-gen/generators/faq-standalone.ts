@@ -57,7 +57,7 @@ Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles abs
 - INTERDIT (marketing-hype, doctrine §21 — un seul de ces mots fait REJETER le contenu) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
 - "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×10-15], tags, keyTakeaway, expertTake }`);
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×10-15], tags, keyTakeaway, expertTake }`, "faq_standalone");
 
 function synthesizeFaqTopic(input: GeneratorBaseInput): string {
   if (input.primaryKeyword) return input.primaryKeyword;

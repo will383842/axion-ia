@@ -89,7 +89,7 @@ Tu prépares le PLAN d'un article COMPARATIF FR optimisé SEO/AEO 2026 (intent c
 - "expertTake" : 1-2 phrases = point de vue d'Axion-IA (voix collective, jamais une personne nommée), sans statistique inventée.
 - "outline" : **8 sections <h2>** couvrant une progression comparative logique : enjeu/contexte → critères de comparaison (lisibilité, coût, déploiement, support, cas d'usage) un par section → **UNE section dédiée « Tableau comparatif récapitulatif »** → recommandation par profil (petite structure, entreprise de taille moyenne, grande entreprise). Chaque entrée = { h2 (titre de section, 5-9 mots), brief (1 phrase : ce que la section doit développer, ancré sur un fait KB précis) }. OBLIGATOIRE : exactement une entrée d'outline doit être la section « tableau comparatif » (son brief précise que cette section contient un <table> récapitulatif 3-5 colonnes Option/Avantages/Inconvénients/Coût/Cible).
 - INTERDIT (marketing-hype, doctrine § 21 — chaque mot fait baisser la note qualité ; « garanti » et « sans risque » promettant un résultat bloquent la publication) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Reste factuel et sobre.
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`);
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`, "comparison");
 
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
 // EXIGENCE INTENT : au moins une section (celle « tableau comparatif ») contient
@@ -108,7 +108,7 @@ const SYSTEM_PROMPT_EXPAND =
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies. ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
-- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`);
+- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`, "comparison");
 
 /** Vérifie que le body contient au moins 2 sections H2 (structure comparative). */
 function hasComparativeSections(bodyHtml: string): boolean {

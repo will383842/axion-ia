@@ -53,6 +53,7 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { consigneLisibiliteV2 } from "../brand/consigne-lisibilite";
 import { consigneAngle } from "../brand/positionnement";
 import { consigneJourneeIA } from "../knowledge/journee-ia-fiche";
 import { REGLE_CHIFFRES_SOURCES, sectionChiffresVerifies } from "../kb/chiffres-verifies";
@@ -93,7 +94,7 @@ Règles absolues :
 - "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }
 
-${getBrandVoiceForContentType("blog_from_rss")}`;
+${getBrandVoiceForContentType("blog_from_rss")}${consigneLisibiliteV2("blog_from_rss")}`;
 
 export const blogFromRssGenerator: Generator = {
   contentType: "blog_from_rss",
