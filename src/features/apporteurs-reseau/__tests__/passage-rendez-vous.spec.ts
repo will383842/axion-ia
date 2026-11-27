@@ -700,6 +700,28 @@ describe("commande signée pendant la réservation, sans rendez-vous", () => {
     expect(envoyer).toHaveBeenCalledTimes(1);
   });
 
+  it("un e-mail « commande signée » mis en validation n'est PAS compté comme envoyé", async () => {
+    db.pres.push(
+      pres({ statut: "confirmee", confirmeeAt: j(RECUE, 30), protegeeJusquAt: j(RECUE, 210) }),
+    );
+    db.res.push(
+      reservation({
+        validationSource: "commande",
+        valideeAt: j(RECUE, 31),
+        valideeParId: "systeme",
+      }),
+    );
+    db.devis.push({
+      id: "D3",
+      acceptedAt: j(RECUE, 40),
+      client: { siren: "123456782", siret: null },
+    });
+    vi.mocked(envoyer).mockResolvedValueOnce("en-validation");
+    const b = await passerReseauApporteurs(j(RECUE, 41));
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(b.commandesSigneesAnnoncees).toBe(0);
+  });
+
   it("l'échéance et la validation par commande ne gagnent jamais toutes les deux", async () => {
     db.pres.push(pres());
     db.res.push(reservation());

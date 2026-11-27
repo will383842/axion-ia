@@ -1513,7 +1513,8 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
       entityId: p.id,
       jobId,
     });
-    if (r === "envoye" || r === "en-validation") bilan.commandesSigneesAnnoncees += 1;
+    // « en-validation » = e-mail retenu en attente, pas parti : il n'est pas compté comme envoyé.
+    if (r === "envoye") bilan.commandesSigneesAnnoncees += 1;
   }
 }
 
