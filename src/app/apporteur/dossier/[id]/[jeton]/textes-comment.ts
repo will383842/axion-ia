@@ -17,12 +17,13 @@ export const comment = (mois: number) =>
 // aucun nombre, aucune relance. ⚠️ À RELIRE par le dirigeant (liste dans la PR).
 export const commentRendezVous = (jours: number, mois: number) =>
   [
-    "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
+    "Après votre déclaration, nous prenons contact avec l'entreprise de votre part. Dès ce premier contact, nous lui disons que vous nous l'avez signalée.",
     `Cette entreprise vous est gardée ${jours} jours à compter de votre déclaration.`,
     `Elle est validée à votre nom dès qu'un premier rendez-vous avec Axion-IA a eu lieu, s'il a été pris pendant ces ${jours} jours. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
-    `Un devis signé pendant ces ${jours} jours compte aussi.`,
+    `Un devis signé pendant ces ${jours} jours la valide aussi. Un rendez-vous annulé par Axion-IA compte comme tenu.`,
+    "Si elle n'est pas validée, elle reste ensuite trente jours au repos : personne d'autre ne peut la déclarer, et vous pouvez la déclarer à nouveau.",
     "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
-    "Une commission n'est due que sur une commande payée.",
+    "Une commission est due quand le client a payé la totalité de sa commande.",
   ] as const;
 
 /** Les lignes à afficher, selon la règle de l'apporteur (`regleDe`). */
