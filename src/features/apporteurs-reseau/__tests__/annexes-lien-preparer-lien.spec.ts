@@ -78,9 +78,7 @@ describe("preparerLien : pièces jointes du lien du contrat à signer", () => {
     const r = await preparerLien(ID, "Bonjour", undefined);
     if (!r.ok) throw new Error("préparation refusée");
     expect(r.envoi.gabarit).toBe("apporteur-dossier-lien");
-    expect(r.envoi.attachments?.map((a) => a.r2Key)).toEqual(
-      DOCUMENTS_ANNEXES.map((d) => d.cleR2),
-    );
+    expect(r.envoi.attachments?.map((a) => a.r2Key)).toEqual(DOCUMENTS_ANNEXES.map((d) => d.cleR2));
     expect(r.envoi.attachments?.every((a) => a.facultative === true)).toBe(true);
     expect(r.envoi.payload).toMatchObject({
       dossierUrl: expect.stringContaining(ID),
