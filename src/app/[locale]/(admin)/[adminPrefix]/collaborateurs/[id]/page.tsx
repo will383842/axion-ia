@@ -60,7 +60,7 @@ export default async function CollaborateurPage({
     sortOrder: m.sortOrder,
     consentPublication: m.publicationConsentAt !== null,
     consentLinkedin: m.linkedinConsentAt !== null,
-    consentNote: m.consentNote ?? "",
+    consentNote: "", // jamais pré-remplie : un nouvel accord exige une preuve nouvelle
     photoKind: m.photoKind,
     photoConsent: m.photoConsentAt !== null,
     photoUrl256: m.photoUrl256,

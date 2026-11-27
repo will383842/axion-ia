@@ -18,28 +18,50 @@ const optionnel = (max: number) =>
     .optional()
     .transform((v) => (v === undefined || v === "" ? null : v));
 
-/** Aucune balise HTML dans un texte affiché. */
-const sansHtml = (v: string) => !/<\s*[a-z/!]/i.test(v);
+const CARACTERES_INTERDITS =
+  /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200E\u200F\u202A-\u202E\u2066-\u2069]/;
 
-const urlHttps = (max: number, domaine?: RegExp) =>
+/** Ni `<` ni `>`, ni caractère de contrôle ou de sens du texte, ni image ou lien Markdown non https. */
+const sansHtml = (v: string) =>
+  !/[<>]/.test(v) &&
+  !CARACTERES_INTERDITS.test(v) &&
+  !/!\[/.test(v) &&
+  !/\]\(\s*(?!https:\/\/)/i.test(v);
+
+/** Un seul mot (trait d'union et apostrophe permis) : le nom de famille ne passe pas. */
+const PRENOM = /^[\p{L}][\p{L}'-]*$/u;
+
+/** Adresse https sans identifiants ni port ; stockée sous sa forme normalisée. */
+const urlHttps = (max: number, linkedin = false) =>
   z
     .string()
     .trim()
     .max(max)
     .optional()
-    .transform((v) => (v === undefined || v === "" ? null : v))
-    .refine(
-      (v) => {
-        if (v === null) return true;
-        try {
-          const u = new URL(v);
-          return u.protocol === "https:" && (domaine ? domaine.test(u.hostname) : true);
-        } catch {
-          return false;
-        }
-      },
-      { message: domaine ? "Adresse https du bon site attendue" : "Adresse https attendue" },
-    );
+    .transform((v, ctx) => {
+      if (v === undefined || v === "") return null;
+      try {
+        const u = new URL(v);
+        const ok =
+          u.protocol === "https:" &&
+          u.username === "" &&
+          u.password === "" &&
+          u.port === "" &&
+          (!linkedin ||
+            (/^((www|[a-z]{2})\.)?linkedin\.com$/.test(u.hostname) &&
+              u.search === "" &&
+              u.hash === "" &&
+              /^\/(in|company)\/[A-Za-z0-9_%-]+\/?$/.test(u.pathname)));
+        if (ok) return u.href;
+      } catch {
+        /* refusée ci-dessous */
+      }
+      ctx.addIssue({
+        code: "custom",
+        message: linkedin ? "Adresse LinkedIn https valide requise" : "Adresse https attendue",
+      });
+      return z.NEVER;
+    });
 
 const liste = (maxItems: number, maxLen: number) =>
   z
@@ -58,7 +80,7 @@ export const slugSchema = z
 const ficheBaseSchema = z
   .object({
     category: z.enum(TEAM_CATEGORY_SLUGS as unknown as [string, ...string[]]),
-    firstName: z.string().trim().min(1).max(80).refine(sansHtml, "Pas de HTML"),
+    firstName: z.string().trim().min(1).max(80).regex(PRENOM, "Prénom seul : un mot, sans chiffre"),
     organizationName: optionnel(160),
     jobTitle: z.string().trim().min(1).max(120).refine(sansHtml, "Pas de HTML"),
     headline: optionnel(200),
@@ -66,7 +88,7 @@ const ficheBaseSchema = z
     skills: liste(20, 60),
     languages: liste(10, 40),
     websiteUrl: urlHttps(512),
-    linkedinUrl: urlHttps(512, /(^|\.)linkedin\.com$/i),
+    linkedinUrl: urlHttps(512, true),
     /** Un lieu : une ville OU un département, jamais les deux, jamais d'adresse. */
     citySlug: optionnel(100),
     departmentCode: optionnel(3),

@@ -80,6 +80,8 @@ const existant = (over: Record<string, unknown> = {}) => ({
   consentNote: null,
   latitude: null,
   longitude: null,
+  erasureRequestedAt: null,
+  updatedAt: new Date("2026-11-01T00:00:00Z"),
   ...over,
 });
 
@@ -98,6 +100,7 @@ beforeEach(() => {
   }));
   m.tm.updateMany.mockResolvedValue({ count: 1 });
   m.tm.update.mockResolvedValue({});
+  m.tm.updateMany.mockResolvedValue({ count: 1 });
   m.ev.create.mockResolvedValue({});
 });
 
@@ -151,6 +154,16 @@ describe("creerCollaborateur : validation", () => {
     ["site javascript:", { websiteUrl: "javascript:alert(1)" }],
     ["ville ET département", { citySlug: "annecy", departmentCode: "74" }],
     ["structure hors partenaire", { organizationName: "ACME" }],
+    ["nom de famille dans le prénom", { firstName: "Jean Dupont" }],
+    ["caractère de sens inversé", { firstName: "Lea\u202Egnp" }],
+    [
+      "LinkedIn redirection",
+      { linkedinUrl: "https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fevil.example" },
+    ],
+    ["LinkedIn identifiants", { linkedinUrl: "https://u:p@linkedin.com/in/x" }],
+    ["LinkedIn sous-domaine pirate", { linkedinUrl: "https://evil.attacker.linkedin.com/in/x" }],
+    ["site avec identifiants", { websiteUrl: "https://linkedin.com@evil.example/" }],
+    ["image Markdown", { bioMd: "![x](https://t.example/p.gif)" }],
     ["slug réservé", { slug: "williams" }],
     ["slug de catégorie", { slug: "direction" }],
     ["slug majuscules", { slug: "Julie" }],
@@ -284,7 +297,7 @@ describe("slug unique", () => {
     m.tm.findUnique.mockResolvedValue(existant({ status: "publie", publishedAt: new Date() }));
     const r = await modifierCollaborateur(ID, fiche({ slug: "autre-slug" }));
     expect(r.ok).toBe(false);
-    expect(m.tm.update).not.toHaveBeenCalled();
+    expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
 });
 
@@ -294,7 +307,7 @@ describe("modifierCollaborateur", () => {
     expect(m.tm.findUnique).not.toHaveBeenCalled();
     m.tm.findUnique.mockResolvedValue(null);
     expect((await modifierCollaborateur(ID, fiche())).ok).toBe(false);
-    expect(m.tm.update).not.toHaveBeenCalled();
+    expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
 
   it("revalide fiche et hub si elle est publiée, journalise les champs touchés", async () => {
@@ -325,13 +338,13 @@ describe("modifierCollaborateur", () => {
     );
     const r = await modifierCollaborateur(ID, fiche({ consentPublication: false }));
     expect(r.ok).toBe(false);
-    expect(m.tm.update).not.toHaveBeenCalled();
+    expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
 
   it("retire l'accord LinkedIn et le journalise", async () => {
     m.tm.findUnique.mockResolvedValue(existant({ linkedinConsentAt: new Date() }));
     await modifierCollaborateur(ID, fiche({ consentLinkedin: false }));
-    expect(m.tm.update.mock.calls[0]![0].data).toMatchObject({
+    expect(m.tm.updateMany.mock.calls[0]![0].data).toMatchObject({
       linkedinConsentAt: null,
       linkedinConsentVersion: null,
     });
@@ -346,7 +359,68 @@ describe("modifierCollaborateur", () => {
     );
     const r = await modifierCollaborateur(ID, fiche({ consentPublication: true }));
     expect(r.ok).toBe(true);
-    expect(m.tm.update.mock.calls[0]![0].data.consentSource).toBeUndefined();
+    expect(m.tm.updateMany.mock.calls[0]![0].data.consentSource).toBeUndefined();
+  });
+});
+
+describe("concurrence, effacement, preuve", () => {
+  it("modifier refuse si la fiche a changé entre la lecture et l'écriture", async () => {
+    m.tm.findUnique.mockResolvedValue(existant());
+    m.tm.updateMany.mockResolvedValue({ count: 0 });
+    const r = await modifierCollaborateur(ID, fiche());
+    expect(r.ok).toBe(false);
+    expect(m.ev.create).not.toHaveBeenCalled();
+    expect(m.tm.updateMany.mock.calls[0]![0].where).toMatchObject({ id: ID, status: "brouillon" });
+  });
+  it("carte : refuse si la fiche a changé entre-temps", async () => {
+    m.tm.findUnique.mockResolvedValue({
+      id: ID,
+      slug: "j",
+      status: "brouillon",
+      latitude: 1,
+      longitude: 1,
+      updatedAt: new Date(),
+    });
+    m.tm.updateMany.mockResolvedValue({ count: 0 });
+    expect((await basculerPointCarte(ID, true)).ok).toBe(false);
+    expect(m.ev.create).not.toHaveBeenCalled();
+  });
+  it("une demande d'effacement verrouille modification et publication", async () => {
+    m.tm.findUnique.mockResolvedValue(
+      existant({ erasureRequestedAt: new Date(), publicationConsentAt: new Date() }),
+    );
+    expect((await modifierCollaborateur(ID, fiche())).ok).toBe(false);
+    expect((await publierCollaborateur(ID)).ok).toBe(false);
+    expect(m.tm.updateMany).not.toHaveBeenCalled();
+  });
+  it("un nouvel accord ne peut pas réutiliser la note précédente", async () => {
+    m.tm.findUnique.mockResolvedValue(existant({ consentNote: NOTE, consentSource: "console" }));
+    const r = await modifierCollaborateur(
+      ID,
+      fiche({ consentPublication: true, consentNote: NOTE }),
+    );
+    expect(r.ok).toBe(false);
+  });
+  it("une note nouvelle s'ajoute sans effacer la preuve précédente", async () => {
+    m.tm.findUnique.mockResolvedValue(
+      existant({
+        publicationConsentAt: new Date(),
+        consentNote: "preuve publication initiale",
+        consentSource: "questionnaire",
+      }),
+    );
+    await modifierCollaborateur(
+      ID,
+      fiche({ consentPublication: true, consentLinkedin: true, consentNote: NOTE }),
+    );
+    const note = m.tm.updateMany.mock.calls[0]![0].data.consentNote as string;
+    expect(note).toContain("preuve publication initiale");
+    expect(note).toContain(NOTE);
+  });
+  it("refuse un lien Markdown javascript: dans la présentation", async () => {
+    expect((await creerCollaborateur(fiche({ bioMd: "[clic](javascript:alert(1))" }))).ok).toBe(
+      false,
+    );
   });
 });
 
@@ -465,9 +539,13 @@ describe("basculerPointCarte", () => {
       status: "publie",
       latitude: 45.9,
       longitude: 6.1,
+      updatedAt: new Date(),
     });
     expect((await basculerPointCarte(ID, true)).ok).toBe(true);
-    expect(m.tm.update).toHaveBeenCalledWith({ where: { id: ID }, data: { showOnMap: true } });
+    expect(m.tm.updateMany).toHaveBeenCalledWith({
+      where: { id: ID, updatedAt: expect.anything() },
+      data: { showOnMap: true },
+    });
     expect(m.ev.create.mock.calls[0]![0].data.action).toBe("carte_activee");
     expect(m.revalidatePath).toHaveBeenCalledWith("/fr/equipe");
   });

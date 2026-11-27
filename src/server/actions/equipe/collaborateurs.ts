@@ -222,6 +222,7 @@ export async function proposerSlugCollaborateur(entree: {
 interface ConsentsExistants {
   publicationConsentAt: Date | null;
   linkedinConsentAt: Date | null;
+  consentNote: string | null;
   status: string;
 }
 
@@ -242,8 +243,15 @@ function patchConsentements(
         erreur: `Une note de preuve (${NOTE_PREUVE_MIN} caractères au moins) est obligatoire pour un accord saisi depuis la console.`,
       };
     }
+    const note = (demande.consentNote ?? "").trim();
+    if (existant?.consentNote && existant.consentNote.includes(note)) {
+      return { erreur: "Saisissez une note de preuve nouvelle pour ce nouvel accord." };
+    }
     data["consentSource"] = "console";
-    data["consentNote"] = demande.consentNote;
+    // Jamais écrasée : la preuve des accords précédents reste lisible.
+    data["consentNote"] = existant?.consentNote
+      ? `${existant.consentNote}\n---\n${maintenant.toISOString().slice(0, 10)} : ${note}`
+      : note;
   }
   if (demande.consentPublication && !existant?.publicationConsentAt) {
     data["publicationConsentAt"] = maintenant;
@@ -374,10 +382,17 @@ export async function modifierCollaborateur(
   }
   const v = parse.data;
   const maintenant = new Date();
+  let aRevalider: string | null = null;
   try {
-    return await prisma.$transaction(async (tx) => {
+    const res = await prisma.$transaction(async (tx) => {
       const actuel = await tx.teamMember.findUnique({ where: { id: idOk.data } });
       if (!actuel) return { ok: false as const, erreur: "Fiche introuvable." };
+      if (actuel.erasureRequestedAt) {
+        return {
+          ok: false as const,
+          erreur: "Une demande d'effacement est en cours : fiche verrouillée.",
+        };
+      }
 
       const lieu = await resoudreLieu(tx, v.citySlug, v.departmentCode);
       if (lieu === "inconnu")
@@ -438,8 +453,8 @@ export async function modifierCollaborateur(
       ];
       for (const [nom, avant, apres] of compare) if (avant !== apres) touches.push(nom);
 
-      await tx.teamMember.update({
-        where: { id: actuel.id },
+      const ecrit = await tx.teamMember.updateMany({
+        where: { id: actuel.id, status: actuel.status, updatedAt: actuel.updatedAt },
         data: {
           slug,
           category: v.category,
@@ -458,6 +473,9 @@ export async function modifierCollaborateur(
           ...consent.data,
         },
       });
+      if (ecrit.count !== 1) {
+        return { ok: false as const, erreur: "La fiche a changé entre-temps, rechargez la page." };
+      }
       await tx.teamMemberEvent.create({
         data: {
           memberId: actuel.id,
@@ -466,9 +484,11 @@ export async function modifierCollaborateur(
           details: { champs: touches, evenements: consent.changes },
         },
       });
-      if (actuel.status === "publie") revalider(slug);
+      if (actuel.status === "publie") aRevalider = slug;
       return { ok: true as const, slug };
     });
+    if (res.ok && aRevalider) revalider(aRevalider);
+    return res;
   } catch (e) {
     if (estConflitUnique(e))
       return { ok: false, erreur: "Ce slug est déjà pris.", champs: { slug: "Déjà pris" } };
@@ -484,10 +504,17 @@ export async function publierCollaborateur(id: unknown): Promise<ResultatAction<
   const idOk = idSchema.safeParse(id);
   if (!idOk.success) return { ok: false, erreur: "Identifiant invalide." };
   const maintenant = new Date();
-  return prisma.$transaction(async (tx) => {
+  let aRevalider: string | null = null;
+  const res = await prisma.$transaction(async (tx) => {
     const m = await tx.teamMember.findUnique({ where: { id: idOk.data } });
     if (!m) return { ok: false as const, erreur: "Fiche introuvable." };
     if (m.status === "publie") return { ok: false as const, erreur: "La fiche est déjà publiée." };
+    if (m.erasureRequestedAt) {
+      return {
+        ok: false as const,
+        erreur: "Une demande d'effacement est en cours : publication impossible.",
+      };
+    }
     if (!m.publicationConsentAt) {
       return {
         ok: false as const,
@@ -504,7 +531,13 @@ export async function publierCollaborateur(id: unknown): Promise<ResultatAction<
       return { ok: false as const, erreur: "La note de preuve de l'accord est manquante." };
     }
     const r = await tx.teamMember.updateMany({
-      where: { id: m.id, status: m.status },
+      where: {
+        id: m.id,
+        status: m.status,
+        updatedAt: m.updatedAt,
+        publicationConsentAt: { not: null },
+        erasureRequestedAt: null,
+      },
       data: {
         status: "publie",
         publishedAt: m.publishedAt ?? maintenant,
@@ -524,9 +557,11 @@ export async function publierCollaborateur(id: unknown): Promise<ResultatAction<
         details: { depuis: m.status },
       },
     });
-    revalider(m.slug);
+    aRevalider = m.slug;
     return { ok: true as const, slug: m.slug };
   });
+  if (res.ok && aRevalider) revalider(aRevalider);
+  return res;
 }
 
 export async function depublierCollaborateur(
@@ -536,7 +571,8 @@ export async function depublierCollaborateur(
   if (!admin) return { ok: false, erreur: ERREUR_ACCES };
   const idOk = idSchema.safeParse(id);
   if (!idOk.success) return { ok: false, erreur: "Identifiant invalide." };
-  return prisma.$transaction(async (tx) => {
+  let aRevalider: string | null = null;
+  const res = await prisma.$transaction(async (tx) => {
     const m = await tx.teamMember.findUnique({
       where: { id: idOk.data },
       select: { id: true, slug: true, status: true },
@@ -552,9 +588,11 @@ export async function depublierCollaborateur(
     await tx.teamMemberEvent.create({
       data: { memberId: m.id, action: "depublication", actor: admin.userId },
     });
-    revalider(m.slug);
+    aRevalider = m.slug;
     return { ok: true as const, slug: m.slug };
   });
+  if (res.ok && aRevalider) revalider(aRevalider);
+  return res;
 }
 
 export async function basculerPointCarte(id: unknown, actif: unknown): Promise<ResultatAction> {
@@ -563,16 +601,37 @@ export async function basculerPointCarte(id: unknown, actif: unknown): Promise<R
   const idOk = idSchema.safeParse(id);
   if (!idOk.success || typeof actif !== "boolean")
     return { ok: false, erreur: "Demande invalide." };
-  return prisma.$transaction(async (tx) => {
+  let aRevalider: string | null = null;
+  const res = await prisma.$transaction(async (tx) => {
     const m = await tx.teamMember.findUnique({
       where: { id: idOk.data },
-      select: { id: true, slug: true, status: true, latitude: true, longitude: true },
+      select: {
+        id: true,
+        slug: true,
+        status: true,
+        latitude: true,
+        longitude: true,
+        updatedAt: true,
+        erasureRequestedAt: true,
+      },
     });
     if (!m) return { ok: false as const, erreur: "Fiche introuvable." };
+    if (m.erasureRequestedAt) {
+      return {
+        ok: false as const,
+        erreur: "Une demande d'effacement est en cours : fiche verrouillée.",
+      };
+    }
     if (actif && (m.latitude === null || m.longitude === null)) {
       return { ok: false as const, erreur: "Choisissez d'abord un lieu pour cette fiche." };
     }
-    await tx.teamMember.update({ where: { id: m.id }, data: { showOnMap: actif } });
+    const ecrit = await tx.teamMember.updateMany({
+      where: { id: m.id, updatedAt: m.updatedAt },
+      data: { showOnMap: actif },
+    });
+    if (ecrit.count !== 1) {
+      return { ok: false as const, erreur: "La fiche a changé entre-temps, rechargez la page." };
+    }
     await tx.teamMemberEvent.create({
       data: {
         memberId: m.id,
@@ -580,7 +639,9 @@ export async function basculerPointCarte(id: unknown, actif: unknown): Promise<R
         actor: admin.userId,
       },
     });
-    if (m.status === "publie") revalider(m.slug);
+    if (m.status === "publie") aRevalider = m.slug;
     return { ok: true as const };
   });
+  if (res.ok && aRevalider) revalider(aRevalider);
+  return res;
 }
