@@ -215,6 +215,10 @@ import {
   apporteurPresentationRecueRendezVousSubject,
   ApporteurPresentationRecueRendezVousEmail,
 } from "./apporteur-presentation-recue-rendez-vous";
+import {
+  ApporteurReleveMensuelEmail,
+  apporteurReleveMensuelSubject,
+} from "./apporteur-releve-mensuel";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
 import {
   ApporteurCompteAConfirmerEmail,
@@ -751,6 +755,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-releve": {
     subject: apporteurReleveSubject,
     component: ApporteurReleveEmail,
+  },
+  "apporteur-releve-mensuel": {
+    subject: apporteurReleveMensuelSubject,
+    component: ApporteurReleveMensuelEmail,
   },
   "apporteur-virement-fait": {
     subject: apporteurVirementFaitSubject,

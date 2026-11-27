@@ -243,6 +243,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
     "Apporteur : une commande ne lui est pas attribuée (motif, contestation ; art. 3.1)",
   "apporteur-attribution-confirmee": "Apporteur : attribution confirmée ou protection prolongée",
   "apporteur-releve": "Apporteur : commission facturée et autofacture",
+  "apporteur-releve-mensuel": "Apporteur : relevé mensuel de ses commissions (récapitulatif)",
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",
   "apporteur-lien-espace":
     "Apporteur : lien de son espace, à sa demande ou envoyé depuis la console",
