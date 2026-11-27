@@ -200,7 +200,8 @@ export function SectionsPub({
               <div>
                 <h3>Vous présentez</h3>
                 <p>
-                  Vous en parlez à un dirigeant que vous connaissez. Il est enregistré à votre nom.
+                  Vous en parlez à un dirigeant que vous connaissez. Il vous est réservé 60 jours,
+                  puis validé à votre nom.
                 </p>
                 <span className="qui">Vous · 5 minutes</span>
               </div>
