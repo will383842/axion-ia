@@ -902,6 +902,7 @@ async function executePublishPipeline(
     jobId: cgJob.id,
     contentType: cgJob.contentType,
     topicHint: primaryKeyword ?? title,
+    ...(heroImageFilePathRaw ? { heroImageUrl: heroImageFilePathRaw } : {}),
   });
   // Liens internes profonds vers d'autres articles tier-1 (maillage thématique),
   // après les images. Best-effort, sur la même chaîne persistée. Internal links

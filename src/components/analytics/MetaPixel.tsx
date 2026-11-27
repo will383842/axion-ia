@@ -38,13 +38,12 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { isRouteTunnelFacebook } from "@/lib/analytics/tunnel-facebook-routes";
 import { useAnalyticsConsent } from "./CookieConsent";
 
 export function MetaPixel() {
-  const pixelId = env.NEXT_PUBLIC_META_PIXEL_ID;
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || undefined;
   const consent = useAnalyticsConsent();
   const pathname = usePathname();
   if (!pixelId) return null;

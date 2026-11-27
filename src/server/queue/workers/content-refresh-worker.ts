@@ -42,6 +42,9 @@ import {
   type SignauxArticle,
 } from "@/server/content-gen/equipe/suivi-publication";
 import { chargerCarteRequetes } from "@/server/content-gen/strategie/carte-requetes-source";
+import { normaliserUrl, type CarteRequetes } from "@/server/content-gen/strategie/carte-requetes";
+import { executerMiseAJour } from "@/server/content-gen/equipe/mise-a-jour";
+import { dependancesReelles } from "@/server/content-gen/equipe/mise-a-jour-reel";
 
 const QUEUE_NAME = "content-refresh";
 const DEFAULT_OLDER_THAN_DAYS = 14;
@@ -56,7 +59,7 @@ interface RefreshJobData {
    * absent = scan de rafraîchissement, comme avant. Les autres tâches ne
    * s'exécutent que si CONTENT_EQUIPE_EDITORIALE=true.
    */
-  readonly tache?: "suivi-publication" | "liens-hebdo";
+  readonly tache?: "suivi-publication" | "liens-hebdo" | "mise-a-jour";
 }
 
 export interface ContentRefreshResult {
@@ -65,6 +68,8 @@ export interface ContentRefreshResult {
   readonly refreshedCount: number;
   readonly checkedAt: string;
   readonly suivi?: Readonly<Record<string, number>>;
+  /** Mode « mise à jour » (équipe éditoriale) : nombre d'articles par issue. */
+  readonly miseAJour?: Readonly<Record<string, number>>;
 }
 
 const ENABLED_ENV = process.env.CONTENT_REFRESH_ENABLED === "true";
@@ -132,7 +137,13 @@ async function articlesPublies(take: number) {
       updatedAt: true,
       isNews: true,
       templateVariant: true,
-      translations: { where: { locale: "fr" }, select: { slug: true, body: true }, take: 1 },
+      generatedByJobId: true,
+      mentionedCities: true,
+      translations: {
+        where: { locale: "fr" },
+        select: { slug: true, body: true, title: true },
+        take: 1,
+      },
     },
   });
 }
@@ -175,7 +186,141 @@ async function runTacheEquipe(
   if (carte && carte.cannibalisations.length > 0) {
     console.log(`[content-refresh] cannibalisation : ${carte.cannibalisations.length} requête(s)`);
   }
-  return { ...base, flaggedCount: casses, suivi: { liensCasses: casses } };
+  const occasions = await chargerOccasionsLiens(articles, maintenant).catch(() => 0);
+  return {
+    ...base,
+    flaggedCount: casses,
+    suivi: { liensCasses: casses, occasionsLiens: occasions },
+  };
+}
+
+/** Chargé de liens (PR 18) : au plus 20 articles par passage, une fois par article, rien n'est envoyé. */
+async function chargerOccasionsLiens(
+  articles: Awaited<ReturnType<typeof articlesPublies>>,
+  maintenant: Date,
+): Promise<number> {
+  // Chargement à la demande : rien n'est importé tant que l'interrupteur n'est pas allumé.
+  const { proposerOccasions } = await import("@/server/content-gen/equipe/charge-de-liens");
+  const { chargerCandidats, coutDejaEngage, ecrireOccasions, estOppose, lireOccasions } =
+    await import("@/server/content-gen/equipe/charge-de-liens-donnees");
+  let total = 0;
+  let traites = 0;
+  for (const a of articles) {
+    if (traites >= 20) break;
+    const jobId = a.generatedByJobId;
+    const url = urlArticle(a);
+    const t = a.translations[0];
+    if (!jobId || !url || !t) continue;
+    try {
+      if (await lireOccasions(jobId)) continue;
+      // Marqueur posé AVANT l'appel payant : au plus un appel par article, même en cas d'échec ou de passages parallèles.
+      const pose = await redis.set(`charge-liens:fait:${jobId}`, "1", "EX", 90 * 24 * 3600, "NX");
+      if (pose !== "OK") continue;
+      traites++;
+      const r = await proposerOccasions(
+        { jobId, articleUrl: url, titre: t.title, motsCles: [] },
+        {
+          candidats: await chargerCandidats(a.id, a.mentionedCities),
+          coutDejaEngage,
+          estOppose,
+          maintenant,
+        },
+      );
+      if (r.statut !== "occasions") continue;
+      await ecrireOccasions(jobId, { version: 1, occasions: r.occasions, coutUsd: r.coutUsd });
+      total += r.occasions.length;
+    } catch (e) {
+      console.warn(
+        `[content-refresh] charge-liens : article ignoré (${e instanceof Error ? e.name : "erreur"})`,
+      );
+    }
+  }
+  return total;
+}
+
+/** Mot-clé principal d'une URL d'après la carte des requêtes (premier par ordre alphabétique). */
+function motClePrincipal(carte: CarteRequetes, url: string): string | null {
+  const u = normaliserUrl(url);
+  const cles = [...carte.carte.entries()].filter(([, v]) => v === u).map(([k]) => k);
+  return cles.sort()[0] ?? null;
+}
+
+interface Retenu {
+  readonly id: string;
+  readonly isNews: boolean;
+  readonly templateVariant: string | null;
+  readonly translations: ReadonlyArray<{ slug: string; title?: string; body?: string }>;
+}
+
+/** Une mise à jour par article retenu ; le quota du jour est contrôlé dans `executerMiseAJour`. */
+async function miseAJourRetenus(
+  retenus: readonly Retenu[],
+  carte: CarteRequetes,
+  maintenant: Date,
+): Promise<Record<string, number>> {
+  const bilan: Record<string, number> = {};
+  for (const [k, a] of retenus.entries()) {
+    const t = a.translations[0];
+    const url = urlArticle(a);
+    const motCle = url ? motClePrincipal(carte, url) : null;
+    if (!t?.slug || !t.body || !url || !motCle) {
+      bilan["ignore"] = (bilan["ignore"] ?? 0) + 1;
+      continue;
+    }
+    try {
+      const deps = await dependancesReelles({
+        maintenant,
+        articleId: a.id,
+        titre: t.title ?? motCle,
+        motCle,
+        carte,
+        urlDe: async (id) => {
+          const x = await prisma.article.findUnique({
+            where: { id },
+            select: {
+              isNews: true,
+              templateVariant: true,
+              translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
+            },
+          });
+          return x ? (urlArticle(x) ?? undefined) : undefined;
+        },
+      });
+      const r = await executerMiseAJour(
+        {
+          article: { id: a.id, slug: t.slug, motCle, html: t.body },
+          brief: {
+            motCle,
+            intention: "information",
+            requetesSecondaires: [],
+            champSemantique: [],
+            entites: [],
+            questions: [],
+            urlCible: url,
+            cluster: "mise-a-jour",
+            type: "mise-a-jour",
+          },
+          raisons: [],
+        },
+        deps,
+      );
+      bilan[r.statut] = (bilan[r.statut] ?? 0) + 1;
+      console.log(
+        `[content-refresh] mise à jour ${t.slug} : ${r.statut}${r.raison ? ` — ${r.raison}` : ""}`,
+      );
+      if (r.statut === "quota") {
+        // Quota atteint : les articles non traités ne doivent pas rester « signalés » 28 jours.
+        await Promise.all(
+          retenus.slice(k).map((x) => redis.del(`suivi-pub:alerte:${x.id}`).catch(() => 0)),
+        );
+        break;
+      }
+    } catch (err) {
+      bilan["erreur"] = (bilan["erreur"] ?? 0) + 1;
+      console.error(`[content-refresh] mise à jour ${t.slug} en erreur :`, err);
+    }
+  }
+  return bilan;
 }
 
 async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshResult> {
@@ -185,7 +330,7 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     return { scannedCount: 0, flaggedCount: 0, refreshedCount: 0, checkedAt };
   }
 
-  if (job.data.tache && equipeEditorialeActive()) {
+  if (job.data.tache && job.data.tache !== "mise-a-jour" && equipeEditorialeActive()) {
     return runTacheEquipe(job.data.tache, checkedAt);
   }
 
@@ -198,6 +343,8 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
   // Scan : articles tier-1 publiés non rafraîchis depuis > olderThanDays, du
   // plus ancien au plus récent (les plus décayés d'abord). Best-effort.
   const equipe = equipeEditorialeActive();
+  // Le corps (Text) n'est lu que pour la mise à jour : la requête d'avant reste inchangée sinon.
+  const avecCorps = equipe && job.data.tache === "mise-a-jour";
   const stale = await prisma.article
     .findMany({
       where: {
@@ -213,7 +360,14 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
         updatedAt: true,
         isNews: true,
         templateVariant: true,
-        translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
+        translations: {
+          where: { locale: "fr" },
+          select: {
+            slug: true,
+            ...(avecCorps ? { title: true, body: true } : {}),
+          },
+          take: 1,
+        },
       },
     })
     .catch(() => []);
@@ -258,6 +412,12 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     const ids = new Set(choisis);
     retenus = stale.filter((a) => ids.has(a.id));
   }
+  // Mode « mise à jour » : seulement interrupteur allumé ET tâche demandée. Sinon, comme avant.
+  let miseAJour: Record<string, number> | undefined;
+  if (equipe && job.data.tache === "mise-a-jour") {
+    const carte = await chargerCarteRequetes().catch(() => null);
+    if (carte) miseAJour = await miseAJourRetenus(retenus, carte, new Date(now));
+  }
   const candidates = retenus.map((a) => ({
     slug: a.translations[0]?.slug ?? a.id,
     ageDays: Math.round((now - a.updatedAt.getTime()) / (24 * 60 * 60 * 1000)),
@@ -274,12 +434,13 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     `[content-refresh] scanné=${stale.length} candidats=${candidates.length} (>${olderThanDays}j, max ${maxPerRun})`,
   );
 
-  // refreshedCount = 0 : ce worker SIGNALE, il ne mute pas (anti date-gaming).
+  // Sans mode « mise à jour » : ce worker SIGNALE, il ne mute pas (refreshedCount = 0, anti date-gaming).
   return {
     scannedCount: stale.length,
     flaggedCount: candidates.length,
-    refreshedCount: 0,
+    refreshedCount: miseAJour?.["mis-a-jour"] ?? 0,
     checkedAt,
+    ...(miseAJour ? { miseAJour } : {}),
   };
 }
 

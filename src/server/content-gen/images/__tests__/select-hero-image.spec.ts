@@ -22,6 +22,8 @@ const assignHeroImageMock = vi.fn<(...args: unknown[]) => Promise<unknown>>();
 vi.mock("../../providers/unsplash", () => ({
   unsplashProvider: { generate: (req: unknown) => generateMock(req) },
 }));
+// Ces specs couvrent le comportement d'AVANT (CONTENT_IMAGES_QUALITE="false").
+vi.mock("../used-photos", () => ({ loadUsedPhotoKeys: vi.fn(), makePhotoGate: vi.fn() }));
 vi.mock("../assign-hero-image", () => ({
   assignHeroImage: (input: unknown) => assignHeroImageMock(input),
 }));
@@ -63,6 +65,7 @@ const ORIGINAL_KEY = process.env.UNSPLASH_ACCESS_KEY;
 const ORIGINAL_FALLBACK = process.env.HERO_IMAGE_BANK_FALLBACK;
 
 beforeEach(() => {
+  process.env.CONTENT_IMAGES_QUALITE = "false";
   generateMock.mockReset();
   assignHeroImageMock.mockReset();
   // Défaut « Unsplash uniquement » : fallback OFF sauf opt-in explicite par test.
@@ -70,6 +73,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  delete process.env.CONTENT_IMAGES_QUALITE;
   if (ORIGINAL_KEY === undefined) delete process.env.UNSPLASH_ACCESS_KEY;
   else process.env.UNSPLASH_ACCESS_KEY = ORIGINAL_KEY;
   if (ORIGINAL_FALLBACK === undefined) delete process.env.HERO_IMAGE_BANK_FALLBACK;

@@ -7,7 +7,7 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import type { ApporteurReseauStatut } from "../../../prisma/generated/client";
+import type { ApporteurReseauStatut, EmailLogStatus } from "../../../prisma/generated/client";
 
 import { lireContenuPiece } from "./pieces-chiffrement";
 import { STATUTS_CUMUL, cumulVigilanceCents, piecesVigilanceConformes } from "./commissions";
@@ -226,6 +226,7 @@ export async function lireFicheApporteur(id: string) {
     aContratApporteur: !!a?.contratCle,
     aContratSigne: !!a?.contratSigneCle,
     submissionId: a?.submissionId ?? null,
+    creeAt: a?.creeAt ?? null,
     signature: sansTexteArchive(a?.signatureApporteur),
     filleuls: (a?.filleuls ?? []).map((f) => ({ id: f.id, nom: nom(f), statut: f.statut })),
     parrainsPossibles: parrains.map((p) => ({ id: p.id, nom: nom(p) })),
@@ -469,4 +470,89 @@ export async function lireChangementsRegimeTva(
   } catch {
     return [];
   }
+}
+
+/**
+ * Libellé lisible d'un gabarit quand la copie du journal (donc l'objet réel) est absente :
+ * « apporteur-lien-espace » → « Lien espace ». Le préfixe « apporteur- » est retiré, les tirets
+ * deviennent des espaces, la première lettre passe en capitale. Jamais le nom technique brut.
+ */
+export function libelleGabaritApporteur(template: string): string {
+  const sans = template
+    .replace(/^apporteur-/, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
+  if (!sans) return "E-mail";
+  return sans.charAt(0).toUpperCase() + sans.slice(1);
+}
+
+/** Nombre maximal d'e-mails relus dans l'historique de la fiche. */
+export const LIMITE_HISTORIQUE_EMAILS = 50;
+
+export interface EmailDeLApporteur {
+  id: string;
+  template: string;
+  /** Objet réel, relu dans la copie du journal ; null si la copie n'existe pas (ou plus). */
+  objet: string | null;
+  status: EmailLogStatus;
+  /** Date d'envoi si partie, sinon date de création de la ligne. */
+  date: Date;
+  error: string | null;
+}
+
+/**
+ * Historique des e-mails envoyés à un apporteur (lecture seule), lus dans `EmailLog`.
+ *
+ * Deux clés de traçabilité posées par `envoyer()` rattachent un e-mail à l'apporteur :
+ * `ApporteurReseau` / id de l'apporteur, et `PresentationEntreprise` / id d'une de SES
+ * présentations (annonce d'attribution…). Mais certains e-mails posés sur ces clés ne lui
+ * sont PAS adressés (alerte interne à Axion, courrier à l'entreprise présentée) : on ne garde
+ * donc que ceux dont le DESTINATAIRE est son adresse actuelle (`recipient` est en `citext`).
+ * Limite assumée : un e-mail parti vers une ancienne adresse n'apparaît pas. Sans adresse, la
+ * liste est vide plutôt que de montrer des courriers d'autrui. Plus récents d'abord, 50 au plus.
+ */
+export async function lireHistoriqueEmailsApporteur(
+  apporteurId: string,
+  email: string | null,
+): Promise<EmailDeLApporteur[]> {
+  if (!email) return [];
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: { apporteurId },
+    select: { id: true },
+  });
+  const lignes = await prisma.emailLog.findMany({
+    where: {
+      recipient: email,
+      OR: [
+        { entityType: "ApporteurReseau", entityId: apporteurId },
+        ...(presentations.length > 0
+          ? [
+              {
+                entityType: "PresentationEntreprise",
+                entityId: { in: presentations.map((p) => p.id) },
+              },
+            ]
+          : []),
+      ],
+    },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    take: LIMITE_HISTORIQUE_EMAILS,
+    select: {
+      id: true,
+      template: true,
+      status: true,
+      createdAt: true,
+      sentAt: true,
+      error: true,
+      contenu: { select: { subject: true } },
+    },
+  });
+  return lignes.map((l) => ({
+    id: l.id,
+    template: l.template,
+    objet: l.contenu?.subject ?? null,
+    status: l.status,
+    date: l.sentAt ?? l.createdAt,
+    error: l.error,
+  }));
 }

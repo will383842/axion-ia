@@ -12,6 +12,7 @@ import {
   AdminCard,
   AdminEtatBooleen,
 } from "@/components/admin/ui";
+import { PanneauEquipe } from "./PanneauEquipe";
 import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
 import { cancelJob, retryJob } from "@/server/actions/content-gen/jobs";
@@ -64,6 +65,8 @@ interface JobData {
   tokensOutput: number | null;
   costUsd: unknown;
   errorMessage: string | null;
+  /** Sortie persistée : seul `equipe` (journal de l'équipe éditoriale) est lu ici. */
+  outputJsonRaw?: unknown;
   createdAt: Date;
   logs: ReadonlyArray<JobLog>;
   // Liens contextuels SP-04 P1
@@ -286,6 +289,8 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           </pre>
         </AdminCard>
       ) : null}
+
+      <PanneauEquipe outputJsonRaw={job.outputJsonRaw} />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Progression temps réel</h2>

@@ -12,6 +12,7 @@ import {
 } from "@/features/apporteurs-reseau/actions-apporteurs";
 import type { Decision } from "@/features/apporteurs-reseau/verification";
 
+import { useSignalerReussite } from "./BlocDecision";
 import { ApercuEmail, MessageRetour, type EmailApercu } from "./ApercuEmail";
 
 const LIBELLE: Record<Decision, { bouton: string; envoyer: string }> = {
@@ -21,6 +22,7 @@ const LIBELLE: Record<Decision, { bouton: string; envoyer: string }> = {
 };
 
 export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
+  const onReussite = useSignalerReussite();
   const [note, setNote] = useState("");
   const [choix, setChoix] = useState<Decision | null>(null);
   const [email, setEmail] = useState<EmailApercu | null>(null);
@@ -76,7 +78,8 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
         texte,
         nomVerifie,
       });
-      setRetour(r);
+      if (r.ok) onReussite(r.message);
+      else setRetour(r);
       if (r.ok) fermer();
     });
 
