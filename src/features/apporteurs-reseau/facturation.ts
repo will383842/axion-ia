@@ -32,6 +32,8 @@
 
 import { randomUUID } from "node:crypto";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
@@ -73,6 +75,16 @@ import {
   regimesDesPieces,
 } from "./tva-pieces";
 import { signalerErreurReseau } from "./signaler";
+import { changementIbanActif } from "./interrupteur-changement-iban";
+import {
+  demandesQuiGelent,
+  ecrirePreuveDeCompte,
+  lireComptesVirement,
+  MESSAGE_GEL,
+  tablePreuveDisponible,
+  trancherCompte,
+  type SaisieCompte,
+} from "./virement-compte";
 
 export function jobIdEmailAutofacture(numero: string): string {
   return `apporteur-releve-${numero}`;
@@ -876,17 +888,36 @@ function montantDesPdf(
  * `numero` : une seule autofacture ; sans lui, toutes celles de l'apporteur. RATTRAPAGE : sans
  * `numero`, une commission `due` qui n'a jamais été facturée est d'abord facturée (ancien
  * comportement), pour qu'il n'y ait jamais de versement sans pièce.
+ *
+ * LOT 7 (changement de compte) :
+ *  - REFUSÉ tant qu'une demande de changement de compte de cet apporteur est ouverte (gel calculé à
+ *    la lecture, plan §4.2) ; table absente = comportement d'avant ;
+ *  - le compte réellement payé est enregistré (empreinte + 4 derniers caractères, jamais l'IBAN) ;
+ *    les 4 derniers caractères lus sur le RIB ouvert sont contrôlés (obligatoires interrupteur allumé,
+ *    et pendant les 10 jours qui suivent une validation, avec le choix du compte).
  */
+/** Un gel apparu pendant la transaction du versement : elle est annulée, rien n'est écrit. */
+class GelPendantVersement extends Error {}
+
 export async function marquerVerse(
   apporteurId: string,
   maintenant: Date = new Date(),
   numero?: string,
+  compteSaisi: SaisieCompte & { acteurId?: string | undefined } = {},
 ): Promise<{ ok: true; numeros: string[]; totalCents: number } | { ok: false; message: string }> {
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { id: true, prenom: true, nom: true, email: true, regimeTva: true },
+    select: { id: true, prenom: true, nom: true, email: true, regimeTva: true, iban: true },
   });
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
+
+  // Gel (lot 7) : AVANT toute lecture de commission et avant le rattrapage de facturation ci-dessous.
+  if ((await demandesQuiGelent([apporteurId], maintenant)).has(apporteurId)) {
+    return { ok: false, message: MESSAGE_GEL };
+  }
+  const comptes = await lireComptesVirement(apporteurId, apporteur.iban, maintenant);
+  const compte = trancherCompte(comptes, compteSaisi, changementIbanActif());
+  if (!compte.ok) return compte;
 
   if (!numero) {
     const sansPiece = await prisma.commissionApporteur.count({
@@ -1007,35 +1038,72 @@ export async function marquerVerse(
     return { ok: false, message: "Rien à virer : le total de ce virement n'est pas positif." };
   }
   const aVerser = avant;
-
-  await prisma.$transaction(
-    async (tx) => {
-      const lues = await lireAVerser(tx);
-      const memes =
-        lues.length === avant.length &&
-        lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
-      if (!memes)
-        throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
-      const v = await tx.commissionApporteur.updateMany({
-        where: { id: { in: dues.map((c) => c.id) }, statut: "due" },
-        data: { statut: "versee", verseeAt: maintenant },
-      });
-      const r = await tx.commissionApporteur.updateMany({
-        where: {
-          id: { in: aVerser.filter((c) => c.statut === "reprise").map((c) => c.id) },
-          statut: "reprise",
-          verseeAt: null,
-        },
-        data: { verseeAt: maintenant },
-      });
-      if (v.count + r.count !== aVerser.length)
-        throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
-    },
-    { timeout: 15_000 },
-  );
-  const numeros = [
+  const numerosVerses = [
     ...new Set(aVerser.map((c) => c.autofactureNumero).filter((n): n is string => !!n)),
   ];
+  // Preuve du compte payé : sondée AVANT la transaction (une table absente la ferait échouer).
+  const preuve = compte.compte?.empreinte && (await tablePreuveDisponible()) ? compte.compte : null;
+  // Compte lu mais aucune empreinte : `IBAN_EMPREINTE_SECRET` manque. Le virement est gardé, mais la
+  // preuve du compte payé n'est pas écrite : on le signale (Sentry + journal), sans donnée personnelle.
+  if (compte.compte && !compte.compte.empreinte) {
+    console.warn(
+      "[apporteurs] IBAN_EMPREINTE_SECRET absent : virement gardé, preuve du compte payé non écrite",
+    );
+    try {
+      Sentry.captureMessage(
+        "apporteurs : IBAN_EMPREINTE_SECRET absent, preuve du compte non écrite",
+        { level: "warning", tags: { service: "apporteurs", etape: "virement-fait" } },
+      );
+    } catch {
+      // Sentry muet : rien d'autre à faire.
+    }
+  }
+
+  try {
+    await prisma.$transaction(
+      async (tx) => {
+        // Seconde lecture du gel, DANS la transaction du versement : une demande ouverte entre le premier
+        // contrôle et l'écriture est vue ici, et rien n'est écrit.
+        if ((await demandesQuiGelent([apporteurId], new Date(), tx)).has(apporteurId)) {
+          throw new GelPendantVersement();
+        }
+        const lues = await lireAVerser(tx);
+        const memes =
+          lues.length === avant.length &&
+          lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
+        if (!memes)
+          throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
+        const v = await tx.commissionApporteur.updateMany({
+          where: { id: { in: dues.map((c) => c.id) }, statut: "due" },
+          data: { statut: "versee", verseeAt: maintenant },
+        });
+        const r = await tx.commissionApporteur.updateMany({
+          where: {
+            id: { in: aVerser.filter((c) => c.statut === "reprise").map((c) => c.id) },
+            statut: "reprise",
+            verseeAt: null,
+          },
+          data: { verseeAt: maintenant },
+        });
+        if (v.count + r.count !== aVerser.length)
+          throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
+        if (preuve) {
+          await ecrirePreuveDeCompte(tx, {
+            apporteurId,
+            numeros: numerosVerses,
+            verseAt: maintenant,
+            compte: { fin4: preuve.fin4, empreinte: preuve.empreinte! },
+            declarePar: compteSaisi.acteurId ?? "console",
+          });
+        }
+      },
+      { timeout: 15_000 },
+    );
+  } catch (err) {
+    if (err instanceof GelPendantVersement) return { ok: false, message: MESSAGE_GEL };
+    throw err;
+  }
+  const numeros = numerosVerses;
   // E-mail de confirmation à l'apporteur, une seule fois par virement : jamais bloquant.
   try {
     const destinataire = decryptPii(apporteur.email) ?? "";
@@ -1049,6 +1117,7 @@ export async function marquerVerse(
         montant: euros(total),
         numeros,
         dateVirement: dateFr(maintenant),
+        ...(compte.compte ? { compteFin: compte.compte.fin4 } : {}),
       });
     }
   } catch (err) {

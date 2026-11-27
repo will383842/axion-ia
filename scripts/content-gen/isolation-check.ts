@@ -543,6 +543,16 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/seo-pilotage\/opportunites\/analyser\.ts$/,
   /^src\/server\/seo-pilotage\/opportunites\/detecteurs\.ts$/,
   /^src\/server\/seo-pilotage\/opportunites\/garde-fous\.ts$/,
+  // Exceptions 2026-11-27 (pilotage SEO, P4 « robot »). CONSOMMATEURS en lecture seule :
+  // - ingestion/jour.ts, ingestion/taches.ts : client Search Console partagé
+  //   (content-gen/seo/gsc-client) ;
+  // - interrupteur.ts : table `ContentGenConfig` (clé `pilotage_seo`) ;
+  // - leurs deux tests. Fichiers NOMMÉS : tout autre fichier de seo-pilotage/ reste signalé.
+  /^src\/server\/seo-pilotage\/ingestion\/jour\.ts$/,
+  /^src\/server\/seo-pilotage\/ingestion\/taches\.ts$/,
+  /^src\/server\/seo-pilotage\/interrupteur\.ts$/,
+  /^src\/server\/seo-pilotage\/ingestion\/__tests__\/jour\.spec\.ts$/,
+  /^src\/server\/seo-pilotage\/ingestion\/__tests__\/taches\.spec\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
   // secteurs). CONSOMMATEURS LÉGITIMES de la pain-matrix / KB content-gen (lecture
   // seule data) ou refs en commentaires — PAS du code content-gen core :

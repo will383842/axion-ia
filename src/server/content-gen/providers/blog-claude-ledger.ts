@@ -380,6 +380,7 @@ export async function solderReservation(
       const ecart =
         Math.round((auCentimeSuperieur(coutReelUsd) - auCentimeSuperieur(actuel)) * 100) / 100;
       await tx.costLedger.update({
+        select: { id: true },
         where: { id },
         data: {
           costUsd: coutReelUsd,
