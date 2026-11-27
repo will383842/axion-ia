@@ -189,7 +189,7 @@ describe("pilotage SEO P2 — Proxy du stub Prisma (build GH Actions)", () => {
   it("le Proxy générique répond à vide (groupBy, aggregate) sur les accesseurs des sept modèles ; une mutation lève", async () => {
     process.env.DATABASE_URL = "postgresql://stub:stub@stub.invalid:5432/stub";
     vi.resetModules();
-    const { prisma } = (await import("@/lib/prisma")) as {
+    const { prisma } = (await import("@/lib/prisma")) as unknown as {
       prisma: Record<string, Record<string, (a?: unknown) => Promise<unknown>>>;
     };
     const accesseurs = [
