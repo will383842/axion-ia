@@ -16,6 +16,7 @@ export interface EntreeChargeLiens {
   readonly coutUsd: number;
 }
 
+const MAX_MEDIAS = 2;
 const CATEGORIES_ANNUAIRE = new Set(["cci", "technopole", "french-tech", "pole"]);
 
 /** Candidats réels : retombées presse déjà en base, institutions des fiches locales, pages citant déjà le sujet. */
@@ -24,21 +25,7 @@ export async function chargerCandidats(
   villes: readonly string[],
 ): Promise<CandidatLien[]> {
   const out: CandidatLien[] = [];
-  const medias = await prisma.mediaCoverage.findMany({
-    where: { status: "published", deletedAt: null },
-    orderBy: { publishedAt: "desc" },
-    take: 20,
-    select: { id: true, outlet: true, url: true },
-  });
-  for (const m of medias) {
-    out.push({ id: `media-${m.id}`, type: "media-region", cible: m.outlet, url: m.url });
-  }
-  for (const slug of villes) {
-    for (const [i, inst] of (ficheLocale(slug)?.institutions ?? []).entries()) {
-      if (!CATEGORIES_ANNUAIRE.has(inst.categorie)) continue;
-      out.push({ id: `annuaire-${slug}-${i}`, type: "annuaire", cible: inst.nom, url: inst.url });
-    }
-  }
+  // Ordre : pages qui citent déjà le sujet, annuaires de l'article, puis au plus 2 retombées presse.
   const citations = await prisma.contentCitation.findMany({
     where: { articleId, externalReference: { isAlive: true } },
     take: 20,
@@ -54,6 +41,21 @@ export async function chargerCandidats(
       cible: r.publisher ?? r.title,
       url: r.url,
     });
+  }
+  for (const slug of villes) {
+    for (const [i, inst] of (ficheLocale(slug)?.institutions ?? []).entries()) {
+      if (!CATEGORIES_ANNUAIRE.has(inst.categorie)) continue;
+      out.push({ id: `annuaire-${slug}-${i}`, type: "annuaire", cible: inst.nom, url: inst.url });
+    }
+  }
+  const medias = await prisma.mediaCoverage.findMany({
+    where: { status: "published", deletedAt: null },
+    orderBy: { publishedAt: "desc" },
+    take: MAX_MEDIAS,
+    select: { id: true, outlet: true, url: true },
+  });
+  for (const m of medias) {
+    out.push({ id: `media-${m.id}`, type: "media-region", cible: m.outlet, url: m.url });
   }
   return out;
 }
@@ -97,20 +99,33 @@ export async function lireOccasions(jobId: string): Promise<EntreeChargeLiens | 
   return lireEntree(job?.outputJsonRaw);
 }
 
-/** Fusion sans écraser les autres clés du JSON du job. */
+/**
+ * Lecture-modification-écriture SOUS VERROU de ligne (`FOR UPDATE`) : deux décisions
+ * simultanées ne s'écrasent pas. Fusion : les autres clés du JSON du job sont conservées.
+ * `modifier` reçoit l'entrée courante (ou null) et rend la nouvelle ; elle peut lever.
+ */
+export async function modifierOccasions(
+  jobId: string,
+  modifier: (courant: EntreeChargeLiens | null) => EntreeChargeLiens,
+): Promise<void> {
+  await prisma.$transaction(async (tx) => {
+    const lignes = await tx.$queryRaw<Array<{ output_json_raw: unknown }>>`
+      SELECT output_json_raw FROM "content_gen_jobs" WHERE id = ${jobId} FOR UPDATE`;
+    const brut = lignes[0]?.output_json_raw;
+    const base =
+      brut && typeof brut === "object" && !Array.isArray(brut)
+        ? (brut as Record<string, unknown>)
+        : {};
+    const suivant = modifier(lireEntree(base));
+    await tx.contentGenJob.update({
+      where: { id: jobId },
+      data: { outputJsonRaw: JSON.parse(JSON.stringify({ ...base, chargeLiens: suivant })) },
+    });
+  });
+}
+
 export async function ecrireOccasions(jobId: string, entree: EntreeChargeLiens): Promise<void> {
-  const job = await prisma.contentGenJob.findUnique({
-    where: { id: jobId },
-    select: { outputJsonRaw: true },
-  });
-  const base =
-    job?.outputJsonRaw && typeof job.outputJsonRaw === "object" && !Array.isArray(job.outputJsonRaw)
-      ? (job.outputJsonRaw as Record<string, unknown>)
-      : {};
-  await prisma.contentGenJob.update({
-    where: { id: jobId },
-    data: { outputJsonRaw: JSON.parse(JSON.stringify({ ...base, chargeLiens: entree })) },
-  });
+  await modifierOccasions(jobId, () => entree);
 }
 
 export interface ArticleAvecOccasions {
@@ -123,23 +138,26 @@ export interface ArticleAvecOccasions {
 /** Articles récents dont le job porte des occasions (lecture de la console). */
 export async function listerArticlesAvecOccasions(take = 50): Promise<ArticleAvecOccasions[]> {
   const jobs = await prisma.contentGenJob.findMany({
-    where: { outputJsonRaw: { path: ["chargeLiens"], not: undefined as never } },
+    where: { outputJsonRaw: { path: ["chargeLiens", "version"], equals: 1 } },
     orderBy: { updatedAt: "desc" },
     take,
     select: { id: true, outputJsonRaw: true },
   });
+  const arts = await prisma.article.findMany({
+    where: { generatedByJobId: { in: jobs.map((j) => j.id) } },
+    select: {
+      generatedByJobId: true,
+      translations: { where: { locale: "fr" }, select: { title: true }, take: 1 },
+    },
+  });
+  const titres = new Map(arts.map((x) => [x.generatedByJobId, x.translations[0]?.title]));
   const res: ArticleAvecOccasions[] = [];
   for (const j of jobs) {
     const entree = lireEntree(j.outputJsonRaw);
     if (!entree || entree.occasions.length === 0) continue;
-    const art = await prisma.article.findFirst({
-      where: { generatedByJobId: j.id },
-      select: { translations: { where: { locale: "fr" }, select: { title: true }, take: 1 } },
-    });
-    const t = art?.translations[0];
     res.push({
       jobId: j.id,
-      titre: t?.title ?? j.id,
+      titre: titres.get(j.id) ?? j.id,
       url: "",
       occasions: entree.occasions,
     });

@@ -1,3 +1,4 @@
+import { resolve } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import {
   ChargeLiensError,
@@ -177,6 +178,30 @@ describe("charge de liens", () => {
     expect(d.generer).toHaveBeenCalledTimes(1);
   });
 
+  it("message avec URL étrangère ou demande d'échange de liens : écarté", async () => {
+    const mauvais = [
+      "Bonjour https://axion-ia.com/fr/blog/ia-pme et https://autre.fr/x",
+      "Bonjour, un échange de liens ? https://axion-ia.com/fr/blog/ia-pme",
+    ];
+    const d = deps(mauvais.map((_, i) => cand(i)));
+    d.generer.mockResolvedValueOnce({
+      output: JSON.stringify({ messages: mauvais.map((message, i) => ({ id: `c${i}`, message })) }),
+      costUsd: 0.01,
+    });
+    const r = await proposerOccasions(ARTICLE, d);
+    if (r.statut !== "occasions") throw new Error("attendu : occasions");
+    for (const o of r.occasions) expect(o.message).not.toMatch(/autre\.fr|échange/);
+  });
+
+  it("texte sobre : un titre interdit n'entre pas dans le message", async () => {
+    const d = deps([cand(1)]);
+    d.generer.mockRejectedValueOnce(new Error("x"));
+    const r = await proposerOccasions({ ...ARTICLE, titre: "Formation à Grenoble à 990 €" }, d);
+    if (r.statut !== "occasions") throw new Error("attendu : occasions");
+    expect(r.occasions[0]!.message).not.toMatch(/grenoble|€/i);
+    expect(r.occasions[0]!.message).toContain(ARTICLE.articleUrl);
+  });
+
   it("modèle en échec ou JSON illisible : textes sobres, pas de second appel, coût 0", async () => {
     const d = deps([cand(1)]);
     d.generer.mockRejectedValueOnce(new Error("réseau"));
@@ -187,10 +212,17 @@ describe("charge de liens", () => {
     expect(d.generer).toHaveBeenCalledTimes(1);
   });
 
-  it("aucun envoi : le module n'importe aucun envoi d'e-mail", async () => {
+  it("aucun envoi : ni le module, ni les données, ni l'action n'importent d'envoi d'e-mail", async () => {
     const { readFileSync } = await import("node:fs");
-    const src = readFileSync("src/server/content-gen/equipe/charge-de-liens.ts", "utf8");
-    expect(src).not.toMatch(/from\s+["'][^"']*(mailer|nodemailer|queue|emails?)[^"']*["']/i);
+    const motif =
+      /from\s+["'][^"']*(mailer|nodemailer|\/queue|verdict-envoi|zeptomail|server\/email\/)[^"']*["']/i;
+    for (const f of [
+      "src/server/content-gen/equipe/charge-de-liens.ts",
+      "src/server/content-gen/equipe/charge-de-liens-donnees.ts",
+      "src/server/actions/content-gen/charge-liens.ts",
+    ]) {
+      expect(readFileSync(resolve(process.cwd(), f), "utf8")).not.toMatch(motif);
+    }
   });
 
   it("états : proposée → validée ou écartée, une seule fois", () => {

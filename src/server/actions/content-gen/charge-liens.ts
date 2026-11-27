@@ -15,8 +15,7 @@ import {
   roleAutoriseChargeLiens,
 } from "@/server/content-gen/equipe/charge-de-liens";
 import {
-  ecrireOccasions,
-  lireOccasions,
+  modifierOccasions,
   listerArticlesAvecOccasions,
   type ArticleAvecOccasions,
 } from "@/server/content-gen/equipe/charge-de-liens-donnees";
@@ -44,27 +43,28 @@ async function decider(brut: unknown, etat: "validee" | "ecartee"): Promise<Resu
   if (!equipeEditorialeActive()) return { ok: false, message: "Fonction désactivée." };
   const p = entree.safeParse(brut);
   if (!p.success) return { ok: false, message: "Entrée invalide." };
-  const courant = await lireOccasions(p.data.jobId);
-  if (!courant) return { ok: false, message: "Aucune occasion pour cet article." };
+  let message = "";
   try {
-    const occasions = changerEtatOccasion(
-      courant.occasions,
-      p.data.occasionId,
-      etat,
-      s.userId,
-      new Date(),
-    );
-    await ecrireOccasions(p.data.jobId, { ...courant, occasions });
+    await modifierOccasions(p.data.jobId, (courant) => {
+      if (!courant) throw new ChargeLiensError("Aucune occasion pour cet article.");
+      message = courant.occasions.find((o) => o.id === p.data.occasionId)?.message ?? "";
+      return {
+        ...courant,
+        occasions: changerEtatOccasion(
+          courant.occasions,
+          p.data.occasionId,
+          etat,
+          s.userId,
+          new Date(),
+        ),
+      };
+    });
   } catch (e) {
     if (e instanceof ChargeLiensError) return { ok: false, message: e.message };
     throw e;
   }
-  const message = occasionsMessage(courant.occasions, p.data.occasionId);
   return { ok: true, message: etat === "validee" ? message : "Occasion écartée." };
 }
-
-const occasionsMessage = (occ: ReadonlyArray<{ id: string; message: string }>, id: string) =>
-  occ.find((o) => o.id === id)?.message ?? "";
 
 /** Marque l'occasion validée et rend le message à copier. N'envoie rien. */
 export async function validerOccasionLien(brut: unknown): Promise<ResultatDecision> {

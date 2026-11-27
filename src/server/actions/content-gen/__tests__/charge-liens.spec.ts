@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => ({
   auth: vi.fn<() => Promise<unknown>>(),
-  lire: vi.fn(),
+  etat: { courant: null as unknown },
   ecrire: vi.fn(async (..._a: unknown[]) => undefined),
   lister: vi.fn(async () => [] as unknown[]),
 }));
@@ -11,8 +11,10 @@ vi.mock("@/auth", () => ({ auth: () => m.auth() }));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 vi.mock("@/server/content-gen/equipe/charge-de-liens-donnees", () => ({
-  lireOccasions: (id: string) => m.lire(id),
-  ecrireOccasions: (...a: unknown[]) => m.ecrire(...a),
+  modifierOccasions: async (id: string, f: (c: unknown) => unknown) => {
+    const suivant = f(m.etat.courant);
+    await m.ecrire(id, suivant);
+  },
   listerArticlesAvecOccasions: () => m.lister(),
 }));
 
@@ -41,7 +43,7 @@ describe("actions chargé de liens", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.stubEnv("CONTENT_EQUIPE_EDITORIALE", "true");
-    m.lire.mockResolvedValue(OCC);
+    m.etat.courant = OCC;
   });
 
   it.each(["reader", "editor"])("rôle %s refusé, rien n'est écrit", async (role) => {
@@ -79,10 +81,7 @@ describe("actions chargé de liens", () => {
   it("admin : écarter, puis seconde décision refusée", async () => {
     session("admin");
     expect((await ecarterOccasionLien({ jobId: "j", occasionId: "c1" })).ok).toBe(true);
-    m.lire.mockResolvedValue({
-      ...OCC,
-      occasions: [{ ...OCC.occasions[0]!, etat: "ecartee" }],
-    });
+    m.etat.courant = { ...OCC, occasions: [{ ...OCC.occasions[0]!, etat: "ecartee" }] };
     expect((await validerOccasionLien({ jobId: "j", occasionId: "c1" })).ok).toBe(false);
   });
 

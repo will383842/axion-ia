@@ -1,6 +1,7 @@
 // use-client: état local des occasions + presse-papiers pour copier le message validé.
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import {
   ecarterOccasionLien,
@@ -13,6 +14,7 @@ const ETATS = { proposee: "Proposée", validee: "Validée", ecartee: "Écartée"
 export function ChargeLiens({ articles }: { articles: ArticleAvecOccasions[] }) {
   const [liste, setListe] = useState(articles);
   const [info, setInfo] = useState<string | null>(null);
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
 
   function decider(jobId: string, occasionId: string, valider: boolean) {
@@ -24,6 +26,7 @@ export function ChargeLiens({ articles }: { articles: ArticleAvecOccasions[] }) 
       });
       if (!res.ok) {
         setInfo(res.message);
+        router.refresh();
         return;
       }
       if (valider) {

@@ -104,6 +104,7 @@ function sujetCorrespond(c: CandidatLien, motsCles: readonly string[]): boolean 
 }
 
 const TUTOIEMENT = /\b(?:tu|toi|ton|ta|tes)\b/i;
+const MOTIF_ECHANGE = /échange|echange|backlink|achat|acheter|sponsoris/i;
 const MOTIF_INTERDIT = /€|\beuros?\b|\bprix\b|\btarifs?\b|grenoble|garanti|promet|\d+\s?%/i;
 
 /** Un message est utilisable s'il vouvoie, cite l'article, et n'annonce ni prix ni résultat ni ville interdite. */
@@ -114,13 +115,21 @@ export function messageValide(message: string, articleUrl: string): boolean {
     m.length <= LONGUEUR_MESSAGE_MAX &&
     m.includes(articleUrl) &&
     !MOTIF_INTERDIT.test(m) &&
+    !MOTIF_ECHANGE.test(m) &&
+    (m.match(/https?:\/\/\S+/gi) ?? []).every((u) => u.replace(/[.,;:)»]+$/, "") === articleUrl) &&
     !TUTOIEMENT.test(m) &&
     !detecterTutoiement(m).tutoie
   );
 }
 
+function propre(t: string, max: number): string {
+  return t.replace(/\s+/g, " ").trim().slice(0, max);
+}
+
 function messageSobre(c: CandidatLien, a: ArticleLiens): string {
-  return `Bonjour, nous avons publié l'article « ${a.titre.slice(0, 160)} », qui peut intéresser ${c.cible}. Vous pouvez le consulter ici : ${a.articleUrl}. Si vous le jugez utile, vous êtes libre d'y faire référence. Cordialement.`;
+  const avecTitre = `Bonjour, nous avons publié l'article « ${propre(a.titre, 160)} », qui peut intéresser ${propre(c.cible, 80)}. Vous pouvez le consulter ici : ${a.articleUrl}. Si vous le jugez utile, vous êtes libre d'y faire référence. Cordialement.`;
+  if (messageValide(avecTitre, a.articleUrl)) return avecTitre;
+  return `Bonjour, nous avons publié un article qui peut vous intéresser. Vous pouvez le consulter ici : ${a.articleUrl}. Cordialement.`;
 }
 
 const SYSTEME = `Tu rédiges de courts messages de prise de contact en français, au vouvoiement, au ton sobre, pour signaler un article publié à une organisation.
@@ -188,7 +197,7 @@ export async function proposerOccasions(
         role: "text",
         systemPrompt: SYSTEME,
         userPrompt: `Article : « ${article.titre.slice(0, 200)} »\nLien de l'article : ${article.articleUrl}\nDestinataires : ${JSON.stringify(
-          retenus.map((c) => ({ id: c.id, type: c.type, nom: c.cible.slice(0, 120) })),
+          retenus.map((c) => ({ id: c.id, type: c.type, nom: propre(c.cible, 80) })),
         )}`,
         maxTokens: 1500,
       },

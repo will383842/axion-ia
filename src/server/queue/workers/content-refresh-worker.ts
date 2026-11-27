@@ -181,7 +181,7 @@ async function runTacheEquipe(
   if (carte && carte.cannibalisations.length > 0) {
     console.log(`[content-refresh] cannibalisation : ${carte.cannibalisations.length} requête(s)`);
   }
-  const occasions = await chargerOccasionsLiens(articles, maintenant);
+  const occasions = await chargerOccasionsLiens(articles, maintenant).catch(() => 0);
   return {
     ...base,
     flaggedCount: casses,
@@ -208,6 +208,9 @@ async function chargerOccasionsLiens(
     if (!jobId || !url || !t) continue;
     try {
       if (await lireOccasions(jobId)) continue;
+      // Marqueur posé AVANT l'appel payant : au plus un appel par article, même en cas d'échec ou de passages parallèles.
+      const pose = await redis.set(`charge-liens:fait:${jobId}`, "1", "EX", 90 * 24 * 3600, "NX");
+      if (pose !== "OK") continue;
       traites++;
       const r = await proposerOccasions(
         { jobId, articleUrl: url, titre: t.title, motsCles: [] },
