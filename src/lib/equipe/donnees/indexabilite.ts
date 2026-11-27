@@ -27,6 +27,8 @@ export interface MembreIndexable {
   readonly questionnaireVersion: string | null;
   readonly photoKind: string;
   readonly photoConsentAt: Date | null;
+  /** Variante publique de la photo : sans elle, pas de « vraie photo » à montrer. */
+  readonly photoUrl256: string | null;
   readonly bioMd: string | null;
   readonly skills: readonly string[];
   readonly languages: readonly string[];
@@ -106,7 +108,10 @@ export function evaluerIndexabilite(membre: MembreIndexable): ResultatIndexabili
     elements.push("langues");
   }
 
-  const vraiePhoto = membre.photoKind === "reelle" && membre.photoConsentAt !== null;
+  const vraiePhoto =
+    membre.photoKind === "reelle" &&
+    membre.photoConsentAt !== null &&
+    (membre.photoUrl256 ?? "").trim() !== "";
   const manque: string[] = [];
   if (!vraiePhoto) manque.push("une vraie photo avec l'accord de la personne");
   if (elements.length < SEUIL_ELEMENTS_PROPRES) {

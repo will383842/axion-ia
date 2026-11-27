@@ -41,7 +41,7 @@ export const TEAM_CONSENT_VERSIONS = {
       version: "team-linkedin-v1",
       formRef: "team-profile-linkedin",
       texte:
-        "J'accepte que le lien vers mon profil LinkedIn soit affiché sur ma page publique. Je peux retirer cet accord à tout moment.",
+        "J'accepte que le lien vers mon profil LinkedIn soit affiché sur ma page publique ; ce lien peut faire apparaître mon nom complet. Je peux retirer cet accord à tout moment.",
     },
   },
 } as const satisfies Record<TeamConsentKind, Record<string, TeamConsentVersion>>;

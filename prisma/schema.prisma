@@ -19019,8 +19019,9 @@ model TeamMember {
 
   // Contact privé (jamais affiché) : lien de questionnaire et retrait.
   contactEmailEnc   String? @map("contact_email_enc") @db.Text
+  /// À calculer avec `hashEmailForLookup` (HMAC, src/lib/security/email-hash.ts), sinon la demande par e-mail ne retrouve pas la fiche.
   contactEmailHash  String? @map("contact_email_hash") @db.VarChar(64)
-  /// Jeton de retrait en un clic (empreinte SHA-256 seulement).
+  /// Jeton de retrait en un clic (empreinte SHA-256 seulement ; jeton d'au moins 128 bits, régénéré après usage).
   withdrawTokenHash String? @unique @map("withdraw_token_hash") @db.VarChar(64)
 
   // Cycle de vie
@@ -19059,6 +19060,7 @@ model TeamQuestionnaireInvite {
   category             String      @db.VarChar(40)
   questionnaireVersion String      @map("questionnaire_version") @db.VarChar(40)
   tokenHash            String      @unique @map("token_hash") @db.VarChar(64)
+  /// À calculer avec `hashEmailForLookup` ; l'effacement retrouve aussi les invitations sans fiche par cette empreinte.
   emailHash            String?     @map("email_hash") @db.VarChar(64)
   expiresAt            DateTime    @map("expires_at") @db.Timestamptz(3)
   firstOpenedAt        DateTime?   @map("first_opened_at") @db.Timestamptz(3)
@@ -19091,6 +19093,7 @@ model TeamQuestionnaireSubmission {
   /// recue | appliquee | refusee
   status               String                  @default("recue") @db.VarChar(20)
   reviewNote           String?                 @map("review_note") @db.Text
+  /// À calculer avec src/lib/security/ip-hash.ts (jamais un SHA-256 nu d'une adresse IP).
   ipHash               String?                 @map("ip_hash") @db.VarChar(64)
   userAgent            String?                 @map("user_agent") @db.VarChar(300)
   submittedAt          DateTime                @default(now()) @map("submitted_at") @db.Timestamptz(3)

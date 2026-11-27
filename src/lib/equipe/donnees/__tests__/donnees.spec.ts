@@ -78,6 +78,7 @@ describe("questionnaires v1", () => {
     };
     expect(s.safeParse({ commun, categorie, consentements }).success).toBe(true);
     expect(schemaReponse("apporteur", "v99")).toBeNull();
+    expect(schemaReponse("apporteur", "constructor")).toBeNull();
   });
   it("schéma : refuse HTML, champ inconnu, présentation courte, accord de publication absent", () => {
     const s = schemaReponse("autres", "v1")!;
@@ -96,11 +97,45 @@ describe("questionnaires v1", () => {
   it("schéma : LinkedIn limité à linkedin.com en https", () => {
     const s = schemaReponse("autres", "v1")!;
     const avec = (linkedin: string) =>
-      s.safeParse({ commun: { ...commun, linkedin }, categorie: {}, consentements }).success;
+      s.safeParse({
+        commun: { ...commun, linkedin },
+        categorie: {},
+        consentements: { ...consentements, linkedin: true },
+      }).success;
     expect(avec("https://www.linkedin.com/in/julie")).toBe(true);
     expect(avec("http://www.linkedin.com/in/julie")).toBe(false);
     expect(avec("https://linkedin.com.evil.fr/in/julie")).toBe(false);
     expect(avec("https://evil.fr/linkedin.com")).toBe(false);
     expect(avec("javascript:alert(1)")).toBe(false);
+  });
+});
+
+describe("schémas : durcissement (audit)", () => {
+  const s = () => schemaReponse("autres", "v1")!;
+  const essai = (c: Record<string, unknown>, cons = consentements) =>
+    s().safeParse({ commun: { ...commun, ...c }, categorie: {}, consentements: cons }).success;
+  it("prénom : un seul mot", () => {
+    expect(essai({ prenom: "Jean-Pierre" })).toBe(true);
+    expect(essai({ prenom: "Julie Dupont" })).toBe(false);
+  });
+  it("lieu : une adresse est refusée", () => {
+    expect(essai({ lieu: "Annecy" })).toBe(true);
+    expect(essai({ lieu: "12 rue des Lilas 74000 Annecy" })).toBe(false);
+  });
+  it("LinkedIn : accord requis, chemin strict, adresse normalisée", () => {
+    const l = "https://www.linkedin.com/in/julie";
+    expect(essai({ linkedin: l }, { ...consentements, linkedin: false })).toBe(false);
+    expect(essai({ linkedin: l }, { ...consentements, linkedin: true })).toBe(true);
+    for (const mauvais of [
+      "https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fevil.fr",
+      "https://www.linkedin.com:8443/in/julie",
+      "https://www.linkedin.com/in/julie?x=1",
+      "https://www.linkedin.com/feed/",
+    ]) {
+      expect(essai({ linkedin: mauvais }, { ...consentements, linkedin: true })).toBe(false);
+    }
+  });
+  it("caractères de direction du texte refusés", () => {
+    expect(essai({ apport: "ok‮evil" })).toBe(false);
   });
 });

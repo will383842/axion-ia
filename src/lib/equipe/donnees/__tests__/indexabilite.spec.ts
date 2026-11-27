@@ -9,6 +9,7 @@ function membre(surcharge: Partial<MembreIndexable> = {}): MembreIndexable {
     questionnaireVersion: "v1",
     photoKind: "reelle",
     photoConsentAt: new Date("2026-11-01T10:00:00Z"),
+    photoUrl256: "/equipe/photo-256.webp",
     bioMd: null,
     skills: [],
     languages: [],
@@ -50,6 +51,18 @@ describe("evaluerIndexabilite", () => {
     );
     expect(r.indexable).toBe(false);
     expect(r.manque.join(" ")).toMatch(/photo/i);
+  });
+
+  it("une photo réelle consentie mais sans variante publique n'indexe pas", () => {
+    const r = evaluerIndexabilite(
+      membre({
+        photoUrl256: null,
+        bioMd: LONG,
+        skills: ["a", "b", "c"],
+        websiteUrl: "https://exemple.fr",
+      }),
+    );
+    expect(r.indexable).toBe(false);
   });
 
   it("un avatar, même avec consentement photo, n'indexe pas", () => {

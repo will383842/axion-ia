@@ -54,17 +54,17 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   {
     modele: "TeamMember",
     motif:
-      "fiche collaborateur publiée sur le site (prénom, présentation, réponses au questionnaire) : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
   },
   {
     modele: "TeamQuestionnaireInvite",
     motif:
-      "fiche collaborateur publiée sur le site (prénom, présentation, réponses au questionnaire) : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
   },
   {
     modele: "TeamQuestionnaireSubmission",
     motif:
-      "fiche collaborateur publiée sur le site (prénom, présentation, réponses au questionnaire) : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
   },
   {
     modele: "ApporteurChangementIban",

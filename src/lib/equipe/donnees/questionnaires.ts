@@ -280,14 +280,16 @@ export const QUESTIONNAIRES: Record<TeamCategory, Record<string, Questionnaire>>
 
 /** Le questionnaire d'une catégorie et d'une version, ou `null` si la version est inconnue. */
 export function getQuestionnaire(categorie: TeamCategory, version: string): Questionnaire | null {
-  return QUESTIONNAIRES[categorie]?.[version] ?? null;
+  const versions = QUESTIONNAIRES[categorie];
+  return Object.hasOwn(versions, version) ? versions[version]! : null;
 }
 
 // ─── Schémas Zod ────────────────────────────────────────────────────────────────
 
 /** Texte brut : pas de balise HTML, pas de caractère de contrôle (sauf retour à la ligne). */
 const SANS_HTML = /^[^<>]*$/;
-const SANS_CONTROLE = /^[^\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]*$/;
+const SANS_CONTROLE =
+  /^[^\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200E\u200F\u202A-\u202E\u2066-\u2069]*$/;
 
 function texte(min: number, max: number) {
   return z
@@ -299,29 +301,46 @@ function texte(min: number, max: number) {
     .regex(SANS_CONTROLE, "Caractère non autorisé");
 }
 
-function urlHttps(domaine?: string) {
+/** Profil LinkedIn : https, hôte linkedin.com (ou `xx.linkedin.com`), sans port, chemin /in/… ou /company/…, ni requête ni fragment. */
+function urlLinkedin() {
   return z
     .string()
     .trim()
     .max(512)
-    .refine((v) => {
+    .transform((v, ctx) => {
       try {
         const u = new URL(v);
-        if (u.protocol !== "https:" || u.username !== "" || u.password !== "") return false;
-        if (domaine === undefined) return true;
-        return u.hostname === domaine || u.hostname.endsWith(`.${domaine}`);
+        const hoteOk = /^((www|[a-z]{2})\.)?linkedin\.com$/.test(u.hostname);
+        const ok =
+          u.protocol === "https:" &&
+          hoteOk &&
+          u.username === "" &&
+          u.password === "" &&
+          u.port === "" &&
+          u.search === "" &&
+          u.hash === "" &&
+          /^\/(in|company)\/[A-Za-z0-9_%-]+\/?$/.test(u.pathname);
+        if (ok) return u.href;
       } catch {
-        return false;
+        /* adresse illisible : refusée ci-dessous */
       }
-    }, "Adresse https valide requise");
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Adresse LinkedIn https valide requise",
+      });
+      return z.NEVER;
+    });
 }
 
-const PRENOM = /^[\p{L}][\p{L}' -]*$/u;
+/** Un seul mot (trait d'union et apostrophe permis) : le nom de famille ne passe pas. */
+const PRENOM = /^[\p{L}][\p{L}'-]*$/u;
+/** Lieu : ni adresse ni numéro de rue (les chiffres sont refusés ; le département se choisit en liste côté console). */
+const SANS_CHIFFRE = /^[^0-9]*$/;
 
 export const schemaCommunV1 = z
   .object({
-    prenom: texte(1, 80).regex(PRENOM, "Prénom seul, sans chiffre"),
-    lieu: texte(1, 120),
+    prenom: texte(1, 80).regex(PRENOM, "Prénom seul : un mot, sans chiffre"),
+    lieu: texte(1, 120).regex(SANS_CHIFFRE, "Ville ou département, jamais d'adresse"),
     intitule: texte(1, 120),
     presentation: texte(
       QUESTIONS_COMMUNES_V1.presentationMin,
@@ -329,7 +348,7 @@ export const schemaCommunV1 = z
     ),
     apport: texte(1, 800),
     langues: z.array(texte(1, 40)).max(8).default([]),
-    linkedin: urlHttps("linkedin.com").optional(),
+    linkedin: urlLinkedin().optional(),
     souhaitCarte: z.boolean().default(false),
   })
   .strict();
@@ -363,5 +382,14 @@ export function schemaReponse(categorie: TeamCategory, version: string) {
       categorie: schemaCategorie(questionnaire.questions),
       consentements: schemaConsentementsV1,
     })
-    .strict();
+    .strict()
+    .superRefine((v, ctx) => {
+      if (v.commun.linkedin !== undefined && !v.consentements.linkedin) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["commun", "linkedin"],
+          message: "Le lien LinkedIn n'est conservé qu'avec l'accord LinkedIn",
+        });
+      }
+    });
 }
