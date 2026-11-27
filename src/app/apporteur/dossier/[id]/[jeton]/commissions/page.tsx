@@ -75,7 +75,11 @@ export default async function GrilleDesCommissionsPage({ params }: PageProps) {
 
       <div className="mt-6 grid gap-8">
         {grille.map((t) => (
-          <section key={t.cle} aria-labelledby={`grille-${t.cle.replace(/\s/g, "-")}`}>
+          <section
+            key={t.cle}
+            className="min-w-0"
+            aria-labelledby={`grille-${t.cle.replace(/\s/g, "-")}`}
+          >
             <h2
               id={`grille-${t.cle.replace(/\s/g, "-")}`}
               className="font-serif text-[22px] font-medium"
