@@ -24,4 +24,18 @@ Suite de `docs/perf/ANALYSE-SOCLE-LOCALE.md` (branche `perf/socle-locale-analyse
 
 ## Mesure APRÈS
 
-En cours.
+Build `next build --webpack --experimental-build-mode compile` (12 Go, stubs) : **passé, pas d'OOM**. Même méthode que l'analyse §1 (fichiers du `page_client-reference-manifest.js` + `rootMainFiles`, gzip niveau 9 un à un), script hors dépôt.
+
+| Route                 | Fichiers      | Sans polyfills                | Avec polyfills                |
+| --------------------- | ------------- | ----------------------------- | ----------------------------- |
+| `[locale]/a-propos`   | 27 (avant 28) | **237,0 KB gz** (avant 267,7) | **275,6 KB gz** (avant 306,4) |
+| `[locale]/journee-ia` | 27            | 238,1 KB gz                   | 276,7 KB gz                   |
+| `[locale]`            | 25            | 232,5 KB gz                   | 271,1 KB gz                   |
+
+Gain sur `a-propos` : **≈ 30,8 KB gz** (attendu ≈ 28). Réserve : le « avant » vient de `origin/main` 1abd8256d, le « après » de la tête de `main` fusionnée le 2026-11-27 ; une partie de l'écart peut venir d'autres commits. Octets mesurés sur une seule passe ; LCP/INP/TBT non mesurés (médiane Lighthouse requise).
+
+## Verdict du relecteur (sous-agent Opus)
+
+RAS bloquant : comportement identique (`emptyStringAsUndefined` ≡ `|| undefined`), accès `process.env` littéraux donc inlinés, consentement et gardes de routes intacts, aucun autre composant client du layout n'importe `@/env`. Remarques non bloquantes : la validation `z.string().url()` de `NEXT_PUBLIC_PLAUSIBLE_API_URL` ne s'applique plus côté navigateur (reste serveur) ; les observateurs `onINP` s'accumulent à chaque navigation, défaut préexistant non aggravé, à traiter à part.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
