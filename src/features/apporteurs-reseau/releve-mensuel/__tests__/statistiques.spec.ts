@@ -7,12 +7,15 @@ vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 
 import {
   anomaliesDePeriode,
+  conditionsCommissionQ4b,
+  totauxTvaDeContenu,
   construireSerie,
   hauteursEnPourcent,
   periodesDouzeMois,
   type ReleveEcran,
   type TotauxPeriode,
 } from "../statistiques";
+import { bornesPeriode } from "../periode";
 
 function releve(over: Partial<ReleveEcran> = {}): ReleveEcran {
   return {
@@ -110,15 +113,6 @@ describe("anomaliesDePeriode", () => {
     expect(c).toHaveLength(1);
     expect(c[0]!.detail).toContain("Signé manquant");
   });
-  it("un signé APRÈS la coupure n'est pas une cible : aucune anomalie", () => {
-    // `cibles` ne le contient pas (la lecture l'exclut) : rien à reprocher.
-    expect(
-      anomaliesDePeriode({
-        cibles: [cible("a1")],
-        releves: [releve()],
-      }),
-    ).toEqual([]);
-  });
   it("un relevé de rang > 0 (rectificatif) ne tient pas lieu de relevé d'origine", () => {
     const a = anomaliesDePeriode({
       cibles: [cible("a1")],
@@ -153,31 +147,183 @@ describe("anomaliesDePeriode", () => {
   });
 });
 
+type W = Record<string, unknown>;
+/** Mini-évaluateur du sous-ensemble de `where` Prisma utilisé par la règle Q4 b. */
+function evalWhere(w: W, row: W): boolean {
+  return Object.entries(w).every(([k, v]) => {
+    if (k === "OR") return (v as W[]).some((x) => evalWhere(x, row));
+    const val = row[k] ?? null;
+    if (v === null) return val === null;
+    if (typeof v !== "object" || v instanceof Date) return val === v;
+    const o = v as { not?: unknown; lt?: Date; gte?: Date };
+    if ("not" in o) return val !== o.not && !(o.not === null && val === null);
+    if (o.lt || o.gte) {
+      if (val === null) return false;
+      const d = val as Date;
+      return (!o.lt || d < o.lt) && (!o.gte || d >= o.gte);
+    }
+    return val === v;
+  });
+}
+
 describe("lireCiblesPeriode (définition des cibles)", () => {
-  it("signés contresignés AVANT la coupure, plus les non-signés avec argent en jeu (Q4 b)", async () => {
-    const appels: Array<{ where: Record<string, unknown> }> = [];
+  const { debut, coupure } = bornesPeriode("2026-10");
+  const av = new Date("2026-09-20T10:00:00Z");
+  const ap = new Date("2026-11-02T10:00:00Z");
+  const dedans = new Date("2026-10-10T10:00:00Z");
+  const com = (o: W): W => ({ statut: "payee", autofactureNumero: "AXI-APP-1", ...o });
+  const cible = (o: W) =>
+    evalWhere(conditionsCommissionQ4b(debut, coupure) as unknown as W, com(o));
+
+  async function lire(signes: W[], resilies: W[], avoirs: W[] = []) {
+    const appels: Array<{ where: W }> = [];
     const prisma = (await import("@/lib/prisma")).prisma as unknown as Record<string, unknown>;
+    prisma.pieceAutofactureApporteur = { findMany: async () => avoirs };
     prisma.apporteurReseau = {
-      findMany: async (arg: { where: Record<string, unknown> }) => {
+      findMany: async (arg: { where: W }) => {
         appels.push(arg);
-        return arg.where.statut === "signe"
-          ? [{ id: "s1", prenom: "A", nom: "B", denomination: null }]
-          : [{ id: "r1", prenom: "C", nom: "D", denomination: "Société fictive" }];
+        return arg.where.statut === "signe" ? signes : resilies;
       },
     };
     const { lireCiblesPeriode } = await import("../statistiques");
-    const cibles = await lireCiblesPeriode("2026-10", true);
+    return { appels, cibles: await lireCiblesPeriode("2026-10", true) };
+  }
+  const ligne = (id: string, denomination: string | null = null) => ({
+    id,
+    prenom: "A",
+    nom: "B",
+    denomination,
+  });
+
+  it("signés + Q4 b, identité masquée sans nom réel", async () => {
+    const { cibles } = await lire([ligne("s1")], [ligne("r1", "Société fictive")]);
     expect(cibles.map((c) => c.apporteurId).sort()).toEqual(["r1", "s1"]);
+    const masque = await (await import("../statistiques")).lireCiblesPeriode("2026-10", false);
+    expect(masque.every((c) => c.nom === "Apporteur (identité masquée)")).toBe(true);
+  });
+
+  it("la borne de signature est la coupure (valeur, pas seulement `lt`)", async () => {
+    const { appels } = await lire([], []);
     const signes = appels.find((a) => a.where.statut === "signe")!;
-    expect(JSON.stringify(signes.where)).toContain('"signeParSocieteAt":{"lt"');
-    const q4b = appels.find((a) => a.where.statut !== "signe")!;
-    expect(JSON.stringify(q4b.where)).toContain("autofactureEmiseAt");
-    expect(JSON.stringify(q4b.where)).toContain("autofactureAttenteDepuis");
-    // identité masquée : aucun nom réel
+    expect((signes.where.OR as W[])[1]).toEqual({ signeParSocieteAt: { lt: coupure } });
+  });
+
+  it("un signé APRÈS la coupure n'est pas une cible : la lecture le filtre par la coupure", async () => {
+    // Le fournisseur applique le `where` réel de lireCiblesPeriode à deux signés.
+    const base = [
+      { ...ligne("avant"), statut: "signe", signeParSocieteAt: new Date(coupure.getTime() - 1) },
+      { ...ligne("pile"), statut: "signe", signeParSocieteAt: coupure },
+      { ...ligne("apres"), statut: "signe", signeParSocieteAt: ap },
+      { ...ligne("sansDate"), statut: "signe", signeParSocieteAt: null },
+    ];
+    const prisma = (await import("@/lib/prisma")).prisma as unknown as Record<string, unknown>;
+    prisma.pieceAutofactureApporteur = { findMany: async () => [] };
+    prisma.apporteurReseau = {
+      findMany: async (arg: { where: W }) =>
+        arg.where.statut === "signe" ? base.filter((r) => evalWhere(arg.where, r)) : [],
+    };
+    const { lireCiblesPeriode } = await import("../statistiques");
+    const ids = (await lireCiblesPeriode("2026-10", true)).map((c) => c.apporteurId).sort();
+    expect(ids).toEqual(["avant", "sansDate"]);
+  });
+
+  it("Q4 b : autofacture émise avant la coupure et non versée = cible", () => {
+    expect(cible({ autofactureEmiseAt: av, verseeAt: null })).toBe(true);
+  });
+  it("Q4 b : résilié payé DANS le mois (autofacture de septembre versée en octobre) = cible", () => {
+    expect(cible({ autofactureEmiseAt: av, verseeAt: dedans })).toBe(true);
+  });
+  it("Q4 b : versée après la coupure mais émise avant = cible (argent en jeu à la coupure)", () => {
+    expect(cible({ autofactureEmiseAt: av, verseeAt: ap })).toBe(true);
+  });
+  it("Q4 b : autofacture émise APRÈS la coupure, non versée = PAS cible (faux positif)", () => {
+    expect(cible({ autofactureEmiseAt: ap, verseeAt: null })).toBe(false);
+  });
+  it("Q4 b : tout réglé avant le mois = pas cible", () => {
+    expect(cible({ autofactureEmiseAt: av, verseeAt: new Date("2026-09-25T10:00:00Z") })).toBe(
+      false,
+    );
+  });
+  it("Q4 b : attente posée avant la coupure sans autofacture émise avant = cible", () => {
+    const o = { autofactureNumero: null, autofactureAttenteDepuis: av };
+    expect(cible({ ...o, autofactureEmiseAt: null })).toBe(true);
+    expect(cible({ ...o, autofactureEmiseAt: ap })).toBe(true);
+  });
+  it("Q4 b : attente posée APRÈS la coupure = pas cible", () => {
+    expect(
+      cible({ autofactureNumero: null, autofactureAttenteDepuis: ap, autofactureEmiseAt: null }),
+    ).toBe(false);
+  });
+  it("Q4 b : la borne exacte est la coupure (émise pile à la coupure = après)", () => {
+    expect(cible({ autofactureEmiseAt: coupure, verseeAt: null })).toBe(false);
+    expect(cible({ autofactureEmiseAt: new Date(coupure.getTime() - 1), verseeAt: null })).toBe(
+      true,
+    );
+    expect(cible({ autofactureEmiseAt: av, verseeAt: coupure })).toBe(true);
+    expect(cible({ autofactureEmiseAt: av, verseeAt: new Date(coupure.getTime() - 1) })).toBe(true);
+    expect(cible({ autofactureEmiseAt: av, verseeAt: debut })).toBe(true);
+    expect(cible({ autofactureEmiseAt: av, verseeAt: new Date(debut.getTime() - 1) })).toBe(false);
+  });
+  it("Q4 b : une commission annulée ne rend jamais cible", () => {
+    expect(cible({ statut: "annulee", autofactureEmiseAt: av, verseeAt: null })).toBe(false);
+  });
+  it("Q4 b : un avoir du mois rend cible (apporteur lu sur la pièce, bornes du mois)", async () => {
+    const { appels } = await lire([], [], [{ apporteurId: "r7" }, { apporteurId: "r7" }]);
+    const q = appels.find((a) => a.where.statut !== "signe")!;
+    expect((q.where.OR as W[]).some((x) => JSON.stringify(x) === '{"id":{"in":["r7"]}}')).toBe(
+      true,
+    );
+  });
+});
+
+describe("lireVuePeriode : cibles et TVA/TTC lus du contenu", () => {
+  it("cibles vient de lireCiblesPeriode ; TVA et TTC viennent du contenu figé", async () => {
+    const prisma = (await import("@/lib/prisma")).prisma as unknown as Record<string, unknown>;
+    prisma.pieceAutofactureApporteur = { findMany: async () => [] };
     prisma.apporteurReseau = {
       findMany: async () => [{ id: "s1", prenom: "A", nom: "B", denomination: null }],
     };
-    const masque = await lireCiblesPeriode("2026-10", false);
-    expect(masque[0]!.nom).toBe("Apporteur (identité masquée)");
+    const ligne = {
+      id: "r1",
+      numero: "REL-1",
+      apporteurId: "s1",
+      rang: 0,
+      statut: "prepare",
+      nbLignes: 1,
+      facturesHtCents: 100,
+      avoirsHtCents: 0,
+      contenu: { totaux: { tvaCents: 1_234, ttcCents: 5_678 } },
+      viresTtcCents: 0,
+      enAttenteHtCents: 0,
+      cumulAnneeHtCents: 0,
+      empreinteSha256: "abcdef0123456789",
+      pdfR2Key: null,
+      erreur: null,
+      motifEcart: null,
+      envoyeAt: null,
+      apporteur: { prenom: "A", nom: "B", denomination: null, email: null },
+    };
+    prisma.releveMensuelApporteur = {
+      findMany: async () => [ligne, { ...ligne, id: "r2", contenu: "illisible" }],
+    };
+    const { lireVuePeriode } = await import("../statistiques");
+    const v = await lireVuePeriode("2026-10", true);
+    expect(v.cibles.map((c) => c.apporteurId)).toEqual(["s1"]);
+    expect(v.releves[0]).toMatchObject({ tvaCents: 1_234, ttcCents: 5_678 });
+    expect(v.releves[1]).toMatchObject({ tvaCents: null, ttcCents: null });
+  });
+});
+
+describe("totauxTvaDeContenu", () => {
+  it("lit les entiers, sinon null (jamais 0)", () => {
+    expect(totauxTvaDeContenu({ totaux: { tvaCents: 0, ttcCents: 10 } })).toEqual({
+      tvaCents: 0,
+      ttcCents: 10,
+    });
+    for (const c of [null, undefined, "x", {}, { totaux: {} }, { totaux: { tvaCents: 1.5 } }]) {
+      const r = totauxTvaDeContenu(c);
+      expect(r.tvaCents).toBeNull();
+      expect(r.ttcCents).toBeNull();
+    }
   });
 });

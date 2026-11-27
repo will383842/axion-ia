@@ -77,8 +77,12 @@ export function TableauReleves({
               <td className="pr-[var(--space-admin-3)] text-right">{r.nbLignes}</td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.facturesHtCents)}</td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.avoirsHtCents)}</td>
-              <td className="pr-[var(--space-admin-3)] text-right">{eur(r.tvaCents)}</td>
-              <td className="pr-[var(--space-admin-3)] text-right">{eur(r.ttcCents)}</td>
+              <td className="pr-[var(--space-admin-3)] text-right">
+                {r.tvaCents === null ? "—" : eur(r.tvaCents)}
+              </td>
+              <td className="pr-[var(--space-admin-3)] text-right">
+                {r.ttcCents === null ? "—" : eur(r.ttcCents)}
+              </td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.viresTtcCents)}</td>
               <td className="pr-[var(--space-admin-3)] text-right">{eur(r.enAttenteHtCents)}</td>
               <td className="pr-[var(--space-admin-3)]">

@@ -7,7 +7,7 @@
  */
 import { prisma } from "@/lib/prisma";
 import { bornesPeriode, moisPrecedent, periodePrecedente } from "./periode";
-import type { StatutReleveMensuel } from "../../../../prisma/generated/client";
+import type { Prisma, StatutReleveMensuel } from "../../../../prisma/generated/client";
 
 export type StatutReleveEcran = StatutReleveMensuel;
 export type SourceChiffres = "releves" | "direct" | "aucune";
@@ -67,9 +67,9 @@ export interface ReleveEcran {
   nbLignes: number;
   facturesHtCents: number;
   avoirsHtCents: number;
-  /** TVA et TTC NETS du mois, LUS dans `contenu.totaux` (jamais recalculés) ; 0 si illisibles. */
-  tvaCents: number;
-  ttcCents: number;
+  /** TVA et TTC NETS du mois, LUS dans `contenu.totaux` (jamais recalculés) ; `null` si illisibles. */
+  tvaCents: number | null;
+  ttcCents: number | null;
   viresTtcCents: number;
   enAttenteHtCents: number;
   cumulAnneeHtCents: number;
@@ -115,10 +115,13 @@ export const PREFIXE_ERREUR_DONNEES_MODIFIEES = "données du mois modifiées";
 
 // ── Fonctions pures ──────────────────────────────────────────────────────────────────────────
 
-/** TVA et TTC lus tels quels dans le contenu figé ; entiers ou 0. Aucun calcul. */
-export function totauxTvaDeContenu(contenu: unknown): { tvaCents: number; ttcCents: number } {
+/** TVA et TTC lus tels quels dans le contenu figé ; entiers, sinon `null` (jamais 0). Aucun calcul. */
+export function totauxTvaDeContenu(contenu: unknown): {
+  tvaCents: number | null;
+  ttcCents: number | null;
+} {
   const t = (contenu as { totaux?: { tvaCents?: unknown; ttcCents?: unknown } } | null)?.totaux;
-  const lire = (v: unknown) => (typeof v === "number" && Number.isInteger(v) ? v : 0);
+  const lire = (v: unknown) => (typeof v === "number" && Number.isInteger(v) ? v : null);
   return { tvaCents: lire(t?.tvaCents), ttcCents: lire(t?.ttcCents) };
 }
 
@@ -321,10 +324,57 @@ export async function lireVueStatistiques(maintenant: Date = new Date()): Promis
 }
 
 /**
+ * Règle Q4 b À LA COUPURE, UNE SEULE définition (mêmes bornes que `report()` de `calcul.ts`),
+ * réutilisable par la préparation : filtre `where` sur les commissions d'un apporteur non signé
+ * qui a eu un mouvement dans `[debut, coupure[` ou de l'argent en jeu à la coupure.
+ *  - autofacture émise AVANT la coupure et non versée avant la coupure ;
+ *  - attente posée AVANT la coupure, sans autofacture émise avant la coupure ;
+ *  - mouvements du mois : autofacture émise ou versée dans `[debut, coupure[`.
+ * Les avoirs du mois (date lue sur la pièce) s'ajoutent côté apporteur (`id in`).
+ */
+export function conditionsCommissionQ4b(
+  debut: Date,
+  coupure: Date,
+): Prisma.CommissionApporteurWhereInput {
+  return {
+    statut: { not: "annulee" },
+    OR: [
+      {
+        autofactureNumero: { not: null },
+        avoirNumero: null,
+        autofactureEmiseAt: { lt: coupure },
+        OR: [{ verseeAt: null }, { verseeAt: { gte: coupure } }],
+      },
+      {
+        autofactureAttenteDepuis: { lt: coupure },
+        OR: [{ autofactureEmiseAt: null }, { autofactureEmiseAt: { gte: coupure } }],
+      },
+      { autofactureNumero: { not: null }, autofactureEmiseAt: { gte: debut, lt: coupure } },
+      { autofactureNumero: { not: null }, verseeAt: { gte: debut, lt: coupure } },
+    ],
+  };
+}
+
+/** Cible Q4 b (résilié ou retiré) : filtre apporteur, avoirs du mois compris. */
+export function whereApporteurQ4b(
+  debut: Date,
+  coupure: Date,
+  apporteursAvecAvoir: string[],
+): Prisma.ApporteurReseauWhereInput {
+  return {
+    statut: { not: "signe" },
+    OR: [
+      { commissions: { some: conditionsCommissionQ4b(debut, coupure) } },
+      ...(apporteursAvecAvoir.length ? [{ id: { in: apporteursAvecAvoir } }] : []),
+    ],
+  };
+}
+
+/**
  * Cibles de la période (même définition que la préparation) : les apporteurs `signe` dont le
  * contrat est contresigné AVANT la coupure (un signé après n'est pas attendu), plus, Q4 b, les
- * résiliés ou retirés qui ont eu un mouvement dans le mois ou ont encore de l'argent en jeu
- * (autofacture non versée, ligne en attente d'autofacture).
+ * résiliés ou retirés avec mouvement dans le mois ou argent en jeu À LA COUPURE
+ * (`whereApporteurQ4b`).
  */
 export async function lireCiblesPeriode(
   periode: string,
@@ -332,6 +382,11 @@ export async function lireCiblesPeriode(
 ): Promise<CibleReleve[]> {
   const { debut, coupure } = bornesPeriode(periode);
   const select = { id: true, prenom: true, nom: true, denomination: true } as const;
+  const avoirs = await prisma.pieceAutofactureApporteur.findMany({
+    where: { genre: "avoir", emiseAt: { gte: debut, lt: coupure } },
+    select: { apporteurId: true },
+    take: 10000,
+  });
   const [signes, avecArgent] = await Promise.all([
     prisma.apporteurReseau.findMany({
       where: {
@@ -342,19 +397,7 @@ export async function lireCiblesPeriode(
       take: 5000,
     }),
     prisma.apporteurReseau.findMany({
-      where: {
-        statut: { not: "signe" },
-        commissions: {
-          some: {
-            statut: { not: "annulee" },
-            OR: [
-              { autofactureEmiseAt: { gte: debut, lt: coupure } },
-              { autofactureNumero: { not: null }, verseeAt: null },
-              { autofactureAttenteDepuis: { not: null }, autofactureNumero: null },
-            ],
-          },
-        },
-      },
+      where: whereApporteurQ4b(debut, coupure, [...new Set(avoirs.map((p) => p.apporteurId))]),
       select,
       take: 5000,
     }),

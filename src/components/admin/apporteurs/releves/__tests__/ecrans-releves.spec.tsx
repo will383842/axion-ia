@@ -116,6 +116,19 @@ describe("TableauReleves", () => {
     expect(html).toContain(eur(1_800));
     expect(html).toContain(eur(10_800));
   });
+  it("TVA et TTC illisibles : « — », jamais 0,00 €", () => {
+    const html = renderToStaticMarkup(
+      <TableauReleves
+        base="/fr/x"
+        periode="2026-10"
+        releves={[{ ...ligne, tvaCents: null, ttcCents: null }]}
+        peutVoirPdf
+      />,
+    );
+    expect(html).toContain(">—</td>");
+    expect(html).not.toContain(eur(1_800));
+    expect(html.match(/>—<\/td>/g)).toHaveLength(2);
+  });
   it("sans droit de facturation, pas de lien d'aperçu", () => {
     const html = renderToStaticMarkup(
       <TableauReleves base="/fr/x" periode="2026-10" releves={[ligne]} peutVoirPdf={false} />,

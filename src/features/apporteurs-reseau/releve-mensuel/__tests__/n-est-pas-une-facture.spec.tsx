@@ -68,6 +68,19 @@ describe("PDF du relevé : n'est pas une facture", () => {
     const tout = textesDuReleve(c, ENTETE).join("\n");
     expect(tout).toContain(`Dont commissions facturées : ${c.sousTotaux.facturees.nb}`);
     expect(tout).toContain(`Dont commissions versées : ${c.sousTotaux.versees.nb}`);
+    // Montants HT : valeurs distinctes pour que chaque sous-total se lise séparément.
+    const m = textesDuReleve(
+      {
+        ...c,
+        sousTotaux: {
+          facturees: { ...c.sousTotaux.facturees, htCents: 123_456 },
+          versees: { ...c.sousTotaux.versees, htCents: 78_900 },
+        },
+      },
+      ENTETE,
+    ).join("\n");
+    expect(m).toMatch(/Dont commissions facturées : \d+\s*\n?.*1\s?234,56/);
+    expect(m).toMatch(/Dont commissions versées : \d+\s*\n?.*789,00/);
   });
 
   it("ne contient aucun vocabulaire de facture à payer", () => {
