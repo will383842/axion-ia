@@ -6,7 +6,11 @@
 import { render } from "@react-email/render";
 import { describe, expect, it } from "vitest";
 
-import { ApporteurPresentationRecueRendezVousEmail } from "../apporteur-presentation-recue-rendez-vous";
+import {
+  ApporteurPresentationRecueRendezVousEmail,
+  COPY_PRESENTATION_RECUE_RENDEZ_VOUS,
+  RESERVATION_RENDEZ_VOUS_JOURS,
+} from "../apporteur-presentation-recue-rendez-vous";
 import { EntrepriseInformationCoordonneesEmail } from "../entreprise-information-coordonnees";
 
 const EXEMPLE = {
@@ -51,6 +55,21 @@ describe("L4a — accusé 7a : un langage de fait, pas de reproche ni de « comp
       "Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un nouveau contact avec elle.",
     );
     expect(lu).not.toMatch(/reproche/i);
+  });
+
+  it("la durée du rendez-vous annulé vient de la constante, pas d'un « 60 » écrit en dur", async () => {
+    const t = COPY_PRESENTATION_RECUE_RENDEZ_VOUS.rendezVousAnnule(77);
+    expect(t).toContain("77 jours");
+    expect(t).not.toContain("60");
+    const lu = await texte(ApporteurPresentationRecueRendezVousEmail);
+    expect(lu).toContain(
+      `Si nous annulons un rendez-vous pris pendant ces ${RESERVATION_RENDEZ_VOUS_JOURS} jours, il compte comme tenu.`,
+    );
+  });
+
+  it("ne promet AUCUN délai de 30 jours avant une nouvelle déclaration (contrat 2.8, art. 3.2 et 3.4 bis : redéclaration possible)", async () => {
+    const lu = await texte(ApporteurPresentationRecueRendezVousEmail);
+    expect(lu).not.toMatch(/30 jours/);
   });
 
   it("dit « à votre nom », jamais « sur votre compte »", async () => {

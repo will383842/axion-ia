@@ -1,18 +1,29 @@
 # Refonte des gabarits d'articles du blog — PLAN (phase 1 : conception)
 
 Statut : conception uniquement, aucun code produit sous `src/` ni `prisma/`.
-Branche : `feat/gabarits-articles-conception`. Maquettes : `maquettes/index.html`. Découpage des PR : `DECOUPAGE.md`.
+Branche : `feat/gabarits-articles-conception`, puis `docs/gabarits-articles-v2-visuel` (révision visuelle v2). Découpage des PR : `DECOUPAGE.md`.
+
+> **Révision v2 du 2026-11-27 : la référence visuelle est désormais `maquettes-v2/index.html`.** Les maquettes v1
+> (`maquettes/`) ont été refusées par le propriétaire (« manque de peps, de contraste, d'encadrés ; trop
+> textuel ; des boutons bien visibles sur le côté ; le but : des prospects et de la visibilité »). Elles restent
+> dans le dépôt pour l'historique, mais ne servent plus de référence. Ce qui change est décrit au **§15**. Le
+> reste du plan reste valable (interrupteur, type de contenu, JSON-LD, tests), sauf mention contraire au §15.
+
+> **Révision v3 du 2026-11-27 : les maquettes v3 validées par Will (PR #2423) remplacent la v2, dans le même
+> dossier `maquettes-v2/`.** En-tête réel du site réutilisé, héros terracotta, vraie photo sous chaque titre,
+> boutons latéraux, encart vidéo : voir le **§15.9**, qui prime sur le reste du §15. La branche
+> `feat/gabarits-articles-s2-composants` (premier plan, CSS dans `globals.css`) est abandonnée : S2 repart de `main` (`DECOUPAGE.md`).
 
 ## 1. Contraintes (non négociables)
 
-1. **Images** : aucun changement de la sélection des images (une autre PR s'en occupe) ni de l'attribution du photographe Unsplash (`UnsplashCredit`, `resoudreImagePartageArticle`, `featuredImage*`). Les gabarits ne font que _placer_ l'image existante.
+1. **Images** : aucun changement de la sélection des images (une autre PR s'en occupe) ni de l'attribution du photographe Unsplash (`UnsplashCredit`, `resoudreImagePartageArticle`, `featuredImage*`). Les gabarits ne font que _placer_ l'image existante. **Révision v3** : quand un article n'a aucune image (`featuredImage` nul), le gabarit v2 affiche une photo de repli tirée de la banque d'images du site (§15.9) ; la sélection des images existantes, `og:image` et le JSON-LD ne changent pas.
 2. **Prisma** : aucun changement de schéma, aucune migration. Le type de contenu se lit par `Article.generatedByJobId` → `ContentGenJob.contentType` (requête supplémentaire, sans relation Prisma).
 3. **Interrupteur `BLOG_GABARITS_V2`** : `"true"` = nouveaux gabarits ; toute autre valeur (absente, `"false"`, vide) = page actuelle **au balisage identique** (même HTML qu'aujourd'hui, hors `<style>`), sans requête supplémentaire. Seule la feuille CSS commune, inlinée dans toutes les pages, peut grossir (≤ 2 Ko gz) ; toute règle ajoutée est **bornée** à `[data-gabarit]` ou `html:has([data-gabarit])` pour ne rien changer au rendu V1. Lecture au rendu côté serveur (jamais `NEXT_PUBLIC_`). Retour arrière = repasser la variable à autre chose que `true` et redémarrer (puis purge : `revalidate = 3600` + Cloudflare).
 4. **Anglais** : la locale EN reste désactivée (301 vers FR). Tous les textes visibles des nouveaux composants passent par le système de traduction existant (`next-intl`, `src/messages/fr.json` et `src/messages/en.json`), jamais en dur.
 5. **Performance** : aucun JavaScript client ajouté sans nécessité (voir §7). Aucun cliquet `size-limit` relevé.
 6. **SEO** : `generateMetadata`, URL, slugs, canonical, hreflang, `og:image`, redirections (`guide-*` → `/guides`, `isNews` → `/actualites`), tombstone, historique de slugs : **inchangés**.
 7. **Contenu** : pas de prix, pas de donnée client, pas de chiffre inventé. Le gabarit ne met jamais en valeur un chiffre ou un témoignage qui ne vient pas d'une donnée structurée vérifiée.
-8. **Marque** : on garde ivoire, mocha, terracotta, bleu, Manrope / Fraunces / Inconsolata. Uniquement les jetons existants de `src/app/globals.css` (le contrôle `anti-hex:check` interdit les hexadécimaux en dur dans `src/`).
+8. **Marque** : la couleur de marque est le **terracotta** (révision v3, décision de Will), sur ivoire et mocha, avec Manrope / Fraunces / Inconsolata. Le bleu `--color-primary` reste un jeton du site (liens, bouton « Réserver un appel » de l'en-tête réel), jamais une couleur de marque (§15.9). Uniquement les jetons existants de `src/app/globals.css` (le contrôle `anti-hex:check` interdit les hexadécimaux en dur dans `src/`).
 
 ## 2. État actuel (constats)
 
@@ -24,7 +35,7 @@ Branche : `feat/gabarits-articles-conception`. Maquettes : `maquettes/index.html
 
 ## 3. Familles de gabarits et correspondance ContentType → gabarit
 
-Huit gabarits (code `data-gabarit`), plus l'actualité qui reste hors périmètre.
+Huit gabarits (code `data-gabarit`). **v2 : l'actualité (`/actualites/[slug]`) et le guide pilier (`/guides/[slug]`) entrent dans le périmètre visuel** (voir §15.5) : ce sont des pages autonomes, donc couvertes par le même interrupteur mais pas par cette table.
 
 | Gabarit                | Code         | ContentType                                                                                                          |
 | ---------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------- |
@@ -36,7 +47,7 @@ Huit gabarits (code `data-gabarit`), plus l'actualité qui reste hors périmètr
 | **Définition**         | `definition` | `what_is_x`, `glossary_term`                                                                                         |
 | **Questions-réponses** | `faq`        | `faq_standalone`, `faq_geo`, `qa_derived`                                                                            |
 | **Chiffres**           | `chiffres`   | `barometer_insight`                                                                                                  |
-| _Actualité_            | —            | `blog_from_rss` : reste sur `/actualites/[slug]` (redirection 308 existante), hors interrupteur                      |
+| _Actualité_            | `actualite`  | `blog_from_rss` : reste sur `/actualites/[slug]` (redirection 308 existante) ; habillage v2 par la PR A1 (§15.5)     |
 
 Toute la table est un `Record<ContentType, GabaritArticle>` **exhaustif** : l'ajout d'une valeur d'énumération casse la compilation (et un test le vérifie).
 
@@ -74,11 +85,14 @@ Toute la table est un `Record<ContentType, GabaritArticle>` **exhaustif** : l'aj
 9. **FAQ**, puis **Sources et méthode** (un seul encadré : `ArticleSources` + `ArticleTransparencyBlock`).
 10. Carte auteur → badge Qualiopi → mention IA → partage → lien ville.
 11. Questions associées, articles liés, précédent/suivant.
-12. Encart vidéo, newsletter, **un seul** appel à l'action selon le gabarit (libellés sans prix, liens déjà utilisés).
+12. Encart vidéo, newsletter (capture « Guide IA entreprise »), **encart d'action de fin** adapté au gabarit (libellés sans prix, liens déjà utilisés).
+13. **v2** : `aside.action[aria-label="Passer à l'action"]`, **hors** `<article>`, placé après lui dans le DOM. Sur ordinateur c'est la carte collante de la colonne droite, sur téléphone la barre fixe du bas (§15.3). Un encart d'action au milieu du corps (`CtaMilieu`) s'ajoute à celui de la fin.
 
 Inchangés : JSON-LD (jusqu'à la PR dédiée), balise `alternate` markdown, barre de progression, attributs `data-aeo` / `data-speakable` / `data-faq-*` (les sélecteurs `speakable` en dépendent).
 
 ### Ce que chaque gabarit ajoute
+
+> v2 : les visuels propres à chaque gabarit sont redéfinis au §15.4 ; la liste ci-dessous reste valable pour la logique de données.
 
 - **Analyse** : sommaire H2+H3 (le gabarit reçoit le HTML brut et construit son sommaire ; `buildToc` et le `level: 2` de `page.tsx` ne sont pas modifiés) ; au-delà de 2 500 mots : numéros de chapitre (compteur CSS) et lien « Revenir au sommaire ».
 - **Guide** : encadré « Avant de commencer » si le corps débute par des prérequis ; étapes en liste numérotée à pastilles (`ArticleEtapes`, via `parseStepsFromBody` exportée) ; le sommaire = les étapes. CTA audit.
@@ -270,3 +284,126 @@ Rendu de chaque gabarit (Vitest, `renderToStaticMarkup`) · exhaustivité `Recor
 - Cibles tactiles des liens isolés (bandeau de données, termes liés) : ≥ 24 px de haut, 44 px visés.
 - Définition : ratios d'image 16/7 (mobile) et 4/3 (ordinateur) → `object-fit: cover` et `sizes` cohérent ; ratio réservé, donc aucun décalage.
 - Image avant la réponse directe en mobile : vérifier à la mesure post-déploiement que le LCP mobile reste ≤ 1 800 ms, sinon placer l'image après la réponse directe.
+
+## 15. Révision visuelle v2 (2026-11-27)
+
+Référence : `maquettes-v2/index.html` (10 maquettes autonomes, sans JavaScript, ordinateur et téléphone dans le même fichier). Socle commun : `maquettes-v2/_socle.css` (≈ 750 lignes commentées, recopié à l'identique dans chaque maquette entre les marqueurs « DÉBUT SOCLE » et « FIN SOCLE »).
+
+### 15.1 Décisions qui remplacent la v1
+
+| Sujet             | v1 (refusée)                                        | v2 (retenue)                                                                                                                                                                                                                                                                                                      |
+| ----------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Appels à l'action | **un seul** appel à l'action, en fin d'article      | **plusieurs** : carte collante (ordinateur) ou barre fixe (téléphone) avec 3 actions, un encart au milieu, un encart de fin, et 1 ou 2 micro-appels dans les encadrés. Le bouton principal dépend du gabarit (§15.3).                                                                                             |
+| En-tête           | ivoire, sobre                                       | ⚠️ **remplacé en v3 (§15.9)** : en-tête réel du site + héros **terracotta**. Texte v2 d'origine : bandeau **mocha plein**, H1 Fraunces jusqu'à 4,5 rem avec la fin en italique `terracotta-on-mocha`, surtitre en pastille terracotta, temps de lecture en pastille pleine, image qui chevauche le bas du bandeau |
+| Encadrés          | 2 ou 3 encadrés sable                               | bibliothèque de **12 encadrés et visuels**, une couleur fixe par fonction (§15.2), un élément visuel fort toutes les 2 ou 3 sections                                                                                                                                                                              |
+| Rythme de lecture | sommaire et corps                                   | intertitres en questions, « 04 / 07 » au-dessus des H2, relances « Dans la suite : … », barre de progression CSS, résumé visuel de fin « Ce qu'il faut retenir »                                                                                                                                                  |
+| Sommaire          | deux `<nav>` (mobile `<details>` + rail ordinateur) | **un seul** `<nav>` contenant un `<details>` : replié sur téléphone, toujours ouvert dans la colonne droite sur ordinateur (`::details-content`, sous `@supports` ; sans ce support, le `<summary>` reste cliquable)                                                                                              |
+| Périmètre         | 8 gabarits du blog                                  | 8 gabarits + **actualités** + **guides pilier**, avec les mêmes boutons latéraux                                                                                                                                                                                                                                  |
+
+### 15.2 Bibliothèque d'encadrés (fonction = couleur, toujours avec un libellé texte et une icône SVG)
+
+| Encadré / visuel                       | Fond                                         | Classe de maquette                                         |
+| -------------------------------------- | -------------------------------------------- | ---------------------------------------------------------- |
+| « En bref » (réponse directe)          | papier, bordure encre 2 px, filet terracotta | `.en-bref` (`data-aeo="tldr"`, `.tldr-answer`)             |
+| « À retenir »                          | sage-soft                                    | `.encadre--retenir`                                        |
+| « Attention / piège à éviter »         | ochre-soft hachuré                           | `.encadre--attention`                                      |
+| « Exemple concret »                    | plum-soft                                    | `.encadre--exemple`                                        |
+| « Modèle à reprendre »                 | primary-soft                                 | `.encadre--modele`                                         |
+| « Le saviez-vous ? »                   | sable                                        | `.encadre--saviez`                                         |
+| « Bon à savoir »                       | papier, bordure pointillée                   | `.encadre--bon`                                            |
+| « Chiffre clé » (chiffre géant sourcé) | terracotta-soft                              | `.chiffre-cle`                                             |
+| Citation mise en avant                 | terracotta-soft, guillemet géant             | `.citation` (`figure`)                                     |
+| Cartes, schéma, rangée de chiffres     | papier / mocha                               | `.cartes`, `.schema`, `.chiffres`                          |
+| Étapes numérotées (frise)              | pastilles terracotta, rail pointillé         | `.etapes`                                                  |
+| Tableau visuel                         | en-tête mocha, zébrures, coches SVG          | `.tableau` (région défilante nommée, 1re colonne collante) |
+| Checklist, relance, séparateur, résumé | —                                            | `.checklist`, `.relance`, `.separateur`, `.resume`         |
+
+Le contenu d'un encadré est du **texte réel** dans le DOM (jamais dans `::before`), pour les moteurs et les lecteurs d'écran. Côté production, les encadrés sont produits par le générateur (classes ou balises dédiées dans le HTML de l'article, à définir dans S3) **ou** par le gabarit à partir de données structurées. Le gabarit n'invente jamais un chiffre ni une citation.
+
+### 15.3 Appels à l'action (spécialiste conversion)
+
+- **Carte collante (≥ 1024 px)**, titrée « Passer de la lecture à l'action » :
+  1. « Diagnostic IA, 45 min » (libellé exact du site, `method1Title`), bouton principal bleu, vers `/fr/appel?rdv=diagnostic&depuis=<gabarit>-colonne` ;
+  2. « Découvrir la Journée IA », en terracotta, vers `/fr/journee-ia` ;
+  3. « Écrire un message », en contour, vers `/fr/contact`.
+     Réassurance : uniquement des libellés existants du site (« Confirmation immédiate », « Annulable en un clic », « Partout en France »). **Qualiopi n'est jamais écrit en dur** : il n'apparaît que si `getQualiopiPublicIdentity()` renvoie une identité. La garantie de la Journée IA n'est pas citée (elle renvoie à un prix).
+- **Barre fixe (< 1024 px)** : « Journée IA » · « Diagnostic IA » (au centre, en bleu, avec une pastille « 45 min ») · « Message ». Elle fait 56 px de haut minimum et tient compte de `safe-area-inset-bottom`. Le `body` réserve sa hauteur en bas de page, et le focus n'est jamais masqué. Chaque `aria-label` contient le texte visible (2.5.3).
+- **Un seul élément du DOM** sert à la fois de carte et de barre, repositionné en CSS : pas de doublon de liens pour les moteurs. Liens internes simples (ni `nofollow`, ni `target`, ni UTM) ; la mesure passe par le paramètre `depuis` et un attribut `data-cta`.
+- **Bouton principal des encarts selon le gabarit** : Journée IA pour Guide, Sélection, Étude de cas et Chiffres ; « Écrire un message » pour la FAQ ; Diagnostic pour les autres. Le guide pilier a deux encarts au milieu.
+- **Preuve de valeur sans faux témoignage** : déroulé du diagnostic en 3 étapes (libellés du site), ce que remet la Journée IA (attestation, rapport de priorités), et la phrase du site « Nous n'annonçons jamais un gain à l'avance. »
+- Interdits : prix, frais de déplacement, « Grenoble », « Aucun gain garanti », compte à rebours, chiffre de résultat client.
+
+### 15.3 bis Décisions issues de l'arbitrage qualité (2 tours)
+
+- **Boutons dès le premier écran sur ordinateur.** La carte d'actions est posée dans le bandeau du héros (terracotta depuis la v3), puis reste collante. Le sommaire collant se place dessous, dans la hauteur qui reste : fondu en bas et indication « ↓ suite du sommaire » quand il défile. La réassurance est masquée sous 860 px de hauteur d'écran.
+- ~~Bouton bleu « Diagnostic IA, 45 min » dans le bandeau de navigation du site~~ : **abandonné en v3**. L'en-tête est le `Header` réel, inchangé (son bouton « Réserver un appel » garde `depuis=entete`) ; le `depuis=<gabarit>-entete` des maquettes n'est pas repris. Toute retouche de l'en-tête global reste une PR distincte, sur décision de Will.
+- **Un signe propre à chaque gabarit dans l'en-tête** (« RAG. », « A ou B », « ≈ 10 % », « Art. 4 », jalons…), en décor `aria-hidden`.
+- **Typographie française** : espace fine insécable devant ? ! ; et insécable devant : et dans les « ». À appliquer au rendu des textes d'interface, via les messages.
+- **Promesses vérifiées contre le site** : le rapport et le plan d'action à 90 jours de la Journée IA arrivent **sous 10 jours ouvrés**, pas le jour même.
+
+### 15.4 Visuel signature de chaque gabarit
+
+| Gabarit            | Visuel signature                                                                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Analyse            | schéma constat → causes → leviers, chiffre clé, citation, cartes                                                                                        |
+| Guide              | parcours en un coup d'œil (bandeau mocha), étapes à pastilles géantes « Étape n sur N », checklist « Avant de commencer », formule (`calculator_roi`)   |
+| Comparatif         | face-à-face A / B en tête, tableau à coches et croix (vrai `<table>`), cartes « Pour qui ? », arbre de décision, verdict « ça dépend de… » sans gagnant |
+| Sélection          | grandes cartes à numéro géant (« n sur 10 », pour qui / points forts / limites), critères en pastilles, tableau de synthèse rédigé                      |
+| Étude de cas       | fiche « Contexte » mocha (« exemple type, pas un client »), frise Avant / Pendant / Après sans chiffre, « Ce que l'équipe a appris »                    |
+| Définition         | terme géant avec prononciation et sigle développé, `<dfn>` dans « En bref », « En une phrase / En pratique / À ne pas confondre », termes liés          |
+| Questions-réponses | grille mocha des questions, thèmes en pastilles colorées, cartes `<details>` numérotées (la première ouverte), « Votre question n'est pas là ? »        |
+| Chiffres           | bandeau « Données au <date> », rangée de chiffres géants sourcés, barres horizontales en CSS (valeur écrite en texte), « Comment lire ces chiffres »    |
+| Actualité          | triptyque « Ce qui change / Pour qui / Que faire maintenant », encadré « Source d'origine », frise des dates, « Ce que l'on ne sait pas encore »        |
+| Guide pilier       | sommaire en grille de chapitres avec progression, bandeaux de chapitre (« Chapitre n sur 7 », temps restant), feuille de route finale                   |
+
+Les chiffres des maquettes sont des **exemples d'illustration** (sources publiques citées de mémoire, marquées « à revérifier »). En production, la règle du §1.7 s'applique sans changement.
+
+### 15.5 Extension aux actualités et aux guides
+
+- `/actualites/[slug]` et `/guides/[slug]` sont des pages **autonomes** : leur habillage v2 passe par des composants partagés (`HerosArticle`, `PhotoArticle`, `ColonneActions`, encadrés), derrière le même interrupteur `BLOG_GABARITS_V2`, avec le même principe qu'au §9 (rendu v1 au balisage identique quand il est coupé).
+- URL, slugs, canonical, metadata, redirections et `@id` ne changent pas. On conserve `data-aeo`, `data-speakable`, les ids `step-N` des guides et le lien `alternate` markdown.
+- Constats SEO à traiter (PR dédiées, hors interrupteur si le propriétaire valide) :
+  - `/guides` : `BreadcrumbList` en double (F1, déjà prévu) ; `HowTo.totalTime` rempli avec le temps de lecture (faux) ; articles liés codés en dur en `/blog/` (redirections 308) ; ni auteur ni date affichés.
+  - `/actualites` : `<article>` n'entoure que le corps ; le badge « Brève (non indexée) » est visible du public (la v2 le retire de l'affichage).
+
+### 15.6 Accessibilité (audit des 10 maquettes, Chromium)
+
+Contrastes mesurés par script sur chaque texte visible à 1280 et 360 px : aucun échec après correction. Anneau de focus ivoire sur les fonds sombres (13,7:1 sur mocha, 5,24:1 sur terracotta). Cibles de 44 px pour les liens isolés et d'au moins 24 px pour les liens dans le texte. Aucun élément reçoit le focus sous la barre mobile. Reflow sans défilement horizontal à 320 px. Espacement du texte (1.4.12), mouvement réduit (barre de progression masquée) et couleurs forcées vérifiés.
+
+Limites :
+
+- « Copier le lien » demande un îlot client : on garde le composant existant.
+- Les boutons pleins de la carte mocha ont un contraste de 2,25 et 2,61:1 avec leur fond. C'est accepté, car leur texte suffit à les identifier.
+- Safari et Firefox restent à vérifier à l'implémentation.
+
+### 15.7 Performance (audit des 10 maquettes)
+
+- Zéro JavaScript, aucune ressource externe, graisses existantes uniquement.
+- CLS = 0 avec les polices système. Avec les vraies polices simulées en retard, la cause trouvée était un `max-width` en `ch` sur le H1 ; il est corrigé (unité indépendante de la police). Les repli métriques de `next/font` restent la protection en production.
+- LCP : le H1 sur ordinateur, le chapô ou le H1 sur téléphone. L'image devient le LCP en 1920 × 1080. On garde `loading="eager"` et on n'ajoute pas de `preload` d'image. **Révision v3** : la photo est désormais présente sur chaque article et chevauche le bas du héros ; elle porte `fetchPriority="high"` (comme dans les maquettes v3), avec ratio 16/10 réservé et AVIF/WebP ; on la traite comme l'élément LCP probable (§15.9).
+- **CSS, point décisif** : le socle pèse ≈ 8,6 Ko gz, chaque gabarit 0,4 à 2,5 Ko gz, l'ensemble ≈ 19 Ko gz. **L'import dans `globals.css` prévu en v1 (S2) est abandonné** : il ajouterait ≈ +17 à +19 Ko gz à chaque page du site, environ neuf fois le budget de +2 Ko. À la place, la CSS des gabarits est importée **uniquement par les routes d'article** (`blog/[slug]`, `actualites/[slug]`, `guides/[slug]`), sur le modèle de `accueil.module.css` et `journee-ia.module.css`, et réécrite au maximum avec les utilitaires Tailwind déjà présents. Les règles `.v-*` (anciens dessins SVG de substitution) ne visent plus aucun élément dans les maquettes v3, qui affichent de vraies photos : il n'y a rien à en reprendre ; on reprend le cadre photo (`.visuel`, `.visuel__cadre`, `.visuel__etiquette`, légende) (§15.9).
+- À mesurer au build de S2 : `/fr/contact` et l'accueil ne doivent pas bouger d'un octet de CSS ; la CSS d'une page d'article reste ≤ +12 Ko gz (socle + un gabarit) ; le First Load JS ne bouge pas.
+
+### 15.8 Nouveaux composants (en plus du §10)
+
+`ColonneActions` (carte collante et barre mobile, un seul élément), `CtaMilieu` et `CtaFin` (variantes par gabarit, `depuis` en prop), `Encadre` (prop `type` : retenir, attention, exemple, modele, saviez, bon), `ChiffreCle`, `CitationMiseEnAvant`, `Cartes`, `RangeeChiffres`, `BarresChiffres`, `Frise` (étapes et dates), `TableauVisuel` (enveloppe `TableauDefilant`), `Checklist`, `Relance`, `ResumeFin`, `HerosArticle` (remplace l'en-tête sobre d'`EnteteArticle`), `BarreProgression` (CSS pur), `FaceAFace`, `CarteSelection`, `FicheContexte` (restylée), `TriptyqueActualite`, `BandeauChapitre`. Tous serveur ; aucun `"use client"`.
+
+### 15.9 Révision v3 (2026-11-27) : maquettes validées par Will
+
+Référence : les maquettes v3 de `maquettes-v2/` (le dossier garde son nom), fusionnées par la PR #2423. Ce paragraphe prime sur le reste du §15. Découpage révisé : `DECOUPAGE.md` (S2, G1-G8, A1, GU1).
+
+| Sujet            | v2 (remplacée)                                                | v3 (validée)                                                                                                                                                                                                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| En-tête du site  | « en-tête mocha » propre au blog, bouton Diagnostic à ajouter | **le `Header` réel** (`src/components/nav/Header.tsx`), déjà rendu par `src/app/[locale]/layout.tsx` : barre terracotta, aucun changement. La section 06 du socle n'en est qu'une copie pour la maquette                                                                                                                          |
+| Héros            | bandeau mocha plein, italique `terracotta-on-mocha`           | **aplat terracotta** (dégradé vers terracotta-deep, rayures), H1 papier, italique terracotta-soft souligné, pastilles papier / terracotta-deep, signe du gabarit en décor (`HerosArticle`, section 07)                                                                                                                            |
+| Visuel principal | dessin SVG de substitution (`.v-*`)                           | **vraie photo** dans `.visuel__cadre` (ratio 16/10, passe-partout ivoire, chevauche le héros, `fetchPriority="high"`), photo de l'article ou, à défaut, photo de repli de la banque du site (`public/images/axion-ia-*`) ; jamais un dessin. Les règles `.v-*` restent en fin de `<style>` des maquettes mais ne visent plus rien |
+| Boutons latéraux | carte dans le bandeau sombre                                  | carte mocha-soft dans la colonne droite, posée dans le bandeau terracotta puis collante ; barre fixe à 3 cellules sur téléphone ; un seul `<aside>`                                                                                                                                                                               |
+| Encart vidéo     | —                                                             | `section.encart-video` entre FAQ et sources, rendu seulement si une vraie vidéo est publiée ; façade vers `/fr/videos/<slug>` (option A de `docs/pilotage-seo-geo/CONCEPTION-ENCART-VIDEO.md`) : aucun lecteur, aucun iframe YouTube, aucun `VideoObject`                                                                         |
+| Typographie      | —                                                             | `text-wrap: balance` / `pretty`, largeurs en em (jamais en ch), chiffres tabulaires, espaces fines insécables françaises dans les messages, aucune graisse 700/800                                                                                                                                                                |
+
+**Points ouverts pour Will avant S2** :
+
+- **Bleu.** Les maquettes v3 emploient encore `--color-primary` (`#1a4dd9`) : bouton « Diagnostic IA, 45 min » (`btn--bleu`) dans la carte, la barre mobile et les encarts, liens du texte, anneau de focus clair, thème « Cadre légal » de la FAQ, et même le bouton Journée IA des encarts du milieu des maquettes Étude de cas, Chiffres et Guide pilier. La marque est terracotta : soit Will accepte le bleu comme couleur d'action (comme le « Réserver un appel » de l'en-tête réel), soit ces boutons passent en terracotta. En attendant, Journée IA est toujours en terracotta (§15.3).
+- **Photos des maquettes Comparatif et Chiffres** : `…-comparatif-…-infographie.webp` est une infographie, et `…-avant-apres-tableau-bord-45-pourcent-photo-carre.webp` annonce un chiffre de résultat. Elles sont exclues de la table de repli.
+- **Libellés de prise de rendez-vous** : la réassurance « Confirmation immédiate · Annulable en un clic » et le déroulé « Vous choisissez un créneau » décrivent une prise de rendez-vous en ligne pour le Diagnostic (page `/appel`) ; à confirmer au regard de l'interdit « réservation directe ».
+- `maquettes-v2/index.html` annonce encore « un bouton bleu Diagnostic IA, 45 min » dans le bandeau du site : texte périmé, les maquettes elles-mêmes montrent l'en-tête réel (« Réserver un appel »).

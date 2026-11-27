@@ -110,6 +110,8 @@ Si l'apporteur quitte le réseau avec un solde négatif : la clause de reprise d
 
 ### 2.7 Le cycle mensuel de versement
 
+> **Remplacé** par la facturation au fil de l'eau (06/10) et par le relevé d'information de `docs/plans/PLAN-RELEVE-MENSUEL-APPORTEURS.md` (ADR 0078) : le relevé du 1er et l'historique sont repris ; le versement groupé le 5 et le seuil minimal de versement sont abandonnés.
+
 | Quand           | Ce qui se passe                                                                                              | Qui     |
 | --------------- | ------------------------------------------------------------------------------------------------------------ | ------- |
 | **Le 1er**      | Le système fige les lignes `acquise` du mois écoulé, déduit les reprises, génère **un relevé par apporteur** | 🤖      |

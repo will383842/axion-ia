@@ -11,6 +11,7 @@ import { EMAIL_LEGAL } from "@/lib/email/legal-footer";
 import {
   ApporteurPresentationRecueRendezVousEmail,
   apporteurPresentationRecueRendezVousSubject,
+  COPY_PRESENTATION_RECUE_RENDEZ_VOUS,
 } from "../apporteur-presentation-recue-rendez-vous";
 
 const EXEMPLE = {
@@ -104,5 +105,12 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     const { text } = await rendre(EXEMPLE);
     expect(text).not.toMatch(/\btu\b|\bton\b|\btes\b/i);
     expect(text.toLowerCase()).not.toMatch(/vous devez|objectif|minimum|garanti|au moins/);
+  });
+});
+
+describe("durée du rendez-vous annulé : jamais en dur", () => {
+  it("suit le paramètre reçu", () => {
+    expect(COPY_PRESENTATION_RECUE_RENDEZ_VOUS.rendezVousAnnule(45)).toContain("ces 45 jours");
+    expect(COPY_PRESENTATION_RECUE_RENDEZ_VOUS.rendezVousAnnule(45)).not.toContain("60");
   });
 });
