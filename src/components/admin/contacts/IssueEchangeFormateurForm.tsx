@@ -191,7 +191,7 @@ export function IssueEchangeFormateurForm({
         >
           {apercuPret.email ? (
             <>
-              <LecteurEmail apercu={apercuPret.email} liensInertes />
+              <LecteurEmail apercu={apercuPret.email} liensOuvrables />
             </>
           ) : (
             <p role="status">{apercuPret.sansEmail ?? "Aucun e-mail ne partira."}</p>

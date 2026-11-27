@@ -76,10 +76,7 @@ describe("déclaration des documents annexes", () => {
   });
 
   it("le plafond ne dépasse pas celui que le worker d'e-mails accepte", () => {
-    const worker = readFileSync(
-      join(process.cwd(), "src/server/queue/workers/email-worker.ts"),
-      "utf-8",
-    );
+    const worker = readFileSync(join(process.cwd(), "src/server/email/pieces-jointes.ts"), "utf-8");
     const lu = /export const TAILLE_MAX_PJ_OCTETS = (\d+) \* ([\d_]+);/.exec(worker);
     expect(lu).not.toBeNull();
     const plafondWorker = Number(lu![1]) * Number(lu![2]!.replace(/_/g, ""));

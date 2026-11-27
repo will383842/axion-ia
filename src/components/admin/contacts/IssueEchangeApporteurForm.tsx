@@ -283,7 +283,7 @@ export function IssueEchangeApporteurForm({
               <LecteurEmail
                 apercu={apercuPret.email.apercu}
                 titre={`Aperçu : ${apercuPret.email.sujet}`}
-                liensInertes
+                liensOuvrables
               />
               <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
                 <button
