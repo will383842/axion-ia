@@ -1,42 +1,70 @@
-VERDICT A CORRIGER sha=0fb9246c (AUDIT) : src/components/generateur/FeuilleSerie.tsx:97, la phrase de notification (« N hors du domaine d'Axion-IA · M à compléter · K gardée(s) en idée ») n'est prouvée par aucune exécution : extraire sa construction dans une fonction pure (ex. `phraseLancementSerie({ partis, restes, horsDomaine, aCompleter })`), l'appeler depuis FeuilleSerie et la tester avec des comptes distincts (ex. 3/1/2/1), car la mutation « afficher aCompleter à la place de horsDomaine » reste verte.
+VERDICT A CORRIGER sha=b78179da (AUDIT) : src/components/generateur/FeuilleSerie.tsx:97, la correction demandée par l'audit précédent (sha 0fb9246c) n'est pas faite : la phrase de notification n'est toujours exécutée par aucun test (tests/serie-hors-domaine-v21s.test.ts (e) ne fait que lire le source) et la mutation « `${aCompleter}` affiché à la place de `${horsDomaine}` » reste VERTE (10/10). Extraire `phraseLancementSerie({ partis, restes, horsDomaine, aCompleter })` en fonction pure, l'appeler depuis FeuilleSerie et la tester avec des comptes distincts (ex. 3/1/2/1).
 
-## Contrôles
+# Audit argent / sécurité / données — studio-axion-ia-public, branche video/FIX-SERIE-PARTI-v21s
 
-- Tête de `origin/video/FIX-SERIE-PARTI-v21s` : `0fb9246ccf41f5a081cc2ef9d651750880b36b9a`, conforme (0fb9246c).
-- Dépendances : `pnpm install --frozen-lockfile` (avec un magasin local `--store-dir /tmp/pnpm-store`, le magasin global étant en lecture seule), lockfile inchangé.
+- Tête vérifiée : `b78179da5cedaa125cea4f5a03ec37681e184f43` (tête inchangée).
+- Ce verdict remplace celui de l'audit précédent (sha `0fb9246c`, commit `28d3fbebf` de cette branche). Depuis, la branche n'a reçu que des fusions de `origin/master` : le diff utile est le même, et son unique reproche reste valable.
+- Diff jugé seul (pas de fiche : dépôt des plans privé). Studio en lecture seule : mutations locales annulées, `git status` propre en fin d'audit.
+- Dépendances : `pnpm install --frozen-lockfile` (magasin local, le magasin par défaut est en lecture seule).
 
-## Diff (`origin/master...origin/video/FIX-SERIE-PARTI-v21s`) : 7 fichiers, +195 / -17
+## Le reproche bloquant
 
-- `src/services/serie-ecriture.ts` : nouveau sort `"a-completer"` + champ `manque` quand `lancerGeneration` rend `ok: false` (arrêt à 0 €) ; ligne de Journal séparant hors domaine et « à compléter » ; le suivi traite `a-completer` comme un sujet existant.
-- `src/app/(studio)/ecrire/serie/actions.ts` : `restes` = `reste` + `refuse` seulement ; compteurs facultatifs `horsDomaine` et `aCompleter`.
-- `src/components/generateur/FeuilleSerie.tsx` : phrase de notification avec les deux nouveaux compteurs.
-- Tests : `tests/serie-hors-domaine-v21s.test.ts` (nouveau, 10 cas), et 3 tests existants recalés.
-- Le diff est petit et cohérent avec le nom de la branche. Il ne touche ni `.github/**`, ni `deploiement/**`, ni `outils/gardes/**`, ni `scripts/echecs-connus.json`. Aucun secret (recherche `sk-|api_key|secret|password|token` dans le diff : rien).
+`FeuilleSerie.tsx:97` construit la notification dans le composant, en ligne. Test (e) : `expect(f).toContain("hors du domaine d'Axion-IA")`, `toMatch(/horsDomaine/)`, `toMatch(/aCompleter/)` sur le TEXTE du fichier. Mutation jouée sur b78179da :
 
-## Argent, sécurité, données
+```diff
+- ${horsDomaine ? ` · ${horsDomaine} hors du domaine d'Axion-IA` : ""}
++ ${horsDomaine ? ` · ${aCompleter} hors du domaine d'Axion-IA` : ""}
+```
 
-- Aucune ligne d'argent modifiée : `calculerPlanSerie`, `planSerie`, `exigerTotalConfirme` et leur appel sont intacts (vérifié dans le diff et verrouillé par le cas (i)). Le plafond et le refus avant appel restent ceux de master : le chemin `ok: false` de `lancerGeneration` est un arrêt avant tout appel Claude (cas (a) et (c) : `appelsClaude` = 0 avec un faux fetch qui interdit tout).
-- Aucune donnée de personne supprimée ni exposée ; l'idée liée garde son `scriptMaitreId` (cas (g)).
-- Gardes de test :
-  - `tests/e2e-verif1-bc-serie.test.ts:280` : le plancher passe de `> 0.25` à `> 0.15`. Valeur mesurée sur la branche : `fantomes = 0.199513` (le commentaire annonce ~0,20 $). Le recalage est justifié, et ce fichier était **rouge sur master** (9 échecs : le faux Claude ne connaissait pas les rôles de la chaîne courte). La branche le remet au vert ; ce n'est pas un affaiblissement.
-  - `tests/l2-13c-plafonds-claude.test.ts:152` : les 3 idées (hors domaine) passent de `parti` à `a-completer`. La promesse « aucune limite ne retient, aucun refus » est gardée par `plan.partiront === 3` et l'absence de `refuse`/`reste`. Remarque, antérieure à la branche : ces idées s'arrêtent avant la garde d'argent, donc ce test n'a jamais prouvé qu'une écriture du fondateur passe les plafonds jusqu'à l'appel. Non bloquant ici.
-  - `tests/paquet4-jonctions.test.ts:108` : recalé (`["parti", "a-completer"]` + `manque HORS_DOMAINE`), plus précis qu'avant.
+Résultat : `tests/serie-hors-domaine-v21s.test.ts` 10/10 VERT ; `tests/garde-ecran.test.ts` et `tests/paquet4-jonctions.test.ts` (les deux autres fichiers qui citent FeuilleSerie) ne rougissent que sur leurs échecs déjà présents sur master (voir plus bas). Will lirait « 1 hors du domaine » pour 2 idées hors domaine : la promesse principale de la branche (dire vrai sur ce qui est parti) n'est pas prouvée à l'écran.
+
+## Diff (`git diff --stat origin/master...origin/video/FIX-SERIE-PARTI-v21s`)
+
+```
+src/app/(studio)/ecrire/serie/actions.ts   |   6 +-
+src/components/generateur/FeuilleSerie.tsx |   4 +-
+src/services/serie-ecriture.ts             |  20 ++--
+tests/e2e-verif1-bc-serie.test.ts          |  11 +-
+tests/l2-13c-plafonds-claude.test.ts       |   5 +-
+tests/paquet4-jonctions.test.ts            |   3 +-
+tests/serie-hors-domaine-v21s.test.ts      | 163 +++++++++++++++++++++++++++++
+```
+
+Petit et conforme au nom : une idée de la série arrêtée à 0 € (`lancerGeneration` rend `ok: false`) prend le sort `a-completer` (avec `manque`) au lieu de `parti`. Aucun fichier sous `.github/**`, `deploiement/**`, `outils/gardes/**`, `scripts/echecs-connus.json` ; aucun secret ; `pnpm-lock.yaml` identique à master.
+
+## Argent — conforme
+
+- Aucune ligne de chemin payant modifiée : `calculerPlanSerie`, `planSerie`, `exigerTotalConfirme` et son appel sont ceux de master. Le changement est en aval de `lancerGeneration` (classement du résultat), jamais avant l'appel.
+- Les tests branchent Claude sur un `fetch` qui interdit tout réseau : 0 appel dans (a) et (c).
+- `tests/e2e-verif1-bc-serie.test.ts` : plancher de l'appel fantôme abaissé de `> 0,25` à `> 0,15` $. Valeur mesurée : **0,199513 $** (pire cas du rôle « angle » de la chaîne courte). La promesse tient (l'appel sans réponse reste compté, rien d'effacé). Ce fichier était **rouge sur master** (10 échecs : le faux Claude ne connaissait pas les rôles de la chaîne courte) ; la branche le répare. Vert sur la branche.
+- `tests/l2-13c-plafonds-claude.test.ts` : `parti ×3` → `a-completer ×3`. Pas un affaiblissement : sur master ces idées s'arrêtaient déjà à 0 € et étaient mal étiquetées ; `plan.partiront === 3`, aucun `refuse`/`reste`, aucun montant écrit restent vérifiés.
+
+## Données — conforme
+
+Aucune suppression. Idée de « Idées » hors domaine reliée à son sujet (g) ; idée refusée comptée dans « restes » (j) ; même geste renvoyé = même série, aucun sujet de plus (h).
 
 ## Tests lancés (branche)
 
-`npx vitest run tests/serie-hors-domaine-v21s.test.ts tests/e2e-verif1-bc-serie.test.ts tests/l2-13c-plafonds-claude.test.ts tests/paquet4-jonctions.test.ts` : **40 passés, 1 échec**. L'échec, `paquet4-jonctions` « Jonction 4 · rappel « Votre marque » … geste TikTok » (`ZERNIO_NON_RELIE`), est **antérieur** : il échoue à l'identique sur `origin/master` et n'a aucun lien avec le diff.
+- `npx vitest run tests/serie-hors-domaine-v21s.test.ts tests/e2e-verif1-bc-serie.test.ts tests/l2-13c-plafonds-claude.test.ts tests/paquet4-jonctions.test.ts` → 40 passés, 1 échec : `paquet4-jonctions` « Jonction 4 · rappel … geste TikTok » (`ZERNIO_NON_RELIE`) — **identique sur origin/master**, sans lien.
+- `tests/garde-ecran.test.ts` : « aucun texte affiché … jargon technique » rouge — **identique sur origin/master**, sans lien.
+- Autres consommateurs du sort de série (`c5-serie-ecriture`, `ciblage/relecture-c2c3`, `ordre-25-10/formats-sans-accord`, `paquet4-relecture-exactitude`, `paquet4-rerelecture-exactitude`, `r7-origine-usine-serie`) → 60/60.
+- `npx tsc --noEmit -p .` (heap 8 Go) : 154 erreurs sur la branche, 154 sur master, mêmes lignes (seul l'ordre d'affichage des unions diffère ; `remotion` absent, etc.). **Aucune erreur neuve.**
 
-Sur master, pour comparaison : `e2e-verif1-bc-serie` + `paquet4-jonctions` = 10 échecs sur 23 (9 dans e2e-verif1, corrigés par la branche).
+## Mutations
 
-`npx tsc --noEmit -p .` : 0 erreur sur la branche, 0 sur master.
+| #   | Mutation                                                      | Résultat                        |
+| --- | ------------------------------------------------------------- | ------------------------------- |
+| M1  | `serie-ecriture.ts` : `lance.ok` → `true`                     | ROUGE : (a) (b) (c) (e) (g) (j) |
+| M2  | `actions.ts` : `restes` = `sort !== "parti"`                  | ROUGE : (c) (e) (j)             |
+| M3  | `suiviSerie` : `a-completer` ignoré                           | ROUGE : (f) (j)                 |
+| M4  | Journal sans « hors du domaine »                              | ROUGE : (b) (c)                 |
+| M5  | Notification sans « hors du domaine »                         | ROUGE : (e) (lecture du source) |
+| M6  | Notification : `${aCompleter}` à la place de `${horsDomaine}` | **VERTE** → bloquant            |
 
-## Mutations (toutes annulées ensuite, `git status` propre)
+## Pour passer OK
 
-1. `serie-ecriture.ts` : une idée arrêtée à 0 € redevient `sort: "parti"` → **8 échecs** (rouge ✔).
-2. `actions.ts` : `restes` recompte tout ce qui n'est pas `parti` → **3 échecs** (rouge ✔).
-3. `serie-ecriture.ts` : le suivi ignore de nouveau `a-completer` → **3 échecs** (rouge ✔).
-4. `FeuilleSerie.tsx:97` : la phrase affiche `${aCompleter}` à la place de `${horsDomaine}` → **0 échec** (reste VERTE ✘).
+1. Fonction pure exportée (ex. `src/components/generateur/phrase-serie.ts` ou dans `domaine/`) qui rend la phrase à partir de `{ partis, restes, horsDomaine, aCompleter }` ; FeuilleSerie l'appelle.
+2. Test exécuté avec des comptes tous distincts (ex. partis 3, restes 1, horsDomaine 2, aCompleter 1) qui vérifie la phrase exacte, et le cas sans aucun manque (phrase inchangée).
+3. Rejouer M6 : doit rougir.
 
-## Ce qui bloque
-
-Le cas (e), « l'action et la notification », ne prouve la notification que par la présence de chaînes dans le source (`toContain("hors du domaine d'Axion-IA")`, `toMatch(/horsDomaine/)`). Une notification qui donne à Will un mauvais compte (mutation 4) reste verte. Le comportement ajouté côté écran n'a donc pas de test qui exécute sa promesse. Correction demandée : extraire la phrase dans une fonction pure et la tester (comptes distincts, ordre des segments, cas sans aucun manque identique à master : « 3 idées en écriture »).
+Réserve non bloquante : plancher `> 0,15` à 0,05 $ sous la mesure ; un `toBeCloseTo(0.1995, 3)` serait plus serré.
