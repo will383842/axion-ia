@@ -126,11 +126,12 @@ Référence master prompt : `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md` § 
 2. **Review humaine** (review-queue admin) : reviewer coche cette checklist
    via composant `<Seo60Checklist>` (à brancher Sprint S6.3) sur l'item
    éditeur. Tous bloquants verts = bouton "Publier" actif.
-3. **CI gate** : `pnpm seo:audit` (script existant) scanne les 60+ items sur
-   les 5 URLs pilotes (Lighthouse + custom Cheerio rules). PR refusée si
-   régression sur un bloquant.
-4. **Pré-prod** : `pnpm seo:audit --tier=tier_1_indexable` exécute la
-   checklist complète avant `pnpm build`.
+3. **CI gate : n'existe pas (corrigé le 2026-11-27).** `pnpm seo:audit` est un stub
+   (`scripts/seo-audit.ts` ne fait qu'un `console.warn`) : aucune PR n'est refusée sur ce
+   critère. Le score de citabilité (`src/server/seo-pilotage/citabilite/`, module pur,
+   non branché à ce jour) servira à prioriser le travail éditorial, sans bloquer de PR.
+4. **Pré-prod** : non automatisé (le stub `pnpm seo:audit` ne vérifie rien) ; la
+   checklist se coche à la main en revue.
 
 ## Maintenance
 
