@@ -48,6 +48,9 @@ describe("coordonneesDe", () => {
     expect(coordonneesDe({ departement: "2a" })?.precision).toBe("departement");
     expect(coordonneesDe({ departement: "974" })?.lat).toBeLessThan(0);
   });
+  it("département inconnu renseigné → null, pas d'homonyme au hasard", () => {
+    expect(coordonneesDe({ ville: "Saint-Denis", departement: "99" }, VILLES)).toBeNull();
+  });
   it("rien d'exploitable → null", () => {
     expect(coordonneesDe({})).toBeNull();
     expect(coordonneesDe({ ville: "Nulle part" })).toBeNull();

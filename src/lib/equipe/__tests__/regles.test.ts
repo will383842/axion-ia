@@ -3,7 +3,7 @@ import {
   elementsDistinctifs,
   estIndexable,
   estTextePropre,
-  fichePublique,
+  fichePublique as fichePubliqueBrute,
   initiales,
   nomAffiche,
   slugCollaborateur,
@@ -11,6 +11,7 @@ import {
   type FicheCollaborateur,
 } from "..";
 
+const fichePublique = (f: FicheCollaborateur) => fichePubliqueBrute(f)!;
 const REPONSE = "x".repeat(10);
 const reponseLongue =
   `${"Camille accompagne les TPE et PME dans leurs projets d'intelligence artificielle. ".repeat(4)}`.trim();
@@ -209,6 +210,71 @@ describe("estIndexable", () => {
   });
   it("drapeau dirigeant sans slug figé : pas de passe-droit", () => {
     expect(estIndexable(fiche({ estDirigeantPrincipal: true }))).toBe(false);
+  });
+});
+
+describe("durcissements (relecture)", () => {
+  it("objets imbriqués recopiés champ par champ", () => {
+    const sale = {
+      ...riche,
+      photo: { ...riche.photo!, nomOriginal: "Dupont" },
+      metiers: [{ id: "veille", nom: "Veille", auteur: "Dupont" }],
+      parcours: { avant: [{ annee: 2015, libelle: "Data", chef: "Dupont" }] },
+    } as unknown as FicheCollaborateur;
+    expect(JSON.stringify(fichePublique(sale))).not.toContain("Dupont");
+  });
+  it("slug contenant le nom de famille remplacé par le prénom", () => {
+    const f = fiche({ slug: "camille-dupont-martin" });
+    expect(fichePublique(f).slug).toBe("camille");
+  });
+  it("nom de famille glissé dans le prénom", () => {
+    const f = fiche({ prenom: "Camille Dupont-Martin" });
+    expect(nomAffiche(f)).toBe("Camille");
+    expect(initiales(f)).toBe("C");
+    expect(slugCollaborateur(f.prenom, null, [], f.nomComplet)).toBe("camille");
+  });
+  it("prénom composé avec espace conservé", () => {
+    const f = fiche({ prenom: "Marie Claire", nomComplet: "Marie Claire Dupont" });
+    expect(nomAffiche(f)).toBe("Marie Claire");
+  });
+  it("Williams n'a jamais de point sur la carte", () => {
+    expect(fichePublique({ ...williams, afficherSurCarte: true }).afficherSurCarte).toBe(false);
+  });
+  it("ville ou texte interdit écartés de la sortie et du slug", () => {
+    const f = fiche({ ville: "Grenoble", fonction: "Expert à 100 euros" });
+    expect(fichePublique(f).ville).toBeUndefined();
+    expect(fichePublique(f).fonction).toBe("");
+    expect(slugCollaborateur("Camille", "Grenoble", ["camille"])).toBe("camille-2");
+  });
+  it("prix en toutes lettres refusés", () => {
+    expect(estTextePropre("Tarif 100 euros HT")).toBe(false);
+    expect(estTextePropre("1 500 EUR")).toBe(false);
+  });
+  it("Williams : réponse non propre → non indexable", () => {
+    expect(estIndexable({ ...williams, reponseQui: "Grenoble 100 €" })).toBe(false);
+  });
+  it("consentement invalide ≠ consentement", () => {
+    expect(estIndexable({ ...riche, photo: { ...riche.photo!, consentementLe: "non" } })).toBe(
+      false,
+    );
+  });
+  it("éléments null dans les tableaux ne plantent pas", () => {
+    const f = {
+      ...riche,
+      metiers: [null],
+      parcours: { avant: [null] },
+    } as unknown as FicheCollaborateur;
+    expect(() => estIndexable(f)).not.toThrow();
+    expect(() => fichePublique(f)).not.toThrow();
+  });
+  it("prénom vide → pas de fiche publique", () => {
+    expect(fichePubliqueBrute(fiche({ prenom: " " }))).toBeNull();
+  });
+  it("accents décomposés et lettres spéciales", () => {
+    expect(initiales(fiche({ prenom: "e\u0301lodie" }))).toBe("É");
+    expect(slugifier("Łukasz")).toBe("lukasz");
+    expect(slugifier("Ørjan")).toBe("orjan");
+    expect(slugifier("Groß")).toBe("gross");
   });
 });
 

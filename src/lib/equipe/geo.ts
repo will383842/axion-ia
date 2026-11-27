@@ -133,6 +133,8 @@ export function coordonneesDe(
   villes: ReadonlyArray<VilleConnue> = [],
 ): Coordonnees | null {
   const dep = codeDepartement(lieu.departement);
+  // Un département renseigné mais inconnu : on ne devine pas (homonymes).
+  if (dep === null && (lieu.departement ?? "").trim() !== "") return null;
   const cle = slugifier(lieu.ville);
   if (cle) {
     const trouvee = villes.find(
