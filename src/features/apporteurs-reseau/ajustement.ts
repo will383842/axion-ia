@@ -28,6 +28,7 @@ import {
   PRIX_REFERENCE_JOURNEE_IA_CENTS,
   euros,
   PALIER_CONFERENCE,
+  MESSAGE_GRILLE_INCONNUE,
   PARRAINAGE_BPS,
   TAUX_BPS,
   type ActiviteCommission,
@@ -134,7 +135,9 @@ export function commissionPourPrixConserve(
           montantActuelCents,
           Math.round((Math.max(0, prixHtCents) * TAUX_BPS.un_a_un) / 10_000),
         );
-  // Version signée inconnue : jamais de montant (la ligne ne bouge pas, l'escalade part).
+  // Version signée inconnue : jamais de montant, la ligne ne bouge pas. L'alerte critique part du
+  // passage des avoirs (`avoir-client.ts`, code apporteur_grille_inconnue_avoir) ; `reduireCommission`
+  // refuse avec MESSAGE_GRILLE_INCONNUE.
   if (l.grille === null) return null;
   const calc = calculerCommissionSelonGrille({
     activite: l.activite as ActiviteCommission,
@@ -258,6 +261,7 @@ export async function reduireCommission(
       message: `Le prix conservé doit être inférieur au prix facturé (${euros(avant.factureHtCents)} HT).`,
     };
   const { grille } = await grilleDeLaLigne(avant);
+  if (grille === null) return { ok: false, message: MESSAGE_GRILLE_INCONNUE };
   const nouveau = commissionPourPrixConserve(
     { ...avant, grille },
     prixConserveHtCents,

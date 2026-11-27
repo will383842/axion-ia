@@ -33,6 +33,7 @@ import {
   partDuParrain,
   reduireCommission,
 } from "./ajustement";
+import { alerteInterne } from "./alerte-interne";
 import { dateFr } from "./autofacture-donnees";
 import {
   commandeRenduePourLaLigne,
@@ -51,6 +52,7 @@ import {
   plafondBaseCommissionnableCents,
   FORFAIT_CONFERENCE_CENTS,
   PALIER_CONFERENCE,
+  MESSAGE_GRILLE_INCONNUE,
   PALIER_JOURNEE_IA,
   TAUX_BPS,
   type GrilleCommission,
@@ -123,7 +125,7 @@ interface Calcul {
   palier: string | null;
   prixPublicHtCents: number | null;
   montantCents: number;
-  /** Grille du contrat signé de la ligne ; `null` : version inconnue → aucune cible. */
+  /** Grille du contrat signé de la ligne ; `null` : version inconnue → aucune cible (la ligne ne bouge pas ; le passage pose l'alerte critique `apporteur_grille_inconnue_avoir`). */
   grille: GrilleCommission | null;
 }
 
@@ -777,6 +779,21 @@ export async function reprendreApresAvoirsClients(
       const grilleFilleul = filleul ? await grilleDe(filleul) : null;
       const parrainParAjustement =
         !!filleul && !filleul.autofactureNumero && estModifiable(filleul.statut);
+      // Grille inconnue (ligne ou filleul) alors qu'un avoir actif existe : la ligne ne bouge pas
+      // (aucun montant inventé) mais Williams est prévenu, une seule fois par ligne.
+      const alerterGrilleInconnue = async (x: { id: string }, grille: GrilleCommission | null) => {
+        if (grille !== null || sansAvoirActif) return;
+        await alerteInterne({
+          jobId: `apporteur-grille-inconnue-avoir-${x.id}`,
+          code: "apporteur_grille_inconnue_avoir",
+          titre: "Avoir client : commission à ajuster à la main, version du contrat signé inconnue",
+          message: `Un avoir client touche une commande dont la commission (ligne ${x.id}) n'a pas de grille connue : elle n'a pas été recalculée. ${MESSAGE_GRILLE_INCONNUE} Console : Apporteurs › Commissions.`,
+          cibleType: "CommissionApporteur",
+          cibleId: x.id,
+          niveau: "critique",
+          maintenant,
+        });
+      };
       const ordre = [...groupe].sort((a, b) => Number(a.parrainage) - Number(b.parrainage));
 
       for (const l of ordre) {
@@ -794,7 +811,11 @@ export async function reprendreApresAvoirsClients(
                 grille: grilleFilleul,
               })
             : null;
-          if (cible === null || cible >= montant) continue;
+          if (cible === null) {
+            if (net > 0) await alerterGrilleInconnue(l, grilleFilleul);
+            continue;
+          }
+          if (cible >= montant) continue;
           const u = await prisma.commissionApporteur.updateMany({
             where: { id: l.id, montantCents: montant, autofactureNumero: null, statut: l.statut },
             data: cible <= 0 ? { statut: "annulee" } : { montantCents: cible },
@@ -817,7 +838,10 @@ export async function reprendreApresAvoirsClients(
               net,
               baseHorsRecurrent,
             );
-            if (cible === null) continue;
+            if (cible === null) {
+              await alerterGrilleInconnue(l, await grilleDe(l));
+              continue;
+            }
             let apres = montant;
             if (net > l.factureHtCents && cible > montant) {
               if (await remonter(l, montant, cible, net, motifRetour(net))) {
@@ -903,7 +927,10 @@ export async function reprendreApresAvoirsClients(
             ? { ...filleul, montantCents: filleul.montantCents ?? 0, grille: grilleFilleul }
             : undefined,
         );
-        if (cibleLigne === null) continue;
+        if (cibleLigne === null) {
+          await alerterGrilleInconnue(l, l.parrainage ? grilleFilleul : await grilleDe(l));
+          continue;
+        }
         // Tour 2/2 (défaut 4) : la cible porte sur TOUT ce que la ligne a rapporté (montant −
         // reprises + compléments vivants). Une ligne déjà reprise ou complétée ne descend jamais
         // sous la cible de l'état final (l'argent revenu reste à l'apporteur).

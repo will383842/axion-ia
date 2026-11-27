@@ -136,7 +136,7 @@ const PALIERS = [
   ...PALIERS_FORMATION_LONGUE.map((p) => ({
     id: p.id,
     libelle: p.libelle,
-    detail: `${euros(FORFAIT_JOURNEE_FORMATION_V2_CENTS)} HT par journée (contrats 2.3 à 2.6), ${euros(PLAFOND_FORMATION_LONGUE_CENTS)} HT au plus (2.8 ou avenant), au prorata si ${euros(p.prixJourCents)} HT par journée (quantité = journées)`,
+    detail: `${euros(FORFAIT_JOURNEE_FORMATION_V2_CENTS)} HT par journée (contrats 2.3 à 2.6), ${euros(PLAFOND_FORMATION_LONGUE_CENTS)} HT au plus (2.8 ou avenant), plein si ${euros(p.prixJourCents)} HT par journée ou plus, sinon au prorata (quantité = journées)`,
   })),
   {
     id: PALIER_JOURNEE_IA,
