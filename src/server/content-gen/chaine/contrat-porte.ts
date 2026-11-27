@@ -154,6 +154,13 @@ export function tentativeEnCours(reecrituresFaites: number): number {
   return reecrituresFaites + 1;
 }
 
+/** Sous-critères de B11 rendus par la porte réelle → cause précise permise pour B11. */
+const PRECISION_SOUS_CRITERE: Readonly<Record<string, CodeRefus | undefined>> = {
+  B11a: "structure_titres",
+  B11b: "structure_titres",
+  B11c: "reponse_directe_absente",
+};
+
 interface DefautBloquant {
   readonly id: CritereBloquant;
   readonly etat: "echec" | "non_evalue";
@@ -167,19 +174,54 @@ interface DefautBloquant {
  * répété, le pire état l'emporte.
  */
 function defautsBloquants(sortie: SortiePorte): DefautBloquant[] {
-  const parId = new Map<IdCritere, ResultatCritere>();
-  for (const c of sortie.criteres) {
-    const avant = parId.get(c.id);
-    const rang = (e: EtatCritere) => (e === "ok" ? 0 : e === "non_evalue" ? 1 : 2);
-    if (!avant || rang(c.etat) > rang(avant.etat)) parId.set(c.id, c);
+  const parId = new Map<IdCritere, ResultatCritere[]>();
+  const rang = (e: EtatCritere) => (e === "ok" ? 0 : e === "non_evalue" ? 1 : 2);
+  for (const brut of sortie.criteres) {
+    // Sous-critères de la porte réelle (B11a, B11b, B11c) : repliés sur leur critère parent,
+    // avec la cause qui leur correspond (§ 4.1 de la porte), sans écraser une précision explicite.
+    const sous = /^(B\d{2})[a-z]$/.exec(brut.id);
+    const parent = sous && estCritereBloquant(sous[1]) ? sous[1] : undefined;
+    const precision = brut.precision ?? PRECISION_SOUS_CRITERE[brut.id];
+    const c: ResultatCritere = parent
+      ? { ...brut, id: parent, ...(precision !== undefined ? { precision } : {}) }
+      : brut;
+    parId.set(c.id, [...(parId.get(c.id) ?? []), c]);
   }
   const defauts: DefautBloquant[] = [];
   for (const id of CRITERES_BLOQUANTS) {
-    const r = parId.get(id);
-    if (!r) defauts.push({ id, etat: "non_evalue" });
-    else if (r.etat !== "ok") defauts.push({ id, etat: r.etat, resultat: r });
+    const rs = parId.get(id);
+    if (!rs) {
+      defauts.push({ id, etat: "non_evalue" });
+      continue;
+    }
+    // Le pire état l'emporte ; tous les échecs d'une même famille (B11, B11a, B11b, B11c)
+    // sont gardés : chacun a sa section et sa cause, et doit être corrigé.
+    const pire = Math.max(...rs.map((r) => rang(r.etat)));
+    if (pire === 0) continue;
+    if (pire === 1) {
+      const r = rs.find((x) => x.etat === "non_evalue");
+      if (r) defauts.push({ id, etat: "non_evalue", resultat: r });
+      continue;
+    }
+    const vus = new Set<string>();
+    for (const r of rs) {
+      if (r.etat !== "echec") continue;
+      const cle = `${r.section ?? ""}|${r.precision ?? ""}`;
+      if (vus.has(cle)) continue;
+      vus.add(cle);
+      defauts.push({ id, etat: "echec", resultat: r });
+    }
   }
   return defauts;
+}
+
+/**
+ * Défauts pour DÉCIDER (refus, action). B17 est branché en Q10 : tant que la porte ne rend
+ * aucune ligne B17, son absence n'est pas un « B17 illisible » (qui serait un report) et ne
+ * déclenche rien. `publicationAutorisee`, elle, continue d'exiger B17 « ok » : échec fermé.
+ */
+function defautsPourDecider(sortie: SortiePorte): DefautBloquant[] {
+  return defautsBloquants(sortie).filter((d) => !(d.id === "B17" && d.resultat === undefined));
 }
 
 /**
@@ -229,17 +271,16 @@ export interface ContexteRefus {
 
 /**
  * Règle UNIQUE du report, partagée par `refusDepuisVerdict` et `actionApresVerdict`
- * (elles ne doivent jamais diverger) : B17 (coupe-circuit) en défaut, quel que soit
- * le reste (B17 non évalué : seulement s'il n'y a pas d'autre critère manquant), et note ≥ 70 → le contenu attend (§ 8 de la chaîne : pas de réécriture).
+ * (elles ne doivent jamais diverger) : § 5 de la porte, « seul B17 échoue » (un B04 non évalué ne compte pas comme un échec) (plafond du jour
+ * ou coupe-circuit ; B17 illisible = report, jamais blocage) et note ≥ 70 → le contenu attend,
+ * sans réécriture ni abandon. Si un autre bloquant est en défaut, la règle ordinaire s'applique.
+ * `defauts` vient de `defautsPourDecider` : un B17 que la porte ne rend pas encore n'y figure pas.
  */
 function reportAttendu(defauts: readonly DefautBloquant[], note: number): boolean {
   if (note < SEUIL_BLOQUE) return false;
-  const b17 = defauts.find((d) => d.id === "B17");
-  if (!b17) return false;
-  if (b17.etat === "echec") return true;
-  // B17 seulement illisible : report s'il est seul (ou avec B04) ; si d'autres critères
-  // manquent aussi (sortie vide ou tronquée), c'est une mise en attente, pas un report.
-  return defauts.every((d) => d.id === "B17" || d.etat === "echec" || d.id === "B04");
+  if (!defauts.some((d) => d.id === "B17")) return false;
+  // B04 non évalué (liste réglementaire pas encore activée) n'est pas un échec : le contenu attend de toute façon.
+  return defauts.every((d) => d.id === "B17" || (d.id === "B04" && d.etat === "non_evalue"));
 }
 
 /**
@@ -270,7 +311,7 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
   };
   // Note invalide : panne de la porte, pas faute du contenu (action : mise en attente).
   if (!noteValide(sortie.note)) return [];
-  const defauts = defautsBloquants(sortie);
+  const defauts = defautsPourDecider(sortie);
   // Report (B17 en défaut, note ≥ 70) : le contenu attend, aucune ligne de refus.
   if (reportAttendu(defauts, sortie.note)) return [];
   // Bloquant hors B04 non jugé (source en panne) : mise en attente, donc aucune ligne de refus.
@@ -335,7 +376,7 @@ export type ActionApresVerdict =
 /**
  * Ce que fait la chaîne d'un verdict. Ordre des règles :
  * 1. note invalide → mise en attente ;
- * 2. B17 en échec, ou illisible sans autre critère manquant, note ≥ 70 → report (ni réécriture ni abandon) ;
+ * 2. seul B17 en défaut (échec ou illisible, éventuellement avec B04 non évalué), note ≥ 70 → report (ni réécriture ni abandon) ;
  * 3. publiable et sans défaut → relecture humaine (jamais de publication directe) ;
  * 4. bloquant (hors B17) non évalué ou absent, sans échec → mise en attente,
  *    sauf B04 seul : relecture humaine (§ 5 de la porte) ; un non évalué hors B04
@@ -350,9 +391,9 @@ export type ActionApresVerdict =
  *    viennent des avertissements localisés, à défaut → abandon `autre`.
  */
 export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): ActionApresVerdict {
-  const defauts = defautsBloquants(sortie);
+  const defauts = defautsPourDecider(sortie);
   if (!noteValide(sortie.note)) {
-    return { action: "mettre_en_attente", criteres: defauts.map((d) => d.id) };
+    return { action: "mettre_en_attente", criteres: [...new Set(defauts.map((d) => d.id))] };
   }
   if (reportAttendu(defauts, sortie.note)) return { action: "reporter" };
   if (
@@ -370,7 +411,7 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   // Un bloquant hors B04 non jugé (source en panne) : on attend, même s'il y a aussi un échec
   // (pas de réécriture ni de dérogation fondée sur une évaluation incomplète).
   if (nonEvalues.some((d) => d.id !== "B04")) {
-    return { action: "mettre_en_attente", criteres: nonEvalues.map((d) => d.id) };
+    return { action: "mettre_en_attente", criteres: [...new Set(nonEvalues.map((d) => d.id))] };
   }
   if (echecs.length === 0 && nonEvalues.length > 0) {
     // § 5 de la porte : « B04 non évalué = relecture humaine » (liste réglementaire pas encore activée).
@@ -382,7 +423,7 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   // Une dérogation ne consomme aucune réécriture : elle passe avant le plafond.
   // Sous 70, une dérogation ne rendrait rien publiable : pas de temps humain perdu.
   if (echecs.length > 0 && aCorriger.length === 0 && sortie.note >= SEUIL_BLOQUE) {
-    return { action: "derogation_ou_fusion", criteres: echecs.map((d) => d.id) };
+    return { action: "derogation_ou_fusion", criteres: [...new Set(echecs.map((d) => d.id))] };
   }
   // Compteurs corrompus (NaN, négatif) : plafond atteint, jamais « illimité » (échec fermé).
   const compteurOk =

@@ -11,8 +11,9 @@ Module pur (aucune entrée-sortie, aucune migration, rien de branché) dans `src
 ## Choix à connaître
 
 - Quand la chaîne (§ 8) et la porte (§ 5.1) se contredisent, la chaîne prime : B04 → `fait_non_source` (pas de code `reglementation`), B05 → `intention_couverte`, B06 → `doublon_semantique`, B07 → `apport_absent`, B16 → `generique` (`non_actionnable` reste propre au rôle R5). Le § 5.1 de la porte est à mettre à jour.
-- Écart assumé : B08 prend par défaut `reponse_directe_absente` (code demandé pour C4), alors que le § 8 de la chaîne dit `style`. À mettre à jour dans le § 8. B11 reste `style` par défaut, avec `longueur_hors_fourchette` et `structure_titres` en précision.
-- B17 est un report, jamais un refus : dès que B17 est en échec (ou illisible sans autre critère manquant) et que la note est d'au moins 70, le contenu attend, sans réécriture ni ligne de refus. Une seule règle sert à `refusDepuisVerdict` et à `actionApresVerdict`. Un critère absent de la sortie de la porte vaut « non évalué » (échec fermé). Un « non évalué » n'est pas un refus : le contenu est mis en attente, même s'il y a aussi un échec, et aucune ligne de refus n'est écrite (B04 seul avec une bonne note : relecture humaine, comme le prévoit la porte).
+- Écart assumé : B08 prend par défaut `reponse_directe_absente` (code demandé pour C4), alors que le § 8 de la chaîne dit `style`. À mettre à jour dans le § 8. B11 reste `style` par défaut, avec `longueur_hors_fourchette`, `structure_titres` et `reponse_directe_absente` en précision.
+- B17 est un report, jamais un refus : conformément au § 5 de la porte (« seul B17 échoue »), le contenu attend, sans réécriture ni ligne de refus, quand B17 est le seul bloquant en défaut (un B04 non évalué ne compte pas) et que la note est d'au moins 70 ; avec un autre échec, la règle ordinaire s'applique. Tant que la porte (avant Q10) ne rend aucune ligne B17, son absence n'est PAS un report : elle ne déclenche rien, mais `publicationAutorisee` reste fermée (échec fermé).
+- Sous-critères B11a, B11b, B11c rendus par la porte : repliés sur B11 (B11a et B11b → `structure_titres`, B11c → `reponse_directe_absente`, désormais permis pour B11). Une seule règle sert à `refusDepuisVerdict` et à `actionApresVerdict`. Un critère absent de la sortie de la porte vaut « non évalué » (échec fermé). Un « non évalué » n'est pas un refus : le contenu est mis en attente, même s'il y a aussi un échec, et aucune ligne de refus n'est écrite (B04 seul avec une bonne note : relecture humaine, comme le prévoit la porte).
 - Un seul compteur de réécritures (`reecrituresFaites`), plafonds 2 réécritures et 3 $.
 
 ## Comment vérifier
@@ -21,9 +22,11 @@ Module pur (aucune entrée-sortie, aucune migration, rien de branché) dans `src
 
 ## Points connus, non traités
 
+- Adaptateur à écrire au branchement : le `ResultatCritere` de la porte réelle (`statut`, `preuves[]`, `raison` nullable, sans `section`) diffère de celui de ce contrat (`etat`, `preuve`, `section`) ; sans `section`, un échec corrigeable finit en abandon « non localisable ».
+- Le registre actuel de la porte (Q2) ne rend que B01, B03, B08, B11 (et ses sous-critères), B13 et B14 : branché tel quel, le contrat lirait les autres bloquants comme « non évalués » et mettrait tout contenu en attente ; l'exception B17 n'a d'effet qu'une fois B01 à B16 rendus (Q3 et suivants). À brancher ensemble.
 - Un seul résultat par critère (pas par section) et pas de validation à l'exécution de la sortie de la porte : à prévoir au branchement (C5 et suivantes).
 - Un dérogeable seul avec une note sous 70 n'est pas proposé à la dérogation : abandon avec son code.
 - Le seuil de publication (85) est fixe dans ce module ; la porte peut le relever à 90 : à paramétrer au branchement.
-- Trois tours de relecture Opus faits ; le troisième a relevé un défaut (lignes de refus écrites alors que le contenu est mis en attente), corrigé ensuite. Le code final n'a pas été relu une 4e fois (limite de 3 tours).
+- Relectures Opus : tour 4 en cours après les correctifs (B17 absent avant Q10, sous-critères B11a/b/c, règle du report alignée sur le § 5).
 
-VERDICT OPUS : À CORRIGER
+VERDICT OPUS : EN COURS

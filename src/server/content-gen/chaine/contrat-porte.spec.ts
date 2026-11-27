@@ -208,15 +208,17 @@ describe("actionApresVerdict", () => {
     expect(actionApresVerdict(s, debut).action).toBe("reporter");
   });
 
-  it("B17 avec un autre échec (note ≥ 70) → report : la chaîne prime, pas de réécriture, pas de refus", () => {
+  it("B17 avec un autre échec (note ≥ 70) → règle ordinaire : seul B17 est un report (§ 5 de la porte)", () => {
     const s = sortie("a_corriger", [echec("B17"), echec("B08", { section: "intro" })]);
-    expect(actionApresVerdict(s, debut).action).toBe("reporter");
-    expect(refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 })).toEqual(
-      [],
-    );
+    expect(actionApresVerdict(s, debut).action).toBe("reecrire");
+    expect(
+      refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 }).map(
+        (r) => r.critere,
+      ),
+    ).toEqual(["B08"]);
   });
 
-  it("B17 non évalué + échec dur (B01) → report comme avec B04 en échec (même traitement)", () => {
+  it("B17 non évalué + échec dur (B01) → règle ordinaire, pas de report", () => {
     const b17ne = {
       id: "B17" as const,
       etat: "non_evalue" as const,
@@ -224,7 +226,68 @@ describe("actionApresVerdict", () => {
       raison: "illisible",
     };
     const s = sortie("a_corriger", [b17ne, echec("B01", { section: "intro" })], 80);
-    expect(actionApresVerdict(s, debut).action).toBe("reporter");
+    expect(actionApresVerdict(s, debut).action).toBe("reecrire");
+  });
+
+  it("porte pré-Q10 : B17 absent de la sortie n'est pas un report (sinon tout contenu attendrait)", () => {
+    const s = sortie("a_corriger", [echec("B08", { section: "intro" })], 80);
+    const sansB17 = { ...s, criteres: s.criteres.filter((c) => c.id !== "B17") };
+    expect(actionApresVerdict(sansB17, debut).action).toBe("reecrire");
+    expect(
+      refusDepuisVerdict(sansB17, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 }),
+    ).toHaveLength(1);
+    // et la publication reste fermée tant que B17 n'est pas rendu
+    const propre = sortie("publiable", [], 95);
+    const propreSansB17 = { ...propre, criteres: propre.criteres.filter((c) => c.id !== "B17") };
+    expect(publicationAutorisee({ etat: "ok", sortie: propreSansB17 })).toBe(false);
+    expect(publicationAutorisee({ etat: "ok", sortie: propre })).toBe(true);
+  });
+
+  it("sous-critères B11a, B11b, B11c de la porte réelle : repliés sur B11, cause précise", () => {
+    const sousCritere = (id: string) =>
+      ({
+        id,
+        etat: "echec",
+        preuve: "p",
+        raison: "r",
+        section: "intro",
+      }) as unknown as ResultatCritere;
+    for (const [id, code] of [
+      ["B11a", "structure_titres"],
+      ["B11b", "structure_titres"],
+      ["B11c", "reponse_directe_absente"],
+    ] as const) {
+      const s = sortie("a_corriger", [sousCritere(id)], 80);
+      const action = actionApresVerdict(s, debut);
+      expect(action).toEqual({
+        action: "reecrire",
+        corrections: [{ critere: "B11", section: "intro", code }],
+      });
+      const [r] = refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 });
+      expect(r).toMatchObject({ critere: "B11", code });
+      expect(publicationAutorisee({ etat: "ok", sortie: s })).toBe(false);
+    }
+  });
+
+  it("B11 et un sous-critère en échec ensemble : chaque section et chaque cause est gardée", () => {
+    const e = (id: string, section: string) =>
+      ({ id, etat: "echec", preuve: "p", raison: "r", section }) as unknown as ResultatCritere;
+    const s = sortie("a_corriger", [e("B11", "corps"), e("B11c", "intro"), e("B11a", "plan")], 80);
+    const action = actionApresVerdict(s, debut);
+    expect(action).toEqual({
+      action: "reecrire",
+      corrections: [
+        { critere: "B11", section: "corps", code: "style" },
+        { critere: "B11", section: "intro", code: "reponse_directe_absente" },
+        { critere: "B11", section: "plan", code: "structure_titres" },
+      ],
+    });
+    const refus = refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 });
+    expect(refus.map((r) => r.code)).toEqual([
+      "style",
+      "reponse_directe_absente",
+      "structure_titres",
+    ]);
   });
 
   it("un non évalué hors B04 avec un échec → mise en attente, pas de réécriture", () => {
@@ -470,7 +533,7 @@ describe("tour 3 : cohérence note / verdict / B04 / B17", () => {
     expect(refusDepuisVerdict(s, ctx).map((r) => r.code)).toEqual(["autre"]);
   });
 
-  it("B04 non évalué + B17 en défaut → report", () => {
+  it("B04 non évalué + B17 en défaut → report (B04 non évalué n'est pas un échec)", () => {
     const s = sortie("a_corriger", [b04, echec("B17")], 80);
     expect(actionApresVerdict(s, debut)).toEqual({ action: "reporter" });
     expect(refusDepuisVerdict(s, ctx)).toEqual([]);

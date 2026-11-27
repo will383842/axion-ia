@@ -119,8 +119,8 @@ export type CritereBloquant = (typeof CRITERES_BLOQUANTS)[number];
  *   `reponse_directe_absente`, code demandé par C4 (le § 8 doit être mis à jour) ;
  *   `style` si la réponse existe mais est mal formée (hors fourchette de 40 à
  *   60 mots, trop tardive).
- * - B11 : `style` par défaut ; `longueur_hors_fourchette` ou `structure_titres`
- *   (H1 unique, 3 à 8 H2) quand la complétude échoue pour l'une de ces causes.
+ * - B11 : `style` par défaut ; `longueur_hors_fourchette`, `structure_titres`
+ *   (H1 unique, 3 à 8 H2) ou `reponse_directe_absente` (B11c) quand la complétude échoue pour l'une de ces causes.
  * - Autres écarts avec le § 5.1 de la porte, où la chaîne prime : B05, B06
  *   (`intention_couverte`, `doublon_semantique`, pas `doublon_plan`), B07
  *   (`apport_absent`, pas `generique`), B16 (`generique` seul ; `non_actionnable`
@@ -142,7 +142,7 @@ export const CORRESPONDANCE_BNN: Readonly<
   B08: ["reponse_directe_absente", "style"],
   B09: ["dossier_insuffisant"],
   B10: ["appel_incoherent"],
-  B11: ["style", "longueur_hors_fourchette", "structure_titres"],
+  B11: ["style", "longueur_hors_fourchette", "structure_titres", "reponse_directe_absente"],
   B12: ["style"],
   B13: ["lien_mort"],
   B14: ["date_ou_auteur"],
