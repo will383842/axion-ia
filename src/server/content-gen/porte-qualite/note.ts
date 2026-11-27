@@ -9,8 +9,15 @@ export const MAX_PENALITES = Object.freeze({
   intention: 6,
 });
 
-const borne = (v: number | undefined, max: number): number =>
-  typeof v === "number" && Number.isFinite(v) ? Math.min(Math.max(v, 0), max) : 0;
+/**
+ * `undefined` = critère pas encore branché : 0 point. Une valeur NON FINIE (NaN,
+ * Infinity) est une mesure cassée : `null` n'est pas 0, elle compte au maximum.
+ */
+const borne = (v: number | undefined, max: number): number => {
+  if (v === undefined) return 0;
+  if (typeof v !== "number" || !Number.isFinite(v)) return max;
+  return Math.min(Math.max(v, 0), max);
+};
 
 export function calculerNote(p: PenalitesNote): number {
   const total =

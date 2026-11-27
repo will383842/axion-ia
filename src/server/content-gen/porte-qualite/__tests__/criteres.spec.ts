@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { validateDataQuality } from "../../quality/data-quality-gate";
-import { evaluerPorte } from "../porte";
+import { evaluerPorte as evaluerBrut } from "../porte";
+import { CRITERES } from "../registre";
 import {
   contenuValide,
   contexteValide,
@@ -10,6 +11,9 @@ import {
   REPONSE_DIRECTE,
 } from "./fixtures";
 import type { ContenuPorte, ContextePorte } from "../types";
+
+const evaluerPorte = (a: ContenuPorte, b: ContextePorte) =>
+  evaluerBrut(a, b, { idsAttendus: CRITERES.map((k) => k.id) });
 
 function r(id: string, c: Partial<ContenuPorte> = {}, x: Partial<ContextePorte> = {}) {
   return evaluerPorte(contenuValide(c), contexteValide(x)).criteres.find((k) => k.id === id)!;
@@ -35,6 +39,13 @@ describe("B01 doctrine (appelle interdits-publication, ne la copie pas)", () => 
   });
   it("refuse Grenoble dans le titre, la méta, un champ supplémentaire (alt, JSON-LD)", () => {
     expect(r("B01", { titre: "IA à Grenoble" }).statut).toBe("echec");
+    expect(r("B01", { corpsHtml: corpsValide() + "<p>Gre<span></span>noble</p>" }).statut).toBe(
+      "echec",
+    );
+    // un champ supplémentaire ne peut pas masquer le titre
+    expect(
+      r("B01", { titre: "IA à Grenoble", champsSupplementaires: { titre: "propre" } }).statut,
+    ).toBe("echec");
     expect(r("B01", { metaDescription: "Axion-IA à Grenoble" }).statut).toBe("echec");
     expect(r("B01", { champsSupplementaires: { "image.alt": "bureau à Grenoble" } }).statut).toBe(
       "echec",
@@ -59,8 +70,23 @@ describe("B03 faits canoniques (prix)", () => {
     expect(x.statut).toBe("echec");
     expect(x.preuves.join(" ")).toMatch(/1 234/);
   });
-  it("ignore le jeton {{PRIX}}", () => {
-    expect(r("B03", { corpsHtml: corpsValide() + "<p>Pour {{PRIX}}.</p>" }).statut).toBe("ok");
+  it("ignore le jeton {{price:journee-ia}}", () => {
+    expect(
+      r("B03", { corpsHtml: corpsValide() + "<p>Pour {{price:journee-ia}}.</p>" }).statut,
+    ).toBe("ok");
+  });
+  it("accepte le seul prix de la source unique, même avec espace insécable ou entité", () => {
+    for (const p of ["1 490 € HT", "1&nbsp;490&nbsp;€ HT", "1&#8239;490 &euro; HT"]) {
+      expect(
+        r("B03", { corpsHtml: corpsValide() + `<p>La Journée IA coûte ${p}.</p>` }).statut,
+        p,
+      ).toBe("ok");
+    }
+  });
+  it("ne juge pas un montant étranger à l'offre (aide, amende) : c'est B02", () => {
+    const corps =
+      corpsValide() + "<p>Une aide de 5 000 € existe. Une amende de 20 000 € est possible.</p>";
+    expect(r("B03", { corpsHtml: corps }).statut).toBe("ok");
   });
 });
 
@@ -165,7 +191,10 @@ describe("B13 maillage sortant", () => {
   });
   it("compte une fois un même lien répété, et accepte l'URL absolue du site", () => {
     const html = `<h1>T</h1><p>${REPONSE_DIRECTE}</p><a href="/fr/contact">a</a><a href="/fr/contact#x">b</a><a href="https://axion-ia.com/fr/blog/a">c</a>`;
-    expect(r("B13", { corpsHtml: html }).statut).toBe("echec");
+    const x = r("B13", { corpsHtml: html });
+    expect(x.statut).toBe("echec");
+    expect(x.raison).toMatch(/2 lien/);
+    expect(x.preuves).toContain("/fr/blog/a");
   });
   it("exige le lien vers la page propriétaire quand elle est connue", () => {
     expect(r("B13", {}, { pageProprietaire: "/fr/guide-ia-pme" }).statut).toBe("echec");
@@ -192,6 +221,9 @@ describe("B14 auteur et dates honnêtes", () => {
   });
   it("refuse une date de publication dans le futur", () => {
     expect(r("B14", { datePublished: "2026-12-30" }).statut).toBe("echec");
+  });
+  it("refuse une dateModified antérieure à la publication", () => {
+    expect(r("B14", { dateModified: "2026-10-01" }).statut).toBe("echec");
   });
   it("refuse une dateModified sur un contenu jamais publié", () => {
     expect(r("B14", { dateModified: "2026-11-20" }).statut).toBe("echec");

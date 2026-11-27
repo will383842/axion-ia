@@ -17,6 +17,7 @@ export function nettoyer(html: string): string {
 
 const ENTITES: Record<string, string> = {
   "&nbsp;": " ",
+  "&euro;": "€",
   "&amp;": "&",
   "&lt;": "<",
   "&gt;": ">",
@@ -28,7 +29,9 @@ const ENTITES: Record<string, string> = {
 export function texteDe(html: string): string {
   return html
     .replace(/<[^>]*>/g, " ")
-    .replace(/&(nbsp|amp|lt|gt|quot|apos|#39);/g, (e) => ENTITES[e] ?? " ")
+    .replace(/&#x([0-9a-f]+);/gi, (_e, h: string) => String.fromCodePoint(parseInt(h, 16) || 32))
+    .replace(/&#(\d+);/g, (_e, d: string) => String.fromCodePoint(parseInt(d, 10) || 32))
+    .replace(/&(nbsp|amp|lt|gt|quot|apos|euro);/g, (e) => ENTITES[e] ?? " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -60,7 +63,7 @@ export interface Lien {
 
 export function liens(html: string): Lien[] {
   const out: Lien[] = [];
-  const re = /<a\b[^>]*?\bhref\s*=\s*(?:"([^"]*)"|'([^']*)')[^>]*>([\s\S]*?)<\/a\s*>/gi;
+  const re = /<a\b[^>]*?(?<![-\w])href\s*=\s*(?:"([^"]*)"|'([^']*)')[^>]*>([\s\S]*?)<\/a\s*>/gi;
   for (const m of html.matchAll(re)) {
     out.push({ href: (m[1] ?? m[2] ?? "").trim(), ancre: texteDe(m[3] ?? "") });
   }

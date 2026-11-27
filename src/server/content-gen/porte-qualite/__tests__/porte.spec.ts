@@ -1,9 +1,19 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CRITERES, CLASSES_PAR_ID, IDS_BLOQUANTS_PREVUS } from "../registre";
 import { calculerNote, MAX_PENALITES } from "../note";
-import { evaluerPorte } from "../porte";
+import { evaluerPorte as evaluerBrut } from "../porte";
+import type { ContenuPorte, ContextePorte, Critere } from "../types";
 import { REGLAGES_PAR_DEFAUT, ReglagesPorteSchema, VERSION_PORTE } from "../reglages";
 import { contenuValide, contexteValide, corpsValide } from "./fixtures";
+
+/** Registre du squelette : on exige seulement ce qui est codé (sinon « publiable » est impossible). */
+const evaluerPorte = (c: ContenuPorte, x: ContextePorte, registre?: ReadonlyArray<Critere>) =>
+  evaluerBrut(c, x, {
+    registre,
+    idsAttendus: (registre ?? CRITERES).map((k) => k.id),
+  });
 
 describe("registre CRITERES", () => {
   it("identifiants uniques, libellé non vide, fonction présente", () => {
@@ -87,11 +97,17 @@ describe("décision", () => {
     const v = evaluerPorte(contenuValide(), contexteValide());
     expect(v.verdict).toBe("publiable");
     expect(v.note).toBe(100);
+    expect(v.criteresAbsents).toEqual([]);
     expect(v.versionPorte).toBe(VERSION_PORTE);
     expect(v.seuilsFiges).toEqual(REGLAGES_PAR_DEFAUT);
     expect(v.criteres.map((c) => c.id)).toEqual(CRITERES.map((c) => c.id));
+  });
+  it("critères prévus mais absents du registre (B02, B16…) : jamais publiable", () => {
+    const v = evaluerBrut(contenuValide(), contexteValide());
     expect(v.criteresAbsents).toContain("B02");
+    expect(v.criteresAbsents).toContain("B16");
     expect(v.criteresAbsents).not.toContain("B01");
+    expect(v.verdict).toBe("a_corriger");
   });
   it("un bloquant dur (Grenoble) donne bloque", () => {
     const v = evaluerPorte(contenuValide({ titre: "IA à Grenoble" }), contexteValide());
@@ -117,6 +133,38 @@ describe("décision", () => {
       evaluerPorte(contenuValide(), contexteValide({ penalites: { ...base, avertissements: 15 } }))
         .verdict,
     ).toBe("publiable");
+  });
+  it("bornes exactes : note 70 = a_corriger, 85 = publiable, 69 = bloque", () => {
+    const n = (p: number) =>
+      evaluerPorte(contenuValide(), contexteValide({ penalites: { avertissements: p } }));
+    expect(n(30).note).toBe(70);
+    expect(n(30).verdict).toBe("a_corriger");
+    expect(n(15).note).toBe(85);
+    expect(n(15).verdict).toBe("publiable");
+    expect(n(31).verdict).toBe("bloque");
+  });
+  it("réglages illisibles (NaN, clé manquante) : bloque, jamais publiable", () => {
+    const mauvais = {
+      ...REGLAGES_PAR_DEFAUT,
+      seuilBloque: NaN,
+      seuilPublication: undefined,
+    } as never;
+    const v = evaluerPorte(
+      contenuValide(),
+      contexteValide({ reglages: mauvais, penalites: { preuves: 16 } }),
+    );
+    expect(v.verdict).toBe("bloque");
+    expect(v.motifs[0]!.id).toBe("REGLAGES");
+  });
+  it("pénalité non finie : comptée au maximum, jamais 0", () => {
+    expect(calculerNote({ proximite: NaN })).toBe(90);
+    expect(calculerNote({ preuves: Infinity })).toBe(84);
+    expect(
+      evaluerPorte(
+        contenuValide(),
+        contexteValide({ penalites: { avertissements: NaN, preuves: NaN } }),
+      ).verdict,
+    ).toBe("bloque");
   });
   it("seuils pris dans les réglages du contexte", () => {
     const reglages = { ...REGLAGES_PAR_DEFAUT, seuilPublication: 95 };
@@ -157,7 +205,25 @@ describe("source indisponible = non évalué (échec fermé)", () => {
     expect(v.criteres[0]!.statut).toBe("non_evalue");
     expect(v.verdict).toBe("bloque");
   });
-  it("aucune E/S : l'évaluation est synchrone et déterministe", () => {
+  it("aucune E/S dans les sources du module (prisma, redis, réseau, horloge, env)", () => {
+    const racine = join(__dirname, "..");
+    const fichiers: string[] = [];
+    const parcourir = (d: string) => {
+      for (const e of readdirSync(d, { withFileTypes: true })) {
+        if (e.name === "__tests__") continue;
+        const p = join(d, e.name);
+        if (e.isDirectory()) parcourir(p);
+        else if (p.endsWith(".ts")) fichiers.push(p);
+      }
+    };
+    parcourir(racine);
+    expect(fichiers.length).toBeGreaterThan(8);
+    for (const f of fichiers) {
+      const src = readFileSync(f, "utf8");
+      expect(src, f).not.toMatch(/prisma|redis|\bfetch\(|process\.env|Date\.now|new Date\(\)/i);
+    }
+  });
+  it("l'évaluation est synchrone et déterministe", () => {
     const a = evaluerPorte(contenuValide(), contexteValide());
     const b = evaluerPorte(contenuValide(), contexteValide());
     expect(a).toEqual(b);

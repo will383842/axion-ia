@@ -37,7 +37,10 @@ export function evaluerB11b(c: ContenuPorte): ResultatBrut {
   return OK;
 }
 
-const BLOC = /<(p|ul|ol|dl|table|blockquote|figure|img|pre)\b/i;
+// Une image ou une figure d'en-tête entre le H1 et le chapô est permise.
+// B11c demande 20 mots (présence d'un vrai paragraphe) ; B08 demande 40 à 60 mots
+// sur le champ `directAnswer` : deux mesures distinctes, volontairement.
+const BLOC = /<(p|ul|ol|dl|table|blockquote|pre)\b/i;
 
 /**
  * B11c : le premier bloc sous le H1 (avant tout autre titre) est un paragraphe d'au

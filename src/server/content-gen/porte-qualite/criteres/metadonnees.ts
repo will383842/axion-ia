@@ -26,6 +26,8 @@ export function evaluerB14(c: ContenuPorte, x: ContextePorte): ResultatBrut {
       raisons.push("Date de modification illisible.");
     } else if (Date.parse(c.dateModified) > x.maintenant.getTime()) {
       raisons.push("Date de modification dans le futur.");
+    } else if (c.datePublished && jour(c.dateModified) < jour(c.datePublished)) {
+      raisons.push("Date de modification antérieure à la date de publication.");
     } else if (!c.datePublished || jour(c.dateModified) !== jour(c.datePublished)) {
       if (x.corpsDejaPublie.etat === "indisponible") {
         nonEvalue = `Corps déjà publié non lu : ${x.corpsDejaPublie.raison}`;

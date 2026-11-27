@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { liens } from "../html";
 import { evaluerPorte } from "../porte";
 import { contenuValide, contexteValide, corpsValide, mots, REPONSE_DIRECTE } from "./fixtures";
 
@@ -56,6 +57,10 @@ describe("B11c : réponse directe sous le H1", () => {
     const html = `<h1>T</h1><h2>A</h2><p>${mots(60)}</p>`;
     expect(statut("B11c", html).statut).toBe("echec");
   });
+  it("permet une image d'en-tête entre le H1 et la réponse", () => {
+    const html = `<h1>T</h1><img src="/a.png" alt="x"><figure><img src="/b.png" alt="y"></figure><p>${REPONSE_DIRECTE}</p>`;
+    expect(statut("B11c", html).statut).toBe("ok");
+  });
   it("refuse quand une liste ou un tableau précède le paragraphe", () => {
     const html = `<h1>T</h1><ul><li>a</li></ul><p>${REPONSE_DIRECTE}</p>`;
     expect(statut("B11c", html).statut).toBe("echec");
@@ -70,5 +75,11 @@ describe("B11c : réponse directe sous le H1", () => {
   });
   it("refuse sans H1 (rien sous lequel chercher)", () => {
     expect(statut("B11c", `<p>${REPONSE_DIRECTE}</p>`).statut).toBe("echec");
+  });
+});
+
+describe("lecture des liens", () => {
+  it("ne confond pas data-href avec href", () => {
+    expect(liens('<a data-href="/x" href="/y">z</a>').map((l) => l.href)).toEqual(["/y"]);
   });
 });
