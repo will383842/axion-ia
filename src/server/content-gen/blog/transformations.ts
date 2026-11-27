@@ -9,6 +9,12 @@
  * Ordre recommandé : sanitizer → buildToc → abaisserH1 → envelopperTableaux →
  * marquerLiensExternes → ancrerSousTitres. Toutes sont idempotentes.
  *
+ * Limites connues (sanitizer gelé) : `sanitizeContentGenHtml` retire `<caption>`
+ * et `<h1>` (la branche « caption existante » et `abaisserH1` n'agissent donc
+ * pas sur le blog actuel ; elles servent si la liste blanche évolue ou pour
+ * d'autres chemins). Un h1 abaissé après `buildToc` reste hors sommaire et sans
+ * `data-speakable`. Les tableaux imbriqués : seul le tableau externe est enveloppé.
+ *
  * ⚠️ `buildToc` reste gelé : ses `id` de `<h2>` ne sont jamais modifiés ici.
  */
 
@@ -29,7 +35,10 @@ function texteBrut(html: string): string {
     .trim();
 }
 
-const RE_ID = /\bid\s*=\s*(?:"([^"]*)"|'([^']*)')/i;
+/** Attributs d'une balise : tolère `>` dans une valeur entre guillemets. */
+const ATTRS = `(?:"[^"]*"|'[^']*'|[^'">])*`;
+
+const RE_ID = /(?:^|\s)id\s*=\s*(?:"([^"]*)"|'([^']*)')/i;
 
 function lireId(attrs: string): string | null {
   const m = RE_ID.exec(attrs);
@@ -38,7 +47,7 @@ function lireId(attrs: string): string | null {
 
 function idsPresents(html: string): Set<string> {
   const ids = new Set<string>();
-  for (const m of html.matchAll(/\bid\s*=\s*(?:"([^"]*)"|'([^']*)')/gi)) {
+  for (const m of html.matchAll(/(?:^|\s)id\s*=\s*(?:"([^"]*)"|'([^']*)')/gi)) {
     const id = m[1] ?? m[2];
     if (id) ids.add(id);
   }
@@ -60,29 +69,58 @@ export function envelopperTableaux(html: string, libelleNeutre: string): string 
     pris.add(`cap-${n}`);
     return `cap-${n}`;
   };
+  const ouvrante = new RegExp(`^<table(?=[\\s>/])${ATTRS}>`, "i");
+  const balises = /<(\/?)table(?=[\s>/])/gi;
+  const dejaEnveloppe = new RegExp(
+    `<div(?=[\\s])${ATTRS}\\bclass\\s*=\\s*["'][^"']*\\btable-scroll\\b[^"']*["']${ATTRS}>\\s*$`,
+    "i",
+  );
 
-  return html.replace(
-    /(<div\b[^>]*\bclass\s*=\s*["'][^"']*\btable-scroll\b[^"']*["'][^>]*>\s*)?(<table\b[^>]*>)([\s\S]*?)<\/table>/gi,
-    (complet: string, dejaEnveloppe: string | undefined, ouvrante: string, interieur: string) => {
-      if (dejaEnveloppe) return complet;
-      let corps = interieur;
+  let sortie = "";
+  let curseur = 0;
+  let debut = -1;
+  let profondeur = 0;
+  let tag: RegExpExecArray | null;
+  while ((tag = balises.exec(html)) !== null) {
+    if (tag[1] === "") {
+      if (profondeur === 0) debut = tag.index;
+      profondeur += 1;
+    } else if (profondeur > 0) {
+      profondeur -= 1;
+      if (profondeur > 0) continue;
+      const fin = html.indexOf(">", tag.index) + 1;
+      if (fin === 0) break;
+      const bloc = html.slice(debut, fin);
+      const ouv = ouvrante.exec(bloc);
+      const avant = html.slice(Math.max(0, debut - 600), debut);
+      if (!ouv || dejaEnveloppe.test(avant)) continue;
+      const finInterieur = bloc.length - "</table>".length;
+      let corps = bloc.slice(ouv[0].length, finInterieur);
+      const sousTableau = corps.search(/<table(?=[\s>/])/i);
+      const zone = sousTableau === -1 ? corps : corps.slice(0, sousTableau);
+      const cap = new RegExp(`<caption(?=[\\s>/])(${ATTRS})>`, "i").exec(zone);
       let idNom: string;
-      const cap = /<caption\b([^>]*)>/i.exec(corps);
       if (cap) {
         const existant = lireId(cap[1] ?? "");
         if (existant) {
           idNom = existant;
         } else {
           idNom = prochainId();
-          corps = corps.replace(/<caption\b([^>]*)>/i, `<caption id="${idNom}"$1>`);
+          corps =
+            corps.slice(0, cap.index) +
+            `<caption id="${idNom}"${cap[1] ?? ""}>` +
+            corps.slice(cap.index + cap[0].length);
         }
       } else {
         idNom = prochainId();
         corps = `<caption class="sr-only" id="${idNom}">${echapper(libelleNeutre)}</caption>${corps}`;
       }
-      return `<div class="table-scroll" role="region" tabindex="0" aria-labelledby="${idNom}">${ouvrante}${corps}</table></div>`;
-    },
-  );
+      sortie += html.slice(curseur, debut);
+      sortie += `<div class="table-scroll" role="region" tabindex="0" aria-labelledby="${echapper(idNom)}">${ouv[0]}${corps}${bloc.slice(finInterieur)}</div>`;
+      curseur = fin;
+    }
+  }
+  return sortie + html.slice(curseur);
 }
 
 /** Transforme chaque `<h1>` du corps en `<h2>` (le h1 de la page est celui de l'en-tête). */
@@ -135,14 +173,15 @@ export function idUniqueDepuis(texte: string, utilises: Set<string>): string {
 /**
  * Pose un `id` stable sur les `<h3>` (et sur un `<h2>` qui n'en a pas, ex. un
  * h1 abaissé). Un `id` déjà présent n'est JAMAIS modifié, donc ceux des `<h2>`
- * de `buildToc` restent intacts. `idsExistants` : ids déjà pris ailleurs.
+ * de `buildToc` restent intacts. Si `buildToc` n'a rien posé (moins de 3 h2),
+ * tous les h2 sans id reçoivent un id ici. `idsExistants` : ids déjà pris ailleurs.
  */
 export function ancrerSousTitres(html: string, idsExistants: Iterable<string> = []): string {
   if (!html) return html;
   const utilises = idsPresents(html);
   for (const id of idsExistants) utilises.add(id);
   return html.replace(
-    /<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi,
+    new RegExp(`<(h[23])(?=[\\s>/])(${ATTRS})>([\\s\\S]*?)<\\/\\1>`, "gi"),
     (complet: string, balise: string, attrs: string, interieur: string) => {
       if (lireId(attrs) !== null) return complet;
       const texte = texteBrut(interieur);
@@ -160,9 +199,9 @@ export function marquerLiensExternes(html: string, libelle: string): string {
   if (!html) return html;
   const mention = `<span class="sr-only" data-nouvelle-fenetre=""> ${echapper(libelle)}</span>`;
   return html.replace(
-    /<a\b([^>]*)>([\s\S]*?)<\/a>/gi,
+    new RegExp(`<a(?=[\\s>/])(${ATTRS})>([\\s\\S]*?)<\\/a>`, "gi"),
     (complet: string, attrs: string, interieur: string) => {
-      if (!/\btarget\s*=\s*["']?_blank\b/i.test(attrs)) return complet;
+      if (!/(?:^|\s)target\s*=\s*["']?_blank\b/i.test(attrs)) return complet;
       if (interieur.includes("data-nouvelle-fenetre")) return complet;
       return `<a${attrs}>${interieur}${mention}</a>`;
     },

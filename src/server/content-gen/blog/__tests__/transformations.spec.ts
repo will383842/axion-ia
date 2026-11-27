@@ -80,6 +80,52 @@ describe("envelopperTableaux", () => {
   });
 });
 
+describe("robustesse (sortie réelle du sanitizer)", () => {
+  it("un > dans un attribut de table ne casse pas le balisage", () => {
+    const out = envelopperTableaux(
+      '<table title="a>b"><tbody><tr><td>x</td></tr></tbody></table>',
+      LIBELLE,
+    );
+    expect(out).toContain('<table title="a>b"><caption class="sr-only" id="cap-1">');
+  });
+  it("un tableau imbriqué : seul l'externe est enveloppé, balises équilibrées", () => {
+    const out = envelopperTableaux(
+      "<table><tbody><tr><td><table><tbody><tr><td>i</td></tr></tbody></table></td></tr></tbody></table>",
+      LIBELLE,
+    );
+    expect(out.match(/<div/g)).toHaveLength(1);
+    expect(out.match(/<\/div>/g)).toHaveLength(1);
+    expect(out.match(/<table/g)).toHaveLength(2);
+    expect(out.match(/<\/table>/g)).toHaveLength(2);
+    expect(out.endsWith("</table></div>")).toBe(true);
+    expect(envelopperTableaux(out, LIBELLE)).toBe(out);
+  });
+  it("data-id n'est pas pris pour id", () => {
+    const out = envelopperTableaux('<table><caption data-id="z">C</caption></table>', LIBELLE);
+    expect(out).toContain('aria-labelledby="cap-1"');
+    expect(ancrerSousTitres('<h3 data-id="q">Q</h3>')).toContain('<h3 id="q" data-id="q">');
+  });
+  it("échappe un id de caption entre apostrophes", () => {
+    const out = envelopperTableaux(
+      `<table><caption id='a" onclick="x'>C</caption></table>`,
+      LIBELLE,
+    );
+    expect(out).toContain('aria-labelledby="a&quot; onclick=&quot;x"');
+  });
+  it("data-target et title ne déclenchent pas la mention, > dans un attribut géré", () => {
+    const html = '<a data-target="_blank" href="/x">A</a><a title="target=_blank" href="/y">B</a>';
+    expect(marquerLiensExternes(html, "(nf)")).toBe(html);
+    expect(marquerLiensExternes('<a title="a>b" target="_blank">A</a>', "(nf)")).toContain(
+      "data-nouvelle-fenetre",
+    );
+    expect(ancrerSousTitres('<h3 title="a>b">T</h3>')).toContain('<h3 id="t" title="a>b">');
+  });
+  it("casse mixte et article de moins de 3 h2", () => {
+    expect(ancrerSousTitres("<H3>Titre</h3>")).toContain('id="titre"');
+    expect(ancrerSousTitres("<h2>A</h2><h2>B</h2>")).toBe('<h2 id="a">A</h2><h2 id="b">B</h2>');
+  });
+});
+
 describe("abaisserH1", () => {
   it("transforme h1 en h2 en gardant les attributs, insensible à la casse", () => {
     expect(abaisserH1('<H1 class="x">T</H1><p>a</p><h1>U</h1>')).toBe(
