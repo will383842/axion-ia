@@ -28,6 +28,7 @@ import {
   positionSum,
   typePageDepuisChemin,
 } from "../donnees";
+import { estTableAbsente } from "../interrupteur";
 import { enDate, REGEX_JOUR } from "./dates";
 import { chargerNomsConnus } from "./noms-connus";
 
@@ -115,7 +116,8 @@ async function noterEchec(
       statut: "echec",
       erreurCode: code.slice(0, 80),
       finLe: maintenant,
-      ...(code === "quota" ? { tentatives: tentativesAvant } : {}),
+      // Quota ou tables absentes (fenêtre app/worker) : pas la faute du jour, pas de tentative.
+      ...(code === "quota" || code === "tables_absentes" ? { tentatives: tentativesAvant } : {}),
     },
   });
 }
@@ -398,9 +400,13 @@ export async function ingererJour(jour: string, deps: DepsIngestion): Promise<Is
   } catch (err) {
     // Panne de base ou bug : le jour repasse en échec (repris plus tard), l'erreur remonte pour
     // que la tâche échoue et soit vue. Le noter ne doit pas masquer l'erreur d'origine.
-    await noterEchec(prisma, idRun, "exception", tentativesAvant, maintenant).catch(
-      () => undefined,
-    );
+    await noterEchec(
+      prisma,
+      idRun,
+      estTableAbsente(err) ? "tables_absentes" : "exception",
+      tentativesAvant,
+      maintenant,
+    ).catch(() => undefined);
     throw err;
   }
 }

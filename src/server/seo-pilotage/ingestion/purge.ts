@@ -3,8 +3,8 @@
  *
  *  1. Détail journalier de plus de 90 jours : on CUMULE d'abord par semaine ISO
  *     (`GscPageRequeteSemaine`), puis on supprime les jours de cette semaine, dans UNE
- *     transaction. Une semaine n'est cumulée que si tous ses jours sont importés (sinon le
- *     cumul serait faux) ; passé un délai de grâce de 30 jours elle l'est quand même.
+ *     transaction. Une semaine n'est cumulée que si chacun de ses jours est importé ou
+ *     abandonné (5 tentatives) ; sinon elle attend. Le cumul s'ajoute à celui déjà posé.
  *  2. Cumuls hebdomadaires de plus de 25 mois.
  *  3. Texte des requêtes à moins de 3 impressions cumulées (jours + semaines) : le texte et
  *     ses lignes de détail sont supprimés, seul l'agrégat de la page (`GscPageJour`) reste.
@@ -84,7 +84,10 @@ async function consoliderEtPurgerJours(
     // la ferait cumuler à moitié.
     const regles = new Set(
       runs
-        .filter((r) => r.statut === "reussi" || r.tentatives >= TENTATIVES_MAX)
+        .filter(
+          (r) =>
+            r.statut === "reussi" || (r.tentatives >= TENTATIVES_MAX && r.statut !== "en_cours"),
+        )
         .map((r) => enJour(r.jour)),
     );
     let complet = true;

@@ -240,3 +240,14 @@ describe("chargerNomsConnus", () => {
     );
   });
 });
+
+describe("ingererJour : tables absentes", () => {
+  it("une colonne absente en cours de route ne coûte pas de tentative", async () => {
+    const { prisma, base } = creerFauxPrisma();
+    base.trainer.findMany = async () => {
+      throw Object.assign(new Error("colonne"), { code: "P2022" });
+    };
+    await expect(ingererJour(JOUR, { prisma, recherche: recherche({}) })).rejects.toThrow();
+    expect(base.gscImportRun.lignes[0]).toMatchObject({ statut: "echec", tentatives: 0 });
+  });
+});
