@@ -3,7 +3,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const etat = vi.hoisted(() => ({
   gel: new Map<string, unknown>(),
-  comptes: { actuel: { fin4: "2606", empreinte: "a".repeat(64) }, precedent: null, choixExige: false } as unknown,
+  comptes: {
+    actuel: { fin4: "2606", empreinte: "a".repeat(64) },
+    precedent: null,
+    choixExige: false,
+  } as unknown,
   appelsFacturation: 0,
 }));
 
@@ -24,11 +28,19 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     apporteurReseau: {
       findUnique: vi.fn(async () => ({
-        id: "x", prenom: "P", nom: "N", email: "e@exemple.test", regimeTva: "franchise", iban: "ibanchiffre",
+        id: "x",
+        prenom: "P",
+        nom: "N",
+        email: "e@exemple.test",
+        regimeTva: "franchise",
+        iban: "ibanchiffre",
       })),
     },
     commissionApporteur: {
-      count: vi.fn(async () => { etat.appelsFacturation += 1; return 0; }),
+      count: vi.fn(async () => {
+        etat.appelsFacturation += 1;
+        return 0;
+      }),
       findMany: vi.fn(async () => []),
     },
   },
@@ -42,12 +54,18 @@ const A = "11111111-1111-4111-8111-111111111111";
 beforeEach(() => {
   etat.gel = new Map();
   etat.appelsFacturation = 0;
-  etat.comptes = { actuel: { fin4: "2606", empreinte: "a".repeat(64) }, precedent: null, choixExige: false };
+  etat.comptes = {
+    actuel: { fin4: "2606", empreinte: "a".repeat(64) },
+    precedent: null,
+    choixExige: false,
+  };
 });
 
 describe("marquerVerse sous gel", () => {
   it("refuse tant qu'une demande est ouverte, avant toute lecture de commission", async () => {
-    etat.gel = new Map([[A, { id: "d", statut: "confirmee", demandeeAt: new Date(), confirmeeAt: new Date() }]]);
+    etat.gel = new Map([
+      [A, { id: "d", statut: "confirmee", demandeeAt: new Date(), confirmeeAt: new Date() }],
+    ]);
     const r = await marquerVerse(A, new Date(), undefined, { fin4Lue: "2606" });
     expect(r).toEqual({ ok: false, message: MESSAGE_GEL });
     expect(etat.appelsFacturation).toBe(0);

@@ -73,6 +73,16 @@ import {
   regimesDesPieces,
 } from "./tva-pieces";
 import { signalerErreurReseau } from "./signaler";
+import { changementIbanActif } from "./interrupteur-changement-iban";
+import {
+  demandesQuiGelent,
+  ecrirePreuveDeCompte,
+  lireComptesVirement,
+  MESSAGE_GEL,
+  tablePreuveDisponible,
+  trancherCompte,
+  type SaisieCompte,
+} from "./virement-compte";
 
 export function jobIdEmailAutofacture(numero: string): string {
   return `apporteur-releve-${numero}`;
@@ -871,17 +881,33 @@ function montantDesPdf(
  * `numero` : une seule autofacture ; sans lui, toutes celles de l'apporteur. RATTRAPAGE : sans
  * `numero`, une commission `due` qui n'a jamais été facturée est d'abord facturée (ancien
  * comportement), pour qu'il n'y ait jamais de versement sans pièce.
+ *
+ * LOT 7 (changement de compte) :
+ *  - REFUSÉ tant qu'une demande de changement de compte de cet apporteur est ouverte (gel calculé à
+ *    la lecture, plan §4.2) ; table absente = comportement d'avant ;
+ *  - le compte réellement payé est enregistré (empreinte + 4 derniers caractères, jamais l'IBAN) ;
+ *    les 4 derniers caractères lus sur le RIB ouvert sont contrôlés (obligatoires interrupteur allumé,
+ *    et pendant les 10 jours qui suivent une validation, avec le choix du compte).
  */
 export async function marquerVerse(
   apporteurId: string,
   maintenant: Date = new Date(),
   numero?: string,
+  compteSaisi: SaisieCompte & { acteurId?: string | undefined } = {},
 ): Promise<{ ok: true; numeros: string[]; totalCents: number } | { ok: false; message: string }> {
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { id: true, prenom: true, nom: true, email: true, regimeTva: true },
+    select: { id: true, prenom: true, nom: true, email: true, regimeTva: true, iban: true },
   });
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
+
+  // Gel (lot 7) : AVANT toute lecture de commission et avant le rattrapage de facturation ci-dessous.
+  if ((await demandesQuiGelent([apporteurId], maintenant)).has(apporteurId)) {
+    return { ok: false, message: MESSAGE_GEL };
+  }
+  const comptes = await lireComptesVirement(apporteurId, apporteur.iban, maintenant);
+  const compte = trancherCompte(comptes, compteSaisi, changementIbanActif());
+  if (!compte.ok) return compte;
 
   if (!numero) {
     const sansPiece = await prisma.commissionApporteur.count({
@@ -1002,6 +1028,15 @@ export async function marquerVerse(
     return { ok: false, message: "Rien à virer : le total de ce virement n'est pas positif." };
   }
   const aVerser = avant;
+  const numerosVerses = [
+    ...new Set(aVerser.map((c) => c.autofactureNumero).filter((n): n is string => !!n)),
+  ];
+  // Preuve du compte payé : sondée AVANT la transaction (une table absente la ferait échouer).
+  const preuve = compte.compte?.empreinte && (await tablePreuveDisponible()) ? compte.compte : null;
+  // Seconde lecture du gel au plus près de l'écriture : une demande ouverte pendant le calcul gèle encore.
+  if ((await demandesQuiGelent([apporteurId], new Date())).has(apporteurId)) {
+    return { ok: false, message: MESSAGE_GEL };
+  }
 
   await prisma.$transaction(
     async (tx) => {
@@ -1025,12 +1060,19 @@ export async function marquerVerse(
       });
       if (v.count + r.count !== aVerser.length)
         throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
+      if (preuve) {
+        await ecrirePreuveDeCompte(tx, {
+          apporteurId,
+          numeros: numerosVerses,
+          verseAt: maintenant,
+          compte: { fin4: preuve.fin4, empreinte: preuve.empreinte! },
+          declarePar: compteSaisi.acteurId ?? "console",
+        });
+      }
     },
     { timeout: 15_000 },
   );
-  const numeros = [
-    ...new Set(aVerser.map((c) => c.autofactureNumero).filter((n): n is string => !!n)),
-  ];
+  const numeros = numerosVerses;
   // E-mail de confirmation à l'apporteur, une seule fois par virement : jamais bloquant.
   try {
     const destinataire = decryptPii(apporteur.email) ?? "";
@@ -1044,6 +1086,7 @@ export async function marquerVerse(
         montant: euros(total),
         numeros,
         dateVirement: dateFr(maintenant),
+        ...(compte.compte ? { compteFin: compte.compte.fin4 } : {}),
       });
     }
   } catch (err) {

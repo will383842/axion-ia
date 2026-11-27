@@ -113,6 +113,8 @@ interface Payload {
   /** Virement fait : « n° AXI-APP-2026-0003 » (ou « n° A, n° B ») et « 7 octobre 2026 ». */
   numeros?: string;
   dateVirement?: string;
+  /** Lot 7 : 4 derniers caractères du compte payé (facultatif). */
+  compteFin?: string;
   /** Interne : lien de la fiche de l'apporteur dans la console. */
   lienConsole?: string;
   /**
@@ -461,8 +463,9 @@ export const COPY_DEMARRAGE = {
     subject: "Votre commission est virée",
     title: "Votre commission est virée",
     preview: "Le virement de votre commission vient de partir.",
-    texte: (montant: string, numeros: string, date: string) =>
-      `Le virement${montant ? ` de ${montant}` : " de votre commission"}${numeros ? ` correspondant à votre facture ${numeros}` : ""} est parti${date ? ` le ${date}` : ""}.`,
+    // `compteFin` (lot 7) : facultatif, les 4 derniers caractères seulement ; absent = phrase d'avant.
+    texte: (montant: string, numeros: string, date: string, compteFin = "") =>
+      `Le virement${montant ? ` de ${montant}` : " de votre commission"}${numeros ? ` correspondant à votre facture ${numeros}` : ""} est parti${date ? ` le ${date}` : ""}${/^[A-Z0-9]{4}$/.test(compteFin) ? ` sur votre compte qui se termine par ${compteFin}` : ""}.`,
     suite:
       "Selon les délais de votre banque, il apparaîtra sur votre compte dans les prochains jours. Si vous ne le voyez pas d'ici une semaine, répondez simplement à ce message.",
     merci: "Merci pour votre confiance.",
@@ -1230,6 +1233,7 @@ export function ApporteurVirementFaitEmail({ locale, payload }: Props) {
           texteOuNull(p.montant) ?? "",
           texteOuNull(p.numeros) ?? "",
           texteOuNull(p.dateVirement) ?? "",
+          texteOuNull(p.compteFin) ?? "",
         )}
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>

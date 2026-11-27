@@ -14,7 +14,9 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(async (a: { where: { apporteurId: { in: string[] } } }) => {
         etat.lectures += 1;
         if (etat.absente) throw Object.assign(new Error("absente"), { code: "P2021" });
-        return etat.demandes.filter((d) => a.where.apporteurId.in.includes(String(d["apporteurId"])));
+        return etat.demandes.filter((d) =>
+          a.where.apporteurId.in.includes(String(d["apporteurId"])),
+        );
       }),
     },
   },

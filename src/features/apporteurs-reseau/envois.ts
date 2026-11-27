@@ -246,6 +246,8 @@ export async function envoyerConfirmationVirement(e: {
   montant: string;
   numeros: readonly string[];
   dateVirement: string;
+  /** Lot 7 : les 4 derniers caractères du compte payé (facultatif : un ancien worker l'ignore). */
+  compteFin?: string;
 }): Promise<ResultatEnvoi> {
   const numeros =
     e.numeros.length === 0
@@ -264,6 +266,7 @@ export async function envoyerConfirmationVirement(e: {
       montant: e.montant,
       ...(numeros ? { numeros } : {}),
       dateVirement: e.dateVirement,
+      ...(e.compteFin ? { compteFin: e.compteFin } : {}),
     },
   });
 }

@@ -116,7 +116,11 @@ describe("contrôle des quatre derniers caractères", () => {
     expect(trancherCompte({ ...comptes, choixExige: false }, { fin4Lue: " 26o6 " }, true).ok).toBe(
       false,
     );
-    const c = { actuel: { fin4: "13M0", empreinte: "a".repeat(64) }, precedent: null, choixExige: false };
+    const c = {
+      actuel: { fin4: "13M0", empreinte: "a".repeat(64) },
+      precedent: null,
+      choixExige: false,
+    };
     expect(trancherCompte(c, { fin4Lue: " 13m0 " }, true).ok).toBe(true);
   });
 
@@ -132,11 +136,17 @@ describe("contrôle des quatre derniers caractères", () => {
 
   it("contrôle exigé et saisie absente ou mal formée : refus", () => {
     expect(trancherCompte({ ...comptes, choixExige: false }, {}, true).ok).toBe(false);
-    expect(trancherCompte({ ...comptes, choixExige: false }, { fin4Lue: "26" }, true).ok).toBe(false);
+    expect(trancherCompte({ ...comptes, choixExige: false }, { fin4Lue: "26" }, true).ok).toBe(
+      false,
+    );
   });
 
   it("interrupteur éteint et aucune validation récente : comportement d'aujourd'hui, saisie facultative", () => {
-    const c = { actuel: { fin4: "2606", empreinte: "a".repeat(64) }, precedent: null, choixExige: false };
+    const c = {
+      actuel: { fin4: "2606", empreinte: "a".repeat(64) },
+      precedent: null,
+      choixExige: false,
+    };
     expect(trancherCompte(c, {}, false)).toMatchObject({ ok: true, compte: { fin4: "2606" } });
     // mais une saisie fournie et fausse est refusée
     expect(trancherCompte(c, { fin4Lue: "9999" }, false).ok).toBe(false);

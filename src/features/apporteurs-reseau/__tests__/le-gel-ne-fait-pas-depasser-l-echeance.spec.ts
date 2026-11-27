@@ -4,11 +4,7 @@
 import { describe, expect, it } from "vitest";
 
 import { echeancePaiement } from "../autofacture-donnees";
-import {
-  echeanceEnAlerte,
-  etatGelDesLignes,
-  joursRestants,
-} from "../gel-virements-regles";
+import { echeanceEnAlerte, etatGelDesLignes, joursRestants } from "../gel-virements-regles";
 
 const J = 86_400_000;
 const midi = (iso: string) => new Date(`${iso}T10:00:00Z`);
@@ -42,12 +38,14 @@ describe("échéance sous gel", () => {
     expect(g.plusProcheEcheance.getTime()).toBe(echeancePaiement(vieille).getTime());
   });
 
-  it("jour de Paris aux bornes : 22 h UTC le 4 janvier est déjà le 5 à Paris", () => {
-    const emission = midi("2026-12-06");
-    const echeance = echeancePaiement(emission); // 5 janvier 2027 (Paris)
-    expect(joursRestants(echeance, new Date("2026-12-31T22:30:00Z"))).toBe(5); // 1er janvier Paris
-    expect(echeanceEnAlerte(echeance, new Date("2026-12-31T22:30:00Z"))).toBe(true);
-    expect(echeanceEnAlerte(echeance, new Date("2026-12-31T21:30:00Z"))).toBe(false); // 31 déc. Paris : 6
+  it("jour de Paris aux bornes : 23 h 30 UTC le 30 décembre est déjà le 31 à Paris", () => {
+    const echeance = echeancePaiement(midi("2026-12-06")); // 5 janvier 2027 (Paris)
+    const apresMinuitParis = new Date("2026-12-30T23:30:00Z"); // 00 h 30 le 31 à Paris : 5 jours
+    const avantMinuitParis = new Date("2026-12-30T22:30:00Z"); // 23 h 30 le 30 à Paris : 6 jours
+    expect(joursRestants(echeance, apresMinuitParis)).toBe(5);
+    expect(echeanceEnAlerte(echeance, apresMinuitParis)).toBe(true);
+    expect(joursRestants(echeance, avantMinuitParis)).toBe(6);
+    expect(echeanceEnAlerte(echeance, avantMinuitParis)).toBe(false);
   });
 
   it("après l'échéance : la ligne reste gelée et rouge (le retard est assumé et tracé), jours négatifs", () => {

@@ -136,6 +136,10 @@ const lignes = () => etat.lignes as Ligne[];
 
 vi.mock("@/lib/prisma", () => {
   const prisma = {
+    // Lot 7 : tables du changement de compte, vides dans ces scénarios (aucune demande, aucun historique).
+    apporteurChangementIban: { findMany: vi.fn(async () => []) },
+    apporteurIbanHistorique: { findMany: vi.fn(async () => []) },
+    apporteurVirementCompte: { count: vi.fn(async () => 0), create: vi.fn(async () => ({})) },
     // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
     apporteurReseauSiret: { findUnique: vi.fn(async () => null) },
     apporteurReseau: {
