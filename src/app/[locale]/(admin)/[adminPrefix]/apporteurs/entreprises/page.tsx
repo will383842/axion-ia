@@ -41,6 +41,10 @@ import {
   type PropositionVue,
   type ReservationOuverteVue,
 } from "@/features/apporteurs-reseau/requetes-console";
+import {
+  lireReservations,
+  suitLaRegleRendezVous,
+} from "@/features/apporteurs-reseau/reservation-presentation";
 import { dayKeyInParis, toParisLocalInput } from "@/lib/calendar-grid";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager, peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
@@ -95,6 +99,12 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
     validationActive && administrateur ? lireReservationsOuvertes() : Promise.resolve([]),
   ]);
   const commissions = await lireCommissionsDesPresentations(lignes.map((p) => p.id));
+  // Règle par rendez-vous : la ligne de réservation fait foi (pas de « Confirmer maintenant »).
+  const parRendezVous = new Set(
+    [...(await lireReservations(lignes.map((p) => p.id))).entries()]
+      .filter(([, r]) => suitLaRegleRendezVous(r))
+      .map(([id]) => id),
+  );
   const peutMarquer = peutEngager(acces.role, "facturer");
   const retourPrestation =
     typeof sp.prestation === "string"
@@ -185,6 +195,7 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
               commissions={commissions.get(p.id) ?? []}
               peutMarquer={peutMarquer}
               onglet={onglet}
+              parRendezVous={parRendezVous.has(p.id)}
             />
           ))}
         </div>
@@ -202,6 +213,7 @@ function Carte({
   commissions,
   peutMarquer,
   onglet,
+  parRendezVous,
 }: {
   p: PresentationVue;
   signalements: string[];
@@ -212,6 +224,8 @@ function Carte({
   commissions: ReadonlyArray<CommissionDeLaPresentation>;
   peutMarquer: boolean;
   onglet: string;
+  /** La présentation suit la règle par rendez-vous : pas de confirmation manuelle. */
+  parRendezVous: boolean;
 }) {
   const statut = p.aTraiter
     ? { libelle: "À traiter", ton: "warning" as const }
@@ -324,7 +338,14 @@ function Carte({
               Actions
             </summary>
             <div className="flex flex-col gap-[var(--space-admin-3)] pt-[var(--space-admin-3)]">
-              {p.statut === "reservee" ? <ConfirmerAttribution id={p.id} /> : null}
+              {p.statut === "reservee" && !parRendezVous ? (
+                <ConfirmerAttribution id={p.id} />
+              ) : null}
+              {p.statut === "reservee" && parRendezVous ? (
+                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  Validation par rendez-vous ou par commande signée
+                </p>
+              ) : null}
               {(p.statut === "reservee" || p.statut === "confirmee") &&
               p.etablissement.siret !== null &&
               !p.etablissement.entreprise ? (
@@ -332,7 +353,7 @@ function Carte({
               ) : null}
               <ActionsPresentation
                 id={p.id}
-                peutConfirmer={p.statut === "reservee"}
+                peutConfirmer={p.statut === "reservee" && !parRendezVous}
                 peutDementir={p.statut === "reservee" || p.statut === "confirmee"}
                 note={p.note}
                 aujourdhui={aujourdhui}
@@ -403,6 +424,8 @@ function SectionRendezVous({
                     id={r.id}
                     dateTenueConnue={!!r.rendezVousAt}
                     nonTenu={r.nonTenu}
+                    rencontre={r.rendezVousCle.startsWith("rencontre:")}
+                    prisLocal={toParisLocalInput(r.prisAt)}
                     aujourdhuiLocal={aujourdhuiLocal}
                   />
                 ) : null}
