@@ -22,6 +22,9 @@ import {
   type ActeEngageant,
 } from "./habilitations";
 
+/** Les actes que seul le `super_admin` peut poser (règle du dirigeant) : une liste fermée, vérifiée ci-dessous. */
+const ACTES_SUPER_ADMIN_SEUL: ReadonlyArray<ActeEngageant> = ["valider_changement_iban"];
+
 /** Rôles qui ne doivent JAMAIS engager l'organisme, quel que soit l'acte. */
 const ROLES_NON_ENGAGEANTS = ["secretaire", "editor", "reader"] as const;
 
@@ -71,11 +74,43 @@ describe("matrice d'habilitation — tests négatifs", () => {
 });
 
 describe("matrice d'habilitation — invariants de structure", () => {
-  it("la direction (super_admin, admin) peut poser TOUS les actes", () => {
+  it("la direction (super_admin, admin) peut poser TOUS les actes, sauf ceux du seul super_admin", () => {
     for (const acte of ACTES_ENGAGEANTS) {
       expect(peutEngager("super_admin", acte), `super_admin bloqué sur « ${acte} »`).toBe(true);
+      if (ACTES_SUPER_ADMIN_SEUL.includes(acte)) continue;
       expect(peutEngager("admin", acte), `admin bloqué sur « ${acte} »`).toBe(true);
     }
+  });
+
+  it("🔴 la liste des actes du seul super_admin est exacte : un acte de plus ou de moins doit rougir", () => {
+    const reels = ACTES_ENGAGEANTS.filter(
+      (a) => HABILITATIONS[a].length === 1 && HABILITATIONS[a][0] === "super_admin",
+    );
+    expect([...reels].sort()).toEqual([...ACTES_SUPER_ADMIN_SEUL].sort());
+  });
+
+  it("🔴 valider un changement d'IBAN d'apporteur est réservé au SEUL super_admin (règle du dirigeant)", () => {
+    // Écrit en NÉGATIF sur chaque rôle exclu — `admin` compris, qui peut pourtant facturer.
+    for (const role of [
+      "admin",
+      "responsable_qualite",
+      "secretaire",
+      "editor",
+      "reader",
+    ] as const) {
+      expect(
+        peutEngager(role, "valider_changement_iban"),
+        `« ${role} » ne doit pas pouvoir valider un changement d'IBAN`,
+      ).toBe(false);
+    }
+    expect(peutEngager("super_admin", "valider_changement_iban")).toBe(true);
+    expect(HABILITATIONS.valider_changement_iban).toEqual(["super_admin"]);
+    // Rôle inconnu, vide ou nul : refusé.
+    for (const role of [undefined, null, "", "Super_Admin", "superadmin"]) {
+      expect(peutEngager(role, "valider_changement_iban")).toBe(false);
+    }
+    // La validation est un acte d'écriture : `super_admin` doit rester dans les rôles d'écriture.
+    expect(peutEcrire("super_admin")).toBe(true);
   });
 
   it("chaque acte porte un motif de refus non vide — un bouton absent doit s'expliquer", () => {
@@ -114,6 +149,7 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "remunerer_formateur",
       "revoquer_signature",
       "rouvrir_dossier",
+      "valider_changement_iban",
     ];
     expect([...ACTES_ENGAGEANTS].sort()).toEqual(attendus.sort());
   });

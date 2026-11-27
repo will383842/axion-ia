@@ -147,7 +147,7 @@ async function getQualityLoopMonthSpent(): Promise<number> {
  * remettait à zéro au changement de mois, mais AUCUN code ne l'incrémentait —
  * la boucle pouvait dépenser sans limite, le garde-fou budgétaire était mort.
  * Sont désormais comptés : le coût du juge LLM (mesuré via CostLedger, car
- * `reviewArticle` ne retourne pas son coût) et le coût de chaque re-génération
+ * le coût est tracké par le provider) et le coût de chaque re-génération
  * (appelé depuis content-gen-worker quand un feedback juge est injecté).
  *
  * Fail-open assumé : un échec de lecture/écriture ne casse jamais le job (le
@@ -360,8 +360,8 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const output = dbJob.outputJsonRaw as Record<string, unknown> | null;
   let judge: JudgeResult | null = null;
   // Fix 2026-08-15 (C5) — borne temporelle pour retrouver le coût du juge dans
-  // CostLedger : `reviewArticle` ne retourne pas son coût (il est tracké par le
-  // provider), on somme donc les lignes du ledger de CE job écrites après cet
+  // CostLedger : le coût du juge est tracké par le provider (`JudgeResult.coutUsd`
+  // le porte aussi, mais ne s'ajoute pas au ledger), on somme donc les lignes du ledger de CE job écrites après cet
   // instant. Précis au job près (jobId + timestamp), sans toucher au juge.
   const judgePassStartedAt = new Date();
   if (output && typeof output["title"] === "string" && typeof output["bodyHtml"] === "string") {
