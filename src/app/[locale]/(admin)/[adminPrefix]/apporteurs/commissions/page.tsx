@@ -45,6 +45,7 @@ import {
   PALIERS_FORMATION,
   PALIERS_FORMATION_LONGUE,
   PLAFOND_FORMATION_LONGUE_CENTS,
+  FORFAIT_JOURNEE_FORMATION_V2_CENTS,
   libellePalierFormation,
 } from "@/features/apporteurs-reseau/regles";
 import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
@@ -131,11 +132,11 @@ const PALIERS = [
     libelle: p.libelle,
     detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
   })),
-  // Décision du 27/11 : 1 000 € au plus, au prorata ; quantité = nombre de journées (3 au moins).
+  // Décision du 27/11 : 500 € par journée (contrats 2.3 à 2.6), 1 000 € au plus (2.8 ou avenant), au prorata ; quantité = nombre de journées (3 au moins).
   ...PALIERS_FORMATION_LONGUE.map((p) => ({
     id: p.id,
     libelle: p.libelle,
-    detail: `${euros(PLAFOND_FORMATION_LONGUE_CENTS)} au plus si ${euros(p.prixJourCents)} HT par journée (quantité = journées)`,
+    detail: `${euros(FORFAIT_JOURNEE_FORMATION_V2_CENTS)} HT par journée (contrats 2.3 à 2.6), ${euros(PLAFOND_FORMATION_LONGUE_CENTS)} HT au plus (2.8 ou avenant), au prorata si ${euros(p.prixJourCents)} HT par journée (quantité = journées)`,
   })),
   {
     id: PALIER_JOURNEE_IA,

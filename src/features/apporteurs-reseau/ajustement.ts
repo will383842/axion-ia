@@ -18,7 +18,9 @@
 
 import { prisma } from "@/lib/prisma";
 
+import { grilleDeLaLigne } from "./commissions";
 import {
+  calculerCommissionSelonGrille,
   calculerCommission,
   PALIERS_FORMATION_LONGUE,
   commissionJourneeIaCents,
@@ -29,6 +31,7 @@ import {
   PARRAINAGE_BPS,
   TAUX_BPS,
   type ActiviteCommission,
+  type GrilleCommission,
 } from "./regles";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
 
@@ -73,6 +76,7 @@ async function lire(id: string) {
       autofactureNumero: true,
       factureId: true,
       parrainage: true,
+      presentationId: true,
     },
   });
   // Valeurs figées : la ligne lue peut être modifiée sous nos yeux.
@@ -103,6 +107,8 @@ export function commissionPourPrixConserve(
     activite: string;
     palier: string | null;
     prixPublicHtCents: number | null;
+    /** Grille du contrat signé de la ligne (`grilleDeLaLigne`) ; `null` : version inconnue → escalade. */
+    grille: GrilleCommission | null;
   },
   prixHtCents: number,
   montantActuelCents?: number,
@@ -128,11 +134,14 @@ export function commissionPourPrixConserve(
           montantActuelCents,
           Math.round((Math.max(0, prixHtCents) * TAUX_BPS.un_a_un) / 10_000),
         );
-  const calc = calculerCommission({
+  // Version signée inconnue : jamais de montant (la ligne ne bouge pas, l'escalade part).
+  if (l.grille === null) return null;
+  const calc = calculerCommissionSelonGrille({
     activite: l.activite as ActiviteCommission,
     factureHtCents: prixHtCents,
     palier: l.palier,
     quantite: quantiteDe(l),
+    grille: l.grille,
   });
   return calc.statut === "calculee" ? calc.montantCents : null;
 }
@@ -248,7 +257,12 @@ export async function reduireCommission(
       ok: false,
       message: `Le prix conservé doit être inférieur au prix facturé (${euros(avant.factureHtCents)} HT).`,
     };
-  const nouveau = commissionPourPrixConserve(avant, prixConserveHtCents, avant.montantCents);
+  const { grille } = await grilleDeLaLigne(avant);
+  const nouveau = commissionPourPrixConserve(
+    { ...avant, grille },
+    prixConserveHtCents,
+    avant.montantCents,
+  );
   if (nouveau === null)
     return { ok: false, message: "La règle de calcul ne s'applique pas à cette ligne." };
   if (nouveau >= avant.montantCents)

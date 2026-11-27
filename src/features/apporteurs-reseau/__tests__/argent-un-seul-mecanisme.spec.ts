@@ -190,6 +190,7 @@ vi.mock("../facturation", () => ({
 vi.mock("../litige", () => ({ litigeDisponible: async () => true }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
 vi.mock("../commissions", () => ({
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })), // cas calibrés sur la grille v3
   libererSiPiecesValides: vi.fn(async () => 0),
   relancerVigilance: vi.fn(async () => false),
   demanderVigilance: vi.fn(async () => "deja"),

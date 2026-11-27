@@ -72,6 +72,11 @@ vi.mock("@/lib/destinataires-internes", () => ({
   destinataireAlertesInternes: () => "will@interne",
 }));
 vi.mock("../jeton", () => ({ urlDossier: () => null }));
+// Cas calibrés sur la grille v3 ; la grille v2 est couverte par avoir-grille-contrat-signe.spec.ts.
+vi.mock("../commissions", async (orig) => ({
+  ...(await orig<typeof import("../commissions")>()),
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })),
+}));
 vi.mock("../envois", () => ({
   envoyer: vi.fn(async (e: Record<string, unknown>) => {
     etat.envoyes.push(e);

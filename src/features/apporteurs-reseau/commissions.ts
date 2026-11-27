@@ -313,7 +313,7 @@ export async function statutApresVigilance(
  * l'apporteur de la présentation, date de déclaration, date de signature de la commande (devis
  * accepté, sinon émission de la facture). Une donnée manquante → grille `null` (ESCALADE).
  */
-async function grilleDeLaLigne(c: {
+export async function grilleDeLaLigne(c: {
   presentationId: string | null;
   factureId: string;
 }): Promise<{ grille: GrilleCommission | null; signeeAt: Date | null }> {

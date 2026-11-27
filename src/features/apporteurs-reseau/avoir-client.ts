@@ -44,7 +44,7 @@ import {
   type FactureDeCommande,
   type SoldeDesLignesLiees,
 } from "./commandes";
-import { dejaEnvoye, statutApresVigilance } from "./commissions";
+import { dejaEnvoye, grilleDeLaLigne, statutApresVigilance } from "./commissions";
 import {
   ajouterMois,
   htLignesRecurrentesRestantesCents,
@@ -53,6 +53,7 @@ import {
   PALIER_CONFERENCE,
   PALIER_JOURNEE_IA,
   TAUX_BPS,
+  type GrilleCommission,
 } from "./regles";
 import { litigeDisponible } from "./litige";
 import { envoyer } from "./envois";
@@ -122,6 +123,8 @@ interface Calcul {
   palier: string | null;
   prixPublicHtCents: number | null;
   montantCents: number;
+  /** Grille du contrat signé de la ligne ; `null` : version inconnue → aucune cible. */
+  grille: GrilleCommission | null;
 }
 
 /** Le montant cible d'une ligne pour un prix net (part du parrain : 10 % du filleul recalculé). */
@@ -768,6 +771,10 @@ export async function reprendreApresAvoirsClients(
               select: CHAMPS_LIGNE,
             })
           : null);
+      // Grille du contrat signé de chaque ligne (jamais le plafond 2.8 d'office) ; relue comme à la création.
+      const grilleDe = async (x: { presentationId: string | null; factureId: string }) =>
+        (await grilleDeLaLigne(x)).grille;
+      const grilleFilleul = filleul ? await grilleDe(filleul) : null;
       const parrainParAjustement =
         !!filleul && !filleul.autofactureNumero && estModifiable(filleul.statut);
       const ordre = [...groupe].sort((a, b) => Number(a.parrainage) - Number(b.parrainage));
@@ -781,9 +788,10 @@ export async function reprendreApresAvoirsClients(
           // Part de parrain pas encore facturée alors que le filleul l'est : elle suit le filleul
           // recalculé (art. 4.6), par une écriture conditionnelle tracée.
           const cible = filleul
-            ? cibleApresAvoir({ ...l, montantCents: montant }, net, {
+            ? cibleApresAvoir({ ...l, montantCents: montant, grille: await grilleDe(l) }, net, {
                 ...filleul,
                 montantCents: filleul.montantCents ?? 0,
+                grille: grilleFilleul,
               })
             : null;
           if (cible === null || cible >= montant) continue;
@@ -804,7 +812,11 @@ export async function reprendreApresAvoirsClients(
             // L'argent est revenu : la ligne REMONTE vers la cible. Tour 2/2 (défaut 6) : la part du
             // parrain suit l'ÉTAT FINAL du filleul, que la remontée ait lieu dans CE passage ou
             // dans un précédent (passage interrompu entre les deux écritures).
-            const cible = cibleEtatFinal({ ...l, montantCents: montant }, net, baseHorsRecurrent);
+            const cible = cibleEtatFinal(
+              { ...l, montantCents: montant, grille: await grilleDe(l) },
+              net,
+              baseHorsRecurrent,
+            );
             if (cible === null) continue;
             let apres = montant;
             if (net > l.factureHtCents && cible > montant) {
@@ -842,7 +854,11 @@ export async function reprendreApresAvoirsClients(
         const reference = l.parrainage ? filleul : l;
         if (reference && reference.montantCents !== null) {
           const cibleF = cibleEtatFinal(
-            { ...reference, montantCents: reference.montantCents ?? 0 },
+            {
+              ...reference,
+              montantCents: reference.montantCents ?? 0,
+              grille: l.parrainage ? grilleFilleul : await grilleDe(l),
+            },
             net,
             baseHorsRecurrent,
           );
@@ -881,10 +897,10 @@ export async function reprendreApresAvoirsClients(
         const netLigne = Math.max(0, Math.min(l.factureHtCents, net - anciensApres));
         const annulationLigne = dateDeLAnnulation(apres) ?? annulationLe;
         const cibleLigne = cibleApresAvoir(
-          { ...l, montantCents: montant },
+          { ...l, montantCents: montant, grille: await grilleDe(l) },
           netLigne,
           l.parrainage && filleul
-            ? { ...filleul, montantCents: filleul.montantCents ?? 0 }
+            ? { ...filleul, montantCents: filleul.montantCents ?? 0, grille: grilleFilleul }
             : undefined,
         );
         if (cibleLigne === null) continue;
