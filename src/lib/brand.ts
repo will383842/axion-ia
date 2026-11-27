@@ -13,11 +13,11 @@ import { env } from "@/env";
 // fichier : `brand.ts` tire `@/env`, et le rendu d'e-mail tourne dans le
 // worker, sur un trajet qui ne charge pas la validation Zod des secrets.
 // Déplacer le littéral plutôt que le recopier — cf. `identite-legale-ssot.ts`.
-import { COORDONNEES_PUBLIQUES, IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
+import { COORDONNEES_PUBLIQUES, IDENTITE_LEGALE, NOM_MARQUE } from "@/lib/identite-legale-ssot";
 
 export const BRAND = {
   /** Nom canonique customer-facing (logo, header, JSON-LD `name`, OG, titles). */
-  name: "Axion-IA",
+  name: NOM_MARQUE,
   /**
    * Raison sociale juridique EXACTE, telle qu'immatriculée au RCS Grenoble le
    * 30/07/2026 : dénomination « AXION IA », **sans trait d'union**, forme SAS.

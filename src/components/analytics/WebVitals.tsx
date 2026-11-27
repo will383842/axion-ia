@@ -4,7 +4,6 @@
 
 import { useEffect } from "react";
 import { useReportWebVitals } from "next/web-vitals";
-import { onINP } from "web-vitals/attribution";
 import { usePathname } from "next/navigation";
 import {
   urlEstConsoleAdmin,
@@ -304,61 +303,66 @@ export function WebVitals() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (adminRoute) return; // skip admin
-    onINP(
-      (metric) => {
-        const nav = navigator as NavigatorWithExtras;
-        const attribution = metric.attribution ?? {};
-        const interactionTarget =
-          (attribution as { interactionTarget?: string }).interactionTarget ?? null;
-        const interactionType =
-          (attribution as { interactionType?: string }).interactionType ?? null;
-        const ua =
-          typeof navigator.userAgent === "string" ? navigator.userAgent.slice(0, 200) : null;
-        const payload: VitalsPayload = {
-          id: metric.id,
-          name: "INP-attribution",
-          value: metric.value,
-          rating: metric.rating,
-          delta: metric.delta,
-          navigationType: metric.navigationType,
-          href: window.location.href,
-          route: pathname ?? "",
-          locale,
-          effectiveType: nav.connection?.effectiveType ?? null,
-          deviceMemory: nav.deviceMemory ?? null,
-          // P2-30 — enrichissement client.
-          deviceType: detectDeviceType(),
-          userAgent: ua,
-          sessionId: getOrCreateSessionId(),
-          pageType: inferPageType(pathname ?? ""),
-        };
-        // Ajoute interactionTarget/Type comme suffix dans `id` pour
-        // que /api/vitals route handler les capte sans changer le contrat.
-        if (interactionTarget) {
-          payload.id = `${payload.id}|target=${interactionTarget.slice(0, 60)}`;
-        }
-        if (interactionType) {
-          payload.id = `${payload.id}|type=${interactionType}`;
-        }
-        const body = JSON.stringify(payload);
-        try {
-          if (typeof navigator.sendBeacon === "function") {
-            const blob = new Blob([body], { type: "application/json" });
-            navigator.sendBeacon(VITALS_ENDPOINT, blob);
-          } else {
-            void fetch(VITALS_ENDPOINT, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body,
-              keepalive: true,
-            });
+    // `web-vitals/attribution` est chargé à la demande (import dynamique) : il
+    // sort du First Load JS du socle. Mêmes rapports, même envoi ; seul
+    // l'enregistrement de l'observateur INP a lieu un court instant plus tard.
+    void import("web-vitals/attribution").then(({ onINP }) => {
+      onINP(
+        (metric) => {
+          const nav = navigator as NavigatorWithExtras;
+          const attribution = metric.attribution ?? {};
+          const interactionTarget =
+            (attribution as { interactionTarget?: string }).interactionTarget ?? null;
+          const interactionType =
+            (attribution as { interactionType?: string }).interactionType ?? null;
+          const ua =
+            typeof navigator.userAgent === "string" ? navigator.userAgent.slice(0, 200) : null;
+          const payload: VitalsPayload = {
+            id: metric.id,
+            name: "INP-attribution",
+            value: metric.value,
+            rating: metric.rating,
+            delta: metric.delta,
+            navigationType: metric.navigationType,
+            href: window.location.href,
+            route: pathname ?? "",
+            locale,
+            effectiveType: nav.connection?.effectiveType ?? null,
+            deviceMemory: nav.deviceMemory ?? null,
+            // P2-30 — enrichissement client.
+            deviceType: detectDeviceType(),
+            userAgent: ua,
+            sessionId: getOrCreateSessionId(),
+            pageType: inferPageType(pathname ?? ""),
+          };
+          // Ajoute interactionTarget/Type comme suffix dans `id` pour
+          // que /api/vitals route handler les capte sans changer le contrat.
+          if (interactionTarget) {
+            payload.id = `${payload.id}|target=${interactionTarget.slice(0, 60)}`;
           }
-        } catch {
-          // Swallow
-        }
-      },
-      { reportAllChanges: false },
-    );
+          if (interactionType) {
+            payload.id = `${payload.id}|type=${interactionType}`;
+          }
+          const body = JSON.stringify(payload);
+          try {
+            if (typeof navigator.sendBeacon === "function") {
+              const blob = new Blob([body], { type: "application/json" });
+              navigator.sendBeacon(VITALS_ENDPOINT, blob);
+            } else {
+              void fetch(VITALS_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body,
+                keepalive: true,
+              });
+            }
+          } catch {
+            // Swallow
+          }
+        },
+        { reportAllChanges: false },
+      );
+    });
   }, [pathname, locale, adminRoute]);
 
   // P1-20 — LoAF + Long Tasks observation post-mount.

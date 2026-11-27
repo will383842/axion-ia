@@ -24,7 +24,8 @@
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+// clsx et non cn() : aucune classe en conflit (vérifié), tailwind-merge pèse ~8,6 KB gz.
+import clsx from "clsx";
 
 const INTENTION_SURVOL_MS = 150;
 // Fermeture plus lente que l'ouverture : laisse le temps de traverser le vide
@@ -139,7 +140,7 @@ export function HeaderPrestationsMenu({ label, panelLabel, children }: HeaderPre
           ouvertParSurvol.current = false;
           setOpen(!open);
         }}
-        className={cn(
+        className={clsx(
           "text-mocha-fg focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta relative inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg px-3 text-base font-semibold tracking-tight whitespace-nowrap focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           "after:bg-mocha-fg after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:transition-transform motion-reduce:after:transition-none",
           open ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100",
@@ -148,7 +149,7 @@ export function HeaderPrestationsMenu({ label, panelLabel, children }: HeaderPre
         {label}
         <ChevronDown
           aria-hidden="true"
-          className={cn(
+          className={clsx(
             "h-4 w-4 transition-transform motion-reduce:transition-none",
             open && "rotate-180",
           )}

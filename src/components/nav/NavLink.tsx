@@ -4,7 +4,10 @@
 
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/utils";
+// clsx et non cn() : aucune classe en conflit à fusionner ici (vérifié appel par appel),
+// et tailwind-merge pèse ~8,6 KB gz dans le socle. Seul conflit réel : le texte du lien
+// mobile (`text-fg` / `text-terracotta`), résolu par une alternative explicite.
+import clsx from "clsx";
 
 interface NavLinkProps {
   href: string;
@@ -44,9 +47,9 @@ export function NavLink({ href, label, variant = "desktop", phare = false, sub }
       <Link
         href={href as never}
         aria-current={isActive ? "page" : undefined}
-        className={cn(
-          "border-border text-fg hover:bg-sand/70 focus-visible:ring-terracotta flex min-h-12 flex-col justify-center border-b px-2 py-3 text-[17px] font-semibold tracking-tight transition-colors focus-visible:ring-2 focus-visible:outline-none",
-          isActive && "text-terracotta",
+        className={clsx(
+          "border-border hover:bg-sand/70 focus-visible:ring-terracotta flex min-h-12 flex-col justify-center border-b px-2 py-3 text-[17px] font-semibold tracking-tight transition-colors focus-visible:ring-2 focus-visible:outline-none",
+          isActive ? "text-terracotta" : "text-fg",
         )}
       >
         <span className="inline-flex items-center gap-2">
@@ -65,7 +68,7 @@ export function NavLink({ href, label, variant = "desktop", phare = false, sub }
       <Link
         href={href as never}
         aria-current={isActive ? "page" : undefined}
-        className={cn(
+        className={clsx(
           "border-mocha-fg bg-mocha text-mocha-fg hover:bg-mocha-soft focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-base font-semibold tracking-tight whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           isActive && "underline decoration-2 underline-offset-4",
         )}
@@ -83,7 +86,7 @@ export function NavLink({ href, label, variant = "desktop", phare = false, sub }
     <Link
       href={href as never}
       aria-current={isActive ? "page" : undefined}
-      className={cn(
+      className={clsx(
         "text-mocha-fg focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta relative inline-flex min-h-11 items-center rounded-lg px-3 text-base font-semibold tracking-tight whitespace-nowrap focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         "after:bg-mocha-fg after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:transition-transform motion-reduce:after:transition-none",
         isActive ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100",

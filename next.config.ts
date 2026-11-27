@@ -1241,6 +1241,10 @@ const sentryBuildOptions = {
   hideSourceMaps: true,
   widenClientFileUpload: true,
   reactComponentAnnotation: { enabled: false },
+  // Pas de manifeste de routes injecté côté client : il était dupliqué (runtime Next +
+  // main-app, ~13,7 KB gz, 569 routes dont la console admin) dans le socle. Effet :
+  // les transactions navigateur Sentry portent l'URL réelle et non le motif de route.
+  routeManifestInjection: false as const,
 };
 
 const composedConfig = withNextIntl(bundleAnalyzer(nextConfig));

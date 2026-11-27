@@ -38,13 +38,16 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { isRouteTunnelFacebook } from "@/lib/analytics/tunnel-facebook-routes";
 import { useAnalyticsConsent } from "./CookieConsent";
 
 export function MetaPixel() {
-  const pixelId = env.NEXT_PUBLIC_META_PIXEL_ID;
+  // Lecture directe de process.env.NEXT_PUBLIC_* (littéral, inliné par Next au build) :
+  // `@/env` embarquait zod (~13 KB gz) dans le socle client. Même sémantique que
+  // `emptyStringAsUndefined: true` de src/env.ts (chaîne vide = absent). La
+  // validation reste côté serveur.
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || undefined;
   const consent = useAnalyticsConsent();
   const pathname = usePathname();
   if (!pixelId) return null;

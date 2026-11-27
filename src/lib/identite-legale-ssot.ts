@@ -39,6 +39,13 @@
 // Source : Kbis (RCS Grenoble, à jour au 30/07/2026, n° de gestion 2026B01964)
 // et avis de situation SIRENE du 02/08/2026, qui concordent.
 
+/**
+ * Nom commercial (avec trait d'union), tel que `BRAND.name`. Placé dans ce module
+ * pur pour que le menu mobile (composant client du layout) l'affiche sans importer
+ * `brand.ts`, qui tire `@/env` et donc zod dans le socle client.
+ */
+export const NOM_MARQUE = "Axion-IA";
+
 export const IDENTITE_LEGALE = {
   /**
    * Dénomination immatriculée EXACTE — « AXION IA », **sans trait d'union**,

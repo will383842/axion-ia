@@ -24,14 +24,17 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useAnalyticsConsent } from "./CookieConsent";
 import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
 import { estSurfaceConsole } from "@/lib/analytics/surface-console";
 
 export function Clarity() {
-  const projectId = env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+  // Lecture directe de process.env.NEXT_PUBLIC_* (littéral, inliné par Next au build) :
+  // `@/env` embarquait zod (~13 KB gz) dans le socle client. Même sémantique que
+  // `emptyStringAsUndefined: true` de src/env.ts (chaîne vide = absent). La
+  // validation reste côté serveur.
+  const projectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || undefined;
   const consent = useAnalyticsConsent();
   const pathname = usePathname();
   if (!projectId) return null;

@@ -13,7 +13,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { BRAND } from "@/lib/brand";
+import { NOM_MARQUE } from "@/lib/identite-legale-ssot";
 
 interface MobileNavProps {
   children: React.ReactNode;
@@ -97,7 +97,7 @@ export function MobileNav({ children }: MobileNavProps) {
         className="bg-bg flex w-full max-w-sm flex-col gap-0 overflow-hidden border-l-0 p-0 sm:max-w-sm"
       >
         <SheetTitle className="sr-only">Menu</SheetTitle>
-        <SheetDescription className="sr-only">{`${BRAND.name} navigation`}</SheetDescription>
+        <SheetDescription className="sr-only">{`${NOM_MARQUE} navigation`}</SheetDescription>
         {/* Bandeau de marque — `pr-14` réserve la place du bouton fermeture (X)
             positionné en absolu par SheetContent en haut à droite. */}
         <div className="flex min-h-16 items-center px-4 pr-14">
