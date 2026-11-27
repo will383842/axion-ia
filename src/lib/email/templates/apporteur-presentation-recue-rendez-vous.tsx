@@ -108,7 +108,9 @@ export function ApporteurPresentationRecueRendezVousEmail({ locale, payload }: P
         {t.validation(date, RESERVATION_RENDEZ_VOUS_JOURS, FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.devis(RESERVATION_RENDEZ_VOUS_JOURS)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.rendezVousAnnule(RESERVATION_RENDEZ_VOUS_JOURS)}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.rendezVousAnnule(RESERVATION_RENDEZ_VOUS_JOURS)}
+      </Text>
       <Text style={emailStyles.paragraphStyle}>{t.sansRendezVous}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.commission}</Text>
     </EmailLayout>

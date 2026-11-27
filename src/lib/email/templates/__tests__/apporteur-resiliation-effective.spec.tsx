@@ -38,10 +38,12 @@ describe("apporteur-resiliation-effective", () => {
     }
   });
 
-  it("dit que autofactures, avoirs et décomptes continuent par e-mail (art. 12.3)", async () => {
-    const r = await rendu({ prenom: "Claire", effetLe: "25 décembre 2026" });
-    expect(r.t).toContain("autofactures, avoirs et décomptes");
-    expect(r.t).toContain("par e-mail jusqu'à l'extinction de vos droits");
+  it("dit que autofactures, avoirs et décomptes continuent d'arriver par e-mail (art. 12.3) : la coupure de l'espace n'est pas celle des commissions", async () => {
+    for (const argentEnJeu of [false, true]) {
+      const r = await rendu({ prenom: "Claire", effetLe: "25 décembre 2026", argentEnJeu });
+      expect(r.t).toContain("autofactures, vos avoirs et vos décomptes");
+      expect(r.t).toContain("par e-mail");
+    }
   });
 
   it("salue par le prénom seul", async () => {
