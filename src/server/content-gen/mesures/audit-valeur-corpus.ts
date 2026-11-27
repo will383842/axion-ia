@@ -25,7 +25,8 @@ export interface PageCorpus {
   readonly type: TypePage;
   readonly url: string;
   readonly titre: string;
-  readonly mots: number;
+  /** null = texte affiché non mesurable ici : aucun signalement « faible valeur » sur les mots. */
+  readonly mots: number | null;
   readonly qualityScore: number | null;
   readonly publieLe: Date | null;
   /** Titres H2 dans l'ordre du texte. */
@@ -148,7 +149,8 @@ export function auditerCorpus(
 
     const motsMin = p.type === "article" ? seuils.motsMinArticle : seuils.motsMinPageVille;
     const raisons: string[] = [];
-    if (p.mots < motsMin) raisons.push(`${p.mots} mots (seuil d'attention ${motsMin})`);
+    if (p.mots !== null && p.mots < motsMin)
+      raisons.push(`${p.mots} mots (seuil d'attention ${motsMin})`);
     if (p.qualityScore !== null && p.qualityScore < seuils.scoreQualiteMin) {
       raisons.push(`score qualité ${p.qualityScore} (seuil d'attention ${seuils.scoreQualiteMin})`);
     }
@@ -156,17 +158,21 @@ export function auditerCorpus(
       signalements.push({ ...base, famille: "faible-valeur", motif: raisons.join(" ; ") });
     }
 
-    if (
-      p.impressions !== null &&
-      p.impressions === 0 &&
-      p.publieLe !== null &&
-      joursEntre(p.publieLe, maintenant) >= seuils.ancienneteMinJours
-    ) {
-      signalements.push({
-        ...base,
-        famille: "sans-impressions",
-        motif: `aucune impression Search Console, publiée depuis ${Math.floor(joursEntre(p.publieLe, maintenant))} jours`,
-      });
+    if (p.impressions !== null && p.impressions === 0) {
+      if (p.publieLe !== null && joursEntre(p.publieLe, maintenant) >= seuils.ancienneteMinJours) {
+        signalements.push({
+          ...base,
+          famille: "sans-impressions",
+          motif: `aucune impression Search Console, publiée depuis ${Math.floor(joursEntre(p.publieLe, maintenant))} jours`,
+        });
+      } else if (p.publieLe === null && p.type === "page-ville") {
+        // Pages villes : date de mise en ligne non tracée ; signalement pour un humain, qui jugera l'âge.
+        signalements.push({
+          ...base,
+          famille: "sans-impressions",
+          motif: "aucune impression Search Console (date de mise en ligne inconnue)",
+        });
+      }
     }
   }
 

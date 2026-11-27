@@ -8,6 +8,7 @@
 import { prisma } from "@/lib/prisma";
 import { gscSearchAnalytics } from "@/server/content-gen/seo/gsc-client";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
+import { isVilleIndexable } from "@/content/villes/core";
 import { compterMots } from "@/server/content-gen/audit-blog-existant";
 import {
   auditerCorpus,
@@ -23,27 +24,6 @@ const DEFAUT_SITE = "https://axion-ia.com";
 
 function jourIso(d: Date): string {
   return d.toISOString().slice(0, 10);
-}
-
-function texteDe(v: unknown): string {
-  if (v === null || v === undefined) return "";
-  if (typeof v === "string") return v;
-  try {
-    return JSON.stringify(v);
-  } catch {
-    return "";
-  }
-}
-
-function questionsFaq(v: unknown): string[] {
-  if (!Array.isArray(v)) return [];
-  return v
-    .map((x) =>
-      typeof x === "object" && x !== null && typeof (x as { q?: unknown }).q === "string"
-        ? (x as { q: string }).q
-        : "",
-    )
-    .filter((q) => q.length > 0);
 }
 
 export async function chargerPagesCorpus(): Promise<PageCorpus[]> {
@@ -89,56 +69,32 @@ export async function chargerPagesCorpus(): Promise<PageCorpus[]> {
     });
   }
 
-  const copies = await prisma.generatedVilleCopy.findMany({
-    where: { status: "approved" },
-    select: {
-      id: true,
-      villeSlug: true,
-      pitchFr: true,
-      directAnswerFr: true,
-      ecosystemFr: true,
-      distancesFr: true,
-      servicesContextJson: true,
-      faqGeolocaliseeJson: true,
-      qualityScore: true,
-      generatedAt: true,
-    },
+  // Pages villes : le texte AFFICHÉ vient de `journee-ia-locale` (code, pas la base) ; la copie
+  // `GeneratedVilleCopy` ne sert plus qu'à l'indexabilité. On n'invente donc ni nombre de mots
+  // ni plan pour ces pages : seul le signal « sans impressions » est calculé, sur les villes
+  // que le site déclare indexables (même règle que robots et sitemap).
+  const villes = await prisma.city.findMany({
+    select: { slug: true, name: true, regionSlug: true },
+    orderBy: { slug: "asc" },
     take: LIMITE_PAGES,
   });
-  const slugs = copies.map((c) => c.villeSlug);
-  const villes =
-    slugs.length > 0
-      ? await prisma.city.findMany({
-          where: { slug: { in: slugs } },
-          select: { slug: true, name: true, regionSlug: true, regionName: true },
-        })
-      : [];
-  const parSlug = new Map(villes.map((v) => [v.slug, v]));
-  for (const c of copies) {
-    const v = parSlug.get(c.villeSlug);
-    if (!v) continue; // sans ville connue, pas d'adresse : rien à signaler de fiable
-    const questions = questionsFaq(c.faqGeolocaliseeJson);
-    const corps = [
-      c.pitchFr,
-      c.directAnswerFr,
-      c.ecosystemFr,
-      c.distancesFr,
-      texteDe(c.servicesContextJson),
-      questions.join(" "),
-    ].join(" ");
+  for (const v of villes) {
+    if (!isVilleIndexable(v.slug)) continue;
     pages.push({
-      id: c.id,
+      id: v.slug,
       type: "page-ville",
       url: `${site}/fr/implantations/${v.regionSlug}/${v.slug}`,
       titre: v.name,
-      mots: compterMots(corps),
-      qualityScore: c.qualityScore,
-      publieLe: c.generatedAt,
-      // Le « plan » d'une page ville est la liste de ses questions : le nom de la ville est retiré.
-      plan: questions,
-      motsVariables: [v.name, v.regionName],
+      mots: null,
+      qualityScore: null,
+      // Date de mise en ligne inconnue : l'ancienneté minimale n'est pas démontrable.
+      publieLe: null,
+      plan: [],
       impressions: null,
     });
+  }
+  if (traductions.length >= LIMITE_PAGES || villes.length >= LIMITE_PAGES) {
+    console.warn(`⚠️ Plafond de ${LIMITE_PAGES} pages atteint : audit PARTIEL.`);
   }
   return pages;
 }

@@ -119,10 +119,15 @@ describe("calculerRapportBlocageCout", () => {
     expect(r.bloquesSansCause).toBe(0);
   });
 
-  it("un blocage sans cause journalisée est compté à part, jamais perdu", () => {
+  it("un tier 3 de générateur sans journal de blocage n'est pas un blocage", () => {
     const r = calculerRapportBlocageCout([
       job({ id: "1", outputJsonRaw: { finalIndexationTier: "tier_3_noindex_nofollow" } }),
     ]);
+    expect(r.jobsBloques).toBe(0);
+  });
+
+  it("un blocage sans cause journalisée est compté à part, jamais perdu", () => {
+    const r = calculerRapportBlocageCout([job({ id: "1", blocageJournalise: true })]);
     expect(r.jobsBloques).toBe(1);
     expect(r.bloquesSansCause).toBe(1);
     expect(r.controles[0]?.code).toBe("cause-inconnue");
@@ -178,6 +183,7 @@ describe("calculerRapportBlocageCout", () => {
     ]);
     expect(r.roles).toHaveLength(1);
     expect(r.roles[0]?.coutTotalUsd).toBe(0);
+    expect(r.entreesSansCout).toBe(1);
   });
 
   it("le texte contient les sections", () => {

@@ -79,6 +79,8 @@ export interface RapportBlocageCout {
   readonly coutColonneTotalUsd: number;
   /** Jobs dont le blocage n'a pu être rattaché à aucun contrôle connu. */
   readonly bloquesSansCause: number;
+  /** Entrées de journal d'équipe sans coût lisible : comptées 0 dans les totaux, mais signalées. */
+  readonly entreesSansCout: number;
 }
 
 function objet(v: unknown): Record<string, unknown> | null {
@@ -171,9 +173,9 @@ export function blocagesDuJob(l: LigneJobMesure): ReadonlyArray<Blocage> {
 
 /** Le job a-t-il été bloqué ? (journal, causes, ou état de `outputJsonRaw`). */
 function estBloque(l: LigneJobMesure, blocages: ReadonlyArray<Blocage>): boolean {
-  if (blocages.length > 0 || l.blocageJournalise) return true;
-  const out = objet(l.outputJsonRaw);
-  return out?.["finalIndexationTier"] === "tier_3_noindex_nofollow";
+  // Le tier 3 posé par un générateur (soft-404, score bas…) n'est PAS un blocage de contrôle :
+  // seul le journal « Publication automatique refusée » ou un contrôle relu le prouve.
+  return blocages.length > 0 || l.blocageJournalise;
 }
 
 function quantile(tries: ReadonlyArray<number>, q: number): number | null {
@@ -189,7 +191,8 @@ function arrondi(n: number, d = 4): number {
 
 interface EntreeRole {
   readonly role: string;
-  readonly coutUsd: number;
+  /** null = coût absent du journal : inconnu, jamais compté comme zéro. */
+  readonly coutUsd: number | null;
   readonly dureeMs: number | null;
 }
 
@@ -207,7 +210,7 @@ function entreesEquipe(out: Record<string, unknown> | null): {
     if (!o || typeof o["role"] !== "string") continue;
     entrees.push({
       role: o["role"],
-      coutUsd: nombreFini(o["coutUsd"]) ?? 0,
+      coutUsd: nombreFini(o["coutUsd"]),
       dureeMs: nombreFini(o["dureeMs"]),
     });
   }
@@ -225,6 +228,7 @@ export function calculerRapportBlocageCout(
   const parControle = new Map<string, { code: CodeControle; libelle: string; n: number }>();
   let bloquesJobs = 0;
   let sansCause = 0;
+  let sansCout = 0;
   let coutColonne = 0;
 
   const coutsArticle: number[] = [];
@@ -261,10 +265,11 @@ export function calculerRapportBlocageCout(
     const eq = entreesEquipe(objet(l.outputJsonRaw));
     if (!eq) continue;
     if (eq.issue) issues[eq.issue] = (issues[eq.issue] ?? 0) + 1;
-    const somme = eq.entrees.reduce((t, e) => t + e.coutUsd, 0);
+    const somme = eq.entrees.reduce((t, e) => t + (e.coutUsd ?? 0), 0);
     coutsArticle.push(eq.coutTotal ?? somme);
     const vus = new Set<string>();
     for (const e of eq.entrees) {
+      if (e.coutUsd === null) sansCout += 1;
       const cur = parRole.get(e.role) ?? {
         articles: 0,
         passes: 0,
@@ -277,7 +282,7 @@ export function calculerRapportBlocageCout(
         vus.add(e.role);
       }
       cur.passes += 1;
-      cur.cout += e.coutUsd;
+      cur.cout += e.coutUsd ?? 0;
       if (e.dureeMs !== null) {
         cur.dureeSomme += e.dureeMs;
         cur.dureeN += 1;
@@ -327,6 +332,7 @@ export function calculerRapportBlocageCout(
     issuesEquipe: issues,
     coutColonneTotalUsd: arrondi(coutColonne),
     bloquesSansCause: sansCause,
+    entreesSansCout: sansCout,
   };
 }
 
@@ -340,6 +346,11 @@ export function formaterRapportBlocageCout(r: RapportBlocageCout, jours: number)
     `Jobs mesurés : ${r.totalJobs} · bloqués : ${r.jobsBloques} (${pct(r.tauxBlocageGlobal)})`,
   );
   l.push(`dont cause non journalisée : ${r.bloquesSansCause}`);
+  if (r.entreesSansCout > 0) {
+    l.push(
+      `⚠️ ${r.entreesSansCout} entrée(s) de journal sans coût lisible : comptées 0 $ dans les totaux.`,
+    );
+  }
   l.push("");
   l.push("## Blocage par contrôle (un job peut cumuler plusieurs contrôles)");
   if (r.controles.length === 0) l.push("Aucun blocage sur la période.");

@@ -53,6 +53,7 @@ export async function chargerLignesBlocageCout(
   maintenant: Date = new Date(),
 ): Promise<LigneJobMesure[]> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
+  // Plafond atteint = rapport PARTIEL : on le dit sur la sortie d'erreur, jamais en silence.
   const depuis = new Date(maintenant.getTime() - jours * 86_400_000);
   const lignes: LigneJobMesure[] = [];
   let curseur: string | undefined;
@@ -108,6 +109,11 @@ export async function chargerLignesBlocageCout(
       });
     }
     if (lot.length < TAILLE_LOT) break;
+  }
+  if (lignes.length >= LIMITE_JOBS) {
+    console.warn(
+      `⚠️ Plafond de ${LIMITE_JOBS} jobs atteint : rapport PARTIEL (jobs les plus anciens par id).`,
+    );
   }
   return lignes;
 }

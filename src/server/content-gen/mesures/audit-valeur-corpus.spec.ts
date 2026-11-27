@@ -78,6 +78,23 @@ describe("auditerCorpus", () => {
     );
   });
 
+  it("page ville sans date et sans mots : seul « sans impressions » peut la signaler", () => {
+    const r = auditerCorpus(
+      [
+        page({
+          id: "v",
+          type: "page-ville",
+          mots: null,
+          qualityScore: null,
+          publieLe: null,
+          impressions: 0,
+        }),
+      ],
+      NOW,
+    );
+    expect(r.signalements.map((s) => s.famille)).toEqual(["sans-impressions"]);
+  });
+
   it("Search Console muette : jamais de « sans impressions », et le rapport le dit", () => {
     const r = auditerCorpus([page({ id: "a", impressions: null })], NOW);
     expect(r.impressionsDisponibles).toBe(false);
