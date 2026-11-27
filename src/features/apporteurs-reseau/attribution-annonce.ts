@@ -24,7 +24,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import { dejaEnvoye } from "./commissions";
-import { lireReservations } from "./reservation-presentation";
+import { lireReservations, suitLaRegleRendezVous } from "./reservation-presentation";
 import { envoyer } from "./envois";
 import { RAPPEL_SANS_REPONSE_JOURS, ajouterJours } from "./regles";
 import { signalerErreurReseau } from "./signaler";
@@ -82,6 +82,9 @@ export async function annoncerAttribution(
     if (!p || p.statut !== "confirmee" || !p.protegeeJusquAt) return false;
     const email = decryptPii(p.apporteur.email) ?? "";
     if (!email) return false;
+    const enRendezVous = suitLaRegleRendezVous(
+      (await lireReservations([presentationId])).get(presentationId),
+    );
     const r = await envoyer({
       gabarit: "apporteur-attribution-confirmee",
       destinataire: email,
@@ -92,7 +95,13 @@ export async function annoncerAttribution(
         entreprise: p.denomination,
         finProtection: dateEnClair(p.protegeeJusquAt),
         // Date du rendez-vous tenu ou de la signature (`confirmeeAt`), pas celle du clic (`valideeAt`).
-        ...(p.confirmeeAt ? { dateValidation: dateEnClair(p.confirmeeAt) } : {}),
+        // « Validation » est le mot de la 2.8 : réservé aux présentations qui ont une ligne
+        // `rendez_vous`. Les confirmations tacites ou saisies des contrats < 2.8 disent « confirmation ».
+        ...(p.confirmeeAt
+          ? enRendezVous
+            ? { dateValidation: dateEnClair(p.confirmeeAt) }
+            : { dateConfirmation: dateEnClair(p.confirmeeAt) }
+          : {}),
         variante,
         ...(variante === "prolongee" && p.motifProlongation
           ? { motifTexte: MOTIF_EN_CLAIR[p.motifProlongation] ?? "" }

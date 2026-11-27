@@ -51,7 +51,11 @@ import {
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
-import { enregistrerReservation, lireReservations } from "./reservation-presentation";
+import {
+  enregistrerReservation,
+  lireReservations,
+  suitLaRegleRendezVous,
+} from "./reservation-presentation";
 import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
 
@@ -853,6 +857,13 @@ export async function confirmerPresentation(
     select: { recueAt: true },
   });
   if (!p) return { ok: false, message: "Présentation introuvable." };
+  const ligne = (await lireReservations([id])).get(id);
+  if (suitLaRegleRendezVous(ligne))
+    return {
+      ok: false,
+      message:
+        "Cette présentation suit la règle par rendez-vous : elle se valide par un rendez-vous tenu ou une commande signée.",
+    };
   if (confirmeeAt.getTime() < p.recueAt.getTime() - 86_400_000) {
     return { ok: false, message: "La réponse ne peut pas précéder la présentation." };
   }

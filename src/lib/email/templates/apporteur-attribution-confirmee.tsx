@@ -34,6 +34,11 @@ interface Payload {
    * tenu ou de la signature, déjà formatée en heure de Paris.
    */
   dateValidation?: string;
+  /**
+   * Confirmée seulement, FACULTATIF : date de la confirmation (réputée ou saisie) d'une présentation
+   * des contrats antérieurs à la 2.8 — le mot « validation » est réservé à la règle du rendez-vous.
+   */
+  dateConfirmation?: string;
   variante?: VarianteAttribution;
   /**
    * Prolongée seulement : le motif DÉJÀ RÉDIGÉ par l'appelant (« Un devis est en cours avec
@@ -68,6 +73,7 @@ export const COPY_ATTRIBUTION = {
   },
   motifParDefaut: "Un échange est en cours avec elle",
   validation: (d: string) => (d ? `Date de la validation : ${d}.` : ""),
+  confirmation: (d: string) => (d ? `Date de la confirmation : ${d}.` : ""),
   fin: (d: string) => (d ? `Fin de la protection : ${d}.` : ""),
   commission:
     "Une attribution ne fait naître aucune commission par elle-même : la commission naît d'une commande de l'entreprise, une fois la commande entièrement payée.",
@@ -95,7 +101,11 @@ export function ApporteurAttributionConfirmeeEmail({ locale, payload }: Props) {
     v === "prolongee"
       ? COPY_ATTRIBUTION.prolongee.texte(e, texte(p.motifTexte) || COPY_ATTRIBUTION.motifParDefaut)
       : COPY_ATTRIBUTION.confirmee.texte(e);
-  const validation = v === "confirmee" ? COPY_ATTRIBUTION.validation(texte(p.dateValidation)) : "";
+  const validation =
+    v === "confirmee"
+      ? COPY_ATTRIBUTION.validation(texte(p.dateValidation)) ||
+        COPY_ATTRIBUTION.confirmation(texte(p.dateConfirmation))
+      : "";
   const fin = COPY_ATTRIBUTION.fin(texte(p.finProtection));
   return (
     <EmailLayout

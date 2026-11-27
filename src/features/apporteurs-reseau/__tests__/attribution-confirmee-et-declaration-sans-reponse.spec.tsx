@@ -10,11 +10,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   presentation: null as Record<string, unknown> | null,
+  reservations: [] as Array<Record<string, unknown>>,
   deja: false,
   envoyer: vi.fn(),
 }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { presentationEntreprise: { findUnique: vi.fn(async () => h.presentation) } },
+  prisma: {
+    presentationEntreprise: { findUnique: vi.fn(async () => h.presentation) },
+    presentationReservation: { findMany: vi.fn(async () => h.reservations) },
+  },
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string | null) => v }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
@@ -96,6 +100,7 @@ describe("annoncerAttribution : une fois par événement, jamais pour un état i
   beforeEach(() => {
     vi.clearAllMocks();
     h.deja = false;
+    h.reservations = [];
     h.envoyer.mockResolvedValue("envoye");
     h.presentation = {
       id: ID,
@@ -120,6 +125,7 @@ describe("annoncerAttribution : une fois par événement, jamais pour un état i
   });
 
   it("confirmée : le payload porte dateValidation = date du rendez-vous tenu (confirmeeAt)", async () => {
+    h.reservations = [{ presentationId: ID, regle: "rendez_vous" }];
     h.presentation = {
       ...h.presentation!,
       confirmeeAt: new Date("2026-10-07T09:00:00Z"),
@@ -128,6 +134,23 @@ describe("annoncerAttribution : une fois par événement, jamais pour un état i
     await annoncerAttribution(ID, "confirmee");
     const e = h.envoyer.mock.calls[0]![0] as { payload: Record<string, unknown> };
     expect(e.payload["dateValidation"]).toBe("7 octobre 2026");
+  });
+
+  it("confirmée sans ligne rendez_vous (contrat < 2.8) : « dateConfirmation », jamais « dateValidation »", async () => {
+    await annoncerAttribution(ID, "confirmee");
+    const e = h.envoyer.mock.calls[0]![0] as { payload: Record<string, unknown> };
+    expect(e.payload["dateConfirmation"]).toBe("8 octobre 2026");
+    expect(e.payload).not.toHaveProperty("dateValidation");
+  });
+
+  it("e-mail : « Date de la confirmation » pour dateConfirmation, « Date de la validation » pour dateValidation", async () => {
+    const rendu = (payload: Record<string, unknown>) =>
+      render(React.createElement(ApporteurAttributionConfirmeeEmail, { locale: "fr", payload }));
+    const a = await rendu({ entreprise: "Danone", dateConfirmation: "8 octobre 2026" });
+    expect(a).toContain("Date de la confirmation : 8 octobre 2026.");
+    expect(a).not.toContain("Date de la validation");
+    const b = await rendu({ entreprise: "Danone", dateValidation: "8 octobre 2026" });
+    expect(b).toContain("Date de la validation : 8 octobre 2026.");
   });
 
   it("déjà partie : rien n'est renvoyé", async () => {
