@@ -666,7 +666,9 @@ export async function gscDernierJourFinal(
     deps,
   );
   if (r.etat !== "ok") return { etat: r.etat, jour: null };
-  const jours = r.rows.map((l) => l.keys[0]).filter((k): k is string => !!k && REGEX_DATE.test(k));
+  const jours = r.rows
+    .map((l) => (Array.isArray(l?.keys) ? l.keys[0] : undefined))
+    .filter((k): k is string => !!k && REGEX_DATE.test(k));
   jours.sort();
   return { etat: "ok", jour: jours.length > 0 ? (jours[jours.length - 1] as string) : null };
 }
@@ -721,5 +723,7 @@ export async function gscPageMetricsForUrlDates(
   if (r.etat !== "ok") return null;
   const row = r.rows[0];
   if (!row) return { ctr: 0, impressions: 0, clicks: 0, position: 0 };
+  const valeurs = [row.ctr, row.impressions, row.clicks, row.position];
+  if (!valeurs.every((v) => typeof v === "number" && Number.isFinite(v))) return null;
   return { ctr: row.ctr, impressions: row.impressions, clicks: row.clicks, position: row.position };
 }
