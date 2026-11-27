@@ -14,4 +14,4 @@ Chaîne éditoriale C3 : six tables et une colonne facultative, sans rien branch
 - Typecheck, vitest ciblé (content-gen, migrations, garde RGPD du dossier client), `content-gen:isolation-check`, `image-bank:isolation-check`, prettier : verts.
 - Hors périmètre : 4 tests de `kb-ingest/url-extractor` échouent aussi sur main dans cet environnement (réseau).
 
-VERDICT OPUS : EN COURS (tour 2)
+VERDICT OPUS : EN COURS (tour 3)

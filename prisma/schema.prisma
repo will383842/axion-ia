@@ -19477,7 +19477,7 @@ model ContenuBesoin {
 
 /// Brief (R2) : le contrat de tout le reste. Étend le schéma de equipe/brief.ts (champ `brief`
 /// = briefSchema validé en JSON) ; les colonnes dédiées servent aux requêtes et à la console.
-/// rgpd: technique — briefs éditoriaux (plan, intention, longueur) ; aucune donnée sur une personne, seul le nom d'un membre de l'équipe peut figurer comme auteur
+/// rgpd: technique — briefs éditoriaux (plan, intention, longueur) et questions génériques de lecteurs reprises de la réserve de besoins ; aucune colonne ne nomme une personne
 model ContenuBrief {
   id                 String   @id @default(cuid())
   besoinId           String?
@@ -19500,10 +19500,10 @@ model ContenuBrief {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  besoin          ContenuBesoin?    @relation(fields: [besoinId], references: [id], onDelete: SetNull)
-  faits           ContenuFait[]
-  refus           ContenuRefus[]
-  resultats       ContenuResultat[]
+  besoin    ContenuBesoin?    @relation(fields: [besoinId], references: [id], onDelete: SetNull)
+  faits     ContenuFait[]
+  refus     ContenuRefus[]
+  resultats ContenuResultat[]
 
   @@index([besoinId])
   @@index([jobId])
@@ -19512,7 +19512,7 @@ model ContenuBrief {
 }
 
 /// Dossier de preuves (R3) et faits vérifiés gouvernés (lus par C5 pour CHIFFRES_VERIFIES).
-/// rgpd: technique — faits publics sourcés (énoncé, extrait, URL) ; aucune donnée sur une personne, seul le nom du relecteur de l'équipe figure
+/// rgpd: technique — données publiques sourcées (énoncé, extrait, URL ; une personne publique peut y être citée) ; seul le nom du relecteur de l'équipe est une donnée de personne
 model ContenuFait {
   id              String    @id @default(cuid())
   briefId         String?
@@ -19542,7 +19542,7 @@ model ContenuFait {
 }
 
 /// Refus enregistré (machine ou humain), un seul mécanisme (§ 7.1 et § 8 de la conception).
-/// rgpd: technique — codes et motifs de refus d'un contenu ; aucune donnée sur une personne, seul le nom du décideur de l'équipe figure
+/// rgpd: technique — codes et motifs de refus d'un contenu ; aucune donnée sur une personne, seul le nom de l'auteur (membre de l'équipe) d'un refus humain figure
 model ContenuRefus {
   id             String   @id @default(cuid())
   briefId        String?
