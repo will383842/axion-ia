@@ -43,10 +43,9 @@ const HORS_PROSPECTS: ReadonlySet<string> = new Set([
   "autofacture-transmission",
   "opco-suivi-entreprise",
   "recueil-besoin",
-  // Apporteur retenu ou sous contrat : barème du contrat, privé.
-  "apporteur-issue-retenu",
+  // Apporteur sous contrat : barème du contrat, privé. (« retenu » et « contrat signé »
+  // n'ont plus de montant : ils sont soumis à la règle commune, retirés de la liste.)
   "apporteur-demarrage",
-  "apporteur-contrat-signe",
   "apporteur-releve",
   "apporteur-virement-fait",
   "apporteur-vigilance",

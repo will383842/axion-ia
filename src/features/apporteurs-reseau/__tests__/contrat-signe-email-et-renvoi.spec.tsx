@@ -54,19 +54,22 @@ describe("e-mail « contrat signé » (D5)", () => {
     }
   });
 
-  it("liste TOUTES les commissions du contrat : formation, audit, intégration, 1-to-1 et parrainage", async () => {
+  it("plus de barème (ni €, ni %, ni lignes par prestation) : le parrainage seul reste, le montant vit dans la fiche", async () => {
     const h = await html({ contactName: "Claire", dossierUrl: URL_DOSSIER });
     const t = texteParDefaut("apporteur-contrat-signe", { contactName: "Claire" })!;
     for (const x of [h, t]) {
-      expect(x).toMatch(/Formation : 500/);
-      expect(x).toContain("Audit : 30 % du montant HT");
-      expect(x).toContain("Intégration : 15 % du montant HT");
-      expect(x).toContain("1-to-1) : aucune commission");
+      expect(x).not.toMatch(/Formation : 500/);
+      expect(x).not.toContain("Audit :");
+      expect(x).not.toContain("Intégration :");
       expect(x).toContain(
         "Parrainage : si vous présentez une personne qui devient elle-même apporteur",
       );
       expect(x).toContain("10 % des commissions nées de ses commandes signées pendant les 6 mois");
     }
+    expect(h).toContain(`href="${URL_DOSSIER}/documents"`);
+    expect(t).toContain(
+      "Elle vous est attribuée dès qu'un premier rendez-vous avec nous a eu lieu",
+    );
   });
 
   it("le texte par défaut (« Modifier le texte ») dit la même chose que le gabarit", () => {

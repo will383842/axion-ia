@@ -11,11 +11,7 @@ import { renderEmailTemplate } from "../index";
 import { COPY_ISSUE_ECHANGE } from "../apporteur-issue-echange";
 import { REGIME_FAMILLE } from "../_layout";
 import { OBJET_MAX } from "../../objet-email";
-import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
-import {
-  DOCUMENT_APPORTEUR_CHEMIN,
-  FENETRE_ATTRIBUTION_APPORTEUR_MOIS,
-} from "@/lib/commercial-application/kit-apporteur";
+import { DOCUMENT_APPORTEUR_CHEMIN } from "@/lib/commercial-application/kit-apporteur";
 import { EMAIL_LEGAL } from "@/lib/email/legal-footer";
 import {
   GABARITS_ISSUE_APPORTEUR,
@@ -88,57 +84,79 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain("Vous nous mettez en relation avec une entreprise qui a un besoin");
     expect(t).toContain("Nous gérons tout le reste : rendez-vous, devis et réalisation.");
     expect(t).toContain(
-      "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
+      "L'entreprise vous est attribuée dès qu'un premier rendez-vous avec nous a eu lieu, s'il a été pris dans les 60 jours qui suivent votre déclaration. Nous gérons tout le reste : rendez-vous, devis et réalisation.",
     );
-    expect(t).toContain("due dès que le client a payé l'intégralité de sa commande");
-    expect(t).toContain("sans objectif ni exclusivité");
-    expect(t).toContain("numéro SIREN");
-    expect(t).toContain("votre contrat d'apporteur, à signer en ligne");
-    expect(t).not.toContain("prochains jours");
-    // 2026-10-05 (Will) : plus aucune date promise pour l'espace en ligne (démarrage à la main).
-    expect(t).not.toContain("d'ici un mois");
-    expect(t).toContain("Dès votre contrat signé, vous pourrez nous présenter des entreprises");
-    // 2026-10-06 : le dossier signé renvoie au formulaire du lien personnel : « par simple
-    // e-mail » ne disait que la moitié du chemin (et promettait un canal que l'espace ne garantit pas).
-    // Contrat 2.2 (art. 3.2) : la déclaration passe par le seul formulaire du lien personnel.
     expect(t).toContain(
-      "depuis votre lien personnel, avec le formulaire « Déclarer une entreprise »",
+      "Vous touchez une commission quand l'entreprise a payé l'intégralité de sa commande. Les montants à jour sont dans la fiche des commissions ci-dessous ; votre contrat fait foi.",
+    );
+    expect(t).toContain("sans objectif ni exclusivité");
+    expect(t).toContain(
+      "Pour signer votre contrat et facturer vos commissions, il vous faut un numéro SIREN",
+    );
+    expect(t).not.toContain("prochains jours");
+    // 2026-10-05 (Will) : plus aucune date promise pour l'espace en ligne.
+    expect(t).not.toContain("d'ici un mois");
+    expect(t).toContain(
+      "Dès votre contrat signé, vous pourrez nous présenter des entreprises depuis votre espace, avec le formulaire « Déclarer une entreprise »",
     );
     expect(t).not.toContain("par e-mail ou depuis");
     expect(t).not.toContain("par simple e-mail");
-    // (La consigne « répondez avec son nom et celui de votre contact » allait avec la date
-    // promise : elle est retirée avec elle ; la présentation par e-mail reste dite ci-dessus.)
-    // Le châssis porte « Une question ? Répondez simplement à cet e-mail » : une
-    // seule fois, pas deux.
+    // Le châssis porte « Une question ? Répondez simplement à cet e-mail » : une seule fois.
     expect(t.match(/Une question \?/g)).toHaveLength(1);
-    // Le kit : le catalogue seul, le document de présentation est retiré
-    // jusqu'à sa réécriture (JUR-T44, `kit-apporteur-sans-pdf.spec.ts`).
-    expect(r.html).toMatch(/\/fr\/catalogue"/);
+    // Plus de kit ni de catalogue : les documents passent par des liens personnels.
+    expect(r.html).not.toContain("/catalogue");
     expect(r.html).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
+    // Sans lien de dossier, pas de section de documents (jamais de lien mort).
+    expect(t).not.toContain("Vos documents, toujours à jour");
   });
 
-  it("🔑 les montants viennent du SSOT : 500 € la journée, 30 % l'audit, 15 % l'intégration, 6 mois", async () => {
-    const t = texte((await rendu("apporteur-issue-retenu")).html);
-    const audit = getCommissionById("com-audit").percent;
-    const integration = getCommissionById("com-integration").percent;
+  it("avec le lien du dossier : 4 liens personnels, qui commencent tous par ce lien", async () => {
+    const dossierUrl = "https://axion-ia.com/apporteur/dossier/abc/jeton123";
+    const r = await rendu("apporteur-issue-retenu", "fr", { dossierUrl });
+    const t = texte(r.html);
+    expect(t).toContain("Vos documents, toujours à jour");
     expect(t).toContain(
-      `Formation : ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
+      "Ces liens ouvrent toujours la dernière version. Ils vous sont personnels : gardez cet e-mail.",
     );
-    expect(t).toContain(`Audit : ${audit} % du montant HT de la facture.`);
-    expect(t).toContain(`Intégration : ${integration} % du montant HT de la facture.`);
-    // Décision de Will (2026-10-05) : la durée d'attribution ne s'écrit PAS dans cet e-mail.
-    expect(t).toContain("payé l'intégralité de sa commande");
-    expect(t).not.toContain("prestation est réalisée");
-    expect(t).not.toContain("attribuée");
-    expect(t).not.toContain("6 mois");
-    // Témoin des valeurs décidées : si le SSOT bouge, ce test le dit.
-    expect([
-      COMMISSION_FORMATION_PAR_JOURNEE_EUR,
-      audit,
-      integration,
-      FENETRE_ATTRIBUTION_APPORTEUR_MOIS,
-    ]).toEqual([500, 30, 15, 6]);
+    const attendus: Array<[string, string, string]> = [
+      [
+        "La fiche des commissions",
+        "/fiche-commissions",
+        "ce que vous touchez, prestation par prestation, et quand c'est versé",
+      ],
+      ["Le livret d'accueil", "/livret", "le réseau et son fonctionnement"],
+      ["Le guide de démarrage", "/guide", "des idées pour bien commencer, à votre rythme"],
+      [
+        "Mon espace apporteur",
+        "/documents",
+        "votre dossier, votre contrat et tous vos documents au même endroit",
+      ],
+    ];
+    for (const [libelle, chemin, detail] of attendus) {
+      expect(r.html).toContain(`href="${dossierUrl}${chemin}"`);
+      expect(t).toContain(`→ ${libelle} ${detail}`);
+    }
+    const hrefs = (r.html.match(/href="([^"]+)"/g) ?? []).map((x) => x.slice(6, -1));
+    expect(hrefs.filter((h) => h.startsWith(`${dossierUrl}/`))).toHaveLength(4);
+    // Le texte « Nous vous enverrons votre contrat… » n'a plus lieu d'être avec le lien.
+    expect(t).not.toContain("Nous vous enverrons votre contrat");
+    // Budget de liens de la famille B tenu.
+    expect(new Set(hrefs).size).toBeLessThanOrEqual(REGIME_FAMILLE.B.budgetLiens);
   });
+
+  it.each(["fr", "en"] as const)(
+    "🔑 aucun montant ni catalogue dans l'e-mail retenu (%s) : ni « € », ni « %% », ni « catalogue »",
+    async (l) => {
+      const r = await rendu("apporteur-issue-retenu", l, {
+        dossierUrl: "https://axion-ia.com/apporteur/dossier/abc/jeton123",
+      });
+      const brut = `${r.subject}\n${r.text}\n${texte(r.html)}`;
+      expect(brut).not.toContain("€");
+      expect(brut).not.toContain("%");
+      expect(brut).not.toMatch(/catalogue/i);
+      expect(brut).not.toMatch(/catalog/i);
+    },
+  );
 });
 
 describe("Non retenu — refus courtois, porte ouverte", () => {
