@@ -334,6 +334,15 @@ async function main(): Promise<void> {
       });
       break;
     }
+    case "iban-brut": {
+      // Lecture de la colonne telle qu'elle est stockée (doit être chiffrée, jamais l'IBAN en clair).
+      const r = await prisma.apporteurReseau.findUniqueOrThrow({
+        where: { id: String(a["apporteurId"]) },
+        select: { iban: true },
+      });
+      sortie = { brut: r.iban };
+      break;
+    }
     case "avoir":
       sortie = await avoir();
       break;
