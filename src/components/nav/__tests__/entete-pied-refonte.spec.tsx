@@ -297,4 +297,15 @@ describe("pied de page — mentions de la maquette", () => {
   it("aucune date de mise à jour écrite en dur", () => {
     expect(textes(pied)).not.toMatch(/mise à jour le/i);
   });
+
+  it("F0 : aucun titre rendu, et chaque liste est nommée par un intitulé visible", () => {
+    expect(pied).not.toMatch(/<h[1-6][\s>]|role="heading"/);
+    const doc = new DOMParser().parseFromString(pied, "text/html");
+    const listes = [...doc.querySelectorAll("ul[aria-labelledby]")];
+    expect(listes.length).toBeGreaterThanOrEqual(4);
+    for (const ul of listes) {
+      const cible = doc.getElementById(ul.getAttribute("aria-labelledby") ?? "");
+      expect(cible?.textContent?.trim()).toBeTruthy();
+    }
+  });
 });
