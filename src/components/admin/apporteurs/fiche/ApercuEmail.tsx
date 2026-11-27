@@ -146,7 +146,7 @@ export function ApercuEmail({
       aria-label="Aperçu de l'e-mail"
       className="flex flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]"
     >
-      <LecteurEmail apercu={email.apercu} titre={`Aperçu : ${email.sujet}`} liensInertes />
+      <LecteurEmail apercu={email.apercu} titre={`Aperçu : ${email.sujet}`} liensOuvrables />
       {onActualiserTexte && email.texteDefaut !== undefined ? (
         <EditeurTexte
           texteDefaut={email.texteDefaut}
