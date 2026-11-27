@@ -43,6 +43,9 @@ import {
   PALIER_JOURNEE_IA,
   FORFAIT_JOURNEE_IA_CENTS,
   PALIERS_FORMATION,
+  PALIERS_FORMATION_LONGUE,
+  PLAFOND_FORMATION_LONGUE_CENTS,
+  libellePalierFormation,
 } from "@/features/apporteurs-reseau/regles";
 import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
 import { lireCommandesAAttribuer } from "@/features/apporteurs-reseau/commandes-a-attribuer";
@@ -127,6 +130,12 @@ const PALIERS = [
     id: p.id,
     libelle: p.libelle,
     detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
+  })),
+  // Décision du 27/11 : 1 000 € au plus, au prorata ; quantité = nombre de journées (3 au moins).
+  ...PALIERS_FORMATION_LONGUE.map((p) => ({
+    id: p.id,
+    libelle: p.libelle,
+    detail: `${euros(PLAFOND_FORMATION_LONGUE_CENTS)} au plus si ${euros(p.prixJourCents)} HT par journée (quantité = journées)`,
   })),
   {
     id: PALIER_JOURNEE_IA,
@@ -516,7 +525,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                       ? "Conférence"
                       : c.palier === PALIER_JOURNEE_IA
                         ? "Journée IA"
-                        : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
+                        : (libellePalierFormation(c.palier) ??
                           (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
                   </p>
                 ) : null}

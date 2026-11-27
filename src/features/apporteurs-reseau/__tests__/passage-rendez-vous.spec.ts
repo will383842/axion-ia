@@ -235,6 +235,8 @@ const apporteur = (o: Ligne = {}) => ({
   email: "a@b.fr",
   parrainId: null,
   signeParSocieteAt: null,
+  // Contrat 2.8 : grille v3 (décision du 27/11, la version signée choisit la grille).
+  signatureApporteur: { version: "2.8" },
   ...o,
 });
 const pres = (o: Ligne = {}): Ligne => ({

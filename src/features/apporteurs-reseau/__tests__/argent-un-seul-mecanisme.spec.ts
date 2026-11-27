@@ -226,6 +226,8 @@ const presentation = (id: string, apporteurId: string, parrainId: string | null 
     email: "a@b.fr",
     parrainId,
     signeParSocieteAt: parrainId ? new Date("2026-06-01T00:00:00Z") : null,
+    // Contrat 2.8 : grille v3 (décision du 27/11, la version signée choisit la grille).
+    signatureApporteur: { version: "2.8" },
   },
 });
 

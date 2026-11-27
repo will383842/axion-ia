@@ -20,6 +20,7 @@ import { prisma } from "@/lib/prisma";
 
 import {
   calculerCommission,
+  PALIERS_FORMATION_LONGUE,
   commissionJourneeIaCents,
   PALIER_JOURNEE_IA,
   PRIX_REFERENCE_JOURNEE_IA_CENTS,
@@ -87,6 +88,10 @@ export const partDuParrain = (commissionFilleulCents: number): number =>
 
 /** Nombre de sessions retenu à la création (formation) : prix public ÷ prix du palier. */
 function quantiteDe(l: { palier: string | null; prixPublicHtCents: number | null }): number {
+  // 3 jours ou plus : la quantité est le nombre de journées (référence = journées × prix du jour).
+  const longue = PALIERS_FORMATION_LONGUE.find((p) => p.id === l.palier);
+  if (longue)
+    return l.prixPublicHtCents ? Math.round(l.prixPublicHtCents / longue.prixJourCents) : 0;
   const calc = calculerCommission({ activite: "formation", factureHtCents: 0, palier: l.palier });
   if (calc.statut !== "calculee" || !calc.prixPublicCents || !l.prixPublicHtCents) return 1;
   return Math.max(1, Math.round(l.prixPublicHtCents / calc.prixPublicCents));
