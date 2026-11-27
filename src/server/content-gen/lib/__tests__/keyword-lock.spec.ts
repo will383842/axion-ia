@@ -21,10 +21,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // ─── Hoisted Redis mock ──────────────────────────────────────────────────────
 
-const { redisSetMock, redisDelMock, redisGetMock } = vi.hoisted(() => ({
+const { redisSetMock, redisDelMock, redisGetMock, redisEvalMock } = vi.hoisted(() => ({
   redisSetMock: vi.fn(),
   redisDelMock: vi.fn(),
   redisGetMock: vi.fn(),
+  redisEvalMock: vi.fn(),
 }));
 
 vi.mock("@/lib/redis", () => ({
@@ -32,6 +33,7 @@ vi.mock("@/lib/redis", () => ({
     set: redisSetMock,
     del: redisDelMock,
     get: redisGetMock,
+    eval: redisEvalMock,
   },
 }));
 
@@ -47,6 +49,7 @@ describe("keyword-lock (Sprint Final P1-14)", () => {
     redisSetMock.mockReset();
     redisDelMock.mockReset();
     redisGetMock.mockReset();
+    redisEvalMock.mockReset();
   });
 
   afterEach(() => {
@@ -279,6 +282,37 @@ describe("keyword-lock (Sprint Final P1-14)", () => {
       const { releaseKeywordLock } = await import("../keyword-lock");
 
       await expect(releaseKeywordLock("formation IA")).resolves.toBeUndefined();
+    });
+
+    describe("avec jeton de propriété (équipe éditoriale)", () => {
+      it("ne relâche que par script atomique comparant le jeton, jamais par DEL", async () => {
+        redisEvalMock.mockResolvedValueOnce(1);
+        const { releaseKeywordLock } = await import("../keyword-lock");
+
+        await releaseKeywordLock("Formation IA Paris", "job-1");
+
+        expect(redisDelMock).not.toHaveBeenCalled();
+        expect(redisEvalMock).toHaveBeenCalledOnce();
+        const args = redisEvalMock.mock.calls[0] as unknown[];
+        expect(String(args[0])).toContain("get");
+        expect(args.slice(1)).toEqual([1, "keyword-lock:formation ia paris", "job-1"]);
+      });
+
+      it("lock d'un autre propriétaire : le script rend 0, rien n'est supprimé", async () => {
+        redisEvalMock.mockResolvedValueOnce(0);
+        const { releaseKeywordLock } = await import("../keyword-lock");
+
+        await expect(releaseKeywordLock("audit IA", "job-1")).resolves.toBeUndefined();
+        expect(redisDelMock).not.toHaveBeenCalled();
+      });
+
+      it("panne Redis : ne relâche rien et ne lève pas (pas de repli sur DEL)", async () => {
+        redisEvalMock.mockRejectedValueOnce(new Error("Redis down"));
+        const { releaseKeywordLock } = await import("../keyword-lock");
+
+        await expect(releaseKeywordLock("audit IA", "job-1")).resolves.toBeUndefined();
+        expect(redisDelMock).not.toHaveBeenCalled();
+      });
     });
   });
 

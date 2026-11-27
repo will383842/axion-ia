@@ -433,7 +433,13 @@ export async function ouvrirDossierEtEnvoyerLienAction(input: {
     }
     const dossier = await ouvrirDossierDepuisCandidature(evt.linkedSubmissionId, { creer: true });
     if (!dossier.ok) return { etat: "erreur", message: dossier.message };
-    const r = await envoyerLien(dossier.apporteurId, null);
+    const r = await envoyerLien(
+      dossier.apporteurId,
+      null,
+      undefined,
+      false,
+      `apporteur-dossier-lien-${dossier.apporteurId}-ouverture`,
+    );
     try {
       await prisma.activityLog.create({
         data: {

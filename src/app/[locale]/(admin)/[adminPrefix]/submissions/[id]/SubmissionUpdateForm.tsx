@@ -14,6 +14,11 @@ interface Props {
   currentStatus: string;
   currentInternalNotes: string | null;
   currentAssignedTo: string | null;
+  /**
+   * Fiche d'un candidat apporteur : l'étape du parcours remplace le statut. Le menu n'est pas
+   * rendu, donc le champ n'est pas envoyé — `updateSubmissionAction` n'écrit alors pas le statut.
+   */
+  masquerStatut?: boolean;
 }
 
 export function SubmissionUpdateForm({
@@ -21,29 +26,32 @@ export function SubmissionUpdateForm({
   currentStatus,
   currentInternalNotes,
   currentAssignedTo,
+  masquerStatut = false,
 }: Props) {
   const [state, formAction, pending] = useActionState(updateSubmissionAction, initialState);
   return (
     <form action={formAction} className="admin-form">
       <input type="hidden" name="id" value={id} />
 
-      <div className="admin-field">
-        <label htmlFor="status" className="admin-label">
-          Statut
-        </label>
-        <select
-          id="status"
-          name="status"
-          defaultValue={currentStatus}
-          className="admin-input"
-          disabled={pending}
-        >
-          <option value="new">Nouveau</option>
-          <option value="in_progress">En cours</option>
-          <option value="processed">Traité</option>
-          <option value="archived">Archivé</option>
-        </select>
-      </div>
+      {masquerStatut ? null : (
+        <div className="admin-field">
+          <label htmlFor="status" className="admin-label">
+            Statut
+          </label>
+          <select
+            id="status"
+            name="status"
+            defaultValue={currentStatus}
+            className="admin-input"
+            disabled={pending}
+          >
+            <option value="new">Nouveau</option>
+            <option value="in_progress">En cours</option>
+            <option value="processed">Traité</option>
+            <option value="archived">Archivé</option>
+          </select>
+        </div>
+      )}
 
       <div className="admin-field">
         <label htmlFor="assignedTo" className="admin-label">

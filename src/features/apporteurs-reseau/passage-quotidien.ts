@@ -51,6 +51,7 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { envoyer } from "./envois";
+import { annexesDeLEnvoiDuLien } from "./documents-joints";
 import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
 import {
   basculeVersRendezVous,
@@ -1725,6 +1726,7 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     where: { statut: "dossier_en_cours", signeParApporteurAt: null },
     select: { id: true, prenom: true, email: true, versionLien: true, submissionId: true },
   });
+  let annexesDuPassage: ReturnType<typeof annexesDeLEnvoiDuLien> | undefined;
   for (const a of candidats) {
     const envoisLien = await prisma.emailLog.findMany({
       where: {
@@ -1763,13 +1765,23 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     const url = urlDossier(a.id, a.versionLien);
     const destinataire = decryptPii(a.email);
     if (!url || !destinataire) continue;
+    // Les relances portent aussi la fiche, le livret et le guide (facultatifs, jamais d'erreur).
+    // Lus une seule fois par passage, et seulement s'il y a au moins une relance à envoyer.
+    annexesDuPassage ??= annexesDeLEnvoiDuLien();
+    const annexes = await annexesDuPassage;
     const r = await envoyer({
       gabarit: "apporteur-dossier-lien",
       destinataire,
-      payload: { contactName: decryptPii(a.prenom) ?? "", dossierUrl: url, rappel },
+      payload: {
+        contactName: decryptPii(a.prenom) ?? "",
+        dossierUrl: url,
+        rappel,
+        ...annexes.payload,
+      },
       entityType: "ApporteurReseau",
       entityId: a.id,
       jobId,
+      ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     });
     if (r === "envoye") bilan.rappelsDossier += 1;
   }
