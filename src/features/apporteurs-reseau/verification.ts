@@ -29,6 +29,7 @@ import { annexesDeLEnvoiDuLien, bilanDesPieces, piecesDuContratSigne } from "./d
 import { lireDossier, purgerContenuPieces } from "./donnees";
 import { alerterContresignature } from "./alerte-telegram";
 import { apercu } from "./apercu-envoi";
+import { alerterContratAltere, empreinteConforme } from "./integrite-contrat";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -420,7 +421,7 @@ export async function appliquerDecision(
     const sha = createHash("sha256").update(pdf).digest("hex");
     // Clé PROPRE à cette tentative (suffixée par sa réservation) : une tentative n'efface
     // jamais le PDF d'une autre.
-    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}-${randomBytes(4).toString("hex")}.pdf`;
+    const cle = `${PREFIXE_CONTRATS_SIGNES}/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}-${randomBytes(4).toString("hex")}.pdf`;
     try {
       await uploadToR2(cle, pdf, "application/pdf");
     } catch (err) {
@@ -755,6 +756,9 @@ export async function envoyerLien(
   };
 }
 
+/** Préfixe R2 des contrats contresignés à venir : permet une règle de verrou par préfixe (10 ans). */
+export const PREFIXE_CONTRATS_SIGNES = "contrats-signes/apporteurs";
+
 // ── Documents pour la console ────────────────────────────────────────────
 
 export async function lireContratPdf(
@@ -763,11 +767,29 @@ export async function lireContratPdf(
 ): Promise<Buffer | null> {
   const a = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { contratCle: true, contratSigneCle: true },
+    select: {
+      contratCle: true,
+      contratSigneCle: true,
+      contratSha256: true,
+      contratSigneSha256: true,
+    },
   });
   const cle = quel === "signe" ? a?.contratSigneCle : a?.contratCle;
   if (!cle) return null;
-  return getObjectBufferR2(cle);
+  const octets = await getObjectBufferR2(cle);
+  if (octets === null) return null;
+  // Point 12 : l'empreinte est REVÉRIFIÉE ; un fichier altéré n'est jamais servi.
+  const etat = empreinteConforme(
+    octets,
+    (quel === "signe" ? a?.contratSigneSha256 : a?.contratSha256) ?? null,
+  );
+  if (etat === "alteree") {
+    await alerterContratAltere(apporteurId, quel, new Date());
+    return null;
+  }
+  if (etat === "sans_reference")
+    console.warn("[apporteurs] contrat servi sans empreinte de référence");
+  return octets;
 }
 
 /** Nom affiché d'un apporteur (console). */

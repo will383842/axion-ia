@@ -91,6 +91,7 @@ import {
 } from "./commandes";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
+import { verifierIntegriteContrats } from "./passage-integrite-contrats";
 import { urlDossier } from "./jeton";
 import { executerResiliationsEchues } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
@@ -328,7 +329,8 @@ type NomEtape =
   | "hors-grille"
   | "declarations-sans-reponse"
   | "commandes-a-attribuer"
-  | "resiliations-echues";
+  | "resiliations-echues"
+  | "integrite-contrats";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -411,6 +413,8 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
+    // Point 12 (#2464) : le lundi, l'empreinte des contrats contresignés est revérifiée sur R2.
+    ["integrite-contrats", async () => void (await verifierIntegriteContrats(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
