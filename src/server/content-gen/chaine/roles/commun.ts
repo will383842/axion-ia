@@ -305,7 +305,16 @@ export function hrefInterdit(href: string): boolean {
 
 /** Tous les href d'un fragment HTML (guillemets doubles, simples ou absents). */
 export function hrefsDe(html: string): string[] {
-  return [...html.matchAll(/<a\b[^>]*?\shref\s*=\s*["']?([^"'\s>]+)/gi)].map((m) => m[1]!);
+  const sortie: string[] = [];
+  for (const balise of html.matchAll(/<a(?=[\s/>])((?:"[^"]*"|'[^']*'|[^>"'])*)>/gi)) {
+    // Lecture des attributs comme un navigateur : nom, puis valeur entre guillemets ou nue.
+    for (const a of (balise[1] ?? "").matchAll(
+      /([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g,
+    )) {
+      if (a[1]!.toLowerCase() === "href") sortie.push((a[2] ?? a[3] ?? a[4] ?? "").trim());
+    }
+  }
+  return sortie;
 }
 
 /**

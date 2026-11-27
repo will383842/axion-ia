@@ -25,6 +25,7 @@ import {
   type AppelModele,
   type CompteurCout,
   type Correction,
+  hrefsDe,
 } from "./commun";
 import { nombresDe } from "./nombres";
 import { decouperSections } from "./redacteur";
@@ -304,11 +305,7 @@ export async function verifierFaits(
   // Liens sortants.
   const liensMorts: string[] = [];
   const tout = `${e.directAnswer}\n${e.bodyHtml}\n${e.faq.map((f) => `${f.question} ${f.answer}`).join("\n")}`;
-  const hrefs = [
-    ...new Set(
-      [...tout.matchAll(/<a\s[^>]*?href\s*=\s*["']?(https?:\/\/[^"'\s>]+)/gi)].map((m) => m[1]!),
-    ),
-  ];
+  const hrefs = [...new Set(hrefsDe(tout).filter((h) => /^https?:\/\//i.test(h)))];
   for (const url of hrefs) {
     if (!hotePublic(url)) {
       liensMorts.push(url);
