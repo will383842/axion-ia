@@ -40,7 +40,10 @@ vi.mock("@/lib/prisma", () => ({
       },
       create: async (a: { data: Ligne }) => {
         if (db.tableAbsente) absente();
-        if (a.data["zohoMessageId"] && db.messages.some((l) => l["zohoMessageId"] === a.data["zohoMessageId"]))
+        if (
+          a.data["zohoMessageId"] &&
+          db.messages.some((l) => l["zohoMessageId"] === a.data["zohoMessageId"])
+        )
           throw Object.assign(new Error("Unique"), { code: "P2002" });
         const ligne = { id: `m-${db.messages.length}`, auto: false, ...a.data };
         db.messages.push(ligne);
@@ -89,7 +92,10 @@ beforeEach(() => {
 describe("relevé des e-mails d'un apporteur", () => {
   it("rattache par adresse, sans tenir compte de la casse ni du nom affiché", async () => {
     const r = await enregistrerMessagesApporteurs(
-      [msg("z1", "Claire.Martin@Exemple.FR"), msg("z2", "Claire Martin <claire.martin@exemple.fr>")],
+      [
+        msg("z1", "Claire.Martin@Exemple.FR"),
+        msg("z2", "Claire Martin <claire.martin@exemple.fr>"),
+      ],
       client,
     );
     expect(r).toMatchObject({ enregistres: 2, erreurs: 0, tableAbsente: false });
@@ -152,7 +158,9 @@ describe("demande d'aide", () => {
 
   it("ne lève pas si la base refuse", async () => {
     db.tableAbsente = true;
-    expect(await enregistrerDemandeAide({ apporteurId: ID_B, sujet: "x", message: "y" })).toBe(false);
+    expect(await enregistrerDemandeAide({ apporteurId: ID_B, sujet: "x", message: "y" })).toBe(
+      false,
+    );
   });
 });
 

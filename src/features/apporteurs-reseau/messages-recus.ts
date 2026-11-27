@@ -62,7 +62,11 @@ export async function enregistrerMessagesApporteurs(
     const idParEmpreinte = new Map(apporteurs.map((a) => [a.emailHash, a.id]));
     const aTraiter = [...parEmpreinte].flatMap(([empreinte, liste]) =>
       idParEmpreinte.has(empreinte)
-        ? liste.map((message) => ({ message, empreinte, apporteurId: idParEmpreinte.get(empreinte)! }))
+        ? liste.map((message) => ({
+            message,
+            empreinte,
+            apporteurId: idParEmpreinte.get(empreinte)!,
+          }))
         : [],
     );
     const deja = await prisma.apporteurMessageRecu.findMany({
@@ -173,7 +177,14 @@ export async function lireMessagesRecus(apporteurId: string): Promise<MessageRec
       where: { apporteurId },
       orderBy: { receivedAt: "desc" },
       take: MESSAGES_MAX,
-      select: { id: true, source: true, receivedAt: true, subject: true, excerpt: true, auto: true },
+      select: {
+        id: true,
+        source: true,
+        receivedAt: true,
+        subject: true,
+        excerpt: true,
+        auto: true,
+      },
     });
   } catch (e) {
     if (estTableAbsente(e)) return [];

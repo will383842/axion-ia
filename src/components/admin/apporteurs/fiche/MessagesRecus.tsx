@@ -18,7 +18,9 @@ const dateHeureParis = (d: Date) =>
 export function MessagesRecus({ messages }: { messages: readonly MessageRecuApporteur[] }) {
   return (
     <AdminCard as="section">
-      <h2 className="mb-[var(--space-admin-3)] font-semibold">Messages reçus ({messages.length})</h2>
+      <h2 className="mb-[var(--space-admin-3)] font-semibold">
+        Messages reçus ({messages.length})
+      </h2>
       {messages.length === 0 ? (
         <p className="text-[color:var(--color-admin-fg-muted)]">
           Aucun message reçu de cet apporteur pour l&apos;instant.
