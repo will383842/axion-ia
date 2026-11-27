@@ -148,9 +148,16 @@ describe("aucun <iframe d'e-mail hors du lecteur commun", () => {
     for (const e of EXCEPTIONS) expect(() => lire(e), `exception périmée : ${e}`).not.toThrow();
   });
 
-  it("le lecteur lui-même est isolé : sandbox vide, jamais allow-same-origin", () => {
+  it("le lecteur lui-même est isolé : sandbox vide par défaut, jamais allow-same-origin", () => {
     const s = code(lire(LECTEUR));
-    expect(s).toContain('sandbox=""');
+    // Vide par défaut ; seul l'aperçu avant envoi (`liensOuvrables`) ouvre les liens en
+    // nouvel onglet : `allow-popups` (+ sortie du bac à sable), et RIEN d'autre.
+    expect(s).toContain(
+      'sandbox={liensOuvrables ? "allow-popups allow-popups-to-escape-sandbox" : ""}',
+    );
+    expect(
+      s.match(/allow-[a-z-]+/g)?.filter((x) => !/^allow-popups(-to-escape-sandbox)?$/.test(x)),
+    ).toEqual([]);
     expect(s).toContain('referrerPolicy="no-referrer"');
     expect(s).not.toContain("allow-same-origin");
     expect(s).not.toContain("allow-scripts");

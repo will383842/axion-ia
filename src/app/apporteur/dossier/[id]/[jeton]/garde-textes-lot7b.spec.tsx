@@ -82,7 +82,7 @@ describe("textes de la validation par rendez-vous (apporteur et page)", () => {
     }
   });
 
-  it("les seuls nombres écrits sont 60 (jours) et 6 (mois)", () => {
+  it("les seuls nombres écrits sont 60 (jours), 6 (mois) et 30 (délai avant une nouvelle présentation)", () => {
     // Les textes eux-mêmes, pas le rendu : le pied de page légal porte SIREN et code postal.
     const corps = [
       ...commentRendezVous(60, 6),
@@ -91,6 +91,7 @@ describe("textes de la validation par rendez-vous (apporteur et page)", () => {
       ),
     ].join("\n");
     const nombres = corps.match(/\d+/g) ?? [];
+    // Aucun 30 : le contrat 2.8 n'impose à l'apporteur aucun délai d'attente (art. 3.4 bis).
     for (const n of nombres) expect(["60", "6"]).toContain(n);
   });
 

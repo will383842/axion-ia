@@ -10,10 +10,10 @@
 // ── La règle que ce message dit ───────────────────────────────────────────
 //   · l'entreprise est gardée à l'apporteur 60 jours à compter de la saisie ;
 //   · elle est validée au premier rendez-vous qui a eu lieu, s'il a été PRIS pendant ces
-//     60 jours ; un devis signé pendant ces 60 jours compte aussi ;
+//     60 jours ; une commande signée pendant ces 60 jours compte aussi ;
 //   · les 6 mois partent du jour du rendez-vous ;
 //   · sans rendez-vous pris en 60 jours, la réservation prend fin automatiquement, et
-//     l'entreprise peut être présentée de nouveau après un nouveau contact ;
+//     l'entreprise peut être présentée de nouveau après un nouveau contact, sans délai d'attente ;
 //   · une commission n'est due que sur une commande payée.
 //
 // ── Vocabulaire (anti-requalification, comme `apporteur-demarrage.tsx`) ───
@@ -54,9 +54,6 @@ function texteOuNull(v: unknown): string | null {
   return s === "" ? null : s;
 }
 
-/** Repos après la fin d'une réservation sans rendez-vous (contrat 2.8, art. 3.2). */
-const REPOS_APRES_FIN_JOURS = 30;
-
 export const COPY_PRESENTATION_RECUE_RENDEZ_VOUS = {
   subject: (e: string, jours: number) =>
     e
@@ -69,9 +66,11 @@ export const COPY_PRESENTATION_RECUE_RENDEZ_VOUS = {
   suiteTitre: "La suite",
   validation: (date: string | null, jours: number, mois: number) =>
     `Elle sera validée à votre nom dès qu'un premier rendez-vous avec Axion-IA aura eu lieu, s'il a été pris ${date ? "jusqu'à cette date incluse" : `pendant ces ${jours} jours`}. Les ${mois} mois pendant lesquels elle vous est rattachée partent alors du jour de ce rendez-vous.`,
-  annule: "Si nous devons annuler ou déplacer ce rendez-vous, il compte comme tenu.",
-  devis: (jours: number) => `Un devis signé pendant ces ${jours} jours compte aussi.`,
-  sansRendezVous: `Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un délai de ${REPOS_APRES_FIN_JOURS} jours et un nouveau contact avec elle.`,
+  devis: (jours: number) => `Une commande signée pendant ces ${jours} jours compte aussi.`,
+  sansRendezVous:
+    "Sans rendez-vous pris d'ici là, la réservation prend fin automatiquement ; vous pourrez nous présenter de nouveau cette entreprise après un nouveau contact avec elle.",
+  rendezVousAnnule:
+    "Si nous annulons un rendez-vous pris pendant ces 60 jours, il compte comme tenu.",
   commission: "Une commission n'est due que sur une commande payée.",
 } as const;
 
@@ -108,8 +107,8 @@ export function ApporteurPresentationRecueRendezVousEmail({ locale, payload }: P
       <Text style={emailStyles.paragraphStyle}>
         {t.validation(date, RESERVATION_RENDEZ_VOUS_JOURS, FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.annule}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.devis(RESERVATION_RENDEZ_VOUS_JOURS)}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.rendezVousAnnule}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.sansRendezVous}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.commission}</Text>
     </EmailLayout>
