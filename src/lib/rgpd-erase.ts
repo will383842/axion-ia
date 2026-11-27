@@ -3100,6 +3100,11 @@ export async function eraseReseauApporteurForEmail(
     },
   });
   if (!a) return { apporteur: "aucun", presentationsAnonymisees: presentations.count };
+  // Les messages reçus de l'apporteur (e-mails, demandes d'aide) : supprimés dans tous les cas,
+  // aucune obligation légale ne les impose (contrairement aux autofactures).
+  await prisma.apporteurMessageRecu.deleteMany({
+    where: { OR: [{ apporteurId: a.id }, { fromEmailHash: empreinte }] },
+  });
   await prisma.pieceApporteurContenu.deleteMany({ where: { piece: { apporteurId: a.id } } });
   await prisma.pieceApporteur.updateMany({
     where: { apporteurId: a.id },

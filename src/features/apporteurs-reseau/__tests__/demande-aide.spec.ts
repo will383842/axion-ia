@@ -10,6 +10,11 @@ const h = vi.hoisted(() => ({
   limite: vi.fn(),
   enqueueEmail: vi.fn(),
   sentry: vi.fn(),
+  enregistrer: vi.fn(),
+}));
+
+vi.mock("@/features/apporteurs-reseau/messages-recus", () => ({
+  enregistrerDemandeAide: (...a: unknown[]) => h.enregistrer(...a),
 }));
 
 vi.mock("@/features/apporteurs-reseau/donnees", () => ({
@@ -53,6 +58,28 @@ beforeEach(() => {
   h.lireDossierParLien.mockResolvedValue(DOSSIER);
   h.limite.mockResolvedValue({ allowed: true });
   h.enqueueEmail.mockResolvedValue({ enqueued: true });
+  h.enregistrer.mockResolvedValue(true);
+});
+
+describe("la demande est tracée sur la fiche", () => {
+  it("enregistrée avec l'apporteur, le sujet et le message assaini (sans IBAN)", async () => {
+    expect(await demande({ sujet: "contrat", message: `${MESSAGE} Mon IBAN : ${IBAN}` })).toEqual({
+      ok: true,
+    });
+    expect(h.enregistrer).toHaveBeenCalledTimes(1);
+    const arg = h.enregistrer.mock.calls[0]![0] as { apporteurId: string; message: string };
+    expect(arg.apporteurId).toBe(ID);
+    expect(arg.message).toContain("je ne retrouve pas mon contrat");
+    expect(arg.message).not.toContain("3000 6000");
+  });
+
+  it("refus (lien faux) ou alerte en échec : rien n'est enregistré", async () => {
+    h.lireDossierParLien.mockResolvedValueOnce(null);
+    await demande({ sujet: "contrat", message: MESSAGE });
+    h.enqueueEmail.mockResolvedValueOnce({ enqueued: false });
+    await demande({ sujet: "contrat", message: MESSAGE });
+    expect(h.enregistrer).not.toHaveBeenCalled();
+  });
 });
 
 describe("le lien est revérifié côté serveur", () => {
