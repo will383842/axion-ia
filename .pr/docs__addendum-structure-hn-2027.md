@@ -38,4 +38,6 @@ Le document définit aussi :
 
 Aucun fichier de code n'est modifié. Aucune PR n'est ouverte.
 
-VERDICT OPUS : À CORRIGER (points du tour 5 corrigés, non relus)
+- Les points du dernier tour de relecture (Q6 sur `directAnswer`, rôle `edition-seo.ts`, Q8, régime de la pénalité H-10, export du compteur de `lisibilite-v2.ts`, renvois) sont corrigés mais n'ont pas été relus.
+
+VERDICT OPUS : À CORRIGER (3 tours épuisés ; points du dernier tour corrigés, non relus)
