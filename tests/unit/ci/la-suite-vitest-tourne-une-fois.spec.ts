@@ -130,20 +130,35 @@ describe("la suite Vitest tourne une fois, en 3 morceaux fusionnés par « Gate 
     expect(lignesQuiLancentVitest(gateA!)).toEqual([]);
   });
 
-  it("la matrice n'est ni muette ni conditionnelle, ni en file derrière Gate A", () => {
+  it("la matrice n'est pas muette ; sur PR seulement, elle attend Gate A et saute une PR de documentation", () => {
     expect(morceaux).not.toMatch(/continue-on-error/);
-    // Clés de niveau JOB (4 espaces) : le `if:` de l'étape d'upload est légitime.
-    expect(morceaux).not.toMatch(/^ {4}needs:/m);
-    // Seules conditions admises : pas sur un push vers main (la PR l'a déjà passé ; passage quotidien
-    // planifié) et pas sur une PR en BROUILLON (CI-LOT1, 2026-11-08 — relancé par `ready_for_review`).
-    expect(morceaux).toMatch(
-      /^ {4}if: github\.event_name != 'push' && \(github\.event_name != 'pull_request' \|\| github\.event\.pull_request\.draft == false\)\s*$/m,
+    // CI-ALLEGER (2026-11-27) : `needs` PERMIS (gate-a + portee), à condition que la
+    // condition de job ne le fasse jouer QUE sur `pull_request` : le résultat de Gate A
+    // n'est exigé que sur PR, jamais sur file de fusion / quotidien / dispatch.
+    expect(morceaux).toMatch(/^ {4}needs: \[gate-a, portee\]\s*$/m);
+    // `!cancelled()`, jamais `always()` : une annulation doit tout arrêter.
+    const lignes = morceaux!.split(/\r?\n/);
+    const i = lignes.findIndex((l) => /^ {4}if:/.test(l));
+    expect(i, "condition de job absente").toBeGreaterThanOrEqual(0);
+    const cond = [lignes[i]!.replace(/^ {4}if:\s*/, "")]
+      .concat(lignes.slice(i + 1).filter((_, k) => lignes.slice(i + 1, i + 1 + k + 1).every((l) => /^ {6}/.test(l))))
+      .join(" ")
+      .replace(/^>-\s*/, "")
+      .replace(/\s+/g, " ");
+    expect(cond).toContain("!cancelled() && github.event_name != 'push'");
+    expect(cond).not.toContain("always()");
+    expect(cond).toContain("github.event.pull_request.draft == false");
+    expect(cond).toContain("github.event_name != 'pull_request' ||");
+    expect(cond).toContain("needs.gate-a.result == 'success'");
+    // La dispense « documentation seulement » exige que le filtre ait ABOUTI.
+    expect(cond).toContain(
+      "!(needs.portee.result == 'success' && needs.portee.outputs.docs_seulement == 'true')",
     );
   });
 
   it("la fusion attend la matrice, tourne toujours, et rougit si elle n'est pas success", () => {
     expect(couverture).not.toMatch(/continue-on-error/);
-    expect(couverture).toMatch(/^ {4}needs: gate-a-couverture-morceau\s*$/m);
+    expect(couverture).toMatch(/^ {4}needs: \[gate-a-couverture-morceau, portee\]\s*$/m);
     expect(couverture).toMatch(/^ {4}if: always\(\) && github\.event_name != 'push'\s*$/m);
     expect(couverture).toContain("RESULTAT: ${{ needs.gate-a-couverture-morceau.result }}");
     expect(couverture).toMatch(/if \[ "\$\{RESULTAT\}" != "success" \]; then[\s\S]*?exit 1/);
@@ -154,7 +169,10 @@ describe("la suite Vitest tourne une fois, en 3 morceaux fusionnés par « Gate 
       const [ligne] = lignesQuiLancentVitest(corps);
       expect(ligne, "aucune ligne ne lance Vitest").toBeDefined();
       const etape = etapeAutour(corps, ligne!);
-      expect(etape).not.toMatch(/^\s+if:/m);
+      // CI-ALLEGER : la SEULE condition d'étape admise est la dispense « documentation
+      // seulement » du verdict, posée par l'étape `docs` (elle-même gardée par
+      // `portee.result == 'success'` ET `docs_seulement == 'true'`).
+      expect(etape.replace(/^\s+if: steps\.docs\.outcome != 'success'\s*$/m, "")).not.toMatch(/^\s+if:/m);
       expect(etape).not.toMatch(/continue-on-error/);
       expect(etape).not.toMatch(AVALE_L_ECHEC);
     }
