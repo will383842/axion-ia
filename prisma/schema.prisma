@@ -19308,14 +19308,14 @@ model BingRequeteSemaine {
 /// Bing Webmaster (P17) : exploration et erreurs d'exploration du site, par jour.
 /// rgpd: technique — compteurs du site ; aucune donnée sur une personne
 model BingExplorationJour {
-  id               Int      @id @default(autoincrement())
-  date             DateTime @db.Date
-  pagesExplorees   Int      @default(0) @map("pages_explorees")
-  erreursExploration Int   @default(0) @map("erreurs_exploration")
-  pagesIndexees    Int      @default(0) @map("pages_indexees")
-  codes4xx         Int      @default(0) @map("codes_4xx")
-  codes5xx         Int      @default(0) @map("codes_5xx")
-  misAJourLe       DateTime @default(now()) @map("mis_a_jour_le") @db.Timestamptz(3)
+  id                 Int      @id @default(autoincrement())
+  date               DateTime @db.Date
+  pagesExplorees     Int      @default(0) @map("pages_explorees")
+  erreursExploration Int      @default(0) @map("erreurs_exploration")
+  pagesIndexees      Int      @default(0) @map("pages_indexees")
+  codes4xx           Int      @default(0) @map("codes_4xx")
+  codes5xx           Int      @default(0) @map("codes_5xx")
+  misAJourLe         DateTime @default(now()) @map("mis_a_jour_le") @db.Timestamptz(3)
 
   @@unique([date], map: "bing_exploration_jours_date_key")
   @@map("bing_exploration_jours")

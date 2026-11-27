@@ -34,6 +34,7 @@ describe("worker seo-pilotage", () => {
     vi.clearAllMocks();
     delete process.env.CONTENT_PILOTAGE_SEO;
     delete process.env.CONTENT_PILOTAGE_BING;
+    delete process.env.BING_WMT_API_KEY;
     tacheBing.mockResolvedValue({
       issue: "fait",
       pages: 0,
@@ -135,6 +136,13 @@ describe("worker seo-pilotage", () => {
   it("ingestion-bing allumé : lance la collecte ; saut propagé (clé absente, quota)", async () => {
     process.env.CONTENT_PILOTAGE_SEO = "true";
     process.env.CONTENT_PILOTAGE_BING = "true";
+    // clé absente : saut avant tout accès à la base
+    expect(await runSeoPilotageJob(job("ingestion-bing"))).toEqual({
+      issue: "saute",
+      motif: "cle_absente",
+    });
+    expect(accesBase).not.toHaveBeenCalled();
+    process.env.BING_WMT_API_KEY = "cle-de-test";
     expect(await runSeoPilotageJob(job("ingestion-bing"))).toEqual({
       issue: "fait",
       tache: "ingestion-bing",

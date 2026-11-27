@@ -22,6 +22,7 @@ import { Worker, type Job } from "bullmq";
 
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type { SeoPilotageJobData } from "@/server/queue/types";
+import { bingPilotageActif } from "@/server/seo-pilotage/bing/client";
 import {
   buildStub,
   estTableAbsente,
@@ -64,6 +65,9 @@ export async function runSeoPilotageJob(
   if (!pilotageSeoActif()) return { issue: "saute", motif: "interrupteur_eteint" };
   if (tache === "ingestion-bing" && !pilotageBingActif()) {
     return { issue: "saute", motif: "interrupteur_bing_eteint" };
+  }
+  if (tache === "ingestion-bing" && !bingPilotageActif()) {
+    return { issue: "saute", motif: "cle_absente" };
   }
   if (buildStub()) {
     console.log("[seo-pilotage-worker] build stub : saut.");

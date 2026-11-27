@@ -28,6 +28,20 @@ import { piiScrubBeforeSend, piiScrubBeforeSendTransaction } from "./sentry-pii-
  *
  * @param dsn Le DSN, déjà vérifié non vide par l'appelant.
  */
+/**
+ * Fil d'Ariane : les appels à l'API Bing Webmaster portent la clé dans l'URL (`?apikey=`), et
+ * Sentry copie la query dans `data["http.query"]`. Tout fil d'Ariane vers `bing.com` est écarté.
+ */
+export function ecarterFilDarianBing<T extends { data?: Record<string, unknown> }>(
+  fil: T,
+): T | null {
+  const d = fil.data ?? {};
+  const cible = [d["url"], d["http.url"], d["server.address"], d["http.query"]]
+    .filter((v): v is string => typeof v === "string")
+    .join(" ");
+  return /bing\.com|apikey=/i.test(cible) ? null : fil;
+}
+
 export function optionsSentryServeur(dsn: string) {
   return {
     dsn,
@@ -51,6 +65,7 @@ export function optionsSentryServeur(dsn: string) {
     // Audit E2E 2026-05-11 P0-CONF-06 — RGPD Art. 32.
     sendDefaultPii: false,
     beforeSend: piiScrubBeforeSend,
+    beforeBreadcrumb: ecarterFilDarianBing,
     // Les transactions portent elles aussi `request.url` : sans ce hook, un
     // jeton partirait chez Sentry sans qu'aucune erreur ne se soit produite.
     beforeSendTransaction: piiScrubBeforeSendTransaction,

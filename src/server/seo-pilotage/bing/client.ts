@@ -81,7 +81,12 @@ async function appeler(
     });
     if (res.status === 429) return { etat: "quota", lignes: [] };
     if (!res.ok) return { etat: "erreur_http", lignes: [] };
-    const corps = (await res.json()) as { d?: unknown };
+    let corps: { d?: unknown };
+    try {
+      corps = (await res.json()) as { d?: unknown };
+    } catch {
+      return { etat: "reponse_invalide", lignes: [] };
+    }
     if (!Array.isArray(corps?.d)) return { etat: "reponse_invalide", lignes: [] };
     const lignes = (corps.d as unknown[]).filter(
       (l): l is Record<string, unknown> => typeof l === "object" && l !== null,
@@ -99,13 +104,16 @@ async function lireStats(methode: string, deps: DepsBing): Promise<LectureBing<L
   for (const l of r.lignes) {
     const jour = dateBing(l["Date"]);
     const cle = typeof l["Query"] === "string" ? l["Query"].trim() : "";
-    if (!jour || !cle) continue;
+    // Position absente, nulle ou négative (valeur sentinelle) : ligne écartée, sinon elle
+    // tirerait la position moyenne pondérée vers le haut.
+    const position = nombre(l["AvgImpressionPosition"]);
+    if (!jour || !cle || position <= 0) continue;
     lignes.push({
       cle,
       jour,
       clics: nombre(l["Clicks"]),
       impressions: nombre(l["Impressions"]),
-      position: nombre(l["AvgImpressionPosition"]),
+      position,
     });
   }
   return { etat: r.etat, lignes };

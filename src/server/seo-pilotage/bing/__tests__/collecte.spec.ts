@@ -23,14 +23,33 @@ function fauxPrisma() {
       const k = cle(premier instanceof Date ? where : (premier as Ligne));
       m.set(k, m.has(k) ? { ...(m.get(k) as Ligne), ...update } : create);
     });
+  const sup = (m: Map<string, Ligne>) =>
+    vi.fn(async ({ where }: { where: Ligne }) => {
+      for (const [k, l] of [...m.entries()]) {
+        const s = where["semaine"] as { lt: Date } | undefined;
+        const dt = where["date"] as { lt: Date } | undefined;
+        const tx = where["texte"] as { in: string[] } | undefined;
+        if (
+          (s && (l["semaine"] as Date) < s.lt) ||
+          (dt && (l["date"] as Date) < dt.lt) ||
+          (tx && tx.in.includes(l["texte"] as string))
+        )
+          m.delete(k);
+      }
+    });
   const prisma = {
     bingPageSemaine: {
+      deleteMany: sup(t.page),
       upsert: upsert(t.page, (w) => `${(w["semaine"] as Date).toISOString()}|${w["chemin"]}`),
     },
     bingRequeteSemaine: {
+      deleteMany: sup(t.requete),
       upsert: upsert(t.requete, (w) => `${(w["semaine"] as Date).toISOString()}|${w["texte"]}`),
     },
-    bingExplorationJour: { upsert: upsert(t.explo, (w) => (w["date"] as Date).toISOString()) },
+    bingExplorationJour: {
+      deleteMany: sup(t.explo),
+      upsert: upsert(t.explo, (w) => (w["date"] as Date).toISOString()),
+    },
   };
   return { prisma: prisma as never, t };
 }
@@ -145,6 +164,30 @@ describe("tâche ingestion-bing", () => {
     expect(t.page.size).toBe(1);
     expect(t.requete.size).toBe(1);
     expect(t.explo.size).toBe(1);
+  });
+
+  it("conservation : 25 mois ; requêtes rares et devenues personnelles effacées de la base", async () => {
+    const { prisma, t } = fauxPrisma();
+    t.page.set("vieux", { semaine: new Date("2024-01-01T00:00:00Z"), chemin: "/vieux" });
+    t.explo.set("vieux", { date: new Date("2024-01-01T00:00:00Z") });
+    t.requete.set("ancien", { semaine: new Date("2024-01-01T00:00:00Z"), texte: "x" });
+    // stockée avant qu'un nom soit connu, puis devenue personnelle
+    t.requete.set("perso", {
+      semaine: new Date("2026-11-16T00:00:00Z"),
+      texte: "elodie martin avocat",
+    });
+    const f = api({
+      requetes: [
+        page("formation ia", "2026-11-10", 0, 1, 1),
+        page("formation ia", "2026-11-17", 1, 4, 6),
+        page("elodie martin avocat", "2026-11-17", 1, 4, 1),
+        page("requete rare", "2026-11-17", 0, 1, 3),
+      ],
+    });
+    await tacheIngestionBing({ prisma, fetch: f as never, env, maintenant });
+    expect(t.page.size).toBe(0);
+    expect(t.explo.size).toBe(0);
+    expect([...t.requete.values()].map((l) => l["texte"])).toEqual(["formation ia"]);
   });
 
   it("quota (429) : arrêt immédiat, pas d'appel suivant, rien d'écrit après", async () => {

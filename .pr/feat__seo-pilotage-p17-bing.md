@@ -6,7 +6,7 @@ Pilotage SEO : collecte quotidienne des statistiques Bing Webmaster (P17), étei
 - Nouvelle tâche `ingestion-bing` sur le robot P4 (file `seo-pilotage`, 07 h 47 Paris). Au plus 3 appels par passage, aucune nouvelle tentative ; un 429 (quota) arrête le passage.
 - Agrégats hebdomadaires (lundi) pour les pages et les requêtes, recalculés par `upsert` (rejouable sans doublon). Première semaine de la fenêtre, probablement tronquée, écartée. Requêtes : filtre de données personnelles AVANT stockage (réutilise celui de P4).
 - Migration additive `20261128010078_pilotage_seo_bing` : trois tables neuves (`bing_page_semaines`, `bing_requete_semaines`, `bing_exploration_jours`), sans clé étrangère, sans énumération. Le test « liste fermée des migrations » est mis à jour.
-- **Interrupteur éteint par défaut** : la tâche exige `CONTENT_PILOTAGE_SEO="true"` ET `CONTENT_PILOTAGE_BING="true"` (valeur exacte) ET la clé. Sinon : saut avant toute lecture de base et tout appel réseau.
+- **Interrupteur éteint par défaut** : la tâche exige `CONTENT_PILOTAGE_SEO="true"` ET `CONTENT_PILOTAGE_BING="true"` (valeur exacte) ET la clé. Sinon : saut avant toute lecture de base et tout appel réseau (la clé absente est aussi testée dans le worker avant de charger Prisma).
 - Le code mort `content-gen/seo/bing-wmt-client.ts` n'est pas touché (hors périmètre).
 - Pas de soumission de sitemap : la conception (DECOUPAGE P17) ne la prévoit pas.
 
@@ -16,7 +16,7 @@ Pilotage SEO : collecte quotidienne des statistiques Bing Webmaster (P17), étei
 
 ## Fenêtre app/worker
 
-Cron posé par l'app avant que le worker connaisse la tâche : un ancien worker l'ignore (tâche inconnue journalisée). Tables absentes (P2021/P2022) : saut sans échec.
+Le cron est posé au démarrage du worker (`bootRepeatableJobs`) ; un worker plus ancien qui recevrait la tâche l'ignore (tâche inconnue journalisée). Tables absentes (P2021/P2022) : saut sans échec.
 
 ## Base de la PR
 
@@ -29,4 +29,11 @@ Cron posé par l'app avant que le worker connaisse la tâche : un ancien worker 
 - Worker : double interrupteur, propagation des sauts. Interrupteur et cadence. Migration additive (+ liste fermée).
 - Contrôles : typecheck, vitest ciblé, `content-gen:isolation-check`, `image-bank:isolation-check`, lint, prettier.
 
-VERDICT OPUS : (en attente de relecture)
+## Après relecture (tour 1)
+
+- Conservation : 25 mois ; requêtes rares (< 3 impressions) jamais stockées ; texte retiré par le filtre ou devenu rare effacé de la base à chaque passage.
+- Sentry : `beforeBreadcrumb` écarte tout fil d'Ariane vers `bing.com` / `apikey=` (la clé est dans l'URL), test dédié.
+- Lignes sans position valide (≤ 0) écartées ; corps JSON illisible classé `reponse_invalide`.
+- À vérifier dans la documentation Microsoft avant d'allumer : granularité exacte des dates (jour ou semaine) et échelle de `AvgImpressionPosition`.
+
+VERDICT OPUS : (en attente du tour 2)

@@ -12,8 +12,8 @@
  */
 import type { PrismaClient } from "../../../../prisma/generated/client";
 import { normaliserChemin } from "../donnees/chemins";
-import { filtrerDonneesPersonnelles } from "../donnees/personnel";
-import { ajouterJours, enDate, enJour } from "../ingestion/dates";
+import { filtrerDonneesPersonnelles, requetesARetirerDuTexte } from "../donnees/personnel";
+import { ajouterJours, enDate, enJour, reculerMois } from "../ingestion/dates";
 import { chargerNomsConnus } from "../ingestion/noms-connus";
 import {
   bingPilotageActif,
@@ -28,6 +28,9 @@ import {
 const SEMAINES_RECALCULEES = 12;
 const REQUETE_LONGUEUR_MAX = 512;
 const CHEMIN_LONGUEUR_MAX = 1000;
+/** Même durée de conservation que les semaines Google de P4. */
+const CONSERVATION_MOIS = 25;
+const LOT_SUPPRESSION = 500;
 
 export interface DepsCollecteBing extends DepsBing {
   readonly prisma: Pick<
@@ -155,7 +158,23 @@ export async function tacheIngestionBing(deps: DepsCollecteBing): Promise<IssueB
       { noms },
     );
     filtrees += filtre.retirees.lignes;
-    for (const l of agregerSemaines(filtre.conservees, aujourdhui)) {
+    // Requêtes rares (< 3 impressions cumulées) : jamais stockées en texte, comme côté Google.
+    const rares = new Set(requetesARetirerDuTexte(filtre.conservees));
+    const gardees = new Set(filtre.conservees.map((l) => l.cle));
+    // Texte retiré par le filtre OU rare : effacé aussi de la base (un nom ajouté depuis, une
+    // requête devenue rare). Un `upsert` seul ne retirerait jamais une ligne déjà stockée.
+    const aEffacer = [
+      ...new Set([...valides.map((l) => l.cle).filter((t) => !gardees.has(t)), ...rares]),
+    ];
+    for (let i = 0; i < aEffacer.length; i += LOT_SUPPRESSION) {
+      await prisma.bingRequeteSemaine.deleteMany({
+        where: { texte: { in: aEffacer.slice(i, i + LOT_SUPPRESSION) } },
+      });
+    }
+    for (const l of agregerSemaines(
+      filtre.conservees.filter((l) => !rares.has(l.cle)),
+      aujourdhui,
+    )) {
       const donnees = { clics: l.clics, impressions: l.impressions, positionSum: l.positionSum };
       await prisma.bingRequeteSemaine.upsert({
         where: { semaine_texte: { semaine: enDate(l.semaine), texte: l.cle } },
@@ -192,6 +211,12 @@ export async function tacheIngestionBing(deps: DepsCollecteBing): Promise<IssueB
   } else {
     erreurs.push("exploration:quota");
   }
+
+  // Conservation bornée : au-delà de 25 mois, rien n'est gardé.
+  const limite = reculerMois(aujourdhui, CONSERVATION_MOIS);
+  await prisma.bingPageSemaine.deleteMany({ where: { semaine: { lt: enDate(limite) } } });
+  await prisma.bingRequeteSemaine.deleteMany({ where: { semaine: { lt: enDate(limite) } } });
+  await prisma.bingExplorationJour.deleteMany({ where: { date: { lt: enDate(limite) } } });
 
   return { issue: "fait", pages, requetes, jours, filtrees, isolees, erreurs };
 }

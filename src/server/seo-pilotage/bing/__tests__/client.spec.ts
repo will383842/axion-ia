@@ -97,6 +97,32 @@ describe("client Bing Webmaster", () => {
     expect(String((f.mock.calls[1] as unknown[])[0])).toContain("/GetCrawlStats?");
   });
 
+  it("écarte les lignes sans position valide ; json illisible = reponse_invalide", async () => {
+    const f = async () =>
+      reponse({
+        d: [
+          {
+            Query: "a",
+            Date: "/Date(1700000000000)/",
+            Clicks: 1,
+            Impressions: 5,
+            AvgImpressionPosition: -1,
+          },
+          { Query: "b", Date: "/Date(1700000000000)/", Clicks: 1, Impressions: 5 },
+        ],
+      });
+    expect((await lirePagesBing({ fetch: f as never, env })).lignes).toEqual([]);
+    const illisible = async () =>
+      ({
+        ok: true,
+        status: 200,
+        json: async () => {
+          throw new Error("x");
+        },
+      }) as unknown as Response;
+    expect((await lirePagesBing({ fetch: illisible as never, env })).etat).toBe("reponse_invalide");
+  });
+
   it("429 = quota ; autre statut = erreur ; panne réseau = reseau ; corps invalide", async () => {
     expect(
       (await lirePagesBing({ fetch: (async () => reponse({}, 429)) as never, env })).etat,
