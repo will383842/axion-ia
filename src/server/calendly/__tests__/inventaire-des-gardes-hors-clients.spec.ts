@@ -84,6 +84,7 @@ const SELECTION_APPORTEUR = [
   "src/server/calendly/enrich.ts",
   "src/server/calendly/fiche-rendez-vous-apporteur.ts",
   "src/server/calendly/rattachement-apporteur.ts",
+  "src/server/calendly/rattachement-orphelins.ts",
   "src/server/calendly/type-effectif.ts",
 ].sort();
 

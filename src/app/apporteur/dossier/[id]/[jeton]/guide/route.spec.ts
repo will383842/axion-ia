@@ -3,8 +3,8 @@ import { join } from "node:path";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// `guide/route.ts` : le guide de démarrage en PDF, réservé à l'apporteur dont le contrat est
-// signé et qui arrive par SON lien personnel. Tout le reste : le même 404 neutre.
+// `guide/route.ts` : le guide de démarrage en PDF, ouvert à l'apporteur qui arrive par SON lien personnel.
+// Tout le reste : le même 404 neutre.
 vi.mock("server-only", () => ({}));
 
 const h = vi.hoisted(() => ({
@@ -44,7 +44,7 @@ beforeEach(() => {
   );
 });
 
-describe("guide/route.ts : apporteur signé", () => {
+describe("guide/route.ts : apporteur signé ou en cours", () => {
   it("le guide en PDF, ouvert dans le navigateur, privé et sans cache", async () => {
     const r = await appel();
     expect(r.status).toBe(200);
@@ -63,6 +63,14 @@ describe("guide/route.ts : apporteur signé", () => {
     expect((await appel("?dl=0")).headers.get("Content-Disposition")).toMatch(/^inline;/);
   });
 
+  it.each(["dossier_en_cours", "a_completer", "a_verifier"])(
+    "dossier %s : le guide est ouvert aussi",
+    async (statut) => {
+      h.lireDossierParLien.mockResolvedValue({ id: ID, statut, restreint: false });
+      expect((await appel()).status).toBe(200);
+    },
+  );
+
   it("le lien est vérifié avec l'identifiant ET le jeton", async () => {
     await appel();
     expect(h.lireDossierParLien).toHaveBeenCalledTimes(1);
@@ -73,9 +81,6 @@ describe("guide/route.ts : apporteur signé", () => {
 describe("guide/route.ts : 404 neutre, toujours le même", () => {
   const CAS: ReadonlyArray<readonly [string, unknown, (string | undefined)?]> = [
     ["lien invalide", null],
-    ["dossier en cours", { id: ID, statut: "dossier_en_cours", restreint: false }],
-    ["dossier à compléter", { id: ID, statut: "a_completer", restreint: false }],
-    ["dossier à vérifier", { id: ID, statut: "a_verifier", restreint: false }],
     ["dossier refusé", { id: ID, statut: "refuse", restreint: false }],
     ["dossier résilié", { id: ID, statut: "resilie", restreint: false }],
     ["fiche retirée du réseau", { id: ID, statut: "signe", restreint: true }],
