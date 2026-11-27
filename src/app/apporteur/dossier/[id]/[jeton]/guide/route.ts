@@ -1,9 +1,9 @@
 // Le GUIDE DE DÉMARRAGE en PDF : `/apporteur/dossier/<id>/<jeton>/guide` (`?dl=1` : enregistrer).
 //
 // Réservé à l'apporteur qui arrive par SON lien personnel (`lireDossierParLien` : identifiant ET
-// jeton, version du lien) et dont le contrat est SIGNÉ. Lien faux ou d'un autre apporteur, dossier
-// pas signé, refusé, résilié, fiche retirée, lien d'exemple, fichier absent : le même 404 neutre.
-// Le fichier vit sous `private/`, jamais sous `public/`. Aucun suivi : ni lecture, ni compteur.
+// jeton, version du lien) et AVANT comme APRÈS la signature (dossier modifiable, à vérifier ou
+// signé). Lien faux ou d'un autre apporteur, dossier refusé, résilié, fiche retirée, lien
+// d'exemple, fichier absent : le même 404 neutre. Le fichier vit sous `private/`, jamais sous `public/`. Aucun suivi : ni lecture, ni compteur.
 
 import { NextResponse } from "next/server";
 
@@ -16,6 +16,7 @@ import {
   NOM_FICHIER_GUIDE,
   lireGuideDemarrage,
 } from "@/features/apporteurs-reseau/guide-demarrage";
+import { documentsOuvertsPour } from "@/features/apporteurs-reseau/documents-prives";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 import { etatDeLaPage } from "@/features/apporteurs-reseau/signature-regles";
 
@@ -55,7 +56,7 @@ export async function GET(
 
   const dossier =
     id.toLowerCase() === ID_DOSSIER_EXEMPLE ? null : await lireDossierParLien(id, jeton);
-  if (!dossier || dossier.restreint || etatDeLaPage(dossier.statut) !== "signe") {
+  if (!dossier || dossier.restreint || !documentsOuvertsPour(etatDeLaPage(dossier.statut))) {
     return introuvable();
   }
 

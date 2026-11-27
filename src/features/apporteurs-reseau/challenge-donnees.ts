@@ -286,8 +286,8 @@ export interface OptionsPublication {
  * Publie un brouillon : fige la règle (empreinte de la règle complète), refuse une période déjà
  * terminée, exige une confirmation si elle a déjà commencé, refuse un chevauchement avec un
  * challenge publié ou archivé (après son début), tous produits : les primes de challenges sur une
- * même période ne se cumulent pas (règle validée). Transaction sérialisable : deux publications simultanées ne
- * passent pas toutes les deux.
+ * même période ne se cumulent pas (règle validée). Transaction sérialisable : deux publications
+ * simultanées ne passent pas toutes les deux.
  */
 export async function publierChallenge(
   id: string,

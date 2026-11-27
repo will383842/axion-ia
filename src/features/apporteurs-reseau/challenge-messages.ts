@@ -25,7 +25,7 @@ export const MESSAGES_ERREUR = {
   deja_commence:
     "La période a déjà commencé : cochez « Je publie un challenge déjà commencé » pour confirmer.",
   chevauche:
-    "Un challenge déjà publié, ou archivé après son début, couvre une partie de cette période : les primes de challenges ne se cumulent pas.",
+    "Un challenge déjà publié, ou archivé après son début, couvre une partie de cette période : les primes de challenges ne se cumulent pas. La période entière d'un challenge arrêté reste bloquée jusqu'à sa date de fin.",
   pas_archivable: "Seul un challenge publié peut être archivé.",
   publication: "Publication impossible. Réessayez.",
   archivage: "Archivage impossible. Réessayez.",

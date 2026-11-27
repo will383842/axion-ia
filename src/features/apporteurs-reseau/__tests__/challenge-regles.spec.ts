@@ -240,14 +240,15 @@ describe("texte de l'encart", () => {
     expect(periodeEnLettres("2026-12-15", "2027-01-15")).toBe(
       "entre le 15 décembre 2026 et le 15 janvier 2027",
     );
-    expect(
-      phrasesDeLEncart({
-        produit: "journee-ia",
-        seuil: 1,
-        primeHtCents: 50_000,
-        debutLe: "2026-12-01",
-        finLe: "2026-12-31",
-      }).principale,
-    ).toContain("au moins une Journée IA a été facturée");
+    const seuilUn = phrasesDeLEncart({
+      produit: "journee-ia",
+      seuil: 1,
+      primeHtCents: 50_000,
+      debutLe: "2026-12-01",
+      finLe: "2026-12-31",
+    }).principale;
+    expect(seuilUn).toContain("au moins une Journée IA a été facturée");
+    expect(seuilUn).toContain("et payée en entier");
+    expect(seuilUn).not.toContain("payées");
   });
 });

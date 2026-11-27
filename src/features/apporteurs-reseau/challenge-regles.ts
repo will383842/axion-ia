@@ -58,7 +58,8 @@ export interface SaisieChallenge {
 }
 
 export type ResultatSaisie =
-  { ok: true; valeur: SaisieChallenge } | { ok: false; erreurs: string[] };
+  | { ok: true; valeur: SaisieChallenge }
+  | { ok: false; erreurs: string[] };
 
 /** Contrôle de la saisie de la console (texte brut du formulaire). */
 export function validerSaisie(brut: Record<string, string | undefined>): ResultatSaisie {
@@ -289,13 +290,13 @@ export function phrasesDeLEncart(c: {
 }): { principale: string; rassurance: string } {
   const produit =
     c.seuil === 1
-      ? `au moins une ${LIBELLE_PRODUIT[c.produit]} a été facturée`
-      : `au moins ${nombreEnLettres(c.seuil)} ${LIBELLE_PRODUIT_PLURIEL[c.produit]} ont été facturées`;
+      ? `au moins une ${LIBELLE_PRODUIT[c.produit]} a été facturée ${periodeEnLettres(c.debutLe, c.finLe)} et payée en entier`
+      : `au moins ${nombreEnLettres(c.seuil)} ${LIBELLE_PRODUIT_PLURIEL[c.produit]} ont été facturées ${periodeEnLettres(c.debutLe, c.finLe)} et payées en entier`;
   const paiement = c.paiementJusquAu
     ? `, paiement reçu au plus tard le ${jourEnLettres(c.paiementJusquAu, true)}`
     : "";
   return {
-    principale: `Une prime de ${montantEnLettres(c.primeHtCents)} HT est versée à tout apporteur pour qui ${produit} ${periodeEnLettres(c.debutLe, c.finLe)} et payées en entier${paiement}, à des entreprises qui lui sont attribuées selon son contrat. Cette prime ne se cumule pas avec une autre prime de challenge sur la même période.`,
+    principale: `Une prime de ${montantEnLettres(c.primeHtCents)} HT est versée à tout apporteur pour qui ${produit}${paiement}, à des entreprises qui lui sont attribuées selon son contrat. Cette prime ne se cumule pas avec une autre prime de challenge sur la même période.`,
     rassurance:
       "Rien n'est attendu de vous : ne pas l'obtenir ne change rien à votre contrat ni à vos commissions.",
   };
