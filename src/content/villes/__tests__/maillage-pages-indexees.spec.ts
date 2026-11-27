@@ -16,6 +16,7 @@ describe("getNearbyVilles — option indexeesSeulement", () => {
         sameRegion: v!.region,
         indexeesSeulement: true,
       });
+      expect(proches.length, slug).toBeGreaterThan(0);
       for (const p of proches) expect(VILLES_INDEXEES.has(p.ville.slug), p.ville.slug).toBe(true);
     }
   });
