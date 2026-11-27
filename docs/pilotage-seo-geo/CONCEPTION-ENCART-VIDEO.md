@@ -50,15 +50,14 @@
 - Postgres sert de magasin de documents (`documents(collection, id, data jsonb)`,
   `src/donnees/postgres/index.ts:5-8`). Types : `src/domaine/types.ts`.
 - `Video` (`types.ts:752-820`) : `id`, `titre` (peut porter un code interne retiré par
-  `titreSansCodeInterne`, `src/domaine/miniatures.ts:96`), `sujet?`, `ciblage?`, `serieId`,
+  `titreSansCodeInterne`, `src/domaine/miniatures.ts:106`), `sujet?`, `ciblage?`, `serieId`,
   `langue`, `dureeCibleSec`, `ratios[]`, `mentionIA`, `distribution`.
 - Il n'y a **pas de taxonomie** (ni thème ni catégorie) dans le Studio : seulement `sujet`,
   `ciblage`, `serieId`. La « rubrique » n'existe que dans le **passeport web**
   (`src/domaine/site-videos/types.ts:28-57`), saisie à la main : `titreWeb`, `resume`,
   `transcription`, `chapitres`, `aRetenir`, `questions`, `rubrique`, `motsCles`, `credits`.
-- Sous-titres : `SousTitres` (`types.ts:1002-1043`), convertis en `.vtt` à la demande
-  (`src/briques/sous-titres/export.ts`), non stockés. Pas de transcription stockée : elle vient
-  du script validé.
+- Sous-titres : `SousTitres` (`types.ts:1036-1043`), convertis en `.vtt` à la demande
+  (`src/briques/sous-titres/export.ts`), non stockés. La transcription est stockée dans le passeport web (`site-videos/types.ts:35-36`).
 - Vignette : celle de la miniature choisie, JPEG, largeur minimale 1200 px contrôlée par
   SITE-09 (`controles.ts:176-178`).
 
@@ -76,14 +75,17 @@ retrait-en-cours | retiree | echec`. **C'est le critère de l'encart.**
   `statut prete` + `etapeEditoriale validee` ; « déjà publiée » = `publiee` ; **éligible à
   l'encart = envoyée au site (`en-ligne`)**, ce qui n'arrive que si les contrôles SITE-01 à
   SITE-17 passent et que le générateur de la vidéo est autorisé pour le site (éteint par
-  défaut).
+  défaut). ⚠️ L'inverse n'est pas garanti : l'envoi ne lit pas l'étape éditoriale, donc une
+  vidéo encore `a_relire` peut être `en-ligne` si Will coche « Sur le site ». Pour tenir la
+  décision « validées, prêtes ou publiées », S-6 ajoute au déclencheur la condition « étape ≠
+  `a_relire` » (§ 1.7).
 
 ### 1.3 Retrait
 
 - `retirerDuSite` (`services/site-videos.ts:761-780`) : DELETE signé, effacement des fichiers
   publics, état `retiree`. `retirerAvantSuppression` (`:804-824`) est appelé par la suppression
   définitive et la corbeille. `retirerTout`/`republierTout` à l'extinction/rallumage d'un
-  générateur (`:206-239`).
+  générateur (`:205-237`).
 - **Trou** : `archiverVideos` (`services/videos.ts:386-399`) ne retire pas la page : une
   vidéo archivée resterait en ligne. → PR Studio S-3.
 - Aucun webhook ni événement sortant : seulement `journaliser(...)`.
@@ -101,7 +103,7 @@ retrait-en-cours | retiree | echec`. **C'est le critère de l'encart.**
 
 - Le Studio envoie, le site répond (`PLAN-LOTS-STUDIO.md:463`) :
   `GET /api/interne/videos/reglages`, `POST /api/interne/videos`,
-  `DELETE /api/interne/videos/<id>` (`src/fournisseurs/site/fournisseur.ts:12-13`).
+  `DELETE /api/interne/videos/<id>` (`src/fournisseurs/site/fournisseur.ts:12-13`, **chemins que le site ne sert pas : voir § 1.6**).
 - HMAC-SHA256, trois en-têtes `x-axion-horodatage`, `x-axion-nonce`,
   `x-axion-signature: v1=…` ; délai 10 s, `redirect: "error"` (`http.ts:25-61`). Client inscrit
   seulement si `SITE_VIDEOS_URL` et `SITE_VIDEOS_SECRET` existent ; fournisseur « simulation »
@@ -135,14 +137,39 @@ inconnu = 422).
 | Chapitres | `{debutSec, finSec, libelle}` | `{titre 2-120, debutSecondes}` ; aucun sous 30 s, débuts croissants | convertir, `finSec` supprimé |
 | Fichiers | `urlVideo`, `urlVignette`, `urlVtt` (adresses complètes), + `largeur`, `hauteur`, `largeurVignette`, `hauteurVignette` | `fichiers{video, affiche169, vignette43, vignette11, sousTitres}`, chacun `{chemin, octets, type}` ; vidéo avec `sha256`, `largeur`, `hauteur` ; images avec `largeur`, `hauteur` | objet à reconstruire ; 3 images au lieu d'une |
 | Clés de stockage | `medias/videos/<idStudio>/<slug>-v<version>-<sha8>.<ext>` (`contrat.ts:98,119`) | `/medias/videos/<slug>/v<version>/<fichier>` (`superRefine`) ; vérifié par `HEAD` | disposition incompatible (S-4) |
-| Transcription | `transcription` | `transcription` 1 à 100 000 ou `null` | compatible |
+| Transcription | `transcription` (peut être vide) | `transcription` 1 à 100 000 ou `null` | le Studio doit envoyer `null` plutôt que `""` |
 | Mention IA | `contenuGenere` (un seul booléen) | `ia{voixGeneree, doubleNumerique}` | à scinder, dériver de `distribution` |
 | Personnes à l'image | **absent** | `personnesALImage{williams}` | à créer (jamais par défaut) |
 | Attestation | **absente** (case SITE-05 locale) | `attestations{aucunNomNiLogoDeClient: true}` | à envoyer quand la case est cochée |
 | Publication | `publieLe` | **inconnu** | à retirer |
 | Champs du Studio que le site refuse | `motsCles`, `generateur`, `credits` | — | **à retirer** de l'envoi |
 
-Seul l'identifiant de signature est déjà compatible (voir plus bas).
+**Les adresses et les réponses ne correspondent pas non plus** (relecture critique n° 2, vérifié) :
+
+- **Retrait** : le Studio appelle `DELETE /api/interne/videos/<idStudio>` sans corps
+  (`src/fournisseurs/site/fournisseur.ts:12-13,75-76`) ; le site n'a aucune route `videos/[id]`,
+  seulement `DELETE /api/interne/videos` avec un corps `{schemaVersion, studioVideoId, motif}`,
+  `motif` ∈ `obsolete | erreur | demande_tiers | autre` (`src/app/api/interne/videos/route.ts:43-44`,
+  `src/server/videos/contrat.ts:175-181`). Le chemin signé n'est donc pas le même.
+- 🔴 **Échec silencieux** : le site répond 404, et `retirer()` lit un 404 comme
+  `{statut: "inconnue"}`, donc un succès (`fournisseur.ts:77`) ; `retirerDuSite` marque alors la
+  vidéo `retiree` et efface ses fichiers publics (`services/site-videos.ts:776-779`) alors que la
+  page reste `publiee` sur le site. Retrait, archivage (S-3) et corbeille seraient cassés **sans
+  aucun signal**. Le Studio doit appeler la route du site et ne plus traiter un 404 de route
+  comme « inconnue » (distinguer « route absente » de « vidéo inconnue »).
+- **Réglages** : le Studio appelle `GET /api/interne/videos/reglages` et attend `versionContrat` ;
+  le site sert `GET /api/interne/reglages-publics` (`reglages-publics/route.ts:24-28`) et répond
+  `schemaVersion`, `luLe`, `qualiopiCertificationObtenue`, `ofPublicDisclosure`, `avisPublies`,
+  `videosSiteActives`. Le Studio lit aussi un champ `certifexempleCertificationObtenue` à aligner.
+- **Réponse de publication** : le Studio exige `200`, `versionPasseport` et `inchange`
+  (`fournisseur.ts:66-71`) ; le site renvoie `201` à la première publication, `version` et `rejeu`
+  (`src/server/videos/reception.ts:241-257`). Chaque première publication finirait en « réponse
+  illisible » côté Studio alors que la page est publiée.
+- **Seule la signature est compatible** (même chaîne `v1`, nonce, fenêtre), mais elle signe le
+  chemin : un chemin différent donne une signature différente.
+
+S-1 couvre donc **corps, routes et réponses**, avec un test croisé sur les trois appels (réglages,
+publication, retrait), pas seulement sur le corps du POST.
 
 Recommandation : **suivre le site** (en production, strict, portant les attestations).
 
@@ -154,11 +181,10 @@ Recommandation : **suivre le site** (en production, strict, portant les attestat
   60 (SITE-11, `:194-202`) : un titre de 15 caractères passe chez lui et reçoit un 422 au site.
 - **Fichiers** : le site exige `/medias/videos/<slug>/v<version>/<fichier>` avec `sha256`,
   `octets`, largeur, hauteur, et vérifie chaque fichier par `HEAD`
-  (`src/server/videos/contrat.ts:116-145`, `fichiers.ts`). Le Studio range sous
+  (`src/server/videos/contrat.ts:116-127` pour le chemin, `fichiers.ts` pour le `HEAD`, `fichiers.ts`). Le Studio range sous
   `medias/videos/<idStudio>/<slug>-v<version>-<sha8>.<ext>` (`contrat.ts:98,119`) : disposition
   incompatible.
-- Les signatures, elles, sont compatibles (même chaîne, `v1=`, nonce 32 hex, fenêtre 300 s).
-
+- 
 ### 1.7 « Validée mais pas encore envoyée » : comment l'encart les prend aussi
 
 Décision de Will : l'encart prend les vidéos validées, prêtes à publier ou déjà publiées. Le
@@ -167,17 +193,27 @@ Studio n'a qu'une étape « validée » **pour les réseaux** ; mais l'envoi au 
 autorisé ; `publierSansSession`, `:633` : case « Sur le site » cochée ; contrôles SITE-01 à 17).
 **Ce n'est donc pas impossible**, et aucun changement du modèle éditorial n'est nécessaire.
 
-Aujourd'hui seul `publicationAuto` (`:837-870`) coche la case et envoie, et seulement juste après
+Aujourd'hui seul `publicationAuto` (`:839-869`) coche la case et envoie, et seulement juste après
 les finitions d'une **nouvelle** vidéo, si le générateur et son réglage `cleSiteAuto` sont allumés.
 Une vidéo validée plus tard, ou antérieure, n'est jamais reprise. Proposition (PR Studio S-6) :
 
 1. appeler `publicationAuto(videoId)` aussi depuis `changerEtapeEditoriale` quand l'étape devient
    `validee` (`services/videos.ts:495-508` ; pour une vidéo de version, après `validerVariante`) ;
 2. une passe de rattrapage, à lancer à la main une fois, sur toutes les vidéos `prete` dont l'étape
-   est `validee`, `programmee` ou `publiee` (modèle : `republierTout`, `site-videos.ts:225-239`) ;
+   est `validee`, `programmee` ou `publiee` (modèle : `republierTout`, `site-videos.ts:222-237`) ;
 3. les contrôles restent bloquants : une vidéo qui n'a pas de page complète (SITE-10, le
    passeport d'essai échoue toujours), pas de sous-titres, ou pas de case « Aucun client nommé »
    reste « à relire avant le site » et ne part pas.
+
+Garde-fous obligatoires de S-6 :
+
+- ne **jamais** republier une vidéo que Will a retirée à la main ou décochée : `publicationAuto`
+  force `choisie: true` et ne saute pas l'état `retiree` (`:846-847`) ; S-6 saute `retiree`
+  (sauf `retireeParGenerateur`) et respecte `choisie: false` ;
+- n'agir que si l'étape est `validee`, `programmee` ou `publiee` (jamais `a_relire`) ;
+- **dépendances** : S-1 (contrat, routes, réponses), S-2 (SITE-09 bloque toute vidéo verticale,
+  miniature de 1 080 px sous le minimum de 1 200, décision D6), S-4 (sans stockage public réel,
+  `STOCKAGE_PUBLIC_A_RELIER`, `:634-637`, refuse tout envoi), S-5 (branchement).
 
 **Le vrai obstacle n'est pas le statut mais le passeport web** (thème, résumé, à retenir,
 questions) : tant que Will ne l'écrit pas, ou que l'écriture par Claude (réglage éteint) n'est pas
@@ -185,7 +221,7 @@ allumée, aucune vidéo ne part, validée ou non.
 
 ## 2. Le site : ce qui existe
 
-- `SiteVideo` (`prisma/schema.prisma:18322-18372`) : `statut publiee|retiree`, `theme`,
+- `SiteVideo` (`prisma/schema.prisma:18337-18374`) : `statut publiee|retiree`, `theme`,
   `serieSlug`, `titre`, `description`, `resume`, `aRetenir`, `questions`, `transcription`.
   Seul écrivain : `src/server/videos/reception.ts`, via `POST`/`DELETE` signés
   (`src/app/api/interne/videos/route.ts`).
@@ -226,8 +262,9 @@ demandent des écritures. Le choix est **calculé hors rendu et stocké** :
 - table `encarts_video_affectations` : `contenuType`, `contenuId` (unique sur la paire),
   `siteVideoId`, `score`, `methode` (`embedding` | `lexical`), `choisiLe`, `versionAlgo`,
   `etat` (`active` | `orpheline`). Migration **additive**, colonnes nullables ;
-- file BullMQ neuve `videos-encarts`, charge minimale (`{ tache, contenuId }` ou
-  `{ tache: "reequilibrer", tick }`), le worker **ignore les tâches inconnues** ;
+- file BullMQ neuve `videos-encarts`, charge minimale (`{ tache: "affecter", contenuId }`,
+  `{ tache: "reequilibrer", siteVideoId? }` ou `{ tache: "nocturne", tick }`), le worker **ignore
+  les tâches inconnues de sa file** ;
 - déclencheurs : après la publication d'un contenu (accroche naturelle :
   `content-publish-worker.ts:1231`, tâche détachée comme l'embedding) et passe nocturne qui
   réaffecte orphelines et dépassements, et traite le stock existant (~100 contenus/jour + stock).
@@ -240,8 +277,10 @@ demandent des écritures. Le choix est **calculé hors rendu et stocké** :
   worker lit `SiteVideo` sans le cache mémoire de 5 min ; **garde « liste vide = ne rien
   toucher »** : jamais de passage massif en orphelines sur une liste vide.
 - **Réactivité** : `apresPublication` met en file `{ tache: "reequilibrer", siteVideoId }`
-  (borné) à chaque retrait ou arrivée, pour ne pas attendre la nuit (les tâches inconnues sont
-  ignorées par un ancien worker : ordre de déploiement sûr).
+  (borné) à chaque retrait ou arrivée, pour ne pas attendre la nuit. ⚠️ Cet émetteur est dans
+  **l'app** (`after()`), le consommateur dans le **worker** : un ancien worker n'écoute pas la
+  file `videos-encarts`, les tâches s'y accumulent sans être perdues. Ordre sûr : le worker
+  (E4) atterrit **avant** que l'app n'émette ; la passe nocturne rattrape de toute façon.
 - la page lit l'affectation puis résout la vidéo via `videosPubliees()` : une vidéo retirée
   disparaît à la revalidation déjà câblée.
 
@@ -251,7 +290,7 @@ demandent des écritures. Le choix est **calculé hors rendu et stocké** :
 2. Score : cosinus article↔vidéo dans l'espace du fournisseur actif
    (`dedup/nearest-articles.ts:33-56`, texte vidéo via `buildVoyageEmbeddingText` sur
    titre + description + résumé + à retenir + questions). **Repli lexical** si un vecteur manque :
-   recouvrement de jetons (`jetonsArticle`/`jetonsSujet`/`recouvrementSujet`,
+   recouvrement de jetons (`jetonsArticle`/`jetonsSujet`/`recouvrementSujet` (prend un `ExternalLink` : à adapter à une vidéo, `pertinence-sujet.ts:150`),
    `src/data/external-links/pertinence-sujet.ts:137-183`) plus bonus si le thème de catégorie correspond.
 3. Seuil de pertinence : on retient seulement `s ≥ seuilMin`, classé par score décroissant moins
    la pénalité de rotation. Un sujet voisin est un repli **permis**, pas une obligation : on
@@ -274,7 +313,7 @@ slug)` (déterministe, pas d'aléatoire non reproductible).
 - **Évitement des voisins** : on exclut toute vidéo déjà affectée aux « À lire aussi »
   (`findRelatedArticles`, 4), précédent/suivant (`loadAdjacentArticles`) et plus proches
   voisins sémantiques (`findNearestArticles`, 5).
-- Villes : rotation déterministe (hachage du slug modulo les vidéos éligibles), en évitant la
+- Villes : rotation déterministe par hachage par rendez-vous (HRW, voir plus bas), en évitant la
   vidéo des communes proches (`VilleCommunesProches`), sans écriture par page.
 - Concurrence : relire le compteur dans la transaction **ne suffit pas** (READ COMMITTED :
   deux transactions lisent `plafond − 1`). On prend `pg_advisory_xact_lock(hash(siteVideoId))`
@@ -292,13 +331,14 @@ slug)` (déterministe, pas d'aléatoire non reproductible).
 ### 4.1 Composant
 
 - XSS : aucun champ du Studio ne passe par `dangerouslySetInnerHTML` ; `src` reste le `chemin`
-  contraint par la regex (`contrat.ts:142-145`) ; test dédié en E6. `sizes`/`srcset` sur la
-  vignette 4:3 (ne pas charger 1 200 px sur 360 px).
-- Composant serveur sans JS, `<section aria-labelledby>` avec **identifiant unique par
-  instance** (corrige § 2.1.6), titre visible, durée lisible (« 2 min 10 »), mention de
-  sous-titres si le `.vtt` existe.
+  contraint par le `superRefine` (`src/server/videos/contrat.ts:116-127`) ; test dédié en E6. Le contrat ne livre qu'**une** `vignette43` (pas de `srcset` possible) :
+  S-2 la produit à une largeur modeste (≈ 640 px) ; ajouter plusieurs largeurs au contrat
+  seulement si la mesure le demande.
+- Composant serveur sans JS, `<aside aria-labelledby>` avec **identifiant unique par
+  instance** (corrige § 2.1.6), titre visible, durée lisible (« 2 min 10 »), mention « sous-titres
+  disponibles » (le `.vtt` est obligatoire dans le contrat).
 - Façade : `<img>` avec `width`/`height` et ratio fixe (**CLS = 0**), `loading="lazy"`,
-  `decoding="async"`, jamais `priority` (**aucun impact LCP** : l'encart est en fin de page,
+  `decoding="async"`, jamais `fetchpriority="high"` (**aucun impact LCP** : l'encart est en fin de page,
   hors première vue). Pictogramme de lecture, zone tactile ≥ 44 px, contraste AA.
 - Couleurs : classes de jetons (`text-terracotta`, `border-terracotta/50`) ; le terracotta
   public actuel est `#b23f16`. Aucun hexadécimal en dur.
@@ -343,8 +383,9 @@ Aucun lecteur tiers (doctrine). Pour B : sous-titres `<track>` si `.vtt` présen
   `typesContenus`, `exclureVoisins`, `videosExclues[]` (liste d'identifiants).
 - « Exclure une vidéo » : l'exclusion est lue par le répartiteur **et** purge les
   affectations existantes à la prochaine passe ; l'écran montre le nombre d'encarts concernés.
-- Action serveur sur le modèle `editorial/reglages.ts` (permission, schéma Zod,
-  `persistContentGenConfig` + `ContentGenAuditLog`, `logActivity`, Sentry, `revalidatePath`).
+- Action serveur sur le modèle `src/server/actions/content-gen/_settings.ts` (permission,
+  schéma Zod, `persistContentGenConfig` + `ContentGenAuditLog`, `logActivity`, Sentry,
+  `revalidatePath`) ; `editorial/reglages.ts` n'utilise aucun de ces éléments.
 - Page `…/content-gen/settings/videos-encarts/` : `force-dynamic`, `auth()` puis `redirect`
   (`pnpm admin-gardes:check`), entrée dans `src/lib/admin-nav.ts`
   (`tests/unit/ci/route-admin-sans-entree-de-menu.spec.ts`), tableau lecture seule des
@@ -417,9 +458,9 @@ quelque chose.
 | PR      | Contenu                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Classe                                                                                                           |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | **S-0** | Décision de contrat (ADR croisé) : le contrat du site fait foi. Doc seule.                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Pas à annoncer                                                                                                   |
-| **S-1** | Aligner `corpsPasseport` sur le schéma du site ; liste fermée de thèmes ; champ `description` ; **bornes de longueur du site reprises dans les contrôles** (nouveaux SITE-xx bloquants, SITE-11 ramené à 20-60) ; retirer `generateur` et `credits` de l'envoi (le site ne les attend pas) ; contrôle « personnage qui témoigne » ; **test de contrat croisé** (JSON fixture du Studio validé par le schéma Zod du site, versionné dans les deux dépôts) ; régénérer `docs/site-videos/contrat/*.json`, `s4-contrat`, `s4-signature`. | **À annoncer à la session qui met le Studio en ligne** (touche `types.ts` partagé), `sensible-a-fusionner`                                          |
+| **S-1** | **Aligner routes, corps et réponses** : `DELETE /api/interne/videos` avec corps `{schemaVersion, studioVideoId, motif}`, `GET /api/interne/reglages-publics`, lecture de `201` et `version`/`rejeu` ; un 404 de route n'est plus un « vidéo inconnue » ; aligner `corpsPasseport` sur le schéma du site ; liste fermée de thèmes ; champ `description` ; **bornes de longueur du site reprises dans les contrôles** (nouveaux SITE-xx bloquants, SITE-11 ramené à 20-60) ; retirer `generateur` et `credits` de l'envoi (le site ne les attend pas) ; contrôle « personnage qui témoigne » ; **test de contrat croisé** sur les trois appels (réglages, publication, retrait : fixtures du Studio validées par les schémas Zod du site, versionnées dans les deux dépôts) ; régénérer `docs/site-videos/contrat/*.json`, `s4-contrat`, `s4-signature`. | **À annoncer à la session qui met le Studio en ligne** (touche `types.ts` partagé), `sensible-a-fusionner`                                          |
 | **S-2** | Vignettes 4:3 et 1:1 + affiche 16:9 (décision D6) via le système de vignettes v2.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | **À annoncer à la session qui met le Studio en ligne** (zone interface/miniatures)                                                                  |
-| **S-3** | `archiverVideos` appelle `retirerAvantSuppression` ; test rouge d'abord.                                                                                                                                                                                                                                                                                                                                                                                                                                                              | **À annoncer à la session qui met le Studio en ligne** (`services/videos.ts` partagé)                                                               |
+| **S-3** | (après S-1, sinon le retrait échoue en silence) `archiverVideos` appelle `retirerAvantSuppression` ; test rouge d'abord.                                                                                                                                                                                                                                                                                                                                                                                                                                                              | **À annoncer à la session qui met le Studio en ligne** (`services/videos.ts` partagé)                                                               |
 | **S-4** | `StockagePublic` réel sur R2, seau public dédié, réglage éteint ; **adopter la disposition de clés du site** `/medias/videos/<slug>/v<version>/<fichier>` avec `sha256`, `octets`, dimensions (le site vérifie par `HEAD`).                                                                                                                                                                                                                                                                                                           | **À annoncer à la session qui met le Studio en ligne** (`fournisseurs/index.ts`), `sensible-a-fusionner` ; seau + règle `/medias/*` = geste de Will |
 | **S-5** | Branchement : `SITE_VIDEOS_URL`, `SITE_VIDEOS_SECRET`, `fournisseur.site = http`. Fiche manuelle datée de Will, aucun code.                                                                                                                                                                                                                                                                                                                                                                                                           | Pas à annoncer (config) mais geste de Will                                                                       |
 | **S-6** | Déclencheur « validée » et rattrapage des vidéos déjà validées ou publiées (§ 1.7). Test rouge d'abord. | **À annoncer à la session qui met le Studio en ligne** (`services/videos.ts`) |
@@ -437,7 +478,7 @@ ADR **0078** (numéro à revérifier sur les PR ouvertes ; 0034, 0036, 0050 sont
 | **E1** | Module pur du répartiteur + tests (seuil, plafond, voisins, départage). Aucune E/S.                                                                                                                                                                                                                                                                                                               | —                |
 | **E2** | Migration additive : colonnes vecteur sur `site_videos`, table d'affectations.                                                                                                                                                                                                                                                                                                                    | —                |
 | **E3** | Embeddings vidéo à la réception (`after()`) + rattrapage nocturne.                                                                                                                                                                                                                                                                                                                                | E2               |
-| **E4** | File/worker `videos-encarts`, branchement publication, cron nocturne, revalidation par `revalidateContent`, file « rééquilibrer » depuis `apresPublication`. **Ne fusionne qu'une fois E2 atterrie en production** (`prisma migrate status`) ; sinon le worker tolère la table absente (erreur attrapée, rien fait). L'émetteur étant dans le worker, « worker avant app » ne s'applique pas ici. | E1, E2 atterrie  |
+| **E4** | File/worker `videos-encarts`, branchement publication, cron nocturne, revalidation par `revalidateContent`, file « rééquilibrer » depuis `apresPublication`. **Ne fusionne qu'une fois E2 atterrie en production** (`prisma migrate status`) ; sinon le worker tolère la table absente (erreur attrapée, rien fait). L'émetteur `reequilibrer` étant dans l'app, E4 (worker) atterrit avant l'émission. | E1, E2 atterrie  |
 | **E5** | Réglages console : schéma unique, action, page, menu, journal, test de parité.                                                                                                                                                                                                                                                                                                                    | E1               |
 | **E6** | Rendu par affectation (blog d'abord) ; étendre `GABARITS_HOTES` puis guides, actualités, connaissances.                                                                                                                                                                                                                                                                                           | E4, E5, ADR 0078 |
 | **E7** | Rotation des villes (hachage + évitement des communes proches).                                                                                                                                                                                                                                                                                                                                   | E1, E6           |
