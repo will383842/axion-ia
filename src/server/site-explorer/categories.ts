@@ -48,7 +48,7 @@ export const ROUTE_CATEGORY_ORDER: ReadonlyArray<RouteCategory> = [
 
 // Mapping section (1er segment FR) → catégorie. Une section absente tombe dans
 // le fallback pathPattern puis "autre".
-const SECTION_TO_CATEGORY: Record<string, RouteCategory> = {
+export const SECTION_TO_CATEGORY: Record<string, RouteCategory> = {
   // Commercial — 5 verticales services + hubs/intentions
   audit: "commercial",
   interventions: "commercial",
