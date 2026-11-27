@@ -268,9 +268,9 @@
       "running": false
     },
     {
-      "name": "Routes /apporteur/dossier (lien secret, noindex, hors budget des 15 pages stratégiques — page Mes commissions 100 % serveur, mesuré 26,41 kB le 26/11 ; + 2 routes serveur challenges (règlement, règlements passés), mesuré 29,03 kB le 27/11/2026) — 30 KB cumulé",
+      "name": "Routes /apporteur/dossier (lien secret, noindex, hors budget des 15 pages stratégiques — page Mes commissions 100 % serveur, mesuré 26,41 kB le 26/11 ; + 2 routes serveur challenges (règlement, règlements passés), mesuré 29,03 kB le 27/11/2026) ; + section « Mon compte bancaire » et page des liens de changement de compte, mesuré 33,66 kB en CI le 27/11/2026 — 35 KB cumulé",
       "path": ".next/static/chunks/app/apporteur/**/page-*.js",
-      "limit": "30 KB",
+      "limit": "35 KB",
       "running": false
     },
     {
