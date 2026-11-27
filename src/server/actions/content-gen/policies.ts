@@ -72,6 +72,9 @@ const ContentPoliciesSchema = z
     // aux `blog_from_rss`. true = news auto-publiées tier_1 dès score ≥
     // rssAutoPublishMinScore ; false = news → review queue (modération humaine).
     newsAutoPublish: z.boolean(),
+    // C2 (2026-11) — autorisation de publier SANS relecture (retour arrière). Optionnelle :
+    // absent = non autorisé. Les deux interrupteurs ci-dessus n'agissent que si elle vaut true.
+    publicationSansRelectureAutorisee: z.boolean().optional(),
   })
   .strict();
 const LlmsTxtSchema = z.string().max(50_000);
@@ -225,6 +228,12 @@ export interface ContentPolicies {
    * plus les news).
    */
   readonly newsAutoPublish: boolean;
+  /**
+   * C2 (2026-11, « arrêter la publication faible ») — retour arrière. Sans `true`, aucun
+   * contenu généré ne se publie sans relecture humaine, même si les deux interrupteurs
+   * d'auto-publication sont cochés (config enregistrée avant C2). Défaut : false.
+   */
+  readonly publicationSansRelectureAutorisee?: boolean;
 }
 
 const POLICIES_DEFAULTS: ContentPolicies = {
@@ -232,8 +241,10 @@ const POLICIES_DEFAULTS: ContentPolicies = {
   plagiarismJaccardInternal: 0.3,
   plagiarismJaccardRss: 0.1,
   tier3RetentionDays: 90,
-  // 2026-06-14 (décision Will) — full auto + tout indexable par défaut.
-  factoryAutoPublishAllBlogTypes: true,
+  // C2 (2026-11, décision Will : qualité avant volume) — plus d'auto-publication par défaut.
+  // Les deux interrupteurs passent à faux ; `publicationSansRelectureAutorisee` (absent = faux)
+  // couvre aussi les configs déjà enregistrées avec « true ». Retour arrière : console.
+  factoryAutoPublishAllBlogTypes: false,
   factoryAutoPromoteTier1MinScore: 0,
   // 2026-06-14 — Cap news RSS/jour + fenêtre fraîcheur (défaut 3 j).
   // 2026-07-04 (Will) — défaut abaissé 20 → 5 : le volume de news RSS/jour visé est
@@ -244,7 +255,8 @@ const POLICIES_DEFAULTS: ContentPolicies = {
   rssMaxAgeDays: 3,
   // 2026-07-01 — Auto-publication des news activée par défaut (aligné sur la
   // stratégie « veille IA → Google News »). Réversible depuis la page Actualités.
-  newsAutoPublish: true,
+  newsAutoPublish: false,
+  publicationSansRelectureAutorisee: false,
 };
 
 export async function getPolicies(): Promise<ContentPolicies> {
