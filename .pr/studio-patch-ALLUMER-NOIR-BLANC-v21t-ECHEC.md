@@ -1,0 +1,4 @@
+Rien à corriger trouvé : aucun patch produit (un patch vide serait trompeur, d'où la branche -ECHEC).
+Rouge : l'API GitHub ne renvoie aucun check-run pour 0889bc20 (total_count 0) et le numéro de PR est inconnu ; aucune CI rouge à lire.
+Lancé sur la branche (HEAD 0889bc20) : vitest tests/briques/composition = 14 fichiers / 125 tests verts ; vitest tests/briques + tests/formats = 4 échecs ; tsc --noEmit : erreurs seulement dans des tests étrangers au lot (tests/zernio, tests/image-video), aucune dans les 3 fichiers du lot.
+Rouges hérités, non réparés (identiques sur origin/master, vérifié) : recollage.test.ts (remotion), habillage/controle-piece-neuve.test.ts (Montserrat), habillage-commun/sequence-appel.test.ts, voix-maitre/mesure-v3.test.ts. Un commit « correction (robot crédits API) » f8018466 existe déjà sur la branche.
