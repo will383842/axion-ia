@@ -7,6 +7,8 @@ const jour = (d: string): string => d.slice(0, 10);
 const valide = (d: string): boolean => /^\d{4}-\d{2}-\d{2}/.test(d) && !Number.isNaN(Date.parse(d));
 
 export function evaluerB14(c: ContenuPorte, x: ContextePorte): ResultatBrut {
+  // Horloge injectée invalide : on ne compare rien (échec fermé, voir `lancer`).
+  if (Number.isNaN(x.maintenant.getTime())) throw new Error("horloge injectée invalide");
   const raisons: string[] = [];
   if (!c.auteur || c.auteur.nom.trim().length === 0) {
     raisons.push("Auteur non identifiable.");

@@ -83,6 +83,25 @@ describe("B03 faits canoniques (prix)", () => {
       ).toBe("ok");
     }
   });
+  it("juge la phrase d'Axion-IA même si le même montant apparaît licite ailleurs", () => {
+    const corps =
+      corpsValide() +
+      "<p>Une aide régionale de 3 500 € existe. Notre accompagnement est à 3 500 € HT.</p>";
+    expect(r("B03", { corpsHtml: corps }).statut).toBe("echec");
+  });
+  it("contrôle aussi le point clé et la réponse directe (B01 et B03)", () => {
+    expect(r("B01", { keyTakeaway: "Formation certifiée Qualiopi et éligible CPF" }).statut).toBe(
+      "echec",
+    );
+    expect(r("B01", { directAnswer: mots(45) + " Qualiopi." }).statut).toBe("echec");
+    expect(r("B03", { keyTakeaway: "Notre diagnostic coûte 3 500 € HT" }).statut).toBe("echec");
+  });
+  it("ne juge pas les montants hors offre (abonnement tiers, prise en charge)", () => {
+    const corps =
+      corpsValide() +
+      "<p>L'abonnement ChatGPT Team coûte 25 € par mois. Votre OPCO peut prendre en charge la formation jusqu'à 3 000 €.</p>";
+    expect(r("B03", { corpsHtml: corps }).statut).toBe("ok");
+  });
   it("ne juge pas un montant étranger à l'offre (aide, amende) : c'est B02", () => {
     const corps =
       corpsValide() + "<p>Une aide de 5 000 € existe. Une amende de 20 000 € est possible.</p>";
@@ -200,6 +219,10 @@ describe("B13 maillage sortant", () => {
     expect(r("B13", {}, { pageProprietaire: "/fr/guide-ia-pme" }).statut).toBe("echec");
     expect(r("B13", {}, { pageProprietaire: "/fr/contact" }).statut).toBe("ok");
   });
+  it("chemin relatif de page propriétaire accepté (fr/contact)", () => {
+    expect(r("B13", {}, { pageProprietaire: "fr/contact" }).statut).toBe("ok");
+    expect(r("B13", {}, { pageProprietaire: "fr/autre" }).statut).toBe("echec");
+  });
   it("lien externe jamais compté comme interne", () => {
     expect(
       r("B13", { corpsHtml: corpsValide() }, { etatLiens: LIENS_SAINS }).preuves.join(" "),
@@ -221,6 +244,9 @@ describe("B14 auteur et dates honnêtes", () => {
   });
   it("refuse une date de publication dans le futur", () => {
     expect(r("B14", { datePublished: "2026-12-30" }).statut).toBe("echec");
+  });
+  it("horloge invalide : non évalué, jamais ok", () => {
+    expect(r("B14", {}, { maintenant: new Date("x") }).statut).toBe("non_evalue");
   });
   it("refuse une dateModified antérieure à la publication", () => {
     expect(r("B14", { dateModified: "2026-10-01" }).statut).toBe("echec");

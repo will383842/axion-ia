@@ -14,6 +14,8 @@ export function surfaceDuContenu(c: ContenuPorte): Record<string, string | undef
     ...c.champsSupplementaires,
     titre: c.titre,
     metaDescription: c.metaDescription ?? undefined,
+    directAnswer: c.directAnswer ?? undefined,
+    keyTakeaway: c.keyTakeaway ?? undefined,
     corps: c.corpsHtml,
     // Texte visible : un mot coupé par une balise (« Gre<span></span>noble ») ne s'échappe pas.
     corpsTexte: texteDe(
@@ -36,16 +38,18 @@ export function evaluerB01(c: ContenuPorte, x: ContextePorte): ResultatBrut {
   };
 }
 
-const CONTEXTE_OFFRE =
-  /axion|journ[ée]e ia|diagnostic|audit|tarif|prix|\bHT\b|\bTTC\b|devis|formation|intervention|coaching|abonnement/i;
+/** Une phrase qui parle d'une offre d'Axion-IA (nous, notre, nom d'offre, HT/TTC). */
+const PHRASE_OFFRE = /axion|journ[ée]e ia|diagnostic ia|\bnotre\b|\bnos\b|\bnous\b|\bHT\b|\bTTC\b/i;
 
 /**
  * B03 : prix d'une offre d'Axion-IA lus dans `pricing.ts` (via `price-gate`).
- * Seuls comptent les montants écrits près d'un nom d'offre, d'un « HT » ou d'un
- * mot de tarif : « une aide de 5 000 € » ou « 20 000 € d'amende » ne portent pas
- * sur Axion-IA et relèvent de B02 (Q3), sinon la règle ferait des faux positifs
- * massifs (cf. content-gen-worker, contrôle déjà retiré des fautes dures pour
- * cette raison). Les durées et le programme de la Journée IA arrivent ensuite.
+ * Le contrôle se fait PHRASE PAR PHRASE : seule une phrase qui parle d'Axion-IA
+ * (nous, notre, nom d'offre, HT/TTC) est comparée à la source unique. « Une aide de
+ * 5 000 € » ou « l'abonnement ChatGPT coûte 25 € » ne portent pas sur Axion-IA et
+ * relèvent de B02 (Q3) : sinon faux positifs massifs (cf. content-gen-worker, contrôle
+ * déjà retiré des fautes dures pour cette raison). Chaque phrase est jugée à part :
+ * un même montant licite dans une phrase ne couvre pas la phrase suivante.
+ * Les durées et le programme de la Journée IA arrivent ensuite.
  */
 export function evaluerB03(c: ContenuPorte): ResultatBrut {
   const texte = texteDe(
@@ -56,11 +60,10 @@ export function evaluerB03(c: ContenuPorte): ResultatBrut {
         .join("\n"),
     ),
   );
-  const ecarts = findNonSsotPrices(texte).filter((e) => {
-    const i = texte.indexOf(e.amount);
-    if (i < 0) return true;
-    return CONTEXTE_OFFRE.test(texte.slice(Math.max(0, i - 80), i + e.amount.length + 40));
-  });
+  const ecarts = texte
+    .split(/(?<=[.!?])\s+/)
+    .filter((phrase) => PHRASE_OFFRE.test(phrase))
+    .flatMap((phrase) => findNonSsotPrices(phrase));
   if (ecarts.length === 0) return OK;
   return {
     statut: "echec",

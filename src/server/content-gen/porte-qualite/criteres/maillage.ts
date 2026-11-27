@@ -25,8 +25,10 @@ export function evaluerB13(c: ContenuPorte, x: ContextePorte, r: ReglagesPorte):
       chemins,
     );
   }
-  const proprietaire = x.pageProprietaire
-    ? cheminInterne(x.pageProprietaire, x.hotesInternes)
+  // Chemin relatif (« fr/diagnostic ») accepté : on le ramène à « /fr/diagnostic ».
+  const brut = x.pageProprietaire?.trim();
+  const proprietaire = brut
+    ? cheminInterne(/^(\/|https?:)/i.test(brut) ? brut : `/${brut}`, x.hotesInternes)
     : null;
   if (proprietaire && !chemins.includes(proprietaire)) {
     return echec(`Aucun lien vers la page propriétaire du thème (${proprietaire}).`, chemins);

@@ -4,8 +4,8 @@
  */
 
 import { calculerNote } from "./note";
-import { CRITERES, IDS_BLOQUANTS_PREVUS } from "./registre";
-import { REGLAGES_PAR_DEFAUT, ReglagesPorteSchema, VERSION_PORTE } from "./reglages";
+import { CLASSES_PAR_ID, CRITERES, IDS_BLOQUANTS_PREVUS } from "./registre";
+import { ReglagesPorteSchema, VERSION_PORTE } from "./reglages";
 import type {
   ContenuPorte,
   ContextePorte,
@@ -34,8 +34,8 @@ export interface OptionsPorte {
   readonly registre?: ReadonlyArray<Critere> | undefined;
   /**
    * Bloquants que le verdict exige. Par défaut B01 à B16 (§ 4.1) : tant que le
-   * registre est incomplet (squelette Q2), `publiable` n'est JAMAIS rendu, car un
-   * critère prévu mais absent n'a pas été évalué (§ 3, règle 2).
+   * registre est incomplet (squelette Q2), le verdict est `bloque` : un critère prévu
+   * mais absent n'a pas été évalué (§ 3, règle 2) et chacun devient un motif `non_evalue`.
    */
   readonly idsAttendus?: ReadonlyArray<string>;
 }
@@ -65,7 +65,8 @@ export function evaluerPorte(
         },
       ],
       criteresAbsents: idsAttendus.filter((id) => !registre.some((c) => c.id === id)),
-      seuilsFiges: REGLAGES_PAR_DEFAUT,
+      // Réglages bruts tels que reçus : ce sont eux qui ont été refusés, pas des valeurs par défaut.
+      seuilsFiges: contexte.reglages,
     };
   }
   const reglages = lus.data;
@@ -77,6 +78,9 @@ export function evaluerPorte(
     ...lancer(c, contenu, x),
   }));
 
+  const presents = new Set(registre.map((c) => c.id));
+  const criteresAbsents = idsAttendus.filter((id) => !presents.has(id));
+
   const motifs: MotifRefus[] = criteres
     .filter((r): r is ResultatCritere & { statut: "echec" | "non_evalue" } => r.statut !== "ok")
     .map((r) => ({
@@ -85,16 +89,23 @@ export function evaluerPorte(
       statut: r.statut,
       raison: r.raison ?? "Critère non satisfait.",
     }));
+  // Un bloquant prévu mais absent n'a pas été évalué : non évalué = bloque (§ 3, règle 2),
+  // et le refus est enregistré avec son critère (§ 5.1).
+  for (const id of criteresAbsents) {
+    motifs.push({
+      id,
+      classe: CLASSES_PAR_ID[id] ?? "dur",
+      statut: "non_evalue",
+      raison: "Critère pas encore branché : non évalué.",
+    });
+  }
 
   const note = calculerNote(x.penalites);
   const { seuilPublication, seuilBloque } = reglages;
-  const presents = new Set(registre.map((c) => c.id));
-  const criteresAbsents = idsAttendus.filter((id) => !presents.has(id));
-
   let verdict: VerdictFinal;
   if (motifs.some((m) => m.classe === "dur" || m.statut === "non_evalue") || note < seuilBloque) {
     verdict = "bloque";
-  } else if (motifs.length > 0 || note < seuilPublication || criteresAbsents.length > 0) {
+  } else if (motifs.length > 0 || note < seuilPublication) {
     verdict = "a_corriger";
   } else {
     verdict = "publiable";

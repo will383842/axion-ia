@@ -92,6 +92,14 @@ describe("réglages (schéma Zod unique)", () => {
   });
 });
 
+describe("seuils du registre dérivés des réglages", () => {
+  it("le texte suit le réglage", () => {
+    const b08 = CRITERES.find((c) => c.id === "B08")!;
+    expect(b08.seuil(REGLAGES_PAR_DEFAUT)).toBe("40 à 60 mots");
+    expect(b08.seuil({ ...REGLAGES_PAR_DEFAUT, motsMaxReponseDirecte: 80 })).toBe("40 à 80 mots");
+  });
+});
+
 describe("décision", () => {
   it("contenu sain, tout évalué : publiable, note 100, version et seuils figés", () => {
     const v = evaluerPorte(contenuValide(), contexteValide());
@@ -102,12 +110,17 @@ describe("décision", () => {
     expect(v.seuilsFiges).toEqual(REGLAGES_PAR_DEFAUT);
     expect(v.criteres.map((c) => c.id)).toEqual(CRITERES.map((c) => c.id));
   });
-  it("critères prévus mais absents du registre (B02, B16…) : jamais publiable", () => {
+  it("critères prévus mais absents du registre (B02, B16…) : non évalués, donc bloque", () => {
     const v = evaluerBrut(contenuValide(), contexteValide());
     expect(v.criteresAbsents).toContain("B02");
     expect(v.criteresAbsents).toContain("B16");
     expect(v.criteresAbsents).not.toContain("B01");
-    expect(v.verdict).toBe("a_corriger");
+    expect(v.verdict).toBe("bloque");
+    expect(v.motifs.find((m) => m.id === "B02")).toMatchObject({
+      statut: "non_evalue",
+      classe: "dur",
+    });
+    expect(v.motifs.find((m) => m.id === "B16")?.classe).toBe("corrigeable");
   });
   it("un bloquant dur (Grenoble) donne bloque", () => {
     const v = evaluerPorte(contenuValide({ titre: "IA à Grenoble" }), contexteValide());
@@ -155,6 +168,7 @@ describe("décision", () => {
     );
     expect(v.verdict).toBe("bloque");
     expect(v.motifs[0]!.id).toBe("REGLAGES");
+    expect(v.seuilsFiges).toBe(mauvais);
   });
   it("pénalité non finie : comptée au maximum, jamais 0", () => {
     expect(calculerNote({ proximite: NaN })).toBe(90);
@@ -196,7 +210,7 @@ describe("source indisponible = non évalué (échec fermé)", () => {
         gravite: "bloquant",
         classe: "dur",
         derogation: false,
-        seuil: "-",
+        seuil: () => "-",
         evaluer: () => {
           throw new Error("boum");
         },

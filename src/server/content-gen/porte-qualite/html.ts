@@ -26,11 +26,16 @@ const ENTITES: Record<string, string> = {
   "&apos;": "'",
 };
 
+/** Entité numérique : une valeur hors plage donne une espace, jamais une exception. */
+function caractere(n: number): string {
+  return Number.isInteger(n) && n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : " ";
+}
+
 export function texteDe(html: string): string {
   return html
     .replace(/<[^>]*>/g, " ")
-    .replace(/&#x([0-9a-f]+);/gi, (_e, h: string) => String.fromCodePoint(parseInt(h, 16) || 32))
-    .replace(/&#(\d+);/g, (_e, d: string) => String.fromCodePoint(parseInt(d, 10) || 32))
+    .replace(/&#x([0-9a-f]+);/gi, (_e, h: string) => caractere(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_e, d: string) => caractere(parseInt(d, 10)))
     .replace(/&(nbsp|amp|lt|gt|quot|apos|euro);/g, (e) => ENTITES[e] ?? " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -88,7 +93,7 @@ export function cheminInterne(href: string, hotes: ReadonlyArray<string>): strin
     } catch {
       return null;
     }
-    if (!hotes.includes(url.hostname.toLowerCase())) return null;
+    if (!hotes.some((h) => h.toLowerCase() === url.hostname.toLowerCase())) return null;
     chemin = url.pathname;
   } else {
     return null;

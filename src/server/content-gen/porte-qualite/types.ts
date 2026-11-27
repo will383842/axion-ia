@@ -94,7 +94,7 @@ export interface Critere {
   /** Dérogation humaine permise (vrai seulement pour la classe « dérogeable »). */
   readonly derogation: boolean;
   /** Seuil de départ, en français, pour l'écran de console. */
-  readonly seuil: string;
+  readonly seuil: (reglages: ReglagesPorte) => string;
   readonly evaluer: (
     contenu: ContenuPorte,
     contexte: ContextePorte,
