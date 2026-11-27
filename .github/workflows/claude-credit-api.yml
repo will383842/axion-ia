@@ -100,8 +100,12 @@ jobs:
           sudo sysctl -q -w kernel.apparmor_restrict_unprivileged_userns=0 >/dev/null 2>&1 || true
           npm i -g --no-audit --no-fund @anthropic-ai/claude-code >/dev/null 2>&1
           claude --version >/dev/null
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Identité PROPRE À CE RUN (le Verdict ne compte que les branches dont le commit de tête porte
+          # ce committer, daté après le départ) : plusieurs sessions et plusieurs exécutions poussent en parallèle.
+          git config user.name "robot-credit-api"
+          git config user.email "robot-credit-api-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}@users.noreply.github.com"
+          git config user.email > "$RUNNER_TEMP/robot-email.txt"
+          date -u +%s > "$RUNNER_TEMP/robot-debut.txt"
           # Diagnostic d'échec : forme de la clé (oui/non, jamais sa valeur) et message d'erreur de la CLI,
           # affiché SEULEMENT si Claude a fait au plus 1 tour (échec au démarrage : pas de travail du modèle à protéger).
           cat > "$RUNNER_TEMP/diagnostic.sh" <<'EOF'
@@ -240,7 +244,18 @@ jobs:
             echo "::error::Aucune exécution de Claude n'a réussi : voir le diagnostic de l'étape « Claude (premier compte) »."; exit 1; fi
           # Toute consigne doit pousser une branche (code, ou verdict/<nom> pour une relecture) : sinon, échec.
           git ls-remote --heads origin | sort > "$RUNNER_TEMP/branches-apres.txt"
-          nouvelles=$(comm -13 "$RUNNER_TEMP/branches-avant.txt" "$RUNNER_TEMP/branches-apres.txt" | awk '{print $2}' | sed 's#refs/heads/##')
+          candidates=$(comm -13 "$RUNNER_TEMP/branches-avant.txt" "$RUNNER_TEMP/branches-apres.txt" | awk '{print $2}' | sed 's#refs/heads/##')
+          # Le push d'une AUTRE session ne doit pas faire passer un robot qui n'a rien poussé : on ne garde
+          # que les branches dont le commit de tête a pour committer le robot de CE run, daté après son départ.
+          robot_email=$(cat "$RUNNER_TEMP/robot-email.txt" 2>/dev/null || true)
+          debut=$(cat "$RUNNER_TEMP/robot-debut.txt" 2>/dev/null || echo 0)
+          nouvelles=""
+          for b in $candidates; do
+            git fetch -q --depth=1 origin "refs/heads/$b" 2>/dev/null || continue
+            read -r ce ct < <(git log -1 --format='%ce %ct' FETCH_HEAD)
+            if [ -n "$robot_email" ] && [ "$ce" = "$robot_email" ] && [ "${ct:-0}" -ge "$debut" ]; then
+              nouvelles="$nouvelles $b"; fi
+          done
           if [ -z "$nouvelles" ]; then
             # Exception : relecture en lecture seule dont la réponse contient « VERDICT ».
             for x in "$F1" "$F2"; do
