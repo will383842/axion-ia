@@ -16,7 +16,7 @@ import {
   type LigneInvitation,
 } from "@/components/admin/collaborateurs/InvitationsQuestionnaire";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
-import { gardePageCollaborateurs } from "@/server/equipe-garde-page";
+import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 import {
   TEAM_CATEGORIES,
@@ -52,7 +52,10 @@ export default async function CollaborateursPage({ params, searchParams }: PageP
   if (!lecture.autorise) {
     return <AccesRefuse motif={lecture.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
-  const acces = await gardePageCollaborateurs(login);
+  const acces = await gardeLectureEchanges(
+    login,
+    () => "Les fiches collaborateurs sont réservées aux administrateurs.",
+  );
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }

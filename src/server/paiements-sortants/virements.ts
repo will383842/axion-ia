@@ -40,6 +40,8 @@ export interface VirementLu {
   readonly nonConforme?: boolean;
   /** Formateur seulement : relevé validé, facture pas encore émise ni reçue. */
   readonly factureAttendue?: boolean;
+  /** Apporteur seulement (lot 7) : virements gelés par une demande de changement de compte ouverte. */
+  readonly gel?: { readonly plusProcheEcheance: string; readonly rouge: boolean };
   /** Formateur seulement : origine du relevé (`passage_mission` : gardes du virement de mission). */
   readonly origineReleve?: string;
 }
@@ -147,9 +149,10 @@ export async function lireVirementsSortants(
   maintenant: Date,
   echeanceFormateur: (r: ReleveADater) => Date | null,
 ): Promise<VirementSortant[]> {
-  const [{ lireVirementsAFaire }, { prisma }] = await Promise.all([
+  const [{ lireVirementsAFaire }, { prisma }, { enrichirVirements }] = await Promise.all([
     import("@/features/apporteurs-reseau/facturation"),
     import("@/lib/prisma"),
+    import("@/features/apporteurs-reseau/virement-compte"),
   ]);
   const [apporteurs, releves] = await Promise.all([
     lireVirementsAFaire(),
@@ -181,8 +184,18 @@ export async function lireVirementsSortants(
       },
     }),
   ]);
+  // Lot 7 : gel des virements d'un apporteur dont une demande de changement de compte est ouverte.
+  const gels = await enrichirVirements(apporteurs, maintenant);
   const lus: VirementLu[] = [
     ...apporteurs.map((a): VirementLu => ({
+      ...(gels.get(a.numero)?.gel
+        ? {
+            gel: {
+              plusProcheEcheance: jourParis(gels.get(a.numero)!.gel!.plusProcheEcheance),
+              rouge: gels.get(a.numero)!.gel!.rouge,
+            },
+          }
+        : {}),
       flux: "apporteur",
       pieceId: a.numero,
       beneficiaireId: a.apporteurId,
