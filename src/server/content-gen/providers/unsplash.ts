@@ -26,6 +26,7 @@ import {
 import { withRetry } from "../lib/retry";
 import { readProviderConfig } from "../lib/config-reader";
 import { redis } from "@/lib/redis";
+import { rankPhotos, type TopicTerm } from "../images/photo-quality";
 
 /**
  * Réponse partielle Unsplash API /search/photos.
@@ -44,6 +45,8 @@ interface UnsplashPhoto {
   readonly description: string | null;
   readonly alt_description: string | null;
   readonly likes: number;
+  /** Présents sur certains résultats de recherche (aide à la mesure de pertinence). */
+  readonly tags?: ReadonlyArray<{ readonly title?: string | null }> | null;
   /** Vrai sur photos Unsplash+ (paid tier — interdit pour notre usage). */
   readonly premium?: boolean;
   /** Some endpoints expose `tier` ("free" | "paid"). */
@@ -285,6 +288,80 @@ function buildAttribution(photo: UnsplashPhoto): UnsplashAttribution {
     photoUrl: `https://unsplash.com/photos/${photo.id}?${UTM_PARAMS}`,
     photoCredit: `Photo de ${photographer} sur Unsplash`,
     downloadTriggeredAt: new Date().toISOString(),
+  };
+}
+
+export interface QualityPhotoRequest {
+  readonly jobId: string;
+  /** Requête de recherche (anglais de préférence). */
+  readonly query: string;
+  /** Termes du sujet pour mesurer la pertinence (cf. `buildTopic`). */
+  readonly terms: readonly TopicTerm[];
+  /**
+   * Portier anti-doublon : appelé avec l'URL de chaque candidate, dans l'ordre
+   * du meilleur au moins bon ; la première acceptée gagne (et est réservée).
+   */
+  readonly accept: (urlRegular: string) => Promise<boolean>;
+}
+
+/**
+ * Recherche qualité (CONTENT_IMAGES_QUALITE actif) : UN seul appel API, 20
+ * résultats, filtrage taille/paysage/capture, note de pertinence, tri par
+ * pertinence puis likes, rejet des photos déjà utilisées. Retourne null si rien
+ * de pertinent et d'inutilisé (jamais de photo hors sujet) ; lève ProviderError
+ * pour les erreurs d'API (le caller les traite comme « pas de photo »).
+ * Attribution photographe + trigger de téléchargement (CGU §6) conservés.
+ */
+export async function findQualityUnsplashPhoto(
+  req: QualityPhotoRequest,
+): Promise<UnsplashSelectedPhoto | null> {
+  const config = await readProviderConfig("unsplash");
+  if (!config.enabled) {
+    throw new ProviderError(
+      "Unsplash provider disabled in DB (cf. UNSPLASH-COMPLIANCE.md)",
+      "auth_failed",
+      "unsplash",
+      false,
+    );
+  }
+  checkRateLimit();
+  const apiKey = getApiKey();
+  const query = req.query.trim();
+  if (!query) return null;
+
+  const url = new URL(`${UNSPLASH_API_BASE}/search/photos`);
+  url.searchParams.set("query", query);
+  url.searchParams.set("orientation", "landscape");
+  url.searchParams.set("content_filter", "high");
+  url.searchParams.set("per_page", "20");
+
+  const search: UnsplashSearchResponse = await withRetry(async () => {
+    const res = await fetch(url.toString(), {
+      headers: { Authorization: `Client-ID ${apiKey}`, "Accept-Version": "v1" },
+    });
+    if (!res.ok) throw mapHttpError(res.status, await res.text());
+    return (await res.json()) as UnsplashSearchResponse;
+  });
+
+  const ranked = rankPhotos(filterFreeOnly(search.results ?? []), req.terms);
+  let chosen: UnsplashPhoto | null = null;
+  for (const { photo } of ranked) {
+    if (await req.accept(photo.urls.regular)) {
+      chosen = photo;
+      break;
+    }
+  }
+  if (!chosen) return null;
+
+  await triggerDownloadTracking(chosen.links.download_location, apiKey);
+  return {
+    photoId: chosen.id,
+    width: chosen.width,
+    height: chosen.height,
+    alt: chosen.alt_description || chosen.description || query,
+    downloadUrl: chosen.urls.regular,
+    hotlinkUrl: chosen.urls.regular,
+    attribution: buildAttribution(chosen),
   };
 }
 

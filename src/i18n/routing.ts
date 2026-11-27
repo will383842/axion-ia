@@ -319,6 +319,7 @@ export const routing = defineRouting({
     // formation collective retirée le 2026-06-12 et redirigée 301 vers
     // `/formations` (cf. next.config.ts).
     "/diagnostic": "/diagnostic",
+    "/questionnaire-barometre-ia-2027": "/questionnaire-barometre-ia-2027",
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },

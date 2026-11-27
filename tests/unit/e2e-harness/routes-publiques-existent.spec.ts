@@ -114,6 +114,8 @@ const HORS_AUDIT = [
   // L'audit E2E exige un 200 sur chaque route de la liste : y inscrire `/fr/videos` ferait
   // rougir la suite à chaque déploiement d'avant la première vidéo.
   "/videos",
+  // Questionnaire du Baromètre 2027 : noindex, collecte temporaire.
+  "/questionnaire-barometre-ia-2027",
 ];
 
 /** Chemins des pages statiques rendues sous `[locale]` (segments dynamiques exclus). */

@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { HeroImagesBackfill } from "./_v2/HeroImagesBackfill";
+import { ImageDuplicatesReport } from "./_v2/ImageDuplicatesReport";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,7 @@ export default async function HeroImagesPage({ params }: PageProps) {
         description="Pose une vraie photo Unsplash (créditée) sur les articles publiés qui n'en ont pas. Doctrine « Unsplash uniquement » — aucune image générée par IA."
       />
       <HeroImagesBackfill />
+      <ImageDuplicatesReport />
     </AdminPageShell>
   );
 }
