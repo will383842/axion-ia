@@ -1,4 +1,5 @@
 "use client";
+// use-client: pilotage interactif (état du formulaire, transitions, appels d'actions serveur).
 
 import { useState, useTransition } from "react";
 import {
