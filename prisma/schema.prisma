@@ -19512,7 +19512,7 @@ model ContenuBrief {
 }
 
 /// Dossier de preuves (R3) et faits vérifiés gouvernés (lus par C5 pour CHIFFRES_VERIFIES).
-/// rgpd: technique — données publiques sourcées (énoncé, extrait, URL ; une personne publique peut y être citée) ; seul le nom du relecteur de l'équipe est une donnée de personne
+/// rgpd: technique — données publiques sourcées (énoncé, extrait, URL, éditeur) ; une personnalité publique peut y être citée dans son rôle public, aucune donnée privée ni coordonnée ; seul nom interne : `verifiePar` (membre de l'équipe)
 model ContenuFait {
   id              String    @id @default(cuid())
   briefId         String?

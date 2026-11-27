@@ -14,4 +14,4 @@ Chaîne éditoriale C3 : six tables et une colonne facultative, sans rien branch
 - Typecheck, vitest ciblé (content-gen, migrations, garde RGPD du dossier client), `content-gen:isolation-check`, `image-bank:isolation-check`, prettier : verts.
 - Hors périmètre : 4 tests de `kb-ingest/url-extractor` échouent aussi sur main dans cet environnement (réseau).
 
-VERDICT OPUS : EN COURS (tour 3)
+VERDICT OPUS : À CORRIGER (3 tours épuisés). Le tour 3 a relevé un seul point, le motif RGPD de `ContenuFait` qui se contredisait ; il est reformulé dans le commit suivant mais n'a pas été relu. Tout le reste est validé par opus : SQL identique à `prisma migrate diff`, migration additive, horodatage postérieur à main, `select` sur `cost_ledger`.
