@@ -220,7 +220,7 @@ function motifDEcart(
   if (date.getTime() > maintenant.getTime()) return "date_future";
   if (
     f.texteReference === true &&
-    !DOMAINES_TEXTE_REFERENCE.some((d) => hoteDe(f.url).endsWith(d))
+    !DOMAINES_TEXTE_REFERENCE.some((d) => hoteDe(f.url) === d || hoteDe(f.url).endsWith(`.${d}`))
   ) {
     return "reference_non_admise";
   }
@@ -228,13 +228,28 @@ function motifDEcart(
     return "source_trop_ancienne";
   }
   // La page lue doit porter l'année de publication annoncée (date contrôlée, pas seulement formée).
-  if (f.texteReference !== true && !page.includes(f.datePublication.slice(0, 4))) {
-    return "annee_absente_de_la_page";
+  if (f.texteReference !== true) {
+    const an = f.datePublication.slice(0, 4);
+    const pres = new RegExp(
+      `(?:publi\\w*|mis[e]? à jour|actualis\\w*|date|le \\d{1,2}(?:er)?|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)[^.\\n]{0,25}${an}`,
+    );
+    if (!pres.test(page)) return "annee_absente_de_la_page";
+    // L'extrait lui-même ne doit pas porter d'année plus vieille que la limite d'âge.
+    const limite = maintenant.getUTCFullYear() - Math.floor(AGE_MAX_SOURCE_MOIS / 12);
+    if (nombresDe(f.extrait).some((n) => n.annee && n.valeur < limite))
+      return "source_trop_ancienne";
   }
   if (f.valeur && !extrait.includes(normaliser(f.valeur))) return "valeur_absente_de_l_extrait";
   // Un chiffre de l'énoncé doit figurer dans l'extrait exact (l'énoncé est écrit par le modèle).
   const dansExtrait = new Set(nombresDe(f.extrait).map((n) => n.cle));
-  if (nombresDe(f.enonce).some((n) => n.notable && !n.annee && !dansExtrait.has(n.cle))) {
+  const anPub = Number(f.datePublication.slice(0, 4));
+  if (
+    nombresDe(f.enonce).some(
+      (n) =>
+        (n.notable && !n.annee && !dansExtrait.has(n.cle)) ||
+        (n.annee && n.valeur !== anPub && !dansExtrait.has(n.cle)),
+    )
+  ) {
     return "enonce_hors_extrait";
   }
   return null;

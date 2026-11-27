@@ -106,7 +106,7 @@ const faits: FaitSource[] = [
   {
     enonce: "14 % des PME ont utilisé l'IA en 2025.",
     valeur: "14 %",
-    extrait: "14 % des PME de 10 salariés ou plus ont utilisé l'IA",
+    extrait: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA",
     url: "https://www.insee.fr/fr/statistiques/1",
     editeur: "Insee",
     datePublication: "2026-03-10",
@@ -451,6 +451,21 @@ describe("réécriture ciblée", () => {
     if (r.verdict !== "redige") throw new Error();
     expect(r.problemes.filter((p) => p.probleme === "chiffre_hors_dossier").length).toBeGreaterThan(
       0,
+    );
+  });
+
+  it("signale un lien hors dossier, un titre H2 générique et une statistique en lettres", async () => {
+    const body =
+      corpsValide().replace(
+        "Quels frais peut-on automatiser en premier ?",
+        "Conclusion : frais à automatiser en premier",
+      ) +
+      `<p>Voir <a href="https://spam.example/x">ici</a>. Huit PME sur dix gagnent du temps.</p>`;
+    const r = await redigerArticle(entree(), appelant({ bodyHtml: body }), new CompteurCout());
+    if (r.verdict !== "redige") throw new Error();
+    const p = r.problemes.map((x) => x.probleme);
+    expect(p).toEqual(
+      expect.arrayContaining(["lien_non_autorise", "h2_generique", "chiffre_hors_dossier"]),
     );
   });
 });

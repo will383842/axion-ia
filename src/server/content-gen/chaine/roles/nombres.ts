@@ -20,12 +20,15 @@ export function nombresDe(texte: string): NombreTrouve[] {
     const valeur = Number(dec ? `${entier}.${dec}` : entier);
     const apres = texte.slice((m.index ?? 0) + m[0].length, (m.index ?? 0) + m[0].length + 12);
     const suivant = texte.slice((m.index ?? 0) + m[0].length, (m.index ?? 0) + m[0].length + 16);
+    const suivant40 = texte.slice((m.index ?? 0) + m[0].length, (m.index ?? 0) + m[0].length + 60);
     const avant = texte.slice(Math.max(0, (m.index ?? 0) - 8), m.index ?? 0);
     // « 8 PME sur 10 », « 3 fois », « 6 heures » : des statistiques, même sous 11.
     const statistique =
+      /^[^.!?\d]{0,40}\bsur\s+(?:\d|dix|cent)/i.test(suivant40) ||
       /^\s*(?:sur\s+\d|fois|heures?|jours?|semaines?|mois|ans|salari|personnes?|collaborateurs?|employ|clients?|entreprises?|pme|tpe)/i.test(
         suivant,
-      ) || /\bsur\s*$/i.test(avant);
+      ) ||
+      /\bsur\s*$/i.test(avant);
     sortie.push({
       cle: `${dec ? `${entier}.${dec}` : entier}${unite}`,
       valeur,
@@ -34,5 +37,18 @@ export function nombresDe(texte: string): NombreTrouve[] {
       minutes: /^\s*minutes?/i.test(apres),
     });
   }
+  // Statistiques écrites en lettres : « huit PME sur dix », « la moitié », « 12 pour cent ».
+  for (const m of texte.matchAll(RE_LETTRES)) {
+    sortie.push({
+      cle: `txt:${m[0].toLowerCase().replace(/\s+/g, " ").trim()}`,
+      valeur: 0,
+      notable: true,
+      annee: false,
+      minutes: false,
+    });
+  }
   return sortie;
 }
+
+const RE_LETTRES =
+  /(?<![\p{L}])(?:(?:un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt|trente|quarante|cinquante|soixante|cent)\s+[^.!?\d]{0,40}?\bsur\s+(?:dix|cent|vingt|deux|trois|quatre|cinq|six|sept|huit|neuf|\d+)|la moitié|un tiers|deux tiers|un quart|trois quarts|\d+\s*pour cent)(?![\p{L}])/giu;

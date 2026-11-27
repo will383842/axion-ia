@@ -9,6 +9,8 @@ import {
   PlafondAtteintError,
   appelerRole,
   encadrerDonnees,
+  hrefInterdit,
+  peutSeReecrire,
   lireJson,
   modeleAutorise,
   verifierReglesMarque,
@@ -177,5 +179,26 @@ describe("règles de marque (§ 9)", () => {
 
   it("n'interdit jamais « partout en France »", () => {
     expect(verifierReglesMarque("Nous venons dans vos locaux, partout en France.")).toEqual([]);
+  });
+
+  it("hrefInterdit : /appel sous toutes ses formes, javascript:, protocole relatif", () => {
+    for (const h of [
+      "../appel",
+      "appel",
+      "https://axion-ia.com:443/appel",
+      "/fr/%61ppel",
+      "javascript:alert(1)",
+      "//spam.example/x",
+      "https://calendly.com/x",
+    ]) {
+      expect(hrefInterdit(h), h).toBe(true);
+    }
+    for (const h of ["/fr/contact", "https://www.insee.fr/fr/statistiques/1"])
+      expect(hrefInterdit(h), h).toBe(false);
+  });
+  it("peutSeReecrire : seules les corrections « global » ne se réécrivent pas", () => {
+    expect(peutSeReecrire({ section: 2, probleme: "x", attendu: "y" })).toBe(true);
+    expect(peutSeReecrire({ section: "faq", probleme: "x", attendu: "y" })).toBe(true);
+    expect(peutSeReecrire({ section: "global", probleme: "x", attendu: "y" })).toBe(false);
   });
 });

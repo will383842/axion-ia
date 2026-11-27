@@ -27,12 +27,18 @@ import {
   type Correction,
 } from "./commun";
 import { nombresDe } from "./nombres";
+import { decouperSections } from "./redacteur";
 import { normaliserTitre } from "./structure-hn";
 
 export const PLAFOND_RECHERCHES_VERIFICATION = 6;
 export const MAX_LECTURES_VERIFICATION = 6;
 
-export type CodeRefusVerif = Extract<CodeRefus, "fait_non_source" | "chiffre_retire" | "lien_mort">;
+export const CODES_VERIF = [
+  "fait_non_source",
+  "chiffre_retire",
+  "lien_mort",
+] as const satisfies ReadonlyArray<CodeRefus>;
+export type CodeRefusVerif = (typeof CODES_VERIF)[number];
 
 export interface ResultatLien {
   readonly statut: number;
@@ -44,7 +50,11 @@ export interface EntreeVerification {
   readonly bodyHtml: string;
   readonly faq: ReadonlyArray<{ readonly question: string; readonly answer: string }>;
   readonly faits: ReadonlyArray<FaitSource>;
-  /** Suit les redirections et rend le statut final et l'URL finale ; lève en cas d'erreur réseau. */
+  /**
+   * Suit les redirections et rend le statut final et l'URL finale ; lève en cas d'erreur réseau.
+   * CONTRAT (anti-SSRF) : l'implémentation suit les redirections À LA MAIN et refuse, à chaque saut,
+   * `hotePublic` faux ou une adresse résolue privée (127/8, 10/8, 172.16/12, 192.168/16, 169.254/16).
+   */
   readonly testerLien: (url: string) => Promise<ResultatLien>;
 }
 
@@ -150,6 +160,12 @@ const correspond = (phrase: string, affirmation: string) => {
 export function hotePublic(url: string): boolean {
   const h = hote(url);
   if (!h || !h.includes(".")) return false;
+  // Services de résolution d'IP (127.0.0.1.nip.io…) et noms contenant une adresse : refusés.
+  if (
+    /(^|\.)(nip\.io|sslip\.io|xip\.io|localtest\.me)$/i.test(h) ||
+    /\d+[.-]\d+[.-]\d+[.-]\d+/.test(h)
+  )
+    return false;
   if (/^\d+\.\d+\.\d+\.\d+$/.test(h) || h.includes(":") || h.startsWith("[")) return false;
   return !/(^|\.)(localhost|local|internal|intranet|lan)$/i.test(h);
 }
@@ -207,7 +223,11 @@ export async function verifierFaits(
       if (!url || !pages.has(url)) {
         verdict = "a_retirer";
         motif = "source_non_reconnue";
-      } else if (!a.extrait || !textePage(url).includes(normaliserTitre(a.extrait))) {
+      } else if (
+        !a.extrait ||
+        normaliserTitre(a.extrait).length < 15 ||
+        !textePage(url).includes(normaliserTitre(a.extrait))
+      ) {
         verdict = "a_retirer";
         motif = "extrait_introuvable";
       } else {
@@ -239,6 +259,33 @@ export async function verifierFaits(
         verdict: "a_retirer",
         sourceUrl: null,
         motif: "non_examinee",
+      });
+    }
+  }
+
+  // Chaque phrase vérifiable couverte par une ligne « confirme » : TOUS ses chiffres doivent figurer
+  // dans les extraits des lignes qui la couvrent (le contrôle porte sur la phrase de l'article).
+  for (const p of phrasesVerifiables(e)) {
+    const couvrantes = tableau.filter((l) => correspond(p.texte, l.affirmation));
+    if (couvrantes.length === 0 || couvrantes.some((l) => l.verdict !== "confirme")) continue;
+    const cles = new Set(
+      couvrantes
+        .flatMap((l) =>
+          lu.valeur.affirmations.find((x) => x.affirmation === l.affirmation)?.extrait
+            ? nombresDe(
+                lu.valeur.affirmations.find((x) => x.affirmation === l.affirmation)!.extrait!,
+              )
+            : [],
+        )
+        .map((n) => n.cle),
+    );
+    if (nombresDe(p.texte).some((n) => (n.notable || n.annee) && !cles.has(n.cle))) {
+      tableau.push({
+        affirmation: p.texte,
+        section: p.section,
+        verdict: "a_retirer",
+        sourceUrl: null,
+        motif: "extrait_introuvable",
       });
     }
   }
@@ -275,8 +322,16 @@ export async function verifierFaits(
     }
   }
   for (const url of liensMorts) {
+    const { sections } = decouperSections(e.bodyHtml);
+    const idx = sections.findIndex((s) => s.includes(url));
     corrections.push({
-      section: "global",
+      section: e.directAnswer.includes(url)
+        ? "directAnswer"
+        : idx >= 0
+          ? idx
+          : e.faq.some((f) => f.answer.includes(url))
+            ? "faq"
+            : "global",
       probleme: `lien mort ou détourné : ${url}`,
       attendu: "Remplacer par une source valide du dossier ou retirer le lien",
     });

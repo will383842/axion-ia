@@ -136,17 +136,32 @@ export type AppelModele = (
   requete: RequeteModele & { readonly role: RoleChaine; readonly modele: string },
 ) => Promise<ReponseModele>;
 
-/**
- * Majorants prudents du prix de sortie par million de jetons : réservation AVANT l'appel (un appel
- * qui pourrait dépasser le plafond n'est pas lancé). À remplacer par les tarifs du dépôt
- * (providers/anthropic.ts) au branchement.
- */
-const PRIX_SORTIE_MAX_USD_PAR_MTOK: Readonly<Record<string, number>> = {
-  [MODELE_OPUS]: 30,
-  [MODELE_SONNET]: 15,
+/** Tarifs $ par million de jetons (conception § 2, page lue le 27/11/2026) : entrée / sortie. */
+const TARIFS: Readonly<Record<string, { entree: number; sortie: number }>> = {
+  [MODELE_OPUS]: { entree: 4, sortie: 20 },
+  [MODELE_SONNET]: { entree: 2, sortie: 10 },
 };
-export function estimerCoutMax(modele: string, maxTokens: number): number {
-  return ((PRIX_SORTIE_MAX_USD_PAR_MTOK[modele] ?? 75) * maxTokens) / 1_000_000;
+const PRIX_RECHERCHE_USD = 0.01;
+/** Budget d'entrée majoré d'une page lue par `web_fetch` (jetons). */
+const JETONS_PAR_LECTURE = 8000;
+
+/**
+ * Coût MAXIMAL d'un appel, réservé AVANT de le lancer : entrée (prompt / 3 caractères par jeton),
+ * sortie (`maxTokens`), lectures de pages et recherches web. Un appel qui pourrait dépasser un
+ * plafond n'est pas lancé. Modèle inconnu : tarif pénalisant.
+ */
+export function estimerCoutMax(
+  modele: string,
+  requete: Pick<RequeteModele, "system" | "user" | "maxTokens" | "maxRecherches" | "maxLectures">,
+): number {
+  const t = TARIFS[modele] ?? { entree: 15, sortie: 75 };
+  const jetonsEntree =
+    (requete.system.length + requete.user.length) / 3 +
+    (requete.maxLectures ?? 0) * JETONS_PAR_LECTURE;
+  return (
+    (jetonsEntree * t.entree + requete.maxTokens * t.sortie) / 1_000_000 +
+    (requete.maxRecherches ?? 0) * PRIX_RECHERCHE_USD
+  );
 }
 
 /** Appelle le modèle du rôle : modèle imposé, plafonds relus avant ET après l'appel. */
@@ -158,11 +173,13 @@ export async function appelerRole(
 ): Promise<ReponseModele> {
   const modele = MODELES_ROLES[role];
   if (!modeleAutorise(modele)) throw new Error(`Modèle non autorisé pour ${role}`);
+  const maxi = estimerCoutMax(modele, requete);
   if (
     compteur.epuise ||
-    compteur.totalUsd + estimerCoutMax(modele, requete.maxTokens) > PLAFOND_COUT_CONTENU_USD
+    compteur.totalUsd + maxi > PLAFOND_COUT_CONTENU_USD ||
+    (compteur.parRole[role] ?? 0) + maxi > PLAFOND_ROLE_USD[role]
   ) {
-    throw new PlafondAtteintError("Plafond du contenu déjà atteint : aucun appel", role);
+    throw new PlafondAtteintError("Plafond atteint ou dépassable : aucun appel", role);
   }
   const reponse = await appel({ ...requete, role, modele });
   compteur.ajouter(role, reponse.coutUsd);
@@ -265,4 +282,37 @@ const MOTIFS_MARQUE: ReadonlyArray<readonly [string, RegExp]> = [
 /** Détection déterministe (code, pas modèle) : rend les codes de règles de marque violées. */
 export function verifierReglesMarque(texte: string): string[] {
   return MOTIFS_MARQUE.filter(([, motif]) => motif.test(texte)).map(([code]) => code);
+}
+
+/**
+ * Lien interdit dans un contenu : schéma non http(s) (javascript:, data:), lien « protocole relatif »
+ * (//hôte), ou chemin passant par /appel (page de réservation), quelle que soit la forme
+ * (absolu, relatif, port, encodage).
+ */
+export function hrefInterdit(href: string): boolean {
+  let h = href.trim();
+  try {
+    h = decodeURIComponent(h);
+  } catch {
+    return true;
+  }
+  h = h.toLowerCase().replace(/\\/g, "/");
+  if (h.startsWith("//")) return true;
+  if (/^[a-z][a-z0-9+.-]*:/.test(h) && !/^https?:/.test(h)) return true;
+  const chemin = h.replace(/^https?:\/\/[^/?#]*/, "").split(/[?#]/)[0] ?? "";
+  return chemin.split("/").some((seg) => seg === "appel") || /calendly/.test(h);
+}
+
+/** Tous les href d'un fragment HTML (guillemets doubles, simples ou absents). */
+export function hrefsDe(html: string): string[] {
+  return [...html.matchAll(/<a\s[^>]*?href\s*=\s*["']?([^"'\s>]+)/gi)].map((m) => m[1]!);
+}
+
+/**
+ * Une correction ne peut être appliquée par la réécriture ciblée que si elle vise une section
+ * numérotée, la réponse directe ou la FAQ. Une correction « global » (ordre du plan, longueur…)
+ * n'est pas réécrivable : l'orchestration abandonne tout de suite au lieu de brûler les réécritures.
+ */
+export function peutSeReecrire(c: Correction): boolean {
+  return c.section !== "global";
 }

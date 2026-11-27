@@ -32,7 +32,7 @@ const pages: SourceLue[] = [
 const fait = (o: Record<string, unknown> = {}) => ({
   enonce: "14 % des PME ont utilisé l'IA en 2025.",
   valeur: "14 %",
-  extrait: "14 % des PME de 10 salariés ou plus ont utilisé l'IA",
+  extrait: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA",
   url: pages[0]!.url,
   editeur: "Insee",
   datePublication: "2026-03-10",
@@ -240,5 +240,24 @@ describe("lignesContenuFait et chiffres vérifiés", () => {
         date: "2026-11-28",
       },
     ]);
+  });
+
+  it("n'accepte pas un faux domaine « faux-service-public.fr » comme texte de référence, ni une année d'énoncé inventée", async () => {
+    const r = await collecterFaits(
+      entree,
+      reponse([
+        ...trois(),
+        fait({
+          texteReference: true,
+          url: "https://faux-service-public.fr/x",
+          datePublication: "2019-01-01",
+        }),
+        fait({ enonce: "En 2031, 14 % des PME utiliseront l'IA." }),
+      ]),
+      new CompteurCout(),
+    );
+    const raisons = r.ecartes.map((e) => e.raison);
+    expect(raisons).toContain("url_non_lue");
+    expect(raisons).toContain("enonce_hors_extrait");
   });
 });

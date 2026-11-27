@@ -28,6 +28,7 @@ import {
 } from "./commun";
 import { nombresDe } from "./nombres";
 import { normaliserTitre } from "./structure-hn";
+import { hrefInterdit, hrefsDe } from "./commun";
 import { mesurerEquilibre } from "./equilibre-sections";
 import {
   analyserArticle,
@@ -100,9 +101,6 @@ function chiffresParSegment(a: ArticleRedige): string[][] {
   ];
 }
 
-const hrefsDe = (h: string) =>
-  [...h.matchAll(/<a\s[^>]*?href\s*=\s*["']?([^"'\s>]+)/gi)].map((m) => m[1]!);
-
 function liensConformes(
   avant: ArticleRedige,
   apres: ArticleRedige,
@@ -117,7 +115,7 @@ function liensConformes(
   const interne = (h: string) => hrefsDe(h).filter((u) => !/^https?:/i.test(u));
   const anciens = new Set(interne(avant.bodyHtml));
   return interne(apres.bodyHtml).every(
-    (u) => !/\/appel(?![\p{L}-])/iu.test(u) && (anciens.has(u) || internesPermis.includes(u)),
+    (u) => !hrefInterdit(u) && (anciens.has(u) || internesPermis.includes(u)),
   );
 }
 

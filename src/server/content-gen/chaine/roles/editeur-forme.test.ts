@@ -50,7 +50,7 @@ const faits: FaitSource[] = [
   {
     enonce: "14 % des PME ont utilisé l'IA en 2025.",
     valeur: "14 %",
-    extrait: "14 % des PME de 10 salariés ou plus ont utilisé l'IA",
+    extrait: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA",
     url: "https://www.insee.fr/fr/statistiques/1",
     editeur: "Insee",
     datePublication: "2026-03-10",
@@ -78,7 +78,10 @@ const article = (): ArticleRedige => ({
   h1DansSortieBrute: false,
 });
 const entree = (o: Partial<EntreeEdition> = {}): EntreeEdition => ({
-  brief: { questions: [] } as unknown as EntreeEdition["brief"],
+  brief: {
+    questions: [],
+    motCle: "automatiser notes de frais",
+  } as unknown as EntreeEdition["brief"],
   structure,
   faits,
   maintenant: new Date("2026-11-27T10:00:00Z"),

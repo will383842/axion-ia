@@ -25,6 +25,7 @@ import {
   REGLES_MARQUE_PROMPT,
   appelerRole,
   encadrerDonnees,
+  hrefInterdit,
   lireJson,
   verifierReglesMarque,
   type AppelModele,
@@ -182,10 +183,12 @@ export interface StructureBrief {
  * est `intention_couverte` (la liste fermée de C4 n'a pas de code propre : à ajouter à C4 si la console
  * doit les distinguer, décision à prendre avec la porte).
  * Codes de la liste fermée de C4 : le compilateur refuse tout autre nom. */
-export type CodeRefusStrateg = Extract<
-  CodeRefus,
-  "pas_d_angle" | "pas_de_matiere" | "intention_couverte"
->;
+export const CODES_STRATEG = [
+  "pas_d_angle",
+  "pas_de_matiere",
+  "intention_couverte",
+] as const satisfies ReadonlyArray<CodeRefus>;
+export type CodeRefusStrateg = (typeof CODES_STRATEG)[number];
 
 export type ResultatStrateg =
   | {
@@ -363,6 +366,10 @@ function valider(
   const plan = s.planHn!;
 
   // Règles de marque, par le code.
+  if ((s.liensInternes ?? []).some((l) => !/^\/fr(\/|$)/.test(l) || hrefInterdit(l))) {
+    problemes.push("lien_interne_invalide");
+    return invalide("Lien interne invalide : chemin /fr/… attendu, jamais /appel.");
+  }
   const marque = verifierReglesMarque(texteCompletDe(s));
   if (marque.length > 0) {
     problemes.push(...marque.map((m) => `marque_${m}`));
@@ -379,6 +386,7 @@ function valider(
     const format = (FORMATS_OBSERVES as ReadonlyArray<string>).includes(brut) ? brut : "autre";
     pagesLues.push({ url, format, mots: compterMotsContenu(contenu) });
   }
+  pagesLues.sort((a, b) => Number(b.mots > 0) - Number(a.mots > 0));
   if (pagesLues.length > 5) pagesLues.length = 5;
   const dominant = formatDominant(pagesLues);
   const regles = GABARITS_REGLES[gabarit];
@@ -397,7 +405,8 @@ function valider(
   (s.questions ?? []).forEach((q, i) => {
     const reelle =
       q.origine === "autre-source"
-        ? normaliserTitre(lues.get(q.reference) ?? "").includes(normaliserTitre(q.question))
+        ? normaliserTitre(q.question).length >= 15 &&
+          normaliserTitre(lues.get(q.reference) ?? "").includes(normaliserTitre(q.question))
         : connues.has(`${q.origine}|${norme(q.question)}`);
     if (!reelle) {
       questionsEcartees.push({ question: q.question, motif: "sans_origine_reelle" });

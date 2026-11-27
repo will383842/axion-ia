@@ -24,6 +24,8 @@ import {
   REGLES_MARQUE_PROMPT,
   appelerRole,
   encadrerDonnees,
+  hrefInterdit,
+  hrefsDe,
   lireJson,
   verifierReglesMarque,
   type AppelModele,
@@ -31,7 +33,12 @@ import {
   type Correction,
 } from "./commun";
 import { nombresDe } from "./nombres";
-import { compterMotsContenu, motsSignificatifs, normaliserTitre } from "./structure-hn";
+import {
+  compterMotsContenu,
+  motsSignificatifs,
+  normaliserTitre,
+  verifierTitres,
+} from "./structure-hn";
 import type { StructureBrief } from "./strateg-brief";
 
 export interface EntreeRedaction {
@@ -193,7 +200,6 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
   const anneesDossier = new Set<number>([e.maintenant.getUTCFullYear()]);
   for (const f of e.faits) {
     anneesDossier.add(Number(f.datePublication.slice(0, 4)));
-    for (const n of nombresDe(f.enonce)) if (n.annee) anneesDossier.add(n.valeur);
     for (const n of nombresDe(`${f.valeur ?? ""} ${f.extrait}`)) {
       nombresDossier.set(n.cle, [...(nombresDossier.get(n.cle) ?? []), f]);
       if (n.annee) anneesDossier.add(n.valeur);
@@ -259,7 +265,8 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
   // Texte caché, HTML interdit, « relu par », marque : localisés à la section fautive.
   const CACHE =
     /<details|\shidden[\s>=]|display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0|opacity\s*:\s*0|sr-only|aria-hidden|<!--/i;
-  const INTERDIT = /<(script|iframe|style|object|embed|form|input)\b|\son\w+\s*=/i;
+  const INTERDIT =
+    /<(script|iframe|style|object|embed|form|input)\b|\s(?:on\w+|style|class|title|alt)\s*=/i;
   const RELU = /\brelu(?:e|s|es)?\s+par\b/i;
   const controlerForme = (html: string, texte: string, section: Correction["section"]) => {
     if (CACHE.test(html)) {
@@ -288,6 +295,46 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
       pb.push({ section, probleme: "regle_de_marque", attendu: `Retirer : ${marque.join(", ")}` });
     }
   };
+  const urlsDossier = new Set(e.faits.map((f) => f.url));
+  const controlerLiens = (html: string, section: Correction["section"]) => {
+    for (const href of hrefsDe(html)) {
+      const permis = /^https?:/i.test(href)
+        ? urlsDossier.has(href)
+        : e.structure.liensInternes.includes(href);
+      if (hrefInterdit(href) || !permis) {
+        pb.push({
+          section,
+          probleme: "lien_non_autorise",
+          attendu: `Lien « ${href} » non prévu : seuls les liens du dossier et du brief sont permis`,
+        });
+      }
+    }
+  };
+  controlerLiens(a.directAnswer, "directAnswer");
+  controlerLiens(avant, "global");
+  sections.forEach((s, i) => controlerLiens(s, i));
+  for (const f of a.faq) controlerLiens(f.answer, "faq");
+  // Titres H2 écrits (H-7, H-8, H-11) : longueur, générique, doublon, identique au H1.
+  const vusH2 = new Set<string>();
+  sections.forEach((s, i) => {
+    const t = titreH2(s);
+    const k = normaliserTitre(t);
+    const pbT = verifierTitres({
+      h1: e.structure.h1,
+      motCle: e.brief.motCle,
+      plan: [{ type: "informatif", intitule: t, question: null, blocAttendu: null }],
+      gabarit: "analyse",
+    }).filter((x) => x === "h2_longueur" || x === "h2_generique" || x === "h2_egal_h1");
+    if (vusH2.has(k)) pbT.push("h2_egal_h1");
+    vusH2.add(k);
+    for (const x of new Set(pbT)) {
+      pb.push({
+        section: i,
+        probleme: x === "h2_egal_h1" ? "h2_doublon" : x,
+        attendu: "Titre H2 de 3 à 14 mots, informatif, unique, différent du H1",
+      });
+    }
+  });
   controlerForme(a.directAnswer, a.directAnswer, "directAnswer");
   controlerForme(avant, sansBalises(avant), "global");
   sections.forEach((s, i) => controlerForme(s, sansBalises(s), i));
@@ -444,7 +491,8 @@ export async function reecrireSections(
     nouvelles[s.index] = s.html.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, "<p>$1</p>");
   }
   const vise = (c: Correction["section"]) => corrections.some((x) => x.section === c);
-  const faqNouvelle = vise("faq") && lu.valeur.faq ? filtrerFaq(e, lu.valeur.faq).faq : article.faq;
+  const refaq = vise("faq") && lu.valeur.faq ? filtrerFaq(e, lu.valeur.faq) : null;
+  const faqNouvelle = refaq && refaq.faq.length > 0 ? refaq.faq : article.faq;
   const suivant: ArticleRedige = {
     ...article,
     directAnswer:
@@ -455,5 +503,13 @@ export async function reecrireSections(
     h1DansSortieBrute: article.h1DansSortieBrute || h1,
     bodyHtml: avant + nouvelles.join(""),
   };
-  return { verdict: "redige", article: suivant, problemes: analyserArticle(e, suivant) };
+  const problemes = analyserArticle(e, suivant);
+  if (refaq?.inventee) {
+    problemes.push({
+      section: "faq",
+      probleme: "faq_question_inventee",
+      attendu: "N'utiliser que les questions du brief",
+    });
+  }
+  return { verdict: "redige", article: suivant, problemes };
 }

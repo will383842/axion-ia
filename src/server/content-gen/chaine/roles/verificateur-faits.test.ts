@@ -18,7 +18,7 @@ const faits: FaitSource[] = [
 
 const PHRASE = "En 2025, 14 % des PME ont utilisé l'IA.";
 const entree = (o: Partial<EntreeVerification> = {}): EntreeVerification => ({
-  directAnswer: "Une PME sur sept utilise déjà l'IA aujourd'hui, sans bruit.",
+  directAnswer: "Beaucoup de PME utilisent déjà l'IA aujourd'hui, sans bruit.",
   bodyHtml: `<h2>Combien de PME ?</h2><p>${PHRASE} Le reste attend.</p>`,
   faq: [],
   faits,
@@ -212,5 +212,57 @@ describe("verifierFaits (R6)", () => {
     expect(appels).toBe(0);
     if (r.verdict === "illisible") throw new Error();
     expect(r.liensMorts).toHaveLength(2);
+  });
+
+  it("une affirmation partielle qui omet le chiffre de la phrase ne la confirme pas", async () => {
+    const phrase = "Selon l'Insee, 45 % des PME utilisent l'IA générative au quotidien en 2025.";
+    const r = await verifierFaits(
+      entree({ bodyHtml: `<h2>Combien ?</h2><p>${phrase}</p>` }),
+      appelant([
+        ligne({
+          affirmation: "des PME utilisent l'IA générative au quotidien en 2025.",
+          extrait: "En 2025, 14 % des PME de 10 salariés ou plus ont utilisé l'IA",
+        }),
+      ]),
+      new CompteurCout(),
+    );
+    if (r.verdict === "illisible") throw new Error();
+    expect(r.verdict).toBe("a_corriger");
+  });
+
+  it("une statistique écrite en lettres est une phrase vérifiable", async () => {
+    const r = await verifierFaits(
+      entree({ bodyHtml: "<h2>Combien ?</h2><p>Huit PME sur dix gagnent du temps.</p>" }),
+      appelant([]),
+      new CompteurCout(),
+    );
+    if (r.verdict === "illisible") throw new Error();
+    expect(r.tableau[0]).toMatchObject({ verdict: "a_retirer", motif: "non_examinee" });
+  });
+
+  it("un extrait trop court ne confirme rien ; un lien mort est localisé à sa section", async () => {
+    const court = await verifierFaits(
+      entree(),
+      appelant([ligne({ extrait: "PME" })]),
+      new CompteurCout(),
+    );
+    if (court.verdict === "illisible") throw new Error();
+    expect(court.tableau[0]).toMatchObject({ verdict: "a_retirer" });
+    const lien = await verifierFaits(
+      entree({
+        bodyHtml: `<h2>Combien ?</h2><p>${PHRASE} <a href="https://www.insee.fr/mort">s</a></p>`,
+        testerLien: async () => ({ statut: 404, urlFinale: "https://www.insee.fr/mort" }),
+      }),
+      appelant([ligne()]),
+      new CompteurCout(),
+    );
+    if (lien.verdict === "illisible") throw new Error();
+    expect(lien.corrections.find((c) => c.probleme.includes("lien mort"))?.section).toBe(0);
+  });
+
+  it("refuse les noms résolvant vers une adresse interne (nip.io)", async () => {
+    const { hotePublic } = await import("./verificateur-faits");
+    expect(hotePublic("http://127.0.0.1.nip.io/x")).toBe(false);
+    expect(hotePublic("https://www.insee.fr/x")).toBe(true);
   });
 });

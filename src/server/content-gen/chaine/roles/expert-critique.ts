@@ -26,16 +26,19 @@ import {
   type CompteurCout,
   type Correction,
 } from "./commun";
+import { decouperSections } from "./redacteur";
 import { mesurerEquilibre } from "./equilibre-sections";
 import type { Gabarit, TypeSection } from "./structure-hn";
 
 export const NOTE_MIN_REFUS = 3;
 export const MAX_CORRECTIONS = 10;
 
-export type CodeRefusExpert = Extract<
-  CodeRefus,
-  "generique" | "non_actionnable" | "fait_non_source"
->;
+export const CODES_EXPERT = [
+  "generique",
+  "non_actionnable",
+  "fait_non_source",
+] as const satisfies ReadonlyArray<CodeRefus>;
+export type CodeRefusExpert = (typeof CODES_EXPERT)[number];
 
 export interface EntreeExpert {
   readonly titre: string;
@@ -103,7 +106,7 @@ const CODE_PAR_QUESTION: Readonly<Record<keyof NotesExpert, CodeRefusExpert>> = 
 };
 
 const FAIRE_SEUL =
-  /(vous pouvez (?:le |la |les )?(?:faire|mettre en place|déployer|installer)\s+(?:vous[- ]même|seul(?:e)?)|en autonomie complète|faites-le vous[- ]même)/i;
+  /(vous pouvez (?:le |la |les )?(?:faire|mettre en place|déployer|installer)\s+(?:vous[- ]même|seul(?:e)?)|vous pouvez [^.!?]{0,60}\bsans (?:faire appel à |l'aide d'|l'aide de |recourir à )(?:un |une )?(?:prestataire|expert|consultant)|en autonomie complète|faites-le vous[- ]même)/i;
 
 const sansBalises = (h: string) =>
   h
@@ -165,8 +168,11 @@ export async function critiquerArticle(
   const refusDur = (["q1", "q3"] as const).filter((q) => notes[q] < NOTE_MIN_REFUS);
   let forceCode: CodeRefusExpert | null = null;
   if (FAIRE_SEUL.test(texte)) {
+    const idx = decouperSections(e.bodyHtml).sections.findIndex((s) =>
+      FAIRE_SEUL.test(sansBalises(s)),
+    );
     corrections.push({
-      section: "global",
+      section: FAIRE_SEUL.test(e.directAnswer) ? "directAnswer" : idx >= 0 ? idx : "global",
       probleme: "conseil_faire_seul",
       attendu:
         "Ne jamais suggérer de faire seul : Axion-IA s'occupe de la mise en place (Diagnostic IA gratuit de 45 minutes)",

@@ -168,4 +168,20 @@ describe("critiquerArticle (R5)", () => {
     await critiquerArticle(court, appel, new CompteurCout());
     expect(user).toContain("section_trop_courte");
   });
+
+  it("détecte « le mettre en place sans faire appel à un prestataire » et localise la section", async () => {
+    const e = entree({
+      bodyHtml: entree().bodyHtml.replace(
+        "Combien de temps ?</h2>",
+        "Combien de temps ?</h2><p>Vous pouvez le mettre en place sans faire appel à un prestataire.</p>",
+      ),
+    });
+    const r = await critiquerArticle(
+      e,
+      appelant({ verdict: "ok", notes: notes(), corrections: [] }),
+      new CompteurCout(),
+    );
+    if (r.verdict === "illisible") throw new Error();
+    expect(r.corrections.find((c) => c.probleme === "conseil_faire_seul")?.section).toBe(2);
+  });
 });
