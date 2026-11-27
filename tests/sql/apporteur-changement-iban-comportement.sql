@@ -84,7 +84,7 @@ BEGIN
     INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine, statut)
     VALUES (gen_random_uuid(), gen_random_uuid(), chiffre, h, '1234', 'espace', 'inconnu');
     RAISE EXCEPTION 'AXT99 statut inconnu accepte';
-  EXCEPTION WHEN check_violation THEN NULL; WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN check_violation THEN NULL; WHEN raise_exception THEN IF SQLERRM NOT LIKE '%sans trace d%' THEN RAISE; END IF; END;
   BEGIN
     INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine)
     VALUES (gen_random_uuid(), gen_random_uuid(), chiffre, h, '1234', 'autre');
@@ -115,7 +115,7 @@ BEGIN
       UPDATE apporteur_changements_iban SET statut = 'confirmee' WHERE id = d;
       RAISE EXCEPTION 'AXT99 confirmee sans date acceptee';
     EXCEPTION WHEN check_violation THEN NULL; END;
-    UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() WHERE id = d;
+    UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now(), avis_envoye_at = now() WHERE id = d;
     BEGIN
       UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now(), traitee_par = gen_random_uuid() WHERE id = d;
       RAISE EXCEPTION 'AXT99 validee avant 72 h acceptee';
@@ -134,34 +134,34 @@ BEGIN
     INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine, statut, confirmee_at, traitee_at, traitee_par)
     VALUES (gen_random_uuid(), gen_random_uuid(), chiffre, h, '1234', 'espace', 'validee', now() - interval '72 hours', now(), gen_random_uuid());
     RAISE EXCEPTION 'AXT99 demande inseree deja validee';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%sans trace d%' THEN RAISE; END IF; END;
   BEGIN
     INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine, statut, confirmee_at)
     VALUES (gen_random_uuid(), gen_random_uuid(), chiffre, h, '1234', 'espace', 'confirmee', now() - interval '72 hours');
     RAISE EXCEPTION 'AXT99 demande inseree deja confirmee et antidatee';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%sans trace d%' THEN RAISE; END IF; END;
   BEGIN
     INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine, controles)
     VALUES (gen_random_uuid(), gen_random_uuid(), chiffre, h, '1234', 'espace', '{}'::jsonb);
     RAISE EXCEPTION 'AXT99 demande inseree avec des controles';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%sans trace d%' THEN RAISE; END IF; END;
   -- les cas coherents s'obtiennent par les transitions : validee, refusee.
   DECLARE v uuid := gen_random_uuid(); r uuid := gen_random_uuid();
   BEGIN
     INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine)
     VALUES (v, gen_random_uuid(), chiffre, h, '1234', 'espace'), (r, gen_random_uuid(), chiffre, h, '1234', 'console');
-    UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '73 hours' WHERE id IN (v, r);
+    UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '73 hours', avis_envoye_at = now() WHERE id IN (v, r);
     UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now(), traitee_par = gen_random_uuid(), controles = '{"cases":3}'::jsonb WHERE id = v;
     UPDATE apporteur_changements_iban SET statut = 'refusee', traitee_at = now(), traitee_par = gen_random_uuid(), motif_refus = 'Titulaire different' WHERE id = r;
     -- la confirmation ne se reecrit pas, la decision gele les controles.
     BEGIN
       UPDATE apporteur_changements_iban SET controles = '{}'::jsonb WHERE id = v;
       RAISE EXCEPTION 'AXT99 controles reecrits apres decision';
-    EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+    EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%fig_e%' THEN RAISE; END IF; END;
     BEGIN
       UPDATE apporteur_changements_iban SET confirmation_ip_hash = 'x' WHERE id = v;
       RAISE EXCEPTION 'AXT99 preuve de confirmation reecrite apres decision';
-    EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+    EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%fig_e%' THEN RAISE; END IF; END;
   END;
 END $$;
 ROLLBACK;
@@ -183,42 +183,42 @@ BEGIN
   BEGIN
     DELETE FROM apporteur_changements_iban WHERE id = d;
     RAISE EXCEPTION 'AXT99 DELETE accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%suppression interdite%' THEN RAISE; END IF; END;
   BEGIN
     TRUNCATE apporteur_changements_iban;
     RAISE EXCEPTION 'AXT99 TRUNCATE accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%suppression interdite%' THEN RAISE; END IF; END;
   -- le coeur ne change pas
   BEGIN
     UPDATE apporteur_changements_iban SET iban = autre WHERE id = d;
     RAISE EXCEPTION 'AXT99 IBAN demande modifie';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%coeur d_une demande%' THEN RAISE; END IF; END;
   BEGIN
     UPDATE apporteur_changements_iban SET apporteur_id = gen_random_uuid() WHERE id = d;
     RAISE EXCEPTION 'AXT99 fiche de la demande changee';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%coeur d_une demande%' THEN RAISE; END IF; END;
   -- a_confirmer -> validee : interdit
   BEGIN
-    UPDATE apporteur_changements_iban SET statut = 'validee', confirmee_at = now(), traitee_at = now(), traitee_par = gen_random_uuid() WHERE id = d;
+    UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now(), traitee_par = gen_random_uuid() WHERE id = d;
     RAISE EXCEPTION 'AXT99 saut a validee accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%transition%interdite%' THEN RAISE; END IF; END;
   -- a_confirmer -> confirmee -> validee : permis
-  UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '73 hours' WHERE id = d;
+  UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '73 hours', avis_envoye_at = now() WHERE id = d;
   -- la date de confirmation ne s'antidate pas (le delai de 72 h repose dessus)
   BEGIN
     UPDATE apporteur_changements_iban SET confirmee_at = now() - interval '5 days' WHERE id = d;
     RAISE EXCEPTION 'AXT99 confirmee_at antidate';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%preuve de la confirmation%' THEN RAISE; END IF; END;
   UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now(), traitee_par = gen_random_uuid() WHERE id = d;
   -- figee ensuite
   BEGIN
     UPDATE apporteur_changements_iban SET statut = 'opposee', opposee_at = now() WHERE id = d;
     RAISE EXCEPTION 'AXT99 opposition apres validation acceptee';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%fig_e%' THEN RAISE; END IF; END;
   BEGIN
     UPDATE apporteur_changements_iban SET traitee_par = gen_random_uuid() WHERE id = d;
     RAISE EXCEPTION 'AXT99 auteur de la decision reecrit';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%fig_e%' THEN RAISE; END IF; END;
 END $$;
 ROLLBACK;
 
@@ -264,15 +264,15 @@ BEGIN
   BEGIN
     DELETE FROM apporteur_changements_iban_rib WHERE demande_id = rid;
     RAISE EXCEPTION 'AXT99 DELETE RIB accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%suppression interdite%' THEN RAISE; END IF; END;
   BEGIN
     TRUNCATE apporteur_changements_iban_rib;
     RAISE EXCEPTION 'AXT99 TRUNCATE RIB accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%suppression interdite%' THEN RAISE; END IF; END;
   BEGIN
     UPDATE apporteur_changements_iban_rib SET octets = '\x41584231ff'::bytea, taille = 5 WHERE demande_id = rid;
     RAISE EXCEPTION 'AXT99 RIB remplace';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%seule la purge des octets est permise%' THEN RAISE; END IF; END;
   UPDATE apporteur_changements_iban_rib SET octets = NULL, purge_at = now() WHERE demande_id = rid;
 END $$;
 ROLLBACK;
@@ -302,20 +302,20 @@ BEGIN
   BEGIN
     DELETE FROM apporteur_iban_historique WHERE id = id1;
     RAISE EXCEPTION 'AXT99 DELETE historique accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%suppression interdite%' THEN RAISE; END IF; END;
   BEGIN
     TRUNCATE apporteur_iban_historique;
     RAISE EXCEPTION 'AXT99 TRUNCATE historique accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%suppression interdite%' THEN RAISE; END IF; END;
   BEGIN
     UPDATE apporteur_iban_historique SET iban_fin4 = '9999' WHERE id = id1;
     RAISE EXCEPTION 'AXT99 ligne d historique reecrite';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%ajout seul, seule%' THEN RAISE; END IF; END;
   UPDATE apporteur_iban_historique SET en_vigueur_jusqua = now() WHERE id = id1;
   BEGIN
     UPDATE apporteur_iban_historique SET en_vigueur_jusqua = now() + interval '1 day' WHERE id = id1;
     RAISE EXCEPTION 'AXT99 fin de validite posee puis changee';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%ne change plus%' THEN RAISE; END IF; END;
 END $$;
 ROLLBACK;
 
@@ -344,15 +344,15 @@ BEGIN
   BEGIN
     UPDATE apporteur_virements_compte SET iban_fin4 = '9999';
     RAISE EXCEPTION 'AXT99 UPDATE accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%ajout seul%' THEN RAISE; END IF; END;
   BEGIN
     DELETE FROM apporteur_virements_compte;
     RAISE EXCEPTION 'AXT99 DELETE accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%ajout seul%' THEN RAISE; END IF; END;
   BEGIN
     TRUNCATE apporteur_virements_compte;
     RAISE EXCEPTION 'AXT99 TRUNCATE accepte';
-  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'AXT99%' THEN RAISE; END IF; END;
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%ajout seul%' THEN RAISE; END IF; END;
 END $$;
 ROLLBACK;
 
@@ -366,6 +366,7 @@ DECLARE
   h text := repeat('d', 64);
   d uuid := gen_random_uuid();
   v timestamptz;
+  etat text;
 BEGIN
   INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine, demandee_at)
   VALUES (d, gen_random_uuid(), chiffre, h, '1234', 'espace', now() - interval '3 days');
@@ -418,6 +419,25 @@ BEGIN
   IF abs(extract(epoch FROM clock_timestamp() - v)) > 5 THEN
     RAISE EXCEPTION 'AXT99 traitee_at fournie par l appelant conservee : %', v;
   END IF;
+  -- opposee_at, annulee_at et expiree_at sont, elles aussi, ecrasees par la base.
+  FOREACH etat IN ARRAY ARRAY['opposee', 'annulee', 'expiree'] LOOP
+    d := gen_random_uuid();
+    INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine)
+    VALUES (d, gen_random_uuid(), chiffre, h, '1234', 'espace');
+    IF etat = 'opposee' THEN
+      UPDATE apporteur_changements_iban SET statut = etat, opposee_at = now() - interval '9 days' WHERE id = d;
+      SELECT opposee_at INTO v FROM apporteur_changements_iban WHERE id = d;
+    ELSIF etat = 'annulee' THEN
+      UPDATE apporteur_changements_iban SET statut = etat, annulee_at = now() - interval '9 days' WHERE id = d;
+      SELECT annulee_at INTO v FROM apporteur_changements_iban WHERE id = d;
+    ELSE
+      UPDATE apporteur_changements_iban SET statut = etat, expiree_at = now() - interval '9 days' WHERE id = d;
+      SELECT expiree_at INTO v FROM apporteur_changements_iban WHERE id = d;
+    END IF;
+    IF v IS NULL OR abs(extract(epoch FROM clock_timestamp() - v)) > 5 THEN
+      RAISE EXCEPTION 'AXT99 %_at fournie par l appelant conservee : %', etat, v;
+    END IF;
+  END LOOP;
 END $$;
 ROLLBACK;
 
@@ -434,7 +454,7 @@ BEGIN
   INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine)
   VALUES (d, gen_random_uuid(), chiffre, h, '1234', 'espace');
   ALTER TABLE apporteur_changements_iban DISABLE TRIGGER apporteur_changements_iban_horloge;
-  UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '73 hours',
+  UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '73 hours', avis_envoye_at = now(),
          confirmation_ip_hash = repeat('f', 64), confirmation_navigateur = 'navigateur fictif' WHERE id = d;
   ALTER TABLE apporteur_changements_iban ENABLE TRIGGER apporteur_changements_iban_horloge;
   BEGIN
@@ -519,5 +539,30 @@ BEGIN
     UPDATE apporteur_changements_iban SET statut = 'a_confirmer' WHERE id = d;
     RAISE EXCEPTION 'AXT99 retour a a_confirmer accepte';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE '%transition%interdite%' THEN RAISE; END IF; END;
+END $$;
+ROLLBACK;
+
+-- 13. Pas de validation sans avis envoye : le CHECK de coherence la refuse, par son NOM (apres 72 h reelles
+--     simulees : le declencheur d'horloge est desactive, donc ni le delai ni la transition ne sont en cause).
+BEGIN;
+ALTER TABLE apporteur_changements_iban DISABLE TRIGGER apporteur_changements_iban_horloge;
+DO $$
+DECLARE
+  chiffre text := 'enc:v2:' || repeat('a', 24) || ':' || repeat('b', 40) || ':' || repeat('c', 32);
+  d uuid := gen_random_uuid();
+  contrainte text;
+BEGIN
+  INSERT INTO apporteur_changements_iban (id, apporteur_id, iban, iban_empreinte, iban_fin4, origine) VALUES (d, gen_random_uuid(), chiffre, repeat('d',64), '1234', 'espace');
+  UPDATE apporteur_changements_iban SET statut = 'confirmee', confirmee_at = now() - interval '73 hours' WHERE id = d;
+  BEGIN
+    UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now(), traitee_par = gen_random_uuid() WHERE id = d;
+    RAISE EXCEPTION 'AXT99 validation sans avis envoye acceptee';
+  EXCEPTION WHEN check_violation THEN
+    GET STACKED DIAGNOSTICS contrainte = CONSTRAINT_NAME;
+    IF contrainte IS DISTINCT FROM 'apporteur_changements_iban_coherence' THEN RAISE; END IF;
+  END;
+  -- avec l'avis envoye, la meme validation passe.
+  UPDATE apporteur_changements_iban SET avis_envoye_at = now() WHERE id = d;
+  UPDATE apporteur_changements_iban SET statut = 'validee', traitee_at = now(), traitee_par = gen_random_uuid() WHERE id = d;
 END $$;
 ROLLBACK;

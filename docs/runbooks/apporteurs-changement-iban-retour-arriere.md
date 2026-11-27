@@ -46,8 +46,10 @@ La preuve dure reste l'existence des quatre tables (`\dt apporteur_*`) et de leu
 
 - **Les déclencheurs protègent contre une erreur de code, pas contre un rôle compromis.** Le propriétaire d'une
   table (ou un superutilisateur) peut faire `ALTER TABLE … DISABLE TRIGGER`, `DROP TRIGGER`, ou passer
-  `session_replication_role` en `replica`. « Jamais supprimée » vaut pour le code applicatif. Vérifier, avant
-  l'allumage, que le rôle de connexion de l'application n'est pas propriétaire de ces tables.
+  `session_replication_role` en `replica`. « Jamais supprimée » vaut pour le code applicatif. **Limite acceptée** :
+  c'est le conteneur de l'application qui joue la migration, donc son rôle de connexion est propriétaire de ces
+  tables. On ne vérifie pas un « rôle non propriétaire » : la protection vaut contre l'erreur de code, pas
+  contre la compromission de ce rôle.
 - **Pas de purge en fin de conservation dans ce lot.** Les déclencheurs interdisent de réécrire `iban` et de
   supprimer une ligne (demandes, historique). Quand la durée de conservation sera arrêtée (décision D-7, lot 8),
   la purge passera par une migration qui ajoute la sortie voulue au déclencheur : elle n'est pas devinée ici.

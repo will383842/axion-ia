@@ -66,6 +66,8 @@ ALTER TABLE "apporteur_changements_iban" ADD CONSTRAINT "apporteur_changements_i
         AND "motif_refus" IS NOT NULL AND length(btrim("motif_refus")) > 0))
   -- Défense en profondeur du délai d'opposition : une validation date d'au moins 72 h après la confirmation.
   AND ("statut" <> 'validee' OR "traitee_at" >= "confirmee_at" + interval '72 hours')
+  -- Une validation envoie l'avis à l'ancienne adresse : pas de validation sans avis envoyé.
+  AND ("statut" <> 'validee' OR "avis_envoye_at" IS NOT NULL)
   AND ("statut" <> 'opposee' OR "opposee_at" IS NOT NULL)
   AND ("statut" <> 'annulee' OR "annulee_at" IS NOT NULL)
   AND ("statut" <> 'expiree' OR "expiree_at" IS NOT NULL)
@@ -186,7 +188,7 @@ BEGIN
     ELSIF NEW."statut" = 'expiree' THEN
       NEW."expiree_at" := maintenant;
     END IF;
-    IF NEW."statut" = 'validee' AND maintenant < OLD."confirmee_at" + interval '72 hours' THEN
+    IF NEW."statut" = 'validee' AND (OLD."confirmee_at" IS NULL OR maintenant < OLD."confirmee_at" + interval '72 hours') THEN
       RAISE EXCEPTION 'apporteur_changements_iban : validation avant la fin du délai d''opposition de 72 heures';
     END IF;
   END IF;
