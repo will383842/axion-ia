@@ -91,8 +91,8 @@ describe("textes de la validation par rendez-vous (apporteur et page)", () => {
       ),
     ].join("\n");
     const nombres = corps.match(/\d+/g) ?? [];
-    // 30 : « après un délai de 30 jours et un nouveau contact avec elle » (accusé, lot A).
-    for (const n of nombres) expect(["60", "6", "30"]).toContain(n);
+    // Aucun 30 : le contrat 2.8 n'impose à l'apporteur aucun délai d'attente (art. 3.4 bis).
+    for (const n of nombres) expect(["60", "6"]).toContain(n);
   });
 
   it("le texte de la page des apporteurs sous la règle actuelle n'est pas touché", () => {

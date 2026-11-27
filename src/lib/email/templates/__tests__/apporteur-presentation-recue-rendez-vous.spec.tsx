@@ -55,7 +55,7 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(lu).toContain("du jour de ce rendez-vous");
     expect(lu).toContain("Une commande signée pendant ces 60 jours compte aussi");
     expect(lu).toContain("la réservation prend fin automatiquement");
-    expect(lu).toContain("après un délai de 30 jours et un nouveau contact avec elle");
+    expect(lu).toContain("après un nouveau contact avec elle");
     expect(lu).not.toContain("devis");
     expect(lu).toContain("Une commission n'est due que sur une commande payée");
   });
@@ -71,20 +71,25 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(text).not.toMatch(/undefined|null/);
   });
 
-  it("ne reprend pas l'attribution par le silence de l'accusé en service : « 30 jours » n'apparaît que comme délai avant une nouvelle présentation", async () => {
+  it("🔑 point 1 : aucun délai d'attente de 30 jours n'est annoncé à l'apporteur (contrat 2.8, art. 3.2 et 3.4 bis)", async () => {
     const { text } = await rendre(EXEMPLE);
     const lu = text.replace(/\s+/g, " ");
-    expect(lu.match(/\b30\b/g)).toHaveLength(1);
-    expect(lu).toContain("après un délai de 30 jours et un nouveau contact avec elle");
+    expect(lu).not.toMatch(/\b30\b/);
+    expect(lu).not.toContain("délai de 30 jours");
+    expect(lu).toContain(
+      "vous pourrez nous présenter de nouveau cette entreprise après un nouveau contact avec elle.",
+    );
   });
 
-  it("dit que nous avons écrit à l'entreprise, et qu'un rendez-vous annulé ou déplacé par Axion compte comme tenu", async () => {
+  it("🔑 point 2 : seul un rendez-vous pris pendant la réservation et annulé par Axion compte comme tenu ; « déplacer » n'est pas promis", async () => {
     const { text } = await rendre(EXEMPLE);
     const lu = text.replace(/\s+/g, " ");
     expect(lu).toContain("Nous venons de lui écrire de votre part.");
     expect(lu).toContain(
-      "Si nous devons annuler ou déplacer ce rendez-vous, il compte comme tenu.",
+      "Si nous annulons un rendez-vous pris pendant ces 60 jours, il compte comme tenu.",
     );
+    expect(lu).not.toContain("déplacer");
+    expect(lu).not.toContain("ce rendez-vous, il compte");
   });
 
   it("ni « Grenoble » (hors adresse légale du pied), ni « gain garanti », ni chiffre de commission, ni conférence", async () => {
