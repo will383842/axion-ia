@@ -225,7 +225,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-resiliation-effective": "Apporteur : résiliation du contrat prise d'effet",
   "apporteur-manquement": "Apporteur : manquement ou fraude notifié avec les faits (art. 4.5 bis)",
   "apporteur-commission-avoir-client":
-    "Apporteur : commission facturée annulée par un avoir, après l'avoir du client (art. 4.5)",
+    "Apporteur : commission réduite, annulée, retenue ou reprise après l'avoir du client (art. 4.5)",
   "apporteur-contrat-signe": "Apporteur : contrat contresigné",
   "apporteur-presentation-recue": "Apporteur : entreprise bien reçue",
   "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",
