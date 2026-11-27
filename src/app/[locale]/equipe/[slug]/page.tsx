@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: contenu.titreSeo,
       description: contenu.metaDescription,
       alternates: { fr: `/equipe/williams` },
-      ogEyebrow: "Fondateur d'Axion-IA",
+      ogEyebrow: WILLIAMS_FONCTION,
     });
     // 🔑 Titre ABSOLU : le titre SEO est écrit tel quel, sans le suffixe « · Axion-IA » du
     // gabarit racine. Image de partage : le portrait (`/api/og/equipe-williams`), pour ce
