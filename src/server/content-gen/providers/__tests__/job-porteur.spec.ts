@@ -23,7 +23,13 @@ vi.mock("@/lib/prisma", () => ({
 
 import { ContentType } from "../../../../../prisma/generated/client";
 import { BlogClaudeRefusError } from "../blog-claude-ledger";
-import { PREFIXE_CLE_PORTEUR, creerJobPorteur, whereHorsPorteurs } from "../job-porteur";
+import {
+  BORNE_PLAFOND_PORTEUR_USD,
+  PREFIXE_CLE_PORTEUR,
+  creerJobPorteur,
+  estJobPorteur,
+  whereHorsPorteurs,
+} from "../job-porteur";
 
 const racine = resolve(__dirname, "../../../../..");
 const lire = (chemin: string) => readFileSync(resolve(racine, chemin), "utf-8");
@@ -90,7 +96,36 @@ describe("creerJobPorteur", () => {
   });
 });
 
+describe("estJobPorteur et bornes", () => {
+  it("reconnaît la clé, la charge, et rien d'autre", () => {
+    expect(estJobPorteur({ idempotencyKey: "porteur:pilotage:x" })).toBe(true);
+    expect(estJobPorteur({ idempotencyKey: "h", inputPayload: { porteur: true } })).toBe(true);
+    expect(estJobPorteur({ idempotencyKey: "hash", inputPayload: { primaryKeyword: "k" } })).toBe(
+      false,
+    );
+    expect(estJobPorteur({ inputPayload: null })).toBe(false);
+  });
+  it("plafond au-dessus de la borne de garde : refus", async () => {
+    await expect(
+      creerJobPorteur({ origine: "pilotage", plafondJobUsd: BORNE_PLAFOND_PORTEUR_USD + 1 }),
+    ).rejects.toMatchObject({ code: "config_invalide" });
+  });
+});
+
 describe("le porteur est invisible", () => {
+  it("les autres comptages sans filtre de statut l'excluent (rapport, tableau de bord, santé)", () => {
+    for (const f of [
+      "src/server/queue/workers/content-weekly-report-worker.ts",
+      "src/server/actions/content-gen/dashboard.ts",
+      "src/server/actions/content-gen/health.ts",
+    ]) {
+      expect(lire(f)).toContain("whereHorsPorteurs");
+    }
+  });
+  it("« Relancer » refuse un porteur", () => {
+    expect(lire("src/server/actions/content-gen/jobs.ts")).toContain("estJobPorteur(dbJob)");
+  });
+
   it("statut `cancelled` : hors des statuts lus par le recovery et l'orchestrateur", () => {
     const sources = [
       lire("src/server/content-gen/recovery/backlog-recovery.ts"),

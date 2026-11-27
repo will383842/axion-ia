@@ -47,6 +47,24 @@ export const whereHorsPorteurs = {
   NOT: { idempotencyKey: { startsWith: PREFIXE_CLE_PORTEUR } },
 } as const;
 
+/** Vrai si la ligne est un job porteur (clé de préfixe `porteur:` ou `inputPayload.porteur`). */
+export function estJobPorteur(job: {
+  readonly idempotencyKey?: string | null;
+  readonly inputPayload?: unknown;
+}): boolean {
+  if (
+    typeof job.idempotencyKey === "string" &&
+    job.idempotencyKey.startsWith(PREFIXE_CLE_PORTEUR)
+  ) {
+    return true;
+  }
+  const p = job.inputPayload;
+  return typeof p === "object" && p !== null && (p as Record<string, unknown>)["porteur"] === true;
+}
+
+/** Borne de garde du plafond d'un porteur (même ordre que la borne du jour de la porte). */
+export const BORNE_PLAFOND_PORTEUR_USD = 20;
+
 export interface ParamsJobPorteur {
   readonly origine: OrigineJobPorteur;
   /** Plafond de coût cumulé de CE porteur (somme des réservations), en dollars. */
@@ -63,7 +81,8 @@ export async function creerJobPorteur(p: ParamsJobPorteur): Promise<JobPorteur> 
   if (!(
     typeof p.plafondJobUsd === "number" &&
     Number.isFinite(p.plafondJobUsd) &&
-    p.plafondJobUsd > 0
+    p.plafondJobUsd > 0 &&
+    p.plafondJobUsd <= BORNE_PLAFOND_PORTEUR_USD
   )) {
     throw new BlogClaudeRefusError("Plafond du job porteur invalide", "config_invalide");
   }
