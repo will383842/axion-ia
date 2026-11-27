@@ -132,7 +132,13 @@ async function articlesPublies(take: number) {
       updatedAt: true,
       isNews: true,
       templateVariant: true,
-      translations: { where: { locale: "fr" }, select: { slug: true, body: true }, take: 1 },
+      generatedByJobId: true,
+      mentionedCities: true,
+      translations: {
+        where: { locale: "fr" },
+        select: { slug: true, body: true, title: true },
+        take: 1,
+      },
     },
   });
 }
@@ -175,7 +181,53 @@ async function runTacheEquipe(
   if (carte && carte.cannibalisations.length > 0) {
     console.log(`[content-refresh] cannibalisation : ${carte.cannibalisations.length} requête(s)`);
   }
-  return { ...base, flaggedCount: casses, suivi: { liensCasses: casses } };
+  const occasions = await chargerOccasionsLiens(articles, maintenant);
+  return {
+    ...base,
+    flaggedCount: casses,
+    suivi: { liensCasses: casses, occasionsLiens: occasions },
+  };
+}
+
+/** Chargé de liens (PR 18) : au plus 20 articles par passage, une fois par article, rien n'est envoyé. */
+async function chargerOccasionsLiens(
+  articles: Awaited<ReturnType<typeof articlesPublies>>,
+  maintenant: Date,
+): Promise<number> {
+  // Chargement à la demande : rien n'est importé tant que l'interrupteur n'est pas allumé.
+  const { proposerOccasions } = await import("@/server/content-gen/equipe/charge-de-liens");
+  const { chargerCandidats, coutDejaEngage, ecrireOccasions, estOppose, lireOccasions } =
+    await import("@/server/content-gen/equipe/charge-de-liens-donnees");
+  let total = 0;
+  let traites = 0;
+  for (const a of articles) {
+    if (traites >= 20) break;
+    const jobId = a.generatedByJobId;
+    const url = urlArticle(a);
+    const t = a.translations[0];
+    if (!jobId || !url || !t) continue;
+    try {
+      if (await lireOccasions(jobId)) continue;
+      traites++;
+      const r = await proposerOccasions(
+        { jobId, articleUrl: url, titre: t.title, motsCles: [] },
+        {
+          candidats: await chargerCandidats(a.id, a.mentionedCities),
+          coutDejaEngage,
+          estOppose,
+          maintenant,
+        },
+      );
+      if (r.statut !== "occasions") continue;
+      await ecrireOccasions(jobId, { version: 1, occasions: r.occasions, coutUsd: r.coutUsd });
+      total += r.occasions.length;
+    } catch (e) {
+      console.warn(
+        `[content-refresh] charge-liens : article ignoré (${e instanceof Error ? e.name : "erreur"})`,
+      );
+    }
+  }
+  return total;
 }
 
 async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshResult> {
