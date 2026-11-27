@@ -1,8 +1,9 @@
 /**
  * Relevé mensuel des apporteurs : ENVOI, sur CLIC du dirigeant seulement (lot 4a, D3 et D7).
  *
- * SEUL émetteur du gabarit `apporteur-releve-mensuel`, et seulement appelé par la Server Action du
- * bouton « Envoyer les relevés à tout le monde » (`actions-envoi.ts`). Ni le worker ni aucun passage
+ * SEUL émetteur du gabarit `apporteur-releve-mensuel`, et seulement appelé par les Server Actions
+ * des boutons de la console (`actions-envoi.ts`) : « Envoyer les relevés à tout le monde », « Renvoyer
+ * les échecs », et « Envoyer ce rectificatif » (bouton par ligne `-Rk`). Ni le worker ni aucun passage
  * automatique ne l'importe (verrouillé par `aucun-envoi-automatique.spec.ts`).
  *
  * Idempotence : un seul lot vivant par période (index partiel en base) ; prise conditionnelle de la
@@ -220,6 +221,8 @@ function critere(
     periode: o.periode,
     rang: 0,
     statut: o.mode === "tous" ? "prepare" : "echec",
+    // Un relevé `echec` déjà rectifié (a un -Rk) ne se renvoie pas : c'est son rectificatif qui part.
+    ...(o.mode === "echecs" ? { rectificatifs: { none: {} } } : {}),
     ...(traitees.size ? { id: { notIn: [...traitees] } } : {}),
   };
 }

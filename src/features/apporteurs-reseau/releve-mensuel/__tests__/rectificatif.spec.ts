@@ -153,6 +153,23 @@ describe("etablirRectificatif", () => {
     expect(m.create).not.toHaveBeenCalled();
   });
 
+  it("rectifier un relevé `echec` (jamais reçu) : le PDF dit que c'est le relevé du mois", async () => {
+    m.findUnique.mockResolvedValue({ ...cible, statut: "echec", envoyeAt: null });
+    m.findMany.mockResolvedValue([
+      { id: "id-0", numero: "REL-2026-10-0004", rang: 0, statut: "echec" },
+    ]);
+    const r = await etablirRectificatif("id-0", MAINTENANT);
+    expect(r.ok).toBe(true);
+    const entete = m.pdf.mock.calls[0]![2] as { rectifie?: { jamaisRecu?: boolean } };
+    expect(entete.rectifie).toMatchObject({ numero: "REL-2026-10-0004", jamaisRecu: true });
+  });
+
+  it("rectifier un relevé réellement envoyé : pas de `jamaisRecu`", async () => {
+    await etablirRectificatif("id-0", MAINTENANT);
+    const entete = m.pdf.mock.calls[0]![2] as { rectifie?: { jamaisRecu?: boolean } };
+    expect(entete.rectifie?.jamaisRecu).toBeUndefined();
+  });
+
   it("un second rectificatif prend le rang suivant et rectifie la dernière version envoyée", async () => {
     m.findUnique.mockResolvedValue({
       ...cible,

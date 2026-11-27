@@ -111,6 +111,8 @@ export async function etablirRectificatif(
     await entetePdf(cible.apporteurId, numero, {
       numero: cible.numero,
       date: (cible.envoyeAt ?? cible.prepareAt).toISOString().slice(0, 10),
+      // Un relevé `echec` n'est jamais arrivé chez l'apporteur : on ne parle pas d'un « rectificatif ».
+      ...(cible.statut === "echec" ? { jamaisRecu: true } : {}),
     }),
   );
   await prisma.releveMensuelApporteur.updateMany({

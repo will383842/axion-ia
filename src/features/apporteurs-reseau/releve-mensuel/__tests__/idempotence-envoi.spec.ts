@@ -19,6 +19,8 @@ interface Ligne {
   contenu: unknown;
   pdfR2Key: string | null;
   erreur: string | null;
+  /** Test seulement : la ligne a déjà un rectificatif (`rectificatifs: { some }`). */
+  rectifiee?: boolean;
   envoyeAt?: Date;
   envoyePar?: string;
   emailJobId?: string;
@@ -64,7 +66,13 @@ vi.mock("@/lib/prisma", () => ({
         where,
         take,
       }: {
-        where: { periode: string; rang: number; statut: Statut; id?: { notIn: string[] } };
+        where: {
+          periode: string;
+          rang: number;
+          statut: Statut;
+          id?: { notIn: string[] };
+          rectificatifs?: { none: object };
+        };
         take: number;
       }) =>
         rows()
@@ -73,7 +81,8 @@ vi.mock("@/lib/prisma", () => ({
               l.periode === where.periode &&
               l.rang === where.rang &&
               l.statut === where.statut &&
-              !where.id?.notIn.includes(l.id),
+              !where.id?.notIn.includes(l.id) &&
+              !(where.rectificatifs?.none && l.rectifiee),
           )
           .sort((a, b) => a.numero.localeCompare(b.numero))
           .slice(0, take),
@@ -255,6 +264,20 @@ describe("un enfilage par apporteur", () => {
     expect(s.envoyer).toHaveBeenCalledTimes(1);
     expect(r.nbEnvoyes).toBe(1);
     expect(rows()[1]!.statut).toBe("prepare");
+  });
+});
+
+describe("« Renvoyer les échecs » et les relevés déjà rectifiés", () => {
+  it("un relevé `echec` qui a déjà un rectificatif n'est pas renvoyé ; un autre l'est", async () => {
+    s.lignes = [
+      ligne(1, { statut: "echec", erreur: "envoi non parti (x)", rectifiee: true }),
+      ligne(2, { statut: "echec", erreur: "envoi non parti (x)" }),
+    ];
+    const r = await lancer("echecs");
+    expect(s.envoyer).toHaveBeenCalledTimes(1);
+    expect(r).toMatchObject({ nbCibles: 1, nbEnvoyes: 1 });
+    expect(rows()[0]!.statut).toBe("echec");
+    expect(rows()[1]!.statut).toBe("envoye");
   });
 });
 
