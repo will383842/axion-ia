@@ -388,7 +388,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
      total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
      (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
-  .sommaire ol::after { content: "↓ suite du sommaire · " counter(s, decimal-leading-zero) " entrées" / "";
+  .sommaire ol::after { content: "↓ suite du sommaire" / "";
     position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
     background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
@@ -1140,7 +1140,7 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
           </svg>
           <span class="visuel__etiquette" aria-hidden="true">Glossaire · niveau découverte</span>
         </div>
-        <figcaption>Photo&nbsp;: [nom du photographe] / Unsplash</figcaption>
+        <figcaption>Photo&nbsp;: Prénom Nom / Unsplash (crédit réel conservé)</figcaption>
       </figure>
       <div class="fiche-terme sur-sombre">
         <p class="fiche-terme__titre">Fiche du terme</p>
