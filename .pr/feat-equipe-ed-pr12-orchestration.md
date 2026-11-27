@@ -57,8 +57,21 @@ Corrigé après relecture : titre vide (`||` au lieu de `??`), reprise de la bou
 
 Rebase fait sur `origin/main` (PR 11 déjà fusionnée) ; tests, typecheck et lint passent.
 
-## Restes
+## Relecture Opus (2e passe)
 
-Voir la relecture ci-dessous.
+Un point bloquant relevé et corrigé : une reprise de la boucle qualité arrêtée par le plafond avant ou pendant la réécriture annulait le job et perdait l'article déjà écrit. Elle part maintenant en relecture (`needs_review` + ligne de file), le verrou est gardé ; test d'intégration ajouté (il échoue sans la correction).
 
-VERDICT OPUS : relecture en cours (2e passe)
+Restes connus, mineurs, non corrigés (derrière l'interrupteur) :
+
+- l'angle du gardien n'est pas persisté : une reprise de la boucle qualité réécrit sans lui ;
+- un abandon par le rédacteur en chef après écriture relâche le verrou alors que l'article reste en relecture ;
+- `releaseKeywordLock` ne vérifie pas le propriétaire du verrou (repli sur panne Redis, ou TTL expiré) ;
+- les arrêts anticipés en reprise ne comptent pas la dépense de la boucle qualité ;
+- `costUsd` du job est cumulatif sur toutes les passes quand l'équipe tourne ;
+- une erreur transitoire du stratège ou du gardien annule le job sans nouvel essai BullMQ ;
+- lecture du registre en échec dans la garde du routeur : le job passe en `failed` (sûr, mais sans journal d'équipe) ;
+- tests du circuit complet au niveau du worker (barrière, persistance du journal) non écrits : le test d'intégration s'arrête à l'appel du générateur.
+
+Le correctif du bloquant n'a pas été relu par un second tour Opus.
+
+VERDICT OPUS : À CORRIGER

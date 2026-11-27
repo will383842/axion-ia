@@ -897,13 +897,20 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         await prisma.contentGenJob.update({
           where: { id: contentGenJobId },
           data: {
-            status: "cancelled",
+            // Reprise de la boucle qualité : l'article existe déjà, on le garde pour la relecture.
+            status: reprise ? "needs_review" : "cancelled",
             errorMessage: `Équipe éditoriale (plafond) : ${premiere.arret}`.slice(0, 1000),
             completedAt: new Date(),
             outputJsonRaw: { ...(reprise ? (prevOutput ?? {}) : {}), equipe: journal } as never,
           },
         });
-        await libererVerrouMotCle();
+        if (reprise) {
+          await prisma.reviewQueue
+            .create({ data: { jobId: contentGenJobId, status: "pending" } })
+            .catch(() => undefined);
+        } else {
+          await libererVerrouMotCle();
+        }
         return;
       }
       output = premiere.output;

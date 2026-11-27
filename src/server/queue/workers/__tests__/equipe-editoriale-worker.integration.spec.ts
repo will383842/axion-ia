@@ -219,6 +219,22 @@ describe("worker content-gen : équipe éditoriale allumée", () => {
     expect(releaseKeywordLock).toHaveBeenCalledWith("ia pme");
   });
 
+  it("reprise de la boucle qualité arrêtée par le plafond avant l'écriture : relecture, article gardé, verrou gardé", async () => {
+    const base = await h.prisma.contentGenJob.findUnique();
+    h.prisma.contentGenJob.findUnique.mockResolvedValue({
+      ...base,
+      outputJsonRaw: { judgeIssues: "à étoffer", titre: "article existant" },
+    });
+    h.state.depasseDepuis = 4; // reprise : début (1), stratège (2), phase A (3) → 0 $ ; écriture (4) → 3,5 $
+    await lancer();
+    const maj = miseAJours().find((m) => m.data["status"] === "needs_review");
+    expect(maj).toBeDefined();
+    expect((maj!.data["outputJsonRaw"] as { titre?: string }).titre).toBe("article existant");
+    expect(h.prisma.reviewQueue.create).toHaveBeenCalled();
+    expect(releaseKeywordLock).not.toHaveBeenCalled();
+    expect(h.ordre).not.toContain("generateur");
+  });
+
   it("arrêt du gardien : aucune écriture, verrou relâché, job annulé avec le journal", async () => {
     vi.mocked(decider).mockImplementationOnce(async () => {
       h.ordre.push("gardien");
