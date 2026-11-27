@@ -226,6 +226,11 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   motif: "Motif d'exemple, saisi par l'administrateur.",
   argentEnJeu: true,
   lien: "https://exemple.invalid/lien-de-demonstration",
+  // Lot 2 « changement de compte bancaire » : fins de compte fictives (4 caractères, jamais d'IBAN).
+  nouveauFin: "5678",
+  ancienFin: "1234",
+  lienConfirmer: "https://exemple.invalid/lien-de-demonstration",
+  lienBloquer: "https://exemple.invalid/lien-de-demonstration",
   // Chantier QNC, L09 — réclamations (accusé et réponse signée).
   recueLe: "16 octobre 2026",
   reponseAvant: "6 novembre 2026",

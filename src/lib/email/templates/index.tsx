@@ -217,6 +217,18 @@ import {
 } from "./apporteur-presentation-recue-rendez-vous";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
 import {
+  ApporteurCompteAConfirmerEmail,
+  ApporteurCompteChangeEmail,
+  ApporteurCompteDemandeBloqueeEmail,
+  ApporteurCompteExpireEmail,
+  ApporteurCompteRefuseEmail,
+  apporteurCompteAConfirmerSubject,
+  apporteurCompteChangeSubject,
+  apporteurCompteDemandeBloqueeSubject,
+  apporteurCompteExpireSubject,
+  apporteurCompteRefuseSubject,
+} from "./apporteur-compte";
+import {
   ApporteurResiliationEffectiveEmail,
   apporteurResiliationEffectiveSubject,
 } from "./apporteur-resiliation-effective";
@@ -674,6 +686,27 @@ const TEMPLATES: TemplateMap = {
   "apporteur-resiliation-effective": {
     subject: apporteurResiliationEffectiveSubject,
     component: ApporteurResiliationEffectiveEmail,
+  },
+  // Lot 2 « changement de compte bancaire » : gabarits SANS émetteur avant le lot 4.
+  "apporteur-compte-a-confirmer": {
+    subject: apporteurCompteAConfirmerSubject,
+    component: ApporteurCompteAConfirmerEmail,
+  },
+  "apporteur-compte-demande-bloquee": {
+    subject: apporteurCompteDemandeBloqueeSubject,
+    component: ApporteurCompteDemandeBloqueeEmail,
+  },
+  "apporteur-compte-change": {
+    subject: apporteurCompteChangeSubject,
+    component: ApporteurCompteChangeEmail,
+  },
+  "apporteur-compte-refuse": {
+    subject: apporteurCompteRefuseSubject,
+    component: ApporteurCompteRefuseEmail,
+  },
+  "apporteur-compte-expire": {
+    subject: apporteurCompteExpireSubject,
+    component: ApporteurCompteExpireEmail,
   },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,

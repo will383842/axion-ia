@@ -229,7 +229,14 @@ function liensDistincts(html: string): Set<string> {
  * gabarit ajouté, la tentation sera d'y glisser le nouveau nom plutôt que de
  * raccourcir l'objet.
  */
+const MOTIF_COMPTE =
+  "Objet validé mot pour mot par le dirigeant (plan changement de compte bancaire, " +
+  "section 12.3) : e-mail de sécurité dont l'objet doit dire clairement la situation. " +
+  "Le début (« Votre demande de changement de compte… ») reste lisible une fois tronqué.";
 const OBJETS_HORS_BORNE: Record<string, string> = {
+  "apporteur-compte-demande-bloquee": MOTIF_COMPTE,
+  "apporteur-compte-refuse": MOTIF_COMPTE,
+  "apporteur-compte-expire": MOTIF_COMPTE,
   "vivier-information":
     "Notice juridique dont le texte est validé (doctrine CNIL « CVthèque ») : " +
     "sa reformulation fabriquerait un second texte non validé, sur lequel " +
