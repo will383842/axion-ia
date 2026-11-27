@@ -16963,6 +16963,8 @@ model ReleveMensuelApporteur {
   /// 0 = origine ; k = k-ième rectificatif.
   rang              Int                 @default(0)
   rectifieId        String?             @map("rectifie_id") @db.Uuid
+  rectifie          ReleveMensuelApporteur?  @relation("ReleveRectifie", fields: [rectifieId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  rectificatifs     ReleveMensuelApporteur[] @relation("ReleveRectifie")
   statut            StatutReleveMensuel @default(prepare)
   formatVersion     Int                 @default(1) @map("format_version")
   /// 1er M+1 00:00 Paris : instant de coupure du relevé (plan § 5.2).

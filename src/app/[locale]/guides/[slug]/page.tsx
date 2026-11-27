@@ -16,6 +16,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, permanentRedirect } from "next/navigation";
+import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import Image from "next/image";
 import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
 import { routing, type Locale } from "@/i18n/routing";
@@ -100,6 +101,11 @@ export default async function GuidePiliersPage({ params }: Props) {
     });
     if (hit?.currentPath) {
       permanentRedirect(hit.currentPath);
+    }
+    // S1 (404) : un ancien slug d'ARTICLE devenu guide n'est que dans `ArticleSlugHistory`.
+    const ancien = await findArticleSlugRedirect(slug, locale as "fr" | "en");
+    if (ancien && !(ancien.section === "guides" && ancien.newSlug === slug)) {
+      permanentRedirect(`/${locale}/${ancien.section}/${ancien.newSlug}`);
     }
     notFound();
   }
