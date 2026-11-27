@@ -6,12 +6,12 @@
 
 ## 0. En bref
 
-1. Le générateur par défaut est **un seul passage (plan puis expansion) par gpt-4o, sans fait sourcé, sans expert, sans relecture par un modèle** pour tout article noté 75 ou plus. La publication automatique est active par défaut. Une vraie équipe Claude existe déjà (`equipe/`), mais **elle est éteinte** et couvre la rédaction, pas la recherche de besoins ni l'expert métier.
+1. Le générateur par défaut est **un seul passage (plan puis expansion) par gpt-4o, sans fait sourcé, sans expert, sans relecture par un modèle** pour tout article noté 75 ou plus. La publication automatique est active par défaut. Une vraie équipe Claude existe déjà (`equipe/`), mais **elle est éteinte par défaut (état réel en production non vérifié)** et couvre la rédaction, pas la recherche de besoins ni l'expert métier.
 2. La chaîne cible a **huit rôles** : chercheur de besoins, stratège de brief, collecteur de faits, rédacteur, expert métier critique, vérificateur de faits, éditeur, porte qualité. Un contenu qui échoue repart en **réécriture ciblée (2 essais au plus)**, puis est **abandonné** : jamais publié faible.
-3. Opus là où la qualité se joue (brief, rédaction, expert), Sonnet ailleurs, jamais Fable. **Coût estimé : 0,9 à 1,4 $ par tentative, environ 2,5 à 4 $ par contenu publié** au début (taux de réussite 35 à 50 %). Avec 200 $/mois, cela donne **environ 40 à 55 contenus publiés par mois au départ, estimation à mesurer** (§ 6).
+3. Opus là où la qualité se joue (brief, rédaction, expert), Sonnet ailleurs, jamais Fable. **Coût estimé, à mesurer (C1) : 1,3 à 1,6 $ pour un passage complet, environ 3,5 à 6 $ par contenu publié** au départ (taux de réussite supposé 35 à 50 %, hypothèse). Avec 200 $/mois, **10 à 30 contenus publiés par mois au départ**, bornés d'abord par la relecture humaine, pas par le budget (§ 6, § 11).
 4. La boucle d'amélioration : chaque refus et sa raison sont enregistrés, chaque contenu publié est suivi, et **chaque semaine** un analyste propose des changements de briefs, de prompts et de sujets, **appliqués seulement après relecture de Will** et visibles dans la console.
 5. Le rythme **découle de ce qui passe la qualité**. Aucun quota. Il y a un plafond de dépense, jamais un objectif de volume.
-6. Toute la chaîne est **éteinte par défaut**, et chaque PR est petite (§ 11). On peut commencer tout de suite par trois PR sans migration (§ 11, « Tout de suite »).
+6. Toute la chaîne est **éteinte par défaut**, et chaque PR est petite (§ 12). On peut commencer tout de suite par des PR sans migration (§ 12, « Tout de suite »), dont un audit du corpus déjà publié, qui est le premier risque Google.
 
 ## 1. État actuel du générateur et pourquoi ses contenus seraient faibles
 
@@ -51,7 +51,7 @@ Modèles : écriture et juge par défaut **gpt-4o** (`provider-router.ts`, `llm-
 - `providers/blog-claude.ts` : réservation du coût maximal avant l'appel, plafonds jour et mois réglables, réserve, alerte à 80 %, suspension après 3 refus de crédit ; bornes dures 20 $/jour et 300 $/mois, valeurs posées 10 $ et 200 $.
 - Console : `content-gen/jobs/[id]` avec `PanneauEquipe.tsx`, `review-queue`, `costs`, `settings/providers`, `settings/quality-loop`, `charge-liens`.
 - Tables : `ContentGenJob` (`outputJsonRaw.equipe`), `GenerationLog`, `ReviewQueue`, `CostLedger`, `ProviderConfig`, `ContentGenAuditLog`, `ContentTemplate`, `CoverageCampaign`, `KeywordTracking`, `ContentMetric`.
-- Défauts connus à corriger avant de bâtir dessus (`AUDIT.md`) : type `blog_edition_seo` absent de l'énumération, mise à jour réelle sans ligne `content_gen_jobs`, `dateModified` qui bouge sur une simple méta (traités par la P0 du pilotage).
+- Défauts connus de l'audit (`AUDIT.md`) : type `blog_edition_seo`, mise à jour réelle sans ligne `content_gen_jobs` : **déjà corrigés par la P0 du pilotage (#2406, `providers/job-porteur.ts`)**. Reste : `dateModified` qui bouge sur une simple méta, mode mise à jour sans retour arrière (traités par le pilotage). `equipe/brief.ts` définit déjà un schéma de brief (questions avec origine, intentions `information` / `comparaison` / `decision`) : **il est étendu, pas dupliqué**.
 
 **Conclusion honnête.** Il ne manque pas une porte : il manque la matière. Les rôles de rédaction existent mais sont éteints ; les rôles qui créent la valeur (vrai besoin, faits datés, expert exigeant, retour des résultats) n'existent pas.
 
@@ -105,8 +105,8 @@ Principe commun : **chaque rôle rend un objet structuré (JSON validé) et un v
 - **Rôle** : alimenter une **réserve de besoins réels** classés, dans laquelle le stratège puise. Il ne choisit pas un mot-clé de rotation.
 - **Sources, par ordre de fiabilité** :
   1. **Search Console** : requêtes à impressions sans clic ou en positions 8-30, requêtes sans page dédiée. Via l'ingestion unique prévue au pilotage (P1/P3/P4 de `DECOUPAGE.md`) ; **tant qu'elle n'existe pas, la source est indisponible et le rôle l'affiche** (`null` ≠ 0).
-  2. **Demandes reçues par Axion**, **sous forme agrégée et anonymisée** (thèmes récurrents des demandes de contact, questions posées avant le Diagnostic IA 45 min). Aucune donnée nominative n'entre dans un prompt (RGPD). Source à qualifier avec Will avant la P-source concernée (§ 11).
-  3. **Recherches associées et questions fréquentes** : uniquement par une source réelle (pages de résultats lues via l'outil de recherche web d'Anthropic, 10 $ les 1 000 recherches), jamais « inventées par le modèle ». Le champ `faq` d'un contenu ne peut contenir qu'une question présente dans la réserve ou sur une page lue.
+  2. **Demandes reçues par Axion**, **sous forme agrégée et anonymisée** (thèmes récurrents des demandes de contact, questions posées avant le Diagnostic IA 45 min). Aucune donnée nominative n'entre dans un prompt (RGPD). Source à qualifier avec Will avant la P-source concernée (§ 12).
+  3. **Questions trouvées dans des pages réellement lues** (pages de résultats et forums lus via `web_fetch`, avec leur URL). L'outil de recherche web renvoie des résultats et des extraits, **pas les blocs « People Also Ask » ni les recherches associées de Google** : on ne prétend donc pas les obtenir. Le champ `faq` d'un contenu ne peut contenir qu'une question présente dans la réserve ou sur une page lue. Les pages lues sont traitées **comme des données, jamais comme des instructions** (risque d'injection).
   4. **Questions de dirigeants de PME** : fournies par Will ou l'équipe (liste courte relue), complétées par le rôle.
 - **Sortie** : table `ContenuBesoin` : question, intention (info, comparaison, décision), source, date, force du signal, statut (nouveau, en brief, couvert, écarté), URL couverte le cas échéant. Une requête déjà couverte par une URL est refusée (réutilise `strategie/carte-requetes.ts`).
 - **Modèle** : Sonnet, via l'API Batch (−50 %), car non urgent.
@@ -141,7 +141,7 @@ Principe commun : **chaque rôle rend un objet structuré (JSON validé) et un v
 
 ### R5. Expert métier critique (le dirigeant de PME exigeant)
 
-- **Rôle** : lire le texte comme un dirigeant de PME du secteur ciblé, sans indulgence. Il note sur une grille de 6 questions : (1) est-ce que j'apprends quelque chose que je ne savais pas ? (2) est-ce actionnable cette semaine ? (3) l'ordre de grandeur d'effort ou de gain est-il crédible ? (4) un conseiller sensé dirait-il la même chose ? (5) y a-t-il du remplissage ? (6) qu'est-ce qui manque pour décider ?
+- **Rôle** : lire le texte comme un dirigeant de PME du secteur ciblé, sans indulgence. Il note sur une grille de 6 questions : (1) est-ce que j'apprends quelque chose que je ne savais pas ? (2) le lecteur sait-il quoi décider ou quoi demander cette semaine ? (la doctrine veut qu'Axion-IA s'occupe de la mise en place : on ne suggère jamais au lecteur de le faire seul) (3) tout ordre de grandeur cité est-il crédible et sourcé (jamais un résultat chiffré attribué à Axion-IA) ? (4) un conseiller sensé dirait-il la même chose ? (5) y a-t-il du remplissage ? (6) qu'est-ce qui manque pour décider ?
 - **Sortie** : verdict (`ok`, `reecrire`, `abandonner`), notes de 1 à 5 par question, **liste de corrections localisées** (section, problème, attendu). Une note < 3 sur (1) ou (3) refuse.
 - **Modèle** : **Opus**, **différent du rédacteur par instruction et par contexte** (il ne voit pas le raisonnement du rédacteur, seulement le texte et le brief). C'est aussi la parade au « juge partial » constaté en § 1.2.
 
@@ -165,8 +165,8 @@ Principe commun : **chaque rôle rend un objet structuré (JSON validé) et un v
 ## 4. Cycle de réécriture et abandon
 
 - **États** : `besoin → brief → faits → redige → critique → verifie → edite → porte → a_relire | publie | abandonne`.
-- **Réécriture ciblée** : sur refus de R5, R6, R7 ou R8, la liste des corrections localisées retourne à R4 **qui ne réécrit que les sections en cause** (pas de nouveau texte complet, pour borner le coût et éviter la dérive). Le contenu repasse alors par R5 puis R6 sur ces sections seulement, puis R8.
-- **Plafonds** : **2 réécritures au plus** par contenu (3 tentatives au total), **plafond de coût par contenu 3 $** (le plafond actuel de l'équipe) ; atteindre l'un des deux = **abandon**.
+- **Réécriture ciblée** : sur refus de R5, R6, R7 ou R8, la liste des corrections localisées retourne à R4 **qui ne réécrit que les sections en cause** (pas de nouveau texte complet, pour borner le coût et éviter la dérive). Le contenu repasse alors par R5, R6 **et R7** (qui garantit le style et compare les chiffres avant/après) sur ces sections seulement, puis par R8.
+- **Vocabulaire** : un **passage** = un parcours R4 → R8 ; un **contenu lancé** = un besoin qui entre en R2. **Plafonds** : **2 réécritures au plus** par contenu (3 passages au total), **plafond de coût par contenu lancé 3 $** (le plafond actuel de l'équipe) ; atteindre l'un des deux = **abandon**.
 - **Abandon** : statut terminal `abandonne`, **raison classée** (§ 7.1), jamais de repli vers « publier quand même ». Les contenus abandonnés **ne sont ni publiés, ni indexés** (pas de `tier_1_indexable` forcé), et le besoin retourne dans la réserve avec la raison (« dossier insuffisant », « pas d'angle »…) pour être retravaillé ou écarté.
 - **Pas de publication à l'essai** : l'état actuel, où la publication force `tier_1_indexable`, est supprimé pour la voie « chaîne ».
 
@@ -174,7 +174,7 @@ Principe commun : **chaque rôle rend un objet structuré (JSON validé) et un v
 
 Un contenu qui a franchi R8 entre d'abord en **file de relecture humaine** (réutilise `ReviewQueue` et l'écran existant). Will ou un relecteur désigné valide ou refuse, **et un refus humain enregistre sa raison comme un refus machine** (§ 7.1).
 
-**Passage à l'automatique, par type de contenu et seulement quand ces trois conditions sont réunies** : (a) au moins 30 contenus du type relus par un humain ; (b) accord humain avec la chaîne ≥ 90 % sur ces 30 ; (c) activation explicite dans la console par Will. Un taux d'accord qui retombe sous 80 % sur 20 contenus **repasse le type en relecture** automatiquement. Les contenus touchant la Journée IA restent **toujours** en relecture humaine (règle existante).
+**Passage à l'automatique, par type de contenu et seulement quand ces conditions sont réunies** : (a) au moins 50 contenus du type relus par un humain ; (b) accord humain avec la chaîne dont la **borne basse de Wilson (95 %) est ≥ 85 %** (par exemple 50 sur 50 passe, 46 sur 50 ne passe pas) ; (c) un **échantillon des abandons** a aussi été relu, pour mesurer les faux refus (sinon on ne mesure que la précision) ; (d) activation explicite dans la console par Will. Un accord qui retombe sous 80 % sur 20 contenus **repasse le type en relecture** automatiquement. Les contenus touchant la Journée IA restent **toujours** en relecture humaine (règle existante).
 
 ## 6. Choix des modèles et coût
 
@@ -190,32 +190,32 @@ Un contenu qui a franchi R8 entre d'abord en **file de relecture humaine** (réu
 | R6 Vérificateur               | Sonnet 5.5 + web   | Contrôle étroit et vérifiable                         |
 | R7 Éditeur                    | Sonnet 5.5         | Forme, contrôlée par le code                          |
 | R8 Porte                      | Sonnet 5.5 + code  | Dernier filet, majoritairement déterministe           |
-| Analyste hebdomadaire (§ 7.4) | Opus 5.5 (Batch)   | Raisonnement sur peu de données, une fois par semaine |
+| Analyste hebdomadaire (§ 7.3) | Opus 5.5 (Batch)   | Raisonnement sur peu de données, une fois par semaine |
 
 **Jamais Fable.** Haiku 5.5 n'est pas retenu : le calcul de coût du dépôt refuse son prix (`providers/anthropic.ts`), il faudrait d'abord le saisir ; gain marginal face au risque sur la qualité. Le cache de prompt (doctrine de marque, grille, positionnement : lecture à 0,05 × l'entrée sur Opus et Sonnet) est employé pour les parties stables des prompts.
 
 ### 6.2 Estimation du coût par contenu (à confirmer par mesure réelle)
 
-Hypothèses (tarifs du § 2, page lue le 27/11/2026) : article d'environ 1 800 mots, soit 4 500 tokens de sortie en tenant compte des 30 % de tokens supplémentaires des modèles récents ; entrées de 8 000 à 40 000 tokens selon le rôle ; réflexion adaptative incluse dans les sorties.
+Hypothèses (tarifs du § 2, page lue le 27/11/2026) : article d'environ 1 800 mots, soit 4 500 tokens de sortie avec une marge pour les tokens supplémentaires des modèles récents (ordre de 30 %, **non sourcé**, à mesurer) ; entrées de 8 000 à 40 000 tokens selon le rôle ; réflexion adaptative incluse dans les sorties.
 
-| Rôle                               | Entrée × sortie (tokens)         | Coût par tentative |
-| ---------------------------------- | -------------------------------- | ------------------ |
-| R1 (réparti sur ~10 briefs, Batch) | 15 k × 2 k                       | 0,05 $             |
-| R2 Opus                            | 8 k × 2 k                        | 0,07 $             |
-| R3 Sonnet + 8 recherches           | 40 k × 3 k + 0,08 $ de recherche | 0,19 $             |
-| R4 Opus                            | 15 k × 6 k                       | 0,18 $             |
-| R5 Opus                            | 12 k × 3 k                       | 0,11 $             |
-| R6 Sonnet + web                    | 20 k × 3 k + pages               | 0,12 $             |
-| R7 Sonnet                          | 12 k × 6 k                       | 0,08 $             |
-| R8 Sonnet                          | 10 k × 1 k                       | 0,03 $             |
-| **Total, un passage**              |                                  | **≈ 0,85 $**       |
+| Rôle                                 | Hypothèse (tokens entrée × sortie)            | Coût par passage  |
+| ------------------------------------ | --------------------------------------------- | ----------------- |
+| R1 (réparti sur ~10 briefs, Batch)   | 15 k × 2 k                                    | 0,0025 $          |
+| R2 Opus (lit les 5 premières pages)  | 25-50 k × 2 k                                 | 0,15 à 0,30 $     |
+| R3 Sonnet + 8 recherches + lectures  | 150-250 k × 3 k (contexte relu à chaque tour) | 0,35 à 0,60 $     |
+| R4 Opus                              | 15 k × 6 k                                    | 0,18 $            |
+| R5 Opus                              | 12 k × 3 k                                    | 0,11 $            |
+| R6 Sonnet + web (rouvre les sources) | 20-60 k × 3 k + pages                         | 0,15 à 0,40 $     |
+| R7 Sonnet                            | 12 k × 6 k                                    | 0,08 $            |
+| R8 Sonnet                            | 10 k × 1 k                                    | 0,03 $            |
+| **Total, un passage complet**        |                                               | **≈ 1,3 à 1,6 $** |
 
-- Une **réécriture ciblée** (R4 sur sections, puis R5, R6, R8 sur ces sections) ≈ **0,40 $**. Tentative moyenne avec 0,7 réécriture : **≈ 1,1 $**. Plage retenue : **0,9 à 1,4 $** par tentative ; **plafond dur 3 $** par contenu.
-- **Taux de réussite supposé au départ : 35 à 50 %**, car la première semaine sera sévère. **Coût par contenu publié ≈ coût par tentative ÷ taux de réussite ≈ 2,5 à 4 $.** Un abandon tôt (R2 `pas_d_angle`, R3 `dossier_insuffisant`) coûte 0,1 à 0,3 $, ce qui tire la moyenne vers le bas.
-- **Budget : 200 $/mois** (réglable dans la console, valeur posée actuelle de la voie Claude ; bornes dures 20 $/jour et 300 $/mois). Répartition proposée : **analyste et chercheur ≈ 15 $** (4 passages hebdomadaires à ≈ 3 $, plus R1), **réserve de dépassement 10 %** (20 $), reste ≈ **165 $ pour la production**, soit **≈ 40 à 55 contenus publiés par mois au départ** à 3-4 $ pièce, et davantage quand le taux de réussite monte. **Ce chiffre n'est pas un objectif** : si moins de contenus passent, on en publie moins et on dépense moins.
+- Une **réécriture ciblée** (R4 sur sections, puis R5, R6, R7, R8 sur ces sections) ≈ **0,45 $**. Un **contenu lancé** coûte selon l'issue : abandon tôt (`pas_d_angle`, `dossier_insuffisant`) ≈ 0,2 à 0,6 $ ; abandon après 2 réécritures ≈ 2,5 $ ; réussite ≈ 1,5 à 2,3 $. Avec la répartition supposée (40 % de réussites, 40 % d'abandons tôt, 20 % d'abandons tardifs), **≈ 1,4 $ par contenu lancé**, donc **≈ 3,5 $ par contenu publié** ; **jusqu'à 6 $ si le taux de réussite est de 35 %**. Formule retenue : somme des coûts de tous les contenus lancés ÷ nombre de contenus publiés. **Plafond dur 3 $ par contenu lancé.**
+- **Le taux de réussite de 35 à 50 % et la répartition des issues sont des hypothèses, à mesurer (C1)**, car la première semaine sera sévère.
+- **Budget : 200 $/mois** (réglable dans la console, valeur posée actuelle de la voie Claude ; bornes dures 20 $/jour et 300 $/mois). Répartition proposée : **analyste et chercheur ≈ 15 $**, **réserve de dépassement 10 %** (20 $), **part du pilotage SEO/GEO ≈ 30 $** (2 $/jour partagé avec cette voie), soit **≈ 135 $ pour la production**, **≈ 30 à 40 contenus publiés au plus** à 3,5-4 $ pièce. **Le volume réel sera plus bas : il est borné par la relecture humaine** (un seul relecteur, 3 contenus lancés par jour au départ, file arrêtée à 10 en attente), d'où **10 à 30 publiés par mois au départ**. Ce n'est pas un objectif : on publie ce qui passe. **Contrôle à faire en C10** : le plafond jour (10 $) étant réservé au coût maximal, 3 contenus × 3 $ + 2 $ du pilotage = 11 $ dépasse ; régler le plafond jour ou limiter à 2 contenus simultanés.
 - **Si le budget est atteint dans le mois** : la chaîne s'arrête (mécanisme actuel de réservation et de suspension de `blog-claude.ts`), les contenus en cours sont mis en attente, **jamais finis au rabais**.
 - **Mesure** : la première semaine sert à mesurer le vrai coût par rôle dans `CostLedger` (champ `role`) ; ce tableau est alors **remplacé par les valeurs mesurées**.
-- **Concurrence avec l'existant** : le budget de 200 $ des appels de la voie Claude et la boucle d'amélioration qualité à 100 $/mois (`content-quality-improver-worker.ts`) **ne doivent pas se cumuler sans décision**. La P1 (§ 11) fait de la chaîne le consommateur principal du budget Claude et met l'ancienne boucle d'amélioration en veille pour les contenus de la chaîne.
+- **Concurrence avec l'existant** : la boucle d'amélioration qualité (100 $/mois, `content-quality-improver-worker.ts`) est surtout de la dépense OpenAI (gpt-4o), pas du budget Claude. La console doit afficher un **total multi-fournisseur**. Les modèles par rôle exigent aussi de modifier la table de `blog-claude.ts:35` (aujourd'hui `ecriture` = Sonnet, `relecture` = Opus avec plafond `jugeMaxJour`) : R4 en Opus et R5 en Opus passent par cette table, avec un test, dans C7 et C8 ; `jugeMaxJour` s'applique à R5.
 
 ## 7. Boucle d'amélioration continue
 
@@ -228,7 +228,7 @@ Table `ContenuRefus` (additive) : contenu, tentative, **rôle qui refuse**, **co
 Table `ContenuResultat` (une ligne par contenu et par date de mesure) : **indexation** (inspection d'URL à J3 et J7, réutilise `suivi-publication.ts`), **affichages, clics, position** (Search Console, J7/J28/J90), **affichages dans les aperçus IA** (rapport « Search Generative AI performance » : données par page, **à consulter hors API tant qu'une API n'est pas confirmée**), **citations IA** (voir ci-dessous), **visites venues des IA** (Plausible, existant), **rendez-vous générés** (voir ci-dessous).
 
 - **Citations IA mesurables ?** Seulement en partie : Bing AI Performance (Copilot, Bing), rapport Search Console pour les aperçus IA, et un **échantillon de questions fixes** posées chaque semaine aux moteurs ouverts (une dizaine de questions, 7 à 8 répétitions, car les sources citées changent d'un jour à l'autre). C'est la P10 « GEO mesure » du pilotage, que cette chaîne **réutilise sans la dupliquer**. Aucun chiffre de citation n'est présenté sans son intervalle et son échantillon.
-- **Rendez-vous générés** : il n'existe aujourd'hui **aucun lien article → rendez-vous** (`AUDIT` : Calendly capte `utm_source`, rien ne le relie à `content-gen`). Ajouter un paramètre `utm_content=<slug>` sur le lien du Diagnostic IA 45 min et le lire à la réservation. **Attribution partielle assumée** : la décision de réserver suit rarement une seule page ; le tableau dit « attribué au dernier article lu », pas « causé par ».
+- **Rendez-vous générés** : il n'existe aujourd'hui **aucun lien article → rendez-vous** (`AUDIT` : Calendly capte `utm_source`, rien ne le relie à `content-gen`). **Pas de `utm_content` sur un lien interne** (il écraserait la source de la visite dans Plausible, et les pages publiques n'ont pas de JavaScript) : transmettre la page d'origine **côté serveur**, de la page contact jusqu'à la réservation Calendly (C12). **Attribution partielle assumée** : la décision de réserver suit rarement une seule page ; le tableau dit « attribué au dernier article lu », pas « causé par ».
 - **Règle de prudence** : le site est jeune (environ 428 impressions par semaine en août). Sous les planchers statistiques définis au pilotage (§ 4.2 de `PLAN.md`), **l'écran affiche « données insuffisantes » et aucune décision n'est tirée**. Une durée d'observation d'au moins 8 semaines précède toute conclusion sur les résultats.
 
 ### 7.3 Analyse hebdomadaire
@@ -292,17 +292,18 @@ Le rythme **découle de ce qui passe la qualité**. Mécanique :
 
 ## 12. Découpage en petites PR ordonnées
 
-Règles communes (identiques à `DECOUPAGE.md`) : ouvrir en **brouillon**, ne passer « prête » qu'à la fin du lot ; ne jamais toucher `positionnement.ts`, `interdits-publication.ts`, `pricing.ts`, `legal.ts` ; migrations **additives** uniquement, colonnes nullables ; **nouvelles files et charges tolérées par un worker plus ancien** (D8b : le worker ignore toute tâche inconnue, une valeur d'énumération est ajoutée avant d'être émise) ; tout éteint par défaut ; respecter le contrat de build `stub.invalid`.
+Règles communes (identiques à `DECOUPAGE.md`) : ouvrir en **brouillon**, ne passer « prête » qu'à la fin du lot ; ne jamais toucher `positionnement.ts`, `interdits-publication.ts`, `pricing.ts`, `legal.ts`, `journee-ia-commun.ts` ; migrations **additives** uniquement, colonnes nullables ; **nouvelles files et charges tolérées par un worker plus ancien** (D8b : le worker ignore toute tâche inconnue, une valeur d'énumération est ajoutée avant d'être émise) ; tout éteint par défaut ; respecter le contrat de build `stub.invalid`.
 
 ### Tout de suite (sans migration, sans risque pour le site)
 
-- **C0 · Corriger les défauts de l'équipe existante** (reprise de la P0 du pilotage) : type `blog_edition_seo`, job porteur pour la mise à jour réelle. Prérequis des suivantes.
-- **C1 · Mesurer avant de changer** : ajouter le **rôle** dans `CostLedger`/`GenerationLog` (champ nullable) et un rapport **lecture seule** « taux de blocage actuel par contrôle et coût réel par article » sur les 30 derniers jours. **Objectif : remplacer les hypothèses du § 6.2 par des chiffres réels.**
-- **C2 · Arrêter la publication faible** : pour la voie actuelle, passer `factoryAutoPublishAllBlogTypes` à faux et ne plus forcer `tier_1_indexable` pour les contenus sans relecture (décision à valider par Will ; c'est un changement de comportement, d'où la PR séparée et le test dédié).
+- **C0 · (déjà livré, rien à faire)** : la P0 du pilotage (#2406) a livré `providers/job-porteur.ts`, le job porteur de la mise à jour réelle et la correction de `blog_edition_seo`. Le § 1.3 le mentionne. L'ordre part donc de C1.
+- **C1 · Mesurer avant de changer, sans migration** : rapport **lecture seule** « taux de blocage actuel par contrôle et coût réel par article et par rôle » sur les 30 derniers jours, lu dans `outputJsonRaw.equipe` (qui journalise déjà coût par rôle) et `GenerationLog.metadata`. La colonne `role` de `CostLedger` attend la migration de C3. **Objectif : remplacer les hypothèses du § 6.2 par des chiffres réels.**
+- **C2 · Arrêter la publication faible** : pour la voie actuelle, passer `factoryAutoPublishAllBlogTypes` **et `newsAutoPublish`** (actualités RSS : réécritures de flux publiées dès 60, le profil le plus exposé) à faux, ne plus forcer `tier_1_indexable` pour les contenus sans relecture, **et abaisser en même temps le plafond `anti-burst` (20 → 3) ; décider du gel de la rotation des 747 mots-clés**, sinon la file de relecture sature. Décision à valider par Will (changement de comportement, d'où la PR séparée et le test dédié).
+- **C2b · Audit du corpus déjà publié** (lecture seule, sans migration) : liste des articles et pages gabaritées (pages villes) à faible valeur, sans impressions, doublons de plan ; **signalements pour un humain, jamais de noindex ni de fusion automatique** (`PLAN.md`, principe 5). C'est le premier risque Google : le signal de qualité à l'échelle du site vient de l'existant, pas de la nouvelle chaîne.
 
 ### Vague 1 : fondations (migration additive)
 
-- **C3 · Tables** `ContenuBesoin`, `ContenuBrief`, `ContenuRefus`, `ContenuResultat`, `ContenuProposition` (migration additive, colonnes nullables).
+- **C3 · Tables** (en **étendant** `equipe/brief.ts` et ses énumérations d'intention plutôt que de dupliquer un second schéma de brief) ; ajout de la colonne nullable `role` à `CostLedger` : `ContenuBesoin`, `ContenuBrief`, `ContenuRefus`, `ContenuResultat`, `ContenuProposition` (migration additive, colonnes nullables).
 - **C4 · Liste fermée des codes de raison** (module pur, tests) et contrat d'interface avec la porte (§ 8).
 
 ### Vague 2 : rôles, un par PR, chacun testé seul et éteint
@@ -328,7 +329,7 @@ Règles communes (identiques à `DECOUPAGE.md`) : ouvrir en **brouillon**, ne pa
 
 ### Ordre et dépendances
 
-`C0 → C1 → C2` (parallèle de C3) → `C3 → C4 → C5 → C6 → C7 → C8 → C9 → C10` → `C11, C12` → `C13, C14` → `C15 → C16`. C5, C6, C7 peuvent avancer en parallèle après C4.
+`C1 → C2, C2b` (parallèle de C3) → `C3 → C4 → C5 → C6 → C7 → C8 → C9 → C10` → `C11, C12` → `C13, C14` → `C15 → C16`. C5, C6, C7 peuvent avancer en parallèle après C4.
 
 ## 13. Risques et réponses
 
@@ -343,6 +344,12 @@ Règles communes (identiques à `DECOUPAGE.md`) : ouvrir en **brouillon**, ne pa
 | Fenêtre app/worker (D8b)                                                                                                           | Files et tâches nouvelles ignorées par un ancien worker, colonnes nullables, énumération ajoutée avant son émission, tolérance P2021.                                                                                                                                         |
 | Dépendance à des sources non vérifiées (API Search Console pour l'IA, citations)                                                   | Marquées « indisponible » à l'écran ; aucune décision automatique sur ces données.                                                                                                                                                                                            |
 | Conflit des règles de marque                                                                                                       | « Grenoble » et « partout en France » : voir § 9, décision de Will requise.                                                                                                                                                                                                   |
+| **Corpus existant** : articles gpt-4o publiés automatiquement depuis juin, actualités RSS, pages villes gabaritées                 | Audit en lecture seule (C2b), arrêt de la publication faible (C2), aucune action automatique sur les URL.                                                                                                                                                                     |
+| Injection d'instructions par les pages lues (R1, R2, R3, R6)                                                                       | Pages traitées comme des données, jamais comme des consignes ; sorties JSON validées.                                                                                                                                                                                         |
+| Paraphrase trop proche des pages concurrentes lues par R2                                                                          | Contrôle de plagiat contre ces pages.                                                                                                                                                                                                                                         |
+| Péremption des faits datés                                                                                                         | Revérification à 12 mois (mode mise à jour).                                                                                                                                                                                                                                  |
+| Envoi d'articles à l'API Google Indexing (hors conditions d'usage)                                                                 | Exclu pour la chaîne ; IndexNow et sitemap seulement.                                                                                                                                                                                                                         |
+| Juge de même famille que le rédacteur (Opus juge Opus)                                                                             | Entrée de terrain réelle obligatoire dans le brief (note de Will, constat anonymisé de Diagnostic) sinon abandon `pas_de_matiere` ; R5 calibré sur les verdicts humains ; autre modèle à envisager pour R5 ou R8 si l'écart persiste.                                         |
 
 ## 14. Décisions demandées à Will
 
@@ -352,3 +359,6 @@ Règles communes (identiques à `DECOUPAGE.md`) : ouvrir en **brouillon**, ne pa
 4. **Source « demandes reçues »** : quelles données agrégées sont autorisées.
 5. **Budget** : confirmer 200 $/mois pour la chaîne et la mise en veille de la boucle qualité à 100 $ pour les contenus de la chaîne.
 6. **Relecteur humain** : qui valide la file, avec quel délai cible.
+
+7. **Corpus existant et actualités** : confirmer l'arrêt de la publication automatique des actualités RSS (C2) et l'audit des pages déjà publiées (C2b).
+8. **Doctrine et angle unique** : la doctrine impose de passer par la démarche Axion-IA et de ne jamais suggérer au lecteur de faire seul ; l'angle unique doit s'y inscrire. Confirmer, et fournir une **matière de terrain réelle** (notes, constats anonymisés) pour chaque brief.
