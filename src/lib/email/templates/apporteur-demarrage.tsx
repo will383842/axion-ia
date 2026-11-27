@@ -31,7 +31,7 @@ import type { ReactElement } from "react";
 import { EmailLayout, emailStyles } from "./_layout";
 import { assemblerParagraphes, listeTexte } from "../texte-par-defaut";
 import { paragraphesLibres } from "./texte-libre-reseau";
-import { ligneAPreparer, lignesBareme } from "./_bareme-apporteur";
+import { ligneAPreparer } from "./_bareme-apporteur";
 import { PARRAINAGE_BPS, PARRAINAGE_MOIS } from "@/features/apporteurs-reseau/regles";
 import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
@@ -54,6 +54,8 @@ const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 export type MotifRefus = "deja-connue" | "pas-disponible" | "hors-champ";
 
 interface Payload {
+  /** « Contrat signé » : `true` seulement si la règle par rendez-vous s'applique (`regleDe`). Absent : ancien texte. */
+  regleRendezVous?: boolean;
   /** Manquement (art. 4.5 bis) : les faits, tels que saisis dans la console. */
   faits?: string;
   /** Manquement : avis au PARRAIN dont la part est retirée (sans les faits). */
@@ -169,18 +171,24 @@ export const COPY_DEMARRAGE = {
     ensuiteTitre: "Ensuite",
     ensuite: [
       "Nous vous répondons pour vous confirmer que c'est noté.",
+      "L'entreprise vous est réservée 60 jours à partir de votre déclaration.",
+      (mois: number) =>
+        `Elle vous est attribuée dès son premier rendez-vous avec nous, s'il a été pris pendant ces 60 jours (même s'il a lieu après ; un rendez-vous annulé par Axion-IA compte comme tenu), ou dès qu'elle signe une commande pendant ces 60 jours. Toutes ses commandes signées pendant ${mois} mois à compter de ce rendez-vous ou de cette commande vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
+    ],
+    // Règle du silence (contrats antérieurs à la 2.8, ou drapeau éteint) : texte d'origine.
+    ensuiteSilence: [
+      "Nous vous répondons pour vous confirmer que c'est noté.",
       "L'entreprise vous est réservée : la date de votre déclaration fait foi.",
       (mois: number) =>
         `Une fois l'entreprise attribuée, toutes ses commandes signées pendant ${mois} mois à compter de votre déclaration vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
     ],
-    commissionTitre: "Votre commission",
     parrainage: (pct: string, mois: number) =>
       `Parrainage : si vous présentez une personne qui devient elle-même apporteur, vous touchez ${pct} des commissions nées de ses commandes signées pendant les ${mois} mois qui suivent la signature de son contrat par Axion-IA.`,
     paiement:
-      "Elle vous est due dès que le client a payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée : nous établissons votre facture pour vous, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
+      "Votre commission vous est due dès que le client a payé l'intégralité de sa commande, même si la prestation n'est pas encore livrée : nous établissons votre facture pour vous, puis nous faisons le virement au plus tard 30 jours après ce paiement.",
     fiche:
-      "Votre contrat signé des deux parties est en pièce jointe. La fiche des commissions est à garder sous la main",
-    ficheLien: "la fiche en PDF",
+      "Votre contrat signé des deux parties est en pièce jointe. Vos documents à jour (fiche des commissions, livret d'accueil, guide de démarrage) sont dans votre espace : ",
+    ficheLien: "Mes documents",
   },
   presentationRecue: {
     subject: (e: string) =>
@@ -507,7 +515,7 @@ export const apporteurContratSigneSubject = (_locale: Locale): string =>
 export function ApporteurContratSigneEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.contratSigne;
-  const [e1, e2, e3] = t.ensuite;
+  const [e1, e2, e3] = p.regleRendezVous === true ? t.ensuite : t.ensuiteSilence;
   const libres = paragraphesLibres(p.texteLibre);
   // Le lien du dossier porte le formulaire de déclaration : bouton quand on l'a.
   const url = texteOuNull(p.dossierUrl);
@@ -545,13 +553,6 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
             3. {e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
           </Text>
 
-          <Text style={intertitre}>{t.commissionTitre}</Text>
-          {/* Le MÊME barème que « Retenu » et que le contrat v2 (`_bareme-apporteur`). */}
-          {lignesBareme().map((ligne) => (
-            <Text key={ligne} style={puce}>
-              • {ligne}
-            </Text>
-          ))}
           <Text style={puce}>• {t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}</Text>
           <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
         </>
@@ -560,14 +561,14 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>
         {t.fiche}
         {url ? (
-          <>
-            {" : "}
-            <a href={`${url}/fiche-commissions`} style={{ color: emailStyles.COLORS.terracotta }}>
-              {t.ficheLien}
-            </a>
-          </>
+          <a
+            href={`${url.replace(/\/+$/, "")}/documents`}
+            style={{ color: emailStyles.COLORS.terracotta }}
+          >
+            {t.ficheLien}
+          </a>
         ) : (
-          " (disponible sur votre lien personnel)"
+          t.ficheLien
         )}
         .
       </Text>
@@ -1309,16 +1310,14 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
     }
     case "apporteur-contrat-signe": {
       const t = COPY_DEMARRAGE.contratSigne;
-      const [e1, e2, e3] = t.ensuite;
+      const [e1, e2, e3] = payload.regleRendezVous === true ? t.ensuite : t.ensuiteSilence;
       return avecMot([
         mot,
         t.merci,
         `${t.presenterTitre}\n${t.presenter}\n${liste(t.champs)}`,
         t.prevenir,
         `${t.ensuiteTitre}\n1. ${e1}\n2. ${e2}\n3. ${e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}`,
-        `${t.commissionTitre}\n${lignesBareme()
-          .map((ligne) => `• ${ligne}`)
-          .join("\n")}\n• ${t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}`,
+        `• ${t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}`,
         t.paiement,
         "Votre contrat signé des deux parties est en pièce jointe.",
       ]);

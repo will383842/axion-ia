@@ -103,6 +103,11 @@ describe("l'objet et l'extrait gardés — jamais plus", () => {
     expect(extraitCourt(null)).toBeNull();
   });
 
+  it("les apostrophes codées en HTML sont lues avant de tailler", () => {
+    expect(extraitCourt("Merci d&#39;avoir pensé à moi")).toBe("Merci d'avoir pensé à moi");
+    expect(objetEnregistre("Re: l&#x27;échange")).toBe("Re: l'échange");
+  });
+
   it("l'objet tient dans sa colonne (500), et n'est jamais vide", () => {
     expect(objetEnregistre("x".repeat(900)).length).toBeLessThanOrEqual(LONGUEUR_OBJET_MAX);
     expect(objetEnregistre("   ")).toBe("(sans objet)");

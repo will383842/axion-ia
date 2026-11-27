@@ -76,6 +76,7 @@ import {
   lireFiltreType,
   ongletAutreVisible,
 } from "@/features/admin-rendezvous/type-rdv";
+import { BoutonTrameEchange } from "@/components/admin/contacts/BoutonTrameEchange";
 import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import { LIBELLE_CANAL } from "@/server/calendly/canal";
 import { dayKeyInParis, dayKeyOfGridDate, timeInParis } from "@/lib/calendar-grid";
@@ -404,10 +405,15 @@ function CarteRdv({
 
       {dossier !== null && !apporteur ? <DossierSurLaCarte d={dossier} /> : null}
 
-      <p>
+      <p className="flex flex-wrap items-center gap-[var(--space-admin-4)]">
         <Link href={r.detailHref} className="admin-link">
           Ouvrir la fiche ›
         </Link>
+        <BoutonTrameEchange
+          eventTypeName={r.title}
+          typeRendezVous={r.typeRendezVous}
+          contactName={r.contactName}
+        />
       </p>
     </li>
   );
@@ -476,6 +482,11 @@ function CartePoint({
           {quand} · <PastilleTypeRdv type={r.typeRendezVous} /> · {r.titre}
         </p>
       </div>
+      <BoutonTrameEchange
+        eventTypeName={r.titre}
+        typeRendezVous={r.typeRendezVous}
+        contactName={r.contactName}
+      />
       {formulaire === "apporteur" ? (
         <IssueEchangeApporteurForm calendlyEventId={r.id} peutRetenir={peutRetenir} />
       ) : formulaire === "formateur" ? (

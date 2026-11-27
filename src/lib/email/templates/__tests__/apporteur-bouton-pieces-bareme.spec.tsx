@@ -46,24 +46,25 @@ describe("bouton et liste « à préparer »", () => {
   );
 });
 
-describe("barème identique partout, tiré des constantes du contrat", () => {
-  it("« Retenu » et « contrat signé » citent les mêmes lignes, 1-to-1 et conférence compris", async () => {
+describe("plus aucun montant dans « Retenu » ni « contrat signé » (le barème vit dans la fiche en lien)", () => {
+  it("ni « € », ni « % » dans les lignes de commission ; seul le parrainage reste dans « contrat signé »", async () => {
     const retenu = await texte("apporteur-issue-retenu", {
       contactName: "Claire Martin",
       dossierUrl: URL_DOSSIER,
     });
     const signe = await texte("apporteur-contrat-signe", { contactName: "Claire Martin" });
     for (const ligne of lignesBareme()) {
-      expect(retenu).toContain(ligne);
-      expect(signe).toContain(ligne);
+      expect(retenu).not.toContain(ligne);
+      expect(signe).not.toContain(ligne);
     }
-    expect(lignesBareme().join(" ")).toContain("1-to-1");
-    expect(lignesBareme().join(" ")).toContain("Conférence : aucune commission");
-    expect(lignesBareme().join(" ")).toContain("Journée IA : 500 € HT");
-    expect(lignesBareme("en").join(" ")).toContain("Talks: no commission");
-    // Le parrainage reste dans « contrat signé » (c'est le contrat), et la mention prudente aussi.
+    // Seul le montant Journée IA est cité (décision de Will du 27/11/2026).
+    expect(retenu).toContain(
+      "Pour une Journée IA, votre commission est, à titre indicatif, de 500 € HT par journée",
+    );
+    expect(retenu.replaceAll("500 € HT par journée", "")).not.toContain("€");
+    expect(signe).not.toContain("€");
+    expect(signe).not.toContain("Audit :");
     expect(signe).toContain("Parrainage");
-    expect(retenu).toContain("à titre indicatif");
   });
 });
 
@@ -94,13 +95,13 @@ describe("étape 2 : « Pas encore de numéro SIREN ? »", () => {
 });
 
 describe("13) « contrat signé » réécrit par Will", () => {
-  it("lie la fiche des commissions par le lien personnel, jamais par un fichier public", async () => {
+  it("garde le lien « Mes documents » vers l'espace, plus le PDF « Comment ça marche »", async () => {
     const r = await renderEmailTemplate("apporteur-contrat-signe" as never, "fr", {
       contactName: "Claire Martin",
+      dossierUrl: URL_DOSSIER,
       texteLibre: "Bienvenue dans le réseau.",
-      dossierUrl: "https://exemple.test/apporteur/dossier/1/jeton",
     });
-    expect(r.html).toContain("/apporteur/dossier/1/jeton/fiche-commissions");
-    expect(r.html).not.toContain("comment-ca-marche");
+    expect(r.html).toContain(`href="${URL_DOSSIER}/documents"`);
+    expect(r.html).not.toContain("comment-ca-marche.pdf");
   });
 });
