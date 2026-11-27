@@ -5,6 +5,7 @@ vi.mock("@/lib/prisma", () => ({
   prisma: { siteVideo: { findMany: (...a: unknown[]) => findMany(...a) } },
 }));
 
+import { BLOG_CATEGORY_SLUGS } from "@/server/content-gen/lib/category-mapper";
 import { viderCacheVideos } from "../lecture";
 import {
   THEME_GENERIQUE_VILLES,
@@ -156,5 +157,24 @@ describe("correspondances thème", () => {
   it("le thème générique des villes existe dans la liste fermée", async () => {
     const { THEME_SLUGS } = await import("@/content/videos/themes");
     expect(THEME_SLUGS).toContain(THEME_GENERIQUE_VILLES);
+  });
+});
+
+describe("catégories de blog réelles (BLOG_CATEGORY_SLUGS)", () => {
+  it.each([
+    ["blog-formations-ia", "formations-ia"],
+    ["blog-coaching-1-to-1", "coaching-ia"],
+    ["blog-audits-ia", "audit-ia"],
+    ["blog-implementations-ia", "automatisation"],
+    ["blog-sites-web-augmentes", "sites-web-ia"],
+  ])("%s → %s", (slug, theme) => {
+    expect(themeDeCategorieBlog(slug)).toBe(theme);
+  });
+
+  it("chacun des vrais slugs de catégorie donne un thème (aucune catégorie sans encart)", () => {
+    expect(BLOG_CATEGORY_SLUGS.length).toBeGreaterThan(0);
+    for (const slug of BLOG_CATEGORY_SLUGS) {
+      expect(themeDeCategorieBlog(slug), slug).not.toBeNull();
+    }
   });
 });

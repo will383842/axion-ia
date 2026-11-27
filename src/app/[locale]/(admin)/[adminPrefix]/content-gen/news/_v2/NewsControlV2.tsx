@@ -127,6 +127,9 @@ export function NewsControlV2({
               file de relecture avant mise en ligne
             </label>
             <p className="admin-meta-block">
+              {cfg.publicationSansRelectureAutorisee === true
+                ? null
+                : "⚠️ Sans effet tant que « Autoriser la publication sans relecture » (Règles de publication) est décoché : toutes les actualités partent en relecture. "}
               Quand activé, une actualité est publiée dès que son score qualité atteint{" "}
               <strong>{cfg.rssAutoPublishMinScore}</strong> (réglable dans Policies). En dessous,
               elle part en relecture. L&apos;anti-plagiat vs source (Jaccard{" "}

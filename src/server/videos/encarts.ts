@@ -54,6 +54,9 @@ const THEME_PAR_MOT: Readonly<Record<string, string>> = {
   audit: "audit-ia",
   audits: "audit-ia",
   implementation: "automatisation",
+  // Slug réel `blog-implementations-ia` (SECTOR_TO_CATEGORY_SLUG) : le PLURIEL. Sans lui, cette
+  // catégorie n'avait jamais d'encart.
+  implementations: "automatisation",
   automatisation: "automatisation",
   site: "sites-web-ia",
   sites: "sites-web-ia",
