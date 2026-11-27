@@ -100,6 +100,7 @@ import {
   htLignesRecurrentesRestantesCents,
   plafondBaseCommissionnableCents,
   calculerCommissionAvecRegle,
+  regleApresPlafond,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
   versionContratSignee,
@@ -1291,7 +1292,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
         signeeAt,
       });
       calc = r.calcul;
-      regle = plafondBase < baseAvantPlafond && r.regle !== null ? "plafond_base" : r.regle;
+      regle = regleApresPlafond(r.regle, baseAvantPlafond, plafondBase);
     }
     const versionContrat = versionContratSignee(p.apporteur.signatureApporteur);
     if (calc.statut === "aucune") continue;
@@ -1391,6 +1392,11 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           commandeSigneeAt: signeeAt,
         });
         const v = await statutApresVigilance(parrainId, part, maintenant);
+        // Version signée par le PARRAIN (un apporteur signé), pas celle du filleul.
+        const parrain = await prisma.apporteurReseau.findUnique({
+          where: { id: parrainId },
+          select: { signatureApporteur: true },
+        });
         await prisma.commissionApporteur.create({
           data: {
             ...base,
@@ -1399,7 +1405,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
             montantCents: part,
             statut: v.statut,
             regleAppliquee: "parrainage_10",
-            // `versionContrat` : celle du PARRAIN n'est pas lue ici, rien n'est inventé (null).
+            versionContrat: versionContratSignee(parrain?.signatureApporteur),
           },
           select: { id: true },
         });

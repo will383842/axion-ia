@@ -73,7 +73,10 @@ vi.mock("@/lib/prisma", () => ({
     presentationReservation: { findMany: vi.fn(async () => []) },
     pieceApporteur: { findMany: vi.fn(async () => []) },
     devis: { findMany: vi.fn(async () => []) },
-    apporteurReseau: { findMany: vi.fn(async () => []) },
+    apporteurReseau: {
+      findMany: vi.fn(async () => []),
+      findUnique: vi.fn(async () => ({ signatureApporteur: { version: "2.6" } })),
+    },
   },
 }));
 
@@ -489,6 +492,8 @@ describe("passage quotidien : commission par commande soldée", () => {
         await passerReseauApporteurs(MAINTENANT);
         expect(etat.crees).toHaveLength(1);
         expect(etat.crees[0]).toMatchObject({ factureHtCents: 400_000, montantCents: 60_000 });
+        // Le plafond a réduit la base (taux_ht) : la règle posée est plafond_base.
+        expect(etat.crees[0]).toMatchObject({ regleAppliquee: "plafond_base" });
       });
 
       it("devis 4 000 € + 150 €, facture refaite en ligne unique 4 150 € → 600 €", async () => {
@@ -664,6 +669,8 @@ describe("passage quotidien : commission par commande soldée", () => {
       apporteurId: "PAR1",
       parrainage: true,
       montantCents: 6_000,
+      regleAppliquee: "parrainage_10",
+      versionContrat: "2.6",
     });
     expect(bilan.partsParrainage).toBe(1);
   });

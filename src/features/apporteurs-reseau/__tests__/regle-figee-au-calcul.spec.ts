@@ -149,3 +149,22 @@ describe("lot R — chaque création de commission pose la règle (source)", () 
     }
   });
 });
+
+import { regleApresPlafond } from "../regles";
+
+describe("regleApresPlafond", () => {
+  it("taux_ht dont le plafond réduit la base : plafond_base", () => {
+    expect(regleApresPlafond("taux_ht", 100_000, 80_000)).toBe("plafond_base");
+  });
+  it("plafond égal ou supérieur à la base : code d'origine", () => {
+    expect(regleApresPlafond("taux_ht", 100_000, 100_000)).toBe("taux_ht");
+  });
+  it("rien de calculé : null", () => {
+    expect(regleApresPlafond(null, 100_000, 80_000)).toBeNull();
+  });
+  it("un forfait plafonné garde son code (conférence d'avant la date d'effet)", () => {
+    expect(regleApresPlafond("tarif_avant_date_effet", 100_000, 80_000)).toBe(
+      "tarif_avant_date_effet",
+    );
+  });
+});

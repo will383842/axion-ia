@@ -600,6 +600,21 @@ export function calculerCommissionAvecRegle(e: Parameters<typeof calculerCommiss
 }
 
 /**
+ * Code de règle après le plafond de base : `plafond_base` seulement si le montant vient d'un
+ * pourcentage de la base (`taux_ht`) ET que le plafond a réduit cette base. Un forfait (palier,
+ * conférence d'avant la date d'effet, remise au prorata…) garde son code : le plafond ne change pas
+ * son montant. `null` reste `null`. Pur.
+ */
+export function regleApresPlafond(
+  regle: RegleAppliquee | null,
+  baseAvantPlafond: number,
+  plafondBase: number,
+): RegleAppliquee | null {
+  if (regle === "taux_ht" && plafondBase < baseAvantPlafond) return "plafond_base";
+  return regle;
+}
+
+/**
  * Version du contrat signée par l'apporteur (« 2.6 », « 2.8 »…), lue dans `signatureApporteur`.
  * `null` si absente ou illisible : rien n'est inventé.
  */

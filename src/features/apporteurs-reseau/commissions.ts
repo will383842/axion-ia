@@ -40,7 +40,9 @@ import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
-  calculerCommission,
+  calculerCommissionAvecRegle,
+  versionContratSignee,
+  type RegleAppliquee,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   commissionJourneeIaCents,
   PALIER_JOURNEE_IA,
@@ -305,6 +307,15 @@ export async function statutApresVigilance(
 
 // ── Qualifier une formation ──────────────────────────────────────────────
 
+/** Version du contrat signée par cet apporteur (`null` si illisible : rien n'est inventé). */
+async function versionSignee(apporteurId: string): Promise<string | null> {
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { signatureApporteur: true },
+  });
+  return versionContratSignee(a?.signatureApporteur);
+}
+
 export async function qualifierCommission(
   id: string,
   palier: string,
@@ -348,20 +359,27 @@ export async function qualifierCommission(
     });
     signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
   }
-  const calc: CalculCommission = journeeIa
-    ? {
-        statut: "calculee",
-        montantCents: commissionJourneeIaCents(c.factureHtCents, q),
-        palier: PALIER_JOURNEE_IA,
-        prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
-      }
-    : calculerCommission({
-        activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
-        factureHtCents: c.factureHtCents,
-        palier,
-        quantite,
-        signeeAt,
-      });
+  let regle: RegleAppliquee | null = null;
+  let calc: CalculCommission;
+  if (journeeIa) {
+    calc = {
+      statut: "calculee",
+      montantCents: commissionJourneeIaCents(c.factureHtCents, q),
+      palier: PALIER_JOURNEE_IA,
+      prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
+    };
+    regle = "journee_ia";
+  } else {
+    const r = calculerCommissionAvecRegle({
+      activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
+      factureHtCents: c.factureHtCents,
+      palier,
+      quantite,
+      signeeAt,
+    });
+    calc = r.calcul;
+    regle = r.regle;
+  }
   if (calc.statut !== "calculee")
     return {
       ok: false,
@@ -380,6 +398,9 @@ export async function qualifierCommission(
       prixPublicHtCents: calc.prixPublicCents,
       montantCents: calc.montantCents,
       statut: v.statut,
+      // Règle et version posées au calcul, sous la garde `a_qualifier` : jamais rétroactif.
+      regleAppliquee: regle,
+      versionContrat: await versionSignee(c.apporteurId),
     },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être qualifiée." };
@@ -451,9 +472,14 @@ export async function classerActiviteCommission(
     if (choisie === "site_web")
       venteAnterieure = !signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
   }
-  const calc: CalculCommission = venteAnterieure
-    ? { statut: "aucune" }
-    : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents, signeeAt });
+  const avecRegle = venteAnterieure
+    ? null
+    : calculerCommissionAvecRegle({
+        activite: choisie,
+        factureHtCents: c.factureHtCents,
+        signeeAt,
+      });
+  const calc: CalculCommission = avecRegle ? avecRegle.calcul : { statut: "aucune" };
   if (calc.statut === "aucune") {
     // La vraie raison, jamais un message générique : une commande de développement web signée avant
     // la date d'effet n'est pas « sans commission », elle est antérieure au contrat 2.8.
@@ -487,6 +513,8 @@ export async function classerActiviteCommission(
       ...(calc.palier ? { palier: calc.palier } : {}),
       montantCents: calc.montantCents,
       statut: v.statut,
+      regleAppliquee: avecRegle?.regle ?? null,
+      versionContrat: await versionSignee(c.apporteurId),
     },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
@@ -540,7 +568,12 @@ async function qualifierPartParrainage(
   const v = await statutApresVigilance(part.apporteurId, montant, maintenant, part.id);
   await prisma.commissionApporteur.updateMany({
     where: { id: part.id, statut: "a_qualifier" },
-    data: { montantCents: montant, statut: v.statut },
+    data: {
+      montantCents: montant,
+      statut: v.statut,
+      regleAppliquee: "parrainage_10",
+      versionContrat: await versionSignee(part.apporteurId),
+    },
   });
   if (v.demander) await demanderVigilance(part.apporteurId, "premiere");
 }
