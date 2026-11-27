@@ -50,6 +50,10 @@ import { adresseConfirmee } from "@/server/calendly/fiche-rendez-vous-apporteur"
 // `initial` à CalendlyEventEditor restent en ISO (attendu par le formulaire).
 import { formatDateFr } from "@/lib/format-date-fr";
 // Lot L5b (2026-10-04) : le type, le bouton d'origine et les réponses lisibles.
+import {
+  BoutonTrameEchange,
+  estEchangeAvecCandidatApporteur,
+} from "@/components/admin/contacts/BoutonTrameEchange";
 import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import { besoinDuBrut } from "@/server/calendly/type-rendez-vous";
@@ -204,6 +208,19 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
               : "Complétez ci-dessous depuis le mail Calendly reçu dans Gmail — ou configurez CALENDLY_API_TOKEN pour que cette étape disparaisse."}
           </p>
         </div>
+      ) : null}
+
+      {estEchangeAvecCandidatApporteur({
+        eventTypeName: event.eventTypeName,
+        typeRendezVous: typeRdv,
+      }) ? (
+        <p className="mt-[var(--space-admin-4)]">
+          <BoutonTrameEchange
+            eventTypeName={event.eventTypeName}
+            typeRendezVous={typeRdv}
+            contactName={event.inviteeName}
+          />
+        </p>
       ) : null}
 
       <div className="admin-detail-grid mt-[var(--space-admin-4)]">

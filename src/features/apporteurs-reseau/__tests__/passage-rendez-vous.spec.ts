@@ -366,7 +366,7 @@ describe("confirmation par le silence : intacte pour 2.6, jamais pour une réser
     expect(db.pres[0]!.statut).toBe("reservee");
   });
 
-  it("l'interrupteur n'est lu nulle part dans le passage : sans ligne de réservation, rien ne change, allumé ou non", async () => {
+  it("sans ligne de réservation et sans bascule possible (apporteur sans contrat 2.8), rien ne change, interrupteur allumé ou non", async () => {
     process.env.APPORTEURS_VALIDATION_RDV = "true";
     db.pres.push(pres({ recueAt: j(MAINT, -20) }));
     const b = await passerReseauApporteurs(MAINT);

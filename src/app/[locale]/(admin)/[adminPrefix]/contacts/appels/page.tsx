@@ -52,6 +52,7 @@ import {
   compterParType,
   lireFiltreType,
 } from "@/features/admin-rendezvous/type-rdv";
+import { BoutonTrameEchange } from "@/components/admin/contacts/BoutonTrameEchange";
 import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import { BilanRendezVousVue } from "@/components/admin/contacts/BilanRendezVousVue";
 import { OrigineRendezVousVue } from "@/components/admin/contacts/OrigineRendezVousVue";
@@ -679,6 +680,20 @@ export default async function AppelsPage({
             />
           </span>
         ) : null,
+    },
+    {
+      key: "trame",
+      header: "Trame",
+      cell: (r) => (
+        // Au-dessus du lien étiré de la ligne, comme la visio.
+        <span className="relative z-[2] inline-flex">
+          <BoutonTrameEchange
+            eventTypeName={r.title}
+            typeRendezVous={r.typeRendezVous}
+            contactName={r.contactName}
+          />
+        </span>
+      ),
     },
   ];
 

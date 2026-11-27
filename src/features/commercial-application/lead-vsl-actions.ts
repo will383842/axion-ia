@@ -58,6 +58,7 @@
 
 "use server";
 
+import { rattacherOrphelinsDeLaFiche } from "@/server/calendly/rattachement-orphelins";
 import { randomUUID } from "node:crypto";
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
@@ -426,9 +427,13 @@ async function creerLead(
 
   if (suspect) {
     // Ligne gardée (on voit le robot), mais ni preuve de consentement d'une
-    // personne, ni message, ni notification.
+    // personne, ni message, ni notification, ni rattachement de rendez-vous.
     return reponseJeton(submission.id, true);
   }
+
+  // Rendez-vous déjà pris (avant sa fiche) : rattachement par adresse confirmée par Calendly,
+  // jamais pour une fiche suspecte. Ne lève jamais.
+  await rattacherOrphelinsDeLaFiche(submission.id);
 
   // Preuve de consentement : le texte v3, celui de la case réellement cochée.
   try {

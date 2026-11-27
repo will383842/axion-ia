@@ -24,7 +24,13 @@
  * doivent pas être comptés comme des citations de contenu.
  */
 
-import { unsplashProvider, type UnsplashSelectedPhoto } from "../providers/unsplash";
+import {
+  findQualityUnsplashPhoto,
+  unsplashProvider,
+  type UnsplashSelectedPhoto,
+} from "../providers/unsplash";
+import { buildTopic, imageQualityEnabled, photoKeyFromUrl } from "./photo-quality";
+import { loadUsedPhotoKeys, makePhotoGate } from "./used-photos";
 
 export interface InjectBodyImagesInput {
   readonly jobId: string;
@@ -33,6 +39,8 @@ export interface InjectBodyImagesInput {
   readonly topicHint?: string;
   /** Nombre max d'images injectées (défaut 2 — conservateur vs quota Unsplash). */
   readonly maxImages?: number;
+  /** URL de l'image principale du même article (jamais reprise dans le corps). */
+  readonly heroImageUrl?: string;
 }
 
 const UNSPLASH_LINK = "https://unsplash.com/?utm_source=axion-ia&utm_medium=referral";
@@ -155,6 +163,33 @@ async function fetchPhoto(
 }
 
 /**
+ * Cascade qualité : requête du titre H2, puis (si rien de pertinent et d'inutilisé)
+ * thème de l'article. Rien → null : l'image du corps est simplement omise.
+ */
+async function fetchQualityPhoto(
+  rawQuery: string,
+  input: InjectBodyImagesInput,
+  accept: (url: string) => Promise<boolean>,
+): Promise<UnsplashSelectedPhoto | null> {
+  const raws = [rawQuery];
+  const hint = (input.topicHint ?? "").trim();
+  if (hint.length >= 3) raws.push(hint);
+  const tried = new Set<string>();
+  for (const raw of raws) {
+    const { query, terms } = buildTopic(raw);
+    if (!query || tried.has(query)) continue;
+    tried.add(query);
+    try {
+      const photo = await findQualityUnsplashPhoto({ jobId: input.jobId, query, terms, accept });
+      if (photo?.hotlinkUrl && photo.attribution?.photographer) return photo;
+    } catch {
+      // provider désactivé / rate-limit / réseau → on tente la suite, sinon on saute.
+    }
+  }
+  return null;
+}
+
+/**
  * Injecte jusqu'à `maxImages` photos Unsplash contextuelles dans le corps HTML,
  * chacune devant une section H2 (en sautant la première section pour ne pas
  * concurrencer la hero). Retourne le corps inchangé si Unsplash est
@@ -179,12 +214,28 @@ export async function injectBodyImages(
   // respecter le rate-limit et garder l'ordre des requêtes déterministe.
   const inserts: Array<{ offset: number; figure: string }> = [];
   const usedPhotoIds = new Set<string>();
+
+  // Règles qualité : portier anti-doublon partagé par tout l'article.
+  let accept: ((url: string) => Promise<boolean>) | null = null;
+  if (imageQualityEnabled()) {
+    try {
+      const used = await loadUsedPhotoKeys();
+      const heroKey = photoKeyFromUrl(input.heroImageUrl);
+      if (heroKey) used.add(heroKey);
+      accept = makePhotoGate(used);
+    } catch {
+      return bodyHtml; // mémoire des doublons illisible → pas d'image plutôt qu'un doublon
+    }
+  }
+
   for (const idx of candidateIdx) {
     const offset = offsets[idx];
     if (offset === undefined) continue;
     const query = h2ToQuery(h2InnerAt(bodyHtml, offset), input.topicHint);
     if (!query) continue;
-    const photo = await fetchPhoto(query, input);
+    const photo = accept
+      ? await fetchQualityPhoto(query, input, accept)
+      : await fetchPhoto(query, input);
     if (!photo || usedPhotoIds.has(photo.photoId)) continue;
     usedPhotoIds.add(photo.photoId);
     inserts.push({ offset, figure: buildFigure(photo) });

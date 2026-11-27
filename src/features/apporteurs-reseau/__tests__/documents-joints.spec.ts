@@ -12,6 +12,8 @@ const h = vi.hoisted(() => ({
   signaler: vi.fn(),
   televerser: vi.fn(),
   copie: vi.fn(),
+  copieFiche: vi.fn(),
+  copieLivret: vi.fn(),
 }));
 
 vi.mock("@/lib/r2-storage", () => ({
@@ -22,6 +24,12 @@ vi.mock("@/lib/r2-storage", () => ({
 vi.mock("../guide-demarrage", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../guide-demarrage")>()),
   lireGuideDemarrage: () => h.copie(),
+}));
+// Fiche et livret : par défaut, aucune copie embarquée lisible (comportement « absent de R2 » inchangé).
+vi.mock("../documents-prives", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../documents-prives")>()),
+  lireFicheCommissions: () => h.copieFiche(),
+  lireLivret: () => h.copieLivret(),
 }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
@@ -57,6 +65,8 @@ beforeEach(() => {
   h.configure = true;
   h.televerser.mockResolvedValue({});
   h.copie.mockResolvedValue(Buffer.from("%PDF-guide"));
+  h.copieFiche.mockResolvedValue(null);
+  h.copieLivret.mockResolvedValue(null);
   avertissements = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 });
 
@@ -220,6 +230,41 @@ describe("🔴 le guide de démarrage : dépôt automatique sur R2", () => {
     r2({});
     await documentsAnnexesAJoindre();
     expect(h.televerser.mock.calls.map((c) => c[0])).toEqual([GUIDE.cleR2]);
+  });
+});
+
+describe("fiche et livret : copie embarquée, la même que celle du lien de l'espace", () => {
+  it("absents de R2 : déposés depuis private/apporteurs/ puis joints", async () => {
+    h.copieFiche.mockResolvedValue(Buffer.from("%PDF-fiche"));
+    h.copieLivret.mockResolvedValue(Buffer.from("%PDF-livret"));
+    r2({});
+    expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([
+      FICHE.cleR2,
+      LIVRET.cleR2,
+      GUIDE.cleR2,
+    ]);
+    expect(h.televerser).toHaveBeenCalledWith(
+      FICHE.cleR2,
+      Buffer.from("%PDF-fiche"),
+      "application/pdf",
+      expect.anything(),
+    );
+    expect(h.televerser).toHaveBeenCalledWith(
+      LIVRET.cleR2,
+      Buffer.from("%PDF-livret"),
+      "application/pdf",
+      expect.anything(),
+    );
+  });
+
+  it("un objet déjà sur R2 n'est jamais écrasé", async () => {
+    h.copieFiche.mockResolvedValue(Buffer.from("%PDF-fiche"));
+    h.copieLivret.mockResolvedValue(Buffer.from("%PDF-livret"));
+    r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000, [GUIDE.cleR2]: 3000 });
+    await documentsAnnexesAJoindre();
+    expect(h.televerser).not.toHaveBeenCalled();
+    expect(h.copieFiche).not.toHaveBeenCalled();
+    expect(h.copieLivret).not.toHaveBeenCalled();
   });
 });
 
