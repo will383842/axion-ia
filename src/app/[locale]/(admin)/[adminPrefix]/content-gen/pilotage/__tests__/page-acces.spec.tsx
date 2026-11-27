@@ -23,7 +23,7 @@ describe("page Pilotage SEO & IA : accès", () => {
   it("passe par la garde de la console avant toute lecture", async () => {
     gardePage.mockResolvedValue({ autorise: false, motif: "role" });
     await PilotageSeoPage(props);
-    expect(gardePage).toHaveBeenCalledWith("consultation", "/fr/admin/login");
+    expect(gardePage).toHaveBeenCalledWith("ecriture", "/fr/admin/login");
     expect(chargerPilotageSeo).not.toHaveBeenCalled();
   });
 

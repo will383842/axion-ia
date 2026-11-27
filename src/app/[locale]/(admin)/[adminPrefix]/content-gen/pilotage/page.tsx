@@ -23,10 +23,10 @@ interface PageProps {
 export default async function PilotageSeoPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
-  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  const acces = await gardePage("ecriture", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}/content-gen`} />;
   }
   const modele = await chargerPilotageSeo({ type: sp.onglet === "pages" ? sp.type : undefined });
-  return <PilotageV2 modele={modele} adminPrefix={adminPrefix} onglet={sp.onglet} type={sp.type} />;
+  return <PilotageV2 modele={modele} adminPrefix={adminPrefix} onglet={sp.onglet} />;
 }

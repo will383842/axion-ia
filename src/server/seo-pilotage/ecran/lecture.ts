@@ -30,6 +30,7 @@ export interface OptionsLecture {
   readonly type?: string | undefined;
 }
 
+const JOURS_FENETRE = 28;
 const LIMITE_PAGES = 100;
 const LIMITE_REQUETES = 500;
 const LIMITE_OPPORTUNITES = 100;
@@ -78,6 +79,8 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
         explication: "Impossible de lire l'état des imports pour l'instant.",
       },
       donneesJusquAu: null,
+      fenetreCouranteComplete: false,
+      comparaisonPossible: false,
       vue: null,
       pages: null,
       requetes: null,
@@ -85,7 +88,7 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
       imports: null,
     };
   }
-  const imports: ImportEcran[] = runs.map((r) => ({
+  const imports: ImportEcran[] = runs.slice(0, 30).map((r) => ({
     jour: jourIso(r.jour),
     statut: r.statut,
     nbLignesPage: r.nbLignesPage,
@@ -124,6 +127,8 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
       mode,
       source,
       donneesJusquAu: null,
+      fenetreCouranteComplete: false,
+      comparaisonPossible: false,
       vue: null,
       pages: null,
       requetes: null,
@@ -149,10 +154,17 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
     positionSum: r._sum.positionSum ?? 0,
   });
 
+  // Un jour manquant compterait comme un zéro : on ne compare que des fenêtres COMPLÈTES.
+  const reussis = runs.filter((r) => r.statut === "reussi").map((r) => jourIso(r.jour));
+  const joursDans = (fen: { debut: string; fin: string }): number =>
+    new Set(reussis.filter((j) => j >= fen.debut && j <= fen.fin)).size;
+  const fenetreCouranteComplete = joursDans(f.courante) >= JOURS_FENETRE;
+  const comparaisonPossible = joursDans(f.precedente) >= JOURS_FENETRE;
+
   const vue = await ouNull(async () => {
     const [c, p] = await Promise.all([
       agreger(f.courante.debut, f.courante.fin),
-      agreger(f.precedente.debut, f.precedente.fin),
+      comparaisonPossible ? agreger(f.precedente.debut, f.precedente.fin) : Promise.resolve([]),
     ]);
     return composerVueEnsemble(c.map(versAgregat), p.map(versAgregat));
   });
@@ -222,6 +234,8 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
     mode,
     source,
     donneesJusquAu: fin,
+    fenetreCouranteComplete,
+    comparaisonPossible,
     vue,
     pages,
     requetes,

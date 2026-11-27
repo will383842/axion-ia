@@ -134,4 +134,28 @@ describe("lireModelePilotage", () => {
     const appelPages = groupBy.mock.calls.find((c) => c[0].by.includes("chemin"));
     expect(appelPages?.[0].where.typePage).toBe("ville");
   });
+
+  it("fenêtres incomplètes : aucune évolution calculée, et l'écran est prévenu", async () => {
+    const groupBy = vi
+      .fn()
+      .mockResolvedValue([
+        { typePage: "article", _sum: { clics: 12, impressions: 400, positionSum: 3200 } },
+      ]);
+    const jours = Array.from({ length: 28 }, (_, i) => ({
+      jour: new Date(Date.UTC(2026, 10, 25 - i)),
+      statut: "reussi",
+    }));
+    const m = await lireModelePilotage({
+      prisma: fauxPrisma({
+        gscImportRun: { findMany: vi.fn().mockResolvedValue(jours) },
+        gscPageJour: { groupBy },
+      }),
+      env: { CONTENT_PILOTAGE_SEO: "true" },
+      aujourdhui: "2026-11-27",
+    });
+    if (m.etat !== "actif") throw new Error("attendu actif");
+    expect(m.fenetreCouranteComplete).toBe(true);
+    expect(m.comparaisonPossible).toBe(false);
+    expect(m.vue?.[0]?.variationClics).toBeNull();
+  });
 });

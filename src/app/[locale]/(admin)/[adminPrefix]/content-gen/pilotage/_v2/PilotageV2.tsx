@@ -11,6 +11,7 @@ import {
   AdminTable,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { TYPES_PAGE } from "@/server/seo-pilotage/donnees/types-page";
 import type {
   ImportEcran,
   LignePageEcran,
@@ -40,7 +41,6 @@ const TYPES: Readonly<Record<string, string>> = {
   institutionnel: "Pages de présentation",
   conversion: "Contact et réservation",
   galerie: "Galerie",
-  legal: "Pages légales",
   autre: "Autres pages",
   total: "Ensemble du site",
 };
@@ -151,6 +151,17 @@ function VueEnsemble({ modele }: { readonly modele: ModeleActif }) {
   ];
   return (
     <div className="space-y-2">
+      {!modele.fenetreCouranteComplete ? (
+        <p className="text-sm text-[color:var(--color-admin-warning-fg)]">
+          Attention : certains jours des 28 derniers jours n&apos;ont pas encore été reçus de
+          Google. Les chiffres sont partiels.
+        </p>
+      ) : null}
+      {!modele.comparaisonPossible ? (
+        <p className="text-sm text-[color:var(--color-admin-warning-fg)]">
+          Évolution indisponible : les 28 jours d&apos;avant ne sont pas tous reçus.
+        </p>
+      ) : null}
       <p className="admin-meta-block">
         28 derniers jours, comparés aux 28 jours d&apos;avant. Une position plus basse en chiffre
         est meilleure (1 = tout en haut).
@@ -167,16 +178,13 @@ function VueEnsemble({ modele }: { readonly modele: ModeleActif }) {
 
 function Pages({
   lignes,
-  type,
   base,
 }: {
   readonly lignes: LignePageEcran[] | null;
-  readonly type: string | undefined;
   readonly base: string;
 }) {
   if (lignes === null) return <Indisponible quoi="La liste des pages" />;
-  const types = [...new Set(lignes.map((l) => l.typePage))].sort();
-  const filtrees = type ? lignes.filter((l) => l.typePage === type) : lignes;
+  const filtrees = lignes;
   const colonnes: AdminTableColumn<LignePageEcran>[] = [
     { key: "chemin", header: "Page", cell: (l) => l.chemin },
     { key: "type", header: "Type", cell: (l) => libelleType(l.typePage) },
@@ -198,7 +206,7 @@ function Pages({
     <div className="space-y-3">
       <nav aria-label="Filtrer par type de page" className="flex flex-wrap gap-2 text-sm">
         <Link href={`${base}?onglet=pages`}>Tous</Link>
-        {types.map((t) => (
+        {TYPES_PAGE.map((t) => (
           <Link key={t} href={`${base}?onglet=pages&type=${encodeURIComponent(t)}`}>
             {libelleType(t)}
           </Link>
@@ -366,10 +374,9 @@ interface Props {
   readonly modele: ModelePilotage;
   readonly adminPrefix: string;
   readonly onglet?: string | undefined;
-  readonly type?: string | undefined;
 }
 
-export function PilotageV2({ modele, adminPrefix, onglet, type }: Props) {
+export function PilotageV2({ modele, adminPrefix, onglet }: Props) {
   const base = `/fr/${adminPrefix}/content-gen/pilotage`;
   if (modele.etat === "eteint") {
     return (
@@ -420,7 +427,7 @@ export function PilotageV2({ modele, adminPrefix, onglet, type }: Props) {
         ))}
       </nav>
       {actif === "ensemble" ? <VueEnsemble modele={modele} /> : null}
-      {actif === "pages" ? <Pages lignes={modele.pages} type={type} base={base} /> : null}
+      {actif === "pages" ? <Pages lignes={modele.pages} base={base} /> : null}
       {actif === "requetes" ? <Requetes lignes={modele.requetes} /> : null}
       {actif === "opportunites" ? <Opportunites lignes={modele.opportunites} /> : null}
       {actif === "sante" ? <Sante modele={modele} /> : null}

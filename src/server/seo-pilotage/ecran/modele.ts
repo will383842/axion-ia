@@ -36,6 +36,10 @@ export interface ModeleActif {
   readonly mode: ModePilotage;
   readonly source: SourceEtat;
   readonly donneesJusquAu: string | null;
+  /** Les 28 jours récents ont tous été importés. */
+  readonly fenetreCouranteComplete: boolean;
+  /** Les 28 jours d'avant sont complets : sinon aucune évolution n'est calculée. */
+  readonly comparaisonPossible: boolean;
   readonly vue: LigneVue[] | null;
   readonly pages: LignePageEcran[] | null;
   readonly requetes: LigneRequeteEcran[] | null;

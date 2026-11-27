@@ -13,6 +13,8 @@ const base: ModeleActif = {
     explication: "Les données arrivent.",
   },
   donneesJusquAu: "2026-11-25",
+  fenetreCouranteComplete: true,
+  comparaisonPossible: true,
   vue: [
     {
       typePage: "article",
@@ -149,5 +151,17 @@ describe("PilotageV2", () => {
 
   it("aucun « Grenoble » dans l'écran", () => {
     expect(rendre(base).toLowerCase()).not.toContain("grenoble");
+  });
+
+  it("fenêtre incomplète : l'écran le dit", () => {
+    const html = rendre({ ...base, fenetreCouranteComplete: false, comparaisonPossible: false });
+    expect(html).toContain("Les chiffres sont partiels");
+    expect(html).toContain("Évolution indisponible");
+  });
+
+  it("filtre de pages : tous les types restent proposés", () => {
+    const html = rendre(base, "pages");
+    expect(html).toContain("Pages de villes");
+    expect(html).toContain("Galerie");
   });
 });

@@ -9,7 +9,8 @@ Ajoute l'écran `content-gen/pilotage` (P8 du cahier « pilotage SEO/GEO »), en
 - Éteint par défaut : sans `CONTENT_PILOTAGE_SEO=true` exact, l'écran affiche « Pilotage éteint » et ne lit rien.
 - Une donnée absente ou une lecture en échec s'écrit « indisponible », jamais 0 (position et part de clics nulles sans affichage).
 - Requêtes rares (moins de 3 affichages) masquées, par prudence sur les données personnelles.
-- Accès : `gardePage("consultation")` comme les autres écrans de la console (redirection vers la connexion sans session, refus nommé sinon) ; l'action revérifie la session et le rôle.
+- Accès : `gardePage("ecriture")` (super_admin, admin, editor : le texte brut des requêtes n'est pas montré aux rôles de simple consultation) ; l'action revérifie par `requireAdmin`.
+- Les évolutions sur 28 jours ne sont calculées que si les deux fenêtres sont complètes (jours importés comptés) ; sinon « indisponible » et un avertissement. Requêtes lues dans le détail journalier récent ; filtre par type appliqué en base.
 - Entrée de menu « Pilotage SEO & IA » (+ test de compte du menu : 184) et lien depuis « Suivi des positions ».
 
 Limites assumées : le score de citabilité n'est pas stocké en base (P12 est un module pur) : la colonne dit « pas encore mesurée ». L'onglet Opportunités lit la table `seo_opportunites` ; aucune tâche ne l'alimente encore, il affiche donc « aucune opportunité » tant que ce calcul hebdomadaire n'est pas branché. Les onglets Propositions, En mesure et Moteurs IA viennent avec leurs PR. Aucune migration.
