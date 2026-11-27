@@ -3,12 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 // Fiche des commissions, livret et guide partent dès l'e-mail qui porte le lien du contrat à
 // signer (et ses rappels, et « Retenu »). Facultatives : jamais d'erreur, liste vide si R2 tombe.
 
-const h = vi.hoisted(() => ({ entete: vi.fn(), configure: true }));
+const h = vi.hoisted(() => ({ entete: vi.fn(), televerser: vi.fn(), configure: true }));
 
 vi.mock("@/lib/r2-storage", () => ({
   enteteObjetR2: (...a: unknown[]) => h.entete(...a),
   isR2Configured: () => h.configure,
-  uploadToR2: vi.fn(),
+  uploadToR2: (...a: unknown[]) => h.televerser(...a),
 }));
 vi.mock("../guide-demarrage", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../guide-demarrage")>()),
@@ -29,6 +29,7 @@ const URL_DOSSIER = "https://axion-ia.com/apporteur/dossier/x/y";
 beforeEach(() => {
   vi.clearAllMocks();
   h.configure = true;
+  h.televerser.mockResolvedValue({});
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
 });
 
@@ -47,6 +48,9 @@ describe("annexesDeLEnvoiDuLien", () => {
   });
 
   it("ne joint que ce qui existe", async () => {
+    // Le guide a une copie dans l'image, déposée sur R2 si l'objet manque : ici le dépôt échoue,
+    // il n'est donc pas joint (le test ne dépend pas de la copie embarquée de la machine).
+    h.televerser.mockRejectedValue(new Error("dépôt impossible"));
     h.entete.mockImplementation(async (cle: string) =>
       cle === DOCUMENTS_ANNEXES[1].cleR2 ? { taille: 500, etag: "e" } : null,
     );
