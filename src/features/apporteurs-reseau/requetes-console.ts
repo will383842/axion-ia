@@ -7,7 +7,7 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import type { ApporteurReseauStatut } from "../../../prisma/generated/client";
+import type { ApporteurReseauStatut, EmailLogStatus } from "../../../prisma/generated/client";
 
 import { lireContenuPiece } from "./pieces-chiffrement";
 import { STATUTS_CUMUL, cumulVigilanceCents, piecesVigilanceConformes } from "./commissions";
@@ -226,6 +226,7 @@ export async function lireFicheApporteur(id: string) {
     aContratApporteur: !!a?.contratCle,
     aContratSigne: !!a?.contratSigneCle,
     submissionId: a?.submissionId ?? null,
+    creeAt: a?.creeAt ?? null,
     signature: sansTexteArchive(a?.signatureApporteur),
     filleuls: (a?.filleuls ?? []).map((f) => ({ id: f.id, nom: nom(f), statut: f.statut })),
     parrainsPossibles: parrains.map((p) => ({ id: p.id, nom: nom(p) })),
@@ -469,4 +470,51 @@ export async function lireChangementsRegimeTva(
   } catch {
     return [];
   }
+}
+
+/** Nombre maximal d'e-mails relus dans l'historique de la fiche. */
+export const LIMITE_HISTORIQUE_EMAILS = 50;
+
+export interface EmailDeLApporteur {
+  id: string;
+  template: string;
+  /** Objet réel, relu dans la copie du journal ; null si la copie n'existe pas (ou plus). */
+  objet: string | null;
+  status: EmailLogStatus;
+  /** Date d'envoi si partie, sinon date de création de la ligne. */
+  date: Date;
+  error: string | null;
+}
+
+/**
+ * Historique des e-mails envoyés à un apporteur (lecture seule) : les lignes d'`EmailLog`
+ * portant la clé de traçabilité posée par `envoyer()` (`entityType = "ApporteurReseau"`,
+ * `entityId` = id de l'apporteur). Plus récents d'abord, 50 au plus. Le destinataire n'est
+ * pas lu : la fiche l'affiche déjà.
+ */
+export async function lireHistoriqueEmailsApporteur(
+  apporteurId: string,
+): Promise<EmailDeLApporteur[]> {
+  const lignes = await prisma.emailLog.findMany({
+    where: { entityType: "ApporteurReseau", entityId: apporteurId },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    take: LIMITE_HISTORIQUE_EMAILS,
+    select: {
+      id: true,
+      template: true,
+      status: true,
+      createdAt: true,
+      sentAt: true,
+      error: true,
+      contenu: { select: { subject: true } },
+    },
+  });
+  return lignes.map((l) => ({
+    id: l.id,
+    template: l.template,
+    objet: l.contenu?.subject ?? null,
+    status: l.status,
+    date: l.sentAt ?? l.createdAt,
+    error: l.error,
+  }));
 }
