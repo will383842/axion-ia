@@ -320,6 +320,9 @@ describe("variantes V2 des composants partagés", () => {
     expect(defaut).not.toContain("art-toc");
     expect(defaut).not.toContain("min-h-11");
     expect(defaut).toContain('<nav aria-label="Sommaire"');
+    expect(defaut).toContain('<details class="not-prose group border-border bg-sand');
+    expect(defaut).toContain("lg:sticky lg:top-24");
+    expect(defaut).toContain("01</span>");
     expect(defaut.match(/<nav /g)).toHaveLength(1);
   });
 
@@ -340,7 +343,7 @@ describe("variantes V2 des composants partagés", () => {
     const html = rendre(<ArticleFaq items={faq} locale="fr" variante="v2" premiereOuverte />);
     expect(html.match(/<details/g)).toHaveLength(2);
     expect(html.match(/<details open/g)).toHaveLength(1);
-    expect(html).toContain('<h2 id="faq">');
+    expect(html).toContain('<h2 id="art-faq-titre">');
     expect(html).toContain("data-faq-q");
     expect(html).toContain("data-faq-a");
     expect(html).not.toMatch(/<summary[^>]*>\s*<h[1-6]/);
@@ -349,7 +352,7 @@ describe("variantes V2 des composants partagés", () => {
 
   it("ArticleFaq v2 : niveauTitre 3, rien d'ouvert par défaut", () => {
     const html = rendre(<ArticleFaq items={faq} locale="fr" variante="v2" niveauTitre={3} />);
-    expect(html).toContain('<h3 id="faq">');
+    expect(html).toContain('<h3 id="art-faq-titre">');
     expect(html).not.toContain("<details open");
   });
 
@@ -357,6 +360,10 @@ describe("variantes V2 des composants partagés", () => {
     const defaut = rendre(<ArticleFaq items={faq} locale="fr" />);
     expect(defaut).toBe(rendre(<ArticleFaq items={faq} locale="fr" variante="v1" />));
     expect(defaut).toContain("max-w-[52rem]");
+    expect(defaut).toContain(
+      '<h2 class="text-fg inline-flex items-center gap-2.5 text-2xl font-semibold tracking-tight">',
+    );
+    expect(defaut).toContain("rounded-xl border px-4 py-3.5");
     expect(defaut).not.toContain("art-faq");
     expect(rendre(<ArticleFaq items={[]} locale="fr" variante="v2" />)).toBe("");
   });
@@ -381,6 +388,8 @@ describe("variantes V2 des composants partagés", () => {
     );
     expect(defaut).toContain('role="doc-tip"');
     expect(defaut).toContain("border-l-4");
+    expect(defaut).toContain("bg-halo-warm");
+    expect(defaut).toContain("Réponse rapide");
   });
 });
 

@@ -179,7 +179,8 @@ html:has([data-gabarit]) {
 [data-gabarit] .art-corps pre {
   overflow-x: auto;
 }
-[data-gabarit] .art-tscroll {
+[data-gabarit] .art-tscroll,
+[data-gabarit] .table-scroll {
   margin: 1.5rem 0;
   overflow-x: auto;
   border: 1px solid var(--color-border-field);
@@ -219,13 +220,6 @@ html:has([data-gabarit]) {
   margin: 0;
   font: 600 1rem/1.4 var(--font-sans);
   color: var(--color-terracotta-deep);
-}
-[data-gabarit] .art-boite {
-  margin: 2rem 0;
-  padding: 1.25rem;
-  border: 1px solid var(--color-border-field);
-  border-radius: 0.75rem;
-  background: var(--color-paper);
 }
 [data-gabarit] .art-pied {
   max-width: var(--mesure);
@@ -306,10 +300,16 @@ html:has([data-gabarit]) {
   [data-gabarit] .art-toc-m {
     display: none;
   }
+  [data-gabarit] .art-layout > :first-child:not(.art-corps-colonne) {
+    position: sticky;
+    top: calc(var(--header-total-h) + 1rem);
+    align-self: start;
+  }
+  [data-gabarit] .art-layout.art-sans-sommaire > :first-child {
+    position: static;
+  }
   [data-gabarit] .art-toc-d {
     display: block;
-    position: sticky;
-    top: 6rem;
     max-height: calc(100dvh - 7rem);
     overflow: auto;
   }
@@ -379,4 +379,7 @@ html:has([data-gabarit]) {
 [data-gabarit] .art-faq-reponse {
   padding: 0 1rem 1rem;
   color: var(--color-fg-soft);
+}
+[data-gabarit] [id] {
+  scroll-margin-top: 0;
 }

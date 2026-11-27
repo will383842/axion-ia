@@ -16,7 +16,7 @@ export function MiseEnPageLecture({ sommaire, children }: MiseEnPageLectureProps
   return (
     <div className={`art-layout${sommaire ? "" : " art-sans-sommaire"}`}>
       {sommaire ? <div>{sommaire}</div> : null}
-      <div className="min-w-0">{children}</div>
+      <div className="art-corps-colonne min-w-0">{children}</div>
     </div>
   );
 }

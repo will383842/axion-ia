@@ -100,7 +100,7 @@ export function AnswerCard({
         <div className="text-fg m-0 text-[1.1875rem] leading-[1.6]">{children}</div>
         {sourceLabel ? (
           <p className="text-fg-muted mt-2 mb-0 text-[0.9375rem]">
-            {isFr ? "Source" : "Source"} :{" "}
+            Source :{" "}
             {sourceUrl ? (
               <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">
                 {sourceLabel}
