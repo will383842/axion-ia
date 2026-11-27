@@ -72,6 +72,11 @@ vi.mock("@/lib/destinataires-internes", () => ({
   destinataireAlertesInternes: () => "will@interne",
 }));
 vi.mock("../jeton", () => ({ urlDossier: () => null }));
+// Cas calibrés sur la grille v3 ; la grille v2 est couverte par avoir-grille-contrat-signe.spec.ts.
+vi.mock("../commissions", async (orig) => ({
+  ...(await orig<typeof import("../commissions")>()),
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })),
+}));
 vi.mock("../envois", () => ({
   envoyer: vi.fn(async (e: Record<string, unknown>) => {
     etat.envoyes.push(e);
@@ -250,6 +255,8 @@ import {
   oublierCacheRegistre,
 } from "../facturation";
 import { annulerCommission, reduireCommission } from "../ajustement";
+import { grilleDeLaLigne } from "../commissions";
+import { MESSAGE_GRILLE_INCONNUE } from "../regles";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import {
   annulerRealisation,
@@ -1065,6 +1072,41 @@ describe("réduire ou annuler une commission pas encore facturée (point 4)", ()
       action: "commission_apporteur.reduite",
       changes: { avantCents: 30_000, apresCents: 24_002, prixConserveHtCents: 80_005 },
     });
+  });
+
+  const formation3j = () =>
+    ligne("c1", "due", 150_000, {
+      activite: "formation",
+      palier: "formation-generale-3j-plus",
+      prixPublicHtCents: 570_000,
+      factureHtCents: 570_000,
+    });
+
+  it("réduire · grille v2 (signataire 2.6) : 3 j à 5 700 € puis prix conservé 4 560 € → 1 200 €, sans plafond de 1 000 €", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementationOnce(async () => ({
+      grille: "v2",
+      signeeAt: null,
+    }));
+    etat.lignes = [formation3j()];
+    const r = await reduireCommission("c1", 456_000, "prix conservé : 4 560 € HT");
+    expect(r).toMatchObject({ ok: true, montantCents: 120_000 });
+  });
+
+  it("réduire · grille v3 (contrôle) : même ligne → 800 €", async () => {
+    etat.lignes = [formation3j()];
+    const r = await reduireCommission("c1", 456_000, "prix conservé : 4 560 € HT");
+    expect(r).toMatchObject({ ok: true, montantCents: 80_000 });
+  });
+
+  it("réduire · grille inconnue : refus avec MESSAGE_GRILLE_INCONNUE, la ligne ne bouge pas", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementationOnce(async () => ({
+      grille: null,
+      signeeAt: null,
+    }));
+    etat.lignes = [formation3j()];
+    const r = await reduireCommission("c1", 456_000, "prix conservé : 4 560 € HT");
+    expect(r).toEqual({ ok: false, message: MESSAGE_GRILLE_INCONNUE });
+    expect(lignes()[0]!.montantCents).toBe(150_000);
   });
 
   it("réduire : refusé sans motif, à un prix supérieur ou nul, sur une part de parrain, ou une fois facturée", async () => {

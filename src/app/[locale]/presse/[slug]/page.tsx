@@ -18,7 +18,7 @@
  *     publisher Axion-IA, image OG dynamique, mainEntityOfPage)
  *   - JSON-LD `BreadcrumbList` via `<Breadcrumbs>` (Home → Espace presse → Titre)
  *   - JSON-LD `WebPage` + `Speakable` cssSelector `[data-aeo="press-release-tldr"]`
- *   - Anti-doorway HCU 2024 : `robots: noindex` si body < 250 mots
+ *   - Anti-doorway HCU 2024 : `robots: noindex` si body < 60 mots et pas de PDF
  *   - Réutilisation `<Container>`, `<Breadcrumbs>`, `<JsonLd>`, `<AnswerCard>`,
  *     `<PressImageBank>`
  *   - Pas d'AiContentDisclaimer (les communiqués sont éditoriaux humains, pas IA)
@@ -49,6 +49,7 @@ import {
   getPublishedPressReleases,
 } from "@/server/press/queries";
 import { formatPressReleaseBody } from "@/server/press/format-body";
+import { communiqueIndexable, countWords, MIN_BODY_WORDS } from "@/server/press/indexabilite";
 import { fmtDate } from "@/lib/intl";
 
 interface Props {
@@ -70,22 +71,6 @@ export const revalidate = 3600;
  * `getPressReleaseBySlug() === null` → `notFound()` (vrai 404).
  */
 export const dynamicParams = true;
-
-/**
- * Seuil HCU 2024 anti-doorway : un communiqué de presse digne d'indexation
- * Google News + AI Overviews fait ≥ 60 mots cumulés (body). En dessous, on
- * noindex pour ne pas être pénalisé "thin content".
- *
- * 60 mots = baseline V1 calibrée sur les fixtures `press.ts` (les communiqués
- * Axion-IA V1 font 77-200 mots — minimum éditorial cohérent avec dek = 25-40
- * mots + body ≥ 60 mots). Les communiqués Phase 2+ visent 150-300 mots pour
- * profiter pleinement de Google Discover / Top Stories (signal Authority).
- */
-const MIN_BODY_WORDS = 60;
-
-function countWords(text: string): number {
-  return text.trim().split(/\s+/).filter(Boolean).length;
-}
 
 const TAG_LABEL_FR: Record<PressReleaseTag, string> = {
   launch: "Lancement",
@@ -136,7 +121,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Anti-doorway HCU 2024 : noindex si body < seuil. Les communiqués PDF (body
   // vide, contenu = le PDF embarqué) sont indexables → on saute le check.
-  if (!release.pdfUrl && countWords(copy.body) < MIN_BODY_WORDS) {
+  if (!communiqueIndexable(release)) {
     return {
       ...meta,
       robots: {

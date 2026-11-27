@@ -24,7 +24,7 @@ import { THEME_GENERIQUE_VILLES } from "@/server/videos/encarts";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowRight, ArrowUpRight, MapPin, Building2 } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
@@ -149,6 +149,11 @@ export default async function VillePage({ params }: Props) {
   const { locale, region: regionSlug, ville: villeSlug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   const ville = await resolveVilleWithCopy(villeSlug);
+  // S1 (404) : ville connue mais dans une autre région (ancien découpage, lien mal tapé) →
+  // 308 vers la bonne adresse plutôt qu'un 404. Ville inconnue : 404 inchangé.
+  if (ville && ville.region !== regionSlug && getRegion(ville.region)) {
+    permanentRedirect(`/${locale}/implantations/${ville.region}/${ville.slug}`);
+  }
   if (!ville || ville.region !== regionSlug) notFound();
   const region = getRegion(regionSlug);
   if (!region) notFound();
