@@ -39,8 +39,18 @@ export function buildBarometreJsonLd(locale: Locale) {
     datePublished: BAROMETRE_DATE_PUBLICATION,
     dateModified: BAROMETRE_DATE_MODIFICATION,
     spatialCoverage: ["France", "Union européenne"],
-    creator: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
-    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+    creator: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Axion-IA",
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Axion-IA",
+      url: SITE_URL,
+    },
     isBasedOn: SOURCES.map((s) => ({ "@type": s.type, name: s.nom, url: s.url })),
     citation: SOURCES.map((s) => ({ "@type": "CreativeWork", name: s.nom, url: s.url })),
     variableMeasured: VARIABLES_MESUREES.map((v) => ({
