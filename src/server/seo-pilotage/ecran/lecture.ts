@@ -15,7 +15,7 @@ type Lecteur = Pick<
   PrismaClient,
   | "gscImportRun"
   | "gscPageJour"
-  | "gscPageRequeteSemaine"
+  | "gscPageRequeteJour"
   | "gscRequete"
   | "seoOpportunite"
   | "contentGenConfig"
@@ -26,6 +26,8 @@ export interface OptionsLecture {
   readonly env?: Readonly<Record<string, string | undefined>>;
   /** `YYYY-MM-DD` */
   readonly aujourdhui: string;
+  /** Filtre de l'onglet Pages (type de page). */
+  readonly type?: string | undefined;
 }
 
 const LIMITE_PAGES = 100;
@@ -55,7 +57,13 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
 
   const runs = buildStub(env)
     ? null
-    : await ouNull(() => prisma.gscImportRun.findMany({ orderBy: { jour: "desc" }, take: 30 }));
+    : await ouNull(() =>
+        prisma.gscImportRun.findMany({
+          where: { typeRecherche: "web" },
+          orderBy: { jour: "desc" },
+          take: 30,
+        }),
+      );
   const source = etatSourceSearchConsole(
     (runs ?? []).map((r) => ({ jour: jourIso(r.jour), statut: r.statut })),
     o.aujourdhui,
@@ -155,6 +163,11 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
       where: {
         typeRecherche: "web",
         date: { gte: dateUtc(f.courante.debut), lte: dateUtc(f.courante.fin) },
+        ...(o.type === undefined || o.type === ""
+          ? {}
+          : o.type === "autre"
+            ? { OR: [{ typePage: null }, { typePage: "autre" }] }
+            : { typePage: o.type }),
       },
       _sum: { clics: true, impressions: true, positionSum: true },
       orderBy: { _sum: { impressions: "desc" } },
@@ -173,9 +186,12 @@ export async function lireModelePilotage(o: OptionsLecture): Promise<ModelePilot
   });
 
   const requetes = await ouNull(async () => {
-    const lignes = await prisma.gscPageRequeteSemaine.groupBy({
+    const lignes = await prisma.gscPageRequeteJour.groupBy({
       by: ["requeteId", "chemin"],
-      where: { typeRecherche: "web", semaine: { gte: dateUtc(f.courante.debut) } },
+      where: {
+        typeRecherche: "web",
+        date: { gte: dateUtc(f.courante.debut), lte: dateUtc(f.courante.fin) },
+      },
       _sum: { clics: true, impressions: true, positionSum: true },
       orderBy: { _sum: { impressions: "desc" } },
       take: LIMITE_REQUETES,

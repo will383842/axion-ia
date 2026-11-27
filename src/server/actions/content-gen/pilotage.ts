@@ -10,12 +10,15 @@ import { peutConsulter } from "@/server/auth/habilitations";
 import type { ModelePilotage } from "@/server/seo-pilotage/ecran/modele";
 import { lireModelePilotage } from "@/server/seo-pilotage/ecran/lecture";
 
-export async function chargerPilotageSeo(): Promise<ModelePilotage> {
+export async function chargerPilotageSeo(
+  options: { type?: string | undefined } = {},
+): Promise<ModelePilotage> {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
   if (!peutConsulter((session.user as { role?: string }).role)) throw new Error("forbidden");
   return lireModelePilotage({
     prisma,
+    type: typeof options.type === "string" ? options.type.slice(0, 40) : undefined,
     aujourdhui: new Date().toISOString().slice(0, 10),
   });
 }

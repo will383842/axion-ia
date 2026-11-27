@@ -40,6 +40,7 @@ const TYPES: Readonly<Record<string, string>> = {
   institutionnel: "Pages de présentation",
   conversion: "Contact et réservation",
   galerie: "Galerie",
+  legal: "Pages légales",
   autre: "Autres pages",
   total: "Ensemble du site",
 };
@@ -59,6 +60,12 @@ const DETECTEURS: Readonly<Record<string, string>> = {
   e: "Page en baisse",
   f: "Jamais affichée",
 };
+
+const MODES = {
+  observation: "Mode observation",
+  proposition: "Mode proposition",
+  auto_borne: "Mode automatique borné",
+} as const;
 
 const libelleType = (t: string): string => TYPES[t] ?? t;
 
@@ -200,7 +207,7 @@ function Pages({
       <AdminTable
         columns={colonnes}
         rows={filtrees}
-        getRowId={(l) => l.chemin}
+        getRowId={(l) => `${l.chemin}|${l.typePage}`}
         caption="Pages les plus affichées sur 28 jours"
         emptyState={<AdminEmptyState title="Aucune page" description="Rien à afficher ici." />}
       />
@@ -386,7 +393,7 @@ export function PilotageV2({ modele, adminPrefix, onglet, type }: Props) {
         description="Comment le site se comporte dans Google. Lecture seule : cet écran ne modifie rien."
         meta={
           <span className="flex flex-wrap items-center gap-2">
-            <AdminBadge tone="info">Mode observation</AdminBadge>
+            <AdminBadge tone="info">{MODES[modele.mode]}</AdminBadge>
             <span>
               Google Search Console : <AdminBadge tone={etat.tone}>{etat.texte}</AdminBadge>
             </span>

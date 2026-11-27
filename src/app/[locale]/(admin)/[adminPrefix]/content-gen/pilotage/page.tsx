@@ -27,6 +27,6 @@ export default async function PilotageSeoPage({ params, searchParams }: PageProp
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}/content-gen`} />;
   }
-  const modele = await chargerPilotageSeo();
+  const modele = await chargerPilotageSeo({ type: sp.onglet === "pages" ? sp.type : undefined });
   return <PilotageV2 modele={modele} adminPrefix={adminPrefix} onglet={sp.onglet} type={sp.type} />;
 }

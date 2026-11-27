@@ -7,7 +7,7 @@ function fauxPrisma(surcharges: Record<string, unknown> = {}) {
   return {
     gscImportRun: { findMany: vide() },
     gscPageJour: { groupBy: vide() },
-    gscPageRequeteSemaine: { groupBy: vide() },
+    gscPageRequeteJour: { groupBy: vide() },
     gscRequete: { findMany: vide() },
     seoOpportunite: { findMany: vide() },
     contentGenConfig: { findUnique: vi.fn().mockResolvedValue(null) },
@@ -92,5 +92,46 @@ describe("lireModelePilotage", () => {
     if (m.etat !== "actif") throw new Error("attendu actif");
     expect(m.vue?.[0]).toMatchObject({ typePage: "article", clics: 12 });
     expect(m.donneesJusquAu).toBe("2026-11-25");
+  });
+
+  it("requêtes : lues dans le détail journalier récent, pas dans les semaines purgées", async () => {
+    const jour = vi
+      .fn()
+      .mockResolvedValue([
+        { requeteId: 1, chemin: "/fr/a", _sum: { clics: 2, impressions: 50, positionSum: 300 } },
+      ]);
+    const m = await lireModelePilotage({
+      prisma: fauxPrisma({
+        gscImportRun: {
+          findMany: vi.fn().mockResolvedValue([{ jour: new Date("2026-11-25"), statut: "reussi" }]),
+        },
+        gscPageRequeteJour: { groupBy: jour },
+        gscRequete: { findMany: vi.fn().mockResolvedValue([{ id: 1, texte: "formation ia" }]) },
+      }),
+      env: { CONTENT_PILOTAGE_SEO: "true" },
+      aujourdhui: "2026-11-27",
+    });
+    if (m.etat !== "actif") throw new Error("attendu actif");
+    expect(m.requetes?.map((r) => r.requete)).toEqual(["formation ia"]);
+    const where = jour.mock.calls[0]?.[0].where;
+    expect(where.date.gte).toEqual(new Date("2026-10-29T00:00:00Z"));
+    expect(where.date.lte).toEqual(new Date("2026-11-25T00:00:00Z"));
+  });
+
+  it("pages : le filtre par type est appliqué en base, avant la limite", async () => {
+    const groupBy = vi.fn().mockResolvedValue([]);
+    await lireModelePilotage({
+      prisma: fauxPrisma({
+        gscImportRun: {
+          findMany: vi.fn().mockResolvedValue([{ jour: new Date("2026-11-25"), statut: "reussi" }]),
+        },
+        gscPageJour: { groupBy },
+      }),
+      env: { CONTENT_PILOTAGE_SEO: "true" },
+      aujourdhui: "2026-11-27",
+      type: "ville",
+    });
+    const appelPages = groupBy.mock.calls.find((c) => c[0].by.includes("chemin"));
+    expect(appelPages?.[0].where.typePage).toBe("ville");
   });
 });
