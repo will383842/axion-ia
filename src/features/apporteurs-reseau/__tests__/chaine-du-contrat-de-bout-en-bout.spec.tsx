@@ -148,7 +148,7 @@ const pieces = (e: Record<string, unknown>) =>
 const noms = (e: Record<string, unknown>) => pieces(e).map((p) => p.filename);
 
 beforeEach(() => {
-  vi.stubEnv("AUTH_SECRET", "secret-fictif-de-test-1234567890abcdef");
+  vi.stubEnv("AUTH_SECRET", "secret-de-test");
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
   h.r2.clear();
   h.r2EnPanne = false;
