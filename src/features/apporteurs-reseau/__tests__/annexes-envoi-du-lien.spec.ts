@@ -17,7 +17,11 @@ vi.mock("../guide-demarrage", async (importOriginal) => ({
 vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
 
 import { DOCUMENTS_ANNEXES, annexesDeLEnvoiDuLien } from "../documents-joints";
-import { phrasePiecesJointes } from "@/lib/email/templates/_annexes-jointes";
+import {
+  ID_ANNEXE_PAR_NOM_FICHIER,
+  payloadSansAnnexesOmises,
+  phrasePiecesJointes,
+} from "@/lib/email/templates/_annexes-jointes";
 import { renderEmailTemplate } from "@/lib/email/templates";
 
 const URL_DOSSIER = "https://axion-ia.com/apporteur/dossier/x/y";
@@ -82,4 +86,37 @@ describe("phrase des pièces jointes", () => {
       expect(sans.text).not.toContain("pièce jointe");
     },
   );
+});
+
+describe("correspondance nom de fichier vers identifiant (copie sans dépendance serveur)", () => {
+  it("reste identique à DOCUMENTS_ANNEXES", () => {
+    expect(ID_ANNEXE_PAR_NOM_FICHIER).toEqual(
+      Object.fromEntries(DOCUMENTS_ANNEXES.map((d) => [d.nomFichier, d.id])),
+    );
+  });
+});
+
+describe("payloadSansAnnexesOmises", () => {
+  const p = {
+    contactName: "C",
+    annexesJointes: ["fiche-commissions", "livret", "guide-demarrage"],
+  };
+  it("retire les annexes omises, sans modifier l'entrée", () => {
+    const r = payloadSansAnnexesOmises(p, [DOCUMENTS_ANNEXES[2].nomFichier]);
+    expect(r).toEqual({ contactName: "C", annexesJointes: ["fiche-commissions", "livret"] });
+    expect(p.annexesJointes).toHaveLength(3);
+  });
+  it("retire le champ quand plus rien ne reste", () => {
+    const r = payloadSansAnnexesOmises(
+      p,
+      DOCUMENTS_ANNEXES.map((d) => d.nomFichier),
+    );
+    expect(r).toEqual({ contactName: "C" });
+  });
+  it("sans omission, sur un nom inconnu ou sans champ : rendu tel quel", () => {
+    expect(payloadSansAnnexesOmises(p, [])).toBe(p);
+    expect(payloadSansAnnexesOmises(p, ["autre.pdf"])).toBe(p);
+    const sans = { contactName: "C" };
+    expect(payloadSansAnnexesOmises(sans, [DOCUMENTS_ANNEXES[0].nomFichier])).toBe(sans);
+  });
 });
