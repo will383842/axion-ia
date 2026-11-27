@@ -11,6 +11,7 @@
  * peut indexer un article en DB qui était en FS, sans casser le routing.
  */
 
+import type { ContentType } from "../../../../prisma/generated/client";
 import type { Locale } from "@/i18n/routing";
 import { BLOG_POSTS, getBlogPost } from "@/content/transversal";
 import type { BlogPost } from "@/content/blog";
@@ -103,6 +104,12 @@ export interface BlogArticleView {
   readonly keyTakeaway: string | null;
   /** Citation d'expert nommé (Article.expertQuote*). null si non renseignée. */
   readonly expertQuote: { name: string; title: string | null; text: string } | null;
+  /**
+   * Job de génération d'origine (`Article.generatedByJobId`, simple chaîne sans
+   * relation Prisma). Sert à retrouver le type de contenu pour l'aiguillage des
+   * gabarits (`chargerTypeContenu`). Absent / null : article saisi en console ou FS.
+   */
+  readonly generatedByJobId?: string | null;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
   readonly fsPost: BlogPost | null;
 }
@@ -236,6 +243,8 @@ export async function loadBlogArticleForView(
             // Séparation Actualités (2026-07-01) — discriminant pour le redirect
             // 308 /blog/<slug> → /actualites/<slug> côté route.
             isNews: true,
+            // Gabarits d'articles (PR S1) — job d'origine, pour retrouver le type de contenu.
+            generatedByJobId: true,
           },
         })
         .catch(() => null),
@@ -265,6 +274,7 @@ export async function loadBlogArticleForView(
       // Séparation Actualités (2026-07-01) — `catTags` (findUnique Article) porte
       // `isNews`. KnowledgeEntry unifié → catTags null → false (éditorial).
       isNews: catTags?.isNews ?? false,
+      generatedByJobId: catTags?.generatedByJobId ?? null,
       // P2-3 — Image hero DB article (Article.featuredImage String?).
       featuredImage: dbArticle.featuredImage ?? null,
       // Recensement OG 2026-08-17 — la surcharge d'image de partage saisie en
@@ -310,6 +320,31 @@ export async function loadBlogArticleForView(
   if (fsPost) return adaptFsPostToView(fsPost, locale);
 
   return null;
+}
+
+/**
+ * Type de contenu d'un article (gabarits d'articles, PR S1) : lit
+ * `ContentGenJob.contentType` via `Article.generatedByJobId` (pas de relation
+ * Prisma). `null` si l'article n'a pas de job (console, FS), si le job est
+ * introuvable, ou si la lecture échoue (dont le Proxy `stub.invalid` du build).
+ *
+ * À n'appeler QUE si `gabaritsV2Actifs()` : interrupteur coupé = aucune requête.
+ */
+export async function chargerTypeContenu(
+  view: Pick<BlogArticleView, "generatedByJobId">,
+): Promise<ContentType | null> {
+  const jobId = view.generatedByJobId;
+  if (!jobId) return null;
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return null;
+  try {
+    const job = await prisma.contentGenJob.findUnique({
+      where: { id: jobId },
+      select: { contentType: true },
+    });
+    return job?.contentType ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**

@@ -10,6 +10,12 @@ import { poserChargeurEnfileurEmail } from "@/server/notifications/enfileur-emai
 import { randomUUID } from "node:crypto";
 import { redactEmail } from "@/lib/pii-redaction";
 import { Queue } from "bullmq";
+import {
+  FUSEAU_SEO_PILOTAGE,
+  PATTERN_SEO_INGESTION,
+  PATTERN_SEO_PURGE,
+  PATTERN_SEO_RATTRAPAGE,
+} from "@/server/seo-pilotage/planification";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
 import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
@@ -48,6 +54,7 @@ import type {
   ApporteurCronJobType,
   AlertesClientsCronJobData,
   VisioBalayageJobData,
+  SeoPilotageJobData,
   OpcoSiroImportJobData,
   VisioJobData,
   VisioJobName,
@@ -300,6 +307,23 @@ export const FUSEAU_RECAP_CLIENTS = "Europe/Paris";
  */
 export const visioBalayageQueue: Queue<VisioBalayageJobData> | null = connection
   ? new Queue<VisioBalayageJobData>("visio-balayage", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 24 * 3600, count: 50 },
+        removeOnFail: { age: 7 * 24 * 3600, count: 100 },
+      },
+    })
+  : null;
+
+/**
+ * Pilotage SEO (P4) — file `seo-pilotage` : collecte Search Console, rattrapage de l'historique,
+ * purge. `attempts: 1` : un passage raté est repris au créneau suivant (l'état vit en base).
+ * Les crons sont posés TOUJOURS ; l'interrupteur `CONTENT_PILOTAGE_SEO` est lu par le worker.
+ */
+export const seoPilotageQueue: Queue<SeoPilotageJobData> | null = connection
+  ? new Queue<SeoPilotageJobData>("seo-pilotage", {
       connection,
       defaultJobOptions: {
         ...defaultJobOptions,
@@ -1757,6 +1781,30 @@ export async function bootRepeatableJobs(): Promise<void> {
       { tick: new Date().toISOString() },
       { repeat: { pattern: PATTERN_BALAYAGE_VISIO }, jobId: "visio-balayage-cron" },
     );
+  }
+
+  // ── Pilotage SEO (P4) — collecte, rattrapage, purge ──────────────────────
+  // Purge EXHAUSTIVE d'abord (cadences à jour), ajout TOUJOURS : l'interrupteur
+  // `CONTENT_PILOTAGE_SEO` est lu par le worker, qui sort sans rien faire s'il est éteint.
+  if (seoPilotageQueue) {
+    for (const existing of await seoPilotageQueue.getRepeatableJobs()) {
+      await seoPilotageQueue.removeRepeatableByKey(existing.key);
+    }
+    const programmeSeo = [
+      { tache: "ingestion-gsc", pattern: PATTERN_SEO_INGESTION, tz: FUSEAU_SEO_PILOTAGE },
+      { tache: "rattrapage-gsc", pattern: PATTERN_SEO_RATTRAPAGE, tz: undefined },
+      { tache: "purge", pattern: PATTERN_SEO_PURGE, tz: FUSEAU_SEO_PILOTAGE },
+    ] as const;
+    for (const { tache, pattern, tz } of programmeSeo) {
+      await seoPilotageQueue.add(
+        tache,
+        { tache, tick: new Date().toISOString() },
+        {
+          repeat: tz ? { pattern, tz } : { pattern },
+          jobId: `seo-pilotage-${tache}-cron`,
+        },
+      );
+    }
   }
 
   // ── INT-T60-A — import mensuel de la table IDCC → OPCO ────────────────
