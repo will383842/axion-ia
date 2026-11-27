@@ -56,7 +56,7 @@ describe("envoyerReponsesBarometre", () => {
     const { data } = createMock.mock.calls[0]![0] as { data: Record<string, unknown> };
     expect(data.campagne).toBe("barometre-2027");
     expect(data.questionnaireVersion).toBe("q-v5");
-    expect(data.consentVersion).toBe("barometre-q-v1");
+    expect(data.consentVersion).toBe("barometre-q-v2");
     expect(data.codeRetraitHash).toBe(HASH_OK);
     expect(data.texteUsage).toBe("Mes devis");
     expect(data.texteQuestion).toBe("RGPD ?");

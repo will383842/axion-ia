@@ -250,7 +250,7 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page renvoie en 308 vers
   // /journee-ia. Une URL redirigée n'a pas sa place dans pages.xml (crawl-budget, GSC).
   "/audit/tpe-1-jour",
-  // Questionnaire du Baromètre 2027 : diffusé par lien, `noindex`, collecte temporaire.
+  // Questionnaire du Baromètre 2027 : diffusé par lien, `noindex`, collecte permanente, sans date de fin.
   "/questionnaire-barometre-ia-2027",
 ];
 

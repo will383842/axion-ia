@@ -25,6 +25,7 @@ const db = vi.hoisted(() => ({
     jobId: string;
   }>,
   jobIds: new Set<string>(),
+  retraits: [] as Array<Record<string, any>>, // eslint-disable-line @typescript-eslint/no-explicit-any
   /** Appelé juste APRÈS une lecture des présentations : simule un autre processus qui écrit entre lecture et écriture. */
   apresLecture: null as null | ((where: Record<string, unknown>) => void),
   apresLectureRes: null as null | ((where: Record<string, unknown>) => void),
@@ -60,7 +61,13 @@ vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("@/lib/destinataires-internes", () => ({
   destinataireAlertesInternes: () => "williams@x.test",
 }));
-vi.mock("../envois", () => ({ envoyer: vi.fn(async () => "envoye") }));
+vi.mock("../envois", () => ({
+  // Un envoi réussi est mémorisé (comme le journal d'e-mails le fait : « une fois par jobId »).
+  envoyer: vi.fn(async (a: { jobId: string }) => {
+    db.jobIds.add(a.jobId);
+    return "envoye";
+  }),
+}));
 vi.mock("../jeton", () => ({ urlDossier: () => null }));
 vi.mock("../alerte-vigilance", () => ({ alerterPiecesVigilanceDeposees: vi.fn(async () => 0) }));
 vi.mock("../commissions", () => ({
@@ -196,10 +203,27 @@ vi.mock("@/lib/prisma", () => {
         return { count: l.length };
       }),
     },
-    apporteurResiliation: { updateMany: vi.fn(async () => ({ count: 0 })) },
+    apporteurResiliation: {
+      updateMany: vi.fn(async () => ({ count: 0 })),
+      findMany: vi.fn(async () => []),
+    },
     activityLog: { create: vi.fn(async () => ({})) },
     pieceApporteur: { findMany: vi.fn(async () => []) },
-    devis: { findMany: vi.fn(async () => db.devis) },
+    devis: {
+      findMany: vi.fn(async (a: { where?: Ligne }) =>
+        (db.devis as Ligne[]).filter((d) => !a.where || ok(d, { acceptedAt: a.where.acceptedAt })),
+      ),
+      findUnique: vi.fn(
+        async (a: { where: { id: string } }) =>
+          (db.devis as Ligne[]).find((d) => d.id === a.where.id) ?? null,
+      ),
+    },
+    apporteurReseauRetrait: {
+      findUnique: vi.fn(
+        async (a: { where: { apporteurId: string } }) =>
+          db.retraits.find((r) => r.apporteurId === a.where.apporteurId) ?? null,
+      ),
+    },
     client: { findMany: vi.fn(async () => []) },
     $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) => {
       const avant = {
@@ -294,6 +318,7 @@ beforeEach(() => {
     "devis",
     "apporteurs",
     "alertes",
+    "retraits",
   ] as const)
     db[k].length = 0;
   db.jobIds.clear();
@@ -639,16 +664,27 @@ describe("commissions d'une réservation (argent)", () => {
   });
 });
 
+/** Les e-mails à l'apporteur, par gabarit. */
+const envoisDe = (gabarit: string) =>
+  vi.mocked(envoyer).mock.calls.filter(([a]) => a.gabarit === gabarit);
+const unDevis = (o: Ligne = {}) => ({
+  id: "D1",
+  acceptedAt: j(RECUE, 30),
+  client: { siren: "123456782", siret: null },
+  ...o,
+});
+
 describe("commande signée pendant la réservation, sans rendez-vous", () => {
-  it("valide l'entreprise à la date de signature (six mois), alerte unique par devis, aucun e-mail à l'apporteur", async () => {
+  it("valide l'entreprise à la date de signature (six mois), UNE annonce à l'apporteur sur deux passages, jamais « commande signée »", async () => {
     const signee = j(RECUE, 30);
     db.pres.push(pres());
     db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
-    db.devis.push({ id: "D1", acceptedAt: signee, client: { siren: "123456782", siret: null } });
+    db.devis.push(unDevis({ acceptedAt: signee }));
     const b1 = await passerReseauApporteurs(j(RECUE, 32));
     const b2 = await passerReseauApporteurs(j(RECUE, 33));
     expect(b1.commandesSigneesAnnoncees + b2.commandesSigneesAnnoncees).toBe(0);
-    expect(envoyer).not.toHaveBeenCalled();
+    expect(envoisDe("apporteur-commande-signee")).toHaveLength(0);
+    expect(envoisDe("apporteur-attribution-confirmee")).toHaveLength(1);
     expect(db.pres[0]).toMatchObject({ statut: "confirmee" });
     expect((db.pres[0]!.protegeeJusquAt as Date).toISOString()).toBe("2027-04-01T09:00:00.000Z");
     expect(db.res[0]).toMatchObject({ validationSource: "commande" });
@@ -658,22 +694,45 @@ describe("commande signée pendant la réservation, sans rendez-vous", () => {
     ).toHaveLength(1);
   });
 
-  it("verdict G : l'alerte a ÉCHOUÉ au passage de la validation → au suivant, toujours aucun e-mail « commande signée », l'alerte est retentée", async () => {
-    const signee = j(RECUE, 30);
+  it("verdict G : l'annonce a ÉCHOUÉ au passage de la validation → au suivant elle est RETENTÉE (une seule au total), toujours aucun « commande signée »", async () => {
     db.pres.push(pres());
     db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
-    db.devis.push({ id: "D1", acceptedAt: signee, client: { siren: "123456782", siret: null } });
-    const { enqueueEmail } = await import("@/server/queue/queues");
-    vi.mocked(enqueueEmail).mockRejectedValueOnce(new Error("Redis indisponible"));
+    db.devis.push(unDevis());
+    vi.mocked(envoyer).mockRejectedValueOnce(new Error("relais indisponible"));
     await passerReseauApporteurs(j(RECUE, 32));
     expect(db.pres[0]).toMatchObject({ statut: "confirmee" });
     expect(db.res[0]).toMatchObject({ validationSource: "commande", valideeParId: "systeme" });
-    expect(db.alertes).toHaveLength(0);
+    expect(db.jobIds.has("apporteur-attribution-confirmee-P1")).toBe(false);
     await passerReseauApporteurs(j(RECUE, 33));
-    expect(envoyer).not.toHaveBeenCalled();
+    expect(db.jobIds.has("apporteur-attribution-confirmee-P1")).toBe(true);
+    await passerReseauApporteurs(j(RECUE, 34));
+    expect(envoisDe("apporteur-attribution-confirmee").filter(([a]) => a.jobId)).toHaveLength(2); // 1 échec + 1 succès
+    expect(envoisDe("apporteur-commande-signee")).toHaveLength(0);
     expect(
       db.alertes.filter((a) => a.jobId === "apporteur-commande-en-reservation-D1"),
     ).toHaveLength(1);
+  });
+
+  it("pas d'annonce EN RETARD : la validation date de plus de 5 jours ouvrés → rien n'est relancé", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push(unDevis());
+    vi.mocked(envoyer).mockRejectedValueOnce(new Error("relais indisponible"));
+    await passerReseauApporteurs(j(RECUE, 32));
+    await passerReseauApporteurs(j(RECUE, 45)); // > 5 jours ouvrés plus tard
+    expect(db.jobIds.has("apporteur-attribution-confirmee-P1")).toBe(false);
+    expect(envoisDe("apporteur-attribution-confirmee")).toHaveLength(1); // le seul essai, échoué
+  });
+
+  it("apporteur RETIRÉ du réseau : validée, mais aucune annonce n'est envoyée", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push(unDevis());
+    db.retraits.push({ apporteurId: "APP1" });
+    await passerReseauApporteurs(j(RECUE, 32));
+    await passerReseauApporteurs(j(RECUE, 33));
+    expect(db.pres[0]).toMatchObject({ statut: "confirmee" });
+    expect(envoyer).not.toHaveBeenCalled();
   });
 
   it("une commande signée APRÈS la validation (protection en cours) reçoit bien son annonce", async () => {
@@ -691,26 +750,312 @@ describe("commande signée pendant la réservation, sans rendez-vous", () => {
         valideeParId: "systeme",
       }),
     );
-    db.devis.push({
-      id: "D2",
-      acceptedAt: j(RECUE, 40),
-      client: { siren: "123456782", siret: null },
-    });
+    db.devis.push(unDevis({ id: "D2", acceptedAt: j(RECUE, 40) }));
     await passerReseauApporteurs(j(RECUE, 41));
-    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(envoisDe("apporteur-commande-signee")).toHaveLength(1);
   });
 
-  it("l'échéance et la validation par commande ne gagnent jamais toutes les deux", async () => {
-    db.pres.push(pres());
-    db.res.push(reservation());
-    db.devis.push({
-      id: "D1",
-      acceptedAt: j(RECUE, 59),
-      client: { siren: "123456782", siret: null },
-    });
+  it("l'échéance et la validation par commande : une réservation échue se valide encore (valideeAt postérieur à echueAt, présentation confirmée)", async () => {
+    // Changement de sens VOULU : avant, une ligne échue ne pouvait plus être validée.
+    db.pres.push(pres({ statut: "terminee" }));
+    db.res.push(reservation({ echueAt: j(RECUE, 60.5) }));
+    db.devis.push(unDevis({ acceptedAt: j(RECUE, 59) }));
     await passerReseauApporteurs(j(RECUE, 61));
     const r = db.res[0]!;
-    expect(!!r.echueAt && !!r.valideeAt).toBe(false);
+    expect(r.echueAt).toEqual(j(RECUE, 60.5)); // la trace de l'échéance est gardée
+    expect((r.valideeAt as Date).getTime()).toBeGreaterThan((r.echueAt as Date).getTime());
+    expect(db.pres[0]).toMatchObject({ statut: "confirmee" });
+    expect((db.pres[0]!.protegeeJusquAt as Date).getTime()).toBeGreaterThan(j(RECUE, 59).getTime());
+    expect(envoisDe("apporteur-attribution-confirmee")).toHaveLength(1);
+  });
+
+  it("signature au 62e jour (après le terme) : jamais validée", async () => {
+    db.pres.push(pres({ statut: "terminee" }));
+    db.res.push(reservation({ echueAt: j(RECUE, 60.5) }));
+    db.devis.push(unDevis({ acceptedAt: j(RECUE, 62) }));
+    await passerReseauApporteurs(j(RECUE, 63));
+    expect(db.res[0]!.valideeAt).toBeNull();
+    expect(db.pres[0]).toMatchObject({ statut: "terminee" });
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("devis de 45 jours sur une réservation de 50 jours : validé (la fenêtre de 30 jours ne s'applique pas)", async () => {
+    db.pres.push(pres({ recueAt: j(MAINT, -50) }));
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push(unDevis({ acceptedAt: j(MAINT, -45) }));
+    const b = await passerReseauApporteurs(MAINT);
+    expect(b.validationsParCommande).toBe(1);
+    expect(db.pres[0]).toMatchObject({ statut: "confirmee" });
+  });
+
+  it("devis de 45 jours SANS réservation : la limite de 30 jours reste — aucun e-mail « commande signée »", async () => {
+    db.pres.push(
+      pres({
+        statut: "confirmee",
+        recueAt: j(MAINT, -100),
+        confirmeeAt: j(MAINT, -90),
+        protegeeJusquAt: j(MAINT, 90),
+      }),
+    );
+    db.devis.push(unDevis({ acceptedAt: j(MAINT, -45) }));
+    const b = await passerReseauApporteurs(MAINT);
+    expect(b.commandesSigneesAnnoncees).toBe(0);
+    expect(envoisDe("apporteur-commande-signee")).toHaveLength(0);
+  });
+
+  it("apporteur RÉSILIÉ : une réservation échue n'est pas validée par la commande", async () => {
+    db.apporteurs.push({ id: "APP1", statut: "resilie" });
+    db.pres.push(pres({ statut: "terminee" }));
+    db.res.push(reservation({ echueAt: j(RECUE, 60.5) }));
+    db.devis.push(unDevis({ acceptedAt: j(RECUE, 59) }));
+    await passerReseauApporteurs(j(RECUE, 61));
+    expect(db.res[0]!.valideeAt).toBeNull();
+    expect(db.pres[0]).toMatchObject({ statut: "terminee" });
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("conflit : une autre déclaration RÉSERVÉE occupe l'entreprise → pas de validation, alerte critique, message corrigé", async () => {
+    db.pres.push(
+      pres({ statut: "terminee" }),
+      pres({ id: "P2", apporteurId: "APP2", recueAt: j(RECUE, 62) }),
+    );
+    db.res.push(
+      reservation({ echueAt: j(RECUE, 60.5) }),
+      reservation({ presentationId: "P2", reserveeJusquAt: j(RECUE, 122) }),
+    );
+    db.devis.push(unDevis({ acceptedAt: j(RECUE, 59) }));
+    await passerReseauApporteurs(j(RECUE, 63));
+    await passerReseauApporteurs(j(RECUE, 64));
+    expect(db.res[0]!.valideeAt).toBeNull();
+    expect(db.pres[0]).toMatchObject({ statut: "terminee" });
+    const critiques = db.alertes.filter((a) => a.jobId === "apporteur-rattrapage-conflit-P1");
+    expect(critiques).toHaveLength(1);
+    expect(critiques[0]!.payload.niveau).toBe("critique");
+    const m = String(
+      db.alertes.find((a) => a.jobId === "apporteur-commande-en-reservation-D1")!.payload.message,
+    );
+    expect(m).not.toMatch(/sans nouvelle protection/);
+    expect(m).toMatch(/n'a pas pu être enregistrée/);
+  });
+});
+
+describe("L7 · un devis émis AVANT la saisie ne valide pas la réservation", () => {
+  it("devis envoyé avant la saisie : pas de validation", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push(unDevis({ sentAt: j(RECUE, -5), createdAt: j(RECUE, -6) }));
+    const b = await passerReseauApporteurs(j(RECUE, 32));
+    expect(b.validationsParCommande).toBe(0);
+    expect(db.pres[0]).toMatchObject({ statut: "reservee" });
+  });
+
+  it("sentAt vide : c'est createdAt qui date l'émission", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push(unDevis({ sentAt: null, createdAt: j(RECUE, -2) }));
+    expect((await passerReseauApporteurs(j(RECUE, 32))).validationsParCommande).toBe(0);
+  });
+
+  it("devis émis après la saisie : validé", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push(unDevis({ sentAt: j(RECUE, 5), createdAt: j(RECUE, 4) }));
+    expect((await passerReseauApporteurs(j(RECUE, 32))).validationsParCommande).toBe(1);
+  });
+
+  it("devis RÉVISÉ après la saisie dont l'ancêtre date d'avant : la date la plus ancienne de la chaîne fait foi", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    db.devis.push(
+      unDevis({ sentAt: j(RECUE, 20), createdAt: j(RECUE, 20), replacesDevisId: "D0" }),
+      {
+        id: "D0",
+        acceptedAt: null,
+        sentAt: j(RECUE, -3),
+        createdAt: j(RECUE, -4),
+        replacesDevisId: null,
+        client: { siren: "123456782", siret: null },
+      },
+    );
+    expect((await passerReseauApporteurs(j(RECUE, 32))).validationsParCommande).toBe(0);
+  });
+
+  it("la COMMISSION n'est pas touchée : un devis émis avant la saisie reste commissionné", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation({ reserveeJusquAt: j(MAINT, 10) }));
+    unPaiement(j(RECUE, 30));
+    (db.lignes as Ligne[])[0]!.devis = {
+      acceptedAt: j(RECUE, 30),
+      montantTotalHtCents: 100_000,
+      sentAt: j(RECUE, -5),
+      createdAt: j(RECUE, -6),
+    };
+    await passerFacturationApporteurs(MAINT);
+    expect(db.commissions).toHaveLength(1);
+  });
+});
+
+describe("L3a / E5 · alertes internes avant le terme", () => {
+  const sansRdv = () =>
+    db.alertes.filter((a) => a.jobId.startsWith("apporteur-reservation-sans-rdv-"));
+  const jobAttendu = `apporteur-reservation-sans-rdv-P1-${FIN_RESERVATION.toISOString()}`;
+
+  it("au 50e jour (10 jours avant le terme) : une alerte interne, aucun e-mail à l'apporteur", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    const b = await passerReseauApporteurs(j(RECUE, 50));
+    expect(sansRdv().map((a) => a.jobId)).toEqual([jobAttendu]);
+    expect(b.reservationsBientotEchues).toBe(1);
+    expect(String(sansRdv()[0]!.payload.message)).toMatch(
+      /Saisir un rendez-vous ou créer la rencontre avant le terme/,
+    );
+    expect(sansRdv()[0]!.to).toBe("williams@x.test");
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("au 51e jour : pas de doublon", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    await passerReseauApporteurs(j(RECUE, 50));
+    const b = await passerReseauApporteurs(j(RECUE, 51));
+    expect(sansRdv()).toHaveLength(1);
+    expect(b.reservationsBientotEchues).toBe(0);
+  });
+
+  it("au 40e jour : rien", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    await passerReseauApporteurs(j(RECUE, 40));
+    expect(sansRdv()).toHaveLength(0);
+  });
+
+  it("une proposition ouverte : rien", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    db.props.push({
+      id: "PR1",
+      presentationId: "P1",
+      prisAt: j(RECUE, 49),
+      creeAt: j(RECUE, 49),
+      ecarteeAt: null,
+      retenueAt: null,
+    });
+    await passerReseauApporteurs(j(RECUE, 50));
+    expect(sansRdv()).toHaveLength(0);
+  });
+
+  it.each([
+    ["validée", { valideeAt: j(RECUE, 20) }, "confirmee"],
+    ["échue", { echueAt: j(RECUE, 49) }, "terminee"],
+  ])("réservation %s : rien", async (_n, ligne, statut) => {
+    db.pres.push(pres({ statut }));
+    db.res.push(reservation(ligne));
+    await passerReseauApporteurs(j(RECUE, 50));
+    expect(sansRdv()).toHaveLength(0);
+  });
+
+  it("l'envoi de l'alerte échoue : retentée au passage suivant, le bilan ne plante pas", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    const { enqueueEmail } = await import("@/server/queue/queues");
+    vi.mocked(enqueueEmail).mockRejectedValueOnce(new Error("Redis indisponible"));
+    const b1 = await passerReseauApporteurs(j(RECUE, 50));
+    expect(b1.erreurs).toBe(0);
+    expect(sansRdv()).toHaveLength(0);
+    const b2 = await passerReseauApporteurs(j(RECUE, 51));
+    expect(sansRdv()).toHaveLength(1);
+    expect(b2.reservationsBientotEchues).toBe(1);
+  });
+
+  it("E5 · une proposition en attente depuis plus de 5 jours ouvrés : une alerte (jobId stable), pas deux", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    db.props.push({
+      id: "PR1",
+      presentationId: "P1",
+      prisAt: j(RECUE, 10),
+      creeAt: j(RECUE, 10),
+      ecarteeAt: null,
+      retenueAt: null,
+    });
+    await passerReseauApporteurs(j(RECUE, 20));
+    await passerReseauApporteurs(j(RECUE, 21));
+    expect(
+      db.alertes.filter((a) => a.jobId === "apporteur-proposition-en-attente-PR1"),
+    ).toHaveLength(1);
+  });
+
+  it("E5 · une proposition récente (3 jours) : rien ; écartée ou retenue : rien", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    db.props.push(
+      {
+        id: "PR1",
+        presentationId: "P1",
+        prisAt: j(RECUE, 17),
+        creeAt: j(RECUE, 17),
+        ecarteeAt: null,
+        retenueAt: null,
+      },
+      {
+        id: "PR2",
+        presentationId: "P1",
+        prisAt: j(RECUE, 1),
+        creeAt: j(RECUE, 1),
+        ecarteeAt: j(RECUE, 2),
+        retenueAt: null,
+      },
+      {
+        id: "PR3",
+        presentationId: "P1",
+        prisAt: j(RECUE, 1),
+        creeAt: j(RECUE, 1),
+        ecarteeAt: null,
+        retenueAt: j(RECUE, 2),
+      },
+    );
+    await passerReseauApporteurs(j(RECUE, 20));
+    expect(
+      db.alertes.filter((a) => a.jobId.startsWith("apporteur-proposition-en-attente-")),
+    ).toEqual([]);
+  });
+});
+
+describe("L3b · à l'échéance : alerte interne « la réservation a pris fin »", () => {
+  const echue = () => db.alertes.filter((a) => a.jobId === "apporteur-reservation-echue-P1");
+
+  it("une seule alerte sur deux passages, aucun e-mail à l'apporteur", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    const b1 = await passerReseauApporteurs(j(RECUE, 61));
+    const b2 = await passerReseauApporteurs(j(RECUE, 62));
+    expect(b1.reservationsEchues).toBe(1);
+    expect(b2.reservationsEchues).toBe(0);
+    expect(echue()).toHaveLength(1);
+    expect(String(echue()[0]!.payload.message)).toMatch(
+      /un rendez-vous pris avant le terme peut encore être validé/,
+    );
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("alerte échouée : rattrapée au passage suivant (échue depuis moins de 7 jours)", async () => {
+    db.pres.push(pres());
+    db.res.push(reservation());
+    const { enqueueEmail } = await import("@/server/queue/queues");
+    vi.mocked(enqueueEmail).mockRejectedValueOnce(new Error("Redis indisponible"));
+    // L'envoi échoue dans la boucle ET dans le rattrapage du même passage.
+    vi.mocked(enqueueEmail).mockRejectedValueOnce(new Error("Redis indisponible"));
+    await passerReseauApporteurs(j(RECUE, 61));
+    expect(echue()).toHaveLength(0);
+    await passerReseauApporteurs(j(RECUE, 63));
+    expect(echue()).toHaveLength(1);
+  });
+
+  it("échue depuis plus de 7 jours : pas de rattrapage", async () => {
+    db.pres.push(pres({ statut: "terminee" }));
+    db.res.push(reservation({ echueAt: j(RECUE, 61) }));
+    await passerReseauApporteurs(j(RECUE, 70));
+    expect(echue()).toHaveLength(0);
   });
 });
 

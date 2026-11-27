@@ -43,16 +43,13 @@ import {
   type ResultatEnvoi,
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
-import {
-  type ReservationProvisoire,
-  reservationOccupe,
-  versReservationProvisoire,
-} from "./regle-attribution";
+import { presentationOccupe, versReservationProvisoire } from "./regle-attribution";
 import { ajouterMois, finDeProtection } from "./regles";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { finReservation, regleDe, type RegleAttribution } from "./regle-attribution";
 import {
   enregistrerReservation,
+  lireIdsEnGrace,
   lireReservations,
   suitLaRegleRendezVous,
 } from "./reservation-presentation";
@@ -81,21 +78,8 @@ export function devisSigneNonFacture(d: {
   return facture < d.montantTotalHtCents;
 }
 
-/**
- * Une présentation occupe-t-elle encore le SIREN à cette date ? `reservation` (facultatif, règle
- * par rendez-vous) : une présentation `reservee` occupe tant que sa réservation court, ou qu'un
- * rendez-vous pris pendant la réservation reste à tenir (`reservationOccupe`).
- */
-export function presentationOccupe(
-  p: { statut: StatutPresentation; protegeeJusquAt: Date | null },
-  maintenant: Date,
-  reservation?: ReservationProvisoire | null,
-): boolean {
-  if (p.statut === "reservee") return !reservation || reservationOccupe(reservation, maintenant);
-  if (p.statut === "confirmee")
-    return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
-  return false;
-}
+// `presentationOccupe` vit dans `regle-attribution.ts` (module pur, atteint par le worker) ; ré-exporté ici.
+export { presentationOccupe };
 
 const STATUTS_FACTURE_EMISE = ["emise", "partiellement_payee", "en_retard", "payee"] as const;
 
@@ -108,16 +92,22 @@ export async function lireSignalements(
   etablissement: Etablissement = { siret: null, entreprise: false, exclus: [] },
 ): Promise<Signalement[]> {
   const out: Signalement[] = [];
+  const enGrace = await lireIdsEnGrace(maintenant);
   const [presentations, tousClients] = await Promise.all([
     prisma.presentationEntreprise.findMany({
       where: {
         siren,
-        statut: { in: ["reservee", "confirmee"] },
+        // E1 : une réservation terminée sans validation occupe encore 30 jours.
+        OR: [
+          { statut: { in: ["reservee", "confirmee"] } },
+          { statut: "terminee", id: { in: enGrace } },
+        ],
         ...(saufId ? { id: { not: saufId } } : {}),
       },
       select: {
         id: true,
         statut: true,
+        recueAt: true,
         protegeeJusquAt: true,
         apporteur: { select: { prenom: true, nom: true } },
       },
@@ -131,13 +121,24 @@ export async function lireSignalements(
     etablissement.siret && !etablissement.entreprise
       ? tousClients.filter((c) => !c.siret || c.siret.replace(/\s+/g, "") === etablissement.siret)
       : tousClients;
+  const lignesGrace = await lireReservations(
+    presentations.filter((p) => p.statut === "terminee").map((p) => p.id),
+  );
   for (const p of presentations) {
-    if (!presentationOccupe(p, maintenant)) continue;
+    const enFenetre = p.statut === "terminee";
+    if (
+      !presentationOccupe(
+        p,
+        maintenant,
+        enFenetre ? versReservationProvisoire(p.recueAt, lignesGrace.get(p.id)) : undefined,
+      )
+    )
+      continue;
     if (!memePerimetre(etablissement, etabs.get(p.id)!)) continue;
     out.push({
       type: "deja_presentee",
       apporteur: nomComplet(p.apporteur.prenom, p.apporteur.nom),
-      statut: p.statut as "reservee" | "confirmee",
+      statut: enFenetre ? "reservee" : (p.statut as "reservee" | "confirmee"),
       jusquAu: p.protegeeJusquAt,
     });
   }
@@ -289,7 +290,13 @@ export async function creerPresentation(
   // son SIREN (réservée, ou protégée et non échue) n'est pas enregistrée une seconde fois — la
   // saisie console ne doit pas ouvrir une seconde réservation de 30 jours.
   const siennes = await prisma.presentationEntreprise.findMany({
-    where: { apporteurId: s.apporteurId, siren, statut: { in: ["reservee", "confirmee"] } },
+    where: {
+      apporteurId: s.apporteurId,
+      siren,
+      // Contrat 2.8, art. 3.2 et 3.4 bis : les 30 jours après la fin d'une réservation ne bloquent
+      // que les AUTRES ; l'apporteur peut redéclarer, sans délai d'attente.
+      statut: { in: ["reservee", "confirmee"] },
+    },
     select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   // Contrat 2.6 : par établissement — un AUTRE établissement de la même entreprise se déclare.
