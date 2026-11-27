@@ -1,0 +1,38 @@
+# Pages équipe · D6b : questionnaire public par lien personnel
+
+## Quoi
+
+Une page privée `/fr/equipe/questionnaire/<jeton>` où un collaborateur remplit son questionnaire. L'envoi crée une fiche « à valider » : elle n'est jamais publiée toute seule.
+
+## Pourquoi
+
+Chaque personne écrit elle-même sa présentation et donne ses accords un par un. L'équipe relit ensuite avant toute mise en ligne.
+
+## Ce qui est fait
+
+- Le jeton n'est jamais stocké : on cherche par `sha256(jeton)` (`src/server/equipe/questionnaire/jeton.ts`, fichier commun écrit tel quel).
+- Même message pour un lien inconnu, expiré, révoqué, déjà utilisé ou une fiche en cours d'effacement. La première ouverture est notée.
+- Questions communes et questions de la catégorie (version figée par l'invitation, déjà dans `src/lib/equipe/donnees`).
+- Cases séparées et non cochées d'avance : publication, photo, LinkedIn, carte (simple souhait, rien n'est mis sur la carte), et attestation obligatoire « Je certifie l'exactitude des informations fournies et j'en assume la responsabilité. » (texte versionné `team-attestation-v1`).
+- Contrôlé côté serveur : pas d'envoi sans attestation ni consentement de publication ; photo refusée si la case photo n'est pas cochée.
+- Turnstile (strict), limite par IP hachée (5 par heure) et par jeton (3 par heure).
+- Une transaction : invitation consommée (condition dans l'UPDATE, donc un double envoi simultané ne passe qu'une fois), fiche créée ou mise à jour en `a_valider`, réponse conservée, un `ConsentEvent` par accord plus l'attestation (`team-profile-attestation`), journal.
+- Une fiche déjà publiée n'est pas modifiée : la réponse est gardée, la photo n'est pas appliquée.
+- Photo : `deposerPhotoCollaborateur` (branche D4) appelée après la transaction ; elle ré-encode sans EXIF. La photo est contrôlée avant l'écriture.
+- Aucune migration : l'attestation est tracée dans `ConsentEvent` et dans la réponse conservée. Aucun job, aucune énumération, aucun e-mail.
+- Garde `gardeLectureEchanges` ajoutée en première instruction des deux pages console `collaborateurs` (même rôles qu'avant) : le test de garde échouait sur la base D4.
+
+## Comment vérifier
+
+- `pnpm vitest run src/server/equipe src/lib/equipe src/features/admin-calendly/__tests__/la-lecture-est-gardee-comme-l-ecriture.spec.ts`
+- Créer une invitation en base (jeton de `genererJetonQuestionnaire`, hash dans `tokenHash`), ouvrir le lien, envoyer, vérifier la fiche en `a_valider`.
+
+## Risques et restes
+
+- Le clone du robot a des fichiers en lecture seule (`package.json`, deux scripts `apporteurs`) : ils sont restés dans l'état de `main` dans l'arbre de travail et ne sont PAS dans le commit. `pnpm-lock.yaml` n'a pas été comparé.
+- `pnpm typecheck` ne signale que deux scripts restés de `main` (hors de cette branche), rien dans le code ajouté.
+- Le lieu saisi est rapproché d'une ville ou d'un département par son nom ; sinon il reste en texte sans coordonnées.
+- Si la photo échoue après la transaction, la fiche est gardée et la personne en est informée.
+- `pnpm bundle:check` : voir le compte rendu final.
+
+VERDICT OPUS : EN COURS

@@ -11,6 +11,7 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { PointCarteSwitch } from "@/components/admin/collaborateurs/PointCarteSwitch";
+import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { gardePageCollaborateurs } from "@/server/equipe-garde-page";
 import { prisma } from "@/lib/prisma";
 import {
@@ -41,6 +42,11 @@ const LIBELLE_STATUT: Record<string, string> = {
 
 export default async function CollaborateursPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  // Garde de lecture en PREMIÈRE instruction : les fiches sont réservées aux mêmes rôles que les échanges du dossier client.
+  const lecture = await gardeLectureEchanges(`/${locale}/${adminPrefix}/login`);
+  if (!lecture.autorise) {
+    return <AccesRefuse motif={lecture.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
   const acces = await gardePageCollaborateurs(`/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
