@@ -18977,7 +18977,7 @@ model ChallengeApporteur {
 
 /// Questionnaire du Baromètre 2027 : une ligne par réponse, non nominative. Ni IP, ni e-mail, ni
 /// agent navigateur, ni horodatage précis (`jour` est tronqué au jour UTC). Effacement automatique
-/// 24 mois après la fin de l'enquête (exception déclarée dans le worker de purge).
+/// 24 mois après le jour d'envoi de chaque réponse (exception déclarée dans le worker de purge).
 /// rgpd: technique — réponses non nominatives, sans identifiant de personne : l'export et l'effacement par personne n'existent pas (art. 11) ; retrait par code, effacement automatique à 24 mois
 model BarometreQuestionnaireReponse {
   id                   String   @id @default(uuid()) @db.Uuid

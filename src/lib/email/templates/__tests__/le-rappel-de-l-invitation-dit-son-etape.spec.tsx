@@ -92,7 +92,7 @@ describe("les deux étapes, les deux langues", () => {
     expect(r.html).not.toContain(CALENDLY);
     expect(r.html).toMatch(l === "fr" ? /Réserver mon créneau/ : /Book my slot/);
     // Le kit : le catalogue seul depuis JUR-T44 (`kit-apporteur-sans-pdf.spec.ts`).
-    expect(r.html).toMatch(/\/(fr|en)\/catalogue"/);
+    expect(r.html).toMatch(/\/(fr|en)\/formations"/);
     expect(r.html).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
     expect(texte(r.html)).toMatch(l === "fr" ? /un clic suffit/ : /one click is enough/);
     // Le lien d'opposition du pied de page, porté par le châssis de famille B.

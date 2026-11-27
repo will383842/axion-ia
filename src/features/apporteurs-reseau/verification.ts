@@ -27,6 +27,7 @@ import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/l
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { annexesDeLEnvoiDuLien, bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
+import { alerterContresignature } from "./alerte-telegram";
 import { apercu } from "./apercu-envoi";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
 import { urlDossier } from "./jeton";
@@ -502,6 +503,18 @@ export async function appliquerDecision(
       jobId: `apporteur-contrat-signe-${apporteurId}`,
       attachments: pieces,
     });
+    // Salon Telegram « Apporteurs » : jamais bloquant, la contresignature est actée.
+    try {
+      const qui = await lireDossier(apporteurId);
+      await alerterContresignature({
+        apporteurId,
+        prenom: qui?.prenom ?? "",
+        nom: qui?.nom ?? "",
+        envoi: r,
+      });
+    } catch (err) {
+      signalerErreurReseau("contresignature : alerte Telegram", err);
+    }
     return {
       ok: true,
       message:

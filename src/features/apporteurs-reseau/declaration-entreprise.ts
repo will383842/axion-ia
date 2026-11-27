@@ -116,7 +116,13 @@ export async function declarerEntreprise(
   // Doublon de l'apporteur lui-même : il a déjà déclaré CET établissement (contrat 2.6), ou une
   // déclaration couvre toute l'entreprise. Un autre établissement de l'entreprise se déclare.
   const siennes = await prisma.presentationEntreprise.findMany({
-    where: { apporteurId, siren: d.siret.slice(0, 9), statut: { in: ["reservee", "confirmee"] } },
+    where: {
+      apporteurId,
+      siren: d.siret.slice(0, 9),
+      // Contrat 2.8, art. 3.2 et 3.4 bis : les 30 jours après la fin d'une réservation ne bloquent
+      // que les AUTRES ; l'apporteur peut redéclarer, sans délai d'attente.
+      statut: { in: ["reservee", "confirmee"] },
+    },
     select: { id: true, statut: true, protegeeJusquAt: true, recueAt: true },
   });
   const etabs = await lireEtablissements(siennes.map((p) => p.id));

@@ -248,7 +248,7 @@ describe("R7 / R8 — vocabulaire et promesses", () => {
       expect(t).not.toMatch(/\b0\d([ .]?\d{2}){4}\b|\+33/);
       // Le document de présentation est retiré du kit (JUR-T44) ; le catalogue part.
       expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
-      expect(h).toMatch(/\/fr\/catalogue"/);
+      expect(h).toMatch(/\/fr\/formations"/);
     },
   );
 });
