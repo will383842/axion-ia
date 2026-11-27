@@ -345,6 +345,23 @@ export async function validerPropositionAction(
         etat: "erreur",
         message: "Indiquez la date et l'heure où le rendez-vous a eu lieu.",
       };
+    // Rencontre : « Pris (convenu) le » obligatoire, jamais postérieur à la création de la
+    // proposition ni à maintenant (les bornes de la règle sont refaites dans la transaction).
+    let prisAt: Date | undefined;
+    if (pr.rendezVousCle.startsWith("rencontre:")) {
+      const brut = texte(fd, "prisLe");
+      if (!brut)
+        return { etat: "erreur", message: "Indiquez le jour où ce rendez-vous a été convenu." };
+      const saisi = instantSaisi(brut);
+      if (!saisi) return { etat: "erreur", message: "Date de prise du rendez-vous illisible." };
+      if (saisi.getTime() > pr.creeAt.getTime() || saisi.getTime() > Date.now())
+        return {
+          etat: "erreur",
+          message:
+            "La date de prise ne peut pas être postérieure à la création de la proposition ni à aujourd'hui.",
+        };
+      prisAt = saisi;
+    }
     const r = await validerParRendezVous({
       presentationId: pr.presentationId,
       rendezVousCle: pr.rendezVousCle,
@@ -352,6 +369,7 @@ export async function validerPropositionAction(
       source: sourceDeLaCle(pr.rendezVousCle),
       propositionId: pr.id,
       acteurId: acteur.id,
+      ...(prisAt ? { prisAt } : {}),
     });
     if (r.ok) rafraichir();
     return messageValidation(r);
@@ -411,10 +429,14 @@ export async function saisirRendezVousAction(_prev: EtatAction, fd: FormData): P
     return { etat: "erreur", message: "Indiquez le jour où ce rendez-vous a été convenu." };
   const prisAt = instantSaisi(prisBrut);
   if (!prisAt) return { etat: "erreur", message: "Date de prise du rendez-vous illisible." };
+  const motif = texte(fd, "motif").slice(0, 200);
+  if (!motif)
+    return { etat: "erreur", message: "Indiquez le motif de cette saisie (en quelques mots)." };
   if (texte(fd, "confirmer") !== "oui") return { etat: "erreur", message: MESSAGE_CONFIRMER };
   try {
     const r = await validerParRendezVous({
       presentationId,
+      motif,
       rendezVousCle: null,
       prisAt,
       tenuAt,

@@ -55,6 +55,7 @@ const gestes = [
         canal: "telephone",
         tenuLe: "2026-11-10T10:00",
         prisLe: "2026-11-05T10:00",
+        motif: "Appel noté au carnet",
         confirmer: "oui",
       }),
     ),
@@ -119,6 +120,7 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
         presentationId: ID,
         canal: "telephone",
         tenuLe: "2026-11-10T10:00",
+        motif: "Appel noté au carnet",
         confirmer: "oui",
       }),
     );
@@ -161,6 +163,7 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
         presentationId: ID,
         canal: "annule_par_axion",
         tenuLe: "2026-11-10T10:00",
+        motif: "Annulé par nous",
         confirmer: "oui",
       }),
     );
@@ -176,6 +179,7 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
         canal: "annule_par_axion",
         tenuLe: "2026-11-10T10:00",
         prisLe: "2026-11-05T10:00",
+        motif: "Appel noté au carnet",
         confirmer: "oui",
       }),
     );
@@ -183,5 +187,75 @@ describe("validation par rendez-vous : actions réservées aux administrateurs",
     const e = (h.valider.mock.calls[0] as unknown as [Record<string, unknown>])[0];
     expect(e).toMatchObject({ canal: "annule_par_axion", source: "saisie" });
     expect(e["prisAt"]).not.toEqual(e["tenuAt"]);
+  });
+
+  it("saisie sans motif : refus, aucun appel au métier (E4)", async () => {
+    for (const motif of [undefined, "", "   "]) {
+      const o: Record<string, string> = {
+        presentationId: ID,
+        canal: "telephone",
+        tenuLe: "2026-11-10T10:00",
+        prisLe: "2026-11-05T10:00",
+        confirmer: "oui",
+      };
+      if (motif !== undefined) o["motif"] = motif;
+      expect((await saisirRendezVousAction(INITIAL, form(o))).etat).toBe("erreur");
+    }
+    expect(h.valider).not.toHaveBeenCalled();
+  });
+
+  it("saisie avec motif : transmis (rogné) au métier (E4)", async () => {
+    await gestes[2]!();
+    const e = (h.valider.mock.calls[0] as unknown as [Record<string, unknown>])[0];
+    expect(e["motif"]).toBe("Appel noté au carnet");
+  });
+
+  describe("proposition « rencontre: » : « Pris (convenu) le » (L9)", () => {
+    beforeEach(() => {
+      h.proposition = {
+        presentationId: ID,
+        rendezVousCle: "rencontre:r1",
+        prisAt: new Date("2026-11-05T10:00:00Z"),
+        creeAt: new Date("2026-11-12T08:00:00Z"),
+        rendezVousAt: new Date("2026-11-10T10:00:00Z"),
+        ecarteeAt: null,
+        retenueAt: null,
+      };
+    });
+    const valide = (extra: Record<string, string>) =>
+      validerPropositionAction(INITIAL, form({ id: ID, confirmer: "oui", ...extra }));
+
+    it("date fournie : transmise comme prisAt", async () => {
+      expect((await valide({ prisLe: "2026-11-03T10:00" })).etat).toBe("ok");
+      const e = (h.valider.mock.calls[0] as unknown as [Record<string, unknown>])[0];
+      expect(e["prisAt"]).toBeInstanceOf(Date);
+      expect(e["source"]).toBe("rencontre");
+    });
+
+    it("date absente ou illisible : refus", async () => {
+      expect((await valide({})).etat).toBe("erreur");
+      expect((await valide({ prisLe: "demain" })).etat).toBe("erreur");
+      expect(h.valider).not.toHaveBeenCalled();
+    });
+
+    it("date postérieure à la création de la proposition : refus", async () => {
+      const r = await valide({ prisLe: "2026-11-13T10:00" });
+      expect(r.etat).toBe("erreur");
+      expect(h.valider).not.toHaveBeenCalled();
+    });
+
+    it("date dans le futur : refus", async () => {
+      h.proposition!["creeAt"] = new Date("2099-01-01T00:00:00Z");
+      const r = await valide({ prisLe: "2098-01-01T10:00" });
+      expect(r.etat).toBe("erreur");
+      expect(h.valider).not.toHaveBeenCalled();
+    });
+
+    it("une proposition calendly n'exige rien et ne transmet aucun prisAt", async () => {
+      h.proposition!["rendezVousCle"] = "calendly:ev1";
+      expect((await valide({ prisLe: "2026-11-03T10:00" })).etat).toBe("ok");
+      const e = (h.valider.mock.calls[0] as unknown as [Record<string, unknown>])[0];
+      expect(e["prisAt"]).toBeUndefined();
+    });
   });
 });
