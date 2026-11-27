@@ -24,7 +24,16 @@ Deux outils de mesure, sans migration, sans écriture en base, éteints par déf
 ## Vérifications
 - `pnpm typecheck` : propre. 25 tests unitaires des modules purs : verts.
 - Aucun fichier interdit touché, aucune migration.
+- Fusion de `origin/main` (sans conflit). `pnpm typecheck` propre ; 30 tests verts (3 fichiers) sur `content-gen/mesures`.
 - Relecture Opus n°1 : « à corriger » (tier 3 compté à tort, texte de page ville non affiché, plafonds muets, coûts absents) : corrigé.
-- Relecture Opus n°2 : « à corriger » (les villes venaient de la table `City`, mauvais identifiant de région et couverture incomplète) : corrigé en lisant les données du site, comme le sitemap. Ce dernier correctif n'a PAS été relu par Opus ; typecheck et 25 tests verts.
+- Relecture Opus n°2 : « à corriger » (villes lues depuis la table `City`) : corrigé en lisant les données du site, comme le sitemap.
+- Relecture Opus n°3 (dernier correctif de villes + fusion) : « à corriger », 5 points, corrigés :
+  - **Pages noindex** : un article non `tier_1_indexable` n'est plus signalé « sans impressions » (0 par construction, jamais proposé à Google). La règle est tenue par le module pur et par le chargeur.
+  - **Médiane** : moyenne des deux valeurs centrales quand le nombre d'articles est pair (elle était sous-estimée).
+  - **Plafond** : lecture de LIMITE + 1 ; l'avertissement « PARTIEL » n'apparaît que s'il y avait réellement plus de lignes.
+  - **Libellé du coût colonne** : dit exactement quels jobs sont exclus (en file, en génération, contrôle qualité, échec, annulés). Le coût réel est donc minoré de la dépense des jobs en échec : limite connue, annoncée dans le rapport.
+  - **Test** de lecture du corpus (villes = villes indexables du site, mêmes adresses que le sitemap ; noindex ; `stub.invalid`).
+- Relecture Opus n°4, sur le code final (commit 143932cbb) : rien de bloquant. Deux remarques mineures non traitées : le libellé du coût ne dit pas que `quality_improving` et les quarantaines sont inclus ; si Search Console répond mais qu'aucune page n'est indexable, le rapport dit « n'a rien répondu » (cas impossible en pratique, les pages villes sont toujours indexables).
+- Lecture seule, aucune migration, aucun fichier interdit.
 
-VERDICT OPUS : À CORRIGER
+VERDICT OPUS : BON
