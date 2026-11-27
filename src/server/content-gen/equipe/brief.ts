@@ -12,6 +12,24 @@ export const ORIGINES_QUESTION = ["search-console", "plan-editorial", "autre-sou
 export const INTENTIONS = ["information", "comparaison", "decision"] as const;
 export const TYPES_BRIEF = ["neuf", "mise-a-jour"] as const;
 
+/**
+ * Chaîne éditoriale (C3) : statuts en TEXTE en base (aucune énumération Postgres, donc rien à
+ * ajouter avant de l'émettre : un worker plus ancien ignore simplement ces tables). Un statut
+ * nouveau s'ajoute ici, jamais par migration.
+ */
+export const STATUTS_BESOIN = ["nouveau", "en_brief", "couvert", "ecarte"] as const;
+export const STATUTS_BRIEF = [
+  "brouillon",
+  "valide",
+  "pas_d_angle",
+  "pas_de_matiere",
+  "abandonne",
+] as const;
+export const STATUTS_PROPOSITION = ["a_relire", "appliquee", "refusee", "reportee"] as const;
+export const NIVEAUX_TITRE = [1, 2, 3] as const;
+/** Borne haute de sécurité d'une fourchette de longueur, en mots. */
+export const FOURCHETTE_LONGUEUR_MAX_MOTS = 10000;
+
 const texte = (max: number) => z.string().trim().min(1).max(max);
 
 export const questionSchema = z
@@ -22,6 +40,18 @@ export const questionSchema = z
     reference: texte(300),
   })
   .strict();
+
+/** Plan de titres H1/H2/H3 du brief (ordre = ordre de lecture). */
+export const planTitresSchema = z
+  .array(
+    z
+      .object({
+        niveau: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+        titre: texte(200),
+      })
+      .strict(),
+  )
+  .max(60);
 
 export const briefSchema = z
   .object({
@@ -37,8 +67,21 @@ export const briefSchema = z
       .refine((u) => u.startsWith("https://"), { message: "URL absolue en https attendue" }),
     cluster: texte(200),
     type: z.enum(TYPES_BRIEF),
+    // ── Chaîne éditoriale (C3) : tous optionnels, un brief ancien reste valide ──
+    /** Intention de recherche (mêmes valeurs que `intention`). */
+    intentionRecherche: z.enum(INTENTIONS).nullish(),
+    planTitres: planTitresSchema.nullish(),
+    longueurMinMots: z.number().int().min(1).max(FOURCHETTE_LONGUEUR_MAX_MOTS).nullish(),
+    longueurMaxMots: z.number().int().min(1).max(FOURCHETTE_LONGUEUR_MAX_MOTS).nullish(),
   })
-  .strict();
+  .strict()
+  .refine(
+    (b) =>
+      b.longueurMinMots == null ||
+      b.longueurMaxMots == null ||
+      b.longueurMinMots <= b.longueurMaxMots,
+    { message: "longueurMinMots doit être ≤ longueurMaxMots", path: ["longueurMinMots"] },
+  );
 
 export type Question = z.infer<typeof questionSchema>;
 export type Brief = z.infer<typeof briefSchema>;
