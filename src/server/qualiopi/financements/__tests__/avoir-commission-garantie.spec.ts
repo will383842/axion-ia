@@ -24,6 +24,7 @@ const LIGNE = {
   palier: PALIER_JOURNEE_IA,
   prixPublicHtCents: 149_000,
   montantCents: 50_000,
+  grille: "v3" as const,
 };
 
 /** Commission restante après un remboursement de `ttcCents`, via le HT de l'avoir réellement émis. */
