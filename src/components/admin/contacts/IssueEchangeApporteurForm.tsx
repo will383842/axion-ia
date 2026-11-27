@@ -14,11 +14,11 @@
 // côté serveur ; ce composant ne fait que les annoncer.
 
 import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
+import { BoutonOuvrirDossierContrat } from "./BoutonOuvrirDossierContrat";
 import { useActionState, useState, useTransition } from "react";
 
 import {
   apercuIssueApporteurAction,
-  ouvrirDossierEtEnvoyerLienAction,
   enregistrerIssueApporteurAction,
   type ApercuIssueApporteur,
   type EtatIssueApporteur,
@@ -102,18 +102,6 @@ export function IssueEchangeApporteurForm({
   }
 
   const apercuPret = apercu?.etat === "apercu" && apercu.issue === choix ? apercu : null;
-  const [dossierEnCours, setDossierEnCours] = useState(false);
-  const [retourDossier, setRetourDossier] = useState<EtatIssueApporteur | null>(null);
-  async function ouvrirDossier() {
-    setDossierEnCours(true);
-    setRetourDossier(null);
-    try {
-      setRetourDossier(await ouvrirDossierEtEnvoyerLienAction({ calendlyEventId }));
-    } finally {
-      setDossierEnCours(false);
-    }
-  }
-
   return (
     <form action={action} className="flex flex-col gap-[var(--space-admin-3)]">
       <input type="hidden" name="calendlyEventId" value={calendlyEventId} />
@@ -256,9 +244,17 @@ export function IssueEchangeApporteurForm({
               className="admin-button-secondary"
               disabled={occupe}
             >
-              Enregistrer sans envoyer d&apos;e-mail
+              {choix === "retenu"
+                ? "Noter retenu sans envoyer le contrat"
+                : "Enregistrer sans envoyer d'e-mail"}
             </button>
           </div>
+          {choix === "retenu" ? (
+            <p role="note" className="text-[color:var(--color-admin-warning,#b45309)]">
+              Le contrat ne partira pas. Vous pourrez l&apos;envoyer plus tard depuis le bandeau en
+              haut.
+            </p>
+          ) : null}
         </div>
       ) : null}
 
@@ -322,16 +318,6 @@ export function IssueEchangeApporteurForm({
                     ? "Enregistrement…"
                     : `Enregistrer sans e-mail : ${LIBELLE_ISSUE_APPORTEUR[apercuPret.issue].toLowerCase()}`}
                 </button>
-                {apercuPret.proposerDossier && peutRetenir ? (
-                  <button
-                    type="button"
-                    className="admin-button-secondary"
-                    onClick={ouvrirDossier}
-                    disabled={occupe || dossierEnCours}
-                  >
-                    {dossierEnCours ? "Ouverture…" : "Ouvrir le dossier et envoyer le lien"}
-                  </button>
-                ) : null}
                 {apercuPret.issue === "absent" ? (
                   <button
                     type="button"
@@ -345,17 +331,12 @@ export function IssueEchangeApporteurForm({
               </div>
             </>
           )}
-          {retourDossier && retourDossier.etat !== "initial" ? (
-            <p
-              role={retourDossier.etat === "ok" ? "status" : "alert"}
-              className={
-                retourDossier.etat === "ok"
-                  ? "text-[color:var(--color-admin-success)]"
-                  : "text-[color:var(--color-admin-danger)]"
-              }
-            >
-              {retourDossier.message}
-            </p>
+          {apercuPret.proposerDossier && peutRetenir ? (
+            <BoutonOuvrirDossierContrat
+              calendlyEventId={calendlyEventId}
+              libelle="Ouvrir le dossier et envoyer le lien"
+              secondaire
+            />
           ) : null}
         </section>
       ) : null}

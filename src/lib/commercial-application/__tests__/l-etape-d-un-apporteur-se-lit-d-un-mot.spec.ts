@@ -21,6 +21,7 @@ import {
   lienEtapeSuivi,
   motifSansLien,
   precisionEtapeSuivi,
+  tonEtapeSuivi,
   motifArchivageAuto,
   doitArchiverAutomatiquement,
   MARQUE_ARCHIVAGE_AUTO,
@@ -105,9 +106,10 @@ describe("l'étape, du début à la fin du parcours", () => {
     expect(libelle({ suivi: s })).toBe("Absent");
   });
 
-  it("retenu, sans dossier ouvert : « Retenu »", () => {
+  it("retenu, sans dossier ouvert : « Retenu · contrat pas envoyé » (orange)", () => {
     const s = suivi({ echange: "reserve", decision: { type: "retenu", le: MAINTENANT } });
-    expect(libelle({ suivi: s })).toBe("Retenu");
+    expect(libelle({ suivi: s })).toBe("Retenu · contrat pas envoyé");
+    expect(tonEtapeSuivi(etapeDuSuivi({ suivi: s }, MAINTENANT))).toBe("warning");
   });
 
   it("dossier ouvert, lien parti : « Contrat envoyé le JJ/MM »", () => {
@@ -116,8 +118,9 @@ describe("l'étape, du début à la fin du parcours", () => {
     expect(libelle({ suivi: s, dossier: d })).toBe("Contrat envoyé le 05/10");
   });
 
-  it("dossier ouvert, aucun envoi journalisé : « Retenu » (on n'invente pas de date)", () => {
-    expect(libelle({ dossier: dossier() })).toBe("Retenu");
+  it("dossier ouvert, aucun envoi journalisé : « Contrat envoyé » (on n'invente pas de date)", () => {
+    expect(libelle({ dossier: dossier() })).toBe("Contrat envoyé");
+    expect(etapeDuSuivi({ dossier: dossier() }, MAINTENANT).type).toBe("retenu");
   });
 
   it("l'apporteur a signé : « Dossier signé (à vérifier) »", () => {

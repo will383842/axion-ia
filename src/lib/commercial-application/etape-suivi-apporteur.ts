@@ -134,7 +134,10 @@ export type EtapeSuivi =
   | { readonly type: "echange-reserve"; readonly le: Date | null }
   | { readonly type: "echange-fait"; readonly aRevoir: boolean }
   | { readonly type: "absent" }
+  /** Dossier du réseau ouvert, aucun envoi du contrat journalisé. */
   | { readonly type: "retenu" }
+  /** Décision « Retenu » notée, mais AUCUN dossier ouvert : le contrat n'est pas parti. */
+  | { readonly type: "retenu-sans-contrat" }
   | { readonly type: "contrat-envoye"; readonly le: Date }
   | { readonly type: "dossier-a-completer" }
   | { readonly type: "dossier-signe" }
@@ -173,7 +176,9 @@ export function etapeDuSuivi(d: DonneesEtapeSuivi, maintenant: Date): EtapeSuivi
   const s = d.suivi ?? null;
   const decision = s?.decision ?? null;
   if (decision?.type === "non-retenu") return { type: "non-retenu" };
-  if (decision?.type === "retenu") return { type: "retenu" };
+  // Décision « Retenu » sans dossier : rien n'est parti (cas « Enregistrer sans
+  // envoyer d'e-mail »). Distinct de « dossier ouvert sans envoi journalisé ».
+  if (decision?.type === "retenu") return { type: "retenu-sans-contrat" };
   if (decision?.type === "absent") return { type: "absent" };
   if (decision?.type === "a-revoir") return { type: "echange-fait", aRevoir: true };
 
@@ -213,7 +218,9 @@ export function libelleEtapeSuivi(e: EtapeSuivi): string {
     case "absent":
       return "Absent";
     case "retenu":
-      return "Retenu";
+      return "Contrat envoyé";
+    case "retenu-sans-contrat":
+      return "Retenu · contrat pas envoyé";
     case "contrat-envoye":
       return `Contrat envoyé le ${jourMois(e.le)}`;
     case "dossier-a-completer":
@@ -243,6 +250,7 @@ export function tonEtapeSuivi(e: EtapeSuivi): TonEtape {
     case "contrat-contresigne":
     case "echange-reserve":
       return "success";
+    case "retenu-sans-contrat":
     case "dossier-signe":
     case "dossier-a-completer":
     case "absent":
