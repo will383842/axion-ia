@@ -36,10 +36,11 @@ describe("normaliserDomaine", () => {
 });
 
 describe("normaliserPageSource", () => {
-  it("retire le fragment, les identifiants, garde la requête, met l'hôte en minuscules", () => {
-    expect(normaliserPageSource("https://user:pw@Exemple.FR/a/b?x=1#haut")).toBe(
+  it("retire le fragment, garde la requête, met l'hôte en minuscules, refuse les identifiants", () => {
+    expect(normaliserPageSource("https://Exemple.FR/a/b?x=1#haut")).toBe(
       "https://exemple.fr/a/b?x=1",
     );
+    expect(normaliserPageSource("https://user:pw@Exemple.FR/a/b")).toBeNull();
   });
   it("refuse un schéma non http(s), une valeur illisible, une page d'Axion IA", () => {
     expect(normaliserPageSource("javascript:alert(1)")).toBeNull();
@@ -107,5 +108,16 @@ describe("durcissements, tour 2", () => {
     expect(normaliserCible("autre.fr/x")).toBeNull();
     expect(normaliserCible("n'importe quoi")).toBeNull();
     expect(normaliserCible("axion-ia.com/fr/faq")).toBe("/fr/faq");
+  });
+});
+
+describe("tour 3", () => {
+  it("plafonne cheminCible à 500 sans tronquer", () => {
+    expect(normaliserCible(`/fr/${"a".repeat(800)}`)).toBeNull();
+    expect(normaliserCible("/fr/ok")).toBe("/fr/ok");
+  });
+  it("aucune adresse e-mail gardée, avec ou sans schéma, jusque dans la requête", () => {
+    expect(normaliserPageSource("https://jean@gmail.com")).toBeNull();
+    expect(normaliserPageSource("https://site.fr/p?email=jean@gmail.com")).toBeNull();
   });
 });

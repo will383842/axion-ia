@@ -112,3 +112,12 @@ describe("adresses sans schéma", () => {
     );
   });
 });
+
+describe("tour 3 : adresses sans schéma, tout domaine", () => {
+  it.each(["www.autre-site.de", "WWW.AUTRE.DE", "bit.ly/abc", "exemple.dev", "site.uk/x"])(
+    "refuse %s",
+    (a) => {
+      expect(controlerBrouillon(`${BON} Voir ${a}`, URL_PAGE).motifs).toContain("autre_url");
+    },
+  );
+});

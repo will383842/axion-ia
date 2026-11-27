@@ -56,8 +56,9 @@ export function controlerBrouillon(
   if (MOTIF_ECHANGE.test(sansLien)) motifs.push("echange");
   const urls = m.match(/https?:\/\/\S+/gi) ?? [];
   // Adresse sans schéma (« www.autre-site.fr ») : aussi une URL.
+  // Toute adresse sans schéma (« voir bit.ly/abc », « www.site.de », « exemple.dev ») compte comme une URL.
   const sansSchema =
-    /(?<![\w@/.-])(?:[a-z0-9-]+\.)+(?:fr|com|org|net|eu|io|info|ai|co|be|ch)\b/i.test(
+    /(?<![\w@/.-])(?:www\.[a-z0-9-]+(?:\.[a-z0-9-]+)+|(?:[a-z0-9-]+\.)+[a-z]{2,24}\/\S*|(?:[a-z0-9-]+\.)+(?:fr|com|org|net|eu|io|info|ai|co|be|ch|de|uk|dev|app|me|ly|es|it|nl|us|ca|tv|xyz|site|online)\b)/i.test(
       sansLien.replace(/https?:\/\/\S+/gi, " "),
     );
   if (sansSchema || !urls.every((u) => u.replace(/[.,;:)»]+$/, "") === urlPage))

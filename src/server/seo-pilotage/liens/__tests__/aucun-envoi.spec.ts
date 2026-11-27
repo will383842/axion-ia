@@ -11,6 +11,8 @@ const INTERDITS = [
   /["'](?:node:)?(?:http|https|http2|net|tls|child_process)["']/,
   /\bundici\b/,
   /server\/queue/,
+  /(?:^|["'/])queue(?:\/|["'])/,
+  /(?:^|["'/])email(?:-simple)?(?:\/|["'])/,
   /bullmq/i,
   /\bimport\s*\(/,
   /\brequire\s*\(/,
@@ -52,4 +54,13 @@ describe("le verrou attrape les chemins d'envoi du dépôt", () => {
     expect(INTERDITS.some((m) => m.test(code))).toBe(true);
     expect(INTERDITS.some((m) => m.test('await import("x")'))).toBe(true);
   });
+});
+
+describe("le verrou attrape aussi les imports relatifs", () => {
+  it.each(['from "../../queue/queues"', 'from "../../../lib/email"', 'from "../../email/envoi"'])(
+    "%s",
+    (code) => {
+      expect(INTERDITS.some((m) => m.test(code))).toBe(true);
+    },
+  );
 });

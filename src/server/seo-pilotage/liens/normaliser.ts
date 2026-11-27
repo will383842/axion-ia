@@ -8,6 +8,7 @@ import { normaliserChemin } from "../donnees/chemins";
 
 export const PAGE_SOURCE_MAX = 2000;
 export const DOMAINE_MAX = 255;
+export const CHEMIN_CIBLE_MAX = 500;
 export const ANCRE_MAX = 200;
 /** Aucune cellule d'un CSV importé n'est gardée au-delà de cette longueur. */
 export const CELLULE_MAX = 2000;
@@ -62,7 +63,9 @@ export function normaliserPageSource(brut: string): string | null {
     .replace(/\.$/, "")
     .replace(/^www\./, "");
   // Un identifiant dans l'URL (« jean@gmail.com » lu comme URL) : pas un lien, on ne le « répare » pas.
-  if (u.username.includes("@") || /^[^/]*@/.test(brut.trim())) return null;
+  if (u.username || u.password || /^[^/]*@/.test(brut.trim())) return null;
+  // Adresse e-mail dans la requête (?email=jean@x.fr) : aucune donnée personnelle gardée.
+  if (/@|%40/i.test(u.search)) return null;
   if (estAdresseIp(hote) || !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(hote)) return null;
   if (estDomaineAxion(hote)) return null;
   if (u.hostname.endsWith(".")) u.hostname = u.hostname.slice(0, -1);
@@ -84,7 +87,9 @@ export function normaliserCible(brut: string): string | null {
   )) {
     return null;
   }
-  return normaliserChemin(s);
+  const chemin = normaliserChemin(s);
+  // Plafond de la spec (§ 3.1) : refusé, jamais tronqué.
+  return chemin !== null && chemin.length <= CHEMIN_CIBLE_MAX ? chemin : null;
 }
 
 export function normaliserAncre(brut: string | null | undefined): string | null {
