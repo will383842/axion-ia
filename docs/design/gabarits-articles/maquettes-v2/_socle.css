@@ -641,7 +641,7 @@ section:hover .ancre,
   gap: 0.35rem;
   min-height: 44px;
   padding-inline: 0.75rem;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   white-space: nowrap;
   font: 600 1.125rem/1 var(--font-sans);
   letter-spacing: -0.025em;
@@ -3210,8 +3210,8 @@ section:hover .ancre,
     color: var(--color-ink);
     padding-bottom: 1rem;
   }
-  .heros a,
-  .heros time,
+  .heros .meta a,
+  .heros .meta time,
   .heros h1,
   .chapo,
   .meta,
@@ -3393,17 +3393,50 @@ section:hover .ancre,
 @page {
   margin: 18mm 16mm;
 }
-@media print {
-  .heros.sur-terracotta a,
-  .heros time {
-    color: var(--color-ink) !important;
-  }
-}
 /* Téléphone : la méta occupe toujours une rangée par élément (le nombre de rangées ne dépend pas de la police : CLS) */
 @media (max-width: 639px) {
   .meta {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     justify-items: start;
+  }
+}
+@media print {
+  .heros.sur-terracotta .meta a,
+  .heros .meta time,
+  .heros .meta .icone {
+    color: var(--color-ink) !important;
+  }
+  .heros .pastille--contour,
+  .date-une,
+  .releve-bandeau {
+    background: none !important;
+    border: 1px solid var(--color-ink) !important;
+  }
+  .heros .pastille--contour,
+  .heros .pastille--contour a,
+  .date-une,
+  .date-une time,
+  .releve-bandeau,
+  .releve-bandeau time,
+  .releve-bandeau a {
+    color: var(--color-ink) !important;
+  }
+  .chapitre__bandeau *,
+  .feuille-route *,
+  .parcours__titre,
+  .parcours__titre em,
+  .parcours__total,
+  .parcours__total *,
+  .parcours__note,
+  .commencer *:not(.num-section span) {
+    color: var(--color-ink) !important;
+  }
+  .commencer mark,
+  .commencer strong {
+    background: none !important;
+  }
+  .num-section span {
+    color: var(--color-terracotta-deep) !important;
   }
 }
