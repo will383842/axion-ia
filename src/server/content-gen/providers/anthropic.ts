@@ -53,8 +53,9 @@ const PRICING: Record<
   // `null` = prix INCONNU : computeCost échoue plutôt que d'inventer un chiffre.
   | null
 > = {
-  // Famille 5.5. Tarifs de cache propres à chaque modèle (source : dépôt
-  // studio-axion-ia-public, src/fournisseurs/claude/tarifs.ts lignes 31-32).
+  // Famille 5.5. Tarifs de cache propres à chaque modèle (Sonnet 5.5 : lecture
+  // 0,10 $/M, valeur imposée par la consigne de remise à niveau — soit 0,05 × l'entrée,
+  // à confirmer sur la grille officielle Anthropic ; Opus 5.5 : 0,20 $/M).
   "claude-opus-5-5": {
     input: 4.0 / 1_000_000,
     output: 20.0 / 1_000_000,
@@ -64,7 +65,7 @@ const PRICING: Record<
   "claude-sonnet-5-5": {
     input: 2.0 / 1_000_000,
     output: 10.0 / 1_000_000,
-    cacheRead: 0.2 / 1_000_000,
+    cacheRead: 0.1 / 1_000_000,
     cacheWrite: 2.5 / 1_000_000,
   },
   // Haiku 5.5 : prix NON connu à ce jour -> volontairement `null`.
