@@ -34,7 +34,17 @@ const WEBMASTERS_API = "https://www.googleapis.com/webmasters/v3";
  * Cache 55 min (sous 1h Google TTL) pour mutualiser entre les ~500 articles
  * d'un même run du worker keyword-sync.
  */
-async function getAccessToken(): Promise<string> {
+class GscOauthError extends Error {
+  constructor(
+    message: string,
+    readonly status: number | null,
+  ) {
+    super(message);
+    this.name = "GscOauthError";
+  }
+}
+
+async function getAccessToken(fetchImpl: typeof fetch = fetch): Promise<string> {
   if (cachedToken && cachedToken.expiresAt > Date.now() + 60_000) {
     return cachedToken.token;
   }
@@ -56,7 +66,7 @@ async function getAccessToken(): Promise<string> {
     grant_type: "refresh_token",
   });
 
-  const res = await fetch(OAUTH_TOKEN_URL, {
+  const res = await fetchImpl(OAUTH_TOKEN_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: body.toString(),
@@ -64,12 +74,15 @@ async function getAccessToken(): Promise<string> {
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`GSC OAuth refresh failed: ${res.status} ${text.slice(0, 200)}`);
+    throw new GscOauthError(
+      `GSC OAuth refresh failed: ${res.status} ${text.slice(0, 200)}`,
+      res.status,
+    );
   }
 
   const data = (await res.json()) as { access_token?: string; expires_in?: number };
   if (!data.access_token) {
-    throw new Error("GSC OAuth response missing access_token");
+    throw new GscOauthError("GSC OAuth response missing access_token", null);
   }
 
   // Cache 55 min (Google TTL = 1h, marge 5 min).
@@ -368,4 +381,323 @@ export async function gscInspectUrl(
 
   const data = (await res.json()) as { inspectionResult?: GscUrlInspectionResult };
   return data.inspectionResult ?? null;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// Pilotage SEO/GEO — P1 : lecture Search Analytics PAR LOT (fonctions nouvelles,
+// non branchées). Les fonctions ci-dessus gardent leur signature.
+//
+// Champs de `searchanalytics.query` utilisés (doc Google, v3 webmasters) :
+//   requête : startDate, endDate (YYYY-MM-DD, heure du Pacifique), dimensions[]
+//   (date|page|query|country|device|searchAppearance), type (web), dataState
+//   (final|all|hourly_all), aggregationType (auto|byPage|byProperty),
+//   rowLimit (1..25000), startRow (≥ 0), dimensionFilterGroups.
+//   réponse : rows[{keys, clicks, impressions, ctr, position}],
+//   responseAggregationType, metadata.first_incomplete_date.
+// Aucun identifiant ni corps de réponse n'est jamais recopié dans un message.
+// ════════════════════════════════════════════════════════════════════════════
+
+export type GscDimension = "date" | "page" | "query" | "country" | "device" | "searchAppearance";
+export type GscDataState = "final" | "all" | "hourly_all";
+export type GscAggregationType = "auto" | "byPage" | "byProperty";
+
+export type GscEtat = "ok" | "identifiants_absents" | "refus" | "quota" | "erreur";
+
+export interface GscSearchAnalyticsParams {
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly dimensions: ReadonlyArray<GscDimension>;
+  readonly aggregationType?: GscAggregationType;
+  readonly dataState?: GscDataState;
+  readonly startRow?: number;
+  /** Taille de page (1..25000, défaut 25000). La pagination avance de cette taille. */
+  readonly rowLimit?: number;
+  /** Filtre exact sur une page (pour la variante à dates explicites). */
+  readonly pageEquals?: string;
+}
+
+export interface GscLotDeps {
+  readonly fetchImpl?: typeof fetch;
+  /** Attente en millisecondes (injectable pour les tests). */
+  readonly attendre?: (ms: number) => Promise<void>;
+  /** Nombre maximal de réessais sur 429 (défaut 3). */
+  readonly essaisMax?: number;
+  /** Nombre maximal de pages lues (défaut 40, soit 1 M de lignes). */
+  readonly pagesMax?: number;
+  readonly maintenant?: () => Date;
+}
+
+export interface GscLotResultat {
+  readonly etat: GscEtat;
+  readonly rows: ReadonlyArray<GscSearchRow>;
+  /** true seulement si la dernière page lue était incomplète (fin naturelle des données). */
+  readonly complet: boolean;
+  readonly premierJourIncomplet?: string;
+  /** Message sûr : jamais d'identifiant, jamais de corps de réponse. */
+  readonly message?: string;
+}
+
+const GSC_LIGNES_MAX = 25_000;
+const REGEX_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const RAISONS_QUOTA = new Set(["quotaExceeded", "rateLimitExceeded", "dailyLimitExceeded"]);
+const ATTENTE_RETRY_AFTER_MAX_MS = 60_000;
+
+const attendreParDefaut = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+function identifiantsPresents(): boolean {
+  return Boolean(
+    process.env["GSC_PROPERTY_URL"] &&
+    process.env["GSC_OAUTH_CLIENT_ID"] &&
+    process.env["GSC_OAUTH_CLIENT_SECRET"] &&
+    process.env["GSC_OAUTH_REFRESH_TOKEN"],
+  );
+}
+
+function dateValide(d: string): boolean {
+  if (!REGEX_DATE.test(d)) return false;
+  const t = new Date(`${d}T00:00:00Z`);
+  return !Number.isNaN(t.getTime()) && t.toISOString().slice(0, 10) === d;
+}
+
+function delaiRetryAfter(valeur: string | null): number | null {
+  if (!valeur) return null;
+  const s = Number(valeur);
+  if (!Number.isFinite(s) || s < 0) return null;
+  return Math.min(Math.round(s * 1000), ATTENTE_RETRY_AFTER_MAX_MS);
+}
+
+async function raisonsErreurGoogle(res: Response): Promise<ReadonlyArray<string>> {
+  try {
+    const data = (await res.json()) as {
+      error?: { status?: string; errors?: ReadonlyArray<{ reason?: string }> };
+    };
+    const raisons = (data.error?.errors ?? []).map((e) => e.reason ?? "");
+    if (data.error?.status) raisons.push(data.error.status);
+    return raisons;
+  } catch {
+    return [];
+  }
+}
+
+function resultatVide(etat: GscEtat, message: string): GscLotResultat {
+  return { etat, rows: [], complet: false, message };
+}
+
+/**
+ * Lit Search Analytics avec pagination (`startRow`), réessai sur 429 et arrêt
+ * propre sur quota. Ne lève jamais ; ne rend jamais `null`. En cas d'échec en
+ * cours de pagination, les lignes déjà lues sont rendues avec `complet: false`.
+ */
+export async function gscSearchAnalytics(
+  params: GscSearchAnalyticsParams,
+  deps: GscLotDeps = {},
+): Promise<GscLotResultat> {
+  const fetchImpl = deps.fetchImpl ?? fetch;
+  const attendre = deps.attendre ?? attendreParDefaut;
+  const essaisMax = Math.max(0, deps.essaisMax ?? 3);
+  const pagesMax = Math.max(1, deps.pagesMax ?? 40);
+
+  if (
+    !dateValide(params.startDate) ||
+    !dateValide(params.endDate) ||
+    params.startDate > params.endDate
+  ) {
+    return resultatVide("erreur", "Période invalide (dates au format AAAA-MM-JJ, début ≤ fin).");
+  }
+  const taillePage = Math.min(
+    Math.max(1, Math.floor(params.rowLimit ?? GSC_LIGNES_MAX)),
+    GSC_LIGNES_MAX,
+  );
+  let startRow = Math.max(0, Math.floor(params.startRow ?? 0));
+
+  if (!identifiantsPresents()) {
+    return resultatVide("identifiants_absents", "Identifiants Search Console absents.");
+  }
+  const propertyUrl = process.env["GSC_PROPERTY_URL"] as string;
+
+  let accessToken: string;
+  try {
+    accessToken = await getAccessToken(fetchImpl);
+  } catch (err) {
+    const status = err instanceof GscOauthError ? err.status : null;
+    if (status === 400 || status === 401 || status === 403) {
+      return resultatVide("refus", "Jeton OAuth refusé par Google.");
+    }
+    return resultatVide("erreur", "Échec du rafraîchissement du jeton OAuth.");
+  }
+
+  const url = `${WEBMASTERS_API}/sites/${encodeURIComponent(propertyUrl)}/searchAnalytics/query`;
+  const rows: GscSearchRow[] = [];
+  let premierJourIncomplet: string | undefined;
+
+  const echec = (etat: GscEtat, message: string): GscLotResultat => ({
+    etat,
+    rows,
+    complet: false,
+    message,
+    ...(premierJourIncomplet ? { premierJourIncomplet } : {}),
+  });
+
+  for (let page = 0; page < pagesMax; page++) {
+    const corps: Record<string, unknown> = {
+      startDate: params.startDate,
+      endDate: params.endDate,
+      dimensions: params.dimensions,
+      type: "web",
+      rowLimit: taillePage,
+      startRow,
+    };
+    if (params.aggregationType) corps["aggregationType"] = params.aggregationType;
+    if (params.dataState) corps["dataState"] = params.dataState;
+    if (params.pageEquals) {
+      corps["dimensionFilterGroups"] = [
+        { filters: [{ dimension: "page", operator: "equals", expression: params.pageEquals }] },
+      ];
+    }
+
+    let essai = 0;
+    let res: Response;
+    for (;;) {
+      try {
+        res = await fetchImpl(url, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+          body: JSON.stringify(corps),
+        });
+      } catch {
+        return echec("erreur", "Appel Search Console impossible (réseau).");
+      }
+      if (res.status !== 429) break;
+      if (essai >= essaisMax) return echec("quota", "Search Console limite le débit (429).");
+      const delai = delaiRetryAfter(res.headers.get("retry-after")) ?? 1000 * 2 ** essai;
+      await attendre(delai);
+      essai++;
+    }
+
+    if (!res.ok) {
+      if (res.status === 403) {
+        const raisons = await raisonsErreurGoogle(res);
+        if (raisons.some((r) => RAISONS_QUOTA.has(r))) {
+          return echec("quota", "Quota Search Console atteint (quotaExceeded).");
+        }
+        return echec("refus", "Accès Search Console refusé (403).");
+      }
+      if (res.status === 401) return echec("refus", "Accès Search Console refusé (401).");
+      return echec("erreur", `Search Console a répondu ${res.status}.`);
+    }
+
+    let data: {
+      rows?: GscSearchRow[];
+      metadata?: { first_incomplete_date?: string };
+    };
+    try {
+      data = (await res.json()) as typeof data;
+    } catch {
+      return echec("erreur", "Réponse Search Console illisible.");
+    }
+    if (data.metadata?.first_incomplete_date) {
+      premierJourIncomplet = data.metadata.first_incomplete_date;
+    }
+    const lot = data.rows ?? [];
+    rows.push(...lot);
+    if (lot.length < taillePage) {
+      return {
+        etat: "ok",
+        rows,
+        complet: true,
+        ...(premierJourIncomplet ? { premierJourIncomplet } : {}),
+      };
+    }
+    startRow += lot.length;
+  }
+  return {
+    etat: "ok",
+    rows,
+    complet: false,
+    message: "Nombre maximal de pages atteint.",
+    ...(premierJourIncomplet ? { premierJourIncomplet } : {}),
+  };
+}
+
+const FENETRE_DERNIER_JOUR_FINAL_JOURS = 14;
+
+/**
+ * Dernier jour pour lequel `dataState: "final"` rend des données. Détecté, jamais
+ * codé en dur à J-3. `jour` vaut `null` s'il n'y a aucune donnée finale (ou si
+ * l'état n'est pas « ok » : lire `etat` d'abord).
+ */
+export async function gscDernierJourFinal(
+  deps: GscLotDeps = {},
+): Promise<{ etat: GscEtat; jour: string | null }> {
+  const fin = (deps.maintenant ?? (() => new Date()))();
+  const debut = new Date(fin.getTime() - FENETRE_DERNIER_JOUR_FINAL_JOURS * 86_400_000);
+  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  const r = await gscSearchAnalytics(
+    {
+      startDate: fmt(debut),
+      endDate: fmt(fin),
+      dimensions: ["date"],
+      dataState: "final",
+      rowLimit: 100,
+    },
+    deps,
+  );
+  if (r.etat !== "ok") return { etat: r.etat, jour: null };
+  const jours = r.rows.map((l) => l.keys[0]).filter((k): k is string => !!k && REGEX_DATE.test(k));
+  jours.sort();
+  return { etat: "ok", jour: jours.length > 0 ? (jours[jours.length - 1] as string) : null };
+}
+
+/**
+ * Sonde de santé : un appel minimal. Rend toujours un état, **jamais `null`** ;
+ * ne lève jamais ; ne contient aucun identifiant.
+ */
+export async function gscSonde(deps: GscLotDeps = {}): Promise<{ etat: GscEtat }> {
+  try {
+    const fin = (deps.maintenant ?? (() => new Date()))();
+    const debut = new Date(fin.getTime() - 7 * 86_400_000);
+    const fmt = (d: Date) => d.toISOString().slice(0, 10);
+    const r = await gscSearchAnalytics(
+      {
+        startDate: fmt(debut),
+        endDate: fmt(fin),
+        dimensions: ["date"],
+        dataState: "final",
+        rowLimit: 1,
+      },
+      { ...deps, essaisMax: 0, pagesMax: 1 },
+    );
+    return { etat: r.etat };
+  } catch {
+    return { etat: "erreur" };
+  }
+}
+
+/**
+ * Variante de `gscPageMetricsForUrl` à **dates explicites** (fenêtres avant/après
+ * d'une modification). Même forme de retour ; `null` si l'API échoue ou si les
+ * identifiants manquent (jamais 0 par erreur). Page sans ligne = zéros explicites.
+ */
+export async function gscPageMetricsForUrlDates(
+  targetUrl: string,
+  startDate: string,
+  endDate: string,
+  deps: GscLotDeps = {},
+): Promise<{ ctr: number; impressions: number; clicks: number; position: number } | null> {
+  const r = await gscSearchAnalytics(
+    {
+      startDate,
+      endDate,
+      dimensions: [],
+      dataState: "final",
+      rowLimit: 1,
+      pageEquals: targetUrl,
+    },
+    { ...deps, pagesMax: 1 },
+  );
+  if (r.etat !== "ok") return null;
+  const row = r.rows[0];
+  if (!row) return { ctr: 0, impressions: 0, clicks: 0, position: 0 };
+  return { ctr: row.ctr, impressions: row.impressions, clicks: row.clicks, position: row.position };
 }
