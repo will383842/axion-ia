@@ -83,7 +83,13 @@ export interface EntreeReleve {
   /** Mois de Paris « AAAA-MM », CLOS à `preparationAt`. */
   readonly periode: string;
   readonly preparationAt: Date;
-  /** Toutes les commissions de l'apporteur utiles de l'année civile de la période (cumul, E). */
+  /**
+   * Contrat exact pour le lot 3c : toute commission de l'apporteur ayant un évènement (émission,
+   * avoir, virement, attente d'autofacture) dans `[1er janvier de l'année de la période ; coupure[`,
+   * PLUS toute commission facturée et non virée à la coupure, QUELLE QUE SOIT l'année d'émission
+   * (une autofacture de décembre N−1 virée en janvier N figure en C ; impayée, elle reste en D1).
+   * Filtrer sur la seule année d'émission ferait disparaître ces lignes sans signal.
+   */
   readonly commissions: readonly CommissionLue[];
   /** Toutes les pièces AXI-APP de l'apporteur. */
   readonly pieces: readonly PieceLue[];

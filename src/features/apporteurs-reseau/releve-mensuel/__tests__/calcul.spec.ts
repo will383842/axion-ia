@@ -782,3 +782,143 @@ describe("totauxDenormalises", () => {
     });
   });
 });
+
+describe("audit argent #2427 : ordre d'entrée, ex æquo, signes, année", () => {
+  const dansLesDeuxOrdres = (cs: CommissionLue[], ps: PieceLue[]) => {
+    const a = calcul(cs, ps).contenu;
+    const b = calcul([...cs].reverse(), ps).contenu;
+    expect(empreinteContenu(a)).toBe(empreinteContenu(b));
+    expect(empreinteControle(a)).toBe(empreinteControle(b));
+    return a;
+  };
+
+  it("S12 : deux lignes ex æquo sur les cinq champs de tri, factures client différentes : même empreinte", () => {
+    dansLesDeuxOrdres(
+      [
+        commission({ id: "1", factureClientNumero: "F-1" }),
+        commission({ id: "2", factureClientNumero: "F-2" }),
+      ],
+      [piece()],
+    );
+  });
+
+  it("S13 : deux attentes d'autofacture le même jour, motifs différents : même empreinte de contrôle", () => {
+    const depuis = new Date("2026-10-10T10:00:00Z");
+    dansLesDeuxOrdres(
+      [
+        commission({
+          id: "1",
+          autofactureNumero: null,
+          autofactureEmiseAt: null,
+          autofactureAttenteDepuis: depuis,
+          autofactureAttenteMotif: "motif A",
+        }),
+        commission({
+          id: "2",
+          autofactureNumero: null,
+          autofactureEmiseAt: null,
+          autofactureAttenteDepuis: depuis,
+          autofactureAttenteMotif: "motif B",
+        }),
+      ],
+      [],
+    );
+  });
+
+  it("reprise stockée en POSITIF : la ligne d'avoir sort quand même en négatif", () => {
+    const { contenu } = calcul(
+      [
+        commission({
+          id: "r",
+          statut: "reprise",
+          montantCents: 2_000,
+          avoirNumero: "AXI-APP-2026-0002",
+          autofactureNumero: "AXI-APP-2026-0001",
+          autofactureEmiseAt: null,
+        }),
+      ],
+      [
+        piece({
+          numero: "AXI-APP-2026-0002",
+          genre: "avoir",
+          totalHtCents: 2_000,
+          totalTvaCents: 400,
+          totalTtcCents: 2_400,
+          emiseAt: new Date("2026-10-20T10:00:00Z"),
+        }),
+      ],
+    );
+    expect(contenu.avoirs.lignes[0]!.montantHtCents).toBe(-2_000);
+    expect(contenu.avoirs.pieces[0]!.htCents).toBe(-2_000);
+  });
+
+  it("la ligne d'avoir porte la règle et la version du contrat lues sur la commission (§ 5.3)", () => {
+    const { contenu } = calcul(
+      [
+        commission({
+          id: "r",
+          statut: "reprise",
+          montantCents: -2_000,
+          avoirNumero: "AXI-APP-2026-0002",
+          autofactureEmiseAt: null,
+        }),
+      ],
+      [
+        piece({
+          numero: "AXI-APP-2026-0002",
+          genre: "avoir",
+          totalHtCents: 2_000,
+          totalTvaCents: 400,
+          totalTtcCents: 2_400,
+          emiseAt: new Date("2026-10-20T10:00:00Z"),
+        }),
+      ],
+    );
+    const l = contenu.avoirs.lignes[0]!;
+    expect(l.regle?.code).toBe("forfait_palier");
+    expect(l.versionContrat).toBe("Contrat v2.8");
+    expect(l.renvoiDecompte).toBeNull();
+  });
+
+  it("autofacture numérotée sans date d'émission : anomalie emission_incoherente (le repli majAt peut bouger)", () => {
+    const { anomalies } = calcul(
+      [commission({ autofactureEmiseAt: null, majAt: new Date("2026-10-15T10:00:00Z") })],
+      [piece()],
+    );
+    expect(anomalies.map((a) => a.code)).toContain("emission_incoherente");
+  });
+
+  it("C : autofacture émise en décembre N−1, virée en janvier N, figure en C de janvier", () => {
+    const { contenu } = calcul(
+      [
+        commission({
+          autofactureEmiseAt: new Date("2025-12-10T10:00:00Z"),
+          statut: "versee",
+          verseeAt: new Date("2026-01-15T10:00:00Z"),
+        }),
+      ],
+      [piece({ emiseAt: new Date("2025-12-10T10:00:00Z") })],
+      "2026-01",
+      new Date("2026-02-02T08:00:00Z"),
+    );
+    expect(contenu.virements).toHaveLength(1);
+    expect(contenu.virements[0]!.montantTtcCents).toBe(12_000);
+    expect(contenu.report.facturesNonVirees).toEqual([]);
+  });
+
+  it("D1 : autofacture de décembre N−1 toujours impayée, reportée tout au long de l'année N", () => {
+    const { contenu } = calcul(
+      [
+        commission({
+          autofactureEmiseAt: new Date("2025-12-10T10:00:00Z"),
+          encaissementIntegralAt: null,
+        }),
+      ],
+      [piece({ emiseAt: new Date("2025-12-10T10:00:00Z") })],
+      "2026-03",
+      new Date("2026-04-02T08:00:00Z"),
+    );
+    expect(contenu.report.facturesNonVirees).toHaveLength(1);
+    expect(contenu.report.facturesNonVirees[0]!.emiseLe).toBe("2025-12-10");
+  });
+});
