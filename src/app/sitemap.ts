@@ -73,6 +73,7 @@ import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
 import { barometreEstPublic } from "@/content/barometre-2027/donnees";
+import { communiqueIndexable } from "@/server/press/indexabilite";
 import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
@@ -84,7 +85,7 @@ import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable
 //   /sitemap/cas-concrets.xml       = case studies + industry filters
 //   /sitemap/comparaisons.xml       = comparison pages
 //   /sitemap/implementation.xml     = /par-fonction/[slug] programmatic
-//   /sitemap/implantations.xml      = hub + 12 régions indexable (Corse noindex)
+//   /sitemap/implantations.xml      = hub + 18 régions indexables (`getIndexableRegions()`)
 //
 // Dynamic sub-sitemaps (auto-paginés à 1 000 URLs max — best practice 2026) :
 //   /sitemap/villes-<region>.xml         = villes indexables de la région (≤ 1 000 URLs)
@@ -361,7 +362,7 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
 function getVillesSitemapIds(): string[] {
   const ids: string[] = [];
   // 18/11/2026 : les IDs dérivent UNIQUEMENT des villes de `villes-indexees.ts`
-  // (40 villes, 12 régions, jamais plus de 10 villes par région → aucun découpage).
+  // (40 villes dans 12 régions, jamais plus de 10 villes par région → aucun découpage).
   // Une région sans ville gardée (Corse, DROM) n'a PAS de sub-sitemap : l'index
   // refuse les sitemaps vides (`sitemap-index.xml/route.ts`). Test de garde :
   // `src/app/__tests__/sitemap-villes.spec.ts`.
@@ -447,8 +448,9 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     // etc.) sont RETIRÉES du sitemap. Elles sont orphelines (0 lien interne,
     // sitemap-only) et diluaient le crawl-budget d'un domaine jeune. On concentre
     // le crawl sur les ~1776 villes-hub (sub-sitemaps villes, inchangés).
-    // Les pages restent LIVE + indexables (pas de noindex) — simplement plus
-    // annoncées. Réintroduire ces ids une fois l'autorité installée (+ backlinks).
+    // Depuis la décision du 18/11/2026 ces pages sont en `noindex, follow` (page + en-tête
+    // Edge) : hors plan du site ET hors index (certaines, sans contenu, redirigent vers
+    // une ville-hub). Ne réintroduire ces ids que si la page repasse indexable.
     //   "services-villes-audit", "services-villes-interventions",
     //   "services-villes-implementation", "services-villes-un-a-un",
     //   "services-villes-sites-web-augmentes",
@@ -1256,7 +1258,7 @@ function buildGlossarySitemap(_now: Date): MetadataRoute.Sitemap {
   // Slugs identiques en FR et EN (les termes IA sont des sigles anglo-saxons
   // ou des concepts internationaux — pas de translation des slugs).
   // Audit indexation 2026-06-17 : n'inclure QUE les termes réellement indexables
-  // (définition ≥ 80 mots cumulés). Les termes thin rendent `noindex` côté page
+  // (prose FR ≥ 120 mots cumulés). Les termes thin rendent `noindex` côté page
   // (`glossaire/[slug]/page.tsx`) → les sitemapper créait une incohérence
   // sitemap↔page (Google perd confiance dans le sitemap). SSOT = isGlossaryTermIndexable.
   const slugs = listGlossaryTermSlugs().filter((slug) => isGlossaryTermIndexable(slug));
@@ -1319,7 +1321,8 @@ async function buildPresseSitemap(_now: Date): Promise<MetadataRoute.Sitemap> {
   let rows: Array<{
     publishedAt: Date | null;
     createdAt: Date;
-    translations: Array<{ locale: string; slug: string }>;
+    pdfStoragePath: string | null;
+    translations: Array<{ locale: string; slug: string; body: string | null }>;
   }> = [];
   try {
     rows = await prisma.pressRelease.findMany({
@@ -1328,7 +1331,8 @@ async function buildPresseSitemap(_now: Date): Promise<MetadataRoute.Sitemap> {
       select: {
         publishedAt: true,
         createdAt: true,
-        translations: { select: { locale: true, slug: true } },
+        pdfStoragePath: true,
+        translations: { select: { locale: true, slug: true, body: true } },
       },
     });
   } catch {
@@ -1339,7 +1343,13 @@ async function buildPresseSitemap(_now: Date): Promise<MetadataRoute.Sitemap> {
   for (const row of rows) {
     const fr = row.translations.find((t) => t.locale === "fr");
     if (!fr) continue; // FR canonique requis (doctrine content-gen)
-    const en = row.translations.find((t) => t.locale === "en");
+    // S2-2 : même règle que la page `/presse/[slug]` (`communiqueIndexable`).
+    // Un communiqué court sans PDF est `noindex` → hors plan du site. La page
+    // teste `pdfUrl`, dérivé de `pdfStoragePath` (src/server/press/queries.ts).
+    const pdfUrl = row.pdfStoragePath;
+    if (!communiqueIndexable({ pdfUrl, body: fr.body })) continue;
+    const enRaw = row.translations.find((t) => t.locale === "en");
+    const en = enRaw && communiqueIndexable({ pdfUrl, body: enRaw.body }) ? enRaw : undefined;
     // `publishedAt` peut être null (brouillon promu) → fallback createdAt.
     const lastMod = (row.publishedAt ?? row.createdAt).toISOString().slice(0, 10);
     const frUrl = `${SITE_URL}/fr/presse/${fr.slug}`;
