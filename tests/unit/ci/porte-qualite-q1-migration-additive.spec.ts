@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const RACINE = process.cwd();
-const DOSSIER = join(RACINE, "prisma", "migrations", "20261127210000_porte_qualite_tables");
+const DOSSIER = join(RACINE, "prisma", "migrations", "20261127235000_porte_qualite_tables");
 const sql = readFileSync(join(DOSSIER, "migration.sql"), "utf8")
   .split("\n")
   .filter((l) => !l.trim().startsWith("--"))
