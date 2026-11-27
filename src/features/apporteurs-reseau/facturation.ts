@@ -1060,45 +1060,45 @@ export async function marquerVerse(
   }
 
   try {
-  await prisma.$transaction(
-    async (tx) => {
-      // Seconde lecture du gel, DANS la transaction du versement : une demande ouverte entre le premier
-      // contrôle et l'écriture est vue ici, et rien n'est écrit.
-      if ((await demandesQuiGelent([apporteurId], new Date(), tx)).has(apporteurId)) {
-        throw new GelPendantVersement();
-      }
-      const lues = await lireAVerser(tx);
-      const memes =
-        lues.length === avant.length &&
-        lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
-      if (!memes)
-        throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
-      const v = await tx.commissionApporteur.updateMany({
-        where: { id: { in: dues.map((c) => c.id) }, statut: "due" },
-        data: { statut: "versee", verseeAt: maintenant },
-      });
-      const r = await tx.commissionApporteur.updateMany({
-        where: {
-          id: { in: aVerser.filter((c) => c.statut === "reprise").map((c) => c.id) },
-          statut: "reprise",
-          verseeAt: null,
-        },
-        data: { verseeAt: maintenant },
-      });
-      if (v.count + r.count !== aVerser.length)
-        throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
-      if (preuve) {
-        await ecrirePreuveDeCompte(tx, {
-          apporteurId,
-          numeros: numerosVerses,
-          verseAt: maintenant,
-          compte: { fin4: preuve.fin4, empreinte: preuve.empreinte! },
-          declarePar: compteSaisi.acteurId ?? "console",
+    await prisma.$transaction(
+      async (tx) => {
+        // Seconde lecture du gel, DANS la transaction du versement : une demande ouverte entre le premier
+        // contrôle et l'écriture est vue ici, et rien n'est écrit.
+        if ((await demandesQuiGelent([apporteurId], new Date(), tx)).has(apporteurId)) {
+          throw new GelPendantVersement();
+        }
+        const lues = await lireAVerser(tx);
+        const memes =
+          lues.length === avant.length &&
+          lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
+        if (!memes)
+          throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
+        const v = await tx.commissionApporteur.updateMany({
+          where: { id: { in: dues.map((c) => c.id) }, statut: "due" },
+          data: { statut: "versee", verseeAt: maintenant },
         });
-      }
-    },
-    { timeout: 15_000 },
-  );
+        const r = await tx.commissionApporteur.updateMany({
+          where: {
+            id: { in: aVerser.filter((c) => c.statut === "reprise").map((c) => c.id) },
+            statut: "reprise",
+            verseeAt: null,
+          },
+          data: { verseeAt: maintenant },
+        });
+        if (v.count + r.count !== aVerser.length)
+          throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
+        if (preuve) {
+          await ecrirePreuveDeCompte(tx, {
+            apporteurId,
+            numeros: numerosVerses,
+            verseAt: maintenant,
+            compte: { fin4: preuve.fin4, empreinte: preuve.empreinte! },
+            declarePar: compteSaisi.acteurId ?? "console",
+          });
+        }
+      },
+      { timeout: 15_000 },
+    );
   } catch (err) {
     if (err instanceof GelPendantVersement) return { ok: false, message: MESSAGE_GEL };
     throw err;
