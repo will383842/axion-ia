@@ -33,13 +33,21 @@ Aucun code, aucune migration, rien allumé, rien envoyé au Studio.
 
 ## Relecture
 
-Trois relectures par un sous-agent opus, avec vérification des références dans les deux dépôts. Les
-deux premières ont trouvé des bloquants (routes et réponses, garde-fou S-6), corrigés. La troisième
-n'a plus trouvé de bloquant, mais deux points importants (déclencheurs de validation, ordre E3) et sept
-mineurs : tous appliqués ensuite, sans quatrième relecture. `prettier --check` passe (avec la config
-du dépôt sans son plugin Tailwind, absent ici, sans effet sur du Markdown).
+Quatre relectures par un sous-agent opus, avec vérification des références dans les deux dépôts
+(site et Studio, branche `master`). Les deux premières ont trouvé des bloquants (routes et réponses,
+garde-fou S-6), corrigés. La troisième n'en a plus trouvé. La quatrième (finale) n'en a trouvé aucun
+non plus et a confirmé que les corrections de la troisième sont bien en place et que les références
+au code sont exactes. Elle a signalé deux points importants sur S-6, appliqués :
 
-VERDICT OPUS : À CORRIGER
+- pour une vidéo du générateur, « validée » veut dire « prête » (elle le devient toute seule) : le
+  texte le dit maintenant, et Will doit confirmer que cela lui suffit ;
+- l'envoi du site ne doit pas partir de l'intérieur de `synchroniserSujet` (verrou global, avant les
+  finitions) : S-6 appelle l'envoi après le retour de l'appelant, hors verrou.
+
+Sept mineurs appliqués (doublons, longueurs, dépendance de E3, bornes de S-1, etc.). Les deux points
+importants sont des reformulations de précision, sans changement de plan. `prettier --check` passe.
+
+VERDICT OPUS : BON
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
