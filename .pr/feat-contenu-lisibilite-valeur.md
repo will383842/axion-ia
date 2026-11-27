@@ -58,3 +58,7 @@ Documenté dans `docs/design/gabarits-articles/BALISAGE-ENCADRES.md` (classes `a
 - Le formatage prettier des 8 générateurs (appel à deux arguments) est à refaire : l'outil n'était pas disponible.
 - Le bloc rallonge les prompts (coût en jetons légèrement supérieur).
 
+
+Relecture Opus : 3 tours (6 défauts corrigés au tour 2, aucun au tour 3). Elle s'appuie sur une lecture du code et une rejouée des assertions sous node : vitest, tsc, eslint et prettier n'ont PAS tourné (dépendances absentes, installation refusée).
+
+VERDICT OPUS : BON
