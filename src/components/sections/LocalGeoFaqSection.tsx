@@ -49,11 +49,11 @@ const FAQS_BY_SERVICE: Record<
       id: "audit-metropoles",
       fr: {
         q: "Et dans les autres métropoles ? Lyon, Marseille, Toulouse, Bordeaux ?",
-        a: "Nous intervenons dans toutes les métropoles régionales, dans vos locaux. Sélectionnez votre région sur la page Implantations pour voir le tissu B2B local et les éventuels cas clients à proximité.",
+        a: "Nous intervenons dans toutes les métropoles régionales, dans vos locaux. Sélectionnez votre région sur la page Implantations pour voir le tissu B2B local.",
       },
       en: {
         q: "What about other metropolitan areas? Lyon, Marseille, Toulouse, Bordeaux?",
-        a: "We work in all the large regional cities, at your premises. Pick your region on the Locations page to see the local B2B fabric and any nearby case studies.",
+        a: "We work in all the large regional cities, at your premises. Pick your region on the Locations page to see the local B2B fabric.",
       },
     },
     {
@@ -117,11 +117,11 @@ const FAQS_BY_SERVICE: Record<
       id: "interventions-international",
       fr: {
         q: "Intervenez-vous à l'international ou seulement en France ?",
-        a: "Pour les sièges français de groupes internationaux, oui systématiquement. Pour les filiales hors France (Belgique, Suisse, Luxembourg, Allemagne, etc.), c'est possible au cas par cas avec un devis sur mesure. Anglais opérationnel.",
+        a: "Pour les sièges français de groupes internationaux, oui, sur devis. Pour les filiales hors France (Belgique, Suisse, Luxembourg, Allemagne, etc.), c'est possible au cas par cas avec un devis sur mesure. Anglais possible.",
       },
       en: {
         q: "Do you intervene internationally or only in France?",
-        a: "For French headquarters of international groups, yes systematically. For non-French subsidiaries (Belgium, Switzerland, Luxembourg, Germany, etc.), it's possible case-by-case with a custom quote. Operational English.",
+        a: "For French headquarters of international groups, yes, on quote. For non-French subsidiaries (Belgium, Switzerland, Luxembourg, Germany, etc.), it's possible case-by-case with a custom quote. English is possible.",
       },
     },
   ],
@@ -141,11 +141,11 @@ const FAQS_BY_SERVICE: Record<
       id: "implementation-onsite",
       fr: {
         q: "L'implémentation IA peut-elle se faire à distance ou faut-il être sur site ?",
-        a: "Hybride dans la majorité des cas : kick-off et déploiement initial sur site, itérations à distance, recette finale sur site. Pour les cabinets et PME en région, nous nous déplaçons systématiquement aux jalons clés.",
+        a: "Hybride dans la majorité des cas : kick-off et déploiement initial sur site, itérations à distance, recette finale sur site. Pour les cabinets et PME en région, des jalons clés sur site sont possibles.",
       },
       en: {
         q: "Can AI implementation be done remotely or does it require on-site presence?",
-        a: "Hybrid in most cases: on-site kick-off and initial deployment, remote iterations, on-site final acceptance. For regional firms and SMEs, we systematically travel for key milestones.",
+        a: "Hybrid in most cases: on-site kick-off and initial deployment, remote iterations, on-site final acceptance. For regional firms and SMEs, key milestones on site are possible.",
       },
     },
     {
@@ -163,11 +163,11 @@ const FAQS_BY_SERVICE: Record<
       id: "implementation-international",
       fr: {
         q: "Implémentez-vous chez des filiales internationales ?",
-        a: "Pour les sièges français de groupes pilotant leurs filiales depuis Paris, oui — c'est un de nos cas typiques. Pour des déploiements purement à l'étranger, un partenariat local est étudié au cas par cas.",
+        a: "Pour les sièges français de groupes pilotant leurs filiales depuis Paris, oui : oui, sur devis. Pour des déploiements purement à l'étranger, c'est étudié au cas par cas, sur devis.",
       },
       en: {
         q: "Do you deploy at international subsidiaries?",
-        a: "For French headquarters of groups steering their subsidiaries from Paris, yes — it's one of our typical cases. For purely abroad deployments, local partnerships are studied case-by-case.",
+        a: "For French headquarters of groups steering their subsidiaries from Paris, yes : yes, on quote. For purely abroad deployments, it is studied case by case, on quote.",
       },
     },
   ],
@@ -176,7 +176,7 @@ const FAQS_BY_SERVICE: Record<
       id: "codage-paris",
       fr: {
         q: "Développez-vous des plateformes IA à Paris et en Île-de-France ?",
-        a: "Oui, nous développons pour des entreprises de Paris et de toute l'Île-de-France. Nous intervenons aussi bien pour des startups que pour des TPE, PME et ETI. Les projets se déroulent en mode hybride : kickoff et démos sur site, développement en sprint à distance.",
+        a: "Oui, nous développons pour des entreprises de Paris et de toute l'Île-de-France. Nous intervenons aussi bien pour des startups que pour des TPE, PME et ETI. Les projets se déroulent en mode hybride : kick-off et démos sur site, développement en sprint à distance.",
       },
       en: {
         q: "Do you build AI platforms in Paris and Greater Paris?",
@@ -209,11 +209,11 @@ const FAQS_BY_SERVICE: Record<
       id: "codage-coverage",
       fr: {
         q: "Quelles régions sont les plus actives pour le développement de plateformes IA ?",
-        a: "Île-de-France (sièges et scale-ups), Auvergne-Rhône-Alpes (industrie tech Lyon), Occitanie (SaaS Toulouse), Bretagne (industrie navale et agri-tech), Pays de la Loire (ETI Nantes). Toute région métropolitaine est éligible sans condition.",
+        a: "Île-de-France (sièges et scale-ups), Auvergne-Rhône-Alpes (industrie tech Lyon), Occitanie (SaaS Toulouse), Bretagne (industrie navale et agri-tech), Pays de la Loire (ETI Nantes). Nous intervenons dans toutes les régions, sur devis.",
       },
       en: {
         q: "Which regions are most active for AI platform development?",
-        a: "Île-de-France (HQs and scale-ups), Auvergne-Rhône-Alpes (Lyon tech industry), Occitanie (Toulouse SaaS), Brittany (naval and agri-tech), Pays de la Loire (Nantes mid-caps). Every metropolitan region is eligible without condition.",
+        a: "Île-de-France (HQs and scale-ups), Auvergne-Rhône-Alpes (Lyon tech industry), Occitanie (Toulouse SaaS), Brittany (naval and agri-tech), Pays de la Loire (Nantes mid-caps). We work in every region, on quote.",
       },
     },
   ],
@@ -237,18 +237,18 @@ const FAQS_BY_SERVICE: Record<
       },
       en: {
         q: "Is 1-to-1 coaching available in regional areas?",
-        a: "Yes, across mainland France. Regular sessions are conducted remotely; intensive on-site sessions are available in all regions.",
+        a: "Yes, across mainland France. Regular sessions are conducted remotely; intensive on-site sessions are possible in all regions, on quote.",
       },
     },
     {
       id: "unauun-remote",
       fr: {
         q: "Les séances peuvent-elles se faire entièrement à distance ?",
-        a: "Oui. Les accompagnements 1-to-1 peuvent se faire en visio. Cela permet une flexibilité maximale pour les dirigeants avec un agenda chargé, sans aucune perte de qualité ni d'intensité.",
+        a: "Oui. Les accompagnements 1-to-1 peuvent se faire en visio. Cela permet une flexibilité maximale pour les dirigeants avec un agenda chargé.",
       },
       en: {
         q: "Can sessions be conducted entirely remotely?",
-        a: "Yes. 1-to-1 coaching can be conducted by video. This allows maximum flexibility for busy executives, with no loss of quality or intensity.",
+        a: "Yes. 1-to-1 coaching can be conducted by video. This allows maximum flexibility for busy executives.",
       },
     },
     {
@@ -317,8 +317,8 @@ export function LocalGeoFaqSection({
         }
         description={
           isFr
-            ? "Questions fréquentes sur la couverture géographique de ce service. Pour explorer le tissu B2B local et nos cas concrets à proximité, consultez notre carte des implantations."
-            : "Frequently asked questions about the geographic coverage of this service. To explore the local B2B fabric and our nearby case studies, visit our locations map."
+            ? "Questions fréquentes sur la couverture géographique de ce service. Pour explorer le tissu B2B local, consultez notre carte des implantations."
+            : "Frequently asked questions about the geographic coverage of this service. To explore the local B2B fabric, visit our locations map."
         }
         items={items}
         emitJsonLd={false}

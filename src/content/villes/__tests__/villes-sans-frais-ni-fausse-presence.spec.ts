@@ -53,7 +53,7 @@ function fautesPages(motif: RegExp): string[] {
 const PAGES_INTERDITES: ReadonlyArray<readonly [string, RegExp]> = [
   [
     "premier pôle / terrain d'intervention",
-    /premiers? (?:p[ôo]les?|terrains?) d['’]intervention|top engagement (?:hubs?|ground)/iu,
+    /premiers? (?:p[ôo]les?|terrains?)\b|top (?:engagement )?(?:hubs?|ground)/iu,
   ],
   ["part importante de nos missions", /part importante de nos missions|significant share of our/iu],
   ["mêmes conditions que Paris", /m[êe]mes conditions que|same terms as/iu],
@@ -61,16 +61,19 @@ const PAGES_INTERDITES: ReadonlyArray<readonly [string, RegExp]> = [
     "consultants mobiles",
     /consultants sont mobiles|consultants are mobile|consultants? mobiles?/iu,
   ],
-  ["au cœur de notre activité", /au c[œo]eur de notre activit[ée]|heart of our development/iu],
+  ["au cœur de notre activité", /au c(?:œ|oe)ur de notre activit[ée]|heart of our development/iu],
   [
     "majorité de nos projets / accompagnements",
     /majorité de nos (?:projets|accompagnements)|most of our (?:projects|1-to-1)/iu,
   ],
-  ["même tarif quel que soit le lieu", /same rate regardless|regardless of location/iu],
-  ["douze régions", /douze r[ée]gions|twelve (?:metropolitan )?regions/iu],
+  [
+    "même tarif quel que soit le lieu",
+    /same rate regardless|regardless of location|quel que soit le lieu|m[êe]me tarif/iu,
+  ],
+  ["douze régions", /(?:douze|12) r[ée]gions|(?:twelve|12) (?:metropolitan )?regions/iu],
   [
     "éligibilité selon un seuil de 5 000 habitants",
-    /(?:5 ?000 habitants|5,000 inhabitants)[^".]{0,30}(?:éligible|eligible)|(?:éligible|eligible)[^".]{0,40}(?:5 ?000 habitants|5,000 inhabitants)/iu,
+    /(?:5[\s\u00a0\u202f]?000 habitants|5,000 inhabitants)[^".]{0,30}(?:éligible|eligible)|(?:éligible|eligible)[^".]{0,40}(?:5[\s\u00a0\u202f]?000 habitants|5,000 inhabitants)/iu,
   ],
 ];
 
@@ -306,9 +309,20 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
   });
 
   it("les motifs des pages sont vivants et épargnent les phrases justes", () => {
-    const [premier, , mêmes] = PAGES_INTERDITES;
-    expect(premier![1].test("Paris est notre premier terrain d'intervention.")).toBe(true);
-    expect(mêmes![1].test("couvertes aux mêmes conditions que Paris")).toBe(true);
+    const EXEMPLES: Record<string, string> = {
+      "premier pôle / terrain d'intervention":
+        "Paris est notre premier terrain pour l'accompagnement.",
+      "part importante de nos missions": "Paris concentre une part importante de nos missions.",
+      "mêmes conditions que Paris": "couvertes aux mêmes conditions que Paris",
+      "consultants mobiles": "Nos consultants sont mobiles : Lyon.",
+      "au cœur de notre activité": "sont au cœur de notre activité de développement.",
+      "majorité de nos projets / accompagnements":
+        "La majorité de nos projets sont conduits en full-remote.",
+      "même tarif quel que soit le lieu": "Same rate regardless of location.",
+      "douze régions": "Douze régions métropolitaines couvertes.",
+    };
+    for (const [nom, phrase] of Object.entries(EXEMPLES))
+      expect(PAGES_INTERDITES.find(([n]) => n === nom)![1].test(phrase), nom).toBe(true);
     const seuil = PAGES_INTERDITES.find(([n]) => n.startsWith("éligibilité"))![1];
     expect(seuil.test("Toute commune de plus de 5 000 habitants est éligible.")).toBe(true);
     expect(seuil.test("Communes de plus de 5 000 habitants, groupées par département.")).toBe(
@@ -325,7 +339,7 @@ describe("villes · ni frais de déplacement, ni fausse présence, ni Grenoble",
   for (const [nom, motif] of PAGES_INTERDITES)
     it(`pages géographiques sans allégation ni promesse : ${nom}`, () => vide(fautesPages(motif)));
 
-  for (const [nom, motif] of [...FRAIS, ...ANGLAIS])
+  for (const [nom, motif] of [...FRAIS, ...PRESENCE, ...ANGLAIS])
     it(`pages géographiques sans frais, surcoût ni trajet : ${nom}`, () =>
       vide(fautesPages(motif)));
 
