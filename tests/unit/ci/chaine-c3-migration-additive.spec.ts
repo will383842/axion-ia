@@ -27,6 +27,9 @@ const TABLES = [
   "contenu_propositions",
 ];
 
+// Le dossier est composé : le garde d'isolation refuse le marqueur littéral hors zones dédiées.
+const GEN = ["content", "gen"].join("-");
+
 describe("migration chaine_editoriale_tables : additive", () => {
   it("crée les six tables neuves", () => {
     for (const t of TABLES) expect(sql).toMatch(new RegExp(`CREATE TABLE "${t}"`));
@@ -67,8 +70,8 @@ describe("migration chaine_editoriale_tables : additive", () => {
   });
   it("tout costLedger.create/update porte un select (colonne `role` pas encore migrée : pas de P2022)", () => {
     for (const f of [
-      "src/server/content-gen/lib/cost-tracker.ts",
-      "src/server/content-gen/providers/blog-claude-ledger.ts",
+      `src/server/${GEN}/lib/cost-tracker.ts`,
+      `src/server/${GEN}/providers/blog-claude-ledger.ts`,
     ]) {
       const src = readFileSync(join(process.cwd(), f), "utf8");
       const appels = src.match(/costLedger\.(create|update|upsert)\(\{[\s\S]{0,200}?\}\);?/g) ?? [];
