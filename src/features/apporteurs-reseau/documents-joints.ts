@@ -19,12 +19,9 @@
  * le journalise et le signale. Un worker plus ancien ignore ce champ et garde son comportement
  * d'avant (il exige toutes les pièces) : rien ne casse dans la fenêtre app/worker.
  *
- * Les fichiers de la fiche et du livret ne sont PAS dans le dépôt : ils se déposent à leur clé
- * fixe avec `scripts/apporteurs/deposer-document-joint.ts`, après relecture par le dirigeant.
- * Tant qu'ils n'y sont pas, rien ne change : le contrat part seul.
- *
- * 🔑 Le GUIDE DE DÉMARRAGE (validé le 25/11/2026) fait exception : sa copie est dans l'image
- * (`private/apporteurs/`). S'il manque sur R2 (404 vrai, jamais une panne ni un délai), l'application
+ * 🔑 La fiche, le livret et le GUIDE DE DÉMARRAGE ont une copie dans l'image
+ * (`private/apporteurs/`), qui est la source de la pièce jointe comme du lien de l'espace de
+ * l'apporteur (`documents-prives.ts`) : le même fichier des deux côtés. S'il manque sur R2 (404 vrai, jamais une panne ni un délai), l'application
  * l'y dépose elle-même avant de le joindre : tout est automatique, rien à lancer à la main. Un objet
  * déjà présent n'est jamais écrasé. Pour REMPLACER le guide : nouveau PDF dans `private/`, puis
  * `deposer-document-joint.ts guide-demarrage … --appliquer` (sinon l'e-mail garde l'ancien).
@@ -38,6 +35,7 @@ import { createHash } from "node:crypto";
 
 import { enteteObjetR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
+import { lireFicheCommissions, lireLivret } from "./documents-prives";
 import { NOM_FICHIER_GUIDE, lireGuideDemarrage } from "./guide-demarrage";
 import { signalerErreurReseau } from "./signaler";
 
@@ -72,12 +70,14 @@ export const DOCUMENTS_ANNEXES = [
     nomFichier: "Fiche-des-commissions-Axion-IA.pdf",
     cleR2: `${PREFIXE_DOCUMENTS_APPORTEURS}fiche-des-commissions.pdf`,
     libelleConsole: "la fiche des commissions",
+    lireCopieLocale: lireFicheCommissions,
   },
   {
     id: "livret",
     nomFichier: "Livret-apporteur-Axion-IA.pdf",
     cleR2: `${PREFIXE_DOCUMENTS_APPORTEURS}livret-apporteur.pdf`,
     libelleConsole: "le livret",
+    lireCopieLocale: lireLivret,
   },
   {
     id: "guide-demarrage",
