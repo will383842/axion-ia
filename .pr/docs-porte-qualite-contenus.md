@@ -1,36 +1,20 @@
-# docs : conception de la porte qualité des contenus générés
+# docs : conception de la porte qualité des contenus (dernier filet de la chaîne éditoriale)
 
-Aucun code n'est modifié. Un seul fichier ajouté : `docs/pilotage-seo-geo/CONCEPTION-PORTE-QUALITE.md`.
+Aucun code n'est modifié. Un seul fichier de conception : `docs/pilotage-seo-geo/CONCEPTION-PORTE-QUALITE.md`.
 
-## Pourquoi
+## Ce qui a changé (décisions de Will du 27/11/2026)
 
-Will a décidé le 27/11/2026 : la qualité passe avant le volume. Aujourd'hui, il n'y a pas de porte unique : une douzaine de contrôles dispersés, dont certains éteints (la complétude ne fait que journaliser), et plusieurs chemins qui publient sans les traverser (approbation groupée sur la note seule, FAQ extraites, réécriture du fact-check).
-
-## Ce que le document propose
-
-- Une porte unique, en module pur, appelée à quatre endroits, avec un point final obligatoire dans le worker de publication. En cas d'erreur, rien n'est publié.
-- 17 critères bloquants et 10 avertissements, une formule de note unique (seuil de départ 85/100), un classement des bloquants en dur, corrigeable et dérogeable.
-- Vérification des faits en trois niveaux, avec une liste réglementaire datée (AI Act article 4 assoupli, Qualiopi, OPCO).
-- Anti-doublon : registre d'intentions (une intention = une page), embeddings du brouillon avant publication, Search Console quand elle sera branchée.
-- Apport original exigé (exemple type étiqueté, chiffre sourcé, angle PME française, donnée réelle d'Axion-IA).
-- Huit paliers de rythme (3 à 100 par jour), au moins 35 jours chacun, passage validé par Will sur des indicateurs d'indexation, coupe-circuit automatique.
-- Écran de console dont le registre de critères, les réglages et les verdicts viennent du back-end, avec trois tests de concordance.
-- Découpage en petites PR (Q0 à Q17).
+- **« Partout en France » est autorisée.** Seul « Grenoble » est interdit (sauf pages légales). L'ancienne question D1 est supprimée, la porte ne refuse jamais cette formule, un test le verrouille.
+- **Plus aucun quota.** Les huit paliers de 3 à 100 contenus par jour sont retirés. Le rythme découle de ce qui passe la qualité ; on accélère seulement si Google et les IA suivent (indexation, affichages, clics, citations IA), avec le coupe-circuit automatique et des indicateurs de montée en charge sans cible de volume. Les cibles de volume encore présentes dans le code sont recensées pour être neutralisées.
+- **La porte est le dernier filet.** La qualité se construit en amont, par la chaîne éditoriale IA (document `CONCEPTION-CHAINE-EDITORIALE-IA.md`, branche `docs/chaine-editoriale-ia`). Un contenu refusé repart en réécriture ciblée (2 essais, même compteur que la chaîne), puis est abandonné, jamais publié faible.
+- **Les refus sont enregistrés** avec leur raison (liste de codes partagée avec la chaîne, correspondance critère par critère), visibles en console, et alimentent la boucle d'amélioration hebdomadaire.
+- **Règles de marque** : pas de faux témoignage, pas de prix barré, aucun frais de déplacement, pas de réservation directe en ligne (l'appel à l'action pointe vers la page contact, jamais vers `/appel`), terracotta, aucun avocat.
+- **Corrections issues de la relecture Opus** : Qualiopi et CPF ne sont plus présentés comme des contenus à écrire (le code les refuse) ; la FAQ et la citation d'expert ne sont plus exigées (risque de FAQ décorative et de faux expert) ; la liste des interdits est en lecture seule à l'écran ; contradictions internes et références corrigées.
+- **Décisions restantes D2, D3, D5, D6**, chacune avec une recommandation par défaut en français simple (§ 17).
 
 ## À savoir
 
-- Les seuils sont des points de départ : Google ne publie aucun seuil. Les sources sont classées « confirmé » ou « hypothèse » au § 14. Les pages `developers.google.com` n'ont pas pu être ouvertes en entier : relire les sources marquées ‡ avant de décider.
-- Le palier 100 par jour n'est probablement pas tenable avec des contenus tous distincts. Le document le dit et propose de le valider au palier 5.
-- Question pour Will (D1) : la consigne interdit « partout en France », le code en fait la formule permise. Choix par défaut : l'interdire, après correction du prompt.
-- Autres décisions à prendre : D2 à D6 (§ 17), dont qui relit les contenus en son nom.
-
-## Critique indépendante
-
-Première version : « À CORRIGER », 19 défauts (dont 7 bloquants : mauvais renvoi à P13, durées de paliers trop courtes pour juger une cohorte à 28 jours, palier 0 incohérent, formule de note fausse, bloquants non classés, ordre des PR contradictoire, B17 branché trop tard). Tous ont été corrigés dans le document. La version corrigée n'a pas été relue une seconde fois par un critique.
-
-## Vérifications
-
-- `prettier --check` sur les fichiers ajoutés.
-- Références de code relues par la critique (fichiers et lignes) : exactes sauf deux affirmations, corrigées.
+- Le document de la chaîne éditoriale dit encore « jamais partout en France » : sa correction est à demander.
+- Prettier vérifié avec la configuration du dépôt, sans le plugin Tailwind (non installé ici).
 
 VERDICT OPUS : À CORRIGER
