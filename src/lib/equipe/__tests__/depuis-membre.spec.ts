@@ -115,4 +115,15 @@ describe("ficheDepuisMembre : identité", () => {
     const { contenu } = ficheDepuisMembre(membre());
     expect(JSON.stringify(contenu)).not.toMatch(/€|grenoble|freelance|commission/i);
   });
+
+  it("une fonction ou une ville interdite n'apparaît nulle part dans le contenu", () => {
+    const { contenu } = ficheDepuisMembre(
+      membre({ jobTitle: "Consultant IA, TJM 600 €", locationLabel: "Grenoble" }),
+    );
+    expect(JSON.stringify(contenu)).not.toMatch(/TJM|600|grenoble/i);
+  });
+
+  it("une seule variante de photo : pas de photo réelle", () => {
+    expect(graphe(membre({ photoUrl256: null })).publique.photo).toBeUndefined();
+  });
 });

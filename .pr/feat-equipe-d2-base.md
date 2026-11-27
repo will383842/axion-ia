@@ -20,4 +20,10 @@
 - `bundle:check` non lancé ici (aucun build disponible) ; aucun JavaScript client ajouté.
 - `format:check` global échoue sur un fichier non versionné (`.mcp.json`), hors lot.
 
-VERDICT OPUS : EN COURS
+## Relecture Opus (données, JSON-LD, confidentialité)
+
+Corrigé : le contenu (titre, description, bloc « en bref », pastilles) passe par le même filtre que la fiche publique (plus de valeur brute de la base) ; règle « vraie photo » alignée entre indexation et affichage (les deux variantes exigées) ; une seule lecture de la base par rendu (`cache`).
+
+Reste, assumé : l'indexation compte la présentation complète, les réponses « exemple » et « parcours » et le site personnel, que cette PR n'affiche pas encore (la fiche montre l'accroche, les compétences, les langues). Une fiche peut être indexée avec un contenu visible mince tant que ces sections ne sont pas rendues : à traiter dans le lot d'affichage.
+
+VERDICT OPUS : BON

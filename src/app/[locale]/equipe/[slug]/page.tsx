@@ -38,7 +38,8 @@ import { buildGrapheCollaborateur } from "@/lib/seo/collaborateur-jsonld";
 import { ProfilCollaborateur } from "@/components/equipe/ProfilCollaborateur";
 import { estIndexable, fichePublique, ficheDepuisWilliams } from "@/lib/equipe";
 import { LIBELLE_PLUME_IA, SLUG_PLUME_IA } from "@/lib/seo/plume-ia";
-import { resoudreFicheEquipe } from "@/lib/equipe/collaborateurs";
+import { cache } from "react";
+import { resoudreFicheEquipe as resoudreSansCache } from "@/lib/equipe/collaborateurs";
 import { ficheDepuisMembre } from "@/lib/equipe/depuis-membre";
 import { evaluerIndexabilite } from "@/lib/equipe/donnees/indexabilite";
 // Doctrine financement : les Q/R OPCO / France Travail ne sont émises que si la
@@ -48,6 +49,9 @@ import {
   isQualiopiCertificationObtenue,
   isQualiopiPublicDisclosureEnabled,
 } from "@/server/qualiopi/config/flag";
+
+// Une seule lecture par rendu (métadonnées + page).
+const resoudreFicheEquipe = cache(resoudreSansCache);
 
 // ISR 24h : la fiche fondateur est statique et la bio Manon ne change quasiment
 // jamais (édition via admin /content-gen/author/manon) → cache CDN agressif

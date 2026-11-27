@@ -10,6 +10,7 @@
  */
 import type { ContenuFiche } from "./contenu";
 import { categoriePublique } from "./depuis-membre-categorie";
+import { estTextePropre, fichePublique } from "./regles";
 import type { FicheCollaborateur } from "./types";
 import type { FicheComplete } from "./adaptateurs";
 
@@ -64,7 +65,10 @@ function premierParagraphe(md: string | null): string {
 
 export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
   const photoOk =
-    m.photoKind === "reelle" && m.photoConsentAt !== null && (m.photoUrl1024 ?? "").trim() !== "";
+    m.photoKind === "reelle" &&
+    m.photoConsentAt !== null &&
+    (m.photoUrl1024 ?? "").trim() !== "" &&
+    (m.photoUrl256 ?? "").trim() !== "";
   const linkedinOk = m.linkedinConsentAt !== null && estHttps(m.linkedinUrl);
   const ville = (m.locationLabel ?? "").trim();
   const reponse = (m.headline ?? "").trim() || premierParagraphe(m.bioMd);
@@ -93,20 +97,33 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
       : {}),
   };
 
-  const identite: Array<{ terme: string; valeur: string }> = [
-    { terme: "Fonction", valeur: m.jobTitle },
-  ];
-  if (ville) identite.push({ terme: "Lieu", valeur: ville });
-  const langues = m.languages.map((l) => l.trim()).filter(Boolean);
+  // Tout texte du contenu passe par le même filtre que la fiche publique (formulations interdites,
+  // fragments de nom de famille) : jamais une valeur brute de la base.
+  const pub = fichePublique(fiche);
+  const fonctionPropre = pub?.fonction ?? "";
+  const reponsePropre = pub?.reponseQui ?? "";
+  const villePropre = pub?.ville ?? "";
+  const propre = (t: string): boolean => estTextePropre(t);
+
+  const identite: Array<{ terme: string; valeur: string }> = [];
+  if (fonctionPropre) identite.push({ terme: "Fonction", valeur: fonctionPropre });
+  if (villePropre) identite.push({ terme: "Lieu", valeur: villePropre });
+  const langues = m.languages.map((l) => l.trim()).filter((l) => l !== "" && propre(l));
   if (langues.length > 0) identite.push({ terme: "Langues", valeur: langues.join(", ") });
-  const competences = m.skills.map((s) => s.trim()).filter(Boolean);
+  const competences = m.skills.map((s) => s.trim()).filter((c) => c !== "" && propre(c));
   if (competences.length > 0)
     identite.push({ terme: "Compétences", valeur: competences.join(", ") });
 
   const contenu: ContenuFiche = {
-    titreSeo: `${m.firstName}, ${m.jobTitle} chez Axion-IA`,
-    metaDescription: reponse || `${m.firstName}, ${m.jobTitle} chez Axion-IA.`,
-    sousTitre: m.jobTitle,
+    titreSeo: fonctionPropre
+      ? `${m.firstName}, ${fonctionPropre} chez Axion-IA`
+      : `${m.firstName} chez Axion-IA`,
+    metaDescription:
+      reponsePropre ||
+      (fonctionPropre
+        ? `${m.firstName}, ${fonctionPropre} chez Axion-IA.`
+        : `${m.firstName}, de l'équipe Axion-IA.`),
+    sousTitre: fonctionPropre,
     dateMiseAJour: m.updatedAt.toISOString(),
     pastilles: competences.slice(0, 4),
     identite,
