@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  controlerLisibiliteV2,
-  lisibiliteV2Active,
-  mesurerLisibiliteV2,
-} from "../lisibilite-v2";
+import { controlerLisibiliteV2, lisibiliteV2Active, mesurerLisibiliteV2 } from "../lisibilite-v2";
 import { evaluerBarrieresRelecture } from "../barrieres-publication";
 
 const ON = { CONTENU_LISIBILITE_V2: "true" };
@@ -13,7 +9,9 @@ const PHRASE_COURTE = "Votre équipe gagne du temps chaque semaine grâce à un 
 const BON = `<h2>Pourquoi automatiser ?</h2>${Array.from(
   { length: 6 },
   () => `<p>${Array.from({ length: 5 }, () => PHRASE_COURTE).join(" ")}</p>`,
-).join("")}<aside class="ax-encadre ax-retenir"><p class="ax-encadre-titre">À retenir</p><p>Commencez petit.</p></aside>`;
+).join(
+  "",
+)}<aside class="ax-encadre ax-retenir"><p class="ax-encadre-titre">À retenir</p><p>Commencez petit.</p></aside>`;
 
 /** Phrases de 40 mots, sans encadré. */
 const MOT = "important ";
@@ -63,9 +61,9 @@ describe("controlerLisibiliteV2", () => {
     const sansEncadre = BON.replace(/<aside[\s\S]*<\/aside>/, "");
     expect(controlerLisibiliteV2(sansEncadre, ON, "faq_standalone")).toEqual([]);
     expect(controlerLisibiliteV2(sansEncadre, ON)).toEqual([]);
-    expect(
-      controlerLisibiliteV2(sansEncadre, ON, "blog_article").map((p) => p.code),
-    ).toEqual(["lisibilite-sans-encadre"]);
+    expect(controlerLisibiliteV2(sansEncadre, ON, "blog_article").map((p) => p.code)).toEqual([
+      "lisibilite-sans-encadre",
+    ]);
   });
   it("un texte trop court n'est pas jugé", () => {
     expect(controlerLisibiliteV2("<p>Court.</p>", ON, "blog_article")).toEqual([]);

@@ -5,14 +5,14 @@ Quand l'interrupteur `CONTENU_LISIBILITE_V2` vaut `true`, les consignes de réda
 en HTML sémantique. Les futurs modèles de pages peuvent les styler par classe. Le nettoyeur HTML
 (`shared/html-sanitizer.ts`) conserve `<aside>` et `class`.
 
-| Encadré        | Balisage                                                                                         | Quand                                         |
-| -------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------- |
-| À retenir      | `<aside class="callout callout-info ax-encadre ax-retenir"><p class="callout-label">À retenir</p>…</aside>`        | fin de section ou d'article                   |
-| En bref        | `<aside class="callout callout-note ax-encadre ax-bref"><p class="callout-label">En bref</p>…</aside>`             | en tête (3 puces au plus)                     |
-| Exemple        | `<aside class="callout callout-note ax-encadre ax-exemple"><p class="callout-label">Exemple illustratif</p>…</aside>`          | situation illustrative d'une PME              |
-| Chiffre clé    | `<aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">…</span><span class="ax-stat-label">…</span></aside>` (existant) | seulement si un chiffre sourcé est fourni |
-| Réponse directe | `<p data-aeo="answer">…</p>` (existant)                                                          | sous chaque `<h2>`                            |
-| Mise en garde  | `<aside class="callout callout-warning">…</aside>` (existant)                                    | avertissement ponctuel                        |
+| Encadré         | Balisage                                                                                                                           | Quand                                     |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| À retenir       | `<aside class="callout callout-info ax-encadre ax-retenir"><p class="callout-label">À retenir</p>…</aside>`                        | fin de section ou d'article               |
+| En bref         | `<aside class="callout callout-note ax-encadre ax-bref"><p class="callout-label">En bref</p>…</aside>`                             | en tête (3 puces au plus)                 |
+| Exemple         | `<aside class="callout callout-note ax-encadre ax-exemple"><p class="callout-label">Exemple illustratif</p>…</aside>`              | situation illustrative d'une PME          |
+| Chiffre clé     | `<aside class="ax-stat" data-aeo="stat"><span class="ax-stat-num">…</span><span class="ax-stat-label">…</span></aside>` (existant) | seulement si un chiffre sourcé est fourni |
+| Réponse directe | `<p data-aeo="answer">…</p>` (existant)                                                                                            | sous chaque `<h2>`                        |
+| Mise en garde   | `<aside class="callout callout-warning">…</aside>` (existant)                                                                      | avertissement ponctuel                    |
 
 Les classes `callout*` existent déjà dans `globals.css` : les encadrés s'affichent sans CSS neuve ; `ax-encadre`, `ax-retenir`, `ax-bref`, `ax-exemple` sont les crochets pour les futurs modèles de pages.
 

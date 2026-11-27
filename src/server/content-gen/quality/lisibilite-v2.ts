@@ -56,9 +56,7 @@ export interface MesureLisibiliteV2 {
 }
 
 export type CodeLisibiliteV2 =
-  | "lisibilite-phrases-longues"
-  | "lisibilite-paragraphes-longs"
-  | "lisibilite-sans-encadre";
+  "lisibilite-phrases-longues" | "lisibilite-paragraphes-longs" | "lisibilite-sans-encadre";
 
 export interface ProblemeLisibiliteV2 {
   readonly code: CodeLisibiliteV2;
@@ -113,7 +111,8 @@ export function mesurerLisibiliteV2(html: string): MesureLisibiliteV2 {
   const questions = intertitres.filter(estQuestion).length;
 
   const encadres = (
-    html.match(/<(?:aside|section|div)\b[^>]*\bclass="[^"]*\b(?:ax-encadre|ax-stat|callout)\b/gi) ?? []
+    html.match(/<(?:aside|section|div)\b[^>]*\bclass="[^"]*\b(?:ax-encadre|ax-stat|callout)\b/gi) ??
+    []
   ).length;
 
   return {
