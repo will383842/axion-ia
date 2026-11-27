@@ -74,4 +74,33 @@ Restes connus, mineurs, non corrigés (derrière l'interrupteur) :
 
 Le correctif du bloquant n'a pas été relu par un second tour Opus.
 
+(Verdict de la 2e passe : À CORRIGER, car le correctif du bloquant n'avait pas été relu.)
+
+## 3e passe
+
+Les huit restes de la 2e passe sont corrigés, test d'abord pour chacun.
+
+1. **Angle du gardien persisté** dans `outputJsonRaw.equipe.angle` (champ facultatif) et réutilisé à la reprise de la boucle qualité (le gardien n'est pas rejoué). Un arrêt en reprise conserve aussi le brief et l'angle dans le journal.
+2. **Abandon du rédacteur en chef après écriture** : l'article reste en relecture, le verrou de mot-clé est **gardé**.
+3. **`releaseKeywordLock(mot, jeton)`** : avec jeton, script Lua atomique (compare puis supprime) ; panne Redis = rien n'est relâché, pas de repli sur `DEL`. Sans jeton : comportement d'avant (worker de publication inchangé). Le worker de génération passe le `contentGenJobId`.
+4. **Arrêts anticipés en reprise** : la dépense de la boucle qualité est comptée (`addQualityLoopSpend`).
+5. **`costUsd`** = max(somme déclarée, registre − registre au début de l'exécution), jamais additionnés ; une seule valeur sert au `costUsd` du job et au compteur de la boucle qualité.
+6. **Erreur transitoire du stratège ou du gardien** : relancée (`ErreurEquipeTransitoire`, non convertie en échec définitif) pour que BullMQ réessaie ; aucune rédaction payée en double. Le journal est écrit avant l'échec.
+7. **Lecture du registre en échec dans la garde du routeur** : journal d'équipe écrit avant l'échec du job.
+8. **Test du circuit complet au niveau du worker** : publication (ordre des rôles, journal, brief), abandon du rédacteur en chef (barrière, verrou gardé), coûts, reprise.
+
+Fichiers : `keyword-lock.ts` (+ spec), `orchestration.ts` (+ test), `content-gen-worker.ts`, `equipe-editoriale-worker.integration.spec.ts`, `equipe-editoriale-interrupteur.spec.ts`.
+
+### Relecture Opus (3e passe, tour 1)
+
+Les 8 points confirmés corrigés. Un bloquant relevé et corrigé : après un renvoi, un arrêt avant la phase B du tour suivant laissait le marqueur « fact-check abouti » et les sources de l'ancien texte sur un texte réécrit non vérifié. Remise à zéro dans `renvoyer`, test d'intégration qui échoue sans le correctif.
+
+Mineurs connus, non corrigés (derrière l'interrupteur) :
+
+- une erreur transitoire du stratège peut rejouer un stratège déjà payé (3 essais au plus, borné par le plafond de 3 $ par job) ;
+- chaque essai transitoire marque le job `failed` et compte dans l'alerte « batch fail » ;
+- les rôles (mailleur, éditeur SEO, conformité, rédacteur en chef) sont simulés dans le test worker, leur logique est testée dans `circuit-article.test.ts` ;
+- un arrêt avant écriture hors reprise ne met pas à jour `costUsd` du job ;
+- une reprise qui échoue en cours d'écriture n'ajoute pas sa dépense au compteur de la boucle qualité.
+
 VERDICT OPUS : À CORRIGER
