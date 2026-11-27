@@ -38,11 +38,16 @@ function texteBrut(html: string): string {
 /** Attributs d'une balise : tolère `>` dans une valeur entre guillemets. */
 const ATTRS = `(?:"[^"]*"|'[^']*'|[^'">])*`;
 
-const RE_ID = /(?:^|\s)id\s*=\s*(?:"([^"]*)"|'([^']*)')/i;
+/** Lit la valeur d'un attribut en parcourant les paires nom=valeur (pas de faux positif dans une valeur). */
+function lireAttribut(attrs: string, nom: string): string | null {
+  for (const m of attrs.matchAll(/([^\s"'=<>/]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g)) {
+    if ((m[1] ?? "").toLowerCase() === nom) return m[2] ?? m[3] ?? m[4] ?? "";
+  }
+  return null;
+}
 
 function lireId(attrs: string): string | null {
-  const m = RE_ID.exec(attrs);
-  return m ? (m[1] ?? m[2] ?? null) : null;
+  return lireAttribut(attrs, "id");
 }
 
 function idsPresents(html: string): Set<string> {
@@ -116,7 +121,7 @@ export function envelopperTableaux(html: string, libelleNeutre: string): string 
         corps = `<caption class="sr-only" id="${idNom}">${echapper(libelleNeutre)}</caption>${corps}`;
       }
       sortie += html.slice(curseur, debut);
-      sortie += `<div class="table-scroll" role="region" tabindex="0" aria-labelledby="${echapper(idNom)}">${ouv[0]}${corps}${bloc.slice(finInterieur)}</div>`;
+      sortie += `<div class="table-scroll" role="region" tabindex="0" aria-labelledby="${idNom.replace(/"/g, "&quot;")}">${ouv[0]}${corps}${bloc.slice(finInterieur)}</div>`;
       curseur = fin;
     }
   }
@@ -201,7 +206,7 @@ export function marquerLiensExternes(html: string, libelle: string): string {
   return html.replace(
     new RegExp(`<a(?=[\\s>/])(${ATTRS})>([\\s\\S]*?)<\\/a>`, "gi"),
     (complet: string, attrs: string, interieur: string) => {
-      if (!/(?:^|\s)target\s*=\s*["']?_blank\b/i.test(attrs)) return complet;
+      if ((lireAttribut(attrs, "target") ?? "").toLowerCase() !== "_blank") return complet;
       if (interieur.includes("data-nouvelle-fenetre")) return complet;
       return `<a${attrs}>${interieur}${mention}</a>`;
     },

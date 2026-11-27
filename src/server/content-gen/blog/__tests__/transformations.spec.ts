@@ -126,6 +126,22 @@ describe("robustesse (sortie réelle du sanitizer)", () => {
   });
 });
 
+describe("attributs lus par paires", () => {
+  it("id déjà encodé : pas de double encodage", () => {
+    expect(
+      envelopperTableaux('<table><caption id="a&amp;b">C</caption></table>', LIBELLE),
+    ).toContain('aria-labelledby="a&amp;b"');
+  });
+  it("un id ou target écrit dans la valeur d'un autre attribut est ignoré", () => {
+    expect(
+      envelopperTableaux(`<table><caption title="x id='z'">C</caption></table>`, LIBELLE),
+    ).toContain('aria-labelledby="cap-1"');
+    expect(ancrerSousTitres(`<h3 title="x id='z'">T</h3>`)).toContain('<h3 id="t"');
+    const html = '<a title="voir target=_blank" href="/x">A</a>';
+    expect(marquerLiensExternes(html, "(nf)")).toBe(html);
+  });
+});
+
 describe("abaisserH1", () => {
   it("transforme h1 en h2 en gardant les attributs, insensible à la casse", () => {
     expect(abaisserH1('<H1 class="x">T</H1><p>a</p><h1>U</h1>')).toBe(
