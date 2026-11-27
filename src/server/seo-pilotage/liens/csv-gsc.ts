@@ -158,12 +158,18 @@ export function lireExportGsc(contenu: string): ResultatLecture {
   const refuser = (ligne: number, raison: string, cle: string) => {
     ignorees++;
     if (erreurs.length < ERREURS_MAX) {
-      erreurs.push({ ligne, raison, extrait: cle.slice(0, EXTRAIT_MAX) });
+      // Jamais d'adresse e-mail brute dans un aperçu d'erreur.
+      erreurs.push({
+        ligne,
+        raison,
+        extrait: cle.replace(/\S*@\S*/g, "[adresse masquée]").slice(0, EXTRAIT_MAX),
+      });
     }
   };
 
   rows.forEach((brutes, k) => {
-    const ligne = k + 2;
+    // Rang de la ligne de DONNÉES (en-tête, lignes vides et sauts de ligne internes non comptés).
+    const ligne = k + 1;
     // Deux fois le plafond, pour que la normalisation juge la longueur réelle : une URL trop longue est REFUSÉE, jamais tronquée en silence.
     const cellules = brutes.map((c) => c.slice(0, CELLULE_MAX * 2));
     const cle = cellules[iCle] ?? "";

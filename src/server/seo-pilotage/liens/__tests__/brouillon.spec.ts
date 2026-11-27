@@ -48,10 +48,23 @@ describe("controlerBrouillon", () => {
     );
   });
   it("ne déclenche pas les motifs à cause de l'URL elle-même (slug)", () => {
-    const url = "https://axion-ia.com/fr/blog/prix-et-achat-grenoble";
+    const url = "https://axion-ia.com/fr/blog/prix-et-achat-ia";
     const texte = `Bonjour, voici notre article : ${url}. Cordialement.`;
     expect(controlerBrouillon(texte, url).valide).toBe(true);
   });
+  it("refuse la ville du siège même dans l'URL proposée ou déguisée", () => {
+    const url = "https://axion-ia.com/fr/ingenieur-ia/grenoble";
+    expect(controlerBrouillon(`Bonjour, voici : ${url}. Cordialement.`, url).valide).toBe(false);
+    expect(controlerBrouillon(`${BON} Grenóble`, URL_PAGE).valide).toBe(false);
+    expect(controlerBrouillon(`${BON} Gre\u00adnoble`, URL_PAGE).valide).toBe(false);
+    expect(controlerBrouillon(`${BON} \uff27renoble`, URL_PAGE).valide).toBe(false);
+  });
+  it.each(["ftp://evil.fr/x", "//evil.fr/x", "evil.paris", "evil.bzh", "evil.studio"])(
+    "refuse une autre adresse : %s",
+    (u) => {
+      expect(controlerBrouillon(`${BON} ${u}`, URL_PAGE).motifs).toContain("autre_url");
+    },
+  );
   it("va dans le même sens que messageValide du chargé de liens", () => {
     const corpus = [
       BON,

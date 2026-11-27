@@ -121,3 +121,16 @@ describe("tour 3", () => {
     expect(normaliserPageSource("https://site.fr/p?email=jean@gmail.com")).toBeNull();
   });
 });
+
+describe("tour 4 : adresse e-mail dans le chemin, erreurs sans donnée personnelle", () => {
+  it.each([
+    "https://site.fr/profil/jean@x.fr",
+    "https://site.fr/u/jean%40x.fr",
+    "https://site.fr/p?e=jean%2540x.fr",
+  ])("refuse %s", (u) => {
+    expect(normaliserPageSource(u)).toBeNull();
+  });
+  it("garde une page ordinaire", () => {
+    expect(normaliserPageSource("https://site.fr/profil/jean")).not.toBeNull();
+  });
+});

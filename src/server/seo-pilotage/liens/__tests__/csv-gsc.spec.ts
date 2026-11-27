@@ -118,3 +118,12 @@ describe("lireExportGsc : fichiers qui ressemblent sans l'être", () => {
     ).toEqual([null, "2026-12-31"]);
   });
 });
+
+describe("tour 4 : aperçu d'erreur", () => {
+  it("masque une adresse e-mail et compte les lignes de données", () => {
+    const r = lireExportGsc("Site,Linking pages\njean@gmail.com,3\n");
+    if (!r.ok) throw new Error("attendu ok");
+    expect(r.erreurs[0]?.extrait).toBe("[adresse masquée]");
+    expect(r.erreurs[0]?.ligne).toBe(1);
+  });
+});

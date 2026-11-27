@@ -25,6 +25,9 @@ const INTERDITS = [
   /sendgrid/i,
   /\baxios\b/,
   /mailto:/,
+  /telegram/i,
+  /server\/notifications|\/notifications\//,
+  /slack|discord|webhook/i,
 ];
 
 function fichiers(dossier = DOSSIER): string[] {

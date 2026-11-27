@@ -65,7 +65,16 @@ export function normaliserPageSource(brut: string): string | null {
   // Un identifiant dans l'URL (« jean@gmail.com » lu comme URL) : pas un lien, on ne le « répare » pas.
   if (u.username || u.password || /^[^/]*@/.test(brut.trim())) return null;
   // Adresse e-mail dans la requête (?email=jean@x.fr) : aucune donnée personnelle gardée.
-  if (/@|%40/i.test(u.search)) return null;
+  // Aussi dans le chemin, et sous un encodage multiple (%40, %2540…).
+  let decode = `${u.pathname}${u.search}`;
+  for (let i = 0; i < 3; i++) {
+    try {
+      decode = decodeURIComponent(decode);
+    } catch {
+      break;
+    }
+  }
+  if (/@|%40/i.test(u.search) || /[^\s/@]+@[^\s/@]+\.[a-z]{2,}/i.test(decode)) return null;
   if (estAdresseIp(hote) || !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(hote)) return null;
   if (estDomaineAxion(hote)) return null;
   if (u.hostname.endsWith(".")) u.hostname = u.hostname.slice(0, -1);
