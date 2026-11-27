@@ -1,0 +1,4 @@
+Rouge de la PR #1762 : « tests des fichiers touchés » et « tests des nouveaux fichiers de test », même échec : tests/usine/inventaire/retouche-chat.test.ts (assertion tests/usine/interrupteurs-inventaire.test.ts:567), clés « zernio.pinterest_actif » (zernio.ts:66) et « site.domaine » (zernio.ts:94) ni en table ni exclues.
+Cause : la base de la branche (85d71124, Pinterest PR 3) contient zernio.ts sans les lignes d'inventaire ; le même test échoue sur 85d71124 seul. master (91dc1521, #1778) les ajoute dans tests/usine/inventaire/publication-et-mesures.test.ts et site-et-visuels.test.ts, fichiers hors du périmètre de la fiche.
+Réparation : fusionner/rebaser sur master, ce que la consigne interdit (pas de merge, pas d'autres fichiers) ; aucun changement de code propre à la fiche n'est en cause, donc aucun patch produit.
+Tests lancés : les 5 fichiers de la fiche, 63/64 verts ; seul l'inventaire échoue (hérité de la base). tsc non lancé.
