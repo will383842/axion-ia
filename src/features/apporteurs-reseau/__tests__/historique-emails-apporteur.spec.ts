@@ -39,7 +39,11 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { LIMITE_HISTORIQUE_EMAILS, lireHistoriqueEmailsApporteur } from "../requetes-console";
+import {
+  LIMITE_HISTORIQUE_EMAILS,
+  libelleGabaritApporteur,
+  lireHistoriqueEmailsApporteur,
+} from "../requetes-console";
 
 const log = (id: string, entityId: string, minutes: number, extra: Ligne = {}): Ligne => ({
   id,
@@ -144,5 +148,16 @@ describe("lireHistoriqueEmailsApporteur", () => {
 
   it("aucun e-mail : liste vide", async () => {
     expect(await lireHistoriqueEmailsApporteur("app-1", EMAIL)).toEqual([]);
+  });
+});
+
+describe("libelleGabaritApporteur", () => {
+  it("rend un libellé lisible, jamais le nom technique", () => {
+    expect(libelleGabaritApporteur("apporteur-lien-espace")).toBe("Lien espace");
+    expect(libelleGabaritApporteur("apporteur-commission_avoir-client")).toBe(
+      "Commission avoir client",
+    );
+    expect(libelleGabaritApporteur("autre-gabarit")).toBe("Autre gabarit");
+    expect(libelleGabaritApporteur("apporteur-")).toBe("E-mail");
   });
 });

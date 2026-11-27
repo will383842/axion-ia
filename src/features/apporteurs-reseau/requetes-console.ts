@@ -472,6 +472,20 @@ export async function lireChangementsRegimeTva(
   }
 }
 
+/**
+ * Libellé lisible d'un gabarit quand la copie du journal (donc l'objet réel) est absente :
+ * « apporteur-lien-espace » → « Lien espace ». Le préfixe « apporteur- » est retiré, les tirets
+ * deviennent des espaces, la première lettre passe en capitale. Jamais le nom technique brut.
+ */
+export function libelleGabaritApporteur(template: string): string {
+  const sans = template
+    .replace(/^apporteur-/, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
+  if (!sans) return "E-mail";
+  return sans.charAt(0).toUpperCase() + sans.slice(1);
+}
+
 /** Nombre maximal d'e-mails relus dans l'historique de la fiche. */
 export const LIMITE_HISTORIQUE_EMAILS = 50;
 

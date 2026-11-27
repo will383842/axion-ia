@@ -6,7 +6,10 @@ import Link from "next/link";
 
 import { AdminCard } from "@/components/admin/ui";
 import { LIBELLES_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
-import type { EmailDeLApporteur } from "@/features/apporteurs-reseau/requetes-console";
+import {
+  libelleGabaritApporteur,
+  type EmailDeLApporteur,
+} from "@/features/apporteurs-reseau/requetes-console";
 
 const dateHeure = (d: Date) =>
   d.toLocaleString("fr-FR", {
@@ -33,8 +36,8 @@ export function HistoriqueEmails({
       </h2>
       <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         Seuls les e-mails adressés à l&apos;adresse actuelle sont listés. L&apos;objet vient de la
-        copie du journal ; sans copie, le nom du gabarit s&apos;affiche. Le contenu complet
-        s&apos;ouvre dans le journal des e-mails.
+        copie du journal ; sans copie, un libellé déduit du type d&apos;e-mail s&apos;affiche. Le
+        contenu complet s&apos;ouvre dans le journal des e-mails.
       </p>
       {emails.length === 0 ? (
         <p className="text-[color:var(--color-admin-fg-muted)]">
@@ -58,14 +61,14 @@ export function HistoriqueEmails({
                     {dateHeure(e.date)}
                   </td>
                   <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
-                    {e.objet ?? e.template}
+                    {e.objet ?? libelleGabaritApporteur(e.template)}
                     {e.objet ? (
                       <div className="text-[color:var(--color-admin-fg-muted)]">{e.template}</div>
                     ) : null}
                   </td>
                   <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
                     {LIBELLES_STATUT_EMAIL[e.status] ?? e.status}
-                    {e.error && (e.status === "failed" || e.status === "bounced") ? (
+                    {e.error ? (
                       <div className="text-[color:var(--color-admin-fg-muted)]">
                         {e.error.slice(0, 200)}
                       </div>
