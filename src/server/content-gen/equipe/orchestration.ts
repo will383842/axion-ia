@@ -136,6 +136,27 @@ export class SuiviEquipe {
     }
   }
 
+  /** Somme des coûts rendus par les rôles (chacun une seule fois, dans le journal). */
+  get sommeEntreesUsd(): number {
+    return this.entrees.reduce((t, e) => t + (Number.isFinite(e.coutUsd) ? e.coutUsd : 0), 0);
+  }
+
+  /**
+   * Dépense de CETTE exécution : tout coût payant de l'équipe, une seule fois chacun. Le registre
+   * couvre tous les appels (rédacteur, réparation, juge…) ; la somme des entrées couvre ce que les
+   * rôles déclarent. On prend le plus grand des deux (jamais leur somme : ils se recoupent).
+   * `debutRegistreUsd` = coût déjà au registre quand l'exécution a commencé (passes précédentes).
+   */
+  async depenseExecutionUsd(debutRegistreUsd: number): Promise<number> {
+    let total = this.dernierCoutRegistre + this.horsRegistreUsd;
+    try {
+      total = await this.coutCourant();
+    } catch {
+      /* dernier coût connu */
+    }
+    return Math.max(0, total - Math.max(0, debutRegistreUsd), this.sommeEntreesUsd);
+  }
+
   async journal(issue: IssueEquipe, renvois: number, raison?: string): Promise<JournalEquipe> {
     let coutTotalUsd = this.dernierCoutRegistre + this.horsRegistreUsd;
     try {
@@ -418,10 +439,16 @@ export async function premiereEcriture<O>(
     if (err instanceof PlafondJobAtteint) return { arret: err.message };
     throw err;
   }
-  const r = await suivi.role("plan-redaction", ecrire, (x) => ({
-    decision: "ecrit",
-    ...(x.coutUsd !== undefined ? { coutUsd: x.coutUsd } : {}),
-    ...(x.detail ? { detail: x.detail } : {}),
-  }));
-  return { output: r.output };
+  try {
+    const r = await suivi.role("plan-redaction", ecrire, (x) => ({
+      decision: "ecrit",
+      ...(x.coutUsd !== undefined ? { coutUsd: x.coutUsd } : {}),
+      ...(x.detail ? { detail: x.detail } : {}),
+    }));
+    return { output: r.output };
+  } catch (err) {
+    // Le plafond peut aussi tomber au milieu de l'écriture (garde du routeur) : aucune suite payée.
+    if (err instanceof PlafondJobAtteint) return { arret: err.message };
+    throw err;
+  }
 }

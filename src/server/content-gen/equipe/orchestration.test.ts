@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   PLAFOND_JOB_USD,
+  PlafondJobAtteint,
   SuiviEquipe,
   apresEcriture,
   avantEcriture,
@@ -139,6 +140,50 @@ describe("premiereEcriture", () => {
     expect((await suivi.journal("publier", 0)).entrees[0]).toMatchObject({
       role: "plan-redaction",
     });
+  });
+});
+
+describe("premiereEcriture : plafond levé en cours d'écriture", () => {
+  it("la garde du routeur qui lève PlafondJobAtteint = arrêt, pas une erreur", async () => {
+    const r = await premiereEcriture(
+      suiviAvec(() => 0.1),
+      async () => {
+        throw new PlafondJobAtteint(3.2, "appel du générateur");
+      },
+    );
+    expect("arret" in r).toBe(true);
+  });
+  it("une autre erreur remonte", async () => {
+    await expect(
+      premiereEcriture(
+        suiviAvec(() => 0.1),
+        async () => {
+          throw new Error("boom");
+        },
+      ),
+    ).rejects.toThrow("boom");
+  });
+});
+
+describe("SuiviEquipe.depenseExecutionUsd", () => {
+  it("compte le registre depuis le début de l'exécution, une seule fois", async () => {
+    let registre = 1;
+    const suivi = suiviAvec(() => registre);
+    registre = 1.8; // 0,8 $ dépensés pendant cette exécution
+    expect(await suivi.depenseExecutionUsd(1)).toBeCloseTo(0.8, 5);
+  });
+  it("prend la somme des entrées si elle dépasse le registre (jamais les deux additionnés)", async () => {
+    const suivi = suiviAvec(() => 1);
+    await suivi.role(
+      "strateg",
+      async () => 1,
+      () => ({ decision: "brief", coutUsd: 0.5 }),
+    );
+    expect(await suivi.depenseExecutionUsd(1)).toBeCloseTo(0.5, 5);
+  });
+  it("lecture du registre en échec : dernier coût connu, sans lever", async () => {
+    const suivi = new SuiviEquipe(async () => Promise.reject(new Error("db")));
+    await expect(suivi.depenseExecutionUsd(0)).resolves.toBe(0);
   });
 });
 

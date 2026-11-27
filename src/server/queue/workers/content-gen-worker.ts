@@ -136,7 +136,12 @@ import {
 // Fix 2026-08-15 (C3) — le lock est désormais acquis AVEC token de propriété
 // (contentGenJobId) : une re-génération de boucle qualité ou un retry BullMQ
 // qui retombe sur SON PROPRE lock ne se fait plus `cancelled` à tort.
-import { acquireKeywordLock, KEYWORD_LOCK_TTL_SEC } from "@/server/content-gen/lib/keyword-lock";
+import {
+  acquireKeywordLock,
+  releaseKeywordLock,
+  KEYWORD_LOCK_TTL_SEC,
+} from "@/server/content-gen/lib/keyword-lock";
+import { inscrirePlafondJob } from "@/server/content-gen/providers/plafond-job";
 // 2026-06-15 — Branche les ContentTemplate (console) au pipeline (override prompt).
 import {
   resolveTemplateOverride,
@@ -428,6 +433,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
   // aucun code ne le repassait jamais en `failed` — et le slot de campagne
   // restait consommé par un fantôme. On ouvre le try AVANT ces étapes : toute
   // erreur y bascule désormais le job en `failed` via le catch commun.
+  let cleanupPlafondJob: (() => void) | undefined;
   try {
     // 3. Status → running + dedup pre-IA
     await prisma.contentGenJob.update({
@@ -713,16 +719,47 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Éteint : aucune de ces variables n'est utilisée et le chemin d'avant est inchangé.
     const equipeOrchestree =
       equipeEditorialeActive() && interrupteurBlogClaude() && typeClaudeAutorise(contentType);
-    const suiviEquipe = equipeOrchestree
-      ? new SuiviEquipe(() => coutCumuleJobUsd(contentGenJobId))
+    const reprise = improvementFeedback !== undefined;
+    // La carte des requêtes est lue ICI, dans un try : une erreur de lecture = repli sur le chemin
+    // d'avant (équipe non construite), jamais un job planté.
+    let carte: Awaited<ReturnType<typeof chargerCarteRequetes>> | undefined;
+    let carteEchec = false;
+    if (equipeOrchestree && !reprise) {
+      try {
+        carte = await chargerCarteRequetes();
+      } catch (err) {
+        carteEchec = true;
+        await logStep(
+          contentGenJobId,
+          "validation",
+          `Équipe éditoriale non lancée (carte des requêtes illisible) : ${err instanceof Error ? err.message : String(err)} — chemin d'avant`,
+          {},
+        ).catch(() => undefined);
+      }
+    }
+    const suiviEquipe =
+      equipeOrchestree && !carteEchec
+        ? new SuiviEquipe(() => coutCumuleJobUsd(contentGenJobId))
+        : undefined;
+    // Plafond de 3,00 $ vérifié avant CHAQUE appel du routeur de ce job (générateur, réparation de
+    // la réponse directe…). Retirée en sortie du traitement (finally plus bas).
+    const retirerPlafondJob = suiviEquipe
+      ? inscrirePlafondJob(contentGenJobId, () => suiviEquipe.verifierPlafond("appel du routeur"))
       : undefined;
+    cleanupPlafondJob = retirerPlafondJob;
     let briefEquipe: Brief | undefined;
     let decisionGardienEquipe: DecisionGardien | undefined;
-    const reprise = improvementFeedback !== undefined;
+    let angleGardien: string | undefined;
+    let debutRegistreEquipe = 0;
+    // Mot-clé verrouillé plus haut : relâché sur tout arrêt avant écriture (sinon il resterait
+    // bloqué 30 min pour rien).
+    const libererVerrouMotCle = async (): Promise<void> => {
+      if (resolvedKeyword) await releaseKeywordLock(resolvedKeyword).catch(() => undefined);
+    };
     if (suiviEquipe) {
       const titreBrief = title || resolvedKeyword || contentType;
       const briefRepli = (prevOutput?.["equipe"] as { brief?: Brief } | undefined)?.brief;
-      const carte = reprise ? undefined : await chargerCarteRequetes();
+      if (reprise) debutRegistreEquipe = await coutCumuleJobUsd(contentGenJobId).catch(() => 0);
       const avant = await avantEcriture(suiviEquipe, {
         // Reprise de la boucle qualité : même article, déjà arbitré (pas de second brief payé).
         brief: async () =>
@@ -788,11 +825,16 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           await prisma.reviewQueue
             .create({ data: { jobId: contentGenJobId, status: "pending" } })
             .catch(() => undefined);
+        } else {
+          await libererVerrouMotCle();
         }
         return;
       }
       briefEquipe = avant.brief;
-      decisionGardienEquipe = { decision: "feu_vert", raison: "gardien passé" };
+      angleGardien = avant.angle;
+      decisionGardienEquipe = avant.angle
+        ? { decision: "reorienter", angle: avant.angle, raison: "gardien : angle proposé" }
+        : { decision: "feu_vert", raison: "gardien passé" };
     } else if (equipeEditorialeActive() && factCheckClaudeActif(contentType)) {
       await constituerPhaseA();
     }
@@ -823,9 +865,15 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
           : {}),
         ...(resolvedKeyword ? { primaryKeyword: resolvedKeyword } : {}),
-        ...(improvementFeedback || feedbackRenvoi
+        ...(improvementFeedback || feedbackRenvoi || angleGardien
           ? {
-              improvementFeedback: [improvementFeedback, feedbackRenvoi]
+              improvementFeedback: [
+                improvementFeedback,
+                angleGardien
+                  ? `Angle à adopter (le gardien a repéré un risque de doublon avec le site) : ${angleGardien}`
+                  : undefined,
+                feedbackRenvoi,
+              ]
                 .filter((x): x is string => Boolean(x))
                 .join("\n\n"),
             }
@@ -855,6 +903,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
             outputJsonRaw: { ...(reprise ? (prevOutput ?? {}) : {}), equipe: journal } as never,
           },
         });
+        await libererVerrouMotCle();
         return;
       }
       output = premiere.output;
@@ -1130,6 +1179,8 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         },
       });
       output = fin.output;
+      // Abandon par le rédacteur en chef : le mot-clé n'a plus lieu d'être gardé.
+      if (fin.statut === "stop" && fin.issue === "ecarte") await libererVerrouMotCle();
       if (fin.statut === "stop") {
         barrieresEquipe.push({
           code: "equipe-editoriale",
@@ -1854,8 +1905,13 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // AUCUN code n'incrémentait cette clé — le cap était une garde morte.
     // Fail-open dans le helper : un échec d'écriture ne casse jamais le job.
     if (improvementFeedback !== undefined) {
+      // Équipe allumée : tous les coûts payants de cette exécution (registre depuis le début de
+      // l'exécution, ou somme du journal), une seule fois chacun — jamais registre + somme.
+      const depenseAvant = output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd;
       await addQualityLoopSpend(
-        output.totalCostUsd + coutFactCheckUsd + coutFideliteLlmUsd,
+        suiviEquipe && journalEquipe
+          ? Math.max(depenseAvant, await suiviEquipe.depenseExecutionUsd(debutRegistreEquipe))
+          : depenseAvant,
         contentGenJobId,
       );
     }
@@ -2016,6 +2072,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     const convertie = erreurNonRelancableCheminClaude(err, contentType);
     if (convertie) throw convertie;
     throw err;
+  } finally {
+    // Garde de plafond du routeur (équipe éditoriale) : jamais laissée en place après le job.
+    cleanupPlafondJob?.();
   }
 }
 

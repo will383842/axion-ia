@@ -22,7 +22,9 @@ describe("worker content-gen : interrupteur de l'équipe éditoriale", () => {
     expect(SOURCE).toMatch(
       /const equipeOrchestree =\s*equipeEditorialeActive\(\) && interrupteurBlogClaude\(\) && typeClaudeAutorise\(contentType\);/,
     );
-    expect(SOURCE).toMatch(/const suiviEquipe = equipeOrchestree\s*\? new SuiviEquipe\(/);
+    expect(SOURCE).toMatch(
+      /const suiviEquipe =\s*equipeOrchestree && !carteEchec\s*\? new SuiviEquipe\(/,
+    );
     expect(SOURCE).toMatch(/if \(suiviEquipe && briefEquipe\) \{/);
   });
 
