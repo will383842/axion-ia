@@ -89,7 +89,9 @@ describe("écarter et opposition", () => {
   it("ecartee et en_opposition sont possibles à tout moment, y compris par le système pour l'opposition", () => {
     for (const s of STATUTS) {
       if (s === "ecartee" || s === "en_opposition") continue;
-      expect(verifierTransition(s, "ecartee", humain).ok).toBe(true);
+      expect(verifierTransition(s, "ecartee", humain).ok).toBe(
+        !["lien_obtenu", "refus", "sans_reponse"].includes(s),
+      );
       expect(verifierTransition(s, "en_opposition", humain).ok).toBe(true);
       expect(verifierTransition(s, "en_opposition", { acteur: "systeme" }).ok).toBe(true);
     }
@@ -125,15 +127,57 @@ describe("sans_reponse automatique et relance", () => {
   it("aucune relance avant 30 jours, et une seule", () => {
     expect(DELAI_RELANCE_MIN_JOURS).toBe(30);
     const ap = (j: number) => new Date(contacte.getTime() + j * JOUR);
-    expect(peutRelancer({ dernierContactLe: contacte, nbRelances: 0, maintenant: ap(29) })).toBe(
-      false,
-    );
-    expect(peutRelancer({ dernierContactLe: contacte, nbRelances: 0, maintenant: ap(30) })).toBe(
-      true,
-    );
-    expect(peutRelancer({ dernierContactLe: contacte, nbRelances: 1, maintenant: ap(60) })).toBe(
-      false,
-    );
-    expect(peutRelancer({ dernierContactLe: null, nbRelances: 0, maintenant: ap(60) })).toBe(false);
+    expect(
+      peutRelancer({
+        statut: "contacte_par_will",
+        dernierContactLe: contacte,
+        nbRelances: 0,
+        maintenant: ap(29),
+      }),
+    ).toBe(false);
+    expect(
+      peutRelancer({
+        statut: "contacte_par_will",
+        dernierContactLe: contacte,
+        nbRelances: 0,
+        maintenant: ap(30),
+      }),
+    ).toBe(true);
+    expect(
+      peutRelancer({
+        statut: "contacte_par_will",
+        dernierContactLe: contacte,
+        nbRelances: 1,
+        maintenant: ap(60),
+      }),
+    ).toBe(false);
+    expect(
+      peutRelancer({
+        statut: "contacte_par_will",
+        dernierContactLe: null,
+        nbRelances: 0,
+        maintenant: ap(60),
+      }),
+    ).toBe(false);
+  });
+});
+
+describe("durcissements", () => {
+  it("la relance exige le statut contacte_par_will", () => {
+    const base = {
+      dernierContactLe: new Date("2026-01-01T00:00:00Z"),
+      nbRelances: 0,
+      maintenant: new Date("2026-06-01T00:00:00Z"),
+    };
+    expect(peutRelancer({ ...base, statut: "contacte_par_will" })).toBe(true);
+    for (const statut of ["en_opposition", "refus", "lien_obtenu", "ecartee"] as const) {
+      expect(peutRelancer({ ...base, statut })).toBe(false);
+    }
+  });
+  it("un statut final ne se rouvre pas par « écartée » ; une réponse tardive est possible", () => {
+    for (const s of ["lien_obtenu", "refus", "sans_reponse"] as const) {
+      expect(verifierTransition(s, "ecartee", humain).ok).toBe(false);
+    }
+    expect(verifierTransition("sans_reponse", "reponse", humain).ok).toBe(true);
   });
 });

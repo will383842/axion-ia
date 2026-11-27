@@ -7,21 +7,26 @@ const DOSSIER = join(__dirname, "..");
 const INTERDITS = [
   /@\/lib\/email/,
   /server\/email/,
+  /\/email\//,
+  /["'](?:node:)?(?:http|https|http2|net|tls|child_process)["']/,
+  /\bundici\b/,
+  /\bfetch\b/,
+  /XMLHttpRequest|WebSocket/,
   /zoho/i,
   /zepto/i,
   /nodemailer/,
   /resend/i,
   /sendgrid/i,
-  /["']node:(?:http|https|net)["']/,
   /\baxios\b/,
-  /\bfetch\s*\(/,
   /mailto:/,
 ];
 
-function fichiers(): string[] {
-  return readdirSync(DOSSIER)
-    .filter((f) => f.endsWith(".ts"))
-    .map((f) => join(DOSSIER, f));
+function fichiers(dossier = DOSSIER): string[] {
+  return readdirSync(dossier, { withFileTypes: true }).flatMap((e) => {
+    const chemin = join(dossier, e.name);
+    if (e.isDirectory()) return e.name === "__tests__" ? [] : fichiers(chemin);
+    return /\.tsx?$/.test(e.name) ? [chemin] : [];
+  });
 }
 
 describe("module liens : aucun envoi", () => {

@@ -17,9 +17,9 @@ export const BROUILLON_MAX = 700;
 export const MENTION_INFORMATION =
   "Vous recevez ce message car votre adresse est publiée par votre organisation pour ce type de demande. Vous pouvez vous opposer à ce traitement à tout moment : répondez simplement « ne plus me contacter » et nous en tiendrons compte.";
 
-const TUTOIEMENT = /\b(?:tu|toi|ton|ta|tes)\b/i;
+const TUTOIEMENT = /(?<![\p{L}])(?:tu|toi|ton|ta|tes)(?![\p{L}])/iu;
 const MOTIF_ECHANGE = /échange|echange|backlink|achat|acheter|sponsoris/i;
-const MOTIF_INTERDIT = /€|\beuros?\b|\bprix\b|\btarifs?\b|grenoble|garanti|promet|\d+\s?%/i;
+const MOTIF_INTERDIT = /€|\beuros?\b|\beur\b|\bprix\b|\btarifs?\b|grenoble|garanti|promet|\d+\s?%/i;
 
 export type MotifRefus =
   | "vide"
@@ -49,13 +49,18 @@ export function controlerBrouillon(
   const motifs: MotifRefus[] = [];
   if (m.length === 0) motifs.push("vide");
   if (m.length > BROUILLON_MAX) motifs.push("trop_long");
-  if (m.length > 0 && !m.includes(urlPage)) motifs.push("url_absente");
+  if (m.length > 0 && (urlPage.trim() === "" || !m.includes(urlPage))) motifs.push("url_absente");
   // L'adresse de la page (slug) ne doit pas déclencher les motifs interdits : on la retire avant.
   const sansLien = m.split(urlPage).join(" ");
   if (MOTIF_INTERDIT.test(sansLien)) motifs.push("interdit");
   if (MOTIF_ECHANGE.test(sansLien)) motifs.push("echange");
   const urls = m.match(/https?:\/\/\S+/gi) ?? [];
-  if (!urls.every((u) => u.replace(/[.,;:)»]+$/, "") === urlPage)) motifs.push("autre_url");
+  // Adresse sans schéma (« www.autre-site.fr ») : aussi une URL.
+  const sansSchema = /(?<![\w@/.])www\.[a-z0-9-]+\.[a-z]{2,}/i.test(
+    sansLien.replace(/https?:\/\/\S+/gi, " "),
+  );
+  if (sansSchema || !urls.every((u) => u.replace(/[.,;:)»]+$/, "") === urlPage))
+    motifs.push("autre_url");
   if (TUTOIEMENT.test(sansLien) || detecterTutoiement(sansLien).tutoie) motifs.push("tutoiement");
   if (options.nominatif && !m.includes(MENTION_INFORMATION)) motifs.push("mention_absente");
   return { valide: motifs.length === 0, motifs };

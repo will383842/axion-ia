@@ -85,3 +85,22 @@ describe("adresse nominative : mention d'information (RGPD art. 14)", () => {
     expect(avecMentionInformation(avecMentionInformation(BON))).toBe(avecMentionInformation(BON));
   });
 });
+
+describe("contournements fermés", () => {
+  it("refuse une URL attendue vide", () => {
+    expect(controlerBrouillon("Bonjour, cordialement.", "").motifs).toContain("url_absente");
+  });
+  it("refuse une seconde adresse sans schéma", () => {
+    expect(controlerBrouillon(`${BON} Voir www.autre-site.fr`, URL_PAGE).motifs).toContain(
+      "autre_url",
+    );
+  });
+  it("refuse un montant en sigle", () => {
+    expect(controlerBrouillon(`${BON} Soit 500 EUR.`, URL_PAGE).valide).toBe(false);
+  });
+  it("ne prend pas « têtu » pour du tutoiement", () => {
+    expect(controlerBrouillon(`${BON} Nous sommes têtus.`, URL_PAGE).motifs).not.toContain(
+      "tutoiement",
+    );
+  });
+});

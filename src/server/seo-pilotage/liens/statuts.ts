@@ -26,6 +26,7 @@ export const DELAI_SANS_REPONSE_JOURS = 45;
 export const DELAI_RELANCE_MIN_JOURS = 30;
 export const RELANCES_MAX = 1;
 
+const STATUTS_FINAUX: readonly StatutOccasion[] = ["lien_obtenu", "refus", "sans_reponse"];
 const JOUR_MS = 86_400_000;
 
 export interface ContexteTransition {
@@ -50,7 +51,7 @@ const SUIVANTS: Readonly<Record<StatutOccasion, readonly StatutOccasion[]>> = {
   reponse: ["lien_obtenu", "refus", "sans_reponse"],
   lien_obtenu: [],
   refus: [],
-  sans_reponse: [],
+  sans_reponse: ["reponse"], // une réponse peut arriver après les 45 jours
   ecartee: ["a_qualifier"],
   en_opposition: [],
 };
@@ -80,7 +81,9 @@ export function verifierTransition(
     return non("seul un humain fait avancer une occasion");
   }
 
-  if (vers === "ecartee") return { ok: true };
+  if (vers === "ecartee") {
+    return STATUTS_FINAUX.includes(de) ? non("statut final") : { ok: true };
+  }
   if (!SUIVANTS[de].includes(vers)) return non(`transition ${de} vers ${vers} interdite`);
   if (vers === "lien_obtenu" && ctx.lienPresent !== true) {
     return non("aucun lien présent et vérifié n'est rattaché");
@@ -93,10 +96,13 @@ export function verifierTransition(
 
 /** Aucune relance avant 30 jours, et une seule au plus. */
 export function peutRelancer(c: {
+  readonly statut: StatutOccasion;
   readonly dernierContactLe: Date | null;
   readonly nbRelances: number;
   readonly maintenant: Date;
 }): boolean {
-  if (!c.dernierContactLe || c.nbRelances >= RELANCES_MAX) return false;
+  // Seule une occasion contactée est relançable : jamais une opposition, un refus, un lien obtenu.
+  if (c.statut !== "contacte_par_will" || !c.dernierContactLe || c.nbRelances >= RELANCES_MAX)
+    return false;
   return c.maintenant.getTime() - c.dernierContactLe.getTime() >= DELAI_RELANCE_MIN_JOURS * JOUR_MS;
 }

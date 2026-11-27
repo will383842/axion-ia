@@ -41,6 +41,8 @@ function estDomaineAxion(hote: string): boolean {
 export function normaliserDomaine(brut: string): string | null {
   const u = lireUrl(brut);
   if (!u) return null;
+  // Une adresse e-mail n'est pas un domaine : « jean@gmail.com » ne devient jamais « gmail.com ».
+  if (u.username || u.password || brut.includes("@")) return null;
   const hote = u.hostname
     .toLowerCase()
     .replace(/\.$/, "")
@@ -59,7 +61,8 @@ export function normaliserPageSource(brut: string): string | null {
     .toLowerCase()
     .replace(/\.$/, "")
     .replace(/^www\./, "");
-  if (estDomaineAxion(hote) || estAdresseIp(hote)) return null;
+  if (estAdresseIp(hote) || !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(hote)) return null;
+  if (estDomaineAxion(hote)) return null;
   u.hash = "";
   u.username = "";
   u.password = "";

@@ -93,3 +93,28 @@ describe("lireExportGsc", () => {
     expect(r.ok).toBe(true);
   });
 });
+
+describe("lireExportGsc : fichiers qui ressemblent sans l'être", () => {
+  it("refuse un export de prospection qui contient une colonne « Site »", () => {
+    expect(lireExportGsc("Nom,Email,Site\nDupont,j@x.fr,www.dupont-btp.fr\n")).toEqual({
+      ok: false,
+      raison: "type_inconnu",
+    });
+    expect(reconnaitreExport(["Ancre", "Email"])).toBeNull();
+  });
+  it("refuse une URL source trop longue au lieu de la tronquer", () => {
+    const r = lireExportGsc(
+      `Linking page,Last crawled\nhttps://exemple.fr/${"a".repeat(2100)},2026-11-03\n`,
+    );
+    expect(r).toMatchObject({ ok: true, lignes: [], ignorees: 1 });
+  });
+  it("une date impossible devient null", () => {
+    const r = lireExportGsc(
+      "Linking page,Last crawled\nhttps://exemple.fr/a,13/25/2026\nhttps://exemple.fr/b,31/12/2026\n",
+    );
+    expect(
+      r.ok &&
+        r.lignes.map((l) => (l.type === "gsc_liens_externes_recents" ? l.derniereExploration : 0)),
+    ).toEqual([null, "2026-12-31"]);
+  });
+});

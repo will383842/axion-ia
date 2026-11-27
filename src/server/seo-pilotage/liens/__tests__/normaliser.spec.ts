@@ -77,3 +77,13 @@ describe("normaliserAncre et tronquerCellule", () => {
     expect(CELLULE_MAX).toBe(2000);
   });
 });
+
+describe("durcissements", () => {
+  it("une adresse e-mail n'est pas un domaine", () => {
+    expect(normaliserDomaine("jean.dupont@gmail.com")).toBeNull();
+  });
+  it("une page source sans hôte pointé est refusée", () => {
+    expect(normaliserPageSource("intranet/page")).toBeNull();
+    expect(normaliserPageSource("http://localhost/x")).toBeNull();
+  });
+});

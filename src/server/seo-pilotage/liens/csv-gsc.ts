@@ -14,7 +14,7 @@ import {
   normaliserCible,
   normaliserDomaine,
   normaliserPageSource,
-  tronquerCellule,
+  CELLULE_MAX,
 } from "./normaliser";
 
 export type TypeExport =
@@ -64,8 +64,9 @@ function normaliserEntete(h: string): string {
 
 export function reconnaitreExport(entetes: readonly string[]): TypeExport | null {
   const n = entetes.map(normaliserEntete);
+  // Clé ET colonne de valeur exigées : une seule colonne « Site » ne fait pas un export Google.
   for (const s of SIGNATURES) {
-    if (n.some((h) => s.cles.includes(h))) return s.type;
+    if (n.some((h) => s.cles.includes(h)) && n.some((h) => s.valeurs.includes(h))) return s.type;
   }
   return null;
 }
@@ -123,9 +124,14 @@ function lireNombre(brut: string | undefined): number | null {
 function lireDate(brut: string | undefined): string | null {
   const s = (brut ?? "").trim();
   const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
-  if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
   const fr = /^(\d{2})\/(\d{2})\/(\d{4})/.exec(s);
-  return fr ? `${fr[3]}-${fr[2]}-${fr[1]}` : null;
+  const [a, m, j] = iso ? [iso[1]!, iso[2]!, iso[3]!] : fr ? [fr[3]!, fr[2]!, fr[1]!] : [];
+  if (!a || !m || !j) return null;
+  const d = new Date(`${a}-${m}-${j}T00:00:00Z`);
+  // Date impossible (mois 25, 31 février) : rien plutôt qu'une date fausse.
+  return Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== `${a}-${m}-${j}`
+    ? null
+    : `${a}-${m}-${j}`;
 }
 
 function indexColonne(
@@ -158,7 +164,8 @@ export function lireExportGsc(contenu: string): ResultatLecture {
 
   rows.forEach((brutes, k) => {
     const ligne = k + 2;
-    const cellules = brutes.map(tronquerCellule);
+    // Un caractère de plus que le plafond : une URL trop longue est REFUSÉE, jamais tronquée en silence.
+    const cellules = brutes.map((c) => c.slice(0, CELLULE_MAX + 1));
     const cle = cellules[iCle] ?? "";
     const val = cellules[iVal];
     switch (type) {
