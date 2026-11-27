@@ -24,9 +24,9 @@ Module pur (aucune entrée-sortie, aucune migration, rien de branché) dans `src
 
 - Adaptateur à écrire au branchement : le `ResultatCritere` de la porte réelle (`statut`, `preuves[]`, `raison` nullable, sans `section`) diffère de celui de ce contrat (`etat`, `preuve`, `section`) ; sans `section`, un échec corrigeable finit en abandon « non localisable ».
 - Le registre actuel de la porte (Q2) ne rend que B01, B03, B08, B11 (et ses sous-critères), B13 et B14 : branché tel quel, le contrat lirait les autres bloquants comme « non évalués » et mettrait tout contenu en attente ; l'exception B17 n'a d'effet qu'une fois B01 à B16 rendus (Q3 et suivants). À brancher ensemble.
-- Un seul résultat par critère (pas par section) et pas de validation à l'exécution de la sortie de la porte : à prévoir au branchement (C5 et suivantes).
+- Pas de validation à l'exécution de la sortie de la porte : à prévoir au branchement (C5 et suivantes).
 - Un dérogeable seul avec une note sous 70 n'est pas proposé à la dérogation : abandon avec son code.
 - Le seuil de publication (85) est fixe dans ce module ; la porte peut le relever à 90 : à paramétrer au branchement.
-- Relectures Opus : tour 4 en cours après les correctifs (B17 absent avant Q10, sous-critères B11a/b/c, règle du report alignée sur le § 5).
+- Quatre tours de relecture Opus faits (3 sur les correctifs de la porte réelle) ; le dernier a relevé cinq points mineurs (un « non évalué » masqué dans une famille B11, doublons de corrections, doc), tous corrigés ensuite avec leurs tests mais sans nouvelle relecture (limite de 3 tours).
 
-VERDICT OPUS : EN COURS
+VERDICT OPUS : À CORRIGER (points du dernier tour corrigés, non relus)

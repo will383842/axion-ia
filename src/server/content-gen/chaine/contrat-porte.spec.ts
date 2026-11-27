@@ -290,6 +290,45 @@ describe("actionApresVerdict", () => {
     ]);
   });
 
+  it("doublons : B11a et B11b sur la même section, W03 répété → une seule correction, une seule ligne", () => {
+    const e = (id: string, section: string) =>
+      ({ id, etat: "echec", preuve: "p", raison: "r", section }) as unknown as ResultatCritere;
+    const s = sortie("a_corriger", [e("B11a", "plan"), e("B11b", "plan")], 80);
+    expect(actionApresVerdict(s, debut)).toEqual({
+      action: "reecrire",
+      corrections: [{ critere: "B11", section: "plan", code: "structure_titres" }],
+    });
+    expect(
+      refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 }),
+    ).toHaveLength(1);
+    const w = sortie("a_corriger", [e("W03", "intro"), e("W03", "intro")], 40);
+    expect(actionApresVerdict(w, debut)).toEqual({
+      action: "reecrire",
+      corrections: [{ critere: "W03", section: "intro", code: "style" }],
+    });
+  });
+
+  it("B11 non évalué + B11c en échec → mise en attente, ni réécriture ni refus", () => {
+    const ne = {
+      id: "B11",
+      etat: "non_evalue",
+      preuve: "",
+      raison: "panne",
+    } as unknown as ResultatCritere;
+    const c = {
+      id: "B11c",
+      etat: "echec",
+      preuve: "p",
+      raison: "r",
+      section: "intro",
+    } as unknown as ResultatCritere;
+    const s = sortie("a_corriger", [ne, c], 80);
+    expect(actionApresVerdict(s, debut).action).toBe("mettre_en_attente");
+    expect(refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 })).toEqual(
+      [],
+    );
+  });
+
   it("un non évalué hors B04 avec un échec → mise en attente, pas de réécriture", () => {
     const s = sortie("a_corriger", [
       echec("B05"),

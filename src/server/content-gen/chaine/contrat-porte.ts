@@ -203,6 +203,9 @@ function defautsBloquants(sortie: SortiePorte): DefautBloquant[] {
       if (r) defauts.push({ id, etat: "non_evalue", resultat: r });
       continue;
     }
+    // Un « non évalué » de la même famille reste un défaut : il met le contenu en attente.
+    const ne = rs.find((x) => x.etat === "non_evalue");
+    if (ne) defauts.push({ id, etat: "non_evalue", resultat: ne });
     const vus = new Set<string>();
     for (const r of rs) {
       if (r.etat !== "echec") continue;
@@ -285,7 +288,7 @@ function reportAttendu(defauts: readonly DefautBloquant[], note: number): boolea
 
 /**
  * Lignes de refus d'un verdict :
- * - une par bloquant EN ÉCHEC (B17 exclu : c'est un report ; si B17 est en défaut avec une note ≥ 70, aucune ligne) ;
+ * - une par échec de bloquant, dédoublonnée par section et précision de cause (B17 exclu : c'est un report ; si B17 est en défaut avec une note ≥ 70, aucune ligne) ;
  * - un bloquant « non évalué » n'est PAS un refus (c'est une panne de source :
  *   elle ne doit pas fausser les statistiques de refus) ;
  * - note invalide : aucune ligne (panne, mise en attente) ;
@@ -317,8 +320,13 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
   // Bloquant hors B04 non jugé (source en panne) : mise en attente, donc aucune ligne de refus.
   if (defauts.some((d) => d.etat === "non_evalue" && d.id !== "B17" && d.id !== "B04")) return [];
   const refus: RefusEnregistrable[] = [];
+  const lignesVues = new Set<string>();
   for (const d of defauts) {
     if (d.etat !== "echec" || !d.resultat || CLASSE_CRITERE[d.id] === "report") continue;
+    const code = codePourCritere(d.id, d.resultat.precision);
+    const cle = `${d.id}|${code}|${d.resultat.section ?? ""}`;
+    if (lignesVues.has(cle)) continue;
+    lignesVues.add(cle);
     refus.push({
       ...base,
       code: codePourCritere(d.id, d.resultat.precision),
@@ -356,6 +364,17 @@ export interface CorrectionLocalisee {
   readonly critere: IdCritere;
   readonly section: string;
   readonly code: CodeRefus;
+}
+
+/** Une correction par (critère, section, code) : la même demande n'est pas faite deux fois. */
+function sansDoublon(corrections: readonly CorrectionLocalisee[]): CorrectionLocalisee[] {
+  const vus = new Set<string>();
+  return corrections.filter((c) => {
+    const cle = `${c.critere}|${c.section}|${c.code}`;
+    if (vus.has(cle)) return false;
+    vus.add(cle);
+    return true;
+  });
 }
 
 export interface EtatCycle {
@@ -456,11 +475,13 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   if (aCorriger.length > 0) {
     return {
       action: "reecrire",
-      corrections: aCorriger.map((d) => ({
-        critere: d.id,
-        section: d.resultat.section as string,
-        code: codePourCritere(d.id, d.resultat.precision),
-      })),
+      corrections: sansDoublon(
+        aCorriger.map((d) => ({
+          critere: d.id,
+          section: d.resultat.section as string,
+          code: codePourCritere(d.id, d.resultat.precision),
+        })),
+      ),
     };
   }
   const avertissements = sortie.criteres.filter(
@@ -470,10 +491,12 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   if (avertissements.length === 0) return { action: "abandonner", code: "autre" };
   return {
     action: "reecrire",
-    corrections: avertissements.map((c) => ({
-      critere: c.id,
-      section: c.section,
-      code: "style" as const,
-    })),
+    corrections: sansDoublon(
+      avertissements.map((c) => ({
+        critere: c.id,
+        section: c.section,
+        code: "style" as const,
+      })),
+    ),
   };
 }
