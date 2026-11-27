@@ -312,9 +312,11 @@ export async function publierChallenge(
       // Non-cumul : toute prime de challenge en vigueur sur la période compte, quel que soit le
       // produit ; un archivé arrêté avant son début n'a jamais été en vigueur (ignoré).
       if (
-        memes.filter(estLisible).some((m) =>
-          periodesSeChevauchent(moi, { debutLe: enJour(m.debutLe), finLe: enJour(m.finLe) }),
-        )
+        memes
+          .filter(estLisible)
+          .some((m) =>
+            periodesSeChevauchent(moi, { debutLe: enJour(m.debutLe), finLe: enJour(m.finLe) }),
+          )
       )
         return refus("chevauche");
       const r = await tx.challengeApporteur.updateMany({

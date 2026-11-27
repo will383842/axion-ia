@@ -64,5 +64,4 @@ Remplace #2315 (en conflit) : branche neuve `feat/apporteurs-challenges-v2` part
 
 **Non-cumul (tranché par Will)** : les primes de challenges sur une même période ne se cumulent pas. Le contrôle de chevauchement à la publication porte sur les publiés et les archivés lisibles (arrêtés après leur début), tous produits confondus.
 
-
 **Vérifications** : `pnpm prisma:generate`, `pnpm typecheck` (vert), eslint et prettier sur les fichiers touchés, `pnpm vitest run` sur `src/features/apporteurs-reseau`, `src/app/apporteur`, `tests/unit/ci`, `src/lib/admin-nav.test.ts` : 272 fichiers, 2759 tests verts. `pnpm-lock.yaml` inchangé.
