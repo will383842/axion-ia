@@ -58,8 +58,7 @@ export interface SaisieChallenge {
 }
 
 export type ResultatSaisie =
-  | { ok: true; valeur: SaisieChallenge }
-  | { ok: false; erreurs: string[] };
+  { ok: true; valeur: SaisieChallenge } | { ok: false; erreurs: string[] };
 
 /** Contrôle de la saisie de la console (texte brut du formulaire). */
 export function validerSaisie(brut: Record<string, string | undefined>): ResultatSaisie {
