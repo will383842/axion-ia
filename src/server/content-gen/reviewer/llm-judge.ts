@@ -125,6 +125,12 @@ export interface JudgeResult {
   readonly linguisticDiversity?: LinguisticDiversityDimension;
   readonly issues: ReadonlyArray<JudgeIssue>;
   readonly reasoning: string;
+  /**
+   * Coût de l'appel du juge (USD), tel que rendu par le fournisseur. Absent si inconnu.
+   * Déjà tracé dans CostLedger par le fournisseur : ne pas l'y ajouter une seconde fois ;
+   * sert au plafond par article du circuit de l'équipe éditoriale.
+   */
+  readonly coutUsd?: number;
 }
 
 // ── Prompt (XML tagged for Claude) ───────────────────────────────────────────
@@ -445,7 +451,12 @@ export async function reviewArticle(
         temperature: 0.2,
       });
 
-  const baseResult = parseJudgeResponse(response.output, thresholds);
+  const parsed = parseJudgeResponse(response.output, thresholds);
+  const coutAppel = response.costUsd;
+  const baseResult: JudgeResult =
+    typeof coutAppel === "number" && Number.isFinite(coutAppel)
+      ? { ...parsed, coutUsd: coutAppel }
+      : parsed;
 
   // ── Dimension linguisticDiversity (Phase G) ──────────────────────────────
   const textForAnalysis = article.bodyText ?? article.bodyHtml;
@@ -510,5 +521,6 @@ export async function reviewArticle(
     linguisticDiversity,
     issues: allIssues,
     reasoning: baseResult.reasoning,
+    ...(baseResult.coutUsd !== undefined ? { coutUsd: baseResult.coutUsd } : {}),
   };
 }

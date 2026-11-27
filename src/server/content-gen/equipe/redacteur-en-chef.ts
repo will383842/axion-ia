@@ -20,6 +20,7 @@ import {
   type JudgeResult,
   type JudgeThresholds,
 } from "../reviewer/llm-judge";
+import { coutErreurTronquee } from "../providers/IProvider";
 import { exigeRelectureHumaine, type ContenuARelire } from "../quality/relecture-journee-ia";
 import {
   PLANCHER_MOTS_RELECTURE,
@@ -45,7 +46,8 @@ import type { ResultatConformite } from "./conformite";
 
 export const PLAFOND_COUT_ARTICLE_USD = 3;
 export const RENVOIS_MAX = 2;
-export const NOTE_PUBLICATION_MIN = 8.5;
+/** Même seuil que le juge actuel (`JUDGE_THRESHOLDS.PUBLISH_MIN`) : jamais moins strict. */
+export const NOTE_PUBLICATION_MIN = JUDGE_THRESHOLDS.PUBLISH_MIN;
 export const NOTE_UTILITE_DIRIGEANT_MIN = 8.5;
 export const MOTS_REPONSE_FENETRE = 100;
 
@@ -328,6 +330,8 @@ export interface Renvoi {
   readonly suite: ReadonlyArray<Role>;
   readonly criteres: ReadonlyArray<CodeCritere>;
   readonly passages: ReadonlyArray<string>;
+  /** Q1 + Q2 fusionnés au rédacteur : chiffres à sourcer (les passages exacts restent dans `passages`). */
+  readonly chiffresASourcer?: ReadonlyArray<string>;
 }
 
 export type DecisionEnChef =
@@ -346,29 +350,55 @@ export interface ContexteDecision {
   /** Note globale du modèle /10 (`undefined` = non notée). */
   readonly noteGlobale?: number | undefined;
   readonly erreurModele?: boolean | undefined;
+  /** Note globale minimale du juge actuel (`thresholds.PUBLISH_MIN`). Défaut : `JUDGE_THRESHOLDS.PUBLISH_MIN`. */
+  readonly noteMin?: number | undefined;
+  /** Le juge a relevé au moins une issue P1 : son verdict aurait été « improve », jamais publié. */
+  readonly p1Juge?: boolean | undefined;
 }
 
 const cause = (r: ResultatCritere): string =>
   `${r.code} — ${r.libelle}${r.passages.length > 0 ? ` : ${r.passages.slice(0, 3).join(" | ")}` : ""}`;
 
 function renvoisPour(echecs: ReadonlyArray<ResultatCritere>): Renvoi[] {
-  const parRole = new Map<Role, { criteres: CodeCritere[]; passages: string[] }>();
+  // Q1 et Q2 ensemble : UN seul renvoi fusionné au rédacteur (passages exacts + chiffres à sourcer).
+  const fusion = echecs.some((r) => r.code === "Q1") && echecs.some((r) => r.code === "Q2");
+  const parRole = new Map<
+    Role,
+    { criteres: CodeCritere[]; passages: string[]; chiffres: string[] }
+  >();
   for (const r of echecs) {
-    // Q2 : le vérificateur d'abord ; le rédacteur reprend ensuite (même renvoi, rôles en file).
-    const role = ROLES_RESPONSABLES[r.code][0];
+    const role: Role | undefined =
+      r.code === "Q2" && fusion ? "redacteur" : ROLES_RESPONSABLES[r.code][0];
     if (!role) continue;
-    const cur = parRole.get(role) ?? { criteres: [], passages: [] };
+    const cur = parRole.get(role) ?? { criteres: [], passages: [], chiffres: [] };
     cur.criteres.push(r.code);
-    cur.passages.push(...r.passages);
+    if (r.code === "Q2" && fusion) cur.chiffres.push(...r.passages);
+    else cur.passages.push(...r.passages);
     parRole.set(role, cur);
+  }
+  // Un renvoi au vérificateur (le rédacteur reprend ensuite) absorbe les écarts du rédacteur :
+  // le rédacteur ne passe qu'une fois.
+  const verif = parRole.get("verificateur");
+  const redac = parRole.get("redacteur");
+  if (verif && redac) {
+    verif.criteres.push(...redac.criteres);
+    verif.passages.push(...redac.passages);
+    verif.chiffres.push(...redac.chiffres);
+    parRole.delete("redacteur");
   }
   return [...parRole.entries()].map(([role, v]) => ({
     role,
-    suite: ROLES_RESPONSABLES[v.criteres[0]!].slice(1),
+    // Q2 seul : le vérificateur d'abord ; le rédacteur reprend ensuite (même renvoi, rôles en file).
+    suite: role === "verificateur" ? ROLES_RESPONSABLES.Q2.slice(1) : [],
     criteres: v.criteres,
     passages: v.passages,
+    ...(v.chiffres.length > 0 ? { chiffresASourcer: v.chiffres } : {}),
   }));
 }
+
+const noteMin = (ctx: ContexteDecision): number => ctx.noteMin ?? NOTE_PUBLICATION_MIN;
+const noteSuffisante = (ctx: ContexteDecision): boolean =>
+  ctx.noteGlobale !== undefined && ctx.noteGlobale >= noteMin(ctx) && !ctx.p1Juge;
 
 export function decider(
   grille: ReadonlyArray<ResultatCritere>,
@@ -407,15 +437,15 @@ export function decider(
     if (ctx.renvoisFaits >= RENVOIS_MAX) {
       return { type: "relecture_humaine", blockCauses: causes(echecs) };
     }
-    return { type: "renvoi", renvois: renvoisPour(bloquants) };
+    // Un seul renvoi groupé par rôle : les écarts Q8 à Q11 relevés en même temps partent avec.
+    const ecartsEmbarques = renvoiables.filter((r) => r.code !== "Q12");
+    return { type: "renvoi", renvois: renvoisPour([...bloquants, ...ecartsEmbarques]) };
   }
   if (relectures.length > 0) {
     return { type: "relecture_humaine", blockCauses: causes(echecs) };
   }
   if (renvoiables.length > 0) {
-    const mineurs =
-      renvoiables.every((r) => ECARTS_MINEURS.has(r.code)) &&
-      (ctx.noteGlobale ?? 0) >= NOTE_PUBLICATION_MIN;
+    const mineurs = renvoiables.every((r) => ECARTS_MINEURS.has(r.code)) && noteSuffisante(ctx);
     if (!mineurs) {
       if (ctx.renvoisFaits >= RENVOIS_MAX) {
         return { type: "relecture_humaine", blockCauses: causes(echecs) };
@@ -423,7 +453,16 @@ export function decider(
       return { type: "renvoi", renvois: renvoisPour(renvoiables) };
     }
   }
-  // Tout vert (ou écarts mineurs avec la note requise).
+  // Tout vert (ou écarts mineurs) : la note globale doit atteindre le minimum du juge actuel.
+  if (!noteSuffisante(ctx)) {
+    return {
+      type: "relecture_humaine",
+      blockCauses: [
+        `${ctx.p1Juge ? "Issue P1 relevée par le juge (verdict « improve »)" : `Note globale du juge ${ctx.noteGlobale === undefined ? "absente" : ctx.noteGlobale.toFixed(1)} sous le minimum ${noteMin(ctx).toFixed(1)}`}`,
+        ...causes(echecs),
+      ],
+    };
+  }
   if (ctx.sujetJourneeIA) {
     return {
       type: "a_relire",
@@ -456,6 +495,10 @@ export interface SortieEnChef {
   readonly decision: DecisionEnChef;
   readonly grille: ReadonlyArray<ResultatCritere>;
   readonly jugement?: JudgeResult | undefined;
+  /** Coût de l'appel du juge (0 si non appelé ou coût inconnu). */
+  readonly coutJugeUsd: number;
+  /** Dépense déjà faite + coût du juge : à compter dans le plafond de 3,00 $ par article. */
+  readonly coutTotalUsd: number;
 }
 
 export async function redacteurEnChef(
@@ -463,7 +506,14 @@ export async function redacteurEnChef(
   deps: DependancesEnChef = {},
   env: EnvEquipeEditoriale = process.env,
 ): Promise<SortieEnChef> {
-  if (!equipeEditorialeActive(env)) return { decision: { type: "inchange" }, grille: [] };
+  if (!equipeEditorialeActive(env)) {
+    return {
+      decision: { type: "inchange" },
+      grille: [],
+      coutJugeUsd: 0,
+      coutTotalUsd: entree.coutDepenseUsd,
+    };
+  }
 
   const sujetJourneeIA = exigeRelectureHumaine(entree.journeeIA);
   const ctxBase = {
@@ -472,14 +522,21 @@ export async function redacteurEnChef(
     sujetJourneeIA,
   };
   const sansModele = evaluerGrille(entree);
+  const noteMinJuge = (entree.thresholds ?? JUDGE_THRESHOLDS).PUBLISH_MIN;
+  const sansJuge = (decision: DecisionEnChef): SortieEnChef => ({
+    decision,
+    grille: sansModele,
+    coutJugeUsd: 0,
+    coutTotalUsd: entree.coutDepenseUsd,
+  });
 
   // Plafond de coût : pas d'appel au modèle une fois atteint.
   if (entree.coutDepenseUsd >= PLAFOND_COUT_ARTICLE_USD) {
-    return { decision: decider(sansModele, ctxBase), grille: sansModele };
+    return sansJuge(decider(sansModele, { ...ctxBase, noteMin: noteMinJuge }));
   }
   // Un bloquant ou une relecture en échec décide sans modèle (renvoi ou arrêt) : on n'achète pas de note inutile.
   const bloquantEnEchec = sansModele.some((r) => r.nature !== "renvoi" && !r.ok);
-  if (bloquantEnEchec) return { decision: decider(sansModele, ctxBase), grille: sansModele };
+  if (bloquantEnEchec) return sansJuge(decider(sansModele, { ...ctxBase, noteMin: noteMinJuge }));
 
   const juger = deps.juger ?? reviewArticle;
   let jugement: JudgeResult;
@@ -487,12 +544,30 @@ export async function redacteurEnChef(
     jugement = await juger(entree.article, entree.thresholds ?? JUDGE_THRESHOLDS, {
       ...(entree.contentType ? { typeBlog: entree.contentType } : {}),
     });
-  } catch {
+  } catch (err) {
+    // Un coût déjà facturé porté par l'erreur (sortie tronquée) compte dans le plafond.
+    const coutJugeUsd = coutErreurTronquee(err);
+    const coutTotalUsd = entree.coutDepenseUsd + coutJugeUsd;
     return {
-      decision: decider(sansModele, { ...ctxBase, erreurModele: true }),
+      decision: decider(sansModele, {
+        ...ctxBase,
+        coutDepenseUsd: coutTotalUsd,
+        noteMin: noteMinJuge,
+        erreurModele: true,
+      }),
       grille: sansModele,
+      coutJugeUsd,
+      coutTotalUsd,
     };
   }
+  // Coût du juge : vérifié avant l'appel (plafond), ajouté après.
+  const coutJugeUsd =
+    typeof jugement.coutUsd === "number" &&
+    Number.isFinite(jugement.coutUsd) &&
+    jugement.coutUsd > 0
+      ? jugement.coutUsd
+      : 0;
+  const coutTotalUsd = entree.coutDepenseUsd + coutJugeUsd;
   const noteUtilite = jugement.dimensions.valueToReader.score;
   const grille = evaluerGrille({ ...entree, noteUtilite });
   // Un P0 du modèle (doctrine, erreur factuelle) n'est jamais publié ni « mineur » : relecture humaine.
@@ -505,12 +580,22 @@ export async function redacteurEnChef(
       },
       grille,
       jugement,
+      coutJugeUsd,
+      coutTotalUsd,
     };
   }
   return {
-    decision: decider(grille, { ...ctxBase, noteGlobale: jugement.globalScore }),
+    decision: decider(grille, {
+      ...ctxBase,
+      coutDepenseUsd: coutTotalUsd,
+      noteGlobale: jugement.globalScore,
+      noteMin: noteMinJuge,
+      p1Juge: jugement.issues.some((i) => i.severity === "P1"),
+    }),
     grille,
     jugement,
+    coutJugeUsd,
+    coutTotalUsd,
   };
 }
 

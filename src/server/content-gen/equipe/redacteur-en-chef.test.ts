@@ -13,6 +13,7 @@ import {
   type CodeCritere,
 } from "./redacteur-en-chef";
 import type { JudgeResult } from "../reviewer/llm-judge";
+import { ProviderError } from "../providers/IProvider";
 
 const ACTIF = { CONTENT_EQUIPE_EDITORIALE: "true" };
 const mots = (n: number, base = "mot") =>
@@ -463,5 +464,217 @@ describe("pannes des contrôles et ordre des règles", () => {
       ACTIF,
     );
     expect(out.mode).toBe("en-chef");
+  });
+});
+
+describe("correctifs de relecture (PR 11, 2e passe)", () => {
+  // 1) coût du juge compté dans le plafond de 3,00 $
+  it("coût du juge : rendu à l'appelant, total = dépense + juge", async () => {
+    const juger = vi.fn().mockResolvedValue({ ...jugement(9), coutUsd: 0.12 });
+    const s = await redacteurEnChef(entreeCircuit({ coutDepenseUsd: 1 }), { juger }, ACTIF);
+    expect(s.coutJugeUsd).toBeCloseTo(0.12);
+    expect(s.coutTotalUsd).toBeCloseTo(1.12);
+    expect(s.decision).toEqual({ type: "publier" });
+  });
+  it("coût du juge : vérifié avant l'appel (déjà au plafond → pas d'appel, coût juge 0)", async () => {
+    const juger = vi.fn();
+    const s = await redacteurEnChef(entreeCircuit({ coutDepenseUsd: 3 }), { juger }, ACTIF);
+    expect(juger).not.toHaveBeenCalled();
+    expect(s.coutJugeUsd).toBe(0);
+    expect(s.coutTotalUsd).toBe(3);
+  });
+  it("coût du juge : ajouté après l'appel — le franchissement du plafond → relecture humaine", async () => {
+    const juger = vi.fn().mockResolvedValue({ ...jugement(9), coutUsd: 0.2 });
+    const s = await redacteurEnChef(entreeCircuit({ coutDepenseUsd: 2.9 }), { juger }, ACTIF);
+    expect(juger).toHaveBeenCalledTimes(1);
+    expect(s.coutTotalUsd).toBeCloseTo(3.1);
+    expect(s.decision.type).toBe("relecture_humaine");
+    expect(s.decision.type === "relecture_humaine" && s.decision.blockCauses[0]).toContain(
+      "Plafond de coût",
+    );
+  });
+  it("coût du juge inconnu : compté pour 0, le circuit continue", async () => {
+    const s = await redacteurEnChef(
+      entreeCircuit({ coutDepenseUsd: 1 }),
+      { juger: vi.fn().mockResolvedValue(jugement(9)) },
+      ACTIF,
+    );
+    expect(s.coutJugeUsd).toBe(0);
+    expect(s.coutTotalUsd).toBe(1);
+  });
+  it("coût du juge : un coût invalide (NaN, négatif) n'est jamais retranché", async () => {
+    for (const c of [Number.NaN, -5]) {
+      const s = await redacteurEnChef(
+        entreeCircuit({ coutDepenseUsd: 1 }),
+        { juger: vi.fn().mockResolvedValue({ ...jugement(9), coutUsd: c }) },
+        ACTIF,
+      );
+      expect(s.coutTotalUsd).toBe(1);
+    }
+  });
+  it("jugerPourCircuit allumé rend le coût ; éteint, résultat du juge tel quel", async () => {
+    const j = { ...jugement(9), coutUsd: 0.3 };
+    const on = await jugerPourCircuit(
+      entreeCircuit(),
+      { juger: vi.fn().mockResolvedValue(j) },
+      ACTIF,
+    );
+    expect(on.mode === "en-chef" && on.coutJugeUsd).toBeCloseTo(0.3);
+    const off = await jugerPourCircuit(
+      entreeCircuit(),
+      { juger: vi.fn().mockResolvedValue(j) },
+      {},
+    );
+    expect(off).toEqual({ mode: "juge-actuel", jugement: j });
+  });
+
+  // 2) renvoi pour bloquant + écarts Q8 à Q11
+  it("renvoi bloquant : embarque Q8 à Q11 relevés en même temps, un seul renvoi par rôle", () => {
+    const d = decider(
+      avec(
+        r("Q4", false, ["lien-mort"]),
+        r("Q8", false, ["question non couverte"]),
+        r("Q9", false, ["tutoiement"]),
+        r("Q10", false),
+        r("Q11", false, ["entité"]),
+      ),
+      ctx,
+    );
+    expect(d.type).toBe("renvoi");
+    if (d.type !== "renvoi") return;
+    expect(d.renvois.map((x) => x.role).sort()).toEqual(
+      ["architecte", "editeur-seo", "mailleur", "redacteur"].sort(),
+    );
+    expect(d.renvois.filter((x) => x.role === "editeur-seo")).toHaveLength(1);
+    const ed = d.renvois.find((x) => x.role === "editeur-seo")!;
+    expect(ed.criteres).toEqual(["Q10", "Q11"]);
+    expect(d.renvois.find((x) => x.role === "architecte")!.criteres).toEqual(["Q8"]);
+    expect(d.renvois.find((x) => x.role === "redacteur")!.criteres).toEqual(["Q9"]);
+  });
+  it("renvoi bloquant : Q12 n'est pas embarqué ; Q13 + Q8 sans bloquant → relecture humaine", () => {
+    const d = decider(avec(r("Q4", false), r("Q12", false)), ctx);
+    expect(d.type === "renvoi" && d.renvois.flatMap((x) => x.criteres)).toEqual(["Q4"]);
+    // Q7/Q13 : ordre des règles inchangé (un bloquant se renvoie d'abord).
+    expect(decider(avec(r("Q13", false), r("Q8", false)), ctx).type).toBe("relecture_humaine");
+  });
+  it("renvoi bloquant : le plafond de renvois reste la règle", () => {
+    expect(decider(avec(r("Q4", false), r("Q8", false)), { ...ctx, renvoisFaits: 2 }).type).toBe(
+      "relecture_humaine",
+    );
+  });
+
+  // 3) Q1 + Q2 fusionnés
+  it("Q1 + Q2 : UN seul renvoi au rédacteur, passages exacts + chiffres à sourcer", () => {
+    const d = decider(
+      avec(r("Q1", false, ["phrase fautive"]), r("Q2", false, ["37 % des PME"])),
+      ctx,
+    );
+    expect(d.type).toBe("renvoi");
+    if (d.type !== "renvoi") return;
+    expect(d.renvois).toHaveLength(1);
+    expect(d.renvois[0]).toMatchObject({
+      role: "redacteur",
+      suite: [],
+      criteres: ["Q1", "Q2"],
+      passages: ["phrase fautive"],
+      chiffresASourcer: ["37 % des PME"],
+    });
+  });
+  it("Q1 + Q2 + Q9 : tout dans le seul renvoi du rédacteur", () => {
+    const d = decider(
+      avec(r("Q1", false, ["a"]), r("Q2", false, ["b"]), r("Q9", false, ["tutoiement"])),
+      ctx,
+    );
+    expect(d.type === "renvoi" && d.renvois).toHaveLength(1);
+    expect(d.type === "renvoi" && d.renvois[0]!.criteres).toEqual(["Q1", "Q2", "Q9"]);
+  });
+  it("Q2 seul : toujours vérificateur puis rédacteur (inchangé)", () => {
+    const d = decider(avec(r("Q2", false, ["37 %"])), ctx);
+    expect(d).toMatchObject({ renvois: [{ role: "verificateur", suite: ["redacteur"] }] });
+  });
+
+  // 4) note globale minimale quand tout est vert
+  it("tout vert mais note sous le minimum du juge actuel → pas de publication", () => {
+    const d = decider(vert(), { ...ctx, noteGlobale: 8.4 });
+    expect(d.type).toBe("relecture_humaine");
+    expect(d.type === "relecture_humaine" && d.blockCauses[0]).toContain("Note globale");
+    expect(decider(vert(), { ...ctx, noteGlobale: 8.5 })).toEqual({ type: "publier" });
+  });
+  it("tout vert sans note du juge → pas de publication", () => {
+    expect(decider(vert(), { ...ctx, noteGlobale: undefined }).type).toBe("relecture_humaine");
+  });
+  it("tout vert + note insuffisante + Journée IA → relecture humaine (pas « à relire » seul)", () => {
+    expect(decider(vert(), { ...ctx, noteGlobale: 7, sujetJourneeIA: true }).type).toBe(
+      "relecture_humaine",
+    );
+  });
+  it("le seuil est celui du juge actuel (thresholds), jamais moins strict", async () => {
+    const th = { PUBLISH_MIN: 9, IMPROVE_MIN: 6 };
+    const s = await redacteurEnChef(
+      entreeCircuit({ thresholds: th }),
+      { juger: vi.fn().mockResolvedValue(jugement(8.8)) },
+      ACTIF,
+    );
+    expect(s.decision.type).toBe("relecture_humaine");
+    const ok = await redacteurEnChef(
+      entreeCircuit({ thresholds: th }),
+      { juger: vi.fn().mockResolvedValue(jugement(9.1)) },
+      ACTIF,
+    );
+    expect(ok.decision).toEqual({ type: "publier" });
+    // Seuil réglé plus bas en base : jamais sous 8,5 par défaut du code, mais celui du juge fait foi.
+    const bas = await redacteurEnChef(
+      entreeCircuit({ thresholds: { PUBLISH_MIN: 7, IMPROVE_MIN: 5 } }),
+      { juger: vi.fn().mockResolvedValue(jugement(7.5)) },
+      ACTIF,
+    );
+    expect(bas.decision).toEqual({ type: "publier" });
+  });
+  it("allumé, tout vert, note globale 8,4 (seuil par défaut) → relecture humaine", async () => {
+    const s = await redacteurEnChef(
+      entreeCircuit(),
+      { juger: vi.fn().mockResolvedValue(jugement(8.4)) },
+      ACTIF,
+    );
+    expect(s.decision.type).toBe("relecture_humaine");
+  });
+
+  // Relecture Opus, tour 1
+  it("une issue P1 du juge : jamais « publier » (comme le verdict « improve » du juge actuel)", async () => {
+    const p1 = [
+      { severity: "P1" as const, section: "corps", issue: "voix passive", suggestedFix: "" },
+    ];
+    const s = await redacteurEnChef(
+      entreeCircuit(),
+      { juger: vi.fn().mockResolvedValue(jugement(9.5, 9, p1)) },
+      ACTIF,
+    );
+    expect(s.decision.type).toBe("relecture_humaine");
+    expect(s.decision.type === "relecture_humaine" && s.decision.blockCauses[0]).toContain("P1");
+    expect(decider(vert(), { ...ctx, p1Juge: true }).type).toBe("relecture_humaine");
+    expect(decider(vert(), { ...ctx, p1Juge: false })).toEqual({ type: "publier" });
+  });
+  it("Q2 + Q9 : un seul renvoi (vérificateur, le rédacteur reprend avec Q9)", () => {
+    const d = decider(avec(r("Q2", false, ["37 %"]), r("Q9", false, ["tutoiement"])), ctx);
+    expect(d.type).toBe("renvoi");
+    if (d.type !== "renvoi") return;
+    expect(d.renvois).toHaveLength(1);
+    expect(d.renvois[0]).toMatchObject({
+      role: "verificateur",
+      suite: ["redacteur"],
+      criteres: ["Q2", "Q9"],
+    });
+  });
+  it("erreur du juge portant un coût déjà facturé : compté dans le total", async () => {
+    const err = new ProviderError("x", "invalid_response", "anthropic", false);
+    (err as { costUsd?: number }).costUsd = 0.5;
+    const s = await redacteurEnChef(
+      entreeCircuit({ coutDepenseUsd: 1 }),
+      { juger: vi.fn().mockRejectedValue(err) },
+      ACTIF,
+    );
+    expect(s.decision.type).toBe("relecture_humaine");
+    expect(s.coutJugeUsd).toBeCloseTo(0.5);
+    expect(s.coutTotalUsd).toBeCloseTo(1.5);
   });
 });
