@@ -182,8 +182,18 @@ jobs:
               # fixtures, AGENTS.md…) : jamais de la documentation seule.
               src/*|tests/*|scripts/*|public/*|messages/*|AGENTS.md|CLAUDE.md) autre=1 ;;
               docs/*|.pr/*|_PLANS/*|*.md)
-                # Fichier cité (chemin ou nom) par une source ou un test ⇒ lu par le code.
-                if git grep -qF -- "$f" "${HEAD_SHA}" -- src tests scripts 2>/dev/null; then autre=1; fi ;;
+                # Fichier cité (chemin complet OU nom) par une source ou un test ⇒ lu par le
+                # code. Code de sortie de git grep : 0 = cité, 1 = non cité ; tout autre
+                # (erreur) = doute ⇒ tout lancer.
+                git grep -qF -- "$f" "${HEAD_SHA}" -- src tests scripts 2>/dev/null; rc=$?
+                [ "${rc}" -ne 1 ] && autre=1
+                git grep -qF -- "$(basename "$f")" "${HEAD_SHA}" -- src tests scripts 2>/dev/null; rc=$?
+                [ "${rc}" -ne 1 ] && autre=1
+                # Une garde Vitest parcourt docs/ en entier (disque-vps-aucune-purge-dangereuse).
+                case "$f" in docs/*)
+                  git show "${HEAD_SHA}:$f" 2>/dev/null | grep -qE 'prune|--volumes'; rc=${PIPESTATUS[1]}
+                  [ "${rc}" -ne 1 ] && autre=1 ;;
+                esac ;;
               *) autre=1 ;;
             esac
             [ "${autre}" -eq 1 ] && { echo "Fichier hors documentation : ${f}"; break; }
@@ -393,8 +403,8 @@ jobs:
   # la lance (voir le commentaire de tête de `gate-a`). Elle tourne avec
   # couverture ; « Gate A · couverture » rougit si un test échoue OU si la
   # couverture descend sous les seuils de `coverage.thresholds` dans
-  # vitest.config.ts (source unique : ne pas les recopier ici). Aucun `needs`
-  # vers Gate A : la matrice démarre en même temps qu'elle.
+  # vitest.config.ts (source unique : ne pas les recopier ici). Sur PR, `needs: gate-a`
+  # (CI-ALLEGER, 2026-11-27) : la matrice attend Gate A.
   # Chaque job refait l'installation et `prisma generate` : un job GitHub part
   # d'une machine vierge, rien n'est hérité de Gate A.
   #

@@ -17,5 +17,5 @@ PR docs seule : ~66 min-machine économisées. PR de code dont lint/types échou
 - Le filtre « cité par src/tests » ne voit pas une lecture de dossier (`readdirSync`) : un .md hors dossiers de code, lu ainsi, peut passer pour doc. Rattrapé par le passage quotidien.
 - Validation : YAML (python) ; actionlint indisponible ; `vitest tests/unit/ci` : seuls 3 fichiers échouent, pour cause de client Prisma non généré (échec identique sans mon diff).
 
-Relecture Opus : 1re passe À CORRIGER (filtre trop large pour les .md de code ; garde de test) ; correctifs appliqués.
+Relecture Opus : 1re passe À CORRIGER (filtre .md ; garde de test), corrigé ; 2e passe À CORRIGER (docs/ lu en entier par une garde, grep par nom, échec de git grep, commentaire périmé), corrigé sans 3e relecture (limite de 2 passages).
 VERDICT OPUS : À CORRIGER
