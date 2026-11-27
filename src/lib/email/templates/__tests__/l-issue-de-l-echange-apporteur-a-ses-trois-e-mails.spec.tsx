@@ -113,7 +113,7 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t.match(/Une question \?/g)).toHaveLength(1);
     // Le kit : le catalogue seul, le document de présentation est retiré
     // jusqu'à sa réécriture (JUR-T44, `kit-apporteur-sans-pdf.spec.ts`).
-    expect(r.html).toMatch(/\/fr\/catalogue"/);
+    expect(r.html).toMatch(/\/fr\/formations"/);
     expect(r.html).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
   });
 

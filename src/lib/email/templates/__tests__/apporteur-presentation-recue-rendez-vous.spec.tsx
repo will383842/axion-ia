@@ -46,16 +46,17 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(html).toContain('data-famille="B"');
   });
 
-  it("dit la règle entière : validation, 6 mois, devis signé, fin sans reproche, commande payée", async () => {
+  it("dit la règle entière : validation, 6 mois, commande signée, fin sans reproche, commande payée", async () => {
     const { text } = await rendre(EXEMPLE);
     const lu = text.replace(/\s+/g, " ");
     expect(lu).toContain("dès qu'un premier rendez-vous avec Axion-IA aura eu lieu");
     expect(lu).toContain("s'il a été pris jusqu'à cette date incluse");
     expect(lu).toContain("6 mois");
     expect(lu).toContain("du jour de ce rendez-vous");
-    expect(lu).toContain("Un devis signé pendant ces 60 jours compte aussi");
+    expect(lu).toContain("Une commande signée pendant ces 60 jours compte aussi");
     expect(lu).toContain("la réservation prend fin automatiquement");
-    expect(lu).toContain("après un nouveau contact");
+    expect(lu).toContain("après un délai de 30 jours et un nouveau contact avec elle");
+    expect(lu).not.toContain("devis");
     expect(lu).toContain("Une commission n'est due que sur une commande payée");
   });
 
@@ -70,10 +71,20 @@ describe("apporteur-presentation-recue-rendez-vous", () => {
     expect(text).not.toMatch(/undefined|null/);
   });
 
-  it("ne reprend pas les « 30 jours » de l'accusé en service", async () => {
+  it("ne reprend pas l'attribution par le silence de l'accusé en service : « 30 jours » n'apparaît que comme délai avant une nouvelle présentation", async () => {
     const { text } = await rendre(EXEMPLE);
-    expect(text).not.toContain("30 jours");
-    expect(text).not.toMatch(/\b30\b/);
+    const lu = text.replace(/\s+/g, " ");
+    expect(lu.match(/\b30\b/g)).toHaveLength(1);
+    expect(lu).toContain("après un délai de 30 jours et un nouveau contact avec elle");
+  });
+
+  it("dit que nous avons écrit à l'entreprise, et qu'un rendez-vous annulé ou déplacé par Axion compte comme tenu", async () => {
+    const { text } = await rendre(EXEMPLE);
+    const lu = text.replace(/\s+/g, " ");
+    expect(lu).toContain("Nous venons de lui écrire de votre part.");
+    expect(lu).toContain(
+      "Si nous devons annuler ou déplacer ce rendez-vous, il compte comme tenu.",
+    );
   });
 
   it("ni « Grenoble » (hors adresse légale du pied), ni « gain garanti », ni chiffre de commission, ni conférence", async () => {

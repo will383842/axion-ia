@@ -8,6 +8,7 @@
 // import serveur ici (Prisma, Redis, `server-only`) entrerait dans son graphe.
 
 import { ORIGINE_CANDIDATURE_OFFRE, ORIGINE_SAISIE_MANUELLE } from "../contact/accuse-attendu";
+import { ORIGINES_ACCORD_REQUIS, ORIGINES_DIRECTES, PROVENANCE_ADRESSE } from "./saisie-manuelle";
 
 /**
  * Numéro d'objet stable pour une fiche : la somme des codes de son identifiant.
@@ -63,4 +64,29 @@ export function marqueDemarche(details: unknown, id: string): MarqueDemarche {
 export function offreDeLaFiche(details: unknown): { offreEmploi: string } | Record<string, never> {
   const m = marqueDemarche(details, "");
   return "offreEmploi" in m ? { offreEmploi: m.offreEmploi } : {};
+}
+
+/**
+ * Provenance de l'adresse d'une fiche SAISIE À LA MAIN (`{ provenance }`), `{}` sinon.
+ * Même règle que l'envoi de l'invitation : seule une saisie manuelle en porte une.
+ * Les rappels J+3 / J+7 s'en servent pour ne pas dire « candidature retenue » à une
+ * personne qui n'a jamais candidaté.
+ */
+export function provenanceDeLaFiche(
+  details: unknown,
+  locale: "fr" | "en",
+): { provenance: { mode: "directe" | "indirecte"; libelle: string } } | Record<string, never> {
+  const d =
+    details && typeof details === "object" && !Array.isArray(details)
+      ? (details as Record<string, unknown>)
+      : {};
+  if (d["origine"] !== ORIGINE_SAISIE_MANUELLE) return {};
+  const origine = typeof d["origineSaisie"] === "string" ? d["origineSaisie"] : "";
+  const fragment = PROVENANCE_ADRESSE[origine];
+  if (!fragment) return {};
+  if (ORIGINES_ACCORD_REQUIS.includes(origine))
+    return { provenance: { mode: "indirecte", libelle: fragment[locale] } };
+  if (ORIGINES_DIRECTES.includes(origine))
+    return { provenance: { mode: "directe", libelle: fragment[locale] } };
+  return {};
 }

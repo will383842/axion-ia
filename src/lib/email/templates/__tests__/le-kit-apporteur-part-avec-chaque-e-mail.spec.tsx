@@ -89,7 +89,7 @@ describe("le kit part avec chaque e-mail automatique — le lien d'appel, jamais
     async (_nom, el) => {
       const h = await html(el);
       expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
-      expect(h).toMatch(/\/fr\/catalogue"/);
+      expect(h).toMatch(/\/fr\/formations"/);
       // ⛔ Distribué à tous, le lien de réservation saturerait l'agenda de Will.
       expect(h.toLowerCase()).not.toContain("calendly");
       expect(h).not.toContain("/appel/apporteur");
@@ -131,7 +131,7 @@ describe("la confirmation du dossier complet porte le bouton de réservation (11
 
   it("garde le kit (catalogue), sans le document retiré", async () => {
     const h = await confirmation();
-    expect(h).toMatch(/\/fr\/catalogue"/);
+    expect(h).toMatch(/\/fr\/formations"/);
     expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
   });
 
@@ -168,7 +168,7 @@ describe("l'invitation — le seul e-mail qui porte le lien de réservation", ()
     // reste dans la charge utile, jamais dans le message).
     expect(h).toContain("/fr/appel/apporteur");
     expect(h).not.toContain(CALENDLY);
-    expect(h).toMatch(/\/fr\/catalogue"/);
+    expect(h).toMatch(/\/fr\/formations"/);
     expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
     expect(h).toContain(DOSSIER);
     expect(texte(h)).toMatch(/15 minutes/);
@@ -294,8 +294,10 @@ describe("l'accusé du premier contact ne promet plus d'appel (B4, 2026-09-19)",
       expect(sujet).toBe(l === "fr" ? "C'est noté" : "Noted");
       const t = texte(await html(<LeadApporteurRecuEmail locale={l} payload={payload} />));
       expect(t).not.toMatch(APPEL_PROMIS);
-      // Ce qui suit vraiment : le document, puis un échange SI le profil correspond.
-      expect(t).toMatch(l === "fr" ? /si votre profil correspond/i : /if your profile is a match/i);
+      // Ce qui suit vraiment : la candidature à compléter, puis l’échange que la personne réserve elle-même.
+      expect(t).toMatch(
+        l === "fr" ? /réservez vous-même votre échange/i : /book your 15-minute call yourself/i,
+      );
       expect(t).toMatch(/15 minutes|15-minute/);
     },
   );

@@ -94,12 +94,11 @@ function lienReservationB1(p: Payload): string {
 const COPY = {
   fr: {
     title: "C'est noté",
-    preview:
-      "Le catalogue de nos prestations, et votre candidature à compléter si vous le souhaitez.",
-    body: "Vous venez de nous laisser vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici le catalogue de ce que vous pourrez recommander. Si votre profil correspond, nous vous proposons un échange de 15 minutes pour faire connaissance. Aucun engagement : vous décidez après.",
+    preview: "Nos formations et prestations, et votre candidature à compléter.",
+    body: "Vous venez de nous laisser vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici nos formations et prestations, ce que vous pourrez recommander. Complétez votre candidature, puis réservez vous-même votre échange de 15 minutes. Aucun engagement : vous décidez après.",
     titleDossier: "Votre candidature vous attend",
     previewDossier:
-      "Le catalogue de nos prestations, et votre candidature à terminer : il reste quelques écrans.",
+      "Nos formations et prestations, et votre candidature à terminer : il reste quelques écrans.",
     bodyDossier:
       "Vous avez commencé votre candidature pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Elle n'est pas encore arrivée : il vous reste quelques écrans.",
     // 2026-10-10 (décision de Will) — « votre demande » dans tout le tunnel vidéo :
@@ -123,10 +122,10 @@ const COPY = {
   },
   en: {
     title: "Noted",
-    preview: "Our catalogue of services, and your file to complete if you like.",
-    body: "You just left us your details to join Axion-IA's network of business introducers. Here is the catalogue of what you will be able to recommend. If your profile is a match, we will offer you a 15-minute call to get acquainted. No commitment: you decide afterwards.",
+    preview: "Our training and services, and your file to complete.",
+    body: "You just left us your details to join Axion-IA's network of business introducers. Here are our training and services, what you will be able to recommend. Complete your application, then book your 15-minute call yourself. No commitment: you decide afterwards.",
     titleDossier: "Your application is waiting",
-    previewDossier: "Our catalogue of services, and your file to finish: only a few screens left.",
+    previewDossier: "Our training and services, and your file to finish: only a few screens left.",
     bodyDossier:
       "You started your file to join Axion-IA's network of business introducers. Thank you! It has not arrived yet: only a few screens are left.",
     titleAbandon: "Your request is not finished",
