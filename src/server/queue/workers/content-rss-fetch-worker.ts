@@ -19,6 +19,10 @@
  * V1.5 migrera vers table RssItem propre quand volume > 1000 items.
  */
 
+import {
+  plafondActualitesEffectif,
+  type PolitiquesRelecture,
+} from "@/server/content-gen/quality/relecture-obligatoire";
 import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -244,11 +248,19 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   // jobs `blog_from_rss` déjà créés aujourd'hui (UTC) et on n'enqueue plus une
   // fois le budget atteint. Les items au-delà du budget ne sont PAS marqués
   // "seen" → ils restent éligibles aux ticks suivants / au lendemain.
-  const rssPolicies = await readContentGenConfig<{
-    rssMaxPerDay?: number;
-    rssMaxAgeDays?: number;
-  }>("policies", {});
-  const maxPerDay = rssPolicies.rssMaxPerDay ?? 5;
+  const rssPolicies = await readContentGenConfig<
+    {
+      rssMaxPerDay?: number;
+      rssMaxAgeDays?: number;
+    } & PolitiquesRelecture
+  >("policies", {});
+  // C2 : relecture obligatoire → actualités plafonnées à 2/jour (3 − 1). Elles comptent dans le
+  // budget global de l'orchestrateur (3) : sans cette réserve, 3 actualités le matin
+  // affameraient les articles de campagne toute la journée. 0 = pause RSS (jamais relevé).
+  const maxPerDay = plafondActualitesEffectif(
+    rssPolicies.rssMaxPerDay,
+    rssPolicies as PolitiquesRelecture,
+  );
   const startOfDayUtc = new Date();
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
   // 2026-07-04 — Fail-SAFE : l'ancien `.catch(() => 0)` faisait « fuiter » le cap.
