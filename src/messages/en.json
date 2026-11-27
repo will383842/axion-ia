@@ -228,6 +228,19 @@
     "retry": "Retry",
     "backHome": "Back to home"
   },
+  "articleV2": {
+    "by": "By",
+    "publishedOn": "Published",
+    "updatedOn": "Updated",
+    "relatedEyebrow": "Related articles",
+    "relatedTitle": "Read next",
+    "ctaTitle": "One day to get started",
+    "ctaDescription": "The AI Day identifies which of your tasks to automate first.",
+    "ctaButton": "Discover the AI Day",
+    "cityPrefix": "This article covers ",
+    "cityLink": "AI in {ville}",
+    "citySuffix": " — see the local page."
+  },
   "breadcrumb": {
     "home": "Home",
     "ariaLabel": "Breadcrumb"
