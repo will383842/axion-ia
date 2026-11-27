@@ -34,6 +34,21 @@ import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
 const MODIFIABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
 const estModifiable = (statut: string) => (MODIFIABLES as readonly string[]).includes(statut);
 
+/** Ce qui vient d'être ÉCRIT sur la part d'un parrain, pour le lui annoncer (relecture du 27/11). */
+export interface EcritureParrain {
+  type: "reduite" | "annulee" | "reprise";
+  apporteurId: string;
+  ligneId: string;
+  avantCents: number;
+  apresCents?: number;
+  reprisCents?: number;
+  /** `reprise` : l'identifiant de la ligne de reprise écrite (clé d'idempotence de l'e-mail). */
+  repriseId?: string;
+}
+
+/** Rappel appelé après chaque écriture réussie sur une part de parrain ; ne doit jamais défaire. */
+export type SurEcritureParrain = (e: EcritureParrain) => Promise<void> | void;
+
 export type ResultatAjustement =
   { ok: true; montantCents?: number; avertissement?: string } | { ok: false; message: string };
 
@@ -152,8 +167,8 @@ async function reprendrePart(
   p: { id: string; apporteurId: string; montantCents: number | null },
   cents: number,
   motif: string,
-): Promise<string | null> {
-  if (cents <= 0) return null;
+): Promise<{ avertissement: string | null; repriseId?: string; reprisCents?: number }> {
+  if (cents <= 0) return { avertissement: null };
   const deja = await prisma.commissionApporteur.findMany({
     where: { apporteurId: p.apporteurId, palier: `${PREFIXE_PALIER_REPRISE}${p.id}` },
     select: { montantCents: true },
@@ -161,7 +176,7 @@ async function reprendrePart(
   const restant =
     (p.montantCents ?? 0) - deja.reduce((s, x) => s + Math.abs(x.montantCents ?? 0), 0);
   const montant = Math.min(cents, restant);
-  if (montant <= 0) return null;
+  if (montant <= 0) return { avertissement: null };
   const r = await enregistrerReprise({
     commissionId: p.id,
     apporteurId: p.apporteurId,
@@ -169,8 +184,14 @@ async function reprendrePart(
     motif,
   });
   return r.ok
-    ? null
-    : `La part du parrain (${euros(p.montantCents ?? 0)}) est déjà versée et sa reprise a été refusée : ${r.message}`;
+    ? {
+        avertissement: null,
+        reprisCents: montant,
+        ...(r.repriseId ? { repriseId: r.repriseId } : {}),
+      }
+    : {
+        avertissement: `La part du parrain (${euros(p.montantCents ?? 0)}) est déjà versée et sa reprise a été refusée : ${r.message}`,
+      };
 }
 
 /** Applique un nouveau montant de filleul aux parts du parrain ; rend les avertissements. */
@@ -180,7 +201,15 @@ async function suivreParrain(
   motif: string,
   acteurId: string | null,
   suit: string,
+  surEcriture?: SurEcritureParrain,
 ): Promise<string[]> {
+  const annoncer = async (e: EcritureParrain) => {
+    try {
+      await surEcriture?.(e);
+    } catch {
+      // Prévenir ne défait jamais l'écriture.
+    }
+  };
   const avertissements: string[] = [];
   for (const p of await partsDuParrain(factureId)) {
     const avant = p.montantCents ?? 0;
@@ -200,12 +229,28 @@ async function suivreParrain(
           acteurId,
           { avantCents: avant, apresCents: apres, motif, suitLaCommission: suit },
         );
+        await annoncer({
+          type: nouveauFilleulCents === null ? "annulee" : "reduite",
+          apporteurId: p.apporteurId,
+          ligneId: p.id,
+          avantCents: avant,
+          ...(nouveauFilleulCents === null ? {} : { apresCents: apres }),
+        });
       } else {
         avertissements.push("La part du parrain a changé entre-temps : vérifiez-la.");
       }
     } else if (p.statut === "versee") {
       const a = await reprendrePart(p, avant - apres, motif);
-      if (a) avertissements.push(a);
+      if (a.avertissement) avertissements.push(a.avertissement);
+      else if (a.reprisCents !== undefined)
+        await annoncer({
+          type: "reprise",
+          apporteurId: p.apporteurId,
+          ligneId: p.id,
+          avantCents: avant,
+          reprisCents: a.reprisCents,
+          ...(a.repriseId ? { repriseId: a.repriseId } : {}),
+        });
     } else if (p.statut === "due" && p.autofactureNumero) {
       avertissements.push(
         `La part du parrain est déjà facturée (${p.autofactureNumero}) mais pas versée : elle n'est pas modifiée. Après son versement, enregistrez une reprise de ${euros(avant - apres)}.`,
@@ -221,6 +266,7 @@ export async function reduireCommission(
   prixConserveHtCents: number,
   motif: string,
   acteurId: string | null = null,
+  surEcritureParrain?: SurEcritureParrain,
 ): Promise<ResultatAjustement> {
   const m = motif.trim().slice(0, 300);
   if (!m) return { ok: false, message: "Indiquez le motif de la réduction." };
@@ -269,7 +315,7 @@ export async function reduireCommission(
     prixConserveHtCents,
     motif: m,
   });
-  const av = await suivreParrain(avant.factureId, nouveau, m, acteurId, id);
+  const av = await suivreParrain(avant.factureId, nouveau, m, acteurId, id, surEcritureParrain);
   return { ok: true, montantCents: nouveau, ...(av.length ? { avertissement: av.join(" ") } : {}) };
 }
 
@@ -277,6 +323,7 @@ export async function annulerCommission(
   id: string,
   motif: string,
   acteurId: string | null = null,
+  surEcritureParrain?: SurEcritureParrain,
 ): Promise<ResultatAjustement> {
   const m = motif.trim().slice(0, 300);
   if (!m) return { ok: false, message: "Indiquez le motif de l'annulation." };
@@ -296,6 +343,8 @@ export async function annulerCommission(
     montantAvantCents: avant.montantCents,
     motif: m,
   });
-  const av = avant.parrainage ? [] : await suivreParrain(avant.factureId, null, m, acteurId, id);
+  const av = avant.parrainage
+    ? []
+    : await suivreParrain(avant.factureId, null, m, acteurId, id, surEcritureParrain);
   return { ok: true, ...(av.length ? { avertissement: av.join(" ") } : {}) };
 }

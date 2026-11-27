@@ -196,6 +196,34 @@ beforeEach(() => {
 
 const versee = { statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE };
 
+describe("part du parrain ajustée avec le filleul non facturé (relecture du 27/11, point 1)", () => {
+  it("avoir total, filleul et parrain « due » non facturés : le parrain reçoit SON e-mail (clé par ligne)", async () => {
+    d.lignes = [
+      ligne({ id: "f1", apporteurId: "a1" }),
+      ligne({ id: "p1", apporteurId: "parrain1", parrainage: true, montantCents: 10 }),
+    ];
+    // Le vrai ajustement.ts annonce la part du parrain par le rappel qu'on lui passe.
+    d.annuler.mockImplementationOnce(async (...a: unknown[]) => {
+      const rappel = a[3] as (e: Record<string, unknown>) => Promise<void>;
+      await rappel({ type: "annulee", apporteurId: "parrain1", ligneId: "p1", avantCents: 10 });
+      return { ok: true };
+    });
+    await reprendreApresAvoirsClients(LE);
+    const e = envois();
+    const parrain = e.find((x) => x.entityId === "parrain1");
+    expect(parrain).toMatchObject({
+      destinataire: "parrain1@exemple.fr",
+      jobId: "apporteur-commission-annulee-p1",
+    });
+    expect(parrain!.payload).toMatchObject({
+      variante: "annulee",
+      avant: euros(10),
+      annulationLe: "2 mars 2026",
+    });
+    expect(e.find((x) => x.entityId === "a1")?.jobId).toBe("apporteur-commission-annulee-f1");
+  });
+});
+
 describe("réduite avant facturation", () => {
   it("avoir partiel → un envoi « reduite », clé par ligne et par montant atteint", async () => {
     d.factures = [facture, avoir(-100)];
@@ -416,7 +444,15 @@ describe("rendu des variantes", () => {
     const t = norm(r.text);
     expect(r.subject).toBe("Reprise sur une commission déjà versée");
     expect(t).toContain(`${norm(euros(12_345))} hors taxes sont repris`);
-    expect(t).toContain("déduite de votre prochain virement");
+    // Relecture du 27/11 (point 2) : la reprise suit l'art. 4.5 (« commissions suivantes ») et
+    // l'art. 12.4 (remboursement possible sans commissions à venir) : aucune promesse de gratuité.
+    expect(t).toContain(
+      "déduite de vos prochaines commissions, et l'avoir d'autofacture correspondant vous sera envoyé à ce moment-là (articles 4.5 et 12.4)",
+    );
+    expect(t).not.toMatch(/rien à payer/i);
+    expect(t).not.toContain("prochain virement");
+    expect(t).not.toContain("ne change rien");
+    expect(norm(r.html)).not.toContain("prochain virement");
   });
 
   it("sans variante ou variante inconnue : le texte actuel, à l'identique", async () => {

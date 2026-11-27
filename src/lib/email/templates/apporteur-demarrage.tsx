@@ -472,17 +472,19 @@ export const COPY_DEMARRAGE = {
         texte: (avant: string, _apres: string, le: string) =>
           `Le client a reçu un avoir${le ? ` le ${le}` : ""} qui annule une commande pour laquelle vous étiez commissionné. Comme le prévoit votre contrat (article 4.5), la commission correspondante (${avant} hors taxes) est annulée. Elle n'avait pas encore été facturée : aucune somme ne vous est demandée.`,
       },
-      // EN (non câblé) : Subject « Deduction from a commission already paid » / title « Commission taken back » / body « The client received a credit note on ${annulationLe} for an order whose commission has already been paid to you. As provided by your contract (article 4.5), ${repris} excluding VAT are taken back, rounded to the nearest cent. You have nothing to pay: this amount will be deducted from your next transfer, and the matching self-billing credit note will be sent to you then. »
+      // EN (non câblé) : Subject « Deduction from a commission already paid » / title « Commission taken back » / body « The client received a credit note on ${annulationLe} for an order whose commission has already been paid to you. As provided by your contract (article 4.5), ${repris} excluding VAT are taken back, rounded to the nearest cent. This amount will be deducted from your next commissions, and the matching self-billing credit note will be sent to you then (articles 4.5 and 12.4). »
       reprise: {
         subject: "Reprise sur une commission déjà versée",
         title: "Commission reprise",
-        preview: "Une somme sera déduite de votre prochain virement.",
+        preview: "Une somme sera déduite de vos prochaines commissions.",
         texte: (repris: string, _apres: string, le: string) =>
-          `Le client a reçu un avoir${le ? ` le ${le}` : ""} sur une commande pour laquelle votre commission vous a déjà été versée. Comme le prévoit votre contrat (article 4.5), ${repris} hors taxes sont repris, arrondis au centime le plus proche. Vous n'avez rien à payer : cette somme sera déduite de votre prochain virement, et l'avoir d'autofacture correspondant vous sera envoyé à ce moment-là.`,
+          `Le client a reçu un avoir${le ? ` le ${le}` : ""} sur une commande pour laquelle votre commission vous a déjà été versée. Comme le prévoit votre contrat (article 4.5), ${repris} hors taxes sont repris, arrondis au centime le plus proche. Cette somme sera déduite de vos prochaines commissions, et l'avoir d'autofacture correspondant vous sera envoyé à ce moment-là (articles 4.5 et 12.4).`,
       },
     },
     suiteVariante:
       "Cela ne change rien à vos autres commissions. Si vous avez une question, écrivez-nous depuis votre espace.",
+    // La reprise est justement déduite de vos autres commissions : jamais « ne change rien ».
+    suiteReprise: "Si vous avez une question sur cette reprise, écrivez-nous depuis votre espace.",
   },
   dossierRecu: {
     // ⛔ Aucun délai promis : la vérification dépend des pièces reçues.
@@ -1232,7 +1234,9 @@ export function ApporteurCommissionAvoirClientEmail({ locale, payload }: Props) 
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       <Text style={emailStyles.paragraphStyle}>{corps}</Text>
-      <Text style={emailStyles.paragraphStyle}>{variante ? t.suiteVariante : t.suite}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {v === "reprise" ? t.suiteReprise : variante ? t.suiteVariante : t.suite}
+      </Text>
     </EmailLayout>
   );
 }

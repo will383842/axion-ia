@@ -33,6 +33,7 @@ import {
   commissionPourPrixConserve,
   partDuParrain,
   reduireCommission,
+  type SurEcritureParrain,
 } from "./ajustement";
 import { dateFr } from "./autofacture-donnees";
 import {
@@ -826,6 +827,8 @@ export async function reprendreApresAvoirsClients(
       // plus ancien ne profite jamais du délai d'un avoir récent.
       const recents = avoirsDansLeDelai(actifs as FactureLue[], maintenant);
       const annulationLe = dateDeLAnnulation(recents) ?? maintenant;
+      // La part du PARRAIN ajustée avec celle du filleul (non facturé) lui est annoncée aussi.
+      const surParrain: SurEcritureParrain = (e) => prevenirAjustement({ ...e, annulationLe });
       const motif = `Art. 4.5 : facture du client annulée ou réduite par un avoir (prix net ${(net / 100).toFixed(2).replace(".", ",")} € HT).`;
 
       // Le FILLEUL d'abord : s'il n'est pas encore facturé, `ajustement.ts` porte la part du parrain
@@ -903,8 +906,8 @@ export async function reprendreApresAvoirsClients(
           if (sansAvoirActif) continue;
           const r =
             net <= 0
-              ? await annulerCommission(l.id, motif)
-              : await reduireCommission(l.id, net, motif);
+              ? await annulerCommission(l.id, motif, null, surParrain)
+              : await reduireCommission(l.id, net, motif, null, surParrain);
           if (r.ok) {
             if (net <= 0) bilan.annulees += 1;
             else bilan.reduites += 1;
