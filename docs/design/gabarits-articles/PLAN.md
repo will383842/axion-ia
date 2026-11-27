@@ -12,7 +12,7 @@ Branche : `feat/gabarits-articles-conception`, puis `docs/gabarits-articles-v2-v
 > **Révision v3 du 2026-11-27 : les maquettes v3 validées par Will (PR #2423) remplacent la v2, dans le même
 > dossier `maquettes-v2/`.** En-tête réel du site réutilisé, héros terracotta, vraie photo sous chaque titre,
 > boutons latéraux, encart vidéo : voir le **§15.9**, qui prime sur le reste du §15. La branche
-> `feat/gabarits-articles-s2-composants` (design v2) est abandonnée : S2 repart de `main` (`DECOUPAGE.md`).
+> `feat/gabarits-articles-s2-composants` (premier plan, CSS dans `globals.css`) est abandonnée : S2 repart de `main` (`DECOUPAGE.md`).
 
 ## 1. Contraintes (non négociables)
 
