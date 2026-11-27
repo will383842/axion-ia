@@ -6,10 +6,10 @@
  * ne contient « infographie » ni un chiffre-vedette (verrouillé par test). La photo de
  * repli n'entre ni dans `og:image` ni dans le JSON-LD (les métadonnées ne changent pas).
  *
- * ⚠️ POINT OUVERT (relecture Opus) : la banque `public/images/axion-ia-*` ne contient que des
- * visuels de marque (affiches, citations, schémas) et très peu de vraies photos. Ces choix sont
- * les moins texteux, pas de vraies photos : `alt` vide (décor) plutôt qu'une description fausse.
- * À remplacer par de vraies photos validées par Will.
+ * Les huit entrées sont de VRAIES photographies de la banque (fichiers `axion-ia-photo-*`,
+ * sans texte incrusté ni logo) : cinq photos distinctes, donc certaines servent à deux gabarits
+ * faute d'un stock plus large. Aucun visuel de marque, affiche ou schéma. `alt` vide : la photo
+ * est décorative (elle n'illustre pas un fait de l'article ; le titre porte le sens).
  */
 import type { GabaritArticle } from "@/server/content-gen/blog/gabarits";
 
@@ -20,35 +20,35 @@ export interface PhotoRepli {
 
 export const PHOTOS_REPLI: Readonly<Record<GabaritArticle, PhotoRepli>> = {
   analyse: {
-    src: "/images/axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads.webp",
+    src: "/images/axion-ia-photo-formation-ia-salle-conference-participants-eclairage.webp",
     alt: "",
   },
   guide: {
-    src: "/images/axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere.webp",
+    src: "/images/axion-ia-photo-formation-ia-equipe-mixte-exercices-pratiques-resultat.webp",
     alt: "",
   },
   comparatif: {
-    src: "/images/axion-ia-audit-ia-cartographie-outils-existants-systeme-information-banniere.webp",
+    src: "/images/axion-ia-photo-formateur-ia-presentation-tableau-equipe-entreprise.webp",
     alt: "",
   },
   selection: {
-    src: "/images/axion-ia-audit-ia-diagnostic-workflow-taches-repetitives-detection.webp",
+    src: "/images/axion-ia-photo-atelier-ia-groupe-collaborateurs-ordinateurs-ecrans.webp",
     alt: "",
   },
   cas: {
-    src: "/images/axion-ia-cas-concret-soirees-admin-devis-factures-automatiques-pme-carre.webp",
+    src: "/images/axion-ia-photo-celebration-formation-ia-reussie-equipe-satisfaite.webp",
     alt: "",
   },
   definition: {
-    src: "/images/axion-ia-connexion-outils-crm-erp-ia-automatisation-donnees.webp",
+    src: "/images/axion-ia-photo-atelier-ia-groupe-collaborateurs-ordinateurs-ecrans.webp",
     alt: "",
   },
   faq: {
-    src: "/images/axion-ia-audit-ia-entretien-dirigeant-recueil-besoins-analyse.webp",
+    src: "/images/axion-ia-photo-formation-ia-equipe-mixte-exercices-pratiques-resultat.webp",
     alt: "",
   },
   chiffres: {
-    src: "/images/axion-ia-audit-ia-diagnostic-numerique-pme-bilan-competences.webp",
+    src: "/images/axion-ia-photo-formation-ia-salle-conference-participants-eclairage.webp",
     alt: "",
   },
 };
