@@ -2,42 +2,25 @@ Conception : intention de recherche, structure des titres et longueur des articl
 
 ## Ce que fait cette PR
 
-Elle ajoute un seul document de conception, sans aucun code :
+Elle ajoute un seul document de conception, sans code ni migration :
 `docs/pilotage-seo-geo/ADDENDUM-STRUCTURE-INTENTION-LONGUEUR-2027.md`.
 
-Il complète la conception de la chaîne éditoriale IA, celle de la porte qualité et celle des gabarits d'articles. Pour chaque article, la chaîne tient désormais compte, de façon explicite et vérifiable par le code :
+Base : `main` (fusionné le 27/11/2026, avec S1 #2448 et C3 #2465 livrées).
 
-- **de l'intention de recherche.** On reprend les cinq valeurs de l'énumération `SearchIntent` qui existe déjà. Seules les intentions informationnelles et comparatives donnent un article. Une question de prix, une recherche par ville ou une recherche de page précise est renvoyée vers une page existante, jamais vers un nouvel article.
-- **de la structure des titres.**
-  - Un seul H1, rendu par la page.
-  - Des H2 qui sont le plus souvent les vraies questions du brief, reliés à elles par leur place dans un plan figé.
-  - Aucun saut de niveau et des longueurs de titres calibrées sur les 365 questions du plan éditorial.
-  - Une réponse directe de 40 à 60 mots sous le H1, et une ouverture visée de 40 à 60 mots sous chaque H2. La porte tolère 25 à 80 mots pour ne pas rendre tous les articles identiques.
-- **de la longueur.** Une fourchette est calculée par le code à partir des pages concurrentes que le stratège lit déjà, sans lecture supplémentaire. Elle est bornée par la couverture des questions et par le gabarit. Ce n'est jamais un nombre fixe.
-- **des pratiques des moteurs fin 2026**, en séparant ce qui est documenté de ce qui est supposé : Google (Search, AI Overviews, AI Mode), Bing et Copilot, ChatGPT Search, Perplexity, Gemini et Claude.
+Il complète la conception de la chaîne éditoriale IA, celle de la porte qualité et celle des gabarits d'articles. Pour chaque article, la chaîne tient compte, de façon explicite et vérifiable par le code :
 
-Le document définit aussi :
+- **de l'intention de recherche** (les valeurs de l'énumération `SearchIntent` existante) : seules les intentions informationnelles et comparatives donnent un article ; prix, ville ou page précise renvoient vers une page existante.
+- **de la structure des titres** : un seul H1, des H2 reliés aux questions du brief, aucun saut de niveau, longueurs calibrées sur les 365 questions du plan, réponse directe de 40 à 60 mots sous le H1.
+- **de la longueur** : une fourchette calculée par le code à partir des pages que R2 lira en C6, bornée par la couverture des questions et par le gabarit.
+- **des pratiques des moteurs fin 2026**, en séparant le documenté du supposé.
 
-- **six nouveaux critères de porte, B18 à B23.** Ils ne s'appliquent qu'aux contenus de la chaîne, restent en observation jusqu'à 10 contenus relus par gabarit, et ne changent pas la formule de note.
-- **une fiche pour chacun des 10 gabarits.** Le gabarit fixe la mise en page ; l'en-tête et le pied de page restent ceux du site.
-- **la place de chaque règle dans le découpage existant** (C3 à C11, C14, Q2c, Q5a/Q5, Q8, Q15, S1, G1 à G8, A1, GU1) et 23 groupes de tests numérotés (plus leurs sous-tests).
-- **les contrôles existants à adapter**, sans quoi la chaîne casserait :
-  - le validateur d'intention, qui désindexerait les sujets « décision » ;
-  - les questions Q5 et Q6 de la grille du rédacteur en chef (un H2 exigé, mot-clé exact) ;
-  - quatre planchers de 850 mots codés en dur (dont celui de B11 dans la porte livrée) ;
-  - la section « Sources » ajoutée au corps stocké ;
-  - la consigne de lisibilité V2 ;
-  - l'aiguillage du worker par type de contenu ;
-  - le contrôle de plan dupliqué.
-- **neuf décisions à prendre par Will (D-A1 à D-A9)**, chacune avec une recommandation par défaut et un exemple.
+Il définit aussi six critères de porte (B18 à B23, en observation), une fiche par gabarit (10), la place de chaque règle dans le découpage (dont une migration C3b et une PR S1b nouvelles), les contrôles existants à adapter (validateur d'intention, Q5, Q6, Q8, Q13 de la grille, `edition-seo.ts`, planchers de 850 mots, etc.) et neuf décisions pour Will (D-A1 à D-A9).
 
 ## Limites
 
-- La recherche web date du 27/11/2026. Les pages de Google Search Central et le guide de Microsoft n'ont pas pu être ouverts (domaines bloqués dans la session). Ils sont cités d'après les extraits de recherche et la presse spécialisée, et marqués comme tels dans le document.
-- Le document a été relu par trois sous-agents Opus indépendants, l'un après l'autre. Chacun a rendu « À CORRIGER », et leurs remarques ont été corrigées. Un quatrième tour a relevé 14 points (dont B11a, B11b, B11c et ce que Q2c doit modifier dans la porte déjà livrée), corrigés puis relus ; un cinquième tour a relevé 14 autres points (Q5 et Q6 de la grille, objet mesuré de H-2 à H-4, juge unique du saut de niveau, W01 non codé, exceptions `lone_h3`, fichiers de Q2c, rangement des tests), corrigés mais **non relus**. Les choix de conception tranchés à cette occasion sont listés en fin de § 15 du document, à valider.
+- Recherche web du 27/11/2026 ; les pages Google Search Central et Microsoft n'ont pas pu être ouvertes (domaines bloqués), elles sont citées d'après des extraits et marquées comme telles.
+- Huit tours de relecture Opus. Dernière passe (tour 8, 3 tours de cette session) : 1 bloquant (le marqueur `versionChaine` serait perdu par le worker : déplacé dans `inputPayload`) et 6 mineurs, **tous corrigés mais non relus**.
 
-Aucun fichier de code n'est modifié. Aucune PR n'est ouverte.
+Aucune PR n'est ouverte.
 
-- Les points du dernier tour de relecture (Q6 sur `directAnswer`, rôle `edition-seo.ts`, Q8, régime de la pénalité H-10, export du compteur de `lisibilite-v2.ts`, renvois) sont corrigés mais n'ont pas été relus.
-
-VERDICT OPUS : À CORRIGER (3 tours épuisés ; points du dernier tour corrigés, non relus)
+VERDICT OPUS : À CORRIGER (3 tours épuisés ; 1 bloquant et 6 mineurs du dernier tour corrigés, non relus)
