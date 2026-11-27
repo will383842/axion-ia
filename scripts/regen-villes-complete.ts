@@ -153,7 +153,9 @@ async function processOneVille(
   // de relecture (reprise), sauf retour arrière (auto-approbation active).
   if (
     existing?.status === "approved" ||
-    (existing?.status === "generated" && (existing.qualityScore ?? 0) >= args.autoApproveThreshold)
+    (existing?.status === "generated" &&
+      process.env.VILLES_AUTO_APPROBATION_ACTIVE !== "true" &&
+      (existing.qualityScore ?? 0) >= args.autoApproveThreshold)
   ) {
     return {
       villeSlug: slug,
@@ -269,7 +271,7 @@ async function main(): Promise<void> {
           : r.status === "success_a_relire"
             ? `📝 score ${r.qualityScore} — à relire (generated)`
             : r.status === "skipped_already_approved"
-              ? `⏭️  already approved (score ${r.qualityScore ?? "?"})`
+              ? `⏭️  déjà traitée, rien refait (score ${r.qualityScore ?? "?"})`
               : r.status === "skipped_dry_run"
                 ? "🔍 dry-run"
                 : `❌ ${r.status} — ${r.errorMessage ?? ""}`;

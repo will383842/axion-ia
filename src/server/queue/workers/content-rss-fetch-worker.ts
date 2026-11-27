@@ -256,10 +256,12 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   >("policies", {});
   // C2 : relecture obligatoire → actualités plafonnées comme le reste (3/jour), sinon elles
   // consomment le budget global et affament les articles de campagne.
-  const maxPerDay = plafondGenerationEffectif(
-    { maxPerDay: rssPolicies.rssMaxPerDay ?? 5 },
-    rssPolicies as PolitiquesRelecture,
-  );
+  const rssMaxBrut = rssPolicies.rssMaxPerDay ?? 5;
+  // 0 = pause RSS (réglage console) : jamais relevé par le plafond.
+  const maxPerDay =
+    rssMaxBrut <= 0
+      ? 0
+      : plafondGenerationEffectif({ maxPerDay: rssMaxBrut }, rssPolicies as PolitiquesRelecture);
   const startOfDayUtc = new Date();
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
   // 2026-07-04 — Fail-SAFE : l'ancien `.catch(() => 0)` faisait « fuiter » le cap.

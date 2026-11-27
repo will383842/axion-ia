@@ -230,7 +230,7 @@ export async function ensurePendingReviewRow(contentGenJobId: string): Promise<v
     // automatiquement : on la rend à la relecture (`pending`) pour ne pas la bloquer.
     await prisma.reviewQueue.updateMany({
       where: { jobId: contentGenJobId, status: "needs_edits" },
-      data: { status: "pending" },
+      data: { status: "pending", reviewedBy: null, reviewedAt: null },
     });
   } catch (err) {
     // Fail-open : ne jamais faire échouer une passe de boucle qualité pour la
