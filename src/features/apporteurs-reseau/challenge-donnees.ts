@@ -20,9 +20,19 @@ import {
 
 const enJour = (d: Date): string => d.toISOString().slice(0, 10);
 const deJour = (j: string): Date => new Date(`${j}T00:00:00.000Z`);
+/** « AAAA-MM-JJ » du jour de Paris (local : ce module ne tire pas le module des autofactures). */
+const jourDeParis = (d: Date): string =>
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
 
 /** Ce que l'encart de l'espace reçoit : la règle, rien d'autre. */
 export interface VueEncartChallenge {
+  /** Le challenge affiché : le lien « Lire le règlement » vise CE challenge. */
+  id: string;
   titre: string;
   produit: ProduitChallenge;
   seuil: number;
@@ -37,6 +47,16 @@ export interface VueReglementChallenge {
   reglement: string;
   debutLe: string;
   finLe: string;
+  /** Jour de Paris de l'arrêt, pour un challenge archivé lisible ; null sinon. */
+  arreteLe: string | null;
+}
+
+/** Une ligne de la liste des règlements passés : titre et période, rien d'autre. */
+export interface LigneReglementPasse {
+  id: string;
+  titre: string;
+  debutLe: string;
+  finLe: string;
 }
 
 /** Le challenge publié dont la période contient `aujourdhui` (jour de Paris), sinon null. */
@@ -49,6 +69,7 @@ export async function lireEncartChallenge(aujourdhui: string): Promise<VueEncart
     },
     orderBy: { debutLe: "desc" },
     select: {
+      id: true,
       titre: true,
       produit: true,
       seuil: true,
@@ -59,6 +80,7 @@ export async function lireEncartChallenge(aujourdhui: string): Promise<VueEncart
   });
   if (!c) return null;
   return {
+    id: c.id,
     titre: c.titre,
     produit: c.produit as ProduitChallenge,
     seuil: c.seuil,
@@ -68,29 +90,91 @@ export async function lireEncartChallenge(aujourdhui: string): Promise<VueEncart
   };
 }
 
+type LigneLisible = {
+  statut: string;
+  publieAt: Date | null;
+  archiveAt: Date | null;
+  debutLe: Date;
+};
+
 /**
- * Le règlement publié le plus récent, commencé à `aujourdhui` ; encore lisible après la fin ET
- * après l'archivage (le texte fonde la prime : seul l'encart disparaît à l'archivage).
+ * Un règlement est lisible s'il est publié, ou archivé APRÈS son début : un archivé sans date
+ * d'archivage, ou arrêté avant son début, n'a jamais été en vigueur et n'est jamais lisible.
+ */
+function estLisible(c: LigneLisible): boolean {
+  if (c.publieAt === null) return false;
+  if (c.statut === "publie") return true;
+  if (c.statut !== "archive" || c.archiveAt === null) return false;
+  return jourDeParis(c.archiveAt) >= enJour(c.debutLe);
+}
+
+/**
+ * Le règlement DU challenge `id`, commencé à `aujourdhui` ; encore lisible après la fin ET après
+ * l'archivage (le texte fonde la prime : seul l'encart disparaît à l'archivage). Un archivé
+ * arrêté avant son début n'est jamais lisible.
  */
 export async function lireReglementChallenge(
+  id: string,
   aujourdhui: string,
 ): Promise<VueReglementChallenge | null> {
   const c = await prisma.challengeApporteur.findFirst({
+    where: {
+      id,
+      statut: { in: ["publie", "archive"] },
+      publieAt: { not: null },
+      debutLe: { lte: deJour(aujourdhui) },
+    },
+    select: {
+      titre: true,
+      reglement: true,
+      debutLe: true,
+      finLe: true,
+      statut: true,
+      publieAt: true,
+      archiveAt: true,
+    },
+  });
+  if (!c || !estLisible(c)) return null;
+  return {
+    titre: c.titre,
+    reglement: c.reglement,
+    debutLe: enJour(c.debutLe),
+    finLe: enJour(c.finLe),
+    arreteLe: c.statut === "archive" && c.archiveAt ? jourDeParis(c.archiveAt) : null,
+  };
+}
+
+/**
+ * Les règlements des challenges passés (terminés ou archivés), les plus récents d'abord : titre
+ * et période seulement, aucun chiffre personnel, compteur, classement ni nombre de participants.
+ */
+export async function listerReglementsPasses(aujourdhui: string): Promise<LigneReglementPasse[]> {
+  const l = await prisma.challengeApporteur.findMany({
     where: {
       statut: { in: ["publie", "archive"] },
       publieAt: { not: null },
       debutLe: { lte: deJour(aujourdhui) },
     },
     orderBy: [{ debutLe: "desc" }, { publieAt: "desc" }],
-    select: { titre: true, reglement: true, debutLe: true, finLe: true },
+    select: {
+      id: true,
+      titre: true,
+      debutLe: true,
+      finLe: true,
+      statut: true,
+      publieAt: true,
+      archiveAt: true,
+    },
+    take: 200,
   });
-  if (!c) return null;
-  return {
-    titre: c.titre,
-    reglement: c.reglement,
-    debutLe: enJour(c.debutLe),
-    finLe: enJour(c.finLe),
-  };
+  return l
+    .filter((c) => estLisible(c) && (c.statut === "archive" || enJour(c.finLe) < aujourdhui))
+    .map((c) => ({
+      id: c.id,
+      titre: c.titre,
+      debutLe: enJour(c.debutLe),
+      finLe: enJour(c.finLe),
+    }));
 }
 
 export interface ChallengeConsole extends SaisieChallenge {
@@ -257,7 +341,7 @@ export async function publierChallenge(
 export async function archiverChallenge(id: string): Promise<ResultatEcriture> {
   const r = await prisma.challengeApporteur.updateMany({
     where: { id, statut: "publie" },
-    data: { statut: "archive" },
+    data: { statut: "archive", archiveAt: new Date() },
   });
   return r.count === 1 ? { ok: true } : refus("pas_archivable");
 }

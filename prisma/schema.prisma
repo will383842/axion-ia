@@ -18862,6 +18862,8 @@ model ChallengeApporteur {
   /// `brouillon` (défaut) | `publie` | `archive` (CHECK en base).
   statut          String    @default("brouillon") @db.VarChar(20)
   publieAt        DateTime? @map("publie_at") @db.Timestamptz(3)
+  /// Instant de l'archivage ; un archivé arrêté avant son début n'est jamais lisible.
+  archiveAt       DateTime? @map("archive_at") @db.Timestamptz(3)
   /// Identifiants texte d'administrateur, sans clé étrangère.
   publiePar       String?   @map("publie_par") @db.VarChar(64)
   creePar         String?   @map("cree_par") @db.VarChar(64)

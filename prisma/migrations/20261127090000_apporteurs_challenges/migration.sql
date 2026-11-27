@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS "challenges_apporteur" (
     "reglement_sha256" CHAR(64),
     "statut" VARCHAR(20) NOT NULL DEFAULT 'brouillon',
     "publie_at" TIMESTAMPTZ(3),
+    "archive_at" TIMESTAMPTZ(3),
     "publie_par" VARCHAR(64),
     "cree_par" VARCHAR(64),
     "cree_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

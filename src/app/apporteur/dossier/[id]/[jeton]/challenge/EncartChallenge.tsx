@@ -50,11 +50,24 @@ export function EncartChallenge({
       <p className="text-fg-soft mt-2">{p.principale}</p>
       <p className="text-fg-soft mt-2">{p.rassurance}</p>
       <a
-        href={`/apporteur/dossier/${id}/${jeton}/challenge/reglement`}
+        href={`/apporteur/dossier/${id}/${jeton}/challenge/reglement/${vue.id}`}
         className="text-terracotta-deep mt-3 inline-flex min-h-[48px] items-center gap-2 font-bold underline underline-offset-4"
       >
         Lire le règlement →
       </a>
     </section>
+  );
+}
+
+/** Petit lien vers la liste des règlements passés (titre et période seulement). */
+export function LienReglementsPasses({ id, jeton }: { id: string; jeton: string }) {
+  if (!challengesEspaceActifs()) return null;
+  return (
+    <a
+      href={`/apporteur/dossier/${id}/${jeton}/challenge/reglements`}
+      className="text-terracotta-deep mt-3 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+    >
+      Règlements des challenges passés →
+    </a>
   );
 }

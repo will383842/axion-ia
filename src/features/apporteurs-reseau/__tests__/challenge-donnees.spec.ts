@@ -27,6 +27,7 @@ vi.mock("@/lib/prisma", () => ({
 import {
   lireEncartChallenge,
   lireReglementChallenge,
+  listerReglementsPasses,
   modifierBrouillon,
   publierChallenge,
   archiverChallenge,
@@ -204,25 +205,117 @@ describe("publication", () => {
 describe("archivage et lectures", () => {
   it("archive un publié seulement", async () => {
     await archiverChallenge(ID);
-    expect(h.updateMany.mock.calls[0]![0].where).toEqual({ id: ID, statut: "publie" });
+    const a = h.updateMany.mock.calls[0]![0];
+    expect(a.where).toEqual({ id: ID, statut: "publie" });
+    expect(a.data.statut).toBe("archive");
+    expect(a.data.archiveAt).toBeInstanceOf(Date);
   });
-  it("règlement : publié ET archivé, publication avérée, commencé", async () => {
-    h.findFirst.mockResolvedValueOnce({
-      titre: "T",
-      reglement: "R",
-      debutLe: j("2026-12-01"),
-      finLe: j("2026-12-31"),
-    });
-    const v = await lireReglementChallenge("2027-02-01");
-    expect(v).toMatchObject({ titre: "T", reglement: "R" });
-    const w = h.findFirst.mock.calls[0]![0].where;
-    expect(w.statut).toEqual({ in: ["publie", "archive"] });
-    expect(w.publieAt).toEqual({ not: null });
-    expect(w.debutLe).toEqual({ lte: j("2027-02-01") });
+  const ligne = (o: Record<string, unknown>) => ({
+    titre: "T",
+    reglement: "R",
+    debutLe: j("2026-12-01"),
+    finLe: j("2026-12-31"),
+    statut: "publie",
+    publieAt: new Date("2026-11-20T10:00:00.000Z"),
+    archiveAt: null,
+    ...o,
+  });
+  it("règlement : cherché PAR IDENTIFIANT, publié ou archivé, publication avérée, commencé", async () => {
+    h.findFirst.mockResolvedValueOnce(ligne({}));
+    const v = await lireReglementChallenge(ID, "2027-02-01");
+    expect(v).toMatchObject({ titre: "T", reglement: "R", arreteLe: null });
+    const a = h.findFirst.mock.calls[0]![0];
+    expect(a.where.id).toBe(ID);
+    expect(a.where.statut).toEqual({ in: ["publie", "archive"] });
+    expect(a.where.publieAt).toEqual({ not: null });
+    expect(a.where.debutLe).toEqual({ lte: j("2027-02-01") });
+    // plus aucun tri « le plus récent » : l'identifiant désigne le challenge
+    expect(a.orderBy).toBeUndefined();
+  });
+  it("l'encart X donne le règlement X, même si un archivé a un début plus récent", async () => {
+    const X = "11111111-1111-4111-8111-111111111111";
+    const Y = "22222222-2222-4222-8222-222222222222";
+    const base = [
+      { id: X, ...ligne({ titre: "X publié", debutLe: j("2026-12-01") }) },
+      {
+        id: Y,
+        ...ligne({
+          titre: "Y archivé plus récent",
+          debutLe: j("2027-01-01"),
+          finLe: j("2027-01-31"),
+          statut: "archive",
+          archiveAt: new Date("2027-01-15T10:00:00.000Z"),
+        }),
+      },
+    ];
+    h.findFirst.mockImplementation(
+      async (a: { where: { id: string } }) => base.find((l) => l.id === a.where.id) ?? null,
+    );
+    expect((await lireReglementChallenge(X, "2027-02-01"))?.titre).toBe("X publié");
+    expect((await lireReglementChallenge(Y, "2027-02-01"))?.titre).toBe("Y archivé plus récent");
+  });
+  it("un archivé lisible porte la date d'arrêt (jour de Paris)", async () => {
+    h.findFirst.mockResolvedValueOnce(
+      ligne({ statut: "archive", archiveAt: new Date("2026-12-15T23:30:00.000Z") }),
+    );
+    expect((await lireReglementChallenge(ID, "2027-02-01"))?.arreteLe).toBe("2026-12-16");
+  });
+  it("un archivé le jour même de son début reste lisible (borne incluse)", async () => {
+    h.findFirst.mockResolvedValueOnce(
+      ligne({ statut: "archive", archiveAt: new Date("2026-12-01T09:00:00.000Z") }),
+    );
+    expect(await lireReglementChallenge(ID, "2027-02-01")).not.toBeNull();
+  });
+  it.each([
+    [
+      "archivé avant son début",
+      { statut: "archive", archiveAt: new Date("2026-11-30T10:00:00.000Z") },
+    ],
+    ["archivé sans date d'archivage", { statut: "archive", archiveAt: null }],
+    ["jamais publié", { publieAt: null }],
+    ["brouillon", { statut: "brouillon" }],
+  ])("%s : jamais lisible", async (_n, o) => {
+    h.findFirst.mockResolvedValueOnce(ligne(o));
+    expect(await lireReglementChallenge(ID, "2027-02-01")).toBeNull();
+  });
+  it("aucune ligne : null", async () => {
+    h.findFirst.mockResolvedValueOnce(null);
+    expect(await lireReglementChallenge(ID, "2027-02-01")).toBeNull();
+  });
+  it("liste des passés : tri, filtre, et seuls titre et période sortent", async () => {
+    h.findMany.mockResolvedValueOnce([
+      { id: "a", ...ligne({ titre: "Terminé", finLe: j("2026-12-31") }) },
+      { id: "b", ...ligne({ titre: "En cours", finLe: j("2027-03-31") }) },
+      {
+        id: "c",
+        ...ligne({
+          titre: "Archivé ok",
+          statut: "archive",
+          archiveAt: new Date("2026-12-10T10:00:00Z"),
+        }),
+      },
+      {
+        id: "d",
+        ...ligne({
+          titre: "Archivé avant début",
+          statut: "archive",
+          archiveAt: new Date("2026-11-01T10:00:00Z"),
+        }),
+      },
+    ]);
+    const r = await listerReglementsPasses("2027-02-01");
+    const a = h.findMany.mock.calls[0]![0];
+    expect(a.where.statut).toEqual({ in: ["publie", "archive"] });
+    expect(a.where.publieAt).toEqual({ not: null });
+    expect(a.where.debutLe).toEqual({ lte: j("2027-02-01") });
+    expect(a.orderBy).toEqual([{ debutLe: "desc" }, { publieAt: "desc" }]);
+    expect(r.map((l) => l.titre)).toEqual(["Terminé", "Archivé ok"]);
+    expect(Object.keys(r[0]!).sort()).toEqual(["debutLe", "finLe", "id", "titre"]);
   });
   it("encart : les publiés en cours seulement (jamais un archivé)", async () => {
     h.findFirst.mockResolvedValueOnce(null);
     expect(await lireEncartChallenge("2026-12-10")).toBeNull();
+    expect(h.findFirst.mock.calls[0]![0].select.id).toBe(true);
     const w = h.findFirst.mock.calls[0]![0].where;
     expect(w.statut).toBe("publie");
     expect(w.debutLe).toEqual({ lte: j("2026-12-10") });

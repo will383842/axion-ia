@@ -11,6 +11,7 @@ const h = vi.hoisted(() => ({
   encart: null as Record<string, unknown> | null,
   reglement: null as Record<string, unknown> | null,
   lectureEchoue: false,
+  passes: [] as Array<Record<string, unknown>>,
 }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/navigation", () => ({
@@ -27,9 +28,13 @@ vi.mock("@/features/apporteurs-reseau/challenge-donnees", () => ({
     if (h.lectureEchoue) throw new Error("table absente");
     return h.encart;
   }),
-  lireReglementChallenge: vi.fn(async () => {
+  lireReglementChallenge: vi.fn(async (_id: string, _jour: string) => {
     if (h.lectureEchoue) throw new Error("table absente");
     return h.reglement;
+  }),
+  listerReglementsPasses: vi.fn(async () => {
+    if (h.lectureEchoue) throw new Error("table absente");
+    return h.passes;
   }),
 }));
 
@@ -39,10 +44,15 @@ import { EncartChallenge, lireEncartPourEspace } from "./EncartChallenge";
 
 const rendre = async () =>
   EncartChallenge({ vue: await lireEncartPourEspace(), id: ID, jeton: "jeton-valide" });
-import Page from "./reglement/page";
+import Page from "./reglement/[challengeId]/page";
+import PagePassees from "./reglements/page";
+import { lireReglementChallenge } from "@/features/apporteurs-reseau/challenge-donnees";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
-const params = (id = ID) => ({ params: Promise.resolve({ id, jeton: "jeton-valide" }) });
+const CH = "0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d";
+const params = (id = ID, challengeId = CH) => ({
+  params: Promise.resolve({ id, jeton: "jeton-valide", challengeId }),
+});
 const texte = (x: string) =>
   x
     .replace(/<[^>]+>/g, " ")
@@ -51,7 +61,9 @@ const texte = (x: string) =>
 
 beforeEach(() => {
   h.dossier = { id: ID, prenom: "Ana", statut: "signe", restreint: false };
+  h.passes = [];
   h.encart = {
+    id: CH,
     titre: "Challenge de test",
     produit: "journee-ia",
     seuil: 10,
@@ -76,7 +88,7 @@ describe("encart", () => {
     expect(t).toContain("Challenge de test");
     expect(t).toContain("Une prime de 2 000 € HT");
     expect(t).toContain("Rien n'est attendu de vous");
-    expect(html).toContain(`/apporteur/dossier/${ID}/jeton-valide/challenge/reglement`);
+    expect(html).toContain(`/apporteur/dossier/${ID}/jeton-valide/challenge/reglement/${CH}"`);
     expect(html).not.toMatch(/<progress|role="progressbar"/i);
     expect(t).not.toMatch(/\d+ sur \d+|il vous reste|plus que|encore \d|J-\d/i);
     // les seuls nombres : ceux de la règle publiée (dix en lettres, 2 000 €, dates 2026)
@@ -104,6 +116,7 @@ describe("encart", () => {
     h.encart = null;
     expect(await rendre()).toBeNull();
     h.encart = {
+      id: CH,
       titre: "x",
       produit: "journee-ia",
       seuil: 1,
@@ -180,6 +193,85 @@ describe("règlement : réservé aux apporteurs signés", () => {
   it.each(REFUS)("%s : 404 neutre", async (_c, preparer, id) => {
     preparer();
     await expect(Page(params(id))).rejects.toThrow("NOT_FOUND");
+  });
+});
+
+describe("règlement : le challenge demandé, pas « le plus récent »", () => {
+  it("transmet l'identifiant de l'adresse à la lecture", async () => {
+    await Page(params());
+    expect(lireReglementChallenge).toHaveBeenLastCalledWith(CH, expect.stringMatching(/^\d{4}-/));
+  });
+  it.each(["pas-un-uuid", "123", "0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d/../x"])(
+    "identifiant « %s » : 404 sans lecture",
+    async (mauvais) => {
+      vi.mocked(lireReglementChallenge).mockClear();
+      await expect(Page(params(ID, mauvais))).rejects.toThrow("NOT_FOUND");
+      expect(lireReglementChallenge).not.toHaveBeenCalled();
+    },
+  );
+  it("un challenge archivé lisible dit « Challenge arrêté le … »", async () => {
+    h.reglement = { ...h.reglement, arreteLe: "2026-12-15" };
+    expect(texte(renderToStaticMarkup(await Page(params())))).toContain(
+      "Challenge arrêté le 15/12/2026",
+    );
+  });
+  it("un challenge en cours n'affiche aucune mention d'arrêt", async () => {
+    h.reglement = { ...h.reglement, arreteLe: null };
+    expect(texte(renderToStaticMarkup(await Page(params())))).not.toContain("arrêté");
+  });
+});
+
+describe("règlements des challenges passés : titre et période seulement", () => {
+  it("liste titre et période, liens vers chaque règlement, aucun chiffre personnel", async () => {
+    h.passes = [
+      { id: CH, titre: "Challenge d'automne", debutLe: "2026-09-01", finLe: "2026-10-31" },
+    ];
+    const html = renderToStaticMarkup(await PagePassees({ params: params().params }));
+    const t = texte(html);
+    expect(t).toContain("Challenge d'automne");
+    expect(t).toContain("Du 01/09/2026 au 31/10/2026");
+    expect(html).toContain(`/apporteur/dossier/${ID}/jeton-valide/challenge/reglement/${CH}`);
+    expect(t).not.toMatch(/\d+ sur \d+|participant|classement|rang|il vous reste/i);
+  });
+  it("aucun challenge passé : phrase neutre", async () => {
+    expect(texte(renderToStaticMarkup(await PagePassees({ params: params().params })))).toContain(
+      "Aucun règlement de challenge passé",
+    );
+  });
+  it.each([
+    [
+      "dossier introuvable",
+      () => {
+        h.dossier = null;
+      },
+    ],
+    [
+      "restreint",
+      () => {
+        h.dossier = { id: ID, statut: "signe", restreint: true };
+      },
+    ],
+    [
+      "non signé",
+      () => {
+        h.dossier = { id: ID, statut: "a_verifier", restreint: false };
+      },
+    ],
+    [
+      "interrupteur éteint",
+      () => {
+        delete process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED;
+      },
+    ],
+    [
+      "table illisible",
+      () => {
+        h.lectureEchoue = true;
+      },
+    ],
+  ])("%s : 404 neutre", async (_c, preparer) => {
+    preparer();
+    await expect(PagePassees({ params: params().params })).rejects.toThrow("NOT_FOUND");
   });
 });
 

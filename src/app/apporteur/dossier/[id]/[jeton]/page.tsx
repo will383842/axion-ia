@@ -38,7 +38,11 @@ import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-ent
 import { RESERVATION_PROVISOIRE_JOURS } from "@/features/apporteurs-reseau/regle-attribution";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 
-import { EncartChallenge, lireEncartPourEspace } from "./challenge/EncartChallenge";
+import {
+  EncartChallenge,
+  LienReglementsPasses,
+  lireEncartPourEspace,
+} from "./challenge/EncartChallenge";
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
 import { DeclarationEntreprise } from "./DeclarationEntreprise";
@@ -152,6 +156,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         </EcranEtat>
         {/* Challenge publié : la règle seulement (invitation libre). */}
         <EncartChallenge vue={encartChallenge} id={dossier.id} jeton={jeton} />
+        <LienReglementsPasses id={dossier.id} jeton={jeton} />
         <DeclarationEntreprise
           id={dossier.id}
           jeton={jeton}

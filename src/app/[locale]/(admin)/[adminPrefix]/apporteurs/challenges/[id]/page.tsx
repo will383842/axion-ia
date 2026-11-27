@@ -96,6 +96,7 @@ export default async function ChallengePage({ params, searchParams }: PageProps)
             </p>
             <EncartApercu
               vue={{
+                id: c.id,
                 titre: c.titre,
                 produit: c.produit,
                 seuil: c.seuil,
