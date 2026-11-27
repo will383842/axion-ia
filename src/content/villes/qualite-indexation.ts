@@ -2,7 +2,7 @@
 // n'importe ce module, donc aucun effet sur le site, le bundle ou les sitemaps.
 //
 // But : une ville n'entre dans `villes-indexees.ts` que si sa page porte une vraie fiche locale
-// sourcée, distincte des autres (anti pages-doublons). Pur : `fiches-locales` et
+// sourcée, distincte des autres (anti pages-doublons). Pur : `fiches-locales`, `core.ts` (léger) et
 // `villes-indexees` seulement, jamais le barrel de contenu (29 Mo).
 //
 // Les règles de sources (liste blanche de domaines, dates de consultation, catégories fermées,
@@ -26,6 +26,10 @@ function tousLesTextes(f: FicheLocale): string[] {
     ...f.epci.communes,
     ...f.entreprises.secteurs.map((x) => x.libelle),
     ...f.institutions.flatMap((i) => [i.nom, i.role]),
+    f.entreprises.perimetre,
+    f.population.source,
+    f.epci.source,
+    f.entreprises.source,
   ];
 }
 
@@ -103,16 +107,28 @@ export const VILLES_INDEXEES_SANS_FICHE: ReadonlyArray<string> = [
  * par Will (mesure littérale : les 10 fiches actuelles sont dessous, de 125 à 237).
  */
 export const FICHES_SOUS_LE_SEUIL: Readonly<Record<string, ReadonlyArray<string>>> = {
-  marseille: ["au moins 250 mots propres à la ville"],
-  lyon: ["au moins 250 mots propres à la ville"],
-  toulouse: ["au moins 250 mots propres à la ville"],
-  nice: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
-  nantes: ["au moins 250 mots propres à la ville"],
-  montpellier: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
-  strasbourg: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
-  bordeaux: ["au moins 250 mots propres à la ville"],
-  lille: ["au moins 250 mots propres à la ville"],
-  rennes: ["au moins 3 institutions publiques", "au moins 250 mots propres à la ville"],
+  marseille: [`au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`],
+  lyon: [`au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`],
+  toulouse: [`au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`],
+  nice: [
+    `au moins ${SEUILS_QUALITE.institutionsMin} institutions publiques`,
+    `au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`,
+  ],
+  nantes: [`au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`],
+  montpellier: [
+    `au moins ${SEUILS_QUALITE.institutionsMin} institutions publiques`,
+    `au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`,
+  ],
+  strasbourg: [
+    `au moins ${SEUILS_QUALITE.institutionsMin} institutions publiques`,
+    `au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`,
+  ],
+  bordeaux: [`au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`],
+  lille: [`au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`],
+  rennes: [
+    `au moins ${SEUILS_QUALITE.institutionsMin} institutions publiques`,
+    `au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`,
+  ],
 };
 
 /** Critères du § 5 vérifiés ailleurs, sur TOUTES les fiches de `FICHES_LOCALES`. */
@@ -221,18 +237,22 @@ export function evaluerQualiteVille(
 
   const nbSecteurs = f.entreprises.secteurs.length;
   regle(
-    "au moins 3 secteurs chiffrés",
+    `au moins ${SEUILS_QUALITE.secteursMin} secteurs chiffrés`,
     nbSecteurs >= SEUILS_QUALITE.secteursMin,
     `${nbSecteurs} secteur(s) chiffré(s)`,
   );
   const nbInst = f.institutions.length;
   regle(
-    "au moins 3 institutions publiques",
+    `au moins ${SEUILS_QUALITE.institutionsMin} institutions publiques`,
     nbInst >= SEUILS_QUALITE.institutionsMin,
     `${nbInst} institution(s)`,
   );
   const nbQ = f.faqLocale.length;
-  regle("3 questions locales", nbQ === SEUILS_QUALITE.questionsLocales, `${nbQ} question(s)`);
+  regle(
+    `${SEUILS_QUALITE.questionsLocales} questions locales`,
+    nbQ === SEUILS_QUALITE.questionsLocales,
+    `${nbQ} question(s)`,
+  );
 
   let pire = 0;
   let pireAvec = "";
@@ -244,13 +264,13 @@ export function evaluerQualiteVille(
     }
   }
   regle(
-    "moins de 30 % de suites de 6 mots communes avec chaque autre fiche",
+    `moins de ${SEUILS_QUALITE.partCommuneMax * 100} % de suites de 6 mots communes avec chaque autre fiche`,
     pire < SEUILS_QUALITE.partCommuneMax,
     `${Math.round(pire * 100)} % avec « ${pireAvec} »`,
   );
   const propres = motsPropres(f, autres);
   regle(
-    "au moins 250 mots propres à la ville",
+    `au moins ${SEUILS_QUALITE.motsPropresMin} mots propres à la ville`,
     propres >= SEUILS_QUALITE.motsPropresMin,
     `${propres} mot(s) propre(s)`,
   );

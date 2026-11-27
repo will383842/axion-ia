@@ -32,6 +32,18 @@ const echecs = (slug: string, fiches: Record<string, FicheLocale>) =>
     .filter((c) => !c.ok)
     .map((c) => c.critere);
 
+describe("porte de qualité · seuils figés", () => {
+  it("les seuils sont ceux de la fiche S6 § 5 : les changer est une décision de Will", () => {
+    expect({ ...SEUILS_QUALITE }).toEqual({
+      secteursMin: 3,
+      institutionsMin: 3,
+      questionsLocales: 3,
+      motsPropresMin: 250,
+      partCommuneMax: 0.3,
+    });
+  });
+});
+
 describe("porte de qualité · critères", () => {
   it("une ville sans fiche échoue sur la fiche et rien d'autre", () => {
     const r = evaluerQualiteVille("ville-fictive-sans-fiche");
@@ -133,6 +145,14 @@ describe("porte de qualité · critères", () => {
       institutions: m.institutions,
     });
     expect(echecs("ville-fautive", avec(fautive))).toContain("nom de la ville du siège absent");
+    // champs affichés autres que la prose : périmètre et libellés de sources
+    const dansPerimetre = clone("ville-perim", "Villeperim", {
+      prose: m.prose,
+      faqLocale: m.faqLocale,
+      institutions: m.institutions,
+      entreprises: { ...m.entreprises, perimetre: `communes de ${siege}` },
+    });
+    expect(echecs("ville-perim", avec(dansPerimetre))).toContain("nom de la ville du siège absent");
   });
 });
 
