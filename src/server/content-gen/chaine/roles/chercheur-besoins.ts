@@ -124,7 +124,6 @@ const MOTS_TRANSACTION =
 const MOTS_MARQUE = /axion[\s-]?ia/i;
 const VILLES =
   /(?<![\p{L}])(?:à|a|en|sur)\s+(?:Lyon|Paris|Marseille|Lille|Toulouse|Nantes|Bordeaux|Strasbourg|Rennes|Montpellier|Nice)(?![\p{L}])/iu;
-/\b(?:à|a|en|sur)\s+(?:Lyon|Paris|Marseille|Lille|Toulouse|Nantes|Bordeaux|Strasbourg|Rennes|Montpellier|Nice)\b/i;
 
 /** Pré-classement simple (I-4) : une PROPOSITION. « fixer ses prix » n'est pas transactionnel. */
 export function proposerIntention(question: string): BesoinPropose["intentionProposee"] {

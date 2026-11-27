@@ -359,6 +359,9 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // part qu'après un vrai déploiement. Même nature que l'exception ci-dessus :
   // un chemin irréductible lu en assertion, aucun import.
   /^tests\/unit\/ci\/deploiement-a-heures-fixes\.spec\.ts$/,
+  // Exception ajoutée 2026-11-28 — garde de la migration additive C3 (chaîne éditoriale) :
+  // elle lit en assertion les chemins des fichiers content-gen touchés, aucun import.
+  /^tests\/unit\/ci\/chaine-c3-migration-additive\.spec\.ts$/,
   // Exception ajoutée 2026-09-01 — garde « use server » (mêmes raisons que les
   // deux ci-dessus).
   //
