@@ -2056,6 +2056,18 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
+    if (nextStatus === "needs_review") {
+      // C2 : après « Demander des modifications » (fiche `needs_edits`) puis régénération, la
+      // création ci-dessus échoue (la ligne existe) : sans cette remise la fiche resterait en
+      // `needs_edits`, état que ni approuver ni refuser n'acceptent.
+      await prisma.reviewQueue
+        .updateMany({
+          where: { jobId: contentGenJobId, status: "needs_edits" },
+          data: { status: "pending", reviewedBy: null, reviewedAt: null },
+        })
+        .catch(() => undefined);
+    }
+
     if (nextStatus === "approved") {
       // ⚠️ Fix 2026-08-15 — CE QUE `shouldPromoteTier1` FAIT RÉELLEMENT.
       //

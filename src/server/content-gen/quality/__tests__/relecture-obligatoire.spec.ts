@@ -10,6 +10,7 @@ import {
   autoPublicationBlogActive,
   autoPublicationNewsActive,
   plafondGenerationEffectif,
+  plafondActualitesEffectif,
   relectureObligatoire,
   tierNaissancePublication,
   statutPageVilleApresGeneration,
@@ -141,5 +142,25 @@ describe("C2c — pages villes gabaritées", () => {
         env: { VILLES_AUTO_APPROBATION_ACTIVE: "1" },
       }),
     ).toBe("generated");
+  });
+});
+
+describe("plafond des actualités RSS", () => {
+  it("relecture obligatoire : 2 au plus (réserve d'une place aux campagnes), même si la clé dit 10", () => {
+    expect(plafondActualitesEffectif(10, {})).toBe(ARTICLES_MAX_JOUR_DEFAUT - 1);
+    expect(plafondActualitesEffectif(undefined, {})).toBe(2);
+  });
+  it("jamais relevé : un plafond stocké plus bas reste", () => {
+    expect(plafondActualitesEffectif(1, {})).toBe(1);
+  });
+  it("0 = pause RSS, conservé", () => {
+    expect(plafondActualitesEffectif(0, {})).toBe(0);
+    expect(plafondActualitesEffectif(-1, {})).toBe(0);
+  });
+  it("retour arrière : plafond d'avant", () => {
+    expect(plafondActualitesEffectif(10, { publicationSansRelectureAutorisee: true })).toBe(10);
+    expect(plafondActualitesEffectif(undefined, { publicationSansRelectureAutorisee: true })).toBe(
+      5,
+    );
   });
 });

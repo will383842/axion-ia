@@ -24,9 +24,15 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const upsertMock = vi.fn();
+const updateManyMock = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
-  prisma: { reviewQueue: { upsert: (args: unknown) => upsertMock(args) } },
+  prisma: {
+    reviewQueue: {
+      upsert: (args: unknown) => upsertMock(args),
+      updateMany: (args: unknown) => updateManyMock(args),
+    },
+  },
 }));
 
 // Le worker tire une chaîne lourde (Server Actions → next-auth, BullMQ, Sentry).
@@ -73,6 +79,7 @@ function sourceSansCommentaires(): string {
 beforeEach(() => {
   vi.clearAllMocks();
   upsertMock.mockResolvedValue({});
+  updateManyMock.mockResolvedValue({ count: 0 });
 });
 
 describe("ensurePendingReviewRow", () => {
@@ -99,6 +106,17 @@ describe("ensurePendingReviewRow", () => {
 
     const arg = upsertMock.mock.calls[0]?.[0] as { update: Record<string, unknown> };
     expect(arg.update).toEqual({});
+  });
+
+  it("C2 : remet une fiche `needs_edits` en `pending` (reviewedBy vidé), sans toucher aux autres états", async () => {
+    const { ensurePendingReviewRow } = await import("../content-quality-improver-worker");
+
+    await ensurePendingReviewRow("job-1");
+
+    expect(updateManyMock).toHaveBeenCalledWith({
+      where: { jobId: "job-1", status: "needs_edits" },
+      data: { status: "pending", reviewedBy: null, reviewedAt: null },
+    });
   });
 
   it("ne fait pas échouer la passe si la file de relecture refuse l'écriture", async () => {
@@ -141,5 +159,19 @@ describe("aucune sortie du worker ne bascule en relecture sans sa ligne", () => 
 
     expect(i).toBeGreaterThan(-1);
     expect(src.slice(i, i + 220)).toContain("ensurePendingReviewRow(");
+  });
+});
+
+describe("C2 : le worker de génération rend aussi une fiche needs_edits à la relecture", () => {
+  it("après la création de la ligne, une sortie needs_review remet needs_edits → pending", () => {
+    const src = readFileSync(
+      join(process.cwd(), "src", "server", "queue", "workers", "content-gen-worker.ts"),
+      "utf-8",
+    )
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    expect(src).toMatch(
+      /nextStatus === "needs_review"\) \{\s*await prisma\.reviewQueue\s*\.updateMany\(\{\s*where: \{ jobId: contentGenJobId, status: "needs_edits" \}/,
+    );
   });
 });

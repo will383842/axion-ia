@@ -151,6 +151,29 @@ async function processOneVille(
   });
   // C2c : les copies restent « generated » ; on ne repaie pas une copie déjà bonne et en attente
   // de relecture (reprise), sauf retour arrière (auto-approbation active).
+  // Retour arrière : une copie « generated » déjà bonne est approuvée telle quelle, sans repayer.
+  if (
+    existing?.status === "generated" &&
+    process.env.VILLES_AUTO_APPROBATION_ACTIVE === "true" &&
+    (existing.qualityScore ?? 0) >= args.autoApproveThreshold
+  ) {
+    await prisma.generatedVilleCopy.update({
+      where: { villeSlug: slug },
+      data: {
+        status: "approved",
+        reviewedBy: `auto:regen-complete:>=${args.autoApproveThreshold}`,
+        reviewedAt: new Date(),
+        reviewNotes: `Auto-approved à la reprise (score ${existing.qualityScore} >= ${args.autoApproveThreshold}) — regen-villes-complete.ts`,
+      },
+    });
+    return {
+      villeSlug: slug,
+      status: "skipped_already_approved",
+      ecoGenerated: false,
+      totalCostUsd: 0,
+      qualityScore: existing.qualityScore ?? undefined,
+    };
+  }
   if (
     existing?.status === "approved" ||
     (existing?.status === "generated" &&

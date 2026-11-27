@@ -20,7 +20,7 @@
  */
 
 import {
-  plafondGenerationEffectif,
+  plafondActualitesEffectif,
   type PolitiquesRelecture,
 } from "@/server/content-gen/quality/relecture-obligatoire";
 import { Queue, Worker, type Job } from "bullmq";
@@ -254,14 +254,13 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       rssMaxAgeDays?: number;
     } & PolitiquesRelecture
   >("policies", {});
-  // C2 : relecture obligatoire → actualités plafonnées comme le reste (3/jour), sinon elles
-  // consomment le budget global et affament les articles de campagne.
-  const rssMaxBrut = rssPolicies.rssMaxPerDay ?? 5;
-  // 0 = pause RSS (réglage console) : jamais relevé par le plafond.
-  const maxPerDay =
-    rssMaxBrut <= 0
-      ? 0
-      : plafondGenerationEffectif({ maxPerDay: rssMaxBrut }, rssPolicies as PolitiquesRelecture);
+  // C2 : relecture obligatoire → actualités plafonnées à 2/jour (3 − 1). Elles comptent dans le
+  // budget global de l'orchestrateur (3) : sans cette réserve, 3 actualités le matin
+  // affameraient les articles de campagne toute la journée. 0 = pause RSS (jamais relevé).
+  const maxPerDay = plafondActualitesEffectif(
+    rssPolicies.rssMaxPerDay,
+    rssPolicies as PolitiquesRelecture,
+  );
   const startOfDayUtc = new Date();
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
   // 2026-07-04 — Fail-SAFE : l'ancien `.catch(() => 0)` faisait « fuiter » le cap.

@@ -81,6 +81,21 @@ export function plafondGenerationEffectif(
 }
 
 /**
+ * Plafond des actualités RSS du jour. Les actualités comptent dans le budget global de
+ * l'orchestrateur : sous relecture obligatoire elles laissent au moins 1 place aux articles de
+ * campagne (`ARTICLES_MAX_JOUR_DEFAUT - 1`). 0 = pause RSS, jamais relevé. Retour arrière :
+ * plafond d'avant.
+ */
+export function plafondActualitesEffectif(
+  rssMaxPerDay: number | undefined,
+  politiques: PolitiquesRelecture | null | undefined,
+): number {
+  const brut = rssMaxPerDay ?? 5;
+  if (brut <= 0) return 0;
+  return relectureObligatoire(politiques) ? Math.min(brut, ARTICLES_MAX_JOUR_DEFAUT - 1) : brut;
+}
+
+/**
  * C2c — pages villes gabaritées (`ville-hub-copy`). Une copie générée reste « generated »
  * (page non rendue ; la validation passe par une mise à jour manuelle du statut en base, aucune action console n'existe encore) ; l'auto-approbation sur la note
  * n'a lieu que si `VILLES_AUTO_APPROBATION_ACTIVE=true` (retour arrière, sans déploiement).
