@@ -36,6 +36,26 @@ describe("aiguillage dans page.tsx", () => {
     expect(v1).not.toContain("ArticleGabarit");
   });
 
+  it("generateMetadata ne dépend pas de l'interrupteur (métadonnées identiques allumé/éteint)", () => {
+    const debut = src.indexOf("export async function generateMetadata");
+    const fin = src.indexOf("export default async function BlogArticle");
+    expect(debut).toBeGreaterThan(0);
+    expect(fin).toBeGreaterThan(debut);
+    const meta = src.slice(debut, fin);
+    expect(meta).not.toMatch(/gabaritsV2Actifs|chargerTypeContenu|ArticleGabarit/);
+    expect([...src.matchAll(/gabaritsV2Actifs\(\)/g)]).toHaveLength(1);
+  });
+
+  it("le JSON-LD passé au gabarit est celui de la V1 (articleJsonLd, personJsonLd), sans nouveau nœud", () => {
+    const garde = src.indexOf("if (gabaritsV2Actifs())");
+    const retourV1 = src.indexOf("return (\n    <>\n      {/* Refonte templates 2026-06-22");
+    const bloc = src.slice(garde, retourV1);
+    expect(bloc).toContain(
+      "jsonLd={personJsonLd ? [articleJsonLd, personJsonLd] : [articleJsonLd]}",
+    );
+    expect(bloc).not.toMatch(/build\w*JsonLd\(/);
+  });
+
   it("aucun use client dans le socle", () => {
     for (const f of [
       "src/components/article-v2/ArticleGabarit.tsx",
