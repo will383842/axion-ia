@@ -134,6 +134,12 @@ vi.mock("@/lib/prisma", () => {
       ),
     },
     commissionApporteur,
+    // Table des pièces figées présente (#2464, point 15 : son absence refuse l'avoir).
+    pieceAutofactureApporteur: {
+      findFirst: vi.fn(async () => null),
+      findMany: vi.fn(async () => []),
+      createMany: vi.fn(async () => ({ count: 0 })),
+    },
     apporteurReseau: {
       findUnique: vi.fn(async (a: { where: { id: string } }) => ({
         prenom: a.where.id === "APP2" ? "Paul" : "Claire",
