@@ -32,6 +32,12 @@ export interface BackfillHeroOptions {
    * false (défaut) = ne traite que les articles SANS image.
    */
   replaceBank?: boolean;
+  /**
+   * Cible EXACTEMENT ces articles publiés (bouton « Remplacer » du rapport de
+   * doublons) : leur image actuelle est remplacée même si elle est déjà en
+   * Unsplash. Jamais de masse : l'action serveur n'en passe qu'un.
+   */
+  articleIds?: string[];
   /** Plafond d'articles traités sur cet appel (batch). Omis = tous. */
   limit?: number;
   /** Pause entre articles en ms (CLI = 1500 ; action = 0, le provider throttle). */
@@ -65,7 +71,8 @@ export async function countHeroBackfillTargets(replaceBank: boolean): Promise<nu
   return prisma.article.count({ where });
 }
 
-function buildWhere(replaceBank: boolean): Prisma.ArticleWhereInput {
+function buildWhere(replaceBank: boolean, articleIds?: string[]): Prisma.ArticleWhereInput {
+  if (articleIds && articleIds.length > 0) return { status: "published", id: { in: articleIds } };
   return replaceBank
     ? {
         status: "published",
@@ -77,10 +84,10 @@ function buildWhere(replaceBank: boolean): Prisma.ArticleWhereInput {
 export async function backfillHeroImages(
   opts: BackfillHeroOptions = {},
 ): Promise<BackfillHeroResult> {
-  const { dryRun = false, replaceBank = false, limit, throttleMs = 0, onItem } = opts;
+  const { dryRun = false, replaceBank = false, articleIds, limit, throttleMs = 0, onItem } = opts;
 
   const articles = await prisma.article.findMany({
-    where: buildWhere(replaceBank),
+    where: buildWhere(replaceBank, articleIds),
     select: {
       id: true,
       featuredImage: true,
