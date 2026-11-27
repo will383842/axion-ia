@@ -1,0 +1,354 @@
+# Conception : chaîne éditoriale IA qui crée la qualité à la source
+
+> Phase de conception, 27/11/2026. **Aucun code sous `src/` ni `prisma/` n'est écrit dans cette phase.**
+> Origine : constat de Will (27/11/2026). Une porte qualité seule bloquerait presque tout si le contenu de départ est faible. Il faut d'abord **améliorer la génération**, avec une équipe IA, et un système qui **s'améliore avec le temps**. Pas de quota : le but est la qualité.
+> Documents liés : `AUDIT.md`, `PLAN.md`, `DECOUPAGE.md` (pilotage SEO/GEO). La conception de la porte qualité (`CONCEPTION-PORTE-QUALITE.md`, branche `docs/porte-qualite-contenus`) **n'existait pas encore sur `origin` au 27/11/2026** : l'interface de ce document avec la porte est donc proposée au § 8 et devra être alignée quand cette branche sera publiée.
+
+## 0. En bref
+
+1. Le générateur par défaut est **un seul passage (plan puis expansion) par gpt-4o, sans fait sourcé, sans expert, sans relecture par un modèle** pour tout article noté 75 ou plus. La publication automatique est active par défaut. Une vraie équipe Claude existe déjà (`equipe/`), mais **elle est éteinte** et couvre la rédaction, pas la recherche de besoins ni l'expert métier.
+2. La chaîne cible a **huit rôles** : chercheur de besoins, stratège de brief, collecteur de faits, rédacteur, expert métier critique, vérificateur de faits, éditeur, porte qualité. Un contenu qui échoue repart en **réécriture ciblée (2 essais au plus)**, puis est **abandonné** : jamais publié faible.
+3. Opus là où la qualité se joue (brief, rédaction, expert), Sonnet ailleurs, jamais Fable. **Coût estimé : 0,9 à 1,4 $ par tentative, environ 2,5 à 4 $ par contenu publié** au début (taux de réussite 35 à 50 %). Avec 200 $/mois, cela donne **environ 40 à 55 contenus publiés par mois au départ, estimation à mesurer** (§ 6).
+4. La boucle d'amélioration : chaque refus et sa raison sont enregistrés, chaque contenu publié est suivi, et **chaque semaine** un analyste propose des changements de briefs, de prompts et de sujets, **appliqués seulement après relecture de Will** et visibles dans la console.
+5. Le rythme **découle de ce qui passe la qualité**. Aucun quota. Il y a un plafond de dépense, jamais un objectif de volume.
+6. Toute la chaîne est **éteinte par défaut**, et chaque PR est petite (§ 11). On peut commencer tout de suite par trois PR sans migration (§ 11, « Tout de suite »).
+
+## 1. État actuel du générateur et pourquoi ses contenus seraient faibles
+
+Source : lecture du code au 27/11/2026 (`src/server/content-gen`, `src/server/queue/workers/content-gen-worker.ts`). Les références `fichier:ligne` sont celles de la lecture ; elles dérivent avec le code.
+
+### 1.1 Le pipeline réel
+
+| Étape               | Ce qui se passe                                                                                                                                  | Où                                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| Sujet               | Rotation sur 747 mots-clés seedés (`lastUsedAt ASC`) et gabarits par ville. Plafond par défaut 20 articles par jour.                             | `keyword-selector.ts`, `scheduler/anti-burst.ts:119` |
+| Avant l'IA          | Base de connaissances prête, dédoublonnage, verrou Redis 30 min, gabarit de prompt en base.                                                      | worker `:448-677`                                    |
+| Équipe (si allumée) | Stratège, gardien, vérificateur phase A.                                                                                                         | `equipe/orchestration.ts:204-273`                    |
+| Génération          | Appel 1 PLAN (métas, FAQ ×8, plan en 8 sections), appel 2 EXPANSION en deux tranches. Boucle interne d'au plus 2 itérations, seuil 75, 850 mots. | `generators/blog-from-title.ts:221-390`              |
+| Retouches           | Réparation de la réponse directe, « plancher d'intention » qui injecte sources et appel à l'action.                                              | worker `:1056-1126`                                  |
+| Contrôles           | Plagiat, intention, plan, doctrine, barrières, fidélité, fact-check. Ils produisent `blockingFail`.                                              | worker `:1270-1749`                                  |
+| Décision            | Publication automatique si pas de `blockingFail` et score ≥ 75 (**défaut : vrai**).                                                              | worker `:1865-1939`                                  |
+| Publication         | L'article est **forcé en `tier_1_indexable`**, puis IndexNow.                                                                                    | `content-publish-worker.ts`                          |
+| Après               | Fact-check Perplexity qui note `factCheckScore` sans rien dépublier.                                                                             | `content-fact-check-worker.ts`                       |
+
+Modèles : écriture et juge par défaut **gpt-4o** (`provider-router.ts`, `llm-judge.ts:45`). La voie Claude (`blog-claude.ts`) n'est prise que si les drapeaux `CONTENT_EQUIPE_EDITORIALE` et `CONTENT_GEN_BLOG_CLAUDE` sont allumés ; elle emploie `claude-sonnet-5-5` pour écrire et `claude-opus-5-5` pour relire. Les valeurs réelles des drapeaux en production n'ont pas pu être vérifiées (seul `.env.example` est lisible : vide).
+
+### 1.2 Pourquoi les contenus seraient faibles : huit causes, avec preuves
+
+1. **Un seul passage, sans relecture par un modèle.** Le score qui décide de la publication est heuristique : (SEO + lisibilité) / 2 (`quality/article-quality.ts:80`). Le juge LLM n'est appelé que pour les articles sous 75 (`content-quality-improver-worker.ts:369`). Un article à 75 ou plus sans blocage dur **part sans qu'aucun modèle l'ait relu**, quand l'équipe est éteinte.
+2. **Aucun fait sourcé.** `kb/chiffres-verifies.ts:25` : `CHIFFRES_VERIFIES = []`. Aucun générateur ne fait de recherche web ; la base de connaissances n'apporte que des extraits de 8 fiches internes. Sans chiffre ni source, un article ne peut produire que des généralités.
+3. **Même gabarit pour tous.** Plan imposé en 8 sections identiques (`blog-from-title.ts:108`), « l'angle est TOUJOURS ce qu'Axion-IA fait concrètement », mot-clé « au moins 3 fois », longueur « déterminante pour le rang ». La parade existante (8 angles d'entrée tirés au hasard, dédoublonnage de plan SimHash) traite le symptôme d'un gabarit qui produit des structures quasi identiques.
+4. **Contenu inventé encouragé.** Le prompt demande « 8 questions People-Also-Ask réelles » sans fournir aucune donnée PAA : le modèle les invente (`blog-from-title.ts`, `blog-from-keywords.ts:89`, `blog-article.ts:82`). Les FAQ ne reflètent donc aucune demande réelle.
+5. **Pas d'expert métier.** L'avis est signé « Point de vue d'Axion-IA » (`brand/expert-bank.ts:14-17`) ; la persona est une « plume IA ». Aucune donnée de terrain, et la doctrine interdit à juste titre cas client et témoignage inventés. Résultat : rien d'unique à dire.
+6. **Sujets choisis sans demande mesurée.** Rotation, pas de questions issues de la Search Console (le stratège est appelé sans `questionsConnues`, worker `:824-832`), pas de recherches associées, pas d'usage des demandes reçues. Le détecteur d'opportunités ne fait qu'alerter sur Telegram sans créer de sujet. Le site est jeune : environ 13 clics sur la période relevée (`AUDIT.md`).
+7. **Juge partial.** gpt-4o juge gpt-4o (`llm-judge.ts:11-15`) ; le juge n'a pas d'accès web et note pourtant « exactitude des faits ».
+8. **Aucun retour des résultats.** Pas de lien article → rendez-vous, pas de mesure de citation IA, pas d'historique Search Console (`AUDIT.md`). Le générateur ne peut donc rien apprendre de ses succès.
+
+### 1.3 Ce qui est déjà là et se réutilise
+
+- `equipe/` : orchestration avec journal par rôle, coût, plafond de 3 $ par job, au plus 2 renvois, issues `publier / a_relire / ecarte / mise_a_jour / relecture_humaine` ; rôles `strategie`, `gardien`, `plan`, `redaction`, `maillage`, `edition-seo`, `conformite`, `redacteur-en-chef` (grille Q1-Q13), `charge-de-liens`, `suivi-publication`.
+- `fact-check/verificateur-deux-phases.ts` : dossier de preuves avec extrait exact, puis vérification finale ; outils `web_search_20260318` et `web_fetch_20260318`, plafonds 4 et 6 recherches ; « en cas de doute, a_retirer ».
+- `providers/blog-claude.ts` : réservation du coût maximal avant l'appel, plafonds jour et mois réglables, réserve, alerte à 80 %, suspension après 3 refus de crédit ; bornes dures 20 $/jour et 300 $/mois, valeurs posées 10 $ et 200 $.
+- Console : `content-gen/jobs/[id]` avec `PanneauEquipe.tsx`, `review-queue`, `costs`, `settings/providers`, `settings/quality-loop`, `charge-liens`.
+- Tables : `ContentGenJob` (`outputJsonRaw.equipe`), `GenerationLog`, `ReviewQueue`, `CostLedger`, `ProviderConfig`, `ContentGenAuditLog`, `ContentTemplate`, `CoverageCampaign`, `KeywordTracking`, `ContentMetric`.
+- Défauts connus à corriger avant de bâtir dessus (`AUDIT.md`) : type `blog_edition_seo` absent de l'énumération, mise à jour réelle sans ligne `content_gen_jobs`, `dateModified` qui bouge sur une simple méta (traités par la P0 du pilotage).
+
+**Conclusion honnête.** Il ne manque pas une porte : il manque la matière. Les rôles de rédaction existent mais sont éteints ; les rôles qui créent la valeur (vrai besoin, faits datés, expert exigeant, retour des résultats) n'existent pas.
+
+## 2. Ce que Google et les IA valorisent fin 2026 (sources datées)
+
+Limite de la recherche : les pages `developers.google.com` et le tableau de bord d'état de Google n'ont pas pu être relus en texte intégral (domaines inaccessibles à l'outil) ; elles sont citées via des extraits de recherche. « (secondaire) » = presse SEO ou éditeur d'outil.
+
+**Faits sourcés**
+
+- **Contenu à grande échelle.** Politique « scaled content abuse » (mars 2024) : produire de nombreuses pages surtout pour manipuler le classement est du spam, **quel que soit le moyen** (IA, humains ou mélange). https://developers.google.com/search/docs/essentials/spam-policies ; https://developers.google.com/search/blog/2024/03/core-update-spam-policies (05/03/2024).
+- **15/05/2026.** Les politiques anti-spam s'appliquent aussi aux réponses d'IA générative de Search ; « tenter de manipuler les réponses d'IA générative » entre dans la définition du spam (secondaire) : https://searchengineland.com/google-updates-search-spam-policies-to-clarify-it-applies-to-generative-ai-responses-477657 ; https://www.seroundtable.com/google-spam-policies-apply-ai-responses-41331.html.
+- **Guide Google d'optimisation pour l'IA générative (2026).** Créer une page par variante de requête pour manipuler classement ou réponses IA viole la politique. Le contenu « unique, convaincant et utile » comptera à terme plus que le reste : https://developers.google.com/search/docs/fundamentals/ai-optimization-guide.
+- **Contenu généré.** L'IA n'est pas interdite et ne donne aucun bonus ; est jugé sans effort le texte produit en masse sans supervision ni curation manuelle. Google déconseille de fabriquer des profils d'auteur (photos générées, faux titres) : https://developers.google.com/search/docs/fundamentals/creating-helpful-content ; https://developers.google.com/search/blog/2023/02/google-search-and-ai-content (08/02/2023). Le journal de Google signale une révision de la page « using-gen-ai-content » le 01/10/2026, non lue.
+- **Quality Rater Guidelines.** Janvier 2025 : un contenu principal produit par des outils automatisés avec peu de valeur ajoutée peut recevoir la note la plus basse (secondaire) : https://searchengineland.com/google-quality-raters-content-ai-generated-454161.
+- **Mises à jour 2026.** Core update de novembre 2026 du 10/11 au 24/11 (secondaire) : https://searchengineland.com/google-november-2026-core-update-rollout-is-now-complete-502268. Une core update de décembre 2026 est pré-annoncée, non démarrée au 24/11 : https://searchengineland.com/google-preannounced-the-december-2026-core-update-but-it-is-not-live-or-active-yet-502947.
+- **Ce que Google dit inutile pour ses fonctionnalités d'IA** : `llms.txt`, découpage en blocs, réécriture spéciale pour l'IA, balisage spécial. Être indexé et pouvoir afficher un extrait suffit : https://developers.google.com/search/docs/appearance/ai-features ; https://www.searchenginejournal.com/googles-new-ai-search-guide-calls-aeo-and-geo-still-seo/575026/ (05/2026).
+- **Rich results FAQ supprimés le 07/05/2026** (balisage toléré, pas de gain Google) : https://searchengineland.com/google-to-no-longer-support-faq-rich-results-476957.
+- **Recherche GEO (KDD 2024).** Ajouter des citations de sources crédibles et des statistiques augmente la visibilité dans les moteurs génératifs (jusqu'à environ 40 %) ; le bourrage de mots-clés est inefficace : https://arxiv.org/abs/2311.09735.
+- **Robots d'IA.** `OAI-SearchBot` (présence dans la recherche ChatGPT), `Claude-SearchBot` et `Claude-User`, `PerplexityBot` sont des robots de recherche distincts de ceux d'entraînement (`GPTBot`, `ClaudeBot`) ; les bloquer exclut le site des réponses : https://developers.openai.com/api/docs/bots ; https://docs.perplexity.ai/docs/resources/perplexity-crawlers ; https://support.claude.com/en/articles/8896518.
+- **France.** AI Overviews et AI Mode lancés en France le 22/07/2026 : https://blog.google/intl/fr-fr/nouveautes-produits/explorez-obtenez-des-reponses/recherche-ia-apercus-mode/.
+- **Mesure des citations.** Search Console : rapports « Search Generative AI performance » (annoncés 03/06/2026, ouverts à tous au 31/08/2026) par page, appareil et date : https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports. Selon des sources secondaires (août-septembre 2026), pas de clics ni de requêtes et pas de valeur « IA » dans l'API `searchAnalytics`, non vérifié dans la référence officielle. Bing Webmaster Tools : rapport « AI Performance » en bêta depuis 02/2026, citations Copilot et Bing seulement : https://searchengineland.com/bing-webmaster-tools-ai-performance-report-468751 (02/2026). Les sources citées varient d'un jour à l'autre (34 à 42 % de recouvrement) : il faut répéter les mesures (https://arxiv.org/pdf/2604.07585, 04/2026).
+- **Tarifs Anthropic** (page lue le 27/11/2026, $ par million de tokens) : Opus 5.5 entrée 4 / sortie 20 ; Sonnet 5.5 entrée 2 / sortie 10 ; Haiku 5.5 entrée 0,10 / sortie 0,50 ; lecture de cache 0,05 × l'entrée sur Opus et Sonnet ; Batch −50 % ; recherche web 10 $ les 1 000 : https://platform.claude.com/docs/en/about-claude/pricing.
+
+**Hypothèses (non démontrées)**
+
+- Le risque de pénalité tient au **rapport entre le nombre de pages et la valeur unique de chacune**, pas à l'usage d'agents. Une chaîne qui produit beaucoup de pages proches (une par ville ou par variante de requête) est le profil le plus exposé, d'autant plus que la core update de décembre est annoncée.
+- Ce qui différencie : données propres datées et sourcées, retour d'expérience réel, auteur ou relecteur réel et vérifiable, réponse directe en tête. Cohérent avec Google et avec l'étude GEO ; **aucune mesure causale récente trouvée**.
+- `llms.txt` et schema.org : faible coût, effet de citation non démontré. Ce ne sont pas des priorités ; le schema sert surtout à désambiguïser les entités.
+
+**Non vérifié** : texte intégral des pages Google, dates exactes des spam updates 2026, absence de données IA dans l'API Search Console, politique de sources de Gemini et de Copilot hors Bing, et **toute étude chiffrée sur les chaînes multi-agents avec relecture humaine** (aucune trouvée ; seulement des retours d'expérience de rédactions).
+
+**Ce que la conception en tire** : (a) moins de pages, plus fortes, une requête = une URL ; (b) chaque page apporte un fait daté et sourcé et un angle que les concurrents n'ont pas ; (c) réponse directe en tête, questions réelles, auteur ou relecteur réel et transparence sur l'IA ; (d) pas de FAQ inventée ; (e) rien de spécifique « pour l'IA » : c'est du bon SEO.
+
+## 3. La chaîne cible, rôle par rôle
+
+```
+ R1 Chercheur de besoins ─► R2 Stratège de brief ─► R3 Collecteur de faits ─► R4 Rédacteur
+                                                                                  │
+   (abandon)◄─ échec après 2 réécritures ◄─┐                                      ▼
+                                           ├◄ R5 Expert métier critique ◄────────┤
+   réécriture ciblée (≤ 2 essais) ─────────┤◄ R6 Vérificateur de faits ◄─────────┤
+                                           └◄ R7 Éditeur (style, lisibilité, citabilité)
+                                                                                  ▼
+                                                R8 Porte qualité finale (dernier filet) ─► file de relecture ─► publication
+```
+
+Principe commun : **chaque rôle rend un objet structuré (JSON validé) et un verdict** ; chaque verdict et chaque raison sont écrits dans le journal de l'équipe (`outputJsonRaw.equipe`, déjà affiché dans `PanneauEquipe`). Chaque rôle a un plafond de coût et de tokens ; un dépassement abandonne le contenu, il ne le publie pas.
+
+### R1. Chercheur de besoins (hebdomadaire, hors chemin d'un contenu)
+
+- **Rôle** : alimenter une **réserve de besoins réels** classés, dans laquelle le stratège puise. Il ne choisit pas un mot-clé de rotation.
+- **Sources, par ordre de fiabilité** :
+  1. **Search Console** : requêtes à impressions sans clic ou en positions 8-30, requêtes sans page dédiée. Via l'ingestion unique prévue au pilotage (P1/P3/P4 de `DECOUPAGE.md`) ; **tant qu'elle n'existe pas, la source est indisponible et le rôle l'affiche** (`null` ≠ 0).
+  2. **Demandes reçues par Axion**, **sous forme agrégée et anonymisée** (thèmes récurrents des demandes de contact, questions posées avant le Diagnostic IA 45 min). Aucune donnée nominative n'entre dans un prompt (RGPD). Source à qualifier avec Will avant la P-source concernée (§ 11).
+  3. **Recherches associées et questions fréquentes** : uniquement par une source réelle (pages de résultats lues via l'outil de recherche web d'Anthropic, 10 $ les 1 000 recherches), jamais « inventées par le modèle ». Le champ `faq` d'un contenu ne peut contenir qu'une question présente dans la réserve ou sur une page lue.
+  4. **Questions de dirigeants de PME** : fournies par Will ou l'équipe (liste courte relue), complétées par le rôle.
+- **Sortie** : table `ContenuBesoin` : question, intention (info, comparaison, décision), source, date, force du signal, statut (nouveau, en brief, couvert, écarté), URL couverte le cas échéant. Une requête déjà couverte par une URL est refusée (réutilise `strategie/carte-requetes.ts`).
+- **Modèle** : Sonnet, via l'API Batch (−50 %), car non urgent.
+
+### R2. Stratège de brief
+
+- **Entrée** : un besoin de la réserve, la carte des requêtes (pour ne pas cannibaliser), la base de connaissances.
+- **Sortie : le brief**, qui est le contrat de tout le reste :
+  - intention de recherche et lecteur précis (dirigeant de PME d'un métier donné) ;
+  - **angle unique** : en une phrase, ce que cette page dit que les pages concurrentes ne disent pas ;
+  - **« ce que les concurrents ne disent pas »** : le stratège lit les 5 premières pages de résultats (outil web) et liste les lacunes (chiffre absent, étape sautée, erreur courante non traitée) ;
+  - questions réelles à traiter (de R1) ;
+  - faits à collecter (liste de questions factuelles pour R3) ;
+  - plan **adapté au sujet** (fini le plan fixe en 8 sections) et longueur **déduite de l'intention**, sans seuil de mots ;
+  - appel à l'action (§ 9) et liens internes candidats.
+- **Verdict possible : `pas_d_angle`** → le besoin est écarté et la raison enregistrée. C'est le premier filtre qualité et le moins cher.
+- **Modèle** : **Opus** (c'est là que se joue l'unicité).
+
+### R3. Collecteur de faits sourcés et datés
+
+- **Rôle** : répondre aux questions factuelles du brief avec des sources primaires (statistiques publiques, textes officiels, études, documentation d'éditeurs), **datées**.
+- **Sortie : dossier de preuves** : pour chaque fait, énoncé, **extrait exact**, URL, éditeur, **date de publication**, date de lecture, niveau de confiance. Règles : source de moins de 3 ans sauf texte de référence ; au moins 3 sources distinctes ; aucun fait sans extrait ; en cas de doute, le fait est écarté. Le dossier alimente `CHIFFRES_VERIFIES` de façon **gouvernée** (écriture en base après relecture, pas dans le code).
+- **Modèle** : Sonnet avec outils `web_search` et `web_fetch` (reprise du vérificateur phase A, plafonds relevés à 8 recherches).
+- **Verdict possible : `dossier_insuffisant`** → abandon raisonné (« pas assez de faits sourcés pour ce sujet »).
+
+### R4. Rédacteur
+
+- **Entrée** : brief + dossier de preuves + doctrine de marque. **Il n'a le droit d'énoncer un chiffre que s'il est dans le dossier**, avec son lien ; sinon il écrit sans chiffre.
+- **Format citable** : réponse directe de 40 à 60 mots en tête, titres sous forme de questions réelles, chaque affirmation clé dans un paragraphe autonome, chiffres datés (« en 2026, … »), définition des termes, liste ou tableau quand c'est le bon format, pas de remplissage.
+- **Honnêteté d'auteur** : mention transparente « rédigé avec l'aide de l'IA, relu et validé par … » (voir § 9 sur la persona « Manon »).
+- **Modèle** : **Opus**. Une tranche, un passage de rédaction ; la réécriture ciblée réutilise le même modèle sur la seule section en cause.
+
+### R5. Expert métier critique (le dirigeant de PME exigeant)
+
+- **Rôle** : lire le texte comme un dirigeant de PME du secteur ciblé, sans indulgence. Il note sur une grille de 6 questions : (1) est-ce que j'apprends quelque chose que je ne savais pas ? (2) est-ce actionnable cette semaine ? (3) l'ordre de grandeur d'effort ou de gain est-il crédible ? (4) un conseiller sensé dirait-il la même chose ? (5) y a-t-il du remplissage ? (6) qu'est-ce qui manque pour décider ?
+- **Sortie** : verdict (`ok`, `reecrire`, `abandonner`), notes de 1 à 5 par question, **liste de corrections localisées** (section, problème, attendu). Une note < 3 sur (1) ou (3) refuse.
+- **Modèle** : **Opus**, **différent du rédacteur par instruction et par contexte** (il ne voit pas le raisonnement du rédacteur, seulement le texte et le brief). C'est aussi la parade au « juge partial » constaté en § 1.2.
+
+### R6. Vérificateur de faits
+
+- **Rôle** : reprendre **chaque affirmation vérifiable** du texte final (chiffre, date, nom, texte de loi) et la rapprocher du dossier de preuves, puis, si absente, de la source ouverte de nouveau. Reprise de `verificateur-deux-phases.ts` phase B : « en cas de doute, `a_retirer` ».
+- **Sortie** : tableau affirmation → source → verdict (`confirme`, `a_retirer`, `a_nuancer`). **Toute affirmation non confirmée est retirée ou réécrite ; un chiffre sans source retourne en réécriture.** Les liens sortants sont testés (réponse 200, pas de redirection vers une page sans rapport).
+- **Modèle** : Sonnet (tâche étroite, vérifiable), outils web.
+
+### R7. Éditeur (style, lisibilité, structure citable)
+
+- **Rôle** : passe finale sur la forme, **sans changer le fond ni les chiffres** (une comparaison automatique des chiffres avant/après le garantit) : phrases courtes, voix active, tutoiement ou vouvoiement conforme à la doctrine, pas de formule creuse, titres informatifs, méta et réponse directe, maillage interne ciblé (réutilise `maillage.ts` et `charge-de-liens.ts`), contrôle des règles de marque (§ 9).
+- **Modèle** : Sonnet. Il s'appuie sur les contrôles déterministes existants (`conformite.ts`, `interdits-publication.ts`) : le modèle propose, le code vérifie.
+
+### R8. Porte qualité finale (dernier filet)
+
+- **Rôle** : refuser ce que la chaîne a laissé passer. Combinaison de contrôles **déterministes** (doctrine, plagiat, doublon de plan, liens, présence du dossier de preuves, mots interdits) et d'**un juge LLM indépendant** (Sonnet, grille courte).
+- **Elle n'est plus l'outil principal** : sur un contenu issu de la chaîne, elle doit presque toujours dire oui. **Un taux de refus élevé à la porte est un signal d'alarme sur les rôles amont**, affiché comme tel (§ 7).
+- **Alignement** : le contrat d'interface est au § 8. Tant que la porte autonome n'existe pas, la porte actuelle (`blockingFail` + juge) tient lieu de R8, **mais sans publication automatique** (§ 5).
+
+## 4. Cycle de réécriture et abandon
+
+- **États** : `besoin → brief → faits → redige → critique → verifie → edite → porte → a_relire | publie | abandonne`.
+- **Réécriture ciblée** : sur refus de R5, R6, R7 ou R8, la liste des corrections localisées retourne à R4 **qui ne réécrit que les sections en cause** (pas de nouveau texte complet, pour borner le coût et éviter la dérive). Le contenu repasse alors par R5 puis R6 sur ces sections seulement, puis R8.
+- **Plafonds** : **2 réécritures au plus** par contenu (3 tentatives au total), **plafond de coût par contenu 3 $** (le plafond actuel de l'équipe) ; atteindre l'un des deux = **abandon**.
+- **Abandon** : statut terminal `abandonne`, **raison classée** (§ 7.1), jamais de repli vers « publier quand même ». Les contenus abandonnés **ne sont ni publiés, ni indexés** (pas de `tier_1_indexable` forcé), et le besoin retourne dans la réserve avec la raison (« dossier insuffisant », « pas d'angle »…) pour être retravaillé ou écarté.
+- **Pas de publication à l'essai** : l'état actuel, où la publication force `tier_1_indexable`, est supprimé pour la voie « chaîne ».
+
+## 5. Publication : relecture d'abord, automatique ensuite, par type
+
+Un contenu qui a franchi R8 entre d'abord en **file de relecture humaine** (réutilise `ReviewQueue` et l'écran existant). Will ou un relecteur désigné valide ou refuse, **et un refus humain enregistre sa raison comme un refus machine** (§ 7.1).
+
+**Passage à l'automatique, par type de contenu et seulement quand ces trois conditions sont réunies** : (a) au moins 30 contenus du type relus par un humain ; (b) accord humain avec la chaîne ≥ 90 % sur ces 30 ; (c) activation explicite dans la console par Will. Un taux d'accord qui retombe sous 80 % sur 20 contenus **repasse le type en relecture** automatiquement. Les contenus touchant la Journée IA restent **toujours** en relecture humaine (règle existante).
+
+## 6. Choix des modèles et coût
+
+### 6.1 Modèle par rôle
+
+| Rôle                          | Modèle             | Pourquoi                                              |
+| ----------------------------- | ------------------ | ----------------------------------------------------- |
+| R1 Chercheur de besoins       | Sonnet 5.5 (Batch) | Tri et regroupement, pas urgent, −50 %                |
+| R2 Stratège de brief          | **Opus 5.5**       | L'angle unique se joue ici                            |
+| R3 Collecteur de faits        | Sonnet 5.5 + web   | Tâche de recherche étroite, extraits exacts           |
+| R4 Rédacteur                  | **Opus 5.5**       | La qualité du texte et de la voix                     |
+| R5 Expert critique            | **Opus 5.5**       | Jugement exigeant, indépendant du rédacteur           |
+| R6 Vérificateur               | Sonnet 5.5 + web   | Contrôle étroit et vérifiable                         |
+| R7 Éditeur                    | Sonnet 5.5         | Forme, contrôlée par le code                          |
+| R8 Porte                      | Sonnet 5.5 + code  | Dernier filet, majoritairement déterministe           |
+| Analyste hebdomadaire (§ 7.4) | Opus 5.5 (Batch)   | Raisonnement sur peu de données, une fois par semaine |
+
+**Jamais Fable.** Haiku 5.5 n'est pas retenu : le calcul de coût du dépôt refuse son prix (`providers/anthropic.ts`), il faudrait d'abord le saisir ; gain marginal face au risque sur la qualité. Le cache de prompt (doctrine de marque, grille, positionnement : lecture à 0,05 × l'entrée sur Opus et Sonnet) est employé pour les parties stables des prompts.
+
+### 6.2 Estimation du coût par contenu (à confirmer par mesure réelle)
+
+Hypothèses (tarifs du § 2, page lue le 27/11/2026) : article d'environ 1 800 mots, soit 4 500 tokens de sortie en tenant compte des 30 % de tokens supplémentaires des modèles récents ; entrées de 8 000 à 40 000 tokens selon le rôle ; réflexion adaptative incluse dans les sorties.
+
+| Rôle                               | Entrée × sortie (tokens)         | Coût par tentative |
+| ---------------------------------- | -------------------------------- | ------------------ |
+| R1 (réparti sur ~10 briefs, Batch) | 15 k × 2 k                       | 0,05 $             |
+| R2 Opus                            | 8 k × 2 k                        | 0,07 $             |
+| R3 Sonnet + 8 recherches           | 40 k × 3 k + 0,08 $ de recherche | 0,19 $             |
+| R4 Opus                            | 15 k × 6 k                       | 0,18 $             |
+| R5 Opus                            | 12 k × 3 k                       | 0,11 $             |
+| R6 Sonnet + web                    | 20 k × 3 k + pages               | 0,12 $             |
+| R7 Sonnet                          | 12 k × 6 k                       | 0,08 $             |
+| R8 Sonnet                          | 10 k × 1 k                       | 0,03 $             |
+| **Total, un passage**              |                                  | **≈ 0,85 $**       |
+
+- Une **réécriture ciblée** (R4 sur sections, puis R5, R6, R8 sur ces sections) ≈ **0,40 $**. Tentative moyenne avec 0,7 réécriture : **≈ 1,1 $**. Plage retenue : **0,9 à 1,4 $** par tentative ; **plafond dur 3 $** par contenu.
+- **Taux de réussite supposé au départ : 35 à 50 %**, car la première semaine sera sévère. **Coût par contenu publié ≈ coût par tentative ÷ taux de réussite ≈ 2,5 à 4 $.** Un abandon tôt (R2 `pas_d_angle`, R3 `dossier_insuffisant`) coûte 0,1 à 0,3 $, ce qui tire la moyenne vers le bas.
+- **Budget : 200 $/mois** (réglable dans la console, valeur posée actuelle de la voie Claude ; bornes dures 20 $/jour et 300 $/mois). Répartition proposée : **analyste et chercheur ≈ 15 $** (4 passages hebdomadaires à ≈ 3 $, plus R1), **réserve de dépassement 10 %** (20 $), reste ≈ **165 $ pour la production**, soit **≈ 40 à 55 contenus publiés par mois au départ** à 3-4 $ pièce, et davantage quand le taux de réussite monte. **Ce chiffre n'est pas un objectif** : si moins de contenus passent, on en publie moins et on dépense moins.
+- **Si le budget est atteint dans le mois** : la chaîne s'arrête (mécanisme actuel de réservation et de suspension de `blog-claude.ts`), les contenus en cours sont mis en attente, **jamais finis au rabais**.
+- **Mesure** : la première semaine sert à mesurer le vrai coût par rôle dans `CostLedger` (champ `role`) ; ce tableau est alors **remplacé par les valeurs mesurées**.
+- **Concurrence avec l'existant** : le budget de 200 $ des appels de la voie Claude et la boucle d'amélioration qualité à 100 $/mois (`content-quality-improver-worker.ts`) **ne doivent pas se cumuler sans décision**. La P1 (§ 11) fait de la chaîne le consommateur principal du budget Claude et met l'ancienne boucle d'amélioration en veille pour les contenus de la chaîne.
+
+## 7. Boucle d'amélioration continue
+
+### 7.1 Enregistrer chaque refus et sa raison
+
+Table `ContenuRefus` (additive) : contenu, tentative, **rôle qui refuse**, **code de raison** parmi une liste fermée (ex. `pas_d_angle`, `dossier_insuffisant`, `fait_non_source`, `chiffre_retire`, `generique`, `non_actionnable`, `doctrine`, `plagiat`, `doublon_plan`, `lien_mort`, `style`, `refus_humain_<motif>`), détail libre, section en cause, coût déjà dépensé, version du prompt et du brief employés. Les refus humains sont saisis dans la même liste. **Une raison qui tombe dans « autre » plus de 10 % du temps déclenche l'ajout d'un code.**
+
+### 7.2 Suivre chaque contenu publié
+
+Table `ContenuResultat` (une ligne par contenu et par date de mesure) : **indexation** (inspection d'URL à J3 et J7, réutilise `suivi-publication.ts`), **affichages, clics, position** (Search Console, J7/J28/J90), **affichages dans les aperçus IA** (rapport « Search Generative AI performance » : données par page, **à consulter hors API tant qu'une API n'est pas confirmée**), **citations IA** (voir ci-dessous), **visites venues des IA** (Plausible, existant), **rendez-vous générés** (voir ci-dessous).
+
+- **Citations IA mesurables ?** Seulement en partie : Bing AI Performance (Copilot, Bing), rapport Search Console pour les aperçus IA, et un **échantillon de questions fixes** posées chaque semaine aux moteurs ouverts (une dizaine de questions, 7 à 8 répétitions, car les sources citées changent d'un jour à l'autre). C'est la P10 « GEO mesure » du pilotage, que cette chaîne **réutilise sans la dupliquer**. Aucun chiffre de citation n'est présenté sans son intervalle et son échantillon.
+- **Rendez-vous générés** : il n'existe aujourd'hui **aucun lien article → rendez-vous** (`AUDIT` : Calendly capte `utm_source`, rien ne le relie à `content-gen`). Ajouter un paramètre `utm_content=<slug>` sur le lien du Diagnostic IA 45 min et le lire à la réservation. **Attribution partielle assumée** : la décision de réserver suit rarement une seule page ; le tableau dit « attribué au dernier article lu », pas « causé par ».
+- **Règle de prudence** : le site est jeune (environ 428 impressions par semaine en août). Sous les planchers statistiques définis au pilotage (§ 4.2 de `PLAN.md`), **l'écran affiche « données insuffisantes » et aucune décision n'est tirée**. Une durée d'observation d'au moins 8 semaines précède toute conclusion sur les résultats.
+
+### 7.3 Analyse hebdomadaire
+
+Chaque semaine, un job `chaine-analyse-hebdo` (file `seo-pilotage`, tâche nouvelle ignorée par un worker plus ancien, conformément à la règle D8b) prépare un dossier : taux de réussite par rôle, raisons de refus, coût par contenu publié, résultats des contenus mûrs. L'analyste Opus produit une **liste de propositions** : changements de brief (nouvelle consigne dans R2), de prompts (modification d'un gabarit de rôle), de sujets (besoins à monter, à écarter ou à fusionner), de règles d'abandon.
+
+### 7.4 Appliquer après relecture, de façon visible
+
+- Chaque proposition porte : constat chiffré, hypothèse, **changement exact (diff du prompt ou du brief)**, effet attendu, risque, **critère d'évaluation après application** (« taux de réussite sur 20 contenus »).
+- **Rien ne s'applique seul.** Will valide dans la console (« Appliquer », « Refuser », « Reporter »), l'application passe par `ContentTemplate`/`ContentTemplateHistory` (**versionné, avec retour arrière**) et `ContentGenAuditLog`.
+- **Un seul changement de prompt à la fois par rôle**, et au plus 2 changements par semaine au total, pour qu'on puisse attribuer l'effet. Un changement qui dégrade le taux de réussite de plus de 15 points sur 20 contenus est **proposé en retour arrière**.
+- **Garde-fou de l'analyste** : il ne peut proposer ni d'assouplir une règle de marque (§ 9), ni de relever un plafond de coût, ni de baisser un seuil de la porte. Ces points restent des décisions humaines.
+
+## 8. Interface avec la porte qualité
+
+La porte autonome (`CONCEPTION-PORTE-QUALITE.md`) n'était pas encore publiée. Le contrat proposé, à aligner à sa publication :
+
+- La chaîne appelle la porte **une fois par contenu final**, avec : texte, métadonnées, dossier de preuves, brief, identifiant de contenu.
+- La porte rend : `verdict` (`passe` / `refuse`), liste de **codes de raison** de la **même liste fermée** que `ContenuRefus`, et un score par dimension.
+- Un `refuse` de la porte entre dans le cycle de réécriture (§ 4) **comme n'importe quel autre refus**, puis abandon au plafond.
+- Les codes de raison sont définis **dans un seul module** partagé ; la chaîne ne redéfinit rien.
+- La porte n'écrit jamais de contenu ; la chaîne ne la contourne jamais (pas de publication si l'appel échoue : **fail-closed**).
+
+## 9. Règles de marque (appliquées à tous les rôles et vérifiées par le code)
+
+À inscrire dans le prompt de chaque rôle **et** vérifiées par `interdits-publication.ts` (la source de vérité, en lecture seule ici) :
+
+- **Jamais « Grenoble »**, aucun ancrage local d'Axion-IA.
+- **Jamais « partout en France »** (règle de Will). ⚠️ **Conflit à trancher avec Will** : le code actuel `interdits-publication.ts` (l. 213, 222, 293, 317) et `positionnement.ts` impose ou autorise précisément cette formule (« écrire "partout en France" », « seule formule permise : "dans vos locaux, partout en France" »). Appliquer la règle de Will rend ces messages d'erreur et la formule permise **incohérents**. La chaîne doit donc éviter les deux expressions (formule neutre à définir, par exemple « dans vos locaux »), et **la doctrine du dépôt doit être modifiée par une PR séparée décidée par Will** (ce document ne touche pas `positionnement.ts` ni `interdits-publication.ts`).
+- **Aucun faux témoignage, aucun cas client inventé**, aucun résultat chiffré attribué à Axion-IA, aucun partenaire ni client nommé.
+- **Aucun prix barré ni ancien prix** (le tarif s'affiche seul).
+- **Aucune mention de frais de déplacement, d'hébergement ou de repas.**
+- **Appel à l'action unique** : le **Diagnostic IA gratuit de 45 minutes** sans engagement (page contact) ; sur un contenu qui parle de la Journée IA, **renseignements Journée IA** sans prix chiffré dans le texte généré et relecture humaine obligatoire. Aucun lien de réservation ni de paiement dans le corps (règle actuelle de `positionnement.ts`).
+- Cible : PME ; autres interdits existants conservés (Qualiopi, CPF, financement « à 100 % », « garanti », etc.).
+- **Couleur terracotta** : règle d'**interface** (console et visuels) : jeton `#c24a1b` de la charte ; **ce n'est pas une règle de texte** et rien dans les prompts ne la concerne. Les écrans de la console l'emploient pour les éléments d'action et de vigilance, et jamais en couleur unique de statut (le texte accompagne toujours la couleur).
+- **Honnêteté sur l'IA** : la persona « Manon, plume IA » est à reconsidérer. Google déconseille les profils d'auteur fabriqués. **Proposition** : signer d'un relecteur réel et nommé (Will ou un responsable désigné) **seulement si cette personne a effectivement relu** ; sinon, « rédigé avec l'aide de l'IA, relu par l'équipe Axion-IA ». Décision à prendre par Will.
+
+## 10. Console : des écrans en adéquation parfaite avec le back-end
+
+Règle d'or : **un chiffre affiché = une requête sur une table qui existe, avec sa date**. Aucun écran n'affiche une donnée que le back-end ne produit pas ; une source indisponible affiche « indisponible » (jamais 0). Les écrans sont en `force-dynamic`, sans appel réseau au SSG, sans JavaScript sur les pages publiques, couleur terracotta selon § 9.
+
+Nouvel onglet **« Chaîne éditoriale »** sous `content-gen`, en cinq vues :
+
+1. **Entonnoir** (période réglable) : besoins reçus → briefs → dossiers de faits → rédigés → critiqués → vérifiés → édités → passés la porte → publiés, et **abandonnés par étape**. Source : `ContentGenJob` + `outputJsonRaw.equipe`. Taux de réussite par étape et global.
+2. **Raisons de refus** : classement des codes de `ContenuRefus` par rôle, tendance sur 8 semaines, exemples cliquables vers le contenu et le journal du job (`PanneauEquipe` existant).
+3. **Coût** : par rôle, par contenu publié, par contenu abandonné ; progression du budget mensuel, plafond jour/mois, réserve. Source : `CostLedger` avec le champ `role`. Réglage des plafonds par le formulaire existant de `settings/providers` (aucun second réglage).
+4. **Résultats** : par contenu publié et par date de mesure, indexation, affichages, clics, position, affichages IA, citations IA, rendez-vous attribués ; **mention explicite des planchers statistiques** et de l'attribution partielle.
+5. **Propositions de la semaine** : liste, diff exact, état (à relire, appliquée, refusée, reportée), résultat mesuré après application et bouton de retour arrière. Journal des changements appliqués.
+
+Interrupteurs de la console (tous éteints au départ) : chaîne allumée, par rôle ; publication automatique par type ; plafonds.
+
+## 11. Rythme
+
+Le rythme **découle de ce qui passe la qualité**. Mécanique :
+
+- Le chercheur alimente une réserve ; le stratège **prend au plus N besoins par jour, N déduit du budget restant du mois et du délai de relecture humaine**, et **s'arrête quand la file de relecture dépasse 10 contenus en attente** (ne pas produire plus vite qu'on ne relit).
+- Aucun objectif de nombre de publications. Le plafond de 20 articles par jour de `anti-burst.ts` devient un **maximum de sécurité**, pas une cible, et s'abaisse à 3 par jour au départ.
+- **Une requête = une URL** (`carte-requetes.ts`) : pas de pages par ville ou par variante de requête.
+- Si le taux de réussite est trop bas (< 25 % sur 20 tentatives), la chaîne **ralentit** et le rapport hebdomadaire le dit, plutôt que de brûler le budget.
+- Toute reprise d'un contenu publié existant (mise à jour) suit le **mode mise à jour** déjà prévu (avant/après, `dateModified` seulement si le corps change).
+
+## 12. Découpage en petites PR ordonnées
+
+Règles communes (identiques à `DECOUPAGE.md`) : ouvrir en **brouillon**, ne passer « prête » qu'à la fin du lot ; ne jamais toucher `positionnement.ts`, `interdits-publication.ts`, `pricing.ts`, `legal.ts` ; migrations **additives** uniquement, colonnes nullables ; **nouvelles files et charges tolérées par un worker plus ancien** (D8b : le worker ignore toute tâche inconnue, une valeur d'énumération est ajoutée avant d'être émise) ; tout éteint par défaut ; respecter le contrat de build `stub.invalid`.
+
+### Tout de suite (sans migration, sans risque pour le site)
+
+- **C0 · Corriger les défauts de l'équipe existante** (reprise de la P0 du pilotage) : type `blog_edition_seo`, job porteur pour la mise à jour réelle. Prérequis des suivantes.
+- **C1 · Mesurer avant de changer** : ajouter le **rôle** dans `CostLedger`/`GenerationLog` (champ nullable) et un rapport **lecture seule** « taux de blocage actuel par contrôle et coût réel par article » sur les 30 derniers jours. **Objectif : remplacer les hypothèses du § 6.2 par des chiffres réels.**
+- **C2 · Arrêter la publication faible** : pour la voie actuelle, passer `factoryAutoPublishAllBlogTypes` à faux et ne plus forcer `tier_1_indexable` pour les contenus sans relecture (décision à valider par Will ; c'est un changement de comportement, d'où la PR séparée et le test dédié).
+
+### Vague 1 : fondations (migration additive)
+
+- **C3 · Tables** `ContenuBesoin`, `ContenuBrief`, `ContenuRefus`, `ContenuResultat`, `ContenuProposition` (migration additive, colonnes nullables).
+- **C4 · Liste fermée des codes de raison** (module pur, tests) et contrat d'interface avec la porte (§ 8).
+
+### Vague 2 : rôles, un par PR, chacun testé seul et éteint
+
+- **C5 · R3 collecteur de faits + dossier de preuves** (reprise de la phase A, plafonds relevés) et `CHIFFRES_VERIFIES` alimenté par la base. _Le plus rentable : sans faits, rien d'autre ne sert._
+- **C6 · R2 stratège de brief** (angle unique, lacunes des concurrents, plan adapté, `pas_d_angle`).
+- **C7 · R4 rédacteur sous contrat de faits** (aucun chiffre hors dossier) et suppression de la consigne « 8 PAA réelles » inventées.
+- **C8 · R5 expert critique** (Opus, grille, corrections localisées).
+- **C9 · R6 vérificateur** (tableau affirmation → source) et **R7 éditeur** (comparaison automatique des chiffres avant/après).
+- **C10 · Orchestration** : états, réécriture ciblée (≤ 2), plafond de 3 $, abandon, appel à la porte fail-closed, file de relecture. Premier moment où la chaîne tourne **de bout en bout, sur 3 sujets par jour, en relecture humaine seulement**.
+
+### Vague 3 : besoins réels et résultats
+
+- **C11 · R1 chercheur de besoins** : réserve, source Search Console quand l'ingestion du pilotage (P1/P4) existe ; saisie manuelle de questions de dirigeants dès le départ ; thèmes agrégés des demandes reçues après décision de Will.
+- **C12 · Suivi des résultats** : `ContenuResultat` (indexation, Search Console), `utm_content` de la réservation du Diagnostic IA 45 min, lecture de l'attribution.
+- **C13 · Citations IA** : branchement sur la P10 du pilotage (échantillon de questions fixes, Bing AI Performance).
+
+### Vague 4 : console et amélioration
+
+- **C14 · Console « Chaîne éditoriale »** (cinq vues du § 10), livrée **en deux temps** : vues Entonnoir/Refus/Coût dès C10, vues Résultats/Propositions après C12.
+- **C15 · Analyse hebdomadaire** (job, dossier, propositions, application versionnée avec retour arrière, un changement à la fois).
+- **C16 · Publication automatique par type** (§ 5), éteinte, avec bascule automatique vers la relecture si l'accord humain retombe.
+
+### Ordre et dépendances
+
+`C0 → C1 → C2` (parallèle de C3) → `C3 → C4 → C5 → C6 → C7 → C8 → C9 → C10` → `C11, C12` → `C13, C14` → `C15 → C16`. C5, C6, C7 peuvent avancer en parallèle après C4.
+
+## 13. Risques et réponses
+
+| Risque                                                                                                                             | Réponse                                                                                                                                                                                                                                                                       |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Pénalité « scaled content abuse »** (politique 2024, élargie à l'IA générative le 15/05/2026) ; core update de décembre annoncée | Peu de pages et plus fortes ; une requête = une URL ; pas de pages par ville ; faits sourcés et datés ; relecture humaine d'abord ; abandon plutôt que publication faible. La chaîne **réduit** le risque en baissant le volume de pages médiocres ; elle ne le supprime pas. |
+| Coût qui dérive                                                                                                                    | Réservation avant appel, plafond par contenu 3 $, plafond jour/mois, arrêt à l'atteinte, mesure réelle (C1) avant toute montée en charge.                                                                                                                                     |
+| Taux de réussite trop bas au départ                                                                                                | Attendu ; la chaîne ralentit, ne dégrade pas ; l'analyse hebdomadaire cible la raison principale.                                                                                                                                                                             |
+| Boucle d'amélioration qui « apprend » du bruit                                                                                     | Planchers statistiques, un changement à la fois, évaluation sur 20 contenus, retour arrière, validation humaine.                                                                                                                                                              |
+| Données personnelles dans les prompts                                                                                              | Demandes reçues uniquement agrégées et anonymisées.                                                                                                                                                                                                                           |
+| Faux fait malgré la chaîne                                                                                                         | R3 extraits exacts, R6 sur chaque affirmation, « doute = retrait », relecture humaine, liens testés ; correction et retrait possibles depuis la console.                                                                                                                      |
+| Fenêtre app/worker (D8b)                                                                                                           | Files et tâches nouvelles ignorées par un ancien worker, colonnes nullables, énumération ajoutée avant son émission, tolérance P2021.                                                                                                                                         |
+| Dépendance à des sources non vérifiées (API Search Console pour l'IA, citations)                                                   | Marquées « indisponible » à l'écran ; aucune décision automatique sur ces données.                                                                                                                                                                                            |
+| Conflit des règles de marque                                                                                                       | « Grenoble » et « partout en France » : voir § 9, décision de Will requise.                                                                                                                                                                                                   |
+
+## 14. Décisions demandées à Will
+
+1. **« Partout en France »** : accepter de modifier la doctrine (PR séparée) puisque le code l'impose aujourd'hui comme formule de remplacement de « Grenoble ».
+2. **Persona « Manon »** et signature : relecteur nommé réel, ou mention « relu par l'équipe Axion-IA ».
+3. **Arrêt de la publication automatique** actuelle (C2) : confirmer.
+4. **Source « demandes reçues »** : quelles données agrégées sont autorisées.
+5. **Budget** : confirmer 200 $/mois pour la chaîne et la mise en veille de la boucle qualité à 100 $ pour les contenus de la chaîne.
+6. **Relecteur humain** : qui valide la file, avec quel délai cible.
