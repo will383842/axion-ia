@@ -33,6 +33,7 @@ const etat = vi.hoisted(() => ({
   lignes: [] as unknown[],
   stockage: "ok" as "ok" | "ko",
   pdfs: [] as string[],
+  pdfsTentative: [] as string[],
   envoyes: [] as Array<Record<string, unknown>>,
   confirmations: [] as Array<Record<string, unknown>>,
   alertes: [] as Array<{ jobId: string; payload: Record<string, unknown> }>,
@@ -110,7 +111,9 @@ vi.mock("@/server/qualiopi/documents/render", () => ({
   renderPdfToBuffer: async () => ({ buffer: Buffer.from("pdf") }),
   storeAndSignPdf: vi.fn(async (_b: Buffer, key: string) => {
     if (etat.stockage === "ko") return null;
-    etat.pdfs.push(key);
+    // Clé de TENTATIVE (`<numero>.<id>.pdf`) à part : seules les clés DÉFINITIVES sont des « PDF ».
+    if (/\.[0-9a-f]{8}\.pdf$/.test(key)) etat.pdfsTentative.push(key);
+    else etat.pdfs.push(key);
     return "https://signe";
   }),
 }));
@@ -142,6 +145,12 @@ const lignes = () => etat.lignes as Ligne[];
 vi.mock("@/lib/prisma", () => {
   const prisma = {
     // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
+    // Table des pièces figées présente (#2464, point 15 : son absence refuse l'émission).
+    pieceAutofactureApporteur: {
+      findFirst: vi.fn(async () => null),
+      findMany: vi.fn(async () => []),
+      createMany: vi.fn(async () => ({ count: 0 })),
+    },
     apporteurReseauSiret: { findUnique: vi.fn(async () => null) },
     apporteurReseau: {
       update: vi.fn(async () => ({})),
@@ -151,6 +160,9 @@ vi.mock("@/lib/prisma", () => {
         nom: "Martin",
         email: `${a.where.id.toLowerCase()}@m.fr`,
         statut: a.where.id === "APP3" ? "resilie" : "signe",
+        // Mandat d'autofacturation (annexe 2) : contrat signé par les deux parties (#2464, point 34).
+        signeParApporteurAt: new Date("2026-09-01T10:00:00Z"),
+        signeParSocieteAt: new Date("2026-09-01T11:00:00Z"),
         denomination: null,
         siren: "123456782",
         adresse: "1 rue des Lilas, 69000 Lyon",
@@ -252,6 +264,8 @@ import {
 } from "../facturation";
 import { annulerCommission, reduireCommission } from "../ajustement";
 import { grilleDeLaLigne } from "../commissions";
+import { prisma } from "@/lib/prisma";
+import { oublierPiecesFigeesDisponible } from "../tva-pieces";
 import { MESSAGE_GRILLE_INCONNUE } from "../regles";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import {
@@ -301,6 +315,7 @@ beforeEach(() => {
   etat.lignes = [];
   etat.stockage = "ok";
   etat.pdfs = [];
+  etat.pdfsTentative = [];
   etat.envoyes = [];
   etat.confirmations = [];
   etat.alertes = [];
@@ -432,6 +447,38 @@ describe("autofacture dès que la commission est due", () => {
     expect(etat.envoyes).toEqual([]);
     etat.stockage = "ok";
     expect((await facturerCommissionsDues(MARDI)).autofactures).toBe(1);
+  });
+
+  it("#2464 point 14 : le PDF est d'abord déposé sous une clé de TENTATIVE, puis publié sous la clé définitive", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    expect(etat.pdfsTentative).toHaveLength(1);
+    expect(etat.pdfsTentative[0]).toMatch(/AXI-APP-2026-0001\.[0-9a-f]{8}\.pdf$/);
+    expect(etat.pdfs).toEqual(["apporteurs/autofactures/APP1/AXI-APP-2026-0001.pdf"]);
+  });
+
+  it("#2464 point 15 : table des pièces figées illisible = émission REFUSÉE, rien d'émis", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    oublierPiecesFigeesDisponible();
+    vi.mocked(prisma.pieceAutofactureApporteur.findFirst).mockRejectedValue(new Error("illisible"));
+    const r = await facturerCommissionsDues(MARDI);
+    expect(r.autofactures).toBe(0);
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(etat.envoyes).toEqual([]);
+    vi.mocked(prisma.pieceAutofactureApporteur.findFirst).mockResolvedValue(null);
+    oublierPiecesFigeesDisponible();
+  });
+
+  it("#2464 point 34 : sans mandat d'autofacturation signé, aucune autofacture (alerte console)", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    etat.apporteurs["APP1"] = { signeParSocieteAt: null };
+    const r = await facturerCommissionsDues(MARDI);
+    expect(r.autofactures).toBe(0);
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(etat.pdfs).toEqual([]);
+    expect(etat.alertes.map((a) => a.payload["code"])).toContain(
+      "apporteur_mandat_autofacture_non_signe",
+    );
   });
 
   it("attestation périmée et cumul au-delà de 5 000 € : rien n'est facturé, les commissions repassent en attente", async () => {

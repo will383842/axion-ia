@@ -740,10 +740,37 @@ export function calculerCommissionSelonGrille(
 }
 
 /**
- * Lignes d'abonnement, de maintenance, d'hébergement ou de licence portées par un devis (règle du
- * 25/11 : rien dessus ; seule la mise en service donne 15 %). Repère : désignation. Pur.
+ * Lignes d'abonnement, de maintenance, d'hébergement, de licence, de support, de TMA ou
+ * d'infogérance portées par un devis (règle du 25/11 : rien dessus ; seule la mise en service
+ * donne 15 %). Repère PRINCIPAL : le produit ou le type de ligne quand la ligne en porte un
+ * (`recurrent`, `type`, `typeLigne`, `produit`, `produitSlug`, `categorie`, `famille`). La
+ * désignation (regex) n'est plus qu'un FILET, pour les lignes libres sans produit (#2464, point 16).
+ * Pur.
  */
-const LIGNE_RECURRENTE = /maintenance|abonnement|h[ée]bergement|licence/i;
+const MOTS_RECURRENTS =
+  "maintenance|abonnement|h[ée]bergement|licence|support\\s+(?:mensuel|r[ée]current|annuel)|tma(?![\\p{L}\\d])|infog[ée]rance|tierce\\s+maintenance";
+const LIGNE_RECURRENTE = new RegExp(`(?<![\\p{L}\\d])(?:${MOTS_RECURRENTS})`, "iu");
+/** Champs qui portent le produit ou le type de la ligne, quand ils existent. */
+const CHAMPS_PRODUIT = ["type", "typeLigne", "produit", "produitSlug", "categorie", "famille"];
+const TYPES_RECURRENTS = new RegExp(
+  `^(?:recurrent|recurrente|abonnement|maintenance|hebergement|licence|support|tma|infogerance)(?:[-_ ].*)?$`,
+  "i",
+);
+
+function ligneRecurrente(o: Record<string, unknown>): boolean {
+  if (o.recurrent === true || o.recurrente === true) return true;
+  for (const c of CHAMPS_PRODUIT) {
+    const v = o[c];
+    if (typeof v !== "string" || v === "") continue;
+    const norm = v
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
+    if (TYPES_RECURRENTS.test(norm) || LIGNE_RECURRENTE.test(v)) return true;
+  }
+  const d = typeof o.designation === "string" ? o.designation : "";
+  return LIGNE_RECURRENTE.test(d);
+}
 
 export function htLignesRecurrentesCents(lignes: unknown): number {
   if (!Array.isArray(lignes)) return 0;
@@ -751,8 +778,7 @@ export function htLignesRecurrentesCents(lignes: unknown): number {
   for (const l of lignes) {
     if (!l || typeof l !== "object") continue;
     const o = l as Record<string, unknown>;
-    const d = typeof o.designation === "string" ? o.designation : "";
-    if (!LIGNE_RECURRENTE.test(d)) continue;
+    if (!ligneRecurrente(o)) continue;
     // Quantité 0 ou négative (option non retenue) : la ligne ne pèse rien ; illisible : 1.
     const q = typeof o.quantite === "number" ? Math.max(0, o.quantite) : 1;
     const pu = typeof o.prixUnitaireHtCents === "number" ? o.prixUnitaireHtCents : 0;

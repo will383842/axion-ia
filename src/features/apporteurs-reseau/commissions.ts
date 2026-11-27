@@ -4,7 +4,7 @@
  * Elles naissent dans le passage (`passage-quotidien.ts`) ; la console les qualifie
  * (formation : choix du palier). Dès qu'une commission est DUE, `facturation.ts` établit
  * l'autofacture et l'envoie ; « Virement fait » la marque versée. Montants en centimes,
- * arrondis au centime inférieur (`regles.ts`).
+ * arrondis au centime le plus proche (`regles.ts`, contrat 4.5).
  *
  * Autofacture : numéro de série `AXI-APP-AAAA-NNNN`, UN numéro par apporteur et par passe
  * (toutes les lignes facturées ensemble le partagent). Le PDF est généré par
@@ -865,8 +865,19 @@ export async function genererPdfAutofacture(e: {
    * d'émission (changement daté ou fiche).
    */
   regime?: RegimeFige;
+  /**
+   * Identifiant de TENTATIVE (émission : `facturation.ts`). Présent, le PDF est déposé sous une clé
+   * PROPRE à la tentative (`…/<numero>.<tentative>.pdf`) et `cleDefinitive` dit où le publier une
+   * fois la transaction validée : un job relancé pendant qu'un premier tourne n'écrase jamais le
+   * PDF du vainqueur (#2464, point 14). Absent : dépôt direct sous la clé définitive (régénération).
+   */
+  tentative?: string;
 }): Promise<{
   r2Key: string;
+  /** Clé définitive (celle que lisent la console et l'espace). Égale à `r2Key` sans `tentative`. */
+  cleDefinitive: string;
+  /** Le PDF, pour le publier après le commit. */
+  buffer: Buffer;
   filename: string;
   totalTtcCents: number;
   /** Ce que le PDF a imprimé : à FIGER sur la pièce (régime, n° de TVA, totaux). */
@@ -952,7 +963,10 @@ export async function genererPdfAutofacture(e: {
     const { buffer } = await renderPdfToBuffer(
       React.createElement(AutofactureHonorairesPdf, { data: construit.data }),
     );
-    const r2Key = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
+    const cleDefinitive = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
+    const r2Key = e.tentative
+      ? `apporteurs/autofactures/${e.apporteurId}/${e.numero}.${e.tentative}.pdf`
+      : cleDefinitive;
     if ((await storeAndSignPdf(buffer, r2Key)) === null) throw new Error("R2 non configuré");
     // Totaux : la MÊME fonction que le gabarit, pour que la pièce figée retombe sur le PDF.
     const honoraires = regimeHonorairesApporteur(regime.regimeTva)!;
@@ -963,6 +977,8 @@ export async function genererPdfAutofacture(e: {
     );
     return {
       r2Key,
+      cleDefinitive,
+      buffer,
       filename: `${e.numero}.pdf`,
       totalTtcCents: totaux.totalTtcCents,
       regimeTva: regime.regimeTva as "assujetti" | "franchise_293b",

@@ -106,7 +106,18 @@ export async function retenir(
   const montant = l.montantCents ?? 0;
   // L'avoir de neutralisation prend le régime de l'AUTOFACTURE qu'il rectifie (figé sur sa pièce),
   // jamais celui de la fiche : un apporteur passé en franchise depuis garde un avoir AVEC TVA.
-  const figerAvoir = await piecesFigeesDisponible();
+  // #2464 point 15 : table des pièces illisible = refus, jamais un avoir non figé.
+  if (!(await piecesFigeesDisponible())) {
+    signalerErreurReseau(
+      "manquement : table des pièces figées illisible, avoir refusé",
+      new Error(`commission ${l.id}`),
+    );
+    return {
+      ok: false,
+      avertissement:
+        "La table des pièces figées est illisible : l'avoir n'est pas émis, réessayez plus tard.",
+    };
+  }
   const pieceOrigine = l.autofactureNumero
     ? (await piecesFigees([l.autofactureNumero])).get(l.autofactureNumero)
     : undefined;
@@ -145,7 +156,7 @@ export async function retenir(
       },
       select: { id: true },
     });
-    if (figerAvoir && regimeAvoir.regimeTva) {
+    if (regimeAvoir.regimeTva) {
       const ttc = totalTtcPieceCents(regimeAvoir.regimeTva, [Math.abs(montant)]);
       await figerPiece(tx, {
         numero: numeroAvoir!,

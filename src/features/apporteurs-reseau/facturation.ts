@@ -226,9 +226,26 @@ export async function facturerApporteur(
 ): Promise<ResultatFacturation> {
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { id: true, prenom: true, nom: true, email: true },
+    select: {
+      id: true,
+      prenom: true,
+      nom: true,
+      email: true,
+      signeParApporteurAt: true,
+      signeParSocieteAt: true,
+    },
   });
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
+  // #2464 point 34 : le mandat d'autofacturation (annexe 2) fait partie du contrat signé par les
+  // DEUX parties. Pas de signature complète = aucune autofacture, une alerte console à la place.
+  if (!apporteur.signeParApporteurAt || !apporteur.signeParSocieteAt) {
+    await signalerMandatNonSigne(apporteurId, apporteur, maintenant);
+    return {
+      ok: false,
+      message:
+        "Le mandat d'autofacturation (annexe 2 du contrat) n'est pas signé par les deux parties : aucune autofacture n'est émise.",
+    };
+  }
   const annee = Number(moisParis(maintenant).slice(0, 4));
 
   // Règle du 25/11 : la commission est due dès le paiement intégral du client, même si la
@@ -349,7 +366,11 @@ export async function facturerApporteur(
   const numeros = await allouerNumerosAutofacture(annee, 1 + groupes.length);
   const numero = numeros[0]!;
   const brut = dues.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  // Identifiant propre à CETTE tentative : les PDF sont déposés sous une clé de tentative, puis
+  // publiés sous la clé définitive APRÈS le commit (un job concurrent ne l'écrase jamais).
+  const tentative = randomUUID().slice(0, 8);
   const pdf = await genererPdfAutofacture({
+    tentative,
     apporteurId,
     numero,
     periodeLibelle: `commissions exigibles au ${dateFr(maintenant)}`,
@@ -369,6 +390,7 @@ export async function facturerApporteur(
     const montant = -g.lignes.reduce((s, c) => s + (c.montantCents ?? 0), 0);
     const a = pdf
       ? await genererPdfAutofacture({
+          tentative,
           apporteurId,
           numero: numeroAvoir,
           periodeLibelle: `reprise de commissions au ${dateFr(maintenant)}`,
@@ -428,7 +450,19 @@ export async function facturerApporteur(
   const solde = compense ? { verseeAt: maintenant } : {};
   // Si la table des pièces existe, le régime et les totaux de CHAQUE pièce sont figés dans la même
   // transaction que l'émission : jamais de PDF sans pièce figée (une écriture en échec = rien d'émis).
-  const figer = await piecesFigeesDisponible();
+  // #2464 point 15 : table illisible = REFUS (jamais une pièce émise sans être figée, sur le régime
+  // courant de la fiche). Rien n'est écrit, nouvel essai au prochain passage.
+  if (!(await piecesFigeesDisponible())) {
+    signalerErreurReseau(
+      "autofacture : table des pièces figées illisible, émission refusée",
+      new Error(`apporteur ${apporteurId}, autofacture ${numero}`),
+    );
+    return {
+      ok: false,
+      message:
+        "La table des pièces figées est illisible : rien n'est émis (une pièce non figée n'est jamais émise), nouvel essai au prochain passage.",
+    };
+  }
 
   await prisma.$transaction(
     async (tx) => {
@@ -483,7 +517,7 @@ export async function facturerApporteur(
       }
       if (dues2.count + reprises !== avant.length)
         throw new Error("Les commissions ont changé pendant la facturation : réessai.");
-      if (figer) {
+      {
         await figerPiece(tx, {
           numero,
           apporteurId,
@@ -512,6 +546,9 @@ export async function facturerApporteur(
     },
     { timeout: 15_000 },
   );
+
+  // Transaction validée : cette tentative est la gagnante, ses PDF prennent la clé définitive.
+  const cles = await publierPdfApresCommit([pdf, ...avoirsPdf.map((a) => a.pdf!)], numero);
 
   const nom = [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" ");
   // Chaque reprise est un AVOIR numéroté, joint à l'e-mail, qui renvoie à l'autofacture rectifiée.
@@ -549,7 +586,7 @@ export async function facturerApporteur(
       jobId: jobIdEmailAutofacture(numero),
       attachments: [pdf, ...avoirsPdf.map((a) => a.pdf!)].map((x) => ({
         filename: x.filename,
-        r2Key: x.r2Key,
+        r2Key: cles.get(x.cleDefinitive) ?? x.r2Key,
         contentType: "application/pdf",
       })),
     });
@@ -577,6 +614,45 @@ export async function facturerApporteur(
     signalerErreurReseau("autofacture : alerte interne", err);
   }
   return { ok: true, numero, totalCents: aVirer, commissions: dues.length, envoi };
+}
+
+/**
+ * Publie, sous leur clé définitive, les PDF déposés sous une clé de tentative (APRÈS le commit).
+ * Un échec (deux essais) est signalé à Sentry : la pièce est émise, son PDF reste lisible sous la
+ * clé de tentative (rendue ici pour la pièce jointe) et se régénère à la demande. Rend, par clé
+ * définitive, la clé à utiliser.
+ */
+async function publierPdfApresCommit(
+  pdfs: ReadonlyArray<{ r2Key: string; cleDefinitive: string; buffer: Buffer }>,
+  numero: string,
+): Promise<Map<string, string>> {
+  const cles = new Map<string, string>();
+  const [{ storeAndSignPdf }, { deleteFromR2 }] = await Promise.all([
+    import("@/server/qualiopi/documents/render"),
+    import("@/lib/r2-storage"),
+  ]);
+  for (const x of pdfs) {
+    if (x.r2Key === x.cleDefinitive) continue;
+    let ok = false;
+    for (let essai = 0; essai < 2 && !ok; essai++) {
+      try {
+        ok = (await storeAndSignPdf(x.buffer, x.cleDefinitive)) !== null;
+      } catch (err) {
+        if (essai === 1) signalerErreurReseau("autofacture : PDF non publié après commit", err);
+      }
+    }
+    if (ok) {
+      cles.set(x.cleDefinitive, x.cleDefinitive);
+      await deleteFromR2(x.r2Key).catch(() => undefined);
+    } else {
+      cles.set(x.cleDefinitive, x.r2Key);
+      signalerErreurReseau(
+        "autofacture : PDF non publié après commit",
+        new Error(`autofacture ${numero} émise, PDF resté sous ${x.r2Key}`),
+      );
+    }
+  }
+  return cles;
 }
 
 /** Le registre est relu au plus une fois par heure et par SIREN (passage horaire). */
@@ -608,6 +684,39 @@ async function etatAuRegistre(siren: string, maintenant: Date): Promise<Resultat
  * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
  * à afficher, ou `null` quand rien ne manque.
  */
+/** Alerte interne UNE fois par apporteur : autofacture demandée sans mandat signé. */
+async function signalerMandatNonSigne(
+  apporteurId: string,
+  fiche: { prenom: string | null; nom: string | null },
+  maintenant: Date,
+): Promise<void> {
+  try {
+    const jobId = `apporteur-mandat-non-signe-${apporteurId}`;
+    if (await dejaEnvoye(jobId)) return;
+    const nom =
+      [decryptPii(fiche.prenom), decryptPii(fiche.nom)].filter(Boolean).join(" ") || "un apporteur";
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: "important",
+        code: "apporteur_mandat_autofacture_non_signe",
+        titre: `Mandat d'autofacturation non signé : ${nom}`,
+        message: `Des commissions de ${nom} sont à facturer, mais le mandat d'autofacturation (annexe 2) n'est pas signé par les deux parties : aucune autofacture n'est émise. À vérifier dans la console avant tout versement.`,
+        cibleType: "ApporteurReseau",
+        cibleId: apporteurId,
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+        rubrique: "apporteurs",
+        chemin: `apporteurs/${apporteurId}`,
+      },
+      { jobId, entityType: "ApporteurReseau", entityId: apporteurId },
+    );
+  } catch (err) {
+    signalerErreurReseau("autofacture : mandat non signé, alerte", err);
+  }
+}
+
 /** Motif posé sur les dues bloquées par un avoir déjà émis trop gros (art. 12.4). */
 export const PREFIXE_MOTIF_SOLDE_NEGATIF = "solde négatif :";
 

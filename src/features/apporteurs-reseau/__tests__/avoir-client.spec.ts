@@ -359,6 +359,30 @@ describe("sans avoir", () => {
   });
 });
 
+describe("#2464 point 18 : bon d'achat (geste commercial hors délai) ≠ avoir qui reprend", () => {
+  const versee = { statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE };
+
+  it("geste commercial HORS délai de 24 mois (décision de Will : bon d'achat = commission gardée) : commission INTACTE, même versée", async () => {
+    const geste = avoir(-334, { id: "A0", emiseAt: new Date("2024-01-01T00:00:00Z") });
+    d.factures = [facture, geste];
+    d.lignes = [ligne({ ...versee, creeAt: new Date("2023-06-01T00:00:00Z") })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b).toMatchObject({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+    expect(d.reprise).not.toHaveBeenCalled();
+    expect(d.annuler).not.toHaveBeenCalled();
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(d.retenir).not.toHaveBeenCalled();
+  });
+
+  it("avoir normal, dans le délai : reprise au prorata, ARRONDIE AU CENTIME LE PLUS PROCHE", async () => {
+    // Net 2,35 € (avoir de 0,99 €) : 30 % = 70,5 centimes → 71 (le plus proche, pas 70) ; reprise = 100 − 71.
+    d.factures = [facture, avoir(-99)];
+    d.lignes = [ligne(versee)];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 29 }));
+  });
+});
+
 describe("dettes de a1 sur #1398", () => {
   const versee = { statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE };
 
