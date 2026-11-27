@@ -107,7 +107,7 @@ const SYSTEM_PROMPT_EXPAND =
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies. ${REGLE_CHIFFRES_SOURCES}
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
-- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des 8 sections, rien d'autre).`, "blog_from_keywords");
+- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des 8 sections, rien d'autre).`, "blog_from_keywords", "section");
 
 export const blogFromKeywordsGenerator: Generator = {
   contentType: "blog_from_keywords",

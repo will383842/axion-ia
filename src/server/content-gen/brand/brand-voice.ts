@@ -71,7 +71,10 @@ import {
   BLOC_POSITIONNEMENT_ACTUALITE,
 } from "@/server/content-gen/brand/positionnement";
 import { CONSIGNE_PRIX } from "@/server/content-gen/brand/consigne-prix";
-import { avecConsigneLisibiliteV2 } from "@/server/content-gen/brand/consigne-lisibilite";
+import {
+  avecConsigneLisibiliteV2,
+  type PorteeLisibiliteV2,
+} from "@/server/content-gen/brand/consigne-lisibilite";
 
 // ─── Blocs brand voice par persona ───────────────────────────────────────────
 
@@ -157,13 +160,22 @@ export function getBrandVoiceForContentType(contentType: string): string {
  * Injecte le bloc brand voice Manon consultante (défaut) à la fin du system prompt.
  * Idempotent. Pour les types spécifiques, utiliser `getBrandVoiceForContentType()`.
  */
-export function injectBrandVoice(systemPrompt: string, contentType?: string): string {
+export function injectBrandVoice(
+  systemPrompt: string,
+  contentType?: string,
+  portee: PorteeLisibiliteV2 = "article",
+): string {
   // Lisibilité V2 (CONTENU_LISIBILITE_V2) : ajoutée à la FIN, y compris quand la persona est déjà là.
   // Éteint, `avecConsigneLisibiliteV2` rend le prompt tel quel : identique à l'existant.
   if (systemPrompt.includes("PERSONA & BRAND VOICE")) {
-    return avecConsigneLisibiliteV2(systemPrompt, contentType);
+    return avecConsigneLisibiliteV2(systemPrompt, contentType, process.env, portee);
   }
-  return avecConsigneLisibiliteV2(`${systemPrompt}\n\n${BV_MANON_CONSULTANTE}`, contentType);
+  return avecConsigneLisibiliteV2(
+    `${systemPrompt}\n\n${BV_MANON_CONSULTANTE}`,
+    contentType,
+    process.env,
+    portee,
+  );
 }
 
 /**

@@ -110,7 +110,7 @@ const SYSTEM_PROMPT_EXPAND =
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies (INSEE, France Num, BPI France, etc.).
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
-- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections, rien d'autre).`, "barometer_insight");
+- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections, rien d'autre).`, "barometer_insight", "section");
 
 function buildVerifiedDataBlock(s: BarometerSnapshotPayload): string {
   const lines: string[] = [

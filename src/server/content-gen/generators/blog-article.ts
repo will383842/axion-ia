@@ -101,7 +101,7 @@ const SYSTEM_PROMPT_EXPAND =
 - Inclure ≥ 2 liens externes <a href="https://…" rel="noopener noreferrer"> vers des sources d'autorité FR fournies (celles fournies dans le contexte ; jamais McKinsey, Gartner ni MIT de mémoire). Cite un chiffre inline SEULEMENT s'il provient d'une de ces sources publiques et reste attribué à ELLE. INTERDIT ABSOLU : fabriquer une statistique, ou attribuer un chiffre à des « données / mesures / étude internes Axion-IA », « n=… », « évaluations 20XX » (invérifiable → rejet E-E-A-T). En l'absence de chiffre réel, écris qualitativement (« nettement », « une large part »…).
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.
 - INTERDIT (marketing-hype, doctrine § 21 — un seul de ces mots fait REJETER l'article) : « unique », « meilleur », « la meilleure », « leader », « n°1 », « révolutionnaire », « exceptionnel », « incroyable », « incontournable », « garanti », « sans risque », « instantané ». Écris factuel et sobre, sans superlatif.
-- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`, "blog_article");
+- Output JSON strict : { bodyHtml }  (UNIQUEMENT le corps HTML des sections demandées, rien d'autre).`, "blog_article", "section");
 
 function synthesizeTopic(input: GeneratorBaseInput): string {
   if (input.primaryKeyword) return input.primaryKeyword;

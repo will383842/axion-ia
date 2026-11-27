@@ -50,8 +50,12 @@ Documenté dans `docs/design/gabarits-articles/BALISAGE-ENCADRES.md` (classes `a
 ## Limites et risques
 
 - L'article d'essai jugé « très bien » est un brouillon en base, introuvable ici : travail sur les consignes seules ; les seuils de mesure sont à caler sur un texte réel.
-- Les générateurs de blog calculent leur prompt au chargement du module : l'interrupteur y est lu au démarrage du worker (redémarrage nécessaire pour le changer). Les types phase 8, actualité, ville et modèles de pages le lisent à chaque appel.
+- Les générateurs de blog calculent leur prompt au chargement du module : l'interrupteur y est lu au démarrage du worker (redémarrage nécessaire pour le changer). Seuls les types phase 8, la page ville et les modèles de pages le lisent à chaque appel ; l'actualité aussi le lit au chargement.
 - Constats du rédacteur en chef NON traités (consignes existantes à corriger dans une PR séparée, car les modifier changerait les prompts éteints) : réponses `data-aeo` « en une phrase » de 40 à 60 mots, « KPI avant/après » et « témoignage anonymisé » de l'étude de cas, colonne « Coût » du comparatif, « tarifs SSOT », texte provisoire SIREN du guide, minimum de 1 200 mots / 6 H2 / 10 H3 uniforme en phase 8, `readabilityFitScore` trop indulgent, appel à l'action discordant. Le bloc V2 les neutralise par priorité de consigne quand il est allumé.
+- Les prompts qui ne rédigent qu'un morceau (expansion par tranches, sections du guide) reçoivent une version « section » du bloc, sans réponse d'ouverture ni appel final.
+- Dans la boucle phase 8, la mesure n'ajoute un retour qualité que si un autre motif déclenche déjà un nouvel essai.
+- La Journée IA n'est citée que si sa fiche figure dans le prompt.
+- Le formatage prettier des 8 générateurs (appel à deux arguments) est à refaire : l'outil n'était pas disponible.
 - Le bloc rallonge les prompts (coût en jetons légèrement supérieur).
 
 VERDICT OPUS : À CORRIGER

@@ -48,9 +48,20 @@ Le lecteur type est un dirigeant de petite ou moyenne entreprise, pressé, sans 
    - Chiffre clé : ${ENCADRES_LISIBILITE.chiffreCle} UNIQUEMENT si un chiffre figure dans les sources fournies, avec sa source ; sinon n'en mettez aucun.
 7. TRANSITIONS QUI RELANCENT : terminez chaque section par une phrase qui ouvre la suivante (une question, ou « Reste un point : … »). Pas de « En conclusion » au milieu du texte.
 8. CONCLUSION ACTIONNABLE : une dernière section « Par où commencer ? » avec 3 actions concrètes, à faire cette semaine, en liste numérotée <ol>, chacune commençant par un verbe, et seulement des actions de préparation faisables sans compétence technique (lister des tâches, choisir un usage, désigner un référent).
-9. APPEL À L'ACTION SANS PRIX : proposez, avec sobriété et sans pression, le Diagnostic IA gratuit de ${DUREE_RDV}, sans engagement, comme premier pas, puis la Journée IA d'Axion-IA (journée de formation et d'audit en entreprise, citée sans montant) pour passer à l'action ; un seul paragraphe, aucune réservation ni paiement en ligne. Jamais de prix, de frais de déplacement, de promesse de résultat ni de délai chiffré en dehors de ces ${DUREE_RDV}.
-10. HONNÊTETÉ : aucun chiffre sans source fournie, aucun témoignage ni cas client inventé, aucune promesse de gain. Écrivez « souvent », « selon les cas » plutôt que d'inventer un pourcentage.
+9. APPEL À L'ACTION SANS PRIX : proposez, avec sobriété et sans pression, le Diagnostic IA gratuit de ${DUREE_RDV}, sans engagement, comme premier pas, puis la Journée IA d'Axion-IA UNIQUEMENT si sa fiche figure plus haut dans ce prompt (citée sans montant) ; un seul paragraphe, aucune réservation ni paiement en ligne. Jamais de prix, de frais de déplacement, de promesse de résultat ni de délai chiffré hors des durées données plus haut.
+10. HONNÊTETÉ : aucun chiffre sans source fournie, aucun faux témoignage, aucun témoignage ni cas client inventé, aucune promesse de gain. Écrivez « souvent », « selon les cas » plutôt que d'inventer un pourcentage.
 Vérification interne avant de répondre : relisez à voix haute ; coupez toute phrase de plus de 30 mots ; supprimez tout mot que le lecteur devrait chercher.`;
+
+/** Portée : « article » (plan, texte entier) ou « section » (un morceau rédigé par appel). */
+export type PorteeLisibiliteV2 = "article" | "section";
+
+const COMMUN_SECTION = `${MARQUEUR_LISIBILITE_V2} (rédaction par morceaux)
+Lecteur : dirigeant de petite ou moyenne entreprise, pressé, sans formation technique. Ces règles de FORME s'appliquent aux sections demandées dans cet appel ; ne répétez ni l'introduction, ni l'appel à l'action, ni la conclusion : d'autres appels s'en chargent. Les interdits restent absolus (aucun prix, aucun chiffre sans source, aucun faux témoignage).
+- Phrases de 20 mots en moyenne au plus, jamais plus de 30 ; une idée par phrase ; paragraphes de 2 à 4 phrases et 70 mots au plus. La réponse autonome sous un titre s'écrit en 2 ou 3 phrases courtes.
+- Mots simples ; tout terme technique est expliqué en une demi-phrase à sa première apparition.
+- Un exemple concret de petite ou moyenne entreprise par section, signalé comme illustratif, sans nom, sans ville, sans chiffre, sans citation.
+- Encadrés balisés si le format le permet : À retenir ${ENCADRES_LISIBILITE.retenir} ; Exemple ${ENCADRES_LISIBILITE.exemple} ; Chiffre clé ${ENCADRES_LISIBILITE.chiffreCle} seulement avec un chiffre sourcé fourni.
+- Terminez chaque section par une phrase qui relance vers la suivante (sauf la dernière du morceau).`;
 
 /** Blocs par type : ce qui change par rapport au bloc commun. */
 const SPECIFIQUE: Readonly<Record<string, string>> = {
@@ -87,7 +98,7 @@ const SPECIFIQUE: Readonly<Record<string, string>> = {
   calculator_roi:
     "Type calculateur : expliquez en mots simples ce qui est calculé et comment lire le résultat ; aucun résultat chiffré inventé ; exemple de lecture signalé comme illustratif, sans montant ; formule en mots avec hypothèses en lettres.",
   glossary_term:
-    "Type définition (300 à 500 mots, la longueur minimale des autres types ne s'applique pas) : une définition en une phrase d'au plus 20 mots, puis « À quoi cela sert, concrètement ? » avec un exemple de petite ou moyenne entreprise ; encadré « À retenir ».",
+    "Type définition : une définition en une phrase d'au plus 20 mots, puis « À quoi cela sert, concrètement ? » avec un exemple de petite ou moyenne entreprise ; encadré « À retenir ».",
   what_is_x:
     "Type « c'est quoi » : définition en 2 phrases simples, comparaison avec une chose du quotidien, un exemple de petite ou moyenne entreprise, ce que le lecteur peut en faire dès cette semaine.",
   faq_geo:
@@ -107,8 +118,10 @@ const SPECIFIQUE: Readonly<Record<string, string>> = {
 export function consigneLisibiliteV2(
   contentType: string | undefined,
   env: EnvLisibiliteV2 = process.env,
+  portee: PorteeLisibiliteV2 = "article",
 ): string {
   if (!lisibiliteV2Active(env)) return "";
+  if (portee === "section") return `\n\n${COMMUN_SECTION}`;
   const specifique = contentType ? SPECIFIQUE[contentType] : undefined;
   return `\n\n${COMMUN}${specifique ? `\n${specifique}` : ""}`;
 }
@@ -118,9 +131,10 @@ export function avecConsigneLisibiliteV2(
   prompt: string,
   contentType: string | undefined,
   env: EnvLisibiliteV2 = process.env,
+  portee: PorteeLisibiliteV2 = "article",
 ): string {
   if (prompt.includes(MARQUEUR_LISIBILITE_V2)) return prompt;
-  return `${prompt}${consigneLisibiliteV2(contentType, env)}`;
+  return `${prompt}${consigneLisibiliteV2(contentType, env, portee)}`;
 }
 
 /** Types couverts par un bloc spécifique (pour le test d'exhaustivité). */
