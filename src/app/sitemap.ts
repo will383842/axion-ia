@@ -85,7 +85,7 @@ import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable
 //   /sitemap/cas-concrets.xml       = case studies + industry filters
 //   /sitemap/comparaisons.xml       = comparison pages
 //   /sitemap/implementation.xml     = /par-fonction/[slug] programmatic
-//   /sitemap/implantations.xml      = hub + 12 régions indexable (Corse noindex)
+//   /sitemap/implantations.xml      = hub + 18 régions indexables (`getIndexableRegions()`)
 //
 // Dynamic sub-sitemaps (auto-paginés à 1 000 URLs max — best practice 2026) :
 //   /sitemap/villes-<region>.xml         = villes indexables de la région (≤ 1 000 URLs)
@@ -362,7 +362,7 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
 function getVillesSitemapIds(): string[] {
   const ids: string[] = [];
   // 18/11/2026 : les IDs dérivent UNIQUEMENT des villes de `villes-indexees.ts`
-  // (40 villes, 12 régions, jamais plus de 10 villes par région → aucun découpage).
+  // (40 villes dans 12 régions, jamais plus de 10 villes par région → aucun découpage).
   // Une région sans ville gardée (Corse, DROM) n'a PAS de sub-sitemap : l'index
   // refuse les sitemaps vides (`sitemap-index.xml/route.ts`). Test de garde :
   // `src/app/__tests__/sitemap-villes.spec.ts`.

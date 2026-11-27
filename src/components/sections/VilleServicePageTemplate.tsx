@@ -404,7 +404,7 @@ export async function renderVilleServicePage({
   // === JSON-LD stack — Phase C 2026-05-20 (centralisé via buildVilleServiceJsonLdGraph) ===
   // Les 5 variables individuelles ont été remplacées par le graph builder centralisé
   // (`src/lib/seo/ville-service-jsonld.ts`) qui émet 7 schémas :
-  //   1. Service  2. LocalBusiness/ProfessionalService  3. BreadcrumbList
+  //   1. Service  2. (LocalBusiness retiré le 11/11/2026 : aucun LocalBusiness, aucune adresse)  3. BreadcrumbList
   //   4. FAQPage + Speakable  5. HowTo  6. Person (Manon E-E-A-T)  7. ItemList villes proches
   const jsonLdSchemas = buildVilleServiceJsonLdGraph({
     locale: loc,
@@ -849,7 +849,7 @@ export async function renderVilleServicePage({
       <AiContentDisclaimer locale={loc} />
 
       {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — Phase C
-          2026-05-20 : 7 schémas combinés (Service + LocalBusiness + BreadcrumbList
+          2026-05-20 : schémas combinés (Service + BreadcrumbList
           + FAQPage Speakable + HowTo + Person E-E-A-T + ItemList villes proches)
           via buildVilleServiceJsonLdGraph. Cumul ~4 services × 2 150 villes = ~17 200 SSG.
           V-04 P0i (Sprint Correctif 2026-05-22) — strategy="afterInteractive"

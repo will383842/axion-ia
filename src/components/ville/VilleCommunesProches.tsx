@@ -81,16 +81,17 @@ export async function VilleCommunesProches(props: VilleCommunesProchesProps) {
   let nearby = getNearbyVilles(ville.geo, MAX_NEARBY, {
     excludeSlug: ville.slug,
     sameRegion: ville.region,
-    // Audit maillage 2026-07-03 — ne mailler QUE vers des villes indexables
-    // (avec `copy`) : ne pas lier les pages indexables aux ~2 280 stubs noindex.
-    indexableOnly: true,
+    // S6-1 — ne mailler QUE vers des pages réellement indexées (`villes-indexees.ts`).
+    // `indexableOnly` (« a un copy ») est vrai pour les 2 157 communes depuis
+    // le 18/11/2026 : il ne protège plus des pages noindex.
+    indexeesSeulement: true,
   });
   if (nearby.length === 0) {
-    // Fallback : hors contrainte région (villes indexables les plus proches,
-    // même si en région limitrophe) — toujours indexable-only.
+    // Fallback : hors contrainte région (villes indexées les plus proches,
+    // même si en région limitrophe) — toujours indexées seulement.
     nearby = getNearbyVilles(ville.geo, MAX_NEARBY, {
       excludeSlug: ville.slug,
-      indexableOnly: true,
+      indexeesSeulement: true,
     });
   }
 
