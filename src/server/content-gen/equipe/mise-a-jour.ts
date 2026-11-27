@@ -70,6 +70,7 @@ export interface DependancesMiseAJour {
   readonly conformite: (html: string) => Promise<{
     readonly decision: string;
     readonly constats?: ReadonlyArray<{ libelle: string }>;
+    readonly coutUsd?: number;
   }>;
   readonly enChef: (
     html: string,
@@ -105,12 +106,15 @@ export function decouperSections(html: string): string[] {
   return morceaux.filter((m) => m !== "");
 }
 
-const sansBalises = (h: string) =>
+export const sansBalises = (h: string) =>
   h
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/gi, " ")
     .replace(/\s+/g, " ")
     .trim();
+
+const nombresDe = (t: string): string[] =>
+  (t.match(/\d+(?:[.,]\d+)?/g) ?? []).map((n) => n.replace(",", "."));
 
 const titreH2 = (section: string): string | null => {
   const m = /^<h2[^>]*>([\s\S]*?)<\/h2>/i.exec(section.trimStart());
@@ -188,12 +192,20 @@ export async function executerMiseAJour(
     // 5. Le rédacteur ne reçoit que les sections concernées.
     const sections = decouperSections(article.html);
     const cibles = new Set<number>();
+    const textes = sections.map(sansBalises);
     for (const phrase of v.aRetirer) {
       const p = sansBalises(phrase);
-      if (!p) continue;
-      sections.forEach((s, i) => {
-        if (sansBalises(s).includes(p)) cibles.add(i);
-      });
+      const i = p ? textes.findIndex((t) => t.includes(p)) : -1;
+      // Une phrase refusée par la vérification qu'on ne retrouve pas ne doit jamais rester publiée.
+      if (i === -1) {
+        return fin(
+          "relecture-humaine",
+          slug,
+          cout,
+          "Une phrase à retirer est introuvable dans le texte.",
+        );
+      }
+      cibles.add(i);
     }
     if (cibles.size === 0) {
       return fin("relecture-humaine", slug, cout, "Phrases à retirer introuvables dans le texte.");
@@ -205,6 +217,7 @@ export async function executerMiseAJour(
       raisons: d.raisons,
     });
     cout += r.coutUsd;
+    if (plafond()) return fin("relecture-humaine", slug, cout, "Plafond de coût atteint.");
     if (r.sections.length !== indices.length) {
       return fin("relecture-humaine", slug, cout, "Réécriture incomplète.");
     }
@@ -218,12 +231,27 @@ export async function executerMiseAJour(
     }
     const final = finales.join("");
 
+    // Aucun chiffre nouveau : tout nombre d'une section réécrite figurait déjà dans l'article.
+    const connus = new Set(nombresDe(sansBalises(article.html)));
+    const neufs = indices.flatMap((_, k) =>
+      nombresDe(sansBalises(r.sections[k]!)).filter((n) => !connus.has(n)),
+    );
+    if (neufs.length > 0) {
+      return fin(
+        "relecture-humaine",
+        slug,
+        cout,
+        `Chiffre nouveau sans preuve : ${neufs.join(", ")}`,
+      );
+    }
+
     // Aucun changement réel : ni écriture ni date.
     if (htmlIdentique(final, article.html))
       return fin("inchange", slug, cout, "Contenu identique.");
 
     // 6. Conformité sur le texte final.
     const c = await deps.conformite(final);
+    cout += c.coutUsd ?? 0;
     if (c.decision !== "publier") {
       return fin(
         "relecture-humaine",

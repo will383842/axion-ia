@@ -202,6 +202,35 @@ describe("mise à jour de l'équipe éditoriale", () => {
   });
 });
 
+describe("garde-fous ajoutés après relecture", () => {
+  it("phrase à retirer introuvable : relecture humaine, rien écrit", async () => {
+    const d = deps({
+      verifier: vi.fn().mockResolvedValue({ aRetirer: ["Phrase absente 12 %."], coutUsd: 0 }),
+    });
+    expect((await executerMiseAJour(demande(), d)).statut).toBe("relecture-humaine");
+    expect(d.enregistrer).not.toHaveBeenCalled();
+  });
+  it("chiffre nouveau introduit par la réécriture : refusé", async () => {
+    const d = deps({
+      reecrire: vi.fn().mockResolvedValue({
+        sections: ["<h2>Pourquoi ?</h2><p>Désormais 92 % des entreprises.</p>"],
+        coutUsd: 0,
+      }),
+    });
+    expect((await executerMiseAJour(demande(), d)).statut).toBe("relecture-humaine");
+    expect(d.enregistrer).not.toHaveBeenCalled();
+  });
+  it("le coût de la conformité compte dans le plafond", async () => {
+    const d = deps({
+      conformite: vi.fn().mockResolvedValue({ decision: "publier", coutUsd: 5 }),
+    });
+    const r = await executerMiseAJour(demande(), d);
+    expect(r.coutUsd).toBeGreaterThanOrEqual(5);
+    expect(d.enChef).toHaveBeenCalledWith(expect.any(String), expect.any(Number));
+    expect((d.enChef as ReturnType<typeof vi.fn>).mock.calls[0]![1]).toBeGreaterThanOrEqual(5);
+  });
+});
+
 describe("outils", () => {
   it("htmlIdentique ignore les espaces", () => {
     expect(htmlIdentique("<p>a  b</p>\n", "<p>a b</p>")).toBe(true);

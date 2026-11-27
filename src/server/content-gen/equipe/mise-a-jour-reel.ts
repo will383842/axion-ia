@@ -22,7 +22,7 @@ import type { CarteRequetes } from "../strategie/carte-requetes";
 import { controlerConformite, type ResultatConformite } from "./conformite";
 import { decider as deciderGardien } from "./gardien";
 import { redacteurEnChef } from "./redacteur-en-chef";
-import type { DependancesMiseAJour } from "./mise-a-jour";
+import { sansBalises, type DependancesMiseAJour } from "./mise-a-jour";
 
 const CONTENT_TYPE = "blog_from_keywords";
 const texteBrut = (h: string) =>
@@ -32,14 +32,20 @@ const texteBrut = (h: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
-/** Phrases du texte, celles qui portent un chiffre d'abord (la phase B en vérifie 25 au plus). */
+/**
+ * Phrases factuelles (celles qui portent un chiffre) du texte, hors titres, au plus 25 : la phase B
+ * n'en vérifie pas davantage et marquerait le reste « à retirer ». Chaque phrase est un extrait
+ * EXACT du texte brut (`sansBalises`), sans ponctuation ajoutée, pour être retrouvée ensuite.
+ */
 export function phrasesAVerifier(html: string): string[] {
-  const phrases = texteBrut(html.replace(/<\/(p|li|h[1-6])>/gi, ". "))
-    .split(/(?<=[.!?])\s+/)
+  const corps = html.replace(/<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>/gi, "\n");
+  return corps
+    .replace(/<\/(p|li|div|td|th|blockquote)>/gi, "\n")
+    .split("\n")
+    .flatMap((bloc) => sansBalises(bloc).split(/(?<=[.!?])\s+/))
     .map((p) => p.trim())
-    .filter((p) => p.length > 20);
-  const chiffrees = phrases.filter((p) => /\d/.test(p));
-  return [...chiffrees, ...phrases.filter((p) => !/\d/.test(p))];
+    .filter((p) => p.length > 20 && /\d/.test(p))
+    .slice(0, 25);
 }
 
 export function cleQuotaMaj(maintenant: Date): string {
@@ -50,6 +56,7 @@ export interface ContexteReel {
   readonly maintenant: Date;
   readonly articleId: string;
   readonly titre: string;
+  readonly motCle: string;
   readonly carte: CarteRequetes;
   /** Url publique de chaque article (voisins du gardien). */
   readonly urlDe: (articleId: string) => Promise<string | undefined>;
@@ -142,7 +149,7 @@ export async function dependancesReelles(c: ContexteReel): Promise<DependancesMi
       const s = await redacteurEnChef({
         html,
         h1: c.titre,
-        brief: { motCle: c.titre, entites: [], questions: [] },
+        brief: { motCle: c.motCle, entites: [], questions: [] },
         conformite: derniereConformite,
         chiffresHorsDossier: [],
         liens: [],

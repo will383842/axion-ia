@@ -204,7 +204,7 @@ async function miseAJourRetenus(
   maintenant: Date,
 ): Promise<Record<string, number>> {
   const bilan: Record<string, number> = {};
-  for (const a of retenus) {
+  for (const [k, a] of retenus.entries()) {
     const t = a.translations[0];
     const url = urlArticle(a);
     const motCle = url ? motClePrincipal(carte, url) : null;
@@ -217,6 +217,7 @@ async function miseAJourRetenus(
         maintenant,
         articleId: a.id,
         titre: t.title ?? motCle,
+        motCle,
         carte,
         urlDe: async (id) => {
           const x = await prisma.article.findUnique({
@@ -252,7 +253,13 @@ async function miseAJourRetenus(
       console.log(
         `[content-refresh] mise à jour ${t.slug} : ${r.statut}${r.raison ? ` — ${r.raison}` : ""}`,
       );
-      if (r.statut === "quota") break;
+      if (r.statut === "quota") {
+        // Quota atteint : les articles non traités ne doivent pas rester « signalés » 28 jours.
+        await Promise.all(
+          retenus.slice(k).map((x) => redis.del(`suivi-pub:alerte:${x.id}`).catch(() => 0)),
+        );
+        break;
+      }
     } catch (err) {
       bilan["erreur"] = (bilan["erreur"] ?? 0) + 1;
       console.error(`[content-refresh] mise à jour ${t.slug} en erreur :`, err);
@@ -281,6 +288,8 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
   // Scan : articles tier-1 publiés non rafraîchis depuis > olderThanDays, du
   // plus ancien au plus récent (les plus décayés d'abord). Best-effort.
   const equipe = equipeEditorialeActive();
+  // Le corps (Text) n'est lu que pour la mise à jour : la requête d'avant reste inchangée sinon.
+  const avecCorps = equipe && job.data.tache === "mise-a-jour";
   const stale = await prisma.article
     .findMany({
       where: {
@@ -298,7 +307,10 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
         templateVariant: true,
         translations: {
           where: { locale: "fr" },
-          select: { slug: true, title: true, body: true },
+          select: {
+            slug: true,
+            ...(avecCorps ? { title: true, body: true } : {}),
+          },
           take: 1,
         },
       },
@@ -367,7 +379,7 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     `[content-refresh] scanné=${stale.length} candidats=${candidates.length} (>${olderThanDays}j, max ${maxPerRun})`,
   );
 
-  // refreshedCount = 0 : ce worker SIGNALE, il ne mute pas (anti date-gaming).
+  // Sans mode « mise à jour » : ce worker SIGNALE, il ne mute pas (refreshedCount = 0, anti date-gaming).
   return {
     scannedCount: stale.length,
     flaggedCount: candidates.length,
