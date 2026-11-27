@@ -99,7 +99,10 @@ import {
   ajouterMois,
   htLignesRecurrentesRestantesCents,
   plafondBaseCommissionnableCents,
-  calculerCommission,
+  calculerCommissionSelonGrille,
+  grilleDeLaCommande,
+  MESSAGE_GRILLE_INCONNUE,
+  type CalculCommission,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   calculerCommissionJourneeIa,
   commandeCouverte,
@@ -948,7 +951,15 @@ const SELECT_PRESENTATION_PROTEGEE = {
   confirmeeAt: true,
   protegeeJusquAt: true,
   apporteur: {
-    select: { prenom: true, nom: true, email: true, parrainId: true, signeParSocieteAt: true },
+    select: {
+      prenom: true,
+      nom: true,
+      email: true,
+      parrainId: true,
+      signeParSocieteAt: true,
+      // La version signée décide de la grille (décision du 27/11).
+      signatureApporteur: true,
+    },
   },
 } as const;
 
@@ -1006,6 +1017,7 @@ type ProtegeeLue = {
     email: string;
     parrainId: string | null;
     signeParSocieteAt: Date | null;
+    signatureApporteur?: unknown;
   };
 };
 
@@ -1188,8 +1200,6 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
-    // Développement web : jamais de commission rétroactive sur une commande signée avant la date d'effet.
-    if (f.activite === "site_web" && signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS) continue;
     const siret = siretDeLaCommande({
       devisSiret: f.devisId ? siretsDevis.get(f.devisId) : null,
       clientSiret: f.client?.siret,
@@ -1258,20 +1268,51 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       Math.max(0, commande.baseApresAvoirsCents - recurrentCents),
       plafondBase,
     );
+    // Grille de la version signée par l'apporteur (décision du 27/11) ; date d'effet de l'avenant
+    // 2.8 : lot S1 (table de l'avenant), `null` tant qu'il n'existe pas.
+    const grille = grilleDeLaCommande({
+      signature: p.apporteur.signatureApporteur,
+      declareeAt: p.recueAt,
+      commandeSigneeAt: signeeAt,
+      avenant28EffetAt: null,
+    });
+    // Développement web (grille v3) : jamais de commission rétroactive avant la date d'effet.
+    if (
+      grille === "v3" &&
+      f.activite === "site_web" &&
+      signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS
+    )
+      continue;
+    if (grille === null)
+      // ESCALADE, jamais un 0 € silencieux : la ligne naît « à qualifier » (ci-dessous) et Williams
+      // est prévenu une fois.
+      await alerteInterne({
+        jobId: `apporteur-grille-inconnue-${commande.factureCleId}-${p.apporteurId}`,
+        code: "apporteur_grille_inconnue",
+        titre: "Commission à calculer à la main : version du contrat signé inconnue",
+        message: `Une commande payée de l'entreprise SIREN ${siren} revient à un apporteur dont la version de contrat signée n'a pas de grille connue. La commission est « à qualifier » : ${MESSAGE_GRILLE_INCONNUE} (Apporteurs › Commissions).`,
+        cibleType: "FactureFormation",
+        cibleId: commande.factureCleId,
+        niveau: "critique",
+        maintenant,
+      });
     // Journée IA : repérée par `devis.journee_ia` (aucune valeur d'énumération nouvelle).
-    const calc =
-      f.devis?.journeeIa === true
-        ? calculerCommissionJourneeIa({
-            activite: (f.activite ?? null) as ActiviteCommission | null,
-            lignes: f.devis.lignes,
-            netHtCents: commande.baseApresAvoirsCents,
-          })
-        : calculerCommission({
-            activite: (f.activite ?? null) as ActiviteCommission | null,
-            factureHtCents: baseCommissionnable,
-            palier: null,
-            signeeAt,
-          });
+    const calc: CalculCommission =
+      grille === null
+        ? { statut: "a_qualifier" }
+        : f.devis?.journeeIa === true
+          ? calculerCommissionJourneeIa({
+              activite: (f.activite ?? null) as ActiviteCommission | null,
+              lignes: f.devis.lignes,
+              netHtCents: commande.baseApresAvoirsCents,
+            })
+          : calculerCommissionSelonGrille({
+              activite: (f.activite ?? null) as ActiviteCommission | null,
+              factureHtCents: baseCommissionnable,
+              palier: null,
+              signeeAt,
+              grille,
+            });
     if (calc.statut === "aucune") continue;
     // JAMAIS deux apporteurs commissionnés pour une même entreprise : si une autre personne a déjà
     // une commission (hors part de parrain) sur cette commande, rien n'est créé et Williams tranche.
