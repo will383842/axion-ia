@@ -50,6 +50,8 @@ const texteLibre = z
   .string()
   .trim()
   .max(1000)
+  // Un octet nul fait échouer l'INSERT Postgres (varchar) : refusé ici, avant la base.
+  .refine((s) => !s.includes("\u0000"), "caractère interdit")
   .optional()
   .transform((s) => (s && s.length > 0 ? s : undefined));
 
@@ -79,7 +81,8 @@ export const reponsesSchema = z
     turnstileToken: z.string().min(1).max(4096),
     /** Pot de miel : jamais rempli par une personne. */
     website: z.string().optional(),
-    startedAt: z.number().optional(),
+    /** Instant d'ouverture du formulaire (ms) : obligatoire, sinon le délai minimal serait contournable. */
+    startedAt: z.number().finite(),
   })
   .strict()
   .superRefine((d, ctx) => {

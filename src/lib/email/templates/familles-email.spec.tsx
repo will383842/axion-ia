@@ -30,6 +30,7 @@
  * reste verte en ne regardant rien.
  */
 
+import { SITE_URL } from "@/lib/site-url";
 import { describe, it, expect } from "vitest";
 import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES, familleDuHtml } from "./index";
 import { REGIME_FAMILLE, type FamilleEmail } from "./_layout";
@@ -52,6 +53,9 @@ import {
 const TITRE_LONG = "Intelligence artificielle appliquée aux PME et ETI";
 
 const PAYLOAD: Record<string, unknown> = {
+  // E-mail 1 de changement de compte : exige https, l'hôte du site et le chemin de demande.
+  lienConfirmer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande/signature-a`,
+  lienBloquer: `https://${new URL(SITE_URL).host}/apporteur/dossier/compte/demande/signature-b`,
   contactName: "Jean Dupont",
   stagiairePrenomNom: "Marie Leroy",
   destinataireNom: "Sophie Martin",
@@ -229,7 +233,14 @@ function liensDistincts(html: string): Set<string> {
  * gabarit ajouté, la tentation sera d'y glisser le nouveau nom plutôt que de
  * raccourcir l'objet.
  */
+const MOTIF_COMPTE =
+  "Objet validé mot pour mot par le dirigeant (plan changement de compte bancaire, " +
+  "section 12.3) : e-mail de sécurité dont l'objet doit dire clairement la situation. " +
+  "Le début (« Votre demande de changement de compte… ») reste lisible une fois tronqué.";
 const OBJETS_HORS_BORNE: Record<string, string> = {
+  "apporteur-compte-demande-bloquee": MOTIF_COMPTE,
+  "apporteur-compte-refuse": MOTIF_COMPTE,
+  "apporteur-compte-expire": MOTIF_COMPTE,
   "vivier-information":
     "Notice juridique dont le texte est validé (doctrine CNIL « CVthèque ») : " +
     "sa reformulation fabriquerait un second texte non validé, sur lequel " +

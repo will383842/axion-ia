@@ -18,7 +18,7 @@ import {
   BAROMETRE_DESCRIPTION,
   BAROMETRE_PATH,
   BAROMETRE_TITRE,
-  BAROMETRE_PUBLIC,
+  barometreEstPublic,
 } from "@/content/barometre-2027/donnees";
 
 interface Props {
@@ -80,7 +80,7 @@ export default async function RessourcesHubPage({ params }: Props) {
         }
       >
         <Container className="max-w-3xl">
-          {isFr && BAROMETRE_PUBLIC ? (
+          {isFr && barometreEstPublic() ? (
             <a
               href={`/${locale}${BAROMETRE_PATH}`}
               className="border-border hover:border-primary mb-6 block rounded-lg border p-4"
