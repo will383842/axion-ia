@@ -16,3 +16,11 @@ describe("cheminSansSuffixeMiroir", () => {
     expect(cheminSansSuffixeMiroir(["mentions-legales-1"])).toBeNull();
   });
 });
+
+describe("cheminSansSuffixeMiroir — pages déjà redirigées", () => {
+  it("ne vise jamais une page elle-même redirigée (2e saut)", () => {
+    expect(cheminSansSuffixeMiroir(["cas-concrets-1"])).toBeNull();
+    expect(cheminSansSuffixeMiroir(["observatoire-ia", "participer-1"])).toBeNull();
+    expect(cheminSansSuffixeMiroir(["interventions-1"])).toBeNull();
+  });
+});

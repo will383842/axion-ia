@@ -7,6 +7,9 @@ import { routing } from "../../i18n/routing";
 import { resolveLegacyRedirect } from "../legacy-redirects";
 import { estIntouchable } from "./etendre";
 
+// Pages déjà redirigées par `next.config` : les viser ferait un 2e saut.
+const DEJA_REDIRIGEES = new Set(["/cas-concrets", "/observatoire-ia/participer", "/interventions"]);
+
 let statiques: Set<string> | undefined;
 
 function pagesStatiques(): Set<string> {
@@ -15,7 +18,7 @@ function pagesStatiques(): Set<string> {
   for (const [cle, val] of Object.entries(routing.pathnames as Record<string, unknown>)) {
     const fr = typeof val === "string" ? val : (val as { fr?: string }).fr;
     if (!fr || fr === "/" || fr.includes("[")) continue;
-    if (estIntouchable({ source: fr, destination: fr })) continue;
+    if (DEJA_REDIRIGEES.has(fr) || estIntouchable({ source: fr, destination: fr })) continue;
     out.add(fr);
     void cle;
   }

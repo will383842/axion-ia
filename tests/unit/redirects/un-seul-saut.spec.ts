@@ -69,7 +69,7 @@ describe("redirects() — un seul saut", () => {
       });
     const exemple = (src: string) =>
       src
-        .replace(/:(\w+)\([^)]*\)/g, (_m, n) => `ex-${n}`)
+        .replace(/:(\w+)\(([^)|]*)[^)]*\)/g, (_m, _n, premier) => premier)
         .replace(/:(\w+)[*+]/g, "ex/ex")
         .replace(/:(\w+)/g, "ex");
     const chaines: string[] = [];
