@@ -15,10 +15,15 @@ Il n'en reste qu'un : celui de `<Breadcrumbs>`. Correctif SEO direct, hors inter
 ## Tests
 
 - Le test vérifie que la page n'appelle plus `buildBreadcrumbJsonLd`, que `<Breadcrumbs>` reste le seul émetteur, et que le nœud commence par « Accueil » avec `#breadcrumb`.
-- ⚠️ NON EXÉCUTÉS : `node_modules` est absent de l'environnement (vitest, eslint, tsc indisponibles), et la consigne interdit `pnpm install`. Prettier lancé sans le plugin tailwind. À faire passer par la CI.
+- Exécutés le 2026-11-27, après `pnpm install --frozen-lockfile` et rebase sur `origin/main` (6765b2bc, sans conflit) :
+  - `vitest run tests/unit/seo/guides-un-seul-breadcrumb.spec.ts` : **3/3 verts** avec le correctif ;
+  - même test avec la `page.tsx` d'`origin/main` (sans correctif) : **rouge** (1 échec : `buildBreadcrumbJsonLd` toujours présent) ;
+  - `pnpm typecheck` : OK.
 
 ## Risques
 
 Faible. Aucun JS client ajouté. Le nœud restant est identique en `@id` à celui retiré, avec « Accueil » en plus.
 
-VERDICT OPUS : À CORRIGER (relecture Opus non lancée : tests non exécutables ici ; à relire en CI)
+Relecture Opus : `<Breadcrumbs>` émet bien par défaut (avec « Accueil », même `@id`), aucun import orphelin, test pertinent, rien d'interdit. Réserve mineure : le 3e test vérifie la fonction de construction, pas la préfixation du composant.
+
+VERDICT OPUS : BON
