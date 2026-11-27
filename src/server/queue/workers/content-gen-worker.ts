@@ -103,6 +103,7 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // erreur DB transitoire « dé-gelait » silencieusement un arrêt d'urgence
 // (readContentGenConfig avale l'erreur et rend {active:false}).
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+import { observerJobPorte } from "@/server/content-gen/porte-qualite-io";
 // Fix 2026-08-15 (audit e2e, C2) — politique de retries partagée pour les files
 // créées à la volée (sans elle : attempts=1, un throw kill-switch tuait le job).
 import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
@@ -1977,6 +1978,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       quality_loop_eligible: eligibleQualityLoop,
       rss_auto_publish: rssAutoPublishRequested,
     });
+
+    // Porte qualité EN OBSERVATION (Q7) : note la sortie persistée, écrit son verdict dans
+    // `content_quality_verdicts` et ne décide de rien (statut, revue, publication inchangés).
+    // Interrupteur CONTENT_PORTE_OBSERVATION, éteint par défaut ; ne lève jamais.
+    await observerJobPorte(contentGenJobId, contentType, persistedOutput);
 
     // Fix 2026-08-15 (audit e2e, C5) — si cette exécution est une RE-génération
     // demandée par la boucle qualité (feedback juge injecté), son coût LLM EST
