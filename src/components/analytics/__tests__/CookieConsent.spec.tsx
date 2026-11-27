@@ -22,7 +22,8 @@ vi.mock("@/i18n/navigation", () => ({
     <a href={href}>{children}</a>
   ),
 }));
-vi.mock("@/env", () => ({ env: { NEXT_PUBLIC_CLARITY_PROJECT_ID: "test-project" } }));
+// Clarity lit `process.env.NEXT_PUBLIC_*` directement (plus de `@/env` : zod hors du socle client).
+process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID = "test-project";
 vi.mock("next/script", () => ({
   default: ({ id }: { id: string }) => <script data-testid={id} />,
 }));
