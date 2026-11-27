@@ -10,12 +10,17 @@ import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { ChangerRegimeTva } from "@/components/admin/apporteurs/fiche/ChangerRegimeTva";
+import { HistoriqueEmails } from "@/components/admin/apporteurs/fiche/HistoriqueEmails";
+import { RelevesMensuels } from "@/components/admin/apporteurs/fiche/RelevesMensuels";
+import { lireRelevesDeLApporteur } from "@/features/apporteurs-reseau/releve-mensuel/statistiques";
 import { CorrigerNom } from "@/components/admin/apporteurs/fiche/CorrigerNom";
+import { BlocDecision } from "@/components/admin/apporteurs/fiche/BlocDecision";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
 import {
   NomEtEntreprise,
   NomEtEntrepriseEnCours,
 } from "@/components/admin/apporteurs/fiche/NomEtEntreprise";
+import { MessagesRecus } from "@/components/admin/apporteurs/fiche/MessagesRecus";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
 import {
@@ -23,6 +28,7 @@ import {
   FinDeVie,
   SoldeNegatifFiche,
 } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
+import { lireMessagesRecus } from "@/features/apporteurs-reseau/messages-recus";
 import { lireResiliationEnCours } from "@/features/apporteurs-reseau/resiliation";
 import { lireSoldeNegatif } from "@/features/apporteurs-reseau/solde-negatif";
 import { siretDe } from "@/features/apporteurs-reseau/siret-apporteur";
@@ -35,11 +41,12 @@ import {
   LIBELLE_STATUT_APPORTEUR,
   lireChangementsRegimeTva,
   lireFicheApporteur,
+  lireHistoriqueEmailsApporteur,
 } from "@/features/apporteurs-reseau/requetes-console";
 import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
 import { CLE_REGISTRE_INDISPONIBLE } from "@/features/apporteurs-reseau/signature-regles";
 import { gardePage } from "@/server/auth/garde-page";
-import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
+import { peutEngager, peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 
@@ -112,9 +119,18 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
     siretDe(d.id),
     lireChangementsRegimeTva(d.id),
   ]);
+  // Messages reçus (e-mails + demandes d'aide) : contenu personnel, réservé aux rôles autorisés.
+  const messagesRecus = peutOuvrirDossierApporteur(acces.role)
+    ? await lireMessagesRecus(d.id).catch(() => [])
+    : null;
   const refusSuppr = etatSuppr ? refusSuppression(etatSuppr) : "Dossier introuvable.";
   // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
   const voitPii = peutOuvrirDossierApporteur(acces.role);
+  // Historique des e-mails : administrateurs seulement (les objets citent des montants, des noms).
+  const voitEmails = acces.role === "admin" || acces.role === "super_admin";
+  const emails = voitEmails ? await lireHistoriqueEmailsApporteur(d.id, d.email) : [];
+  // Relevés mensuels (lot 4b', lecture seule) : mêmes rôles que le dossier (montants par apporteur).
+  const releves = voitPii ? await lireRelevesDeLApporteur(d.id) : [];
   const MASQUE = "Réservé aux rôles autorisés";
   const purgees = new Set(fiche.piecesPurgeesIds);
   const pieces: PieceAffichee[] = d.pieces.map((p) => ({
@@ -149,17 +165,19 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
         }
       />
 
-      {aVerifier ? (
-        <AdminCard as="section" elevation={2}>
-          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
-            Dossier signé : à vérifier
-          </h2>
-          <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
-            Vérifiez chaque pièce, relisez le contrat signé, puis choisissez.
-          </p>
-          <DecisionDossier apporteurId={d.id} />
-        </AdminCard>
-      ) : null}
+      <BlocDecision>
+        {aVerifier ? (
+          <AdminCard as="section" elevation={2}>
+            <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
+              Dossier signé : à vérifier
+            </h2>
+            <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
+              Vérifiez chaque pièce, relisez le contrat signé, puis choisissez.
+            </p>
+            <DecisionDossier apporteurId={d.id} />
+          </AdminCard>
+        ) : null}
+      </BlocDecision>
 
       {/* Le nom du contrat correspond-il à l'entreprise ? (10/10) Registre relu à l'affichage. */}
       {voitPii && (d.siren || siret) ? (
@@ -266,6 +284,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
 
         <AdminCard as="section">
           <h2 className="mb-[var(--space-admin-2)] font-semibold">Contrat</h2>
+          <Ligne libelle="Date d'entrée" valeur={fiche.creeAt ? jourHeure(fiche.creeAt) : null} />
           <Ligne
             libelle="Signé par l'apporteur"
             valeur={d.signeParApporteurAt ? jourHeure(d.signeParApporteurAt) : null}
@@ -335,6 +354,16 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
               ))}
             </p>
           ) : null}
+          {fiche.submissionId ? (
+            <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+              <Link
+                href={`/fr/${adminPrefix}/contacts/messages/${fiche.submissionId}`}
+                className="underline"
+              >
+                Voir la fiche contact
+              </Link>
+            </p>
+          ) : null}
           <ParrainEtNote
             apporteurId={d.id}
             parrainId={fiche.parrainId}
@@ -343,6 +372,8 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           />
         </AdminCard>
       </div>
+
+      {messagesRecus ? <MessagesRecus messages={messagesRecus} /> : null}
 
       <AdminCard as="section">
         <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
@@ -394,6 +425,15 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           </div>
         )}
       </AdminCard>
+
+      {voitPii ? (
+        <RelevesMensuels
+          base={`/fr/${adminPrefix}`}
+          releves={releves}
+          peutVoirPdf={peutEngager(acces.role, "facturer")}
+        />
+      ) : null}
+      {voitEmails ? <HistoriqueEmails emails={emails} base={`/fr/${adminPrefix}`} /> : null}
 
       <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">
         <CumulVigilance v={fiche.vigilance} />

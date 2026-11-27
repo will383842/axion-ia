@@ -7,7 +7,7 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import type { ApporteurReseauStatut } from "../../../prisma/generated/client";
+import type { ApporteurReseauStatut, EmailLogStatus } from "../../../prisma/generated/client";
 
 import { lireContenuPiece } from "./pieces-chiffrement";
 import { STATUTS_CUMUL, cumulVigilanceCents, piecesVigilanceConformes } from "./commissions";
@@ -226,6 +226,7 @@ export async function lireFicheApporteur(id: string) {
     aContratApporteur: !!a?.contratCle,
     aContratSigne: !!a?.contratSigneCle,
     submissionId: a?.submissionId ?? null,
+    creeAt: a?.creeAt ?? null,
     signature: sansTexteArchive(a?.signatureApporteur),
     filleuls: (a?.filleuls ?? []).map((f) => ({ id: f.id, nom: nom(f), statut: f.statut })),
     parrainsPossibles: parrains.map((p) => ({ id: p.id, nom: nom(p) })),
@@ -379,27 +380,51 @@ export interface ReservationOuverteVue {
   apporteur: string;
   recueAt: Date;
   reserveeJusquAt: Date;
+  /** Fin de la réservation SANS validation (rattrapage possible), sinon `null`. */
+  echueAt: Date | null;
 }
+
+/** Mention de la console pour une réservation échue : la validation reste possible. */
+export const LIBELLE_RESERVATION_ECHUE = (dateEnClair: string): string =>
+  `Réservation terminée le ${dateEnClair} ; validation encore possible si le rendez-vous a été pris avant cette date`;
 
 export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[]> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
   let lignes;
   try {
-    lignes = await prisma.presentationReservation.findMany({
-      where: { regle: "rendez_vous", valideeAt: null, echueAt: null },
-      orderBy: [{ reserveeJusquAt: "asc" }],
-      take: 300,
-      select: { presentationId: true, reserveeJusquAt: true },
-    });
+    // Deux lectures bornées : les réservations en cours (les plus proches du terme d'abord), puis les
+    // échues non validées (les plus récentes d'abord) : une longue file d'anciennes échues ne
+    // masque jamais les réservations en cours.
+    const select = { presentationId: true, reserveeJusquAt: true, echueAt: true } as const;
+    const [enCours, echues] = await Promise.all([
+      prisma.presentationReservation.findMany({
+        where: { regle: "rendez_vous", valideeAt: null, echueAt: null },
+        orderBy: [{ reserveeJusquAt: "asc" }],
+        take: 300,
+        select,
+      }),
+      prisma.presentationReservation.findMany({
+        where: { regle: "rendez_vous", valideeAt: null, echueAt: { not: null } },
+        orderBy: [{ echueAt: "desc" }],
+        take: 100,
+        select,
+      }),
+    ]);
+    lignes = [...enCours, ...echues];
   } catch (err) {
     if ((err as { code?: unknown } | null)?.code === "P2021") return [];
     throw err;
   }
   if (lignes.length === 0) return [];
   const presentations = await prisma.presentationEntreprise.findMany({
-    where: { id: { in: lignes.map((l) => l.presentationId) }, statut: "reservee" },
+    where: {
+      id: { in: lignes.map((l) => l.presentationId) },
+      // En cours, ou échue sans validation et jamais confirmée (rattrapage).
+      OR: [{ statut: "reservee" }, { statut: "terminee", confirmeeAt: null }],
+    },
     select: {
       id: true,
+      statut: true,
       denomination: true,
       siren: true,
       recueAt: true,
@@ -411,6 +436,8 @@ export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[
   for (const l of lignes) {
     const p = parId.get(l.presentationId);
     if (!p) continue;
+    // `terminee` sans échéance (résiliation) : rien à rattraper.
+    if (p.statut === "terminee" && !l.echueAt) continue;
     sorties.push({
       presentationId: p.id,
       denomination: p.denomination,
@@ -419,6 +446,7 @@ export async function lireReservationsOuvertes(): Promise<ReservationOuverteVue[
         `${decryptPii(p.apporteur.prenom) ?? ""} ${decryptPii(p.apporteur.nom) ?? ""}`.trim(),
       recueAt: p.recueAt,
       reserveeJusquAt: l.reserveeJusquAt,
+      echueAt: l.echueAt ?? null,
     });
   }
   return sorties;
@@ -469,4 +497,89 @@ export async function lireChangementsRegimeTva(
   } catch {
     return [];
   }
+}
+
+/**
+ * Libellé lisible d'un gabarit quand la copie du journal (donc l'objet réel) est absente :
+ * « apporteur-lien-espace » → « Lien espace ». Le préfixe « apporteur- » est retiré, les tirets
+ * deviennent des espaces, la première lettre passe en capitale. Jamais le nom technique brut.
+ */
+export function libelleGabaritApporteur(template: string): string {
+  const sans = template
+    .replace(/^apporteur-/, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
+  if (!sans) return "E-mail";
+  return sans.charAt(0).toUpperCase() + sans.slice(1);
+}
+
+/** Nombre maximal d'e-mails relus dans l'historique de la fiche. */
+export const LIMITE_HISTORIQUE_EMAILS = 50;
+
+export interface EmailDeLApporteur {
+  id: string;
+  template: string;
+  /** Objet réel, relu dans la copie du journal ; null si la copie n'existe pas (ou plus). */
+  objet: string | null;
+  status: EmailLogStatus;
+  /** Date d'envoi si partie, sinon date de création de la ligne. */
+  date: Date;
+  error: string | null;
+}
+
+/**
+ * Historique des e-mails envoyés à un apporteur (lecture seule), lus dans `EmailLog`.
+ *
+ * Deux clés de traçabilité posées par `envoyer()` rattachent un e-mail à l'apporteur :
+ * `ApporteurReseau` / id de l'apporteur, et `PresentationEntreprise` / id d'une de SES
+ * présentations (annonce d'attribution…). Mais certains e-mails posés sur ces clés ne lui
+ * sont PAS adressés (alerte interne à Axion, courrier à l'entreprise présentée) : on ne garde
+ * donc que ceux dont le DESTINATAIRE est son adresse actuelle (`recipient` est en `citext`).
+ * Limite assumée : un e-mail parti vers une ancienne adresse n'apparaît pas. Sans adresse, la
+ * liste est vide plutôt que de montrer des courriers d'autrui. Plus récents d'abord, 50 au plus.
+ */
+export async function lireHistoriqueEmailsApporteur(
+  apporteurId: string,
+  email: string | null,
+): Promise<EmailDeLApporteur[]> {
+  if (!email) return [];
+  const presentations = await prisma.presentationEntreprise.findMany({
+    where: { apporteurId },
+    select: { id: true },
+  });
+  const lignes = await prisma.emailLog.findMany({
+    where: {
+      recipient: email,
+      OR: [
+        { entityType: "ApporteurReseau", entityId: apporteurId },
+        ...(presentations.length > 0
+          ? [
+              {
+                entityType: "PresentationEntreprise",
+                entityId: { in: presentations.map((p) => p.id) },
+              },
+            ]
+          : []),
+      ],
+    },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    take: LIMITE_HISTORIQUE_EMAILS,
+    select: {
+      id: true,
+      template: true,
+      status: true,
+      createdAt: true,
+      sentAt: true,
+      error: true,
+      contenu: { select: { subject: true } },
+    },
+  });
+  return lignes.map((l) => ({
+    id: l.id,
+    template: l.template,
+    objet: l.contenu?.subject ?? null,
+    status: l.status,
+    date: l.sentAt ?? l.createdAt,
+    error: l.error,
+  }));
 }

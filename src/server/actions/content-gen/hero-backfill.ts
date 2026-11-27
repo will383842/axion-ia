@@ -25,6 +25,10 @@ import {
   countHeroBackfillTargets,
   type BackfillHeroItem,
 } from "@/server/content-gen/images/backfill-hero";
+import {
+  scanDuplicateImages,
+  type DuplicateArticle,
+} from "@/server/content-gen/images/duplicate-report";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 
 // Plafond d'articles traités par clic. Chaque article = 1 appel Unsplash
@@ -104,6 +108,48 @@ export async function runHeroBackfill(
       items: result.items,
       batchLimit: BATCH_LIMIT,
     };
+  } catch (err) {
+    Sentry.captureException(err);
+    return { error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+// ─── Rapport des doublons d'images (lecture seule) + remplacement UNITAIRE ────
+
+/** Rapport en lecture seule : articles publiés dont une photo est en doublon. */
+export async function reportDuplicateImages(): Promise<
+  { duplicates: DuplicateArticle[] } | { error: string }
+> {
+  try {
+    await requireAdmin();
+    return { duplicates: await scanDuplicateImages() };
+  } catch (err) {
+    Sentry.captureException(err);
+    return { error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+const ReplaceOneSchema = z.object({ articleId: z.string().uuid() }).strict();
+
+/**
+ * Bouton « Remplacer » : remplace l'image principale d'UN article (jamais en
+ * masse) via le chemin hero-backfill et les règles qualité. Sans photo pertinente
+ * et inutilisée, l'image actuelle est conservée.
+ */
+export async function replaceDuplicateHero(
+  input: z.infer<typeof ReplaceOneSchema>,
+): Promise<{ replaced: boolean; reason?: string } | { error: string }> {
+  try {
+    await requireAdminWriteRateLimited("hero-replace-one", { limit: 30, windowSec: 60 });
+    const { articleId } = ReplaceOneSchema.parse(input);
+    if (!process.env.UNSPLASH_ACCESS_KEY) {
+      return { error: "UNSPLASH_ACCESS_KEY absente côté serveur (doctrine Unsplash-only)." };
+    }
+    const result = await backfillHeroImages({ articleIds: [articleId], limit: 1 });
+    revalidatePath("/[locale]/blog", "page");
+    const item = result.items[0];
+    if (result.updated > 0) return { replaced: true };
+    return { replaced: false, reason: item?.reason ?? "aucune photo pertinente et inutilisée" };
   } catch (err) {
     Sentry.captureException(err);
     return { error: err instanceof Error ? err.message : String(err) };

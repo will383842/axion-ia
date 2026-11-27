@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquettes v2 — modèles d'articles</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "Manrope"; src: url("../../../../src/fonts/manrope-latin-var.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("../../../../src/fonts/fraunces-latin-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("../../../../src/fonts/fraunces-latin-var-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inconsolata"; src: url("../../../../src/fonts/inconsolata-latin-var.woff2") format("woff2"); font-weight: 200 900; font-display: swap; }
+:root {
+  --color-bg: #faf8f3; --color-paper: #ffffff; --color-sand: #f0e9da;
+  --color-mocha: #2a2520; --color-mocha-fg: #f7f3ea; --color-terracotta-on-mocha: #eb8560;
+  --color-fg: #1a1815; --color-fg-soft: #524b41; --color-primary: #1a4dd9; --color-primary-hover: #0f3aae;
+  --color-terracotta: #b23f16; --color-terracotta-deep: #8c3010; --color-terracotta-soft: #f5e3d8;
+  --color-border: #e5ddc8; --color-border-field: #8a7f6c; --color-mocha-soft: #3d362f; --color-border-on-mocha: #4a4239;
+  --radius-lg: 12px; --radius-xl: 20px; --radius-full: 9999px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--color-bg); color: var(--color-fg);
+  font: 400 1.0625rem/1.65 "Manrope", system-ui, sans-serif; }
+header { background: linear-gradient(180deg, var(--color-terracotta) 0 58%, color-mix(in srgb, var(--color-terracotta) 55%, var(--color-terracotta-deep))); color: var(--color-mocha-fg); padding: 3rem 1rem 3.5rem; }
+/* Contrastes mesurés : ivoire sur terracotta 5,24:1 ; blanc 5,81:1 ; terracotta-soft 4,66:1 */
+.contenu { max-width: 72rem; margin: 0 auto; }
+.surtitre { display: inline-block; background: var(--color-paper); color: var(--color-terracotta-deep);
+  border-radius: var(--radius-full); padding: .25rem .9rem; font-weight: 600; font-size: .875rem;
+  letter-spacing: .06em; text-transform: uppercase; }
+h1 { font-family: "Fraunces", Georgia, serif; font-weight: 500; line-height: 1.08; color: var(--color-paper);
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); margin: 1rem 0; }
+h1 em { color: var(--color-terracotta-soft); }
+header p { max-width: 46rem; font-size: 1.1875rem; margin: 0; }
+main { padding: 2.5rem 1rem 4rem; }
+.grille { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); }
+.carte { background: var(--color-paper); border: 1px solid var(--color-border);
+  border-top: 6px solid var(--color-terracotta); border-radius: var(--radius-xl);
+  padding: 1.5rem; display: flex; flex-direction: column; gap: .6rem; height: 100%; }
+.carte:nth-child(3n+2) { border-top-color: var(--color-primary); }
+.carte:nth-child(3n+3) { border-top-color: var(--color-mocha); }
+.code { font-family: "Inconsolata", ui-monospace, monospace; color: var(--color-terracotta-deep);
+  font-size: .9375rem; font-weight: 600; }
+h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 1.5rem; line-height: 1.2; margin: 0; }
+h2 a { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-terracotta);
+  text-underline-offset: .2em; }
+h2 a:hover { color: var(--color-primary-hover); }
+.carte p { margin: 0; color: var(--color-fg-soft); }
+.url { font-size: .9375rem; color: var(--color-fg-soft); }
+a:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; border-radius: 4px; }
+.note { margin-top: 2.5rem; background: var(--color-sand); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; }
+.note h2 { font-size: 1.25rem; margin-bottom: .5rem; }
+.note ul { margin: 0; padding-left: 1.2rem; }
+/* Aperçu (décor aria-hidden) : le bandeau du héros en miniature, avec le signe propre au modèle
+   et, à droite, la carte d'action (bleu · terracotta · contour) telle qu'elle apparaît dès le premier écran */
+.apercu { position: relative; display: flex; align-items: center; gap: .85rem; height: 6.25rem; margin: -1.5rem -1.5rem .5rem;
+  padding: 0 7rem 0 1.25rem; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--color-terracotta); }
+.apercu__signe { font: 600 2.5rem/1 "Fraunces", Georgia, serif; letter-spacing: -.02em; color: var(--color-terracotta-soft); white-space: nowrap; }
+.apercu__legende { font: 600 .75rem/1.3 "Manrope", system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--color-mocha-fg); }
+.apercu::after { content: ""; position: absolute; right: 1.1rem; top: 1rem; bottom: 1rem; width: 4.75rem; border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--color-border-on-mocha), 4px 4px 0 var(--color-terracotta-deep);
+  background: linear-gradient(var(--color-primary) 0 0) .5rem .7rem / calc(100% - 1rem) .8rem no-repeat,
+    linear-gradient(var(--color-terracotta) 0 0) .5rem 1.85rem / calc(100% - 1rem) .8rem no-repeat,
+    linear-gradient(var(--color-mocha-fg) 0 0) .5rem 3rem / calc(100% - 1rem) 1.5px no-repeat, var(--color-mocha-soft); }
+@media (forced-colors: active) { .apercu::after { display: none; } .apercu { border: 2px solid CanvasText; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="contenu">
+    <span class="surtitre">Maquettes v2</span>
+    <h1>Modèles de pages d'articles&nbsp;: <em>plus visuels, plus de rendez-vous</em></h1>
+    <p>Dix modèles&nbsp;: les huit modèles du blog, plus les actualités et les guides. Chaque page a désormais
+    des encadrés de couleur, un grand titre terracotta et trois boutons toujours visibles&nbsp;: Journée IA,
+    Diagnostic IA de 45 min, Écrire un message.</p>
+  </div>
+</header>
+<main>
+  <div class="contenu">
+    <ul class="grille">
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">4 sem.</span><span class="apercu__legende">d'essai, puis une décision</span></div><span class="code">analyse · /blog/[slug]</span>
+        <h2><a href="analyse.html">Analyse (modèle par défaut)</a></h2>
+        <p>Un grand titre terracotta et une réponse «&nbsp;En bref&nbsp;» dès le haut de la page. Ensuite, un encadré coloré
+        toutes les deux ou trois sections&nbsp;: à retenir, exemple, chiffre clé, citation, schéma.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">1→6</span><span class="apercu__legende">étapes en frise</span></div><span class="code">guide · /blog/[slug]</span>
+        <h2><a href="guide.html">Guide pratique</a></h2>
+        <p>Les étapes deviennent une frise à gros numéros, avec «&nbsp;Étape 3 sur 6&nbsp;» pour savoir où on en est.
+        On y trouve aussi une liste «&nbsp;Avant de commencer&nbsp;» à cocher et une méthode de calcul mise en valeur.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">A ou B</span><span class="apercu__legende">face-à-face</span></div><span class="code">comparatif · /blog/[slug]</span>
+        <h2><a href="comparatif.html">Comparatif</a></h2>
+        <p>Un face-à-face en tête de page, puis un tableau à coches et croix.
+        Des cartes «&nbsp;Pour qui&#8239;?&nbsp;» et un verdict «&nbsp;ça dépend de…&nbsp;», sans gagnant, sans note, sans prix.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">10</span><span class="apercu__legende">cartes numérotées</span></div><span class="code">selection · /blog/[slug]</span>
+        <h2><a href="selection.html">Sélection (top X)</a></h2>
+        <p>Chaque choix devient une grande carte avec un gros numéro et trois rubriques&nbsp;:
+        pour qui, points forts, limites. Un tableau de synthèse vient à la fin, sans aucune note inventée.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">→</span><span class="apercu__legende">avant, pendant, après · exemple type</span></div><span class="code">cas · /blog/[slug]</span>
+        <h2><a href="etude-de-cas.html">Étude de cas</a></h2>
+        <p>Une fiche «&nbsp;Contexte&nbsp;» sombre (secteur, taille, ville) et une frise «&nbsp;Avant / Pendant / Après&nbsp;» en couleur.
+        Elle est présentée comme un exemple type&nbsp;: aucun résultat chiffré, aucun témoignage inventé.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">RAG.</span><span class="apercu__legende">le terme en très grand</span></div><span class="code">definition · /blog/[slug]</span>
+        <h2><a href="definition.html">Définition</a></h2>
+        <p>Le terme s'affiche en très grand avec sa définition en une phrase, puis
+        «&nbsp;En pratique&nbsp;», «&nbsp;À ne pas confondre avec&nbsp;», un petit schéma et des pastilles vers le glossaire.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">?</span><span class="apercu__legende">10 questions, 3 thèmes</span></div><span class="code">faq · /blog/[slug]</span>
+        <h2><a href="faq.html">Questions-réponses</a></h2>
+        <p>Les questions deviennent des cartes numérotées, rangées par thème avec des pastilles de couleur.
+        La première est ouverte. Le bouton mis en avant est «&nbsp;Écrire un message&nbsp;».</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">≈ 10 %</span><span class="apercu__legende">chiffres sourcés</span></div><span class="code">chiffres · /blog/[slug]</span>
+        <h2><a href="chiffres.html">Chiffres (baromètre)</a></h2>
+        <p>Une rangée de très grands chiffres, chacun avec sa source, et des barres en CSS pur.
+        On voit la date des données, un encadré «&nbsp;Comment lire ces chiffres&nbsp;» et un lien vers l'Observatoire.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">Art. 4</span><span class="apercu__legende">la source officielle</span></div><span class="code">actualite · /actualites/[slug] — nouveau</span>
+        <h2><a href="actualite.html">Actualité</a></h2>
+        <p>Une page courte&nbsp;: trois cartes «&nbsp;Ce qui change / Pour qui / Que faire maintenant&nbsp;», la source d'origine
+        bien visible et une frise des dates. Elle a les mêmes boutons que le blog, alors qu'avant elle n'en avait pas.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">7</span><span class="apercu__legende">chapitres en jalons</span></div><span class="code">guide pilier · /guides/[slug] — nouveau</span>
+        <h2><a href="guide-pilier.html">Guide pilier</a></h2>
+        <p>Un long guide découpé en chapitres sur de grands bandeaux, avec «&nbsp;Chapitre 2 sur 7&nbsp;» et le temps restant.
+        Il se termine par une feuille de route en sept actions. Deux encarts d'action, plus la colonne de boutons.</p></li>
+    </ul>
+    <section class="note" aria-labelledby="commun">
+      <h2 id="commun">Commun aux dix modèles</h2>
+      <ul>
+        <li>Sur ordinateur, une carte à droite, visible dès le premier écran puis collante pendant la lecture, propose&nbsp;: Diagnostic IA, 45 min · Découvrir la Journée IA · Écrire un message. Le bandeau du site porte aussi un bouton bleu «&nbsp;Diagnostic IA, 45 min&nbsp;».</li>
+        <li>Chaque modèle a son signe dans l'en-tête (ci-dessus en miniature)&nbsp;: «&nbsp;RAG.&nbsp;», «&nbsp;A ou B&nbsp;», «&nbsp;≈ 10 %&nbsp;», les 7 jalons du guide pilier…</li>
+        <li>Sur téléphone, les mêmes trois boutons sont dans une barre fixe en bas de l'écran.</li>
+        <li>Une barre de lecture en haut de page, le temps de lecture, des intertitres en questions et un résumé visuel à la fin.</li>
+        <li>Aucun JavaScript, aucune nouvelle police. URL, slugs et canonical inchangés.</li>
+        <li>Les chiffres affichés sont des exemples d'illustration, avec leur source, à revérifier avant publication.</li>
+      </ul>
+    </section>
+  </div>
+</main>
+</body>
+</html>

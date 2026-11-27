@@ -2178,6 +2178,21 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "TeamMember",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+  },
+  {
+    modele: "TeamQuestionnaireInvite",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+  },
+  {
+    modele: "TeamQuestionnaireSubmission",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+  },
+  {
     // Assistant de devis, fiche S17 — requalifié `dossier-client` AVANT l'allumage de S06.
     modele: "DevisAssistantBrouillon",
     motif:
@@ -2226,6 +2241,30 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
     motif:
       "les octets d'une pièce de `DocumentProjet` : même règle que la pièce (supprimés avant " +
       "elle par la purge du pilote).",
+  },
+  {
+    // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
+    modele: "ApporteurChangementIban",
+    motif:
+      "preuve de la décision sur un changement de compte bancaire (qui a demandé, confirmé, validé ou refusé, et quand) : conservée comme les autofactures et les virements qu'elle justifie (art. 17(3)(b) et (e) RGPD, art. L.123-22 du code de commerce). Annuler la demande ouverte à l'effacement sera livré avec le lot « RGPD » du chantier, avant l'allumage ; la ligne n'est jamais supprimée.",
+  },
+  {
+    // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
+    modele: "ApporteurChangementIbanRib",
+    motif:
+      "RIB joint à une demande de changement de compte : devenu la pièce RIB du dossier si la demande est validée ; si elle est refusée, expirée, annulée ou contestée, la durée de conservation n'est pas encore arrêtée (décision D-7, avis du délégué à la protection des données attendu ; fixée avec le lot « RGPD » du chantier, avant l'allumage), et le RIB peut être gardé comme preuve d'une tentative de fraude (art. 17(3)(e) RGPD).",
+  },
+  {
+    // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
+    modele: "ApporteurIbanHistorique",
+    motif:
+      "comptes bancaires successifs de l'apporteur, conservés comme preuve du compte payé (art. 17(3)(b) RGPD, art. L.123-22 du code de commerce), en ajout seul.",
+  },
+  {
+    // 2026-11-26 — changement d'IBAN après signature (plan apporteurs-changement-iban, lot 1).
+    modele: "ApporteurVirementCompte",
+    motif:
+      "compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement a été déclaré : preuve du paiement, conservée comme les autofactures (art. L.123-22 du code de commerce), en ajout seul.",
   },
   {
     // 2026-10-08 — SIRET de l'établissement d'un apporteur : comme son SIREN (gardé sur la fiche).
@@ -3061,6 +3100,11 @@ export async function eraseReseauApporteurForEmail(
     },
   });
   if (!a) return { apporteur: "aucun", presentationsAnonymisees: presentations.count };
+  // Les messages reçus de l'apporteur (e-mails, demandes d'aide) : supprimés dans tous les cas,
+  // aucune obligation légale ne les impose (contrairement aux autofactures).
+  await prisma.apporteurMessageRecu.deleteMany({
+    where: { OR: [{ apporteurId: a.id }, { fromEmailHash: empreinte }] },
+  });
   await prisma.pieceApporteurContenu.deleteMany({ where: { piece: { apporteurId: a.id } } });
   await prisma.pieceApporteur.updateMany({
     where: { apporteurId: a.id },

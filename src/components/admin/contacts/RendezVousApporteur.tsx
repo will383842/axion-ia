@@ -29,6 +29,7 @@ import {
 } from "@/features/admin-rendezvous/issue-apporteur";
 import { peutEngager } from "@/server/auth/habilitations";
 
+import { BoutonTrameEchange } from "./BoutonTrameEchange";
 import { IssueEchangeApporteurForm } from "./IssueEchangeApporteurForm";
 
 export async function RendezVousApporteur({
@@ -91,6 +92,13 @@ export async function RendezVousApporteur({
                   {point?.noteSur20 !== null && point?.noteSur20 !== undefined
                     ? ` · ${point.noteSur20}/20`
                     : ""}
+                </p>
+                <p>
+                  <BoutonTrameEchange
+                    eventTypeName={r.title}
+                    typeRendezVous={r.typeRendezVous}
+                    contactName={r.contactName}
+                  />
                 </p>
                 {issueOuverte ? (
                   <IssueEchangeApporteurForm

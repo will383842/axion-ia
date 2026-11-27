@@ -28,6 +28,7 @@ import type { GeneratorOutput } from "../generators/types";
 import { verifierAccrocheTropProche } from "./anti-redite-accroche";
 import { surfaceDepuisSortie, type SortiePourSurface } from "./doctrine-surface";
 import { evaluateSoft404 } from "./soft-404-gate";
+import { controlerLisibiliteV2 } from "./lisibilite-v2";
 import { detecterTutoiement } from "./vouvoiement";
 
 /** Plancher de mots des articles longs : en dessous, relecture humaine. */
@@ -68,7 +69,9 @@ export type CodeBarriere =
   | "fidelite-kb"
   | "fidelite-llm"
   | "fact-check-claude"
-  | "journee-ia";
+  | "journee-ia"
+  | "equipe-editoriale"
+  | "lisibilite-v2";
 
 export interface BarriereRelecture {
   readonly code: CodeBarriere;
@@ -173,6 +176,17 @@ export function evaluerBarrieresRelecture(entree: EntreeBarrieres): BarriereRele
         slug_proche: accroche.slugProche,
         source: accroche.source,
       },
+    });
+  }
+
+  // Lisibilité V2 (CONTENU_LISIBILITE_V2) : texte pénible à lire → relecture, jamais refus.
+  // Interrupteur éteint : liste vide, aucune barrière neuve.
+  const lisibilite = controlerLisibiliteV2(html, process.env, contentType);
+  if (lisibilite.length > 0) {
+    barrieres.push({
+      code: "lisibilite-v2",
+      libelle: `Texte difficile à lire : ${lisibilite.map((p) => p.message).join(" ; ")}`,
+      detail: { problemes: lisibilite.map((p) => p.code) },
     });
   }
 

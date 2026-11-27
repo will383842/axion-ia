@@ -28,6 +28,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { RegenererFacturePdfButton } from "@/components/admin/qualiopi/RegenererFacturePdfButton";
 import { PiecesFacturationOpcoButton } from "@/components/admin/qualiopi/PiecesFacturationOpcoButton";
 import { circuitPaiementSession } from "@/server/qualiopi/financements/circuit-paiement-opco";
+import { factureCommissionneeParApporteur } from "@/server/qualiopi/financements/avoir-commission-apporteur";
 import { FactureFormationActions } from "@/components/admin/qualiopi/FactureFormationActions";
 import { lienTelechargement } from "@/lib/content-disposition";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -517,6 +518,9 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
           estAvoir={estAvoir}
           contactEmail={facture.client?.contactEmail ?? null}
           canWrite={peutEcrire}
+          commissionApporteur={
+            peutEcrire && !estAvoir ? await factureCommissionneeParApporteur(facture.id) : false
+          }
         />
       </section>
     </AdminPageShell>

@@ -24,14 +24,13 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useAnalyticsConsent } from "./CookieConsent";
 import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
 import { estSurfaceConsole } from "@/lib/analytics/surface-console";
 
 export function Clarity() {
-  const projectId = env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+  const projectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || undefined;
   const consent = useAnalyticsConsent();
   const pathname = usePathname();
   if (!projectId) return null;

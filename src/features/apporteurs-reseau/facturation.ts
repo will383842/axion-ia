@@ -111,6 +111,8 @@ async function scinderReprise(s: {
         releveMois: true,
         montantCents: true,
         creeAt: true,
+        regleAppliquee: true,
+        versionContrat: true,
       },
     });
     if (
@@ -138,6 +140,9 @@ async function scinderReprise(s: {
         statut: "reprise",
         // Date d'ORIGINE de la reprise : les délais de l'art. 12.4 ne repartent pas à zéro.
         creeAt: o.creeAt,
+        // Relevé mensuel : le reste de la reprise garde la règle de la ligne scindée (aucun calcul).
+        regleAppliquee: o.regleAppliquee,
+        versionContrat: o.versionContrat,
       },
       select: { id: true },
     });

@@ -40,8 +40,14 @@ import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
-  calculerCommission,
+  calculerCommissionSelonGrilleAvecRegle,
+  versionContratSignee,
+  type RegleAppliquee,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
+  estPalierFormation,
+  grilleDeLaCommande,
+  MESSAGE_GRILLE_INCONNUE,
+  type GrilleCommission,
   commissionJourneeIaCents,
   PALIER_JOURNEE_IA,
   PRIX_REFERENCE_JOURNEE_IA_CENTS,
@@ -50,7 +56,6 @@ import {
   etatVigilance,
   euros,
   PALIER_CONFERENCE,
-  PALIERS_FORMATION,
   PARRAINAGE_BPS,
 } from "./regles";
 
@@ -303,7 +308,53 @@ export async function statutApresVigilance(
   return { statut: v.attendre ? "en_attente_vigilance" : "due", demander: v.demander };
 }
 
+// ── Grille de la ligne (décision du 27/11) ───────────────────────────────
+
+/**
+ * La grille d'une ligne de commission et la date de signature de sa commande : version signée par
+ * l'apporteur de la présentation, date de déclaration, date de signature de la commande (devis
+ * accepté, sinon émission de la facture). Une donnée manquante → grille `null` (ESCALADE).
+ */
+export async function grilleDeLaLigne(c: {
+  presentationId: string | null;
+  factureId: string;
+}): Promise<{ grille: GrilleCommission | null; signeeAt: Date | null }> {
+  const [fac, pres] = await Promise.all([
+    prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+    }),
+    c.presentationId
+      ? prisma.presentationEntreprise.findUnique({
+          where: { id: c.presentationId },
+          select: { recueAt: true, apporteur: { select: { signatureApporteur: true } } },
+        })
+      : null,
+  ]);
+  const signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+  if (!pres || !signeeAt) return { grille: null, signeeAt };
+  return {
+    grille: grilleDeLaCommande({
+      signature: pres.apporteur?.signatureApporteur,
+      declareeAt: pres.recueAt,
+      commandeSigneeAt: signeeAt,
+      // Date d'effet de l'avenant 2.8 : lot S1 (table de l'avenant).
+      avenant28EffetAt: null,
+    }),
+    signeeAt,
+  };
+}
+
 // ── Qualifier une formation ──────────────────────────────────────────────
+
+/** Version du contrat signée par cet apporteur (`null` si illisible : rien n'est inventé). */
+async function versionSignee(apporteurId: string): Promise<string | null> {
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { signatureApporteur: true },
+  });
+  return versionContratSignee(a?.signatureApporteur);
+}
 
 export async function qualifierCommission(
   id: string,
@@ -311,17 +362,14 @@ export async function qualifierCommission(
   quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
-  if (
-    palier !== PALIER_CONFERENCE &&
-    palier !== PALIER_JOURNEE_IA &&
-    !PALIERS_FORMATION.some((p) => p.id === palier)
-  )
+  if (palier !== PALIER_CONFERENCE && palier !== PALIER_JOURNEE_IA && !estPalierFormation(palier))
     return { ok: false, message: "Palier inconnu." };
   const c = await prisma.commissionApporteur.findUnique({
     where: { id },
     select: {
       id: true,
       apporteurId: true,
+      presentationId: true,
       factureId: true,
       parrainage: true,
       activite: true,
@@ -339,36 +387,41 @@ export async function qualifierCommission(
   if (!journeeIa && c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
   const q = quantiteSessions(quantite);
-  // Conférence : la date de signature de la commande décide du forfait (avant le 26/11/2026) ou de 0 €.
-  let signeeAt: Date | null = null;
-  if (palier === PALIER_CONFERENCE) {
-    const fac = await prisma.factureFormation.findUnique({
-      where: { id: c.factureId },
-      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
+  // Grille de la version signée (27/11) ; conférence en grille v3 : la date de signature de la
+  // commande décide du forfait (avant le 26/11/2026) ou de 0 €.
+  const { grille, signeeAt } = await grilleDeLaLigne(c);
+  if (grille === null) return { ok: false, message: MESSAGE_GRILLE_INCONNUE };
+  let regle: RegleAppliquee | null = null;
+  let calc: CalculCommission;
+  if (journeeIa) {
+    calc = {
+      statut: "calculee",
+      montantCents: commissionJourneeIaCents(c.factureHtCents, q),
+      palier: PALIER_JOURNEE_IA,
+      prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
+    };
+    regle = "journee_ia";
+  } else {
+    const r = calculerCommissionSelonGrilleAvecRegle({
+      activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
+      factureHtCents: c.factureHtCents,
+      palier,
+      quantite,
+      signeeAt,
+      grille,
     });
-    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
+    calc = r.calcul;
+    regle = r.regle;
   }
-  const calc: CalculCommission = journeeIa
-    ? {
-        statut: "calculee",
-        montantCents: commissionJourneeIaCents(c.factureHtCents, q),
-        palier: PALIER_JOURNEE_IA,
-        prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
-      }
-    : calculerCommission({
-        activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
-        factureHtCents: c.factureHtCents,
-        palier,
-        quantite,
-        signeeAt,
-      });
   if (calc.statut !== "calculee")
     return {
       ok: false,
       message:
         palier === PALIER_CONFERENCE
           ? "Conférence signée à partir du 26/11/2026 : aucune commission (contrat 2.8)."
-          : "Calcul impossible pour ce palier.",
+          : estPalierFormation(palier) && palier.endsWith("-3j-plus")
+            ? "Formation de 3 jours ou plus : indiquez le nombre de journées (3 au moins) en quantité."
+            : "Calcul impossible pour ce palier.",
     };
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
   const r = await prisma.commissionApporteur.updateMany({
@@ -380,6 +433,9 @@ export async function qualifierCommission(
       prixPublicHtCents: calc.prixPublicCents,
       montantCents: calc.montantCents,
       statut: v.statut,
+      // Règle et version posées au calcul, sous la garde `a_qualifier` : jamais rétroactif.
+      regleAppliquee: regle,
+      versionContrat: await versionSignee(c.apporteurId),
     },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être qualifiée." };
@@ -417,6 +473,7 @@ export async function classerActiviteCommission(
     select: {
       id: true,
       apporteurId: true,
+      presentationId: true,
       factureId: true,
       parrainage: true,
       activite: true,
@@ -437,23 +494,24 @@ export async function classerActiviteCommission(
       ? { ok: true, message: "Classée en formation : choisissez maintenant son palier." }
       : { ok: false, message: "Cette commission vient d'être modifiée." };
   }
-  // Développement web : jamais de commission rétroactive (4.1) — une commande signée avant la date
-  // d'effet est close à 0 €, comme au passage quotidien. Date illisible : close aussi (prudence).
-  let venteAnterieure = false;
-  // Conférence : une commande signée avant la date d'effet garde le forfait de l'ancien contrat.
-  let signeeAt: Date | null = null;
-  if (choisie === "site_web" || choisie === "conference") {
-    const fac = await prisma.factureFormation.findUnique({
-      where: { id: c.factureId },
-      select: { emiseAt: true, devis: { select: { acceptedAt: true } } },
-    });
-    signeeAt = fac?.devis?.acceptedAt ?? fac?.emiseAt ?? null;
-    if (choisie === "site_web")
-      venteAnterieure = !signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS;
-  }
-  const calc: CalculCommission = venteAnterieure
-    ? { statut: "aucune" }
-    : calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents, signeeAt });
+  // Grille de la version signée (27/11) : inconnue → ESCALADE, rien n'est clos ni calculé.
+  const { grille, signeeAt } = await grilleDeLaLigne(c);
+  if (grille === null) return { ok: false, message: MESSAGE_GRILLE_INCONNUE };
+  // Développement web (grille v3) : jamais de commission rétroactive (4.1) — une commande signée
+  // avant la date d'effet est close à 0 €, comme au passage quotidien.
+  const venteAnterieure =
+    grille === "v3" &&
+    choisie === "site_web" &&
+    (!signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS);
+  const avecRegle = venteAnterieure
+    ? null
+    : calculerCommissionSelonGrilleAvecRegle({
+        activite: choisie,
+        factureHtCents: c.factureHtCents,
+        signeeAt,
+        grille,
+      });
+  const calc: CalculCommission = avecRegle ? avecRegle.calcul : { statut: "aucune" };
   if (calc.statut === "aucune") {
     // La vraie raison, jamais un message générique : une commande de développement web signée avant
     // la date d'effet n'est pas « sans commission », elle est antérieure au contrat 2.8.
@@ -487,6 +545,8 @@ export async function classerActiviteCommission(
       ...(calc.palier ? { palier: calc.palier } : {}),
       montantCents: calc.montantCents,
       statut: v.statut,
+      regleAppliquee: avecRegle?.regle ?? null,
+      versionContrat: await versionSignee(c.apporteurId),
     },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
@@ -540,7 +600,12 @@ async function qualifierPartParrainage(
   const v = await statutApresVigilance(part.apporteurId, montant, maintenant, part.id);
   await prisma.commissionApporteur.updateMany({
     where: { id: part.id, statut: "a_qualifier" },
-    data: { montantCents: montant, statut: v.statut },
+    data: {
+      montantCents: montant,
+      statut: v.statut,
+      regleAppliquee: "parrainage_10",
+      versionContrat: await versionSignee(part.apporteurId),
+    },
   });
   if (v.demander) await demanderVigilance(part.apporteurId, "premiere");
 }

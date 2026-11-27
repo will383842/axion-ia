@@ -330,6 +330,8 @@ export async function SubmissionsV2({
   // date / heure / CONTENU du message directement dans la liste, puis
   // nom / prénom / email / téléphone. Société, statut pipeline et langue
   // restent visibles dans le détail — ils encombraient la liste.
+  // Catégories forcées par la route : la colonne « Type » dirait la même chose partout.
+  const categoriesForcees = Boolean(forcedTypes && forcedTypes.length > 0);
   const rows = result.items.map((s) => {
     // Une vraie réponse (composeur) ou un état terminal prime ; sinon, le suivi
     // de l'invitation (échange réservé, rappel, invité) remplace « Sans réponse ».
@@ -382,6 +384,19 @@ export async function SubmissionsV2({
         ) : s.etape && (etape.type === "candidat" || etape.type === "lien-envoye") ? (
           <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             {LIBELLE_ETAPE[s.etape]}
+          </span>
+        ) : null}
+        {etape.type === "lien-envoye" && (donneesEtape.suivi?.relances.length ?? 0) > 0 ? (
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Rappel {donneesEtape.suivi!.relances.length} le{" "}
+            {formatDateFrShort(donneesEtape.suivi!.relances.at(-1)).slice(0, 5)}
+          </span>
+        ) : null}
+        {etape.type === "lien-envoye" &&
+        maintenant.getTime() - etape.le.getTime() > 14 * 24 * 3600 * 1000 ? (
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Sans nouvelles depuis{" "}
+            {Math.floor((maintenant.getTime() - etape.le.getTime()) / 86_400_000)} j
           </span>
         ) : null}
         {s.archivedAt ? (
@@ -438,7 +453,7 @@ export async function SubmissionsV2({
         prenom ?? "—",
         s.contactEmail || "—",
         s.contactPhone ?? "—",
-        resolveSubmissionLabel(s.type, s.unifiedType),
+        ...(categoriesForcees ? [] : [resolveSubmissionLabel(s.type, s.unifiedType)]),
         <SubmissionRowActions
           key="actions"
           id={s.id}
@@ -462,7 +477,12 @@ export async function SubmissionsV2({
           jargon base visible de la chaîne (audit réservation 2026-08-26). */}
       <AdminPageHeader
         title={title}
-        description={`${result.total} message${result.total > 1 ? "s" : ""} · page ${result.page}/${result.totalPages}`}
+        // Apporteurs : le compteur est déjà affiché par la liste (une seule fois).
+        {...(perimetre === "apporteurs"
+          ? {}
+          : {
+              description: `${result.total} message${result.total > 1 ? "s" : ""} · page ${result.page}/${result.totalPages}`,
+            })}
         actions={
           <>
             {/* « Ajouter » remplace l'entrée de menu « Nouveau contact
@@ -486,7 +506,8 @@ export async function SubmissionsV2({
       <div className="mb-[var(--space-admin-6)]">
         <SubmissionFilters
           initial={searchParams}
-          hideCategory={Boolean(forcedTypes && forcedTypes.length > 0)}
+          hideCategory={categoriesForcees}
+          hideStatuts={perimetre === "apporteurs"}
         />
       </div>
       <AdminListScaffold
@@ -494,7 +515,7 @@ export async function SubmissionsV2({
         // « soumission » est le nom de la TABLE, jamais le mot d'un écran. Le h1
         // de cet écran a été corrigé en « Messages » ; ce compteur, quatre lignes
         // plus bas, disait encore « 1 234 soumissions » — le jumeau oublié.
-        itemLabel="message"
+        itemLabel={perimetre === "apporteurs" ? "candidat" : "message"}
         total={result.total}
         page={result.page}
         totalPages={result.totalPages}
@@ -507,7 +528,7 @@ export async function SubmissionsV2({
           "Prénom",
           "Email",
           "Téléphone",
-          "Type",
+          ...(categoriesForcees ? [] : ["Type"]),
           "Actions",
         ]}
         rows={rows}
@@ -515,6 +536,7 @@ export async function SubmissionsV2({
         paginationBaseHref={base}
         paginationPreservedParams={{
           type: searchParams["type"],
+          tri: searchParams["tri"],
           // Filtre « Catégorie » (unifiedType) — sinon perdu dès la page 2.
           unifiedType: searchParams["unifiedType"],
           status: searchParams["status"],

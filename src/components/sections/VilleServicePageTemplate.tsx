@@ -403,9 +403,9 @@ export async function renderVilleServicePage({
 
   // === JSON-LD stack — Phase C 2026-05-20 (centralisé via buildVilleServiceJsonLdGraph) ===
   // Les 5 variables individuelles ont été remplacées par le graph builder centralisé
-  // (`src/lib/seo/ville-service-jsonld.ts`) qui émet 7 schémas :
-  //   1. Service  2. LocalBusiness/ProfessionalService  3. BreadcrumbList
-  //   4. FAQPage + Speakable  5. HowTo  6. Person (Manon E-E-A-T)  7. ItemList villes proches
+  // (`src/lib/seo/ville-service-jsonld.ts`) qui émet jusqu'à 7 schémas : Service, BreadcrumbList,
+  // FAQPage + Speakable, HowTo (si au moins 3 étapes), référence à la plume IA, WebPage,
+  // ItemList villes proches. Aucun LocalBusiness (retiré le 11/11/2026), aucune adresse.
   const jsonLdSchemas = buildVilleServiceJsonLdGraph({
     locale: loc,
     isFr,
@@ -849,11 +849,11 @@ export async function renderVilleServicePage({
       <AiContentDisclaimer locale={loc} />
 
       {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — Phase C
-          2026-05-20 : 7 schémas combinés (Service + LocalBusiness + BreadcrumbList
-          + FAQPage Speakable + HowTo + Person E-E-A-T + ItemList villes proches)
+          2026-05-20 : schémas combinés (Service + BreadcrumbList
+          + FAQPage Speakable + HowTo + référence plume IA + WebPage + ItemList villes proches)
           via buildVilleServiceJsonLdGraph. Cumul ~4 services × 2 150 villes = ~17 200 SSG.
           V-04 P0i (Sprint Correctif 2026-05-22) — strategy="afterInteractive"
-          défère l'injection 7-schema (~3 KB JSON sur villes pilotes) après
+          défère l'injection multi-schémas (~3 KB JSON sur villes pilotes) après
           hydratation, retire du parsing HTML initial (-300 à -500 ms TBT). */}
       <JsonLdGraph
         schemas={jsonLdSchemas}

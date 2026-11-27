@@ -31,7 +31,10 @@ import { useId } from "react";
 import {
   compterImagesBloquees,
   cspCorpsEmail,
+  extraireLiens,
+  libelleTaille,
   type ApercuLecteur,
+  type PieceJointeApercu,
 } from "@/lib/email/apercu-lecteur";
 
 export interface LecteurEmailProps {
@@ -47,8 +50,8 @@ export interface LecteurEmailProps {
   objet?: string | null | undefined;
   /** Pré-en-tête (l'aperçu qu'affiche la boîte de réception). */
   preEntete?: string | null | undefined;
-  /** Noms des pièces jointes. */
-  piecesJointes?: readonly string[] | null | undefined;
+  /** Pièces jointes : noms seuls, ou pièces décrites (poids, bouton « Ouvrir »). `[]` = « Aucune pièce jointe ». */
+  piecesJointes?: readonly (string | PieceJointeApercu)[] | null | undefined;
   /** Titre accessible du cadre. */
   titre?: string;
   /** Lien « Ouvrir en plein écran » (nouvel onglet) ; absent = aucun lien. */
@@ -57,6 +60,13 @@ export interface LecteurEmailProps {
   formatInitial?: "html" | "texte";
   /** Neutralise les clics sur les liens du corps (aperçu avant envoi). */
   liensInertes?: boolean;
+  /**
+   * Aperçu avant envoi dont le HTML a été traité par `rendreLiensOuvrables` : les liens publics
+   * s'ouvrent dans un NOUVEL onglet (`<base target="_blank">` + `allow-popups`, jamais de script),
+   * et la liste « Liens de cet e-mail » s'affiche sous l'aperçu. Les liens personnels du
+   * destinataire n'y sont jamais cliquables. Remplace `liensInertes`.
+   */
+  liensOuvrables?: boolean;
   /** Raccourci : étale les champs d'un `ApercuLecteur` ; les propriétés explicites l'emportent. */
   apercu?: ApercuLecteur;
 }
@@ -65,12 +75,16 @@ const STYLE_LIENS_INERTES = "<style>a,area{pointer-events:none;cursor:default}</
 
 /** Balises posées en tête du document (après un éventuel doctype, pour ne pas
  *  basculer l'e-mail en mode quirks). */
-export function preparerSrcDoc(html: string, options: { liensInertes?: boolean } = {}): string {
+export function preparerSrcDoc(
+  html: string,
+  options: { liensInertes?: boolean; liensOuvrables?: boolean } = {},
+): string {
   const csp = `default-src 'none'; img-src data: ${cspCorpsEmail()}; style-src 'unsafe-inline'`;
   const balises =
     `<meta http-equiv="Content-Security-Policy" content="${csp}">` +
     `<meta name="color-scheme" content="light dark">` +
-    (options.liensInertes === true ? STYLE_LIENS_INERTES : "");
+    (options.liensOuvrables === true ? '<base target="_blank">' : "") +
+    (options.liensInertes === true && options.liensOuvrables !== true ? STYLE_LIENS_INERTES : "");
   const doctype = /^\s*<!doctype[^>]*>/i.exec(html);
   if (doctype) return doctype[0] + balises + html.slice(doctype[0].length);
   return balises + html;
@@ -113,10 +127,89 @@ function Bascule({
   );
 }
 
+function normaliserPieces(
+  liste: readonly (string | PieceJointeApercu)[] | null | undefined,
+): PieceJointeApercu[] | null {
+  if (!liste) return null;
+  return liste.map((p) => (typeof p === "string" ? { nom: p } : p)).filter((p) => p.nom !== "");
+}
+
+function PiecesJointes({ pieces }: { pieces: readonly PieceJointeApercu[] }) {
+  if (pieces.length === 0) return <>Aucune pièce jointe</>;
+  return (
+    <ul className="admin-lecteur-email-pieces">
+      {pieces.map((p, i) => (
+        <li key={`${i}-${p.nom}`}>
+          <span>{p.nom}</span>
+          {typeof p.taille === "number" ? <span> ({libelleTaille(p.taille)})</span> : null}
+          {p.remarque ? <span> : {p.remarque}</span> : null}
+          {p.href ? (
+            <>
+              {" "}
+              <a
+                className="admin-lecteur-email-ouvrir"
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Ouvrir ${p.nom} dans un nouvel onglet`}
+              >
+                Ouvrir
+              </a>
+            </>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ListeLiens({ html }: { html: string }) {
+  const liens = extraireLiens(html);
+  return (
+    <section className="admin-lecteur-email-liens" aria-label="Liens de cet e-mail">
+      <h3>Liens de cet e-mail</h3>
+      {liens.length === 0 ? (
+        <p>Cet e-mail ne contient aucun lien.</p>
+      ) : (
+        <ul>
+          {liens.map((l, i) => (
+            <li key={`${i}-${l.adresse}`}>
+              <span>{l.texte}</span>
+              {" → "}
+              {l.genre === "ouvrable" ? (
+                <a
+                  href={l.adresse}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${l.texte} : ${l.adresse} (s'ouvre dans un nouvel onglet)`}
+                >
+                  {l.adresse}
+                </a>
+              ) : (
+                <span>{l.adresse}</span>
+              )}
+              {l.genre === "personnel" ? (
+                <em className="admin-lecteur-email-lien-note"> lien personnel du destinataire</em>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
 const present = (v: string | null | undefined): v is string => typeof v === "string" && v !== "";
 
 export function LecteurEmail(props: LecteurEmailProps): React.ReactElement {
-  const { apercu, titre, pleinEcranHref, formatInitial = "html", liensInertes = false } = props;
+  const {
+    apercu,
+    titre,
+    pleinEcranHref,
+    formatInitial = "html",
+    liensInertes = false,
+    liensOuvrables = false,
+  } = props;
   const html = props.html ?? apercu?.html ?? "";
   const texte = props.texte ?? apercu?.texte ?? null;
   const de = props.de ?? apercu?.de;
@@ -128,7 +221,7 @@ export function LecteurEmail(props: LecteurEmailProps): React.ReactElement {
   const id = useId();
   const imagesBloquees = compterImagesBloquees(html);
   const titreCadre = titre ?? (present(objet) ? `Aperçu : ${objet}` : "Aperçu de l'e-mail");
-  const pieces = (piecesJointes ?? []).filter((p) => p !== "");
+  const pieces = normaliserPieces(piecesJointes);
   const aTexte = present(texte);
   const aEntete =
     present(de) ||
@@ -136,7 +229,7 @@ export function LecteurEmail(props: LecteurEmailProps): React.ReactElement {
     present(repondreA) ||
     present(objet) ||
     present(preEntete) ||
-    pieces.length > 0;
+    pieces !== null;
   return (
     <div className="admin-apercu-email admin-lecteur-email" data-bloc="lecteur-email">
       {aEntete ? (
@@ -150,7 +243,11 @@ export function LecteurEmail(props: LecteurEmailProps): React.ReactElement {
             </Ligne>
           ) : null}
           {present(preEntete) ? <Ligne libelle="Pré-en-tête">{preEntete}</Ligne> : null}
-          {pieces.length > 0 ? <Ligne libelle="Pièces jointes">{pieces.join(", ")}</Ligne> : null}
+          {pieces !== null ? (
+            <Ligne libelle="Pièces jointes">
+              <PiecesJointes pieces={pieces} />
+            </Ligne>
+          ) : null}
         </dl>
       ) : null}
       <div className="admin-lecteur-email-barre">
@@ -206,12 +303,13 @@ export function LecteurEmail(props: LecteurEmailProps): React.ReactElement {
         <iframe
           className="admin-lecteur-email-cadre"
           title={titreCadre}
-          sandbox=""
+          sandbox={liensOuvrables ? "allow-popups allow-popups-to-escape-sandbox" : ""}
           referrerPolicy="no-referrer"
-          srcDoc={preparerSrcDoc(html, { liensInertes })}
+          srcDoc={preparerSrcDoc(html, { liensInertes, liensOuvrables })}
         />
         {aTexte ? <pre className="admin-lecteur-email-texte">{texte}</pre> : null}
       </div>
+      {liensOuvrables ? <ListeLiens html={html} /> : null}
     </div>
   );
 }

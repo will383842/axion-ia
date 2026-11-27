@@ -88,6 +88,9 @@ const APP_LOCALE = join(APP, "[locale]");
  * Elles portent `robots: { index: false }` pour la même raison.
  */
 const HORS_AUDIT = [
+  // Baromètre 2027 : noindex et hors sitemap avant le 1er décembre 2026 (BAROMETRE_DATE_OUVERTURE).
+  // À ajouter à routes-publiques.json après l'ouverture.
+  "/ressources/barometre-ia-tpe-pme-2027",
   // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page redirige (308) vers
   // /journee-ia, qui la remplace dans routes-publiques.json. Auditer une redirection mesurerait
   // la page d'arrivée, pas celle-ci.
@@ -111,6 +114,8 @@ const HORS_AUDIT = [
   // L'audit E2E exige un 200 sur chaque route de la liste : y inscrire `/fr/videos` ferait
   // rougir la suite à chaque déploiement d'avant la première vidéo.
   "/videos",
+  // Questionnaire du Baromètre 2027 : noindex, collecte temporaire.
+  "/questionnaire-barometre-ia-2027",
 ];
 
 /** Chemins des pages statiques rendues sous `[locale]` (segments dynamiques exclus). */

@@ -71,7 +71,7 @@ import {
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 // VIS-09 — articles DB (content-gen, auteur Manon) émis via la factory
 // BlogPosting (type correct + author @id résolu + AI Act + image hero).
-import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
+import { buildBlogPostingEquipeJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
@@ -293,8 +293,8 @@ export default async function BlogArticle({ params }: Props) {
     // indéfiniment (même doctrine anti-307 que proxy.ts). `permanentRedirect()`
     // émet le 308 attendu par le commentaire d'origine.
     const redirectInfo = await findArticleSlugRedirect(slug, loc as "fr" | "en");
-    if (redirectInfo && !redirectInfo.isNews) {
-      permanentRedirect(`/${loc}/blog/${redirectInfo.newSlug}`);
+    if (redirectInfo && !(redirectInfo.section === "blog" && redirectInfo.newSlug === slug)) {
+      permanentRedirect(`/${loc}/${redirectInfo.section}/${redirectInfo.newSlug}`);
     }
 
     // Audit indexation 2026-05-15 P0-7 — soft-410 si Article archived/draft.
@@ -425,7 +425,7 @@ export default async function BlogArticle({ params }: Props) {
   // image hero). Articles FS legacy (auteur humain réel) → helper générique
   // avec le vrai auteur (NE PAS attribuer à Manon).
   const articleJsonLd = isDbHtml
-    ? buildBlogPostingJsonLd({
+    ? buildBlogPostingEquipeJsonLd({
         title: view.title,
         // 🔴 GEO-044 (audit GEO/AEO 2026-08-14) — `view.excerpt` est VIDE sur les
         // 126 articles : le worker de publication ne l'écrit jamais. Le JSON-LD
@@ -463,7 +463,10 @@ export default async function BlogArticle({ params }: Props) {
         ...(view.tags.length > 0 ? { tags: [...view.tags] } : {}),
         ...(view.category ? { section: view.category } : {}),
         ...(view.citations.length > 0
-          ? { citations: view.citations.map((c) => ({ url: c.url, title: c.name })) }
+          ? {
+              citations: view.citations.map((c) => ({ url: c.url, title: c.name })),
+              isBasedOn: view.citations.map((c) => ({ url: c.url, name: c.name })),
+            }
           : {}),
       })
     : {

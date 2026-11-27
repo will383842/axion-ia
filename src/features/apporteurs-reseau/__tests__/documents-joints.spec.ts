@@ -10,23 +10,15 @@ const h = vi.hoisted(() => ({
   entete: vi.fn(),
   configure: true,
   signaler: vi.fn(),
-  televerser: vi.fn(),
-  copie: vi.fn(),
 }));
 
 vi.mock("@/lib/r2-storage", () => ({
   enteteObjetR2: (...a: unknown[]) => h.entete(...a),
   isR2Configured: () => h.configure,
-  uploadToR2: (...a: unknown[]) => h.televerser(...a),
-}));
-vi.mock("../guide-demarrage", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("../guide-demarrage")>()),
-  lireGuideDemarrage: () => h.copie(),
 }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
 import {
-  DELAI_DEPOT_MS,
   DELAI_ENTETE_MS,
   DOCUMENTS_ANNEXES,
   NOM_CONTRAT_SIGNE,
@@ -55,8 +47,6 @@ let avertissements: ReturnType<typeof vi.spyOn>;
 beforeEach(() => {
   vi.clearAllMocks();
   h.configure = true;
-  h.televerser.mockResolvedValue({});
-  h.copie.mockResolvedValue(Buffer.from("%PDF-guide"));
   avertissements = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 });
 
@@ -76,10 +66,7 @@ describe("déclaration des documents annexes", () => {
   });
 
   it("le plafond ne dépasse pas celui que le worker d'e-mails accepte", () => {
-    const worker = readFileSync(
-      join(process.cwd(), "src/server/queue/workers/email-worker.ts"),
-      "utf-8",
-    );
+    const worker = readFileSync(join(process.cwd(), "src/server/email/pieces-jointes.ts"), "utf-8");
     const lu = /export const TAILLE_MAX_PJ_OCTETS = (\d+) \* ([\d_]+);/.exec(worker);
     expect(lu).not.toBeNull();
     const plafondWorker = Number(lu![1]) * Number(lu![2]!.replace(/_/g, ""));
@@ -95,7 +82,6 @@ describe("documents annexes à joindre", () => {
       { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 },
       { ...ANNEXE, filename: GUIDE.nomFichier, r2Key: GUIDE.cleR2 },
     ]);
-    expect(h.televerser).not.toHaveBeenCalled();
   });
 
   it("🔴 document absent de R2 : non joint, sans erreur, et journalisé", async () => {
@@ -104,11 +90,6 @@ describe("documents annexes à joindre", () => {
     expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2, GUIDE.cleR2]);
     expect(avertissements).toHaveBeenCalledTimes(1);
     expect(String(avertissements.mock.calls[0]?.[0])).toContain("livret");
-  });
-
-  it("aucun document déposé (état d'aujourd'hui) : seul le guide est joint, déposé par l'application", async () => {
-    r2({});
-    expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([GUIDE.cleR2]);
   });
 
   it("R2 en panne : rien n'est joint, rien n'est levé, la panne est signalée", async () => {
@@ -150,76 +131,48 @@ describe("documents annexes à joindre", () => {
   });
 });
 
-// Le guide de démarrage part tout seul avec le contrat : s'il manque sur R2 (404 vrai), l'application
-// y dépose sa copie embarquée. Jamais sur une panne, jamais par-dessus un objet existant.
-describe("🔴 le guide de démarrage : dépôt automatique sur R2", () => {
-  const sansGuide = { [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 };
-
-  it("absent de R2 : la copie embarquée y est déposée une fois, puis jointe (facultative)", async () => {
-    r2(sansGuide);
-    const pieces = await documentsAnnexesAJoindre();
-    expect(h.televerser).toHaveBeenCalledTimes(1);
-    expect(h.televerser).toHaveBeenCalledWith(
-      GUIDE.cleR2,
-      Buffer.from("%PDF-guide"),
-      "application/pdf",
-      expect.objectContaining({ sha256: expect.stringMatching(/^[0-9a-f]{64}$/) }),
-    );
-    expect(pieces.at(-1)).toEqual({ ...ANNEXE, filename: GUIDE.nomFichier, r2Key: GUIDE.cleR2 });
+// 🔒 Le dépôt est PUBLIC : fiche, livret et guide ne sont plus dans l'image. R2 est leur seule
+// source ; l'application n'y dépose JAMAIS rien. Absent : pas de pièce, une alerte, pas d'erreur.
+describe("🔴 fiche, livret, guide : absents de R2 (repli sans crash)", () => {
+  it("aucun des trois sur R2 : liste vide, aucune exception, une alerte par document", async () => {
+    r2({});
+    expect(await documentsAnnexesAJoindre()).toEqual([]);
+    expect(h.signaler).toHaveBeenCalledTimes(3);
   });
 
-  it("présent sur R2 (dépôt manuel) : jamais écrasé", async () => {
-    r2({ ...sansGuide, [GUIDE.cleR2]: 3000 });
-    await documentsAnnexesAJoindre();
-    expect(h.televerser).not.toHaveBeenCalled();
+  it("un seul absent (le guide) : les deux autres sont joints, alerte pour le guide seul", async () => {
+    r2({ [FICHE.cleR2]: 1000, [LIVRET.cleR2]: 2000 });
+    expect((await documentsAnnexesAJoindre()).map((p) => p.r2Key)).toEqual([
+      FICHE.cleR2,
+      LIVRET.cleR2,
+    ]);
+    expect(h.signaler).toHaveBeenCalledTimes(1);
+    expect(avertissements).toHaveBeenCalledWith(expect.stringContaining("guide-demarrage"));
   });
 
-  it("R2 en panne ou sans réponse : aucun dépôt, guide non joint", async () => {
+  it("R2 en panne ou sans réponse : aucune pièce, rien n'est levé", async () => {
     h.entete.mockRejectedValue(new Error("réseau"));
     expect(await documentsAnnexesAJoindre()).toEqual([]);
-    expect(h.televerser).not.toHaveBeenCalled();
   });
 
-  it("R2 non configuré : aucun dépôt", async () => {
+  it("R2 non configuré : aucune pièce", async () => {
     h.configure = false;
     expect(await documentsAnnexesAJoindre()).toEqual([]);
-    expect(h.televerser).not.toHaveBeenCalled();
   });
 
-  it("dépôt en échec : guide non joint, signalé, rien n'est levé", async () => {
-    r2(sansGuide);
-    h.televerser.mockRejectedValue(new Error("refusé"));
-    const pieces = await documentsAnnexesAJoindre();
-    expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2, LIVRET.cleR2]);
-    expect(h.signaler).toHaveBeenCalled();
+  it("contrat signé + annexes absentes : le contrat part seul", async () => {
+    r2({ [CLE_CONTRAT]: 50_000 });
+    expect(await piecesDuContratSigne(CLE_CONTRAT)).toEqual([
+      { filename: NOM_CONTRAT_SIGNE, r2Key: CLE_CONTRAT, contentType: "application/pdf" },
+    ]);
   });
 
-  it("dépôt qui ne répond pas : après le délai, guide non joint, rien n'est levé", async () => {
-    vi.useFakeTimers();
-    try {
-      r2(sansGuide);
-      h.televerser.mockImplementation(() => new Promise(() => undefined));
-      const attendu = documentsAnnexesAJoindre();
-      await vi.advanceTimersByTimeAsync(DELAI_DEPOT_MS + 1);
-      expect((await attendu).map((p) => p.r2Key)).toEqual([FICHE.cleR2, LIVRET.cleR2]);
-      expect(h.signaler).toHaveBeenCalled();
-    } finally {
-      vi.useRealTimers();
-    }
-  });
-
-  it("copie embarquée illisible : guide non joint, aucun dépôt", async () => {
-    r2(sansGuide);
-    h.copie.mockResolvedValue(null);
-    const pieces = await documentsAnnexesAJoindre();
-    expect(pieces.map((p) => p.r2Key)).toEqual([FICHE.cleR2, LIVRET.cleR2]);
-    expect(h.televerser).not.toHaveBeenCalled();
-  });
-
-  it("la fiche et le livret absents ne sont JAMAIS déposés par l'application", async () => {
-    r2({});
-    await documentsAnnexesAJoindre();
-    expect(h.televerser.mock.calls.map((c) => c[0])).toEqual([GUIDE.cleR2]);
+  it("le module n'importe plus de lecture disque ni d'écriture R2", () => {
+    const src = readFileSync(
+      join(process.cwd(), "src/features/apporteurs-reseau/documents-joints.ts"),
+      "utf-8",
+    );
+    expect(src).not.toMatch(/uploadToR2|node:fs|private\/apporteurs|lireCopieLocale/);
   });
 });
 
@@ -231,14 +184,6 @@ describe("pièces de l'e-mail « contrat signé »", () => {
       { ...ANNEXE, filename: FICHE.nomFichier, r2Key: FICHE.cleR2 },
       { ...ANNEXE, filename: LIVRET.nomFichier, r2Key: LIVRET.cleR2 },
       { ...ANNEXE, filename: GUIDE.nomFichier, r2Key: GUIDE.cleR2 },
-    ]);
-  });
-
-  it("fiche et livret absents : le contrat et le guide (déposé par l'application)", async () => {
-    r2({ [CLE_CONTRAT]: 50_000 });
-    expect((await piecesDuContratSigne(CLE_CONTRAT)).map((p) => p.r2Key)).toEqual([
-      CLE_CONTRAT,
-      GUIDE.cleR2,
     ]);
   });
 
@@ -351,8 +296,14 @@ describe("🔴 les clés des annexes ne sont servies par aucune route", () => {
         readFileSync(join(racine, f), "utf-8"),
       ),
     );
+    // + `documents-prives` : il LIT les trois PDF sur R2 (clés fixes) pour les routes de l'espace ;
+    //   il n'expose aucune adresse d'objet.
+    // + l'envoi du lien (« Retenu », relances) : il JOINT les annexes à l'e-mail, il ne les sert pas.
     expect(lecteurs.sort()).toEqual([
+      "src/features/admin-rendezvous/issue-apporteur-envoi.ts",
       "src/features/apporteurs-reseau/documents-joints.ts",
+      "src/features/apporteurs-reseau/documents-prives.ts",
+      "src/features/apporteurs-reseau/passage-quotidien.ts",
       "src/features/apporteurs-reseau/signature.ts",
       "src/features/apporteurs-reseau/verification.ts",
     ]);

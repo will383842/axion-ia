@@ -1,0 +1,4076 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Maquette v2 · Étude de cas · Axion-IA</title>
+<meta name="description" content="Maquette v2 du modèle « Étude de cas » des articles du blog Axion-IA : fiche contexte, frise avant / pendant / après, cas illustratif sans chiffre inventé.">
+<style>
+/* ===== DÉBUT SOCLE (copie de _socle.css) ===== */
+/* =============================================================================
+   SOCLE VISUEL v2 — modèles de pages d'articles Axion-IA
+   -----------------------------------------------------------------------------
+   Fichier de RÉFÉRENCE : chaque maquette recopie ce bloc INLINE dans son <style>,
+   puis ajoute à la suite ses quelques règles propres au modèle.
+
+   Règles du socle
+   - Hexadécimaux : UNIQUEMENT dans :root (mêmes noms que src/app/globals.css).
+     Ailleurs : var(--…) ou color-mix() d'un jeton avec transparent.
+   - Graisses : Manrope 400/600, Fraunces 500/600 (+ italique). Jamais 700/800.
+   - Zéro JavaScript. Mobile d'abord ; mise en page ordinateur à partir de 1024 px.
+   - Surfaces sombres : ajouter .sur-sombre (mocha) ou .sur-terracotta pour que liens
+     et anneaux de focus prennent une couleur lisible sur ce fond.
+   - Encadré = fonction fixe pour tout le site (couleur + icône SVG + libellé TEXTE
+     dans le DOM ; ::before/::after ne portent QUE du décor) :
+       sage-soft « À retenir » · ochre-soft « Attention » · plum-soft « Exemple concret »
+       primary-soft « Modèle à reprendre » · terracotta-soft « Chiffre clé » / citation
+       sable « Le saviez-vous ? » · papier pointillé « Bon à savoir » · mocha = temps forts.
+
+   Structure HTML attendue (ordre du DOM = ordre de lecture)
+     .bande-ariane > nav[aria-label="Fil d'Ariane"]
+     main > .mise-en-page
+       article.article
+         header.heros            (h1, chapô, méta)       → ligne 1, pleine largeur
+         div.article__ouverture  (figure.visuel + aside.en-bref)        → ligne 2
+         nav.sommaire > details > summary + ol   → colonne droite, collant (ordinateur)
+         div.article__corps      (sections, FAQ, sources, auteur)       → ligne 3
+       aside.action[aria-label="Passer à l'action"]   → carte collante / barre fixe
+       (puis hors article : à lire aussi, guide gratuit, appel de fin)
+
+   Sections : 01 Jetons · 02 Base · 03 Typographie · 04 Utilitaires & focus
+   05 Progression · 06 Bandeau maquette, en-tête du site, fil d'Ariane · 07 Héros
+   08 Visuel · 09 Grille · 10 Sommaire · 11 Boutons · 12 Carte d'action / barre mobile
+   13 Encadrés · 14 Citation · 15 Cartes, schéma, chiffres, frise · 16 Tableau
+   17 Checklist, relance, séparateurs · 18 Résumé de fin · 19 Encarts d'action
+   20 FAQ, sources, auteur, partage, liens · 21 Préférences utilisateur
+   ========================================================================== */
+
+/* 00 — POLICES : les fichiers de production eux-mêmes (chemin relatif, aucun réseau).
+   Sans eux la maquette s'affichait en Georgia/Times : ce n'était pas la typographie du site. */
+@font-face {
+  font-family: "Manrope";
+  src: url("../../../../src/fonts/manrope-latin-var.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../../../src/fonts/fraunces-latin-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../../../src/fonts/fraunces-latin-var-italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inconsolata";
+  src: url("../../../../src/fonts/inconsolata-latin-var.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Replis métriques de PRODUCTION (copie de src/app/globals.css) : au swap des polices le texte ne reflue pas (CLS) */
+@font-face {
+  font-family: "Manrope Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
+  font-weight: 400 500;
+  font-style: normal;
+  size-adjust: 103.76%;
+  ascent-override: 102.74%;
+  descent-override: 28.91%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Manrope Fallback";
+  src:
+    local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"),
+    local("LiberationSans-Bold");
+  font-weight: 600 800;
+  font-style: normal;
+  size-adjust: 99.27%;
+  ascent-override: 107.38%;
+  descent-override: 30.22%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src:
+    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
+    local("LiberationSerif");
+  font-weight: 400;
+  font-style: normal;
+  size-adjust: 115.46%;
+  ascent-override: 84.71%;
+  descent-override: 22.09%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src:
+    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
+    local("LiberationSerif");
+  font-weight: 500;
+  font-style: normal;
+  size-adjust: 117.37%;
+  ascent-override: 83.33%;
+  descent-override: 21.73%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src:
+    local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"),
+    local("LiberationSerif-Bold");
+  font-weight: 600 900;
+  font-style: normal;
+  size-adjust: 112.22%;
+  ascent-override: 87.15%;
+  descent-override: 22.72%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src:
+    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
+    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
+  font-weight: 400;
+  font-style: italic;
+  size-adjust: 111.67%;
+  ascent-override: 87.58%;
+  descent-override: 22.84%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src:
+    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
+    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
+  font-weight: 500;
+  font-style: italic;
+  size-adjust: 114.32%;
+  ascent-override: 85.55%;
+  descent-override: 22.3%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Fallback";
+  src:
+    local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"),
+    local("Liberation Serif Bold Italic"), local("LiberationSerif-BoldItalic");
+  font-weight: 600 900;
+  font-style: italic;
+  size-adjust: 114.07%;
+  ascent-override: 85.74%;
+  descent-override: 22.35%;
+  line-gap-override: 0%;
+}
+
+/* 01 — JETONS (seul endroit avec des hexadécimaux) ------------------------- */
+:root {
+  --color-bg: #faf8f3;
+  --color-paper: #ffffff;
+  --color-sand: #f0e9da;
+  --color-sand-deep: #e6dcc4;
+  --color-mocha: #2a2520;
+  --color-mocha-soft: #3d362f;
+  --color-ink: #14100e;
+  --color-mocha-fg: #f7f3ea;
+  --color-mocha-fg-muted: #b5aa9c;
+  --color-terracotta-on-mocha: #eb8560;
+  --color-fg: #1a1815;
+  --color-fg-soft: #524b41;
+  --color-fg-muted: #5a4f44;
+  --color-primary: #1a4dd9;
+  --color-primary-hover: #0f3aae;
+  --color-primary-fg: #ffffff;
+  --color-primary-soft: #e8efff;
+  --color-terracotta: #b23f16;
+  --color-terracotta-soft: #f5e3d8;
+  --color-terracotta-deep: #8c3010;
+  --color-sage: #5e6c54;
+  --color-sage-soft: #e6ebe2;
+  --color-ochre: #b06a12;
+  --color-ochre-soft: #f6e7cf;
+  --color-ochre-deep: #7d4a0a;
+  --color-plum: #7c4a63;
+  --color-plum-soft: #efe2ea;
+  --color-plum-deep: #5a3348;
+  --color-border: #e5ddc8;
+  --color-border-strong: #c8bda0;
+  --color-border-field: #8a7f6c;
+  --color-border-on-mocha: #4a4239;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+  --header-h: 5rem;
+
+  /* Dérivés : aucune couleur nouvelle, seulement des jetons */
+  --font-sans:
+    "Manrope", "Manrope Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+    sans-serif;
+  --font-serif:
+    "Fraunces", "Fraunces Fallback", "Iowan Old Style", "Palatino Linotype", Palatino,
+    "URW Palladio L", P052, serif;
+  --font-mono: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ombre-douce:
+    0 1px 2px color-mix(in srgb, var(--color-mocha) 8%, transparent),
+    0 14px 34px -14px color-mix(in srgb, var(--color-mocha) 28%, transparent);
+  --ombre-bloc: 6px 6px 0 var(--color-terracotta);
+  --ombre-legere:
+    0 1px 2px color-mix(in srgb, var(--color-mocha) 4%, transparent),
+    0 4px 8px color-mix(in srgb, var(--color-mocha) 6%, transparent);
+  --gouttiere: 16px;
+  /* Largeurs en em, jamais en ch : ch dépend de la police (Manrope 0,610 em, repli Arial 0,577 em ;
+     Fraunces 600 0,675 em, repli Times 0,561 em) et ferait refluer le texte au swap = CLS. */
+  --largeur-lecture: 41.5em; /* = 68ch Manrope */
+  --largeur-page: 80rem;
+  --hauteur-barre-mobile: 4.75rem;
+  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
+     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
+  --hauteur-carte: 33.5rem;
+  /* Sommaire collant sous la carte : place restante de l'écran */
+  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
+  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
+  --focus-clair: var(--color-primary);
+  /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
+     terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
+  --focus-sombre: var(--color-mocha-fg);
+}
+
+/* 02 — BASE ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  color-scheme: light;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  /* téléphone : un élément qui reçoit le focus ne passe jamais sous la barre d'action fixe (2.4.11) */
+  scroll-padding-bottom: calc(var(--hauteur-barre-mobile) + env(safe-area-inset-bottom) + 1rem);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+/* le fond plein écran du héros déborde de la colonne : on le rogne au niveau de la page (clip ne casse pas position: sticky) */
+html {
+  overflow-x: clip;
+}
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font: 400 clamp(1.0625rem, 1rem + 0.25vw, 1.125rem) / 1.68 var(--font-sans);
+  overflow-wrap: break-word;
+  /* place réservée à la barre d'action fixe du téléphone (rien n'est masqué) */
+  padding-bottom: calc(var(--hauteur-barre-mobile) + env(safe-area-inset-bottom));
+}
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: var(--color-primary);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration-thickness: 2px;
+}
+.icone {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+  display: inline-block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 03 — TYPOGRAPHIE (fluide, hiérarchie forte) ------------------------------ */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  text-wrap: balance;
+}
+p,
+li,
+dd,
+figcaption,
+blockquote {
+  text-wrap: pretty;
+}
+.prose,
+.prose p {
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+}
+.prose {
+  max-width: var(--largeur-lecture);
+}
+.prose > section > h2:not([class]),
+.prose h2.titre-section {
+  font: 600 clamp(1.625rem, 1.2rem + 1.6vw, 2.375rem) / 1.14 var(--font-serif);
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 1rem;
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+/* Repère de section (numéro décoratif + ancre partageable), AVANT le h2 :
+   le texte du titre reste propre pour les extracteurs */
+.num-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 0.5rem;
+  font: 600 0.875rem/1 var(--font-mono);
+  color: var(--color-terracotta-deep);
+  letter-spacing: 0.06em;
+}
+.num-section::before {
+  content: "";
+  order: 1;
+  flex: 0 1 5rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-terracotta), transparent);
+}
+.num-section + h2 {
+  margin-top: 0 !important;
+}
+.ancre {
+  order: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -0.75rem 0;
+  border-radius: var(--radius-md);
+  color: var(--color-terracotta-deep);
+  text-decoration: none;
+  font: 600 1rem/1 var(--font-mono);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+section:hover .ancre,
+.ancre:focus-visible {
+  opacity: 1;
+}
+@media (hover: none) {
+  .ancre {
+    opacity: 1;
+  }
+} /* à 0,6 le « # » tombait à 3,1:1 */
+.prose h3 {
+  font: 600 clamp(1.25rem, 1.12rem + 0.55vw, 1.5rem) / 1.3 var(--font-sans);
+  letter-spacing: -0.01em;
+  margin: 2.25rem 0 0.5rem;
+  color: var(--color-ink);
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 1.1em;
+}
+.prose li {
+  margin: 0.35em 0;
+}
+.prose strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+/* Surlignage : 1 par section, la phrase qu'on veut voir citée */
+.prose mark {
+  background: linear-gradient(transparent 55%, var(--color-ochre-soft) 55%);
+  color: inherit;
+  padding: 0 0.1em;
+}
+/* Colonne de TEXTE étroite (≈ 70 caractères par ligne) ; tableaux, schémas et figures gardent toute la largeur */
+@media (min-width: 1024px) {
+  body {
+    font-size: 1.1875rem;
+  }
+  .prose > section > :is(p, ul, ol, h2, h3, h4, .num-section, .reponse-courte) {
+    max-width: 35em;
+  }
+}
+/* h4 : défini une fois pour tous les modèles */
+.prose h4 {
+  font: 600 clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem) / 1.35 var(--font-sans);
+  margin: 1.5rem 0 0.4rem;
+  color: var(--color-ink);
+}
+/* Micro-réponse : la 1re phrase sous chaque H2 répond seule */
+.reponse-courte {
+  font-size: clamp(1.1875rem, 1.1rem + 0.45vw, 1.3125rem);
+  line-height: 1.55;
+  color: var(--color-ink);
+}
+.reponse-courte strong {
+  box-shadow: inset 0 -0.45em 0 var(--color-terracotta-soft);
+}
+.terme-glossaire {
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+}
+/* Liens dans le texte : padding vertical d'un élément en ligne = zone cliquable ≥ 24 px (2.5.8)
+   sans toucher à la hauteur de ligne ; :where() garde la spécificité au plus bas */
+:where(main, .pied-site) a:where(:not([class])),
+.prose a.terme-glossaire {
+  padding-block: 0.25em;
+}
+.chiffre-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 04 — UTILITAIRES & FOCUS ------------------------------------------------- */
+.visuellement-masque {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.lien-evitement {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--color-paper);
+  color: var(--color-fg);
+  border-radius: var(--radius-md);
+}
+.lien-evitement:focus {
+  top: 1rem;
+}
+/* posé sur l'en-tête mocha : l'anneau est tracé DANS le lien, sur fond papier */
+.lien-evitement:focus-visible {
+  outline-offset: -6px;
+  box-shadow: 0 0 0 3px var(--color-mocha-fg);
+}
+.conteneur {
+  width: 100%;
+  max-width: var(--largeur-page);
+  margin-inline: auto;
+  padding-inline: var(--gouttiere);
+}
+@media (min-width: 640px) {
+  :root {
+    --gouttiere: 24px;
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --gouttiere: 40px;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-clair);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+.sur-sombre :focus-visible {
+  outline-color: var(--focus-sombre);
+}
+.sur-terracotta :focus-visible {
+  outline-color: var(--color-mocha-fg);
+}
+.sur-sombre a:not(.btn) {
+  color: var(--color-mocha-fg);
+}
+.sur-sombre a:not(.btn):hover {
+  color: var(--color-terracotta-on-mocha);
+}
+.sur-terracotta a:not(.btn) {
+  color: var(--color-mocha-fg);
+}
+.sur-terracotta a:not(.btn):hover {
+  color: var(--color-paper);
+  text-decoration-thickness: 2px;
+}
+
+/* 05 — BARRE DE PROGRESSION DE LECTURE (CSS pur, invisible sans support) --- */
+.progression {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .progression {
+    display: block;
+    position: fixed;
+    inset: calc(var(--header-h) + 1px) 0 auto 0;
+    height: 4px;
+    z-index: 55;
+    background: var(--color-mocha-fg);
+    box-shadow: 0 1px 0 var(--color-terracotta-deep);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    animation: progression-lecture linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes progression-lecture {
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/* 06 — BANDEAU MAQUETTE, EN-TÊTE DU SITE, FIL D'ARIANE --------------------- */
+.bandeau-maquette {
+  background: var(--color-ochre-soft);
+  color: var(--color-ochre-deep);
+  text-align: center;
+  font: 600 0.8125rem/1.4 var(--font-sans);
+  padding: 0.4rem 1rem;
+}
+/* EN-TÊTE DU SITE — copie fidèle de src/components/nav/Header.tsx + NavLink.tsx (refonte 2026-11-11) :
+   barre TERRACOTTA (bg-terracotta, 95 % + flou si supporté), filet bas mocha/30, logo dans un badge blanc
+   arrondi, onglets ivoire, « La Journée IA » en pastille mocha cerclée ivoire, loupe et « Nous écrire » en
+   pastilles blanches, « Réserver un appel » en bleu plein. Hauteur 5 rem à toutes les tailles (--header-h).
+   Contrastes mesurés : ivoire sur terracotta 5,24:1 ; blanc 5,81:1 ; terracotta sur blanc 5,81:1 ;
+   ivoire sur mocha 13,70:1 ; blanc sur bleu 6,76:1. */
+.site-entete {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--color-terracotta);
+  color: var(--color-mocha-fg);
+  border-bottom: 1px solid var(--color-terracotta-deep);
+}
+@supports (backdrop-filter: blur(1px)) {
+  .site-entete {
+    background: color-mix(in srgb, var(--color-terracotta) 95%, transparent);
+    backdrop-filter: blur(12px);
+  }
+}
+.site-entete::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--color-mocha) 30%, transparent);
+}
+.site-entete__rangee {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: var(--header-h);
+  width: 100%;
+  max-width: 120rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .site-entete__rangee {
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 992px) {
+  .site-entete__rangee {
+    padding-inline: 2.5rem;
+  }
+}
+:where(.site-entete) :focus-visible {
+  outline: 2px solid var(--color-mocha-fg);
+  outline-offset: 2px;
+}
+.site-logo {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: none;
+  min-height: 44px;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-paper);
+  color: var(--color-fg);
+  text-decoration: none;
+  box-shadow: var(--ombre-legere);
+  transition: box-shadow 0.15s;
+}
+.site-logo:hover {
+  color: var(--color-fg);
+  box-shadow: var(--ombre-douce);
+}
+.site-logo__nom {
+  font: 500 1.625rem/1 var(--font-serif);
+  letter-spacing: -0.025em;
+}
+.site-logo__tiret {
+  margin-inline: 0.125rem;
+  color: color-mix(in srgb, var(--color-fg) 70%, transparent);
+}
+.site-logo em {
+  font-style: italic;
+  color: var(--color-terracotta);
+}
+.site-logo__devise {
+  display: none;
+  margin-top: 0.25rem;
+  font: 600 0.75rem/1 var(--font-sans);
+  color: var(--color-fg-muted);
+}
+@media (min-width: 1366px) {
+  .site-logo__devise {
+    display: block;
+  }
+}
+.site-nav {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+}
+.site-nav__lien {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding-inline: 0.75rem;
+  border-radius: var(--radius-lg);
+  white-space: nowrap;
+  font: 600 1.125rem/1 var(--font-sans);
+  letter-spacing: -0.025em;
+  color: var(--color-mocha-fg);
+  text-decoration: none;
+}
+.site-nav__lien::after {
+  content: "";
+  position: absolute;
+  inset: auto 0.75rem 0.375rem;
+  height: 2px;
+  background: var(--color-mocha-fg);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.15s;
+}
+.site-nav__lien:hover {
+  color: var(--color-mocha-fg);
+}
+.site-nav__lien:hover::after {
+  transform: scaleX(1);
+}
+.site-nav__lien .icone {
+  width: 1rem;
+  height: 1rem;
+}
+.site-nav__phare {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-inline: 1rem;
+  border: 1px solid var(--color-mocha-fg);
+  border-radius: var(--radius-full);
+  background: var(--color-mocha);
+  white-space: nowrap;
+  font: 600 1.125rem/1 var(--font-sans);
+  letter-spacing: -0.025em;
+  color: var(--color-mocha-fg);
+  text-decoration: none;
+}
+.site-nav__phare:hover {
+  background: var(--color-mocha-soft);
+  color: var(--color-mocha-fg);
+}
+.site-nav__phare::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-terracotta-on-mocha);
+}
+.site-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.site-pastille {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--color-paper);
+  color: var(--color-terracotta);
+  box-shadow: var(--ombre-legere);
+  white-space: nowrap;
+  font: 600 1.125rem/1 var(--font-sans);
+  text-decoration: none;
+  transition: box-shadow 0.15s;
+}
+.site-pastille:hover {
+  color: var(--color-terracotta);
+  box-shadow: var(--ombre-douce);
+}
+.site-pastille--loupe {
+  width: 44px;
+  padding: 0;
+}
+.site-pastille--texte {
+  padding-inline: 1rem;
+}
+.site-pastille .icone,
+.site-reserver .icone {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.site-reserver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-inline: 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  white-space: nowrap;
+  font: 600 0.9375rem/1 var(--font-sans);
+  text-decoration: none;
+  box-shadow: var(--ombre-legere);
+  transition: background-color 0.15s;
+}
+.site-reserver:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-primary-fg);
+}
+.site-reserver__long {
+  display: none;
+}
+@media (max-width: 379px) {
+  .site-reserver .icone {
+    display: none;
+  }
+}
+@media (min-width: 992px) {
+  .site-reserver__court {
+    display: none;
+  }
+  .site-reserver__long {
+    display: inline;
+  }
+}
+@media (min-width: 1280px) {
+  .site-reserver {
+    padding-inline: 1.25rem;
+    font-size: 1.125rem;
+  }
+}
+/* Tiroir de téléphone : <details> natif, zéro JavaScript */
+.site-menu {
+  position: relative;
+}
+.site-menu summary {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-mocha-fg);
+  border-radius: var(--radius-full);
+  color: var(--color-mocha-fg);
+  cursor: pointer;
+  list-style: none;
+}
+.site-menu summary::-webkit-details-marker {
+  display: none;
+}
+.site-menu summary:hover,
+.site-menu[open] summary {
+  background: var(--color-terracotta-deep);
+}
+.site-menu__panneau {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.75rem);
+  z-index: 50;
+  width: min(20rem, calc(100vw - 2rem));
+  padding: 0.5rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--ombre-douce);
+  max-height: calc(100dvh - var(--header-h) - 2rem);
+  overflow-y: auto;
+}
+.site-menu__panneau a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  font: 600 1.0625rem/1.2 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+  text-decoration: none;
+}
+.site-menu__panneau a:hover {
+  background: var(--color-sand);
+  color: var(--color-fg);
+}
+.site-menu__panneau :focus-visible {
+  outline-color: var(--color-primary);
+}
+@media (min-width: 1280px) {
+  .site-nav {
+    display: flex;
+  }
+  .site-pastille {
+    display: inline-flex;
+  }
+  .site-pastille--texte {
+    height: 44px;
+  }
+  .site-menu {
+    display: none;
+  }
+  .site-entete__rangee {
+    gap: 1.5rem;
+  }
+  .site-actions {
+    gap: 0.75rem;
+  }
+}
+@media (min-width: 1366px) {
+  .site-entete__rangee {
+    gap: 2rem;
+  }
+}
+
+.bande-ariane {
+  background: var(--color-bg);
+  color: var(--color-fg-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+.fil-ariane ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0 0.5rem;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.fil-ariane li {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.fil-ariane li + li::before {
+  content: "/";
+  color: var(--color-border-strong);
+}
+.fil-ariane a {
+  color: var(--color-fg-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+/* Toujours sur une ligne : la page courante se tronque (…) au lieu de passer à la ligne,
+   sinon la hauteur du fil dépend de la police et le swap décale tout l'article. */
+.fil-ariane [aria-current] {
+  display: block;
+  flex: 0 1 auto;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fil-ariane a:hover {
+  color: var(--color-fg);
+  text-decoration: underline;
+}
+.fil-ariane [aria-current] {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+.fil-ariane [aria-current]::before {
+  margin-right: 0.5rem;
+}
+
+/* 07 — HÉROS D'ARTICLE : aplat TERRACOTTA de la charte (retour demandé par Will) ----
+   Contrastes MESURÉS (formule WCAG, scripts de la session) sur le terracotta #b23f16, le point le plus
+   clair du fond : ivoire #f7f3ea 5,24:1 · blanc 5,81:1 · terracotta-soft 4,66:1 · sable 4,81:1.
+   Sur le bas du fond (mélange terracotta → terracotta-deep) tout est PLUS contrasté. Règle de décor :
+   tout ce qui passe sous du texte est plus FONCÉ que le terracotta, jamais plus clair.
+   Le mocha-fg-muted (#b5aa9c) donnerait 2,6:1 ici : il n'est pas utilisé dans le héros. */
+.heros {
+  position: relative;
+  isolation: isolate;
+  color: var(--color-mocha-fg);
+  padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(5.5rem, 4rem + 7vw, 9rem);
+}
+/* Fond plein écran sans débordement : un pseudo-élément qui déborde, rogné par clip-path.
+   Dégradé vertical (donc indépendant de la largeur) : terracotta franc sur les 60 % du haut,
+   puis un fondu vers le terracotta-deep qui accueille le visuel qui chevauche. */
+.heros {
+  clip-path: inset(0 -100vmax);
+}
+.heros::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0 -100vmax;
+  background: linear-gradient(
+    180deg,
+    var(--color-terracotta) 0%,
+    var(--color-terracotta) 58%,
+    color-mix(in srgb, var(--color-terracotta) 55%, var(--color-terracotta-deep)) 100%
+  );
+}
+/* Rayures terracotta-deep en haut à droite (décor plus sombre que le fond). */
+.heros::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  top: 0;
+  width: clamp(8rem, 22vw, 18rem);
+  height: 1.5rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-terracotta-deep) 0 6px,
+    transparent 6px 14px
+  );
+}
+.heros > * {
+  max-width: 56rem;
+}
+.surtitre {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+.pastille {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* Téléphone : pastilles resserrées. Mesuré à 360 px : trois pastilles tenaient sur deux rangées
+   à 18 px près en Manrope, et le repli (MAJUSCULES ~7 % plus larges) en faisait trois ; au swap,
+   tout le héros remontait (CLS 0,097). Cette marge rend le nombre de rangées identique. */
+@media (max-width: 479px) {
+  .pastille {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+}
+/* Pastille de type : blanc, texte terracotta-deep (8,25:1 mesuré) ; pastille de catégorie : terracotta-deep + texte ivoire (7,45:1) */
+.pastille--pleine {
+  background: var(--color-paper);
+  color: var(--color-terracotta-deep);
+}
+.pastille--contour {
+  background: var(--color-terracotta-deep);
+  color: var(--color-mocha-fg);
+  border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 45%, transparent);
+}
+.pastille--claire {
+  background: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.heros h1 {
+  font: 500 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.07 var(--font-serif);
+  letter-spacing: -0.028em;
+  color: var(--color-paper);
+  max-width: 14.6em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */
+}
+/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
+/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
+   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
+@media (min-width: 1024px) {
+  .heros h1 {
+    font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem);
+  }
+}
+/* Mots en italique : sable très clair (sable #f0e9da : 4,81:1 sur terracotta, 6,83:1 sur terracotta-deep) ;
+   le soulignement dessiné en dégradé (décor) les fait ressortir sans dépendre de la couleur seule. */
+.heros h1 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-soft);
+  background: linear-gradient(var(--color-terracotta-deep), var(--color-terracotta-deep)) 0 92% /
+    100% 0.09em no-repeat;
+}
+.chapo {
+  margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0;
+  max-width: 44rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--color-terracotta-soft);
+  font: 400 clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem) / 1.5 var(--font-sans);
+  color: var(--color-paper);
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  color: var(--color-mocha-fg);
+}
+.meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.meta .icone {
+  color: var(--color-terracotta-soft);
+}
+.meta a {
+  font-weight: 600;
+}
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-paper);
+  color: var(--color-terracotta-deep);
+  font: 600 1.0625rem/1 var(--font-serif);
+}
+.meta__lecture {
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  background: var(--color-paper);
+  color: var(--color-terracotta-deep);
+}
+.meta .meta__lecture .icone {
+  color: var(--color-terracotta-deep);
+}
+/* Pied du héros : partage compact à gauche, signe du modèle à droite */
+.heros__pied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin: 1.25rem 0 0;
+}
+.heros__pied .partage-icones {
+  margin: 0;
+  flex: none;
+}
+/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
+   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
+.heros__signe {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex: 0 1 auto;
+  min-width: 0;
+  height: 44px;
+  overflow: hidden;
+  color: var(--color-terracotta-soft);
+  font: 600 1.75rem/1 var(--font-serif);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.signe__legende {
+  display: none;
+  font: 600 0.75rem/1.3 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-mocha-fg);
+  white-space: normal;
+  text-align: left;
+}
+@media (min-width: 640px) {
+  .heros__signe {
+    height: 5.5rem;
+    padding: 0 1.25rem;
+    border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 40%, transparent);
+    border-radius: var(--radius-xl);
+    background: var(--color-terracotta-deep);
+    font-size: 2.75rem;
+  }
+  .signe__legende {
+    display: block;
+    width: 8.5rem;
+  }
+}
+/* Partage compact (icônes) sous la méta */
+.partage-icones {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.partage-icones a {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 60%, transparent);
+  color: var(--color-mocha-fg);
+}
+.partage-icones a:hover {
+  background: var(--color-mocha-fg);
+  color: var(--color-terracotta-deep);
+}
+
+/* 08 — VISUEL PRINCIPAL (ratio 16/10 réservé : CLS = 0) -------------------- */
+.visuel {
+  margin: calc(-1 * clamp(4.5rem, 3rem + 6vw, 7.5rem)) 0 2rem;
+  position: relative;
+}
+.visuel__cadre {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--ombre-douce);
+  border: 6px solid var(--color-bg); /* passe-partout ivoire : l'image ne se fond pas dans le héros terracotta */
+  background: linear-gradient(
+    140deg,
+    var(--color-terracotta) 0%,
+    var(--color-terracotta-deep) 50%,
+    var(--color-mocha) 100%
+  );
+}
+.visuel__cadre svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.visuel figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+}
+
+/* 09 — GRILLE : colonne de lecture 68ch + colonne latérale collante --------- */
+.mise-en-page {
+  position: relative;
+}
+.article {
+  min-width: 0;
+}
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-bottom: 1rem;
+  }
+  body {
+    padding-bottom: 0;
+  }
+  .mise-en-page {
+    display: grid;
+    justify-content: space-between;
+    align-items: start;
+    grid-template-columns: minmax(0, var(--largeur-lecture)) minmax(17rem, 20rem);
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(2.5rem, 4vw, 5rem);
+  }
+  /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
+  .article {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+  }
+  /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
+     Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
+  .heros {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .article__ouverture {
+    grid-column: 1;
+    grid-row: 2;
+    min-width: 0;
+  }
+  .article__corps {
+    grid-column: 1;
+    grid-row: 3;
+    min-width: 0;
+  }
+  /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
+     puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
+     de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
+     margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
+     (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
+  .action {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: start;
+    z-index: 2;
+    position: sticky;
+    top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem);
+  }
+  .action .carte-action {
+    min-height: var(--hauteur-carte);
+  }
+  /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
+  .sommaire {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    align-self: start;
+    position: sticky;
+    top: var(--sommaire-haut);
+    max-height: var(--sommaire-max);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-timeline: --sommaire block;
+  }
+}
+
+/* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
+.sommaire {
+  margin: 0 0 2rem;
+}
+.sommaire details {
+  background: var(--color-paper);
+  border: 2px solid var(--color-mocha);
+  border-radius: var(--radius-lg);
+}
+.sommaire summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.sommaire summary::-webkit-details-marker {
+  display: none;
+}
+.sommaire summary::after {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  font: 400 1.25rem/1 var(--font-sans);
+}
+.sommaire details[open] summary::after {
+  content: "–";
+}
+.sommaire ol {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem 0.75rem;
+  counter-reset: s;
+}
+.sommaire li {
+  counter-increment: s;
+}
+.sommaire ol a {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--radius-md);
+  color: var(--color-fg);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+}
+.sommaire ol a::before {
+  content: counter(s, decimal-leading-zero);
+  min-width: 1.5rem;
+  font: 600 0.8125rem/1 var(--font-mono);
+  color: var(--color-terracotta-deep);
+}
+.sommaire ol a:hover {
+  background: var(--color-sand);
+  color: var(--color-ink);
+}
+@media (min-width: 1024px) {
+  /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
+  .sommaire {
+    margin: 1rem 0 0;
+  }
+  /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
+  .sommaire {
+    background: var(--color-paper);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+  .sommaire details {
+    border: 0;
+    border-radius: var(--radius-xl);
+  }
+  /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
+     sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
+     reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
+  @supports selector(::details-content) {
+    .sommaire details::details-content {
+      content-visibility: visible;
+      display: block;
+    }
+    .sommaire summary {
+      pointer-events: none;
+      min-height: 44px;
+      padding: 1rem 1rem 0.35rem;
+    }
+    .sommaire summary::after {
+      display: none;
+    }
+  }
+  .sommaire ol a {
+    font-size: 0.875rem;
+  }
+  /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
+     total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
+     (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
+  .sommaire ol::after {
+    content: "↓ suite du sommaire" / "";
+    position: sticky;
+    bottom: 0;
+    display: block;
+    margin: -2.75rem -0.5rem -0.75rem;
+    padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(
+      color-mix(in srgb, var(--color-paper) 0%, transparent),
+      var(--color-paper) 55%
+    );
+    font: 600 0.75rem/1.2 var(--font-mono);
+    letter-spacing: 0.02em;
+    color: var(--color-terracotta-deep);
+  }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after {
+      animation: sommaire-suite linear both;
+      animation-timeline: --sommaire;
+    }
+    @keyframes sommaire-suite {
+      0%,
+      88% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
+  .sommaire ol {
+    padding-bottom: 0.75rem;
+  }
+}
+
+/* 11 — BOUTONS ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 48px;
+  padding: 0.7rem 1.3rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  font: 600 1rem/1.2 var(--font-sans);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s,
+    transform 0.15s;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.btn--bleu {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+}
+.btn--bleu:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-primary-fg);
+}
+.btn--terracotta {
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+}
+.btn--terracotta:hover {
+  background: var(--color-terracotta-deep);
+  color: var(--color-paper);
+}
+.btn--contour {
+  background: transparent;
+  color: var(--color-fg);
+  border-color: var(--color-fg);
+}
+.btn--contour:hover {
+  background: var(--color-fg);
+  color: var(--color-paper);
+}
+.btn--contour-clair {
+  background: transparent;
+  color: var(--color-mocha-fg);
+  border-color: var(--color-mocha-fg-muted);
+}
+.btn--contour-clair:hover {
+  background: var(--color-mocha-fg);
+  color: var(--color-ink);
+  border-color: var(--color-mocha-fg);
+}
+.btn__texte {
+  display: grid;
+  gap: 0.1rem;
+  text-align: left;
+}
+.btn__sous {
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+.fleche {
+  margin-left: auto;
+  transition: transform 0.15s;
+}
+.btn:hover .fleche,
+.lien-fleche:hover .fleche {
+  transform: translateX(3px);
+}
+.lien-fleche {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  font-weight: 600;
+}
+.lien-fleche .fleche {
+  margin-left: 0;
+  flex: none;
+}
+
+/* 12 — CARTE D'ACTION (ordinateur) = BARRE FIXE (téléphone) : un seul <aside> */
+/* Téléphone d'abord : barre fixe en bas, 3 cellules, centre en bleu */
+.carte-action {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 50;
+  background: var(--color-paper);
+  border-top: 1px solid var(--color-border-strong);
+  padding: 0.5rem var(--gouttiere) calc(0.5rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -10px 24px -12px color-mix(in srgb, var(--color-mocha) 30%, transparent);
+}
+.carte-action__titre,
+.carte-action__sous-titre,
+.carte-action__rassurance,
+.act__long,
+.act .btn__sous,
+.act .fleche {
+  display: none;
+}
+.carte-action__liste {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 32rem;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  gap: 0.4rem;
+}
+.act {
+  width: 100%;
+  min-height: 56px;
+  padding: 0.35rem 0.25rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.8125rem;
+  line-height: 1.1;
+  position: relative;
+}
+.act .icone {
+  width: 20px;
+  height: 20px;
+}
+.act.btn--terracotta,
+.act.btn--contour {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  border-color: var(--color-border-field);
+} /* 3,7:1 */
+.act.btn--terracotta .icone {
+  color: var(--color-terracotta-deep);
+}
+.act__pastille {
+  position: absolute;
+  top: -0.55rem;
+  right: 0.35rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  font: 600 0.6875rem/1.3 var(--font-mono);
+}
+.act__libelle {
+  display: block;
+}
+/* Barre claire sur téléphone : anneau de focus bleu, même si la carte porte .sur-sombre */
+.carte-action.sur-sombre :focus-visible {
+  outline-color: var(--focus-clair);
+}
+/* Téléphone : Journée IA · Diagnostic (au centre) · Message */
+.carte-action__liste > li:nth-child(1) {
+  order: 2;
+}
+.carte-action__liste > li:nth-child(2) {
+  order: 1;
+}
+.carte-action__liste > li:nth-child(3) {
+  order: 3;
+}
+@media (min-width: 1024px) {
+  .carte-action.sur-sombre :focus-visible {
+    outline-color: var(--focus-sombre);
+  }
+  .carte-action {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    border: 0;
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 1.25rem 1.25rem;
+    color: var(--color-mocha-fg);
+    /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
+       (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
+    background: var(--color-mocha-soft);
+    box-shadow:
+      0 0 0 1px var(--color-border-on-mocha),
+      6px 6px 0 var(--color-terracotta-deep);
+  }
+  .carte-action::before {
+    content: "";
+    position: absolute;
+    inset: 0 1.25rem auto;
+    height: 5px;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    background: var(--color-terracotta-on-mocha);
+  }
+  .carte-action__titre {
+    display: block;
+    margin: 0.25rem 0 0.3rem;
+    font: 600 1.375rem/1.18 var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+  .carte-action__titre em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-terracotta-on-mocha);
+  }
+  .carte-action__sous-titre {
+    display: block;
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    color: var(--color-mocha-fg-muted);
+  }
+  .carte-action__liste {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    max-width: none;
+  }
+  .carte-action__liste > li {
+    order: 0 !important;
+  } /* ordinateur : ordre du DOM */
+  .act {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 56px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9375rem;
+    line-height: 1.25;
+    text-align: left;
+  }
+  .act__long {
+    display: inline;
+  }
+  .act__court,
+  .act__pastille {
+    display: none;
+  }
+  .act .btn__sous {
+    display: block;
+  }
+  .act .fleche {
+    display: inline-block;
+  }
+  .act.btn--terracotta {
+    background: var(--color-terracotta);
+    color: var(--color-paper);
+    border-color: var(--color-terracotta);
+  }
+  .act.btn--terracotta .icone {
+    color: currentColor;
+  }
+  .act.btn--contour {
+    background: transparent;
+    color: var(--color-mocha-fg);
+    border-color: var(--color-mocha-fg-muted);
+  }
+  .act.btn--contour:hover {
+    background: var(--color-mocha-fg);
+    color: var(--color-ink);
+  }
+  .act.btn--bleu {
+    min-height: 64px;
+    box-shadow: 0 0 0 2px var(--color-primary-soft);
+  }
+  .carte-action__rassurance {
+    display: grid;
+    gap: 0.3rem;
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0.9rem 0 0;
+    border-top: 1px solid var(--color-border-on-mocha);
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--color-mocha-fg-muted);
+  }
+  .carte-action__rassurance li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .carte-action__rassurance .icone {
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-terracotta-on-mocha);
+  }
+}
+
+/* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
+@media (min-width: 1024px) and (max-height: 1000px) {
+  :root {
+    --hauteur-carte: 24rem;
+  }
+  .carte-action {
+    padding-top: 1.15rem;
+  }
+  .carte-action__titre {
+    font-size: 1.1875rem;
+  }
+  .carte-action__sous-titre {
+    margin-bottom: 0.75rem;
+  }
+  .act:not(.btn--bleu) .btn__sous {
+    display: none;
+  }
+  .act {
+    min-height: 48px;
+    padding-block: 0.5rem;
+  }
+  .act.btn--bleu {
+    min-height: 56px;
+  }
+  .carte-action__rassurance {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.85rem;
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+  }
+}
+/* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
+   l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
+@media (min-width: 1024px) and (max-height: 860px) {
+  :root {
+    --hauteur-carte: 18.75rem;
+  }
+  .carte-action__rassurance {
+    display: none;
+  }
+}
+
+/* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
+/* Base : fond doux + filet épais + pastille icône + libellé texte réel */
+.encadre {
+  --fond: var(--color-sand);
+  --accent: var(--color-mocha);
+  --libelle: var(--color-fg);
+  position: relative;
+  margin: 2.25rem 0;
+  padding: 1.25rem 1.25rem 1.35rem 1.5rem;
+  background: var(--fond);
+  border-left: 6px solid var(--accent);
+  border-radius: var(--radius-lg);
+}
+.encadre__titre {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 0 0.65rem;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--libelle);
+}
+.encadre__icone {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--color-paper);
+}
+.encadre__icone .icone {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+.encadre p {
+  margin: 0 0 0.75em;
+}
+.encadre > :last-child {
+  margin-bottom: 0;
+}
+.encadre ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.encadre--retenir {
+  --fond: var(--color-sage-soft);
+  --accent: var(--color-sage);
+}
+.encadre--exemple {
+  --fond: var(--color-plum-soft);
+  --accent: var(--color-plum);
+  --libelle: var(--color-plum-deep);
+}
+.encadre--modele {
+  --fond: var(--color-primary-soft);
+  --accent: var(--color-primary);
+  --libelle: var(--color-primary-hover);
+}
+.encadre--modele pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+  font: 400 1rem/1.5 var(--font-mono);
+}
+.encadre--saviez {
+  --fond: var(--color-sand);
+  --accent: var(--color-mocha);
+}
+.encadre--bon {
+  --fond: var(--color-paper);
+  --accent: var(--color-terracotta-deep);
+  --libelle: var(--color-terracotta-deep);
+  border: 1.5px solid var(--color-border-strong);
+  border-left: 6px solid var(--accent);
+}
+/* Attention : bande hachurée en tête, impossible à rater */
+.encadre--attention {
+  --fond: var(--color-ochre-soft);
+  --accent: var(--color-ochre-deep);
+  --libelle: var(--color-ochre-deep);
+  border-left: 0;
+  padding-top: 1.85rem;
+  overflow: hidden;
+}
+.encadre--attention::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-ochre) 0 10px,
+    var(--color-mocha) 10px 20px
+  );
+}
+.encadre__micro {
+  margin-top: 0.85rem !important;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* En bref (réponse directe) : le bloc le plus visible après le titre */
+.en-bref {
+  position: relative;
+  margin: 0 0 2.5rem;
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) clamp(1.25rem, 1rem + 1vw, 2rem);
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-border-strong);
+  border-left: 10px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+  box-shadow: 8px 8px 0 var(--color-sand-deep);
+}
+.en-bref .en-bref__titre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.en-bref__titre .icone {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+}
+.en-bref p {
+  margin: 0;
+  font: 400 clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem) / 1.55 var(--font-sans);
+  color: var(--color-ink);
+}
+.en-bref strong {
+  font-weight: 600;
+  box-shadow: inset 0 -0.42em 0 var(--color-terracotta-soft);
+}
+
+/* Chiffre clé : chiffre géant Fraunces dans une phrase complète + source */
+.chiffre-cle {
+  display: grid;
+  gap: 0.5rem 1.5rem;
+  align-items: center;
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: var(--color-terracotta-soft);
+  border: 2px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+}
+.chiffre-cle .encadre__titre {
+  --accent: var(--color-terracotta);
+  --libelle: var(--color-terracotta-deep);
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.chiffre-cle__phrase {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+.prose .chiffre,
+.chiffre {
+  color: var(--color-terracotta-deep);
+}
+.chiffre {
+  display: block;
+  font: 600 clamp(4rem, 2.5rem + 6vw, 6.5rem) / 0.95 var(--font-serif);
+  letter-spacing: -0.04em;
+  color: var(--color-terracotta-deep);
+  margin-bottom: 0.35rem;
+}
+.source {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--color-fg-muted);
+  font-style: normal;
+}
+
+/* 14 — CITATION MISE EN AVANT (pull quote géante) -------------------------- */
+.citation {
+  position: relative;
+  margin: 3rem 0;
+  padding: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
+  background: var(--color-terracotta-soft);
+  border-radius: var(--radius-2xl);
+}
+.citation::before {
+  content: "«";
+  position: absolute;
+  top: -0.25em;
+  left: 0.15em;
+  pointer-events: none;
+  font: 500 clamp(6rem, 4rem + 8vw, 10rem) / 1 var(--font-serif);
+  color: var(--color-terracotta);
+}
+.citation blockquote {
+  margin: 0;
+  position: relative;
+}
+.citation blockquote p {
+  margin: 0;
+  padding-top: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  font: italic 500 clamp(1.5rem, 1.15rem + 1.7vw, 2.375rem) / 1.22 var(--font-serif);
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+.citation figcaption {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--color-fg-soft);
+}
+.citation figcaption::before {
+  content: "";
+  width: 3rem;
+  height: 3px;
+  background: var(--color-terracotta);
+}
+
+/* 15 — CARTES, SCHÉMA FLÉCHÉ, CHIFFRES EN RANGÉE, FRISE -------------------- */
+.cartes {
+  list-style: none;
+  margin: 2rem 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+.carte {
+  position: relative;
+  padding: 1.25rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--ombre-douce);
+}
+.carte__icone {
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.85rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.carte__titre {
+  margin: 0 0 0.35rem;
+  font: 600 1.125rem/1.3 var(--font-sans);
+  color: var(--color-ink);
+}
+.carte p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--color-fg-soft);
+}
+
+/* Schéma en 3 temps (ex. constat → causes → leviers), flèches entre colonnes */
+.schema {
+  margin: 2.5rem 0;
+}
+.schema__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.75rem;
+}
+.schema__etape {
+  position: relative;
+  padding: 1.25rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-paper);
+  border-top: 6px solid var(--color-mocha);
+  box-shadow: var(--ombre-douce);
+}
+.schema__etape:nth-child(2) {
+  border-top-color: var(--color-terracotta);
+}
+.schema__etape:nth-child(3) {
+  border-top-color: var(--color-sage);
+  background: var(--color-sage-soft);
+}
+.schema__etape + .schema__etape::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -1.6rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  translate: -50% 0;
+  rotate: 45deg;
+  border: solid var(--color-terracotta);
+  border-width: 0 4px 4px 0;
+}
+.schema__libelle {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  font: 600 0.75rem/1.5 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.schema__etape p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.schema__etape .schema__libelle {
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+}
+.schema__etape ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.schema figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+}
+@media (min-width: 640px) {
+  .schema__liste {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .schema__etape + .schema__etape::before {
+    left: -1.55rem;
+    top: 50%;
+    translate: 0 -50%;
+    rotate: -45deg;
+  }
+}
+
+/* Chiffres géants en rangée, sur bandeau mocha */
+.chiffres {
+  margin: 2.5rem 0;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+.chiffres__titre {
+  margin: 0 0 1.25rem;
+  font: 600 1.125rem/1.3 var(--font-sans);
+}
+.chiffres__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+}
+.chiffres__liste li {
+  margin: 0;
+  padding-top: 0.75rem;
+  border-top: 3px solid var(--color-terracotta-on-mocha);
+}
+.chiffres__valeur {
+  display: block;
+  font: 600 clamp(2.75rem, 2rem + 3vw, 3.75rem) / 1 var(--font-serif);
+  letter-spacing: -0.03em;
+  color: var(--color-terracotta-on-mocha);
+}
+.chiffres__libelle {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.chiffres .source {
+  color: var(--color-mocha-fg-muted);
+  margin-top: 1.25rem;
+}
+
+/* Frise / étapes numérotées : pastilles + ligne verticale pointillée */
+.etapes {
+  list-style: none;
+  margin: 2rem 0;
+  padding: 0;
+  counter-reset: etape;
+}
+.etapes li {
+  counter-increment: etape;
+  position: relative;
+  margin: 0;
+  padding: 0 0 1.75rem 4rem;
+  min-height: 3rem;
+}
+.etapes li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+  font: 600 1.125rem/1 var(--font-mono);
+  box-shadow: 0 0 0 5px var(--color-bg);
+}
+.etapes li::after {
+  content: "";
+  position: absolute;
+  left: calc(1.375rem - 1.5px);
+  top: 2.75rem;
+  bottom: 0;
+  width: 3px;
+  background: repeating-linear-gradient(var(--color-border-strong) 0 6px, transparent 6px 11px);
+}
+.etapes li:last-child {
+  padding-bottom: 0;
+}
+.etapes li:last-child::after {
+  display: none;
+}
+.etapes li:last-child::before {
+  background: var(--color-mocha);
+}
+.etapes__titre {
+  display: block;
+  padding-top: 0.5rem;
+  font: 600 1.1875rem/1.3 var(--font-sans);
+  color: var(--color-ink);
+}
+.etapes__duree {
+  display: inline-block;
+  margin: 0.35rem 0 0.2rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--color-sand);
+  font: 600 0.875rem/1.5 var(--font-mono);
+  color: var(--color-fg-soft);
+}
+.etapes p {
+  margin: 0.25rem 0 0;
+  color: var(--color-fg-soft);
+}
+
+/* 16 — TABLEAU VISUEL : vrai <table>, défilant, focusable, 1re colonne collante */
+.tableau {
+  margin: 2.5rem 0;
+}
+.tableau__defilant {
+  overflow-x: auto;
+  background: var(--color-paper);
+  border: 2px solid var(--color-mocha);
+  border-radius: var(--radius-lg);
+}
+.tableau table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.tableau caption {
+  caption-side: top;
+  text-align: left;
+  padding: 1rem 0 0.85rem;
+  background: var(--color-paper);
+  font: 600 1.0625rem/1.35 var(--font-sans);
+  color: var(--color-ink);
+}
+/* la légende reste lisible pendant le défilement horizontal */
+.tableau caption > span {
+  display: block;
+  position: sticky;
+  left: 0;
+  padding-inline: 1rem;
+  max-width: calc(100vw - 2 * var(--gouttiere) - 4px);
+}
+.tableau th,
+.tableau td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+.tableau thead th {
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  border-bottom: 0;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tableau tbody tr:nth-child(odd) > * {
+  background: var(--color-paper);
+}
+.tableau tbody tr:nth-child(even) > * {
+  background: var(--color-bg);
+}
+.tableau tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.tableau :is(th, td):first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  box-shadow: inset -2px 0 0 var(--color-border);
+}
+.tableau thead th:first-child {
+  z-index: 2;
+  box-shadow: inset -2px 0 0 var(--color-border-on-mocha);
+}
+.tableau tbody th {
+  min-width: 7.5rem;
+  max-width: 12rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+.verdict .icone {
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  stroke-width: 3;
+  color: var(--color-paper);
+}
+.verdict--oui .icone {
+  background: var(--color-sage);
+}
+.verdict--partiel .icone {
+  background: var(--color-ochre-deep);
+}
+.verdict--non .icone {
+  background: var(--color-terracotta);
+}
+.tableau__defilant {
+  background:
+    linear-gradient(90deg, var(--color-paper) 30%, transparent) 0 0 / 2rem 100% no-repeat local,
+    linear-gradient(270deg, var(--color-paper) 30%, transparent) 100% 0 / 2rem 100% no-repeat local,
+    linear-gradient(90deg, color-mix(in srgb, var(--color-mocha) 18%, transparent), transparent) 0
+      0 / 0.75rem 100% no-repeat scroll,
+    linear-gradient(270deg, color-mix(in srgb, var(--color-mocha) 18%, transparent), transparent)
+      100% 0 / 0.75rem 100% no-repeat scroll,
+    var(--color-paper);
+}
+@media (max-width: 639px) {
+  .tableau th,
+  .tableau td {
+    padding: 0.7rem 0.75rem;
+  }
+  .tableau table {
+    font-size: 0.875rem;
+  }
+}
+@media (min-width: 640px) {
+  .tableau__note .sur-telephone {
+    display: none;
+  }
+}
+.tableau__note {
+  margin: 0.6rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+
+/* 17 — CHECKLIST, RELANCE DE LECTURE, SÉPARATEURS -------------------------- */
+.checklist {
+  list-style: none;
+  margin: 1.75rem 0;
+  padding: 0.5rem;
+  display: grid;
+  gap: 0.35rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+.checklist li {
+  position: relative;
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: var(--radius-lg);
+}
+.checklist li:nth-child(odd) {
+  background: var(--color-bg);
+}
+/* case cochée dessinée en CSS : décor (le texte porte le sens) */
+.checklist li::before {
+  content: "";
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: 0.1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-sage);
+}
+.checklist li::after {
+  content: "";
+  position: absolute;
+  left: 1.3rem;
+  top: 1rem;
+  width: 0.45rem;
+  height: 0.85rem;
+  border: solid var(--color-paper);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* « Dans la suite : … » — relance en fin de section */
+.relance {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2rem 0 0 !important;
+  padding: 0.75rem 0 0;
+  border-top: 1px dashed var(--color-border-strong);
+  font-size: 0.9375rem;
+  color: var(--color-fg-soft);
+}
+.relance strong {
+  color: var(--color-terracotta-deep);
+}
+.relance .icone {
+  color: var(--color-terracotta-deep);
+}
+
+.separateur {
+  border: 0;
+  margin: 3.5rem auto;
+  height: 1.25rem;
+  width: 10rem;
+  background:
+    radial-gradient(circle, var(--color-terracotta) 0 0.4rem, transparent 0.45rem) center / 1.25rem
+      1.25rem no-repeat,
+    linear-gradient(var(--color-border-strong), var(--color-border-strong)) center / 100% 2px
+      no-repeat;
+}
+.separateur--vague {
+  width: 100%;
+  height: 0.75rem;
+  background: radial-gradient(
+      circle at 50% 0,
+      transparent 0.45rem,
+      var(--color-sand-deep) 0.5rem 0.62rem,
+      transparent 0.67rem
+    )
+    0 0 / 1.5rem 0.75rem repeat-x;
+}
+
+/* 18 — RÉSUMÉ VISUEL DE FIN « Ce qu'il faut retenir » ---------------------- */
+.resume {
+  margin: 3.5rem 0 1rem;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-sand);
+}
+.resume__titre {
+  margin: 0 0 1.25rem;
+  font: 600 clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem) / 1.15 var(--font-serif);
+  letter-spacing: -0.02em;
+}
+.resume__titre em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-deep);
+}
+.resume__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+  counter-reset: r;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+.resume__liste li {
+  counter-increment: r;
+  margin: 0;
+  padding: 1rem 1.1rem 1.15rem;
+  background: var(--color-paper);
+  border-top: 5px solid var(--color-terracotta);
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+.resume__liste li:nth-child(2) {
+  border-top-color: var(--color-primary);
+}
+.resume__liste li:nth-child(3) {
+  border-top-color: var(--color-sage);
+}
+.resume__liste li:nth-child(4) {
+  border-top-color: var(--color-ochre-deep);
+}
+.resume__liste li:nth-child(5) {
+  border-top-color: var(--color-plum);
+}
+.resume__liste li::before {
+  content: counter(r, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.4rem;
+  font: 600 2rem/1 var(--font-serif);
+  color: var(--color-terracotta-deep);
+}
+.micro-appel {
+  margin: 0 0 3rem;
+}
+
+/* 19 — ENCARTS D'APPEL À L'ACTION ------------------------------------------ */
+/* Milieu : fond doux selon le modèle (--fond), filet terracotta, 1 bouton + 1 lien */
+.cta-milieu {
+  --fond: var(--color-plum-soft);
+  --deco: var(--color-plum);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 3.5rem 0;
+  display: grid;
+  gap: 0.85rem;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  padding-right: clamp(1.5rem, 8vw, 9rem);
+  background: var(--fond);
+  border-left: 8px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+}
+.cta-milieu--sage,
+.cta-milieu--ochre {
+  --fond: var(--color-paper);
+  --deco: var(--color-terracotta);
+}
+/* Style UNIQUE de l'appel d'action du milieu : il ne ressemble jamais à un encadré de contenu */
+.cta-milieu,
+.cta-milieu--sage,
+.cta-milieu--ochre {
+  --fond: var(--color-paper);
+  --deco: var(--color-terracotta);
+  border: 2px solid var(--color-mocha);
+  border-left: 8px solid var(--color-terracotta);
+  box-shadow: 6px 6px 0 var(--color-sand-deep);
+}
+.cta-milieu::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -3.5rem;
+  top: 50%;
+  translate: 0 -50%;
+  width: 11rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.75rem solid var(--deco);
+  opacity: 0.22;
+}
+.cta-milieu__surtitre {
+  margin: 0;
+  font: 600 0.8125rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.cta-milieu__titre {
+  margin: 0;
+  font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem) / 1.15 var(--font-serif);
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+.cta-milieu p {
+  margin: 0;
+  max-width: 26.8em; /* = 44ch Manrope */
+}
+.cta-milieu__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin-top: 0.4rem;
+}
+
+/* Fin : grand bloc mocha, 3 actions, déroulé du diagnostic, réassurance factuelle */
+.cta-fin {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 4rem 0 2rem;
+  padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+/* Disque décoratif : sur téléphone, petit et rejeté dans l'angle (il passait sous le titre :
+   terracotta-on-mocha sur terracotta = 2,2:1) ; grand à partir de 760 px, où le titre reste à gauche */
+.cta-fin::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 9rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  top: -5.5rem;
+  right: -4.5rem;
+  background: var(--color-terracotta);
+}
+.cta-fin__surtitre {
+  margin: 0 0 0.75rem;
+}
+.cta-fin__titre {
+  margin: 0 0 0.75rem;
+  max-width: 12.15em; /* = 18ch Fraunces */
+  font: 600 clamp(2rem, 1.3rem + 2.8vw, 3.25rem) / 1.05 var(--font-serif);
+  letter-spacing: -0.025em;
+}
+.cta-fin__titre em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-on-mocha);
+}
+.cta-fin__phrase {
+  max-width: 30.5em; /* = 50ch Manrope */
+  margin: 0 0 1.75rem;
+  font-size: 1.125rem;
+  color: var(--color-mocha-fg-muted);
+}
+.cta-fin__actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.cta-fin__actions .btn {
+  width: 100%;
+  height: 100%;
+  min-height: 60px;
+  justify-content: flex-start;
+  border-radius: var(--radius-lg);
+}
+.deroule {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  counter-reset: d;
+}
+.deroule li {
+  counter-increment: d;
+  display: grid;
+  align-content: start;
+  grid-template-columns: auto 1fr;
+  gap: 0 0.85rem;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-mocha-fg-muted);
+}
+.deroule li::before {
+  content: counter(d, decimal-leading-zero);
+  grid-row: span 2;
+  font: 600 1.75rem/1 var(--font-mono);
+  color: var(--color-terracotta-on-mocha);
+}
+.deroule strong {
+  color: var(--color-mocha-fg);
+  font-weight: 600;
+}
+.rassurance {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin: 1.75rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--color-border-on-mocha);
+  font-size: 0.875rem;
+  color: var(--color-mocha-fg-muted);
+}
+.rassurance li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.rassurance .icone {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--color-terracotta-on-mocha);
+}
+@media (min-width: 760px) {
+  .cta-fin::before {
+    width: 24rem;
+    top: -12rem;
+    right: -8rem;
+  }
+  .cta-fin__actions {
+    grid-template-columns: 1.25fr 1fr 1fr;
+  }
+  .deroule {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* 20 — FAQ, SOURCES, AUTEUR, PARTAGE, ALLER PLUS LOIN, À LIRE AUSSI ------- */
+.bloc-titre {
+  margin: 0 0 1.25rem;
+  font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem) / 1.2 var(--font-serif);
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+.faq {
+  margin: 3.5rem 0;
+}
+.faq details {
+  margin-bottom: 0.6rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.faq details[open] {
+  border-color: var(--color-mocha);
+  box-shadow: inset 5px 0 0 var(--color-terracotta);
+}
+.faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 56px;
+  padding: 0.85rem 1.1rem 0.85rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq summary::after {
+  content: "+";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-sand);
+  color: var(--color-terracotta-deep);
+  font: 400 1.375rem/1 var(--font-sans);
+}
+.faq details[open] summary::after {
+  content: "–";
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+}
+.faq-answer {
+  padding: 0 1.25rem 1.15rem;
+}
+.faq-answer p {
+  margin: 0 0 0.75em;
+}
+.faq-answer p:last-child {
+  margin: 0;
+}
+
+.sources {
+  margin: 3rem 0;
+  padding: 1.5rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+}
+.sources__titre {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.85rem;
+  font: 600 1.375rem/1.3 var(--font-serif);
+}
+.sources__titre .icone {
+  color: var(--color-terracotta-deep);
+}
+.sources ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.sources li {
+  margin: 0.45rem 0;
+  padding-left: 0.25rem;
+}
+.sources li::marker {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-terracotta-deep);
+}
+.sources h3 {
+  margin: 0 0 0.35rem;
+  font: 600 1rem/1.4 var(--font-sans);
+}
+.sources p {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-fg-soft);
+}
+.citer {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  font: 400 0.9375rem/1.5 var(--font-mono);
+  color: var(--color-fg);
+}
+
+.auteur {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 1.25rem;
+  align-items: start;
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: var(--color-sand);
+  border-radius: var(--radius-xl);
+}
+.auteur .avatar {
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+.auteur__titre {
+  margin: 0;
+  font: 600 1.25rem/1.25 var(--font-serif);
+}
+.auteur__titre a {
+  color: var(--color-ink);
+}
+.auteur__role {
+  margin: 0.15rem 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+}
+.auteur p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.mention-ia {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin: 0 !important;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border-strong);
+  font-size: 0.875rem !important;
+  color: var(--color-fg-soft);
+}
+.mention-ia .icone {
+  margin-top: 0.15rem;
+  color: var(--color-terracotta-deep);
+}
+
+.partage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2rem 0;
+}
+.partage__titre {
+  margin: 0 0.25rem 0 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.partage ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.partage a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-border-field);
+  color: var(--color-fg);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.partage a:hover {
+  background: var(--color-mocha);
+  border-color: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+
+/* Aller plus loin : tuiles de maillage interne (4 max) */
+.plus-loin {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+}
+.plus-loin a {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 64px;
+  padding: 0.85rem 1rem;
+  height: 100%;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink);
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.plus-loin a:hover {
+  border-color: var(--color-mocha);
+  box-shadow: var(--ombre-douce);
+}
+.plus-loin small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+.plus-loin .icone {
+  color: var(--color-terracotta-deep);
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* À lire aussi : cartes entièrement cliquables, visuel à ratio réservé */
+.lies {
+  margin: 4rem 0 0;
+}
+.lies__surtitre {
+  margin: 0 0 0.35rem;
+}
+.lies__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+.lie {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.lie:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ombre-douce);
+}
+.lie__visuel {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-mocha), var(--color-mocha-soft));
+}
+.lie__visuel::after {
+  content: "";
+  position: absolute;
+  width: 45%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  right: -8%;
+  top: -20%;
+  background: var(--color-terracotta);
+}
+.lies__liste li:nth-child(2) .lie__visuel {
+  background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary));
+}
+.lies__liste li:nth-child(2) .lie__visuel::after {
+  background: var(--color-primary-soft);
+}
+.lies__liste li:nth-child(3) .lie__visuel {
+  background: linear-gradient(135deg, var(--color-sage), var(--color-mocha-soft));
+}
+.lies__liste li:nth-child(3) .lie__visuel::after {
+  background: var(--color-ochre);
+}
+.lie__corps {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem 1.25rem;
+}
+.lie__corps .pastille {
+  justify-self: start;
+  min-height: 1.6rem;
+  font-size: 0.6875rem;
+}
+.lie__titre {
+  margin: 0;
+  font: 600 1.125rem/1.3 var(--font-serif);
+}
+.lie__titre a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.lie__titre a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+} /* carte entièrement cliquable */
+.lie__titre a:focus-visible {
+  outline: none;
+}
+.lie:has(a:focus-visible) {
+  outline: 3px solid var(--focus-clair);
+  outline-offset: 3px;
+}
+.lie__meta {
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+/* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
+@media (max-width: 639px) {
+  .lie {
+    flex-direction: row;
+  }
+  .lie__visuel {
+    flex: 0 0 6rem;
+    aspect-ratio: auto;
+    min-height: 7.5rem;
+  }
+  .lie__visuel::after {
+    width: 80%;
+    right: -25%;
+    top: -15%;
+  }
+  .lie__corps {
+    align-content: center;
+    padding: 0.85rem 1rem;
+  }
+  .lie__titre {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Guide gratuit (capture e-mail existante, une seule par page) */
+.guide-gratuit {
+  display: grid;
+  gap: 1rem;
+  margin: 3rem 0 0;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-primary-soft);
+  border: 2px solid var(--color-primary);
+}
+.guide-gratuit__titre {
+  margin: 0 0 0.5rem;
+  font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif);
+}
+.guide-gratuit p {
+  margin: 0;
+}
+.guide-gratuit form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
+}
+/* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
+.guide-gratuit > *,
+.guide-gratuit label {
+  min-width: 0;
+}
+.guide-gratuit input {
+  width: 100%;
+  min-width: 0;
+}
+.guide-gratuit label {
+  display: grid;
+  gap: 0.3rem;
+  flex: 1 1 min(15rem, 100%);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.guide-gratuit input {
+  min-height: 48px;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--color-border-field);
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+  color: var(--color-fg);
+  font: 400 1rem/1.3 var(--font-sans);
+}
+@media (min-width: 760px) {
+  .guide-gratuit {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
+
+.pied-site {
+  margin-top: 4rem;
+  padding: 2rem 0;
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg-muted);
+  font-size: 0.875rem;
+}
+
+/* 21 — PRÉFÉRENCES : mouvement réduit, couleurs forcées, impression ------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .progression {
+    display: none !important;
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .btn:hover,
+  .lie:hover {
+    transform: none;
+  }
+  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
+  .sommaire ol::after {
+    animation: sommaire-suite linear both !important;
+    animation-timeline: --sommaire !important;
+  }
+}
+@media (forced-colors: active) {
+  .site-logo,
+  .site-pastille,
+  .site-reserver {
+    border: 1px solid ButtonText;
+  }
+  .progression,
+  .heros::after,
+  .cta-milieu::after,
+  .cta-fin::before,
+  .lie__visuel::after {
+    display: none;
+  }
+  .encadre,
+  .en-bref,
+  .chiffre-cle,
+  .chiffres,
+  .carte,
+  .schema__etape,
+  .resume,
+  .resume__liste li,
+  .cta-milieu,
+  .cta-fin,
+  .citation,
+  .carte-action,
+  .sommaire details,
+  .faq details,
+  .sources,
+  .auteur,
+  .lie,
+  .tableau__defilant,
+  .guide-gratuit,
+  .plus-loin a {
+    border: 2px solid CanvasText;
+  }
+  .btn,
+  .partage a,
+  .partage-icones a {
+    border: 2px solid ButtonText;
+  }
+  .pastille,
+  .meta__lecture,
+  .avatar,
+  .encadre__icone,
+  .act__pastille,
+  .etapes li::before {
+    border: 1px solid CanvasText;
+  }
+  .checklist li::before {
+    background: Canvas;
+    box-shadow: inset 0 0 0 2px CanvasText;
+  }
+  .checklist li::after {
+    border-color: CanvasText;
+  }
+  .schema__etape + .schema__etape::before {
+    border-color: CanvasText;
+  }
+  .verdict .icone {
+    border: 1px solid CanvasText;
+  }
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}
+@media print {
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .progression,
+  .action,
+  .bandeau-maquette,
+  .site-entete,
+  .partage,
+  .partage-icones,
+  .cta-milieu,
+  .guide-gratuit {
+    display: none !important;
+  }
+  body {
+    padding: 0;
+    background: none;
+  }
+  .heros {
+    border-image: none;
+    color: var(--color-ink);
+    padding-bottom: 1rem;
+  }
+  .heros .meta a,
+  .heros .meta time,
+  .heros h1,
+  .chapo,
+  .meta,
+  .meta a,
+  .heros h1 em,
+  .heros .pastille {
+    color: var(--color-ink);
+  }
+  .heros h1 em {
+    background: none;
+  }
+  .heros::before,
+  .heros::after,
+  .heros__signe,
+  .bande-ariane,
+  .cta-fin,
+  .lies,
+  .sommaire,
+  .progression {
+    display: none !important;
+  }
+  .visuel {
+    margin-top: 0;
+  }
+  .visuel__cadre {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .sources a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  .encadre,
+  .tableau,
+  figure {
+    break-inside: avoid;
+  }
+}
+
+/* 22 — FINITIONS (revue design v3) ----------------------------------------- */
+.resume__liste:has(> li:nth-child(4):last-child) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.resume__liste > li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.chiffre,
+.chiffres__valeur {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.lien-fleche {
+  text-wrap: balance;
+}
+@media (max-width: 639px) {
+  /* Héros plus court : une seule date (la mise à jour), pas de rangée de partage ni de signe décoratif */
+  .heros__pied {
+    display: none;
+  }
+  .meta:has([data-aeo="freshness"]) li:has(time):not([data-aeo="freshness"]) {
+    display: none;
+  }
+  .heros {
+    padding-bottom: clamp(4.25rem, 3.5rem + 4vw, 5.5rem);
+  }
+}
+
+/* 23 — AJOUTS « TENDANCES 2027 » : relecteur, historique, vidéo ----------------- */
+.relu {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0 !important;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-sage-soft);
+  color: var(--color-fg);
+}
+.relu .icone {
+  margin-top: 0.15rem;
+  color: var(--color-sage);
+}
+.relu em {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+.historique {
+  margin-top: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+}
+.historique summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.historique ul {
+  margin: 0;
+  padding: 0 1rem 0.9rem 2.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.encart-video {
+  margin: 3rem 0;
+  padding: 1.25rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-sand);
+}
+.encart-video__repere {
+  margin: 0 0 0.35rem;
+  font: 600 0.75rem/1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-deep);
+}
+.encart-video__titre {
+  margin: 0 0 0.9rem;
+  font: 600 1.375rem/1.25 var(--font-serif);
+  letter-spacing: -0.01em;
+}
+.encart-video__cadre {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+.encart-video__cadre .icone {
+  width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  fill: currentColor;
+  stroke: none;
+}
+.encart-video__texte {
+  margin-top: 0.75rem;
+}
+.encart-video__texte summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.encart-video__texte p {
+  margin: 0.25rem 0 0;
+  font-size: 0.9375rem;
+}
+.neutralite {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0 0 2rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-sand);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.neutralite .icone {
+  margin-top: 0.15rem;
+  color: var(--color-terracotta-deep);
+}
+@page {
+  margin: 18mm 16mm;
+}
+/* Téléphone : la méta occupe toujours une rangée par élément (le nombre de rangées ne dépend pas de la police : CLS) */
+@media (max-width: 639px) {
+  .meta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+}
+@media print {
+  .heros.sur-terracotta .meta a,
+  .heros .meta time,
+  .heros .meta .icone {
+    color: var(--color-ink) !important;
+  }
+  .heros .pastille--contour,
+  .date-une,
+  .releve-bandeau {
+    background: none !important;
+    border: 1px solid var(--color-ink) !important;
+  }
+  .heros .pastille--contour,
+  .heros .pastille--contour a,
+  .date-une,
+  .date-une time,
+  .releve-bandeau,
+  .releve-bandeau time,
+  .releve-bandeau a {
+    color: var(--color-ink) !important;
+  }
+  .chapitre__bandeau *,
+  .feuille-route *,
+  .parcours__titre,
+  .parcours__titre em,
+  .parcours__total,
+  .parcours__total *,
+  .parcours__note,
+  .commencer *:not(.num-section span) {
+    color: var(--color-ink) !important;
+  }
+  .commencer mark,
+  .commencer strong {
+    background: none !important;
+  }
+  .num-section span {
+    color: var(--color-terracotta-deep) !important;
+  }
+}
+/* ===== FIN SOCLE ===== */
+
+/* ===== Règles propres au modèle « Étude de cas » ===== */
+/* CLS au swap des polices : avec text-wrap: balance (socle), ce titre de trois lignes se répartissait
+   autrement en repli et en Fraunces (mots déplacés : CLS 0,036 à 1280). pretty garde la même coupe. */
+.heros h1 { text-wrap: pretty; }
+
+/* Signature : fiche « Contexte » mocha + frise Avant / Pendant / Après + « Ce que l'équipe a appris » */
+
+/* Illustration de maquette (à la place de la photo) */
+.visuel__cadre .v-ciel { fill: var(--color-ochre); }
+.visuel__cadre .v-toit { fill: var(--color-mocha); }
+.visuel__cadre .v-mur { fill: var(--color-sand); }
+.visuel__cadre .v-fenetre { fill: var(--color-terracotta-on-mocha); }
+.visuel__cadre .v-papier { fill: var(--color-paper); }
+.visuel__cadre .v-ligne { fill: var(--color-sand-deep); }
+.visuel__cadre .v-ligne-accent { fill: var(--color-terracotta); }
+.visuel__cadre .v-trait { fill: none; stroke: var(--color-terracotta); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+.visuel__cadre .v-tirets { fill: none; stroke: var(--color-mocha-fg); stroke-width: 3; stroke-dasharray: 6 10; opacity: 0.6; }
+.visuel__etiquette { position: absolute; left: 1rem; bottom: 1rem; display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.35rem 0.8rem; border-radius: var(--radius-full); background: var(--color-mocha); color: var(--color-mocha-fg);
+  font: 600 0.8125rem/1.3 var(--font-sans); }
+
+/* Pastille « cas illustratif » dans le héros */
+.pastille--cas { background: var(--color-ochre-soft); color: var(--color-ochre-deep); }
+
+/* — Fiche « Contexte » : carte mocha, tuiles d'identité — */
+.fiche { position: relative; overflow: hidden; isolation: isolate; margin: 0 0 2.5rem;
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); border-radius: var(--radius-2xl);
+  background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
+.fiche::after { content: ""; position: absolute; z-index: -1; right: -2.5rem; bottom: -3rem; width: 13rem; aspect-ratio: 1;
+  background: var(--color-mocha-soft); clip-path: polygon(50% 0, 100% 42%, 100% 100%, 0 100%, 0 42%); }
+.fiche__entete { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin: 0 0 0.85rem; }
+.fiche__libelle { display: inline-flex; align-items: center; gap: 0.55rem; margin: 0;
+  font: 600 0.8125rem/1.2 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-terracotta-on-mocha); }
+.fiche__libelle .icone { width: 1.35rem; height: 1.35rem; }
+.fiche__tampon { display: inline-flex; align-items: center; min-height: 2rem; padding: 0.25rem 0.8rem; margin: 0;
+  border: 1.5px dashed var(--color-terracotta-on-mocha); border-radius: var(--radius-full);
+  font: 600 0.8125rem/1.2 var(--font-sans); color: var(--color-mocha-fg); }
+.fiche__titre { margin: 0 0 1.25rem; max-width: 16.2em; /* = 24ch Fraunces */ font: 600 clamp(1.5rem, 1.2rem + 1.3vw, 2.125rem) / 1.15 var(--font-serif);
+  letter-spacing: -0.02em; }
+.fiche__titre em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
+.fiche__grille { display: grid; gap: 0.6rem; margin: 0; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .fiche__grille { grid-template-columns: repeat(2, 1fr); } }
+.fiche__item { position: relative; display: grid; align-content: center; gap: 0.1rem; min-height: 4.25rem; padding: 0.75rem 0.9rem 0.75rem 4.1rem;
+  background: var(--color-mocha-soft); border: 1px solid var(--color-border-on-mocha); border-radius: var(--radius-lg); }
+.fiche__item .icone { position: absolute; left: 0.9rem; top: 50%; translate: 0 -50%; width: 2.5rem; height: 2.5rem; padding: 0.55rem; border-radius: 50%;
+  background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
+.fiche dt { font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-mocha-fg-muted); }
+.fiche dd { margin: 0; font: 600 1.0625rem/1.3 var(--font-sans); color: var(--color-mocha-fg); }
+.fiche__note { margin: 1rem 0 0; max-width: 31.7em; /* = 52ch Manrope */ font-size: 0.875rem; line-height: 1.5; color: var(--color-mocha-fg-muted); }
+
+/* — Frise Avant / Pendant / Après : 3 colonnes colorées, flèches entre jalons — */
+.frise-cas { margin: 2.5rem 0; padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); border-radius: var(--radius-2xl); background: var(--color-sand); }
+.frise-cas .frise-cas__titre { margin: 0 0 0.35rem; font: 600 clamp(1.3125rem, 1.15rem + 0.7vw, 1.625rem) / 1.2 var(--font-serif); color: var(--color-ink); }
+.frise-cas .frise-cas__sous { margin: 0 0 1.5rem; font-size: 0.9375rem; color: var(--color-fg-soft); }
+.frise-cas__liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 2rem; }
+.jalon { --fond: var(--color-terracotta-soft); --accent: var(--color-terracotta); --texte: var(--color-terracotta-deep);
+  position: relative; margin: 0; padding: 1.25rem 1.1rem 1.3rem; background: var(--fond);
+  border-top: 8px solid var(--accent); border-radius: var(--radius-xl); box-shadow: var(--ombre-douce); }
+.jalon--pendant { --fond: var(--color-ochre-soft); --accent: var(--color-ochre-deep); --texte: var(--color-ochre-deep); }
+.jalon--apres { --fond: var(--color-sage-soft); --accent: var(--color-sage); --texte: var(--color-sage); }
+.jalon__tete { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 0.85rem; }
+.jalon__num { display: grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%;
+  background: var(--accent); color: var(--color-paper); font: 600 1.0625rem/1 var(--font-mono); }
+.jalon__nom { display: block; font: italic 500 clamp(1.75rem, 1.5rem + 1vw, 2.125rem) / 1 var(--font-serif); color: var(--texte); }
+.jalon__quand { display: block; margin-top: 0.2rem; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-fg-soft); }
+.jalon ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; }
+.jalon li { position: relative; margin: 0; padding-left: 1.15rem; font-size: 0.9375rem; line-height: 1.5; color: var(--color-ink); }
+.jalon li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent); }
+/* flèche (décor) entre deux jalons : vers le bas sur téléphone, vers la droite sur grand écran */
+.jalon + .jalon::before { content: ""; position: absolute; left: 50%; top: -1.95rem; width: 1rem; height: 1rem;
+  translate: -50% 0; rotate: 45deg; border: solid var(--color-mocha); border-width: 0 4px 4px 0; }
+.frise-cas figcaption { margin-top: 1rem; font-size: 0.875rem; color: var(--color-fg-muted); }
+@media (min-width: 700px) {
+  .frise-cas__liste { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .jalon + .jalon::before { left: -1.2rem; top: 2.35rem; translate: 0 0; rotate: -45deg; }
+}
+
+/* Variante compacte (résumé de fin) */
+.frise-mini { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.frise-mini li { align-content: start; display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 0.9rem; align-items: start; margin: 0; padding: 1rem 1.1rem;
+  background: var(--color-paper); border-left: 6px solid var(--color-terracotta); border-radius: var(--radius-lg); }
+.frise-mini li:nth-child(2) { border-left-color: var(--color-ochre-deep); }
+.frise-mini li:nth-child(3) { border-left-color: var(--color-sage); }
+.frise-mini__nom { grid-row: span 2; min-width: 5.5rem; font: italic 500 1.375rem/1.1 var(--font-serif); color: var(--color-terracotta-deep); }
+.frise-mini li:nth-child(2) .frise-mini__nom { color: var(--color-ochre-deep); }
+.frise-mini li:nth-child(3) .frise-mini__nom { color: var(--color-sage); }
+.prose .frise-mini p { margin: 0; font-size: 1rem; line-height: 1.45; color: var(--color-ink); }
+@media (min-width: 700px) { .frise-mini { grid-template-columns: repeat(3, 1fr); } .frise-mini li { grid-template-columns: 1fr; } .frise-mini__nom { grid-row: auto; } }
+
+/* — « Ce que l'équipe a appris » : carte à en-tête mocha, leçons numérotées géantes — */
+.appris { margin: 2.75rem 0; overflow: hidden; background: var(--color-paper); border: 2px solid var(--color-mocha); border-radius: var(--radius-2xl); }
+.appris .appris__tete { display: flex; align-items: center; gap: 0.75rem; margin: 0; padding: 1rem 1.25rem;
+  background: var(--color-mocha); color: var(--color-mocha-fg); font: 600 clamp(1.1875rem, 1.05rem + 0.6vw, 1.4375rem) / 1.25 var(--font-serif); }
+.appris__tete em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
+.appris__tete .icone { width: 2.25rem; height: 2.25rem; padding: 0.45rem; border-radius: 50%; background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
+.appris ol { list-style: none; margin: 0; padding: 0.5rem 1.25rem 1.25rem; counter-reset: lecon; display: grid; }
+.appris li { counter-increment: lecon; display: grid; grid-template-columns: 3.25rem 1fr; gap: 0 0.85rem; margin: 0; padding: 1rem 0;
+  border-bottom: 1px dashed var(--color-border-strong); }
+.appris li:last-child { border-bottom: 0; padding-bottom: 0.25rem; }
+.appris li::before { content: counter(lecon); grid-row: span 2; font: 600 3rem/0.9 var(--font-serif); color: var(--color-terracotta-deep); }
+.appris__lecon { font: 600 1.0625rem/1.35 var(--font-sans); color: var(--color-ink); }
+.appris li p { margin: 0.25rem 0 0; font-size: 0.9375rem; line-height: 1.55; color: var(--color-fg-soft); }
+
+/* — « Et chez vous ? » : grand titre-question + 3 cartes d'action (fonction « à retenir », sage) — */
+.chez-vous { margin: 2.75rem 0; padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); border-radius: var(--radius-2xl);
+  background: var(--color-sage-soft); border: 2px solid var(--color-sage); }
+.chez-vous .chez-vous__surtitre { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.35rem;
+  font: 600 0.8125rem/1.2 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink); }
+.chez-vous__surtitre .icone { width: 2.25rem; height: 2.25rem; padding: 0.5rem; border-radius: 50%; background: var(--color-sage); color: var(--color-paper); }
+.chez-vous .chez-vous__titre { margin: 0 0 1.25rem; font: italic 500 clamp(2rem, 1.5rem + 2vw, 2.75rem) / 1.05 var(--font-serif); color: var(--color-ink); letter-spacing: -0.02em; }
+.chez-vous ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; counter-reset: cv;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
+.chez-vous li { counter-increment: cv; margin: 0; padding: 1rem; background: var(--color-paper); border-radius: var(--radius-lg);
+  font-size: 0.9375rem; line-height: 1.5; color: var(--color-ink); box-shadow: var(--ombre-douce); }
+.chez-vous li::before { content: counter(cv, decimal-leading-zero); display: block; margin-bottom: 0.35rem; font: 600 1.5rem/1 var(--font-mono); color: var(--color-sage); }
+.chez-vous li strong { display: block; margin-bottom: 0.2rem; font-weight: 600; font-size: 1rem; }
+
+.micro-note { display: flex; align-items: center; gap: 0.6rem; margin: 1rem 0 0 !important; font-size: 0.9375rem; color: var(--color-fg-soft); }
+.micro-note .icone { color: var(--color-terracotta-deep); }
+
+@media (forced-colors: active) {
+  .visuel__cadre svg { forced-color-adjust: auto; }
+  .fiche, .fiche__item, .jalon, .frise-cas, .frise-mini li, .appris, .chez-vous, .chez-vous li { border: 2px solid CanvasText; }
+  .fiche::after { display: none; }
+  .jalon + .jalon::before { border-color: CanvasText; }
+}
+/* Signe du modèle dans le héros (décor aria-hidden) */
+.signe__avap { display: flex; align-items: center; gap: 0.35rem; font: 600 0.8125rem/1 var(--font-sans); letter-spacing: 0.04em; text-transform: uppercase; }
+.signe__avap > span:not(.signe__fleche) { padding: 0.45rem 0.6rem; border-radius: var(--radius-full); border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 75%, transparent); color: var(--color-mocha-fg); }
+.signe__avap > span.signe__apres { background: var(--color-paper); border-color: var(--color-paper); color: var(--color-terracotta-deep); }
+.signe__fleche { font: 600 1.25rem/1 var(--font-sans); color: var(--color-terracotta-soft); }
+@media (min-width: 640px) { .signe__avap { font-size: 0.9375rem; } .signe__avap > span:not(.signe__fleche) { padding: 0.6rem 0.85rem; } }
+</style>
+</head>
+<body>
+<a class="lien-evitement" href="#contenu">Aller au contenu</a>
+<div class="progression" aria-hidden="true"></div>
+
+<!-- Pictogrammes (sprite inline, décoratifs) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-calendrier" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/></symbol>
+  <symbol id="i-soleil" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></symbol>
+  <symbol id="i-enveloppe" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></symbol>
+  <symbol id="i-horloge" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-maj" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+  <symbol id="i-publie" viewBox="0 0 24 24"><path d="M5 3.5h10l4 4v13H5z"/><path d="M15 3.5v4h4M8.5 12h7M8.5 16h7"/></symbol>
+  <symbol id="i-eclair" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H12l-1 8 8.5-11H12z"/></symbol>
+  <symbol id="i-coche" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-croix" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="i-moins" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+  <symbol id="i-ampoule" viewBox="0 0 24 24"><path d="M9 18h6M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.6.5.8 1.1.8 1.8V16h6v-.1c0-.7.3-1.3.8-1.8A6.5 6.5 0 0 0 12 2.5z"/></symbol>
+  <symbol id="i-attention" viewBox="0 0 24 24"><path d="M12 3 1.8 20.5h20.4z"/><path d="M12 9.5v5M12 17.5v.5"/></symbol>
+  <symbol id="i-mallette" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8.5 7V4.5h7V7M2.5 12.5h19"/></symbol>
+  <symbol id="i-epingle" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 6 4 3.5H6l4-3.5z"/><path d="M12 13v8"/></symbol>
+  <symbol id="i-graphe" viewBox="0 0 24 24"><path d="M3.5 20.5h17M6.5 17v-5M11.5 17V7M16.5 17v-8"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+  <symbol id="i-fleche" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-livre" viewBox="0 0 24 24"><path d="M4 4.5h6.5A2.5 2.5 0 0 1 13 7v13a2 2 0 0 0-2-2H4zM20 4.5h-4.5A2.5 2.5 0 0 0 13 7"/><path d="M20 4.5V18h-7"/></symbol>
+  <symbol id="i-ia" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 3.5V7M9.5 12v1.5M14.5 12v1.5M2.5 12.5H5M19 12.5h2.5"/></symbol>
+  <symbol id="i-lien" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.5v.5M12 17v-6.5M12 13.5c0-2 1.2-3 2.6-3s2.4 1 2.4 3V17"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M4.5 4h4l11 16h-4zM19.5 4l-6.2 7M10.7 13 4.5 20"/></symbol>
+  <symbol id="i-cible" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-equipe" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5c2.4 0 4 1.5 4.5 4"/></symbol>
+  <symbol id="i-boussole" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+  <symbol id="i-bouclier" viewBox="0 0 24 24"><path d="M12 2.5 4.5 5.5v6c0 4.5 3.2 8.2 7.5 10 4.3-1.8 7.5-5.5 7.5-10v-6z"/><path d="m8.5 12 2.5 2.5 4.5-4.5"/></symbol>
+  <symbol id="i-carte" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.2-7-11.5a7 7 0 0 1 14 0c0 5.3-7 11.5-7 11.5z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-batiment" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-6 7 6v11"/><path d="M9.5 21v-6h5v6"/></symbol>
+  <symbol id="i-dossier" viewBox="0 0 24 24"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.5h8.5A1.5 1.5 0 0 1 21 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></symbol>
+  <symbol id="i-sablier" viewBox="0 0 24 24"><path d="M6.5 3h11M6.5 21h11M7.5 3c0 5 9 5 9 9s-9 4-9 9M16.5 3c0 5-9 5-9 9s9 4 9 9"/></symbol>
+</svg>
+
+<p class="bandeau-maquette">Maquette v2 — modèle Étude de cas · document de travail, non publié</p>
+
+<header class="site-entete">
+  <div class="site-entete__rangee">
+    <a class="site-logo" href="/fr" aria-label="Axion-IA, accueil">
+      <span class="site-logo__nom">Axion<span class="site-logo__tiret" aria-hidden="true">-</span><em>IA</em></span>
+      <span class="site-logo__devise">Partenaire IA des PME et TPE</span>
+    </a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a class="site-nav__lien" href="/fr">Accueil</a>
+      <a class="site-nav__phare" href="/fr/journee-ia">La Journée IA</a>
+      <a class="site-nav__lien" href="/fr/prestations">Nos prestations<svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></a>
+      <a class="site-nav__lien" href="/fr/tarifs">Tarifs</a>
+    </nav>
+    <div class="site-actions">
+      <a class="site-pastille site-pastille--loupe" href="/fr/recherche" aria-label="Rechercher sur le site"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></a>
+      <a class="site-pastille site-pastille--texte" href="/fr/contact?depuis=etude-de-cas-ecrire"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Nous écrire</a>
+      <a class="site-reserver" href="/fr/appel?rdv=diagnostic&amp;depuis=etude-de-cas-entete" aria-label="Réserver un appel" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span class="site-reserver__court">Réserver</span><span class="site-reserver__long">Réserver un appel</span></a>
+      <details class="site-menu">
+        <summary aria-label="Menu"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h16"/></svg></summary>
+        <nav class="site-menu__panneau" aria-label="Menu principal">
+          <a href="/fr">Accueil</a>
+          <a href="/fr/journee-ia">La Journée IA</a>
+          <a href="/fr/prestations">Nos prestations</a>
+          <a href="/fr/tarifs">Tarifs</a>
+          <a href="/fr/contact?depuis=etude-de-cas-ecrire">Nous écrire</a>
+          <a href="/fr/recherche">Rechercher sur le site</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<div class="bande-ariane">
+  <div class="conteneur">
+    <nav class="fil-ariane" aria-label="Fil d'Ariane">
+      <ol>
+        <li><a href="/fr">Accueil</a></li>
+        <li><a href="/fr/blog">Blog</a></li>
+        <li aria-current="page">Une entreprise du bâtiment prépare ses devis avec l’IA&nbsp;: récit d’un essai</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<main id="contenu">
+<div class="conteneur mise-en-page">
+
+<article class="article" id="article">
+
+  <!-- 1. EN-TÊTE HÉROS -->
+  <header class="heros sur-terracotta">
+    <ul class="surtitre" aria-label="Type et catégorie">
+      <li class="pastille pastille--pleine">Étude de cas</li>
+      <li class="pastille pastille--contour">Bâtiment &amp; artisanat</li>
+      <li class="pastille pastille--cas">Cas illustratif</li>
+    </ul>
+    <h1>Une entreprise du bâtiment <em>prépare ses devis avec l’IA</em>&nbsp;: récit d’un essai</h1>
+    <p class="chapo">Pour les artisans et dirigeants qui passent leurs soirées sur les devis. Le récit, étape par étape, d’un essai mené dans une entreprise type, avec ce qui a bloqué et ce qui a tenu.</p>
+    <ul class="meta">
+      <li><span class="avatar" aria-hidden="true">M</span><span>Par <a href="/fr/equipe/manon" rel="author">Manon</a></span></li>
+      <li data-aeo="freshness"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-publie"/></svg><time datetime="2026-11-18">Publié le 18 novembre 2026</time></li>
+      <li class="meta__lecture"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>7 min de lecture</li>
+    </ul>
+    <div class="heros__pied">
+      <ul class="partage-icones" aria-label="Partager l'article">
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fentreprise-batiment-devis-ia" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fentreprise-batiment-devis-ia" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:?subject=Une%20entreprise%20du%20b%C3%A2timent%20pr%C3%A9pare%20ses%20devis%20avec%20l%27IA&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fentreprise-batiment-devis-ia" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
+      </ul>
+      <div class="heros__signe signe--cas" aria-hidden="true"><span class="signe__avap"><span>avant</span><span class="signe__fleche">→</span><span class="signe__apres">après</span></span><span class="signe__legende">6 semaines d’essai, exemple type</span></div>
+    </div>
+  </header>
+
+  <!-- 2. IMAGE + RÉPONSE DIRECTE + FICHE CONTEXTE -->
+  <div class="article__ouverture">
+    <figure class="visuel">
+      <div class="visuel__cadre">
+        <img src="../../../../public/images/axion-ia-cas-concret-soirees-admin-devis-factures-automatiques-pme-carre.webp" alt="Un artisan relit un devis imprimé sur l'établi de son atelier, un mètre ruban posé à côté" width="1600" height="1000" style="width:100%;height:100%;object-fit:cover;display:block" fetchpriority="high">
+        <span class="visuel__etiquette" aria-hidden="true">Récit d’un essai · 6 semaines</span>
+      </div>
+      <figcaption>Photo&nbsp;: Prénom Nom / Unsplash (crédit réel conservé)</figcaption>
+    </figure>
+
+    <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
+      <p class="en-bref__titre" id="en-bref-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-eclair"/></svg>En bref</p>
+      <p>Cette entreprise du bâtiment a confié à l’IA <strong>la première version de ses devis</strong>, rédigée à partir des notes de visite. Le métreur relit et corrige chaque devis avant envoi. Le plus difficile n’a pas été l’outil, mais la mise au propre des descriptifs types&#8239;; c’est par là que tout projet semblable devrait commencer.</p>
+    </aside>
+
+    <!-- Fiche « Contexte » : secteur, taille, ville, catégorie ; rien d'autre (aucun résultat chiffré) -->
+    <section class="fiche sur-sombre" aria-labelledby="fiche-titre">
+      <div class="fiche__entete">
+        <p class="fiche__libelle"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-dossier"/></svg>Fiche contexte</p>
+        <p class="fiche__tampon">Exemple type, pas un client</p>
+      </div>
+      <p class="fiche__titre" id="fiche-titre">Une entreprise de rénovation intérieure, <em>à Nantes</em></p>
+      <dl class="fiche__grille">
+        <div class="fiche__item"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-batiment"/></svg>Secteur</dt><dd>Bâtiment, second œuvre</dd></div>
+        <div class="fiche__item"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Taille</dt><dd>Une quinzaine de salariés</dd></div>
+        <div class="fiche__item"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-carte"/></svg>Ville</dt><dd>Nantes (Loire-Atlantique)</dd></div>
+        <div class="fiche__item"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-cible"/></svg>Tâche étudiée</dt><dd>Premier jet des devis</dd></div>
+      </dl>
+      <p class="fiche__note">Cas illustratif, composé à partir de situations courantes dans le métier. Il ne décrit aucune entreprise réelle et ne donne aucun résultat chiffré.</p>
+    </section>
+  </div>
+
+  <!-- 3. SOMMAIRE : un seul <nav> -->
+  <nav class="sommaire" aria-label="Sommaire">
+    <details>
+      <summary>Sommaire · 7 questions</summary>
+      <ol>
+        <li><a href="#quelle-etait-la-situation-de-depart">Quelle était la situation de départ&#8239;?</a></li>
+        <li><a href="#pourquoi-avoir-commence-par-les-devis">Pourquoi commencer par les devis&#8239;?</a></li>
+        <li><a href="#comment-l-essai-s-est-il-organise">Comment l’essai s’est-il organisé&#8239;?</a></li>
+        <li><a href="#qu-est-ce-qui-n-a-pas-marche">Qu’est-ce qui n’a pas marché&#8239;?</a></li>
+        <li><a href="#comment-l-equipe-a-t-elle-ete-formee">Comment l’équipe a-t-elle été formée&#8239;?</a></li>
+        <li><a href="#que-reste-t-il-a-ameliorer">Que reste-t-il à améliorer&#8239;?</a></li>
+        <li><a href="#que-pouvez-vous-reprendre-dans-votre-entreprise">Que reprendre chez vous&#8239;?</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <!-- 4. CORPS -->
+  <div class="article__corps prose">
+
+    <!-- Frise signature : qualitative, aucun pourcentage -->
+    <figure class="frise-cas">
+      <p class="frise-cas__titre">L’essai en trois temps</p>
+      <p class="frise-cas__sous">Ce qui a changé dans la façon de travailler, sans chiffre&nbsp;: il ne serait pas vérifiable.</p>
+      <ol class="frise-cas__liste">
+        <li class="jalon jalon--avant">
+          <div class="jalon__tete"><span class="jalon__num" aria-hidden="true">1</span><span><span class="jalon__nom">Avant</span><span class="jalon__quand">Le point de départ</span></span></div>
+          <ul><li>Les devis étaient ressaisis à la main, le soir, depuis les notes de visite.</li><li>Chaque métreur avait ses propres formulations.</li></ul>
+        </li>
+        <li class="jalon jalon--pendant">
+          <div class="jalon__tete"><span class="jalon__num" aria-hidden="true">2</span><span><span class="jalon__nom">Pendant</span><span class="jalon__quand">Six semaines d’essai</span></span></div>
+          <ul><li>Un seul métreur volontaire, sur de vrais chantiers.</li><li>Les descriptifs types ont été réécrits avant tout le reste.</li></ul>
+        </li>
+        <li class="jalon jalon--apres">
+          <div class="jalon__tete"><span class="jalon__num" aria-hidden="true">3</span><span><span class="jalon__nom">Après</span><span class="jalon__quand">L’usage aujourd’hui</span></span></div>
+          <ul><li>L’IA propose un premier jet&#8239;; le métreur relit tout.</li><li>Les devis suivent la même structure, quel que soit l’auteur.</li></ul>
+        </li>
+      </ol>
+      <figcaption>Frise qualitative d’un cas illustratif&nbsp;: elle décrit des pratiques, pas des gains.</figcaption>
+    </figure>
+
+    <section aria-labelledby="quelle-etait-la-situation-de-depart">
+      <div class="num-section"><span aria-hidden="true">01 / 07</span><a class="ancre" href="#quelle-etait-la-situation-de-depart" aria-label="Lien vers la section «&nbsp;Quelle était la situation de départ&#8239;?&nbsp;»">#</a></div>
+      <h2 id="quelle-etait-la-situation-de-depart" data-speakable="true">Quelle était la situation de départ&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Des devis <strong>rédigés le soir, à la main</strong>, à partir de notes de visite prises sur le chantier, avec des délais de réponse qui s’allongeaient.</p>
+      <p>Dans cette entreprise de rénovation, deux métreurs visitent les chantiers. Ils notent les mesures, l’état des murs et les souhaits du client dans un carnet ou sur leur téléphone.</p>
+      <p>Le soir, ils recopient tout dans le logiciel de devis. Les descriptifs sont tapés de mémoire, ou copiés depuis un ancien devis qui ressemble. Les oublis se glissent là&nbsp;: un poste de préparation, une reprise d’enduit.</p>
+      <p>La gérante voyait surtout un symptôme&nbsp;: <mark>les clients relançaient avant d’avoir reçu leur devis.</mark> Le problème n’était pas le savoir-faire, mais le temps de mise en forme.</p>
+    </section>
+
+    <section aria-labelledby="pourquoi-avoir-commence-par-les-devis">
+      <div class="num-section"><span aria-hidden="true">02 / 07</span><a class="ancre" href="#pourquoi-avoir-commence-par-les-devis" aria-label="Lien vers la section «&nbsp;Pourquoi avoir commencé par les devis&#8239;?&nbsp;»">#</a></div>
+      <h2 id="pourquoi-avoir-commence-par-les-devis" data-speakable="true">Pourquoi avoir commencé par les devis&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Parce que la tâche revient <strong>plusieurs fois par semaine</strong>, et que le métreur voit en un coup d'œil si une proposition tient la route.</p>
+      <p>L’équipe avait d’autres idées&nbsp;: le planning, les réponses aux e-mails, les comptes rendus de chantier. Les devis l’ont emporté sur un critère simple. Une erreur se repère vite, et elle est corrigée avant de partir chez le client.</p>
+      <p>Le circuit retenu tient en trois temps. L’IA ne remplace aucun d’eux&nbsp;: elle prend la mise en forme du milieu.</p>
+
+      <figure class="schema">
+        <ol class="schema__liste">
+          <li class="schema__etape"><p class="schema__libelle">Sur le chantier</p><p>Le métreur dicte ou tape ses notes de visite, comme avant.</p></li>
+          <li class="schema__etape"><p class="schema__libelle">Premier jet</p><p>L’assistant d’IA range les notes dans la structure du devis et reprend les descriptifs types.</p></li>
+          <li class="schema__etape"><p class="schema__libelle">Relecture</p><p>Le métreur vérifie les quantités, ajuste et valide. Rien ne part sans lui.</p></li>
+        </ol>
+        <figcaption>Le circuit du devis pendant l’essai&nbsp;: l’humain au début et à la fin.</figcaption>
+      </figure>
+
+      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite&nbsp;:</strong> pourquoi un seul métreur, et pas toute l’équipe d’un coup.</span></p>
+    </section>
+
+    <section aria-labelledby="comment-l-essai-s-est-il-organise">
+      <div class="num-section"><span aria-hidden="true">03 / 07</span><a class="ancre" href="#comment-l-essai-s-est-il-organise" aria-label="Lien vers la section «&nbsp;Comment l'essai s'est-il organisé&#8239;?&nbsp;»">#</a></div>
+      <h2 id="comment-l-essai-s-est-il-organise" data-speakable="true">Comment l’essai s’est-il organisé&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Six semaines, <strong>un seul métreur volontaire</strong>, de vrais chantiers et une décision écrite à la fin.</p>
+      <p>Commencer petit protège l’équipe. Si l’essai cale, personne n’a perdu de temps à se former pour rien. S’il marche, le premier utilisateur devient celui qui montre aux autres.</p>
+
+      <ol class="etapes">
+        <li><span class="etapes__titre">Rassembler dix devis récents et les relire</span><span class="etapes__duree">Semaine 1</span><p>On repère les postes qui reviennent et les formulations qui varient d’un métreur à l’autre.</p></li>
+        <li><span class="etapes__titre">Réécrire les descriptifs types</span><span class="etapes__duree">Semaines 2 et 3</span><p>Une bibliothèque courte et propre, validée par la gérante&nbsp;: c’est elle qui sert de base à l’IA.</p></li>
+        <li><span class="etapes__titre">Essayer sur les nouveaux chantiers</span><span class="etapes__duree">Semaines 4 et 5</span><p>Le métreur garde un carnet&nbsp;: ce qui sort juste, ce qu’il corrige, ce qui manque.</p></li>
+        <li><span class="etapes__titre">Décider en équipe</span><span class="etapes__duree">Semaine 6</span><p>Une réunion de trente minutes&nbsp;: continuer, ajuster ou arrêter. La décision est écrite.</p></li>
+      </ol>
+    </section>
+
+    <aside class="cta-milieu" aria-labelledby="cta-milieu-titre">
+      <p class="cta-milieu__surtitre">Journée IA</p>
+      <p class="cta-milieu__titre" id="cta-milieu-titre">La même méthode, dans vos locaux</p>
+      <p>Cartographie le matin, formation l’après-midi, puis rapport et plan à 90 jours sous 10 jours ouvrés.</p>
+      <div class="cta-milieu__actions">
+        <a class="btn btn--bleu" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg>Découvrir la Journée IA</a>
+        <a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=etude-de-cas-milieu" data-cta="diagnostic">Diagnostic IA, 45 min<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+      </div>
+    </aside>
+
+    <section aria-labelledby="qu-est-ce-qui-n-a-pas-marche">
+      <div class="num-section"><span aria-hidden="true">04 / 07</span><a class="ancre" href="#qu-est-ce-qui-n-a-pas-marche" aria-label="Lien vers la section «&nbsp;Qu'est-ce qui n'a pas marché&#8239;?&nbsp;»">#</a></div>
+      <h2 id="qu-est-ce-qui-n-a-pas-marche" data-speakable="true">Qu’est-ce qui n’a pas marché&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Les premiers devis étaient <strong>justes dans la forme, fragiles sur les quantités</strong>&nbsp;: l’IA ne voit pas le chantier.</p>
+      <p>Les deux premières semaines ont déçu. L’assistant produisait des devis bien présentés, mais il inventait parfois un poste «&nbsp;logique&nbsp;» qui n’avait rien à faire là. Ou il reprenait une surface mal notée sans sourciller.</p>
+      <p>Le métreur a failli abandonner. Ce qui l’a retenu&nbsp;: l’erreur venait presque toujours de notes incomplètes, pas de l’outil.</p>
+
+      <div class="encadre encadre--attention">
+        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg></span>Attention · ce qui a bloqué</p>
+        <ul>
+          <li><strong>Des notes trop libres.</strong> Sans trame de visite, l’IA comble les trous au hasard.</li>
+          <li><strong>Des descriptifs contradictoires.</strong> Deux versions du même poste donnaient deux devis différents.</li>
+          <li><strong>La tentation de ne plus relire.</strong> Un devis bien présenté inspire une confiance qu’il ne mérite pas toujours.</li>
+        </ul>
+      </div>
+
+      <p>La réponse a été simple&nbsp;: une trame de visite d’une page, avec les rubriques du devis dans le même ordre. Les notes sont devenues plus complètes, et les premiers jets plus justes.</p>
+      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite&nbsp;:</strong> ce que le métreur a appris à demander à l’assistant.</span></p>
+    </section>
+
+    <section aria-labelledby="comment-l-equipe-a-t-elle-ete-formee">
+      <div class="num-section"><span aria-hidden="true">05 / 07</span><a class="ancre" href="#comment-l-equipe-a-t-elle-ete-formee" aria-label="Lien vers la section «&nbsp;Comment l'équipe a-t-elle été formée&#8239;?&nbsp;»">#</a></div>
+      <h2 id="comment-l-equipe-a-t-elle-ete-formee" data-speakable="true">Comment l’équipe a-t-elle été formée&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Sur ses propres devis, <strong>pas sur des exemples génériques</strong>&nbsp;: une demi-journée, puis des points courts chaque semaine.</p>
+      <p>Une démonstration générale de l’IA n’aurait pas suffi. Ce qui a servi, c’est d’écrire ensemble la consigne de départ, de la tester sur un devis réel, puis de la corriger devant l’équipe.</p>
+      <p>Le second métreur et la gérante ont rejoint l’essai à la semaine 5. Ils ont repris la consigne telle quelle, ce qui a gardé des devis homogènes.</p>
+
+      <div class="encadre encadre--modele">
+        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-publie"/></svg></span>Modèle à reprendre · la consigne de départ</p>
+<pre>Tu prépares le premier jet d'un devis de rénovation intérieure.
+Utilise UNIQUEMENT les descriptifs types fournis.
+Range les notes de visite par pièce, puis par poste.
+Si une quantité manque, écris «&nbsp;À COMPLÉTER&nbsp;»&nbsp;: n'invente rien.
+Termine par la liste des points à vérifier sur place.</pre>
+      </div>
+    </section>
+
+    <section aria-labelledby="que-reste-t-il-a-ameliorer">
+      <div class="num-section"><span aria-hidden="true">06 / 07</span><a class="ancre" href="#que-reste-t-il-a-ameliorer" aria-label="Lien vers la section «&nbsp;Que reste-t-il à améliorer&#8239;?&nbsp;»">#</a></div>
+      <h2 id="que-reste-t-il-a-ameliorer" data-speakable="true">Que reste-t-il à améliorer&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Le lien avec le logiciel de devis&nbsp;: <strong>le premier jet est encore copié à la main</strong> dans l’outil de facturation.</p>
+      <p>L’essai a volontairement laissé ce point de côté. Brancher l’IA sur le logiciel aurait demandé un prestataire et des semaines de réglages, avant même de savoir si l’usage tenait.</p>
+      <p>Autre chantier ouvert&nbsp;: les petits dépannages. Pour un devis de deux lignes, la trame de visite prend plus de temps qu’elle n’en fait gagner. L’équipe les rédige toujours directement.</p>
+
+      <div class="appris">
+        <p class="appris__tete"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ampoule"/></svg><span>Ce que l’équipe <em>a appris</em></span></p>
+        <ol>
+          <li><span class="appris__lecon">Ranger avant d’automatiser.</span><p>Les descriptifs types propres ont plus compté que le choix de l’outil.</p></li>
+          <li><span class="appris__lecon">La relecture n’est pas négociable.</span><p>Le métreur signe le devis&#8239;; c’est donc lui qui le valide, ligne par ligne.</p></li>
+          <li><span class="appris__lecon">Un volontaire vaut mieux qu’une consigne.</span><p>Le premier utilisateur convaincu a formé les autres mieux qu’une note de service.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section aria-labelledby="que-pouvez-vous-reprendre-dans-votre-entreprise">
+      <div class="num-section"><span aria-hidden="true">07 / 07</span><a class="ancre" href="#que-pouvez-vous-reprendre-dans-votre-entreprise" aria-label="Lien vers la section «&nbsp;Que pouvez-vous reprendre dans votre entreprise&#8239;?&nbsp;»">#</a></div>
+      <h2 id="que-pouvez-vous-reprendre-dans-votre-entreprise" data-speakable="true">Que pouvez-vous reprendre dans votre entreprise&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">La méthode, <strong>pas l’outil</strong>&nbsp;: une tâche fréquente, un volontaire, des modèles propres et une décision écrite.</p>
+      <p>Votre métier n’est peut-être pas le bâtiment. Mais vous avez sans doute un document qui revient chaque semaine, rédigé à partir de notes&nbsp;: une offre, un rapport d’intervention, un compte rendu.</p>
+
+      <div class="chez-vous">
+        <p class="chez-vous__surtitre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-epingle"/></svg>À retenir · ce que vous pouvez reprendre</p>
+        <p class="chez-vous__titre">Et chez vous&#8239;?</p>
+        <ol>
+          <li><strong>Choisissez un document</strong>Celui qui revient le plus souvent et se vérifie en un coup d'œil.</li>
+          <li><strong>Nettoyez vos modèles</strong>Une version par paragraphe type, validée par une seule personne.</li>
+          <li><strong>Fixez une date de décision</strong>Six semaines au plus, puis continuer, ajuster ou arrêter.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5. RÉSUMÉ DE FIN : la frise rappelée en version compacte -->
+    <section class="resume" aria-labelledby="ce-qu-il-faut-retenir" data-aeo="key-point">
+      <h2 class="resume__titre" id="ce-qu-il-faut-retenir">Ce qu’il faut retenir, <em>en trois temps</em></h2>
+      <ol class="frise-mini">
+        <li><span class="frise-mini__nom">Avant</span><p>Des devis ressaisis le soir, avec des formulations différentes.</p></li>
+        <li><span class="frise-mini__nom">Pendant</span><p>Des descriptifs remis au propre, puis un essai à une personne.</p></li>
+        <li><span class="frise-mini__nom">Après</span><p>Un premier jet par l’IA, toujours relu par le métreur.</p></li>
+      </ol>
+    </section>
+    <p class="micro-note"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><span>Nous n’annonçons jamais un gain à l’avance.</span></p>
+    <p class="micro-appel"><a class="lien-fleche" href="/fr/journee-ia" data-cta="journee">Vos propres chiffres se relèvent sur place, pendant la Journée IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
+
+    <!-- 6. FAQ -->
+    <section class="faq" id="faq" aria-labelledby="faq-titre" data-aeo="people-also-ask">
+      <h2 class="bloc-titre" id="faq-titre">Questions fréquentes</h2>
+      <details data-faq-q>
+        <summary>Ce cas décrit-il une entreprise réelle&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Non. C’est un exemple type, composé à partir de situations courantes dans le bâtiment. Il illustre une méthode&#8239;; il ne rapporte aucun résultat d’un client.</p></div>
+      </details>
+      <details data-faq-q>
+        <summary>Faut-il un logiciel de devis compatible avec l’IA&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Pas pour commencer. Le premier jet peut être produit dans un assistant d’IA puis recopié. Le branchement direct vient ensuite, si l’usage tient.</p></div>
+      </details>
+      <details data-faq-q>
+        <summary>Peut-on confier les coordonnées des clients à l’assistant&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Évitez-le au départ&nbsp;: travaillez sur les notes techniques, sans nom ni adresse. Vérifiez ensuite les conditions du fournisseur et le lieu d’hébergement des données.</p></div>
+      </details>
+      <details data-faq-q>
+        <summary>Qui est responsable si un devis contient une erreur&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>L’entreprise, comme avant. Le devis engage celui qui l’envoie, d’où la relecture systématique par le métreur.</p></div>
+      </details>
+    </section>
+
+    <!-- 7. SOURCES & MÉTHODE -->
+        <!-- ENCART VIDÉO (facultatif) : seulement si une vraie vidéo existe ; chargée au clic, transcription dans le DOM -->
+    <section class="encart-video" aria-labelledby="video-titre" data-aeo="video-slot">
+      <p class="encart-video__repere">Emplacement facultatif · maquette</p>
+      <h2 class="encart-video__titre" id="video-titre">En vidéo, l’essentiel en deux minutes</h2>
+      <div class="encart-video__cadre" role="img" aria-label="Emplacement réservé à une vidéo YouTube d’Axion-IA, chargée seulement au clic"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m9 7 8 5-8 5z"/></svg></div>
+      <details class="encart-video__texte">
+        <summary>Lire la transcription</summary>
+        <p>Le texte de la vidéo est repris ici, en entier ou résumé : il reste lisible sans lecteur vidéo et citable par les moteurs. Cet encart n’apparaît que si une vidéo réelle est publiée.</p>
+      </details>
+    </section>
+
+<section class="sources" id="sources" aria-labelledby="sources-titre">
+      <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
+      <ol>
+        <li><a href="https://entreprendre.service-public.fr/vosdroits/F31211">Service-public.fr (Entreprendre), «&nbsp;Devis&nbsp;: quelles sont les obligations du professionnel&#8239;?&nbsp;», fiche pratique, 2025</a></li>
+        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
+        <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l’intelligence artificielle, article 4, Journal officiel de l’Union européenne, 2024</a></li>
+      </ol>
+      <h3>Méthode</h3>
+      <p>Ce récit est un cas illustratif, construit par Axion-IA à partir de situations fréquentes dans les entreprises du bâtiment. Il ne décrit pas un client. Aucun gain chiffré n’est donné&nbsp;: il ne pourrait pas être vérifié.</p>
+          <p class="citer"><strong>Citer cet article&nbsp;:</strong> Manon, «&nbsp;Une entreprise du bâtiment prépare ses devis avec l’IA&nbsp;: récit d’un essai&nbsp;», Axion-IA, 18 novembre 2026, https://axion-ia.com/fr/blog/entreprise-batiment-devis-ia</p>
+      <details class="historique" data-aeo="update-history">
+        <summary>Historique des mises à jour</summary>
+        <ul>
+          <li><time datetime="2026-11-26">26 novembre 2026</time> : exemple de maquette. En production, une ligne par mise à jour réelle, avec ce qui a changé (chiffre actualisé, source remplacée, section ajoutée). Absent tant qu’aucune mise à jour n’a eu lieu.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- 8. AUTEUR + MENTION IA -->
+    <section class="auteur" id="auteur" aria-labelledby="auteur-titre">
+      <span class="avatar" aria-hidden="true">M</span>
+      <div>
+        <h2 class="auteur__titre" id="auteur-titre"><a href="/fr/equipe/manon" rel="author">Manon</a></h2>
+        <p class="auteur__role">Plume IA d’Axion-IA</p>
+        <p class="relu" data-aeo="reviewer"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2.5 4.5 5.5v6c0 4.5 3.2 8.2 7.5 10 4.3-1.8 7.5-5.5 7.5-10v-6z"/><path d="m8.5 12 2.5 2.5 4.5-4.5"/></svg><span><strong>Relu et validé par</strong> [Prénom Nom], [fonction] chez Axion-IA, le 26 novembre 2026. <em>Emplacement de maquette : ce bloc n’est affiché que si un relecteur réel est enregistré ; jamais de nom générique.</em></span></p>
+        <p>Manon prépare les articles du blog d’Axion-IA à partir de sources publiques et des retours des intervenants, qui relisent chaque article.</p>
+      </div>
+      <p class="mention-ia" data-aeo="ai-disclosure"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ia"/></svg><span>Cet article a été rédigé avec l’aide d’outils d’intelligence artificielle, puis vérifié et relu par l’équipe d’Axion-IA.</span></p>
+    </section>
+
+    <div class="partage" data-aeo="share-bar">
+      <p class="partage__titre">Partager l’article</p>
+      <ul>
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fentreprise-batiment-devis-ia"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg>LinkedIn</a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fentreprise-batiment-devis-ia"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Twitter</a></li>
+        <li><a href="mailto:?subject=Article%20Axion-IA&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fentreprise-batiment-devis-ia"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg>E-mail</a></li>
+        <li><a href="#article"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-lien"/></svg>Copier le lien</a></li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<!-- COLONNE D'ACTION : un seul <aside>, après l’article -->
+<aside class="action" aria-label="Passer à l'action">
+  <div class="carte-action sur-sombre">
+    <p class="carte-action__titre">Passer de la lecture <em>à l’action</em></p>
+    <p class="carte-action__sous-titre">Pour votre PME, partout en France.</p>
+    <ul class="carte-action__liste">
+      <li><a class="btn btn--bleu act" href="/fr/appel?rdv=diagnostic&amp;depuis=etude-de-cas-colonne" data-cta="diagnostic" aria-label="Diagnostic IA, 45 min, gratuit">
+        <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>
+        <span class="btn__texte"><span class="act__libelle"><span class="act__long">Diagnostic IA, 45 min</span><span class="act__court">Diagnostic IA</span></span><span class="btn__sous">Gratuit · en visio ou par téléphone · sans engagement</span></span>
+        <span class="act__pastille" aria-hidden="true">45 min</span>
+        <svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></li>
+      <li><a class="btn btn--terracotta act" href="/fr/journee-ia" data-cta="journee" aria-label="Découvrir la Journée IA">
+        <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg>
+        <span class="btn__texte"><span class="act__libelle"><span class="act__long">Découvrir la Journée IA</span><span class="act__court">Journée IA</span></span><span class="btn__sous">Audit le matin, vos équipes formées l’après-midi, dans vos locaux.</span></span>
+        <svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></li>
+      <li><a class="btn btn--contour act" href="/fr/contact" data-cta="message" aria-label="Écrire un message">
+        <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg>
+        <span class="btn__texte"><span class="act__libelle"><span class="act__long">Écrire un message</span><span class="act__court">Message</span></span><span class="btn__sous">Lu par un consultant senior, jamais par un robot.</span></span>
+        <svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></li>
+    </ul>
+    <ul class="carte-action__rassurance">
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Confirmation immédiate</li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Annulable en un clic</li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Partout en France</li>
+      <!-- Qualiopi : rendu seulement si certification publiée (QualiopiReassuranceBand) — texte exact « Organisme de formation certifié Qualiopi » -->
+    </ul>
+  </div>
+</aside>
+
+</div><!-- /.mise-en-page -->
+
+<!-- HORS ARTICLE -->
+<div class="conteneur">
+  <section class="lies" aria-labelledby="plus-loin-titre">
+    <h2 class="bloc-titre" id="plus-loin-titre">Aller plus loin</h2>
+    <ul class="plus-loin">
+      <li><a href="/fr/secteurs/batiment"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-batiment"/></svg><span>Secteur bâtiment<small>L’IA dans les métiers du BTP</small></span></a></li>
+      <li><a href="/fr/audit"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-cible"/></svg><span>Audit IA<small>Repérer vos tâches à confier</small></span></a></li>
+      <li><a href="/fr/guides/mettre-en-place-ia-pme"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-boussole"/></svg><span>Le guide complet<small>Mettre en place l’IA dans une PME</small></span></a></li>
+      <li><a href="/fr/formations"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg><span>Formations<small>Former vos équipes à l’IA</small></span></a></li>
+    </ul>
+  </section>
+
+  <section class="lies" aria-labelledby="lies-titre">
+    <p class="pastille pastille--claire lies__surtitre">Articles connexes</p>
+    <h2 class="bloc-titre" id="lies-titre">À lire aussi</h2>
+    <ul class="lies__liste">
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Analyse</span><h3 class="lie__titre"><a href="/fr/blog/projets-ia-pme-premier-essai">Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Guide</span><h3 class="lie__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l’IA, en 6 étapes</a></h3><span class="lie__meta">8 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Sélection</span><h3 class="lie__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu’une PME peut confier à l’IA</a></h3><span class="lie__meta">7 min de lecture</span></div></article></li>
+    </ul>
+  </section>
+
+  <section class="guide-gratuit" aria-labelledby="guide-titre" data-aeo="newsletter">
+    <div>
+      <h2 class="guide-gratuit__titre" id="guide-titre">Le guide IA entreprise, 40 pages, gratuit</h2>
+      <p>Usages concrets, coûts réels, retour sur investissement et écueils à éviter. Envoyé tout de suite par e-mail.</p>
+    </div>
+    <form action="/fr/guide-ia" method="post">
+      <label>Votre adresse e-mail<input type="email" name="email" autocomplete="email" required></label>
+      <button class="btn btn--bleu" type="submit">Recevoir le guide</button>
+    </form>
+  </section>
+
+  <section class="cta-fin sur-sombre" aria-labelledby="cta-fin-titre">
+    <p class="pastille pastille--pleine cta-fin__surtitre">Passer à l’action</p>
+    <h2 class="cta-fin__titre" id="cta-fin-titre">Et si le prochain cas <em>était le vôtre</em>&#8239;?</h2>
+    <p class="cta-fin__phrase">Chaque entreprise a ses propres chiffres&nbsp;: ils se relèvent avec vous, pas à l’avance.</p>
+    <ul class="cta-fin__actions">
+      <li><a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=etude-de-cas-fin" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg><span class="btn__texte">Diagnostic IA, 45 min<span class="btn__sous">Gratuit · 45 minutes · Sans engagement</span></span></a></li>
+      <li><a class="btn btn--terracotta" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg><span class="btn__texte">Découvrir la Journée IA<span class="btn__sous">Dans vos locaux, partout en France</span></span></a></li>
+      <li><a class="btn btn--contour-clair" href="/fr/contact" data-cta="message"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg><span class="btn__texte">Écrire un message<span class="btn__sous">Lu par un consultant senior</span></span></a></li>
+    </ul>
+    <ol class="deroule" aria-label="Comment se passe le Diagnostic IA">
+      <li><strong>Vous choisissez un créneau</strong><span>Visioconférence Google Meet ou téléphone, confirmation immédiate.</span></li>
+      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching&nbsp;: on qualifie votre besoin.</span></li>
+      <li><strong>Vous repartez avec des pistes concrètes</strong><span>Et le bon module si vous souhaitez aller plus loin. Sans engagement.</span></li>
+    </ol>
+    <ul class="rassurance">
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Annulable en un clic</li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-carte"/></svg>Partout en France</li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-bouclier"/></svg>Données hébergées dans l’Union européenne</li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Une attestation de formation par personne (Journée IA)</li>
+      <!-- Qualiopi : rendu seulement si certification publiée (QualiopiReassuranceBand) -->
+    </ul>
+  </section>
+</div>
+</main>
+
+<footer class="pied-site sur-sombre">
+  <div class="conteneur">© Axion-IA · <a href="/fr/mentions-legales">Mentions légales</a></div>
+</footer>
+</body>
+</html>
