@@ -101,7 +101,12 @@
   --largeur-lecture: 41.5em; /* = 68ch Manrope */
   --largeur-page: 80rem;
   --hauteur-barre-mobile: 4.75rem;
-  --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
+  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
+     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
+  --hauteur-carte: 33.5rem;
+  /* Sommaire collant sous la carte : place restante de l'écran */
+  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
+  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
   --focus-clair: var(--color-primary);
   /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
      terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
@@ -216,6 +221,16 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
 .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
 @media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
+/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
+.site-entete .site-entete__cta { display: none; }
+@media (min-width: 1024px) {
+  .site-entete .conteneur { justify-content: flex-start; }
+  .site-nav { margin-left: auto; }
+  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
+  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+}
+/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
+@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
 
 .bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
 .fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
@@ -237,10 +252,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   clip-path: inset(0 -100vmax);
   padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
 }
-/* Aplat terracotta : disque (coupé par le bas du bandeau) + rayures mocha-soft */
-.heros::before { content: ""; position: absolute; z-index: -1; border-radius: 50%;
-  width: clamp(14rem, 34vw, 30rem); aspect-ratio: 1; background: var(--color-terracotta);
-  right: calc(-1 * var(--gouttiere)); bottom: clamp(-12rem, -9vw, -5rem); }
+/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
+   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
 .heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
   width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
   background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
@@ -258,6 +271,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
   letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
+/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
+   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
+@media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
 .heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
   border-left: 4px solid var(--color-terracotta-on-mocha);
@@ -272,6 +289,21 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
   background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
 .meta .meta__lecture .icone { color: var(--color-mocha); }
+/* Pied du héros : partage compact à gauche, signe du modèle à droite */
+.heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
+.heros__pied .partage-icones { margin: 0; flex: none; }
+/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
+   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
+.heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
+  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
+  font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
+.signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-mocha-fg); white-space: normal; text-align: left; }
+@media (min-width: 640px) {
+  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
+    background: var(--color-mocha-soft); font-size: 2.75rem; }
+  .signe__legende { display: block; width: 8.5rem; }
+}
 /* Partage compact (icônes) sous la méta */
 .partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
@@ -300,18 +332,25 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
   .article { grid-column: 1 / -1; grid-row: 1 / -1; display: grid;
     grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .heros { grid-column: 1 / -1; grid-row: 1; }
+  /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
+     Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
+  .heros { grid-column: 1; grid-row: 1; min-width: 0; }
   .article__ouverture { grid-column: 1; grid-row: 2; min-width: 0; }
   .article__corps { grid-column: 1; grid-row: 3; min-width: 0; }
-  /* Sommaire : collé en haut (aucun ancêtre en overflow hidden/auto) */
+  /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
+     puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
+     de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
+     margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
+     (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
+  .action { grid-column: 2; grid-row: 1 / -1; align-self: start; z-index: 2;
+    position: sticky; top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem); }
+  .action .carte-action { min-height: var(--hauteur-carte); }
+  /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
   .sommaire { grid-column: 2; grid-row: 2 / 4; align-self: start;
-    position: sticky; top: calc(var(--header-h) + 16px); /* marges : voir section 10 */
-    max-height: max(11rem, calc(100dvh - var(--header-h) - var(--hauteur-carte) - 3rem)); overflow-y: auto; }
-  /* Carte d'action : posée en bas de la colonne, collée en bas d'écran.
-     Elle apparaît d'elle-même à la sortie de l'image principale (ligne 3). */
-  .action { grid-column: 2; grid-row: 3; align-self: stretch; display: flex;
-    flex-direction: column; justify-content: flex-end; padding-top: 2rem; }
-  .action .carte-action { position: sticky; bottom: 16px; }
+    position: sticky; top: var(--sommaire-haut);
+    max-height: var(--sommaire-max); overflow-y: auto; overscroll-behavior: contain;
+    scroll-timeline: --sommaire block; }
 }
 
 /* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
@@ -332,9 +371,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   font: 600 0.8125rem/1 var(--font-mono); color: var(--color-terracotta-deep); }
 .sommaire ol a:hover { background: var(--color-sand); color: var(--color-ink); }
 @media (min-width: 1024px) {
-  /* marges de la colonne : haut aligné, bas = place réservée à la carte en fin d'article */
-  .sommaire { margin: 1.5rem 0 calc(var(--hauteur-carte) + 2rem); }
-  .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
+  .sommaire { margin: 1rem 0 0; }
+  /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
+  .sommaire { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .sommaire details { border: 0; border-radius: var(--radius-xl); }
   /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
      sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
      reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
@@ -344,6 +385,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     .sommaire summary::after { display: none; }
   }
   .sommaire ol a { font-size: 0.875rem; }
+  /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
+     total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
+     (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
+  .sommaire ol::after { content: "↓ suite du sommaire · " counter(s, decimal-leading-zero) " entrées" / "";
+    position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
+    background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
+    font: 600 0.75rem/1.2 var(--font-mono); letter-spacing: 0.02em; color: var(--color-terracotta-deep); }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after { animation: sommaire-suite linear both; animation-timeline: --sommaire; }
+    @keyframes sommaire-suite { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  }
+  .sommaire ol { padding-bottom: 0.75rem; }
 }
 
 /* 11 — BOUTONS ------------------------------------------------------------- */
@@ -393,7 +447,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 @media (min-width: 1024px) {
   .carte-action.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
   .carte-action { position: relative; inset: auto; z-index: auto; border: 0; border-radius: var(--radius-xl);
-    padding: 1.5rem 1.25rem 1.25rem; background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
+    padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
+    /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
+       (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
+    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
   .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
   .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
@@ -420,7 +477,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
 /* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
 @media (min-width: 1024px) and (max-height: 1000px) {
-  :root { --hauteur-carte: 25rem; }
+  :root { --hauteur-carte: 24rem; }
   .carte-action { padding-top: 1.15rem; }
   .carte-action__titre { font-size: 1.1875rem; }
   .carte-action__sous-titre { margin-bottom: 0.75rem; }
@@ -428,6 +485,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .act { min-height: 48px; padding-block: 0.5rem; }
   .act.btn--bleu { min-height: 56px; }
   .carte-action__rassurance { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin-top: 0.75rem; padding-top: 0.65rem; }
+}
+/* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
+   l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
+@media (min-width: 1024px) and (max-height: 860px) {
+  :root { --hauteur-carte: 18.75rem; }
+  .carte-action__rassurance { display: none; }
 }
 
 /* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
@@ -741,6 +804,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .lie__titre a:focus-visible { outline: none; }
 .lie:has(a:focus-visible) { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
 .lie__meta { font-size: 0.8125rem; color: var(--color-fg-muted); }
+/* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
+@media (max-width: 639px) {
+  .lie { flex-direction: row; }
+  .lie__visuel { flex: 0 0 6rem; aspect-ratio: auto; min-height: 7.5rem; }
+  .lie__visuel::after { width: 80%; right: -25%; top: -15%; }
+  .lie__corps { align-content: center; padding: 0.85rem 1rem; }
+  .lie__titre { font-size: 1.0625rem; }
+}
 
 /* Guide gratuit (capture e-mail existante, une seule par page) */
 .guide-gratuit { display: grid; gap: 1rem; margin: 3rem 0 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
@@ -748,7 +819,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .guide-gratuit__titre { margin: 0 0 0.5rem; font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif); }
 .guide-gratuit p { margin: 0; }
 .guide-gratuit form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
-.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 15rem; font-size: 0.875rem; font-weight: 600; }
+/* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
+.guide-gratuit > *, .guide-gratuit label { min-width: 0; }
+.guide-gratuit input { width: 100%; min-width: 0; }
+.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 min(15rem, 100%); font-size: 0.875rem; font-weight: 600; }
 .guide-gratuit input { min-height: 48px; padding: 0.6rem 0.9rem; border: 1.5px solid var(--color-border-field);
   border-radius: var(--radius-md); background: var(--color-paper); color: var(--color-fg); font: 400 1rem/1.3 var(--font-sans); }
 @media (min-width: 760px) { .guide-gratuit { grid-template-columns: 1fr 1fr; align-items: center; } }
@@ -761,9 +835,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .progression { display: none !important; animation: none !important; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .btn:hover, .lie:hover { transform: none; }
+  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
+  .sommaire ol::after { animation: sommaire-suite linear both !important; animation-timeline: --sommaire !important; }
 }
 @media (forced-colors: active) {
-  .progression, .heros::before, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
+  .progression, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
   .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
   .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
     border: 2px solid CanvasText; }
@@ -898,6 +974,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .commencer::after { display: none; }
 }
 @media print { .commencer { background: none; color: var(--color-ink); border: 1px solid var(--color-ink); } .commencer h2, .commencer .reponse-courte { color: var(--color-ink) !important; } }
+/* Signe du modèle dans le héros (décor aria-hidden) */
+.signe--selection { font-size: 2.25rem; }
+@media (min-width: 640px) { .signe--selection { font-size: 4rem; } }
 </style>
 </head>
 <body>
@@ -949,6 +1028,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <a href="/fr/formations">Formations</a>
       <a href="/fr/blog">Blog</a>
     </nav>
+    <a class="btn btn--bleu site-entete__cta" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-entete" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
   </div>
 </header>
 
@@ -983,11 +1063,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <li data-aeo="freshness"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg><time datetime="2026-11-23">Mis à jour le 23 novembre 2026</time></li>
       <li class="meta__lecture"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>8 min de lecture</li>
     </ul>
-    <ul class="partage-icones" aria-label="Partager l'article">
-      <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Ftaches-administratives-ia-pme" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
-      <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Ftaches-administratives-ia-pme" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
-      <li><a href="mailto:?subject=10%20t%C3%A2ches%20administratives%20%C3%A0%20confier%20%C3%A0%20l%27IA&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Ftaches-administratives-ia-pme" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
-    </ul>
+    <div class="heros__pied">
+      <ul class="partage-icones" aria-label="Partager l'article">
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Ftaches-administratives-ia-pme" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Ftaches-administratives-ia-pme" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:?subject=10%20t%C3%A2ches%20administratives%20%C3%A0%20confier%20%C3%A0%20l%27IA&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Ftaches-administratives-ia-pme" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
+      </ul>
+      <div class="heros__signe signe--selection" aria-hidden="true"><span class="signe__grand">10</span><span class="signe__legende">tâches à confier, classées par effort</span></div>
+    </div>
   </header>
 
   <!-- 2. IMAGE + RÉPONSE DIRECTE -->
@@ -1010,12 +1093,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </svg>
         <span class="visuel__etiquette" aria-hidden="true">10 tâches · 3 critères · aucune note</span>
       </div>
-      <figcaption>Photo : Inès Moreau / Unsplash</figcaption>
+      <figcaption>Photo&nbsp;: [nom du photographe] / Unsplash</figcaption>
     </figure>
 
     <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
       <p class="en-bref__titre" id="en-bref-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-eclair"/></svg>En bref</p>
-      <p>Dix tâches administratives se prêtent bien à l'IA en PME : tri des e-mails, comptes rendus, relances, devis types, synthèse de documents, réponses aux questions fréquentes, offres d'emploi, notes internes, traduction et préparation de tableaux. <strong>Commencez par celle qui vous prend le plus de temps</strong> chaque semaine et vérifiez toujours le résultat.</p>
+      <p>Dix tâches administratives se prêtent bien à l'IA en PME&nbsp;: tri des e-mails, comptes rendus, relances, devis types, synthèse de documents, réponses aux questions fréquentes, offres d'emploi, notes internes, traduction et préparation de tableaux. <strong>Commencez par celle qui vous prend le plus de temps</strong> chaque semaine et vérifiez toujours le résultat.</p>
     </aside>
   </div>
 
@@ -1025,11 +1108,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <summary>Sommaire · 10 tâches</summary>
       <ol>
         <li><a href="#comment-avons-nous-choisi-ces-10-taches">Comment nous avons choisi</a></li>
-        <li><a href="#quelles-taches-reviennent-chaque-jour">Tâches 1 à 3 : le quotidien</a></li>
-        <li><a href="#quelles-taches-demandent-de-verifier-chaque-resultat">Tâches 4 à 6 : à vérifier</a></li>
-        <li><a href="#par-quelle-tache-commencer-si-vous-n-avez-jamais-utilise-l-ia">Par où commencer ?</a></li>
-        <li><a href="#lesquelles-touchent-a-des-donnees-sensibles">Tâches 7 à 10 : données sensibles</a></li>
-        <li><a href="#faut-il-un-outil-different-pour-chaque-tache">Un outil par tâche ?</a></li>
+        <li><a href="#quelles-taches-reviennent-chaque-jour">Tâches 1 à 3&nbsp;: le quotidien</a></li>
+        <li><a href="#quelles-taches-demandent-de-verifier-chaque-resultat">Tâches 4 à 6&nbsp;: à vérifier</a></li>
+        <li><a href="#par-quelle-tache-commencer-si-vous-n-avez-jamais-utilise-l-ia">Par où commencer&#8239;?</a></li>
+        <li><a href="#lesquelles-touchent-a-des-donnees-sensibles">Tâches 7 à 10&nbsp;: données sensibles</a></li>
+        <li><a href="#faut-il-un-outil-different-pour-chaque-tache">Un outil par tâche&#8239;?</a></li>
         <li><a href="#comment-mesurer-le-temps-gagne">Mesurer le temps gagné</a></li>
         <li><a href="#les-10-taches-en-un-coup-d-oeil">Les 10 en un coup d'œil</a></li>
       </ol>
@@ -1040,9 +1123,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   <div class="article__corps prose">
 
     <section aria-labelledby="comment-avons-nous-choisi-ces-10-taches">
-      <div class="num-section"><span aria-hidden="true">Méthode</span><a class="ancre" href="#comment-avons-nous-choisi-ces-10-taches" aria-label="Lien vers la section « Comment avons-nous choisi ces 10 tâches ? »">#</a></div>
-      <h2 id="comment-avons-nous-choisi-ces-10-taches" data-speakable="true">Comment avons-nous choisi ces 10 tâches ?</h2>
-      <p class="reponse-courte" data-speakable="true">Chaque tâche répond à <strong>trois critères</strong> : elle revient chaque semaine, son résultat se vérifie vite, et un outil courant suffit.</p>
+      <div class="num-section"><span aria-hidden="true">Méthode</span><a class="ancre" href="#comment-avons-nous-choisi-ces-10-taches" aria-label="Lien vers la section «&nbsp;Comment avons-nous choisi ces 10 tâches&#8239;?&nbsp;»">#</a></div>
+      <h2 id="comment-avons-nous-choisi-ces-10-taches" data-speakable="true">Comment avons-nous choisi ces 10 tâches&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Chaque tâche répond à <strong>trois critères</strong>&nbsp;: elle revient chaque semaine, son résultat se vérifie vite, et un outil courant suffit.</p>
       <div class="encadre encadre--modele">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-filtre"/></svg></span>Comment nous avons choisi</p>
         <ol class="criteres">
@@ -1051,19 +1134,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
           <li>Faisable sans développement</li>
         </ol>
         <ul class="exclus" aria-label="Ce que cette liste ne fait pas">
-          <li>Ce que nous n'avons pas fait :</li>
+          <li>Ce que nous n'avons pas fait&nbsp;:</li>
           <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>aucune note</li>
-          <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>aucun « meilleur »</li>
+          <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>aucun «&nbsp;meilleur&nbsp;»</li>
           <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>aucun lien commercial</li>
         </ul>
       </div>
-      <p>Les numéros servent à se repérer, pas à classer. Les tâches sont regroupées en trois familles : celles du quotidien, celles qui demandent une relecture attentive, et celles qui touchent à des données sensibles. Le niveau indiqué (facile ou intermédiaire) reflète la préparation nécessaire, pas l'intérêt de la tâche.</p>
+      <p>Les numéros servent à se repérer, pas à classer. Les tâches sont regroupées en trois familles&nbsp;: celles du quotidien, celles qui demandent une relecture attentive, et celles qui touchent à des données sensibles. Le niveau indiqué (facile ou intermédiaire) reflète la préparation nécessaire, pas l'intérêt de la tâche.</p>
     </section>
 
     <section aria-labelledby="quelles-taches-reviennent-chaque-jour">
-      <div class="num-section"><span aria-hidden="true">Tâches 1 à 3</span><a class="ancre" href="#quelles-taches-reviennent-chaque-jour" aria-label="Lien vers la section « Quelles tâches reviennent chaque jour ? »">#</a></div>
-      <h2 id="quelles-taches-reviennent-chaque-jour" data-speakable="true">Quelles tâches reviennent chaque jour ?</h2>
-      <p class="reponse-courte" data-speakable="true">Les e-mails, les comptes rendus et les relances : <strong>trois tâches répétitives</strong>, faciles à essayer dès cette semaine.</p>
+      <div class="num-section"><span aria-hidden="true">Tâches 1 à 3</span><a class="ancre" href="#quelles-taches-reviennent-chaque-jour" aria-label="Lien vers la section «&nbsp;Quelles tâches reviennent chaque jour&#8239;?&nbsp;»">#</a></div>
+      <h2 id="quelles-taches-reviennent-chaque-jour" data-speakable="true">Quelles tâches reviennent chaque jour&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Les e-mails, les comptes rendus et les relances&nbsp;: <strong>trois tâches répétitives</strong>, faciles à essayer dès cette semaine.</p>
       <ol class="taches">
         <li class="tache" id="tache-1">
           <div class="tache__tete">
@@ -1071,7 +1154,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">1 sur 10 <span class="niveau niveau--1"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Facile</span></p>
               <h3 class="tache__titre">Trier les e-mails et préparer les réponses</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> l'IA résume, classe et propose un brouillon ; vous validez avant l'envoi.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> l'IA résume, classe et propose un brouillon&#8239;; vous validez avant l'envoi.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
@@ -1086,15 +1169,15 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">2 sur 10 <span class="niveau niveau--1"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Facile</span></p>
               <h3 class="tache__titre">Rédiger les comptes rendus de réunion</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> à partir d'une transcription, l'IA sort décisions, responsables et échéances.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> à partir d'une transcription, l'IA sort décisions, responsables et échéances.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
-            <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Managers, chefs de projet, conducteurs de travaux : tous ceux qui animent des réunions.</dd></div>
+            <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Managers, chefs de projet, conducteurs de travaux&nbsp;: tous ceux qui animent des réunions.</dd></div>
             <div class="rubrique rubrique--forts"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Points forts</dt><dd>Un compte rendu envoyé le jour même, toujours au même format.</dd></div>
             <div class="rubrique rubrique--limites"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>Limites</dt><dd>Noms et chiffres à vérifier. L'enregistrement exige l'accord des participants.</dd></div>
           </dl>
-          <p class="tache__pied"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-carte" data-cta="diagnostic">Pour quel service ? Diagnostic IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
+          <p class="tache__pied"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-carte" data-cta="diagnostic">Pour quel service&#8239;? Diagnostic IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
         </li>
         <li class="tache" id="tache-3">
           <div class="tache__tete">
@@ -1102,7 +1185,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">3 sur 10 <span class="niveau niveau--1"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Facile</span></p>
               <h3 class="tache__titre">Préparer les relances clients et fournisseurs</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> un ton adapté au retard, de la relance aimable au rappel ferme.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> un ton adapté au retard, de la relance aimable au rappel ferme.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
@@ -1117,7 +1200,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
     <aside class="cta-milieu cta-milieu--sage" aria-labelledby="cta-milieu-titre">
       <p class="cta-milieu__surtitre">Journée IA</p>
-      <p class="cta-milieu__titre" id="cta-milieu-titre">Lesquels servent vraiment chez vous ?</p>
+      <p class="cta-milieu__titre" id="cta-milieu-titre">Lesquels servent vraiment chez vous&#8239;?</p>
       <p>L'audit de la Journée IA repère vos 3 à 5 plus gros gains, classés par priorité.</p>
       <div class="cta-milieu__actions">
         <a class="btn btn--terracotta" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg>Découvrir la Journée IA</a>
@@ -1126,9 +1209,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </aside>
 
     <section aria-labelledby="quelles-taches-demandent-de-verifier-chaque-resultat">
-      <div class="num-section"><span aria-hidden="true">Tâches 4 à 6</span><a class="ancre" href="#quelles-taches-demandent-de-verifier-chaque-resultat" aria-label="Lien vers la section « Quelles tâches demandent de vérifier chaque résultat ? »">#</a></div>
-      <h2 id="quelles-taches-demandent-de-verifier-chaque-resultat" data-speakable="true">Quelles tâches demandent de vérifier chaque résultat ?</h2>
-      <p class="reponse-courte" data-speakable="true">Les devis, les synthèses et les réponses aux clients : <strong>une erreur y coûte cher</strong>, donc chaque résultat se relit.</p>
+      <div class="num-section"><span aria-hidden="true">Tâches 4 à 6</span><a class="ancre" href="#quelles-taches-demandent-de-verifier-chaque-resultat" aria-label="Lien vers la section «&nbsp;Quelles tâches demandent de vérifier chaque résultat&#8239;?&nbsp;»">#</a></div>
+      <h2 id="quelles-taches-demandent-de-verifier-chaque-resultat" data-speakable="true">Quelles tâches demandent de vérifier chaque résultat&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Les devis, les synthèses et les réponses aux clients&nbsp;: <strong>une erreur y coûte cher</strong>, donc chaque résultat se relit.</p>
       <ol class="taches" start="4">
         <li class="tache" id="tache-4">
           <div class="tache__tete">
@@ -1136,7 +1219,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">4 sur 10 <span class="niveau niveau--2"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Intermédiaire</span></p>
               <h3 class="tache__titre">Préparer des devis types</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> une première version à partir d'une note de visite et de vos descriptifs.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> une première version à partir d'une note de visite et de vos descriptifs.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
@@ -1151,7 +1234,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">5 sur 10 <span class="niveau niveau--1"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Facile</span></p>
               <h3 class="tache__titre">Synthétiser de longs documents</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> les points clés et les questions à poser, avant de tout lire.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> les points clés et les questions à poser, avant de tout lire.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
@@ -1166,23 +1249,23 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">6 sur 10 <span class="niveau niveau--2"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Intermédiaire</span></p>
               <h3 class="tache__titre">Répondre aux questions fréquentes</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> des réponses cohérentes, rédigées à partir de vos propres documents.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> des réponses cohérentes, rédigées à partir de vos propres documents.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
-            <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Service client, ressources humaines, accueil : ceux qui répondent dix fois à la même question.</dd></div>
+            <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Service client, ressources humaines, accueil&nbsp;: ceux qui répondent dix fois à la même question.</dd></div>
             <div class="rubrique rubrique--forts"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Points forts</dt><dd>La même réponse juste, quelle que soit la personne qui répond.</dd></div>
             <div class="rubrique rubrique--limites"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>Limites</dt><dd>Les documents de base doivent être à jour. Les cas sensibles restent humains.</dd></div>
           </dl>
-          <p class="tache__pied"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-carte" data-cta="diagnostic">Pour quel service ? Diagnostic IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
+          <p class="tache__pied"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-carte" data-cta="diagnostic">Pour quel service&#8239;? Diagnostic IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
         </li>
       </ol>
       <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Encore 4 idées,</strong> dont les offres d'emploi et la traduction.</span></p>
     </section>
 
     <section class="commencer sur-sombre" aria-labelledby="par-quelle-tache-commencer-si-vous-n-avez-jamais-utilise-l-ia">
-      <div class="num-section"><span aria-hidden="true">Mi-parcours</span><a class="ancre" href="#par-quelle-tache-commencer-si-vous-n-avez-jamais-utilise-l-ia" aria-label="Lien vers la section « Par quelle tâche commencer si vous n'avez jamais utilisé l'IA ? »">#</a></div>
-      <h2 id="par-quelle-tache-commencer-si-vous-n-avez-jamais-utilise-l-ia" data-speakable="true">Par quelle tâche commencer si vous n'avez jamais utilisé l'IA ?</h2>
+      <div class="num-section"><span aria-hidden="true">Mi-parcours</span><a class="ancre" href="#par-quelle-tache-commencer-si-vous-n-avez-jamais-utilise-l-ia" aria-label="Lien vers la section «&nbsp;Par quelle tâche commencer si vous n'avez jamais utilisé l'IA&#8239;?&nbsp;»">#</a></div>
+      <h2 id="par-quelle-tache-commencer-si-vous-n-avez-jamais-utilise-l-ia" data-speakable="true">Par quelle tâche commencer si vous n'avez jamais utilisé l'IA&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Commencez par <strong>une tâche facile, fréquente et sans données sensibles</strong>. Ces trois-là cochent les trois cases.</p>
       <ul class="commencer__liste">
         <li><a href="#tache-2"><span class="commencer__chiffre" aria-hidden="true">2</span><span>Comptes rendus</span><small>Tâche 2 · facile</small></a></li>
@@ -1192,9 +1275,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </section>
 
     <section aria-labelledby="lesquelles-touchent-a-des-donnees-sensibles">
-      <div class="num-section"><span aria-hidden="true">Tâches 7 à 10</span><a class="ancre" href="#lesquelles-touchent-a-des-donnees-sensibles" aria-label="Lien vers la section « Lesquelles touchent à des données sensibles ? »">#</a></div>
-      <h2 id="lesquelles-touchent-a-des-donnees-sensibles" data-speakable="true">Lesquelles touchent à des données sensibles ?</h2>
-      <p class="reponse-courte" data-speakable="true">Recrutement, traduction de contrats, chiffres de gestion : <strong>vérifiez l'outil avant d'y mettre la moindre donnée</strong>.</p>
+      <div class="num-section"><span aria-hidden="true">Tâches 7 à 10</span><a class="ancre" href="#lesquelles-touchent-a-des-donnees-sensibles" aria-label="Lien vers la section «&nbsp;Lesquelles touchent à des données sensibles&#8239;?&nbsp;»">#</a></div>
+      <h2 id="lesquelles-touchent-a-des-donnees-sensibles" data-speakable="true">Lesquelles touchent à des données sensibles&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Recrutement, traduction de contrats, chiffres de gestion&nbsp;: <strong>vérifiez l'outil avant d'y mettre la moindre donnée</strong>.</p>
       <ol class="taches" start="7">
         <li class="tache" id="tache-7">
           <div class="tache__tete">
@@ -1202,7 +1285,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">7 sur 10 <span class="niveau niveau--1"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Facile</span></p>
               <h3 class="tache__titre">Rédiger les offres d'emploi</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> une annonce claire et attirante à partir d'une fiche de poste.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> une annonce claire et attirante à partir d'une fiche de poste.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
@@ -1217,13 +1300,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">8 sur 10 <span class="niveau niveau--1"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Facile</span></p>
               <h3 class="tache__titre">Écrire les notes internes et les procédures</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> un plan, une mise en forme et une version courte pour l'affichage.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> un plan, une mise en forme et une version courte pour l'affichage.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
             <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Tous les services qui transmettent des consignes ou des modes opératoires.</dd></div>
             <div class="rubrique rubrique--forts"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Points forts</dt><dd>Des procédures enfin écrites, et plus faciles à lire pour les nouveaux.</dd></div>
-            <div class="rubrique rubrique--limites"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>Limites</dt><dd>Le savoir-faire reste le vôtre : l'IA met en forme, elle n'invente pas la procédure.</dd></div>
+            <div class="rubrique rubrique--limites"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>Limites</dt><dd>Le savoir-faire reste le vôtre&nbsp;: l'IA met en forme, elle n'invente pas la procédure.</dd></div>
           </dl>
         </li>
         <li class="tache" id="tache-9">
@@ -1232,15 +1315,15 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">9 sur 10 <span class="niveau niveau--1"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Facile</span></p>
               <h3 class="tache__titre">Traduire documents et échanges</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> des traductions de travail rapides, avec DeepL ou un assistant d'IA.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> des traductions de travail rapides, avec DeepL ou un assistant d'IA.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
             <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Export, achats, entreprises en contact avec des partenaires étrangers.</dd></div>
             <div class="rubrique rubrique--forts"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Points forts</dt><dd>Répondre dans la journée à un e-mail en anglais, en allemand ou en espagnol.</dd></div>
-            <div class="rubrique rubrique--limites"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>Limites</dt><dd>Contrats et documents juridiques : un traducteur professionnel reste nécessaire.</dd></div>
+            <div class="rubrique rubrique--limites"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>Limites</dt><dd>Contrats et documents juridiques&nbsp;: un traducteur professionnel reste nécessaire.</dd></div>
           </dl>
-          <p class="tache__pied"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-carte" data-cta="diagnostic">Pour quel service ? Diagnostic IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
+          <p class="tache__pied"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-carte" data-cta="diagnostic">Pour quel service&#8239;? Diagnostic IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
         </li>
         <li class="tache" id="tache-10">
           <div class="tache__tete">
@@ -1248,11 +1331,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             <div>
               <p class="tache__rang">10 sur 10 <span class="niveau niveau--2"><span class="points" aria-hidden="true"><span></span><span></span><span></span></span>Intermédiaire</span></p>
               <h3 class="tache__titre">Préparer tableaux et analyses simples</h3>
-              <p class="tache__ligne"><b>En une ligne :</b> formules, tableaux croisés et premières lectures de vos chiffres.</p>
+              <p class="tache__ligne"><b>En une ligne&nbsp;:</b> formules, tableaux croisés et premières lectures de vos chiffres.</p>
             </div>
           </div>
           <dl class="tache__rubriques">
-            <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Gestion, comptabilité, direction : ceux qui passent du temps dans un tableur.</dd></div>
+            <div class="rubrique rubrique--qui"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Pour qui</dt><dd>Gestion, comptabilité, direction&nbsp;: ceux qui passent du temps dans un tableur.</dd></div>
             <div class="rubrique rubrique--forts"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Points forts</dt><dd>La formule qu'on cherchait depuis une heure, expliquée pas à pas.</dd></div>
             <div class="rubrique rubrique--limites"><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>Limites</dt><dd>Les chiffres financiers sont sensibles. Contrôlez chaque formule sur un cas connu.</dd></div>
           </dl>
@@ -1261,9 +1344,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </section>
 
     <section aria-labelledby="faut-il-un-outil-different-pour-chaque-tache">
-      <div class="num-section"><span aria-hidden="true">Outils</span><a class="ancre" href="#faut-il-un-outil-different-pour-chaque-tache" aria-label="Lien vers la section « Faut-il un outil différent pour chaque tâche ? »">#</a></div>
-      <h2 id="faut-il-un-outil-different-pour-chaque-tache" data-speakable="true">Faut-il un outil différent pour chaque tâche ?</h2>
-      <p class="reponse-courte" data-speakable="true">Non : <strong>un seul assistant d'IA</strong> couvre la plupart de ces dix tâches. Un outil spécialisé ne se justifie que pour une tâche quotidienne.</p>
+      <div class="num-section"><span aria-hidden="true">Outils</span><a class="ancre" href="#faut-il-un-outil-different-pour-chaque-tache" aria-label="Lien vers la section «&nbsp;Faut-il un outil différent pour chaque tâche&#8239;?&nbsp;»">#</a></div>
+      <h2 id="faut-il-un-outil-different-pour-chaque-tache" data-speakable="true">Faut-il un outil différent pour chaque tâche&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Non&nbsp;: <strong>un seul assistant d'IA</strong> couvre la plupart de ces dix tâches. Un outil spécialisé ne se justifie que pour une tâche quotidienne.</p>
       <p>Microsoft Copilot, Gemini dans Google Workspace, ChatGPT, Le Chat de Mistral AI ou Claude savent tous rédiger, résumer et traduire. Le choix dépend surtout des logiciels que vous utilisez déjà et des garanties sur vos données.</p>
       <p>Multiplier les outils multiplie aussi les règles à suivre et les comptes à gérer. Mieux vaut un assistant bien cadré, avec des consignes partagées, que cinq outils utilisés au hasard.</p>
       <div class="encadre encadre--bon">
@@ -1273,17 +1356,17 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </section>
 
     <section aria-labelledby="comment-mesurer-le-temps-gagne">
-      <div class="num-section"><span aria-hidden="true">Mesure</span><a class="ancre" href="#comment-mesurer-le-temps-gagne" aria-label="Lien vers la section « Comment mesurer le temps gagné ? »">#</a></div>
-      <h2 id="comment-mesurer-le-temps-gagne" data-speakable="true">Comment mesurer le temps gagné ?</h2>
+      <div class="num-section"><span aria-hidden="true">Mesure</span><a class="ancre" href="#comment-mesurer-le-temps-gagne" aria-label="Lien vers la section «&nbsp;Comment mesurer le temps gagné&#8239;?&nbsp;»">#</a></div>
+      <h2 id="comment-mesurer-le-temps-gagne" data-speakable="true">Comment mesurer le temps gagné&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Chronométrez la tâche <strong>avant, puis après trois essais</strong>, et multipliez l'écart par le nombre de fois où elle revient.</p>
-      <p>Une estimation honnête suffit : deux mesures avant, deux mesures après, notées dans un simple tableau. N'oubliez pas le temps de relecture, qui fait partie de la tâche. Notre guide sur les comptes rendus détaille <a href="/fr/blog/compte-rendu-reunion-ia">la méthode de calcul pas à pas</a>.</p>
-      <p>Mesurez aussi ce qui ne se compte pas en minutes : une relance partie à temps, une procédure enfin écrite, une réponse plus claire. <mark>Le bon indicateur est celui que l'équipe remarque sans qu'on le lui montre.</mark></p>
+      <p>Une estimation honnête suffit&nbsp;: deux mesures avant, deux mesures après, notées dans un simple tableau. N'oubliez pas le temps de relecture, qui fait partie de la tâche. Notre guide sur les comptes rendus détaille <a href="/fr/blog/compte-rendu-reunion-ia">la méthode de calcul pas à pas</a>.</p>
+      <p>Mesurez aussi ce qui ne se compte pas en minutes&nbsp;: une relance partie à temps, une procédure enfin écrite, une réponse plus claire. <mark>Le bon indicateur est celui que l'équipe remarque sans qu'on le lui montre.</mark></p>
     </section>
 
     <!-- 5. RÉSUMÉ DE FIN = tableau de synthèse -->
     <section class="synthese" aria-labelledby="les-10-taches-en-un-coup-d-oeil" data-aeo="key-point">
       <h2 class="resume__titre" id="les-10-taches-en-un-coup-d-oeil">Les 10 tâches <em>en un coup d'œil</em></h2>
-      <p class="synthese__intro">Niveau de préparation, relecture nécessaire et sensibilité des données, en mots : aucune note.</p>
+      <p class="synthese__intro">Niveau de préparation, relecture nécessaire et sensibilité des données, en mots&nbsp;: aucune note.</p>
       <div class="tableau">
         <div class="tableau__defilant" role="region" aria-labelledby="tableau-synthese" tabindex="0">
           <table>
@@ -1313,19 +1396,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section class="faq" id="faq" aria-labelledby="faq-titre" data-aeo="people-also-ask">
       <h2 class="bloc-titre" id="faq-titre">Questions fréquentes</h2>
       <details data-faq-q>
-        <summary>Peut-on confier ces tâches à l'IA sans formation ?</summary>
+        <summary>Peut-on confier ces tâches à l'IA sans formation&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Pour les tâches faciles, oui, avec quelques consignes de base. Pour les autres, une courte formation évite les erreurs et les mauvaises habitudes, notamment sur les données.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Ces tâches vont-elles disparaître des postes administratifs ?</summary>
-        <div class="faq-answer" data-faq-a><p>Non. L'IA prépare une première version ; la personne vérifie, corrige et décide. Le travail se déplace vers la relecture et le suivi.</p></div>
+        <summary>Ces tâches vont-elles disparaître des postes administratifs&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Non. L'IA prépare une première version&#8239;; la personne vérifie, corrige et décide. Le travail se déplace vers la relecture et le suivi.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Par combien de tâches commencer ?</summary>
+        <summary>Par combien de tâches commencer&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Une seule, avec une ou deux personnes volontaires, pendant quelques semaines. Ajoutez la suivante quand la première est devenue une habitude.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Que dit la loi sur l'usage de l'IA au travail ?</summary>
+        <summary>Que dit la loi sur l'usage de l'IA au travail&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Le RGPD s'applique aux données personnelles, et l'article 4 du règlement européen sur l'IA demande de veiller à la maîtrise de l'IA par les équipes depuis le 2 février 2025.</p></div>
       </details>
     </section>
@@ -1334,12 +1417,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section class="sources" id="sources" aria-labelledby="sources-titre">
       <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
       <ol>
-        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier « Intelligence artificielle », recommandations, 2024</a></li>
+        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l'intelligence artificielle, article 4, Journal officiel de l'Union européenne, 2024</a></li>
         <li><a href="https://www.defenseurdesdroits.fr/">Défenseur des droits, recommandations sur les offres d'emploi non discriminatoires</a></li>
       </ol>
       <h3>Méthode</h3>
-      <p>Les dix tâches ont été retenues sur les trois critères annoncés en tête d'article. Les numéros sont un ordre de lecture, pas un classement ; les niveaux, délais et degrés de relecture sont des repères éditoriaux d'Axion-IA, et non des mesures. Les outils cités le sont à titre d'exemple, sans lien commercial.</p>
+      <p>Les dix tâches ont été retenues sur les trois critères annoncés en tête d'article. Les numéros sont un ordre de lecture, pas un classement&#8239;; les niveaux, délais et degrés de relecture sont des repères éditoriaux d'Axion-IA, et non des mesures. Les outils cités le sont à titre d'exemple, sans lien commercial.</p>
     </section>
 
     <!-- 8. AUTEUR + MENTION IA -->
@@ -1413,7 +1496,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <h2 class="bloc-titre" id="lies-titre">À lire aussi</h2>
     <ul class="lies__liste">
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Guide</span><h3 class="lie__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l'IA, en 6 étapes</a></h3><span class="lie__meta">8 min de lecture</span></div></article></li>
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier : lequel choisir ?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier&nbsp;: lequel choisir&#8239;?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Analyse</span><h3 class="lie__titre"><a href="/fr/blog/projets-ia-pme-premier-essai">Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
     </ul>
   </section>
@@ -1432,7 +1515,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   <section class="cta-fin sur-sombre" aria-labelledby="cta-fin-titre">
     <p class="pastille pastille--pleine cta-fin__surtitre">Passer à l'action</p>
     <h2 class="cta-fin__titre" id="cta-fin-titre">De la liste <em>à vos priorités</em></h2>
-    <p class="cta-fin__phrase">Une liste ne dit pas par où commencer ; votre rapport détaillé, si : sous 10 jours ouvrés.</p>
+    <p class="cta-fin__phrase">Une liste ne dit pas par où commencer. Votre rapport détaillé, si&nbsp;: il classe vos priorités, sous 10 jours ouvrés.</p>
     <ul class="cta-fin__actions">
       <li><a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=selection-fin" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg><span class="btn__texte">Diagnostic IA, 45 min<span class="btn__sous">Gratuit · 45 minutes · Sans engagement</span></span></a></li>
       <li><a class="btn btn--terracotta" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg><span class="btn__texte">Découvrir la Journée IA<span class="btn__sous">Dans vos locaux, partout en France</span></span></a></li>
@@ -1440,7 +1523,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </ul>
     <ol class="deroule" aria-label="Comment se passe le Diagnostic IA">
       <li><strong>Vous choisissez un créneau</strong><span>Visioconférence Google Meet ou téléphone, confirmation immédiate.</span></li>
-      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching : on qualifie votre besoin.</span></li>
+      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching&nbsp;: on qualifie votre besoin.</span></li>
       <li><strong>Vous repartez avec des pistes concrètes</strong><span>Et le bon module si vous souhaitez aller plus loin. Sans engagement.</span></li>
     </ol>
     <ul class="rassurance">

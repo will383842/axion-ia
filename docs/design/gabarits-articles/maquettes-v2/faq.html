@@ -101,7 +101,12 @@
   --largeur-lecture: 41.5em; /* = 68ch Manrope */
   --largeur-page: 80rem;
   --hauteur-barre-mobile: 4.75rem;
-  --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
+  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
+     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
+  --hauteur-carte: 33.5rem;
+  /* Sommaire collant sous la carte : place restante de l'écran */
+  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
+  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
   --focus-clair: var(--color-primary);
   /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
      terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
@@ -216,6 +221,16 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
 .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
 @media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
+/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
+.site-entete .site-entete__cta { display: none; }
+@media (min-width: 1024px) {
+  .site-entete .conteneur { justify-content: flex-start; }
+  .site-nav { margin-left: auto; }
+  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
+  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+}
+/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
+@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
 
 .bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
 .fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
@@ -237,10 +252,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   clip-path: inset(0 -100vmax);
   padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
 }
-/* Aplat terracotta : disque (coupé par le bas du bandeau) + rayures mocha-soft */
-.heros::before { content: ""; position: absolute; z-index: -1; border-radius: 50%;
-  width: clamp(14rem, 34vw, 30rem); aspect-ratio: 1; background: var(--color-terracotta);
-  right: calc(-1 * var(--gouttiere)); bottom: clamp(-12rem, -9vw, -5rem); }
+/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
+   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
 .heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
   width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
   background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
@@ -258,6 +271,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
   letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
+/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
+   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
+@media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
 .heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
   border-left: 4px solid var(--color-terracotta-on-mocha);
@@ -272,6 +289,21 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
   background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
 .meta .meta__lecture .icone { color: var(--color-mocha); }
+/* Pied du héros : partage compact à gauche, signe du modèle à droite */
+.heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
+.heros__pied .partage-icones { margin: 0; flex: none; }
+/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
+   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
+.heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
+  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
+  font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
+.signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-mocha-fg); white-space: normal; text-align: left; }
+@media (min-width: 640px) {
+  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
+    background: var(--color-mocha-soft); font-size: 2.75rem; }
+  .signe__legende { display: block; width: 8.5rem; }
+}
 /* Partage compact (icônes) sous la méta */
 .partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
@@ -300,18 +332,25 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
   .article { grid-column: 1 / -1; grid-row: 1 / -1; display: grid;
     grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .heros { grid-column: 1 / -1; grid-row: 1; }
+  /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
+     Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
+  .heros { grid-column: 1; grid-row: 1; min-width: 0; }
   .article__ouverture { grid-column: 1; grid-row: 2; min-width: 0; }
   .article__corps { grid-column: 1; grid-row: 3; min-width: 0; }
-  /* Sommaire : collé en haut (aucun ancêtre en overflow hidden/auto) */
+  /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
+     puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
+     de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
+     margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
+     (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
+  .action { grid-column: 2; grid-row: 1 / -1; align-self: start; z-index: 2;
+    position: sticky; top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem); }
+  .action .carte-action { min-height: var(--hauteur-carte); }
+  /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
   .sommaire { grid-column: 2; grid-row: 2 / 4; align-self: start;
-    position: sticky; top: calc(var(--header-h) + 16px); /* marges : voir section 10 */
-    max-height: max(11rem, calc(100dvh - var(--header-h) - var(--hauteur-carte) - 3rem)); overflow-y: auto; }
-  /* Carte d'action : posée en bas de la colonne, collée en bas d'écran.
-     Elle apparaît d'elle-même à la sortie de l'image principale (ligne 3). */
-  .action { grid-column: 2; grid-row: 3; align-self: stretch; display: flex;
-    flex-direction: column; justify-content: flex-end; padding-top: 2rem; }
-  .action .carte-action { position: sticky; bottom: 16px; }
+    position: sticky; top: var(--sommaire-haut);
+    max-height: var(--sommaire-max); overflow-y: auto; overscroll-behavior: contain;
+    scroll-timeline: --sommaire block; }
 }
 
 /* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
@@ -332,9 +371,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   font: 600 0.8125rem/1 var(--font-mono); color: var(--color-terracotta-deep); }
 .sommaire ol a:hover { background: var(--color-sand); color: var(--color-ink); }
 @media (min-width: 1024px) {
-  /* marges de la colonne : haut aligné, bas = place réservée à la carte en fin d'article */
-  .sommaire { margin: 1.5rem 0 calc(var(--hauteur-carte) + 2rem); }
-  .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
+  .sommaire { margin: 1rem 0 0; }
+  /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
+  .sommaire { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .sommaire details { border: 0; border-radius: var(--radius-xl); }
   /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
      sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
      reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
@@ -344,6 +385,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     .sommaire summary::after { display: none; }
   }
   .sommaire ol a { font-size: 0.875rem; }
+  /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
+     total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
+     (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
+  .sommaire ol::after { content: "↓ suite du sommaire · " counter(s, decimal-leading-zero) " entrées" / "";
+    position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
+    background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
+    font: 600 0.75rem/1.2 var(--font-mono); letter-spacing: 0.02em; color: var(--color-terracotta-deep); }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after { animation: sommaire-suite linear both; animation-timeline: --sommaire; }
+    @keyframes sommaire-suite { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  }
+  .sommaire ol { padding-bottom: 0.75rem; }
 }
 
 /* 11 — BOUTONS ------------------------------------------------------------- */
@@ -393,7 +447,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 @media (min-width: 1024px) {
   .carte-action.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
   .carte-action { position: relative; inset: auto; z-index: auto; border: 0; border-radius: var(--radius-xl);
-    padding: 1.5rem 1.25rem 1.25rem; background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
+    padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
+    /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
+       (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
+    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
   .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
   .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
@@ -420,7 +477,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
 /* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
 @media (min-width: 1024px) and (max-height: 1000px) {
-  :root { --hauteur-carte: 25rem; }
+  :root { --hauteur-carte: 24rem; }
   .carte-action { padding-top: 1.15rem; }
   .carte-action__titre { font-size: 1.1875rem; }
   .carte-action__sous-titre { margin-bottom: 0.75rem; }
@@ -428,6 +485,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .act { min-height: 48px; padding-block: 0.5rem; }
   .act.btn--bleu { min-height: 56px; }
   .carte-action__rassurance { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin-top: 0.75rem; padding-top: 0.65rem; }
+}
+/* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
+   l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
+@media (min-width: 1024px) and (max-height: 860px) {
+  :root { --hauteur-carte: 18.75rem; }
+  .carte-action__rassurance { display: none; }
 }
 
 /* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
@@ -741,6 +804,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .lie__titre a:focus-visible { outline: none; }
 .lie:has(a:focus-visible) { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
 .lie__meta { font-size: 0.8125rem; color: var(--color-fg-muted); }
+/* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
+@media (max-width: 639px) {
+  .lie { flex-direction: row; }
+  .lie__visuel { flex: 0 0 6rem; aspect-ratio: auto; min-height: 7.5rem; }
+  .lie__visuel::after { width: 80%; right: -25%; top: -15%; }
+  .lie__corps { align-content: center; padding: 0.85rem 1rem; }
+  .lie__titre { font-size: 1.0625rem; }
+}
 
 /* Guide gratuit (capture e-mail existante, une seule par page) */
 .guide-gratuit { display: grid; gap: 1rem; margin: 3rem 0 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
@@ -748,7 +819,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .guide-gratuit__titre { margin: 0 0 0.5rem; font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif); }
 .guide-gratuit p { margin: 0; }
 .guide-gratuit form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
-.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 15rem; font-size: 0.875rem; font-weight: 600; }
+/* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
+.guide-gratuit > *, .guide-gratuit label { min-width: 0; }
+.guide-gratuit input { width: 100%; min-width: 0; }
+.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 min(15rem, 100%); font-size: 0.875rem; font-weight: 600; }
 .guide-gratuit input { min-height: 48px; padding: 0.6rem 0.9rem; border: 1.5px solid var(--color-border-field);
   border-radius: var(--radius-md); background: var(--color-paper); color: var(--color-fg); font: 400 1rem/1.3 var(--font-sans); }
 @media (min-width: 760px) { .guide-gratuit { grid-template-columns: 1fr 1fr; align-items: center; } }
@@ -761,9 +835,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .progression { display: none !important; animation: none !important; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .btn:hover, .lie:hover { transform: none; }
+  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
+  .sommaire ol::after { animation: sommaire-suite linear both !important; animation-timeline: --sommaire !important; }
 }
 @media (forced-colors: active) {
-  .progression, .heros::before, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
+  .progression, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
   .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
   .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
     border: 2px solid CanvasText; }
@@ -871,6 +947,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .grille-q, .grille-q__liste a, .themes-pastilles a, .theme__tete, .qr, .qr__num, .qr__formation { border: 2px solid CanvasText; }
   .theme__tete::after { display: none; }
 }
+/* Signe du modèle dans le héros (décor aria-hidden) */
+.signe__bulle { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50% 50% 50% 0.3rem;
+  background: var(--color-terracotta-on-mocha); color: var(--color-mocha); font-size: 1.625rem; }
+@media (min-width: 640px) { .signe__bulle { width: 3.75rem; height: 3.75rem; font-size: 2.5rem; } }
 </style>
 </head>
 <body>
@@ -920,6 +1000,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <a href="/fr/formations">Formations</a>
       <a href="/fr/blog">Blog</a>
     </nav>
+    <a class="btn btn--bleu site-entete__cta" href="/fr/appel?rdv=diagnostic&amp;depuis=faq-entete" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
   </div>
 </header>
 
@@ -929,7 +1010,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <ol>
         <li><a href="/fr">Accueil</a></li>
         <li><a href="/fr/blog">Blog</a></li>
-        <li aria-current="page">IA et données de l'entreprise : les questions que posent les dirigeants</li>
+        <li aria-current="page">IA et données de l'entreprise&nbsp;: les questions que posent les dirigeants</li>
       </ol>
     </nav>
   </div>
@@ -946,7 +1027,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <li class="pastille pastille--pleine">Questions-réponses</li>
       <li class="pastille pastille--contour">Données &amp; RGPD</li>
     </ul>
-    <h1>IA et données de l'entreprise : <em>les questions que posent les dirigeants</em></h1>
+    <h1>IA et données de l'entreprise&nbsp;: <em>les questions que posent les dirigeants</em></h1>
     <p class="chapo">Dix questions, des réponses courtes d'abord, le détail ensuite. Allez directement à celle qui vous concerne.</p>
     <ul class="meta">
       <li><span class="avatar" aria-hidden="true">M</span><span>Par <a href="/fr/equipe/manon" rel="author">Manon</a></span></li>
@@ -954,11 +1035,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <li data-aeo="freshness"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg><time datetime="2026-11-25">Mis à jour le 25 novembre 2026</time></li>
       <li class="meta__lecture"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>7 min de lecture</li>
     </ul>
-    <ul class="partage-icones" aria-label="Partager l'article">
-      <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fia-donnees-entreprise-questions" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
-      <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fia-donnees-entreprise-questions" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
-      <li><a href="mailto:?subject=IA%20et%20donn%C3%A9es%20de%20l%27entreprise&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fia-donnees-entreprise-questions" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
-    </ul>
+    <div class="heros__pied">
+      <ul class="partage-icones" aria-label="Partager l'article">
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fia-donnees-entreprise-questions" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fia-donnees-entreprise-questions" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:?subject=IA%20et%20donn%C3%A9es%20de%20l%27entreprise&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fia-donnees-entreprise-questions" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
+      </ul>
+      <div class="heros__signe signe--faq" aria-hidden="true"><span class="signe__bulle">?</span><span class="signe__legende">10 questions, 3 thèmes</span></div>
+    </div>
   </header>
 
   <!-- 2. IMAGE + RÉPONSE DIRECTE -->
@@ -981,12 +1065,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </svg>
         <span class="visuel__etiquette" aria-hidden="true">10 questions · 3 thèmes</span>
       </div>
-      <figcaption>Photo : Claire Dubois / Unsplash</figcaption>
+      <figcaption>Photo&nbsp;: [nom du photographe] / Unsplash</figcaption>
     </figure>
 
     <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
       <p class="en-bref__titre" id="en-bref-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-eclair"/></svg>En bref</p>
-      <p>Les données saisies dans un assistant d'IA <strong>peuvent être conservées, voire réutilisées</strong>, selon l'offre et les réglages choisis. Avant tout usage avec des données clients, vérifiez les conditions du fournisseur, le lieu d'hébergement et la possibilité de désactiver l'entraînement. Le RGPD s'applique pleinement : informez les personnes et limitez les données transmises.</p>
+      <p>Les données saisies dans un assistant d'IA <strong>peuvent être conservées, voire réutilisées</strong>, selon l'offre et les réglages choisis. Avant tout usage avec des données clients, vérifiez les conditions du fournisseur, le lieu d'hébergement et la possibilité de désactiver l'entraînement. Le RGPD s'applique pleinement&nbsp;: informez les personnes et limitez les données transmises.</p>
     </aside>
   </div>
 
@@ -995,9 +1079,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <details>
       <summary>Sommaire · 3 thèmes</summary>
       <ol>
-        <li><a href="#ou-vont-vos-donnees">Où vont vos données ?</a></li>
-        <li><a href="#que-dit-la-loi">Que dit la loi ?</a></li>
-        <li><a href="#comment-s-organiser-dans-l-entreprise">Comment s'organiser ?</a></li>
+        <li><a href="#ou-vont-vos-donnees">Où vont vos données&#8239;?</a></li>
+        <li><a href="#que-dit-la-loi">Que dit la loi&#8239;?</a></li>
+        <li><a href="#comment-s-organiser-dans-l-entreprise">Comment s'organiser&#8239;?</a></li>
         <li><a href="#les-3-reponses-a-retenir">Les 3 réponses à retenir</a></li>
       </ol>
     </details>
@@ -1015,16 +1099,16 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <li class="t-equipe"><a href="#comment-s-organiser-dans-l-entreprise"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Mise en route <small>3</small></a></li>
       </ul>
       <ol class="grille-q__liste" aria-label="Toutes les questions">
-        <li class="t-donnees"><a href="#q-ou-vont-les-donnees">Où vont les données saisies dans un assistant d'IA ?</a></li>
-        <li class="t-donnees"><a href="#q-donnees-clients">Peut-on utiliser l'IA avec des données clients ?</a></li>
-        <li class="t-donnees"><a href="#q-hebergement-europe">Comment choisir un outil hébergé en Europe ?</a></li>
-        <li class="t-donnees"><a href="#q-entrainement">Peut-on empêcher l'outil d'apprendre de nos contenus ?</a></li>
-        <li class="t-loi"><a href="#q-rgpd">Que dit le RGPD sur ces usages ?</a></li>
-        <li class="t-loi"><a href="#q-responsable">Qui est responsable si l'IA se trompe ?</a></li>
-        <li class="t-loi"><a href="#q-ai-act">Que demande l'AI Act aux PME ?</a></li>
-        <li class="t-equipe"><a href="#q-salaries">Faut-il informer les salariés ?</a></li>
-        <li class="t-equipe"><a href="#q-charte">Faut-il une charte interne ?</a></li>
-        <li class="t-equipe"><a href="#q-commencer">Par où commencer si rien n'est cadré ?</a></li>
+        <li class="t-donnees"><a href="#q-ou-vont-les-donnees">Où vont les données saisies dans un assistant d'IA&#8239;?</a></li>
+        <li class="t-donnees"><a href="#q-donnees-clients">Peut-on utiliser l'IA avec des données clients&#8239;?</a></li>
+        <li class="t-donnees"><a href="#q-hebergement-europe">Comment choisir un outil hébergé en Europe&#8239;?</a></li>
+        <li class="t-donnees"><a href="#q-entrainement">Peut-on empêcher l'outil d'apprendre de nos contenus&#8239;?</a></li>
+        <li class="t-loi"><a href="#q-rgpd">Que dit le RGPD sur ces usages&#8239;?</a></li>
+        <li class="t-loi"><a href="#q-responsable">Qui est responsable si l'IA se trompe&#8239;?</a></li>
+        <li class="t-loi"><a href="#q-ai-act">Que demande l'AI Act aux PME&#8239;?</a></li>
+        <li class="t-equipe"><a href="#q-salaries">Faut-il informer les salariés&#8239;?</a></li>
+        <li class="t-equipe"><a href="#q-charte">Faut-il une charte interne&#8239;?</a></li>
+        <li class="t-equipe"><a href="#q-commencer">Par où commencer si rien n'est cadré&#8239;?</a></li>
       </ol>
     </div>
 
@@ -1035,28 +1119,28 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <div class="theme__tete">
           <span class="theme__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-bouclier"/></svg></span>
           <p class="theme__repere">Thème 1 sur 3 · 4 questions</p>
-          <h2 id="ou-vont-vos-donnees" data-speakable="true">Où vont vos données ?</h2>
+          <h2 id="ou-vont-vos-donnees" data-speakable="true">Où vont vos données&#8239;?</h2>
         </div>
 
         <details class="qr" id="q-ou-vont-les-donnees" data-faq-q open>
-          <summary><span class="qr__num" aria-hidden="true">01</span><span class="qr__question">Où vont les données saisies dans un assistant d'IA ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">01</span><span class="qr__question">Où vont les données saisies dans un assistant d'IA&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>Elles partent sur les serveurs du fournisseur, où elles peuvent être conservées un temps.</strong></p>
-            <p>Selon l'offre, elles peuvent aussi servir à améliorer le modèle. Les offres grand public et professionnelles n'ont souvent pas les mêmes règles. Lisez trois points : durée de conservation, lieu d'hébergement, usage pour l'entraînement.</p>
-            <a class="lien-fleche" href="/fr/blog/rag-explique-simplement">En savoir plus : le RAG, expliqué simplement<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
+            <p>Selon l'offre, elles peuvent aussi servir à améliorer le modèle. Les offres grand public et professionnelles n'ont souvent pas les mêmes règles. Lisez trois points&nbsp;: durée de conservation, lieu d'hébergement, usage pour l'entraînement.</p>
+            <a class="lien-fleche" href="/fr/blog/rag-explique-simplement">En savoir plus&nbsp;: le RAG, expliqué simplement<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
           </div>
         </details>
 
         <details class="qr" id="q-donnees-clients" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">02</span><span class="qr__question">Peut-on utiliser l'IA avec des données clients ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">02</span><span class="qr__question">Peut-on utiliser l'IA avec des données clients&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>Oui, avec une offre adaptée et le moins de données possible.</strong></p>
-            <p>Retirez les noms, adresses et numéros quand la tâche n'en a pas besoin. Vérifiez qu'un contrat encadre le traitement : c'est l'accord de sous-traitance prévu par l'article 28 du RGPD.</p>
+            <p>Retirez les noms, adresses et numéros quand la tâche n'en a pas besoin. Vérifiez qu'un contrat encadre le traitement&nbsp;: c'est l'accord de sous-traitance prévu par l'article 28 du RGPD.</p>
           </div>
         </details>
 
         <details class="qr" id="q-hebergement-europe" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">03</span><span class="qr__question">Comment choisir un outil hébergé en Europe ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">03</span><span class="qr__question">Comment choisir un outil hébergé en Europe&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>Cherchez l'information dans le contrat, pas dans la publicité.</strong></p>
             <p>Un siège européen ne garantit pas un hébergement européen. Demandez le lieu des serveurs, la liste des sous-traitants et les éventuels transferts hors de l'Union européenne.</p>
@@ -1064,9 +1148,9 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </details>
 
         <details class="qr" id="q-entrainement" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">04</span><span class="qr__question">Peut-on empêcher l'outil d'apprendre de nos contenus ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">04</span><span class="qr__question">Peut-on empêcher l'outil d'apprendre de nos contenus&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
-            <p class="qr__court"><strong>Souvent oui : un réglage ou l'offre professionnelle l'exclut.</strong></p>
+            <p class="qr__court"><strong>Souvent oui&nbsp;: un réglage ou l'offre professionnelle l'exclut.</strong></p>
             <p>Vérifiez ce réglage pour chaque compte, pas seulement pour celui de l'administrateur. Et refaites la vérification quand le fournisseur change ses conditions.</p>
           </div>
         </details>
@@ -1074,8 +1158,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
       <aside class="cta-milieu cta-milieu--sage" aria-labelledby="cta-milieu-titre">
         <p class="cta-milieu__surtitre">Écrire un message</p>
-        <p class="cta-milieu__titre" id="cta-milieu-titre">Votre question n'est pas là ?</p>
-        <p>Écrivez-nous : chaque message est lu par un consultant senior.</p>
+        <p class="cta-milieu__titre" id="cta-milieu-titre">Votre question n'est pas là&#8239;?</p>
+        <p>Écrivez-nous&nbsp;: chaque message est lu par un consultant senior.</p>
         <div class="cta-milieu__actions">
           <a class="btn btn--bleu" href="/fr/contact" data-cta="message"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg>Écrire un message</a>
           <a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=faq-milieu" data-cta="diagnostic">ou un Diagnostic IA, 45 min<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
@@ -1087,11 +1171,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <div class="theme__tete">
           <span class="theme__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-balance"/></svg></span>
           <p class="theme__repere">Thème 2 sur 3 · 3 questions</p>
-          <h2 id="que-dit-la-loi" data-speakable="true">Que dit la loi ?</h2>
+          <h2 id="que-dit-la-loi" data-speakable="true">Que dit la loi&#8239;?</h2>
         </div>
 
         <details class="qr" id="q-rgpd" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">05</span><span class="qr__question">Que dit le RGPD sur ces usages ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">05</span><span class="qr__question">Que dit le RGPD sur ces usages&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>Il s'applique dès qu'une donnée personnelle est saisie, comme pour tout logiciel.</strong></p>
             <p>Il faut une base légale, informer les personnes, limiter les données au nécessaire et les protéger. La CNIL a publié des recommandations propres à l'IA.</p>
@@ -1099,23 +1183,23 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </details>
 
         <details class="qr" id="q-responsable" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">06</span><span class="qr__question">Qui est responsable si l'IA se trompe ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">06</span><span class="qr__question">Qui est responsable si l'IA se trompe&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>L'entreprise qui utilise le résultat reste responsable envers ses clients.</strong></p>
-            <p>L'outil ne signe rien. D'où la relecture humaine pour tout ce qui engage : devis, contrats, réponses officielles.</p>
+            <p>L'outil ne signe rien. D'où la relecture humaine pour tout ce qui engage&nbsp;: devis, contrats, réponses officielles.</p>
           </div>
         </details>
 
         <details class="qr" id="q-ai-act" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">07</span><span class="qr__question">Que demande l'AI Act aux PME ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">07</span><span class="qr__question">Que demande l'AI Act aux PME&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>De veiller à un niveau suffisant de maîtrise de l'IA chez ceux qui l'utilisent.</strong></p>
-            <p>C'est l'article 4 du règlement européen, applicable depuis le 2 février 2025. Le texte n'impose ni format ni certification : recensez les usages, formez les personnes concernées, gardez une trace.</p>
+            <p>C'est l'article 4 du règlement européen, applicable depuis le 2 février 2025. Le texte n'impose ni format ni certification&nbsp;: recensez les usages, formez les personnes concernées, gardez une trace.</p>
             <div class="qr__micro"><a class="qr__formation" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg>Une attestation de formation par personne → Journée IA</a></div>
           </div>
         </details>
 
-        <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite :</strong> ce qu'il faut dire aux salariés, et dans quel ordre s'y prendre.</span></p>
+        <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite&nbsp;:</strong> ce qu'il faut dire aux salariés, et dans quel ordre s'y prendre.</span></p>
       </section>
 
       <!-- THÈME 3 · Mise en route -->
@@ -1123,19 +1207,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <div class="theme__tete">
           <span class="theme__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-equipe"/></svg></span>
           <p class="theme__repere">Thème 3 sur 3 · 3 questions</p>
-          <h2 id="comment-s-organiser-dans-l-entreprise" data-speakable="true">Comment s'organiser dans l'entreprise ?</h2>
+          <h2 id="comment-s-organiser-dans-l-entreprise" data-speakable="true">Comment s'organiser dans l'entreprise&#8239;?</h2>
         </div>
 
         <details class="qr" id="q-salaries" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">08</span><span class="qr__question">Faut-il informer les salariés ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">08</span><span class="qr__question">Faut-il informer les salariés&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
-            <p class="qr__court"><strong>Oui, si l'outil traite des données qui les concernent : avant sa mise en place.</strong></p>
+            <p class="qr__court"><strong>Oui, si l'outil traite des données qui les concernent&nbsp;: avant sa mise en place.</strong></p>
             <p>Le Code du travail l'impose (article L1222-4). S'il existe un CSE, l'introduction d'une nouvelle technologie relève en principe de sa consultation. Vérifiez votre cas avec votre conseil.</p>
           </div>
         </details>
 
         <details class="qr" id="q-charte" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">09</span><span class="qr__question">Faut-il une charte interne ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">09</span><span class="qr__question">Faut-il une charte interne&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>Ce n'est pas obligatoire, mais une page de règles évite la plupart des erreurs.</strong></p>
             <p>Elle dit quels outils sont autorisés, quelles données n'y entrent jamais, et qui relit avant envoi. Une page lue vaut mieux que dix pages rangées.</p>
@@ -1143,7 +1227,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </details>
 
         <details class="qr" id="q-commencer" data-faq-q>
-          <summary><span class="qr__num" aria-hidden="true">10</span><span class="qr__question">Par où commencer si rien n'est cadré ?</span></summary>
+          <summary><span class="qr__num" aria-hidden="true">10</span><span class="qr__question">Par où commencer si rien n'est cadré&#8239;?</span></summary>
           <div class="faq-answer" data-faq-a>
             <p class="qr__court"><strong>Recensez d'abord les outils déjà utilisés, souvent plus nombreux qu'on ne le pense.</strong></p>
             <p>Choisissez ensuite un outil validé, écrivez la charte d'une page, puis formez l'équipe sur ses propres dossiers.</p>
@@ -1157,7 +1241,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section class="resume" aria-labelledby="les-3-reponses-a-retenir" data-aeo="key-point">
       <h2 class="resume__titre" id="les-3-reponses-a-retenir">Les 3 réponses <em>à retenir</em></h2>
       <ol class="resume__liste">
-        <li>Vos données partent chez le fournisseur : lisez ses conditions.</li>
+        <li>Vos données partent chez le fournisseur&nbsp;: lisez ses conditions.</li>
         <li>Le RGPD s'applique, et l'entreprise reste responsable du résultat.</li>
         <li>Recensez, cadrez en une page, puis formez l'équipe.</li>
       </ol>
@@ -1168,13 +1252,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section class="sources" id="sources" aria-labelledby="sources-titre">
       <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
       <ol>
-        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier « Intelligence artificielle », recommandations, 2024</a></li>
+        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">Règlement (UE) 2016/679, dit RGPD, notamment l'article 28, Journal officiel de l'Union européenne, 2016</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l'intelligence artificielle, article 4, Journal officiel de l'Union européenne, 2024</a></li>
         <li><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006900875">Légifrance, Code du travail, article L1222-4</a></li>
       </ol>
       <h3>Méthode</h3>
-      <p>Les réponses résument les textes cités, dans leur version consultée en novembre 2026. Elles ne remplacent pas un conseil juridique : les références d'articles sont à revérifier avant publication.</p>
+      <p>Les réponses résument les textes cités, dans leur version consultée en novembre 2026. Elles ne remplacent pas un conseil juridique&nbsp;: les références d'articles sont à revérifier avant publication.</p>
     </section>
 
     <!-- 8. AUTEUR + MENTION IA -->
@@ -1248,7 +1332,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <h2 class="bloc-titre" id="lies-titre">À lire aussi</h2>
     <ul class="lies__liste">
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Définition</span><h3 class="lie__titre"><a href="/fr/blog/rag-explique-simplement">Le RAG, expliqué simplement aux dirigeants de PME</a></h3><span class="lie__meta">6 min de lecture</span></div></article></li>
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Actualité</span><h3 class="lie__titre"><a href="/fr/actualites/ai-act-former-equipes-obligation">AI Act : former vos équipes à l'IA est déjà une obligation</a></h3><span class="lie__meta">5 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Actualité</span><h3 class="lie__titre"><a href="/fr/actualites/ai-act-former-equipes-obligation">AI Act&nbsp;: former vos équipes à l'IA est déjà une obligation</a></h3><span class="lie__meta">5 min de lecture</span></div></article></li>
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Étude de cas</span><h3 class="lie__titre"><a href="/fr/blog/entreprise-batiment-devis-ia">Une entreprise du bâtiment prépare ses devis avec l'IA</a></h3><span class="lie__meta">7 min de lecture</span></div></article></li>
     </ul>
   </section>
@@ -1266,7 +1350,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
   <section class="cta-fin sur-sombre" aria-labelledby="cta-fin-titre">
     <p class="pastille pastille--pleine cta-fin__surtitre">Passer à l'action</p>
-    <h2 class="cta-fin__titre" id="cta-fin-titre">Encore une question ? <em>Posez-la de vive voix</em></h2>
+    <h2 class="cta-fin__titre" id="cta-fin-titre">Encore une question&#8239;? <em>Posez-la de vive voix</em></h2>
     <p class="cta-fin__phrase">Visio ou téléphone, sans engagement.</p>
     <ul class="cta-fin__actions">
       <li><a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=faq-fin" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg><span class="btn__texte">Diagnostic IA, 45 min<span class="btn__sous">Gratuit · 45 minutes · Sans engagement</span></span></a></li>
@@ -1275,7 +1359,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </ul>
     <ol class="deroule" aria-label="Comment se passe le Diagnostic IA">
       <li><strong>Vous choisissez un créneau</strong><span>Visioconférence Google Meet ou téléphone, confirmation immédiate.</span></li>
-      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching : on qualifie votre besoin.</span></li>
+      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching&nbsp;: on qualifie votre besoin.</span></li>
       <li><strong>Vous repartez avec des pistes concrètes</strong><span>Et le bon module si vous souhaitez aller plus loin. Sans engagement.</span></li>
     </ol>
     <ul class="rassurance">

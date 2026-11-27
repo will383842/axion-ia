@@ -101,7 +101,12 @@
   --largeur-lecture: 41.5em; /* = 68ch Manrope */
   --largeur-page: 80rem;
   --hauteur-barre-mobile: 4.75rem;
-  --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
+  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
+     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
+  --hauteur-carte: 33.5rem;
+  /* Sommaire collant sous la carte : place restante de l'écran */
+  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
+  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
   --focus-clair: var(--color-primary);
   /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
      terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
@@ -216,6 +221,16 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
 .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
 @media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
+/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
+.site-entete .site-entete__cta { display: none; }
+@media (min-width: 1024px) {
+  .site-entete .conteneur { justify-content: flex-start; }
+  .site-nav { margin-left: auto; }
+  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
+  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+}
+/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
+@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
 
 .bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
 .fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
@@ -237,10 +252,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   clip-path: inset(0 -100vmax);
   padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
 }
-/* Aplat terracotta : disque (coupé par le bas du bandeau) + rayures mocha-soft */
-.heros::before { content: ""; position: absolute; z-index: -1; border-radius: 50%;
-  width: clamp(14rem, 34vw, 30rem); aspect-ratio: 1; background: var(--color-terracotta);
-  right: calc(-1 * var(--gouttiere)); bottom: clamp(-12rem, -9vw, -5rem); }
+/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
+   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
 .heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
   width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
   background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
@@ -258,6 +271,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
   letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
+/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
+   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
+@media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
 .heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
   border-left: 4px solid var(--color-terracotta-on-mocha);
@@ -272,6 +289,21 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
   background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
 .meta .meta__lecture .icone { color: var(--color-mocha); }
+/* Pied du héros : partage compact à gauche, signe du modèle à droite */
+.heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
+.heros__pied .partage-icones { margin: 0; flex: none; }
+/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
+   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
+.heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
+  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
+  font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
+.signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-mocha-fg); white-space: normal; text-align: left; }
+@media (min-width: 640px) {
+  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
+    background: var(--color-mocha-soft); font-size: 2.75rem; }
+  .signe__legende { display: block; width: 8.5rem; }
+}
 /* Partage compact (icônes) sous la méta */
 .partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
@@ -300,18 +332,25 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
   .article { grid-column: 1 / -1; grid-row: 1 / -1; display: grid;
     grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .heros { grid-column: 1 / -1; grid-row: 1; }
+  /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
+     Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
+  .heros { grid-column: 1; grid-row: 1; min-width: 0; }
   .article__ouverture { grid-column: 1; grid-row: 2; min-width: 0; }
   .article__corps { grid-column: 1; grid-row: 3; min-width: 0; }
-  /* Sommaire : collé en haut (aucun ancêtre en overflow hidden/auto) */
+  /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
+     puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
+     de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
+     margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
+     (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
+  .action { grid-column: 2; grid-row: 1 / -1; align-self: start; z-index: 2;
+    position: sticky; top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem); }
+  .action .carte-action { min-height: var(--hauteur-carte); }
+  /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
   .sommaire { grid-column: 2; grid-row: 2 / 4; align-self: start;
-    position: sticky; top: calc(var(--header-h) + 16px); /* marges : voir section 10 */
-    max-height: max(11rem, calc(100dvh - var(--header-h) - var(--hauteur-carte) - 3rem)); overflow-y: auto; }
-  /* Carte d'action : posée en bas de la colonne, collée en bas d'écran.
-     Elle apparaît d'elle-même à la sortie de l'image principale (ligne 3). */
-  .action { grid-column: 2; grid-row: 3; align-self: stretch; display: flex;
-    flex-direction: column; justify-content: flex-end; padding-top: 2rem; }
-  .action .carte-action { position: sticky; bottom: 16px; }
+    position: sticky; top: var(--sommaire-haut);
+    max-height: var(--sommaire-max); overflow-y: auto; overscroll-behavior: contain;
+    scroll-timeline: --sommaire block; }
 }
 
 /* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
@@ -332,9 +371,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   font: 600 0.8125rem/1 var(--font-mono); color: var(--color-terracotta-deep); }
 .sommaire ol a:hover { background: var(--color-sand); color: var(--color-ink); }
 @media (min-width: 1024px) {
-  /* marges de la colonne : haut aligné, bas = place réservée à la carte en fin d'article */
-  .sommaire { margin: 1.5rem 0 calc(var(--hauteur-carte) + 2rem); }
-  .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
+  .sommaire { margin: 1rem 0 0; }
+  /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
+  .sommaire { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .sommaire details { border: 0; border-radius: var(--radius-xl); }
   /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
      sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
      reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
@@ -344,6 +385,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     .sommaire summary::after { display: none; }
   }
   .sommaire ol a { font-size: 0.875rem; }
+  /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
+     total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
+     (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
+  .sommaire ol::after { content: "↓ suite du sommaire · " counter(s, decimal-leading-zero) " entrées" / "";
+    position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
+    background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
+    font: 600 0.75rem/1.2 var(--font-mono); letter-spacing: 0.02em; color: var(--color-terracotta-deep); }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after { animation: sommaire-suite linear both; animation-timeline: --sommaire; }
+    @keyframes sommaire-suite { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  }
+  .sommaire ol { padding-bottom: 0.75rem; }
 }
 
 /* 11 — BOUTONS ------------------------------------------------------------- */
@@ -393,7 +447,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 @media (min-width: 1024px) {
   .carte-action.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
   .carte-action { position: relative; inset: auto; z-index: auto; border: 0; border-radius: var(--radius-xl);
-    padding: 1.5rem 1.25rem 1.25rem; background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
+    padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
+    /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
+       (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
+    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
   .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
   .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
@@ -420,7 +477,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
 /* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
 @media (min-width: 1024px) and (max-height: 1000px) {
-  :root { --hauteur-carte: 25rem; }
+  :root { --hauteur-carte: 24rem; }
   .carte-action { padding-top: 1.15rem; }
   .carte-action__titre { font-size: 1.1875rem; }
   .carte-action__sous-titre { margin-bottom: 0.75rem; }
@@ -428,6 +485,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .act { min-height: 48px; padding-block: 0.5rem; }
   .act.btn--bleu { min-height: 56px; }
   .carte-action__rassurance { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin-top: 0.75rem; padding-top: 0.65rem; }
+}
+/* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
+   l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
+@media (min-width: 1024px) and (max-height: 860px) {
+  :root { --hauteur-carte: 18.75rem; }
+  .carte-action__rassurance { display: none; }
 }
 
 /* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
@@ -741,6 +804,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .lie__titre a:focus-visible { outline: none; }
 .lie:has(a:focus-visible) { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
 .lie__meta { font-size: 0.8125rem; color: var(--color-fg-muted); }
+/* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
+@media (max-width: 639px) {
+  .lie { flex-direction: row; }
+  .lie__visuel { flex: 0 0 6rem; aspect-ratio: auto; min-height: 7.5rem; }
+  .lie__visuel::after { width: 80%; right: -25%; top: -15%; }
+  .lie__corps { align-content: center; padding: 0.85rem 1rem; }
+  .lie__titre { font-size: 1.0625rem; }
+}
 
 /* Guide gratuit (capture e-mail existante, une seule par page) */
 .guide-gratuit { display: grid; gap: 1rem; margin: 3rem 0 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
@@ -748,7 +819,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .guide-gratuit__titre { margin: 0 0 0.5rem; font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif); }
 .guide-gratuit p { margin: 0; }
 .guide-gratuit form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
-.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 15rem; font-size: 0.875rem; font-weight: 600; }
+/* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
+.guide-gratuit > *, .guide-gratuit label { min-width: 0; }
+.guide-gratuit input { width: 100%; min-width: 0; }
+.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 min(15rem, 100%); font-size: 0.875rem; font-weight: 600; }
 .guide-gratuit input { min-height: 48px; padding: 0.6rem 0.9rem; border: 1.5px solid var(--color-border-field);
   border-radius: var(--radius-md); background: var(--color-paper); color: var(--color-fg); font: 400 1rem/1.3 var(--font-sans); }
 @media (min-width: 760px) { .guide-gratuit { grid-template-columns: 1fr 1fr; align-items: center; } }
@@ -761,9 +835,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .progression { display: none !important; animation: none !important; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .btn:hover, .lie:hover { transform: none; }
+  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
+  .sommaire ol::after { animation: sommaire-suite linear both !important; animation-timeline: --sommaire !important; }
 }
 @media (forced-colors: active) {
-  .progression, .heros::before, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
+  .progression, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
   .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
   .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
     border: 2px solid CanvasText; }
@@ -919,6 +995,10 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
   .def-bloc, .triptyque > li, .fiche-terme, .sigle li, .flux__etape, .cest__col, .termes, .termes__liste a { border: 2px solid CanvasText; }
   .flux__etape + .flux__etape::before { border-color: CanvasText; }
 }
+/* Signe du modèle dans le héros (décor aria-hidden) */
+.signe--definition { font-size: 2rem; color: var(--color-mocha-fg); }
+.signe__point { color: var(--color-terracotta-on-mocha); }
+@media (min-width: 640px) { .signe--definition { font-size: 3.5rem; } }
 </style>
 </head>
 <body>
@@ -969,6 +1049,7 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
       <a href="/fr/formations">Formations</a>
       <a href="/fr/blog">Blog</a>
     </nav>
+    <a class="btn btn--bleu site-entete__cta" href="/fr/appel?rdv=diagnostic&amp;depuis=definition-entete" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
   </div>
 </header>
 
@@ -1003,11 +1084,14 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
       <li data-aeo="freshness"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg><time datetime="2026-11-24">Mis à jour le 24 novembre 2026</time></li>
       <li class="meta__lecture"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>6 min de lecture</li>
     </ul>
-    <ul class="partage-icones" aria-label="Partager l'article">
-      <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Frag-explique-simplement" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
-      <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Frag-explique-simplement" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
-      <li><a href="mailto:?subject=Le%20RAG%2C%20expliqu%C3%A9%20simplement&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Frag-explique-simplement" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
-    </ul>
+    <div class="heros__pied">
+      <ul class="partage-icones" aria-label="Partager l'article">
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Frag-explique-simplement" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Frag-explique-simplement" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:?subject=Le%20RAG%2C%20expliqu%C3%A9%20simplement&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Frag-explique-simplement" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
+      </ul>
+      <div class="heros__signe signe--definition" aria-hidden="true"><span class="signe__grand">RAG<span class="signe__point">.</span></span><span class="signe__legende">Retrieval-Augmented Generation</span></div>
+    </div>
   </header>
 
   <!-- 2. BLOC DÉFINITION (réponse directe) + CARTE + IMAGE RÉDUITE -->
@@ -1017,20 +1101,20 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
         <p class="def-bloc__terme" lang="en">RAG<span aria-hidden="true">.</span></p>
         <dl class="def-bloc__infos">
           <div><dt>Nature</dt><dd>nom masculin, sigle anglais</dd></div>
-          <div><dt>Prononciation</dt><dd class="phonetique">« rag », en un mot</dd></div>
+          <div><dt>Prononciation</dt><dd class="phonetique">«&nbsp;rag&nbsp;», en un mot</dd></div>
           <div><dt>Développé</dt><dd lang="en">Retrieval-Augmented Generation</dd></div>
           <div><dt>En français</dt><dd class="etymo">génération augmentée par recherche</dd></div>
         </dl>
       </div>
       <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
         <p class="en-bref__titre" id="en-bref-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-eclair"/></svg>En bref</p>
-        <p>Le <dfn>RAG</dfn>, ou génération augmentée par recherche, permet à un assistant d'IA de <strong>répondre à partir de vos propres documents</strong> : il cherche d'abord les passages utiles, puis rédige sa réponse en s'appuyant dessus. Pour une PME, c'est la façon la plus courante d'interroger ses procédures, contrats ou fiches produits sans tout relire.</p>
+        <p>Le <dfn>RAG</dfn>, ou génération augmentée par recherche, permet à un assistant d'IA de <strong>répondre à partir de vos propres documents</strong>&nbsp;: il cherche d'abord les passages utiles, puis rédige sa réponse en s'appuyant dessus. Pour une PME, c'est la façon la plus courante d'interroger ses procédures, contrats ou fiches produits sans tout relire.</p>
       </aside>
     </div>
 
     <ul class="triptyque" aria-label="Le RAG en trois angles">
       <li><p class="triptyque__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-bulle"/></svg>En une phrase</p><p>Un assistant qui lit vos documents avant de vous répondre.</p></li>
-      <li><p class="triptyque__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mallette"/></svg>En pratique</p><p>« Quel délai de garantie sur ce produit ? » : la réponse cite la bonne fiche.</p></li>
+      <li><p class="triptyque__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mallette"/></svg>En pratique</p><p>«&nbsp;Quel délai de garantie sur ce produit&#8239;?&nbsp;»&nbsp;: la réponse cite la bonne fiche.</p></li>
       <li><p class="triptyque__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg>À ne pas confondre avec</p><p>L'<a href="/fr/glossaire/fine-tuning">affinage d'un modèle</a>, qui modifie le modèle lui-même.</p></li>
     </ul>
 
@@ -1056,7 +1140,7 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
           </svg>
           <span class="visuel__etiquette" aria-hidden="true">Glossaire · niveau découverte</span>
         </div>
-        <figcaption>Photo : Inès Garnier / Unsplash</figcaption>
+        <figcaption>Photo&nbsp;: [nom du photographe] / Unsplash</figcaption>
       </figure>
       <div class="fiche-terme sur-sombre">
         <p class="fiche-terme__titre">Fiche du terme</p>
@@ -1076,12 +1160,12 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
     <details>
       <summary>Sommaire · 6 questions</summary>
       <ol>
-        <li><a href="#que-veut-dire-rag">Que veut dire RAG ?</a></li>
-        <li><a href="#a-quoi-sert-le-rag-dans-une-pme">À quoi sert-il dans une PME ?</a></li>
-        <li><a href="#quelle-difference-avec-un-assistant-d-ia-classique">Quelle différence avec un assistant classique ?</a></li>
-        <li><a href="#quels-documents-faut-il-preparer">Quels documents préparer ?</a></li>
-        <li><a href="#le-rag-evite-t-il-toutes-les-erreurs">Évite-t-il toutes les erreurs ?</a></li>
-        <li><a href="#faut-il-un-prestataire-pour-le-mettre-en-place">Faut-il un prestataire ?</a></li>
+        <li><a href="#que-veut-dire-rag">Que veut dire RAG&#8239;?</a></li>
+        <li><a href="#a-quoi-sert-le-rag-dans-une-pme">À quoi sert-il dans une PME&#8239;?</a></li>
+        <li><a href="#quelle-difference-avec-un-assistant-d-ia-classique">Quelle différence avec un assistant classique&#8239;?</a></li>
+        <li><a href="#quels-documents-faut-il-preparer">Quels documents préparer&#8239;?</a></li>
+        <li><a href="#le-rag-evite-t-il-toutes-les-erreurs">Évite-t-il toutes les erreurs&#8239;?</a></li>
+        <li><a href="#faut-il-un-prestataire-pour-le-mettre-en-place">Faut-il un prestataire&#8239;?</a></li>
       </ol>
     </details>
   </nav>
@@ -1090,9 +1174,9 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
   <div class="article__corps prose">
 
     <section aria-labelledby="que-veut-dire-rag">
-      <div class="num-section"><span aria-hidden="true">01 / 06</span><a class="ancre" href="#que-veut-dire-rag" aria-label="Lien vers la section « Que veut dire RAG ? »">#</a></div>
-      <h2 id="que-veut-dire-rag" data-speakable="true">Que veut dire RAG ?</h2>
-      <p class="reponse-courte" data-speakable="true">RAG est le sigle anglais de <strong>Retrieval-Augmented Generation</strong> : une génération de texte enrichie par une recherche préalable.</p>
+      <div class="num-section"><span aria-hidden="true">01 / 06</span><a class="ancre" href="#que-veut-dire-rag" aria-label="Lien vers la section «&nbsp;Que veut dire RAG&#8239;?&nbsp;»">#</a></div>
+      <h2 id="que-veut-dire-rag" data-speakable="true">Que veut dire RAG&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">RAG est le sigle anglais de <strong>Retrieval-Augmented Generation</strong>&nbsp;: une génération de texte enrichie par une recherche préalable.</p>
       <p>Le terme vient d'un article de recherche publié en 2020 par des chercheurs de Facebook AI Research et de l'University College London. Il s'est imposé quand les entreprises ont voulu faire parler les assistants d'IA de leurs propres dossiers.</p>
 
       <ol class="sigle" aria-label="Le sigle, lettre par lettre">
@@ -1101,32 +1185,32 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
         <li><span class="sigle__lettre" aria-hidden="true">G</span><span class="sigle__en" lang="en">Generation</span><span class="sigle__fr">Génération</span><span class="sigle__sens">L'assistant rédige sa réponse à partir de ces passages.</span></li>
       </ol>
 
-      <p>Dit autrement : un <a class="terme-glossaire" href="/fr/glossaire/llm">grand modèle de langage</a> sait écrire, mais il ne connaît pas votre entreprise. Le RAG lui tend les bonnes pages au bon moment.</p>
+      <p>Dit autrement&nbsp;: un <a class="terme-glossaire" href="/fr/glossaire/llm">grand modèle de langage</a> sait écrire, mais il ne connaît pas votre entreprise. Le RAG lui tend les bonnes pages au bon moment.</p>
     </section>
 
     <section aria-labelledby="a-quoi-sert-le-rag-dans-une-pme">
-      <div class="num-section"><span aria-hidden="true">02 / 06</span><a class="ancre" href="#a-quoi-sert-le-rag-dans-une-pme" aria-label="Lien vers la section « À quoi sert le RAG dans une PME ? »">#</a></div>
-      <h2 id="a-quoi-sert-le-rag-dans-une-pme" data-speakable="true">À quoi sert le RAG dans une PME ?</h2>
+      <div class="num-section"><span aria-hidden="true">02 / 06</span><a class="ancre" href="#a-quoi-sert-le-rag-dans-une-pme" aria-label="Lien vers la section «&nbsp;À quoi sert le RAG dans une PME&#8239;?&nbsp;»">#</a></div>
+      <h2 id="a-quoi-sert-le-rag-dans-une-pme" data-speakable="true">À quoi sert le RAG dans une PME&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">À <strong>retrouver vite une information enfouie</strong> dans des documents internes, sans tout relire ni déranger un collègue.</p>
-      <p>Toute entreprise accumule des documents que personne ne relit en entier : procédures, conditions générales, notices, comptes rendus. L'information existe, mais la trouver prend du temps.</p>
+      <p>Toute entreprise accumule des documents que personne ne relit en entier&nbsp;: procédures, conditions générales, notices, comptes rendus. L'information existe, mais la trouver prend du temps.</p>
 
       <ul class="cartes">
-        <li class="carte"><span class="carte__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg></span><p class="carte__titre">Procédures internes</p><p>« Comment déclare-t-on un sinistre ? » La réponse sort du bon chapitre.</p></li>
+        <li class="carte"><span class="carte__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg></span><p class="carte__titre">Procédures internes</p><p>«&nbsp;Comment déclare-t-on un sinistre&#8239;?&nbsp;» La réponse sort du bon chapitre.</p></li>
         <li class="carte"><span class="carte__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-dossier"/></svg></span><p class="carte__titre">Fiches produits</p><p>Le service client trouve la bonne caractéristique pendant l'appel.</p></li>
         <li class="carte"><span class="carte__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-bouclier"/></svg></span><p class="carte__titre">Contrats</p><p>Retrouver une clause de résiliation sans ouvrir vingt fichiers.</p></li>
       </ul>
 
       <div class="encadre encadre--exemple">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mallette"/></svg></span>Exemple concret · exemple type, pas un client</p>
-        <p>Lundi matin, chez un distributeur de matériel agricole. Un client appelle pour un réglage de pièce. Le technicien tape sa question ; l'assistant répond en deux phrases et cite la page de la notice. Le technicien vérifie la page, puis rappelle le client dans la foulée.</p>
+        <p>Lundi matin, chez un distributeur de matériel agricole. Un client appelle pour un réglage de pièce. Le technicien tape sa question&#8239;; l'assistant répond en deux phrases et cite la page de la notice. Le technicien vérifie la page, puis rappelle le client dans la foulée.</p>
         <p class="encadre__micro"><a class="lien-fleche" href="/fr/journee-ia" data-cta="journee">On le fait avec vous en Journée IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
       </div>
     </section>
 
     <aside class="cta-milieu cta-milieu--ochre" aria-labelledby="cta-milieu-titre">
       <p class="cta-milieu__surtitre">Diagnostic IA</p>
-      <p class="cta-milieu__titre" id="cta-milieu-titre">Le mot est clair ; l'usage chez vous ?</p>
-      <p>Pas besoin de connaître l'IA : on parle de votre quotidien, pas de technique.</p>
+      <p class="cta-milieu__titre" id="cta-milieu-titre">Le mot est clair&#8239;; l'usage chez vous&#8239;?</p>
+      <p>Pas besoin de connaître l'IA&nbsp;: on parle de votre quotidien, pas de technique.</p>
       <div class="cta-milieu__actions">
         <a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=definition-milieu" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
         <a class="lien-fleche" href="/fr/glossaire">Le glossaire complet<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
@@ -1134,9 +1218,9 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
     </aside>
 
     <section aria-labelledby="quelle-difference-avec-un-assistant-d-ia-classique">
-      <div class="num-section"><span aria-hidden="true">03 / 06</span><a class="ancre" href="#quelle-difference-avec-un-assistant-d-ia-classique" aria-label="Lien vers la section « Quelle différence avec un assistant d'IA classique ? »">#</a></div>
-      <h2 id="quelle-difference-avec-un-assistant-d-ia-classique" data-speakable="true">Quelle différence avec un assistant d'IA classique ?</h2>
-      <p class="reponse-courte" data-speakable="true">Un assistant classique répond <strong>de mémoire</strong> ; avec le RAG, il répond <strong>en consultant vos documents</strong> d'abord.</p>
+      <div class="num-section"><span aria-hidden="true">03 / 06</span><a class="ancre" href="#quelle-difference-avec-un-assistant-d-ia-classique" aria-label="Lien vers la section «&nbsp;Quelle différence avec un assistant d'IA classique&#8239;?&nbsp;»">#</a></div>
+      <h2 id="quelle-difference-avec-un-assistant-d-ia-classique" data-speakable="true">Quelle différence avec un assistant d'IA classique&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Un assistant classique répond <strong>de mémoire</strong>&#8239;; avec le RAG, il répond <strong>en consultant vos documents</strong> d'abord.</p>
       <p>Sans RAG, l'assistant puise dans ce qu'il a appris lors de son entraînement. Il ignore vos tarifs, vos procédures et vos contrats. Avec le RAG, une étape s'intercale entre votre question et sa réponse.</p>
 
       <figure class="flux">
@@ -1146,16 +1230,16 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
             <ul class="flux__docs" aria-label="Exemples de documents"><li>procédures</li><li>contrats</li><li>fiches</li></ul></li>
           <li class="flux__etape"><div class="flux__tete"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg></div><p class="flux__nom">La réponse sourcée</p><p>L'assistant rédige à partir de ces passages et indique d'où il tire l'information.</p></li>
         </ol>
-        <figcaption>Le RAG en trois temps : l'étape du milieu fait toute la différence.</figcaption>
+        <figcaption>Le RAG en trois temps&nbsp;: l'étape du milieu fait toute la différence.</figcaption>
       </figure>
 
-      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite :</strong> pourquoi la qualité de vos documents compte plus que l'outil.</span></p>
+      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite&nbsp;:</strong> pourquoi la qualité de vos documents compte plus que l'outil.</span></p>
     </section>
 
     <section aria-labelledby="quels-documents-faut-il-preparer">
-      <div class="num-section"><span aria-hidden="true">04 / 06</span><a class="ancre" href="#quels-documents-faut-il-preparer" aria-label="Lien vers la section « Quels documents faut-il préparer ? »">#</a></div>
-      <h2 id="quels-documents-faut-il-preparer" data-speakable="true">Quels documents faut-il préparer ?</h2>
-      <p class="reponse-courte" data-speakable="true">Des documents <strong>à jour, sans doublon et lisibles</strong> : le système ne vaut que ce que vaut votre classement.</p>
+      <div class="num-section"><span aria-hidden="true">04 / 06</span><a class="ancre" href="#quels-documents-faut-il-preparer" aria-label="Lien vers la section «&nbsp;Quels documents faut-il préparer&#8239;?&nbsp;»">#</a></div>
+      <h2 id="quels-documents-faut-il-preparer" data-speakable="true">Quels documents faut-il préparer&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Des documents <strong>à jour, sans doublon et lisibles</strong>&nbsp;: le système ne vaut que ce que vaut votre classement.</p>
       <p>Un RAG nourri de trois versions contradictoires d'une même procédure répondra au hasard de la version trouvée. Le tri vient donc avant tout réglage technique.</p>
       <ul class="checklist">
         <li><span><strong>Une seule version</strong> de chaque document, la plus récente.</span></li>
@@ -1163,12 +1247,12 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
         <li><span><strong>Des titres clairs</strong> qui disent de quoi parle chaque partie.</span></li>
         <li><span><strong>Aucune donnée sensible</strong> sans règle d'accès définie au préalable.</span></li>
       </ul>
-      <p>Commencez par un petit périmètre : un dossier, un service. On élargit une fois les réponses jugées fiables.</p>
+      <p>Commencez par un petit périmètre&nbsp;: un dossier, un service. On élargit une fois les réponses jugées fiables.</p>
     </section>
 
     <section aria-labelledby="le-rag-evite-t-il-toutes-les-erreurs">
-      <div class="num-section"><span aria-hidden="true">05 / 06</span><a class="ancre" href="#le-rag-evite-t-il-toutes-les-erreurs" aria-label="Lien vers la section « Le RAG évite-t-il toutes les erreurs ? »">#</a></div>
-      <h2 id="le-rag-evite-t-il-toutes-les-erreurs" data-speakable="true">Le RAG évite-t-il toutes les erreurs ?</h2>
+      <div class="num-section"><span aria-hidden="true">05 / 06</span><a class="ancre" href="#le-rag-evite-t-il-toutes-les-erreurs" aria-label="Lien vers la section «&nbsp;Le RAG évite-t-il toutes les erreurs&#8239;?&nbsp;»">#</a></div>
+      <h2 id="le-rag-evite-t-il-toutes-les-erreurs" data-speakable="true">Le RAG évite-t-il toutes les erreurs&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Non. Il <strong>réduit les inventions</strong>, mais une réponse peut rester fausse si le passage trouvé est mauvais.</p>
       <p>Les erreurs inventées par un assistant s'appellent des <a class="terme-glossaire" href="/fr/glossaire/hallucination">hallucinations</a>. Le RAG les limite en ancrant la réponse dans un texte. <mark>Mais si la recherche rapporte le mauvais passage, la réponse sera fausse avec aplomb.</mark></p>
 
@@ -1176,32 +1260,32 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
         <div class="cest__col">
           <p class="cest__titre">C'est…</p>
           <ul>
-            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>une façon de faire répondre l'IA à partir de vos textes ;</li>
-            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>un moyen de citer la source de chaque réponse ;</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>une façon de faire répondre l'IA à partir de vos textes&#8239;;</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>un moyen de citer la source de chaque réponse&#8239;;</li>
             <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>un outil qui se met à jour quand vos documents changent.</li>
           </ul>
         </div>
         <div class="cest__col cest__col--non">
           <p class="cest__titre">Ce n'est pas…</p>
           <ul>
-            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>une garantie de réponse juste à chaque fois ;</li>
-            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>un nouvel entraînement du modèle sur vos données ;</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>une garantie de réponse juste à chaque fois&#8239;;</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>un nouvel entraînement du modèle sur vos données&#8239;;</li>
             <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>un remplacement de la relecture humaine.</li>
           </ul>
         </div>
       </div>
-      <p>D'où une règle simple : pour toute réponse qui engage l'entreprise, ouvrez la source citée avant d'agir.</p>
+      <p>D'où une règle simple&nbsp;: pour toute réponse qui engage l'entreprise, ouvrez la source citée avant d'agir.</p>
     </section>
 
     <section aria-labelledby="faut-il-un-prestataire-pour-le-mettre-en-place">
-      <div class="num-section"><span aria-hidden="true">06 / 06</span><a class="ancre" href="#faut-il-un-prestataire-pour-le-mettre-en-place" aria-label="Lien vers la section « Faut-il un prestataire pour le mettre en place ? »">#</a></div>
-      <h2 id="faut-il-un-prestataire-pour-le-mettre-en-place" data-speakable="true">Faut-il un prestataire pour le mettre en place ?</h2>
-      <p class="reponse-courte" data-speakable="true">Pas toujours : <strong>plusieurs assistants du marché proposent déjà</strong> d'y déposer vos documents.</p>
+      <div class="num-section"><span aria-hidden="true">06 / 06</span><a class="ancre" href="#faut-il-un-prestataire-pour-le-mettre-en-place" aria-label="Lien vers la section «&nbsp;Faut-il un prestataire pour le mettre en place&#8239;?&nbsp;»">#</a></div>
+      <h2 id="faut-il-un-prestataire-pour-le-mettre-en-place" data-speakable="true">Faut-il un prestataire pour le mettre en place&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Pas toujours&nbsp;: <strong>plusieurs assistants du marché proposent déjà</strong> d'y déposer vos documents.</p>
       <p>Pour un usage simple, comme interroger une dizaine de documents, les fonctions intégrées aux assistants d'IA suffisent souvent. Il suffit de vérifier où les fichiers sont stockés et qui peut y accéder.</p>
       <p>Un prestataire devient utile quand les documents se comptent par milliers, qu'ils vivent dans plusieurs logiciels, ou que les droits d'accès diffèrent selon les services.</p>
       <div class="encadre encadre--bon">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-info"/></svg></span>Bon à savoir</p>
-        <p>Avant de déposer des documents dans un outil, lisez ses conditions : lieu d'hébergement, durée de conservation, réutilisation éventuelle pour l'entraînement. La CNIL publie des recommandations sur ces points.</p>
+        <p>Avant de déposer des documents dans un outil, lisez ses conditions&nbsp;: lieu d'hébergement, durée de conservation, réutilisation éventuelle pour l'entraînement. La CNIL publie des recommandations sur ces points.</p>
       </div>
     </section>
 
@@ -1235,20 +1319,20 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
     <section class="faq" id="faq" aria-labelledby="faq-titre" data-aeo="people-also-ask">
       <h2 class="bloc-titre" id="faq-titre">Questions fréquentes</h2>
       <details data-faq-q>
-        <summary>Le RAG entraîne-t-il l'IA sur mes données ?</summary>
-        <div class="faq-answer" data-faq-a><p>Non, pas par lui-même. Le RAG consulte vos documents au moment de la question ; il ne modifie pas le modèle. Vérifiez toutefois les conditions du fournisseur sur la réutilisation des contenus.</p></div>
+        <summary>Le RAG entraîne-t-il l'IA sur mes données&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Non, pas par lui-même. Le RAG consulte vos documents au moment de la question&#8239;; il ne modifie pas le modèle. Vérifiez toutefois les conditions du fournisseur sur la réutilisation des contenus.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Faut-il des compétences techniques pour s'en servir ?</summary>
-        <div class="faq-answer" data-faq-a><p>Non pour l'utiliser : on pose ses questions en langage courant. La mise en place à grande échelle, elle, demande des compétences techniques.</p></div>
+        <summary>Faut-il des compétences techniques pour s'en servir&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Non pour l'utiliser&nbsp;: on pose ses questions en langage courant. La mise en place à grande échelle, elle, demande des compétences techniques.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Le RAG fonctionne-t-il avec des documents scannés ?</summary>
+        <summary>Le RAG fonctionne-t-il avec des documents scannés&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Mal, si le texte n'est pas reconnu. Faites d'abord passer les scans dans un outil de reconnaissance de caractères, puis relisez les passages importants.</p></div>
       </details>
       <details data-faq-q>
-        <summary>RAG et moteur de recherche interne, est-ce pareil ?</summary>
-        <div class="faq-answer" data-faq-a><p>Pas tout à fait. Un moteur de recherche renvoie une liste de documents ; le RAG s'en sert pour rédiger une réponse directe, en citant ses sources.</p></div>
+        <summary>RAG et moteur de recherche interne, est-ce pareil&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Pas tout à fait. Un moteur de recherche renvoie une liste de documents&#8239;; le RAG s'en sert pour rédiger une réponse directe, en citant ses sources.</p></div>
       </details>
     </section>
 
@@ -1256,8 +1340,8 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
     <section class="sources" id="sources" aria-labelledby="sources-titre">
       <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
       <ol>
-        <li><a href="https://arxiv.org/abs/2005.11401">Lewis P. et al., « Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks », arXiv, 2020</a></li>
-        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier « Intelligence artificielle », recommandations, 2024</a></li>
+        <li><a href="https://arxiv.org/abs/2005.11401">Lewis P. et al., «&nbsp;Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks&nbsp;», arXiv, 2020</a></li>
+        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l'intelligence artificielle, Journal officiel de l'Union européenne, 2024</a></li>
       </ol>
       <h3>Méthode</h3>
@@ -1334,8 +1418,8 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
     <p class="pastille pastille--claire lies__surtitre">Articles connexes</p>
     <h2 class="bloc-titre" id="lies-titre">À lire aussi</h2>
     <ul class="lies__liste">
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Questions-réponses</span><h3 class="lie__titre"><a href="/fr/blog/ia-donnees-entreprise-questions">IA et données de l'entreprise : les questions que posent les dirigeants</a></h3><span class="lie__meta">7 min de lecture</span></div></article></li>
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier : lequel choisir ?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Questions-réponses</span><h3 class="lie__titre"><a href="/fr/blog/ia-donnees-entreprise-questions">IA et données de l'entreprise&nbsp;: les questions que posent les dirigeants</a></h3><span class="lie__meta">7 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier&nbsp;: lequel choisir&#8239;?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Analyse</span><h3 class="lie__titre"><a href="/fr/blog/projets-ia-pme-premier-essai">Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
     </ul>
   </section>
@@ -1362,7 +1446,7 @@ dfn { font-style: normal; font-weight: 600; color: var(--color-terracotta-deep);
     </ul>
     <ol class="deroule" aria-label="Comment se passe le Diagnostic IA">
       <li><strong>Vous choisissez un créneau</strong><span>Visioconférence Google Meet ou téléphone, confirmation immédiate.</span></li>
-      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching : on qualifie votre besoin.</span></li>
+      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching&nbsp;: on qualifie votre besoin.</span></li>
       <li><strong>Vous repartez avec des pistes concrètes</strong><span>Et le bon module si vous souhaitez aller plus loin. Sans engagement.</span></li>
     </ol>
     <ul class="rassurance">

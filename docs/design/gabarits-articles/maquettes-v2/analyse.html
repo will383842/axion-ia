@@ -101,7 +101,12 @@
   --largeur-lecture: 41.5em; /* = 68ch Manrope */
   --largeur-page: 80rem;
   --hauteur-barre-mobile: 4.75rem;
-  --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
+  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
+     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
+  --hauteur-carte: 33.5rem;
+  /* Sommaire collant sous la carte : place restante de l'écran */
+  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
+  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
   --focus-clair: var(--color-primary);
   /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
      terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
@@ -216,6 +221,16 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
 .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
 @media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
+/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
+.site-entete .site-entete__cta { display: none; }
+@media (min-width: 1024px) {
+  .site-entete .conteneur { justify-content: flex-start; }
+  .site-nav { margin-left: auto; }
+  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
+  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+}
+/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
+@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
 
 .bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
 .fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
@@ -237,10 +252,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   clip-path: inset(0 -100vmax);
   padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
 }
-/* Aplat terracotta : disque (coupé par le bas du bandeau) + rayures mocha-soft */
-.heros::before { content: ""; position: absolute; z-index: -1; border-radius: 50%;
-  width: clamp(14rem, 34vw, 30rem); aspect-ratio: 1; background: var(--color-terracotta);
-  right: calc(-1 * var(--gouttiere)); bottom: clamp(-12rem, -9vw, -5rem); }
+/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
+   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
 .heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
   width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
   background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
@@ -258,6 +271,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
   letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
+/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
+   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
+@media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
 .heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
   border-left: 4px solid var(--color-terracotta-on-mocha);
@@ -272,6 +289,21 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
   background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
 .meta .meta__lecture .icone { color: var(--color-mocha); }
+/* Pied du héros : partage compact à gauche, signe du modèle à droite */
+.heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
+.heros__pied .partage-icones { margin: 0; flex: none; }
+/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
+   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
+.heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
+  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
+  font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
+.signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-mocha-fg); white-space: normal; text-align: left; }
+@media (min-width: 640px) {
+  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
+    background: var(--color-mocha-soft); font-size: 2.75rem; }
+  .signe__legende { display: block; width: 8.5rem; }
+}
 /* Partage compact (icônes) sous la méta */
 .partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
@@ -300,18 +332,25 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
   .article { grid-column: 1 / -1; grid-row: 1 / -1; display: grid;
     grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .heros { grid-column: 1 / -1; grid-row: 1; }
+  /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
+     Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
+  .heros { grid-column: 1; grid-row: 1; min-width: 0; }
   .article__ouverture { grid-column: 1; grid-row: 2; min-width: 0; }
   .article__corps { grid-column: 1; grid-row: 3; min-width: 0; }
-  /* Sommaire : collé en haut (aucun ancêtre en overflow hidden/auto) */
+  /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
+     puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
+     de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
+     margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
+     (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
+  .action { grid-column: 2; grid-row: 1 / -1; align-self: start; z-index: 2;
+    position: sticky; top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem); }
+  .action .carte-action { min-height: var(--hauteur-carte); }
+  /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
   .sommaire { grid-column: 2; grid-row: 2 / 4; align-self: start;
-    position: sticky; top: calc(var(--header-h) + 16px); /* marges : voir section 10 */
-    max-height: max(11rem, calc(100dvh - var(--header-h) - var(--hauteur-carte) - 3rem)); overflow-y: auto; }
-  /* Carte d'action : posée en bas de la colonne, collée en bas d'écran.
-     Elle apparaît d'elle-même à la sortie de l'image principale (ligne 3). */
-  .action { grid-column: 2; grid-row: 3; align-self: stretch; display: flex;
-    flex-direction: column; justify-content: flex-end; padding-top: 2rem; }
-  .action .carte-action { position: sticky; bottom: 16px; }
+    position: sticky; top: var(--sommaire-haut);
+    max-height: var(--sommaire-max); overflow-y: auto; overscroll-behavior: contain;
+    scroll-timeline: --sommaire block; }
 }
 
 /* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
@@ -332,9 +371,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   font: 600 0.8125rem/1 var(--font-mono); color: var(--color-terracotta-deep); }
 .sommaire ol a:hover { background: var(--color-sand); color: var(--color-ink); }
 @media (min-width: 1024px) {
-  /* marges de la colonne : haut aligné, bas = place réservée à la carte en fin d'article */
-  .sommaire { margin: 1.5rem 0 calc(var(--hauteur-carte) + 2rem); }
-  .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
+  .sommaire { margin: 1rem 0 0; }
+  /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
+  .sommaire { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .sommaire details { border: 0; border-radius: var(--radius-xl); }
   /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
      sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
      reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
@@ -344,6 +385,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     .sommaire summary::after { display: none; }
   }
   .sommaire ol a { font-size: 0.875rem; }
+  /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
+     total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
+     (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
+  .sommaire ol::after { content: "↓ suite du sommaire · " counter(s, decimal-leading-zero) " entrées" / "";
+    position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
+    background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
+    font: 600 0.75rem/1.2 var(--font-mono); letter-spacing: 0.02em; color: var(--color-terracotta-deep); }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after { animation: sommaire-suite linear both; animation-timeline: --sommaire; }
+    @keyframes sommaire-suite { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  }
+  .sommaire ol { padding-bottom: 0.75rem; }
 }
 
 /* 11 — BOUTONS ------------------------------------------------------------- */
@@ -393,7 +447,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 @media (min-width: 1024px) {
   .carte-action.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
   .carte-action { position: relative; inset: auto; z-index: auto; border: 0; border-radius: var(--radius-xl);
-    padding: 1.5rem 1.25rem 1.25rem; background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
+    padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
+    /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
+       (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
+    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
   .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
   .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
@@ -420,7 +477,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
 /* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
 @media (min-width: 1024px) and (max-height: 1000px) {
-  :root { --hauteur-carte: 25rem; }
+  :root { --hauteur-carte: 24rem; }
   .carte-action { padding-top: 1.15rem; }
   .carte-action__titre { font-size: 1.1875rem; }
   .carte-action__sous-titre { margin-bottom: 0.75rem; }
@@ -428,6 +485,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .act { min-height: 48px; padding-block: 0.5rem; }
   .act.btn--bleu { min-height: 56px; }
   .carte-action__rassurance { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin-top: 0.75rem; padding-top: 0.65rem; }
+}
+/* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
+   l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
+@media (min-width: 1024px) and (max-height: 860px) {
+  :root { --hauteur-carte: 18.75rem; }
+  .carte-action__rassurance { display: none; }
 }
 
 /* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
@@ -741,6 +804,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .lie__titre a:focus-visible { outline: none; }
 .lie:has(a:focus-visible) { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
 .lie__meta { font-size: 0.8125rem; color: var(--color-fg-muted); }
+/* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
+@media (max-width: 639px) {
+  .lie { flex-direction: row; }
+  .lie__visuel { flex: 0 0 6rem; aspect-ratio: auto; min-height: 7.5rem; }
+  .lie__visuel::after { width: 80%; right: -25%; top: -15%; }
+  .lie__corps { align-content: center; padding: 0.85rem 1rem; }
+  .lie__titre { font-size: 1.0625rem; }
+}
 
 /* Guide gratuit (capture e-mail existante, une seule par page) */
 .guide-gratuit { display: grid; gap: 1rem; margin: 3rem 0 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
@@ -748,7 +819,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .guide-gratuit__titre { margin: 0 0 0.5rem; font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif); }
 .guide-gratuit p { margin: 0; }
 .guide-gratuit form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
-.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 15rem; font-size: 0.875rem; font-weight: 600; }
+/* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
+.guide-gratuit > *, .guide-gratuit label { min-width: 0; }
+.guide-gratuit input { width: 100%; min-width: 0; }
+.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 min(15rem, 100%); font-size: 0.875rem; font-weight: 600; }
 .guide-gratuit input { min-height: 48px; padding: 0.6rem 0.9rem; border: 1.5px solid var(--color-border-field);
   border-radius: var(--radius-md); background: var(--color-paper); color: var(--color-fg); font: 400 1rem/1.3 var(--font-sans); }
 @media (min-width: 760px) { .guide-gratuit { grid-template-columns: 1fr 1fr; align-items: center; } }
@@ -761,9 +835,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .progression { display: none !important; animation: none !important; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .btn:hover, .lie:hover { transform: none; }
+  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
+  .sommaire ol::after { animation: sommaire-suite linear both !important; animation-timeline: --sommaire !important; }
 }
 @media (forced-colors: active) {
-  .progression, .heros::before, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
+  .progression, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
   .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
   .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
     border: 2px solid CanvasText; }
@@ -799,6 +875,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   padding: 0.35rem 0.8rem; border-radius: var(--radius-full); background: var(--color-mocha); color: var(--color-mocha-fg);
   font: 600 0.8125rem/1.3 var(--font-sans); }
 @media (forced-colors: active) { .visuel__cadre svg { forced-color-adjust: auto; } }
+/* Signe du modèle dans le héros (décor aria-hidden) */
+.signe__semaines { display: none; gap: 0.3rem; }
+.signe__semaines i { width: 0.7rem; height: 2.25rem; border-radius: var(--radius-sm); background: var(--color-border-on-mocha); }
+.signe__semaines i:last-child { background: var(--color-terracotta-on-mocha); }
+@media (min-width: 640px) { .signe__semaines { display: flex; } }
 </style>
 </head>
 <body>
@@ -846,6 +927,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <a href="/fr/formations">Formations</a>
       <a href="/fr/blog">Blog</a>
     </nav>
+    <a class="btn btn--bleu site-entete__cta" href="/fr/appel?rdv=diagnostic&amp;depuis=analyse-entete" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
   </div>
 </header>
 
@@ -873,18 +955,21 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <li class="pastille pastille--contour">Organisation &amp; IA</li>
     </ul>
     <h1>Pourquoi tant de projets d'IA en PME <em>s'arrêtent au premier essai</em></h1>
-    <p class="chapo">Pour les dirigeants qui ont déjà testé un outil d'IA et l'ont vu s'éteindre. En moins de dix minutes : les vraies causes, et ce qui distingue les essais qui durent.</p>
+    <p class="chapo">Pour les dirigeants qui ont déjà testé un outil d'IA et l'ont vu s'éteindre. En moins de dix minutes&nbsp;: les vraies causes, et ce qui distingue les essais qui durent.</p>
     <ul class="meta">
       <li><span class="avatar" aria-hidden="true">M</span><span>Par <a href="/fr/equipe/manon" rel="author">Manon</a></span></li>
       <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-publie"/></svg><time datetime="2026-11-20">Publié le 20 novembre 2026</time></li>
       <li data-aeo="freshness"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg><time datetime="2026-11-26">Mis à jour le 26 novembre 2026</time></li>
       <li class="meta__lecture"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>9 min de lecture</li>
     </ul>
-    <ul class="partage-icones" aria-label="Partager l'article">
-      <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
-      <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
-      <li><a href="mailto:?subject=Pourquoi%20tant%20de%20projets%20d%27IA%20en%20PME%20s%27arr%C3%AAtent&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
-    </ul>
+    <div class="heros__pied">
+      <ul class="partage-icones" aria-label="Partager l'article">
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:?subject=Pourquoi%20tant%20de%20projets%20d%27IA%20en%20PME%20s%27arr%C3%AAtent&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fprojets-ia-pme-premier-essai" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
+      </ul>
+      <div class="heros__signe signe--analyse" aria-hidden="true"><span class="signe__semaines"><i></i><i></i><i></i><i></i></span><span class="signe__grand">4 sem.</span><span class="signe__legende">d'essai, puis une décision</span></div>
+    </div>
   </header>
 
   <!-- 2. IMAGE + RÉPONSE DIRECTE -->
@@ -908,7 +993,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </svg>
         <span class="visuel__etiquette" aria-hidden="true">4 semaines pour décider</span>
       </div>
-      <figcaption>Photo : Camille Martin / Unsplash</figcaption>
+      <figcaption>Photo&nbsp;: [nom du photographe] / Unsplash</figcaption>
     </figure>
 
     <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
@@ -922,13 +1007,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <details>
       <summary>Sommaire · 7 questions</summary>
       <ol>
-        <li><a href="#qu-appelle-t-on-un-projet-d-ia-arrete">Qu'appelle-t-on un projet « arrêté » ?</a></li>
-        <li><a href="#est-ce-un-probleme-d-outil-ou-d-organisation">Outil ou organisation ?</a></li>
-        <li><a href="#qui-doit-porter-le-projet-dans-une-petite-equipe">Qui doit porter le projet ?</a></li>
-        <li><a href="#combien-de-temps-laisser-a-un-premier-essai">Combien de temps laisser à l'essai ?</a></li>
-        <li><a href="#comment-choisir-la-premiere-tache-a-confier-a-l-ia">Quelle première tâche choisir ?</a></li>
-        <li><a href="#que-faire-quand-l-equipe-n-adhere-pas">Et si l'équipe n'adhère pas ?</a></li>
-        <li><a href="#quand-faut-il-arreter-pour-de-bon">Quand arrêter pour de bon ?</a></li>
+        <li><a href="#qu-appelle-t-on-un-projet-d-ia-arrete">Qu'appelle-t-on un projet «&nbsp;arrêté&nbsp;»&#8239;?</a></li>
+        <li><a href="#est-ce-un-probleme-d-outil-ou-d-organisation">Outil ou organisation&#8239;?</a></li>
+        <li><a href="#qui-doit-porter-le-projet-dans-une-petite-equipe">Qui doit porter le projet&#8239;?</a></li>
+        <li><a href="#combien-de-temps-laisser-a-un-premier-essai">Combien de temps laisser à l'essai&#8239;?</a></li>
+        <li><a href="#comment-choisir-la-premiere-tache-a-confier-a-l-ia">Quelle première tâche choisir&#8239;?</a></li>
+        <li><a href="#que-faire-quand-l-equipe-n-adhere-pas">Et si l'équipe n'adhère pas&#8239;?</a></li>
+        <li><a href="#quand-faut-il-arreter-pour-de-bon">Quand arrêter pour de bon&#8239;?</a></li>
       </ol>
     </details>
   </nav>
@@ -937,18 +1022,18 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   <div class="article__corps prose">
 
     <section aria-labelledby="qu-appelle-t-on-un-projet-d-ia-arrete">
-      <div class="num-section"><span aria-hidden="true">01 / 07</span><a class="ancre" href="#qu-appelle-t-on-un-projet-d-ia-arrete" aria-label="Lien vers la section « Qu'appelle-t-on un projet d'IA arrêté ? »">#</a></div>
-      <h2 id="qu-appelle-t-on-un-projet-d-ia-arrete" data-speakable="true">Qu'appelle-t-on un projet d'IA « arrêté » ?</h2>
+      <div class="num-section"><span aria-hidden="true">01 / 07</span><a class="ancre" href="#qu-appelle-t-on-un-projet-d-ia-arrete" aria-label="Lien vers la section «&nbsp;Qu'appelle-t-on un projet d'IA arrêté&#8239;?&nbsp;»">#</a></div>
+      <h2 id="qu-appelle-t-on-un-projet-d-ia-arrete" data-speakable="true">Qu'appelle-t-on un projet d'IA «&nbsp;arrêté&nbsp;»&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Un projet arrêté, c'est <strong>un outil payé ou installé que plus personne n'ouvre</strong> au bout de quelques semaines, sans qu'aucune décision n'ait été prise.</p>
       <p>Le scénario est presque toujours le même. Un abonnement est ouvert, deux ou trois personnes l'essaient avec curiosité. Puis le quotidien reprend le dessus, et l'outil glisse au fond des favoris.</p>
-      <p>Personne n'a décidé d'arrêter. C'est justement le problème : sans décision, il n'y a pas non plus d'apprentissage. On ne sait pas si l'IA « ne marche pas », ou si elle n'a jamais vraiment été essayée.</p>
+      <p>Personne n'a décidé d'arrêter. C'est justement le problème&nbsp;: sans décision, il n'y a pas non plus d'apprentissage. On ne sait pas si l'IA «&nbsp;ne marche pas&nbsp;», ou si elle n'a jamais vraiment été essayée.</p>
 
       <div class="chiffre-cle">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-graphe"/></svg></span>Chiffre clé</p>
-        <p class="chiffre-cle__phrase"><strong class="chiffre">≈ 10 %</strong> des sociétés françaises de 10 personnes ou plus utilisaient au moins une technologie d'intelligence artificielle en 2023.<span class="source">Source : Insee, enquête sur les technologies de l'information et de la communication dans les entreprises (TIC), 2023. Valeur arrondie.</span></p>
+        <p class="chiffre-cle__phrase"><strong class="chiffre">≈ 10 %</strong> des sociétés françaises de 10 personnes ou plus utilisaient au moins une technologie d'intelligence artificielle en 2023.<span class="source">Source&nbsp;: Insee, enquête sur les technologies de l'information et de la communication dans les entreprises (TIC), 2023. Valeur arrondie.</span></p>
       </div>
 
-      <p>L'usage reste donc minoritaire. Et derrière chaque entreprise qui « utilise l'IA », combien d'essais abandonnés en route ? Les enquêtes publiques ne le mesurent pas. Le schéma ci-dessous résume ce que l'on observe le plus souvent sur le terrain.</p>
+      <p>L'usage reste donc minoritaire. Et derrière chaque entreprise qui «&nbsp;utilise l'IA&nbsp;», combien d'essais abandonnés en route&#8239;? Les enquêtes publiques ne le mesurent pas. Le schéma ci-dessous résume ce que l'on observe le plus souvent sur le terrain.</p>
 
       <figure class="schema">
         <ol class="schema__liste">
@@ -956,15 +1041,15 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
           <li class="schema__etape"><p class="schema__libelle">Causes</p><ul><li>pas d'usage précis</li><li>pas de responsable</li><li>pas de temps prévu</li></ul></li>
           <li class="schema__etape"><p class="schema__libelle">Leviers</p><ul><li>une tâche répétitive</li><li>un porteur nommé</li><li>quatre semaines, puis décider</li></ul></li>
         </ol>
-        <figcaption>Constat, causes, leviers : la lecture de cet article en un coup d'œil.</figcaption>
+        <figcaption>Constat, causes, leviers&nbsp;: la lecture de cet article en un coup d'œil.</figcaption>
       </figure>
     </section>
 
     <section aria-labelledby="est-ce-un-probleme-d-outil-ou-d-organisation">
-      <div class="num-section"><span aria-hidden="true">02 / 07</span><a class="ancre" href="#est-ce-un-probleme-d-outil-ou-d-organisation" aria-label="Lien vers la section « Est-ce un problème d'outil ou d'organisation ? »">#</a></div>
-      <h2 id="est-ce-un-probleme-d-outil-ou-d-organisation" data-speakable="true">Est-ce un problème d'outil ou d'organisation ?</h2>
+      <div class="num-section"><span aria-hidden="true">02 / 07</span><a class="ancre" href="#est-ce-un-probleme-d-outil-ou-d-organisation" aria-label="Lien vers la section «&nbsp;Est-ce un problème d'outil ou d'organisation&#8239;?&nbsp;»">#</a></div>
+      <h2 id="est-ce-un-probleme-d-outil-ou-d-organisation" data-speakable="true">Est-ce un problème d'outil ou d'organisation&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Dans la grande majorité des cas, <strong>c'est l'organisation qui cède</strong>, pas l'outil. Les assistants du marché savent tous rédiger, résumer et classer.</p>
-      <p>Un indice parle de lui-même : les mêmes outils sont accessibles à toutes les entreprises, quelle que soit leur taille. Pourtant, leur usage varie énormément selon l'effectif.</p>
+      <p>Un indice parle de lui-même&nbsp;: les mêmes outils sont accessibles à toutes les entreprises, quelle que soit leur taille. Pourtant, leur usage varie énormément selon l'effectif.</p>
 
       <div class="chiffres">
         <p class="chiffres__titre">Part des entreprises de l'Union européenne utilisant l'IA, selon leur taille (2024)</p>
@@ -973,7 +1058,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
           <li><span class="chiffres__valeur">≈ 21 %</span><span class="chiffres__libelle">des moyennes entreprises (50 à 249 salariés)</span></li>
           <li><span class="chiffres__valeur">≈ 11 %</span><span class="chiffres__libelle">des petites entreprises (10 à 49 salariés)</span></li>
         </ul>
-        <p class="source">Source : Eurostat, « Use of artificial intelligence in enterprises », données 2024. Valeurs arrondies, à revérifier à la source avant publication.</p>
+        <p class="source">Source&nbsp;: Eurostat, «&nbsp;Use of artificial intelligence in enterprises&nbsp;», données 2024. Valeurs arrondies, à revérifier à la source avant publication.</p>
       </div>
 
       <p>L'écart ne tient pas au prix des outils. Il tient au temps disponible pour les essayer, et à la présence de quelqu'un dont c'est le travail. Une grande entreprise a souvent une équipe dédiée. <mark>Une PME doit trouver ce temps sur l'agenda de personnes déjà très occupées.</mark></p>
@@ -981,13 +1066,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
       <div class="encadre encadre--retenir">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-epingle"/></svg></span>À retenir</p>
-        <p>Avant de changer d'outil, posez trois questions : quelle tâche précise, qui s'en occupe, et combien d'heures sont prévues chaque semaine ? Si l'une reste sans réponse, le problème est là.</p>
+        <p>Avant de changer d'outil, posez trois questions&nbsp;: quelle tâche précise, qui s'en occupe, et combien d'heures sont prévues chaque semaine&#8239;? Si l'une reste sans réponse, le problème est là.</p>
       </div>
     </section>
 
     <aside class="cta-milieu" aria-labelledby="cta-milieu-titre">
       <p class="cta-milieu__surtitre">Diagnostic IA</p>
-      <p class="cta-milieu__titre" id="cta-milieu-titre">Et dans votre entreprise, concrètement ?</p>
+      <p class="cta-milieu__titre" id="cta-milieu-titre">Et dans votre entreprise, concrètement&#8239;?</p>
       <p>En 45 minutes, on regarde où cet enjeu touche vos équipes.</p>
       <div class="cta-milieu__actions">
         <a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=analyse-milieu" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
@@ -996,34 +1081,34 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </aside>
 
     <section aria-labelledby="qui-doit-porter-le-projet-dans-une-petite-equipe">
-      <div class="num-section"><span aria-hidden="true">03 / 07</span><a class="ancre" href="#qui-doit-porter-le-projet-dans-une-petite-equipe" aria-label="Lien vers la section « Qui doit porter le projet dans une petite équipe ? »">#</a></div>
-      <h2 id="qui-doit-porter-le-projet-dans-une-petite-equipe" data-speakable="true">Qui doit porter le projet dans une petite équipe ?</h2>
+      <div class="num-section"><span aria-hidden="true">03 / 07</span><a class="ancre" href="#qui-doit-porter-le-projet-dans-une-petite-equipe" aria-label="Lien vers la section «&nbsp;Qui doit porter le projet dans une petite équipe&#8239;?&nbsp;»">#</a></div>
+      <h2 id="qui-doit-porter-le-projet-dans-une-petite-equipe" data-speakable="true">Qui doit porter le projet dans une petite équipe&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Le bon porteur est <strong>la personne qui fait la tâche</strong>, pas forcément la plus à l'aise avec l'informatique.</p>
-      <p>Dans une PME, le réflexe est de confier l'IA au « geek » de l'équipe. Il teste avec plaisir, mais sur des tâches qui ne sont pas les siennes. Il ne sait pas ce qu'un bon résultat doit contenir.</p>
-      <p>La personne qui rédige les devis, elle, voit tout de suite si une proposition tient la route. C'est elle qui peut dire « ça me fait gagner du temps » ou « je passe plus de temps à corriger ».</p>
-      <p>Le dirigeant garde un rôle clé : il protège le temps prévu. Une heure bloquée chaque semaine dans l'agenda, et respectée, vaut mieux qu'un grand lancement.</p>
+      <p>Dans une PME, le réflexe est de confier l'IA au «&nbsp;geek&nbsp;» de l'équipe. Il teste avec plaisir, mais sur des tâches qui ne sont pas les siennes. Il ne sait pas ce qu'un bon résultat doit contenir.</p>
+      <p>La personne qui rédige les devis, elle, voit tout de suite si une proposition tient la route. C'est elle qui peut dire «&nbsp;ça me fait gagner du temps&nbsp;» ou «&nbsp;je passe plus de temps à corriger&nbsp;».</p>
+      <p>Le dirigeant garde un rôle clé&nbsp;: il protège le temps prévu. Une heure bloquée chaque semaine dans l'agenda, et respectée, vaut mieux qu'un grand lancement.</p>
 
       <div class="encadre encadre--exemple">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mallette"/></svg></span>Exemple concret · exemple type, pas un client</p>
-        <p>Une entreprise de menuiserie de 12 personnes veut accélérer ses comptes rendus de chantier. L'assistante administrative porte l'essai. Le chef d'atelier lui dicte ses notes vocales ; elle les fait mettre au propre par l'assistant d'IA, puis relit.</p>
+        <p>Une entreprise de menuiserie de 12 personnes veut accélérer ses comptes rendus de chantier. L'assistante administrative porte l'essai. Le chef d'atelier lui dicte ses notes vocales&#8239;; elle les fait mettre au propre par l'assistant d'IA, puis relit.</p>
         <p>Au bout de quatre semaines, elle sait précisément ce qui marche (la mise en forme) et ce qui ne marche pas (les cotes, toujours à vérifier). La décision devient simple.</p>
       </div>
 
-      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite :</strong> pourquoi quatre semaines, et pas une ou six mois.</span></p>
+      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite&nbsp;:</strong> pourquoi quatre semaines, et pas une semaine ou six mois.</span></p>
     </section>
 
     <section aria-labelledby="combien-de-temps-laisser-a-un-premier-essai">
-      <div class="num-section"><span aria-hidden="true">04 / 07</span><a class="ancre" href="#combien-de-temps-laisser-a-un-premier-essai" aria-label="Lien vers la section « Combien de temps laisser à un premier essai ? »">#</a></div>
-      <h2 id="combien-de-temps-laisser-a-un-premier-essai" data-speakable="true">Combien de temps laisser à un premier essai ?</h2>
-      <p class="reponse-courte" data-speakable="true">Comptez <strong>environ quatre semaines</strong> : assez pour dépasser l'effet de nouveauté, assez court pour garder l'attention de l'équipe.</p>
-      <p>Une semaine ne suffit pas. Les premiers jours, on apprend surtout à formuler ses demandes, et les résultats sont inégaux. À l'inverse, un essai sans date de fin n'aboutit jamais : il n'y a pas de moment pour décider.</p>
+      <div class="num-section"><span aria-hidden="true">04 / 07</span><a class="ancre" href="#combien-de-temps-laisser-a-un-premier-essai" aria-label="Lien vers la section «&nbsp;Combien de temps laisser à un premier essai&#8239;?&nbsp;»">#</a></div>
+      <h2 id="combien-de-temps-laisser-a-un-premier-essai" data-speakable="true">Combien de temps laisser à un premier essai&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Comptez <strong>environ quatre semaines</strong>&nbsp;: assez pour dépasser l'effet de nouveauté, assez court pour garder l'attention de l'équipe.</p>
+      <p>Une semaine ne suffit pas. Les premiers jours, on apprend surtout à formuler ses demandes, et les résultats sont inégaux. À l'inverse, un essai sans date de fin n'aboutit jamais&nbsp;: il n'y a pas de moment pour décider.</p>
       <p>Voici un déroulé qui fonctionne dans une petite équipe. Il demande une à deux heures par semaine au porteur.</p>
 
       <ol class="etapes">
-        <li><span class="etapes__titre">Choisir la tâche et noter le point de départ</span><span class="etapes__duree">Semaine 1</span><p>Combien de temps prend la tâche aujourd'hui ? Combien de fois par semaine ? Une estimation honnête suffit.</p></li>
+        <li><span class="etapes__titre">Choisir la tâche et noter le point de départ</span><span class="etapes__duree">Semaine 1</span><p>Combien de temps prend la tâche aujourd'hui&#8239;? Combien de fois par semaine&#8239;? Une estimation honnête suffit.</p></li>
         <li><span class="etapes__titre">Essayer sur de vrais dossiers</span><span class="etapes__duree">Semaines 2 et 3</span><p>Le porteur utilise l'outil sur son travail réel et garde ses meilleures consignes dans un document partagé.</p></li>
-        <li><span class="etapes__titre">Comparer avec le point de départ</span><span class="etapes__duree">Semaine 4</span><p>Temps passé, qualité, corrections : on compare aux notes de la semaine 1, sans enjoliver.</p></li>
-        <li><span class="etapes__titre">Décider : continuer, ajuster ou arrêter</span><span class="etapes__duree">Fin de semaine 4</span><p>Une réunion de trente minutes, une décision écrite. Même « arrêter » est un bon résultat.</p></li>
+        <li><span class="etapes__titre">Comparer avec le point de départ</span><span class="etapes__duree">Semaine 4</span><p>Temps passé, qualité, corrections&nbsp;: on compare aux notes de la semaine 1, sans enjoliver.</p></li>
+        <li><span class="etapes__titre">Décider&nbsp;: continuer, ajuster ou arrêter</span><span class="etapes__duree">Fin de semaine 4</span><p>Une réunion de trente minutes, une décision écrite. Même «&nbsp;arrêter&nbsp;» est un bon résultat.</p></li>
       </ol>
 
       <figure class="citation">
@@ -1033,11 +1118,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </section>
 
     <section aria-labelledby="comment-choisir-la-premiere-tache-a-confier-a-l-ia">
-      <div class="num-section"><span aria-hidden="true">05 / 07</span><a class="ancre" href="#comment-choisir-la-premiere-tache-a-confier-a-l-ia" aria-label="Lien vers la section « Comment choisir la première tâche à confier à l'IA ? »">#</a></div>
-      <h2 id="comment-choisir-la-premiere-tache-a-confier-a-l-ia" data-speakable="true">Comment choisir la première tâche à confier à l'IA ?</h2>
+      <div class="num-section"><span aria-hidden="true">05 / 07</span><a class="ancre" href="#comment-choisir-la-premiere-tache-a-confier-a-l-ia" aria-label="Lien vers la section «&nbsp;Comment choisir la première tâche à confier à l'IA&#8239;?&nbsp;»">#</a></div>
+      <h2 id="comment-choisir-la-premiere-tache-a-confier-a-l-ia" data-speakable="true">Comment choisir la première tâche à confier à l'IA&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Choisissez <strong>une tâche fréquente, pénible et facile à vérifier</strong>. Si une erreur se voit en dix secondes, c'est un bon candidat.</p>
-      <p>Le piège est de viser trop haut : « l'IA va gérer notre service client ». Un premier essai doit pouvoir réussir sur une petite surface. Le reste viendra ensuite, avec une équipe convaincue.</p>
-      <p>Avant de vous lancer, vérifiez que la tâche coche ces cases :</p>
+      <p>Le piège est de viser trop haut&nbsp;: «&nbsp;l'IA va gérer notre service client&nbsp;». Un premier essai doit pouvoir réussir sur une petite surface. Le reste viendra ensuite, avec une équipe convaincue.</p>
+      <p>Avant de vous lancer, vérifiez que la tâche coche ces cases&nbsp;:</p>
 
       <ul class="checklist">
         <li><span><strong>Elle revient chaque semaine</strong>, idéalement plusieurs fois.</span></li>
@@ -1047,26 +1132,26 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <li><span><strong>Une erreur reste rattrapable</strong> avant d'arriver chez un client.</span></li>
       </ul>
 
-      <p>Les comptes rendus, les relances, les premières versions de courriers ou de devis types remplissent souvent ces conditions. La comptabilité ou les contrats, rarement : on y reviendra plus tard.</p>
+      <p>Les comptes rendus, les relances, les premières versions de courriers ou de devis types remplissent souvent ces conditions. La comptabilité ou les contrats, rarement&nbsp;: on y reviendra plus tard.</p>
 
       <div class="encadre encadre--saviez">
-        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ampoule"/></svg></span>Le saviez-vous ?</p>
+        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ampoule"/></svg></span>Le saviez-vous&#8239;?</p>
         <p>Depuis le 2 février 2025, l'article 4 du règlement européen sur l'IA demande aux entreprises qui utilisent des systèmes d'IA de veiller à un niveau suffisant de maîtrise de l'IA chez leurs équipes. Le texte n'impose ni format ni certification. Un essai bien encadré est une bonne occasion de s'y mettre.</p>
       </div>
     </section>
 
     <section aria-labelledby="que-faire-quand-l-equipe-n-adhere-pas">
-      <div class="num-section"><span aria-hidden="true">06 / 07</span><a class="ancre" href="#que-faire-quand-l-equipe-n-adhere-pas" aria-label="Lien vers la section « Que faire quand l'équipe n'adhère pas ? »">#</a></div>
-      <h2 id="que-faire-quand-l-equipe-n-adhere-pas" data-speakable="true">Que faire quand l'équipe n'adhère pas ?</h2>
-      <p class="reponse-courte" data-speakable="true">Écoutez d'abord : <strong>une réticence cache souvent une crainte précise</strong>, qu'on peut traiter, plutôt qu'un refus de principe.</p>
-      <p>Les craintes reviennent toujours un peu les mêmes. Peur d'être remplacé. Peur de perdre la main sur un travail dont on est fier. Peur, aussi, de passer pour quelqu'un qui « ne s'adapte pas ».</p>
+      <div class="num-section"><span aria-hidden="true">06 / 07</span><a class="ancre" href="#que-faire-quand-l-equipe-n-adhere-pas" aria-label="Lien vers la section «&nbsp;Que faire quand l'équipe n'adhère pas&#8239;?&nbsp;»">#</a></div>
+      <h2 id="que-faire-quand-l-equipe-n-adhere-pas" data-speakable="true">Que faire quand l'équipe n'adhère pas&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Écoutez d'abord&nbsp;: <strong>une réticence cache souvent une crainte précise</strong>, qu'on peut traiter, plutôt qu'un refus de principe.</p>
+      <p>Les craintes reviennent toujours un peu les mêmes. Peur d'être remplacé. Peur de perdre la main sur un travail dont on est fier. Peur, aussi, de passer pour quelqu'un qui «&nbsp;ne s'adapte pas&nbsp;».</p>
       <p>Une réunion où chacun dit ce qu'il redoute fait souvent plus qu'une démonstration. Montrez ensuite que l'IA prend la partie ingrate de la tâche, et que la relecture reste entre les mains de la personne.</p>
 
       <div class="encadre encadre--attention">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg></span>Attention · ce qu'on surestime souvent</p>
         <ul>
           <li><strong>La formation éclair.</strong> Une démonstration d'une heure ne suffit pas à changer une habitude.</li>
-          <li><strong>L'enthousiasme du premier jour.</strong> Il retombe toujours : prévoyez la semaine 3.</li>
+          <li><strong>L'enthousiasme du premier jour.</strong> Il retombe toujours&nbsp;: prévoyez la semaine 3.</li>
           <li><strong>L'obligation d'utiliser l'outil.</strong> Imposer sans écouter fabrique des contournements.</li>
         </ul>
       </div>
@@ -1075,15 +1160,15 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </section>
 
     <section aria-labelledby="quand-faut-il-arreter-pour-de-bon">
-      <div class="num-section"><span aria-hidden="true">07 / 07</span><a class="ancre" href="#quand-faut-il-arreter-pour-de-bon" aria-label="Lien vers la section « Quand faut-il arrêter pour de bon ? »">#</a></div>
-      <h2 id="quand-faut-il-arreter-pour-de-bon" data-speakable="true">Quand faut-il arrêter pour de bon ?</h2>
+      <div class="num-section"><span aria-hidden="true">07 / 07</span><a class="ancre" href="#quand-faut-il-arreter-pour-de-bon" aria-label="Lien vers la section «&nbsp;Quand faut-il arrêter pour de bon&#8239;?&nbsp;»">#</a></div>
+      <h2 id="quand-faut-il-arreter-pour-de-bon" data-speakable="true">Quand faut-il arrêter pour de bon&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Arrêtez quand <strong>la relecture prend plus de temps que la tâche elle-même</strong>, après un essai mené sérieusement.</p>
       <p>Arrêter n'est pas un échec, si la décision est prise en connaissance de cause. Le tableau suivant aide à trancher à la fin des quatre semaines.</p>
 
       <div class="tableau">
         <div class="tableau__defilant" role="region" aria-labelledby="tableau-decision" tabindex="0">
           <table>
-            <caption id="tableau-decision"><span>Continuer, ajuster ou arrêter : que faire selon ce que vous observez</span></caption>
+            <caption id="tableau-decision"><span>Continuer, ajuster ou arrêter&nbsp;: que faire selon ce que vous observez</span></caption>
             <thead>
               <tr><th scope="col">Ce que vous observez</th><th scope="col">Continuer</th><th scope="col">Ajuster</th><th scope="col">Arrêter</th></tr>
             </thead>
@@ -1095,10 +1180,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
             </tbody>
           </table>
         </div>
-        <p class="tableau__note">Sur téléphone, faites défiler le tableau vers la droite. Grille de lecture éditoriale, à adapter à votre tâche. « Partiel » : à discuter en équipe.</p>
+        <p class="tableau__note">Sur téléphone, faites défiler le tableau vers la droite. Grille de lecture éditoriale, à adapter à votre tâche. «&nbsp;Partiel&nbsp;»&nbsp;: à discuter en équipe.</p>
       </div>
 
-      <p>Dans le doute, ajustez une seule chose : la consigne, la tâche ou la personne. Puis relancez deux semaines. Changer tout à la fois empêche de savoir ce qui a joué.</p>
+      <p>Dans le doute, ajustez une seule chose&nbsp;: la consigne, la tâche ou la personne. Puis relancez deux semaines. Changer tout à la fois empêche de savoir ce qui a joué.</p>
 
       <div class="encadre encadre--bon">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-info"/></svg></span>Bon à savoir</p>
@@ -1122,19 +1207,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section class="faq" id="faq" aria-labelledby="faq-titre" data-aeo="people-also-ask">
       <h2 class="bloc-titre" id="faq-titre">Questions fréquentes</h2>
       <details data-faq-q>
-        <summary>Faut-il un budget important pour un premier essai ?</summary>
-        <div class="faq-answer" data-faq-a><p>Non. Un premier essai demande surtout du temps : une à deux heures par semaine pour le porteur, pendant quatre semaines. Beaucoup d'assistants d'IA proposent une offre d'essai ou d'entrée de gamme.</p></div>
+        <summary>Faut-il un budget important pour un premier essai&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Non. Un premier essai demande surtout du temps&nbsp;: une à deux heures par semaine pour le porteur, pendant quatre semaines. Beaucoup d'assistants d'IA proposent une offre d'essai ou d'entrée de gamme.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Peut-on mener l'essai sans compétence technique ?</summary>
-        <div class="faq-answer" data-faq-a><p>Oui. Les assistants actuels se pilotent en langage courant. La compétence utile est la connaissance du métier : savoir ce qu'un bon résultat doit contenir.</p></div>
+        <summary>Peut-on mener l'essai sans compétence technique&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Oui. Les assistants actuels se pilotent en langage courant. La compétence utile est la connaissance du métier&nbsp;: savoir ce qu'un bon résultat doit contenir.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Combien de personnes impliquer au départ ?</summary>
-        <div class="faq-answer" data-faq-a><p>Une ou deux personnes volontaires suffisent. Élargir trop tôt dilue l'attention ; mieux vaut un premier usage solide, qu'on montre ensuite au reste de l'équipe.</p></div>
+        <summary>Combien de personnes impliquer au départ&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Une ou deux personnes volontaires suffisent. Élargir trop tôt dilue l'attention&#8239;; mieux vaut un premier usage solide, qu'on montre ensuite au reste de l'équipe.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Que faire des données clients pendant l'essai ?</summary>
+        <summary>Que faire des données clients pendant l'essai&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Commencez par des tâches sans données sensibles. Avant d'aller plus loin, vérifiez les conditions du fournisseur, le lieu d'hébergement et la possibilité de désactiver l'entraînement sur vos contenus.</p></div>
       </details>
     </section>
@@ -1143,14 +1228,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section class="sources" id="sources" aria-labelledby="sources-titre">
       <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
       <ol>
-        <li><a href="https://www.insee.fr/fr/statistiques?q=technologies+de+l%27information+entreprises">Insee, « Les technologies de l'information et de la communication dans les entreprises », enquête TIC, 2023</a></li>
-        <li><a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Use_of_artificial_intelligence_in_enterprises">Eurostat, « Use of artificial intelligence in enterprises », Statistics Explained, données 2024</a></li>
+        <li><a href="https://www.insee.fr/fr/statistiques?q=technologies+de+l%27information+entreprises">Insee, «&nbsp;Les technologies de l'information et de la communication dans les entreprises&nbsp;», enquête TIC, 2023</a></li>
+        <li><a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Use_of_artificial_intelligence_in_enterprises">Eurostat, «&nbsp;Use of artificial intelligence in enterprises&nbsp;», Statistics Explained, données 2024</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l'intelligence artificielle, article 4, Journal officiel de l'Union européenne, 2024</a></li>
-        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier « Intelligence artificielle », recommandations, 2024</a></li>
+        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
       </ol>
       <h3>Méthode</h3>
-      <p>Les chiffres viennent des seules sources publiques ci-dessus, arrondis et datés. Le déroulé en quatre semaines, la grille de décision et l'exemple de menuiserie sont des repères éditoriaux d'Axion-IA, construits pour illustrer : ce ne sont ni des mesures ni un cas client.</p>
-      <p class="citer"><strong>Citer cet article :</strong> Manon, « Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai », Axion-IA, 20 novembre 2026, https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai</p>
+      <p>Les chiffres viennent des seules sources publiques ci-dessus, arrondis et datés. Le déroulé en quatre semaines, la grille de décision et l'exemple de menuiserie sont des repères éditoriaux d'Axion-IA, construits pour illustrer&nbsp;: ce ne sont ni des mesures ni un cas client.</p>
+      <p class="citer"><strong>Citer cet article&nbsp;:</strong> Manon, «&nbsp;Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai&nbsp;», Axion-IA, 20 novembre 2026, https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai</p>
     </section>
 
     <!-- 8. AUTEUR + MENTION IA -->
@@ -1225,7 +1310,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <h2 class="bloc-titre" id="lies-titre">À lire aussi</h2>
     <ul class="lies__liste">
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Guide</span><h3 class="lie__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l'IA, en 6 étapes</a></h3><span class="lie__meta">8 min de lecture</span></div></article></li>
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier : lequel choisir ?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier&nbsp;: lequel choisir&#8239;?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Sélection</span><h3 class="lie__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu'une PME peut confier à l'IA</a></h3><span class="lie__meta">7 min de lecture</span></div></article></li>
     </ul>
   </section>
@@ -1244,7 +1329,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   <section class="cta-fin sur-sombre" aria-labelledby="cta-fin-titre">
     <p class="pastille pastille--pleine cta-fin__surtitre">Passer à l'action</p>
     <h2 class="cta-fin__titre" id="cta-fin-titre">Votre analyse, <em>sur vos chiffres</em></h2>
-    <p class="cta-fin__phrase">L'article donne le cadre ; vos priorités se relèvent sur place, service par service.</p>
+    <p class="cta-fin__phrase">L'article donne le cadre&#8239;; vos priorités se relèvent sur place, service par service.</p>
     <ul class="cta-fin__actions">
       <li><a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=analyse-fin" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg><span class="btn__texte">Diagnostic IA, 45 min<span class="btn__sous">Gratuit · 45 minutes · Sans engagement</span></span></a></li>
       <li><a class="btn btn--terracotta" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg><span class="btn__texte">Découvrir la Journée IA<span class="btn__sous">Dans vos locaux, partout en France</span></span></a></li>
@@ -1252,7 +1337,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </ul>
     <ol class="deroule" aria-label="Comment se passe le Diagnostic IA">
       <li><strong>Vous choisissez un créneau</strong><span>Visioconférence Google Meet ou téléphone, confirmation immédiate.</span></li>
-      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching : on qualifie votre besoin.</span></li>
+      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching&nbsp;: on qualifie votre besoin.</span></li>
       <li><strong>Vous repartez avec des pistes concrètes</strong><span>Et le bon module si vous souhaitez aller plus loin. Sans engagement.</span></li>
     </ol>
     <ul class="rassurance">

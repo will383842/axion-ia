@@ -101,7 +101,12 @@
   --largeur-lecture: 41.5em; /* = 68ch Manrope */
   --largeur-page: 80rem;
   --hauteur-barre-mobile: 4.75rem;
-  --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
+  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
+     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
+  --hauteur-carte: 33.5rem;
+  /* Sommaire collant sous la carte : place restante de l'écran */
+  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
+  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
   --focus-clair: var(--color-primary);
   /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
      terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
@@ -216,6 +221,16 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
 .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
 @media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
+/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
+.site-entete .site-entete__cta { display: none; }
+@media (min-width: 1024px) {
+  .site-entete .conteneur { justify-content: flex-start; }
+  .site-nav { margin-left: auto; }
+  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
+  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+}
+/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
+@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
 
 .bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
 .fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
@@ -237,10 +252,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   clip-path: inset(0 -100vmax);
   padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
 }
-/* Aplat terracotta : disque (coupé par le bas du bandeau) + rayures mocha-soft */
-.heros::before { content: ""; position: absolute; z-index: -1; border-radius: 50%;
-  width: clamp(14rem, 34vw, 30rem); aspect-ratio: 1; background: var(--color-terracotta);
-  right: calc(-1 * var(--gouttiere)); bottom: clamp(-12rem, -9vw, -5rem); }
+/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
+   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
 .heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
   width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
   background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
@@ -258,6 +271,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
   letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
+/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
+   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
+@media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
 .heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
   border-left: 4px solid var(--color-terracotta-on-mocha);
@@ -272,6 +289,21 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
   background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
 .meta .meta__lecture .icone { color: var(--color-mocha); }
+/* Pied du héros : partage compact à gauche, signe du modèle à droite */
+.heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
+.heros__pied .partage-icones { margin: 0; flex: none; }
+/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
+   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
+.heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
+  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
+  font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
+.signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-mocha-fg); white-space: normal; text-align: left; }
+@media (min-width: 640px) {
+  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
+    background: var(--color-mocha-soft); font-size: 2.75rem; }
+  .signe__legende { display: block; width: 8.5rem; }
+}
 /* Partage compact (icônes) sous la méta */
 .partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
@@ -300,18 +332,25 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
   .article { grid-column: 1 / -1; grid-row: 1 / -1; display: grid;
     grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .heros { grid-column: 1 / -1; grid-row: 1; }
+  /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
+     Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
+  .heros { grid-column: 1; grid-row: 1; min-width: 0; }
   .article__ouverture { grid-column: 1; grid-row: 2; min-width: 0; }
   .article__corps { grid-column: 1; grid-row: 3; min-width: 0; }
-  /* Sommaire : collé en haut (aucun ancêtre en overflow hidden/auto) */
+  /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
+     puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
+     de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
+     margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
+     (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
+  .action { grid-column: 2; grid-row: 1 / -1; align-self: start; z-index: 2;
+    position: sticky; top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem); }
+  .action .carte-action { min-height: var(--hauteur-carte); }
+  /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
   .sommaire { grid-column: 2; grid-row: 2 / 4; align-self: start;
-    position: sticky; top: calc(var(--header-h) + 16px); /* marges : voir section 10 */
-    max-height: max(11rem, calc(100dvh - var(--header-h) - var(--hauteur-carte) - 3rem)); overflow-y: auto; }
-  /* Carte d'action : posée en bas de la colonne, collée en bas d'écran.
-     Elle apparaît d'elle-même à la sortie de l'image principale (ligne 3). */
-  .action { grid-column: 2; grid-row: 3; align-self: stretch; display: flex;
-    flex-direction: column; justify-content: flex-end; padding-top: 2rem; }
-  .action .carte-action { position: sticky; bottom: 16px; }
+    position: sticky; top: var(--sommaire-haut);
+    max-height: var(--sommaire-max); overflow-y: auto; overscroll-behavior: contain;
+    scroll-timeline: --sommaire block; }
 }
 
 /* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
@@ -332,9 +371,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   font: 600 0.8125rem/1 var(--font-mono); color: var(--color-terracotta-deep); }
 .sommaire ol a:hover { background: var(--color-sand); color: var(--color-ink); }
 @media (min-width: 1024px) {
-  /* marges de la colonne : haut aligné, bas = place réservée à la carte en fin d'article */
-  .sommaire { margin: 1.5rem 0 calc(var(--hauteur-carte) + 2rem); }
-  .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
+  .sommaire { margin: 1rem 0 0; }
+  /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
+  .sommaire { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .sommaire details { border: 0; border-radius: var(--radius-xl); }
   /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
      sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
      reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
@@ -344,6 +385,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     .sommaire summary::after { display: none; }
   }
   .sommaire ol a { font-size: 0.875rem; }
+  /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
+     total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
+     (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
+  .sommaire ol::after { content: "↓ suite du sommaire · " counter(s, decimal-leading-zero) " entrées" / "";
+    position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
+    background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
+    font: 600 0.75rem/1.2 var(--font-mono); letter-spacing: 0.02em; color: var(--color-terracotta-deep); }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after { animation: sommaire-suite linear both; animation-timeline: --sommaire; }
+    @keyframes sommaire-suite { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  }
+  .sommaire ol { padding-bottom: 0.75rem; }
 }
 
 /* 11 — BOUTONS ------------------------------------------------------------- */
@@ -393,7 +447,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 @media (min-width: 1024px) {
   .carte-action.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
   .carte-action { position: relative; inset: auto; z-index: auto; border: 0; border-radius: var(--radius-xl);
-    padding: 1.5rem 1.25rem 1.25rem; background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
+    padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
+    /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
+       (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
+    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
   .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
   .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
@@ -420,7 +477,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
 /* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
 @media (min-width: 1024px) and (max-height: 1000px) {
-  :root { --hauteur-carte: 25rem; }
+  :root { --hauteur-carte: 24rem; }
   .carte-action { padding-top: 1.15rem; }
   .carte-action__titre { font-size: 1.1875rem; }
   .carte-action__sous-titre { margin-bottom: 0.75rem; }
@@ -428,6 +485,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .act { min-height: 48px; padding-block: 0.5rem; }
   .act.btn--bleu { min-height: 56px; }
   .carte-action__rassurance { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin-top: 0.75rem; padding-top: 0.65rem; }
+}
+/* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
+   l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
+@media (min-width: 1024px) and (max-height: 860px) {
+  :root { --hauteur-carte: 18.75rem; }
+  .carte-action__rassurance { display: none; }
 }
 
 /* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
@@ -741,6 +804,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .lie__titre a:focus-visible { outline: none; }
 .lie:has(a:focus-visible) { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
 .lie__meta { font-size: 0.8125rem; color: var(--color-fg-muted); }
+/* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
+@media (max-width: 639px) {
+  .lie { flex-direction: row; }
+  .lie__visuel { flex: 0 0 6rem; aspect-ratio: auto; min-height: 7.5rem; }
+  .lie__visuel::after { width: 80%; right: -25%; top: -15%; }
+  .lie__corps { align-content: center; padding: 0.85rem 1rem; }
+  .lie__titre { font-size: 1.0625rem; }
+}
 
 /* Guide gratuit (capture e-mail existante, une seule par page) */
 .guide-gratuit { display: grid; gap: 1rem; margin: 3rem 0 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
@@ -748,7 +819,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .guide-gratuit__titre { margin: 0 0 0.5rem; font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif); }
 .guide-gratuit p { margin: 0; }
 .guide-gratuit form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
-.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 15rem; font-size: 0.875rem; font-weight: 600; }
+/* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
+.guide-gratuit > *, .guide-gratuit label { min-width: 0; }
+.guide-gratuit input { width: 100%; min-width: 0; }
+.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 min(15rem, 100%); font-size: 0.875rem; font-weight: 600; }
 .guide-gratuit input { min-height: 48px; padding: 0.6rem 0.9rem; border: 1.5px solid var(--color-border-field);
   border-radius: var(--radius-md); background: var(--color-paper); color: var(--color-fg); font: 400 1rem/1.3 var(--font-sans); }
 @media (min-width: 760px) { .guide-gratuit { grid-template-columns: 1fr 1fr; align-items: center; } }
@@ -761,9 +835,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .progression { display: none !important; animation: none !important; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .btn:hover, .lie:hover { transform: none; }
+  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
+  .sommaire ol::after { animation: sommaire-suite linear both !important; animation-timeline: --sommaire !important; }
 }
 @media (forced-colors: active) {
-  .progression, .heros::before, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
+  .progression, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
   .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
   .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
     border: 2px solid CanvasText; }
@@ -918,6 +994,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .duel__lettre, .branche, .pf__titre .icone, .arbre__q::before { border: 1px solid CanvasText; }
   .arbre > li + li::before { background: CanvasText; }
 }
+/* Signe du modèle dans le héros (décor aria-hidden) */
+.signe__ab { display: flex; align-items: center; gap: 0.4rem; }
+.signe__a, .signe__b { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; font-size: 1.375rem; }
+.signe__a { background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
+.signe__b { border: 2px solid var(--color-mocha-fg); color: var(--color-mocha-fg); }
+.signe__ou { font: italic 500 1.125rem/1 var(--font-serif); color: var(--color-mocha-fg); }
+@media (min-width: 640px) { .signe__a, .signe__b { width: 3.5rem; height: 3.5rem; font-size: 1.875rem; } .signe__ou { font-size: 1.375rem; } }
 </style>
 </head>
 <body>
@@ -971,6 +1054,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <a href="/fr/formations">Formations</a>
       <a href="/fr/blog">Blog</a>
     </nav>
+    <a class="btn btn--bleu site-entete__cta" href="/fr/appel?rdv=diagnostic&amp;depuis=comparatif-entete" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
   </div>
 </header>
 
@@ -980,7 +1064,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <ol>
         <li><a href="/fr">Accueil</a></li>
         <li><a href="/fr/blog">Blog</a></li>
-        <li aria-current="page">Assistant d'IA généraliste ou outil métier : lequel choisir pour votre PME ?</li>
+        <li aria-current="page">Assistant d'IA généraliste ou outil métier&nbsp;: lequel choisir pour votre PME&#8239;?</li>
       </ol>
     </nav>
   </div>
@@ -997,26 +1081,29 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <li class="pastille pastille--pleine">Comparatif</li>
       <li class="pastille pastille--contour">Outils d'IA</li>
     </ul>
-    <h1>Assistant d'IA généraliste ou outil métier : <em>lequel choisir pour votre PME ?</em></h1>
-    <p class="chapo">Pour les dirigeants qui hésitent entre un assistant à tout faire et un logiciel taillé pour une tâche. Pas de gagnant ici : sept critères, deux profils et trois questions pour trancher chez vous.</p>
+    <h1>Assistant d'IA généraliste ou outil métier&nbsp;: <em>lequel choisir pour votre PME&#8239;?</em></h1>
+    <p class="chapo">Pour les dirigeants qui hésitent entre un assistant à tout faire et un logiciel taillé pour une tâche. Pas de gagnant ici&nbsp;: sept critères, deux profils et trois questions pour trancher chez vous.</p>
     <ul class="meta">
       <li><span class="avatar" aria-hidden="true">M</span><span>Par <a href="/fr/equipe/manon" rel="author">Manon</a></span></li>
       <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-publie"/></svg><time datetime="2026-11-12">Publié le 12 novembre 2026</time></li>
       <li data-aeo="freshness"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg><time datetime="2026-11-24">Mis à jour le 24 novembre 2026</time></li>
       <li class="meta__lecture"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>9 min de lecture</li>
     </ul>
-    <ul class="partage-icones" aria-label="Partager l'article">
-      <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fassistant-ia-generaliste-ou-outil-metier" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
-      <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fassistant-ia-generaliste-ou-outil-metier" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
-      <li><a href="mailto:?subject=Assistant%20d%27IA%20g%C3%A9n%C3%A9raliste%20ou%20outil%20m%C3%A9tier&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fassistant-ia-generaliste-ou-outil-metier" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
-    </ul>
+    <div class="heros__pied">
+      <ul class="partage-icones" aria-label="Partager l'article">
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fassistant-ia-generaliste-ou-outil-metier" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fassistant-ia-generaliste-ou-outil-metier" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:?subject=Assistant%20d%27IA%20g%C3%A9n%C3%A9raliste%20ou%20outil%20m%C3%A9tier&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fassistant-ia-generaliste-ou-outil-metier" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
+      </ul>
+      <div class="heros__signe signe--comparatif" aria-hidden="true"><span class="signe__ab"><span class="signe__a">A</span><span class="signe__ou">ou</span><span class="signe__b">B</span></span><span class="signe__legende">généraliste ou outil métier</span></div>
+    </div>
   </header>
 
   <!-- 2. IMAGE + RÉPONSE DIRECTE + FACE-À-FACE -->
   <div class="article__ouverture">
     <figure class="visuel">
       <div class="visuel__cadre">
-        <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Deux écrans côte à côte sur un bureau : un assistant de conversation à gauche, un logiciel de devis à droite (illustration de maquette à la place de la photo)">
+        <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Deux écrans côte à côte sur un bureau&nbsp;: un assistant de conversation à gauche, un logiciel de devis à droite (illustration de maquette à la place de la photo)">
           <rect class="v-carte" x="70" y="95" width="290" height="310" rx="22"/>
           <rect class="v-a" x="70" y="95" width="290" height="58" rx="22"/>
           <rect class="v-a" x="70" y="125" width="290" height="28"/>
@@ -1042,7 +1129,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </svg>
         <span class="visuel__etiquette" aria-hidden="true">7 critères · aucun gagnant</span>
       </div>
-      <figcaption>Photo : Hugo Bernard / Unsplash</figcaption>
+      <figcaption>Photo&nbsp;: [nom du photographe] / Unsplash</figcaption>
     </figure>
 
     <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
@@ -1055,20 +1142,20 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <p class="duel__nom"><span class="duel__lettre" aria-hidden="true">A</span>Assistant généraliste</p>
         <p class="duel__si">Plutôt si…</p>
         <ul>
-          <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>vos besoins changent d'un jour à l'autre ;</li>
+          <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>vos besoins changent d'un jour à l'autre&#8239;;</li>
           <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>vous voulez essayer cette semaine.</li>
         </ul>
-        <p class="duel__exemples">Exemples : ChatGPT, Microsoft Copilot, Gemini, Le Chat de Mistral AI, Claude.</p>
+        <p class="duel__exemples">Exemples&nbsp;: ChatGPT, Microsoft Copilot, Gemini, Le Chat de Mistral AI, Claude.</p>
       </div>
       <p class="duel__ou" aria-hidden="true">ou</p>
       <div class="duel__cote duel__cote--b">
         <p class="duel__nom"><span class="duel__lettre" aria-hidden="true">B</span>Outil métier</p>
         <p class="duel__si">Plutôt si…</p>
         <ul>
-          <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>une même tâche revient chaque jour ;</li>
+          <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>une même tâche revient chaque jour&#8239;;</li>
           <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>elle vit dans un logiciel précis.</li>
         </ul>
-        <p class="duel__exemples">Exemples : le module d'IA de votre logiciel de devis, de comptabilité ou de relation client.</p>
+        <p class="duel__exemples">Exemples&nbsp;: le module d'IA de votre logiciel de devis, de comptabilité ou de relation client.</p>
       </div>
     </div>
   </div>
@@ -1078,13 +1165,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <details>
       <summary>Sommaire · 8 questions</summary>
       <ol>
-        <li><a href="#quelle-difference-concrete-entre-les-deux">Quelle différence concrète ?</a></li>
+        <li><a href="#quelle-difference-concrete-entre-les-deux">Quelle différence concrète&#8239;?</a></li>
         <li><a href="#que-vaut-l-assistant-generaliste-au-quotidien">Le généraliste au quotidien</a></li>
         <li><a href="#que-vaut-un-outil-metier-au-quotidien">L'outil métier au quotidien</a></li>
         <li><a href="#critere-par-critere-lequel-fait-quoi">Le tableau, critère par critère</a></li>
-        <li><a href="#que-deviennent-vos-donnees-dans-chaque-cas">Que deviennent vos données ?</a></li>
-        <li><a href="#lequel-demande-le-plus-de-formation">Lequel demande le plus de formation ?</a></li>
-        <li><a href="#pour-qui-concretement">Pour qui, concrètement ?</a></li>
+        <li><a href="#que-deviennent-vos-donnees-dans-chaque-cas">Que deviennent vos données&#8239;?</a></li>
+        <li><a href="#lequel-demande-le-plus-de-formation">Lequel demande le plus de formation&#8239;?</a></li>
+        <li><a href="#pour-qui-concretement">Pour qui, concrètement&#8239;?</a></li>
         <li><a href="#comment-choisir-en-trois-questions">Choisir en trois questions</a></li>
       </ol>
     </details>
@@ -1094,27 +1181,27 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   <div class="article__corps prose">
 
     <section aria-labelledby="quelle-difference-concrete-entre-les-deux">
-      <div class="num-section"><span aria-hidden="true">01 / 08</span><a class="ancre" href="#quelle-difference-concrete-entre-les-deux" aria-label="Lien vers la section « Quelle différence concrète entre les deux ? »">#</a></div>
-      <h2 id="quelle-difference-concrete-entre-les-deux" data-speakable="true">Quelle différence concrète entre les deux ?</h2>
-      <p class="reponse-courte" data-speakable="true">Le généraliste sait <strong>un peu tout faire</strong> à partir de ce que vous lui écrivez ; l'outil métier fait une seule chose, à l'intérieur de vos logiciels.</p>
+      <div class="num-section"><span aria-hidden="true">01 / 08</span><a class="ancre" href="#quelle-difference-concrete-entre-les-deux" aria-label="Lien vers la section «&nbsp;Quelle différence concrète entre les deux&#8239;?&nbsp;»">#</a></div>
+      <h2 id="quelle-difference-concrete-entre-les-deux" data-speakable="true">Quelle différence concrète entre les deux&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Le généraliste sait <strong>un peu tout faire</strong> à partir de ce que vous lui écrivez&#8239;; l'outil métier fait une seule chose, à l'intérieur de vos logiciels.</p>
       <dl class="pf pf--defs">
         <div class="pf__col"><dt class="pf__qui"><span class="duel__lettre" aria-hidden="true">A</span><strong>Assistant d'IA généraliste</strong></dt><dd>Un service de conversation qui rédige, résume, traduit ou cherche à partir de vos consignes. Il ne connaît de votre entreprise que ce que vous lui donnez.</dd></div>
-        <div class="pf__col"><dt class="pf__qui"><span class="duel__lettre duel__lettre--b" aria-hidden="true">B</span><strong>Outil d'IA métier</strong></dt><dd>Une fonction d'IA intégrée à un logiciel de votre secteur ou de votre service : devis, comptabilité, planning, relation client. Elle travaille sur vos données, dans un cadre fixé.</dd></div>
+        <div class="pf__col"><dt class="pf__qui"><span class="duel__lettre duel__lettre--b" aria-hidden="true">B</span><strong>Outil d'IA métier</strong></dt><dd>Une fonction d'IA intégrée à un logiciel de votre secteur ou de votre service&nbsp;: devis, comptabilité, planning, relation client. Elle travaille sur vos données, dans un cadre fixé.</dd></div>
       </dl>
-      <p>La différence n'est donc pas la « puissance » de l'IA. Les deux s'appuient souvent sur des modèles semblables. Elle tient à ce que l'outil sait de votre travail, et à l'endroit où il s'en sert.</p>
+      <p>La différence n'est donc pas la «&nbsp;puissance&nbsp;» de l'IA. Les deux s'appuient souvent sur des modèles semblables. Elle tient à ce que l'outil sait de votre travail, et à l'endroit où il s'en sert.</p>
 
       <div class="chiffre-cle">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-graphe"/></svg></span>Chiffre clé</p>
-        <p class="chiffre-cle__phrase"><strong class="chiffre">≈ 13 %</strong> des entreprises de l'Union européenne de 10 personnes ou plus utilisaient au moins une technologie d'IA en 2024.<span class="source">Source : Eurostat, « Use of artificial intelligence in enterprises », données 2024. Valeur arrondie, à revérifier à la source avant publication.</span></p>
+        <p class="chiffre-cle__phrase"><strong class="chiffre">≈ 13 %</strong> des entreprises de l'Union européenne de 10 personnes ou plus utilisaient au moins une technologie d'IA en 2024.<span class="source">Source&nbsp;: Eurostat, «&nbsp;Use of artificial intelligence in enterprises&nbsp;», données 2024. Valeur arrondie, à revérifier à la source avant publication.</span></p>
       </div>
-      <p>Autrement dit, la plupart des PME n'ont pas encore choisi. C'est une bonne nouvelle : vous pouvez partir de vos tâches plutôt que d'un outil déjà installé.</p>
+      <p>Autrement dit, la plupart des PME n'ont pas encore choisi. C'est une bonne nouvelle&nbsp;: vous pouvez partir de vos tâches plutôt que d'un outil déjà installé.</p>
     </section>
 
     <section aria-labelledby="que-vaut-l-assistant-generaliste-au-quotidien">
-      <div class="num-section"><span aria-hidden="true">02 / 08</span><a class="ancre" href="#que-vaut-l-assistant-generaliste-au-quotidien" aria-label="Lien vers la section « Que vaut l'assistant généraliste au quotidien ? »">#</a></div>
-      <h2 id="que-vaut-l-assistant-generaliste-au-quotidien" data-speakable="true">Que vaut l'assistant généraliste au quotidien ?</h2>
+      <div class="num-section"><span aria-hidden="true">02 / 08</span><a class="ancre" href="#que-vaut-l-assistant-generaliste-au-quotidien" aria-label="Lien vers la section «&nbsp;Que vaut l'assistant généraliste au quotidien&#8239;?&nbsp;»">#</a></div>
+      <h2 id="que-vaut-l-assistant-generaliste-au-quotidien" data-speakable="true">Que vaut l'assistant généraliste au quotidien&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">C'est un <strong>couteau suisse rapide à prendre en main</strong>, dont la qualité dépend presque entièrement de vos consignes.</p>
-      <p>On ouvre un compte, on pose une question, on obtient une réponse. Pour une équipe qui écrit beaucoup, le gain se voit vite : premières versions de courriers, synthèses de documents, reformulations. Mais chaque usage repart de zéro si personne ne range les bonnes consignes.</p>
+      <p>On ouvre un compte, on pose une question, on obtient une réponse. Pour une équipe qui écrit beaucoup, le gain se voit vite&nbsp;: premières versions de courriers, synthèses de documents, reformulations. Mais chaque usage repart de zéro si personne ne range les bonnes consignes.</p>
       <div class="pf">
         <div class="pf__col pf__col--forts">
           <p class="pf__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Points forts</p>
@@ -1127,7 +1214,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <div class="pf__col pf__col--limites">
           <p class="pf__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Limites</p>
           <ul>
-            <li>Ne voit pas vos logiciels : beaucoup de copier-coller.</li>
+            <li>Ne voit pas vos logiciels&nbsp;: beaucoup de copier-coller.</li>
             <li>Résultats inégaux d'une personne à l'autre.</li>
             <li>Règles de données à fixer avant tout usage client.</li>
           </ul>
@@ -1136,10 +1223,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </section>
 
     <section aria-labelledby="que-vaut-un-outil-metier-au-quotidien">
-      <div class="num-section"><span aria-hidden="true">03 / 08</span><a class="ancre" href="#que-vaut-un-outil-metier-au-quotidien" aria-label="Lien vers la section « Que vaut un outil métier au quotidien ? »">#</a></div>
-      <h2 id="que-vaut-un-outil-metier-au-quotidien" data-speakable="true">Que vaut un outil métier au quotidien ?</h2>
-      <p class="reponse-courte" data-speakable="true">Il fait <strong>une tâche, très régulièrement</strong>, là où elle se passe déjà : il demande plus de préparation, mais moins de vigilance ensuite.</p>
-      <p>Le module d'IA d'un logiciel de devis propose les lignes à partir d'une note de visite. Celui d'un logiciel comptable pré-classe les pièces. Personne n'a à rédiger de consigne : le cadre est fixé par l'outil, et le résultat arrive au bon endroit.</p>
+      <div class="num-section"><span aria-hidden="true">03 / 08</span><a class="ancre" href="#que-vaut-un-outil-metier-au-quotidien" aria-label="Lien vers la section «&nbsp;Que vaut un outil métier au quotidien&#8239;?&nbsp;»">#</a></div>
+      <h2 id="que-vaut-un-outil-metier-au-quotidien" data-speakable="true">Que vaut un outil métier au quotidien&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Il fait <strong>une tâche, très régulièrement</strong>, là où elle se passe déjà&nbsp;: il demande plus de préparation, mais moins de vigilance ensuite.</p>
+      <p>Le module d'IA d'un logiciel de devis propose les lignes à partir d'une note de visite. Celui d'un logiciel comptable pré-classe les pièces. Personne n'a à rédiger de consigne&nbsp;: le cadre est fixé par l'outil, et le résultat arrive au bon endroit.</p>
       <div class="pf">
         <div class="pf__col pf__col--forts">
           <p class="pf__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Points forts</p>
@@ -1152,19 +1239,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <div class="pf__col pf__col--limites">
           <p class="pf__titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Limites</p>
           <ul>
-            <li>Une seule tâche : il ne remplace pas le reste.</li>
+            <li>Une seule tâche&nbsp;: il ne remplace pas le reste.</li>
             <li>Paramétrage et données propres nécessaires.</li>
             <li>Plus délicat à quitter une fois installé.</li>
           </ul>
         </div>
       </div>
-      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite :</strong> les sept critères côte à côte, pour voir où chacun l'emporte vraiment.</span></p>
+      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite&nbsp;:</strong> les sept critères côte à côte, pour voir où chacun l'emporte vraiment.</span></p>
     </section>
 
     <section aria-labelledby="critere-par-critere-lequel-fait-quoi">
-      <div class="num-section"><span aria-hidden="true">04 / 08</span><a class="ancre" href="#critere-par-critere-lequel-fait-quoi" aria-label="Lien vers la section « Critère par critère : lequel fait quoi ? »">#</a></div>
-      <h2 id="critere-par-critere-lequel-fait-quoi" data-speakable="true">Critère par critère : lequel fait quoi ?</h2>
-      <p class="reponse-courte" data-speakable="true">Aucun ne coche toutes les cases : <strong>le généraliste gagne en souplesse</strong>, l'outil métier en régularité et en intégration.</p>
+      <div class="num-section"><span aria-hidden="true">04 / 08</span><a class="ancre" href="#critere-par-critere-lequel-fait-quoi" aria-label="Lien vers la section «&nbsp;Critère par critère&nbsp;: lequel fait quoi&#8239;?&nbsp;»">#</a></div>
+      <h2 id="critere-par-critere-lequel-fait-quoi" data-speakable="true">Critère par critère&nbsp;: lequel fait quoi&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Aucun ne coche toutes les cases&nbsp;: <strong>le généraliste gagne en souplesse</strong>, l'outil métier en régularité et en intégration.</p>
       <ul class="legende" aria-label="Légende du tableau">
         <li><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span></li>
         <li><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span></li>
@@ -1173,36 +1260,36 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <div class="tableau comparo">
         <div class="tableau__defilant" role="region" aria-labelledby="tableau-comparatif" tabindex="0">
           <table>
-            <caption id="tableau-comparatif"><span>Assistant généraliste ou outil métier : sept critères pour une PME</span></caption>
+            <caption id="tableau-comparatif"><span>Assistant généraliste ou outil métier&nbsp;: sept critères pour une PME</span></caption>
             <thead>
               <tr><th scope="col">Critère</th><th scope="col" class="col-a"><span class="duel__lettre" aria-hidden="true">A</span>Assistant généraliste</th><th scope="col" class="col-b"><span class="duel__lettre duel__lettre--b" aria-hidden="true">B</span>Outil métier</th></tr>
             </thead>
             <tbody>
-              <tr><th scope="row">Prêt à servir dès le premier jour ?</th>
+              <tr><th scope="row">Prêt à servir dès le premier jour&#8239;?</th>
                 <td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><small>Un compte, et c'est parti.</small></td>
                 <td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span><small>Paramétrage et essais d'abord.</small></td></tr>
-              <tr><th scope="row">Couvre-t-il des tâches variées ?</th>
+              <tr><th scope="row">Couvre-t-il des tâches variées&#8239;?</th>
                 <td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><small>Écrire, résumer, traduire, chercher.</small></td>
                 <td><span class="verdict verdict--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-croix"/></svg>Non</span><small>Une tâche, mais bien cadrée.</small></td></tr>
-              <tr><th scope="row">Travaille-t-il dans vos logiciels ?</th>
+              <tr><th scope="row">Travaille-t-il dans vos logiciels&#8239;?</th>
                 <td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span><small>Copier-coller, quelques connecteurs.</small></td>
                 <td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><small>C'est sa raison d'être.</small></td></tr>
-              <tr><th scope="row">Connaît-il le vocabulaire de votre métier ?</th>
+              <tr><th scope="row">Connaît-il le vocabulaire de votre métier&#8239;?</th>
                 <td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span><small>Si vous le lui expliquez.</small></td>
                 <td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><small>Conçu pour votre secteur.</small></td></tr>
-              <tr><th scope="row">Les résultats sont-ils réguliers ?</th>
+              <tr><th scope="row">Les résultats sont-ils réguliers&#8239;?</th>
                 <td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span><small>Selon la consigne de chacun.</small></td>
                 <td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><small>Le cadre est fixé par l'outil.</small></td></tr>
-              <tr><th scope="row">Les données restent-elles maîtrisées ?</th>
+              <tr><th scope="row">Les données restent-elles maîtrisées&#8239;?</th>
                 <td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span><small>Selon l'offre et les réglages.</small></td>
                 <td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span><small>Selon l'éditeur et le contrat.</small></td></tr>
-              <tr><th scope="row">Peut-on arrêter sans tout reconstruire ?</th>
+              <tr><th scope="row">Peut-on arrêter sans tout reconstruire&#8239;?</th>
                 <td><span class="verdict verdict--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><small>Gardez vos consignes, c'est tout.</small></td>
                 <td><span class="verdict verdict--partiel"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-moins"/></svg>Partiel</span><small>Données et réglages à récupérer.</small></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="tableau__note">Grille de lecture éditoriale, établie sans test de produit particulier : à vérifier sur l'outil que vous envisagez. Sur téléphone, faites défiler le tableau vers la droite.</p>
+        <p class="tableau__note">Grille de lecture éditoriale, établie sans test de produit particulier&nbsp;: à vérifier sur l'outil que vous envisagez. Sur téléphone, faites défiler le tableau vers la droite.</p>
       </div>
     </section>
 
@@ -1217,88 +1304,88 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </aside>
 
     <section aria-labelledby="que-deviennent-vos-donnees-dans-chaque-cas">
-      <div class="num-section"><span aria-hidden="true">05 / 08</span><a class="ancre" href="#que-deviennent-vos-donnees-dans-chaque-cas" aria-label="Lien vers la section « Que deviennent vos données dans chaque cas ? »">#</a></div>
-      <h2 id="que-deviennent-vos-donnees-dans-chaque-cas" data-speakable="true">Que deviennent vos données dans chaque cas ?</h2>
-      <p class="reponse-courte" data-speakable="true">Cela dépend <strong>de l'offre souscrite, pas du type d'outil</strong> : lisez les conditions, le lieu d'hébergement et les réglages d'entraînement.</p>
+      <div class="num-section"><span aria-hidden="true">05 / 08</span><a class="ancre" href="#que-deviennent-vos-donnees-dans-chaque-cas" aria-label="Lien vers la section «&nbsp;Que deviennent vos données dans chaque cas&#8239;?&nbsp;»">#</a></div>
+      <h2 id="que-deviennent-vos-donnees-dans-chaque-cas" data-speakable="true">Que deviennent vos données dans chaque cas&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Cela dépend <strong>de l'offre souscrite, pas du type d'outil</strong>&nbsp;: lisez les conditions, le lieu d'hébergement et les réglages d'entraînement.</p>
       <p>Avec un assistant généraliste, la question se pose à chaque copier-coller. Les offres grand public et les offres pour entreprises n'ont pas toujours les mêmes règles de conservation. Certaines permettent de désactiver l'usage de vos contenus pour améliorer le modèle.</p>
-      <p>Un outil métier, lui, traite vos données en continu. Il faut donc lire le contrat de l'éditeur : qui héberge, où, et ce que devient l'IA intégrée quand elle fait appel à un service tiers.</p>
+      <p>Un outil métier, lui, traite vos données en continu. Il faut donc lire le contrat de l'éditeur&nbsp;: qui héberge, où, et ce que devient l'IA intégrée quand elle fait appel à un service tiers.</p>
       <div class="encadre encadre--attention">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg></span>Attention · les trois questions à poser au fournisseur</p>
         <ul>
-          <li><strong>Où</strong> sont hébergées les données, et dans quel pays ?</li>
-          <li><strong>Combien de temps</strong> sont-elles conservées ?</li>
-          <li><strong>Servent-elles</strong> à entraîner un modèle, et peut-on s'y opposer ?</li>
+          <li><strong>Où</strong> sont hébergées les données, et dans quel pays&#8239;?</li>
+          <li><strong>Combien de temps</strong> sont-elles conservées&#8239;?</li>
+          <li><strong>Servent-elles</strong> à entraîner un modèle, et peut-on s'y opposer&#8239;?</li>
         </ul>
       </div>
       <p>Le RGPD s'applique dans les deux cas. Pour des données clients ou salariés, la CNIL recommande de limiter ce qui est transmis et d'informer les personnes.</p>
     </section>
 
     <section aria-labelledby="lequel-demande-le-plus-de-formation">
-      <div class="num-section"><span aria-hidden="true">06 / 08</span><a class="ancre" href="#lequel-demande-le-plus-de-formation" aria-label="Lien vers la section « Lequel demande le plus de formation ? »">#</a></div>
-      <h2 id="lequel-demande-le-plus-de-formation" data-speakable="true">Lequel demande le plus de formation ?</h2>
-      <p class="reponse-courte" data-speakable="true">Le généraliste demande <strong>d'apprendre à formuler</strong> ; l'outil métier demande d'apprendre une procédure. Les deux demandent du temps.</p>
-      <p>Avec un généraliste, la compétence clé est la consigne : dire ce qu'on veut, dans quel format, avec quelles limites. Sans formation, chacun bricole, et l'équipe conclut trop vite que « ça ne marche pas ».</p>
-      <p>Avec un outil métier, la prise en main ressemble à celle de n'importe quel logiciel. Le vrai sujet est ailleurs : savoir quand faire confiance à la proposition, et quand la corriger.</p>
+      <div class="num-section"><span aria-hidden="true">06 / 08</span><a class="ancre" href="#lequel-demande-le-plus-de-formation" aria-label="Lien vers la section «&nbsp;Lequel demande le plus de formation&#8239;?&nbsp;»">#</a></div>
+      <h2 id="lequel-demande-le-plus-de-formation" data-speakable="true">Lequel demande le plus de formation&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Le généraliste demande <strong>d'apprendre à formuler</strong>&#8239;; l'outil métier demande d'apprendre une procédure. Les deux demandent du temps.</p>
+      <p>Avec un généraliste, la compétence clé est la consigne&nbsp;: dire ce qu'on veut, dans quel format, avec quelles limites. Sans formation, chacun bricole, et l'équipe conclut trop vite que «&nbsp;ça ne marche pas&nbsp;».</p>
+      <p>Avec un outil métier, la prise en main ressemble à celle de n'importe quel logiciel. Le vrai sujet est ailleurs&nbsp;: savoir quand faire confiance à la proposition, et quand la corriger.</p>
       <div class="encadre encadre--saviez">
-        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ampoule"/></svg></span>Le saviez-vous ?</p>
+        <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-ampoule"/></svg></span>Le saviez-vous&#8239;?</p>
         <p>Depuis le 2 février 2025, l'article 4 du règlement européen sur l'IA demande aux entreprises qui utilisent des systèmes d'IA de veiller à un niveau suffisant de maîtrise de l'IA chez leurs équipes, quel que soit l'outil choisi.</p>
       </div>
     </section>
 
     <section aria-labelledby="pour-qui-concretement">
-      <div class="num-section"><span aria-hidden="true">07 / 08</span><a class="ancre" href="#pour-qui-concretement" aria-label="Lien vers la section « Pour qui, concrètement ? »">#</a></div>
-      <h2 id="pour-qui-concretement" data-speakable="true">Pour qui, concrètement ?</h2>
-      <p class="reponse-courte" data-speakable="true">Le généraliste va aux équipes <strong>qui écrivent beaucoup et varié</strong> ; l'outil métier aux équipes qui répètent la même tâche.</p>
+      <div class="num-section"><span aria-hidden="true">07 / 08</span><a class="ancre" href="#pour-qui-concretement" aria-label="Lien vers la section «&nbsp;Pour qui, concrètement&#8239;?&nbsp;»">#</a></div>
+      <h2 id="pour-qui-concretement" data-speakable="true">Pour qui, concrètement&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Le généraliste va aux équipes <strong>qui écrivent beaucoup et varié</strong>&#8239;; l'outil métier aux équipes qui répètent la même tâche.</p>
       <ul class="pour-qui">
         <li>
-          <p class="pour-qui__surtitre">Pour qui ?</p>
+          <p class="pour-qui__surtitre">Pour qui&#8239;?</p>
           <h3 class="pour-qui__titre">L'assistant généraliste</h3>
           <dl>
-            <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-usine"/></svg>Profil</dt><dd>Services, conseil, commerce : des équipes qui rédigent, répondent et synthétisent.</dd></div>
+            <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-usine"/></svg>Profil</dt><dd>Services, conseil, commerce&nbsp;: des équipes qui rédigent, répondent et synthétisent.</dd></div>
             <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-situation"/></svg>Situation</dt><dd>Vous découvrez l'IA et vos usages sont encore flous.</dd></div>
             <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-sac"/></svg>Ce qu'il faut déjà avoir</dt><dd>Une règle simple sur les données autorisées, et une ou deux personnes volontaires.</dd></div>
           </dl>
         </li>
         <li>
-          <p class="pour-qui__surtitre">Pour qui ?</p>
+          <p class="pour-qui__surtitre">Pour qui&#8239;?</p>
           <h3 class="pour-qui__titre">L'outil métier</h3>
           <dl>
-            <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-usine"/></svg>Profil</dt><dd>Bâtiment, comptabilité, logistique : un processus qui revient tous les jours.</dd></div>
+            <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-usine"/></svg>Profil</dt><dd>Bâtiment, comptabilité, logistique&nbsp;: un processus qui revient tous les jours.</dd></div>
             <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-situation"/></svg>Situation</dt><dd>Une tâche identifiée coûte des heures chaque semaine.</dd></div>
             <div><dt><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-sac"/></svg>Ce qu'il faut déjà avoir</dt><dd>Un logiciel métier en place, des données propres et un référent.</dd></div>
           </dl>
         </li>
       </ul>
-      <h3 id="peut-on-commencer-par-l-un-et-passer-a-l-autre">Peut-on commencer par l'un et passer à l'autre ?</h3>
+      <h3 id="peut-on-commencer-par-l-un-et-passer-a-l-autre">Peut-on commencer par l'un et passer à l'autre&#8239;?</h3>
       <p>Oui, et c'est même le chemin le plus courant. Quelques semaines de généraliste montrent quelles tâches reviennent vraiment. On cherche ensuite l'outil métier pour celles-là seulement, en connaissant déjà ses besoins.</p>
       <div class="encadre encadre--modele">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-balance"/></svg></span>Le critère qui tranche</p>
-        <p>Comptez combien de fois par semaine la tâche revient, sous la même forme. <strong>Plus de dix fois :</strong> un outil métier mérite d'être étudié. Moins : restez sur le généraliste et améliorez vos consignes.</p>
+        <p>Comptez combien de fois par semaine la tâche revient, sous la même forme. <strong>Plus de dix fois&nbsp;:</strong> un outil métier mérite d'être étudié. Moins&nbsp;: restez sur le généraliste et améliorez vos consignes.</p>
       </div>
-      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite :</strong> trois questions, dans l'ordre, pour décider sans vous perdre.</span></p>
+      <p class="relance"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Dans la suite&nbsp;:</strong> trois questions, dans l'ordre, pour décider sans vous perdre.</span></p>
     </section>
 
     <section aria-labelledby="comment-choisir-en-trois-questions">
-      <div class="num-section"><span aria-hidden="true">08 / 08</span><a class="ancre" href="#comment-choisir-en-trois-questions" aria-label="Lien vers la section « Comment choisir en trois questions ? »">#</a></div>
-      <h2 id="comment-choisir-en-trois-questions" data-speakable="true">Comment choisir en trois questions ?</h2>
-      <p class="reponse-courte" data-speakable="true">Répondez <strong>dans l'ordre</strong> : la fréquence de la tâche, la variété de vos besoins, puis la sensibilité des données.</p>
+      <div class="num-section"><span aria-hidden="true">08 / 08</span><a class="ancre" href="#comment-choisir-en-trois-questions" aria-label="Lien vers la section «&nbsp;Comment choisir en trois questions&#8239;?&nbsp;»">#</a></div>
+      <h2 id="comment-choisir-en-trois-questions" data-speakable="true">Comment choisir en trois questions&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Répondez <strong>dans l'ordre</strong>&nbsp;: la fréquence de la tâche, la variété de vos besoins, puis la sensibilité des données.</p>
       <ol class="arbre">
         <li>
-          <p class="arbre__q">Une même tâche revient-elle chaque jour, dans un logiciel précis ?</p>
+          <p class="arbre__q">Une même tâche revient-elle chaque jour, dans un logiciel précis&#8239;?</p>
           <ul class="arbre__branches">
             <li><span class="branche branche--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><span><span class="arbre__fin">Étudiez d'abord l'outil métier</span>, ou le module d'IA de ce logiciel.</span></li>
             <li><span class="branche branche--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>Non</span><span>Passez à la question 2.</span></li>
           </ul>
         </li>
         <li>
-          <p class="arbre__q">Vos besoins sont-ils variés : écrire, résumer, chercher ?</p>
+          <p class="arbre__q">Vos besoins sont-ils variés&nbsp;: écrire, résumer, chercher&#8239;?</p>
           <ul class="arbre__branches">
             <li><span class="branche branche--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><span><span class="arbre__fin">Commencez par un assistant généraliste</span>, avec des règles de données.</span></li>
             <li><span class="branche branche--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>Non</span><span>Passez à la question 3.</span></li>
           </ul>
         </li>
         <li>
-          <p class="arbre__q">Vos données sont-elles sensibles : santé, juridique, ressources humaines ?</p>
+          <p class="arbre__q">Vos données sont-elles sensibles&nbsp;: santé, juridique, ressources humaines&#8239;?</p>
           <ul class="arbre__branches">
             <li><span class="branche branche--oui"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-coche"/></svg>Oui</span><span><span class="arbre__fin">Choisissez d'abord l'hébergement et le contrat</span>, l'outil ensuite.</span></li>
             <li><span class="branche branche--non"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg>Non</span><span><span class="arbre__fin">Essayez un généraliste quatre semaines</span> pour repérer vos usages.</span></li>
@@ -1320,28 +1407,28 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <li><p class="verdict-final__critere">Ce que l'équipe sait déjà faire</p>
           <ul class="verdict-final__pistes"><li><b>Plutôt généraliste</b>pour apprendre et repérer les usages.</li><li><b>Plutôt outil métier</b>quand le besoin est déjà clair.</li></ul></li>
       </ol>
-      <p class="verdict-final__note">Aucun des deux n'est « le meilleur » : le bon choix est celui qui colle à vos tâches.</p>
+      <p class="verdict-final__note">Aucun des deux n'est «&nbsp;le meilleur&nbsp;»&nbsp;: le bon choix est celui qui colle à vos tâches.</p>
     </section>
-    <p class="micro-appel"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=comparatif-verdict" data-cta="diagnostic">Hésitant entre deux ? Posez la question en 45 min<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
+    <p class="micro-appel"><a class="lien-fleche" href="/fr/appel?rdv=diagnostic&amp;depuis=comparatif-verdict" data-cta="diagnostic">Hésitant entre deux&#8239;? Posez la question en 45 min<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
 
     <!-- 6. FAQ -->
     <section class="faq" id="faq" aria-labelledby="faq-titre" data-aeo="people-also-ask">
       <h2 class="bloc-titre" id="faq-titre">Questions fréquentes</h2>
       <details data-faq-q>
-        <summary>Un assistant généraliste peut-il remplacer un logiciel métier ?</summary>
+        <summary>Un assistant généraliste peut-il remplacer un logiciel métier&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Non. Il peut préparer des textes et des synthèses, mais il ne tient ni vos devis, ni votre comptabilité, ni votre planning. Il complète vos logiciels sans les remplacer.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Faut-il un abonnement entreprise pour un assistant généraliste ?</summary>
-        <div class="faq-answer" data-faq-a><p>Dès que des données de l'entreprise y passent, c'est recommandé : les offres pour entreprises prévoient en général plus de garanties sur la conservation et l'usage des contenus. Vérifiez les conditions de chaque offre.</p></div>
+        <summary>Faut-il un abonnement entreprise pour un assistant généraliste&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Dès que des données de l'entreprise y passent, c'est recommandé&nbsp;: les offres pour entreprises prévoient en général plus de garanties sur la conservation et l'usage des contenus. Vérifiez les conditions de chaque offre.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Mon logiciel métier propose déjà de l'IA : faut-il l'activer ?</summary>
+        <summary>Mon logiciel métier propose déjà de l'IA&nbsp;: faut-il l'activer&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Essayez-la sur une tâche précise, quelques semaines, avec la personne qui fait cette tâche. Lisez d'abord ce que l'éditeur fait des données transmises à la fonction d'IA.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Peut-on utiliser les deux en même temps ?</summary>
-        <div class="faq-answer" data-faq-a><p>Oui, et c'est fréquent : un généraliste pour l'écrit du quotidien, un outil métier pour la tâche qui revient chaque jour. Fixez simplement des règles claires pour chacun.</p></div>
+        <summary>Peut-on utiliser les deux en même temps&#8239;?</summary>
+        <div class="faq-answer" data-faq-a><p>Oui, et c'est fréquent&nbsp;: un généraliste pour l'écrit du quotidien, un outil métier pour la tâche qui revient chaque jour. Fixez simplement des règles claires pour chacun.</p></div>
       </details>
     </section>
 
@@ -1349,13 +1436,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     <section class="sources" id="sources" aria-labelledby="sources-titre">
       <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
       <ol>
-        <li><a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Use_of_artificial_intelligence_in_enterprises">Eurostat, « Use of artificial intelligence in enterprises », Statistics Explained, données 2024</a></li>
-        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier « Intelligence artificielle », recommandations, 2024</a></li>
+        <li><a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Use_of_artificial_intelligence_in_enterprises">Eurostat, «&nbsp;Use of artificial intelligence in enterprises&nbsp;», Statistics Explained, données 2024</a></li>
+        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l'intelligence artificielle, article 4, Journal officiel de l'Union européenne, 2024</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">Règlement (UE) 2016/679 (RGPD), Journal officiel de l'Union européenne, 2016</a></li>
       </ol>
       <h3>Méthode</h3>
-      <p>Ce comparatif oppose deux familles d'outils, pas deux produits. La grille en sept critères et l'arbre de décision sont des repères éditoriaux d'Axion-IA : aucun produit n'a été testé ni noté, et aucun lien commercial ne nous lie aux éditeurs cités. Les noms d'outils sont donnés à titre d'exemple.</p>
+      <p>Ce comparatif oppose deux familles d'outils, pas deux produits. La grille en sept critères et l'arbre de décision sont des repères éditoriaux d'Axion-IA&nbsp;: aucun produit n'a été testé ni noté, et aucun lien commercial ne nous lie aux éditeurs cités. Les noms d'outils sont donnés à titre d'exemple.</p>
     </section>
 
     <!-- 8. AUTEUR + MENTION IA -->
@@ -1456,7 +1543,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     </ul>
     <ol class="deroule" aria-label="Comment se passe le Diagnostic IA">
       <li><strong>Vous choisissez un créneau</strong><span>Visioconférence Google Meet ou téléphone, confirmation immédiate.</span></li>
-      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching : on qualifie votre besoin.</span></li>
+      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching&nbsp;: on qualifie votre besoin.</span></li>
       <li><strong>Vous repartez avec des pistes concrètes</strong><span>Et le bon module si vous souhaitez aller plus loin. Sans engagement.</span></li>
     </ol>
     <ul class="rassurance">

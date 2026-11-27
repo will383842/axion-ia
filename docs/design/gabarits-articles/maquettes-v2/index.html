@@ -11,7 +11,7 @@
   --color-mocha: #2a2520; --color-mocha-fg: #f7f3ea; --color-terracotta-on-mocha: #eb8560;
   --color-fg: #1a1815; --color-fg-soft: #524b41; --color-primary: #1a4dd9; --color-primary-hover: #0f3aae;
   --color-terracotta: #b23f16; --color-terracotta-deep: #8c3010; --color-terracotta-soft: #f5e3d8;
-  --color-border: #e5ddc8; --color-border-field: #8a7f6c;
+  --color-border: #e5ddc8; --color-border-field: #8a7f6c; --color-mocha-soft: #3d362f; --color-border-on-mocha: #4a4239;
   --radius-lg: 12px; --radius-xl: 20px; --radius-full: 9999px;
   color-scheme: light;
 }
@@ -47,66 +47,79 @@ a:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; 
 .note { margin-top: 2.5rem; background: var(--color-sand); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; }
 .note h2 { font-size: 1.25rem; margin-bottom: .5rem; }
 .note ul { margin: 0; padding-left: 1.2rem; }
+/* Aperçu (décor aria-hidden) : le bandeau du héros en miniature, avec le signe propre au modèle
+   et, à droite, la carte d'action (bleu · terracotta · contour) telle qu'elle apparaît dès le premier écran */
+.apercu { position: relative; display: flex; align-items: center; gap: .85rem; height: 6.25rem; margin: -1.5rem -1.5rem .5rem;
+  padding: 0 7rem 0 1.25rem; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--color-mocha); }
+.apercu__signe { font: 600 2.5rem/1 "Fraunces", Georgia, serif; letter-spacing: -.02em; color: var(--color-terracotta-on-mocha); white-space: nowrap; }
+.apercu__legende { font: 600 .75rem/1.3 "Manrope", system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--color-mocha-fg); }
+.apercu::after { content: ""; position: absolute; right: 1.1rem; top: 1rem; bottom: 1rem; width: 4.75rem; border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--color-border-on-mocha), 4px 4px 0 var(--color-terracotta);
+  background: linear-gradient(var(--color-primary) 0 0) .5rem .7rem / calc(100% - 1rem) .8rem no-repeat,
+    linear-gradient(var(--color-terracotta) 0 0) .5rem 1.85rem / calc(100% - 1rem) .8rem no-repeat,
+    linear-gradient(var(--color-mocha-fg) 0 0) .5rem 3rem / calc(100% - 1rem) 1.5px no-repeat, var(--color-mocha-soft); }
+@media (forced-colors: active) { .apercu::after { display: none; } .apercu { border: 2px solid CanvasText; } }
 </style>
 </head>
 <body>
 <header>
   <div class="contenu">
     <span class="surtitre">Maquettes v2</span>
-    <h1>Modèles de pages d'articles : <em>plus visuels, plus de rendez-vous</em></h1>
-    <p>Dix modèles : les huit modèles du blog, plus les actualités et les guides. Chaque page a désormais
-    des encadrés de couleur, un en-tête contrasté et trois boutons toujours visibles : Journée IA,
+    <h1>Modèles de pages d'articles&nbsp;: <em>plus visuels, plus de rendez-vous</em></h1>
+    <p>Dix modèles&nbsp;: les huit modèles du blog, plus les actualités et les guides. Chaque page a désormais
+    des encadrés de couleur, un en-tête contrasté et trois boutons toujours visibles&nbsp;: Journée IA,
     Diagnostic IA de 45 min, Écrire un message.</p>
   </div>
 </header>
 <main>
   <div class="contenu">
     <ul class="grille">
-      <li class="carte"><span class="code">analyse · /blog/[slug]</span>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">4 sem.</span><span class="apercu__legende">d'essai, puis une décision</span></div><span class="code">analyse · /blog/[slug]</span>
         <h2><a href="analyse.html">Analyse (modèle par défaut)</a></h2>
-        <p>Un grand en-tête sombre et une réponse « En bref » dès le haut de la page. Ensuite, un encadré coloré
-        toutes les deux ou trois sections : à retenir, exemple, chiffre clé, citation, schéma.</p></li>
-      <li class="carte"><span class="code">guide · /blog/[slug]</span>
+        <p>Un grand en-tête sombre et une réponse «&nbsp;En bref&nbsp;» dès le haut de la page. Ensuite, un encadré coloré
+        toutes les deux ou trois sections&nbsp;: à retenir, exemple, chiffre clé, citation, schéma.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">1→6</span><span class="apercu__legende">étapes en frise</span></div><span class="code">guide · /blog/[slug]</span>
         <h2><a href="guide.html">Guide pratique</a></h2>
-        <p>Les étapes deviennent une frise à gros numéros, avec « Étape 3 sur 6 » pour savoir où on en est.
-        On y trouve aussi une liste « Avant de commencer » à cocher et une méthode de calcul mise en valeur.</p></li>
-      <li class="carte"><span class="code">comparatif · /blog/[slug]</span>
+        <p>Les étapes deviennent une frise à gros numéros, avec «&nbsp;Étape 3 sur 6&nbsp;» pour savoir où on en est.
+        On y trouve aussi une liste «&nbsp;Avant de commencer&nbsp;» à cocher et une méthode de calcul mise en valeur.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">A ou B</span><span class="apercu__legende">face-à-face</span></div><span class="code">comparatif · /blog/[slug]</span>
         <h2><a href="comparatif.html">Comparatif</a></h2>
         <p>Un face-à-face en tête de page, puis un tableau à coches et croix.
-        Des cartes « Pour qui ? » et un verdict « ça dépend de… », sans gagnant, sans note, sans prix.</p></li>
-      <li class="carte"><span class="code">selection · /blog/[slug]</span>
+        Des cartes «&nbsp;Pour qui&#8239;?&nbsp;» et un verdict «&nbsp;ça dépend de…&nbsp;», sans gagnant, sans note, sans prix.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">10</span><span class="apercu__legende">cartes numérotées</span></div><span class="code">selection · /blog/[slug]</span>
         <h2><a href="selection.html">Sélection (top X)</a></h2>
-        <p>Chaque choix devient une grande carte avec un gros numéro et trois rubriques :
+        <p>Chaque choix devient une grande carte avec un gros numéro et trois rubriques&nbsp;:
         pour qui, points forts, limites. Un tableau de synthèse vient à la fin, sans aucune note inventée.</p></li>
-      <li class="carte"><span class="code">cas · /blog/[slug]</span>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">→</span><span class="apercu__legende">avant, pendant, après · exemple type</span></div><span class="code">cas · /blog/[slug]</span>
         <h2><a href="etude-de-cas.html">Étude de cas</a></h2>
-        <p>Une fiche « Contexte » sombre (secteur, taille, ville) et une frise « Avant / Pendant / Après » en couleur.
-        Elle est présentée comme un exemple type : aucun résultat chiffré, aucun témoignage inventé.</p></li>
-      <li class="carte"><span class="code">definition · /blog/[slug]</span>
+        <p>Une fiche «&nbsp;Contexte&nbsp;» sombre (secteur, taille, ville) et une frise «&nbsp;Avant / Pendant / Après&nbsp;» en couleur.
+        Elle est présentée comme un exemple type&nbsp;: aucun résultat chiffré, aucun témoignage inventé.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">RAG.</span><span class="apercu__legende">le terme en très grand</span></div><span class="code">definition · /blog/[slug]</span>
         <h2><a href="definition.html">Définition</a></h2>
         <p>Le terme s'affiche en très grand avec sa définition en une phrase, puis
-        « En pratique », « À ne pas confondre avec », un petit schéma et des pastilles vers le glossaire.</p></li>
-      <li class="carte"><span class="code">faq · /blog/[slug]</span>
+        «&nbsp;En pratique&nbsp;», «&nbsp;À ne pas confondre avec&nbsp;», un petit schéma et des pastilles vers le glossaire.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">?</span><span class="apercu__legende">10 questions, 3 thèmes</span></div><span class="code">faq · /blog/[slug]</span>
         <h2><a href="faq.html">Questions-réponses</a></h2>
         <p>Les questions deviennent des cartes numérotées, rangées par thème avec des pastilles de couleur.
-        La première est ouverte. Le bouton mis en avant est « Écrire un message ».</p></li>
-      <li class="carte"><span class="code">chiffres · /blog/[slug]</span>
+        La première est ouverte. Le bouton mis en avant est «&nbsp;Écrire un message&nbsp;».</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">≈ 10 %</span><span class="apercu__legende">chiffres sourcés</span></div><span class="code">chiffres · /blog/[slug]</span>
         <h2><a href="chiffres.html">Chiffres (baromètre)</a></h2>
         <p>Une rangée de très grands chiffres, chacun avec sa source, et des barres en CSS pur.
-        On voit la date des données, un encadré « Comment lire ces chiffres » et un lien vers l'Observatoire.</p></li>
-      <li class="carte"><span class="code">actualite · /actualites/[slug] — nouveau</span>
+        On voit la date des données, un encadré «&nbsp;Comment lire ces chiffres&nbsp;» et un lien vers l'Observatoire.</p></li>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">Art. 4</span><span class="apercu__legende">la source officielle</span></div><span class="code">actualite · /actualites/[slug] — nouveau</span>
         <h2><a href="actualite.html">Actualité</a></h2>
-        <p>Une page courte : trois cartes « Ce qui change / Pour qui / Que faire maintenant », la source d'origine
+        <p>Une page courte&nbsp;: trois cartes «&nbsp;Ce qui change / Pour qui / Que faire maintenant&nbsp;», la source d'origine
         bien visible et une frise des dates. Elle a les mêmes boutons que le blog, alors qu'avant elle n'en avait pas.</p></li>
-      <li class="carte"><span class="code">guide pilier · /guides/[slug] — nouveau</span>
+      <li class="carte"><div class="apercu" aria-hidden="true"><span class="apercu__signe">7</span><span class="apercu__legende">chapitres en jalons</span></div><span class="code">guide pilier · /guides/[slug] — nouveau</span>
         <h2><a href="guide-pilier.html">Guide pilier</a></h2>
-        <p>Un long guide découpé en chapitres sur de grands bandeaux, avec « Chapitre 2 sur 7 » et le temps restant.
+        <p>Un long guide découpé en chapitres sur de grands bandeaux, avec «&nbsp;Chapitre 2 sur 7&nbsp;» et le temps restant.
         Il se termine par une feuille de route en sept actions. Deux encarts d'action, plus la colonne de boutons.</p></li>
     </ul>
     <section class="note" aria-labelledby="commun">
       <h2 id="commun">Commun aux dix modèles</h2>
       <ul>
-        <li>Sur ordinateur, une carte collante à droite propose : Diagnostic IA, 45 min · Découvrir la Journée IA · Écrire un message.</li>
+        <li>Sur ordinateur, une carte à droite, visible dès le premier écran puis collante pendant la lecture, propose&nbsp;: Diagnostic IA, 45 min · Découvrir la Journée IA · Écrire un message. Le bandeau du site porte aussi un bouton bleu «&nbsp;Diagnostic IA, 45 min&nbsp;».</li>
+        <li>Chaque modèle a son signe dans l'en-tête (ci-dessus en miniature)&nbsp;: «&nbsp;RAG.&nbsp;», «&nbsp;A ou B&nbsp;», «&nbsp;≈ 10 %&nbsp;», les 7 jalons du guide pilier…</li>
         <li>Sur téléphone, les mêmes trois boutons sont dans une barre fixe en bas de l'écran.</li>
         <li>Une barre de lecture en haut de page, le temps de lecture, des intertitres en questions et un résumé visuel à la fin.</li>
         <li>Aucun JavaScript, aucune nouvelle police. URL, slugs et canonical inchangés.</li>

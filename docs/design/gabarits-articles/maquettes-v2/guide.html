@@ -101,7 +101,12 @@
   --largeur-lecture: 41.5em; /* = 68ch Manrope */
   --largeur-page: 80rem;
   --hauteur-barre-mobile: 4.75rem;
-  --hauteur-carte: 33rem; /* hauteur estimée de la carte d'action : plafonne le sommaire et lui réserve sa place en fin d'article */
+  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
+     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
+  --hauteur-carte: 33.5rem;
+  /* Sommaire collant sous la carte : place restante de l'écran */
+  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
+  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
   --focus-clair: var(--color-primary);
   /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
      terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
@@ -216,6 +221,16 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .site-nav { display: flex; gap: 1.5rem; font-size: 0.9375rem; }
 .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; }
 @media (max-width: 767px) { .site-nav a:not(:last-child) { display: none; } }
+/* Bouton du bandeau : ordinateur seulement (sur téléphone, la barre basse porte déjà le Diagnostic) */
+.site-entete .site-entete__cta { display: none; }
+@media (min-width: 1024px) {
+  .site-entete .conteneur { justify-content: flex-start; }
+  .site-nav { margin-left: auto; }
+  .site-entete .site-entete__cta { display: inline-flex; min-height: 44px; padding: 0.55rem 1.1rem; gap: 0.5rem; font-size: 0.9375rem; }
+  .site-entete__cta .icone { width: 1.1rem; height: 1.1rem; }
+}
+/* Téléphone : en-tête collant de 56 px (au lieu de 80) ; avec la barre basse, le texte garde ~86 % de l'écran */
+@media (max-width: 1023px) { :root { --header-h: 3.5rem; } .site-logo { font-size: 1.25rem; } }
 
 .bande-ariane { background: var(--color-mocha); color: var(--color-mocha-fg-muted); }
 .fil-ariane ol { list-style: none; display: flex; flex-wrap: nowrap; align-items: center; gap: 0 0.5rem;
@@ -237,10 +252,8 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   clip-path: inset(0 -100vmax);
   padding-block: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) clamp(5.5rem, 4rem + 7vw, 9rem);
 }
-/* Aplat terracotta : disque (coupé par le bas du bandeau) + rayures mocha-soft */
-.heros::before { content: ""; position: absolute; z-index: -1; border-radius: 50%;
-  width: clamp(14rem, 34vw, 30rem); aspect-ratio: 1; background: var(--color-terracotta);
-  right: calc(-1 * var(--gouttiere)); bottom: clamp(-12rem, -9vw, -5rem); }
+/* Rayures mocha-soft en haut à droite (décor). Le disque terracotta générique a cédé la place
+   au SIGNE propre à chaque modèle (.heros__signe, plus bas). */
 .heros::after { content: ""; position: absolute; z-index: -1; right: 0; top: 0;
   width: clamp(8rem, 22vw, 18rem); height: 1.5rem;
   background: repeating-linear-gradient(-45deg, var(--color-mocha-soft) 0 6px, transparent 6px 14px); }
@@ -258,6 +271,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .pastille--claire { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
 .heros h1 { font: 600 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.03 var(--font-serif);
   letter-spacing: -0.03em; color: var(--color-mocha-fg); max-width: 13.2em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */ }
+/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
+/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
+   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
+@media (min-width: 1024px) { .heros h1 { font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem); } }
 .heros h1 em { font-style: italic; font-weight: 500; color: var(--color-terracotta-on-mocha); }
 .chapo { margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0; max-width: 44rem; padding-left: 1rem;
   border-left: 4px solid var(--color-terracotta-on-mocha);
@@ -272,6 +289,21 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .meta__lecture { padding: 0.4rem 0.95rem; border-radius: var(--radius-full); font-weight: 600;
   background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
 .meta .meta__lecture .icone { color: var(--color-mocha); }
+/* Pied du héros : partage compact à gauche, signe du modèle à droite */
+.heros__pied { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; margin: 1.25rem 0 0; }
+.heros__pied .partage-icones { margin: 0; flex: none; }
+/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
+   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
+.heros__signe { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; flex: 0 1 auto;
+  min-width: 0; height: 44px; overflow: hidden; color: var(--color-terracotta-on-mocha);
+  font: 600 1.75rem/1 var(--font-serif); letter-spacing: -0.02em; white-space: nowrap; }
+.signe__legende { display: none; font: 600 0.75rem/1.3 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-mocha-fg); white-space: normal; text-align: left; }
+@media (min-width: 640px) {
+  .heros__signe { height: 5.5rem; padding: 0 1.25rem; border: 1.5px solid var(--color-border-on-mocha); border-radius: var(--radius-xl);
+    background: var(--color-mocha-soft); font-size: 2.75rem; }
+  .signe__legende { display: block; width: 8.5rem; }
+}
 /* Partage compact (icônes) sous la méta */
 .partage-icones { display: flex; gap: 0.5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .partage-icones a { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
@@ -300,18 +332,25 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   /* L'article partage la grille (subgrid) : un SEUL sommaire, déplacé en colonne */
   .article { grid-column: 1 / -1; grid-row: 1 / -1; display: grid;
     grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .heros { grid-column: 1 / -1; grid-row: 1; }
+  /* Le héros n'occupe plus que la colonne de lecture : la colonne d'action démarre dès la ligne 1.
+     Le fond mocha reste pleine largeur (border-image du héros) : la carte se pose DANS le bandeau. */
+  .heros { grid-column: 1; grid-row: 1; min-width: 0; }
   .article__ouverture { grid-column: 1; grid-row: 2; min-width: 0; }
   .article__corps { grid-column: 1; grid-row: 3; min-width: 0; }
-  /* Sommaire : collé en haut (aucun ancêtre en overflow hidden/auto) */
+  /* Carte d'action : visible dès le premier écran (en haut de la colonne, à hauteur du titre),
+     puis collée en haut pendant toute la lecture. Elle est elle-même l'élément collant : un élément
+     de grille collant reste contraint par la grille entière, pas par sa seule ligne (align-self: start).
+     margin-bottom = place du sommaire : en fin d'article, la carte remonte AVANT le sommaire
+     (sinon le sommaire, poussé par le bas de la grille, passerait sur elle). */
+  .action { grid-column: 2; grid-row: 1 / -1; align-self: start; z-index: 2;
+    position: sticky; top: calc(var(--header-h) + 1rem);
+    margin: clamp(1.25rem, 1rem + 1.5vw, 2.25rem) 0 calc(var(--sommaire-max) + 1rem); }
+  .action .carte-action { min-height: var(--hauteur-carte); }
+  /* Sommaire : collé juste sous la carte, dans la hauteur qui reste (défilement interne, section 10) */
   .sommaire { grid-column: 2; grid-row: 2 / 4; align-self: start;
-    position: sticky; top: calc(var(--header-h) + 16px); /* marges : voir section 10 */
-    max-height: max(11rem, calc(100dvh - var(--header-h) - var(--hauteur-carte) - 3rem)); overflow-y: auto; }
-  /* Carte d'action : posée en bas de la colonne, collée en bas d'écran.
-     Elle apparaît d'elle-même à la sortie de l'image principale (ligne 3). */
-  .action { grid-column: 2; grid-row: 3; align-self: stretch; display: flex;
-    flex-direction: column; justify-content: flex-end; padding-top: 2rem; }
-  .action .carte-action { position: sticky; bottom: 16px; }
+    position: sticky; top: var(--sommaire-haut);
+    max-height: var(--sommaire-max); overflow-y: auto; overscroll-behavior: contain;
+    scroll-timeline: --sommaire block; }
 }
 
 /* 10 — SOMMAIRE : un seul <nav>, <details> replié sur téléphone ------------ */
@@ -332,9 +371,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   font: 600 0.8125rem/1 var(--font-mono); color: var(--color-terracotta-deep); }
 .sommaire ol a:hover { background: var(--color-sand); color: var(--color-ink); }
 @media (min-width: 1024px) {
-  /* marges de la colonne : haut aligné, bas = place réservée à la carte en fin d'article */
-  .sommaire { margin: 1.5rem 0 calc(var(--hauteur-carte) + 2rem); }
-  .sommaire details { border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  /* le sommaire démarre sous la carte (ligne 2) ; la carte réserve sa propre place en fin d'article */
+  .sommaire { margin: 1rem 0 0; }
+  /* le cadre est porté par la zone qui défile : son bord bas reste visible, jamais coupé net */
+  .sommaire { background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .sommaire details { border: 0; border-radius: var(--radius-xl); }
   /* Ordinateur : toujours déplié, même si le <details> est fermé. Seulement si le navigateur
      sait forcer ::details-content (Chrome 131+, Safari 18.4+, Firefox 143+) : sinon le <summary>
      reste cliquable avec son « + », et le sommaire s'ouvre normalement. */
@@ -344,6 +385,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
     .sommaire summary::after { display: none; }
   }
   .sommaire ol a { font-size: 0.875rem; }
+  /* Sommaire plus long que la place : fondu en bas + « ↓ suite · 07 entrées » (compteur CSS = nombre
+     total d'entrées), collé en bas de la zone qui défile. Il n'apparaît QUE si le sommaire défile
+     (timeline de défilement inactive sinon) et s'efface quand on atteint la dernière entrée. */
+  .sommaire ol::after { content: "↓ suite du sommaire · " counter(s, decimal-leading-zero) " entrées" / "";
+    position: sticky; bottom: 0; display: block; margin: -2.75rem -0.5rem -0.75rem; padding: 1.6rem 1rem 0.6rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl); pointer-events: none; opacity: 0;
+    background: linear-gradient(color-mix(in srgb, var(--color-paper) 0%, transparent), var(--color-paper) 55%);
+    font: 600 0.75rem/1.2 var(--font-mono); letter-spacing: 0.02em; color: var(--color-terracotta-deep); }
+  @supports (animation-timeline: scroll()) {
+    .sommaire ol::after { animation: sommaire-suite linear both; animation-timeline: --sommaire; }
+    @keyframes sommaire-suite { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  }
+  .sommaire ol { padding-bottom: 0.75rem; }
 }
 
 /* 11 — BOUTONS ------------------------------------------------------------- */
@@ -393,7 +447,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 @media (min-width: 1024px) {
   .carte-action.sur-sombre :focus-visible { outline-color: var(--focus-sombre); }
   .carte-action { position: relative; inset: auto; z-index: auto; border: 0; border-radius: var(--radius-xl);
-    padding: 1.5rem 1.25rem 1.25rem; background: var(--color-mocha); color: var(--color-mocha-fg); box-shadow: var(--ombre-bloc); }
+    padding: 1.5rem 1.25rem 1.25rem; color: var(--color-mocha-fg);
+    /* mocha-soft + filet : la carte se détache aussi quand elle est posée dans le bandeau mocha du héros
+       (mocha-fg 10,7:1 · mocha-fg-muted 5,2:1 · terracotta-on-mocha 4,56:1, titre en grand texte) */
+    background: var(--color-mocha-soft); box-shadow: 0 0 0 1px var(--color-border-on-mocha), var(--ombre-bloc); }
   .carte-action::before { content: ""; position: absolute; inset: 0 1.25rem auto; height: 5px;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--color-terracotta-on-mocha); }
   .carte-action__titre { display: block; margin: 0.25rem 0 0.3rem; font: 600 1.375rem/1.18 var(--font-serif); letter-spacing: -0.01em; }
@@ -420,7 +477,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 
 /* Écran d'ordinateur peu haut : carte compacte, le sommaire garde de la place */
 @media (min-width: 1024px) and (max-height: 1000px) {
-  :root { --hauteur-carte: 25rem; }
+  :root { --hauteur-carte: 24rem; }
   .carte-action { padding-top: 1.15rem; }
   .carte-action__titre { font-size: 1.1875rem; }
   .carte-action__sous-titre { margin-bottom: 0.75rem; }
@@ -428,6 +485,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .act { min-height: 48px; padding-block: 0.5rem; }
   .act.btn--bleu { min-height: 56px; }
   .carte-action__rassurance { display: flex; flex-wrap: wrap; gap: 0.2rem 0.85rem; margin-top: 0.75rem; padding-top: 0.65rem; }
+}
+/* Écran très peu haut (1280×800, 1366×768) : la réassurance de la carte s'efface (elle reste dans
+   l'encart de fin et sur la page de réservation) pour laisser au sommaire la place de 6-7 entrées */
+@media (min-width: 1024px) and (max-height: 860px) {
+  :root { --hauteur-carte: 18.75rem; }
+  .carte-action__rassurance { display: none; }
 }
 
 /* 13 — BIBLIOTHÈQUE D'ENCADRÉS --------------------------------------------- */
@@ -741,6 +804,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .lie__titre a:focus-visible { outline: none; }
 .lie:has(a:focus-visible) { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
 .lie__meta { font-size: 0.8125rem; color: var(--color-fg-muted); }
+/* Téléphone : vignette latérale de 96 px et titre à côté (les aplats 16/9 faisaient ~250 px de couleur sans information) */
+@media (max-width: 639px) {
+  .lie { flex-direction: row; }
+  .lie__visuel { flex: 0 0 6rem; aspect-ratio: auto; min-height: 7.5rem; }
+  .lie__visuel::after { width: 80%; right: -25%; top: -15%; }
+  .lie__corps { align-content: center; padding: 0.85rem 1rem; }
+  .lie__titre { font-size: 1.0625rem; }
+}
 
 /* Guide gratuit (capture e-mail existante, une seule par page) */
 .guide-gratuit { display: grid; gap: 1rem; margin: 3rem 0 0; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
@@ -748,7 +819,10 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
 .guide-gratuit__titre { margin: 0 0 0.5rem; font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif); }
 .guide-gratuit p { margin: 0; }
 .guide-gratuit form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
-.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 15rem; font-size: 0.875rem; font-weight: 600; }
+/* 320 px : base min(15rem, 100 %) + min-width 0, sinon le champ dépassait de 0,8 px (défilement horizontal) */
+.guide-gratuit > *, .guide-gratuit label { min-width: 0; }
+.guide-gratuit input { width: 100%; min-width: 0; }
+.guide-gratuit label { display: grid; gap: 0.3rem; flex: 1 1 min(15rem, 100%); font-size: 0.875rem; font-weight: 600; }
 .guide-gratuit input { min-height: 48px; padding: 0.6rem 0.9rem; border: 1.5px solid var(--color-border-field);
   border-radius: var(--radius-md); background: var(--color-paper); color: var(--color-fg); font: 400 1rem/1.3 var(--font-sans); }
 @media (min-width: 760px) { .guide-gratuit { grid-template-columns: 1fr 1fr; align-items: center; } }
@@ -761,9 +835,11 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .progression { display: none !important; animation: none !important; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .btn:hover, .lie:hover { transform: none; }
+  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
+  .sommaire ol::after { animation: sommaire-suite linear both !important; animation-timeline: --sommaire !important; }
 }
 @media (forced-colors: active) {
-  .progression, .heros::before, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
+  .progression, .heros::after, .cta-milieu::after, .cta-fin::before, .lie__visuel::after { display: none; }
   .encadre, .en-bref, .chiffre-cle, .chiffres, .carte, .schema__etape, .resume, .resume__liste li, .cta-milieu, .cta-fin, .citation,
   .carte-action, .sommaire details, .faq details, .sources, .auteur, .lie, .tableau__defilant, .guide-gratuit, .plus-loin a {
     border: 2px solid CanvasText; }
@@ -951,6 +1027,13 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   .cases li::before { border-color: CanvasText; }
 }
 @media print { .parcours { background: none; color: var(--color-ink); border: 1px solid var(--color-ink); } }
+/* Signe du modèle dans le héros (décor aria-hidden) */
+.signe__frise { display: flex; align-items: center; gap: 0.25rem; }
+.signe__frise i { display: grid; place-items: center; width: 1.25rem; height: 1.25rem; border-radius: 50%; font: 600 0.6875rem/1 var(--font-mono);
+  font-style: normal; background: var(--color-border-on-mocha); color: var(--color-mocha-fg); }
+.signe__frise i:first-child { background: var(--color-terracotta-on-mocha); color: var(--color-mocha); }
+@media (min-width: 640px) { .signe__frise { gap: 0.35rem; }
+  .signe__frise i { width: 2rem; height: 2rem; font-size: 0.9375rem; } }
 </style>
 </head>
 <body>
@@ -1004,6 +1087,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <a href="/fr/formations">Formations</a>
       <a href="/fr/blog">Blog</a>
     </nav>
+    <a class="btn btn--bleu site-entete__cta" href="/fr/appel?rdv=diagnostic&amp;depuis=guide-entete" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg>Diagnostic IA, 45 min</a>
   </div>
 </header>
 
@@ -1039,15 +1123,18 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <li class="meta__lecture"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>8 min de lecture</li>
     </ul>
     <ul class="fiche" aria-label="Fiche pratique">
-      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg><span><b>Durée :</b> ≈ 1 h la première fois</span></li>
-      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-niveau"/></svg><span><b>Niveau :</b> débutant</span></li>
-      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-micro"/></svg><span><b>Matériel :</b> un enregistrement, un assistant d'IA</span></li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg><span><b>Durée&nbsp;:</b> ≈ 1 h la première fois</span></li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-niveau"/></svg><span><b>Niveau&nbsp;:</b> débutant</span></li>
+      <li><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-micro"/></svg><span><b>Matériel&nbsp;:</b> un enregistrement, un assistant d'IA</span></li>
     </ul>
-    <ul class="partage-icones" aria-label="Partager l'article">
-      <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fcompte-rendu-reunion-ia" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
-      <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fcompte-rendu-reunion-ia" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
-      <li><a href="mailto:?subject=R%C3%A9diger%20un%20compte%20rendu%20de%20r%C3%A9union%20avec%20l%27IA&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fcompte-rendu-reunion-ia" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
-    </ul>
+    <div class="heros__pied">
+      <ul class="partage-icones" aria-label="Partager l'article">
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fcompte-rendu-reunion-ia" aria-label="Partager sur LinkedIn"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fcompte-rendu-reunion-ia" aria-label="Partager sur Twitter"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:?subject=R%C3%A9diger%20un%20compte%20rendu%20de%20r%C3%A9union%20avec%20l%27IA&amp;body=https%3A%2F%2Faxion-ia.com%2Ffr%2Fblog%2Fcompte-rendu-reunion-ia" aria-label="Partager par e-mail"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-enveloppe"/></svg></a></li>
+      </ul>
+      <div class="heros__signe signe--guide" aria-hidden="true"><span class="signe__frise"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></span><span class="signe__legende">étapes, ≈ 1 h la première fois</span></div>
+    </div>
   </header>
 
   <!-- 2. IMAGE + RÉPONSE DIRECTE -->
@@ -1078,12 +1165,12 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         </svg>
         <span class="visuel__etiquette" aria-hidden="true">6 étapes · ≈ 1 h la première fois</span>
       </div>
-      <figcaption>Photo : Léa Fontaine / Unsplash</figcaption>
+      <figcaption>Photo&nbsp;: [nom du photographe] / Unsplash</figcaption>
     </figure>
 
     <aside class="en-bref tldr-answer" role="doc-tip" data-aeo="tldr" data-answer aria-labelledby="en-bref-titre">
       <p class="en-bref__titre" id="en-bref-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-eclair"/></svg>En bref</p>
-      <p>Pour rédiger un compte rendu avec l'IA, enregistrez la réunion avec l'accord des participants, faites transcrire le fichier, puis donnez à l'assistant <strong>une consigne précise : décisions, responsables, échéances</strong>. Relisez toujours le résultat avant de l'envoyer. Comptez une heure la première fois ; ensuite, quelques minutes suffisent.</p>
+      <p>Pour rédiger un compte rendu avec l'IA, enregistrez la réunion avec l'accord des participants, faites transcrire le fichier, puis donnez à l'assistant <strong>une consigne précise&nbsp;: décisions, responsables, échéances</strong>. Relisez toujours le résultat avant de l'envoyer. Comptez une heure la première fois&#8239;; ensuite, quelques minutes suffisent.</p>
     </aside>
   </div>
 
@@ -1099,7 +1186,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <li><a href="#step-4">Vérifier que rien ne manque</a></li>
         <li><a href="#step-5">Protéger les données</a></li>
         <li><a href="#step-6">Partager à l'équipe</a></li>
-        <li><a href="#combien-de-temps-prevoir-la-premiere-fois">Combien de temps prévoir ?</a></li>
+        <li><a href="#combien-de-temps-prevoir-la-premiere-fois">Combien de temps prévoir&#8239;?</a></li>
       </ol>
     </details>
   </nav>
@@ -1108,22 +1195,22 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
   <div class="article__corps prose">
 
     <section aria-labelledby="de-quoi-avez-vous-besoin-avant-de-commencer">
-      <div class="num-section"><span aria-hidden="true">Préparation</span><a class="ancre" href="#de-quoi-avez-vous-besoin-avant-de-commencer" aria-label="Lien vers la section « De quoi avez-vous besoin avant de commencer ? »">#</a></div>
-      <h2 id="de-quoi-avez-vous-besoin-avant-de-commencer" data-speakable="true">De quoi avez-vous besoin avant de commencer ?</h2>
-      <p class="reponse-courte" data-speakable="true">Il vous faut <strong>quatre choses</strong> : l'accord des participants, un outil de transcription, un assistant d'IA et une heure devant vous.</p>
+      <div class="num-section"><span aria-hidden="true">Préparation</span><a class="ancre" href="#de-quoi-avez-vous-besoin-avant-de-commencer" aria-label="Lien vers la section «&nbsp;De quoi avez-vous besoin avant de commencer&#8239;?&nbsp;»">#</a></div>
+      <h2 id="de-quoi-avez-vous-besoin-avant-de-commencer" data-speakable="true">De quoi avez-vous besoin avant de commencer&#8239;?</h2>
+      <p class="reponse-courte" data-speakable="true">Il vous faut <strong>quatre choses</strong>&nbsp;: l'accord des participants, un outil de transcription, un assistant d'IA et une heure devant vous.</p>
 
       <div class="avant">
         <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-epingle"/></svg></span>Avant de commencer</p>
-        <p class="avant__intro">Vérifiez ces quatre points. Si l'un manque, réglez-le d'abord : c'est lui qui bloquera plus tard.</p>
+        <p class="avant__intro">Vérifiez ces quatre points. Si l'un manque, réglez-le d'abord&nbsp;: c'est lui qui bloquera plus tard.</p>
         <ul class="cases">
           <li><span><b>L'accord des participants</b>Demandé avant la réunion, rappelé au début.</span></li>
           <li><span><b>Un outil de transcription</b>Celui de votre visio (Teams, Meet, Zoom) ou un dictaphone.</span></li>
           <li><span><b>Un assistant d'IA autorisé</b>Celui que votre entreprise a validé pour ce type de contenu.</span></li>
-          <li><span><b>Une heure sans interruption</b>Pour la première fois seulement : ensuite, quelques minutes.</span></li>
+          <li><span><b>Une heure sans interruption</b>Pour la première fois seulement&nbsp;: ensuite, quelques minutes.</span></li>
         </ul>
       </div>
 
-      <p>Vous n'avez besoin d'aucune compétence technique. La seule vraie difficulté est de savoir ce qu'un bon compte rendu doit contenir chez vous. Gardez sous la main le dernier compte rendu que vous avez trouvé utile : il servira de modèle.</p>
+      <p>Vous n'avez besoin d'aucune compétence technique. La seule vraie difficulté est de savoir ce qu'un bon compte rendu doit contenir chez vous. Gardez sous la main le dernier compte rendu que vous avez trouvé utile&nbsp;: il servira de modèle.</p>
 
       <div class="parcours sur-sombre">
         <p class="parcours__titre">Le parcours <em>en un coup d'œil</em></p>
@@ -1135,7 +1222,7 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
           <li><a href="#step-5"><span class="parcours__num" aria-hidden="true">5</span><span class="parcours__nom">Protéger</span><span class="parcours__duree">5 min</span></a></li>
           <li><a href="#step-6"><span class="parcours__num" aria-hidden="true">6</span><span class="parcours__nom">Partager</span><span class="parcours__duree">10 min</span></a></li>
         </ol>
-        <p class="parcours__total"><span>Total la première fois : <strong>≈ 1 heure</strong></span><span>Les fois suivantes : <strong>10 à 15 minutes</strong></span><span>Durées indicatives, à ajuster à vos réunions.</span></p>
+        <p class="parcours__total"><span>Total la première fois&nbsp;: <strong>≈ 1 heure</strong></span><span>Les fois suivantes&nbsp;: <strong>10 à 15 minutes</strong></span><span>Durées indicatives, à ajuster à vos réunions.</span></p>
       </div>
     </section>
 
@@ -1144,19 +1231,19 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <div class="etape__tete">
         <span class="etape__num" aria-hidden="true">1</span>
         <p class="etape__rang">Étape 1 sur 6 <span class="etape__duree">≈ 5 min</span></p>
-        <h2 class="etape__titre" id="step-1" data-speakable="true">Comment enregistrer la réunion sans gêner les participants ?</h2>
+        <h2 class="etape__titre" id="step-1" data-speakable="true">Comment enregistrer la réunion sans gêner les participants&#8239;?</h2>
         <div class="etape__jauge" aria-hidden="true"></div>
       </div>
       <div class="etape__corps">
         <p class="reponse-courte" data-speakable="true">Annoncez l'enregistrement <strong>dans l'invitation</strong>, redites-le en ouvrant la réunion, et proposez de couper si quelqu'un le demande.</p>
-        <p>Enregistrer une conversation sans prévenir est interdit, et c'est surtout le meilleur moyen de braquer une équipe. Une phrase dans l'invitation suffit : « La réunion sera enregistrée pour préparer le compte rendu ; l'enregistrement sera supprimé ensuite. »</p>
-        <p>En visio, utilisez la fonction intégrée : elle affiche un signal visible par tous. En salle, posez le téléphone ou le dictaphone au centre de la table, loin du vidéoprojecteur et de la ventilation.</p>
+        <p>Enregistrer une conversation sans prévenir est interdit, et c'est surtout le meilleur moyen de braquer une équipe. Une phrase dans l'invitation suffit&nbsp;: «&nbsp;La réunion sera enregistrée pour préparer le compte rendu&#8239;; l'enregistrement sera supprimé ensuite.&nbsp;»</p>
+        <p>En visio, utilisez la fonction intégrée&nbsp;: elle affiche un signal visible par tous. En salle, posez le téléphone ou le dictaphone au centre de la table, loin du vidéoprojecteur et de la ventilation.</p>
         <div class="encadre encadre--exemple">
           <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mallette"/></svg></span>Exemple concret · exemple type, pas un client</p>
-          <p>Dans un cabinet comptable de huit personnes, la réunion du lundi se tient en salle. La responsable pose son téléphone au milieu de la table et dit : « J'enregistre pour le compte rendu, je supprime le fichier vendredi. » Personne ne s'y oppose, parce que la règle est connue de tous.</p>
+          <p>Dans un cabinet comptable de huit personnes, la réunion du lundi se tient en salle. La responsable pose son téléphone au milieu de la table et dit&nbsp;: «&nbsp;J'enregistre pour le compte rendu, je supprime le fichier vendredi.&nbsp;» Personne ne s'y oppose, parce que la règle est connue de tous.</p>
           <p class="encadre__micro"><a class="lien-fleche" href="/fr/journee-ia" data-cta="journee">On le fait avec vous en Journée IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
         </div>
-        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante :</strong> <a href="#step-2">transformer l'enregistrement en texte</a>.</span></p>
+        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante&nbsp;:</strong> <a href="#step-2">transformer l'enregistrement en texte</a>.</span></p>
       </div>
     </section>
 
@@ -1169,14 +1256,14 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
         <div class="etape__jauge" aria-hidden="true"></div>
       </div>
       <div class="etape__corps">
-        <p class="reponse-courte" data-speakable="true">Utilisez la transcription de votre outil de visio ou un service de transcription validé : <strong>vous obtenez un texte brut</strong>, pas encore un compte rendu.</p>
+        <p class="reponse-courte" data-speakable="true">Utilisez la transcription de votre outil de visio ou un service de transcription validé&nbsp;: <strong>vous obtenez un texte brut</strong>, pas encore un compte rendu.</p>
         <p>Microsoft Teams, Google Meet et Zoom proposent une transcription automatique selon les abonnements. Pour une réunion en salle, un service de transcription accepte le plus souvent un simple fichier audio.</p>
-        <p>Le texte obtenu est long et désordonné : phrases coupées, hésitations, noms mal orthographiés. C'est normal. Ne le corrigez pas à la main : l'étape suivante s'en charge.</p>
+        <p>Le texte obtenu est long et désordonné&nbsp;: phrases coupées, hésitations, noms mal orthographiés. C'est normal. Ne le corrigez pas à la main&nbsp;: l'étape suivante s'en charge.</p>
         <div class="encadre encadre--attention">
           <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg></span>Erreur fréquente</p>
           <p>Coller l'enregistrement dans le premier service gratuit trouvé en ligne. Vérifiez d'abord où le fichier est stocké et combien de temps il est conservé. En cas de doute, restez sur l'outil déjà validé par l'entreprise.</p>
         </div>
-        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante :</strong> <a href="#step-3">la consigne qui fait toute la différence</a>.</span></p>
+        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante&nbsp;:</strong> <a href="#step-3">la consigne qui fait toute la différence</a>.</span></p>
       </div>
     </section>
 
@@ -1185,32 +1272,32 @@ section:hover .ancre, .ancre:focus-visible { opacity: 1; }
       <div class="etape__tete">
         <span class="etape__num" aria-hidden="true">3</span>
         <p class="etape__rang">Étape 3 sur 6 <span class="etape__duree">≈ 15 min</span></p>
-        <h2 class="etape__titre" id="step-3" data-speakable="true">Quelle consigne donner à l'assistant ?</h2>
+        <h2 class="etape__titre" id="step-3" data-speakable="true">Quelle consigne donner à l'assistant&#8239;?</h2>
         <div class="etape__jauge" aria-hidden="true"></div>
       </div>
       <div class="etape__corps">
-        <p class="reponse-courte" data-speakable="true">Demandez <strong>trois rubriques fixes</strong> : les décisions, qui fait quoi, et pour quand. Précisez la longueur et le ton attendus.</p>
-        <p>Un assistant à qui l'on dit seulement « résume cette réunion » produit un résumé fidèle mais inutilisable. Il raconte la discussion dans l'ordre, au lieu de dire ce qui a été décidé. La consigne doit décrire le document que vous voulez recevoir.</p>
+        <p class="reponse-courte" data-speakable="true">Demandez <strong>trois rubriques fixes</strong>&nbsp;: les décisions, qui fait quoi, et pour quand. Précisez la longueur et le ton attendus.</p>
+        <p>Un assistant à qui l'on dit seulement «&nbsp;résume cette réunion&nbsp;» produit un résumé fidèle mais inutilisable. Il raconte la discussion dans l'ordre, au lieu de dire ce qui a été décidé. La consigne doit décrire le document que vous voulez recevoir.</p>
         <div class="encadre encadre--modele">
           <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-copier"/></svg></span>Modèle à copier</p>
 <pre>Voici la transcription d'une réunion d'équipe.
 Rédige un compte rendu d'une page maximum, en français,
-avec trois rubriques :
+avec trois rubriques&nbsp;:
 1. Décisions prises (une phrase chacune)
-2. Actions : qui fait quoi
-3. Échéances (date ou « à fixer »)
+2. Actions&nbsp;: qui fait quoi
+3. Échéances (date ou «&nbsp;à fixer&nbsp;»)
 N'invente rien. Si une information manque,
-écris « non précisé ».</pre>
+écris «&nbsp;non précisé&nbsp;».</pre>
         </div>
-        <p>Ajoutez au besoin votre propre rubrique, comme « points en suspens ». Gardez ensuite la consigne qui marche dans un document partagé : toute l'équipe gagnera du temps.</p>
+        <p>Ajoutez au besoin votre propre rubrique, comme «&nbsp;points en suspens&nbsp;». Gardez ensuite la consigne qui marche dans un document partagé&nbsp;: toute l'équipe gagnera du temps.</p>
         <figure class="avant-apres">
           <div class="avant-apres__grille">
             <div class="avant-apres__volet avant-apres__volet--brut">
-              <p class="avant-apres__etiquette">Avant : transcription</p>
-              <p class="avant-apres__brut">… euh donc pour le salon on part sur mars, enfin si Paul est d'accord, Paul ? oui ok mars. Et le devis Martin il faut le relancer, Sophie tu peux ? je regarde jeudi…</p>
+              <p class="avant-apres__etiquette">Avant&nbsp;: transcription</p>
+              <p class="avant-apres__brut">… euh donc pour le salon on part sur mars, enfin si Paul est d'accord, Paul&#8239;? oui ok mars. Et le devis Martin il faut le relancer, Sophie tu peux&#8239;? je regarde jeudi…</p>
             </div>
             <div class="avant-apres__volet avant-apres__volet--net">
-              <p class="avant-apres__etiquette">Après : compte rendu</p>
+              <p class="avant-apres__etiquette">Après&nbsp;: compte rendu</p>
               <dl class="avant-apres__net">
                 <div><dt>Décision</dt><dd>Participation au salon en mars.</dd></div>
                 <div><dt>Action</dt><dd>Sophie relance le devis Martin.</dd></div>
@@ -1220,13 +1307,13 @@ N'invente rien. Si une information manque,
           </div>
           <figcaption>Le même passage, avant et après la consigne. Dialogue fictif, écrit pour l'exemple.</figcaption>
         </figure>
-        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante :</strong> <a href="#step-4">la relecture, que l'on saute trop souvent</a>.</span></p>
+        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante&nbsp;:</strong> <a href="#step-4">la relecture, que l'on saute trop souvent</a>.</span></p>
       </div>
     </section>
 
     <aside class="cta-milieu cta-milieu--sage" aria-labelledby="cta-milieu-titre">
       <p class="cta-milieu__surtitre">Journée IA</p>
-      <p class="cta-milieu__titre" id="cta-milieu-titre">Vous préférez le faire avec quelqu'un ?</p>
+      <p class="cta-milieu__titre" id="cta-milieu-titre">Vous préférez le faire avec quelqu'un&#8239;?</p>
       <p>La Journée IA forme vos équipes l'après-midi, sur leurs propres dossiers.</p>
       <div class="cta-milieu__actions">
         <a class="btn btn--terracotta" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg>Découvrir la Journée IA</a>
@@ -1239,13 +1326,13 @@ N'invente rien. Si une information manque,
       <div class="etape__tete">
         <span class="etape__num" aria-hidden="true">4</span>
         <p class="etape__rang">Étape 4 sur 6 <span class="etape__duree">≈ 15 min</span></p>
-        <h2 class="etape__titre" id="step-4" data-speakable="true">Comment vérifier que rien d'important ne manque ?</h2>
+        <h2 class="etape__titre" id="step-4" data-speakable="true">Comment vérifier que rien d'important ne manque&#8239;?</h2>
         <div class="etape__jauge" aria-hidden="true"></div>
       </div>
       <div class="etape__corps">
-        <p class="reponse-courte" data-speakable="true">Relisez avec vos propres notes à côté et contrôlez <strong>les noms, les chiffres et les dates</strong> : ce sont eux que l'IA déforme le plus.</p>
-        <p>L'assistant ne fait pas d'erreur au hasard. Il se trompe surtout là où la transcription était floue : un nom propre mal entendu, un montant prononcé vite, une date dite « la semaine prochaine ». Ce sont aussi les informations qui coûtent cher quand elles sont fausses.</p>
-        <p>Pour la relecture, quatre contrôles suffisent :</p>
+        <p class="reponse-courte" data-speakable="true">Relisez avec vos propres notes à côté et contrôlez <strong>les noms, les chiffres et les dates</strong>&nbsp;: ce sont eux que l'IA déforme le plus.</p>
+        <p>L'assistant ne fait pas d'erreur au hasard. Il se trompe surtout là où la transcription était floue&nbsp;: un nom propre mal entendu, un montant prononcé vite, une date dite «&nbsp;la semaine prochaine&nbsp;». Ce sont aussi les informations qui coûtent cher quand elles sont fausses.</p>
+        <p>Pour la relecture, quatre contrôles suffisent&nbsp;:</p>
         <ul class="checklist">
           <li><span><strong>Chaque décision</strong> correspond à ce qui a vraiment été tranché.</span></li>
           <li><span><strong>Chaque action</strong> a un responsable nommé, et le bon.</span></li>
@@ -1253,7 +1340,7 @@ N'invente rien. Si une information manque,
           <li><span><strong>Rien n'est ajouté</strong> qui n'a pas été dit en réunion.</span></li>
         </ul>
         <p>Si vous corrigez plus de deux ou trois points, revenez à la consigne de l'étape 3. Le problème vient souvent d'une rubrique mal décrite, pas de l'outil.</p>
-        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante :</strong> <a href="#step-5">ce qu'il faut retirer avant de diffuser</a>.</span></p>
+        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante&nbsp;:</strong> <a href="#step-5">ce qu'il faut retirer avant de diffuser</a>.</span></p>
       </div>
     </section>
 
@@ -1262,22 +1349,22 @@ N'invente rien. Si une information manque,
       <div class="etape__tete">
         <span class="etape__num" aria-hidden="true">5</span>
         <p class="etape__rang">Étape 5 sur 6 <span class="etape__duree">≈ 5 min</span></p>
-        <h2 class="etape__titre" id="step-5" data-speakable="true">Que faire des données personnelles dans l'enregistrement ?</h2>
+        <h2 class="etape__titre" id="step-5" data-speakable="true">Que faire des données personnelles dans l'enregistrement&#8239;?</h2>
         <div class="etape__jauge" aria-hidden="true"></div>
       </div>
       <div class="etape__corps">
         <p class="reponse-courte" data-speakable="true">Retirez du compte rendu <strong>ce qui ne sert pas la décision</strong>, puis supprimez l'enregistrement et la transcription dans le délai annoncé.</p>
-        <p>Une réunion déborde souvent : un arrêt maladie évoqué, un client nommé avec son numéro, un désaccord personnel. Rien de cela n'a sa place dans un compte rendu diffusé. Le RGPD demande de ne garder que les données utiles, et pas plus longtemps que nécessaire.</p>
+        <p>Une réunion déborde souvent&nbsp;: un arrêt maladie évoqué, un client nommé avec son numéro, un désaccord personnel. Rien de cela n'a sa place dans un compte rendu diffusé. Le RGPD demande de ne garder que les données utiles, et pas plus longtemps que nécessaire.</p>
         <div class="encadre encadre--attention">
           <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-attention"/></svg></span>Attention</p>
           <ul>
-            <li><strong>Santé, opinions, vie privée :</strong> jamais dans un compte rendu d'équipe.</li>
-            <li><strong>Données clients :</strong> seulement dans un assistant validé pour cet usage.</li>
-            <li><strong>Fichiers audio :</strong> une date de suppression, annoncée et tenue.</li>
+            <li><strong>Santé, opinions, vie privée&nbsp;:</strong> jamais dans un compte rendu d'équipe.</li>
+            <li><strong>Données clients&nbsp;:</strong> seulement dans un assistant validé pour cet usage.</li>
+            <li><strong>Fichiers audio&nbsp;:</strong> une date de suppression, annoncée et tenue.</li>
           </ul>
           <p class="encadre__micro">Vos règles d'usage s'écrivent avec vous pendant la formation.</p>
         </div>
-        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante :</strong> <a href="#step-6">faire lire le compte rendu, vraiment</a>.</span></p>
+        <p class="etape__suite"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg><span><strong>Étape suivante&nbsp;:</strong> <a href="#step-6">faire lire le compte rendu, vraiment</a>.</span></p>
       </div>
     </section>
 
@@ -1286,24 +1373,24 @@ N'invente rien. Si une information manque,
       <div class="etape__tete">
         <span class="etape__num" aria-hidden="true">6</span>
         <p class="etape__rang">Étape 6 sur 6 <span class="etape__duree">≈ 10 min</span></p>
-        <h2 class="etape__titre" id="step-6" data-speakable="true">Comment partager le compte rendu à l'équipe ?</h2>
+        <h2 class="etape__titre" id="step-6" data-speakable="true">Comment partager le compte rendu à l'équipe&#8239;?</h2>
         <div class="etape__jauge" aria-hidden="true"></div>
       </div>
       <div class="etape__corps">
         <p class="reponse-courte" data-speakable="true">Envoyez-le <strong>le jour même</strong>, au même endroit à chaque fois, avec les actions en tête du message.</p>
-        <p>Un compte rendu lu le lendemain perd la moitié de son utilité. Fixez une règle simple : envoi avant la fin de journée, dans le canal habituel de l'équipe ou par e-mail. Mettez les actions et leurs responsables dans les trois premières lignes : c'est ce que tout le monde cherche.</p>
+        <p>Un compte rendu lu le lendemain perd la moitié de son utilité. Fixez une règle simple&nbsp;: envoi avant la fin de journée, dans le canal habituel de l'équipe ou par e-mail. Mettez les actions et leurs responsables dans les trois premières lignes&nbsp;: c'est ce que tout le monde cherche.</p>
         <p>Précisez enfin que le texte a été préparé avec l'aide d'un assistant d'IA, puis relu. Cette transparence rassure, et elle invite chacun à signaler une erreur plutôt qu'à la laisser passer.</p>
         <div class="encadre encadre--exemple">
           <p class="encadre__titre"><span class="encadre__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mallette"/></svg></span>Exemple concret · exemple type, pas un client</p>
-          <p>Une PME de maintenance industrielle publie chaque compte rendu dans le même fil de sa messagerie d'équipe. L'objet commence toujours par « Actions : » suivi des prénoms concernés. Chacun voit en un coup d'œil s'il a quelque chose à faire.</p>
+          <p>Une PME de maintenance industrielle publie chaque compte rendu dans le même fil de sa messagerie d'équipe. L'objet commence toujours par «&nbsp;Actions&nbsp;:&nbsp;» suivi des prénoms concernés. Chacun voit en un coup d'œil s'il a quelque chose à faire.</p>
           <p class="encadre__micro"><a class="lien-fleche" href="/fr/journee-ia" data-cta="journee">On le fait avec vous en Journée IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
         </div>
       </div>
     </section>
 
     <section aria-labelledby="combien-de-temps-prevoir-la-premiere-fois">
-      <div class="num-section"><span aria-hidden="true">Calcul</span><a class="ancre" href="#combien-de-temps-prevoir-la-premiere-fois" aria-label="Lien vers la section « Combien de temps prévoir la première fois ? »">#</a></div>
-      <h2 id="combien-de-temps-prevoir-la-premiere-fois" data-speakable="true">Combien de temps prévoir la première fois ?</h2>
+      <div class="num-section"><span aria-hidden="true">Calcul</span><a class="ancre" href="#combien-de-temps-prevoir-la-premiere-fois" aria-label="Lien vers la section «&nbsp;Combien de temps prévoir la première fois&#8239;?&nbsp;»">#</a></div>
+      <h2 id="combien-de-temps-prevoir-la-premiere-fois" data-speakable="true">Combien de temps prévoir la première fois&#8239;?</h2>
       <p class="reponse-courte" data-speakable="true">Prévoyez <strong>environ une heure</strong> pour le premier compte rendu, le temps de régler la consigne. Ensuite, la relecture devient l'essentiel du travail.</p>
       <p>Le temps gagné dépend de vos réunions, pas de l'outil. Plutôt que de croire un chiffre tout fait, calculez le vôtre avec la méthode ci-dessous, sur vos propres durées.</p>
 
@@ -1332,10 +1419,10 @@ N'invente rien. Si une information manque,
             </tbody>
           </table>
         </div>
-        <p class="tableau__note">Exemple illustratif : durées inventées pour montrer le calcul, à remplacer par les vôtres. Le premier mois, retirez environ une heure d'apprentissage. Sur téléphone, faites défiler le tableau vers la droite.</p>
+        <p class="tableau__note">Exemple illustratif&nbsp;: durées inventées pour montrer le calcul, à remplacer par les vôtres. Le premier mois, retirez environ une heure d'apprentissage. Sur téléphone, faites défiler le tableau vers la droite.</p>
       </div>
 
-      <p>Si votre résultat est faible, ce n'est pas un échec. Il vaut mieux le savoir après un mois d'essai que de garder un outil qui ne sert pas. Et le gain n'est pas seulement du temps : un compte rendu envoyé le jour même évite bien des « je croyais que c'était toi ».</p>
+      <p>Si votre résultat est faible, ce n'est pas un échec. Il vaut mieux le savoir après un mois d'essai que de garder un outil qui ne sert pas. Et le gain n'est pas seulement du temps&nbsp;: un compte rendu envoyé le jour même évite bien des «&nbsp;je croyais que c'était toi&nbsp;».</p>
     </section>
 
     <!-- 5. RÉSUMÉ DE FIN : check-list « Vous avez terminé si… » -->
@@ -1348,26 +1435,26 @@ N'invente rien. Si une information manque,
         <li><span>L'audio sera supprimé à la date annoncée.</span></li>
         <li><span>Le compte rendu est parti le jour même, actions en tête.</span></li>
       </ul>
-      <p class="resume__note">Cases cochées pour l'exemple : relisez-les avant votre prochaine réunion.</p>
+      <p class="resume__note">Cases cochées pour l'exemple&nbsp;: relisez-les avant votre prochaine réunion.</p>
     </section>
 
     <!-- 6. FAQ -->
     <section class="faq" id="faq" aria-labelledby="faq-titre" data-aeo="people-also-ask">
       <h2 class="bloc-titre" id="faq-titre">Questions fréquentes</h2>
       <details data-faq-q>
-        <summary>Peut-on enregistrer une réunion sans prévenir ?</summary>
+        <summary>Peut-on enregistrer une réunion sans prévenir&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Non. Enregistrer des paroles sans le consentement des personnes est interdit par le Code pénal, et le RGPD impose de les informer. Prévenez dans l'invitation et en début de réunion.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Quel assistant d'IA utiliser pour un compte rendu ?</summary>
+        <summary>Quel assistant d'IA utiliser pour un compte rendu&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Les assistants courants, comme Microsoft Copilot, ChatGPT, Le Chat de Mistral AI ou Claude, savent tous structurer une transcription. Le bon choix est celui que votre entreprise a validé pour ses données.</p></div>
       </details>
       <details data-faq-q>
-        <summary>L'IA peut-elle se tromper dans un compte rendu ?</summary>
+        <summary>L'IA peut-elle se tromper dans un compte rendu&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Oui, surtout sur les noms, les chiffres et les dates mal transcrits. C'est pourquoi la relecture de l'étape 4 n'est jamais facultative.</p></div>
       </details>
       <details data-faq-q>
-        <summary>Combien de temps garder l'enregistrement ?</summary>
+        <summary>Combien de temps garder l'enregistrement&#8239;?</summary>
         <div class="faq-answer" data-faq-a><p>Le temps de rédiger et de valider le compte rendu, puis supprimez-le. Fixez un délai court, annoncez-le aux participants et tenez-le.</p></div>
       </details>
     </section>
@@ -1376,13 +1463,13 @@ N'invente rien. Si une information manque,
     <section class="sources" id="sources" aria-labelledby="sources-titre">
       <h2 class="sources__titre" id="sources-titre"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-livre"/></svg>Sources et méthode</h2>
       <ol>
-        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier « Intelligence artificielle », recommandations, 2024</a></li>
+        <li><a href="https://www.cnil.fr/fr/intelligence-artificielle">CNIL, dossier «&nbsp;Intelligence artificielle&nbsp;», recommandations, 2024</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">Règlement (UE) 2016/679 (RGPD), articles 5 et 13, Journal officiel de l'Union européenne, 2016</a></li>
         <li><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417929">Code pénal, article 226-1, Légifrance</a></li>
         <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Règlement (UE) 2024/1689 sur l'intelligence artificielle, article 4, Journal officiel de l'Union européenne, 2024</a></li>
       </ol>
       <h3>Méthode</h3>
-      <p>Les six étapes, les durées indicatives, la consigne et les trois scénarios sont des repères éditoriaux d'Axion-IA, construits pour illustrer la méthode : ce ne sont ni des mesures ni des résultats de clients. Les textes cités ont été consultés à la date de mise à jour.</p>
+      <p>Les six étapes, les durées indicatives, la consigne et les trois scénarios sont des repères éditoriaux d'Axion-IA, construits pour illustrer la méthode&nbsp;: ce ne sont ni des mesures ni des résultats de clients. Les textes cités ont été consultés à la date de mise à jour.</p>
     </section>
 
     <!-- 8. AUTEUR + MENTION IA -->
@@ -1457,7 +1544,7 @@ N'invente rien. Si une information manque,
     <h2 class="bloc-titre" id="lies-titre">À lire aussi</h2>
     <ul class="lies__liste">
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Analyse</span><h3 class="lie__titre"><a href="/fr/blog/projets-ia-pme-premier-essai">Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
-      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier : lequel choisir ?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
+      <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Comparatif</span><h3 class="lie__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d'IA généraliste ou outil métier&nbsp;: lequel choisir&#8239;?</a></h3><span class="lie__meta">9 min de lecture</span></div></article></li>
       <li><article class="lie"><div class="lie__visuel" aria-hidden="true"></div><div class="lie__corps"><span class="pastille pastille--claire">Sélection</span><h3 class="lie__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu'une PME peut confier à l'IA</a></h3><span class="lie__meta">8 min de lecture</span></div></article></li>
     </ul>
   </section>
@@ -1476,7 +1563,7 @@ N'invente rien. Si une information manque,
   <section class="cta-fin sur-sombre" aria-labelledby="cta-fin-titre">
     <p class="pastille pastille--pleine cta-fin__surtitre">Passer à l'action</p>
     <h2 class="cta-fin__titre" id="cta-fin-titre">Passer du guide <em>à vos dossiers</em></h2>
-    <p class="cta-fin__phrase">Vous repartez de la journée avec vos règles d'usage de l'IA et un plan d'action à 90 jours.</p>
+    <p class="cta-fin__phrase">Vos règles d'usage de l'IA s'écrivent avec vous pendant la formation. Puis votre rapport détaillé, avec un plan d'action à 90 jours, sous 10 jours ouvrés.</p>
     <ul class="cta-fin__actions">
       <li><a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=guide-fin" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendrier"/></svg><span class="btn__texte">Diagnostic IA, 45 min<span class="btn__sous">Gratuit · 45 minutes · Sans engagement</span></span></a></li>
       <li><a class="btn btn--terracotta" href="/fr/journee-ia" data-cta="journee"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-soleil"/></svg><span class="btn__texte">Découvrir la Journée IA<span class="btn__sous">Dans vos locaux, partout en France</span></span></a></li>
@@ -1484,7 +1571,7 @@ N'invente rien. Si une information manque,
     </ul>
     <ol class="deroule" aria-label="Comment se passe le Diagnostic IA">
       <li><strong>Vous choisissez un créneau</strong><span>Visioconférence Google Meet ou téléphone, confirmation immédiate.</span></li>
-      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching : on qualifie votre besoin.</span></li>
+      <li><strong>45 minutes sur votre activité</strong><span>Audit, formation, intégration et automatisation ou coaching&nbsp;: on qualifie votre besoin.</span></li>
       <li><strong>Vous repartez avec des pistes concrètes</strong><span>Et le bon module si vous souhaitez aller plus loin. Sans engagement.</span></li>
     </ol>
     <ul class="rassurance">
