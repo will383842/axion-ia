@@ -20,7 +20,14 @@ const LIBELLE: Record<Decision, { bouton: string; envoyer: string }> = {
   refuser: { bouton: "Non, définitif", envoyer: "Envoyer le refus" },
 };
 
-export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
+export function DecisionDossier({
+  apporteurId,
+  onReussite,
+}: {
+  apporteurId: string;
+  /** Message de réussite remonté au parent, qui survit au rechargement de la page. */
+  onReussite?: (message: string) => void;
+}) {
   const [note, setNote] = useState("");
   const [choix, setChoix] = useState<Decision | null>(null);
   const [email, setEmail] = useState<EmailApercu | null>(null);
@@ -76,7 +83,8 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
         texte,
         nomVerifie,
       });
-      setRetour(r);
+      if (r.ok && onReussite) onReussite(r.message);
+      else setRetour(r);
       if (r.ok) fermer();
     });
 
