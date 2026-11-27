@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   CLE_QUOTA_PREFIXE,
@@ -8,6 +8,8 @@ import {
   cleQuota,
   jourPacifique,
   reserverInspections,
+  reserverSuivi,
+  magasinQuotaRedis,
   type MagasinQuota,
 } from "../quota";
 
@@ -79,5 +81,29 @@ describe("quota d'inspection partagé", () => {
     expect(await reserverInspections(m, "rotation", 0, new Date())).toBe(0);
     expect(await reserverInspections(m, "rotation", -5, new Date())).toBe(0);
     expect(m.etat.size).toBe(0);
+  });
+});
+
+describe("suivi après publication sur le compteur partagé", () => {
+  it("passe par la même clé que la rotation, plafonné à 200", async () => {
+    const m = magasin();
+    const maintenant = new Date("2026-11-27T12:00:00Z");
+    expect(await reserverSuivi(m, 150, 200, maintenant)).toBe(150);
+    expect(await reserverSuivi(m, 100, 200, maintenant)).toBe(50);
+    expect(await reserverSuivi(m, 1, 9999, maintenant)).toBe(0);
+    expect([...m.etat.keys()]).toEqual(["gsc:inspection:quota:2026-11-27"]);
+  });
+
+  it("respecte un plafond d'appelant plus bas", async () => {
+    expect(await reserverSuivi(magasin(), 10, 3, new Date())).toBe(3);
+  });
+
+  it("le magasin Redis appelle un script atomique sur la clé du jour", async () => {
+    const evalMock = vi.fn().mockResolvedValue(7);
+    const r = await magasinQuotaRedis({ eval: evalMock }).reserver("k", "rotation", 10, 1400, 2000);
+    expect(r).toBe(7);
+    const args = evalMock.mock.calls[0]!;
+    expect(String(args[0])).toContain("HINCRBY");
+    expect(args.slice(1)).toEqual([1, "k", "rotation", 10, 1400, 2000]);
   });
 });

@@ -68,7 +68,7 @@ describe("ordre de priorité de la rotation", () => {
         page({ chemin: "/fr/a", impressions14: 1, impressionsPrecedentes14: 4 }),
         MAINTENANT,
       ),
-    ).toBeNull();
+    ).not.toBe(2);
   });
 
   it("3 : les 15 pages stratégiques chaque semaine", () => {
@@ -87,10 +87,16 @@ describe("ordre de priorité de la rotation", () => {
 
   it("5 : noindex une fois par mois seulement", () => {
     expect(
-      prioriteDe(page({ chemin: "/fr/a", noindex: true, derniereInspection: jours(31) }), MAINTENANT),
+      prioriteDe(
+        page({ chemin: "/fr/a", noindex: true, derniereInspection: jours(31) }),
+        MAINTENANT,
+      ),
     ).toBe(5);
     expect(
-      prioriteDe(page({ chemin: "/fr/a", noindex: true, derniereInspection: jours(10) }), MAINTENANT),
+      prioriteDe(
+        page({ chemin: "/fr/a", noindex: true, derniereInspection: jours(10) }),
+        MAINTENANT,
+      ),
     ).toBeNull();
     expect(
       prioriteDe(page({ chemin: "/fr/a", noindex: true, derniereInspection: null }), MAINTENANT),

@@ -13,6 +13,7 @@ import { Queue } from "bullmq";
 import {
   FUSEAU_SEO_PILOTAGE,
   PATTERN_SEO_INGESTION,
+  PATTERN_SEO_INSPECTION,
   PATTERN_SEO_PURGE,
   PATTERN_SEO_RATTRAPAGE,
 } from "@/server/seo-pilotage/planification";
@@ -1793,6 +1794,7 @@ export async function bootRepeatableJobs(): Promise<void> {
     const programmeSeo = [
       { tache: "ingestion-gsc", pattern: PATTERN_SEO_INGESTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "rattrapage-gsc", pattern: PATTERN_SEO_RATTRAPAGE, tz: undefined },
+      { tache: "inspection", pattern: PATTERN_SEO_INSPECTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "purge", pattern: PATTERN_SEO_PURGE, tz: FUSEAU_SEO_PILOTAGE },
     ] as const;
     for (const { tache, pattern, tz } of programmeSeo) {
