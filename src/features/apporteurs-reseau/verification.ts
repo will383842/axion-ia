@@ -39,6 +39,14 @@ import { retraitDe } from "./retrait";
 const dossierUrlSi = (url: string | null): { dossierUrl?: string } =>
   url ? { dossierUrl: url } : {};
 
+/**
+ * E-mail « contrat signé » : la règle par rendez-vous n'est annoncée que si elle s'applique
+ * vraiment à cet apporteur (`regleDe` : contrat 2.8 ET drapeau APPORTEURS_VALIDATION_RDV allumé).
+ * Absent : le gabarit garde l'ancien texte (tolère la fenêtre app/worker dans les deux sens).
+ */
+const regleRendezVousSi = (regle: string | null | undefined): { regleRendezVous?: true } =>
+  regle === "rendez_vous" ? { regleRendezVous: true } : {};
+
 export type Decision = "contresigner" | "a_completer" | "refuser";
 
 const SIGNATAIRE_SOCIETE = "Williams Jullin";
@@ -249,7 +257,11 @@ export async function preparerDecision(
         gabarit,
         // Le lien du dossier porte le formulaire « Déclarer une entreprise » (bouton de l'e-mail).
         payload: avecTexteLibre(
-          { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
+          {
+            contactName: d.prenom,
+            ...dossierUrlSi(urlDossier(d.id, d.versionLien)),
+            ...regleRendezVousSi(d.regleAttribution),
+          },
           texte,
         ),
       },
@@ -566,7 +578,11 @@ export async function renvoyerContratSigne(
     entityType: "ApporteurReseau",
     entityId: d.id,
     gabarit: "apporteur-contrat-signe",
-    payload: { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
+    payload: {
+      contactName: d.prenom,
+      ...dossierUrlSi(urlDossier(d.id, d.versionLien)),
+      ...regleRendezVousSi(d.regleAttribution),
+    },
     jobId: `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`,
     attachments: pieces,
   });
@@ -700,6 +716,8 @@ export async function envoyerLien(
   mot: string | null,
   texte?: string,
   confirmerRenvoi = false,
+  /** Identifiant de job FIXE (anti-doublon) ; par défaut horodaté, comportement historique. */
+  jobId?: string,
 ) {
   const prep = await preparerLien(apporteurId, mot, texte);
   if (!prep.ok) return prep;
@@ -711,7 +729,7 @@ export async function envoyerLien(
   }
   const r = await envoyer({
     ...prep.envoi,
-    jobId: `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
+    jobId: jobId ?? `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
   });
   return {
     ok: true as const,

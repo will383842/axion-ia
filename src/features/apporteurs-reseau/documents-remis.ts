@@ -1,7 +1,9 @@
 // DOCUMENTS REMIS à l'apporteur (2026-11-25) : le registre UNIQUE de ce qu'il doit pouvoir
 // retrouver — titre, phrase simple, chemin, condition d'affichage.
 //
-// Le guide de démarrage (PDF A4) est servi par une route contrôlée, sous contrat signé seulement.
+// Le guide de démarrage, la fiche des commissions et le livret (PDF) sont servis par des routes
+// contrôlées de l'espace de l'apporteur, ouvertes par son lien personnel avant comme après la
+// signature (dossier modifiable, à vérifier ou signé).
 //
 // Lu par la page « Mes documents » de son espace
 // (`/apporteur/dossier/<apporteurId>/<jeton>/documents`) ; module PUR (ni base, ni disque, ni
@@ -10,8 +12,9 @@
 //   · ce fichier ne contrôle AUCUN accès : il dit seulement quoi lister. Le lien personnel est
 //     vérifié par `lireDossierParLien`, et chaque adresse listée refait son propre contrôle ;
 //   · aucun montant, aucun pourcentage : les chiffres vivent dans les documents eux-mêmes ;
-//   · le livret d'accueil n'est listé que si son fichier existe dans `public/` : c'est
-//     l'appelant, côté serveur, qui le constate et le dit par `livretDisponible`.
+//   · le livret d'accueil n'est listé que si son fichier existe (`private/apporteurs/`) : c'est
+//     l'appelant, côté serveur, qui le constate (`lireLivret() !== null`) et le dit par
+//     `livretDisponible`.
 
 /** Ce qu'il faut savoir du dossier pour décider des lignes à montrer. */
 export interface ContexteDocuments {
@@ -21,7 +24,7 @@ export interface ContexteDocuments {
   readonly sousContrat: boolean;
   /** Le PDF du contrat signé des deux parties existe et peut être téléchargé. */
   readonly contratSigneDisponible: boolean;
-  /** Le fichier du livret d'accueil existe dans `public/` (constaté côté serveur). */
+  /** Le fichier du livret d'accueil existe et est lisible (constaté côté serveur). */
   readonly livretDisponible: boolean;
 }
 
@@ -47,8 +50,9 @@ export interface DocumentRemis {
   readonly nouvelOnglet: boolean;
 }
 
-export const CHEMIN_FICHE_COMMISSIONS = "/documents/apporteurs/comment-ca-marche.pdf";
-export const CHEMIN_LIVRET = "/documents/apporteurs/livret-apporteur.pdf";
+/** Adresses des documents remis : des routes de l'espace personnel, jamais un fichier public. */
+export const CHEMIN_FICHE_COMMISSIONS = (espace: string): string => `${espace}/fiche-commissions`;
+export const CHEMIN_LIVRET = (espace: string): string => `${espace}/livret`;
 
 export const DOCUMENTS_REMIS: readonly DocumentRemis[] = [
   {
@@ -69,7 +73,7 @@ export const DOCUMENTS_REMIS: readonly DocumentRemis[] = [
     actionTelechargement: "Télécharger le guide (PDF A4)",
     chemin: (espace) => `${espace}/guide`,
     telechargement: (espace) => `${espace}/guide?dl=1`,
-    visible: (c) => c.sousContrat,
+    visible: () => true,
     nouvelOnglet: true,
   },
   {
@@ -77,7 +81,7 @@ export const DOCUMENTS_REMIS: readonly DocumentRemis[] = [
     titre: "La fiche des commissions",
     description: "Comment vos commissions sont calculées et versées, expliqué simplement.",
     action: "Ouvrir la fiche (PDF)",
-    chemin: () => CHEMIN_FICHE_COMMISSIONS,
+    chemin: CHEMIN_FICHE_COMMISSIONS,
     visible: () => true,
     nouvelOnglet: true,
   },
@@ -86,7 +90,7 @@ export const DOCUMENTS_REMIS: readonly DocumentRemis[] = [
     titre: "Le livret d'accueil",
     description: "Le guide pour bien démarrer dans le réseau, étape par étape.",
     action: "Ouvrir le livret (PDF)",
-    chemin: () => CHEMIN_LIVRET,
+    chemin: CHEMIN_LIVRET,
     visible: (c) => c.livretDisponible,
     nouvelOnglet: true,
   },
@@ -146,7 +150,7 @@ export const DOCUMENTS_INTRO =
   "Tous les documents que nous vous avons remis, réunis au même endroit.";
 /** Dossier pas encore signé : ce qui viendra s'ajouter. */
 export const DOCUMENTS_NON_SIGNE =
-  "Votre contrat, votre guide de démarrage, la charte de marque et vos outils de communication s'ajouteront ici dès que votre contrat sera signé.";
+  "Votre contrat signé, la charte de marque et vos outils de communication s'ajouteront ici dès que votre contrat sera signé.";
 
 /** Ce que voit qui ouvre la page sans lien personnel valide : aucun document. */
 export const DOCUMENTS_RESERVES = {
