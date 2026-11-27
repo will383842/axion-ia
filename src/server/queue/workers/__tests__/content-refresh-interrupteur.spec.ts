@@ -10,6 +10,8 @@ vi.mock("@/lib/redis", () => ({
   },
 }));
 vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
+// PR 17 : réglage console sur marche (la variable d'environnement reste le coupe-circuit).
+vi.mock("@/server/content-gen/equipe/pilotage", () => ({ equipeEnMarche: async () => true }));
 vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
 vi.mock("@/server/content-gen/seo/gsc-client", () => ({

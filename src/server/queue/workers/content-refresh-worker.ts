@@ -33,6 +33,7 @@ import {
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { gscInspectUrl, gscPageMetricsForUrl } from "@/server/content-gen/seo/gsc-client";
 import { equipeEditorialeActive } from "@/server/content-gen/equipe/maillage";
+import { equipeEnMarche } from "@/server/content-gen/equipe/pilotage";
 import {
   choisirCandidatsMiseAJour,
   estCannibalise,
@@ -330,7 +331,9 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
     return { scannedCount: 0, flaggedCount: 0, refreshedCount: 0, checkedAt };
   }
 
-  if (job.data.tache && job.data.tache !== "mise-a-jour" && equipeEditorialeActive()) {
+  // PR 17 : variable allumée ET console sur marche (arrêt console = comportement d'avant).
+  const equipeMarche = equipeEditorialeActive() && (await equipeEnMarche());
+  if (job.data.tache && job.data.tache !== "mise-a-jour" && equipeMarche) {
     return runTacheEquipe(job.data.tache, checkedAt);
   }
 
@@ -342,7 +345,7 @@ async function runRefreshJob(job: Job<RefreshJobData>): Promise<ContentRefreshRe
 
   // Scan : articles tier-1 publiés non rafraîchis depuis > olderThanDays, du
   // plus ancien au plus récent (les plus décayés d'abord). Best-effort.
-  const equipe = equipeEditorialeActive();
+  const equipe = equipeMarche;
   // Le corps (Text) n'est lu que pour la mise à jour : la requête d'avant reste inchangée sinon.
   const avecCorps = equipe && job.data.tache === "mise-a-jour";
   const stale = await prisma.article
