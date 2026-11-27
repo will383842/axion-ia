@@ -19,6 +19,8 @@ import {
 
 export interface FicheInitiale {
   id?: string;
+  /** `updatedAt` de la fiche chargée (ISO) : refus serveur si elle a changé entre-temps. */
+  version?: string;
   status: string;
   publishedAt: boolean;
   category: string;
@@ -126,7 +128,7 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
       setInfo(null);
       setChamps({});
       const r = f.id
-        ? await modifierCollaborateur(f.id, payload())
+        ? await modifierCollaborateur(f.id, payload(), f.version)
         : await creerCollaborateur(payload());
       if (!r.ok) {
         setErreur(r.erreur);

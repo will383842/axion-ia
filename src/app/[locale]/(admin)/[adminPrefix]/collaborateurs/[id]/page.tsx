@@ -40,6 +40,7 @@ export default async function CollaborateurPage({
   });
   const initial: FicheInitiale = {
     id: m.id,
+    version: m.updatedAt.toISOString(),
     status: m.status,
     publishedAt: m.publishedAt !== null,
     category: m.category,
@@ -70,7 +71,7 @@ export default async function CollaborateurPage({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader title={`Fiche : ${m.firstName}`} description={`Statut : ${m.status}`} />
-      <CollaborateurForm initial={initial} />
+      <CollaborateurForm key={initial.version} initial={initial} />
       <section className="mt-8" aria-label="Journal">
         <h2 className="text-lg font-semibold">Journal</h2>
         <ul className="mt-2 space-y-1">

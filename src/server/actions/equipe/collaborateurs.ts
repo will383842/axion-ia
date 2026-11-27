@@ -371,11 +371,15 @@ export async function creerCollaborateur(
 export async function modifierCollaborateur(
   id: unknown,
   entree: unknown,
+  version: unknown,
 ): Promise<ResultatAction<{ slug: string }>> {
   const admin = await adminOuRefus();
   if (!admin) return { ok: false, erreur: ERREUR_ACCES };
   const idOk = idSchema.safeParse(id);
   if (!idOk.success) return { ok: false, erreur: "Identifiant invalide." };
+  if (typeof version !== "string" || Number.isNaN(Date.parse(version))) {
+    return { ok: false, erreur: "Version de la fiche manquante : rechargez la page." };
+  }
   const parse = champsFicheSchema.safeParse(entree);
   if (!parse.success) {
     return { ok: false, erreur: "Fiche invalide.", champs: messagesZod(parse.error) };
@@ -387,6 +391,12 @@ export async function modifierCollaborateur(
     const res = await prisma.$transaction(async (tx) => {
       const actuel = await tx.teamMember.findUnique({ where: { id: idOk.data } });
       if (!actuel) return { ok: false as const, erreur: "Fiche introuvable." };
+      if (actuel.updatedAt.toISOString() !== new Date(version as string).toISOString()) {
+        return {
+          ok: false as const,
+          erreur: "La fiche a changé depuis l'ouverture du formulaire : rechargez la page.",
+        };
+      }
       if (actuel.erasureRequestedAt) {
         return {
           ok: false as const,
@@ -595,11 +605,15 @@ export async function depublierCollaborateur(
   return res;
 }
 
-export async function basculerPointCarte(id: unknown, actif: unknown): Promise<ResultatAction> {
+export async function basculerPointCarte(
+  id: unknown,
+  actif: unknown,
+  version: unknown,
+): Promise<ResultatAction> {
   const admin = await adminOuRefus();
   if (!admin) return { ok: false, erreur: ERREUR_ACCES };
   const idOk = idSchema.safeParse(id);
-  if (!idOk.success || typeof actif !== "boolean")
+  if (!idOk.success || typeof actif !== "boolean" || typeof version !== "string")
     return { ok: false, erreur: "Demande invalide." };
   let aRevalider: string | null = null;
   const res = await prisma.$transaction(async (tx) => {
@@ -616,6 +630,12 @@ export async function basculerPointCarte(id: unknown, actif: unknown): Promise<R
       },
     });
     if (!m) return { ok: false as const, erreur: "Fiche introuvable." };
+    if (m.updatedAt.toISOString() !== new Date(version as string).toISOString()) {
+      return {
+        ok: false as const,
+        erreur: "La fiche a changé depuis l'affichage de la liste : rechargez la page.",
+      };
+    }
     if (m.erasureRequestedAt) {
       return {
         ok: false as const,

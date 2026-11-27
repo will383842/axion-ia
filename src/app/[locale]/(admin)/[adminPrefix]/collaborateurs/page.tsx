@@ -141,6 +141,7 @@ export default async function CollaborateursPage({ params, searchParams }: PageP
                       id={m.id}
                       actif={m.showOnMap}
                       possible={m.latitude !== null}
+                      version={m.updatedAt.toISOString()}
                     />
                   </td>
                   <td>{m.publishedAt ? m.publishedAt.toISOString().slice(0, 10) : "—"}</td>
@@ -168,6 +169,7 @@ function lire(categorie: string | undefined, statut: string | undefined) {
       showOnMap: true,
       latitude: true,
       publishedAt: true,
+      updatedAt: true,
       questionnaireVersion: true,
       photoKind: true,
       photoConsentAt: true,

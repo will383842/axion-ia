@@ -41,6 +41,7 @@ import {
   rechercherLieux,
 } from "../collaborateurs";
 
+const VERSION = "2026-11-01T00:00:00.000Z";
 const ID = "11111111-1111-4111-8111-111111111111";
 const ADMIN = "admin-1";
 const NOTE = "Accord reçu par message le 20/11, copie conservée";
@@ -109,10 +110,10 @@ describe("droits : administrateur seulement, dans CHAQUE action", () => {
     ["rechercherLieux", () => rechercherLieux("Anne")],
     ["proposerSlug", () => proposerSlugCollaborateur({ firstName: "Julie", category: "autres" })],
     ["creer", () => creerCollaborateur(fiche())],
-    ["modifier", () => modifierCollaborateur(ID, fiche())],
+    ["modifier", () => modifierCollaborateur(ID, fiche(), VERSION)],
     ["publier", () => publierCollaborateur(ID)],
     ["depublier", () => depublierCollaborateur(ID)],
-    ["carte", () => basculerPointCarte(ID, true)],
+    ["carte", () => basculerPointCarte(ID, true, VERSION)],
   ];
   for (const [nom, appel] of appels) {
     for (const role of [null, "reader", "editor", "secretaire", "responsable_qualite"]) {
@@ -295,7 +296,7 @@ describe("slug unique", () => {
 
   it("slug figé après la première publication", async () => {
     m.tm.findUnique.mockResolvedValue(existant({ status: "publie", publishedAt: new Date() }));
-    const r = await modifierCollaborateur(ID, fiche({ slug: "autre-slug" }));
+    const r = await modifierCollaborateur(ID, fiche({ slug: "autre-slug" }), VERSION);
     expect(r.ok).toBe(false);
     expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
@@ -303,10 +304,10 @@ describe("slug unique", () => {
 
 describe("modifierCollaborateur", () => {
   it("refuse un id qui n'est pas un UUID et une fiche absente", async () => {
-    expect((await modifierCollaborateur("../../etc", fiche())).ok).toBe(false);
+    expect((await modifierCollaborateur("../../etc", fiche(), VERSION)).ok).toBe(false);
     expect(m.tm.findUnique).not.toHaveBeenCalled();
     m.tm.findUnique.mockResolvedValue(null);
-    expect((await modifierCollaborateur(ID, fiche())).ok).toBe(false);
+    expect((await modifierCollaborateur(ID, fiche(), VERSION)).ok).toBe(false);
     expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
 
@@ -317,6 +318,7 @@ describe("modifierCollaborateur", () => {
     const r = await modifierCollaborateur(
       ID,
       fiche({ firstName: "Juliette", consentPublication: true }),
+      VERSION,
     );
     expect(r).toEqual({ ok: true, slug: "julie" });
     expect(m.revalidatePath).toHaveBeenCalledWith("/fr/equipe");
@@ -328,7 +330,7 @@ describe("modifierCollaborateur", () => {
 
   it("ne revalide pas un brouillon", async () => {
     m.tm.findUnique.mockResolvedValue(existant());
-    await modifierCollaborateur(ID, fiche());
+    await modifierCollaborateur(ID, fiche(), VERSION);
     expect(m.revalidatePath).not.toHaveBeenCalled();
   });
 
@@ -336,14 +338,14 @@ describe("modifierCollaborateur", () => {
     m.tm.findUnique.mockResolvedValue(
       existant({ status: "publie", publishedAt: new Date(), publicationConsentAt: new Date() }),
     );
-    const r = await modifierCollaborateur(ID, fiche({ consentPublication: false }));
+    const r = await modifierCollaborateur(ID, fiche({ consentPublication: false }), VERSION);
     expect(r.ok).toBe(false);
     expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
 
   it("retire l'accord LinkedIn et le journalise", async () => {
     m.tm.findUnique.mockResolvedValue(existant({ linkedinConsentAt: new Date() }));
-    await modifierCollaborateur(ID, fiche({ consentLinkedin: false }));
+    await modifierCollaborateur(ID, fiche({ consentLinkedin: false }), VERSION);
     expect(m.tm.updateMany.mock.calls[0]![0].data).toMatchObject({
       linkedinConsentAt: null,
       linkedinConsentVersion: null,
@@ -357,7 +359,7 @@ describe("modifierCollaborateur", () => {
     m.tm.findUnique.mockResolvedValue(
       existant({ publicationConsentAt: new Date(), consentSource: "questionnaire" }),
     );
-    const r = await modifierCollaborateur(ID, fiche({ consentPublication: true }));
+    const r = await modifierCollaborateur(ID, fiche({ consentPublication: true }), VERSION);
     expect(r.ok).toBe(true);
     expect(m.tm.updateMany.mock.calls[0]![0].data.consentSource).toBeUndefined();
   });
@@ -367,7 +369,7 @@ describe("concurrence, effacement, preuve", () => {
   it("modifier refuse si la fiche a changé entre la lecture et l'écriture", async () => {
     m.tm.findUnique.mockResolvedValue(existant());
     m.tm.updateMany.mockResolvedValue({ count: 0 });
-    const r = await modifierCollaborateur(ID, fiche());
+    const r = await modifierCollaborateur(ID, fiche(), VERSION);
     expect(r.ok).toBe(false);
     expect(m.ev.create).not.toHaveBeenCalled();
     expect(m.tm.updateMany.mock.calls[0]![0].where).toMatchObject({ id: ID, status: "brouillon" });
@@ -379,17 +381,36 @@ describe("concurrence, effacement, preuve", () => {
       status: "brouillon",
       latitude: 1,
       longitude: 1,
-      updatedAt: new Date(),
+      updatedAt: new Date(VERSION),
     });
     m.tm.updateMany.mockResolvedValue({ count: 0 });
-    expect((await basculerPointCarte(ID, true)).ok).toBe(false);
+    expect((await basculerPointCarte(ID, true, VERSION)).ok).toBe(false);
     expect(m.ev.create).not.toHaveBeenCalled();
+  });
+  it("modifier refuse un formulaire ouvert sur une version périmée", async () => {
+    m.tm.findUnique.mockResolvedValue(existant({ updatedAt: new Date("2026-11-02T00:00:00Z") }));
+    expect((await modifierCollaborateur(ID, fiche(), VERSION)).ok).toBe(false);
+    expect((await modifierCollaborateur(ID, fiche(), undefined)).ok).toBe(false);
+    expect(m.tm.updateMany).not.toHaveBeenCalled();
+  });
+  it("carte refuse une liste périmée", async () => {
+    m.tm.findUnique.mockResolvedValue({
+      id: ID,
+      slug: "j",
+      status: "brouillon",
+      latitude: 1,
+      longitude: 1,
+      updatedAt: new Date("2026-11-02T00:00:00Z"),
+      erasureRequestedAt: null,
+    });
+    expect((await basculerPointCarte(ID, true, VERSION)).ok).toBe(false);
+    expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
   it("une demande d'effacement verrouille modification et publication", async () => {
     m.tm.findUnique.mockResolvedValue(
       existant({ erasureRequestedAt: new Date(), publicationConsentAt: new Date() }),
     );
-    expect((await modifierCollaborateur(ID, fiche())).ok).toBe(false);
+    expect((await modifierCollaborateur(ID, fiche(), VERSION)).ok).toBe(false);
     expect((await publierCollaborateur(ID)).ok).toBe(false);
     expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
@@ -398,6 +419,7 @@ describe("concurrence, effacement, preuve", () => {
     const r = await modifierCollaborateur(
       ID,
       fiche({ consentPublication: true, consentNote: NOTE }),
+      VERSION,
     );
     expect(r.ok).toBe(false);
   });
@@ -412,6 +434,7 @@ describe("concurrence, effacement, preuve", () => {
     await modifierCollaborateur(
       ID,
       fiche({ consentPublication: true, consentLinkedin: true, consentNote: NOTE }),
+      VERSION,
     );
     const note = m.tm.updateMany.mock.calls[0]![0].data.consentNote as string;
     expect(note).toContain("preuve publication initiale");
@@ -531,17 +554,18 @@ describe("basculerPointCarte", () => {
       status: "publie",
       latitude: null,
       longitude: null,
+      updatedAt: new Date(VERSION),
     });
-    expect((await basculerPointCarte(ID, true)).ok).toBe(false);
+    expect((await basculerPointCarte(ID, true, VERSION)).ok).toBe(false);
     m.tm.findUnique.mockResolvedValue({
       id: ID,
       slug: "julie",
       status: "publie",
       latitude: 45.9,
       longitude: 6.1,
-      updatedAt: new Date(),
+      updatedAt: new Date(VERSION),
     });
-    expect((await basculerPointCarte(ID, true)).ok).toBe(true);
+    expect((await basculerPointCarte(ID, true, VERSION)).ok).toBe(true);
     expect(m.tm.updateMany).toHaveBeenCalledWith({
       where: { id: ID, updatedAt: expect.anything() },
       data: { showOnMap: true },
@@ -557,11 +581,12 @@ describe("basculerPointCarte", () => {
       status: "brouillon",
       latitude: null,
       longitude: null,
+      updatedAt: new Date(VERSION),
     });
-    expect((await basculerPointCarte(ID, false)).ok).toBe(true);
+    expect((await basculerPointCarte(ID, false, VERSION)).ok).toBe(true);
     expect(m.revalidatePath).not.toHaveBeenCalled();
-    expect((await basculerPointCarte(ID, "oui")).ok).toBe(false);
-    expect((await basculerPointCarte("x", true)).ok).toBe(false);
+    expect((await basculerPointCarte(ID, "oui", VERSION)).ok).toBe(false);
+    expect((await basculerPointCarte("x", true, VERSION)).ok).toBe(false);
   });
 });
 

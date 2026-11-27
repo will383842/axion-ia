@@ -29,7 +29,7 @@ const sansHtml = (v: string) =>
   !/\]\(\s*(?!https:\/\/)/i.test(v);
 
 /** Un seul mot (trait d'union et apostrophe permis) : le nom de famille ne passe pas. */
-const PRENOM = /^[\p{L}][\p{L}'-]*$/u;
+const PRENOM = /^[\p{L}][\p{L}\p{M}'’-]*$/u;
 
 /** Adresse https sans identifiants ni port ; stockée sous sa forme normalisée. */
 const urlHttps = (max: number, linkedin = false) =>
@@ -52,7 +52,7 @@ const urlHttps = (max: number, linkedin = false) =>
               u.search === "" &&
               u.hash === "" &&
               /^\/(in|company)\/[A-Za-z0-9_%-]+\/?$/.test(u.pathname)));
-        if (ok) return u.href;
+        if (ok && u.href.length <= max) return u.href;
       } catch {
         /* refusée ci-dessous */
       }
