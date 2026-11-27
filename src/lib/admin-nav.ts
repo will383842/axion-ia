@@ -991,6 +991,15 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       subGroup: "suivre",
       tier: "advanced",
     },
+    // Questionnaire du Baromètre 2027 : état de la collecte et export réservé à l'administrateur.
+    {
+      href: `${base}/barometre-questionnaire`,
+      label: "Questionnaire Baromètre 2027",
+      icon: "Telescope",
+      group: "content_gen",
+      subGroup: "suivre",
+      tier: "advanced",
+    },
     // NB — « Pilotage » (/orchestrator) et « File d'attente » (/queue) NE sont
     // PAS des entrées de nav : ce sont des doublons fusionnés (DECISION-IA §2).
     //   • /orchestrator → 308 → /content-gen : ses KPIs vivent déjà dans le
