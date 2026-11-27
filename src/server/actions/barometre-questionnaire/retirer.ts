@@ -3,7 +3,7 @@
 // Questionnaire du Baromètre 2027 — retrait des réponses par code (RGPD art. 7.3).
 // Le navigateur n'envoie que SHA-256(code). Suppression LIMITÉE à la campagne et à la ligne
 // portant cette empreinte. Même message que l'empreinte existe ou non (aucun oracle).
-// Le retrait reste possible après la fermeture du questionnaire.
+// Le retrait reste possible après l'envoi, à tout moment.
 
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
