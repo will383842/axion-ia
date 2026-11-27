@@ -32,6 +32,8 @@
 
 import { randomUUID } from "node:crypto";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
@@ -894,6 +896,9 @@ function montantDesPdf(
  *    les 4 derniers caractères lus sur le RIB ouvert sont contrôlés (obligatoires interrupteur allumé,
  *    et pendant les 10 jours qui suivent une validation, avec le choix du compte).
  */
+/** Un gel apparu pendant la transaction du versement : elle est annulée, rien n'est écrit. */
+class GelPendantVersement extends Error {}
+
 export async function marquerVerse(
   apporteurId: string,
   maintenant: Date = new Date(),
@@ -1038,13 +1043,30 @@ export async function marquerVerse(
   ];
   // Preuve du compte payé : sondée AVANT la transaction (une table absente la ferait échouer).
   const preuve = compte.compte?.empreinte && (await tablePreuveDisponible()) ? compte.compte : null;
-  // Seconde lecture du gel au plus près de l'écriture : une demande ouverte pendant le calcul gèle encore.
-  if ((await demandesQuiGelent([apporteurId], new Date())).has(apporteurId)) {
-    return { ok: false, message: MESSAGE_GEL };
+  // Compte lu mais aucune empreinte : `IBAN_EMPREINTE_SECRET` manque. Le virement est gardé, mais la
+  // preuve du compte payé n'est pas écrite : on le signale (Sentry + journal), sans donnée personnelle.
+  if (compte.compte && !compte.compte.empreinte) {
+    console.warn(
+      "[apporteurs] IBAN_EMPREINTE_SECRET absent : virement gardé, preuve du compte payé non écrite",
+    );
+    try {
+      Sentry.captureMessage(
+        "apporteurs : IBAN_EMPREINTE_SECRET absent, preuve du compte non écrite",
+        { level: "warning", tags: { service: "apporteurs", etape: "virement-fait" } },
+      );
+    } catch {
+      // Sentry muet : rien d'autre à faire.
+    }
   }
 
+  try {
   await prisma.$transaction(
     async (tx) => {
+      // Seconde lecture du gel, DANS la transaction du versement : une demande ouverte entre le premier
+      // contrôle et l'écriture est vue ici, et rien n'est écrit.
+      if ((await demandesQuiGelent([apporteurId], new Date(), tx)).has(apporteurId)) {
+        throw new GelPendantVersement();
+      }
       const lues = await lireAVerser(tx);
       const memes =
         lues.length === avant.length &&
@@ -1077,6 +1099,10 @@ export async function marquerVerse(
     },
     { timeout: 15_000 },
   );
+  } catch (err) {
+    if (err instanceof GelPendantVersement) return { ok: false, message: MESSAGE_GEL };
+    throw err;
+  }
   const numeros = numerosVerses;
   // E-mail de confirmation à l'apporteur, une seule fois par virement : jamais bloquant.
   try {

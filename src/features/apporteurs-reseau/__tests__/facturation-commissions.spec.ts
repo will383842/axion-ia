@@ -55,6 +55,7 @@ const etat = vi.hoisted(() => ({
     siren: string,
   ) => unknown,
   sentry: [] as string[],
+  messagesSentry: [] as Array<{ message: string; level: string | undefined }>,
 }));
 
 vi.mock("../annuaire", () => ({
@@ -66,7 +67,12 @@ vi.mock("@/server/queue/lib/sentry-worker", () => ({
   }),
 }));
 
-vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+vi.mock("@sentry/nextjs", () => ({
+  captureException: vi.fn(),
+  captureMessage: vi.fn((m: string, o: { level?: string }) => {
+    etat.messagesSentry.push({ message: m, level: o.level });
+  }),
+}));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("@/lib/destinataires-internes", () => ({
   destinataireAlertesInternes: () => "will@interne",
@@ -257,6 +263,7 @@ import {
 import { annulerCommission, reduireCommission } from "../ajustement";
 import { grilleDeLaLigne } from "../commissions";
 import { MESSAGE_GRILLE_INCONNUE } from "../regles";
+import { MESSAGE_GEL } from "../virement-compte";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import {
   annulerRealisation,
@@ -314,6 +321,7 @@ beforeEach(() => {
   etat.maintenant = MARDI;
   etat.apporteurs = {};
   etat.sentry = [];
+  etat.messagesSentry = [];
   etat.registre = (siren: string) => ({ ok: true, entreprise: { siren, active: true } });
   oublierCacheRegistre();
   oublierLitigeDisponible();
@@ -551,6 +559,41 @@ describe("« Virement fait »", () => {
       dateVirement: "8 octobre 2026",
     });
     expect(String(etat.confirmations[0]!["montant"])).toContain("400");
+  });
+
+  it("une demande de changement de compte ouverte ENTRE le premier contrôle et l'écriture : refus, rien n'est écrit", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    const { prisma } = await import("@/lib/prisma");
+    const demande = {
+      id: "d1",
+      apporteurId: "APP1",
+      statut: "confirmee",
+      demandeeAt: new Date(),
+      confirmeeAt: new Date(),
+    };
+    // 1er appel (avant tout calcul) : pas de gel ; 2e appel (dans la transaction du versement) : gel.
+    vi.mocked(prisma.apporteurChangementIban.findMany)
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([demande] as never);
+    const r = await marquerVerse("APP1", new Date("2026-10-08T14:00:00Z"), "AXI-APP-2026-0001");
+    expect(r).toEqual({ ok: false, message: MESSAGE_GEL });
+    expect(lignes()[0]!.statut).toBe("due");
+    expect(lignes()[0]!.verseeAt).toBeNull();
+    expect(etat.confirmations).toEqual([]);
+  });
+
+  it("IBAN_EMPREINTE_SECRET absent : le virement est gardé, mais signalé (Sentry, niveau warning)", async () => {
+    delete process.env["IBAN_EMPREINTE_SECRET"];
+    etat.apporteurs = { APP1: { iban: "FR7630006000011234567890189" } };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    const r = await marquerVerse("APP1", new Date("2026-10-08T14:00:00Z"), "AXI-APP-2026-0001");
+    expect(r).toMatchObject({ ok: true, totalCents: 40_000 });
+    expect(lignes()[0]!.statut).toBe("versee");
+    expect(etat.messagesSentry).toHaveLength(1);
+    expect(etat.messagesSentry[0]).toMatchObject({ level: "warning" });
+    expect(JSON.stringify(etat.messagesSentry)).not.toContain("FR7630006000011234567890189");
   });
 
   it("aucune confirmation quand il n'y a rien à confirmer", async () => {

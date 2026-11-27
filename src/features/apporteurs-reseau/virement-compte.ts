@@ -35,11 +35,13 @@ export interface DemandeGel {
 export async function demandesQuiGelent(
   apporteurIds: ReadonlyArray<string>,
   maintenant: Date,
+  /** Une transaction en cours : la lecture se fait alors DANS elle (au plus près de l'écriture). */
+  db: Pick<typeof prisma, "apporteurChangementIban"> = prisma,
 ): Promise<Map<string, DemandeGel>> {
   const sortie = new Map<string, DemandeGel>();
   if (apporteurIds.length === 0) return sortie;
   try {
-    const lues = await prisma.apporteurChangementIban.findMany({
+    const lues = await db.apporteurChangementIban.findMany({
       where: {
         apporteurId: { in: [...apporteurIds] },
         statut: { in: ["a_confirmer", "confirmee"] },
