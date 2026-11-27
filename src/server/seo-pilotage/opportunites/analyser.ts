@@ -68,7 +68,7 @@ export function analyser(e: EntreeAnalyse): Sortie {
   // Une même (page, requête, action) vue par plusieurs détecteurs n'est comptée qu'une fois.
   const meilleures = new Map<string, Proposition>();
   for (const p of propositions) {
-    const k = `${normaliserUrl(p.url)}|${p.requete ?? ""}|${p.action}|${p.pageCible ?? ""}`;
+    const k = `${normaliserUrl(p.url) || p.url}|${(p.requete ?? "").toLowerCase()}|${p.action}|${normaliserUrl(p.pageCible ?? "")}`;
     const deja = meilleures.get(k);
     if (!deja || p.priorite > deja.priorite) meilleures.set(k, p);
   }

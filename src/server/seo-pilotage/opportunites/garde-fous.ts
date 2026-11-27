@@ -9,7 +9,7 @@ import type { Proposition, Signalement, Sortie } from "./types";
  * `journee-ia-commun.ts`, `positionnement.ts`. Préfixe de segments : `/tarifs`
  * couvre `/tarifs/x`, pas `/tarifs-complets`. `""` = l'accueil, exact.
  *
- * Liste DÉRIVÉE des imports et VERROUILLÉE par `garde-fous.spec.ts`, qui
+ * Liste DÉRIVÉE des imports DIRECTS de `page.tsx` (les imports transitifs, ex. `/formations/tarifs` via le catalogue, sont ajoutés à la main) et contrôlée par `garde-fous.spec.ts`, qui
  * parcourt `src/app/[locale]/**\/page.tsx`. Les pages dynamiques
  * (`blog/[slug]`, `implantations/[region]/[ville]`) servent aussi des pages
  * non protégées : elles ne sont pas listées (à arbitrer par Will).
@@ -21,6 +21,7 @@ export const CHEMINS_PROTEGES: readonly string[] = [
   "/audit",
   "/un-a-un",
   "/journee-ia",
+  "/formations/tarifs",
   "/formations/entreprise",
   "/formations/metiers",
   "/formations/secteurs",

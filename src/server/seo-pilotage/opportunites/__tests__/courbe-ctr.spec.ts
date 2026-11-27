@@ -71,3 +71,13 @@ describe("domaine de la courbe", () => {
     expect(Number.isFinite(c.ctrAttendu(3))).toBe(true);
   });
 });
+
+it("n'emprunte pas le CTR d'une tranche lointaine dans un trou de la courbe", () => {
+  const c = construireCourbeCtr([
+    l("a", 1, 1000, 300),
+    l("b", 2, 1000, 150),
+    l("c", 15, 1000, 10),
+  ])!;
+  expect(c.ctrAttendu(8)).toBe(0);
+  expect(c.ctrAttendu(2)).toBeGreaterThan(0);
+});

@@ -306,6 +306,7 @@ export function detecterDeclin(
   for (const p of pages) {
     if (![p.clics, p.clicsPrecedents, p.position, p.positionPrecedente].every(Number.isFinite))
       continue;
+    if (p.clics < 0 || o.site.clics < 0) continue;
     if (!(p.clicsPrecedents > 0)) continue;
     // Normalisation par la tendance du site ET par la saisonnalité de N−1 (une baisse
     // déjà vue l'an dernier à la même période est attendue ; une hausse n'excuse rien).

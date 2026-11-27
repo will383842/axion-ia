@@ -62,7 +62,13 @@ export function construireCourbeCtr(lignes: readonly LigneRequete[]): CourbeCtr 
   const parTranche = new Map<number, { imp: number; clics: number }>();
   for (const l of lignes) {
     if (estRequeteMarque(l.requete)) continue;
-    if (!(l.impressions > 0) || !Number.isFinite(l.position) || !Number.isFinite(l.clics)) continue;
+    if (
+      !(l.impressions > 0) ||
+      !Number.isFinite(l.position) ||
+      !Number.isFinite(l.clics) ||
+      l.clics < 0
+    )
+      continue;
     const p = Math.round(l.position);
     if (p < 1 || p > POSITION_MAX_COURBE) continue;
     const t = parTranche.get(p) ?? { imp: 0, clics: 0 };
@@ -97,6 +103,8 @@ export function construireCourbeCtr(lignes: readonly LigneRequete[]): CourbeCtr 
       for (const t of tranches) {
         if (Math.abs(t.position - position) < Math.abs(meilleur.position - position)) meilleur = t;
       }
+      // Trou entre deux tranches : pas d'attente plutôt qu'un CTR emprunté à une position lointaine.
+      if (Math.abs(meilleur.position - position) > 1) return 0;
       return meilleur.ctr;
     },
   };

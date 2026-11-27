@@ -100,3 +100,7 @@ describe("périmètre des protections", () => {
     ).toBe(false);
   });
 });
+
+it("/formations/tarifs est protégée (prix issus de pricing.ts via le catalogue)", () => {
+  expect(estCheminProtege("https://axion-ia.com/fr/formations/tarifs")).toBe(true);
+});
