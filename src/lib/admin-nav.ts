@@ -903,6 +903,13 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       icon: "Handshake",
       group: "tunnels",
     },
+    // Fiches publiques de l'équipe (réservé aux administrateurs).
+    {
+      href: `${base}/collaborateurs`,
+      label: "Collaborateurs",
+      icon: "Users",
+      group: "content",
+    },
     // ── contenu ──────────────────────────────────────────────────────────
     {
       href: `${base}/connaissances`,
