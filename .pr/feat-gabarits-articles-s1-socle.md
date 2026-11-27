@@ -34,8 +34,12 @@ Rebasée sur `origin/main` (6765b2bc) : 2 commits rejoués, **aucun conflit**.
 
 ## Relecture Opus
 
-1re passe : « À CORRIGER » pour (a) corps de PR vide, (b) tests de parité `generateMetadata` / JSON-LD manquants, (c) commentaire de `page.tsx` inexact (« aucun module V2 évalué »). Les trois sont corrigés dans ce lot (+ fiche `<main>` → `<div>`).
+1re passe (relecture Opus) : « À CORRIGER » pour (a) corps de PR vide, (b) tests de parité `generateMetadata` / JSON-LD manquants, (c) commentaire de `page.tsx` inexact (« aucun module V2 évalué »). Les trois sont corrigés dans ce lot (+ fiche `<main>` → `<div>`).
 
 ## Risques
 
 Faible : interrupteur éteint = chemin V1 inchangé, aucune requête ajoutée (hors un champ dans un `select` existant). À l'allumage, rendu volontairement sans design (S2).
+
+2e passe (Opus, sur le contenu indexé puis commité à l'identique) : corrections jugées justes ; verdict conditionné au commit sans modification, condition remplie.
+
+VERDICT OPUS : BON
