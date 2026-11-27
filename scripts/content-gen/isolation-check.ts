@@ -671,6 +671,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // ArticleTransparencyBlock.tsx`), lu en texte pour compter ses étiquettes. Aucun import,
   // aucun code du pipeline : même cas que `services-ssot.spec.ts` ci-dessus. Nominatif.
   /^tests\/unit\/seo\/un-seul-mis-a-jour-par-article\.spec\.ts$/,
+  // Gabarits d'articles, socle S1 (2026-11) : le squelette `ArticleGabarit` CONSOMME les
+  // briques d'article déjà publiques (`@/components/content-gen/Article*`, `@/server/
+  // content-gen/blog/*`) et ses tests les lisent. Le marqueur vient de ces seuls chemins
+  // d'import ; aucun code du pipeline éditorial n'est exécuté ni modifié. Nominatif.
+  /^src\/components\/article-v2\/ArticleGabarit\.tsx$/,
+  /^tests\/unit\/blog\/gabarits-(socle|aiguillage-page|rendu-socle)\.spec\.tsx?$/,
 ];
 
 /**

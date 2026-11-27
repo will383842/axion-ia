@@ -561,7 +561,7 @@ export default async function BlogArticle({ params }: Props) {
       : null;
 
   // Gabarits d'articles (PR S1) — interrupteur BLOG_GABARITS_V2 : éteint, ce bloc
-  // n'est jamais exécuté (aucune requête, aucun module V2 évalué) et le JSX
+  // n'est jamais exécuté (aucune requête ; les modules V2, sans effet de bord, restent importés) et le JSX
   // ci-dessous reste celui d'avant, à l'octet près.
   if (gabaritsV2Actifs()) {
     const type = await chargerTypeContenu(view);
