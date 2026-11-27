@@ -781,13 +781,21 @@ export async function reprendreApresAvoirsClients(
         !!filleul && !filleul.autofactureNumero && estModifiable(filleul.statut);
       // Grille inconnue (ligne ou filleul) alors qu'un avoir actif existe : la ligne ne bouge pas
       // (aucun montant inventé) mais Williams est prévenu, une seule fois par ligne.
-      const alerterGrilleInconnue = async (x: { id: string }, grille: GrilleCommission | null) => {
+      const alerterGrilleInconnue = async (
+        x: { id: string },
+        grille: GrilleCommission | null,
+        cause: "grille" | "filleul-introuvable" = "grille",
+      ) => {
         if (grille !== null || sansAvoirActif) return;
+        const detail =
+          cause === "filleul-introuvable"
+            ? "dépend d'un filleul dont la ligne est introuvable (part de parrain sans filleul) : elle n'a pas été recalculée."
+            : `n'a pas de grille connue : elle n'a pas été recalculée. ${MESSAGE_GRILLE_INCONNUE}`;
         await alerteInterne({
           jobId: `apporteur-grille-inconnue-avoir-${x.id}`,
           code: "apporteur_grille_inconnue_avoir",
           titre: "Avoir client : commission à ajuster à la main, version du contrat signé inconnue",
-          message: `Un avoir client touche une commande dont la commission (ligne ${x.id}) n'a pas de grille connue : elle n'a pas été recalculée. ${MESSAGE_GRILLE_INCONNUE} Console : Apporteurs › Commissions.`,
+          message: `Un avoir client touche une commande dont la commission (ligne ${x.id}) ${detail} Console : Apporteurs › Commissions.`,
           cibleType: "CommissionApporteur",
           cibleId: x.id,
           niveau: "critique",
@@ -812,7 +820,12 @@ export async function reprendreApresAvoirsClients(
               })
             : null;
           if (cible === null) {
-            if (net > 0) await alerterGrilleInconnue(l, grilleFilleul);
+            if (net > 0)
+              await alerterGrilleInconnue(
+                l,
+                grilleFilleul,
+                filleul ? "grille" : "filleul-introuvable",
+              );
             continue;
           }
           if (cible >= montant) continue;
@@ -864,6 +877,12 @@ export async function reprendreApresAvoirsClients(
           if (r.ok) {
             if (net <= 0) bilan.annulees += 1;
             else bilan.reduites += 1;
+          } else if (
+            net > 0 &&
+            (r.message === MESSAGE_GRILLE_INCONNUE || (await grilleDe(l)) === null)
+          ) {
+            // Ligne pas encore facturée dont la grille est inconnue : rien ne bouge, Williams est prévenu.
+            await alerterGrilleInconnue(l, null);
           }
           continue;
         }

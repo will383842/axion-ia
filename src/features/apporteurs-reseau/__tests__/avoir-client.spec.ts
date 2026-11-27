@@ -1061,7 +1061,7 @@ describe("grille du contrat signé câblée dans le passage des avoirs (relectur
     expect(alertes[0]![4]).toMatchObject({ jobId: "apporteur-grille-inconnue-avoir-c1" });
   });
 
-  it("grille inconnue, ligne pas encore facturée : le passage ne réduit rien et alerte", async () => {
+  it("grille inconnue, part de parrain non facturée, filleul facturé : le passage ne réduit rien et alerte", async () => {
     vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: null, signeeAt: null }));
     avoirPartiel();
     d.lignes = [
@@ -1080,6 +1080,24 @@ describe("grille du contrat signé câblée dans le passage des avoirs (relectur
             (c[3] as { cibleId?: string }).cibleId === "parrain",
         ),
     ).toBe(true);
+  });
+
+  it("grille inconnue, ligne due non facturée (non parrain), avoir partiel : exactement 1 alerte", async () => {
+    vi.mocked(grilleDeLaLigne).mockImplementation(async () => ({ grille: null, signeeAt: null }));
+    d.reduire.mockResolvedValueOnce({ ok: false, message: MESSAGE_GRILLE_INCONNUE } as never);
+    avoirPartiel();
+    d.lignes = [formation3j({ id: "ligne1" })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).toHaveBeenCalledTimes(1);
+    expect(d.maj).not.toHaveBeenCalled();
+    const alertes = vi
+      .mocked(enqueueEmail)
+      .mock.calls.filter(
+        (c) => (c[3] as { code?: string }).code === "apporteur_grille_inconnue_avoir",
+      );
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]![3]).toMatchObject({ niveau: "critique", cibleId: "ligne1" });
+    expect(alertes[0]![4]).toMatchObject({ jobId: "apporteur-grille-inconnue-avoir-ligne1" });
   });
 
   it("sans avoir actif : grille inconnue n'alerte pas", async () => {
