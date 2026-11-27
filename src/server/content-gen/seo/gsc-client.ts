@@ -29,11 +29,6 @@ let cachedToken: CachedAccessToken | null = null;
 const OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const WEBMASTERS_API = "https://www.googleapis.com/webmasters/v3";
 
-/**
- * Refresh access_token via OAuth refresh_token flow.
- * Cache 55 min (sous 1h Google TTL) pour mutualiser entre les ~500 articles
- * d'un même run du worker keyword-sync.
- */
 class GscOauthError extends Error {
   constructor(
     message: string,
@@ -44,6 +39,11 @@ class GscOauthError extends Error {
   }
 }
 
+/**
+ * Refresh access_token via OAuth refresh_token flow.
+ * Cache 55 min (sous 1h Google TTL) pour mutualiser entre les ~500 articles
+ * d'un même run du worker keyword-sync.
+ */
 async function getAccessToken(fetchImpl: typeof fetch = fetch): Promise<string> {
   if (cachedToken && cachedToken.expiresAt > Date.now() + 60_000) {
     return cachedToken.token;
@@ -390,7 +390,7 @@ export async function gscInspectUrl(
 // Champs de `searchanalytics.query` utilisés (doc Google, v3 webmasters) :
 //   requête : startDate, endDate (YYYY-MM-DD, heure du Pacifique), dimensions[]
 //   (date|page|query|country|device|searchAppearance), type (web), dataState
-//   (final|all|hourly_all), aggregationType (auto|byPage|byProperty),
+//   (final|all), aggregationType (auto|byPage|byProperty),
 //   rowLimit (1..25000), startRow (≥ 0), dimensionFilterGroups.
 //   réponse : rows[{keys, clicks, impressions, ctr, position}],
 //   responseAggregationType, metadata.first_incomplete_date.
@@ -398,7 +398,7 @@ export async function gscInspectUrl(
 // ════════════════════════════════════════════════════════════════════════════
 
 export type GscDimension = "date" | "page" | "query" | "country" | "device" | "searchAppearance";
-export type GscDataState = "final" | "all" | "hourly_all";
+export type GscDataState = "final" | "all";
 export type GscAggregationType = "auto" | "byPage" | "byProperty";
 
 export type GscEtat = "ok" | "identifiants_absents" | "refus" | "quota" | "erreur";
@@ -407,6 +407,7 @@ export interface GscSearchAnalyticsParams {
   readonly startDate: string;
   readonly endDate: string;
   readonly dimensions: ReadonlyArray<GscDimension>;
+  /** `byProperty` est incompatible avec la dimension ou le filtre `page` (400 de l'API). */
   readonly aggregationType?: GscAggregationType;
   readonly dataState?: GscDataState;
   readonly startRow?: number;
@@ -439,7 +440,13 @@ export interface GscLotResultat {
 
 const GSC_LIGNES_MAX = 25_000;
 const REGEX_DATE = /^\d{4}-\d{2}-\d{2}$/;
-const RAISONS_QUOTA = new Set(["quotaExceeded", "rateLimitExceeded", "dailyLimitExceeded"]);
+const RAISONS_QUOTA = new Set([
+  "quotaExceeded",
+  "rateLimitExceeded",
+  "userRateLimitExceeded",
+  "dailyLimitExceeded",
+  "RESOURCE_EXHAUSTED",
+]);
 const ATTENTE_RETRY_AFTER_MAX_MS = 60_000;
 
 const attendreParDefaut = (ms: number): Promise<void> =>
@@ -452,6 +459,11 @@ function identifiantsPresents(): boolean {
     process.env["GSC_OAUTH_CLIENT_SECRET"] &&
     process.env["GSC_OAUTH_REFRESH_TOKEN"],
   );
+}
+
+function entierOuDefaut(v: number | undefined, defaut: number, min: number, max: number): number {
+  if (typeof v !== "number" || !Number.isFinite(v)) return defaut;
+  return Math.min(Math.max(Math.floor(v), min), max);
 }
 
 function dateValide(d: string): boolean {
@@ -495,8 +507,8 @@ export async function gscSearchAnalytics(
 ): Promise<GscLotResultat> {
   const fetchImpl = deps.fetchImpl ?? fetch;
   const attendre = deps.attendre ?? attendreParDefaut;
-  const essaisMax = Math.max(0, deps.essaisMax ?? 3);
-  const pagesMax = Math.max(1, deps.pagesMax ?? 40);
+  const essaisMax = entierOuDefaut(deps.essaisMax, 3, 0, 10);
+  const pagesMax = entierOuDefaut(deps.pagesMax, 40, 1, 400);
 
   if (
     !dateValide(params.startDate) ||
@@ -505,11 +517,11 @@ export async function gscSearchAnalytics(
   ) {
     return resultatVide("erreur", "Période invalide (dates au format AAAA-MM-JJ, début ≤ fin).");
   }
-  const taillePage = Math.min(
-    Math.max(1, Math.floor(params.rowLimit ?? GSC_LIGNES_MAX)),
-    GSC_LIGNES_MAX,
-  );
-  let startRow = Math.max(0, Math.floor(params.startRow ?? 0));
+  const taillePage = entierOuDefaut(params.rowLimit, GSC_LIGNES_MAX, 1, GSC_LIGNES_MAX);
+  let startRow = entierOuDefaut(params.startRow, 0, 0, Number.MAX_SAFE_INTEGER);
+  if (params.pageEquals !== undefined && params.pageEquals.trim() === "") {
+    return resultatVide("erreur", "Filtre de page vide refusé.");
+  }
 
   if (!identifiantsPresents()) {
     return resultatVide("identifiants_absents", "Identifiants Search Console absents.");
@@ -550,7 +562,7 @@ export async function gscSearchAnalytics(
     };
     if (params.aggregationType) corps["aggregationType"] = params.aggregationType;
     if (params.dataState) corps["dataState"] = params.dataState;
-    if (params.pageEquals) {
+    if (params.pageEquals !== undefined) {
       corps["dimensionFilterGroups"] = [
         { filters: [{ dimension: "page", operator: "equals", expression: params.pageEquals }] },
       ];
@@ -569,6 +581,7 @@ export async function gscSearchAnalytics(
         return echec("erreur", "Appel Search Console impossible (réseau).");
       }
       if (res.status !== 429) break;
+      await res.body?.cancel().catch(() => undefined);
       if (essai >= essaisMax) return echec("quota", "Search Console limite le débit (429).");
       const delai = delaiRetryAfter(res.headers.get("retry-after")) ?? 1000 * 2 ** essai;
       await attendre(delai);
@@ -583,23 +596,32 @@ export async function gscSearchAnalytics(
         }
         return echec("refus", "Accès Search Console refusé (403).");
       }
-      if (res.status === 401) return echec("refus", "Accès Search Console refusé (401).");
+      if (res.status === 401) {
+        cachedToken = null; // jeton révoqué : ne pas le garder 55 min
+        return echec("refus", "Accès Search Console refusé (401).");
+      }
       return echec("erreur", `Search Console a répondu ${res.status}.`);
     }
 
     let data: {
-      rows?: GscSearchRow[];
+      rows?: unknown;
       metadata?: { first_incomplete_date?: string };
-    };
+    } | null;
     try {
       data = (await res.json()) as typeof data;
     } catch {
       return echec("erreur", "Réponse Search Console illisible.");
     }
-    if (data.metadata?.first_incomplete_date) {
+    if (!data || typeof data !== "object") {
+      return echec("erreur", "Réponse Search Console illisible.");
+    }
+    if (data.rows !== undefined && !Array.isArray(data.rows)) {
+      return echec("erreur", "Réponse Search Console inattendue.");
+    }
+    if (typeof data.metadata?.first_incomplete_date === "string") {
       premierJourIncomplet = data.metadata.first_incomplete_date;
     }
-    const lot = data.rows ?? [];
+    const lot = (data.rows ?? []) as GscSearchRow[];
     rows.push(...lot);
     if (lot.length < taillePage) {
       return {
@@ -623,7 +645,7 @@ export async function gscSearchAnalytics(
 const FENETRE_DERNIER_JOUR_FINAL_JOURS = 14;
 
 /**
- * Dernier jour pour lequel `dataState: "final"` rend des données. Détecté, jamais
+ * Dernier jour AVEC DONNÉES pour lequel `dataState: "final"` rend des lignes (un site à très faible trafic peut reculer). Dates en UTC ; la fenêtre de 14 jours absorbe l'écart avec l'heure du Pacifique de Google. Détecté, jamais
  * codé en dur à J-3. `jour` vaut `null` s'il n'y a aucune donnée finale (ou si
  * l'état n'est pas « ok » : lire `etat` d'abord).
  */

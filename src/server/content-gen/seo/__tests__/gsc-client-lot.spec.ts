@@ -353,3 +353,125 @@ describe("gscPageMetricsForUrlDates", () => {
     ).toBeNull();
   });
 });
+
+describe("gsc-client-lot : corrections de relecture", () => {
+  const P = { startDate: "2026-11-01", endDate: "2026-11-01", dimensions: ["page"] as const };
+  const mk = (f: unknown, extra = {}) => ({
+    fetchImpl: f as typeof fetch,
+    attendre: attente(),
+    ...extra,
+  });
+
+  it("essaisMax NaN : pas de boucle infinie (valeur par défaut)", async () => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const f = vi
+      .fn()
+      .mockResolvedValueOnce(reponse(JETON))
+      .mockResolvedValue(reponse({ status: 429 }));
+    const r = await gscSearchAnalytics({ ...P }, mk(f, { essaisMax: Number.NaN }));
+    expect(r.etat).toBe("quota");
+    expect(f).toHaveBeenCalledTimes(5);
+  });
+
+  it("rowLimit, startRow et pagesMax hors bornes ou NaN sont normalisés", async () => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const f = fetchSequence([JETON, { body: { rows: [ligne(1)] } }]);
+    await gscSearchAnalytics(
+      { ...P, rowLimit: 999999, startRow: 10 },
+      mk(f, { pagesMax: Number.NaN }),
+    );
+    const corps = JSON.parse((f.mock.calls[1]?.[1] as { body: string }).body);
+    expect(corps.rowLimit).toBe(25000);
+    expect(corps.startRow).toBe(10);
+    expect(corps).not.toHaveProperty("dataState");
+    expect(corps).not.toHaveProperty("aggregationType");
+    vi.resetModules();
+    const m = await import("../gsc-client");
+    const g = fetchSequence([JETON, { body: { rows: [ligne(1)] } }]);
+    await m.gscSearchAnalytics({ ...P, rowLimit: Number.NaN, startRow: Number.NaN }, mk(g));
+    const c2 = JSON.parse((g.mock.calls[1]?.[1] as { body: string }).body);
+    expect(c2.rowLimit).toBe(25000);
+    expect(c2.startRow).toBe(0);
+  });
+
+  it("401 : refus, puis jeton neuf au prochain appel", async () => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const f = fetchSequence([JETON, { status: 401 }, JETON, { body: { rows: [] } }]);
+    expect((await gscSearchAnalytics({ ...P }, mk(f))).etat).toBe("refus");
+    expect((await gscSearchAnalytics({ ...P }, mk(f))).etat).toBe("ok");
+    expect(f).toHaveBeenCalledTimes(4);
+  });
+
+  it.each([
+    [{ error: { errors: [{ reason: "userRateLimitExceeded" }] } }],
+    [{ error: { status: "RESOURCE_EXHAUSTED" } }],
+  ])("403 de quota reconnu : %j", async (body) => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const f = fetchSequence([JETON, { status: 403, body }]);
+    expect((await gscSearchAnalytics({ ...P }, mk(f))).etat).toBe("quota");
+  });
+
+  it("URL vide : refusée sans appel ; la variante rend null", async () => {
+    const { gscSearchAnalytics, gscPageMetricsForUrlDates } = await import("../gsc-client");
+    const f = vi.fn();
+    expect((await gscSearchAnalytics({ ...P, pageEquals: " " }, mk(f))).etat).toBe("erreur");
+    expect(await gscPageMetricsForUrlDates("", "2026-10-01", "2026-10-28", mk(f))).toBeNull();
+    expect(f).not.toHaveBeenCalled();
+  });
+
+  it("corps null ou rows non tableau : erreur, sans exception", async () => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const f = fetchSequence([JETON, { body: null }]);
+    expect((await gscSearchAnalytics({ ...P }, mk(f))).etat).toBe("erreur");
+    vi.resetModules();
+    const m = await import("../gsc-client");
+    const g = fetchSequence([JETON, { body: { rows: "x" } }]);
+    expect((await m.gscSearchAnalytics({ ...P }, mk(g))).etat).toBe("erreur");
+  });
+
+  it("propage premierJourIncomplet", async () => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const f = fetchSequence([
+      JETON,
+      { body: { rows: [ligne(1)], metadata: { first_incomplete_date: "2026-11-25" } } },
+    ]);
+    const r = await gscSearchAnalytics({ ...P, dataState: "all" }, mk(f));
+    expect(r.premierJourIncomplet).toBe("2026-11-25");
+  });
+
+  it("Retry-After plafonné à 60 s ; format date HTTP : attente exponentielle", async () => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const att = attente();
+    const f = fetchSequence([
+      JETON,
+      { status: 429, headers: { "retry-after": "3600" } },
+      { status: 429, headers: { "retry-after": "Wed, 21 Oct 2026 07:28:00 GMT" } },
+      { body: { rows: [] } },
+    ]);
+    await gscSearchAnalytics({ ...P }, { fetchImpl: f as unknown as typeof fetch, attendre: att });
+    expect(att.mock.calls.map((c) => c[0])).toEqual([60000, 2000]);
+  });
+
+  it("sonde sur 429 : quota immédiat, sans attente", async () => {
+    const { gscSonde } = await import("../gsc-client");
+    const att = attente();
+    const f = fetchSequence([JETON, { status: 429 }]);
+    expect(await gscSonde({ fetchImpl: f as unknown as typeof fetch, attendre: att })).toEqual({
+      etat: "quota",
+    });
+    expect(att).not.toHaveBeenCalled();
+  });
+
+  it("OAuth 5xx : erreur ; date impossible : erreur sans appel", async () => {
+    const { gscSearchAnalytics } = await import("../gsc-client");
+    const f = fetchSequence([{ status: 503 }]);
+    expect((await gscSearchAnalytics({ ...P }, mk(f))).etat).toBe("erreur");
+    const g = vi.fn();
+    const r = await gscSearchAnalytics(
+      { ...P, startDate: "2026-02-30", endDate: "2026-03-01" },
+      mk(g),
+    );
+    expect(r.etat).toBe("erreur");
+    expect(g).not.toHaveBeenCalled();
+  });
+});
