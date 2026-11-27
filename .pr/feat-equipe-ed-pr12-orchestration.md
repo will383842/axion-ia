@@ -60,3 +60,5 @@ Rebase fait sur `origin/main` (PR 11 déjà fusionnée) ; tests, typecheck et li
 ## Restes
 
 Voir la relecture ci-dessous.
+
+VERDICT OPUS : relecture en cours (2e passe)
