@@ -333,6 +333,15 @@ export default async function VirementsAFairePage({ params, searchParams }: Page
                     {jour(v.dateCible)}
                   </td>
                   <td>
+                    {v.gel && (
+                      <p className={v.gel.rouge ? "font-semibold" : "admin-muted"}>
+                        <AdminBadge tone={v.gel.rouge ? "destructive" : "warning"} compact>
+                          Gelé
+                        </AdminBadge>{" "}
+                        Changement de compte en cours. Plus proche échéance :{" "}
+                        {jour(v.gel.plusProcheEcheance)}.
+                      </p>
+                    )}
                     {m?.pret === true && (
                       <AdminBadge tone="neutral" compact>
                         Prêt à virer
