@@ -2,7 +2,7 @@
 -- Ajout seul : aucun DROP, UPDATE, DELETE, INSERT, aucune énumération Postgres (statuts, intentions,
 -- rôles et codes de raison sont du texte, listes fermées côté code). Rien dans le code de
 -- production ne lit ni n'écrit ces tables ni la colonne `role` : compatible avec l'ancien et le
--- nouveau conteneur (app et worker), dans les deux sens.
+-- nouveau conteneur (app et worker), dans les deux sens (les deux seuls appels qui écrivent cost_ledger sans select en portent désormais un : une colonne neuve pas encore migrée ne fait pas P2022).
 -- Retour arrière (jamais joué automatiquement) :
 --   ALTER TABLE "cost_ledger" DROP COLUMN "role";
 --   DROP TABLE IF EXISTS "contenu_refus", "contenu_faits", "contenu_briefs",
@@ -60,6 +60,8 @@ CREATE TABLE "contenu_faits" (
     "datePublication" TIMESTAMP(3),
     "dateLecture" TIMESTAMP(3) NOT NULL,
     "confiance" VARCHAR(10),
+    "valeur" VARCHAR(100),
+    "verifiePar" VARCHAR(120),
     "statut" VARCHAR(20) NOT NULL DEFAULT 'propose',
     "verifieLe" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -79,6 +81,8 @@ CREATE TABLE "contenu_refus" (
     "critere" VARCHAR(10),
     "detail" TEXT,
     "sectionEnCause" VARCHAR(300),
+    "preuve" TEXT,
+    "saisiPar" VARCHAR(120),
     "coutDepenseUsd" DECIMAL(10,4),
     "versionPrompt" VARCHAR(60),
     "versionBrief" VARCHAR(60),
@@ -95,7 +99,7 @@ CREATE TABLE "contenu_resultats" (
     "briefId" TEXT,
     "jobId" TEXT,
     "echeance" VARCHAR(10) NOT NULL,
-    "mesureLe" TIMESTAMP(3) NOT NULL,
+    "mesureLe" DATE NOT NULL,
     "indexe" BOOLEAN,
     "affichages" INTEGER,
     "clics" INTEGER,
@@ -155,6 +159,9 @@ CREATE INDEX "contenu_faits_statut_idx" ON "contenu_faits"("statut");
 CREATE INDEX "contenu_refus_briefId_idx" ON "contenu_refus"("briefId");
 
 -- CreateIndex
+CREATE INDEX "contenu_refus_jobId_idx" ON "contenu_refus"("jobId");
+
+-- CreateIndex
 CREATE INDEX "contenu_refus_code_createdAt_idx" ON "contenu_refus"("code", "createdAt");
 
 -- CreateIndex
@@ -183,4 +190,7 @@ ALTER TABLE "contenu_faits" ADD CONSTRAINT "contenu_faits_briefId_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "contenu_refus" ADD CONSTRAINT "contenu_refus_briefId_fkey" FOREIGN KEY ("briefId") REFERENCES "contenu_briefs"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "contenu_resultats" ADD CONSTRAINT "contenu_resultats_briefId_fkey" FOREIGN KEY ("briefId") REFERENCES "contenu_briefs"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 

@@ -19330,7 +19330,7 @@ model ContenuBrief {
   /// brouillon | valide | pas_d_angle | pas_de_matiere | abandonne (STATUTS_BRIEF)
   statut             String   @default("brouillon") @db.VarChar(20)
   motCle             String?  @db.VarChar(200)
-  /// Intention de recherche : information | comparaison | decision.
+  /// Intention de recherche = `intention` du brief (INTENTIONS), recopiée pour les requêtes.
   intentionRecherche String?  @db.VarChar(20)
   angleUnique        String?  @db.VarChar(500)
   /// Plan de titres H1/H2/H3 : [{ niveau: 1|2|3, titre }] (planTitresSchema).
@@ -19344,9 +19344,10 @@ model ContenuBrief {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  besoin ContenuBesoin? @relation(fields: [besoinId], references: [id], onDelete: SetNull)
-  faits  ContenuFait[]
-  refus  ContenuRefus[]
+  besoin          ContenuBesoin?    @relation(fields: [besoinId], references: [id], onDelete: SetNull)
+  faits           ContenuFait[]
+  refus           ContenuRefus[]
+  ContenuResultat ContenuResultat[]
 
   @@index([besoinId])
   @@index([jobId])
@@ -19368,6 +19369,9 @@ model ContenuFait {
   /// haute | moyenne | basse
   confiance       String?   @db.VarChar(10)
   /// propose | verifie | retire : « verifie » seulement après relecture humaine.
+  /// Valeur chiffrée telle qu\'affichée (« 12 % »), lue par C5 pour CHIFFRES_VERIFIES.
+  valeur          String?   @db.VarChar(100)
+  verifiePar      String?   @db.VarChar(120)
   statut          String    @default("propose") @db.VarChar(20)
   verifieLe       DateTime?
   createdAt       DateTime  @default(now())
@@ -19394,6 +19398,10 @@ model ContenuRefus {
   critere        String?  @db.VarChar(10)
   detail         String?
   sectionEnCause String?  @db.VarChar(300)
+  /// Preuve du refus (§ 8 : critère, raison, preuve, tentative, version de la porte).
+  preuve         String?
+  /// Auteur d'un refus humain.
+  saisiPar       String?  @db.VarChar(120)
   coutDepenseUsd Decimal? @db.Decimal(10, 4)
   versionPrompt  String?  @db.VarChar(60)
   versionBrief   String?  @db.VarChar(60)
@@ -19403,6 +19411,7 @@ model ContenuRefus {
   brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
 
   @@index([briefId])
+  @@index([jobId])
   @@index([code, createdAt])
   @@index([role, createdAt])
   @@map("contenu_refus")
@@ -19418,7 +19427,7 @@ model ContenuResultat {
   jobId        String?
   /// j3 | j7 | j28 | j90
   echeance     String   @db.VarChar(10)
-  mesureLe     DateTime
+  mesureLe     DateTime @db.Date
   indexe       Boolean?
   affichages   Int?
   clics        Int?
@@ -19430,6 +19439,8 @@ model ContenuResultat {
   /// Échantillon et intervalle des citations IA, source par mesure.
   details      Json?
   createdAt    DateTime @default(now())
+
+  brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
 
   @@unique([url, echeance, mesureLe])
   @@index([briefId])

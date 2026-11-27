@@ -93,7 +93,7 @@ describe("briefSchema étendu (C3)", () => {
   it("accepte intention de recherche, plan de titres et fourchette de longueur", () => {
     const r = briefSchema.safeParse({
       ...valide,
-      intentionRecherche: "comparaison",
+
       planTitres: [
         { niveau: 1, titre: "Pilote IA en PME" },
         { niveau: 2, titre: "Par où commencer ?" },
@@ -107,7 +107,6 @@ describe("briefSchema étendu (C3)", () => {
   it("accepte des champs explicitement nuls", () => {
     const r = briefSchema.safeParse({
       ...valide,
-      intentionRecherche: null,
       planTitres: null,
       longueurMinMots: null,
       longueurMaxMots: null,
@@ -116,7 +115,7 @@ describe("briefSchema étendu (C3)", () => {
   });
   it("refuse un niveau de titre hors H1-H3, une intention inconnue, une fourchette inversée", () => {
     expect(planTitresSchema.safeParse([{ niveau: 4, titre: "x" }]).success).toBe(false);
-    expect(briefSchema.safeParse({ ...valide, intentionRecherche: "achat" }).success).toBe(false);
+    expect(briefSchema.safeParse({ ...valide, intention: "achat" }).success).toBe(false);
     expect(
       briefSchema.safeParse({ ...valide, longueurMinMots: 2000, longueurMaxMots: 1000 }).success,
     ).toBe(false);

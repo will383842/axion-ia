@@ -46,7 +46,13 @@ export const planTitresSchema = z
   .array(
     z
       .object({
-        niveau: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+        niveau: z.union(
+          NIVEAUX_TITRE.map((n) => z.literal(n)) as unknown as [
+            z.ZodLiteral<1>,
+            z.ZodLiteral<2>,
+            z.ZodLiteral<3>,
+          ],
+        ),
         titre: texte(200),
       })
       .strict(),
@@ -68,8 +74,6 @@ export const briefSchema = z
     cluster: texte(200),
     type: z.enum(TYPES_BRIEF),
     // ── Chaîne éditoriale (C3) : tous optionnels, un brief ancien reste valide ──
-    /** Intention de recherche (mêmes valeurs que `intention`). */
-    intentionRecherche: z.enum(INTENTIONS).nullish(),
     planTitres: planTitresSchema.nullish(),
     longueurMinMots: z.number().int().min(1).max(FOURCHETTE_LONGUEUR_MAX_MOTS).nullish(),
     longueurMaxMots: z.number().int().min(1).max(FOURCHETTE_LONGUEUR_MAX_MOTS).nullish(),

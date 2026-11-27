@@ -52,7 +52,7 @@ describe("migration chaine_editoriale_tables : additive", () => {
   });
   it("les clés étrangères ne bloquent jamais une suppression (SET NULL)", () => {
     const fks = sql.match(/ADD CONSTRAINT[^;]+;/g) ?? [];
-    expect(fks.length).toBe(3);
+    expect(fks.length).toBe(4);
     for (const fk of fks) expect(fk).toMatch(/ON DELETE SET NULL/);
   });
   it("porte le retour arrière en commentaire", () => {
@@ -60,9 +60,20 @@ describe("migration chaine_editoriale_tables : additive", () => {
   });
   it("aucune lecture ni écriture branchée : le code de production ne touche pas ces tables", () => {
     const sortie = execSync(
-      "grep -rlE 'prisma\\.contenu(Besoin|Brief|Refus|Resultat|Proposition|Fait)\\b' src || true",
+      "grep -rlE '\\.contenu(Besoin|Brief|Refus|Resultat|Proposition|Fait)\\b' src || true",
       { encoding: "utf8" },
     ).trim();
     expect(sortie).toBe("");
+  });
+  it("tout costLedger.create/update porte un select (colonne `role` pas encore migrée : pas de P2022)", () => {
+    for (const f of [
+      "src/server/content-gen/lib/cost-tracker.ts",
+      "src/server/content-gen/providers/blog-claude-ledger.ts",
+    ]) {
+      const src = readFileSync(join(process.cwd(), f), "utf8");
+      const appels = src.match(/costLedger\.(create|update|upsert)\(\{[\s\S]{0,200}?\}\);?/g) ?? [];
+      expect(appels.length).toBeGreaterThan(0);
+      for (const a of appels) expect(a).toMatch(/select:/);
+    }
   });
 });
