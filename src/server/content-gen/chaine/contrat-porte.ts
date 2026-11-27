@@ -228,8 +228,23 @@ export interface ContexteRefus {
 }
 
 /**
+ * Règle UNIQUE du report, partagée par `refusDepuisVerdict` et `actionApresVerdict`
+ * (elles ne doivent jamais diverger) : B17 (coupe-circuit) en défaut, quel que soit
+ * le reste (B17 non évalué : seulement s'il n'y a pas d'autre critère manquant), et note ≥ 70 → le contenu attend (§ 8 de la chaîne : pas de réécriture).
+ */
+function reportAttendu(defauts: readonly DefautBloquant[], note: number): boolean {
+  if (note < SEUIL_BLOQUE) return false;
+  const b17 = defauts.find((d) => d.id === "B17");
+  if (!b17) return false;
+  if (b17.etat === "echec") return true;
+  // B17 seulement illisible : report s'il est seul (ou avec B04) ; si d'autres critères
+  // manquent aussi (sortie vide ou tronquée), c'est une mise en attente, pas un report.
+  return defauts.every((d) => d.id === "B17" || d.etat === "echec" || d.id === "B04");
+}
+
+/**
  * Lignes de refus d'un verdict :
- * - une par bloquant EN ÉCHEC (B17 exclu : c'est un report) ;
+ * - une par bloquant EN ÉCHEC (B17 exclu : c'est un report ; si B17 est en défaut avec une note ≥ 70, aucune ligne) ;
  * - un bloquant « non évalué » n'est PAS un refus (c'est une panne de source :
  *   elle ne doit pas fausser les statistiques de refus) ;
  * - note invalide : aucune ligne (panne, mise en attente) ;
@@ -256,6 +271,8 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
   // Note invalide : panne de la porte, pas faute du contenu (action : mise en attente).
   if (!noteValide(sortie.note)) return [];
   const defauts = defautsBloquants(sortie);
+  // Report (B17 en défaut, note ≥ 70) : le contenu attend, aucune ligne de refus.
+  if (reportAttendu(defauts, sortie.note)) return [];
   const refus: RefusEnregistrable[] = [];
   for (const d of defauts) {
     if (d.etat !== "echec" || !d.resultat || CLASSE_CRITERE[d.id] === "report") continue;
@@ -275,10 +292,8 @@ export function refusDepuisVerdict(sortie: SortiePorte, ctx: ContexteRefus): Ref
     nonEvalues.length > 0 &&
     nonEvalues.every((d) => d.id === "B04") &&
     sortie.note >= SEUIL_PUBLICATION_DEPART;
-  const report =
-    defauts.length > 0 && defauts.every((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE;
   const noteSousSeuil = sortie.verdict !== "publiable" || sortie.note < SEUIL_PUBLICATION_DEPART;
-  if (noteSousSeuil && refus.length === 0 && !enAttente && !relecturePrevue && !report) {
+  if (noteSousSeuil && refus.length === 0 && !enAttente && !relecturePrevue) {
     refus.push({
       ...base,
       code: "autre",
@@ -318,10 +333,11 @@ export type ActionApresVerdict =
 /**
  * Ce que fait la chaîne d'un verdict. Ordre des règles :
  * 1. note invalide → mise en attente ;
- * 2. B17 seul en défaut, note ≥ 70 → report (ni réécriture ni abandon) ;
+ * 2. B17 en défaut (seul ou non), note ≥ 70 → report (ni réécriture ni abandon) ;
  * 3. publiable et sans défaut → relecture humaine (jamais de publication directe) ;
  * 4. bloquant (hors B17) non évalué ou absent, sans échec → mise en attente,
- *    sauf B04 seul : relecture humaine (§ 5 de la porte) ;
+ *    sauf B04 seul : relecture humaine (§ 5 de la porte) ; un non évalué hors B04
+ *    met en attente même avec un échec ;
  * 5. seuls des dérogeables en échec → `derogation_ou_fusion` (avant le plafond :
  *    une dérogation ne consomme pas de réécriture) ;
  * 6. plafond de réécritures ou de coût atteint, ou compteur invalide → abandon
@@ -336,9 +352,7 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   if (!noteValide(sortie.note)) {
     return { action: "mettre_en_attente", criteres: defauts.map((d) => d.id) };
   }
-  if (defauts.length > 0 && defauts.every((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE) {
-    return { action: "reporter" };
-  }
+  if (reportAttendu(defauts, sortie.note)) return { action: "reporter" };
   if (
     sortie.verdict === "publiable" &&
     sortie.note >= SEUIL_PUBLICATION_DEPART &&
@@ -351,23 +365,21 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
       d.etat === "echec" && d.resultat !== undefined && CLASSE_CRITERE[d.id] !== "report",
   );
   const nonEvalues = defauts.filter((d) => d.etat === "non_evalue" && d.id !== "B17");
+  // Un bloquant hors B04 non jugé (source en panne) : on attend, même s'il y a aussi un échec
+  // (pas de réécriture ni de dérogation fondée sur une évaluation incomplète).
+  if (nonEvalues.some((d) => d.id !== "B04")) {
+    return { action: "mettre_en_attente", criteres: nonEvalues.map((d) => d.id) };
+  }
   if (echecs.length === 0 && nonEvalues.length > 0) {
     // § 5 de la porte : « B04 non évalué = relecture humaine » (liste réglementaire pas encore activée).
     // Cette relecture est un autre chemin que `publicationAutorisee` (qui exige B04 « ok »).
-    if (nonEvalues.every((d) => d.id === "B04")) {
-      // B17 en défaut (plafond du jour, coupe-circuit) : le contenu attend d'abord.
-      if (defauts.some((d) => d.id === "B17") && sortie.note >= SEUIL_BLOQUE) {
-        return { action: "reporter" };
-      }
-      // Seulement si la note le permet : un contenu faible n'est jamais envoyé « faute de mieux ».
-      if (sortie.note >= SEUIL_PUBLICATION_DEPART) return { action: "relecture_humaine" };
-    } else {
-      return { action: "mettre_en_attente", criteres: nonEvalues.map((d) => d.id) };
-    }
+    // Seulement si la note le permet : un contenu faible n'est jamais envoyé « faute de mieux ».
+    if (sortie.note >= SEUIL_PUBLICATION_DEPART) return { action: "relecture_humaine" };
   }
   const aCorriger = echecs.filter((d) => CLASSE_CRITERE[d.id] !== "derogeable");
   // Une dérogation ne consomme aucune réécriture : elle passe avant le plafond.
-  if (echecs.length > 0 && aCorriger.length === 0) {
+  // Sous 70, une dérogation ne rendrait rien publiable : pas de temps humain perdu.
+  if (echecs.length > 0 && aCorriger.length === 0 && sortie.note >= SEUIL_BLOQUE) {
     return { action: "derogation_ou_fusion", criteres: echecs.map((d) => d.id) };
   }
   // Compteurs corrompus (NaN, négatif) : plafond atteint, jamais « illimité » (échec fermé).
@@ -382,6 +394,14 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
     etat.coutUsd >= PLAFOND_COUT_USD
   ) {
     return { action: "abandonner", code: "plafond_atteint" };
+  }
+  // Dérogeable seul sous 70 : ni dérogation ni réécriture de style, on abandonne avec son code.
+  const premierEchec = echecs[0];
+  if (premierEchec && aCorriger.length === 0) {
+    return {
+      action: "abandonner",
+      code: codePourCritere(premierEchec.id, premierEchec.resultat.precision),
+    };
   }
   const sansSection = aCorriger.find((d) => !sectionLocalisee(d.resultat.section));
   if (sansSection) {

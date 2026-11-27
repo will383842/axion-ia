@@ -208,9 +208,39 @@ describe("actionApresVerdict", () => {
     expect(actionApresVerdict(s, debut).action).toBe("reporter");
   });
 
-  it("B17 avec un autre échec → traité comme un refus ordinaire", () => {
+  it("B17 avec un autre échec (note ≥ 70) → report : la chaîne prime, pas de réécriture, pas de refus", () => {
     const s = sortie("a_corriger", [echec("B17"), echec("B08", { section: "intro" })]);
-    expect(actionApresVerdict(s, debut).action).toBe("reecrire");
+    expect(actionApresVerdict(s, debut).action).toBe("reporter");
+    expect(refusDepuisVerdict(s, { contenuId: "c1", reecrituresFaites: 0, coutUsd: 0 })).toEqual(
+      [],
+    );
+  });
+
+  it("B17 non évalué + échec dur (B01) → report comme avec B04 en échec (même traitement)", () => {
+    const b17ne = {
+      id: "B17" as const,
+      etat: "non_evalue" as const,
+      preuve: "",
+      raison: "illisible",
+    };
+    const s = sortie("a_corriger", [b17ne, echec("B01", { section: "intro" })], 80);
+    expect(actionApresVerdict(s, debut).action).toBe("reporter");
+  });
+
+  it("un non évalué hors B04 avec un échec → mise en attente, pas de réécriture", () => {
+    const s = sortie("a_corriger", [
+      echec("B05"),
+      { id: "B02", etat: "non_evalue", preuve: "", raison: "source en panne" },
+    ]);
+    expect(actionApresVerdict(s, debut).action).toBe("mettre_en_attente");
+  });
+
+  it("dérogeable seul avec une note sous 70 → pas de dérogation proposée", () => {
+    const s = sortie("bloque", [echec("B05")], 40);
+    expect(actionApresVerdict(s, debut)).toEqual({
+      action: "abandonner",
+      code: "intention_couverte",
+    });
   });
 
   it("a_corriger avec cause localisée → réécriture ciblée, corrections listées", () => {
@@ -438,9 +468,9 @@ describe("tour 3 : cohérence note / verdict / B04 / B17", () => {
   });
 
   it("B04 non évalué + B17 en défaut → report", () => {
-    expect(actionApresVerdict(sortie("a_corriger", [b04, echec("B17")], 80), debut)).toEqual({
-      action: "reporter",
-    });
+    const s = sortie("a_corriger", [b04, echec("B17")], 80);
+    expect(actionApresVerdict(s, debut)).toEqual({ action: "reporter" });
+    expect(refusDepuisVerdict(s, ctx)).toEqual([]);
   });
 
   it("une section blanche n'est pas recopiée dans le refus", () => {
