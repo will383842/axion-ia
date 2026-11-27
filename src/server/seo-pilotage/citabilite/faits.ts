@@ -33,8 +33,12 @@ export interface InterditTrouve {
 
 /** Lit les faits canon à la source. */
 export function faitsCanon(): FaitsCanon {
+  const prix = JOURNEE_IA_TIER.priceFlat;
+  if (typeof prix !== "number" || !(prix > 0)) {
+    throw new Error("faitsCanon : prix de la Journée IA absent de pricing.ts");
+  }
   return {
-    prixJourneeIaEur: JOURNEE_IA_TIER.priceFlat ?? 0,
+    prixJourneeIaEur: prix,
     delaiRapportJoursOuvres: DELAI_RAPPORT_JOURS_OUVRES,
   };
 }
@@ -67,8 +71,11 @@ export function detecterFaitsDivergents(texte: string, canon: FaitsCanon): Diver
   for (const phrase of phrases) {
     const n = normaliser(phrase);
     if (/journee ia/.test(n)) {
-      for (const montant of montantsEuros(phrase)) {
-        if (montant !== canon.prixJourneeIaEur) {
+      // Une phrase qui contient déjà le prix canon peut citer d'autres montants (ex. le seuil de
+      // déduction « 5 000 € ») : on ne juge que les phrases où AUCUN montant n'est le prix.
+      const montants = montantsEuros(phrase);
+      if (montants.length > 0 && !montants.includes(canon.prixJourneeIaEur)) {
+        for (const montant of montants) {
           out.push({
             type: "prix-journee-ia",
             attendu: canon.prixJourneeIaEur,

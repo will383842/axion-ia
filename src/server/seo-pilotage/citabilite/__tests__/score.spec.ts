@@ -8,7 +8,7 @@ import {
 } from "../score";
 import { detecterFaitsDivergents, faitsCanon } from "../faits";
 import { JOURNEE_IA_TIER } from "@/content/pricing";
-import { DELAI_RAPPORT_JOURS_OUVRES } from "@/content/journee-ia-commun";
+import { DELAI_RAPPORT_JOURS_OUVRES, DEDUCTION_JOURNEE_IA } from "@/content/journee-ia-commun";
 
 const URL_PAGE = "https://axion-ia.com/fr/blog/automatiser-sa-facturation";
 const MAINTENANT = new Date("2026-11-27T10:00:00Z");
@@ -358,5 +358,34 @@ describe("faits canon : lus à la source", () => {
     expect(detecterFaitsDivergents("La Journée IA : 1 490 €.", canon)).toEqual([]);
     expect(detecterFaitsDivergents("La Journée IA : 1490 euros.", canon)).toEqual([]);
     expect(detecterFaitsDivergents("La Journée IA : 990 euros.", canon)).toHaveLength(1);
+  });
+});
+
+describe("régressions de la relecture", () => {
+  it("la phrase de déduction canon (5 000 € et prix) ne diverge pas", () => {
+    const texte = DEDUCTION_JOURNEE_IA.replace(
+      "{{PRIX}}",
+      `${String(faitsCanon().prixJourneeIaEur).replace(/\B(?=(\d{3})+(?!\d))/g, " ")} €`,
+    );
+    expect(detecterFaitsDivergents(texte, faitsCanon())).toEqual([]);
+  });
+
+  it("une Organization redéfinie avec le même @id reste à 10", () => {
+    const complet = {
+      "@type": "Organization",
+      "@id": ID_ORGANISATION,
+      name: "Axion-IA",
+      url: "https://axion-ia.com",
+    };
+    const html = page({ jsonLd: JSON.stringify({ "@graph": [complet] }) }).replace(
+      "</head>",
+      `<script type="application/ld+json">${JSON.stringify(complet)}</script></head>`,
+    );
+    expect(points(html).jsonLd).toBe(10);
+  });
+
+  it("une entrée gigantesque est traitée sans exception", () => {
+    const r = calculerCitabilite(entree("<".repeat(100_000)));
+    expect(r.score).toBeGreaterThanOrEqual(0);
   });
 });

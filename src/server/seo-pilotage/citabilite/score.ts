@@ -31,6 +31,8 @@ export const POINTS = {
 
 export const PENALITE_FAIT_CANON = 20;
 export const PENALITE_INTERDIT = 20;
+/** Au-delà, le HTML est tronqué avant analyse. */
+export const TAILLE_HTML_MAX = 1_000_000;
 export const FRAICHEUR_MAX_JOURS = 365;
 export const HOTE_SITE = "axion-ia.com";
 export const ID_ORGANISATION = `https://${HOTE_SITE}/#organization`;
@@ -104,7 +106,7 @@ function decoder(t: string): string {
 }
 
 function texteDe(fragment: string): string {
-  return decoder(fragment.replace(/<[^>]*>/g, " "))
+  return decoder(fragment.replace(/<[^>]{0,1024}>/g, " "))
     .replace(/[  ]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -117,7 +119,7 @@ function sansScripts(html: string): string {
 }
 
 function balises(html: string, nom: string): string[] {
-  const re = new RegExp(`<${nom}\\b[^>]*>([\\s\\S]*?)<\\/${nom}\\s*>`, "gi");
+  const re = new RegExp(`<${nom}\\b[^>]{0,1024}>([\\s\\S]*?)<\\/${nom}\\s*>`, "gi");
   return [...html.matchAll(re)].map((m) => m[1] ?? "");
 }
 
@@ -127,7 +129,7 @@ function attribut(balise: string, nom: string): string | null {
 }
 
 function ouvrantes(html: string, nom: string): string[] {
-  return [...html.matchAll(new RegExp(`<${nom}\\b[^>]*>`, "gi"))].map((m) => m[0]);
+  return [...html.matchAll(new RegExp(`<${nom}\\b[^>]{0,1024}>`, "gi"))].map((m) => m[0]);
 }
 
 function mots(t: string): number {
@@ -176,7 +178,7 @@ function noeudsJsonLd(html: string): Record<string, unknown>[] {
     for (const x of Object.values(o)) visiter(x, profondeur + 1);
   };
   const re =
-    /<script\b[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script\s*>/gi;
+    /<script\b[^>]{0,1024}type\s*=\s*["']application\/ld\+json["'][^>]{0,1024}>([\s\S]*?)<\/script\s*>/gi;
   for (const m of html.matchAll(re)) {
     try {
       visiter(JSON.parse(m[1] ?? ""), 0);
@@ -196,7 +198,7 @@ const INTERROGATIF =
   /^(qu['’e]|quel|quelle|quels|quelles|comment|pourquoi|combien|quand|ou |est-ce|peut-on|faut-il|dois-je|y a-t-il|a-t-on|que |qui |lequel)/;
 
 const RENVOI =
-  /(comme (vu|indique|mentionne|evoque|explique|dit|detaille)|ci-dessus|plus haut|precedemment|voir plus)/;
+  /(comme (vu|indique|mentionne|evoque|explique|dit|detaille)|ci-dessus|plus haut|precedemment|(?<![a-z])voir plus haut)/;
 
 /* ───────────────────────────────── critères ───────────────────────────────── */
 
@@ -207,7 +209,9 @@ function critere(id: IdCritere, ok: boolean): ResultatCritere {
 /** Score de citabilité d'une page à partir de son HTML rendu. */
 export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   const canon = entree.canon ?? faitsCanon();
-  const brut = entree.html;
+  // Entrée non fiable : on borne la taille pour garder un coût linéaire.
+  const brut =
+    entree.html.length > TAILLE_HTML_MAX ? entree.html.slice(0, TAILLE_HTML_MAX) : entree.html;
   const html = sansScripts(brut);
   const corps = balises(html, "main")[0] ?? balises(html, "body")[0] ?? html;
 
@@ -259,7 +263,7 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   const ageJours = modifs.length
     ? (entree.maintenant.getTime() - Math.max(...modifs)) / 86_400_000
     : Number.POSITIVE_INFINITY;
-  const date = dateVisible && ageJours >= 0 && ageJours <= FRAICHEUR_MAX_JOURS;
+  const date = dateVisible && ageJours >= -2 && ageJours <= FRAICHEUR_MAX_JOURS;
 
   // 6. JSON-LD relié à /#organization, sans second nœud Organization
   const organisations = noeuds.filter((n) => aType(n, "Organization"));
@@ -278,7 +282,6 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   const jsonLd =
     noeuds.length > 0 &&
     (referencesOrg || definitions.some((n) => n["@id"] === ID_ORGANISATION)) &&
-    definitions.length <= 1 &&
     definitions.every((n) => n["@id"] === ID_ORGANISATION);
 
   // 7. FAQ visible concordant avec FAQPage
@@ -299,7 +302,7 @@ export function calculerCitabilite(entree: EntreePage): ResultatCitabilite {
   // 8. Tableau ou liste structurée
   const listes =
     /<table\b/i.test(corps) ||
-    [...corps.matchAll(/<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi)].some(
+    [...corps.matchAll(/<(ul|ol)\b[^>]{0,1024}>([\s\S]*?)<\/\1\s*>/gi)].some(
       (m) => (m[2]?.match(/<li\b/gi) ?? []).length >= 3,
     );
 
