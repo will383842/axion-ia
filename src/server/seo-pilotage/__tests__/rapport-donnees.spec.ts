@@ -156,7 +156,7 @@ describe("collecterSectionPilotage", () => {
     p.seoOpportunite.findMany.mockResolvedValue([
       {
         semaine: jour("2026-11-16"),
-        detecteur: "quasi_gagnante",
+        detecteur: "a",
         cible: "/fr/a",
         priorite: 9,
         details: { requeteId: 7 },
