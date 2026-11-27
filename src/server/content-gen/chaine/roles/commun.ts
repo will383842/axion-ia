@@ -153,6 +153,14 @@ export async function appelerRole(
   return reponse;
 }
 
+/** Correction localisée renvoyée à R4 (section, problème, attendu) : § 3 R5, § 4. */
+export interface Correction {
+  /** Index (0 = premier H2 du corps), « directAnswer », « faq » ou « global ». */
+  readonly section: number | "directAnswer" | "faq" | "global";
+  readonly probleme: string;
+  readonly attendu: string;
+}
+
 export type LectureJson<T> =
   { readonly ok: true; readonly valeur: T } | { readonly ok: false; readonly raison: string };
 
