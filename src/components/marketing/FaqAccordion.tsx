@@ -38,6 +38,11 @@ interface FaqAccordionProps {
   permalinkBase?: string;
   /** Locale-aware label for the permalink CTA. Default: "Page dédiée". */
   permalinkLabel?: string;
+  /**
+   * Niveau de titre des questions. Absent : la question reste un `<span>` dans le `<summary>` (HTML des pages
+   * existantes inchangé). `"h3"` : la question devient un titre de niveau 3 (plan de page des fiches équipe).
+   */
+  questionAs?: "h3";
 }
 
 // FAQ accordion 100% CSS-only (`<details>/<summary>`) — aucun JS client, aucun
@@ -55,7 +60,9 @@ export function FaqAccordion({
   ancres = false,
   permalinkBase,
   permalinkLabel = "Page dédiée",
+  questionAs,
 }: FaqAccordionProps) {
+  const Question = questionAs ?? "span";
   const jsonLd = emitJsonLd
     ? buildFaqJsonLd(faqAuthorId ? { items, authorId: faqAuthorId } : { items })
     : null;
@@ -70,9 +77,9 @@ export function FaqAccordion({
               className="group border-border border-b"
             >
               <summary className="text-fg flex cursor-pointer list-none items-start justify-between gap-4 py-4 text-left text-base font-medium">
-                <span data-faq-q className="flex-1">
+                <Question data-faq-q className="flex-1">
                   {item.question}
-                </span>
+                </Question>
                 <span
                   aria-hidden="true"
                   className="text-fg-muted mt-1 shrink-0 text-xl leading-none transition-transform group-open:rotate-45"

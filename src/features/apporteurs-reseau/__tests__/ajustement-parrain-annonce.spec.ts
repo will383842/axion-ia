@@ -27,6 +27,10 @@ vi.mock("@/lib/prisma", () => ({
     activityLog: { create: vi.fn(async () => ({})) },
   },
 }));
+// Cas calibrés sur la grille v3 (la grille de la ligne est lue par `grilleDeLaLigne`).
+vi.mock("../commissions", () => ({
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })),
+}));
 vi.mock("../resiliation", () => ({
   PREFIXE_PALIER_REPRISE: "reprise:",
   enregistrerReprise: (...a: unknown[]) => d.reprise(...a),

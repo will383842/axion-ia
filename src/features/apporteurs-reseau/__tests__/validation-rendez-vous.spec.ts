@@ -415,6 +415,119 @@ describe("validerParRendezVous", () => {
     expect(bd.reservations[0]).toMatchObject({ validationSource: "saisie", rendezVousCle: null });
   });
 
+  describe("date de prise saisie (L9) : seulement pour une rencontre", () => {
+    const PRIS_SAISI = new Date("2026-11-03T10:00:00Z");
+    function rencontre() {
+      bd.rencontres.push({
+        id: "r1",
+        statut: "tenue",
+        debutReel: TENU,
+        debutPrevu: TENU,
+        createdAt: PRIS,
+      });
+      bd.propositions.push({
+        id: "pr-r1",
+        presentationId: "p1",
+        rendezVousCle: "rencontre:r1",
+        prisAt: PRIS,
+        rendezVousAt: TENU,
+        ecarteeAt: null,
+        retenueAt: null,
+      });
+    }
+
+    it("rencontre : le prisAt fourni est écrit dans rendezVousPrisAt et journalisé (prisAtSaisi)", async () => {
+      entreprise("p1", A1);
+      rencontre();
+      const r = await validerParRendezVous(
+        saisie("p1", {
+          rendezVousCle: "rencontre:r1",
+          source: "rencontre",
+          propositionId: "pr-r1",
+          prisAt: PRIS_SAISI,
+        }),
+        MAINTENANT,
+      );
+      expect(r.ok).toBe(true);
+      expect(bd.reservations[0]!["rendezVousPrisAt"]).toEqual(PRIS_SAISI);
+      expect(bd.journal[0]!["changes"]).toMatchObject({
+        prisAtSaisi: true,
+        prisAt: PRIS_SAISI.toISOString(),
+      });
+    });
+
+    it("rencontre sans prisAt fourni : la date de la proposition, prisAtSaisi faux", async () => {
+      entreprise("p1", A1);
+      rencontre();
+      const base = saisie("p1", {
+        rendezVousCle: "rencontre:r1",
+        source: "rencontre",
+        propositionId: "pr-r1",
+      });
+      const { prisAt: _ignore, ...sansPris } = base;
+      const r = await validerParRendezVous(sansPris as typeof base, MAINTENANT);
+      expect(r.ok).toBe(true);
+      expect(bd.reservations[0]!["rendezVousPrisAt"]).toEqual(PRIS);
+      expect(bd.journal[0]!["changes"]).toMatchObject({ prisAtSaisi: false });
+    });
+
+    it("rencontre : prisAt fourni avant la saisie de l'entreprise : refus (pris_avant_saisie)", async () => {
+      entreprise("p1", A1);
+      rencontre();
+      const r = await validerParRendezVous(
+        saisie("p1", {
+          rendezVousCle: "rencontre:r1",
+          source: "rencontre",
+          propositionId: "pr-r1",
+          prisAt: new Date("2026-10-30T10:00:00Z"),
+        }),
+        MAINTENANT,
+      );
+      expect(r).toMatchObject({ ok: false });
+      if (!r.ok) expect(r.message).toMatch(/AVANT la saisie/);
+      expect(bd.presentations[0]!["statut"]).toBe("reservee");
+    });
+
+    it("rencontre : prisAt fourni après la réservation : refus (pris_apres_reservation)", async () => {
+      entreprise("p1", A1);
+      rencontre();
+      const r = await validerParRendezVous(
+        saisie("p1", {
+          rendezVousCle: "rencontre:r1",
+          source: "rencontre",
+          propositionId: "pr-r1",
+          prisAt: new Date("2027-02-01T10:00:00Z"),
+        }),
+        MAINTENANT,
+      );
+      expect(r).toMatchObject({ ok: false });
+      if (!r.ok) expect(r.message).toMatch(/plus de 60 jours/);
+    });
+
+    it("calendly avec un prisAt fourni différent : rendezVousPrisAt reste celui de la proposition", async () => {
+      entreprise("p1", A1);
+      const e = saisie("p1");
+      const r = await validerParRendezVous({ ...e, prisAt: PRIS_SAISI }, MAINTENANT);
+      expect(r.ok).toBe(true);
+      expect(bd.reservations[0]!["rendezVousPrisAt"]).toEqual(PRIS);
+    });
+  });
+
+  it("saisie manuelle : le motif est écrit dans validationMotif", async () => {
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(
+      {
+        ...saisie("p1", { rendezVousCle: null, source: "saisie", prisAt: TENU }),
+        motif: "Appel du 10 novembre, noté dans le carnet",
+      },
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(true);
+    expect(bd.reservations[0]!["validationMotif"]).toBe(
+      "Appel du 10 novembre, noté dans le carnet",
+    );
+  });
+
   it("interrupteur éteint : rien n'est écrit", async () => {
     vi.stubEnv("APPORTEURS_VALIDATION_RDV", "TRUE");
     entreprise("p1", A1);

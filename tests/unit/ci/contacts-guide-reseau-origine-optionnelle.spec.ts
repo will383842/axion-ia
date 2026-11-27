@@ -47,7 +47,11 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261126140000_apporteurs_tva_figee",
       "20261126150000_apporteur_changement_iban",
       "20261127100000_barometre_questionnaire_reponses",
+      "20261127110000_apporteur_messages_recus",
       "20261127120000_apporteurs_challenges",
+      "20261127130000_team_members",
+      "20261127200000_apporteurs_releve_mensuel",
+      "20261127230000_pilotage_seo_mesure",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

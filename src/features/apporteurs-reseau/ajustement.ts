@@ -18,16 +18,21 @@
 
 import { prisma } from "@/lib/prisma";
 
+import { grilleDeLaLigne } from "./commissions";
 import {
+  calculerCommissionSelonGrille,
   calculerCommission,
+  PALIERS_FORMATION_LONGUE,
   commissionJourneeIaCents,
   PALIER_JOURNEE_IA,
   PRIX_REFERENCE_JOURNEE_IA_CENTS,
   euros,
   PALIER_CONFERENCE,
+  MESSAGE_GRILLE_INCONNUE,
   PARRAINAGE_BPS,
   TAUX_BPS,
   type ActiviteCommission,
+  type GrilleCommission,
 } from "./regles";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
 
@@ -87,6 +92,7 @@ async function lire(id: string) {
       autofactureNumero: true,
       factureId: true,
       parrainage: true,
+      presentationId: true,
     },
   });
   // Valeurs figées : la ligne lue peut être modifiée sous nos yeux.
@@ -102,6 +108,10 @@ export const partDuParrain = (commissionFilleulCents: number): number =>
 
 /** Nombre de sessions retenu à la création (formation) : prix public ÷ prix du palier. */
 function quantiteDe(l: { palier: string | null; prixPublicHtCents: number | null }): number {
+  // 3 jours ou plus : la quantité est le nombre de journées (référence = journées × prix du jour).
+  const longue = PALIERS_FORMATION_LONGUE.find((p) => p.id === l.palier);
+  if (longue)
+    return l.prixPublicHtCents ? Math.round(l.prixPublicHtCents / longue.prixJourCents) : 0;
   const calc = calculerCommission({ activite: "formation", factureHtCents: 0, palier: l.palier });
   if (calc.statut !== "calculee" || !calc.prixPublicCents || !l.prixPublicHtCents) return 1;
   return Math.max(1, Math.round(l.prixPublicHtCents / calc.prixPublicCents));
@@ -113,6 +123,8 @@ export function commissionPourPrixConserve(
     activite: string;
     palier: string | null;
     prixPublicHtCents: number | null;
+    /** Grille du contrat signé de la ligne (`grilleDeLaLigne`) ; `null` : version inconnue → escalade. */
+    grille: GrilleCommission | null;
   },
   prixHtCents: number,
   montantActuelCents?: number,
@@ -138,11 +150,16 @@ export function commissionPourPrixConserve(
           montantActuelCents,
           Math.round((Math.max(0, prixHtCents) * TAUX_BPS.un_a_un) / 10_000),
         );
-  const calc = calculerCommission({
+  // Version signée inconnue : jamais de montant, la ligne ne bouge pas. L'alerte critique part du
+  // passage des avoirs (`avoir-client.ts`, code apporteur_grille_inconnue_avoir) ; `reduireCommission`
+  // refuse avec MESSAGE_GRILLE_INCONNUE.
+  if (l.grille === null) return null;
+  const calc = calculerCommissionSelonGrille({
     activite: l.activite as ActiviteCommission,
     factureHtCents: prixHtCents,
     palier: l.palier,
     quantite: quantiteDe(l),
+    grille: l.grille,
   });
   return calc.statut === "calculee" ? calc.montantCents : null;
 }
@@ -289,7 +306,13 @@ export async function reduireCommission(
       ok: false,
       message: `Le prix conservé doit être inférieur au prix facturé (${euros(avant.factureHtCents)} HT).`,
     };
-  const nouveau = commissionPourPrixConserve(avant, prixConserveHtCents, avant.montantCents);
+  const { grille } = await grilleDeLaLigne(avant);
+  if (grille === null) return { ok: false, message: MESSAGE_GRILLE_INCONNUE };
+  const nouveau = commissionPourPrixConserve(
+    { ...avant, grille },
+    prixConserveHtCents,
+    avant.montantCents,
+  );
   if (nouveau === null)
     return { ok: false, message: "La règle de calcul ne s'applique pas à cette ligne." };
   if (nouveau >= avant.montantCents)

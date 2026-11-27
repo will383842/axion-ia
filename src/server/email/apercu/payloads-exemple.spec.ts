@@ -144,7 +144,8 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // « une entreprise est déclarée par un apporteur ». Ses champs sont tous facultatifs.
     // 🔴 2026-10-08 — RELEVÉ À 69 : `apporteur-attribution-confirmee`, l'e-mail à l'apporteur
     // « attribution confirmée / protection prolongée » (contrat 2.3, art. 3.2 et 3.4). Ses
-    // champs sont tous facultatifs.
+    // champs sont tous facultatifs. (2026-11-27 : `dateValidation`, facultatif lui aussi, ne
+    // change pas le compte : même gabarit.)
     // 🔴 2026-10-09 — RELEVÉ À 70 : `apporteur-lien-espace`, le lien de l'espace renvoyé à
     // l'apporteur depuis « Retrouver mon espace ». Ses champs sont tous facultatifs.
     // 🔴 2026-10-16 — RELEVÉ À 71 : `recueil-besoin` (chantier QNC, lot L03), le
@@ -184,7 +185,11 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // et `miseEnDemeureLe` ont leur valeur d'exemple.
     // RELEVÉ À 93 : `apporteur-presentation-non-retenue`, l'e-mail à l'apporteur « entreprise non
     // retenue ». Champs tous facultatifs.
-    expect(tous.length).toBe(93);
+    // RELEVÉ À 94 : `apporteur-compte` (lot 2 changement de compte bancaire, sans émetteur ; un
+    // fichier, cinq gabarits). Champs tous facultatifs.
+    // RELEVÉ À 95 : `apporteur-releve-mensuel` (relevé mensuel, lot 2, gabarit dormant sans
+    // émetteur). Champs tous facultatifs.
+    expect(tous.length).toBe(95);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

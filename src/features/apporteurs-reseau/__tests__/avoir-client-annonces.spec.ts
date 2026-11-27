@@ -104,6 +104,8 @@ vi.mock("../litige", () => ({ litigeDisponible: async () => d.litige }));
 vi.mock("../commissions", () => ({
   statutApresVigilance: vi.fn(async () => ({ statut: "due", demander: false })),
   dejaEnvoye: vi.fn(async (jobId: string) => d.envoyes.has(jobId)),
+  // Cas calibrés sur la grille v3 (la grille v2 est couverte par avoir-grille-contrat-signe.spec.ts).
+  grilleDeLaLigne: vi.fn(async () => ({ grille: "v3", signeeAt: null })),
 }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn(async () => ({ enqueued: true })) }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => d.envoyer(...(a as [])) }));

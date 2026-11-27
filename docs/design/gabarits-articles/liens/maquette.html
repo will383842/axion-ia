@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maquette · liens des articles · Axion-IA</title>
+<style>
+/* =====================================================================
+   Maquette « rendu visuel des liens » — gabarits d'articles Axion-IA.
+   Autonome : CSS inline, zéro JavaScript, aucune police téléchargée
+   (piles de repli : en prod, Manrope / Fraunces / Inconsolata déjà chargées).
+   Les variables reprennent À L'IDENTIQUE les noms de src/app/globals.css.
+   Les blocs .annot (étiquettes en pointillés) n'existent QUE dans la maquette.
+   ===================================================================== */
+:root{
+  --color-bg:#faf8f3;--color-paper:#fff;--color-sand:#f0e9da;--color-sand-deep:#e6dcc4;
+  --color-mocha:#2a2520;--color-mocha-soft:#3d362f;--color-mocha-fg:#f7f3ea;--color-mocha-fg-muted:#b5aa9c;
+  --color-terracotta-on-mocha:#eb8560;--color-fg:#1a1815;--color-fg-soft:#524b41;--color-fg-muted:#5a4f44;
+  --color-primary:#1a4dd9;--color-primary-hover:#0f3aae;--color-primary-soft:#e8efff;
+  --color-terracotta:#b23f16;--color-terracotta-soft:#f5e3d8;--color-terracotta-deep:#8c3010;
+  --color-sage:#5e6c54;--color-sage-soft:#e6ebe2;--color-ochre-soft:#f6e7cf;--color-ochre-deep:#7d4a0a;
+  --color-border:#e5ddc8;--color-border-on-mocha:#4a4239;--color-border-strong:#c8bda0;
+  --font-sans:Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --font-serif:Fraunces,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --font-mono:Inconsolata,ui-monospace,SFMono-Regular,Menlo,monospace;
+  /* Jetons propres aux liens (à poser par S2, bornés à [data-gabarit]) */
+  --lien-souligne:color-mix(in srgb,var(--color-primary) 45%,transparent);
+  --focus-ring:var(--color-primary);
+  --ico-fleche:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8h9.5M9 4.5 12.5 8 9 11.5'/%3E%3C/svg%3E");
+  --ico-sortie:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 3.5h-3v9h9v-3M9.5 3h3.5v3.5M13 3 7.5 8.5'/%3E%3C/svg%3E");
+  --ico-chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 3.5 4.5 4.5L6 12.5'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html{color-scheme:light;scroll-padding-top:5.5rem;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--color-bg);color:var(--color-fg);font:400 clamp(1.0625rem,1rem + .25vw,1.125rem)/1.75 var(--font-sans)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px;border-radius:3px}
+.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--color-paper);padding:.75rem 1rem;z-index:99}
+
+/* ---- Maquette uniquement ---- */
+.top{background:var(--color-paper);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:40}
+.top div{max-width:76rem;margin:auto;padding:.9rem 1rem;font-weight:600;font-size:1.1rem}
+.annot{display:inline-block;font:400 .75rem/1.3 var(--font-mono);letter-spacing:.02em;color:var(--color-ochre-deep);background:var(--color-ochre-soft);border:1px dashed var(--color-ochre-deep);border-radius:6px;padding:.15rem .45rem;margin:.25rem 0}
+.annot-bloc{display:block;width:max-content;max-width:100%;margin:2rem 0 .5rem}
+
+.wrap{max-width:76rem;margin:auto;padding:0 1rem}
+
+/* =====================================================================
+   1. FIL D'ARIANE — nav > ol, chevron en masque, page courante non liée
+   ===================================================================== */
+.ariane ol{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:0 .25rem;margin:1rem 0 .5rem;padding:0;font:400 .9375rem/1.4 var(--font-sans);color:var(--color-fg-muted)}
+.ariane li{display:flex;align-items:center;min-width:0}
+.ariane li+li::before{content:"";width:.75rem;height:.75rem;margin-right:.25rem;background:var(--color-border-strong);-webkit-mask:var(--ico-chevron) center/contain no-repeat;mask:var(--ico-chevron) center/contain no-repeat;flex:none}
+.ariane a{display:inline-flex;align-items:center;min-height:1.5rem;padding:.25rem .375rem;margin:0 -.375rem;border-radius:6px;color:var(--color-fg-soft);text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.25em;transition:color .15s,text-decoration-color .15s,background-color .15s}.ariane a:hover,.ariane a:focus-visible{color:var(--color-primary);text-decoration-color:currentColor;background:var(--color-primary-soft)}
+.ariane li:first-child a{margin-left:0;padding-left:0}
+.ariane [aria-current]{color:var(--color-fg);font-weight:600;max-width:22ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:.25rem 0}
+
+/* ---- En-tête d'article (repris des maquettes du gabarit, simplifié) ---- */
+.entete{max-width:46rem;padding:.5rem 0 2rem}
+.kicker{font:600 .8125rem/1.3 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--color-terracotta-deep)}
+h1{font:600 clamp(2rem,1.35rem + 2.6vw,3.125rem)/1.1 var(--font-serif);letter-spacing:-.02em;margin:.5rem 0 1rem;text-wrap:balance}
+.chapo{font-size:clamp(1.1875rem,1.1rem + .4vw,1.375rem);line-height:1.55;color:var(--color-fg-soft);margin:0 0 1rem}
+.meta{font-size:.9375rem;color:var(--color-fg-muted);margin:0}
+
+/* =====================================================================
+   Corps : colonne de lecture + colonne de marge (notes de glossaire)
+   ===================================================================== */
+.corps{display:grid;grid-template-columns:minmax(0,1fr);max-width:42rem}
+.corps>*{grid-column:1;min-width:0}
+.corps h2{font:600 clamp(1.5rem,1.2rem + 1.2vw,2rem)/1.2 var(--font-serif);letter-spacing:-.01em;margin:2.5rem 0 .75rem;text-wrap:balance}
+.corps p{margin:0 0 1.25rem}
+@media (min-width:72rem){
+  .corps{grid-template-columns:minmax(0,42rem) 15rem;column-gap:3rem;max-width:none}
+  .corps>.note-glossaire{grid-column:2;grid-row:span 3;align-self:start;margin-top:.35rem}
+  .corps>.pleine{grid-column:1/-1}
+}
+
+/* =====================================================================
+   2. LIEN INTERNE DANS LE TEXTE — a[data-lien="article"|"page"|"service"]
+   Soulignement 2 px bleu 45 % → plein au survol + surligneur doux ;
+   petite flèche en masque (jamais seul repère : le soulignement reste).
+   ===================================================================== */
+.corps>p a[data-lien]{color:var(--color-primary);font-weight:600;text-decoration:underline 2px var(--lien-souligne);text-underline-offset:.22em;text-decoration-skip-ink:auto;
+  background:linear-gradient(var(--color-primary-soft),var(--color-primary-soft)) 0 100%/100% 0 no-repeat;border-radius:2px;
+  transition:color .15s,text-decoration-color .15s,background-size .15s}.corps>p a[data-lien]:hover,.corps>p a[data-lien]:focus-visible{color:var(--color-primary-hover);text-decoration-color:currentColor;background-size:100% 100%}
+.corps>p a[data-lien="article"]::after,.corps>p a[data-lien="page"]::after,.corps>p a[data-lien="service"]::after{content:"";display:inline-block;width:.72em;height:.72em;margin-left:.2em;vertical-align:-.02em;background:currentColor;opacity:.75;
+  -webkit-mask:var(--ico-fleche) center/contain no-repeat;mask:var(--ico-fleche) center/contain no-repeat;transition:transform .15s}.corps>p a[data-lien]:hover::after,.corps>p a[data-lien]:focus-visible::after{transform:translateX(2px);opacity:1}
+
+/* Lien de service DANS le texte : même forme, accent terracotta = « passer à l'action » */
+.corps>p a[data-lien="service"]{color:var(--color-terracotta-deep);--lien-souligne:color-mix(in srgb,var(--color-terracotta) 50%,transparent);background-image:linear-gradient(var(--color-terracotta-soft),var(--color-terracotta-soft))}.corps>p a[data-lien="service"]:hover,.corps>p a[data-lien="service"]:focus-visible{color:var(--color-terracotta-deep)}
+
+/* =====================================================================
+   3. LIEN EXTERNE — a[data-lien="source"] : icône « sortie » + domaine
+   en pastille mono (le domaine fait partie du nom accessible).
+   ===================================================================== */
+.corps>p a[data-lien="source"]::after{content:"";display:inline-block;width:.78em;height:.78em;margin-left:.15em;vertical-align:-.04em;background:currentColor;opacity:.8;
+  -webkit-mask:var(--ico-sortie) center/contain no-repeat;mask:var(--ico-sortie) center/contain no-repeat;transition:transform .15s}.corps>p a[data-lien="source"]:hover::after,.corps>p a[data-lien="source"]:focus-visible::after{transform:translate(1.5px,-1.5px);opacity:1}
+.lien-domaine{font:400 .78em/1 var(--font-mono);color:var(--color-fg-muted);background:var(--color-sand);border-radius:999px;padding:.12em .5em .16em;margin-left:.35em;white-space:nowrap;letter-spacing:.01em;display:inline-block;vertical-align:.08em}.corps>p a[data-lien="source"]:hover .lien-domaine,.corps>p a[data-lien="source"]:focus-visible .lien-domaine{background:var(--color-primary-soft);color:var(--color-primary-hover)}
+
+/* Appel de note [1] → bloc Sources. Cible ≥ 24 px par padding. */
+.appel-note{font:600 .72em/1 var(--font-mono);vertical-align:.45em}
+.appel-note a{display:inline-flex;align-items:center;justify-content:center;min-width:1.6rem;min-height:1.5rem;padding:0 .3rem;margin:-.3rem 0;border-radius:999px;color:var(--color-sage);background:var(--color-sage-soft);text-decoration:none;transition:background-color .15s,color .15s}.appel-note a:hover,.appel-note a:focus-visible{background:var(--color-sage);color:var(--color-paper)}
+
+/* =====================================================================
+   4. LIEN DE GLOSSAIRE — terme souligné en pointillé terracotta, lié à la
+   fiche ; définition courte TOUJOURS visible dans une note de marge
+   (ordinateur) ou un encart compact sous le paragraphe (téléphone).
+   ===================================================================== */
+.corps>p a[data-lien="glossaire"]{color:inherit;font-weight:600;text-decoration:underline 2px dotted var(--color-terracotta);text-underline-offset:.28em;background-image:linear-gradient(var(--color-terracotta-soft),var(--color-terracotta-soft))}.corps>p a[data-lien="glossaire"]:hover,.corps>p a[data-lien="glossaire"]:focus-visible{color:var(--color-terracotta-deep);text-decoration-style:solid}
+.note-glossaire{position:relative;margin:-.5rem 0 1.5rem;padding:.75rem 1rem .8rem 1rem;background:var(--color-paper);border:1px solid var(--color-border);border-left:3px solid var(--color-terracotta);border-radius:0 12px 12px 0;font-size:.9375rem;line-height:1.55;color:var(--color-fg-soft)}
+.note-glossaire dfn{display:flex;align-items:center;gap:.4rem;font:600 .75rem/1.3 var(--font-mono);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--color-terracotta-deep);margin-bottom:.25rem}
+.note-glossaire dfn::before{content:"Aa";display:inline-grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:6px;background:var(--color-terracotta-soft);font:600 .7rem/1 var(--font-serif);letter-spacing:0;text-transform:none}
+.note-glossaire p{margin:0 0 .35rem}
+.note-glossaire a{display:inline-flex;align-items:center;gap:.3rem;min-height:1.5rem;font-weight:600;font-size:.875rem;color:var(--color-primary);text-decoration:underline 1px var(--lien-souligne);text-underline-offset:.2em}
+.note-glossaire a::after{content:"";width:.75em;height:.75em;background:currentColor;-webkit-mask:var(--ico-fleche) center/contain no-repeat;mask:var(--ico-fleche) center/contain no-repeat}.note-glossaire a:hover,.note-glossaire a:focus-visible{color:var(--color-primary-hover);text-decoration-color:currentColor}
+@media (min-width:72rem){.note-glossaire{margin:0;background:transparent;border:0;border-left:2px solid var(--color-terracotta);border-radius:0;padding:.1rem 0 .1rem 1rem}}
+
+/* =====================================================================
+   5. CARTES « À LIRE AUSSI » — aside > ul > li.carte ; un seul lien (le titre)
+   étendu à toute la carte par ::after ; vignette 3:2 réservée (CLS 0).
+   ===================================================================== */
+.lire-aussi{margin:2.25rem 0 2.5rem;padding:1.5rem 0 0;border-top:1px solid var(--color-border)}
+.corps .bloc-titre,.bloc-titre{display:flex;align-items:center;gap:.6rem;font:600 .8125rem/1.3 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--color-terracotta-deep);margin:0 0 1rem}
+.bloc-titre::before{content:"";width:1.5rem;height:2px;background:currentColor}
+.cartes{list-style:none;margin:0;padding:0;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr))}
+.carte{position:relative;display:flex;flex-direction:column;background:var(--color-paper);border:1px solid var(--color-border);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgb(42 37 32 / .06);transition:transform .18s,box-shadow .18s,border-color .18s}.carte:hover,.carte:focus-within{transform:translateY(-3px);border-color:var(--color-border-strong);box-shadow:0 12px 28px -12px rgb(42 37 32 / .28)}
+.carte:has(a:focus-visible){outline:3px solid var(--focus-ring);outline-offset:3px}
+.carte a:focus-visible{outline:none}
+.vignette{aspect-ratio:3/2;display:grid;place-items:center;margin:0;overflow:hidden}
+.vignette img,.vignette svg.photo{width:100%;height:100%;object-fit:cover;display:block}
+.vignette .picto{width:3rem;height:3rem}
+.v-guide{background:linear-gradient(135deg,var(--color-terracotta-soft),var(--color-sand));color:var(--color-terracotta)}
+.v-analyse{background:linear-gradient(135deg,var(--color-primary-soft),var(--color-sand));color:var(--color-primary)}
+.v-actu{background:linear-gradient(135deg,var(--color-sage-soft),var(--color-sand));color:var(--color-sage)}
+.carte-corps{display:flex;flex-direction:column;gap:.5rem;padding:1rem 1.1rem 1.1rem;flex:1}
+.carte-type{display:flex;flex-wrap:wrap;gap:.35rem .6rem;align-items:center;font:400 .8125rem/1.2 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted)}
+.carte-type b{font-weight:600;color:var(--color-terracotta-deep)}
+.carte h3{font:600 1.125rem/1.3 var(--font-serif);margin:0;letter-spacing:-.005em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.carte h3 a{color:var(--color-fg);text-decoration:none}
+.carte h3 a::after{content:"";position:absolute;inset:0;border-radius:14px}
+.carte-lire{margin-top:auto;padding-top:.5rem;display:flex;align-items:center;gap:.4rem;font-weight:600;font-size:.9375rem;color:var(--color-primary)}
+.carte-lire::after{content:"";width:1em;height:1em;background:currentColor;-webkit-mask:var(--ico-fleche) center/contain no-repeat;mask:var(--ico-fleche) center/contain no-repeat;transition:transform .18s}.carte:hover .carte-lire::after,.carte:focus-within .carte-lire::after{transform:translateX(4px)}.carte:hover h3 a,.carte:focus-within h3 a{color:var(--color-primary-hover)}
+
+/* =====================================================================
+   6. CARTE DE SERVICE (milieu d'article) — fond mocha, un seul bouton
+   ===================================================================== */
+.carte-service{--focus-ring:var(--color-terracotta-on-mocha);position:relative;display:grid;gap:1rem;align-items:center;margin:2.5rem 0;padding:1.5rem;border-radius:18px;color:var(--color-mocha-fg);
+  background:radial-gradient(120% 140% at 100% 0%,var(--color-mocha-soft) 0%,var(--color-mocha) 60%);overflow:hidden}
+.carte-service::before{content:"";position:absolute;right:-3rem;top:-3rem;width:11rem;height:11rem;border-radius:50%;border:1px solid var(--color-border-on-mocha);opacity:.9}
+.cs-eyebrow{display:flex;align-items:center;gap:.5rem;font:600 .8125rem/1.3 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--color-terracotta-on-mocha);margin:0}
+.cs-eyebrow svg{width:1.25rem;height:1.25rem}
+.carte-service h2,.carte-service .cs-titre{font:600 clamp(1.375rem,1.1rem + 1vw,1.75rem)/1.2 var(--font-serif);margin:.35rem 0 .4rem;color:var(--color-mocha-fg);letter-spacing:-.01em}
+.carte-service p{margin:0;color:var(--color-mocha-fg);opacity:.92;font-size:1rem;line-height:1.55}
+.cs-rassure{margin-top:.6rem!important;font:400 .875rem/1.3 var(--font-mono)!important;color:var(--color-mocha-fg-muted)!important;opacity:1!important;letter-spacing:.02em}
+@media (min-width:40rem){.carte-service{grid-template-columns:1fr auto;padding:1.75rem 2rem}}
+
+/* =====================================================================
+   7. BOUTONS DE SERVICE — vrais <a> stylés en bouton, ≥ 48 px de haut
+   ===================================================================== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:3rem;padding:.75rem 1.25rem;border-radius:10px;font:600 1rem/1.2 var(--font-sans);text-decoration:none;white-space:nowrap;transition:background-color .15s,box-shadow .15s,color .15s,border-color .15s}
+.btn svg{width:1.15rem;height:1.15rem;flex:none}
+.btn-primaire{background:var(--color-terracotta);color:var(--color-paper);box-shadow:0 1px 0 rgb(0 0 0 / .08)}.btn-primaire:hover,.btn-primaire:focus-visible{background:var(--color-terracotta-deep);box-shadow:0 8px 18px -8px rgb(178 63 22 / .55)}
+.btn-secondaire{background:var(--color-paper);color:var(--color-primary);border:1.5px solid var(--color-primary)}.btn-secondaire:hover,.btn-secondaire:focus-visible{background:var(--color-primary-soft);color:var(--color-primary-hover)}
+.btn .fl{width:1rem;height:1rem;background:currentColor;-webkit-mask:var(--ico-fleche) center/contain no-repeat;mask:var(--ico-fleche) center/contain no-repeat;transition:transform .15s}.btn:hover .fl,.btn:focus-visible .fl{transform:translateX(3px)}
+
+/* =====================================================================
+   8. BLOC « POUR ALLER PLUS LOIN » (fin) — liste numérotée sur sable
+   ===================================================================== */
+.plus-loin{margin:3rem 0 2rem;padding:1.5rem 1.25rem 1rem;background:var(--color-sand);border-radius:18px}
+.plus-loin h2{font:600 1.375rem/1.25 var(--font-serif);margin:0 0 .25rem}
+.plus-loin .sous{margin:0 0 .75rem;font-size:.9375rem;color:var(--color-fg-soft)}
+.plus-loin ol{list-style:none;margin:0;padding:0;counter-reset:apl}
+.plus-loin li{counter-increment:apl;border-top:1px solid var(--color-sand-deep)}
+.plus-loin li:first-child{border-top:0}
+.plus-loin a{display:grid;grid-template-columns:2.25rem 1fr auto;align-items:center;gap:.25rem .75rem;min-height:3.5rem;padding:.75rem .75rem;margin:0 -.75rem;border-radius:12px;color:var(--color-fg);text-decoration:none;transition:background-color .15s,color .15s}
+.plus-loin a::before{content:counter(apl,decimal-leading-zero);font:600 .9375rem/1 var(--font-mono);color:var(--color-terracotta)}
+.plus-loin a::after{content:"";width:1.1rem;height:1.1rem;background:var(--color-fg-muted);-webkit-mask:var(--ico-fleche) center/contain no-repeat;mask:var(--ico-fleche) center/contain no-repeat;transition:transform .15s,background-color .15s}
+.plus-loin .apl-titre{font-weight:600;line-height:1.35;text-decoration:underline 1px transparent;text-underline-offset:.2em;transition:text-decoration-color .15s}
+.plus-loin .apl-type{display:block;font:400 .8125rem/1.3 var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--color-fg-muted);margin-top:.15rem}.plus-loin a:hover,.plus-loin a:focus-visible{background:var(--color-paper);color:var(--color-primary-hover)}.plus-loin a:hover .apl-titre,.plus-loin a:focus-visible .apl-titre{text-decoration-color:currentColor}.plus-loin a:hover::after,.plus-loin a:focus-visible::after{background:var(--color-primary);transform:translateX(3px)}
+
+/* =====================================================================
+   9. BLOC DE FIN « Par où commencer chez vous ? » — 2 boutons + 1 lien
+   ===================================================================== */
+.fin-action{margin:2rem 0;padding:1.75rem 1.5rem;background:var(--color-paper);border:1px solid var(--color-border);border-top:4px solid var(--color-terracotta);border-radius:18px}
+.fin-action h2{font:600 clamp(1.375rem,1.1rem + 1vw,1.75rem)/1.2 var(--font-serif);margin:0 0 .4rem}
+.fin-action p{margin:0 0 1.25rem;color:var(--color-fg-soft)}
+.fin-boutons{display:flex;flex-wrap:wrap;align-items:flex-start;gap:.75rem 1rem}
+.fin-primaire{display:flex;flex-direction:column;gap:.5rem}
+.fin-repli{margin:1rem 0 0!important;font-size:.9375rem}
+.fin-repli a{display:inline-flex;align-items:center;gap:.35rem;min-height:1.5rem;color:var(--color-primary);font-weight:600;text-decoration:underline 2px var(--lien-souligne);text-underline-offset:.22em}
+.fin-repli a::after{content:"";width:.8em;height:.8em;background:currentColor;-webkit-mask:var(--ico-fleche) center/contain no-repeat;mask:var(--ico-fleche) center/contain no-repeat}.fin-repli a:hover,.fin-repli a:focus-visible{color:var(--color-primary-hover);text-decoration-color:currentColor}
+.cs-rassure-clair{display:block;font:400 .875rem/1.3 var(--font-mono);color:var(--color-fg-muted)}
+
+/* =====================================================================
+   10. BLOC « SOURCES » — section > ol, numéros = cibles des appels [n]
+   ===================================================================== */
+.sources{margin:2.5rem 0 3rem;padding:1.5rem 1.25rem;background:var(--color-paper);border:1px solid var(--color-border);border-left:4px solid var(--color-sage);border-radius:0 16px 16px 0}
+.sources h2{display:flex;align-items:center;gap:.5rem;font:600 .875rem/1.3 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--color-sage);margin:0 0 .25rem}
+.sources h2 svg{width:1.2rem;height:1.2rem}
+.sources .sous{margin:0 0 1rem;font-size:.9375rem;color:var(--color-fg-soft)}
+.sources ol{list-style:none;margin:0;padding:0;counter-reset:src}
+.sources li{counter-increment:src;display:grid;grid-template-columns:2rem 1fr;gap:.25rem .75rem;padding:.85rem .5rem;margin:0 -.5rem;border-top:1px solid var(--color-border);border-radius:10px;scroll-margin-top:6rem;transition:background-color .4s}
+.sources li:first-child{border-top:0}
+.sources li::before{content:counter(src);display:grid;place-items:center;width:1.75rem;height:1.75rem;border-radius:999px;background:var(--color-sage-soft);color:var(--color-sage);font:600 .875rem/1 var(--font-mono)}
+.sources li:target{background:var(--color-sage-soft)}
+.src-titre{font-weight:600;line-height:1.4}
+.src-titre a{display:inline-block;padding:.2rem 0;color:var(--color-fg);text-decoration:underline 1px var(--color-border-strong);text-underline-offset:.22em}
+.src-titre a::after{content:"";display:inline-block;width:.75em;height:.75em;margin-left:.25em;vertical-align:-.02em;background:var(--color-fg-muted);-webkit-mask:var(--ico-sortie) center/contain no-repeat;mask:var(--ico-sortie) center/contain no-repeat}.src-titre a:hover,.src-titre a:focus-visible{color:var(--color-primary);text-decoration-color:currentColor}.src-titre a:hover::after,.src-titre a:focus-visible::after{background:var(--color-primary)}
+.src-meta{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .5rem;font:400 .875rem/1.3 var(--font-mono);color:var(--color-fg-muted)}
+.src-badge{font:600 .7rem/1 var(--font-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--color-sage);border:1px solid var(--color-sage);border-radius:999px;padding:.25rem .5rem}
+.src-retour{display:inline-flex;align-items:center;justify-content:center;min-width:1.5rem;min-height:1.5rem;border-radius:6px;color:var(--color-primary);text-decoration:none;font-family:var(--font-sans)}.src-retour:hover,.src-retour:focus-visible{background:var(--color-primary-soft)}
+
+/* ---- Téléphone ---- */
+@media (max-width:40rem){
+  .fin-boutons .btn,.fin-primaire{width:100%}
+  .carte-service .btn{width:100%}
+  .ariane [aria-current]{max-width:14ch}
+  .plus-loin{margin-left:-.5rem;margin-right:-.5rem}
+  .carte{flex-direction:row;min-height:7rem}
+  .vignette{width:6.5rem;flex:none;aspect-ratio:auto;align-self:stretch}
+  .vignette .picto{width:2.25rem;height:2.25rem}
+  .carte-corps{padding:.85rem 1rem}
+  .carte h3{font-size:1.0625rem}
+}
+
+/* ---- Préférences utilisateur ---- */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}.carte:hover,.carte:focus-within{transform:none}}
+@media (forced-colors:active){
+  .corps>p a[data-lien]::after,.carte-lire::after,.plus-loin a::after,.src-titre a::after,.btn .fl,.ariane li+li::before,.note-glossaire a::after,.fin-repli a::after{background:LinkText;forced-color-adjust:none}
+  .carte,.carte-service,.plus-loin,.sources,.fin-action,.note-glossaire{border:1px solid CanvasText}
+  .btn{border:2px solid ButtonText}
+  :focus-visible,.carte:has(a:focus-visible){outline-color:Highlight}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#article">Aller à l'article</a>
+<header class="top"><div>Axion-IA <span class="annot">maquette · liens des articles — zéro JS</span></div></header>
+
+<main class="wrap" id="article">
+
+  <span class="annot annot-bloc">① Fil d'Ariane · nav[aria-label] &gt; ol · page courante non liée, aria-current="page"</span>
+  <nav class="ariane" aria-label="Fil d'Ariane">
+    <ol>
+      <li><a href="/fr">Accueil</a></li>
+      <li><a href="/fr/guides">Guides</a></li>
+      <li><span aria-current="page">Automatiser vos devis avec l'IA : par où commencer dans une PME</span></li>
+    </ol>
+  </nav>
+
+  <article data-gabarit="guide">
+    <header class="entete">
+      <p class="kicker">Guide pratique</p>
+      <h1>Automatiser vos devis avec l'IA : par où commencer dans une PME</h1>
+      <p class="chapo">Un devis bien fait demande souvent une heure de recherche dans d'anciens dossiers. Un assistant IA bien cadré peut préparer le brouillon ; votre équipe garde la décision.</p>
+      <p class="meta">Publié le 18 novembre 2026 · 9 min de lecture</p>
+    </header>
+
+    <div class="corps">
+      <p>Dans une PME de services ou du bâtiment, le devis est le premier contact concret avec un client. Il mobilise une personne qualifiée, souvent le dirigeant lui-même, pour retrouver un chantier comparable, recopier des lignes et vérifier les mentions.</p>
+
+      <span class="annot">② Lien interne (article) · data-lien="article" · flèche en masque CSS</span>
+      <span class="annot">⑦ Lien de service dans le texte · data-lien="service" · accent terracotta</span>
+      <p>Avant d'acheter un outil, il faut savoir quelle tâche coûte vraiment du temps. Notre méthode pour <a href="/fr/blog/cartographier-taches-repetitives-pme" data-lien="article">cartographier les tâches répétitives de votre équipe</a> tient sur une demi-page. Si vous préférez un regard extérieur, vous pouvez aussi <a href="/fr/appel" data-lien="service">faire le point en 45 minutes avec un Diagnostic IA</a>.</p>
+
+      <h2>Ce qu'un assistant IA sait faire sur un devis</h2>
+
+      <span class="annot">④ Lien de glossaire · terme en pointillé lié à la fiche + note de marge (aria-describedby)</span>
+      <p>Le principe le plus sûr consiste à brancher un modèle de langage sur vos propres devis passés, avec la technique dite du <a href="/fr/glossaire/rag" data-lien="glossaire" aria-describedby="def-rag">RAG</a>. L'assistant ne « devine » pas un prix : il retrouve les lignes de vos chantiers comparables et propose un brouillon que vous corrigez.</p>
+      <aside class="note-glossaire" id="note-rag" aria-label="Définition : RAG">
+        <dfn>RAG</dfn>
+        <p id="def-rag">Génération augmentée par recherche : l'IA consulte d'abord vos documents, puis rédige à partir de ce qu'elle y a trouvé.</p>
+        <a href="/fr/glossaire/rag">Voir la fiche du glossaire</a>
+      </aside>
+
+      <span class="annot">③ Lien externe · data-lien="source" · icône sortie + domaine · même onglet · appel de note [1]</span>
+      <p>Ces outils se diffusent vite dans les entreprises françaises, mais l'usage reste inégal selon la taille : l'<a href="https://www.insee.fr/fr/accueil" data-lien="source" rel="noopener noreferrer">enquête de l'Insee sur les TIC dans les entreprises <span class="lien-domaine">insee.fr</span></a> montre un écart net entre petites et grandes structures<sup class="appel-note"><a href="#source-1" id="appel-1" aria-label="Source 1">1</a></sup>.</p>
+
+      <span class="annot annot-bloc pleine">⑤ Cartes « À lire aussi » · milieu d'article · 3 max · un seul lien par carte (le titre) · vignette 3:2 réservée</span>
+      <aside class="lire-aussi pleine" aria-labelledby="titre-lire-aussi">
+        <h2 class="bloc-titre" id="titre-lire-aussi">À lire aussi</h2>
+        <ul class="cartes">
+          <li class="carte">
+            <figure class="vignette v-guide">
+              <!-- Image Unsplash DÉJÀ attribuée à l'article cible (aucune nouvelle sélection). Simulée ici. -->
+              <svg class="photo" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="300" height="200" fill="#e6dcc4"/><rect x="0" y="120" width="300" height="80" fill="#c8bda0"/><rect x="40" y="60" width="90" height="70" rx="4" fill="#f5e3d8"/><rect x="150" y="40" width="110" height="90" rx="4" fill="#faf8f3"/><circle cx="240" cy="35" r="16" fill="#eb8560"/></svg>
+            </figure>
+            <div class="carte-corps">
+              <p class="carte-type"><b>Guide</b><span>· 7 min</span></p>
+              <h3><a href="/fr/guides/premier-assistant-ia-pme">Mettre en place votre premier assistant IA en quatre semaines</a></h3>
+              <span class="carte-lire" aria-hidden="true">Lire le guide</span>
+            </div>
+          </li>
+          <li class="carte">
+            <figure class="vignette v-analyse">
+              <svg class="picto" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 40V22M18 40V12M28 40V26M38 40V16"/><path d="M5 40h38"/></svg>
+            </figure>
+            <div class="carte-corps">
+              <p class="carte-type"><b>Analyse</b><span>· 11 min</span></p>
+              <h3><a href="/fr/blog/ia-generative-pme-ou-en-sont-les-entreprises">IA générative dans les PME : où en sont vraiment les entreprises</a></h3>
+              <span class="carte-lire" aria-hidden="true">Lire l'analyse</span>
+            </div>
+          </li>
+          <li class="carte">
+            <figure class="vignette v-actu">
+              <svg class="picto" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="7" y="9" width="34" height="30" rx="3"/><path d="M14 18h20M14 25h20M14 32h12"/></svg>
+            </figure>
+            <div class="carte-corps">
+              <p class="carte-type"><b>Actualité</b><span>· 4 min</span></p>
+              <h3><a href="/fr/actualites/ai-act-obligations-2026-pme">AI Act : ce qui change pour les PME en 2026</a></h3>
+              <span class="carte-lire" aria-hidden="true">Lire l'actualité</span>
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+      <h2>Les trois conditions pour que ça marche</h2>
+      <p>D'abord, des devis passés propres et rangés : l'assistant ne fera pas mieux que vos archives. Ensuite, une règle claire sur ce que l'IA propose et ce que l'humain valide. Enfin, un cadre de confidentialité, puisque vos devis contiennent des données de clients.</p>
+      <p>Sur ce dernier point, la <a href="https://www.cnil.fr/fr/intelligence-artificielle" data-lien="source" rel="noopener noreferrer">page de la CNIL consacrée à l'intelligence artificielle <span class="lien-domaine">cnil.fr</span></a> détaille les bons réflexes avant de confier des données personnelles à un outil<sup class="appel-note"><a href="#source-2" id="appel-2" aria-label="Source 2">2</a></sup>. Notre page <a href="/fr/securite-donnees" data-lien="page">sécurité et hébergement des données</a> explique où sont traitées les vôtres.</p>
+
+      <span class="annot annot-bloc pleine">⑥ Carte de service · milieu d'article (après le passage le plus concret) · 1 max · 1 bouton</span>
+      <aside class="carte-service pleine" aria-labelledby="cs-titre">
+        <div>
+          <p class="cs-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Diagnostic IA, 45 min</p>
+          <p class="cs-titre" id="cs-titre">Vos priorités IA, en 45 minutes</p>
+          <p>Diagnostic IA gratuit pour qualifier votre besoin et choisir le bon module.</p>
+          <p class="cs-rassure">Diagnostic IA : gratuit · 45 minutes · sans engagement</p>
+        </div>
+        <a class="btn btn-primaire" href="/fr/appel" data-lien="service">Réserver mon Diagnostic IA<span class="fl" aria-hidden="true"></span></a>
+      </aside>
+
+      <h2>Par quoi commencer lundi</h2>
+      <p>Choisissez un seul type de devis, le plus fréquent. Rassemblez vingt exemples récents, notez le temps passé sur chacun, puis testez l'assistant sur cinq nouveaux devis en gardant la relecture humaine. Le guide <a href="/fr/guides/rediger-consignes-ia" data-lien="article">rédiger des consignes claires pour un assistant IA</a> vous aidera pour ce premier essai.</p>
+
+      <span class="annot annot-bloc pleine">⑧ « Pour aller plus loin » · fin d'article · 3 liens max · internes · jamais une page déjà ciblée par le bloc de fin</span>
+      <nav class="plus-loin pleine" aria-labelledby="apl-titre">
+        <h2 id="apl-titre">Pour aller plus loin</h2>
+        <p class="sous">Trois lectures choisies pour passer à l'étape suivante.</p>
+        <ol>
+          <li><a href="/fr/guides/ia-pme-guide-complet"><span><span class="apl-titre">L'IA dans une PME : le guide complet pour démarrer</span><span class="apl-type">Guide pilier · 15 min</span></span></a></li>
+          <li><a href="/fr/blog/choisir-outil-ia-generative"><span><span class="apl-titre">Choisir un outil d'IA générative sans se tromper</span><span class="apl-type">Comparatif · 8 min</span></span></a></li>
+          <li><a href="/fr/glossaire"><span><span class="apl-titre">Le glossaire de l'IA : les mots clés expliqués simplement</span><span class="apl-type">Glossaire · définitions courtes</span></span></a></li>
+        </ol>
+      </nav>
+
+      <span class="annot annot-bloc pleine">⑨ Bloc d'action de fin · 1 primaire + 1 secondaire + /contact en lien de repli</span>
+      <aside class="fin-action pleine" aria-labelledby="fin-titre">
+        <h2 id="fin-titre">Par où commencer chez vous ?</h2>
+        <p>On regarde ensemble vos tâches, vos outils et ce que l'IA peut prendre en charge en premier.</p>
+        <div class="fin-boutons">
+          <div class="fin-primaire">
+            <a class="btn btn-primaire" href="/fr/appel" data-lien="service">Réserver mon Diagnostic IA<span class="fl" aria-hidden="true"></span></a>
+            <span class="cs-rassure-clair">Diagnostic IA : gratuit · 45 minutes · sans engagement</span>
+          </div>
+          <a class="btn btn-secondaire" href="/fr/journee-ia" data-lien="service">Découvrir la Journée IA<span class="fl" aria-hidden="true"></span></a>
+        </div>
+        <p class="fin-repli">Une autre question ? <a href="/fr/contact" data-lien="service">Parlons de vous</a></p>
+      </aside>
+
+      <span class="annot annot-bloc pleine">⑩ Sources (exemples de maquette) · numérotées, cibles des appels · domaine · date DU DOCUMENT (jamais une « vérification » inventée) · lien retour</span>
+      <section class="sources pleine" aria-labelledby="titre-sources">
+        <h2 id="titre-sources"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zM12 6.5v13"/></svg>Sources</h2>
+        <p class="sous">Les documents cités dans cet article.</p>
+        <ol>
+          <li id="source-1">
+            <span class="src-titre"><a href="https://www.insee.fr/fr/accueil" rel="noopener noreferrer"><cite>Les technologies de l'information et de la communication dans les entreprises</cite></a></span>
+            <span class="src-meta"><span>Insee</span><span aria-hidden="true">·</span><span>insee.fr</span><span aria-hidden="true">·</span><time datetime="2024">2024</time><span class="src-badge">Source officielle</span><a class="src-retour" href="#appel-1" aria-label="Retour au texte, appel 1">↩</a></span>
+          </li>
+          <li id="source-2">
+            <span class="src-titre"><a href="https://www.cnil.fr/fr/intelligence-artificielle" rel="noopener noreferrer"><cite>Intelligence artificielle : les recommandations de la CNIL</cite></a></span>
+            <span class="src-meta"><span>CNIL</span><span aria-hidden="true">·</span><span>cnil.fr</span><span class="src-badge">Source officielle</span><a class="src-retour" href="#appel-2" aria-label="Retour au texte, appel 2">↩</a></span>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </article>
+</main>
+</body>
+</html>
