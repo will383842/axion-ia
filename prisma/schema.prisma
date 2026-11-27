@@ -2764,6 +2764,58 @@ model ContentGenConfig {
   @@map("content_gen_config")
 }
 
+/// Porte qualité (CONCEPTION-PORTE-QUALITE.md § 13, PR Q1) — un verdict par évaluation
+/// d'un contenu. Table NOUVELLE, aucune lecture ni écriture branchée en Q1.
+/// Pas de clé étrangère volontaire : le verdict survit à la suppression du contenu (audit),
+/// et aucune table existante n'est touchée (fenêtre app/worker). `verdict` : publiable |
+/// a_corriger | bloque | reporte ; `mode` : ombre | reel | maj. Colonnes en texte libre,
+/// pas d'énumération (règle 6 du § 3).
+/// rgpd: technique — verdict de qualité d'un contenu éditorial ; aucune donnée sur une personne
+model ContentQualityVerdict {
+  id                String   @id @default(cuid())
+  jobId             String?  @map("job_id")
+  articleId         String?  @map("article_id") @db.Uuid
+  contentKind       String   @map("content_kind") @db.VarChar(40)
+  versionPorte      String   @map("version_porte") @db.VarChar(40)
+  mode              String   @db.VarChar(20)
+  verdict           String   @db.VarChar(20)
+  note              Int?
+  criteres          Json?
+  seuilsFiges       Json?    @map("seuils_figes")
+  embeddingVoisinId String?  @map("embedding_voisin_id")
+  cosinusMax        Float?   @map("cosinus_max")
+  decidePar         String?  @map("decide_par")
+  motifDerogation   String?  @map("motif_derogation")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([jobId])
+  @@index([articleId])
+  @@index([verdict, createdAt])
+  @@index([createdAt])
+  @@map("content_quality_verdicts")
+}
+
+/// Porte qualité (§ 13, PR Q1) — instantané hebdomadaire d'une cohorte (contenus publiés la
+/// même semaine). Écrit plus tard par le worker, lu par l'écran. Un nombre absent est NULL
+/// (« indisponible »), jamais 0.
+/// rgpd: technique — compteurs agrégés par semaine ; aucune donnée sur une personne
+model PorteCohorte {
+  id           String   @id @default(cuid())
+  semaine      DateTime @unique @db.Date
+  publies      Int?
+  indexes7j    Int?     @map("indexes_7j")
+  indexes14j   Int?     @map("indexes_14j")
+  indexes28j   Int?     @map("indexes_28j")
+  impressions  Int?
+  noteMoyenne  Float?   @map("note_moyenne")
+  derogations  Int?
+  versionPorte String?  @map("version_porte") @db.VarChar(40)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("porte_cohortes")
+}
+
 /// City Domination 2026-05-18 P1-9 (audit A10) — Audit trail SOC2 immuable
 /// pour toute modification de ContentGenConfig + autres settings admin
 /// content-gen. Append-only : pas d'UPDATE/DELETE exposés via le helper
