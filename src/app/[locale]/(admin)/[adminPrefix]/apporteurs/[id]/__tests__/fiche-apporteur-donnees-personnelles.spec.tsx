@@ -47,6 +47,10 @@ vi.mock("@/features/apporteurs-reseau/solde-negatif", () => ({
   lireSoldeNegatif: async () => null,
 }));
 vi.mock("@/features/apporteurs-reseau/siret-apporteur", () => ({ siretDe: async () => null }));
+// Relevés mensuels (lot 4b'), lecture : hors du sujet de ce test, simulés.
+vi.mock("@/features/apporteurs-reseau/releve-mensuel/statistiques", () => ({
+  lireRelevesDeLApporteur: async () => [],
+}));
 vi.mock("@/components/admin/apporteurs/fiche/ChangerRegimeTva", () => ({
   ChangerRegimeTva: () => null,
 }));

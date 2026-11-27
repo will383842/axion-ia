@@ -20,7 +20,7 @@ describe("worker content-gen : interrupteur de l'équipe éditoriale", () => {
 
   it("le suivi de l'équipe n'est construit que derrière l'interrupteur", () => {
     expect(SOURCE).toMatch(
-      /const equipeOrchestree =\s*equipeEditorialeActive\(\) && interrupteurBlogClaude\(\) && typeClaudeAutorise\(contentType\);/,
+      /const equipeOrchestree =\s*equipeEditorialeActive\(\) &&\s*interrupteurBlogClaude\(\) &&\s*typeClaudeAutorise\(contentType\) &&\s*\(await equipeEnMarche\(\)\);/,
     );
     expect(SOURCE).toMatch(
       /const suiviEquipe =\s*equipeOrchestree && !carteEchec\s*\? new SuiviEquipe\(/,

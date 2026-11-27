@@ -66,6 +66,7 @@ import {
 } from "@/server/content-gen/fact-check/fact-check-claude";
 import { equipeEditorialeActive } from "@/server/content-gen/fact-check/equipe-editoriale-drapeau";
 import { coutCumuleJobUsd } from "@/server/content-gen/providers/blog-claude-ledger";
+import { equipeEnMarche } from "@/server/content-gen/equipe/pilotage";
 import { produireBrief } from "@/server/content-gen/equipe/strategie";
 import {
   decider as deciderGardien,
@@ -727,8 +728,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
 
     // PR 12 — équipe éditoriale (`CONTENT_EQUIPE_EDITORIALE` = « true », types Claude seulement).
     // Éteint : aucune de ces variables n'est utilisée et le chemin d'avant est inchangé.
+    // PR 17 : la console peut aussi l'arrêter (`equipe_marche`) ; arrêt console = pas d'équipe.
     const equipeOrchestree =
-      equipeEditorialeActive() && interrupteurBlogClaude() && typeClaudeAutorise(contentType);
+      equipeEditorialeActive() &&
+      interrupteurBlogClaude() &&
+      typeClaudeAutorise(contentType) &&
+      (await equipeEnMarche());
     const reprise = improvementFeedback !== undefined;
     // La carte des requêtes est lue ICI, dans un try : une erreur de lecture = repli sur le chemin
     // d'avant (équipe non construite), jamais un job planté.
