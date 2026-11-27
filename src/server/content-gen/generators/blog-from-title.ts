@@ -39,6 +39,7 @@ import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
+import { equipeEditorialeActive } from "../fact-check/equipe-editoriale-drapeau";
 import { expandOutlineChunked } from "../shared/expand-outline-chunked";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
@@ -76,6 +77,14 @@ const MIN_WORD_COUNT = 850;
 // ───────────────────────────────────────────────────────────────────────────
 // ARCHITECTURE 2-APPELS (2026-06-25)
 // ───────────────────────────────────────────────────────────────────────────
+
+// Consigne du plan (équipe éditoriale, derrière CONTENT_EQUIPE_EDITORIALE) : contrat vérifié par equipe/plan.ts.
+const CONSIGNE_PLAN_EQUIPE = `## Contrat de plan (obligatoire — prime sur « 8 sections » ci-dessus)
+- "directAnswer" : 40 à 60 mots, placée juste sous le titre, qui contient le mot-clé principal.
+- "outline" : 5 à 8 sections <h2>, chacune répondant à une sous-question du brief ; ajoute à chaque entrée "questionCouverte" (la sous-question) et, si tu en as une, "preuve" (texte ou identifiant de preuve).
+- Pas de <h3> sauf si un <h2> en a au moins deux ; <h4> à <h6> seulement si nécessaire ; jamais de saut de niveau.
+- Chaque question du brief est traitée UNE fois : dans un <h2> OU dans la FAQ, jamais les deux.
+`;
 
 // APPEL 1 — PLAN : produit l'ossature (métadonnées + FAQ + outline 8 sections).
 // PAS de bodyHtml ici (c'est l'appel 2 qui développe). Le TITRE est IMPOSÉ par
@@ -168,7 +177,8 @@ export const blogFromTitleGenerator: Generator = {
     let lastPromptHash = ""; // P0-3 AI Act art. 50
     const glossaryContext = getGlossaryContext([mandatoryTitle].filter(Boolean));
 
-    type OutlineSection = { h2: string; brief: string };
+    // questionCouverte / preuve : facultatifs (circuit équipe éditoriale) — un job ou un plan sans eux reste valide.
+    type OutlineSection = { h2: string; brief: string; questionCouverte?: string; preuve?: string };
     type PlanParsed = {
       title: string;
       metaTitle: string;
@@ -199,7 +209,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 "expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile, sans chiffre inventé.
 ${consigneAngle(input.jobId)}
 ${consigneJourneeIA(mandatoryTitle)}
-${sectionChiffresVerifies()}## Output attendu (JSON)
+${sectionChiffresVerifies()}${equipeEditorialeActive() ? CONSIGNE_PLAN_EQUIPE : ""}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;
