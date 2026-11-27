@@ -99,7 +99,7 @@ export default async function QuestionnaireBarometrePage({ params }: Props) {
   };
 
   return (
-    <main>
+    <div>
       <Container className="py-10 sm:py-14">
         <h1 className="text-3xl font-semibold">{H1}</h1>
         <p className="mt-3 text-sm">{DUREE}</p>
@@ -139,6 +139,6 @@ export default async function QuestionnaireBarometrePage({ params }: Props) {
           <RetraitQuestionnaire t={RETRAIT} />
         </section>
       </Container>
-    </main>
+    </div>
   );
 }
