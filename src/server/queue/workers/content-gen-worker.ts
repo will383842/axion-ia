@@ -684,6 +684,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       jobId: contentGenJobId,
       contentType,
       targetSearchIntent,
+      ...(dossierPreuves ? { dossierPreuves } : {}),
       ...(templateOverride ? { templateOverride } : {}),
       ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
       ...(dbJob.anchorDepartementCode
