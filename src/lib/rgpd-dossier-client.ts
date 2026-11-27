@@ -52,6 +52,21 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    modele: "TeamMember",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+  },
+  {
+    modele: "TeamQuestionnaireInvite",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+  },
+  {
+    modele: "TeamQuestionnaireSubmission",
+    motif:
+      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec l'écran de la console qui la remplit.",
+  },
+  {
     modele: "ApporteurChangementIban",
     motif:
       "vos demandes de changement de compte bancaire déposées depuis votre espace d'apporteur : leur date, leur état et les quatre derniers caractères du compte demandé vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com) ; l'IBAN d'une demande refusée ou contestée n'est pas rendu, car il peut être celui d'un tiers.",

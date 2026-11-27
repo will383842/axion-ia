@@ -117,6 +117,8 @@ vi.mock("@/lib/prisma", () => ({
         return ligne;
       },
     },
+    // Le suivi des messages d'apporteur (2026-11-27) a ses propres tests (`messages-recus.spec.ts`).
+    apporteurReseau: { findMany: async () => [] },
     setting: {
       findUnique: async (a: { where: { key: string } }) =>
         db.settings.has(a.where.key) ? { value: db.settings.get(a.where.key) } : null,

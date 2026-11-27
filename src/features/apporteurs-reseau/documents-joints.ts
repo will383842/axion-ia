@@ -19,24 +19,25 @@
  * le journalise et le signale. Un worker plus ancien ignore ce champ et garde son comportement
  * d'avant (il exige toutes les pièces) : rien ne casse dans la fenêtre app/worker.
  *
- * 🔑 La fiche, le livret et le GUIDE DE DÉMARRAGE ont une copie dans l'image
- * (`private/apporteurs/`), qui est la source de la pièce jointe comme du lien de l'espace de
- * l'apporteur (`documents-prives.ts`) : le même fichier des deux côtés. S'il manque sur R2 (404 vrai, jamais une panne ni un délai), l'application
- * l'y dépose elle-même avant de le joindre : tout est automatique, rien à lancer à la main. Un objet
- * déjà présent n'est jamais écrasé. Pour REMPLACER le guide : nouveau PDF dans `private/`, puis
- * `deposer-document-joint.ts guide-demarrage … --appliquer` (sinon l'e-mail garde l'ancien).
+ * 🔒 La fiche, le livret et le GUIDE DE DÉMARRAGE ne sont PAS dans le dépôt (public, ils portent
+ * des montants) : ils sont déposés UNE fois sur R2 à la main (`deposer-document-joint.ts`), à
+ * la clé déclarée ci-dessous. Absent de R2 : la pièce n'est pas jointe, l'e-mail part sans elle,
+ * une alerte est journalisée (console + Sentry). Jamais de dépôt automatique.
  *
  * ⚠️ Aucun `server-only` ici : le script de dépôt (tsx, hors Next) lit ces déclarations.
  * ⚠️ Journaux sans donnée personnelle : jamais la clé d'un contrat (elle porte l'identifiant du
  * dossier), seulement l'identifiant d'un document annexe.
  */
 
-import { createHash } from "node:crypto";
+import { enteteObjetR2, isR2Configured } from "@/lib/r2-storage";
 
-import { enteteObjetR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
-
-import { lireFicheCommissions, lireLivret } from "./documents-prives";
-import { NOM_FICHIER_GUIDE, lireGuideDemarrage } from "./guide-demarrage";
+import {
+  CLE_R2_FICHE_COMMISSIONS,
+  CLE_R2_GUIDE,
+  CLE_R2_LIVRET,
+  PREFIXE_DOCUMENTS_APPORTEURS,
+} from "./documents-prives";
+import { NOM_FICHIER_GUIDE } from "./guide-demarrage";
 import { signalerErreurReseau } from "./signaler";
 
 /** Une pièce jointe telle que la file d'e-mails l'attend : jamais de binaire, la clé R2. */
@@ -58,33 +59,28 @@ export interface DocumentAnnexe {
   cleR2: string;
   /** Nom du document dans les messages de la CONSOLE (jamais montré à l'apporteur). */
   libelleConsole: string;
-  /** Copie embarquée dans l'image, déposée sur R2 si l'objet manque (404 vrai seulement). */
-  lireCopieLocale?: () => Promise<Buffer | null>;
 }
 
-export const PREFIXE_DOCUMENTS_APPORTEURS = "documents-apporteurs/";
+export { PREFIXE_DOCUMENTS_APPORTEURS };
 
 export const DOCUMENTS_ANNEXES = [
   {
     id: "fiche-commissions",
     nomFichier: "Fiche-des-commissions-Axion-IA.pdf",
-    cleR2: `${PREFIXE_DOCUMENTS_APPORTEURS}fiche-des-commissions.pdf`,
+    cleR2: CLE_R2_FICHE_COMMISSIONS,
     libelleConsole: "la fiche des commissions",
-    lireCopieLocale: lireFicheCommissions,
   },
   {
     id: "livret",
     nomFichier: "Livret-apporteur-Axion-IA.pdf",
-    cleR2: `${PREFIXE_DOCUMENTS_APPORTEURS}livret-apporteur.pdf`,
+    cleR2: CLE_R2_LIVRET,
     libelleConsole: "le livret",
-    lireCopieLocale: lireLivret,
   },
   {
     id: "guide-demarrage",
     nomFichier: NOM_FICHIER_GUIDE,
-    cleR2: `${PREFIXE_DOCUMENTS_APPORTEURS}guide-demarrage-apporteur.pdf`,
+    cleR2: CLE_R2_GUIDE,
     libelleConsole: "le guide de démarrage",
-    lireCopieLocale: lireGuideDemarrage,
   },
 ] as const satisfies readonly DocumentAnnexe[];
 
@@ -109,9 +105,6 @@ const PDF = "application/pdf";
  */
 export const DELAI_ENTETE_MS = 5_000;
 
-/** Délai maximal du dépôt du guide (≈ 1 Mo) : au-delà, il n'est pas joint (relecture de la PR #2298). */
-export const DELAI_DEPOT_MS = 15_000;
-
 async function enteteDansLeDelai(cle: string): ReturnType<typeof enteteObjetR2> {
   let minuterie: ReturnType<typeof setTimeout> | undefined;
   try {
@@ -126,41 +119,6 @@ async function enteteDansLeDelai(cle: string): ReturnType<typeof enteteObjetR2> 
   }
 }
 
-/** Dépose la copie embarquée sur R2 (objet absent) ; taille déposée, ou `null` sans rien lever. */
-async function deposerCopieLocale(
-  cle: string,
-  libelle: string,
-  lire: () => Promise<Buffer | null>,
-): Promise<number | null> {
-  try {
-    const copie = await lire();
-    if (!copie || copie.byteLength === 0) {
-      console.warn(
-        `[apporteurs-documents] ${libelle} : absent de R2 et copie embarquée illisible, non joint`,
-      );
-      return null;
-    }
-    const sha256 = createHash("sha256").update(copie).digest("hex");
-    let minuterie: ReturnType<typeof setTimeout> | undefined;
-    try {
-      await Promise.race([
-        uploadToR2(cle, copie, PDF, { sha256 }),
-        new Promise<never>((_, refuser) => {
-          minuterie = setTimeout(() => refuser(new Error("délai dépassé")), DELAI_DEPOT_MS);
-        }),
-      ]);
-    } finally {
-      clearTimeout(minuterie);
-    }
-    console.warn(`[apporteurs-documents] ${libelle} : absent de R2, déposé depuis l'image`);
-    return copie.byteLength;
-  } catch (err) {
-    console.warn(`[apporteurs-documents] ${libelle} : dépôt sur R2 impossible, non joint`);
-    signalerErreurReseau(`documents joints : dépôt de ${libelle} sur R2`, err);
-    return null;
-  }
-}
-
 /**
  * Taille de l'objet s'il est joignable, sinon `null`. Ne lève jamais. `libelle` est ce qui
  * s'écrit au journal : jamais une clé de contrat.
@@ -168,14 +126,19 @@ async function deposerCopieLocale(
 async function tailleSiJoignable(
   cle: string,
   libelle: string,
-  lireCopieLocale?: () => Promise<Buffer | null>,
+  signalerAbsence = false,
 ): Promise<number | null> {
   try {
     if (!isR2Configured()) return null;
     const entete = await enteteDansLeDelai(cle);
     if (!entete) {
-      if (lireCopieLocale) return await deposerCopieLocale(cle, libelle, lireCopieLocale);
       console.warn(`[apporteurs-documents] ${libelle} : absent de R2, non joint`);
+      if (signalerAbsence) {
+        signalerErreurReseau(
+          "documents joints : annexe absente de R2",
+          new Error(`${libelle} absent du stockage privé, e-mail envoyé sans cette pièce`),
+        );
+      }
       return null;
     }
     if (entete.taille <= 0) {
@@ -201,11 +164,7 @@ export async function documentsAnnexesAJoindre(octetsDejaPris = 0): Promise<Piec
   let cumul = octetsDejaPris;
   for (const doc of DOCUMENTS_ANNEXES) {
     const libelle = `document « ${doc.id} »`;
-    const taille = await tailleSiJoignable(
-      doc.cleR2,
-      libelle,
-      "lireCopieLocale" in doc ? doc.lireCopieLocale : undefined,
-    );
+    const taille = await tailleSiJoignable(doc.cleR2, libelle, true);
     if (taille === null) continue;
     if (cumul + taille > TAILLE_MAX_PIECES_OCTETS) {
       console.warn(`[apporteurs-documents] ${libelle} : trop lourd pour cet e-mail, non joint`);
