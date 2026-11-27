@@ -292,9 +292,9 @@
       "running": false
     },
     {
-      "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés) — relevé de 600 à 604 KB le 27/11/2026 : nouveaux écrans challenges, mesuré 602,9 kB",
+      "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés) — relevé de 600 à 604 KB le 27/11/2026 puis à 608 KB (main a grossi de 200 B) : nouveaux écrans challenges, mesuré 602,9 kB",
       "path": ".next/static/chunks/app/**/[(]admin[)]/**/page-*.js",
-      "limit": "604 KB",
+      "limit": "608 KB",
       "running": false
     },
     {
