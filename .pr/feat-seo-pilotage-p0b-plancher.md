@@ -14,7 +14,7 @@ Une baisse de position de 3 places ou plus ne déclenche plus une mise à jour d
 - 99 impressions : pas de déclenchement ; 100 : déclenchement.
 - `null` ou champ absent : aucun déclenchement.
 - Les autres raisons (âge, lien cassé, preuve, cannibalisation) ne changent pas.
-- Spec exécutée : 20 tests verts (vitest, alias `@` et `next-intl/routing` simulés : le dépôt n'avait pas de `node_modules` dans cet environnement).
+- Spec exécutée : 21 tests verts (vitest, alias `@` et `next-intl/routing` simulés : le dépôt n'avait pas de `node_modules` dans cet environnement).
 - Non exécutés ici faute de dépendances : `pnpm typecheck`, `pnpm lint`. Le changement ne touche que des types simples (champ facultatif). La CI les rejouera.
 - Prettier passé avec la config du dépôt, hors plugin Tailwind (absent ici, sans effet sur ces fichiers).
 
@@ -24,4 +24,6 @@ Une baisse de position de 3 places ou plus ne déclenche plus une mise à jour d
 - Champ facultatif : aucun appelant cassé, aucune charge de job BullMQ modifiée.
 - Aucun interrupteur nouveau, aucun fichier interdit touché.
 
-VERDICT OPUS : EN ATTENTE
+Relecture Opus (1 tour) : aucun problème à corriger ; remarque facultative (test NaN / 0 / négatif) reprise.
+
+VERDICT OPUS : BON

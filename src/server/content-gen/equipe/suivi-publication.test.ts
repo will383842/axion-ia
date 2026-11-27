@@ -141,6 +141,12 @@ describe("declencheursMiseAJour (règles pures)", () => {
     expect(declencheursMiseAJour({ ...baisse, impressions28j: null }, NOW)).toEqual([]);
     expect(declencheursMiseAJour(baisse, NOW)).toEqual([]);
   });
+  it("valeurs non numériques, nulles ou négatives : aucun déclenchement", () => {
+    const baisse = { ...base, positionActuelle: 8 };
+    for (const v of [Number.NaN, 0, -5]) {
+      expect(declencheursMiseAJour({ ...baisse, impressions28j: v }, NOW)).toEqual([]);
+    }
+  });
   it("le plancher ne touche pas les autres raisons", () => {
     expect(
       declencheursMiseAJour({ ...base, impressions28j: null, ageJours: 180, liensCasses: 1 }, NOW),
