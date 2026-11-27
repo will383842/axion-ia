@@ -231,18 +231,6 @@ export async function executerMiseAJour(
     }
     const final = finales.join("");
 
-    // Une phrase refusée par la vérification ne doit plus figurer nulle part dans le texte final.
-    const texteFinal = sansBalises(final);
-    const restantes = v.aRetirer.map(sansBalises).filter((p) => p !== "" && texteFinal.includes(p));
-    if (restantes.length > 0) {
-      return fin(
-        "relecture-humaine",
-        slug,
-        cout,
-        "Une phrase refusée figure encore dans le texte.",
-      );
-    }
-
     // Aucun chiffre nouveau : tout nombre d'une section réécrite figurait déjà dans l'article.
     const connus = new Set(nombresDe(sansBalises(article.html)));
     const neufs = indices.flatMap((_, k) =>
@@ -260,6 +248,18 @@ export async function executerMiseAJour(
     // Aucun changement réel : ni écriture ni date.
     if (htmlIdentique(final, article.html))
       return fin("inchange", slug, cout, "Contenu identique.");
+
+    // Une phrase refusée par la vérification ne doit plus figurer nulle part dans le texte final.
+    const texteFinal = sansBalises(final);
+    const restantes = v.aRetirer.map(sansBalises).filter((p) => p !== "" && texteFinal.includes(p));
+    if (restantes.length > 0) {
+      return fin(
+        "relecture-humaine",
+        slug,
+        cout,
+        "Une phrase refusée figure encore dans le texte.",
+      );
+    }
 
     // 6. Conformité sur le texte final.
     const c = await deps.conformite(final);
