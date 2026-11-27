@@ -414,7 +414,7 @@ export default async function VillePage({ params }: Props) {
       {/* ── FAQ courte, cohérente avec le texte visible (FAQPage en ligne) ── */}
       <VilleFaqGeolocalisee villeContext={villeContext} faqs={faq} isFr />
 
-      {/* ── Communes voisines (liens vers des pages indexables seulement) ── */}
+      {/* ── Communes voisines (liens vers des pages indexées seulement : `villes-indexees.ts`) ── */}
       <VilleCommunesProches ville={ville} isFr />
 
       {/* Encart « En vidéo » (ADR 0070) : lecture mise en cache par processus (jamais une requête
