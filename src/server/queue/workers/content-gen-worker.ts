@@ -1225,6 +1225,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
               "Renvoi sans réécriture possible (mailleur / éditeur SEO) : relecture humaine",
             );
           }
+          // Le texte va changer : la vérification du tour précédent ne vaut plus pour lui. Sans
+          // cette remise à zéro, un arrêt avant la phase B du tour suivant (plafond, erreur) laisserait
+          // le marqueur « fact-check abouti » et les sources de l'ancien texte sur un texte non vérifié.
+          factCheckClaudeAboutiSansReserve = false;
+          sourcesFactCheck = null;
+          barriereB = null;
           const nouveau = await retoucherSortie(await genererArticle(consigneRenvoi(renvois)));
           return {
             output: nouveau,

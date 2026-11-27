@@ -68,8 +68,8 @@ export class PlafondJobAtteint extends Error {
 
 /**
  * Erreur d'un rôle AVANT toute écriture payée (stratège, gardien, lecture du registre) : elle est
- * relancée telle quelle pour que BullMQ réessaie le job (rien n'a été écrit, donc aucune écriture
- * payée en double). Le worker ne la convertit pas en échec définitif.
+ * relancée pour que BullMQ réessaie le job (rien n'a été écrit : aucune rédaction payée en
+ * double ; un stratège déjà payé peut être rejoué, borné par le plafond de 3 $ par job). Le worker ne la convertit pas en échec définitif.
  */
 export class ErreurEquipeTransitoire extends Error {
   constructor(readonly origine: unknown) {

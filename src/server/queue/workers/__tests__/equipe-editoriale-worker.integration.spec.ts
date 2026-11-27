@@ -25,6 +25,8 @@ const h = vi.hoisted(() => {
     /** Décision du rédacteur en chef simulé. */
     decisionChef: { type: "publier" } as Record<string, unknown>,
     depensesBoucle: [] as number[],
+    factCheck: false,
+    plafondApresReecriture: false,
   };
   const prisma = {
     contentGenJob: { findUnique: vi.fn(), update: vi.fn(async () => ({})) },
@@ -115,6 +117,8 @@ vi.mock("@/server/content-gen/lib/keyword-lock", () => ({
 vi.mock("@/server/content-gen/providers/blog-claude-ledger", () => ({
   coutCumuleJobUsd: async () => {
     h.state.appelsCout += 1;
+    if (h.state.plafondApresReecriture && h.ordre.filter((r) => r === "generateur").length >= 2)
+      return 3.5;
     if (h.state.appelsCout >= h.state.echecCoutDepuis) throw new Error("registre muet");
     return h.state.appelsCout >= h.state.depasseDepuis ? 3.5 : h.state.cout;
   },
@@ -189,6 +193,17 @@ vi.mock("@/server/content-gen/equipe/circuit-article", () => ({
   }),
   consigneRenvoi: () => "consigne de renvoi",
 }));
+vi.mock("@/server/content-gen/fact-check/fact-check-claude", () => ({
+  factCheckClaudeActif: () => h.state.factCheck,
+  MARQUEUR_FACT_CHECK_CLAUDE: "factCheckClaudePasse",
+  decisionFactCheckClaude: vi.fn(async () => ({
+    barriere: null,
+    sources: [{ url: "https://exemple.test", title: "src" }],
+    coutUsd: 0.05,
+    affirmations: 1,
+    recherches: 1,
+  })),
+}));
 vi.mock("@/server/content-gen/fact-check/verificateur-deux-phases", () => ({
   constituerDossierPreuves: vi.fn(async () => null),
   PLAFOND_RECHERCHES_PHASE_A: 6,
@@ -244,6 +259,8 @@ beforeEach(() => {
   h.state.echecCoutDepuis = Infinity;
   h.state.decisionChef = { type: "publier" };
   h.state.depensesBoucle = [];
+  h.state.factCheck = false;
+  h.state.plafondApresReecriture = false;
   vi.mocked(addQualityLoopSpend).mockClear();
   h.prisma.contentGenJob.findUnique.mockResolvedValue({
     id: "job-1",
@@ -513,6 +530,24 @@ describe("worker content-gen : circuit complet (équipe allumée)", () => {
       "ecarte",
     );
     expect(releaseKeywordLock).not.toHaveBeenCalled();
+  });
+
+  it("renvoi puis plafond avant la phase B : pas de marqueur « fact-check abouti » sur le texte réécrit", async () => {
+    h.state.factCheck = true;
+    h.state.decisionChef = {
+      type: "renvoi",
+      renvois: [{ role: "redacteur", suite: [], criteres: ["Q1"], passages: ["p"] }],
+    };
+    // Après la réécriture, le plafond tombe avant la phase B du tour suivant.
+    h.state.plafondApresReecriture = true;
+    await lancer();
+    expect(h.ordre.filter((r) => r === "generateur")).toHaveLength(2); // réécriture faite
+    const sortie = miseAJours().find((m) => m.data["outputJsonRaw"] && m.data["qualityScore"]);
+    expect(sortie).toBeDefined();
+    const brut = sortie!.data["outputJsonRaw"] as Record<string, unknown>;
+    expect(brut["factCheckClaudePasse"]).toBeUndefined();
+    expect(brut["sourcesFactCheck"]).toBeUndefined();
+    expect((brut["equipe"] as { issue: string }).issue).toBe("plafond");
   });
 
   it("5. costUsd = max(somme déclarée, registre de l'exécution), jamais les deux additionnés", async () => {
