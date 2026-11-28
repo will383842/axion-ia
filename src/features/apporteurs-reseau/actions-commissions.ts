@@ -18,6 +18,7 @@ import { annulerCommission, reduireCommission } from "./ajustement";
 import { constaterNonCommissionne, marquerHorsGrille } from "./hors-grille";
 import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
+import { ouvrirRibAVirer } from "./rib-a-virer";
 import { leverSuspension, suspendreCommission } from "./litige";
 import { annulerRealisation, marquerPrestationRealisee } from "./realisation";
 import { enregistrerReprise, montantEnCentimes, notifierResiliation } from "./resiliation";
@@ -76,8 +77,13 @@ export async function marquerVerseAction(
   const numero = texte(fd, "numero");
   if (numero && !/^AXI-APP-\d{4}-\d{4,}$/.test(numero))
     return { etat: "erreur", message: "Numéro d'autofacture inconnu." };
+  const compte = texte(fd, "compte");
   try {
-    const r = await marquerVerse(apporteurId, new Date(), numero || undefined);
+    const r = await marquerVerse(apporteurId, new Date(), numero || undefined, {
+      fin4Lue: texte(fd, "fin4"),
+      compte: compte === "actuel" || compte === "precedent" ? compte : null,
+      acteurId: (await auth())?.user?.id,
+    });
     if (!r.ok) return { etat: "erreur", message: r.message };
     revalidatePath(adminPath("fr", "apporteurs/commissions"));
     return {
@@ -91,6 +97,25 @@ export async function marquerVerseAction(
       message: err instanceof Error ? err.message : "Confirmation impossible. Réessayez.",
     };
   }
+}
+
+/**
+ * « Ouvrir le RIB à virer » (lot 7, D-6 option A). Formulaire sans JavaScript client : ouvre la pièce
+ * RIB COURANTE par la route d'administration des pièces (antivirus compris) ; refus : retour à la fiche.
+ * Aucun IBAN n'est rendu ; l'ouverture est journalisée.
+ */
+export async function ouvrirRibAVirerAction(fd: FormData): Promise<void> {
+  const apporteurId = texte(fd, "apporteurId");
+  if (!UUID.test(apporteurId)) redirect(adminPath("fr", "apporteurs/commissions"));
+  const refus = await sessionArgent();
+  if (refus) versFiche(apporteurId, "erreur", refus);
+  const session = await auth();
+  const r = await ouvrirRibAVirer({
+    apporteurId,
+    acteur: { id: session!.user!.id!, role: (session!.user as { role?: string }).role },
+  });
+  if (!r.ok) versFiche(apporteurId, "erreur", r.message);
+  redirect(adminPath("fr", `apporteurs/${apporteurId}/pieces/${r.pieceId}`));
 }
 
 // ── Fin de vie : résilier, enregistrer une reprise ───────────────────────

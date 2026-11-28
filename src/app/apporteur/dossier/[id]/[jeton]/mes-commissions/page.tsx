@@ -20,10 +20,12 @@ import type {
 } from "@/features/apporteurs-reseau/espace-commissions-assemblage";
 import { mesCommissionsActive } from "@/features/apporteurs-reseau/interrupteur-mes-commissions";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
+import { relevesDeLEspace } from "@/features/apporteurs-reseau/releve-mensuel/espace";
 import { etatDeLaPage } from "@/features/apporteurs-reseau/signature";
 
 import { Coquille, EcranEtat } from "../Coquille";
 import { TEXTES } from "../textes";
+import { SectionReleves } from "./SectionReleves";
 import { TEXTES_COMMISSIONS as T, texteEtat } from "./textes";
 
 export const dynamic = "force-dynamic";
@@ -125,6 +127,8 @@ export default async function MesCommissionsPage({
     { id: dossier.id, regimeTva: dossier.regimeTva },
     new Date(),
   );
+  // Seuls les relevés ENVOYÉS apparaissent ; la phrase d'annonce attend un premier relevé reçu.
+  const releves = await relevesDeLEspace(dossier.id);
 
   return (
     <Coquille titre={T.titre}>
@@ -229,6 +233,8 @@ export default async function MesCommissionsPage({
         {vue.tronque ? <p className="text-fg-soft mt-2 text-[16px]">{T.borne}</p> : null}
       </section>
 
+      <SectionReleves base={base} releves={releves} />
+
       <section className="mt-6" aria-labelledby="comment">
         <h2 id="comment" className="font-serif text-[22px] font-medium">
           {T.commentTitre}
@@ -238,6 +244,7 @@ export default async function MesCommissionsPage({
             {l}
           </p>
         ))}
+        {releves.length > 0 ? <p className="mt-1 text-[16px]">{T.relevesPhrase}</p> : null}
         <a href={`${base}/commissions`} className={`${LIEN} mt-2`}>
           {T.grille} →
         </a>

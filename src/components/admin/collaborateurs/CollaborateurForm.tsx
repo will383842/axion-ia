@@ -1,9 +1,10 @@
 "use client";
 // use-client: formulaire de saisie à état local (aperçu et pastille d'indexation en direct, recherche de lieu, appels aux actions serveur).
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
+import { NOTE_PREUVE_MIN as NOTE_REFUS_MIN } from "@/lib/equipe/console/schemas";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { TEAM_CATEGORIES, evaluerIndexabilite } from "@/lib/equipe/donnees";
@@ -16,6 +17,12 @@ import {
   rechercherLieux,
   type LieuTrouve,
 } from "@/server/actions/equipe/collaborateurs";
+import { deposerPhotoAction, retirerPhotoAction } from "@/server/actions/equipe/photo";
+import {
+  enregistrerEnBrouillon,
+  refuserFiche,
+  validerEtPublier,
+} from "@/server/actions/equipe/a-valider";
 
 export interface FicheInitiale {
   id?: string;
@@ -56,7 +63,14 @@ const liste = (s: string): string[] =>
     .map((x) => x.trim())
     .filter(Boolean);
 
-export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
+export function CollaborateurForm({
+  initial,
+  modeValidation = false,
+}: {
+  initial: FicheInitiale;
+  /** Écran « À valider » : les trois décisions remplacent « Publier » (pas de consentement saisi ici). */
+  modeValidation?: boolean;
+}) {
   const router = useRouter();
   const [f, setF] = useState(initial);
   const [lieux, setLieux] = useState<LieuTrouve[]>([]);
@@ -64,6 +78,7 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
   const [erreur, setErreur] = useState<string | null>(null);
   const [champs, setChamps] = useState<Record<string, string>>({});
   const [info, setInfo] = useState<string | null>(null);
+  const [noteRefus, setNoteRefus] = useState("");
   const [enCours, demarrer] = useTransition();
   const maj = <K extends keyof FicheInitiale>(cle: K, valeur: FicheInitiale[K]) =>
     setF((p) => ({ ...p, [cle]: valeur }));
@@ -116,6 +131,8 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
       if (!r.ok) {
         setErreur(r.erreur ?? "Échec.");
         setChamps(r.champs ?? {});
+        // Une décision peut avoir enregistré les modifications avant de refuser : version à jour.
+        if (modeValidation) router.refresh();
         return;
       }
       setInfo(message);
@@ -161,6 +178,25 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
       if (r.ok) maj("slug", r.slug);
       else setErreur(r.erreur);
     });
+
+  const fichierPhoto = useRef<HTMLInputElement>(null);
+  const [altPhoto, setAltPhoto] = useState("");
+  const [notePhoto, setNotePhoto] = useState("");
+  const aPhoto = f.photoKind === "reelle" && f.photoUrl256 !== null;
+
+  const deposerPhoto = () => {
+    const fichier = fichierPhoto.current?.files?.[0];
+    if (!f.id) return;
+    if (!fichier) {
+      setErreur("Choisissez une photo.");
+      return;
+    }
+    const donnees = new FormData();
+    donnees.set("photo", fichier);
+    donnees.set("alt", altPhoto);
+    donnees.set("note", notePhoto);
+    executer(() => deposerPhotoAction(f.id, donnees), "Photo enregistrée.");
+  };
 
   const slugFige = f.publishedAt;
   const peutPublier = f.id !== undefined && f.status !== "publie" && f.consentPublication;
@@ -383,6 +419,7 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
             <input
               type="checkbox"
               checked={f.consentPublication}
+              disabled={modeValidation}
               onChange={(e) => maj("consentPublication", e.target.checked)}
             />
             Accord de publication de la page
@@ -391,6 +428,7 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
             <input
               type="checkbox"
               checked={f.consentLinkedin}
+              disabled={modeValidation}
               onChange={(e) => maj("consentLinkedin", e.target.checked)}
             />
             Accord d&apos;affichage du lien LinkedIn
@@ -411,7 +449,36 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
           <AdminButton type="submit" loading={enCours}>
             Enregistrer
           </AdminButton>
-          {f.id && f.status !== "publie" ? (
+          {modeValidation && f.id ? (
+            <>
+              <AdminButton
+                type="button"
+                variant="secondary"
+                disabled={enCours}
+                onClick={() =>
+                  executer(
+                    () => enregistrerEnBrouillon(f.id, payload(), f.version),
+                    "Fiche enregistrée en brouillon.",
+                  )
+                }
+              >
+                Enregistrer en brouillon
+              </AdminButton>
+              <AdminButton
+                type="button"
+                disabled={!peutPublier || enCours}
+                onClick={() =>
+                  executer(
+                    () => validerEtPublier(f.id, payload(), f.version),
+                    "Fiche validée et publiée.",
+                  )
+                }
+              >
+                Valider et publier
+              </AdminButton>
+            </>
+          ) : null}
+          {!modeValidation && f.id && f.status !== "publie" ? (
             <AdminButton
               type="button"
               variant="secondary"
@@ -432,6 +499,31 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
             </AdminButton>
           ) : null}
         </div>
+        {modeValidation && f.id ? (
+          <section aria-label="Refus" className="border-terracotta space-y-2 rounded border p-4">
+            <h2 className="text-lg font-semibold">Refuser cette fiche</h2>
+            <label className="flex flex-col gap-1">
+              Note de refus (obligatoire, {NOTE_REFUS_MIN} caractères au moins). La fiche repart en
+              brouillon, rien n&apos;est publié.
+              <textarea
+                rows={3}
+                value={noteRefus}
+                maxLength={2000}
+                onChange={(e) => setNoteRefus(e.target.value)}
+              />
+            </label>
+            <AdminButton
+              type="button"
+              variant="danger"
+              disabled={enCours || noteRefus.trim().length < NOTE_REFUS_MIN}
+              onClick={() =>
+                executer(() => refuserFiche(f.id, noteRefus, f.version), "Fiche refusée.")
+              }
+            >
+              Refuser
+            </AdminButton>
+          </section>
+        ) : null}
         {f.id && !f.consentPublication && f.status !== "publie" ? (
           <p>
             « Publier » reste grisé tant que l&apos;accord de publication n&apos;est pas enregistré.
@@ -470,10 +562,76 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
               ))}
             </ul>
           ) : null}
-          <p className="mt-2 text-sm">
-            La photo réelle se gère dans une étape suivante : sans elle, la fiche reste en noindex.
-          </p>
+          {!f.photoConsent || !aPhoto ? (
+            <p className="mt-2 text-sm">
+              Sans photo réelle avec l&apos;accord de la personne, la fiche reste en noindex.
+            </p>
+          ) : null}
         </section>
+        {f.id ? (
+          <section aria-label="Photo" className="space-y-2 rounded border p-4">
+            <h2 className="text-lg font-semibold">Photo</h2>
+            <p>
+              {aPhoto
+                ? "Photo réelle enregistrée. Le public ne la voit que si la fiche est publiée avec l'accord photo ; sinon, c'est l'avatar à initiales."
+                : "Aucune photo : le public voit l'avatar à initiales."}
+            </p>
+            <label className="flex flex-col gap-1">
+              {aPhoto ? "Remplacer la photo" : "Déposer une photo"} (JPEG, PNG ou WebP, 8 Mo au
+              plus, 400 px au moins de côté)
+              <input ref={fichierPhoto} type="file" accept="image/jpeg,image/png,image/webp" />
+            </label>
+            <label className="flex flex-col gap-1">
+              Texte alternatif (par défaut : « Photo de {f.firstName || "…"} »)
+              <input
+                value={altPhoto}
+                maxLength={200}
+                onChange={(e) => setAltPhoto(e.target.value)}
+              />
+            </label>
+            {!f.photoConsent ? (
+              <label className="flex flex-col gap-1">
+                Accord photo non enregistré. Note de preuve (quand, comment, par quel message) :
+                <textarea
+                  rows={3}
+                  value={notePhoto}
+                  maxLength={2000}
+                  onChange={(e) => setNotePhoto(e.target.value)}
+                />
+              </label>
+            ) : null}
+            <p className="text-sm">
+              L&apos;image est ré-encodée et ses données cachées (lieu, appareil) sont supprimées.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <AdminButton
+                type="button"
+                variant="secondary"
+                disabled={enCours}
+                onClick={deposerPhoto}
+              >
+                {aPhoto ? "Remplacer" : "Déposer"}
+              </AdminButton>
+              {aPhoto || f.photoConsent ? (
+                <AdminButton
+                  type="button"
+                  variant="danger"
+                  disabled={enCours}
+                  onClick={() => {
+                    if (window.confirm("Retirer la photo et l'accord photo ? Retour à l'avatar.")) {
+                      executer(
+                        () => retirerPhotoAction(f.id),
+                        "Photo retirée : avatar à initiales.",
+                      );
+                    }
+                  }}
+                >
+                  Retirer la photo
+                </AdminButton>
+              ) : null}
+            </div>
+          </section>
+        ) : null}
       </aside>
     </div>
   );

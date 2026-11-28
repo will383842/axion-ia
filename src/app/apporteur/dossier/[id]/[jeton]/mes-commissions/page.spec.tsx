@@ -6,6 +6,7 @@ vi.mock("server-only", () => ({}));
 const h = vi.hoisted(() => ({
   dossier: null as Record<string, unknown> | null,
   vue: null as unknown,
+  releves: [] as unknown[],
   lire: vi.fn(),
 }));
 vi.mock("next/navigation", () => ({
@@ -22,6 +23,10 @@ vi.mock("@/features/apporteurs-reseau/espace-commissions", () => ({
     h.lire(...a);
     return h.vue;
   },
+}));
+
+vi.mock("@/features/apporteurs-reseau/releve-mensuel/espace", () => ({
+  relevesDeLEspace: async () => h.releves,
 }));
 
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
@@ -92,6 +97,7 @@ const riche = {
 beforeEach(() => {
   vi.clearAllMocks();
   process.env.APPORTEUR_MES_COMMISSIONS_ENABLED = "true";
+  h.releves = [];
   h.dossier = { id: ID, statut: "signe", prenom: "Marie", regimeTva: "assujetti" };
   h.vue = vide;
 });
@@ -199,5 +205,41 @@ describe("rendu", () => {
   it("un seul h1 ; une liste vide de pièces ne casse rien", async () => {
     const html = await rendre();
     expect(html.match(/<h1/g)?.length ?? 0).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("lot 6 : « Mes relevés mensuels »", () => {
+  const releve = (numero: string, rang = 0) => ({
+    numero,
+    periode: "2026-10",
+    rang,
+    envoyeAt: new Date("2026-11-03T09:00:00Z"),
+  });
+
+  it("aucun relevé envoyé : ni section, ni phrase d'annonce (elle attend un premier mois envoyé)", async () => {
+    h.vue = vide;
+    const html = await rendre();
+    expect(html).not.toContain(TEXTES_COMMISSIONS.relevesTitre);
+    expect(texte(html)).not.toContain("Au début de chaque mois");
+  });
+
+  it("un relevé envoyé : section, lien du PDF vers la route copiée, phrase d'annonce, jamais « facture » pour le nommer", async () => {
+    h.vue = vide;
+    h.releves = [releve("REL-2026-10-0004")];
+    const html = await rendre();
+    expect(html).toContain(`/apporteur/dossier/${ID}/jeton-valide/releves/REL-2026-10-0004`);
+    const t = texte(html);
+    expect(t).toContain("Mes relevés mensuels");
+    expect(t).toContain("Relevé de octobre 2026");
+    expect(t).toContain("qui n'est pas une facture");
+    expect(t).toContain(
+      "Au début de chaque mois, vous recevez aussi un relevé récapitulatif du mois précédent.",
+    );
+  });
+
+  it("un rectificatif est libellé comme tel", async () => {
+    h.vue = vide;
+    h.releves = [releve("REL-2026-10-0004-R1", 1)];
+    expect(texte(await rendre())).toContain("Relevé rectificatif n° 1 de octobre 2026");
   });
 });

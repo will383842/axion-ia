@@ -104,3 +104,21 @@ describe("envoyerConfirmationVirement", () => {
     expect("numeros" in p2).toBe(false);
   });
 });
+
+describe("lot 7 : compte payé dans l'e-mail", () => {
+  it("la fin du compte (4 caractères) est dite ; absente, la phrase d'avant reste", async () => {
+    const avec = await renderEmailTemplate("apporteur-virement-fait", "fr", {
+      montant: "1 200,00 €",
+      compteFin: "5678",
+    });
+    expect(avec.html).toContain("sur votre compte qui se termine par 5678");
+    const sans = await renderEmailTemplate("apporteur-virement-fait", "fr", {
+      montant: "1 200,00 €",
+    });
+    expect(sans.html).not.toContain("se termine par");
+    const piege = await renderEmailTemplate("apporteur-virement-fait", "fr", {
+      compteFin: "FR76 3000 6000 0112 3456 7890 189",
+    });
+    expect(piege.html).not.toContain("FR76");
+  });
+});

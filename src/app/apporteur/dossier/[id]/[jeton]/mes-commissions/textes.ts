@@ -23,6 +23,15 @@ export const TEXTES_COMMISSIONS = {
     "La facture en PDF est la pièce qui fait foi.",
   ],
   grille: "Grille des commissions",
+  // Relevé mensuel (lot 6) : récapitulatif d'information, JAMAIS une facture.
+  relevesTitre: "Mes relevés mensuels",
+  relevesPhrase:
+    "Au début de chaque mois, vous recevez aussi un relevé récapitulatif du mois précédent.",
+  relevePasUneFacture:
+    "Un relevé est un récapitulatif, qui n'est pas une facture : vos factures restent les pièces qui font foi.",
+  releveDu: (mois: string) => `Relevé de ${mois}`,
+  releveRectificatif: (mois: string, k: number) => `Relevé rectificatif n° ${k} de ${mois}`,
+  telechargerReleve: (n: string) => `Télécharger le relevé ${n}`,
   presentee: (d: string) => `Présentée le ${d}`,
   validee: (d: string) => `Validée le ${d}`,
   reserveeJusquAu: (d: string) => `Réservée jusqu'au ${d}`,
