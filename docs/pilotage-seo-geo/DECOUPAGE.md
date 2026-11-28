@@ -312,3 +312,13 @@ Facultatif           P17 Bing Webmaster (après P4)
 | 4     | P13 → P14 → P15 → P16     | M, M, S, S    | Séquentielles, après rattrapage de l'historique |
 
 Le mode observation est livrable en **vagues 0 à 2**. Aucune action sur le site n'est possible avant la vague 4.
+
+## 5. Étape « indexation rapide » (2026-11-28)
+
+Objectif : faire indexer un article publié le plus vite possible, dans les règles de Google et de Bing.
+
+- **Vérifié par test de bout en bout** (`content-gen/indexing/__tests__/indexation-rapide-chemin.spec.ts`) : le bouton « Publier » (`approveReview` → `content-publish-worker` → `enqueueIndexingForTier1`) envoie IndexNow avec l'URL canonique ; le sitemap des articles annonce la même URL avec `lastmod` = date de modification réelle ; l'article récent est suggéré par ≥ 2 articles proches (bloc « articles connexes »).
+- **API Indexing de Google : garde-fou, actif sans drapeau.** Permise officiellement pour `JobPosting` et `BroadcastEvent` seulement. `enqueueIndexingForTier1` et `enqueueIndexingForUrls` ne l'appellent plus jamais (le double opt-in `GOOGLE_INDEXING_ARTICLES` est supprimé) ; `enqueueGoogleIndexingForUrls` et le worker refusent toute URL hors `/<locale>/carrieres/<slug>` (`estUrlEligibleIndexingApiGoogle`).
+- **Voie permise : `sitemaps.submit`** (Search Console), éteinte par défaut (`GSC_SITEMAP_SUBMIT_ENABLED=true`). Un job retardé unique, au plus une soumission par heure. Portée requise : `https://www.googleapis.com/auth/webmasters` ; si elle manque, le worker journalise « ESCALADE portée Search Console » et ne fait rien d'autre.
+- **Mesure** : délai = première inspection d'URL P5 au verdict `PASS` moins la date de publication (aucune table nouvelle), affiché dans la console Équipe éditoriale avec la médiane 30 jours, éteint par défaut (`DELAI_INDEXATION_AFFICHE=true`). C'est une borne haute (précision = cadence de la rotation P5).
+- **Limite connue** : rien ne garantit qu'un article neuf soit lié depuis ≥ 2 articles proches dans tous les cas ; le test le vérifie sur un corpus de sujets voisins, le maillage entrant ne modifie pas les articles existants.
