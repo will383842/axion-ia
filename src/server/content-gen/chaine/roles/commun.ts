@@ -84,6 +84,15 @@ export class CompteurCout {
     return this.total >= PLAFOND_COUT_CONTENU_USD - 1e-9;
   }
 
+  /**
+   * Dépense hors rôle (la porte qualité) : comptée dans le total du contenu, donc vue par le contrôle
+   * avant chaque appel de rôle et par `epuise`. Ne lève pas : l'appelant décide de l'abandon.
+   */
+  ajouterExterne(coutUsd: number): void {
+    if (!Number.isFinite(coutUsd) || coutUsd < 0) return;
+    this.total += coutUsd;
+  }
+
   /** Ajoute une dépense réelle ; lève ensuite si un plafond est dépassé (la dépense reste comptée). */
   ajouter(role: RoleChaine, coutUsd: number): void {
     if (!Number.isFinite(coutUsd) || coutUsd < 0) {

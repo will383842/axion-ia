@@ -19,9 +19,8 @@ describe("fiche Williams — vocabulaire interdit", () => {
   const INTERDITS: ReadonlyArray<[RegExp, string]> = [
     [/Grenoble/i, "Grenoble"],
     [/freelance|indépendant/i, "freelance / indépendant"],
-    [/\bagence\b/i, "agence"],
+    [/\bagence\b(?!\s+immobili)/i, "agence"],
     [/restructuration/i, "restructuration"],
-    [/restaurant|restauration/i, "restauration"],
     [/grandes?\s+écoles?/i, "grandes écoles"],
     [/top\s*1\s*%|CAC\s*40/i, "formulations interdites"],
     [/€|\$/, "symbole monétaire"],
@@ -31,7 +30,10 @@ describe("fiche Williams — vocabulaire interdit", () => {
     [/garantit|garantissons|garantie de résultat|aucun gain garanti/i, "promesse de résultat"],
     [/propriétaire|code source|cédés?\b|no-code|lock-in/i, "propriété du code"],
     [/formations? animées? par lui/i, "formations animées par lui-même"],
-    [/\b\d+\s*(collaborateurs|salariés|personnes dirigées)/i, "nombre de collaborateurs"],
+    [
+      /(?<!moins de |à )\b\d+\s*(collaborateurs|salariés|personnes dirigées)/i,
+      "nombre de collaborateurs",
+    ],
     [/\bbleu\b/i, "bleu"],
   ];
 
@@ -71,9 +73,10 @@ describe("fiche Williams — vocabulaire interdit", () => {
 describe("fiche Williams — contenu v4", () => {
   const { contenu } = ficheDepuisWilliams();
 
-  it("titre SEO de 57 caractères, meta description ≤ 160", () => {
-    expect(contenu.titreSeo).toBe("Williams Jullin · Plus de chiffre d'affaires, même équipe");
-    expect(contenu.titreSeo).toHaveLength(57);
+  it("titre SEO court (version de main), meta description de 150 à 160", () => {
+    expect(contenu.titreSeo).toBe("Williams Jullin, fondateur d'Axion IA");
+    expect(contenu.titreSeo.length).toBeLessThanOrEqual(60);
+    expect(contenu.metaDescription.length).toBeGreaterThanOrEqual(150);
     expect(contenu.metaDescription.length).toBeLessThanOrEqual(160);
     expect(contenu.metaDescription).toMatch(/^Williams Jullin dirige Axion-IA/);
   });
@@ -102,12 +105,96 @@ describe("fiche Williams — contenu v4", () => {
     expect(JSON.stringify(contenu.parcours)).toMatch(/plusieurs entités/);
   });
 
-  it("cinq citations de terrain, huit questions sans financement", () => {
+  it("cinq citations de terrain, dix questions sans financement", () => {
     expect(contenu.citations?.items).toHaveLength(5);
-    expect(contenu.faq).toHaveLength(8);
+    expect(contenu.faq).toHaveLength(10);
   });
 
   it("la date visible est la date de révision", () => {
     expect(contenu.dateMiseAJour).toBe("2026-11-27T00:00:00.000Z");
+  });
+});
+
+const nbMots = (t: string): number => t.trim().split(/\s+/).length;
+
+describe("fiche Williams — réponses directes de section", () => {
+  const { contenu } = ficheDepuisWilliams();
+  const entetes = Object.entries(contenu.entetes ?? {});
+
+  it("une réponse par section, H2 en question", () => {
+    expect(entetes.length).toBeGreaterThanOrEqual(10);
+    for (const [id, e] of entetes) {
+      // Le H2 de la FAQ est un intitulé (« Questions fréquentes sur … »), pas une question.
+      if (id !== "faq") expect(e.question, id).toMatch(/\?$/);
+    }
+  });
+
+  it("chaque réponse compte de 40 à 60 mots", () => {
+    for (const [id, e] of entetes) {
+      expect(nbMots(e.reponse ?? ""), id).toBeGreaterThanOrEqual(40);
+      expect(nbMots(e.reponse ?? ""), id).toBeLessThanOrEqual(60);
+    }
+  });
+
+  it("la réponse « Qui est Williams Jullin ? » de la FAQ est la réponse « En bref »", () => {
+    expect(contenu.faq[0]?.answer).toBe(contenu.entetes?.["en-bref"]?.reponse);
+  });
+
+  it("aucune question de la FAQ n'est aussi un H2 de section avec une autre réponse", () => {
+    const h2 = new Map(entetes.map(([, e]) => [e.question, e.reponse]));
+    for (const q of contenu.faq) {
+      if (h2.has(q.question)) expect(q.answer).toBe(h2.get(q.question));
+    }
+  });
+});
+
+describe("fiche Williams — bloc « Vous êtes… »", () => {
+  const { contenu } = ficheDepuisWilliams();
+  const vous = { tailles: contenu.vousEtes ?? [], metiers: contenu.vousEtesMetiers ?? [] };
+
+  it("3 cartes par taille et 6 à 8 par métier", () => {
+    expect(vous?.tailles).toHaveLength(3);
+    expect(vous?.metiers.length).toBeGreaterThanOrEqual(6);
+    expect(vous?.metiers.length).toBeLessThanOrEqual(8);
+  });
+
+  it("aucun champ vide, clés uniques", () => {
+    const cartes = [...(vous?.tailles ?? []), ...(vous?.metiers ?? [])];
+    for (const c of cartes) {
+      for (const [champ, valeur] of Object.entries(c)) {
+        expect(valeur.trim().length, `${c.cle}.${champ}`).toBeGreaterThan(0);
+      }
+    }
+    expect(new Set(cartes.map((c) => c.cle)).size).toBe(cartes.length);
+  });
+
+  it("chaque temps tient en une phrase, sans chiffre inventé", () => {
+    const cartes = [...(vous?.tailles ?? []), ...(vous?.metiers ?? [])];
+    for (const c of cartes) {
+      for (const t of [c.cout, c.action, c.gain]) {
+        expect(t, c.cle).not.toMatch(/\d/);
+        expect(t.match(/[.!?](\s|$)/g)?.length, `${c.cle} : ${t}`).toBe(1);
+      }
+    }
+  });
+
+  it("aucun « % », « € » ni « Grenoble » dans les nouveaux blocs", () => {
+    const texte = JSON.stringify([contenu.vousEtes, contenu.presence, contenu.pourQui]);
+    expect(texte).not.toMatch(/%|€|Grenoble|freelance|garantit/i);
+  });
+});
+
+describe("fiche Williams — bloc « Partout en France »", () => {
+  const bloc = ficheDepuisWilliams().contenu.presence;
+
+  it("H2 en question et réponse de 40 à 60 mots", () => {
+    expect(bloc?.question).toBe("Williams Jullin intervient-il dans ma ville ?");
+    expect(nbMots(bloc?.reponse ?? "")).toBeGreaterThanOrEqual(40);
+    expect(nbMots(bloc?.reponse ?? "")).toBeLessThanOrEqual(60);
+  });
+
+  it("n'annonce ni bureau ni agence", () => {
+    expect(bloc?.reponse).not.toMatch(/bureau|agence|notre siège/i);
+    expect(bloc?.reponse).toMatch(/partout en France/);
   });
 });

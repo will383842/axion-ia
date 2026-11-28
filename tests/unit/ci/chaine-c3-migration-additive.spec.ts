@@ -61,14 +61,25 @@ describe("migration chaine_editoriale_tables : additive", () => {
   it("porte le retour arrière en commentaire", () => {
     expect(BRUT).toMatch(/--\s+ALTER TABLE "cost_ledger" DROP COLUMN "role"/);
   });
-  it("aucune lecture ni écriture branchée : le code de production ne touche pas ces tables", () => {
+  // C14 : seul `vue-console-io.ts` (écran de console, LECTURE SEULE) touche ces tables.
+  const LECTURE_SEULE = `src/server/${GEN}/chaine/vue-console-io.ts`;
+  it("aucune écriture branchée : seul le fichier de lecture de la console touche ces tables", () => {
     const sortie = execSync(
       // C12 : le suivi des résultats (`suivi/`) est le seul lecteur/écrivain branché, et il reste
       // éteint par défaut (`CONTENT_CHAINE_SUIVI`). Aucune autre table de C3 n'est touchée.
       `grep -rlE '\\.contenu(Besoin|Brief|Refus|Resultat|Proposition|Fait)\\b' src | grep -v '/${GEN}/suivi/' || true`,
       { encoding: "utf8" },
-    ).trim();
-    expect(sortie).toBe("");
+    )
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => l !== "" && l !== LECTURE_SEULE);
+    expect(sortie).toEqual([]);
+  });
+  it("le fichier de lecture de la console n'écrit jamais", () => {
+    const src = readFileSync(join(process.cwd(), LECTURE_SEULE), "utf8");
+    expect(src).not.toMatch(
+      /\.(create|createMany|update|updateMany|upsert|delete|deleteMany)\(|\$executeRaw|\$queryRaw/,
+    );
   });
   it("tout costLedger.create/update porte un select (colonne `role` pas encore migrée : pas de P2022)", () => {
     for (const f of [

@@ -31,6 +31,9 @@ const COMMON_DISALLOW = [
   // Surfaces privées / utilisateur authentifié : pas d'indexation.
   "/mes-donnees/",
   "/fr/mes-donnees/",
+  // Pages équipe PRIVÉES (lien personnel : questionnaire et retrait), aussi noindex et hors sitemap.
+  "/*/equipe/questionnaire/",
+  "/*/equipe/retrait/",
   "/en/my-data/",
   // Espace admin obfuscé par ADMIN_URL_PREFIX, mais wildcard `/admin*`
   // bloque les conventions usuelles (admin / fr/admin / en/admin) au cas où

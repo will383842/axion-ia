@@ -7,7 +7,7 @@ const DOSSIER = join(
   process.cwd(),
   "prisma",
   "migrations",
-  "20261128170000_contenu_rendez_vous_origines",
+  "20261128180000_contenu_rendez_vous_origines",
 );
 const sql = readFileSync(join(DOSSIER, "migration.sql"), "utf8")
   .split("\n")

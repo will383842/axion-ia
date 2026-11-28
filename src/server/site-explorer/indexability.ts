@@ -13,6 +13,7 @@
 // valeur chaque jour (worker de découverte) fait basculer noindex→indexable tout
 // seul → c'est ce qui rend l'onglet « vivant ». Déterministe pour un `now` donné.
 
+import { villeIndexableParPorte } from "@/lib/villes-porte-qualite";
 import { isVilleIndexable } from "@/content/villes/core";
 import { getIndexableRegions } from "@/content/regions";
 import { isNoindexStubRoute } from "@/lib/seo-noindex-routes";
@@ -111,6 +112,8 @@ export function computeIndexability(
   // 3) Pages ville×service `/fr/<service>/par-ville/<ville>` : TOUJOURS noindex, follow
   //    (décision du 18/11/2026, une seule page indexée par ville).
   if ((rest[0] === "par-ville" || rest[0] === "by-city") && rest[1]) {
+    // Porte de qualité (28/11/2026) : drapeau éteint ⇒ toujours false, comportement inchangé.
+    if (villeIndexableParPorte(rest[1])) return { indexable: true, reason: "" };
     return {
       indexable: false,
       reason: "Page service × ville (noindex, follow : une seule page indexée par ville)",

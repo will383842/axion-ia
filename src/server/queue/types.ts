@@ -212,6 +212,10 @@ export type EmailJobName =
   | "apporteur-file-attente-premier-rang"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace"
+  // Lot S4 (#2512) : avenant 2.8, sans émetteur avant le lot S3.
+  | "apporteur-avenant-propose"
+  | "apporteur-avenant-relance"
+  | "apporteur-avenant-enregistre"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"
