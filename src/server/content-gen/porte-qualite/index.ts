@@ -48,3 +48,11 @@ export {
   reserverApports,
   retirerMarqueursApport,
 } from "./apports";
+export {
+  CLE_PLAFOND_SECURITE,
+  PLAFOND_SECURITE_PAR_DEFAUT,
+  calculerPlafondSecurite,
+  plafondDepuisCapGeneration,
+  reglagePlafondDepuisConfig,
+} from "./plafond-securite";
+export type { DetailPlafond, ReglagePlafond } from "./plafond-securite";
