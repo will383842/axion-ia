@@ -1,0 +1,64 @@
+From 320e95b33988cb502cb1d0fbd78963e6c6b6c96f Mon Sep 17 00:00:00 2001
+From: robot-credit-api <robot@example.invalid>
+Date: Sat, 28 Nov 2026 11:25:20 +0000
+Subject: [PATCH] =?UTF-8?q?FIX-ROUGES-APPARITION-v21t=20:=20correction=20(?=
+ =?UTF-8?q?robot=20cr=C3=A9dits=20API)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ tests/image-video/variete/apparition.test.ts | 8 +++++---
+ tests/scripts/comparer-echecs.test.ts        | 5 +++++
+ 2 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/tests/image-video/variete/apparition.test.ts b/tests/image-video/variete/apparition.test.ts
+index 7c34ecd0..9f56bf01 100644
+--- a/tests/image-video/variete/apparition.test.ts
++++ b/tests/image-video/variete/apparition.test.ts
+@@ -39,7 +39,9 @@ vi.mock("remotion", async () => {
+   }
+   return new Proxy({ __esModule: true }, { get: (cible, nom) => (nom === "then" ? undefined : nom in cible ? (cible as Record<string | symbol, unknown>)[nom] : () => null) });
+ });
+-const describe = Object.assign((nom: string, fn: () => void) => decrire.skipIf(!DEPS_RENDU)(nom, fn), decrire);
++// Seules les suites qui RENDENT la toile (HTML) ont besoin de remotion ; les autres (moteur, déterminisme) tournent toujours, pour que le fichier ne soit jamais entièrement sauté.
++const describe = decrire;
++const describeRendu = decrire.skipIf(!DEPS_RENDU);
+ 
+ const exiger = createRequire(join(process.cwd(), DEPS_RENDU ? "studio-rendu/package.json" : "package.json"));
+ const { createElement } = exiger("react") as typeof import("react");
+@@ -101,7 +103,7 @@ function empreinteToiles(variete?: RecetteVarieteIV): string {
+   return h.digest("hex");
+ }
+ 
+-describe("APP · référence inchangée", () => {
++describeRendu("APP · référence inchangée", () => {
+   it("sans variété : le HTML de la toile est celui de master au 27/11 (ff1dbf99…)", () => {
+     expect(empreinteToiles()).toBe(EMPREINTE_TOILE_REFERENCE);
+   }, 30_000);
+@@ -148,7 +150,7 @@ describe("APP · moteur", () => {
+   });
+ });
+ 
+-describe("APP · dessin", () => {
++describeRendu("APP · dessin", () => {
+   const ligneC = (code: CodeVariante) => mettreEnSceneIV({ ...entrees("C")[0], variete: recette(code) }).ligne;
+ 
+   it("APP-C (rouge sans le lot) : au début de la toile, toutes les cartes sont là, éteintes et sans texte ; chacune s'allume à son mot", () => {
+diff --git a/tests/scripts/comparer-echecs.test.ts b/tests/scripts/comparer-echecs.test.ts
+index 70dbdf38..58d4e582 100644
+--- a/tests/scripts/comparer-echecs.test.ts
++++ b/tests/scripts/comparer-echecs.test.ts
+@@ -126,4 +126,9 @@ describe("workflow tests-nouveau", () => {
+     expect(compterLances(partiel)).toBe(1);
+     expect(comparer(partiel, { echecs: [] }).ok).toBe(true);
+   });
++
++  it("un fichier sans aucun cas (rien déclaré) n'est pas « sauté » : seul un cas sauté l'est", () => {
++    const vide = rapportVitest({ "tests/a.test.ts": [["un", "passed"]], "tests/vide.test.ts": [] });
++    expect(fichiersSautes(vide)).toEqual([]);
++  });
+ });
+-- 
+2.56.1
+

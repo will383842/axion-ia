@@ -1,0 +1,4 @@
+Rouge : « tests des fichiers touchés » et « tests des nouveaux fichiers de test » — `apparition.test.ts` était entièrement sauté (sans remotion), ce que `comparer-echecs` (dernier commit de la branche) déclare rouge.
+Changé : seules les suites qui rendent la toile (« référence inchangée », « dessin ») sont sautées sans remotion ; « moteur » et « déterminisme » tournent toujours ; + un test de `comparer-echecs` (fichier sans cas ≠ sauté).
+Tests : apparition (6 passés, 6 sautés, 0 fichier sauté), comparer-echecs (16/16), tests/site-videos (336/336) ; 3 mutations du comparateur → rouge (la 3e, `cas.length > 0`, ne l'était pas : test ajouté, vérifié). tsc : 154 erreurs, toutes « Cannot find module 'remotion' » (dépendances absentes), identiques à la branche d'origine.
+Hérités non réparés : aucun connu ; les jobs CI n'installent pas studio-rendu, donc les 12 tests de rendu restent sautés en CI (volontaire, couverts par tests-cibles).
