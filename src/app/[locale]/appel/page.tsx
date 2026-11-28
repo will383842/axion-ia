@@ -167,13 +167,13 @@ export default async function AppelPage({ params, searchParams }: Props) {
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
   // lien du parcours — sans quoi le premier clic effaçait l'attribution.
-  let suivi = lireSuiviArrivee(sp);
+  const suivi = lireSuiviArrivee(sp);
   // C12 : première page du parcours, l'article d'où vient le visiteur se lit côté serveur dans le
   // `Referer`, puis voyage avec les autres paramètres de suivi (jamais en `utm_content`). Éteint
   // par défaut : sans le drapeau, le `Referer` n'est même pas lu.
   if (!suivi.po && suiviOrigineActif()) {
     const po = pageOrigineDepuisReferer((await headers()).get("referer"), hotesDuSite(SITE_URL));
-    if (po) suivi = { ...suivi, po };
+    if (po) suivi.po = po;
   }
   // Échange apporteur ouvert depuis l'e-mail « C'est noté » (`?j=<jeton>`) : le
   // jeton, s'il est VALIDE, est recopié dans chaque créneau pour que le formulaire
