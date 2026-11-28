@@ -208,6 +208,8 @@ export type EmailJobName =
   | "apporteur-releve"
   // Relevé mensuel (lot 2, 2026-11-27) : gabarit DORMANT, sans émetteur avant le lot 4a.
   | "apporteur-releve-mensuel"
+  // File d'attente de l'article 3.5 (PR E #2464) : gabarit livré AVANT son émetteur (PR F).
+  | "apporteur-file-attente-premier-rang"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
