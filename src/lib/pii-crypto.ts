@@ -427,6 +427,33 @@ export function cleQuiDechiffre(chiffre: string, aad?: string): "courante" | "le
 }
 
 /**
+ * Même question pour une enveloppe binaire `AXB1` (PR P, rotation). `null` si l'en-tête est inconnu ou si aucune
+ * clé du trousseau ne passe l'étiquette. Ne lève jamais, ne rend jamais le contenu.
+ */
+export function cleQuiDechiffreOctets(enveloppe: Buffer): "courante" | "lecture" | null {
+  const minimum = ENTETE_OCTETS_V1.length + IV_BYTES + TAG_BYTES;
+  if (enveloppe.length < minimum) return null;
+  if (!enveloppe.subarray(0, ENTETE_OCTETS_V1.length).equals(ENTETE_OCTETS_V1)) return null;
+  const debutIv = ENTETE_OCTETS_V1.length;
+  const iv = enveloppe.subarray(debutIv, debutIv + IV_BYTES);
+  const tag = enveloppe.subarray(debutIv + IV_BYTES, minimum);
+  const chiffre = enveloppe.subarray(minimum);
+  const trousseau = clesDeLecture();
+  for (let i = 0; i < trousseau.length; i += 1) {
+    try {
+      const decipher = crypto.createDecipheriv(ALGORITHM, trousseau[i] as Buffer, iv);
+      decipher.setAuthTag(tag);
+      decipher.update(chiffre);
+      decipher.final();
+      return i === 0 ? "courante" : "lecture";
+    } catch {
+      // étiquette refusée : clé suivante
+    }
+  }
+  return null;
+}
+
+/**
  * Détection rapide d'une valeur chiffrée (pour log/debug + future migration
  * batch re-encrypt v2).
  */
