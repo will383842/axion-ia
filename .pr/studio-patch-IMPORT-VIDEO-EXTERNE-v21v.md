@@ -1,0 +1,4 @@
+Rouge de la PR #1776 : un seul contexte, « tests ciblés cas concret » : `tests/zernio/rap3-retrait.test.ts:60` (« la rapatriée retirée sort du calendrier mais reste en base ») voit `pub-8`, une publication de démonstration (`demo.ts`, `dans(4)`) qui tombe désormais dans la fenêtre fixe du test (décembre 2026).
+Changé : rien (patch sans diff, commit normal vide) : le test est hors des 13 fichiers de la fiche, et master échoue à l'identique (reproduit 3 fois) ; la cause est un test lié à la date du jour, pas le code de la branche.
+Lancé : `vitest tests/import-video-externe.test.ts` 25/25 verts ; `rap3-retrait` 3/4 sur la branche ET sur master ; `tsc --noEmit` : mêmes 135 lignes d'erreurs sur master et sur la branche (aucune neuve). Mutations non faites : aucun code ajouté.
+Hérité non réparé : `rap3-retrait.test.ts` (fenêtre « 2026-12-01..31 » à rendre indépendante de la date, ex. exclure `estDemo` ou fenêtre relative) : à traiter dans une fiche à part.
