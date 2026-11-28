@@ -1,0 +1,5 @@
+ECHEC : rien de rouge n'a pu être identifié, donc aucun correctif produit (aucun patch).
+
+- Aucune PR ni aucun check-run trouvés via l'API publique GitHub (pulls?head=… → [], check-runs de 0889bc20, f8018466 et de la branche → total_count 0) : la CI rouge n'est pas lisible depuis ici.
+- Rejoué en local sur 0889bc20 (installation avec --store-dir hors du magasin en lecture seule) : `vitest run tests/briques/composition` = 14 fichiers / 125 tests verts ; `tests/briques` + `tests/moteurs` = 4 échecs (recollage.test.ts, habillage/controle-piece-neuve.test.ts, habillage-commun/sequence-appel.test.ts, voix-maitre/mesure-v3.test.ts), identiques sur origin/master donc hérités, hors des 3 fichiers de la fiche.
+- `tsc --noEmit` : erreurs nombreuses (remotion/types manquants), aucune dans plages-noir-blanc.ts ni dans ses deux tests. Aucun fichier modifié, aucune mutation à faire. Il faut le nom du contrôle rouge de la PR pour aller plus loin. (Branche -ECHEC-2 : l'ancienne -ECHEC existe déjà sur le dépôt.)
