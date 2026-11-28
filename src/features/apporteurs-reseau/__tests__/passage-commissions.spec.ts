@@ -658,6 +658,56 @@ describe("passage quotidien : commission par commande soldée", () => {
     expect(etat.crees[0]).not.toHaveProperty("montantCents");
   });
 
+  describe("Journée IA : la grille signée décide (point 17, #2464)", () => {
+    const LJ = [{ designation: "Journée IA", quantite: 1, prixUnitaireHtCents: 149_000 }];
+    const journeeIa = (version: string | null) => {
+      etat.presentations = [
+        {
+          ...protegee,
+          apporteur: {
+            ...protegee.apporteur,
+            signatureApporteur: version === null ? null : { version },
+          },
+        },
+      ];
+      unePayee({
+        activite: "formation",
+        montantHtCents: 149_000,
+        lignes: LJ,
+        devis: {
+          acceptedAt: new Date("2026-12-01T00:00:00Z"),
+          montantTotalHtCents: 149_000,
+          journeeIa: true,
+          lignes: LJ,
+        },
+      });
+    };
+
+    it("apporteur 2.6 : une seule ligne « à qualifier », palier hors-grille, ni montant ni règle", async () => {
+      journeeIa("2.6");
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toHaveLength(1);
+      expect(etat.crees[0]).toMatchObject({ statut: "a_qualifier", palier: "hors-grille" });
+      expect(etat.crees[0]).not.toHaveProperty("montantCents");
+      expect(etat.crees[0]).not.toHaveProperty("regleAppliquee");
+    });
+
+    it("apporteur 2.8 : 500 € et règle journee_ia, inchangés", async () => {
+      journeeIa("2.8");
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toHaveLength(1);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 50_000, regleAppliquee: "journee_ia" });
+    });
+
+    it("grille inconnue : « à qualifier » sans palier, jamais 500 € (escalade inchangée)", async () => {
+      journeeIa(null);
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toHaveLength(1);
+      expect(etat.crees[0]).toMatchObject({ statut: "a_qualifier", palier: null });
+      expect(etat.crees[0]).not.toHaveProperty("montantCents");
+    });
+  });
+
   it("parrain : 10 % de la commission du filleul quand la commande tombe dans les 6 mois", async () => {
     etat.presentations = [
       {

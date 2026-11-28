@@ -486,7 +486,9 @@ export function actionApresVerdict(sortie: SortiePorte, etat: EtatCycle): Action
   }
   const avertissements = sortie.criteres.filter(
     (c): c is ResultatCritere & { section: string } =>
-      !estCritereBloquant(c.id) && c.etat === "echec" && sectionLocalisee(c.section),
+      (AVERTISSEMENTS as readonly string[]).includes(c.id) &&
+      c.etat === "echec" &&
+      sectionLocalisee(c.section),
   );
   if (avertissements.length === 0) return { action: "abandonner", code: "autre" };
   return {

@@ -118,7 +118,12 @@ describe("correspondance Bnn → code", () => {
     expect(CORRESPONDANCE_BNN.B02).toEqual(["fait_non_source", "chiffre_retire"]);
     expect(CORRESPONDANCE_BNN.B08).toContain("style");
     expect(CORRESPONDANCE_BNN.B11).toEqual(
-      expect.arrayContaining(["style", "longueur_hors_fourchette", "structure_titres"]),
+      expect.arrayContaining([
+        "style",
+        "longueur_hors_fourchette",
+        "structure_titres",
+        "reponse_directe_absente",
+      ]),
     );
   });
 

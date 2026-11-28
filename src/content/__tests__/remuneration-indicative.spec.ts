@@ -381,6 +381,8 @@ const GABARITS_APRES_SIGNATURE: readonly string[] = [
   // Relevé mensuel (lot 2, 2026-11-27) : récapitulatif à un apporteur SIGNÉ ; montants lus dans
   // le payload (relevé figé), aucun barème ni montant dans le gabarit.
   "apporteur-releve-mensuel.tsx",
+  // PR E #2464 : file d'attente (art. 3.5) — apporteur SIGNÉ ; aucun barème ni montant.
+  "apporteur-file-attente.tsx",
 ];
 const CITE_UN_MONTANT =
   /commission\s*\(|€|\d\s?%|\}\s?%|COMMISSION_FORMATION|getCommissionById|COMMERCIAL_COMMISSIONS/;

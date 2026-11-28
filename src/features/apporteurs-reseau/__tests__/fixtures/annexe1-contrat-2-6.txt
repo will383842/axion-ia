@@ -1,0 +1,149 @@
+## Annexe 1 — Grille de commissions du présent contrat, version 2 
+
+### A1.1 — Formations collectives
+
+*Une journée vendue est une journée de formation facturée et non annulée ; une demi-journée est une
+formation de quatre heures. Les prix publics du tableau sont ceux de la date de la version ; le prix public
+retenu pour une commande est celui de l'article 4.1 bis.*
+
+*Forfait de 500 € HT par journée de formation vendue, au prix public, réduit au prorata en cas de remise
+(article 4.1 bis). La commission suit le nombre de journées de la commande : chaque palier porte sa propre
+durée (une demi-journée, une journée, deux jours) et, lorsqu'une même commande porte plusieurs sessions d'un
+même palier, la commission est due pour chacune d'elles. Prix par groupe de 2 à 15 participants.*
+
+*Exemple : une formation générale d'un jour vendue 1 520 € HT au lieu de 1 900 € (remise de 20 %) donne une
+commission de 500 € × 1 520 ÷ 1 900 = 400 €. Vendue au prix public ou plus cher, elle donne 500 €.*
+
+*Exemple de plusieurs journées : cinq journées de formation générale vendues 9 500 € HT (au prix public)
+donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles donnent 2 500 € × 8 550 ÷ 9 500 =
+2 250 €. Aucune limite n'est fixée au nombre de journées.*
+
+| Formation | Durée | Prix public HT | Commission du présent contrat |
+| --- | --- | --- | --- |
+| Formation générale | 4 heures | 1 200 € | 250 € |
+| Formation générale | 1 jour | 1 900 € | 500 € |
+| Formation générale | 2 jours | 3 600 € | 1 000 € |
+| Formation par métier | 1 jour | 1 900 € | 500 € |
+| Formation par métier | 2 jours | 3 600 € | 1 000 € |
+| Formation par secteur | 1 jour | 2 200 € | 500 € |
+| Formation par secteur | 2 jours | 3 900 € | 1 000 € |
+
+### A1.2 — Accompagnement individuel et coaching (1-to-1)
+
+*30 % du montant hors taxes facturé.*
+
+| Prestation | Durée | Prix public HT | Commission du présent contrat |
+| --- | --- | --- | --- |
+| Accompagnement dirigeant | 1 jour | 1 390 € | 30 % |
+| Accompagnement dirigeant | 2 jours | 2 590 € | 30 % |
+| Accompagnement collaborateur | 1 jour | 990 € | 30 % |
+| Accompagnement collaborateur | 2 jours | 1 830 € | 30 % |
+| Coaching individuel | à la séance | à partir de 790 € | 30 % |
+
+### A1.3 — Audits (11 paliers)
+
+*Grille publiée : **30 % du montant hors taxes facturé**.*
+
+| Palier | Prix de référence HT | Commission du présent contrat |
+| --- | --- | --- |
+| Audit sur place | à partir de 1 190 € | 30 % |
+| Audit sur place — sur site | à partir de 1 190 € | 30 % |
+| Audit ciblé | à partir de 1 900 € | 30 % |
+| Audit ciblé — solo | à partir de 1 900 € | 30 % |
+| Audit ciblé — standard | à partir de 2 900 € | 30 % |
+| Audit ciblé — avancé | à partir de 3 900 € | 30 % |
+| Audit stratégique PME | à partir de 1 900 € | 30 % |
+| Audit stratégique PME — 20 à 50 salariés | à partir de 4 900 € | 30 % |
+| Audit stratégique PME — 50 à 250 salariés | à partir de 9 900 € | 30 % |
+| Audit stratégique ETI | à partir de 1 900 € | 30 % |
+| Audit stratégique ETI — base | à partir de 1 900 € | 30 % |
+
+### A1.4 — Implémentations (5 paliers)
+
+*Grille publiée : **15 % du montant hors taxes facturé**. Les quatre derniers paliers
+étant vendus sur devis, seul le pourcentage y est applicable ; c'est aussi là que se règle la dégressivité,
+en portant un taux plus bas sur les grands programmes.*
+
+| Palier | Prix de référence HT | Commission du présent contrat |
+| --- | --- | --- |
+| Pilote IA | 990 € à 4 900 € | 15 % |
+| Mission PME | sur devis | 15 % |
+| Mission ETI | sur devis | 15 % |
+| Grand programme | sur devis | 15 % |
+| IA custom d'entreprise (4 à 12 semaines) | sur devis | 15 % |
+
+### A1.4 bis — Conférences
+
+*Forfait de 500 € HT par conférence signée et payée.*
+
+Une conférence s'entend d'une intervention de la Société, en qualité d'orateur, devant une audience désignée
+par l'entreprise ou par l'organisateur qui la commande, à une date et en un lieu (ou par visioconférence)
+fixés à la commande ; elle ne comprend ni une formation (A1.1) ni une intervention sur demande (A1.5).
+
+La commission est de **500 € hors taxes par conférence figurant à la commande**, quel que soit le nombre de
+participants. Elle n'est pas réduite à raison d'une remise : l'article 4.1 bis ne lui est
+pas applicable. Elle n'excède jamais le prix hors taxes facturé de la commande. Elle est acquise lorsque la
+Société a encaissé l'intégralité du prix facturé de la commande (articles 4.2 et 4.3) ; la reprise
+(article 4.5) et le parrainage (article 4.6) lui sont applicables comme aux autres commissions. Aucune
+commission n'est due au titre d'une conférence effectivement financée par le compte personnel de formation
+(A1.6).
+
+*Exemples : une conférence commandée 2 400 € HT et payée en totalité donne 500 € HT ; commandée 900 € HT, elle
+donne 500 € HT ; payée en partie seulement, elle ne donne encore rien ; offerte, elle ne donne rien. Une
+commande de trois conférences facturée 6 000 € HT et payée en totalité donne 3 × 500 € = 1 500 € HT.*
+
+| Prestation | Commission du présent contrat |
+| --- | --- |
+| Conférence | 500 € HT par conférence |
+
+### A1.5 — Prestations non commissionnées
+
+**Les prestations qui ne figurent dans aucun des tableaux A1.1 à A1.4 bis ne donnent lieu à aucune
+commission**, sous réserve de A1.7 pour les paliers créés après la date de la présente version. Prestations
+non commissionnées à la date de la présente version :
+
+| Prestation | Commission |
+| --- | --- |
+| Développement web | **Aucune** |
+| Maintenance | **Aucune** |
+| Intervention sur demande | **Aucune** |
+
+Le « coup de projecteur » (podcast, interview, page dédiée) est fourni à titre gratuit et ne donne lieu à
+aucune commission par construction.
+
+Le présent tableau est limitatif à la date de la présente version ; les paliers créés postérieurement
+relèvent de A1.7.
+
+### A1.6 — Compte personnel de formation
+
+Conformément à l'article 8.1, **aucune commission n'est due au titre d'une prestation effectivement
+financée, en tout ou partie, par le compte personnel de formation**, quelle que soit l'origine du contact,
+y compris pour une conférence. Les paliers susceptibles d'un tel financement portent la mention « CPF » dans
+les tableaux A1.1 à A1.4 bis. Un financement par le compte personnel de formation constaté après le
+versement de la commission donne lieu à sa reprise (article 4.5).
+**À la date de la présente version, aucun palier de la présente grille ne porte cette mention.**
+
+### A1.7 — Produits créés après la signature
+
+**Chaque palier figurant à la présente annexe conserve la commission que lui attribue le présent contrat
+tant que la Société le propose.**
+
+Lorsque la Société crée un produit après la signature du présent contrat (palier, prestation ou format,
+nouvelle formation comprise), **sa commission est celle que la grille de référence publiée par la Société
+lui attribue à la date de la vente**, sans avenant. La Société fixe la commission de chaque nouveau produit
+à sa création et la publie, datée, avant toute vente de ce produit ; elle la motive sur demande de
+l'Apporteur (article 1164 du code civil). **La commission ainsi publiée n'est jamais rétroactive** : une
+vente déjà réalisée conserve la commission publiée à la date de cette vente.
+
+Lorsqu'un tel produit est vendu à une entreprise attribuée sans qu'aucune commission n'ait été publiée à la
+date de la vente, la commission correspondante est portée en attente **sous le libellé « prestation hors
+grille de commissions »**. **La situation est réglée dans les soixante jours de l'encaissement**, soit par
+la publication de la commission de ce produit, soit par la constatation écrite que ce produit n'est pas
+commissionné, portée à la connaissance de l'Apporteur avec son motif. **À défaut de décision de la Société
+dans ce délai, la commission est due au taux ou au forfait que la grille publiée par la Société portait à
+la date de la vente.** Aucun taux n'est appliqué par défaut en dehors de ce cas.
+
+**Le retrait d'un produit de l'offre de la Société n'affecte ni les commissions acquises ni les
+attributions en cours.**
+
+---
