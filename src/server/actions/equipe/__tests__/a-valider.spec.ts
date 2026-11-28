@@ -223,3 +223,12 @@ describe("refus", () => {
     expect(m.tm.updateMany).not.toHaveBeenCalled();
   });
 });
+
+describe("note de preuve d'un accord saisi en console", () => {
+  it("publication refusée AVANT toute écriture si la note est trop courte", async () => {
+    m.tm.findUnique.mockResolvedValue(membre({ consentSource: "console", consentNote: "ok" }));
+    const r = await validerEtPublier(ID, fiche(), VERSION);
+    expect(r.ok).toBe(false);
+    expect(m.tm.updateMany).not.toHaveBeenCalled();
+  });
+});

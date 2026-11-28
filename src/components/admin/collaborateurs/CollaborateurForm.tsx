@@ -4,6 +4,7 @@
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
+import { NOTE_PREUVE_MIN as NOTE_REFUS_MIN } from "@/lib/equipe/console/schemas";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { TEAM_CATEGORIES, evaluerIndexabilite } from "@/lib/equipe/donnees";
@@ -55,8 +56,6 @@ export interface FicheInitiale {
   questionnaireVersion: string | null;
   categoryAnswers: unknown;
 }
-
-const NOTE_REFUS_MIN = 10;
 
 const liste = (s: string): string[] =>
   s
@@ -132,6 +131,8 @@ export function CollaborateurForm({
       if (!r.ok) {
         setErreur(r.erreur ?? "Échec.");
         setChamps(r.champs ?? {});
+        // Une décision peut avoir enregistré les modifications avant de refuser : version à jour.
+        if (modeValidation) router.refresh();
         return;
       }
       setInfo(message);

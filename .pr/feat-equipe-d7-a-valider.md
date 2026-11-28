@@ -35,7 +35,12 @@ Une fiche arrivée par le questionnaire ne se publie jamais seule : Will la reli
 
 - Les réponses propres à la catégorie s'affichent en lecture seule : elles ne sont pas modifiables depuis cet écran (le formulaire existant ne les édite pas non plus).
 - Le questionnaire écrit la réponse directement dans la fiche : la colonne « fiche enregistrée » est donc souvent identique à la réponse ; les écarts (corrections de Will, saisies) sont surlignés.
+- Un « Refuser » renvoie la fiche en brouillon comme « Enregistrer en brouillon » : seul le journal (événement `refus`) et la réponse (marquée refusée, avec la note) en gardent la trace ; l'écran ordinaire de la fiche peut encore la publier si l'accord existe (à trancher : statut dédié).
+- Le dépôt de photo reste possible dans cet écran (accord photo avec note de preuve, comme sur la fiche) ; le contrôle « photo réelle sans accord » est fait avant écriture, pas rejoué dans la transaction de publication (fenêtre très courte).
+- `/sitemap.xml` est revalidé par prudence : le hub et la fiche (revalidés par la publication) sont ce qui compte.
 - Un « Enregistrer en brouillon » retire la fiche de la file : elle se retrouve dans la liste filtrée « Brouillon ».
 - Branche créée depuis `feat/equipe-d6a6-invitations` (non fusionnée). Dans le bac à sable du robot, `.git/config` est en lecture seule : la branche est créée sans suivi amont, poussée sans `-u`.
 
-VERDICT OPUS : EN COURS
+Relecture Opus (données et sécurité) : rien de bloquant ; rôle, IDOR, consentements et courses vérifiés ; état partiel quand la note de preuve manque corrigé.
+
+VERDICT OPUS : BON

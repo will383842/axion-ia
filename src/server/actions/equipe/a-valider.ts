@@ -135,6 +135,9 @@ export async function validerEtPublier(
       erreur: "Impossible de publier sans l'accord de publication de la personne.",
     };
   }
+  if (p.m.consentSource === "console" && (p.m.consentNote ?? "").trim().length < NOTE_PREUVE_MIN) {
+    return { ok: false, erreur: "La note de preuve de l'accord est manquante." };
+  }
   if (p.m.photoKind === "reelle" && !p.m.photoConsentAt) {
     return {
       ok: false,
