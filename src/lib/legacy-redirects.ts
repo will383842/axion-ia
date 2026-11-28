@@ -64,13 +64,28 @@ const STATIC_LEGACY_REDIRECTS: ReadonlyMap<string, string> = new Map([
   ["/blog/cours-ia-grenoble-entreprise", "/blog/cours-ia-grenoble-entreprise-faq"],
   ["/blog/chatbot-ia-grenoble-entreprise", "/blog/chatbot-ia-grenoble-entreprise-guide"],
   ["/blog/coaching-ia-dirigeants-grenoble", "/blog/coaching-ia-dirigeant-grenoble"],
-  ["/blog/formation-intelligence-artificielle-grenoble-pme", "/blog/formation-intelligence-artificielle-entreprise-grenoble"],
-  ["/blog/formation-prompt-engineering-grenoble", "/blog/formation-intelligence-artificielle-entreprise-grenoble"],
+  [
+    "/blog/formation-intelligence-artificielle-grenoble-pme",
+    "/blog/formation-intelligence-artificielle-entreprise-grenoble",
+  ],
+  [
+    "/blog/formation-prompt-engineering-grenoble",
+    "/blog/formation-intelligence-artificielle-entreprise-grenoble",
+  ],
   ["/blog/audit-ia-grenoble-guide", "/blog/cabinet-audit-ia-grenoble-faq"],
-  ["/blog/audit-intelligence-artificielle-grenoble-entreprise", "/blog/cabinet-audit-ia-grenoble-faq"],
-  ["/blog/audit-intelligence-artificielle-grenoble-entreprise-faq", "/blog/cabinet-audit-ia-grenoble-faq"],
+  [
+    "/blog/audit-intelligence-artificielle-grenoble-entreprise",
+    "/blog/cabinet-audit-ia-grenoble-faq",
+  ],
+  [
+    "/blog/audit-intelligence-artificielle-grenoble-entreprise-faq",
+    "/blog/cabinet-audit-ia-grenoble-faq",
+  ],
   ["/blog/mentor-ia-dirigeant-grenoble", "/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble"],
-  ["/blog/mentor-ia-dirigeant-auvergne-rhone-alpes", "/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble"],
+  [
+    "/blog/mentor-ia-dirigeant-auvergne-rhone-alpes",
+    "/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble",
+  ],
   ["/blog/glossaire/formation-ia-colombes", "/blog/formation-ia-colombes"],
   // Formats Claude 1-to-1 retirés → prestation équivalente.
   ["/interventions/claude-dirigeant", "/interventions/dirigeant-vision-strategique"],

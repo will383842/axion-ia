@@ -25,7 +25,10 @@ describe("lastmod de /fr/blog", () => {
     expect(d.toISOString().slice(0, 10)).toBe("2026-11-27");
   });
   it("ne va jamais dans le futur", async () => {
-    findFirst.mockResolvedValue({ publishedAt: new Date(Date.now() + 5 * 86_400_000), updatedAt: null });
+    findFirst.mockResolvedValue({
+      publishedAt: new Date(Date.now() + 5 * 86_400_000),
+      updatedAt: null,
+    });
     const d = dateDe(await sitemap({ id: Promise.resolve("pages") }));
     expect(d.getTime()).toBeLessThanOrEqual(Date.now());
   });

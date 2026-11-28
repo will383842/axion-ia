@@ -32,7 +32,10 @@ describe("titres Search Console", () => {
     const d1 = /"(Axion IA aide les TPE[^"]+)"/.exec(apropos)![1]!;
     const devenir = lire("src/app/[locale]/devenir-commercial-ia/page.tsx");
     const t2 = /"(Devenir apporteur d'affaires IA, sans CV[^"]+)"/.exec(devenir)![1]!;
-    const d2 = /"(Vous connaissez des dirigeants de PME \? Présentez-leur la Journée IA :[^"]+)"/.exec(devenir)![1]!;
+    const d2 =
+      /"(Vous connaissez des dirigeants de PME \? Présentez-leur la Journée IA :[^"]+)"/.exec(
+        devenir,
+      )![1]!;
     for (const t of [t1, t2]) {
       expect(t.length).toBeLessThan(60);
       expect(t.endsWith("Axion IA")).toBe(true);
@@ -42,7 +45,9 @@ describe("titres Search Console", () => {
       expect(d.length).toBeLessThanOrEqual(160);
     }
     for (const x of [t1, d1, t2, d2]) {
-      expect(detecterInterdits(x, { actualite: false, financementPublicAutorise: false })).toEqual([]);
+      expect(detecterInterdits(x, { actualite: false, financementPublicAutorise: false })).toEqual(
+        [],
+      );
     }
   });
 });

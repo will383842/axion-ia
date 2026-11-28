@@ -7,7 +7,9 @@ describe("nom de site : WebSite et Organization portent les mêmes noms alternat
   const org = buildOrganizationJsonLd({ locale: "fr" });
   it("WebSite : name, alternateName (Axion IA, AxionIA, domaine), url", () => {
     expect(site.name).toBe("Axion-IA");
-    expect(site.alternateName).toEqual(expect.arrayContaining(["Axion IA", "AxionIA", "axion-ia.com"]));
+    expect(site.alternateName).toEqual(
+      expect.arrayContaining(["Axion IA", "AxionIA", "axion-ia.com"]),
+    );
     expect(site.url).toMatch(/\/fr$/);
   });
   it("Organization : mêmes alternateName, logo et sameAs présents", () => {
