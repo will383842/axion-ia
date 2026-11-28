@@ -41,7 +41,11 @@ import { PiedArticle } from "../PiedArticle";
 import { ColonneActionsConnectee } from "../ColonneActionsConnectee";
 import { CtaMilieu, type LienSecondaire, type PrincipalCta } from "../CtaMilieu";
 import { CtaFin } from "../CtaFin";
+import { envelopperTableaux } from "@/server/content-gen/blog/transformations";
 import type { ArticleGabaritProps } from "../types";
+
+const avecTableauxDefilants = (html: string | null | undefined): string | null =>
+  html ? envelopperTableaux(html, "Tableau de données") : null;
 
 interface MiseEnPageAnalyseProps {
   readonly p: ArticleGabaritProps;
@@ -76,9 +80,12 @@ export function MiseEnPageAnalyse({
   // Repères posés sur le corps HTML (numéros, relance, retours) et coupe avant la 4e section :
   // l'encart du milieu s'insère après la 3e. Un article en fichier garde ses blocs tels quels.
   // Un gabarit qui enveloppe le corps ou pose des blocs après lui (Sélection) le garde entier.
+  // Tableaux enveloppés UNE seule fois sur le corps entier (avant la coupe) : les identifiants de
+  // légende (`cap-N`) restent uniques d'une moitié à l'autre.
+  const htmlCorps = avecTableauxDefilants(p.html);
   const corps =
-    p.html && !enveloppeCorps && !apresCorps
-      ? preparerCorpsAnalyse(p.html, {
+    htmlCorps && !enveloppeCorps && !apresCorps
+      ? preparerCorpsAnalyse(htmlCorps, {
           ancreLabel: (titre) => a("ancreLabel", { titre }),
           relanceLibelle: a("relance"),
           retourLibelle: p.tocItems.length >= 2 ? a("retourSommaire") : null,
@@ -151,8 +158,10 @@ export function MiseEnPageAnalyse({
         colonne={<ColonneActionsConnectee gabarit={p.gabarit} />}
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
+        {/* Les <table> du corps défilent dans un cadre focusable (`.table-scroll`) : sans lui, un tableau
+            large fait défiler toute la page sur téléphone (WCAG 1.4.10). */}
         {(enveloppeCorps ?? ((c: ReactNode) => c))(
-          <CorpsArticle html={corps ? corps.avant : p.html} blocs={p.blocs} />,
+          <CorpsArticle html={corps ? corps.avant : htmlCorps} blocs={p.blocs} />,
         )}
         {apresCorps}
         <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />

@@ -85,3 +85,96 @@
   font-size: 0.8125rem;
   color: var(--color-fg-muted);
 }
+
+/* Tableaux du corps HTML (enveloppés par `envelopperTableaux`) : le cadre défile, pas la page.
+   Mobile first : tout est en largeur de flux, aucune media query. Ombres de défilement = indication
+   visible qu'il reste du contenu hors champ (même technique que `.tableau__defilant`). */
+[data-gabarit] .table-scroll {
+  max-width: 100%;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(90deg, var(--color-paper) 30%, transparent) 0 0 / 2rem 100% no-repeat local,
+    linear-gradient(270deg, var(--color-paper) 30%, transparent) 100% 0 / 2rem 100% no-repeat local,
+    linear-gradient(90deg, color-mix(in srgb, var(--color-mocha) 22%, transparent), transparent) 0
+      0 / 0.75rem 100% no-repeat scroll,
+    linear-gradient(270deg, color-mix(in srgb, var(--color-mocha) 22%, transparent), transparent)
+      100% 0 / 0.75rem 100% no-repeat scroll,
+    var(--color-paper);
+}
+[data-gabarit] .table-scroll:focus-visible {
+  outline: 3px solid var(--focus-clair, currentColor);
+  outline-offset: 2px;
+}
+[data-gabarit] .table-scroll table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+[data-gabarit] .table-scroll :is(th, td) {
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+[data-gabarit] .table-scroll caption {
+  caption-side: top;
+  padding: 0.85rem 0.85rem 0.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+[data-gabarit] .table-scroll thead th {
+  background: var(--color-sand);
+  font-weight: 600;
+}
+
+/* Lien « En savoir plus » de la mention IA : seul sur sa ligne, donc cible tactile pleine (WCAG 2.5.8) */
+[data-gabarit] [data-aeo="ai-disclosure"] a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Les mots très longs (adresses, termes composés) coupent au lieu d'élargir la page */
+[data-gabarit] .corps-html {
+  overflow-wrap: anywhere;
+}
+
+/* Refusion et zoom du texte à 200 % (WCAG 1.4.4, 1.4.10) : les colonnes de grille et de flex peuvent
+   rétrécir sous leur contenu, les boutons passent à la ligne au lieu de déborder du cadre qui les porte. */
+[data-gabarit] .cta-milieu {
+  grid-template-columns: minmax(0, 1fr);
+}
+[data-gabarit] :is(.cta-milieu, .cta-fin) :is(.btn, .lien-fleche) {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+[data-gabarit] :is(.cta-milieu__actions, .cta-fin__actions) > * {
+  min-width: 0;
+}
+@media (max-width: 760px) {
+  [data-gabarit] :is(.cta-milieu, .cta-fin) {
+    /* le remplissage suit la largeur de l'écran, pas la taille du texte : à 200 %, il ne mange pas la colonne.
+       Réservé au téléphone : sur ordinateur, les marges du socle (disque décoratif) restent intactes. */
+    padding-inline: min(clamp(1.5rem, 1rem + 2vw, 2.25rem), 6vw);
+  }
+}
+[data-gabarit] [data-aeo="ai-disclosure"] {
+  padding-inline: min(1.5rem, 5vw);
+}
+[data-gabarit] [data-aeo="ai-disclosure"] div,
+[data-gabarit] form,
+[data-gabarit] form > * {
+  min-width: 0;
+  max-width: 100%;
+}
+[data-gabarit] form input {
+  width: 100%;
+}

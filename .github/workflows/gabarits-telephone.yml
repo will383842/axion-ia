@@ -1,0 +1,89 @@
+name: Gabarits d'articles · téléphone
+
+# Contrôle « téléphone » des modèles d'articles v2/v3 : `tests/e2e/gabarits-telephone.spec.ts` rend
+# CHAQUE gabarit de `GABARITS_ARTICLE` (donc tout modèle ajouté plus tard) sur la page d'aperçu
+# `/fr/blog/apercu-gabarit/<code>`, à 320, 360, 390, 412, 768 et 1280 px.
+#
+# Pourquoi un workflow à part : la page d'aperçu n'existe que derrière `BLOG_GABARITS_V2=true`, que
+# Gate B n'allume pas (il rend donc cette suite « skipped », pas rouge). Ici l'interrupteur est
+# allumé, sur un serveur de développement : aucun build du site (17 629 routes), pas de base, pas de
+# Redis (URL fictives `stub.invalid`, cf. AGENTS.md), aucun secret.
+#
+# Informatif : pas un contexte requis de la protection de `main`. Les captures 360 et 1280 px de
+# chaque modèle sont jointes au run (artefact `captures-gabarits-telephone`).
+
+on:
+  pull_request:
+    paths:
+      - "src/components/article-v2/**"
+      - "src/styles/article-v2/**"
+      - "src/app/*/blog/apercu-gabarit/**"
+      - "src/server/**/blog/gabarits.ts"
+      - "tests/e2e/gabarits-telephone.spec.ts"
+      - ".github/workflows/gabarits-telephone.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gabarits-telephone-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  telephone:
+    name: Gabarits · téléphone
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SKIP_ENV_VALIDATION: "true"
+      DATABASE_URL: postgresql://stub:stub@stub.invalid:5432/stub
+      REDIS_URL: redis://stub.invalid:6379
+      BULLMQ_DISABLED: "true"
+      BLOG_GABARITS_V2: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+      E2E_BASE_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Client Prisma
+        run: pnpm prisma:generate
+      - name: Navigateur
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Serveur de développement
+        run: |
+          nohup pnpm exec next dev -p 3000 > /tmp/next-dev.log 2>&1 &
+          for i in $(seq 1 90); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/fr/blog/apercu-gabarit/analyse || true)
+            [ "$code" = "200" ] && exit 0
+            sleep 4
+          done
+          echo "La page d'aperçu ne répond pas (dernier code : $code)"; tail -50 /tmp/next-dev.log; exit 1
+      - name: Contrôle téléphone
+        run: pnpm exec playwright test tests/e2e/gabarits-telephone.spec.ts --project=chromium --workers=2
+        env:
+          CAPTURES_MOBILE: "1"
+      - name: Journal du serveur
+        if: always()
+        run: tail -100 /tmp/next-dev.log || true
+      - name: Captures 360 et 1280 px
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: captures-gabarits-telephone
+          path: docs/captures-mobile/*.jpg
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Rapport Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-gabarits-telephone
+          path: playwright-report
+          if-no-files-found: ignore
+          retention-days: 14
