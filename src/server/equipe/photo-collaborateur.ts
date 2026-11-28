@@ -121,40 +121,49 @@ function jetonDe(url: string | null): string | null {
   return t && JETON.test(t) ? t : null;
 }
 
-async function supprimerFichier(chemin: string): Promise<void> {
+async function supprimerFichier(chemin: string): Promise<boolean> {
   try {
     await unlink(chemin);
+    return true;
   } catch (e) {
     // Déjà absent : sans effet. Toute autre erreur (droits, disque) est journalisée.
     if ((e as { code?: string }).code !== "ENOENT") {
       console.error("[equipe-photo] suppression impossible", (e as { code?: string }).code);
+      return false;
     }
+    return true;
   }
 }
 
-/** Supprime variantes et original d'une fiche. Idempotent ; ignore tout chemin hors racine. */
-async function purgerFichiers(photo: {
+/**
+ * Supprime variantes et original d'une fiche. Idempotent ; ignore tout chemin hors racine.
+ * Rend le nombre de fichiers qui n'ont PAS pu être supprimés (hors « déjà absent ») : l'effacement
+ * réel s'arrête s'il est non nul.
+ */
+export async function purgerFichiers(photo: {
   photoStoragePath: string | null;
   photoUrl256: string | null;
   photoUrl1024: string | null;
-}): Promise<void> {
+}): Promise<number> {
+  let echecs = 0;
   const pub = racinePublique();
   for (const url of [photo.photoUrl256, photo.photoUrl1024]) {
     const jeton = jetonDe(url);
     if (!jeton) continue;
     for (const cote of [COTE_PETITE, COTE_GRANDE]) {
-      await supprimerFichier(join(pub, `${jeton}-${cote}.webp`));
+      if (!(await supprimerFichier(join(pub, `${jeton}-${cote}.webp`)))) echecs++;
     }
   }
   const prive = photo.photoStoragePath;
   if (prive && sousRacine(racinePrivee(), prive)) {
-    await supprimerFichier(prive);
+    if (!(await supprimerFichier(prive))) echecs++;
     try {
       await rmdir(dirname(prive)); // dossier aléatoire de l'original, s'il est vide
     } catch {
       // non vide ou absent : sans effet
     }
   }
+  return echecs;
 }
 
 function revalider(slug: string): void {
