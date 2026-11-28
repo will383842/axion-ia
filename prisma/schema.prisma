@@ -19658,6 +19658,23 @@ model GeoPanelReponse {
   @@map("geo_panel_reponses")
 }
 
+/// Bing Webmaster Tools (P17) : clics, impressions et position cumulée (somme position × impressions)
+/// par page et par semaine (lundi). Table ADDITIVE, sans clé étrangère ; relevé éteint par défaut.
+/// rgpd: technique — statistiques de pages publiques ; aucune donnée sur une personne
+model BingPageSemaine {
+  id          Int      @id @default(autoincrement())
+  semaine     DateTime @db.Date
+  page        String   @db.VarChar(500)
+  clics       Int      @default(0)
+  impressions Int      @default(0)
+  positionSum Float    @default(0) @map("position_sum")
+  creeLe      DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@unique([semaine, page], map: "bing_pages_semaine_cle_key")
+  @@index([semaine], map: "bing_pages_semaine_semaine_idx")
+  @@map("bing_pages_semaine")
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Chaîne éditoriale IA (C3) : tables NOUVELLES, additives, non branchées.
 // Aucune énumération Postgres : statuts, intentions, rôles et codes de raison sont du TEXTE

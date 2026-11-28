@@ -15,7 +15,9 @@
  * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (jusqu'à 30 jours d'historique par passage),
  * `purge` (dimanche), `recalcul` (P6a, 07 h 07 : champs existants depuis l'historique, sans appel
  * Google), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé), `robots-ia` (P10 :
- * passages des robots d'IA, agrégats Cloudflare ; sans jeton Cloudflare la tâche saute, « indisponible »).
+ * passages des robots d'IA, agrégats Cloudflare ; sans jeton Cloudflare la tâche saute, « indisponible »),
+ * `bing-releve` (P17, lundi 08 h 37 : relevé Bing par page et par semaine ; éteint par `BING_RELEVE_ENABLED`,
+ * saute avec « clé Bing absente du worker » si `BING_WMT_API_KEY` n'est pas transmise au worker).
  * Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
  * jamais un nom.
  *
@@ -46,6 +48,7 @@ export const TACHES_SEO_PILOTAGE = [
   "inspection",
   "robots-ia",
   "panel-geo",
+  "bing-releve",
 ] as const;
 export type TacheSeoPilotage = (typeof TACHES_SEO_PILOTAGE)[number];
 
@@ -148,6 +151,30 @@ export async function runSeoPilotageJob(
         );
       }
       return b.issue === "saute" ? { issue: "saute", motif: b.motif } : { issue: "fait", tache };
+    }
+    if (tache === "bing-releve") {
+      // Deux interrupteurs : `CONTENT_PILOTAGE_SEO` (déjà vérifié) et `BING_RELEVE_ENABLED`, lu dans
+      // la tâche AVANT la clé. Clé absente du conteneur worker : saut, motif fixe, sans appel.
+      const [{ tacheBingReleve }, { bingWmtGetPageStats }] = await Promise.all([
+        import("@/server/seo-pilotage/bing"),
+        import("@/server/content-gen/seo/bing-wmt-client"),
+      ]);
+      const b = await tacheBingReleve({
+        prisma,
+        lirePages: async () => {
+          const l = await bingWmtGetPageStats();
+          return l === null ? null : l.map(({ cle, ...r }) => ({ page: cle, ...r }));
+        },
+      });
+      // Des nombres et des motifs fixes seulement : jamais la clé, jamais une URL.
+      if (b.issue === "saute") {
+        console.log(`[seo-pilotage-worker] bing-releve sauté : ${b.motif}`);
+        return { issue: "saute", motif: b.motif };
+      }
+      console.log(
+        `[seo-pilotage-worker] bing-releve (${mode}) : ${b.pages} page(s), ${b.semaines} semaine(s)`,
+      );
+      return { issue: "fait", tache };
     }
     if (tache === "panel-geo") {
       if (!panelGeo) return { issue: "saute", motif: "panel_non_branche" };

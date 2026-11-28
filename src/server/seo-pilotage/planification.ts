@@ -15,3 +15,5 @@ export const PATTERN_SEO_RECALCUL = "7 7 * * *";
 export const PATTERN_SEO_ROBOTS_IA = "7 7 * * *";
 /** Panel GEO (P11) : jours ouvrés, 08 h 17 à Paris (3 questions par passage) ; jamais sur la minute 0. */
 export const PATTERN_SEO_PANEL_GEO = "17 8 * * 1-5";
+/** Relevé Bing (P17) : le lundi, 08 h 37 à Paris, hebdomadaire ; jamais sur la minute 0. Éteint par `BING_RELEVE_ENABLED`. */
+export const PATTERN_SEO_BING_RELEVE = "37 8 * * 1";
