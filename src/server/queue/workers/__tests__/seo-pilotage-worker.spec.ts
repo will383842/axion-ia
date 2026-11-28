@@ -18,7 +18,7 @@ vi.mock("@/server/seo-pilotage/ingestion", () => ({
 }));
 const tacheRobotsIa = vi.fn();
 const tachePanelGeo = vi.fn();
-vi.mock("@/server/seo-pilotage/geo", () => ({ tacheRobotsIa, tachePanelGeo }));
+vi.mock("@/server/seo-pilotage/geo", () => ({ tacheRobotsIa }));
 const tacheRecalcul = vi.fn();
 vi.mock("@/server/seo-pilotage/recalcul", () => ({ tacheRecalcul }));
 const tacheInspection = vi.fn();
@@ -32,7 +32,8 @@ vi.mock("@/server/seo-pilotage/interrupteur", async (orig) => ({
 vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
 
-const { runSeoPilotageJob } = await import("../seo-pilotage-worker");
+const { runSeoPilotageJob: lancer } = await import("../seo-pilotage-worker");
+const runSeoPilotageJob = (j: never) => lancer(j, tachePanelGeo as never);
 const job = (tache: unknown) => ({ data: { tache } }) as never;
 
 describe("worker seo-pilotage", () => {
@@ -237,6 +238,8 @@ describe("worker seo-pilotage", () => {
       issue: "saute",
       motif: "liste_non_validee",
     });
+    // Sans tâche injectée, le panel saute sans rien appeler.
+    expect(await lancer(job("panel-geo"))).toEqual({ issue: "saute", motif: "panel_non_branche" });
   });
 
   it("une tâche inconnue est journalisée et IGNORÉE, même allumé, sans rien lancer", async () => {

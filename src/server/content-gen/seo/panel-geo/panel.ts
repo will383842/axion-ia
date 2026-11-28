@@ -4,33 +4,26 @@
  * les URL et domaines cités, la présence et le rang d'axion-ia.com ; JAMAIS le texte de la réponse.
  *
  * ÉTEINT par défaut, à trois verrous : `CONTENT_PILOTAGE_SEO` (worker), clé `geo_panel`
- * `{ actif: true }` de `ContentGenConfig`, et une liste de questions validée par Will
+ * `{ actif: true }` de `la table de réglages du contenu`, et une liste de questions validée par Will
  * (`geo_panel_questions`, `validee: true`). Aucun des trois : la tâche saute sans appel.
  *
  * Argent (fail-closed) : un job porteur de P0 (`origine: "pilotage"`, sous-plafonds 2 $/jour et
  * 30 $/mois) + `assertPlafondsClaude` RÉSERVENT le coût maximal AVANT chaque appel ; le premier refus
  * arrête la passe. Le coût réel solde la réservation. Aucun appel réseau dans les tests (injection).
  */
-import type { PrismaClient } from "../../../../prisma/generated/client";
+import type { PrismaClient } from "../../../../../prisma/generated/client";
 import {
   appelerMessagesApi,
   PRIX_RECHERCHE_USD,
   JETONS_ENTREE_PAR_RECHERCHE,
   sourcesDeLaRecherche,
   type AppelMessages,
-} from "../../content-gen/clients/claude-search";
-import { computeCost } from "../../content-gen/providers/anthropic";
-import {
-  assertPlafondsClaude,
-  interrupteurBlogClaude,
-  MODELES,
-} from "../../content-gen/providers/blog-claude";
-import {
-  BlogClaudeRefusError,
-  solderReservation,
-} from "../../content-gen/providers/blog-claude-ledger";
-import { creerJobPorteur, type JobPorteur } from "../../content-gen/providers/job-porteur";
-import type { GenerationRequest } from "../../content-gen/providers/IProvider";
+} from "../../clients/claude-search";
+import { computeCost } from "../../providers/anthropic";
+import { assertPlafondsClaude, interrupteurBlogClaude, MODELES } from "../../providers/blog-claude";
+import { BlogClaudeRefusError, solderReservation } from "../../providers/blog-claude-ledger";
+import { creerJobPorteur, type JobPorteur } from "../../providers/job-porteur";
+import type { GenerationRequest } from "../../providers/IProvider";
 import { listeValidee, type QuestionPanel } from "./panel-questions";
 
 export const CLE_CONFIG_PANEL = "geo_panel";

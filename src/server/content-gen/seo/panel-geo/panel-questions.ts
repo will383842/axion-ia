@@ -2,7 +2,7 @@
  * Panel GEO (P11) : liste PROPOSÉE de 30 questions de dirigeants de TPE et PME françaises.
  *
  * ⛔ À VALIDER PAR WILL. Cette liste n'est PAS utilisée tant qu'elle n'est pas validée : le panel ne
- * lit que la liste posée dans la console (clé `geo_panel_questions` de `ContentGenConfig`, avec
+ * lit que la liste posée dans la console (clé `geo_panel_questions` de `la table de réglages du contenu`, avec
  * `validee: true`). Cette constante sert de point de départ à recopier/éditer, jamais de source
  * d'exécution (`LISTE_PROPOSEE.validee` vaut `false`, verrouillé par test).
  *
@@ -80,7 +80,7 @@ export function questionValide(q: unknown): q is QuestionPanel {
 }
 
 /**
- * Lit la liste VALIDÉE depuis la valeur de `ContentGenConfig["geo_panel_questions"]`. Renvoie
+ * Lit la liste VALIDÉE depuis la valeur de `la table de réglages du contenu["geo_panel_questions"]`. Renvoie
  * `null` (le panel saute) si la valeur est absente, non validée (`validee !== true`), vide, avec une
  * question invalide ou un identifiant en double. Jamais de repli sur `LISTE_PROPOSEE`.
  */

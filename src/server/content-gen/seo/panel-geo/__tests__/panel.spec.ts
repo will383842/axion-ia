@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { BlogClaudeRefusError } from "../../../content-gen/providers/blog-claude-ledger";
+import { BlogClaudeRefusError } from "../../../providers/blog-claude-ledger";
 import { analyserSources, estDomaineAxion, questionsDuJour, tachePanelGeo } from "../panel";
 import { LISTE_PROPOSEE, listeValidee, NB_QUESTIONS_ATTENDUES } from "../panel-questions";
 
