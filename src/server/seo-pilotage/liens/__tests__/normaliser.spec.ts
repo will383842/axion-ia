@@ -92,7 +92,7 @@ describe("normaliserAncre et tronquerCellule", () => {
 
 describe("durcissements", () => {
   it("une adresse e-mail n'est pas un domaine", () => {
-    expect(normaliserDomaine("jean.dupont@gmail.com")).toBeNull();
+    expect(normaliserDomaine("jean.dupont@exemple.fr")).toBeNull();
   });
   it("une page source sans hôte pointé est refusée", () => {
     expect(normaliserPageSource("intranet/page")).toBeNull();
@@ -110,7 +110,7 @@ describe("durcissements, tour 2", () => {
     );
   });
   it("refuse une adresse e-mail comme page source", () => {
-    expect(normaliserPageSource("jean.dupont@gmail.com")).toBeNull();
+    expect(normaliserPageSource("jean.dupont@exemple.fr")).toBeNull();
   });
   it("retire le point final de l'hôte", () => {
     expect(normaliserPageSource("https://exemple.fr./a")).toBe("https://exemple.fr/a");
@@ -128,8 +128,8 @@ describe("tour 3", () => {
     expect(normaliserCible("/fr/ok")).toBe("/fr/ok");
   });
   it("aucune adresse e-mail gardée, avec ou sans schéma, jusque dans la requête", () => {
-    expect(normaliserPageSource("https://jean@gmail.com")).toBeNull();
-    expect(normaliserPageSource("https://site.fr/p?email=jean@gmail.com")).toBeNull();
+    expect(normaliserPageSource("https://jean@exemple.fr")).toBeNull();
+    expect(normaliserPageSource("https://site.fr/p?email=jean@exemple.fr")).toBeNull();
   });
 });
 
@@ -149,7 +149,7 @@ describe("tour 4 : adresse e-mail dans le chemin, erreurs sans donnée personnel
 
 describe("tour 6 : e-mail dans une ancre ou un chemin cible", () => {
   it("refuse", () => {
-    expect(normaliserAncre("écrivez à jean.dupont@gmail.com")).toBeNull();
+    expect(normaliserAncre("écrivez à jean.dupont@exemple.fr")).toBeNull();
     expect(normaliserCible("/fr/contact/jean@x.fr")).toBeNull();
     expect(normaliserAncre("guide IA")).toBe("guide IA");
   });
