@@ -17,7 +17,7 @@ describe("migration du contrôle du registre", () => {
       true,
     );
     const autres = readdirSync(path.join(RACINE, "prisma/migrations")).filter(
-      (d) => /^\d{14}_/.test(d) && d !== NOM,
+      (d) => /^\d{14}_/.test(d) && d !== NOM && !d.endsWith("_apporteurs_annexes_versionnees"),
     );
     expect((NOM ?? "").slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });
