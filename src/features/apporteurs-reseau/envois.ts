@@ -49,6 +49,7 @@ export type GabaritApporteur =
   | "apporteur-attribution-confirmee"
   | "apporteur-releve"
   | "apporteur-releve-mensuel"
+  | "apporteur-file-attente-premier-rang"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace"
   | "apporteur-compte-a-confirmer"
@@ -99,6 +100,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-attribution-confirmee",
   "apporteur-releve",
   "apporteur-releve-mensuel",
+  "apporteur-file-attente-premier-rang",
   "apporteur-virement-fait",
   "apporteur-lien-espace",
   // Changement de compte bancaire (lot 4 du plan changement d'IBAN) : jamais de repli (`gabaritRepli`), voir §6.1.
@@ -155,6 +157,7 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-attribution-confirmee",
   "apporteur-releve",
   "apporteur-releve-mensuel",
+  "apporteur-file-attente-premier-rang",
   "apporteur-virement-fait",
   // « apporteur-lien-espace » n'y est PAS (2026-10-09) : envoyé à SA demande depuis
   // « Retrouver mon espace », qui décide lui-même qui le reçoit (fiche retirée comprise,
@@ -249,6 +252,8 @@ export async function envoyerConfirmationVirement(e: {
   montant: string;
   numeros: readonly string[];
   dateVirement: string;
+  /** Lot 7 : les 4 derniers caractères du compte payé (facultatif : un ancien worker l'ignore). */
+  compteFin?: string;
 }): Promise<ResultatEnvoi> {
   const numeros =
     e.numeros.length === 0
@@ -267,6 +272,7 @@ export async function envoyerConfirmationVirement(e: {
       montant: e.montant,
       ...(numeros ? { numeros } : {}),
       dateVirement: e.dateVirement,
+      ...(e.compteFin ? { compteFin: e.compteFin } : {}),
     },
   });
 }

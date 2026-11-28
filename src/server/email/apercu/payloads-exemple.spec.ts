@@ -189,7 +189,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // fichier, cinq gabarits). Champs tous facultatifs.
     // RELEVÉ À 95 : `apporteur-releve-mensuel` (relevé mensuel, lot 2, gabarit dormant sans
     // émetteur). Champs tous facultatifs.
-    expect(tous.length).toBe(95);
+    // RELEVÉ À 96 : `apporteur-file-attente` (PR E #2464, sans émetteur avant la PR F). Ses trois
+    // champs sont déclarés dans `payloads-exemple.ts`.
+    expect(tous.length).toBe(96);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

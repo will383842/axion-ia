@@ -26,7 +26,7 @@ describe("le programme du worker", () => {
     );
   });
 
-  it("🔴 la file `apporteur-crons` garde EXACTEMENT ses quatre passages (rappels d'invitation retirés le 26/10), sans celui des candidats", () => {
+  it("🔴 la file `apporteur-crons` garde EXACTEMENT ses cinq passages (rappels d'invitation retirés le 26/10 ; relevé mensuel ajouté le 27/11, #2454), sans celui des candidats", () => {
     const debut = queues.indexOf("if (apporteurCronsQueue) {");
     const programme = queues.slice(debut, queues.indexOf("];", debut));
     const types = [...programme.matchAll(/type: "([^"]+)" as const/g)].map((m) => m[1]);
@@ -35,6 +35,7 @@ describe("le programme du worker", () => {
       "invitation-auto",
       "reseau-quotidien",
       "reseau-facturation",
+      "releve-mensuel",
     ]);
     expect(lire("src/server/queue/workers/apporteur-crons-worker.ts")).not.toMatch(
       /reponses-entrantes-candidature|passerReponsesEntrantesCandidats/,

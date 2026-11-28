@@ -8,12 +8,19 @@ afterEach(() => {
 });
 
 describe("interrupteur et gel des virements", () => {
-  it("le gel n'existe pas encore : la constante vaut false", async () => {
+  it("le gel existe (lot 7) : la constante vaut true", async () => {
     const { GEL_VIREMENTS_DISPONIBLE } = await import("../gel-virements");
-    expect(GEL_VIREMENTS_DISPONIBLE).toBe(false);
+    expect(GEL_VIREMENTS_DISPONIBLE).toBe(true);
   });
 
-  it("reste éteint même avec la variable à « true » tant que le gel manque", async () => {
+  it("allumé avec la variable à « true » seulement, une fois le gel livré", async () => {
+    process.env["APPORTEUR_CHANGEMENT_IBAN_ENABLED"] = "true";
+    const { changementIbanActif } = await import("../interrupteur-changement-iban");
+    expect(changementIbanActif()).toBe(true);
+  });
+
+  it("reste éteint, même avec la variable à « true », si le gel est retiré", async () => {
+    vi.doMock("../gel-virements", () => ({ GEL_VIREMENTS_DISPONIBLE: false }));
     process.env["APPORTEUR_CHANGEMENT_IBAN_ENABLED"] = "true";
     const { changementIbanActif } = await import("../interrupteur-changement-iban");
     expect(changementIbanActif()).toBe(false);
