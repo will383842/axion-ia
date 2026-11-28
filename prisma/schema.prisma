@@ -19452,6 +19452,12 @@ model TeamQuestionnaireInvite {
   revokedAt            DateTime?   @map("revoked_at") @db.Timestamptz(3)
   failedAttempts       Int         @default(0) @map("failed_attempts")
   createdByAdminId     String      @map("created_by_admin_id") @db.VarChar(64)
+  /// Adresse chiffrée (`encryptPii`) : sert à « Renvoyer ». Jamais affichée en clair hors de l'envoi.
+  contactEmailEnc      String?     @map("contact_email_enc") @db.Text
+  firstName            String?     @map("first_name") @db.VarChar(80)
+  /// console | contrat_apporteur | …
+  source               String?     @db.VarChar(30)
+  sentAt               DateTime?   @map("sent_at") @db.Timestamptz(3)
   createdAt            DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
 
   submissions TeamQuestionnaireSubmission[]

@@ -25,8 +25,9 @@ export default async function CollaborateurPage({
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
 }) {
   const { locale, adminPrefix, id } = await params;
+  const login = `/${locale}/${adminPrefix}/login`;
   const acces = await gardeLectureEchanges(
-    `/${locale}/${adminPrefix}/login`,
+    login,
     () => "Les fiches collaborateurs sont réservées aux administrateurs.",
   );
   if (!acces.autorise) {

@@ -54,12 +54,12 @@ export function ProfilCollaborateur({
       <Section title={`${fiche.nom} en bref`}>
         <div className="max-w-4xl">
           <FicheIdentite fiche={fiche} lignes={contenu.identite} className="text-base" />
-          {fiche.estDirigeantPrincipal && contenu.liens.linkedin ? (
+          {contenu.liens.linkedin ? (
             <p className="text-fg-soft mt-6 text-sm">
               Profil professionnel vérifiable :{" "}
               <a
                 href={contenu.liens.linkedin}
-                rel="me noopener noreferrer"
+                rel={fiche.estDirigeantPrincipal ? "me noopener noreferrer" : "noopener noreferrer"}
                 target="_blank"
                 className="text-terracotta hover:text-terracotta-deep font-medium underline underline-offset-4"
               >
