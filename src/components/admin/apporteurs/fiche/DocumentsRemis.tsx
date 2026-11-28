@@ -41,20 +41,26 @@ export function DocumentsRemis({ lignes }: { lignes: readonly DocumentRemisLigne
           Aucune annexe tracée pour cet apporteur.
         </p>
       ) : (
-        <ul className="flex flex-col gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
-          {lignes.map((l) => (
-            <li key={l.id} className="flex flex-wrap justify-between gap-[var(--space-admin-2)]">
-              <span>
-                <strong>{LIBELLE_DOCUMENT[l.documentId] ?? l.documentId}</strong>{" "}
-                <code>{l.versionSha256.slice(0, 8)}</code> ·{" "}
-                {LIBELLE_CONTEXTE[l.contexte] ?? l.contexte}
-              </span>
-              <span className="text-[color:var(--color-admin-fg-muted)]">
-                {dateHeureParis(l.remisAt)}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Jointe à l&apos;envoi mis en file : une annexe facultative peut être omise ensuite si
+            elle est introuvable ou trop lourde.
+          </p>
+          <ul className="flex flex-col gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+            {lignes.map((l) => (
+              <li key={l.id} className="flex flex-wrap justify-between gap-[var(--space-admin-2)]">
+                <span>
+                  <strong>{LIBELLE_DOCUMENT[l.documentId] ?? l.documentId}</strong>{" "}
+                  <code>{l.versionSha256.slice(0, 8)}</code> ·{" "}
+                  {LIBELLE_CONTEXTE[l.contexte] ?? l.contexte}
+                </span>
+                <span className="text-[color:var(--color-admin-fg-muted)]">
+                  {dateHeureParis(l.remisAt)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </AdminCard>
   );

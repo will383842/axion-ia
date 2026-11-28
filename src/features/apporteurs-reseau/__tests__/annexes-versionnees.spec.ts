@@ -17,7 +17,10 @@ const h = vi.hoisted(() => ({
   objets: new Map<string, number>(),
   upload: vi.fn(),
   tableAbsente: false,
+  panne: false,
+  signaler: vi.fn(),
 }));
+vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
 const p2021 = () => Object.assign(new Error("table absente"), { code: "P2021" });
 
@@ -33,11 +36,17 @@ vi.mock("@/lib/r2-storage", () => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentAnnexeVersion: {
-      findFirst: async (a: { where: { documentId: string; retireeAt: null } }) => {
+      findFirst: async (a: { where: { documentId: string; retireeAt?: null } }) => {
         if (h.tableAbsente) throw p2021();
+        if (h.panne) throw new Error("base en panne");
+        // Le `where` est appliqué TEL QUEL : sans `retireeAt: null` dans la requête, une version retirée sort.
         return (
           [...h.lignes]
-            .filter((l) => l.documentId === a.where.documentId && l.retireeAt === null)
+            .filter(
+              (l) =>
+                l.documentId === a.where.documentId &&
+                (!("retireeAt" in a.where) || l.retireeAt === a.where.retireeAt),
+            )
             .sort((x, y) => y.deposeAt.getTime() - x.deposeAt.getTime())[0] ?? null
         );
       },
@@ -75,6 +84,8 @@ beforeEach(() => {
   h.objets.clear();
   h.upload.mockReset();
   h.tableAbsente = false;
+  h.panne = false;
+  h.signaler.mockReset();
 });
 
 describe("annexes versionnées", () => {
@@ -158,5 +169,16 @@ describe("annexes versionnées", () => {
     expect(await versionCourante("livret")).toBeNull();
     h.tableAbsente = true;
     expect(await versionCourante("livret")).toBeNull();
+  });
+
+  it("🔴 base en panne : repli sur la clé fixe ET signalé ; table absente : repli silencieux", async () => {
+    h.panne = true;
+    expect(await versionCourante("livret")).toBeNull();
+    expect(h.signaler).toHaveBeenCalledTimes(1);
+    h.signaler.mockReset();
+    h.panne = false;
+    h.tableAbsente = true;
+    expect(await versionCourante("livret")).toBeNull();
+    expect(h.signaler).not.toHaveBeenCalled();
   });
 });

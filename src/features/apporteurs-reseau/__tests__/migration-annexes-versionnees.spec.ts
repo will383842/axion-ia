@@ -82,4 +82,12 @@ describe("migration apporteurs_annexes_versionnees", () => {
     expect(r).toMatch(/RENAME TO "apporteur_documents_remis_retire_/);
     expect(lire("rollback.sql")).toMatch(/décision du fondateur/);
   });
+
+  it("le rollback retire aussi les quatre fonctions de déclencheur (migration réappliquable)", () => {
+    const m = lire("migration.sql");
+    const r = sansCommentaires(lire("rollback.sql"));
+    const fonctions = [...m.matchAll(/CREATE FUNCTION "([a-z_]+)"\(\)/g)].map((x) => x[1]);
+    expect(fonctions).toHaveLength(4);
+    for (const f of fonctions) expect(r).toContain(`DROP FUNCTION "${f}"()`);
+  });
 });

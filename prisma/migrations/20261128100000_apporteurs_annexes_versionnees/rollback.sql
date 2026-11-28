@@ -12,3 +12,8 @@ DROP TRIGGER "apporteur_documents_remis_no_truncate" ON "apporteur_documents_rem
 DROP TRIGGER "apporteur_documents_remis_garde" ON "apporteur_documents_remis";
 ALTER TABLE "documents_annexes_versions" RENAME TO "documents_annexes_versions_retire_20261128";
 ALTER TABLE "apporteur_documents_remis" RENAME TO "apporteur_documents_remis_retire_20261128";
+-- Les fonctions des déclencheurs : retirées pour qu'une réapplication de la migration ne bute pas sur CREATE FUNCTION.
+DROP FUNCTION "documents_annexes_versions_refuse_delete"();
+DROP FUNCTION "documents_annexes_versions_garde_update"();
+DROP FUNCTION "apporteur_documents_remis_refuse_delete"();
+DROP FUNCTION "apporteur_documents_remis_garde_update"();

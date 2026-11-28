@@ -61,9 +61,11 @@ export async function versionCourante(
       select: { cleR2: true, sha256: true },
     });
     return v ? { cleR2: v.cleR2, sha256: v.sha256 } : null;
-  } catch {
-    // Repli SILENCIEUX sur la clé fixe (table absente, base en panne) : un e-mail ne dépend pas de ce registre,
-    // et une alerte par e-mail finirait en boucle.
+  } catch (err) {
+    // Table absente : repli silencieux sur la clé fixe. Toute autre panne : repli aussi (un e-mail ne dépend pas de
+    // ce registre), mais signalé à Sentry (identifiants seuls) ; pas d'alerte par e-mail, qui finirait en boucle.
+    if (!tableAbsente(err))
+      signalerErreurReseau("annexes versionnées : lecture de la version courante", err);
     return null;
   }
 }
@@ -71,7 +73,8 @@ export async function versionCourante(
 /**
  * Note ce qui vient d'être REMIS : une ligne par annexe RÉELLEMENT jointe (pièce à clé versionnée), avec son
  * empreinte. À appeler seulement quand l'e-mail est en file. `skipDuplicates` : un double clic ou un rejeu du même
- * job n'écrit rien de plus. Une pièce à l'ancienne clé fixe n'a pas d'empreinte connue : rien à tracer. Table
+ * job n'écrit rien de plus. Notée à la MISE EN FILE : une annexe facultative peut ensuite être omise par le worker
+ * (introuvable, trop lourde) et rester notée « remise ». Une pièce à l'ancienne clé fixe n'a pas d'empreinte connue : rien à tracer. Table
  * absente : silence. Ne lève jamais.
  */
 export async function noterDocumentsRemis<P extends { r2Key: string }>(
