@@ -1,33 +1,66 @@
+// #2464 point 16 : le classement récurrent / non récurrent d'une ligne de devis passe par le CATALOGUE
+// (offreCode / offreTierId, seuls champs produit stockés), la désignation n'est qu'un filet.
 import { describe, expect, it } from "vitest";
-import { htLignesRecurrentesCents } from "../regles";
+
+import { MAINTENANCE_TIERS, UN_A_UN_RECURRING_TIER } from "@/content/pricing";
+import { lignesVersFormulaire } from "@/components/admin/qualiopi/devis-edition-lignes";
+
+import { htLignesRecurrentesCents, TIERS_RECURRENTS } from "../regles";
 
 const l = (o: Record<string, unknown>) => ({ quantite: 1, prixUnitaireHtCents: 10_000, ...o });
 
-describe("lignes récurrentes : le produit ou le type de ligne d'abord, la désignation en filet", () => {
-  it("repère par le type de ligne, quelle que soit la désignation", () => {
-    for (const champ of ["type", "typeLigne", "produit", "produitSlug", "categorie", "famille"])
-      for (const v of [
-        "abonnement",
-        "maintenance",
-        "tma",
-        "infogérance",
-        "support-mensuel",
-        "Hébergement",
-      ])
-        expect(
-          htLignesRecurrentesCents([l({ designation: "Prestation", [champ]: v })]),
-          `${champ}=${v}`,
-        ).toBe(10_000);
-  });
-  it("le drapeau explicite `recurrent` suffit", () => {
-    expect(htLignesRecurrentesCents([l({ designation: "Forfait", recurrent: true })])).toBe(10_000);
-  });
-  it("un type non récurrent n'est pas arrêté par un mot absent de la désignation", () => {
-    expect(htLignesRecurrentesCents([l({ designation: "Mise en service", type: "service" })])).toBe(
-      0,
+describe("le catalogue : paliers récurrents", () => {
+  it("la maintenance et le coaching régulier, rien d'autre", () => {
+    expect([...TIERS_RECURRENTS].sort()).toEqual(
+      [...MAINTENANCE_TIERS.map((t) => t.id), UN_A_UN_RECURRING_TIER.id].sort(),
     );
   });
-  it("le filet de désignation attrape support mensuel, TMA, infogérance et les mots d'avant", () => {
+});
+
+describe("ligne réelle de devis : « Forfait mensuel » + code de maintenance → 0 de base", () => {
+  it("la forme STOCKÉE (designation, quantite, prixUnitaireHtCents, offreCode) est classée par le code", () => {
+    const stockee = l({ designation: "Forfait mensuel", offreCode: "maintenance-standard" });
+    expect(htLignesRecurrentesCents([stockee])).toBe(10_000);
+  });
+  it("même chose par offreTierId, et avec la colonne mixte (code rangé dans offreTierId)", () => {
+    expect(
+      htLignesRecurrentesCents([
+        l({ designation: "Forfait mensuel", offreTierId: "maintenance-standard" }),
+      ]),
+    ).toBe(10_000);
+    expect(
+      htLignesRecurrentesCents([
+        l({ designation: "Forfait", offreTierId: "un-a-un-recurrent", offreCode: "AXI-OFF-001" }),
+      ]),
+    ).toBe(10_000);
+  });
+  it("la ligne passe le schéma STRICT réel des lignes stockées, avec son code", () => {
+    const stockee = {
+      designation: "Forfait mensuel",
+      quantite: 1,
+      prixUnitaireHtCents: 29_000,
+      offreCode: "maintenance-standard",
+    };
+    const lue = lignesVersFormulaire([stockee]);
+    expect(lue?.[0]?.offreCode).toBe("maintenance-standard");
+    expect(htLignesRecurrentesCents([stockee])).toBe(29_000);
+  });
+  it("casse et espaces ne trompent pas", () => {
+    expect(
+      htLignesRecurrentesCents([l({ designation: "X", offreCode: " Maintenance-Standard " })]),
+    ).toBe(10_000);
+  });
+  it("une offre de formation du catalogue n'est pas récurrente", () => {
+    expect(
+      htLignesRecurrentesCents([
+        l({ designation: "Journée IA", offreCode: "AXI-OFF-042", offreTierId: "intervention-4h" }),
+      ]),
+    ).toBe(0);
+  });
+});
+
+describe("le filet de désignation, en dernier recours (lignes libres sans produit)", () => {
+  it("attrape support mensuel, TMA, infogérance et les mots d'avant", () => {
     for (const d of [
       "Support mensuel",
       "TMA du site",

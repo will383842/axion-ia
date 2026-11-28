@@ -564,23 +564,37 @@ async function refusBienRecu(
     select: { siren: true, apporteurId: true, recueAt: true },
   });
   if (!p) return null;
-  const tous = await db.presentationEntreprise.findMany({
-    where: {
-      siren: p.siren,
-      id: { not: presentationId },
-      apporteurId: { not: p.apporteurId },
-      statut: { in: ["reservee", "confirmee", "terminee"] },
-    },
-    select: {
-      id: true,
-      apporteurId: true,
-      statut: true,
-      contactEnvoyeAt: true,
-      recueAt: true,
-      protegeeJusquAt: true,
-    },
-    take: 20,
-  });
+  // Deux lectures : les présentations ACTIVES (réservée, confirmée) ne doivent jamais sortir de la
+  // fenêtre à cause d'un SIREN qui accumule des présentations terminées (#2464, point 2). Les
+  // terminées, bornées, ne servent qu'au repos de 30 jours : les plus récemment protégées d'abord.
+  const commun = {
+    siren: p.siren,
+    id: { not: presentationId },
+    apporteurId: { not: p.apporteurId },
+  };
+  const champs = {
+    id: true,
+    apporteurId: true,
+    statut: true,
+    contactEnvoyeAt: true,
+    recueAt: true,
+    protegeeJusquAt: true,
+  } as const;
+  const [actives, terminees20] = await Promise.all([
+    db.presentationEntreprise.findMany({
+      where: { ...commun, statut: { in: ["reservee", "confirmee"] } },
+      select: champs,
+      orderBy: { recueAt: "asc" },
+      take: 100,
+    }),
+    db.presentationEntreprise.findMany({
+      where: { ...commun, statut: "terminee" },
+      select: champs,
+      orderBy: { protegeeJusquAt: { sort: "desc", nulls: "first" } },
+      take: 20,
+    }),
+  ]);
+  const tous = [...actives, ...terminees20];
   // Contrat 2.6 : seuls comptent ceux qui visent le même périmètre (même établissement, ou
   // toute l'entreprise) ; un autre établissement de la même entreprise ne bloque rien.
   const etabs = await lireEtablissements([presentationId, ...tous.map((a) => a.id)]);

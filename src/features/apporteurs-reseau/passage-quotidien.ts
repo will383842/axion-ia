@@ -52,6 +52,7 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
+import { horsGesteCommercial } from "./geste-commercial";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
@@ -1116,7 +1117,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     },
   });
   const avoirsLignes = await prisma.factureFormation.findMany({
-    where: { avoirDeId: { in: lignes.map((f) => f.id) } },
+    where: { avoirDeId: { in: lignes.map((f) => f.id) }, ...(await horsGesteCommercial()) },
     select: {
       id: true,
       devisId: true,

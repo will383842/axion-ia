@@ -8715,6 +8715,8 @@ model FactureFormation {
   /// Avoir : facture d'origine rectifiée (montants de CETTE facture négatifs).
   avoirDeId                     String?                      @map("avoir_de_id") @db.Uuid
   avoirDe                       FactureFormation?            @relation("FactureFormationAvoir", fields: [avoirDeId], references: [id], onDelete: Restrict)
+  /// Avoir émis à titre de GESTE COMMERCIAL (bon d'achat offert, hors délai) : la commission de l'apporteur est GARDÉE (contrat 2.8, art. 4.5 ; #2464 pt 18). Faux pour un avoir normal.
+  gesteCommercial               Boolean                      @default(false) @map("geste_commercial")
   avoirs                        FactureFormation[]           @relation("FactureFormationAvoir")
   /// DocumentGenere (PDF) associé.
   documentId                    String?                      @map("document_id") @db.Uuid
@@ -16794,6 +16796,18 @@ model ApporteurVirementCompte {
   @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
   @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
   @@map("apporteur_virements_compte")
+}
+
+/// Réservation d'un numéro d'autofacture ou d'avoir : un numéro n'appartient qu'à UN apporteur, y compris en
+/// concurrence (clé primaire sur le numéro, remplie par le déclencheur de `commissions_apporteur`). Sans clé étrangère.
+/// rgpd: technique — numéro de pièce et identifiant d'apporteur ; aucun nom, e-mail ni téléphone
+model ApporteurNumeroReserve {
+  numero      String   @id @db.VarChar(40)
+  apporteurId String   @map("apporteur_id") @db.Uuid
+  reserveAt   DateTime @default(now()) @map("reserve_at") @db.Timestamptz(3)
+
+  @@index([apporteurId], map: "apporteur_numeros_reserves_apporteur_idx")
+  @@map("apporteur_numeros_reserves")
 }
 
 enum TypePieceApporteur {

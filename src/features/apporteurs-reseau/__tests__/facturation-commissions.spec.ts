@@ -34,6 +34,7 @@ const etat = vi.hoisted(() => ({
   stockage: "ok" as "ok" | "ko",
   pdfs: [] as string[],
   pdfsTentative: [] as string[],
+  supprimes: [] as string[],
   envoyes: [] as Array<Record<string, unknown>>,
   confirmations: [] as Array<Record<string, unknown>>,
   alertes: [] as Array<{ jobId: string; payload: Record<string, unknown> }>,
@@ -109,6 +110,12 @@ vi.mock("@/server/queue/queues", () => ({
       return { enqueued: true };
     },
   ),
+}));
+// Suppression des PDF de tentative (#2464, point 14) : enregistrée.
+vi.mock("@/lib/r2-storage", () => ({
+  deleteFromR2: vi.fn(async (k: string) => {
+    etat.supprimes.push(k);
+  }),
 }));
 vi.mock("@/server/qualiopi/documents/organisme", () => ({
   getOrganismeIdentite: async () => ({ raisonSociale: "Axion IA" }),
@@ -327,6 +334,7 @@ beforeEach(() => {
   etat.stockage = "ok";
   etat.pdfs = [];
   etat.pdfsTentative = [];
+  etat.supprimes = [];
   etat.envoyes = [];
   etat.confirmations = [];
   etat.alertes = [];
@@ -467,6 +475,8 @@ describe("autofacture dès que la commission est due", () => {
     expect(etat.pdfsTentative).toHaveLength(1);
     expect(etat.pdfsTentative[0]).toMatch(/AXI-APP-2026-0001\.[0-9a-f]{8}\.pdf$/);
     expect(etat.pdfs).toEqual(["apporteurs/autofactures/APP1/AXI-APP-2026-0001.pdf"]);
+    // Le PDF de tentative, devenu inutile, est supprimé après la publication.
+    expect(etat.supprimes).toEqual(etat.pdfsTentative);
   });
 
   it("#2464 point 15 : table des pièces figées illisible = émission REFUSÉE, rien d'émis", async () => {
@@ -477,6 +487,9 @@ describe("autofacture dès que la commission est due", () => {
     expect(r.autofactures).toBe(0);
     expect(lignes()[0]!.autofactureNumero).toBeNull();
     expect(etat.envoyes).toEqual([]);
+    // Le PDF de tentative (nom et adresse de l'apporteur) n'est pas laissé dans le stockage.
+    expect(etat.pdfsTentative).toHaveLength(1);
+    expect(etat.supprimes).toEqual(etat.pdfsTentative);
     vi.mocked(prisma.pieceAutofactureApporteur.findFirst).mockResolvedValue(null);
     oublierPiecesFigeesDisponible();
   });

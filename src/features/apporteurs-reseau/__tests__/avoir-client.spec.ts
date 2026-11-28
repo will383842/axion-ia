@@ -12,6 +12,8 @@ interface F {
   avoirDeId: string | null;
   emiseAt: Date | null;
   createdAt: Date | null;
+  /** Avoir émis à titre de geste commercial (bon d'achat offert) : marqueur de la pièce. */
+  gesteCommercial?: boolean;
   /** Le devis de la commande (base de signature), lu par `findUnique`. */
   devis?: { montantTotalHtCents: number } | null;
 }
@@ -44,6 +46,7 @@ const correspond = (f: F, w: Where): boolean => {
   const a = w.avoirDeId as { not?: null; in?: string[] } | undefined;
   if (a && typeof a === "object" && "not" in a && f.avoirDeId === null) return false;
   if (a && typeof a === "object" && a.in && !a.in.includes(f.avoirDeId ?? "")) return false;
+  if (w.gesteCommercial === false && f.gesteCommercial === true) return false;
   const dv = w.devisId as string | { in: string[] } | undefined;
   if (typeof dv === "string" && f.devisId !== dv) return false;
   if (dv && typeof dv === "object" && !dv.in.includes(f.devisId ?? "")) return false;
@@ -85,6 +88,10 @@ vi.mock("@/lib/prisma", () => {
   return { prisma };
 });
 vi.mock("../litige", () => ({ litigeDisponible: async () => d.litige }));
+// #2464 pt 18 : la colonne du marqueur « geste commercial » est présente.
+vi.mock("../geste-commercial", () => ({
+  horsGesteCommercial: async () => ({ gesteCommercial: false }),
+}));
 // Tour 2/2 (défaut 7) : le complément passe par la vigilance comme toute commission neuve.
 vi.mock("../commissions", () => ({
   statutApresVigilance: vi.fn(async () => ({ statut: "due", demander: false })),
@@ -385,7 +392,7 @@ describe("sans avoir", () => {
 describe("#2464 point 18 : bon d'achat (geste commercial hors délai) ≠ avoir qui reprend", () => {
   const versee = { statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE };
 
-  it("geste commercial HORS délai de 24 mois (décision de Will : bon d'achat = commission gardée) : commission INTACTE, même versée", async () => {
+  it("DÉLAI de l'art. 4.5 (ce n'est PAS le cas du bon d'achat) : un avoir de plus de 24 mois ne reprend rien, commission INTACTE même versée", async () => {
     const geste = avoir(-334, { id: "A0", emiseAt: new Date("2024-01-01T00:00:00Z") });
     d.factures = [facture, geste];
     d.lignes = [ligne({ ...versee, creeAt: new Date("2023-06-01T00:00:00Z") })];
@@ -395,6 +402,39 @@ describe("#2464 point 18 : bon d'achat (geste commercial hors délai) ≠ avoir 
     expect(d.annuler).not.toHaveBeenCalled();
     expect(d.reduire).not.toHaveBeenCalled();
     expect(d.retenir).not.toHaveBeenCalled();
+  });
+
+  it("BON D'ACHAT offert à titre exceptionnel (pièce marquée geste commercial), DANS les 24 mois : commission GARDÉE, même versée", async () => {
+    d.factures = [facture, avoir(-334, { id: "AG", gesteCommercial: true })];
+    d.lignes = [ligne(versee)];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b).toMatchObject({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+    expect(d.reprise).not.toHaveBeenCalled();
+    expect(d.annuler).not.toHaveBeenCalled();
+    expect(d.reduire).not.toHaveBeenCalled();
+    expect(d.retenir).not.toHaveBeenCalled();
+  });
+
+  it("MÊME avoir total, SANS marqueur (avoir normal) : la commission est reprise", async () => {
+    d.factures = [facture, avoir(-334, { id: "AN", gesteCommercial: false })];
+    d.lignes = [ligne(versee)];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalled();
+  });
+
+  it("un geste commercial à côté d'un vrai avoir partiel : seul le vrai avoir réduit (prorata)", async () => {
+    // Avoir normal de 0,99 € (reprise 29, cf. ci-dessous) + geste de 2 € : le geste n'ajoute rien.
+    d.factures = [facture, avoir(-99), avoir(-200, { id: "AG", gesteCommercial: true })];
+    d.lignes = [ligne(versee)];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 29 }));
+  });
+
+  it("avoir normal TOTAL dans le délai : commission reprise en entier", async () => {
+    d.factures = [facture, avoir(-334)];
+    d.lignes = [ligne(versee)];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 100 }));
   });
 
   it("avoir normal, dans le délai : reprise au prorata, ARRONDIE AU CENTIME LE PLUS PROCHE", async () => {

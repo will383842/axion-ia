@@ -31,6 +31,7 @@ const etat = vi.hoisted(() => ({
   r2Panne: false,
   appelsR2: 0,
   pdfEchoue: false,
+  piecesIllisibles: false,
 }));
 
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
@@ -136,7 +137,10 @@ vi.mock("@/lib/prisma", () => {
     commissionApporteur,
     // Table des pièces figées présente (#2464, point 15 : son absence refuse l'avoir).
     pieceAutofactureApporteur: {
-      findFirst: vi.fn(async () => null),
+      findFirst: vi.fn(async () => {
+        if (etat.piecesIllisibles) throw new Error("table des pièces illisible");
+        return null;
+      }),
       findMany: vi.fn(async () => []),
       createMany: vi.fn(async () => ({ count: 0 })),
     },
@@ -179,6 +183,7 @@ vi.mock("@/lib/prisma", () => {
 });
 
 import { constaterManquement, regenererAvoirsSansPiece } from "../manquement";
+import { oublierPiecesFigeesDisponible } from "../tva-pieces";
 
 const MAINTENANT = new Date("2026-10-08T09:00:00Z");
 const FAITS = "L'entreprise a versé une rétrocession à l'apporteur, non déclarée (art. 8.4).";
@@ -221,6 +226,8 @@ beforeEach(() => {
   etat.r2Panne = false;
   etat.appelsR2 = 0;
   etat.pdfEchoue = false;
+  etat.piecesIllisibles = false;
+  oublierPiecesFigeesDisponible();
 });
 
 describe("manquement ou fraude (art. 4.5 bis)", () => {
@@ -246,6 +253,15 @@ describe("manquement ou fraude (art. 4.5 bis)", () => {
     expect([st("a"), st("pa")]).toEqual(["annulee", "annulee"]);
     expect([st("b"), st("pb")]).toEqual(["retenue", "retenue"]);
     expect(etat.reprises.map((x) => x["commissionId"])).toEqual(["v", "pv"]);
+  });
+
+  it("#2464 pt 15 : table des pièces figées ILLISIBLE → l'avoir est refusé, la ligne reste « due », aucun avoir non figé (rougit sans le code de manquement.ts)", async () => {
+    etat.piecesIllisibles = true;
+    etat.lignes = [ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" })];
+    await constater();
+    expect(etat.lignes).toHaveLength(1);
+    expect(etat.lignes[0]!.statut).toBe("due");
+    expect(etat.lignes.some((l) => l.statut === "reprise" || l.avoirNumero !== null)).toBe(false);
   });
 
   it("retenue : un AVOIR soldé, rattaché à l'autofacture, neutralise la ligne (jamais déduit ailleurs)", async () => {

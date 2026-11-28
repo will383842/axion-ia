@@ -1676,6 +1676,12 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
+      # Numéros de pièces d'autofacture des apporteurs (#2464 pt 13) : un numéro ne sert qu'à UN apporteur, y compris
+      # en concurrence (table de réservation à clé primaire) ; doublon historique accepté ; rejeu. Cas ANNULÉS.
+      - name: Numéros de pièces des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/apporteurs-numeros-pieces-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,
