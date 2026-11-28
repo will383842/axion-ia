@@ -154,6 +154,28 @@ describe("worker seo-pilotage", () => {
     warn.mockRestore();
   });
 
+  it("rattrapage par lot : rend « fait », un échec est journalisé en erreur", async () => {
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    const err = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    tacheRattrapage.mockResolvedValueOnce({
+      tache: "rattrapage-gsc",
+      issue: "lot",
+      arret: "echec",
+      jours: [
+        { issue: "reussi", jour: "2026-11-23" },
+        { issue: "echec", jour: "2026-11-22", code: "quota" },
+      ],
+    });
+    expect(await runSeoPilotageJob(job("rattrapage-gsc"))).toEqual({
+      issue: "fait",
+      tache: "rattrapage-gsc",
+    });
+    expect(String(err.mock.calls[0]?.[0])).toContain("1 échec(s) (quota), arrêt echec");
+    err.mockRestore();
+    warn.mockRestore();
+  });
+
   it("une autre erreur de base remonte (la tâche échoue et se voit)", async () => {
     process.env.CONTENT_PILOTAGE_SEO = "true";
     tacheIngestion.mockRejectedValueOnce(Object.assign(new Error("autre"), { code: "P2002" }));

@@ -114,6 +114,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // Indexée seulement si la règle d'indexation est satisfaite ; sinon visible mais `noindex, follow`.
     return {
       ...meta,
+      // Titre ABSOLU (≤ 60 caractères, suffixe de marque déjà dans `titreSeo`).
+      title: { absolute: contenu.titreSeo },
       robots: evaluerIndexabilite(resolu.membre).indexable
         ? meta.robots
         : { index: false, follow: true },

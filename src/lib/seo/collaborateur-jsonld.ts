@@ -21,6 +21,7 @@ import {
   buildProfilePageWilliamsJsonLd,
 } from "@/lib/seo/williams-person";
 import { CATEGORIES, SLUG_DIRIGEANT_PRINCIPAL } from "@/lib/equipe";
+import { codeDepartementConnu, regionsFrance, villeAffichable } from "@/lib/equipe/presence";
 import type { ContenuFiche, FichePublique } from "@/lib/equipe";
 
 type Noeud = Record<string, unknown>;
@@ -44,12 +45,40 @@ function nonVide(valeur: string | undefined | null): valeur is string {
   return typeof valeur === "string" && valeur.trim().length > 0;
 }
 
+/**
+ * Zones d'intervention : la France entière (outre-mer compris) puis les régions de France ;
+ * pour un collaborateur, sa ville ou son département SEULEMENT s'ils sont connus. Le filtrage des villes écartées est fait
+ * en amont par `fichePublique` ; jamais de code inventé.
+ */
+export function buildAreaServed(
+  lieu: { ville?: string | null | undefined; departement?: string | null | undefined } = {},
+): ReadonlyArray<Noeud> {
+  const zones: Noeud[] = [
+    { "@type": "Country", name: "France" },
+    ...regionsFrance().map((name) => ({ "@type": "AdministrativeArea", name })),
+  ];
+  const ville = villeAffichable(lieu.ville);
+  if (ville) zones.push({ "@type": "City", name: ville });
+  const dep = codeDepartementConnu(lieu.departement);
+  if (dep) zones.push({ "@type": "AdministrativeArea", name: `Département ${dep}` });
+  return zones;
+}
+
+/** Pages internes vers lesquelles la fiche de Williams pointe (toutes présentes dans le routage). */
+const LIENS_SIGNIFICATIFS = ["/journee-ia", "/implementation", "/formations", "/equipe"] as const;
+
 /** Nœud Person d'un collaborateur. */
 export function buildPersonCollaborateurJsonLd(fiche: FichePublique, contenu: ContenuFiche): Noeud {
-  if (estWilliams(fiche)) return buildPersonWilliamsJsonLd("fr");
+  // `@id`, `sameAs` et le reste viennent de `williams-person.ts` (non modifié) ; seul `areaServed`
+  // est ajouté ici, faute de l'y trouver.
+  if (estWilliams(fiche)) {
+    const williams = buildPersonWilliamsJsonLd("fr") as Noeud;
+    return "areaServed" in williams ? williams : { ...williams, areaServed: buildAreaServed() };
+  }
   const url = urlFiche(fiche.slug);
   const categorie = CATEGORIES[fiche.categorie];
   const lieu = fiche.ville ?? undefined;
+  const competences = (contenu.competences ?? []).filter(nonVide);
   // LinkedIn : `contenu.liens.linkedin` n'est posé par l'adaptateur qu'avec le consentement LinkedIn
   // daté de la personne. Sans consentement, aucun `sameAs`.
   const sameAs: string[] = nonVide(contenu.liens.linkedin) ? [contenu.liens.linkedin] : [];
@@ -78,6 +107,8 @@ export function buildPersonCollaborateurJsonLd(fiche: FichePublique, contenu: Co
         }
       : {}),
     ...(sameAs.length > 0 ? { sameAs } : {}),
+    areaServed: buildAreaServed({ ville: fiche.ville, departement: fiche.departement }),
+    ...(competences.length > 0 ? { knowsAbout: competences } : {}),
     // Un partenaire est affilié à l'organisation, il n'y travaille pas.
     ...(fiche.categorie === "partenaire"
       ? { affiliation: ORGANISATION }
@@ -100,7 +131,12 @@ export function buildProfilePageCollaborateurJsonLd(
   fiche: FichePublique,
   contenu: ContenuFiche,
 ): Noeud {
-  if (estWilliams(fiche)) return buildProfilePageWilliamsJsonLd();
+  if (estWilliams(fiche)) {
+    return {
+      ...buildProfilePageWilliamsJsonLd(),
+      significantLink: LIENS_SIGNIFICATIFS.map((chemin) => `${SITE_URL}/fr${chemin}`),
+    };
+  }
   const url = urlFiche(fiche.slug);
   const id = { "@id": idPersonne(fiche.slug) };
   return {
@@ -150,11 +186,15 @@ export function buildGrapheCollaborateur(
     buildBreadcrumbCollaborateurJsonLd(fiche),
     ...(indexable && faq.length > 0
       ? [
-          buildFaqJsonLd({
-            items: faq.map((q) => ({ question: q.question, answer: q.answer })),
-            authorId: idPersonne(fiche.slug),
-            dateModified: contenu.dateMiseAJour,
-          }) as unknown as Noeud,
+          {
+            ...(buildFaqJsonLd({
+              items: faq.map((q) => ({ question: q.question, answer: q.answer })),
+              authorId: idPersonne(fiche.slug),
+              dateModified: contenu.dateMiseAJour,
+            }) as unknown as Noeud),
+            "@id": `${urlFiche(fiche.slug)}#faq`,
+            isPartOf: { "@id": `${urlFiche(fiche.slug)}#profilepage` },
+          },
         ]
       : []),
   ];
