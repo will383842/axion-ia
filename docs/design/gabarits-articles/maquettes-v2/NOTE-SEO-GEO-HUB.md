@@ -39,5 +39,7 @@ Un seul H1 par page. Hiérarchie : H2 par bloc (À la une, Derniers articles, Le
 4. Les abstracts actuels du code parlent de « ROI » et de « grands groupes » : ne pas les reprendre.
 5. `/blog/service/*` doublonne les catégories : non montré.
 
+6. Les routes `/fr/lettre` (inscription) et `/fr/prestations` n’existent pas : la maquette ouvre « Nos prestations » par un bouton (méga-menu du vrai site) et laisse l’action du formulaire à brancher sur la route d’inscription réelle.
+
 ## 7. Articles et images de la maquette
 Les articles marqués en démonstration (titres, dates) ne sont pas publiés. Les visuels cassés seront réels en ligne ; seuls des visuels sans chiffre ni promesse sont référencés quand ils existent.
