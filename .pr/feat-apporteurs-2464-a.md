@@ -30,7 +30,8 @@ Oui. À vérifier : aucune commission v3 ne change de montant ; la ligne v2 naî
 
 ## Points laissés ouverts
 
-- ⚠️ **Script d'audit non livré.** `scripts/apporteurs/audit-journee-ia-grille-v2.ts` (lecture seule, liste les commissions `journee-ia` déjà posées en grille v2) n'a pas pu être créé : le dossier `scripts/` est monté en lecture seule dans l'environnement de cette session. À faire dans une session qui peut écrire dans `scripts/`.
+- **Script d'audit livré, hors de `scripts/`** : le dossier `scripts/` est en lecture seule dans cette session. Logique pure et testée : `src/features/apporteurs-reseau/audit-journee-ia-v2.ts` ; point d'entrée lecture seule : `src/features/apporteurs-reseau/audit-journee-ia-v2-cli.ts` (`pnpm tsx …`). Sortie : identifiant, statut, montant, n° d'autofacture, sans nom. Le plan le place dans `scripts/apporteurs/audit-journee-ia-grille-v2.ts` : `git mv` + ajustement des imports, dans une session qui peut y écrire.
+- Console (non bloquant a de la relecture) : le bouton « Constater non commissionné » d'une Journée IA v2 hors activité formation est à traiter dans une PR suivante. Consigne en attendant : ne pas qualifier de Journée IA v2 tant que `x-axion-build-sha` ne montre pas cette PR.
 - Module de repère : `journee-ia-grille.ts` recopie la valeur `"hors-grille"` au lieu d'importer `hors-grille.ts` (qui importe `commissions`, ce qui ferait un cycle et cassait des tests). Un test verrouille l'égalité.
 - Les commissions Journée IA déjà versées en grille v2 avant ce correctif ne sont pas touchées (reprise éventuelle : décision de Will, art. 4.5).
 - `pnpm lint` complet non lancé (trop long ici) : eslint lancé sur les fichiers touchés.
