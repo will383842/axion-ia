@@ -11,6 +11,7 @@
 // colonnes est vérifiée, et sans elles le filtre ne s'applique pas (aucune commission ne peut
 // alors être suspendue). Aucun `server-only`.
 
+import { estPrimeChallenge } from "./prime-challenge";
 import { prisma } from "@/lib/prisma";
 
 /** La colonne est-elle en base ? Relu au plus toutes les dix minutes. */
@@ -106,13 +107,14 @@ export async function suspendreCommission(
   if (!m) return { ok: false, message: "Indiquez la contestation du client (date, objet)." };
   const ligne = await prisma.commissionApporteur.findUnique({
     where: { id },
-    select: { factureId: true, parrainage: true, apporteurId: true },
+    select: { factureId: true, parrainage: true, apporteurId: true, activite: true },
   });
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, litigeDepuis: null, statut: { in: [...SUSPENDABLES] } },
     data: { litigeDepuis: maintenant, litigeMotif: m },
   });
-  if (r.count === 1 && ligne && !ligne.parrainage) {
+  // Une prime de challenge n'a pas de part de parrain (son `factureId` n'est pas une facture).
+  if (r.count === 1 && ligne && !ligne.parrainage && !estPrimeChallenge(ligne)) {
     // La part du parrain naît de la MÊME facture : elle est suspendue avec elle (art. 4.6), et le
     // parrain est prévenu lui aussi (même e-mail : ni montant ni client).
     const parts = await prisma.commissionApporteur.findMany({
@@ -162,6 +164,7 @@ export async function leverSuspension(
       factureId: true,
       parrainage: true,
       apporteurId: true,
+      activite: true,
     },
   });
   if (!avant?.litigeDepuis) return { ok: false, message: "Cette commission n'est pas suspendue." };
@@ -172,7 +175,7 @@ export async function leverSuspension(
     data: { litigeDepuis: null, litigeMotif: null },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission n'est pas suspendue." };
-  if (!avant.parrainage) {
+  if (!avant.parrainage && !estPrimeChallenge(avant)) {
     // La part du parrain suspendue avec elle reprend aussi son cours ; le parrain est prévenu.
     const parts = await prisma.commissionApporteur.findMany({
       where: { factureId: avant.factureId, parrainage: true, litigeDepuis: depuis },

@@ -97,6 +97,7 @@ const PRESTATION_PAR_ACTIVITE: Readonly<Record<string, string>> = {
   implementation: "Mise en service",
   site_web: "Site web",
   conference: "Conférence",
+  prime_challenge: "Prime exceptionnelle",
 };
 
 function prestation(c: CommissionLue): string | null {
@@ -129,6 +130,8 @@ function libelleRegle(code: CodeRegleAffichable, c: CommissionLue): string {
       return "Tarif du contrat en vigueur à la commande";
     case "journee_ia":
       return "Forfait Journée IA";
+    case "prime_challenge":
+      return "Prime exceptionnelle d'un challenge";
   }
 }
 
