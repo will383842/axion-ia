@@ -6,18 +6,29 @@
  */
 
 import { extraireApports, type ApportMarque, type TypeApport } from "../apports";
-import { estExterne, liens, texteDe } from "../html";
+import { estExterne, liens, nettoyer, texteDe } from "../html";
 import type { ReglagesPorte } from "../reglages";
 import type { ContenuPorte, ContextePorte, ResultatBrut } from "../types";
 
 const RE_EFFECTIF =
-  /(?<![\p{L}\d])\d{1,4}\s*(?:salari[ée]s?|collaborateurs?|employ[ée]s?)(?![\p{L}\d])/iu;
+  /(?<![\p{L}\d])(?!20[12]\d\s)\d{1,4}\s*(?:salari[ée]s?|collaborateurs?|employ[ée]s?)(?![\p{L}\d])/iu;
 const RE_ETIQUETTE_TYPE = /\bexemple\s+type\b|\bcas\s+type\b|\bsituation\s+type\b/i;
 const RE_RESULTAT = /\d+(?:[.,]\d+)?\s*(?:%|heures?|h\b|jours?|€|euros?|minutes?)/i;
 const RE_ANNEE = /\b20[12]\d\b/;
 const RE_ANNEE_G = /\b20[12]\d\b/g;
 const RE_ANGLE =
-  /\b(?:ai\s*act|r[èe]glement\s+europ[ée]en|obligations?\s+de\s+l'employeur|droit\s+du\s+travail|cse\b|fiscalit[ée]|code\s+du\s+travail|calendrier\s+fran[çc]ais)/i;
+  /\b(?:ai\s*act|r[èe]glement\s+europ[ée]en|obligations?\s+de\s+l['’]employeur|droit\s+du\s+travail|cse\b|fiscalit[ée]|code\s+du\s+travail|calendrier\s+fran[çc]ais)/i;
+
+function hoteInterneOuSousDomaine(href: string, hotes: ReadonlyArray<string>): boolean {
+  try {
+    const h = new URL(href).hostname.toLowerCase();
+    return hotes.some(
+      (i) => h === i.toLowerCase() || h.endsWith(`.${i.toLowerCase().replace(/^www\./, "")}`),
+    );
+  } catch {
+    return true;
+  }
+}
 
 function verifier(
   a: ApportMarque,
@@ -33,9 +44,19 @@ function verifier(
       }
       return null;
     case "B": {
-      // Un nombre qui n'est pas une année : « 2025 » seul n'est pas un chiffre.
-      if (!/\d/.test(t.replace(RE_ANNEE_G, " "))) return "chiffre sourcé sans nombre";
-      if (!liens(a.html).some((l) => estExterne(l.href, hotes))) {
+      // Un nombre qui n'est ni une année ni une date : « 2025 », « 12 mars 2024 » ne sont pas un chiffre.
+      const sansDates = t
+        .replace(
+          /\b\d{1,2}\s+(?:janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|d[ée]cembre)\s+20[12]\d\b/gi,
+          " ",
+        )
+        .replace(RE_ANNEE_G, " ");
+      if (!/\d/.test(sansDates)) return "chiffre sourcé sans nombre";
+      // Liens lus hors commentaires ; un sous-domaine d'un hôte interne n'est pas une source externe.
+      const externes = liens(nettoyer(a.html)).filter(
+        (l) => estExterne(l.href, hotes) && !hoteInterneOuSousDomaine(l.href, hotes),
+      );
+      if (externes.length === 0) {
         return "chiffre sans lien vers une source externe";
       }
       if (!RE_ANNEE.test(t)) return "chiffre sans date de la source";

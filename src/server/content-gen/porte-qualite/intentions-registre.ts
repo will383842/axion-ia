@@ -34,4 +34,8 @@ export function lignesDepuisCarte(carte: CarteRequetes): ReadonlyArray<LigneRegi
 }
 
 /** Clé de recherche au registre : même normalisation que la carte (une seule règle). */
-export const cleIntention = (requete: string): string => normaliserRequete(requete).slice(0, 300);
+/** Au-delà de 300 caractères : chaîne vide (jamais de troncature, comme à l'écriture) ; l'appelant la traite en « non évalué ». */
+export const cleIntention = (requete: string): string => {
+  const cle = normaliserRequete(requete);
+  return cle.length <= 300 ? cle : "";
+};

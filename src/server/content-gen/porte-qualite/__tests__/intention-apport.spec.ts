@@ -167,6 +167,31 @@ describe("B07 : durcissements de la relecture", () => {
     expect(x.statut).toBe("echec");
     expect(x.preuves.join(" ")).toContain("A : vérifié");
   });
+  it("B : date seule, lien caché en commentaire et sous-domaine du site ne sont pas des preuves", () => {
+    const date =
+      '<!--apport:B--><p>Publié le 12 mars 2024 par l\'<a href="https://www.insee.fr/x">Insee</a>.</p><!--/apport-->';
+    const cache =
+      '<!--apport:B--><p>18 % des PME (2025).<!-- <a href="https://www.insee.fr/x">x</a> --></p><!--/apport-->';
+    const sousDomaine =
+      '<!--apport:B--><p>18 % des PME (2025), <a href="https://blog.axion-ia.com/x">notre blog</a>.</p><!--/apport-->';
+    for (const b of [date, cache, sousDomaine]) {
+      expect(r("B07", { corpsHtml: "<h1>T</h1>" + a + b }).statut).toBe("echec");
+    }
+  });
+  it("une clé d'intention trop longue n'est jamais tronquée", () => {
+    expect(
+      cleIntention(
+        "mot "
+          .repeat(200)
+          .trim()
+          .replace(/mot/g, (_m, i: number) => `m${i}x`),
+      ),
+    ).toBe("");
+  });
+  it("retrait : fermeture --!> et nom voisin non touché", () => {
+    expect(contientMarqueurApport(retirerMarqueursApport("<!--apport:A--!>x"))).toBe(false);
+    expect(retirerMarqueursApport("<!--apports-->")).toBe("<!--apports-->");
+  });
   it("un marqueur non fermé invalide son bloc (pas de contenu de C compté pour A)", () => {
     const h = "<!--apport:A--><p>x</p><!--apport:C--><p>c</p><!--/apport-->";
     expect(extraireApports(h)).toEqual([]);

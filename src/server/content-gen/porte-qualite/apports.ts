@@ -14,8 +14,8 @@ export interface ApportMarque {
   readonly html: string;
 }
 
-const RE_PAIRE = /<!--\s*apport\s*:\s*([A-D])\s*-->([\s\S]*?)<!--\s*\/\s*apport\s*-->/gi;
-const RE_OUVRANT = /<!--\s*apport\b/i;
+const RE_PAIRE = /<!--\s*apport\s*:\s*([A-D])\s*--!?>([\s\S]*?)<!--\s*\/\s*apport\s*--!?>/gi;
+const RE_OUVRANT = /<!--\s*apport/i;
 
 /**
  * Marqueurs bien formés seulement (casse et espaces tolérés). Un ouvrant trouvé À L'INTÉRIEUR
@@ -29,11 +29,10 @@ export function extraireApports(html: string): ApportMarque[] {
 
 /** Retire TOUT commentaire « apport » (ouvrant, fermant, orphelin, type inconnu, casse libre), en gardant le contenu. */
 export function retirerMarqueursApport(html: string): string {
-  return html.replace(/<!--\s*\/?\s*apport\b[\s\S]*?-->/gi, "");
+  return html.replace(/<!--\s*\/?\s*apport(?![a-z])[\s\S]*?--!?>/gi, "");
 }
 
-export const contientMarqueurApport = (html: string): boolean =>
-  /<!--\s*\/?\s*apport\b/i.test(html);
+export const contientMarqueurApport = (html: string): boolean => /<!--\s*\/?\s*apport/i.test(html);
 
 export interface MatiereOfferte {
   /** Chiffres sourcés (type B) disponibles pour l'intention. */
@@ -68,7 +67,7 @@ export function reserverApports(m: MatiereOfferte, apportsMin = 2): PlanApports 
       raison: "Aucun chiffre sourcé ni angle PME française disponible : pas assez de matière.",
     };
   }
-  if (reserves.length < apportsMin) {
+  if (!Number.isFinite(apportsMin) || reserves.length < apportsMin) {
     return {
       generable: false,
       apportsReserves: reserves,
