@@ -30,6 +30,10 @@
   box-sizing: border-box;
 }
 html:has([data-gabarit]) {
+  /* Défini ICI et pas seulement sur [data-gabarit] : <body> et <html> lisent ces variables
+     (place réservée sous la barre fixe, marge de défilement). Sur le conteneur seul, elles étaient
+     invalides à leur niveau et le contenu de fin de page passait sous la barre d'action. */
+  --hauteur-barre-mobile: 4.75rem;
   color-scheme: light;
   scroll-padding-top: calc(var(--header-h) + 1rem);
   /* téléphone : un élément qui reçoit le focus ne passe jamais sous la barre d'action fixe (2.4.11) */
@@ -40,6 +44,12 @@ html:has([data-gabarit]) {
 }
 /* le fond plein écran du héros déborde de la colonne : on le rogne au niveau de la page (clip ne casse pas position: sticky) */
 html:has([data-gabarit]) {
+  overflow-x: clip;
+}
+/* Rogner aussi au niveau du gabarit : `overflow-x: clip` sur <html> n'ôte pas le débordement de la
+   mesure `scrollWidth` (le fond du héros fait 100vmax de chaque côté) ; sur le conteneur, le débordement
+   n'est plus compté du tout. `clip`, jamais `hidden` : pas de conteneur de défilement, `sticky` intact. */
+[data-gabarit] {
   overflow-x: clip;
 }
 body:has([data-gabarit]) {
@@ -177,6 +187,11 @@ body:has([data-gabarit]) {
   color: inherit;
   padding: 0 0.1em;
 }
+/* Longueur de ligne lisible à TOUTES les largeurs (tablette comprise : 84 caractères mesurés à 768 px
+   avant cette règle). Sur téléphone la colonne est plus étroite que le plafond : aucun effet. */
+[data-gabarit] :is(.corps-html, .prose > section) > :is(p, ul, ol, blockquote) {
+  max-width: 35em;
+}
 /* Colonne de TEXTE étroite (≈ 70 caractères par ligne) ; tableaux, schémas et figures gardent toute la largeur */
 @media (min-width: 1024px) {
   body:has([data-gabarit]) {
@@ -305,7 +320,7 @@ body:has([data-gabarit]) {
 [data-gabarit] .fil-ariane ol {
   list-style: none;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap; /* refusion à 320 px / zoom 200 % : le fil passe à la ligne au lieu de déborder */
   align-items: center;
   gap: 0 0.5rem;
   margin: 0;
@@ -495,6 +510,10 @@ body:has([data-gabarit]) {
 }
 [data-gabarit] .meta a {
   font-weight: 600;
+  /* zone tactile ≥ 44 px (WCAG 2.5.8) sans changer la mise en page : le remplissage est repris par la marge négative */
+  display: inline-block;
+  padding-block: 0.75rem;
+  margin-block: -0.75rem;
 }
 [data-gabarit] .avatar {
   display: inline-grid;
@@ -957,7 +976,7 @@ body:has([data-gabarit]) {
   padding: 0;
   max-width: 32rem;
   display: grid;
-  grid-template-columns: 1fr 1.3fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
   gap: 0.4rem;
 }
 [data-gabarit] .act {
@@ -970,6 +989,8 @@ body:has([data-gabarit]) {
   font-size: 0.8125rem;
   line-height: 1.1;
   position: relative;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 [data-gabarit] .act .icone {
   width: 20px;
@@ -993,7 +1014,13 @@ body:has([data-gabarit]) {
   border-radius: var(--radius-full);
   background: var(--color-mocha);
   color: var(--color-mocha-fg);
-  font: 600 0.6875rem/1.3 var(--font-mono);
+  /* police sans (déjà chargée) : la mono, chargée tard, décalait le texte d'un pixel (CLS) */
+  font: 600 0.6875rem/1.3 var(--font-sans);
+  /* Boîte de largeur fixe : la police qui arrive en retard ne la déplace pas (CLS = 0) */
+  min-width: 3.5rem;
+  box-sizing: border-box;
+  text-align: center;
+  white-space: nowrap;
 }
 [data-gabarit] .act__libelle {
   display: block;
