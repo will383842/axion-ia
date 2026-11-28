@@ -117,6 +117,9 @@ function cheminNominal() {
 beforeEach(() => {
   vi.resetAllMocks();
   vi.stubEnv("CONTENT_CHAINE_EDITORIALE", "true");
+  for (const r of ["STRATEG", "COLLECTEUR", "REDACTEUR", "EXPERT", "VERIFICATEUR", "EDITEUR"]) {
+    vi.stubEnv(`CONTENT_CHAINE_ROLE_${r}`, "true");
+  }
   cheminNominal();
 });
 afterEach(() => vi.unstubAllEnvs());
@@ -328,6 +331,136 @@ describe("lancerContenu : porte fail-closed", () => {
       issue: "a_trancher",
       criteres: ["B06"],
     });
+  });
+});
+
+describe("lancerContenu : défauts relevés en relecture", () => {
+  it("panne du journal après le dépôt : remonte, jamais d'abandon enregistré", async () => {
+    const { p, refus } = ports(async () => porteOk);
+    const q: PortsChaine = {
+      ...p,
+      journaliser: async (e) => {
+        if (e.etat === "a_relire") throw new Error("journal en panne");
+      },
+    };
+    await expect(lancerContenu(besoin, q)).rejects.toThrow(/journal en panne/);
+    expect(refus).toHaveLength(0);
+  });
+
+  it("abandon décidé par la porte : une seule ligne de refus par cause", async () => {
+    const dur: ResultatCritere = {
+      id: "B01",
+      etat: "echec",
+      preuve: "p",
+      raison: "r",
+      section: "0",
+    };
+    const { p, refus } = ports(async () => ({ etat: "ok", sortie: sortie("bloque", 60, [dur]) }));
+    await lancerContenu(besoin, p);
+    expect(refus.filter((x) => x.code === "doctrine")).toHaveLength(1);
+  });
+
+  it("section « intro » de la porte : réécrite comme réponse directe", async () => {
+    const corr: ResultatCritere = {
+      id: "B08",
+      etat: "echec",
+      preuve: "p",
+      raison: "r",
+      section: "intro",
+    };
+    vi.mocked(reecrireSections).mockResolvedValue({
+      verdict: "redige",
+      article,
+      problemes: [],
+    } as never);
+    const porte = async (e: { reecrituresFaites: number }): Promise<ResultatAppelPorte> =>
+      e.reecrituresFaites === 0
+        ? { etat: "ok", sortie: sortie("a_corriger", 78, [corr]) }
+        : porteOk;
+    const { p } = ports(porte as PortsChaine["appelerPorte"]);
+    expect((await lancerContenu(besoin, p)).issue).toBe("a_relire");
+    expect(vi.mocked(reecrireSections).mock.calls[0]![2]).toEqual([
+      expect.objectContaining({ section: "directAnswer" }),
+    ]);
+  });
+
+  it("section inconnue de la porte : abandon avec le code du critère, pas « autre »", async () => {
+    const corr: ResultatCritere = {
+      id: "B08",
+      etat: "echec",
+      preuve: "p",
+      raison: "r",
+      section: "pied de page",
+    };
+    const { p } = ports(async () => ({ etat: "ok", sortie: sortie("a_corriger", 78, [corr]) }));
+    expect(await lancerContenu(besoin, p)).toMatchObject({
+      issue: "abandonne",
+      code: "reponse_directe_absente",
+    });
+  });
+
+  it("chaîne éteinte en cours de route : reporté, plus aucun appel payant", async () => {
+    vi.mocked(strategeBrief).mockImplementation((async () => {
+      vi.stubEnv("CONTENT_CHAINE_EDITORIALE", "");
+      return {
+        verdict: "brief_pret",
+        brief: { motCle: "kw", intention: "information" },
+        structure,
+        relectureHumaineObligatoire: false,
+      };
+    }) as never);
+    const { p, refus } = ports(async () => porteOk);
+    expect(await lancerContenu(besoin, p)).toMatchObject({ issue: "reporte" });
+    expect(collecterFaits).not.toHaveBeenCalled();
+    expect(refus).toHaveLength(0);
+  });
+
+  it("interrupteur d'un rôle éteint : reporté avant son appel", async () => {
+    vi.stubEnv("CONTENT_CHAINE_ROLE_EXPERT", "");
+    const { p } = ports(async () => porteOk);
+    expect(await lancerContenu(besoin, p)).toMatchObject({ issue: "reporte" });
+    expect(critiquerArticle).not.toHaveBeenCalled();
+  });
+
+  it("le coût de la porte compte dans le plafond de 3 $ : abandon plutôt que relecture", async () => {
+    const dur: ResultatCritere = {
+      id: "B08",
+      etat: "echec",
+      preuve: "p",
+      raison: "r",
+      section: "1",
+    };
+    vi.mocked(reecrireSections).mockResolvedValue({
+      verdict: "redige",
+      article,
+      problemes: [],
+    } as never);
+    const { p } = ports(async () => ({
+      etat: "ok",
+      sortie: sortie("a_corriger", 78, [dur]),
+      coutUsd: 3.5,
+    }));
+    expect(await lancerContenu(besoin, p)).toMatchObject({
+      issue: "abandonne",
+      code: "plafond_atteint",
+    });
+  });
+
+  it("l'abandon pour plafond de réécritures est imputé au rôle demandeur (expert)", async () => {
+    vi.mocked(critiquerArticle).mockResolvedValue({
+      verdict: "reecrire",
+      notes: {},
+      codeRefus: null,
+      corrections: [{ section: 0, probleme: "p", attendu: "a" }],
+    } as never);
+    vi.mocked(reecrireSections).mockResolvedValue({
+      verdict: "redige",
+      article,
+      problemes: [],
+    } as never);
+    const { p, refus } = ports(async () => porteOk);
+    await lancerContenu(besoin, p);
+    expect(refus).toEqual([{ role: "expert", code: "plafond_atteint" }]);
   });
 });
 

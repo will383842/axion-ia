@@ -19,6 +19,7 @@ import type { CodeRefus } from "./codes-refus";
 import {
   actionApresVerdict,
   noteValide,
+  PLAFOND_COUT_USD,
   publicationAutorisee,
   refusDepuisVerdict,
   type EntreePorte,
@@ -44,7 +45,7 @@ import {
   type EntreeRedaction,
 } from "./roles/redacteur";
 import { strategeBrief, type EntreeStrateg } from "./roles/strateg-brief";
-import { exigerChaineAllumee } from "./roles/interrupteur";
+import { ChaineEteinteError, exigerChaineAllumee, roleAllume } from "./roles/interrupteur";
 import { verifierFaits, type ResultatLien } from "./roles/verificateur-faits";
 
 export const ETATS_CONTENU = [
@@ -145,8 +146,35 @@ class Abandon extends Error {
     readonly code: CodeRefus,
     readonly raison: string,
     readonly role: LigneRefusChaine["role"],
+    /** Le refus est déjà écrit (lignes de la porte) : ne pas le compter une seconde fois. */
+    readonly dejaEnregistre = false,
   ) {
     super(raison);
+  }
+}
+
+/** Panne d'un port d'écriture (journal, refus, file) : remonte, ne devient jamais un abandon. */
+class PanneEcriture extends Error {
+  constructor(readonly origine: unknown) {
+    super("Panne d'un port d'écriture de la chaîne");
+  }
+}
+
+/** Rôle qui tourne dans chaque état : son interrupteur est relu avant l'appel. */
+const ROLE_DE_ETAT: Partial<Record<EtatContenu, RoleChaine>> = {
+  brief: "strateg",
+  faits: "collecteur",
+  redige: "redacteur",
+  critique: "expert",
+  verifie: "verificateur",
+  edite: "editeur",
+};
+
+async function ecrire<T>(f: () => Promise<T>): Promise<T> {
+  try {
+    return await f();
+  } catch (e) {
+    throw new PanneEcriture(e);
   }
 }
 
@@ -155,6 +183,8 @@ function sectionDePorte(section: string): Correction["section"] {
   const s = section.trim();
   if (/^\d+$/.test(s)) return Number(s);
   if (s === "directAnswer" || s === "faq") return s;
+  // « intro » est l'étiquette de la porte pour la réponse directe sous le H1.
+  if (s === "intro") return "directAnswer";
   return "global";
 }
 
@@ -191,39 +221,55 @@ function sansDoublonCorrections(cs: ReadonlyArray<Correction>): Correction[] {
 export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise<IssueContenu> {
   exigerChaineAllumee();
   const compteur = new CompteurCout();
+  let coutPorte = 0;
+  const total = () => compteur.totalUsd + coutPorte;
   let reecritures = 0;
+  /** Qui a demandé la réécriture en cours : les abandons lui sont imputés. */
+  let demandeur: LigneRefusChaine["role"] = "redacteur";
   let etat: EtatContenu = "besoin";
 
   const aller = async (e: EtatContenu, detail?: string) => {
+    // Interrupteur général et interrupteur du rôle relus avant CHAQUE étape payante.
+    const role = ROLE_DE_ETAT[e];
+    if (role !== undefined) {
+      exigerChaineAllumee();
+      if (!roleAllume(role)) throw new ChaineEteinteError(`Rôle ${role} éteint`);
+    } else if (e === "porte") exigerChaineAllumee();
     etat = e;
-    await ports.journaliser({
-      contenuId: besoin.contenuId,
-      etat: e,
-      coutUsd: compteur.totalUsd,
-      parRole: { ...compteur.parRole },
-      ...(detail !== undefined ? { detail } : {}),
-    });
+    await journal(e, detail);
   };
+  const journal = (e: EtatContenu, detail?: string) =>
+    ecrire(() =>
+      ports.journaliser({
+        contenuId: besoin.contenuId,
+        etat: e,
+        coutUsd: total(),
+        parRole: { ...compteur.parRole },
+        ...(detail !== undefined ? { detail } : {}),
+      }),
+    );
   const refuser = (
     role: LigneRefusChaine["role"],
     code: CodeRefus,
     raison: string,
   ): Promise<void> =>
-    ports.enregistrerRefus({
-      contenuId: besoin.contenuId,
-      role,
-      code,
-      raison,
-      tentative: reecritures + 1,
-      coutUsd: compteur.totalUsd,
-    });
+    ecrire(() =>
+      ports.enregistrerRefus({
+        contenuId: besoin.contenuId,
+        role,
+        code,
+        raison,
+        tentative: reecritures + 1,
+        coutUsd: total(),
+      }),
+    );
   /** Exige une réécriture : applique le plafond de 2 et l'impossibilité de cibler une section. */
-  const exigerReecriture = (corrections: ReadonlyArray<Correction>, role: RoleChaine) => {
+  const exigerReecriture = (corrections: ReadonlyArray<Correction>) => {
     if (corrections.some((c) => !peutSeReecrire(c))) {
-      throw new Abandon("autre", "Correction globale : non réécrivable par section", role);
+      throw new Abandon("autre", "Correction globale : non réécrivable par section", demandeur);
     }
     if (reecritures >= MAX_REECRITURES) {
-      throw new Abandon("plafond_atteint", "Plafond de réécritures atteint", role);
+      throw new Abandon("plafond_atteint", "Plafond de réécritures atteint", demandeur);
     }
   };
 
@@ -286,10 +332,11 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
     }
     let article = premiere.article;
     let aCorriger: ReadonlyArray<Correction> = premiere.problemes;
+    demandeur = "redacteur";
 
     for (;;) {
       if (aCorriger.length > 0) {
-        exigerReecriture(aCorriger, "redacteur");
+        exigerReecriture(aCorriger);
         reecritures += 1;
         await aller("redige", `réécriture ${reecritures}`);
         const r = await reecrireSections(
@@ -302,6 +349,7 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
         if (r.verdict !== "redige") throw new Abandon("autre", r.raison, "redacteur");
         article = r.article;
         aCorriger = r.problemes;
+        demandeur = "redacteur";
         // Les problèmes de contrat se corrigent avant tout autre appel : on ne paie pas l'expert
         // pour un texte que le code sait déjà non conforme.
         if (aCorriger.length > 0) continue;
@@ -333,6 +381,7 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
       }
       if (critique.verdict === "reecrire") {
         aCorriger = critique.corrections;
+        demandeur = "expert";
         if (aCorriger.length === 0) {
           throw new Abandon("autre", "Réécriture demandée sans correction localisée", "expert");
         }
@@ -355,6 +404,7 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
       if (verif.verdict === "illisible") throw new Abandon("autre", verif.raison, "verificateur");
       if (verif.verdict === "a_corriger") {
         aCorriger = verif.corrections;
+        demandeur = "verificateur";
         if (aCorriger.length === 0) {
           throw new Abandon(
             verif.codeRefus ?? "autre",
@@ -373,6 +423,7 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
       const renvoi = [...edition.renvoiR4, ...edition.problemesResiduels];
       if (renvoi.length > 0) {
         aCorriger = renvoi;
+        demandeur = "editeur";
         continue;
       }
 
@@ -393,46 +444,61 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
         brief: { requetePrincipale: brief.brief.motCle, intention: brief.brief.intention },
         reecrituresFaites: reecritures,
       };
+      // La porte a un coût (juge, sources) : il compte dans le plafond du contenu, et l'appel
+      // n'est pas lancé si le plafond est déjà atteint.
+      if (total() >= PLAFOND_COUT_USD - 1e-9) {
+        throw new Abandon("plafond_atteint", "Plafond de coût atteint avant la porte", "porte");
+      }
       let appelPorte: ResultatAppelPorte;
       try {
         appelPorte = await ports.appelerPorte(entreePorte);
       } catch (e) {
         appelPorte = { etat: "erreur", message: e instanceof Error ? e.message : "erreur" };
       }
+      if (
+        typeof appelPorte.coutUsd === "number" &&
+        Number.isFinite(appelPorte.coutUsd) &&
+        appelPorte.coutUsd > 0
+      ) {
+        coutPorte += appelPorte.coutUsd;
+      }
       if (appelPorte.etat !== "ok") {
         await aller("porte", `en attente : ${appelPorte.message}`);
-        return { issue: "en_attente", raison: appelPorte.message, coutUsd: compteur.totalUsd };
+        return { issue: "en_attente", raison: appelPorte.message, coutUsd: total() };
       }
       const sortie: SortiePorte = appelPorte.sortie;
       const ctx = {
         contenuId: besoin.contenuId,
         reecrituresFaites: reecritures,
-        coutUsd: compteur.totalUsd,
+        coutUsd: total(),
       };
-      for (const refus of refusDepuisVerdict(sortie, ctx)) {
-        await ports.enregistrerRefus({
-          contenuId: refus.contenuId,
-          role: "porte",
-          code: refus.code,
-          raison: refus.raison,
-          tentative: refus.tentative,
-          coutUsd: refus.coutUsd,
-          preuve: refus.preuve,
-          versionPorte: refus.versionPorte,
-          ...(refus.critere !== undefined ? { critere: refus.critere } : {}),
-          ...(refus.section !== undefined ? { section: refus.section } : {}),
-        });
+      const lignesPorte = refusDepuisVerdict(sortie, ctx);
+      for (const refus of lignesPorte) {
+        await ecrire(() =>
+          ports.enregistrerRefus({
+            contenuId: refus.contenuId,
+            role: "porte",
+            code: refus.code,
+            raison: refus.raison,
+            tentative: refus.tentative,
+            coutUsd: refus.coutUsd,
+            preuve: refus.preuve,
+            versionPorte: refus.versionPorte,
+            ...(refus.critere !== undefined ? { critere: refus.critere } : {}),
+            ...(refus.section !== undefined ? { section: refus.section } : {}),
+          }),
+        );
       }
       const action = actionApresVerdict(sortie, {
         reecrituresFaites: reecritures,
-        coutUsd: compteur.totalUsd,
+        coutUsd: total(),
       });
       switch (action.action) {
         case "relecture_humaine": {
           // Seul chemin vers la file : une note valide. La porte « publiable » complète est
           // `publicationAutorisee` ; B04 non évalué (relecture humaine prévue) passe aussi ici.
           if (!noteValide(sortie.note)) {
-            return { issue: "en_attente", raison: "Note invalide", coutUsd: compteur.totalUsd };
+            return { issue: "en_attente", raison: "Note invalide", coutUsd: total() };
           }
           const contenu: ContenuARelire = {
             contenuId: besoin.contenuId,
@@ -443,39 +509,64 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
             note: sortie.note,
             versionPorte: sortie.versionPorte,
             reecrituresFaites: reecritures,
-            coutUsd: compteur.totalUsd,
+            coutUsd: total(),
             relectureObligatoire:
               brief.relectureHumaineObligatoire || !publicationAutorisee(appelPorte),
           };
-          await ports.deposerEnRelecture(contenu);
-          await aller("a_relire");
+          await ecrire(() => ports.deposerEnRelecture(contenu));
+          await journal("a_relire");
           return { issue: "a_relire", contenu };
         }
         case "reporter":
           await aller("porte", "reporté (plafond du jour ou coupe-circuit)");
-          return { issue: "reporte", coutUsd: compteur.totalUsd };
+          return { issue: "reporte", coutUsd: total() };
         case "mettre_en_attente":
           await aller("porte", `en attente : ${action.criteres.join(", ") || "porte"}`);
           return {
             issue: "en_attente",
             raison: `Critères non évalués : ${action.criteres.join(", ") || "note invalide"}`,
-            coutUsd: compteur.totalUsd,
+            coutUsd: total(),
           };
         case "derogation_ou_fusion":
           await aller("porte", `à trancher : ${action.criteres.join(", ")}`);
-          return { issue: "a_trancher", criteres: action.criteres, coutUsd: compteur.totalUsd };
+          return { issue: "a_trancher", criteres: action.criteres, coutUsd: total() };
         case "abandonner":
-          throw new Abandon(action.code, "Abandon décidé après le verdict de la porte", "porte");
-        case "reecrire":
+          // Les lignes de la porte sont déjà écrites : pas de seconde ligne pour la même cause.
+          throw new Abandon(
+            action.code,
+            "Abandon décidé après le verdict de la porte",
+            "porte",
+            lignesPorte.length > 0 && action.code !== "plafond_atteint",
+          );
+        case "reecrire": {
+          const sansSection = action.corrections.find(
+            (c) => sectionDePorte(c.section) === "global",
+          );
+          if (sansSection) {
+            throw new Abandon(
+              sansSection.code,
+              `Section « ${sansSection.section} » non réécrivable`,
+              "porte",
+              lignesPorte.length > 0,
+            );
+          }
+          demandeur = "porte";
           aCorriger = action.corrections.map((c) => ({
             section: sectionDePorte(c.section),
             probleme: `${c.critere} : ${c.code}`,
             attendu: "Corriger cette section selon la raison de la porte",
           }));
           continue;
+        }
       }
     }
   } catch (e) {
+    if (e instanceof PanneEcriture) throw e.origine;
+    if (e instanceof ChaineEteinteError) {
+      // Éteinte en cours de route : le contenu attend, aucune dépense de plus, aucun abandon.
+      await journal(etat, "chaîne éteinte en cours de route");
+      return { issue: "reporte", coutUsd: total() };
+    }
     const abandon =
       e instanceof Abandon
         ? e
@@ -488,14 +579,14 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
             );
     const etatAtteint = etat;
     // Le plafond de coût est le dernier filet : un total au plafond ou au-delà = abandon motivé.
-    await refuser(abandon.role, abandon.code, abandon.raison);
-    await aller("abandonne", `${abandon.code} : ${abandon.raison}`);
+    if (!abandon.dejaEnregistre) await refuser(abandon.role, abandon.code, abandon.raison);
+    await journal("abandonne", `${abandon.code} : ${abandon.raison}`);
     return {
       issue: "abandonne",
       code: abandon.code,
       raison: abandon.raison,
       etatAtteint,
-      coutUsd: Math.min(compteur.totalUsd, Number.MAX_SAFE_INTEGER),
+      coutUsd: total(),
     };
   }
 }
