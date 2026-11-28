@@ -82,14 +82,13 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - uses: pnpm/action-setup@v5
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
         with:
           version: ${{ env.PNPM_VERSION }}
 
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
 
       # Dependances installees AVANT le modele, scripts de cycle de vie coupes ; le client Prisma est genere ensuite
       # (les tests ciblent du code qui l'importe). Aucun secret dans ces etapes. Valeurs de stub : voir AGENTS.md (stubs de build).
@@ -134,6 +133,14 @@ jobs:
           }
           JSON
 
+      - name: Isoler le modele (utilisateur sans sudo)
+        run: |
+          sudo useradd -m -s /bin/bash essai
+          sudo chown -R essai: "$GITHUB_WORKSPACE"
+          sudo chown -R runner: "$GITHUB_WORKSPACE/.git" && sudo chmod -R go-w "$GITHUB_WORKSPACE/.git"
+          sudo -u essai -H git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          chmod 644 "$RUNNER_TEMP/reglages-essai.json"
+
       - name: Lancer Claude Code (modele tiers)
         env:
           NOM: ${{ inputs.nom }}
@@ -148,23 +155,27 @@ jobs:
           export ANTHROPIC_DEFAULT_OPUS_MODEL="$MODELE"
           export ANTHROPIC_DEFAULT_SONNET_MODEL="$MODELE"
           export CLAUDE_CODE_SUBAGENT_MODEL="$MODELE"
+          export ANTHROPIC_DEFAULT_HAIKU_MODEL="$MODELE"
+          export ANTHROPIC_SMALL_FAST_MODEL="$MODELE"
           mkdir -p "$RUNNER_TEMP/essai"
           # La fiche vient du fichier d'evenement du runner (depot public : jamais par env:, jamais affichee).
           FICHE="$(jq -r '.inputs.fiche // empty' "$GITHUB_EVENT_PATH")"
           [ -n "$FICHE" ] || { echo "::error::Fiche vide."; exit 1; }
           RAPPEL="CONSIGNES FIXES : travaille sur la fiche ci-dessous seulement. Ne touche jamais a .github/, aux Dockerfile*, aux fichiers de garde ou de cliquet de la CI (scripts/ci/, scripts/gates/, scripts/check-*, tests/unit/ci/), ni aux fichiers de secrets ou d'environnement. Ne modifie ni package.json ni le fichier de verrouillage. Lance les tests cibles existants qui concernent ta fiche, s'il y en a (par exemple pnpm exec vitest run <fichier de test>). Pas de commit : laisse les modifications dans l'arbre de travail."
           set +e
-          env -u GITHUB_ENV -u GITHUB_STEP_SUMMARY -u GITHUB_PATH -u GITHUB_OUTPUT claude -p "$RAPPEL
+          sudo -u essai -H --preserve-env=ANTHROPIC_BASE_URL,ANTHROPIC_AUTH_TOKEN,ANTHROPIC_MODEL,ANTHROPIC_DEFAULT_OPUS_MODEL,ANTHROPIC_DEFAULT_SONNET_MODEL,ANTHROPIC_DEFAULT_HAIKU_MODEL,ANTHROPIC_SMALL_FAST_MODEL,CLAUDE_CODE_SUBAGENT_MODEL,CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC,CLAUDE_CODE_ATTRIBUTION_HEADER env "PATH=$PATH" claude -p "$RAPPEL
 
           FICHE :
           $FICHE" \
             --output-format json \
             --settings "$RUNNER_TEMP/reglages-essai.json" \
             --permission-mode acceptEdits \
+            --setting-sources user --strict-mcp-config \
             --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "Bash(pnpm exec vitest run:*)" "Bash(git status)" "Bash(git diff:*)" \
             --disallowedTools "WebFetch" "WebSearch" "Bash(node:*)" "Bash(npm:*)" "Bash(npx:*)" "Bash(git commit:*)" "Bash(git config:*)" \
             > "$RUNNER_TEMP/essai/essai-$NOM.json" 2> "$RUNNER_TEMP/essai/essai-$NOM.err"
           CODE=$?
+          sudo pkill -KILL -u essai || true; sudo chown -R runner: "$GITHUB_WORKSPACE"
           set -e
           # Depot public : aucune sortie du modele n'est journalisee, seulement le code de sortie.
           [ "$CODE" -eq 0 ] || { echo "::error::claude s'est termine avec le code $CODE"; exit 1; }
@@ -173,8 +184,8 @@ jobs:
         env:
           NOM: ${{ inputs.nom }}
         run: |
-          git add -A
-          git diff --cached --binary --full-index --no-renames "$GITHUB_SHA" > "$RUNNER_TEMP/essai/essai-$NOM.patch"
+          git -c core.fsmonitor=false -c core.hooksPath=/dev/null add -A
+          git -c core.fsmonitor=false -c core.hooksPath=/dev/null diff --cached --binary --full-index --no-renames "$GITHUB_SHA" > "$RUNNER_TEMP/essai/essai-$NOM.patch"
 
       - name: Sauver le correctif et la sortie JSON en artefact
         if: always() && steps.valider.outcome == 'success'
@@ -185,6 +196,7 @@ jobs:
             ${{ runner.temp }}/essai/essai-${{ inputs.nom }}.json
             ${{ runner.temp }}/essai/essai-${{ inputs.nom }}.patch
           if-no-files-found: warn
+          retention-days: 1
 
   verifier-correctif:
     name: verifier le correctif (confiance, lecture seule)
@@ -234,9 +246,9 @@ jobs:
             const s = Array.isArray(j) ? (j.find(x => x.type === "result") || {}) : j;
             if (s.is_error || s.subtype !== "success") { console.error("::error::Sortie en erreur ou non terminee (subtype=" + s.subtype + ")."); process.exit(1); }
             const noms = Object.keys(s.modelUsage || {});
-            console.log("Modeles utilises : " + JSON.stringify(noms));
+            console.log("Modeles utilises : " + JSON.stringify(noms.filter(n => /^[A-Za-z0-9._:\/\[\]-]{1,40}$/.test(n) && !/^sk-/i.test(n))));
             if (noms.length === 0) { console.error("::error::modelUsage vide : modele reel non verifiable."); process.exit(1); }
-            const claude = noms.filter(n => /^claude-/i.test(n));
+            const claude = noms.filter(n => /claude|anthropic/i.test(n));
             if (claude.length) { console.error("::error::Repli silencieux sur un modele Claude : " + claude.join(", ")); process.exit(1); }
             const norme = x => x.replace(/\[[^\]]*\]$/, "").toLowerCase();
             if (!noms.some(n => norme(n) === norme(process.env.MODELE))) { console.error("::error::Modele attendu absent (" + process.env.MODELE + ") parmi " + noms.join(", ")); process.exit(1); }
@@ -265,7 +277,7 @@ jobs:
           # scripts de deploiement, d'entrypoint, de sauvegarde, de secrets), commitlint, et les fichiers du build a stubs
           # (src/env.ts, src/proxy.ts, src/lib/prisma.ts, src/lib/redis.ts). prisma/ reste AUTORISE, migrations comprises :
           # le pilote les fait auditer par Opus.
-          INTERDIT='(^|/)\.git[^/]*|(^|/)\.dockerignore$|(^|/)(Dockerfile|docker-compose)[^/]*$|(^|/)\.env|(^|/)\.npmrc$|(^|/)\.mcp\.json$|(^|/)\.claude/|(^|/)\.husky/|(^|/)(AGENTS|CLAUDE)\.md$|(^|/)package\.json$|(^|/)(pnpm-lock\.yaml|package-lock\.json|yarn\.lock|npm-shrinkwrap\.json|bun\.lockb?|composer\.lock|pnpm-workspace\.yaml)$|(^|/)tsconfig[^/]*\.json$|(^|/)[^/]*\.config\.[^/]*$|(^|/)vitest[^/]*$|(^|/)lighthouserc[^/]*$|(^|/)\.(eslintrc|prettierrc|prettierignore)[^/]*$|(^|/)isolation-check[^/]*$|^(scripts/ci/|scripts/gates/|tests/unit/ci/|deploy/|infra/|docker/|Caddyfile)|^scripts/(check-[^/]*|docker-entrypoint\.sh|deploy-prod\.sh|generate-prod-secrets\.sh|backup[^/]*|disk-space-alert\.sh)$|^src/(env|proxy)\.ts$|^src/lib/(prisma|redis)\.ts$|secret|\.pem$|\.key$|credential'
+          INTERDIT='(^|/)\.git[^/]*|(^|/)\.dockerignore$|(^|/)(Dockerfile|docker-compose)[^/]*$|(^|/)\.env|(^|/)\.npmrc$|(^|/)\.mcp\.json$|(^|/)\.claude/|(^|/)\.husky/|(^|/)(AGENTS|CLAUDE)\.md$|(^|/)package\.json$|(^|/)(pnpm-lock\.yaml|package-lock\.json|yarn\.lock|npm-shrinkwrap\.json|bun\.lockb?|composer\.lock|pnpm-workspace\.yaml)$|(^|/)tsconfig[^/]*\.json$|(^|/)[^/]*\.config\.[^/]*$|(^|/)vitest[^/]*$|(^|/)lighthouserc[^/]*$|(^|/)\.(eslintrc|prettierrc|prettierignore)[^/]*$|(^|/)isolation-check[^/]*$|^(scripts/ci/|scripts/gates/|tests/unit/ci/|deploy/|infra/|docker/|Caddyfile)|^scripts/(check-[^/]*|docker-entrypoint\.sh|deploy-prod\.sh|generate-prod-secrets\.sh|backup[^/]*|disk-space-alert\.sh)$|^src/(env|proxy)\.ts$|^src/lib/(prisma|redis)\.ts$|^scripts/volumetrie/|^scripts/mcp/verifier-|^scripts/restore-[^/]*$|^scripts/[^/]+/check-[^/]*$|/__tests__/cliquets/|secret|\.pem$|\.key$|credential'
           if grep -Eiq "$INTERDIT" "$RUNNER_TEMP/touches.txt"; then
             echo "::error::Fichier(s) interdit(s) touche(s) :"; grep -Ei "$INTERDIT" "$RUNNER_TEMP/touches.txt"; exit 1
           fi
@@ -280,7 +292,7 @@ jobs:
             const j = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + "/essai/essai-" + process.env.NOM + ".json", "utf8"));
             const s = Array.isArray(j) ? (j.find(x => x.type === "result") || {}) : j;
             const u = s.usage || {};
-            const sur = x => /^[A-Za-z0-9._:\/\[\]-]{1,80}$/.test(x);
+            const sur = x => /^[A-Za-z0-9._:\/\[\]-]{1,40}$/.test(x) && !/^sk-/i.test(x);
             const nb = v => Number.isFinite(Number(v)) ? String(Number(v)) : "?";
             // Depot public : la fiche n est PAS recopiee ici (le pilote la connait).
             const corps = [
@@ -320,3 +332,4 @@ jobs:
             ${{ runner.temp }}/essai/essai-${{ inputs.nom }}.json
             ${{ runner.temp }}/essai/essai-${{ inputs.nom }}.patch
           if-no-files-found: error
+          retention-days: 7
