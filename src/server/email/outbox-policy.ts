@@ -247,6 +247,11 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-file-attente-premier-rang":
     "Apporteur : une entreprise qu'il avait déclarée est de nouveau disponible (file d'attente, art. 3.5)",
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",
+  "apporteur-avenant-propose":
+    "Apporteur : une mise à jour de son contrat lui est proposée (avenant 2.8)",
+  "apporteur-avenant-relance":
+    "Apporteur : rappel unique de la mise à jour de son contrat (avenant 2.8)",
+  "apporteur-avenant-enregistre": "Apporteur : son acceptation de l'avenant 2.8 est enregistrée",
   "apporteur-lien-espace":
     "Apporteur : lien de son espace, à sa demande ou envoyé depuis la console",
   "devis-envoi": "Envoi d'un devis",

@@ -7,6 +7,7 @@ import { evaluerB08, evaluerB11 } from "./criteres/completude";
 import { evaluerB01, evaluerB03 } from "./criteres/doctrine";
 import { evaluerB13 } from "./criteres/maillage";
 import { evaluerB14 } from "./criteres/metadonnees";
+import { evaluerB06 } from "./criteres/unicite";
 import { evaluerB11a, evaluerB11b, evaluerB11c } from "./criteres/structure";
 import type { ClasseBloquant, Critere } from "./types";
 
@@ -62,6 +63,13 @@ export const CRITERES: ReadonlyArray<Critere> = Object.freeze([
     famille: "faits",
     seuil: () => "0 écart avec pricing.ts",
     evaluer: (c) => evaluerB03(c),
+  }),
+  critere({
+    id: "B06",
+    libelle: "Unicité sémantique",
+    famille: "unicite",
+    seuil: (r) => `cosinus maximal < ${r.cosinusBloque} (alerte dès ${r.cosinusAlerte})`,
+    evaluer: (c, x, r) => evaluerB06(c, x, r),
   }),
   critere({
     id: "B08",

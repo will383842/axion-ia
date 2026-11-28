@@ -614,6 +614,7 @@ export default async function sitemap(props: {
           editorialFor("pages"),
           await hubGuidesEstIndexable(),
           await fichesEquipeSitemap(),
+          await dateDernierArticleBlog(),
         ),
       );
     case "blog":
@@ -769,10 +770,42 @@ async function fichesEquipeSitemap(): Promise<Array<{ slug: string; lastModified
   }
 }
 
+/**
+ * Date du dernier article du blog publié (ou modifié). Sert au `lastmod` de l'accueil du blog
+ * (`/fr/blog`) : la liste change à chaque article publié, et Google se sert du lastmod pour
+ * décider de revenir (Search Console 28/11/2026 : pas de retour sur /fr/blog depuis le 11/09).
+ * `null` si la base ne répond pas (build stub, panne) : l'accueil du blog garde sa date éditoriale.
+ */
+async function dateDernierArticleBlog(): Promise<Date | null> {
+  const fs = getIndexableBlogPosts()
+    .map((p) => new Date(p.publishedAt).getTime())
+    .filter((t) => Number.isFinite(t) && t <= Date.now());
+  let db: Date | null = null;
+  try {
+    const row = await prisma.article.findFirst({
+      where: {
+        status: "published",
+        indexationTier: "tier_1_indexable",
+        isNews: false,
+        qualityScore: { gte: BLOG_SITEMAP_MIN_QUALITY_SCORE },
+        publishedAt: { not: null, lte: new Date() },
+      },
+      orderBy: { publishedAt: "desc" },
+      select: { publishedAt: true, updatedAt: true },
+    });
+    db = row?.publishedAt ?? row?.updatedAt ?? null;
+  } catch {
+    db = null;
+  }
+  const tous = [...fs, ...(db ? [db.getTime()] : [])];
+  return tous.length > 0 ? new Date(Math.max(...tous)) : null;
+}
+
 function buildPagesSitemap(
   now: Date,
   hubGuidesIndexable = true,
   fichesEquipe: ReadonlyArray<{ slug: string; lastModified: Date }> = [],
+  dernierArticleBlog: Date | null = null,
 ): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
@@ -803,7 +836,12 @@ function buildPagesSitemap(
     // lit aussi le `dateModified` JSON-LD de la page (`buildWebPageJsonLd`) ;
     // elle retombe sur la famille `pages` — donc sur `now` — si la route est
     // absente du manifeste.
-    const lastModified = new Date(dateRoute(key));
+    let lastModified = new Date(dateRoute(key));
+    // Accueil du blog : lastmod = dernier article publié (jamais « maintenant », jamais dans le futur).
+    if (key === "/blog" && dernierArticleBlog && dernierArticleBlog > lastModified) {
+      // (`now` est ici une date éditoriale figée : le garde-fou du futur lit l'horloge réelle.)
+      if (dernierArticleBlog.getTime() <= Date.now()) lastModified = dernierArticleBlog;
+    }
     for (const locale of effectiveLocales) {
       // Baromètre 2027 : FR seul, pas d'URL EN dans le sitemap.
       if (key === "/ressources/barometre-ia-tpe-pme-2027" && locale === "en") continue;

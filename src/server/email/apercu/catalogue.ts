@@ -715,6 +715,27 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur au premier rang de la file d'attente de l'article 3.5",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-avenant-propose": {
+    categorie: "recrutement",
+    quand:
+      "Pas encore émis (gabarit livré au worker avant son émetteur) : à terme, console « Proposer l'avenant » (avenant 2.8)",
+    destinataire: "l'apporteur dont le contrat signé peut recevoir l'avenant",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-avenant-relance": {
+    categorie: "recrutement",
+    quand:
+      "Pas encore émis (gabarit livré au worker avant son émetteur) : à terme, console « Relancer », une seule fois, 14 jours après la proposition",
+    destinataire: "l'apporteur qui n'a pas encore répondu à l'avenant",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-avenant-enregistre": {
+    categorie: "recrutement",
+    quand:
+      "Pas encore émis (gabarit livré au worker avant son émetteur) : à terme, à l'enregistrement de l'acceptation de l'avenant (date d'effet)",
+    destinataire: "l'apporteur qui a accepté l'avenant",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-virement-fait": {
     categorie: "recrutement",
     quand: "Console : bouton « Virement fait » sur une autofacture",

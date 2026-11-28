@@ -58,7 +58,8 @@ export interface TierDecisionThresholds {
 //   - promoteAgeDaysMin 30 → 14 (articles éligibles plus tôt)
 //   - promoteCtrMin 5% → 3% (pool éligible élargi)
 //   - demoteAgeDaysMin 60 → 30 (demote plus rapide, garde sitemap propre)
-// Cible volume 1500-3000 promus/mois via tier-lifecycle daily.
+// (Ancienne « cible volume 1500-3000 promus/mois » : plus un objectif, voir la décision du
+// 27/11/2026 sur la porte qualité ; aucun quota, le rythme découle de la qualité.)
 // Risque HCU 2024 mitigé par quality gate factory strict (70+ + 800 mots).
 export const DEFAULT_TIER_THRESHOLDS: TierDecisionThresholds = {
   promoteCtrMin: 0.03,

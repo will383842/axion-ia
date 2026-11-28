@@ -30,6 +30,7 @@ describe("registre CRITERES", () => {
       B01: "dur",
       B03: "dur",
       B14: "dur",
+      B06: "derogeable",
       B08: "corrigeable",
       B11: "corrigeable",
       B11a: "corrigeable",
