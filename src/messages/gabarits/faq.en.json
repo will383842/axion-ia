@@ -1,6 +1,7 @@
 {
   "grille": {
     "titre": "The {n} questions,",
+    "titreUne": "The question,",
     "em": "at a glance",
     "aria": "All the questions"
   },

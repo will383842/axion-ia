@@ -11,7 +11,7 @@
   border-radius: var(--radius-2xl);
   box-shadow: var(--ombre-bloc);
 }
-[data-gabarit="faq"] .grille-q__titre {
+[data-gabarit="faq"] .grille-q .grille-q__titre {
   margin: 0 0 1rem;
   font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif);
 }
@@ -20,7 +20,7 @@
   font-weight: 500;
   color: var(--color-terracotta-on-mocha);
 }
-[data-gabarit="faq"] .grille-q__liste {
+[data-gabarit="faq"] .grille-q .grille-q__liste {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -49,16 +49,17 @@
   line-height: 1.35;
 }
 [data-gabarit="faq"] .grille-q__liste a::before {
+  content: counter(gq, decimal-leading-zero);
   content: counter(gq, decimal-leading-zero) / "";
   flex: none;
   font: 600 0.875rem/1 var(--font-mono);
   color: var(--color-terracotta-on-mocha);
 }
-[data-gabarit="faq"] .grille-q__liste a:hover {
+[data-gabarit="faq"] .grille-q.sur-sombre .grille-q__liste a:not(.btn):hover {
   background: var(--color-mocha-fg);
   color: var(--color-ink);
 }
-[data-gabarit="faq"] .grille-q__liste a:hover::before {
+[data-gabarit="faq"] .grille-q.sur-sombre .grille-q__liste a:not(.btn):hover::before {
   color: var(--color-terracotta-deep);
 }
 @media (min-width: 640px) {
@@ -91,6 +92,7 @@
   font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
 }
 [data-gabarit="faq"] .faq summary::before {
+  content: counter(qr, decimal-leading-zero);
   content: counter(qr, decimal-leading-zero) / "";
   flex: none;
   display: grid;

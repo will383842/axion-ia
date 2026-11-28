@@ -183,7 +183,7 @@ describe("GabaritFaq", () => {
 
   it("l'encart « Votre question n'est pas là ? » vient après la 4e question, bouton Écrire un message", () => {
     const h = rendre(props());
-    const encart = h.indexOf("Votre question n’est pas là ?");
+    const encart = h.indexOf("Votre question n’est pas là ?");
     expect(encart).toBeGreaterThan(h.indexOf('id="q-4"'));
     expect(encart).toBeLessThan(h.indexOf('id="q-5"'));
     const bloc = h.slice(h.indexOf("cta-milieu"), h.indexOf("</aside>", h.indexOf("cta-milieu")));
@@ -194,7 +194,7 @@ describe("GabaritFaq", () => {
 
   it("moins de 4 questions : l'encart suit la dernière question", () => {
     const h = rendre(props({ view: { ...props().view, faqItems: QUESTIONS.slice(0, 2) } }));
-    expect(h.indexOf("Votre question n’est pas là ?")).toBeGreaterThan(h.indexOf('id="q-2"'));
+    expect(h.indexOf("Votre question n’est pas là ?")).toBeGreaterThan(h.indexOf('id="q-2"'));
   });
 
   it("réponses vides écartées : la grille ne compte que les questions rendues", () => {
@@ -207,7 +207,7 @@ describe("GabaritFaq", () => {
   it("sans question : mise en page Analyse, ni grille ni encart", () => {
     const h = rendre(props({ view: { ...props().view, faqItems: [] } }));
     expect(h).not.toContain("grille-q");
-    expect(h).not.toContain("Votre question n’est pas là ?");
+    expect(h).not.toContain("Votre question n’est pas là ?");
     expect(h).toContain("<p>Corps</p>");
   });
 
@@ -241,5 +241,37 @@ describe("GabaritFaq", () => {
       "line-through",
     ])
       expect(h, mot).not.toContain(mot);
+  });
+});
+
+describe("GabaritFaq — cas limites de relecture", () => {
+  it("qa_derived réel : la section « questions associées » du corps n'est pas rendue une seconde fois", () => {
+    const corps =
+      '<p class="tldr-answer">Réponse directe.</p><section class="related-qa" data-aeo="related-faq"><h2>Questions fréquentes associées</h2><div class="faq-item"><h3 class="faq-question">Question numéro 1 ?</h3><div class="faq-answer"><p>Réponse numéro 1.</p></div></div></section><p>Suite</p>';
+    const h = rendre(props({ html: corps, tocItems: [] }));
+    expect(h).not.toContain("related-qa");
+    expect(h).not.toContain("faq-question");
+    expect(h.match(/data-faq-q="true">Question numéro 1/g)).toHaveLength(1);
+    expect(h).toContain("<p>Suite</p>");
+  });
+
+  it("une seule question : titre au singulier, pas de sommaire", () => {
+    const h = rendre(props({ view: { ...props().view, faqItems: QUESTIONS.slice(0, 1) } }));
+    expect(h).toContain("La question,");
+    expect(h).not.toContain("Les 1 questions");
+    expect(h).not.toContain('class="sommaire"');
+  });
+
+  it("espace fine insécable (U+202F) avant le « ? » de l'encart", () => {
+    expect(rendre(props())).toContain("Votre question n’est pas là ?");
+  });
+
+  it("ArticleFaq sans `ancres` ne pose aucun id q-N (rétro-compatibilité)", async () => {
+    const { ArticleFaq } = await import("@/components/content-gen/ArticleFaq");
+    const h = renderToStaticMarkup(
+      <ArticleFaq items={QUESTIONS} locale="fr" variante="v2" premiereOuverte />,
+    );
+    expect(h).not.toContain('id="q-');
+    expect(h.match(/<details/g)).toHaveLength(6);
   });
 });

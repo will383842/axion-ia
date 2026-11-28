@@ -50,6 +50,11 @@ import { MiseEnPageAnalyse } from "./GabaritAnalyse";
 const RANG_ENCART = 4;
 
 /** Retire tout `<script type="application/ld+json">` du corps : la FAQPage vient d'`ArticleFaq`. */
+/** Retire la section « questions associées » du corps (`qa_derived`) : les cartes la remplacent. */
+function sansQuestionsAssociees(html: string): string {
+  return html.replace(/<section\b[^>]*related-qa[^>]*>[\s\S]*?<\/section\s*>/gi, "");
+}
+
 function sansJsonLd(html: string): string {
   return html.replace(
     /<script\b[^>]*type\s*=\s*["']?application\/ld\+json["']?[^>]*>[\s\S]*?<\/script\s*>/gi,
@@ -67,7 +72,7 @@ export function GabaritFaq(p: ArticleGabaritProps) {
   const questions = questionsRendues(view.faqItems);
   if (questions.length === 0) return <MiseEnPageAnalyse p={p} cta="diagnostic" />;
 
-  const html = p.html ? abaisserH1(sansJsonLd(p.html)) : null;
+  const html = p.html ? abaisserH1(sansQuestionsAssociees(sansJsonLd(p.html))) : null;
 
   const tocQuestions = questions.map((question, i) => ({
     anchor: `q-${i + 1}`,
@@ -75,16 +80,17 @@ export function GabaritFaq(p: ArticleGabaritProps) {
     level: 2 as const,
   }));
 
-  const sommaire = (
-    <ArticleTOC
-      items={tocQuestions}
-      pageUrl={p.pageUrl}
-      locale={loc}
-      variante="v2"
-      cibleTactile
-      libelle={c("sommaire")}
-    />
-  );
+  const sommaire =
+    tocQuestions.length >= 2 ? (
+      <ArticleTOC
+        items={tocQuestions}
+        pageUrl={p.pageUrl}
+        locale={loc}
+        variante="v2"
+        cibleTactile
+        libelle={c("sommaire")}
+      />
+    ) : null;
 
   const ouverture = (
     <>
@@ -159,7 +165,10 @@ export function GabaritFaq(p: ArticleGabaritProps) {
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
         <div className="grille-q sur-sombre">
           <p className="grille-q__titre">
-            {t("grille.titre", { n: questions.length })} <em>{t("grille.em")}</em>
+            {questions.length === 1
+              ? t("grille.titreUne")
+              : t("grille.titre", { n: questions.length })}{" "}
+            <em>{t("grille.em")}</em>
           </p>
           <ol className="grille-q__liste" aria-label={t("grille.aria")}>
             {questions.map((question, i) => (
