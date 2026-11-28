@@ -55,5 +55,6 @@ describe("Gate A : caches sûrs", () => {
     const cfg = readFileSync(path.join(racine, "eslint.config.mjs"), "utf8");
     expect(cfg).not.toContain("parserOptions.project");
     expect(cfg).not.toContain("projectService");
+    expect(cfg).not.toMatch(/\bproject\s*:/);
   });
 });

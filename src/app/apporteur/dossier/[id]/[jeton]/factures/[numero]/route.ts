@@ -6,6 +6,7 @@
 // site (aucune URL signée) ; la clé R2 est reconstruite côté serveur depuis l'identifiant du
 // dossier et le numéro RELU EN BASE, jamais depuis l'adresse seule.
 
+import { peutLireSesPieces } from "@/features/apporteurs-reseau/acces-pieces";
 import { NextResponse } from "next/server";
 
 import { getClientIp } from "@/lib/client-ip";
@@ -20,7 +21,6 @@ import {
   numeroDePieceDeLApporteur,
 } from "@/features/apporteurs-reseau/espace-commissions";
 import { mesCommissionsActive } from "@/features/apporteurs-reseau/interrupteur-mes-commissions";
-import { etatDeLaPage } from "@/features/apporteurs-reseau/signature";
 import { signalerErreurReseau } from "@/features/apporteurs-reseau/signaler";
 
 export const dynamic = "force-dynamic";
@@ -62,7 +62,7 @@ export async function GET(
 
   const dossier = await lireDossierParLien(id, jeton);
   // Mode restreint et dossier non signé : refusés (décision de la direction attendue pour l'ouvrir).
-  if (!dossier || dossier.restreint || etatDeLaPage(dossier.statut) !== "signe") {
+  if (!dossier || !peutLireSesPieces(dossier)) {
     return introuvable();
   }
 

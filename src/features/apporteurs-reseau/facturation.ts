@@ -49,6 +49,8 @@ import {
   moisParis,
   originesDesReprises,
   piecesVigilanceValides,
+  publierPdfApresCommit,
+  supprimerPdfTentatives,
 } from "./commissions";
 import {
   aVirerPartielCents,
@@ -67,6 +69,7 @@ import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envo
 import { etatVigilance, euros } from "./regles";
 import { horsLitige, litigeDisponible } from "./litige";
 import { paiementIntegralLe } from "./paiement-integral";
+import { facturesClientDesLignes } from "./prime-challenge";
 import {
   figerPiece,
   piecesFigees,
@@ -178,6 +181,7 @@ function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown
     select: {
       id: true,
       factureId: true,
+      activite: true,
       statut: true,
       montantCents: true,
       palier: true,
@@ -243,9 +247,26 @@ export async function facturerApporteur(
 ): Promise<ResultatFacturation> {
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { id: true, prenom: true, nom: true, email: true },
+    select: {
+      id: true,
+      prenom: true,
+      nom: true,
+      email: true,
+      signeParApporteurAt: true,
+      signeParSocieteAt: true,
+    },
   });
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
+  // #2464 point 34 : le mandat d'autofacturation (annexe 2) fait partie du contrat signé par les
+  // DEUX parties. Pas de signature complète = aucune autofacture, une alerte console à la place.
+  if (!apporteur.signeParApporteurAt || !apporteur.signeParSocieteAt) {
+    await signalerMandatNonSigne(apporteurId, apporteur, maintenant);
+    return {
+      ok: false,
+      message:
+        "Le mandat d'autofacturation (annexe 2 du contrat) n'est pas signé par les deux parties : aucune autofacture n'est émise.",
+    };
+  }
   const annee = Number(moisParis(maintenant).slice(0, 4));
 
   // Règle du 25/11 : la commission est due dès le paiement intégral du client, même si la
@@ -254,7 +275,8 @@ export async function facturerApporteur(
   let avant = await lireAFacturer(prisma, apporteurId, hors);
   let dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
-  const paiementIntegral = await paiementIntegralLe(dues.map((c) => c.factureId));
+  // Une prime de challenge n'a pas de facture client : son échéance part de l'émission (art. 5.3).
+  const paiementIntegral = await paiementIntegralLe(facturesClientDesLignes(dues));
   // Régime de l'autofacture à ÉMETTRE : celui applicable aujourd'hui (changement daté, sinon fiche).
   const regimeEmission = (await regimeApplicableAu(apporteurId, jourParis(maintenant))).regimeTva;
   // Art. 12.4 : les reprises dépassent les dues → COMPENSATION avec pièces. Les dues sont
@@ -366,7 +388,11 @@ export async function facturerApporteur(
   const numeros = await allouerNumerosAutofacture(annee, 1 + groupes.length);
   const numero = numeros[0]!;
   const brut = dues.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  // Identifiant propre à CETTE tentative : les PDF sont déposés sous une clé de tentative, puis
+  // publiés sous la clé définitive APRÈS le commit (un job concurrent ne l'écrase jamais).
+  const tentative = randomUUID().slice(0, 8);
   const pdf = await genererPdfAutofacture({
+    tentative,
     apporteurId,
     numero,
     periodeLibelle: `commissions exigibles au ${dateFr(maintenant)}`,
@@ -386,6 +412,7 @@ export async function facturerApporteur(
     const montant = -g.lignes.reduce((s, c) => s + (c.montantCents ?? 0), 0);
     const a = pdf
       ? await genererPdfAutofacture({
+          tentative,
           apporteurId,
           numero: numeroAvoir,
           periodeLibelle: `reprise de commissions au ${dateFr(maintenant)}`,
@@ -401,7 +428,13 @@ export async function facturerApporteur(
       : null;
     avoirsPdf.push({ ...g, numero: numeroAvoir, montant, pdf: a });
   }
+  // Un PDF de TENTATIVE qui ne sera pas publié (refus, échec, job perdant) est supprimé du stockage :
+  // il porte le nom et l'adresse de l'apporteur et ne doit pas y rester (#2464, point 14).
+  const nettoyerTentatives = async (): Promise<void> => {
+    await supprimerPdfTentatives([pdf, ...avoirsPdf.map((g) => g.pdf)]);
+  };
   if (!pdf || avoirsPdf.some((a) => !a.pdf)) {
+    await nettoyerTentatives();
     return {
       ok: false,
       message:
@@ -445,90 +478,112 @@ export async function facturerApporteur(
   const solde = compense ? { verseeAt: maintenant } : {};
   // Si la table des pièces existe, le régime et les totaux de CHAQUE pièce sont figés dans la même
   // transaction que l'émission : jamais de PDF sans pièce figée (une écriture en échec = rien d'émis).
-  const figer = await piecesFigeesDisponible();
+  // #2464 point 15 : table illisible = REFUS (jamais une pièce émise sans être figée, sur le régime
+  // courant de la fiche). Rien n'est écrit, nouvel essai au prochain passage.
+  if (!(await piecesFigeesDisponible())) {
+    signalerErreurReseau(
+      "autofacture : table des pièces figées illisible, émission refusée",
+      new Error(`apporteur ${apporteurId}, autofacture ${numero}`),
+    );
+    await nettoyerTentatives();
+    return {
+      ok: false,
+      message:
+        "La table des pièces figées est illisible : rien n'est émis (une pièce non figée n'est jamais émise), nouvel essai au prochain passage.",
+    };
+  }
 
-  await prisma.$transaction(
-    async (tx) => {
-      // Numéros contrôlés SOUS VERROU dans la transaction qui les écrit (jamais deux fois le même).
-      await verrouillerSerieAutofacture(tx, numeros);
-      // Seules les lignes retenues plus haut (une compensation n'impute pas tout) ; une ligne
-      // apparue entre-temps attend le passage suivant.
-      const lues = (await lireAFacturer(tx, apporteurId, hors)).filter((c) => idsAvant.has(c.id));
-      const memes =
-        lues.length === avant.length &&
-        lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
-      if (!memes) throw new Error("Les commissions ont changé pendant la facturation : réessai.");
-      // Le mois ne sert qu'à marquer la ligne comme imputée (une reprise imputée n'est plus à déduire).
-      const commun = {
-        releveMois: moisParis(maintenant),
-        autofactureNumero: numero,
-        autofactureEmiseAt: maintenant,
-        autofactureAttenteMotif: null,
-        autofactureAttenteDepuis: null,
-      };
-      // Ligne par ligne, au MONTANT lu : une réduction, une suspension ou une annulation faite
-      // pendant la facturation fait échouer l'écriture (réessai), jamais une autofacture à
-      // l'ancien montant. Réalisée et non suspendue revérifiées dans l'écriture même.
-      const dues2 = { count: 0 };
-      for (const c of dues) {
-        const r = await tx.commissionApporteur.updateMany({
-          where: {
-            id: c.id,
-            statut: "due",
-            autofactureNumero: null,
-            montantCents: c.montantCents,
-            ...hors,
-          },
-          data: compense ? { ...commun, statut: "versee", ...solde } : commun,
-        });
-        dues2.count += r.count;
-      }
-      let reprises = 0;
-      for (const a of avoirsPdf) {
-        const r = await tx.commissionApporteur.updateMany({
-          where: { id: { in: a.lignes.map((c) => c.id) }, statut: "reprise", releveMois: null },
-          data: { ...commun, avoirNumero: a.numero, ...solde },
-        });
-        reprises += r.count;
-      }
-      for (const c of dejaEmises) {
-        const r = await tx.commissionApporteur.updateMany({
-          where: { id: c.id, statut: "reprise", releveMois: null, avoirNumero: c.avoirNumero },
-          data: { ...commun, ...solde },
-        });
-        reprises += r.count;
-      }
-      if (dues2.count + reprises !== avant.length)
-        throw new Error("Les commissions ont changé pendant la facturation : réessai.");
-      if (figer) {
-        await figerPiece(tx, {
-          numero,
-          apporteurId,
-          genre: "facture",
-          regimeTva: pdf.regimeTva,
-          numeroTva: pdf.numeroTva,
-          totalHtCents: pdf.totalHtCents,
-          totalTvaCents: pdf.totalTvaCents,
-          totalTtcCents: pdf.totalTtcCents,
-          emiseAt: maintenant,
-        });
-        for (const a of avoirsPdf)
+  try {
+    await prisma.$transaction(
+      async (tx) => {
+        // Numéros contrôlés SOUS VERROU dans la transaction qui les écrit (jamais deux fois le même).
+        await verrouillerSerieAutofacture(tx, numeros);
+        // Seules les lignes retenues plus haut (une compensation n'impute pas tout) ; une ligne
+        // apparue entre-temps attend le passage suivant.
+        const lues = (await lireAFacturer(tx, apporteurId, hors)).filter((c) => idsAvant.has(c.id));
+        const memes =
+          lues.length === avant.length &&
+          lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
+        if (!memes) throw new Error("Les commissions ont changé pendant la facturation : réessai.");
+        // Le mois ne sert qu'à marquer la ligne comme imputée (une reprise imputée n'est plus à déduire).
+        const commun = {
+          releveMois: moisParis(maintenant),
+          autofactureNumero: numero,
+          autofactureEmiseAt: maintenant,
+          autofactureAttenteMotif: null,
+          autofactureAttenteDepuis: null,
+        };
+        // Ligne par ligne, au MONTANT lu : une réduction, une suspension ou une annulation faite
+        // pendant la facturation fait échouer l'écriture (réessai), jamais une autofacture à
+        // l'ancien montant. Réalisée et non suspendue revérifiées dans l'écriture même.
+        const dues2 = { count: 0 };
+        for (const c of dues) {
+          const r = await tx.commissionApporteur.updateMany({
+            where: {
+              id: c.id,
+              statut: "due",
+              autofactureNumero: null,
+              montantCents: c.montantCents,
+              ...hors,
+            },
+            data: compense ? { ...commun, statut: "versee", ...solde } : commun,
+          });
+          dues2.count += r.count;
+        }
+        let reprises = 0;
+        for (const a of avoirsPdf) {
+          const r = await tx.commissionApporteur.updateMany({
+            where: { id: { in: a.lignes.map((c) => c.id) }, statut: "reprise", releveMois: null },
+            data: { ...commun, avoirNumero: a.numero, ...solde },
+          });
+          reprises += r.count;
+        }
+        for (const c of dejaEmises) {
+          const r = await tx.commissionApporteur.updateMany({
+            where: { id: c.id, statut: "reprise", releveMois: null, avoirNumero: c.avoirNumero },
+            data: { ...commun, ...solde },
+          });
+          reprises += r.count;
+        }
+        if (dues2.count + reprises !== avant.length)
+          throw new Error("Les commissions ont changé pendant la facturation : réessai.");
+        {
           await figerPiece(tx, {
-            numero: a.numero,
+            numero,
             apporteurId,
-            genre: "avoir",
-            regimeTva: a.pdf!.regimeTva,
-            numeroTva: a.pdf!.numeroTva,
-            totalHtCents: a.pdf!.totalHtCents,
-            totalTvaCents: a.pdf!.totalTvaCents,
-            totalTtcCents: a.pdf!.totalTtcCents,
-            factureRectifiee: a.origine || null,
+            genre: "facture",
+            regimeTva: pdf.regimeTva,
+            numeroTva: pdf.numeroTva,
+            totalHtCents: pdf.totalHtCents,
+            totalTvaCents: pdf.totalTvaCents,
+            totalTtcCents: pdf.totalTtcCents,
             emiseAt: maintenant,
           });
-      }
-    },
-    { timeout: 15_000 },
-  );
+          for (const a of avoirsPdf)
+            await figerPiece(tx, {
+              numero: a.numero,
+              apporteurId,
+              genre: "avoir",
+              regimeTva: a.pdf!.regimeTva,
+              numeroTva: a.pdf!.numeroTva,
+              totalHtCents: a.pdf!.totalHtCents,
+              totalTvaCents: a.pdf!.totalTvaCents,
+              totalTtcCents: a.pdf!.totalTtcCents,
+              factureRectifiee: a.origine || null,
+              emiseAt: maintenant,
+            });
+        }
+      },
+      { timeout: 15_000 },
+    );
+  } catch (err) {
+    // Job perdant ou transaction en échec : son PDF de tentative n'est jamais publié.
+    await nettoyerTentatives();
+    throw err;
+  }
+
+  // Transaction validée : cette tentative est la gagnante, ses PDF prennent la clé définitive.
+  const cles = await publierPdfApresCommit([pdf, ...avoirsPdf.map((a) => a.pdf!)], numero);
 
   const nom = [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" ");
   // Chaque reprise est un AVOIR numéroté, joint à l'e-mail, qui renvoie à l'autofacture rectifiée.
@@ -566,7 +621,7 @@ export async function facturerApporteur(
       jobId: jobIdEmailAutofacture(numero),
       attachments: [pdf, ...avoirsPdf.map((a) => a.pdf!)].map((x) => ({
         filename: x.filename,
-        r2Key: x.r2Key,
+        r2Key: cles.get(x.cleDefinitive) ?? x.r2Key,
         contentType: "application/pdf",
       })),
     });
@@ -620,11 +675,39 @@ async function etatAuRegistre(siren: string, maintenant: Date): Promise<Resultat
   return r;
 }
 
-/**
- * Fiche de l'apporteur incomplète pour l'autofacture : marque les commissions dues « en attente »
- * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
- * à afficher, ou `null` quand rien ne manque.
- */
+/** Alerte interne UNE fois par apporteur : autofacture demandée sans mandat signé. */
+async function signalerMandatNonSigne(
+  apporteurId: string,
+  fiche: { prenom: string | null; nom: string | null },
+  maintenant: Date,
+): Promise<void> {
+  try {
+    const jobId = `apporteur-mandat-non-signe-${apporteurId}`;
+    if (await dejaEnvoye(jobId)) return;
+    const nom =
+      [decryptPii(fiche.prenom), decryptPii(fiche.nom)].filter(Boolean).join(" ") || "un apporteur";
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: "important",
+        code: "apporteur_mandat_autofacture_non_signe",
+        titre: `Mandat d'autofacturation non signé : ${nom}`,
+        message: `Des commissions de ${nom} sont à facturer, mais le mandat d'autofacturation (annexe 2) n'est pas signé par les deux parties : aucune autofacture n'est émise. À vérifier dans la console avant tout versement.`,
+        cibleType: "ApporteurReseau",
+        cibleId: apporteurId,
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+        rubrique: "apporteurs",
+        chemin: `apporteurs/${apporteurId}`,
+      },
+      { jobId, entityType: "ApporteurReseau", entityId: apporteurId },
+    );
+  } catch (err) {
+    signalerErreurReseau("autofacture : mandat non signé, alerte", err);
+  }
+}
+
 /** Motif posé sur les dues bloquées par un avoir déjà émis trop gros (art. 12.4). */
 export const PREFIXE_MOTIF_SOLDE_NEGATIF = "solde négatif :";
 
@@ -691,6 +774,11 @@ async function signalerSoldeNegatif(
   }
 }
 
+/**
+ * Fiche de l'apporteur incomplète pour l'autofacture : marque les commissions dues « en attente »
+ * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
+ * à afficher, ou `null` quand rien ne manque.
+ */
 async function mettreEnAttenteSiIncomplet(
   apporteurId: string,
   dues: ReadonlyArray<{ id: string; autofactureAttenteMotif: string | null }>,
@@ -1187,6 +1275,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
     select: {
       apporteurId: true,
       factureId: true,
+      activite: true,
       autofactureNumero: true,
       avoirNumero: true,
       montantCents: true,
@@ -1228,7 +1317,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
   );
   for (const [numero, ls] of parNumero) {
     const v = m.get(numero);
-    if (v) v.paiementIntegralAt = await paiementIntegralLe(ls.map((x) => x.factureId));
+    if (v) v.paiementIntegralAt = await paiementIntegralLe(facturesClientDesLignes(ls));
     const fiche = ls[0]!.apporteur.regimeTva;
     const regimeFacture = regimes.has(numero) ? regimes.get(numero)! : fiche;
     const p = aVirerPartielCents(

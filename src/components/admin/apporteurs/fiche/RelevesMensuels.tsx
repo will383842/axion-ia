@@ -1,10 +1,11 @@
 // Fiche apporteur : relevés mensuels de cet apporteur (LECTURE seule, lot 4b').
-// L'état de remise se lit dans `EmailLog` (par `jobId`) ; le bouton « rectificatif » vient plus tard.
+// L'état de remise se lit dans `EmailLog` (par `jobId`). Lot 4b : « Établir un relevé rectificatif » (crée une ligne préparée, n'envoie rien).
 
 import Link from "next/link";
 
 import { AdminBadge, AdminCard } from "@/components/admin/ui";
 import { dateHeureParis, moisLisible } from "@/components/admin/apporteurs/releves/format";
+import { BoutonRectificatif } from "./BoutonRectificatif";
 import type {
   ReleveDeFiche,
   StatutReleveEcran,
@@ -45,12 +46,15 @@ export function RelevesMensuels({
   base,
   releves,
   peutVoirPdf,
+  peutRectifier = false,
 }: {
   /** `/fr/<adminPrefix>` */
   base: string;
   releves: readonly ReleveDeFiche[];
   /** Droit de facturation : le PDF est une pièce financière. */
   peutVoirPdf: boolean;
+  /** Droit de facturation : « Établir un relevé rectificatif » (lot 4b). Rien n'est envoyé. */
+  peutRectifier?: boolean;
 }) {
   return (
     <AdminCard as="section">
@@ -70,7 +74,8 @@ export function RelevesMensuels({
                 <th className="pr-[var(--space-admin-3)]">Numéro</th>
                 <th className="pr-[var(--space-admin-3)]">Envoi</th>
                 <th className="pr-[var(--space-admin-3)]">Empreinte</th>
-                <th>PDF</th>
+                <th className="pr-[var(--space-admin-3)]">PDF</th>
+                {peutRectifier ? <th>Rectificatif</th> : null}
               </tr>
             </thead>
             <tbody>
@@ -102,7 +107,7 @@ export function RelevesMensuels({
                       ) : null}
                     </td>
                     <td className="pr-[var(--space-admin-3)] font-mono">{r.empreinteCourte}</td>
-                    <td>
+                    <td className="pr-[var(--space-admin-3)]">
                       {r.pdfDisponible && peutVoirPdf ? (
                         <a
                           href={`${base}/apporteurs/releves/${r.periode}/pdf?numero=${r.numero}`}
@@ -116,6 +121,16 @@ export function RelevesMensuels({
                         "—"
                       )}
                     </td>
+                    {peutRectifier ? (
+                      <td>
+                        {(r.statut === "envoye" || r.statut === "echec") &&
+                        etat.code !== "echoue" ? (
+                          <BoutonRectificatif id={r.id} />
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                    ) : null}
                   </tr>
                 );
               })}

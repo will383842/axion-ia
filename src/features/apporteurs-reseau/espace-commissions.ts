@@ -15,6 +15,7 @@ import { prisma } from "@/lib/prisma";
 
 import { tableAbsente } from "./reservation-presentation";
 import { paiementIntegralLe } from "./paiement-integral";
+import { facturesClientDesLignes } from "./prime-challenge";
 import { regimesDesPieces } from "./tva-pieces";
 
 import {
@@ -112,7 +113,8 @@ export async function lireEspaceCommissions(
     if (c.autofactureNumero)
       parAutofacture.set(c.autofactureNumero, [
         ...(parAutofacture.get(c.autofactureNumero) ?? []),
-        c.factureId,
+        // Une prime de challenge n'a pas de facture client : rien à lire pour elle.
+        ...facturesClientDesLignes([c]),
       ]);
   const paiementsIntegraux = new Map<string, Date | null>();
   for (const [numero, factureIds] of parAutofacture)
