@@ -659,6 +659,8 @@ describe("L5a — demandes en attente de réponse", () => {
     await collecterDemandesVeille(MAINTENANT);
     expect(d.oppositions).toHaveBeenCalledTimes(1);
     const arg = d.oppositions.mock.calls[0]![0] as { where: { emailHash: { in: string[] } } };
+    // Aucun filtre sur la date d'effacement (ni sur autre chose) : le `where` est exactement celui-ci.
+    expect(arg.where).toEqual({ emailHash: { in: expect.any(Array) } });
     expect([...arg.where.emailHash.in].sort()).toEqual(
       [hashDe("camille@exemple.fr"), hashDe("dominique@exemple.fr")].sort(),
     );
@@ -741,6 +743,52 @@ describe("L5a — demandes en attente de réponse", () => {
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(r.enAttenteNonListees).toBe(4);
     expect(r.enAttenteIncomplete).toBeUndefined();
+  });
+
+  it("🔴 11 demandes, la plus ancienne opposée : 10 listées, aucun « autres »", async () => {
+    opposes("camille@exemple.fr");
+    table([
+      attente({ id: "sub_opposee" }),
+      ...Array.from({ length: 10 }, (_, i) =>
+        autre({
+          id: `sub_ok_${String(i).padStart(2, "0")}`,
+          submittedAt: new Date(LUNDI.getTime() + (i + 1) * 1000),
+        }),
+      ),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toHaveLength(10);
+    expect(ids(r)).not.toContain("sub_opposee");
+    expect(r.enAttenteEcartees).toBe(1);
+    expect(r.enAttenteNonListees).toBeUndefined();
+  });
+
+  it("🔴 clé absente et 15 demandes : jamais « et N autres » sans une seule ligne listée", async () => {
+    table(
+      Array.from({ length: 15 }, (_, i) =>
+        attente({
+          id: `sub_${String(i).padStart(2, "0")}`,
+          submittedAt: new Date(LUNDI.getTime() + i * 1000),
+        }),
+      ),
+    );
+    vi.stubEnv("PII_ENCRYPTION_KEY", "");
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toBeUndefined();
+    expect(r.enAttenteIllisibles).toBe(15);
+    expect(r.enAttenteNonListees).toBeUndefined();
+  });
+
+  it("une réponse seulement « pending » ne fait pas sortir la demande de la liste", async () => {
+    table([
+      attente({
+        id: "sub_pending",
+        status: "in_progress",
+        needsAttention: true,
+        replies: [{ deliveryStatus: "pending" }],
+      }),
+    ]);
+    expect(ids(await collecterDemandesVeille(MAINTENANT))).toEqual(["sub_pending"]);
   });
 
   it("🔴 réponse à l'issue inconnue : la ligne porte la mention ZeptoMail", async () => {
