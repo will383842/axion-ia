@@ -1676,6 +1676,13 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
+      # Relevé mensuel des apporteurs (migration 20261127200000) — les écritures de envoi.ts / preparation.ts /
+      # rectificatif.ts rejouées face au déclencheur et aux CHECK (renvoi des échecs, déjà-envoyé, figement),
+      # avec les refus qui DOIVENT avoir lieu. Cas ANNULÉS.
+      - name: Relevé mensuel des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/releve-mensuel-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,

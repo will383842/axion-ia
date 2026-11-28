@@ -1,6 +1,7 @@
 // Lot 0 du relevé mensuel des apporteurs : un job de la file `apporteur-crons` dont le nom n'est
 // pas connu ne doit PAS retomber sur les rappels d'invitation (arrêtés le 26/10). Il est
-// journalisé et ignoré. Un ancien worker qui recevrait un futur nom (`releve-mensuel`) ne doit
+// journalisé et ignoré. Un ancien worker qui recevrait un futur nom (ex. `releve-mensuel`, avant le
+// lot 4c) ne doit
 // rien exécuter.
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -44,10 +45,10 @@ beforeEach(() => {
 describe("🔴 apporteur-crons : un nom inconnu est ignoré", () => {
   it("un nom inconnu n'exécute PAS les rappels d'invitation, et le dit au journal", async () => {
     await expect(
-      processeur()({ name: "releve-mensuel", data: { type: "releve-mensuel" } }),
+      processeur()({ name: "futur-job-inconnu", data: { type: "futur-job-inconnu" } }),
     ).resolves.toBeUndefined();
     expect(d.relances).not.toHaveBeenCalled();
-    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("releve-mensuel"));
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("futur-job-inconnu"));
   });
 
   it("un job sans nom connu ni type n'exécute pas les rappels non plus", async () => {
@@ -66,6 +67,7 @@ describe("🔴 apporteur-crons : la liste des noms connus est liée au type", ()
     expect([...NOMS_CONNUS].sort()).toEqual(
       [
         "invitation-auto",
+        "releve-mensuel",
         "relance-invitation",
         "reponses-entrantes",
         "reseau-facturation",
