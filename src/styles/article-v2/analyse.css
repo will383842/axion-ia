@@ -26,10 +26,26 @@
   text-underline-offset: 0.2em;
 }
 [data-gabarit] .retour-sommaire a::before {
-  content: "↑";
+  content: "↑" / "";
   margin-right: 0.4rem;
   text-decoration: none;
 }
 [data-gabarit] .retour-sommaire a:hover {
   color: var(--color-ink);
+}
+
+/* Sur ordinateur, le sommaire collant est toujours visible : le lien de retour est inutile. */
+@media (min-width: 1024px) {
+  [data-gabarit] .retour-sommaire {
+    display: none;
+  }
+}
+
+/* Corps HTML : le numéro précède le H2, il prend la place du premier enfant. */
+[data-gabarit] .corps-html > .num-section:first-child {
+  margin-top: 0;
+}
+/* Pas de <section> dans le corps HTML : l'ancre « # » se révèle au survol du repère. */
+[data-gabarit] .corps-html .num-section:hover .ancre {
+  opacity: 1;
 }

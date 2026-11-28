@@ -63,7 +63,7 @@ export function MiseEnPageAnalyse({ p, cta }: MiseEnPageAnalyseProps) {
     ? preparerCorpsAnalyse(p.html, {
         ancreLabel: (titre) => a("ancreLabel", { titre }),
         relanceLibelle: a("relance"),
-        retourLibelle: a("retourSommaire"),
+        retourLibelle: p.tocItems.length >= 2 ? a("retourSommaire") : null,
         ancreSommaire: ANCRE_SOMMAIRE,
       })
     : null;

@@ -20,7 +20,8 @@ export interface LibellesAnalyse {
   /** « Lien vers la section « {titre} » » (titre en texte brut, échappé ici). */
   readonly ancreLabel: (titre: string) => string;
   readonly relanceLibelle: string;
-  readonly retourLibelle: string;
+  /** `null` quand le sommaire n'est pas rendu : aucun lien de retour (cible absente). */
+  readonly retourLibelle: string | null;
   /** `id` de la cible « sommaire » posée par le gabarit. */
   readonly ancreSommaire: string;
 }
@@ -31,8 +32,8 @@ const ENTITES: Record<string, string> = {
   "&gt;": ">",
   "&quot;": '"',
   "&#39;": "'",
-  "&nbsp;": " ",
-  "&#8239;": " ",
+  "&nbsp;": "\u00a0",
+  "&#8239;": "\u202f",
 };
 
 function echapper(texte: string): string {
@@ -47,13 +48,13 @@ function texteBrut(html: string): string {
   return html
     .replace(/<[^>]*>/g, "")
     .replace(/&(?:amp|lt|gt|quot|nbsp|#39|#8239);/g, (e) => ENTITES[e] ?? e)
-    .replace(/\s+/g, " ")
+    .replace(/[ \t\r\n]+/g, " ")
     .trim();
 }
 
 export function compterMots(html: string): number {
   const t = texteBrut(html.replace(/<(?:script|style)[\s\S]*?<\/(?:script|style)>/gi, ""));
-  return t === "" ? 0 : t.split(" ").length;
+  return t === "" ? 0 : t.split(/[ \u00a0\u202f]+/).length;
 }
 
 const RE_H2 = /<h2\b[^>]*?\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/g;
@@ -73,7 +74,7 @@ export function preparerCorpsAnalyse(
   if (h2.length === 0) return { avant: html, apres: "" };
 
   const total = h2.length;
-  const avecRetour = compterMots(html) > SEUIL_MOTS_RETOUR_SOMMAIRE;
+  const avecRetour = l.retourLibelle !== null && compterMots(html) > SEUIL_MOTS_RETOUR_SOMMAIRE;
   const largeur = (n: number) => String(n).padStart(2, "0");
   let coupe = -1;
   let sortie = html.slice(0, h2[0]?.debut ?? 0);
@@ -86,7 +87,7 @@ export function preparerCorpsAnalyse(
       repere += `<p class="relance"><span><strong>${echapper(l.relanceLibelle)}</strong> <a href="#${echapper(s.id)}">${echapper(s.titre)}</a></span></p>`;
     }
     if (avecRetour && i > 0) {
-      repere += `<p class="retour-sommaire"><a href="#${echapper(l.ancreSommaire)}">${echapper(l.retourLibelle)}</a></p>`;
+      repere += `<p class="retour-sommaire"><a href="#${echapper(l.ancreSommaire)}">${echapper(l.retourLibelle ?? "")}</a></p>`;
     }
     if (i === SECTIONS_AVANT_ENCART) coupe = sortie.length + repere.length;
     repere += `<div class="num-section"><span aria-hidden="true">${largeur(i + 1)} / ${largeur(total)}</span><a class="ancre" href="#${echapper(s.id)}" aria-label="${echapper(l.ancreLabel(s.titre))}">#</a></div>`;

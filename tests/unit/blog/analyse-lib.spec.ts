@@ -87,6 +87,23 @@ describe("preparerCorpsAnalyse", () => {
   });
 });
 
+describe("repères", () => {
+  it("sans sommaire (retourLibelle nul) : aucun lien de retour, même au-delà du seuil", () => {
+    const long = corps(5).replace(
+      "texte s1",
+      Array(SEUIL_MOTS_RETOUR_SOMMAIRE + 10)
+        .fill("mot")
+        .join(" "),
+    );
+    const r = preparerCorpsAnalyse(long, { ...lib, retourLibelle: null });
+    expect(r.avant + r.apres).not.toContain("retour-sommaire");
+  });
+  it("garde les espaces insécables du titre dans la relance", () => {
+    const r = preparerCorpsAnalyse(corps(3) + h2("s4", "Pourquoi&nbsp;?") + h2("s5"), lib);
+    expect(r.avant + r.apres).toContain("Pourquoi\u00a0?</a>");
+  });
+});
+
 describe("compterMots", () => {
   it("ignore les balises", () => {
     expect(compterMots("<p>un <strong>deux</strong> trois</p>")).toBe(3);
