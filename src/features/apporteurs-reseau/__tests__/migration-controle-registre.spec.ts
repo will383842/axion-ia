@@ -17,7 +17,8 @@ describe("migration du contrôle du registre", () => {
       true,
     );
     const autres = readdirSync(path.join(RACINE, "prisma/migrations")).filter(
-      (d) => /^\d{14}_/.test(d) && d !== NOM,
+      // Les migrations postérieures (ex. annulations de rendez-vous, PR D) viennent après : on ne compare qu'aux précédentes.
+      (d) => /^\d{14}_/.test(d) && d !== NOM && !d.endsWith("_apporteurs_annulations_rendez_vous"),
     );
     expect((NOM ?? "").slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });
