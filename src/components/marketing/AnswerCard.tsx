@@ -57,6 +57,14 @@ interface AnswerCardProps {
   readonly locale?: "fr" | "en";
   /** Classes additionnelles (rare — la carte est déjà self-contained). */
   readonly className?: string;
+  /**
+   * `v1` (défaut) : rendu historique, inchangé. `v2` : gabarits d'articles
+   * (rendu `.en-bref` du socle v3). `data-aeo="tldr"` et `.tldr-answer`
+   * sont conservés : les sélecteurs `speakable` en dépendent.
+   */
+  readonly variante?: "v1" | "v2";
+  /** Libellé du titre V2, déjà traduit (défaut : « En bref » / « In brief »). */
+  readonly libelle?: string;
 }
 
 export function AnswerCard({
@@ -66,8 +74,41 @@ export function AnswerCard({
   sourceUrl,
   locale = "fr",
   className,
+  variante = "v1",
+  libelle,
 }: AnswerCardProps) {
   const isFr = locale === "fr";
+
+  if (variante === "v2") {
+    return (
+      <aside
+        role="doc-tip"
+        data-aeo="tldr"
+        data-answer
+        aria-labelledby="en-bref-titre"
+        className={cn("en-bref tldr-answer", className)}
+      >
+        <p className="en-bref__titre" id="en-bref-titre">
+          {libelle ?? (isFr ? "En bref" : "In brief")}
+        </p>
+        {question ? <p className="font-semibold">{question}</p> : null}
+        <div>{children}</div>
+        {sourceLabel ? (
+          <p className="en-bref__source">
+            {isFr ? "Source :" : "Source:"}{" "}
+            {sourceUrl ? (
+              <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+                {sourceLabel}
+              </a>
+            ) : (
+              <span>{sourceLabel}</span>
+            )}
+          </p>
+        ) : null}
+      </aside>
+    );
+  }
+
   const headingLabel = isFr ? "Réponse rapide" : "Quick answer";
   const sourcePrefix = isFr ? "Source" : "Source";
 

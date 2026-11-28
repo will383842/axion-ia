@@ -206,6 +206,21 @@ describe("lireCiblesPeriode (définition des cibles)", () => {
     denomination,
   });
 
+  it("le nom d'une cible est DÉCHIFFRÉ (prénom et nom chiffrés en base), jamais « enc:v1:… »", async () => {
+    vi.stubEnv("PII_ENCRYPTION_KEY", "ab".repeat(32));
+    const { encryptPii } = await import("@/lib/pii-crypto");
+    const chiffre = {
+      id: "c1",
+      prenom: encryptPii("Camille"),
+      nom: encryptPii("Test"),
+      denomination: null,
+    };
+    expect(chiffre.prenom).toMatch(/^enc:/);
+    const { cibles } = await lire([chiffre], []);
+    expect(cibles[0]!.nom).toBe("Camille Test");
+    vi.unstubAllEnvs();
+  });
+
   it("signés + Q4 b, identité masquée sans nom réel", async () => {
     const { cibles } = await lire([ligne("s1")], [ligne("r1", "Société fictive")]);
     expect(cibles.map((c) => c.apporteurId).sort()).toEqual(["r1", "s1"]);

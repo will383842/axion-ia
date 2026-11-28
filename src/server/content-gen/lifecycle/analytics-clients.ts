@@ -21,6 +21,7 @@
  */
 
 import { gscPageMetricsForUrl } from "@/server/content-gen/seo/gsc-client";
+import { buildStub, estTableAbsente, pilotageSeoActif } from "@/server/seo-pilotage/interrupteur";
 
 export interface CtrMetrics {
   readonly ctr: number; // 0-1
@@ -32,6 +33,26 @@ export interface CtrMetrics {
 export interface PageviewMetrics {
   readonly views: number;
   readonly bounceRate: number; // 0-1
+}
+
+async function metriquesDepuisHistorique(
+  url: string,
+  daysWindow: number,
+): Promise<CtrMetrics | null> {
+  if (!pilotageSeoActif() || buildStub()) return null;
+  try {
+    const [{ prisma }, { metriquesPageDepuisHistorique }] = await Promise.all([
+      import("@/lib/prisma"),
+      import("@/server/seo-pilotage/recalcul"),
+    ]);
+    return await metriquesPageDepuisHistorique(prisma, url, daysWindow);
+  } catch (err) {
+    // Tables absentes (P2021) ou panne de lecture : repli silencieux sur l'API.
+    if (!estTableAbsente(err)) {
+      console.warn("[lifecycle] lecture de l'historique SEO en échec, repli sur l'API.");
+    }
+    return null;
+  }
 }
 
 /**
@@ -48,6 +69,11 @@ export async function fetchSearchConsoleCtr(
   url: string,
   daysWindow: number,
 ): Promise<CtrMetrics | null> {
+  // P6a — pilotage SEO allumé ET historique couvrant ≥ 28 jours : lecture de la table, aucun
+  // appel Google (quota préservé). Sinon (éteint, stub, historique court, table absente, panne) :
+  // comportement d'avant, inchangé.
+  const depuisHistorique = await metriquesDepuisHistorique(url, daysWindow);
+  if (depuisHistorique) return depuisHistorique;
   const m = await gscPageMetricsForUrl(url, daysWindow);
   if (!m) return null;
   return {
