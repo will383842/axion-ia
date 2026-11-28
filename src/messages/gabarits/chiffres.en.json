@@ -23,7 +23,7 @@
     "champ": "Scope",
     "champTexte": "French companies that answered the Observatory.",
     "periode": "Period",
-    "periodeTexte": "survey as of {date}.",
+    "periodeTexte": "Survey as of {date}.",
     "echantillon": "Sample",
     "echantillonTexte": "{n} respondents."
   }

@@ -21,9 +21,9 @@
   "lecture": {
     "titre": "Comment lire ces chiffres",
     "champ": "Champ",
-    "champTexte": "les entreprises françaises ayant répondu à l’Observatoire.",
+    "champTexte": "Les entreprises françaises ayant répondu à l’Observatoire.",
     "periode": "Période",
-    "periodeTexte": "relevé arrêté au {date}.",
+    "periodeTexte": "Relevé arrêté au {date}.",
     "echantillon": "Échantillon",
     "echantillonTexte": "{n} répondants."
   }

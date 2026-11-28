@@ -203,7 +203,7 @@ describe("GabaritChiffres", () => {
   it("« Comment lire ces chiffres » : champ, période, échantillon du relevé", () => {
     const h = rendre(props());
     expect(h).toContain("Comment lire ces chiffres");
-    expect(h).toContain("relevé arrêté au 1er octobre 2026.");
+    expect(h).toContain("Relevé arrêté au 1er octobre 2026.");
     expect(h).toContain("120 répondants.");
   });
 
@@ -244,8 +244,7 @@ describe("GabaritChiffres", () => {
     vi.doMock("@/server/content-gen/blog/charger-releve", () => ({
       chargerReleve: async (id: string | null) => (id === "job-1" ? RELEVE : null),
     }));
-    const { GabaritChiffresAvecReleve: G } =
-      await import("@/components/article-v2/gabarits/GabaritChiffres");
+    const { GabaritChiffres: G } = await import("@/components/article-v2/gabarits/GabaritChiffres");
     const avec = renderToStaticMarkup(
       await G(props({ view: { ...props().view, generatedByJobId: "job-1" } as never })),
     );

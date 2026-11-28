@@ -117,6 +117,12 @@ const { ArticleFaq } = await import("@/components/content-gen/ArticleFaq");
 const { AnswerCard } = await import("@/components/marketing/AnswerCard");
 
 const rendre = (el: React.ReactElement) => renderToStaticMarkup(el);
+/** Rendu qui attend les composants serveur asynchrones (le gabarit « chiffres » lit le relevé). */
+async function rendreAttente(el: React.ReactElement): Promise<string> {
+  const { prerender } = await import("react-dom/static");
+  const { prelude } = await prerender(el);
+  return await new Response(prelude).text();
+}
 
 describe("composants communs (S2)", () => {
   const baseHeros = {
@@ -521,8 +527,8 @@ const props = (gabarit: ArticleGabaritProps["gabarit"]): ArticleGabaritProps => 
 describe("aiguillage vers les huit gabarits (S2)", () => {
   it.each(GABARITS_ARTICLE)(
     "%s : data-gabarit, un seul h1, ancres du sommaire présentes",
-    (code) => {
-      const html = rendre(<ArticleGabarit {...props(code)} />);
+    async (code) => {
+      const html = await rendreAttente(<ArticleGabarit {...props(code)} />);
       expect(html).toContain(`data-gabarit="${code}"`);
       expect(html.match(/<h1\b/g)).toHaveLength(1);
       for (const ancre of ["a", "b", "c"]) {
@@ -541,9 +547,9 @@ describe("aiguillage vers les huit gabarits (S2)", () => {
     },
   );
 
-  it("appels à l'action : une colonne, un encart de milieu, un appel de fin", () => {
+  it("appels à l'action : une colonne, un encart de milieu, un appel de fin", async () => {
     for (const code of GABARITS_ARTICLE) {
-      const html = rendre(<ArticleGabarit {...props(code)} />);
+      const html = await rendreAttente(<ArticleGabarit {...props(code)} />);
       expect(html.match(/<aside class="action"/g)).toHaveLength(1);
       expect(html.match(/class="cta-milieu"/g)).toHaveLength(1);
       expect(html.match(/class="cta-fin sur-sombre"/g)).toHaveLength(1);

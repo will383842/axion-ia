@@ -3,10 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const job = vi.fn();
 const snap = vi.fn();
+const histo = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     contentGenJob: { findUnique: (...a: unknown[]) => job(...a) },
     barometerSnapshot: { findUnique: (...a: unknown[]) => snap(...a) },
+    barometerSnapshotHistory: { findFirst: (...a: unknown[]) => histo(...a) },
   },
 }));
 
@@ -30,6 +32,7 @@ const APRES = new Date("2026-10-02T10:00:00Z");
 beforeEach(() => {
   job.mockReset();
   snap.mockReset();
+  histo.mockReset();
   delete process.env.DATABASE_URL;
 });
 
@@ -51,15 +54,19 @@ describe("chargerReleve", () => {
     expect(snap).not.toHaveBeenCalled();
   });
 
-  it("relevé calculé avant le début du job : rendu, chiffres tels quels", async () => {
-    job.mockResolvedValue({
-      contentType: "barometer_insight",
-      startedAt: APRES,
-      createdAt: APRES,
-    });
-    snap.mockResolvedValue({ computedAt: AVANT, totalResponses: 120, payload: PAYLOAD });
+  const JOB = { contentType: "barometer_insight", startedAt: APRES, createdAt: APRES };
+  const HISTO = {
+    computedAt: AVANT,
+    totalResponses: 120,
+    insights: { competitors_use_ai: 62, no_formal_strategy: 0, autre_cle: 9 },
+  };
+
+  it("dernière ligne d'historique antérieure au job : relevé rendu, chiffres tels quels", async () => {
+    job.mockResolvedValue(JOB);
+    histo.mockResolvedValue(HISTO);
+    snap.mockResolvedValue({ totalResponses: 120, payload: PAYLOAD });
     const r = await chargerReleve("j1");
-    expect(r).not.toBeNull();
+    expect(histo.mock.calls[0]![0].where).toEqual({ computedAt: { lte: APRES } });
     expect(r!.dateIso).toBe("2026-10-01");
     expect(r!.total).toBe(120);
     // 0 % et clé inconnue écartés, comme dans le bloc « DONNÉES VÉRIFIÉES » du générateur
@@ -70,19 +77,35 @@ describe("chargerReleve", () => {
     ]);
   });
 
-  it("relevé recalculé APRÈS le job : null (les chiffres ont pu changer)", async () => {
-    job.mockResolvedValue({
-      contentType: "barometer_insight",
-      startedAt: AVANT,
-      createdAt: AVANT,
+  it("recalcul périodique sans changement de données : le relevé reste rendu", async () => {
+    // « latest » recalculé APRÈS le job (computedAt neuf) mais mêmes effectif et constats.
+    job.mockResolvedValue(JOB);
+    histo.mockResolvedValue(HISTO);
+    snap.mockResolvedValue({
+      computedAt: new Date("2026-10-03T00:00:00Z"),
+      totalResponses: 120,
+      payload: PAYLOAD,
     });
-    snap.mockResolvedValue({ computedAt: APRES, totalResponses: 120, payload: PAYLOAD });
-    expect(await chargerReleve("j1")).toBeNull();
+    const r = await chargerReleve("j1");
+    expect(r).not.toBeNull();
+    expect(r!.maturite).toHaveLength(2);
   });
 
-  it("pas de relevé, ou lecture en erreur : null", async () => {
-    job.mockResolvedValue({ contentType: "barometer_insight", startedAt: APRES, createdAt: APRES });
-    snap.mockResolvedValue(null);
+  it("données changées depuis : constats de l'historique gardés, mais plus de barres", async () => {
+    job.mockResolvedValue(JOB);
+    histo.mockResolvedValue(HISTO);
+    snap.mockResolvedValue({
+      totalResponses: 150,
+      payload: { ...PAYLOAD, insights: { competitors_use_ai: 70 } },
+    });
+    const r = await chargerReleve("j1");
+    expect(r!.constats).toEqual([{ cle: "competitors_use_ai", pct: 62 }]);
+    expect(r!.maturite).toEqual([]);
+  });
+
+  it("aucune ligne d'historique antérieure au job, ou lecture en erreur : null", async () => {
+    job.mockResolvedValue(JOB);
+    histo.mockResolvedValue(null);
     expect(await chargerReleve("j1")).toBeNull();
     job.mockRejectedValue(new Error("db"));
     expect(await chargerReleve("j1")).toBeNull();

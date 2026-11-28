@@ -10,7 +10,7 @@
  * Composant serveur, zéro JavaScript ; la lecture du relevé est faite côté serveur.
  */
 import "@/styles/article-v2/chiffres.css";
-import { Suspense } from "react";
+import type { CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { STUDY_ATTRIBUTION } from "@/content/observatoire/study";
@@ -51,7 +51,7 @@ import { MiseEnPageAnalyse } from "./GabaritAnalyse";
 
 const NIVEAUX_MATURITE = ["none", "exploration", "poc", "production", "scaled"] as const;
 
-/** « 1er octobre 2026 » / « October 1, 2026 » : UTC, la date du relevé est un jour calendaire. */
+/** « 1er octobre 2026 » / « 1 October 2026 » : UTC, la date du relevé est un jour calendaire. */
 function dateLisible(dateIso: string, locale: string): string {
   const d = new Date(`${dateIso}T00:00:00Z`);
   const texte = new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-GB", {
@@ -175,7 +175,7 @@ export function MiseEnPageChiffres({ p, releve }: MiseEnPageChiffresProps) {
                   <span className="barres__piste" aria-hidden="true">
                     <span
                       className="barres__remplissage"
-                      style={{ "--v": `${m.pct}%` } as React.CSSProperties}
+                      style={{ "--v": `${m.pct}%` } as CSSProperties}
                     />
                   </span>
                 </li>
@@ -273,21 +273,12 @@ export function MiseEnPageChiffres({ p, releve }: MiseEnPageChiffresProps) {
   );
 }
 
-/** Lit le relevé de l'article (serveur, tolérant : erreur ou absence → `null`), puis rend. */
-export async function GabaritChiffresAvecReleve(p: ArticleGabaritProps) {
+/**
+ * Lit le relevé de l'article (serveur, tolérant : erreur ou absence → `null`), puis rend.
+ * Composant serveur ASYNC rendu directement, sans `Suspense` : la page attend la lecture, le
+ * HTML envoyé porte le relevé et jamais un repli (pas de second h1 ni de second JSON-LD).
+ */
+export async function GabaritChiffres(p: ArticleGabaritProps) {
   const releve = await chargerReleve(p.view.generatedByJobId ?? null);
   return <MiseEnPageChiffres p={p} releve={releve} />;
-}
-
-/**
- * Aiguillage : la lecture du relevé est asynchrone ; le repli (mise en page sans relevé) garde
- * l'aiguillage synchrone de `ArticleGabarit` utilisable en rendu statique. À la génération
- * (ISR) la page attend la lecture : le HTML final porte le relevé, jamais le repli.
- */
-export function GabaritChiffres(p: ArticleGabaritProps) {
-  return (
-    <Suspense fallback={<MiseEnPageChiffres p={p} releve={null} />}>
-      <GabaritChiffresAvecReleve {...p} />
-    </Suspense>
-  );
 }
