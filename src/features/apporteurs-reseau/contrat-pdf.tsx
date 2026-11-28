@@ -268,6 +268,56 @@ export function deuxCases(version: string): boolean {
   return maj > 2 || (maj === 2 && min >= 5);
 }
 
+/**
+ * Les lignes de l'encadré « Signatures » en haut de la page 1. MISE EN PAGE SEULEMENT : le
+ * texte signé et son empreinte ne les voient jamais. Contrat vierge → aucune ligne.
+ */
+export function lignesSignatures(
+  apporteur: SignatureApporteur | null,
+  societe: SignatureSociete | null,
+): string[] {
+  if (!apporteur && !societe) return [];
+  const lignes: string[] = [];
+  if (apporteur) {
+    lignes.push(
+      `Signé électroniquement par l'Apporteur, ${apporteur.nomTape}, le ${apporteur.signeAt}.`,
+    );
+  }
+  if (societe) {
+    lignes.push(
+      `Contresigné électroniquement pour AXION IA SAS par ${societe.nom}, Président, le ${societe.signeAt}. Le contrat est conclu à cette date.`,
+    );
+  } else {
+    lignes.push("En attente de la contresignature d'AXION IA SAS.");
+  }
+  return lignes;
+}
+
+export const LIGNE_PREUVE_SIGNATURE =
+  "Preuve de signature (empreinte du texte, adresse IP codée, navigateur, engagements cochés) : certificat en dernière page.";
+
+function EncadreSignatures({
+  apporteur,
+  societe,
+}: {
+  apporteur: SignatureApporteur | null;
+  societe: SignatureSociete | null;
+}) {
+  const lignes = lignesSignatures(apporteur, societe);
+  if (lignes.length === 0) return null;
+  return (
+    <View style={[s.certif, { marginTop: 0, marginBottom: 12 }]} wrap={false}>
+      <Text style={s.gras}>Signatures</Text>
+      {lignes.map((l) => (
+        <Text key={l} style={s.p}>
+          {l}
+        </Text>
+      ))}
+      <Text style={s.petit}>{LIGNE_PREUVE_SIGNATURE}</Text>
+    </View>
+  );
+}
+
 function Certificat({
   sha,
   version,
@@ -376,6 +426,7 @@ export async function rendreContratPdf(entree: {
   const doc = (
     <Document title="Contrat d'apporteur d'affaires" author="AXION IA SAS" language="fr">
       <Page size="A4" style={s.page} wrap>
+        <EncadreSignatures apporteur={apporteur} societe={societe} />
         {blocs(texte)}
         <Certificat
           sha={sha}
