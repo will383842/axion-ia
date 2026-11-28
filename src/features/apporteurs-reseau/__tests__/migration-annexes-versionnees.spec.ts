@@ -31,6 +31,7 @@ describe("migration apporteurs_annexes_versionnees", () => {
         !d.endsWith("_apporteurs_numeros_pieces_reservation") &&
         !d.endsWith("_porte_qualite_content_intentions") &&
         !d.endsWith("_pilotage_seo_geo_panel") &&
+        !d.endsWith("_apporteurs_rotation_rib") &&
         !d.endsWith("_apporteurs_avenants"),
     );
     expect(DOSSIER.slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);

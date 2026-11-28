@@ -24,6 +24,7 @@ describe("migration du contrôle du registre", () => {
         !d.endsWith("_apporteurs_annexes_versionnees") &&
         !d.endsWith("_apporteurs_annulations_rendez_vous") &&
         !d.endsWith("_apporteurs_purge_rgpd") &&
+        !d.endsWith("_apporteurs_rotation_rib") &&
         !d.endsWith("_apporteurs_numeros_pieces_uniques") &&
         !d.endsWith("_apporteurs_numeros_pieces_reservation") &&
         !d.endsWith("_porte_qualite_content_intentions") &&

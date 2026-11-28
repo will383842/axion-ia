@@ -58,6 +58,8 @@ export default defineConfig({
       // ci-dessus, et le même piège : la garde qui vérifie que ce seed ne peut
       // écrire que dans son propre périmètre serait un fichier mort sans elle.
       "prisma/seeds/recrutement/**/*.spec.ts",
+      // Scripts de sécurité (rotation de la clé PII, #2464 P) : sans cette ligne leurs tests seraient des fichiers morts.
+      "scripts/securite/**/*.spec.ts",
     ],
     exclude: ["node_modules", ".next", "tests/e2e/**", "tests/integration/**"],
     coverage: {

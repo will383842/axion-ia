@@ -23,6 +23,7 @@ describe("migration des annulations de rendez-vous", () => {
         /^\d{14}_/.test(d) &&
         d !== nom &&
         !d.endsWith("_pilotage_seo_geo_panel") &&
+        !d.endsWith("_apporteurs_rotation_rib") &&
         !d.endsWith("_apporteurs_avenants"),
     );
     // Les migrations d'autres chantiers, posées après, sont admises : liste fermée.
