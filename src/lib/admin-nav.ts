@@ -1238,6 +1238,14 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       tier: "advanced",
     },
     {
+      href: `${base}/content-gen/pilotage`,
+      label: "Pilotage SEO & IA",
+      icon: "Radar",
+      group: "content_gen",
+      subGroup: "reglages",
+      tier: "advanced",
+    },
+    {
       href: `${base}/content-gen/keyword-tracking`,
       label: "Suivi des positions",
       icon: "Target",
