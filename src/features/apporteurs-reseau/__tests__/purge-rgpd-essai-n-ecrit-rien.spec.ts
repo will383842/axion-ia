@@ -150,3 +150,25 @@ describe("RIB remplacé (preuve du compte payé)", () => {
     expect(b.parRegle.piece_6mois).toBe(0);
   });
 });
+
+describe("dernière pièce de son type", () => {
+  it("mode appliquer : l'unique RIB à retransmettre, vieux de plus de 6 mois, n'est jamais effacé", async () => {
+    process.env.APPORTEURS_PURGE_RGPD = "appliquer";
+    const seule = {
+      id: "p-seule",
+      apporteurId: "a4",
+      type: "rib",
+      statut: "a_retransmettre",
+      remplaceeAt: null,
+      deposeeAt: new Date("2029-01-01T00:00:00Z"),
+    };
+    etat.prisma = fauxPrisma({
+      "pieceApporteur.findMany": [seule],
+      "pieceApporteur.findFirst": { id: "p-seule" },
+    });
+    const b = await purgerDonneesApporteurs(maintenant, "appliquer");
+    const p = etat.prisma as ReturnType<typeof fauxPrisma>;
+    expect(ecritures(p.appels)).toEqual([]);
+    expect(b.parRegle.piece_6mois).toBe(0);
+  });
+});

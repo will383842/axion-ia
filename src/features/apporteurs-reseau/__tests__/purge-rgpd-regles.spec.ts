@@ -106,7 +106,7 @@ describe("apporteur signé (actif) : jamais", () => {
   });
 });
 
-describe("pièce à retransmettre ou remplacée : 6 mois après le dépôt", () => {
+describe("pièce à retransmettre (jamais remplacée) : 6 mois après le dépôt", () => {
   const dep = new Date("2026-01-10T00:00:00Z");
   it("à retransmettre", () => {
     const r = echeancePiece({

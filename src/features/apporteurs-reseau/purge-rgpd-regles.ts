@@ -17,7 +17,7 @@ export const DUREE_CONTRAT_TERMINE_ANS = 5; // À CONFIRMER PAR WILL
 export const DUREE_REFUSE_MOIS = 6; // À CONFIRMER PAR WILL
 /** Dossier jamais signé et inactif : 24 mois sans activité (`majAt`). */
 export const DUREE_INACTIF_MOIS = 24; // À CONFIRMER PAR WILL
-/** Pièce à retransmettre ou remplacée : 6 mois après le dépôt (minimisation). */
+/** Pièce à retransmettre (jamais remplacée) : 6 mois après le dépôt (minimisation). */
 export const DUREE_PIECE_RETRANSMISE_MOIS = 6; // À CONFIRMER PAR WILL
 
 export type ReglePurge = "contrat_termine_5ans" | "refuse_6mois" | "inactif_24mois" | "piece_6mois";
@@ -94,7 +94,7 @@ export interface PiecePurge {
   deposeeAt: Date;
 }
 
-/** Pièce d'identité ou RIB à retransmettre ou remplacée : 6 mois après le dépôt. */
+/** Pièce d'identité ou RIB à retransmettre (jamais remplacée) : 6 mois après le dépôt. */
 export function echeancePiece(p: PiecePurge): EcheancePurge | null {
   if (p.type !== "identite" && p.type !== "rib") return null;
   // Une pièce REMPLACÉE n'est jamais purgée par cette règle : l'ancien RIB est la preuve du compte payé

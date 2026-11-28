@@ -343,7 +343,7 @@ async function rendreCompte(maintenant: Date, bilan: BilanPurgeRgpd): Promise<vo
     jobId: `purge-rgpd-essai-${mois}`,
     code: "apporteur_purge_rgpd_essai",
     titre: "Purge RGPD des apporteurs : essai à blanc",
-    message: `Essai à blanc, rien n'a été effacé. À purger : contrat terminé (5 ans) ${t.contrat_termine_5ans} ; dossier refusé (6 mois) ${t.refuse_6mois} ; dossier inactif (24 mois) ${t.inactif_24mois} ; pièces à retransmettre ou remplacées (6 mois) ${t.piece_6mois}.`,
+    message: `Essai à blanc, rien n'a été effacé. À purger : contrat terminé (5 ans) ${t.contrat_termine_5ans} ; dossier refusé (6 mois) ${t.refuse_6mois} ; dossier inactif (24 mois) ${t.inactif_24mois} ; pièces à retransmettre, jamais remplacées (6 mois) ${t.piece_6mois}.`,
     cibleType: "ApporteurPurgeRgpd",
     cibleId: mois,
     maintenant,
