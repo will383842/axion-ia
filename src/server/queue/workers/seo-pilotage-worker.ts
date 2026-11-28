@@ -12,7 +12,7 @@
  * (AUDIT § 5 bis-4) : une app plus récente peut poser une tâche que ce worker ne connaît pas
  * encore, elle ne doit rien exécuter par défaut.
  *
- * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (un jour d'historique par passage),
+ * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (jusqu'à 30 jours d'historique par passage),
  * `purge` (dimanche), `recalcul` (P6a, 07 h 07 : champs existants depuis l'historique, sans appel
  * Google), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé), `robots-ia` (P10 :
  * passages des robots d'IA, agrégats Cloudflare ; sans jeton Cloudflare la tâche saute, « indisponible »).
@@ -141,6 +141,17 @@ export async function runSeoPilotageJob(
     }
     if (r.issue === "termine") {
       console.log(`[seo-pilotage-worker] ${tache} : ${r.motif}`);
+      return { issue: "fait", tache };
+    }
+    if (r.issue === "lot") {
+      // Rattrapage : jusqu'à JOURS_PAR_PASSAGE jours. Des nombres et des codes seulement.
+      const n = (k: string) => r.jours.filter((x) => x.issue === k).length;
+      const echecs = r.jours.filter((x) => x.issue === "echec");
+      const ligne =
+        `[seo-pilotage-worker] ${tache} (${mode}) : ${r.jours.length} jour(s) traité(s), ` +
+        `${n("reussi")} réussi(s), ${n("occupe") + n("abandonne") + n("deja")} ignoré(s), ` +
+        `${echecs.length} échec(s)${echecs[0]?.issue === "echec" ? ` (${echecs[0].code})` : ""}, arrêt ${r.arret}`;
+      (echecs.length > 0 ? console.error : console.warn)(ligne);
       return { issue: "fait", tache };
     }
     const j = r.jour;
