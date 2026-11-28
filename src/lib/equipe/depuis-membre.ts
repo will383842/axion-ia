@@ -9,8 +9,7 @@
  *  - aucun e-mail : la ligne publique n'en porte pas.
  */
 import { CATEGORIES } from "./categories";
-import type { ContenuFiche, SectionFiche } from "./contenu";
-import type { CarteVousEtes, PourQuiModele } from "./modeles-categorie";
+import type { ContenuFiche, EnteteSection, SectionFiche } from "./contenu";
 import { remplirPrenom } from "./modeles-categorie";
 import { phraseLieu, villeAffichable } from "./presence";
 import { categoriePublique } from "./depuis-membre-categorie";
@@ -18,27 +17,15 @@ import { estTextePropre, fichePublique } from "./regles";
 import type { FicheCollaborateur } from "./types";
 import type { FicheComplete } from "./adaptateurs";
 
-/** Sur-titre, H2 en question et réponse directe d'une section (la réponse est facultative). */
-export interface EnteteSection {
-  surTitre: string;
-  question: string;
-  reponse?: string;
-}
+export type { EnteteSection };
 
 /**
- * Champs ajoutés au contenu par le lot R2c2. Déclarés ici tant que `contenu.ts` ne les porte pas
- * (R2d les y rapatrie). Tous optionnels : une fiche sans donnée n'en porte aucun.
+ * Champs propres à une fiche de membre, ajoutés par le lot R2c2 ; les autres (entetes, vousEtes,
+ * pourQui, chiffresCles, presence) vivent désormais dans `ContenuFiche`.
  */
 export interface ExtensionContenuR2c2 {
-  /** Par id de section (`en-bref` + sections de catégorie). */
-  entetes?: Readonly<Record<string, EnteteSection>>;
-  /** 3 cartes « Vous êtes… » au plus, `{prenom}` remplacé. */
-  vousEtes?: ReadonlyArray<CarteVousEtes>;
-  /** Bloc « Partout en France » : question, réponse, et phrase de lieu si le lieu est connu. */
-  presence: { surTitre: string; question: string; reponse: string; phraseLieu?: string };
-  pourQui?: Omit<PourQuiModele, "question"> & { question: string };
-  /** Chiffres clés : 2 au moins (sinon absents), seulement depuis des champs réellement remplis. */
-  chiffresCles?: ReadonlyArray<{ valeur: string; libelle: string }>;
+  /** Phrase de lieu si le lieu est connu. */
+  presence: NonNullable<ContenuFiche["presence"]>;
   /** Clé d'icône de chaque ligne d'identité (même ordre que `identite`). */
   iconesIdentite?: ReadonlyArray<string>;
 }
@@ -225,7 +212,8 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
   }
 
   const lieu = phraseLieu(prenomPublic, { ville: villePropre, departement: pub?.departement });
-  const extension: ExtensionContenuR2c2 = {
+  const extension: Pick<ContenuFiche, "entetes" | "vousEtes" | "pourQui" | "chiffresCles"> &
+    ExtensionContenuR2c2 = {
     entetes,
     ...(modele.vousEtes.length > 0
       ? {
