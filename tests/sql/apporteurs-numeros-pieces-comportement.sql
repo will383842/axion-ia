@@ -6,7 +6,12 @@
 \set QUIET on
 
 -- Aide : une ligne de commission minimale (colonnes obligatoires seulement).
+-- L apporteur est cree a la demande (cle etrangere commissions_apporteur_apporteur_id_fkey) : colonnes
+-- obligatoires seulement, valeurs fictives, tout est annule avec la transaction du cas.
 CREATE OR REPLACE FUNCTION pg_temp.ligne(ap uuid, af text, av text DEFAULT NULL) RETURNS void AS $$
+  INSERT INTO apporteurs_reseau (id, prenom, nom, email, email_hash, maj_at)
+  VALUES (ap, 'Test', 'Test', ap::text || '@exemple.invalid', replace(ap::text, '-', '') || replace(ap::text, '-', ''), now())
+  ON CONFLICT (id) DO NOTHING;
   INSERT INTO commissions_apporteur (id, apporteur_id, facture_id, activite, facture_ht_cents, autofacture_numero, avoir_numero, maj_at)
   VALUES (gen_random_uuid(), ap, gen_random_uuid(), 'formation', 1000, af, av, now());
 $$ LANGUAGE sql;
