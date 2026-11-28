@@ -81,11 +81,13 @@ export function analyserSources(sources: ReadonlyArray<string>): AnalysePanel {
     if (!domaines.includes(hote)) domaines.push(hote);
     if (rang === null && estDomaineAxion(hote)) rang = urls.length;
   }
+  // Le rang n'est retenu que s'il est cohérent avec la liste enregistrée (tronquée).
+  const garde = rang !== null && rang <= MAX_URLS ? rang : null;
   return {
     urls: urls.slice(0, MAX_URLS),
     domaines: domaines.slice(0, MAX_DOMAINES),
-    presente: rang !== null,
-    rang,
+    presente: garde !== null,
+    rang: garde,
   };
 }
 
@@ -120,6 +122,21 @@ export function coutMaxAppelUsd(): number {
       0,
     )
   );
+}
+
+/** URL citées par le texte de la réponse, dans l'ordre d'apparition (blocs `text`, `citations`). */
+export function urlsCitees(rep: {
+  readonly content: ReadonlyArray<{
+    readonly type: string;
+    readonly citations?: ReadonlyArray<{ url?: string }>;
+  }>;
+}): string[] {
+  const out: string[] = [];
+  for (const b of rep.content) {
+    if (b.type !== "text" || !Array.isArray(b.citations)) continue;
+    for (const c of b.citations) if (typeof c?.url === "string") out.push(c.url);
+  }
+  return out;
 }
 
 // ── Appel d'UNE question ──────────────────────────────────────────────────────
@@ -210,7 +227,9 @@ export async function poserQuestion(
 
   const { sources, erreurs } = sourcesDeLaRecherche(rep);
   if (erreurs > 0 && sources.size === 0) throw new Error("Recherche web indisponible");
-  return { ...analyserSources([...sources.keys()]), nbRecherches, coutUsd };
+  // On mesure la CITATION (liens des blocs de texte de la réponse), pas la simple présence dans les
+  // résultats de recherche. Sans citation, la liste est vide : présente = false.
+  return { ...analyserSources(urlsCitees(rep)), nbRecherches, coutUsd };
 }
 
 // ── Tâche `panel-geo` ─────────────────────────────────────────────────────────

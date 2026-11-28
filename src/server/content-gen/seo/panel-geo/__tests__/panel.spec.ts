@@ -1,7 +1,13 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { BlogClaudeRefusError } from "../../../providers/blog-claude-ledger";
-import { analyserSources, estDomaineAxion, questionsDuJour, tachePanelGeo } from "../panel";
+import {
+  analyserSources,
+  estDomaineAxion,
+  questionsDuJour,
+  tachePanelGeo,
+  urlsCitees,
+} from "../panel";
 import { LISTE_PROPOSEE, listeValidee, NB_QUESTIONS_ATTENDUES } from "../panel-questions";
 
 describe("liste proposée (à valider par Will)", () => {
@@ -75,6 +81,26 @@ describe("reconnaissance d'axion-ia.com", () => {
   });
 });
 
+describe("citation et troncature", () => {
+  it("seules les URL citées par le texte comptent, pas les résultats de recherche", () => {
+    const rep = {
+      content: [
+        { type: "web_search_tool_result", content: [{ url: "https://www.axion-ia.com/x" }] },
+        { type: "text", citations: [{ url: "https://example.fr/a" }] },
+      ],
+    };
+    expect(urlsCitees(rep)).toEqual(["https://example.fr/a"]);
+    expect(analyserSources(urlsCitees(rep)).presente).toBe(false);
+  });
+  it("un rang au-delà de la liste enregistrée n'est pas retenu (aucune contradiction)", () => {
+    const urls = Array.from({ length: 17 }, (_, i) => `https://s${i}.fr/p`);
+    const a = analyserSources([...urls, "https://axion-ia.com/z"]);
+    expect(a.urls).toHaveLength(15);
+    expect(a.presente).toBe(false);
+    expect(a.rang).toBeNull();
+  });
+});
+
 describe("rotation : 3 questions par jour ouvré", () => {
   const qs = LISTE_PROPOSEE.questions;
   it("trois questions un jour ouvré, aucune le week-end, déterministe", () => {
@@ -136,7 +162,11 @@ const REPONSE = {
         { url: "https://www.axion-ia.com/fr", title: "B" },
       ],
     },
-    { type: "text", text: "TEXTE INTEGRAL A NE JAMAIS STOCKER" },
+    {
+      type: "text",
+      text: "TEXTE INTEGRAL A NE JAMAIS STOCKER",
+      citations: [{ url: "https://example.fr/a" }, { url: "https://www.axion-ia.com/fr" }],
+    },
   ],
   usage: { input_tokens: 1000, output_tokens: 200, server_tool_use: { web_search_requests: 1 } },
 };
