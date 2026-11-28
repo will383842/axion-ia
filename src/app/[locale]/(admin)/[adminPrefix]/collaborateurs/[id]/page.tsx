@@ -26,10 +26,6 @@ export default async function CollaborateurPage({
 }) {
   const { locale, adminPrefix, id } = await params;
   const login = `/${locale}/${adminPrefix}/login`;
-  const lecture = await gardeLectureEchanges(login);
-  if (!lecture.autorise) {
-    return <AccesRefuse motif={lecture.motif} retourHref={`/${locale}/${adminPrefix}`} />;
-  }
   const acces = await gardeLectureEchanges(
     login,
     () => "Les fiches collaborateurs sont réservées aux administrateurs.",

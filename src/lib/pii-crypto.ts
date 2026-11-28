@@ -106,6 +106,57 @@ function getKey(): Buffer | null {
 }
 
 /**
+ * Clés de DÉCHIFFREMENT SEUL (`PII_ENCRYPTION_KEYS_LECTURE`, #2464 PR O) :
+ * clés hexadécimales de 64 caractères séparées par des virgules, utilisées
+ * pendant une rotation de `PII_ENCRYPTION_KEY`. Jamais pour chiffrer.
+ * Les formats invalides et les doublons sont écartés ; l'avertissement ne
+ * contient AUCUNE valeur de clé.
+ */
+let avertiCleLecture = false;
+function clesDeLecture(): Buffer[] {
+  const courante = getKey();
+  if (!courante) return [];
+  const trousseau: Buffer[] = [courante];
+  const brut = process.env["PII_ENCRYPTION_KEYS_LECTURE"];
+  if (!brut) return trousseau;
+  let ignorees = 0;
+  for (const morceau of brut.split(",")) {
+    const hex = morceau.trim();
+    if (hex === "") continue;
+    if (!/^[0-9a-fA-F]{64}$/.test(hex)) {
+      ignorees += 1;
+      continue;
+    }
+    const cle = Buffer.from(hex, "hex");
+    if (!trousseau.some((deja) => deja.equals(cle))) trousseau.push(cle);
+  }
+  if (ignorees > 0 && !avertiCleLecture) {
+    console.warn(
+      `[pii-crypto] PII_ENCRYPTION_KEYS_LECTURE : ${ignorees} entrée(s) invalide(s) ignorée(s) (64 caractères hexadécimaux attendus).`,
+    );
+    avertiCleLecture = true;
+  }
+  return trousseau;
+}
+
+/**
+ * Essaie chaque clé dans l'ordre (courante d'abord) ; rend le résultat de la
+ * première dont l'étiquette GCM passe. Si aucune ne passe, relève l'erreur de
+ * la clé courante (comportement d'avant le trousseau).
+ */
+function essayerCles<R>(cles: readonly Buffer[], tenter: (cle: Buffer) => R): R {
+  let premiere: unknown;
+  for (let i = 0; i < cles.length; i += 1) {
+    try {
+      return tenter(cles[i] as Buffer);
+    } catch (err) {
+      if (i === 0) premiere = err;
+    }
+  }
+  throw premiere;
+}
+
+/**
  * Chiffre un plaintext PII. Si la clé est absente (dev fallback) → retourne
  * le plaintext inchangé (avec warn une seule fois) — sauf `cleExigee`, qui lève.
  *
@@ -236,10 +287,13 @@ export function decryptPii<T extends string | null | undefined>(
   if (iv.length !== IV_BYTES) throw new Error("[pii-crypto] IV length mismatch");
   if (tag.length !== TAG_BYTES) throw new Error("[pii-crypto] tag length mismatch");
 
-  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-  decipher.setAuthTag(tag);
-  if (v2) decipher.setAAD(Buffer.from(options?.aad ?? "", "utf8"));
-  const plaintext = Buffer.concat([decipher.update(ciphertext), decipher.final()]);
+  const aad = Buffer.from(options?.aad ?? "", "utf8");
+  const plaintext = essayerCles([key, ...clesDeLecture().slice(1)], (cle) => {
+    const decipher = crypto.createDecipheriv(ALGORITHM, cle, iv);
+    decipher.setAuthTag(tag);
+    if (v2) decipher.setAAD(aad);
+    return Buffer.concat([decipher.update(ciphertext), decipher.final()]);
+  });
   return plaintext.toString("utf8") as T;
 }
 
@@ -334,9 +388,42 @@ export function dechiffrerOctetsPii(enveloppe: Buffer): Buffer {
   const iv = enveloppe.subarray(debutIv, debutIv + IV_BYTES);
   const tag = enveloppe.subarray(debutIv + IV_BYTES, minimum);
   const chiffre = enveloppe.subarray(minimum);
-  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-  decipher.setAuthTag(tag);
-  return Buffer.concat([decipher.update(chiffre), decipher.final()]);
+  return essayerCles([key, ...clesDeLecture().slice(1)], (cle) => {
+    const decipher = crypto.createDecipheriv(ALGORITHM, cle, iv);
+    decipher.setAuthTag(tag);
+    return Buffer.concat([decipher.update(chiffre), decipher.final()]);
+  });
+}
+
+/**
+ * Quelle clé déchiffre cette valeur ? `"courante"`, `"lecture"` (une clé du
+ * trousseau de lecture) ou `null` (aucune, valeur claire ou illisible). Pour le
+ * script de rotation (PR P). Ne lève jamais, ne rend jamais la valeur.
+ */
+export function cleQuiDechiffre(chiffre: string, aad?: string): "courante" | "lecture" | null {
+  if (!estChiffre(chiffre)) return null;
+  const v2 = chiffre.startsWith(PREFIX_V2);
+  const parts = chiffre.slice(v2 ? PREFIX_V2.length : PREFIX_V1.length).split(":");
+  if (parts.length !== 3) return null;
+  const [ivHex, ctHex, tagHex] = parts as [string, string, string];
+  const iv = Buffer.from(ivHex, "hex");
+  const ciphertext = Buffer.from(ctHex, "hex");
+  const tag = Buffer.from(tagHex, "hex");
+  if (iv.length !== IV_BYTES || tag.length !== TAG_BYTES) return null;
+  const trousseau = clesDeLecture();
+  for (let i = 0; i < trousseau.length; i += 1) {
+    try {
+      const decipher = crypto.createDecipheriv(ALGORITHM, trousseau[i] as Buffer, iv);
+      decipher.setAuthTag(tag);
+      if (v2) decipher.setAAD(Buffer.from(aad ?? "", "utf8"));
+      decipher.update(ciphertext);
+      decipher.final();
+      return i === 0 ? "courante" : "lecture";
+    } catch {
+      // étiquette refusée : clé suivante
+    }
+  }
+  return null;
 }
 
 /**

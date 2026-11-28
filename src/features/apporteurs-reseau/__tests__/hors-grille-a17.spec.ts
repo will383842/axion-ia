@@ -162,6 +162,13 @@ describe("prestation hors grille (A1.7)", () => {
     );
   });
 
+  it("une Journée IA v2 (palier hors-grille, créée par le passage) est alertée à J-10 sous « Prestation hors grille »", async () => {
+    etat.lignes = [ligne("c1", { activite: "formation", palier: PALIER_HORS_GRILLE })];
+    etat.factures = { "F-c1": PAYEE };
+    expect(await alerterHorsGrille(new Date("2026-09-21T10:00:00Z"))).toBe(1);
+    expect(String(etat.alertes[0]!["titre"])).toContain(LIBELLE_HORS_GRILLE);
+  });
+
   it("une ligne suspendue (contestation, art. 4.2 bis) n'est pas alertée", async () => {
     etat.lignes = [ligne("c1", { litigeDepuis: new Date("2026-09-01T00:00:00Z") })];
     etat.factures = { "F-c1": PAYEE };
