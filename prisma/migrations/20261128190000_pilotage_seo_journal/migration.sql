@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS "seo_modifications" (
     "appliquee_le" TIMESTAMPTZ(3),
     "date_avant" TIMESTAMPTZ(3),
     "decide_par" VARCHAR(80),
+    "annule_par" VARCHAR(80),
+    "annulee_le" TIMESTAMPTZ(3),
     "mesure_avant" JSONB,
     "mesure_apres" JSONB,
     "groupe" VARCHAR(20),

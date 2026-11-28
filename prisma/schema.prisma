@@ -19460,6 +19460,9 @@ model SeoModification {
   /// Date réellement publiée avant l'écriture (ArticleTranslation.updatedAt), à restaurer à l'annulation.
   dateAvant   DateTime? @map("date_avant") @db.Timestamptz(3)
   decidePar   String?   @map("decide_par") @db.VarChar(80)
+  /// Administrateur qui a annulé (distinct de `decidePar`, qui garde celui qui a appliqué).
+  annulePar   String?   @map("annule_par") @db.VarChar(80)
+  annuleeLe   DateTime? @map("annulee_le") @db.Timestamptz(3)
   mesureAvant Json?     @map("mesure_avant")
   mesureApres Json?     @map("mesure_apres")
   /// traite | temoin

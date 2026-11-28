@@ -22,7 +22,11 @@ import type { CarteRequetes } from "../strategie/carte-requetes";
 import { controlerConformite, type ResultatConformite } from "./conformite";
 import { decider as deciderGardien } from "./gardien";
 import { redacteurEnChef } from "./redacteur-en-chef";
-import { ecrireCorpsJournalise, type TxJournal } from "../../seo-pilotage/actions/journal";
+import {
+  cibleVerrouillee,
+  ecrireCorpsJournalise,
+  type TxJournal,
+} from "../../seo-pilotage/actions/journal";
 import { sansBalises, type DependancesMiseAJour } from "./mise-a-jour";
 
 /**
@@ -92,8 +96,16 @@ export async function dependancesReelles(
       await redis.incr(cleQuota);
       await redis.expire(cleQuota, 2 * 24 * 3600);
     },
-    gardien: (brief) =>
-      deciderGardien(brief, {
+    gardien: async (brief) => {
+      // Verrou du journal (28 jours / proposition ouverte) contrôlé AVANT toute dépense : sinon le
+      // circuit payant s'exécuterait pour une écriture qui sera refusée à l'enregistrement.
+      if (await cibleVerrouillee(prisma, c.articleId, c.maintenant)) {
+        return {
+          decision: "ecarter" as const,
+          raison: "Article déjà modifié depuis moins de 28 jours (journal SEO).",
+        };
+      }
+      return deciderGardien(brief, {
         carte: c.carte,
         voisins: async () => {
           const proches = await findNearestArticles(prisma, { articleId: c.articleId, limit: 5 });
@@ -104,7 +116,8 @@ export async function dependancesReelles(
             }),
           );
         },
-      }),
+      });
+    },
     verifier: async (html, motCle) => {
       const { jobId, contentType } = await obtenirPorteur();
       const dossier = await constituerDossierPreuves({
