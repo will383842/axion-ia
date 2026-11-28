@@ -6,7 +6,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const DOSSIER = join(process.cwd(), "prisma", "migrations", "20261128160000_apporteurs_avenants");
+const DOSSIER = join(process.cwd(), "prisma", "migrations", "20261128180000_apporteurs_avenants");
 const lire = (f: string) => readFileSync(join(DOSSIER, f), "utf8");
 const instructions = (sql: string) =>
   sql
