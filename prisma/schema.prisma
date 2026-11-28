@@ -2816,6 +2816,29 @@ model PorteCohorte {
   @@map("porte_cohortes")
 }
 
+/// Porte qualité (CONCEPTION-PORTE-QUALITE.md § 7.1 et § 13, PR Q5a) — registre des intentions :
+/// « une intention = une page ». Table NOUVELLE, aucune lecture ni écriture branchée en Q5a
+/// (le remplissage et le critère B05 arrivent en Q5). Aucune clé étrangère, aucune énumération :
+/// `etat` (libre | reservee | couverte | a_fusionner) et `intention` sont du texte libre (règle 6 du § 3).
+/// rgpd: technique — requête de recherche normalisée et page du site ; aucune donnée sur une personne
+model ContentIntention {
+  id                String   @id @default(cuid())
+  requeteNormalisee String   @unique @map("requete_normalisee") @db.VarChar(300)
+  intention         String?  @db.VarChar(40)
+  persona           String?  @db.VarChar(200)
+  sousQuestions     Json?    @map("sous_questions")
+  pageType          String?  @map("page_type") @db.VarChar(60)
+  pageProprietaire  String?  @map("page_proprietaire") @db.VarChar(500)
+  etat              String   @default("libre") @db.VarChar(20)
+  source            String?  @db.VarChar(60)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([etat])
+  @@index([pageProprietaire])
+  @@map("content_intentions")
+}
+
 /// City Domination 2026-05-18 P1-9 (audit A10) — Audit trail SOC2 immuable
 /// pour toute modification de ContentGenConfig + autres settings admin
 /// content-gen. Append-only : pas d'UPDATE/DELETE exposés via le helper
