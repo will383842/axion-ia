@@ -75,20 +75,20 @@ describe("Baromètre 2027 IA TPE/PME", () => {
     expect(JSON.stringify(buildBarometreJsonLd("fr"))).not.toMatch(interdit);
   });
 
-  it("ouverture : 1er décembre 2026 00:00 heure de Paris, avant = faux, après = vrai", () => {
-    expect(Date.parse(BAROMETRE_DATE_OUVERTURE)).toBe(Date.parse("2026-11-30T23:00:00Z"));
-    expect(barometreEstPublic(new Date("2026-11-30T22:59:59.999Z"))).toBe(false);
-    expect(barometreEstPublic(new Date("2026-11-30T23:00:00.000Z"))).toBe(true);
+  it("ouverture : 28 novembre 2026 00:00 heure de Paris, avant = faux, après = vrai", () => {
+    expect(Date.parse(BAROMETRE_DATE_OUVERTURE)).toBe(Date.parse("2026-11-27T23:00:00Z"));
+    expect(barometreEstPublic(new Date("2026-11-27T22:59:59.999Z"))).toBe(false);
+    expect(barometreEstPublic(new Date("2026-11-27T23:00:00.000Z"))).toBe(true);
     expect(barometreEstPublic(new Date("2027-03-01T12:00:00Z"))).toBe(true);
   });
 
   it("avant l'ouverture : hors sitemap ; après : présent", async () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     try {
-      vi.setSystemTime(new Date("2026-11-30T22:00:00Z"));
+      vi.setSystemTime(new Date("2026-11-27T22:00:00Z"));
       const avant = await sitemap({ id: Promise.resolve("pages") });
       expect(avant.filter((e) => e.url.includes("barometre-ia-tpe-pme-2027"))).toEqual([]);
-      vi.setSystemTime(new Date("2026-12-01T00:30:00+01:00"));
+      vi.setSystemTime(new Date("2026-11-28T00:30:00+01:00"));
       const apres = await sitemap({ id: Promise.resolve("pages") });
       expect(apres.some((e) => e.url.includes("barometre-ia-tpe-pme-2027"))).toBe(true);
     } finally {
@@ -100,10 +100,10 @@ describe("Baromètre 2027 IA TPE/PME", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     let meta;
     try {
-      vi.setSystemTime(new Date("2026-11-30T22:00:00Z"));
+      vi.setSystemTime(new Date("2026-11-27T22:00:00Z"));
       meta = await generateMetadata({ params: Promise.resolve({ locale: "fr" }) });
       expect(meta.robots).toMatchObject({ index: false });
-      vi.setSystemTime(new Date("2026-12-01T00:30:00+01:00"));
+      vi.setSystemTime(new Date("2026-11-28T00:30:00+01:00"));
       const apres = await generateMetadata({ params: Promise.resolve({ locale: "fr" }) });
       expect(apres.robots).not.toMatchObject({ index: false });
     } finally {
