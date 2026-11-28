@@ -343,7 +343,9 @@ describe("lancerContenu : défauts relevés en relecture", () => {
         if (e.etat === "a_relire") throw new Error("journal en panne");
       },
     };
-    await expect(lancerContenu(besoin, q)).rejects.toThrow(/journal en panne/);
+    await expect(lancerContenu(besoin, q)).rejects.toThrow(
+      /Panne d.un port d.écriture.*journal en panne/,
+    );
     expect(refus).toHaveLength(0);
   });
 
@@ -444,6 +446,46 @@ describe("lancerContenu : défauts relevés en relecture", () => {
       issue: "abandonne",
       code: "plafond_atteint",
     });
+  });
+
+  it("coût de la porte vu par les rôles suivants : pas de réécriture au-delà de 3 $", async () => {
+    const corr: ResultatCritere = {
+      id: "B08",
+      etat: "echec",
+      preuve: "p",
+      raison: "r",
+      section: "1",
+    };
+    vi.mocked(reecrireSections).mockResolvedValue({
+      verdict: "redige",
+      article,
+      problemes: [],
+    } as never);
+    const { p } = ports(async () => ({
+      etat: "ok",
+      sortie: sortie("a_corriger", 78, [corr]),
+      coutUsd: 2.9,
+    }));
+    // Le plafond est atteint avant la 2e porte : abandon, pas de second appel à la porte.
+    const porte = vi.fn(p.appelerPorte);
+    const r = await lancerContenu(besoin, { ...p, appelerPorte: porte });
+    expect(r).toMatchObject({ issue: "abandonne", code: "plafond_atteint" });
+    expect(porte).toHaveBeenCalledTimes(1);
+  });
+
+  it("extinction après le verdict : l'issue réelle (à trancher) est conservée", async () => {
+    const b06: ResultatCritere = {
+      id: "B06",
+      etat: "echec",
+      preuve: "p",
+      raison: "r",
+      section: "0",
+    };
+    const { p } = ports(async () => {
+      vi.stubEnv("CONTENT_CHAINE_EDITORIALE", "");
+      return { etat: "ok", sortie: sortie("a_corriger", 80, [b06]) };
+    });
+    expect(await lancerContenu(besoin, p)).toMatchObject({ issue: "a_trancher" });
   });
 
   it("l'abandon pour plafond de réécritures est imputé au rôle demandeur (expert)", async () => {

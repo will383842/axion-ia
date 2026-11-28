@@ -48,6 +48,8 @@ import { strategeBrief, type EntreeStrateg } from "./roles/strateg-brief";
 import { ChaineEteinteError, exigerChaineAllumee, roleAllume } from "./roles/interrupteur";
 import { verifierFaits, type ResultatLien } from "./roles/verificateur-faits";
 
+const COUT_MAX_PORTE_DEFAUT_USD = 0.5;
+
 export const ETATS_CONTENU = [
   "besoin",
   "brief",
@@ -109,6 +111,8 @@ export interface PortsChaine {
   readonly appel: AppelModele;
   readonly maintenant: () => Date;
   readonly urlSite: string;
+  /** Coût maximal estimé d'un appel à la porte (défaut 0,5 $) : réservé avant l'appel. */
+  readonly coutMaxPorteUsd?: number;
   readonly urlCouvrante: (requete: string) => string | null;
   readonly pageProprietaire: (requete: string) => string | null;
   readonly testerLien: (url: string) => Promise<ResultatLien>;
@@ -117,7 +121,11 @@ export interface PortsChaine {
   /** Écrit un refus (table `ContenuRefus`) : un seul mécanisme pour la chaîne et la porte. */
   readonly enregistrerRefus: (ligne: LigneRefusChaine) => Promise<void>;
   readonly journaliser: (evenement: EvenementJournal) => Promise<void>;
-  /** Dépose dans la file de relecture humaine (jamais de publication). */
+  /**
+   * Dépose dans la file de relecture humaine (jamais de publication). DOIT être idempotent par
+   * `contenuId` : si le journal tombe juste après le dépôt, `PanneEcriture` remonte et l'appelant
+   * peut relancer le même besoin sans créer un second dépôt.
+   */
   readonly deposerEnRelecture: (contenu: ContenuARelire) => Promise<void>;
 }
 
@@ -154,9 +162,12 @@ class Abandon extends Error {
 }
 
 /** Panne d'un port d'écriture (journal, refus, file) : remonte, ne devient jamais un abandon. */
-class PanneEcriture extends Error {
+export class PanneEcriture extends Error {
   constructor(readonly origine: unknown) {
-    super("Panne d'un port d'écriture de la chaîne");
+    super(
+      `Panne d'un port d'écriture de la chaîne : ${origine instanceof Error ? origine.message : "inconnue"}`,
+    );
+    this.name = "PanneEcriture";
   }
 }
 
@@ -221,8 +232,7 @@ function sansDoublonCorrections(cs: ReadonlyArray<Correction>): Correction[] {
 export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise<IssueContenu> {
   exigerChaineAllumee();
   const compteur = new CompteurCout();
-  let coutPorte = 0;
-  const total = () => compteur.totalUsd + coutPorte;
+  const total = () => compteur.totalUsd;
   let reecritures = 0;
   /** Qui a demandé la réécriture en cours : les abandons lui sont imputés. */
   let demandeur: LigneRefusChaine["role"] = "redacteur";
@@ -446,7 +456,7 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
       };
       // La porte a un coût (juge, sources) : il compte dans le plafond du contenu, et l'appel
       // n'est pas lancé si le plafond est déjà atteint.
-      if (total() >= PLAFOND_COUT_USD - 1e-9) {
+      if (total() + (ports.coutMaxPorteUsd ?? COUT_MAX_PORTE_DEFAUT_USD) > PLAFOND_COUT_USD) {
         throw new Abandon("plafond_atteint", "Plafond de coût atteint avant la porte", "porte");
       }
       let appelPorte: ResultatAppelPorte;
@@ -455,15 +465,9 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
       } catch (e) {
         appelPorte = { etat: "erreur", message: e instanceof Error ? e.message : "erreur" };
       }
-      if (
-        typeof appelPorte.coutUsd === "number" &&
-        Number.isFinite(appelPorte.coutUsd) &&
-        appelPorte.coutUsd > 0
-      ) {
-        coutPorte += appelPorte.coutUsd;
-      }
+      if (typeof appelPorte.coutUsd === "number") compteur.ajouterExterne(appelPorte.coutUsd);
       if (appelPorte.etat !== "ok") {
-        await aller("porte", `en attente : ${appelPorte.message}`);
+        await journal("porte", `en attente : ${appelPorte.message}`);
         return { issue: "en_attente", raison: appelPorte.message, coutUsd: total() };
       }
       const sortie: SortiePorte = appelPorte.sortie;
@@ -518,17 +522,17 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
           return { issue: "a_relire", contenu };
         }
         case "reporter":
-          await aller("porte", "reporté (plafond du jour ou coupe-circuit)");
+          await journal("porte", "reporté (plafond du jour ou coupe-circuit)");
           return { issue: "reporte", coutUsd: total() };
         case "mettre_en_attente":
-          await aller("porte", `en attente : ${action.criteres.join(", ") || "porte"}`);
+          await journal("porte", `en attente : ${action.criteres.join(", ") || "porte"}`);
           return {
             issue: "en_attente",
             raison: `Critères non évalués : ${action.criteres.join(", ") || "note invalide"}`,
             coutUsd: total(),
           };
         case "derogation_ou_fusion":
-          await aller("porte", `à trancher : ${action.criteres.join(", ")}`);
+          await journal("porte", `à trancher : ${action.criteres.join(", ")}`);
           return { issue: "a_trancher", criteres: action.criteres, coutUsd: total() };
         case "abandonner":
           // Les lignes de la porte sont déjà écrites : pas de seconde ligne pour la même cause.
@@ -561,7 +565,7 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
       }
     }
   } catch (e) {
-    if (e instanceof PanneEcriture) throw e.origine;
+    if (e instanceof PanneEcriture) throw e;
     if (e instanceof ChaineEteinteError) {
       // Éteinte en cours de route : le contenu attend, aucune dépense de plus, aucun abandon.
       await journal(etat, "chaîne éteinte en cours de route");
