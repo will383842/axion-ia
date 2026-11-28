@@ -14,6 +14,10 @@ export interface TocItem {
   readonly anchor: string;
   readonly title: string;
   readonly level: 2 | 3;
+  /** Variante v2 seulement : ligne de détail sous le titre (ex. durée du chapitre). */
+  readonly detail?: string;
+  /** Variante v2 seulement : avancement 0-100 (`--p`), décor. */
+  readonly progression?: number;
 }
 
 interface ArticleTOCProps {
@@ -36,6 +40,10 @@ interface ArticleTOCProps {
   readonly niveauMax?: 2 | 3;
   /** Libellé du sommaire déjà traduit (défaut : texte historique FR/EN). */
   readonly libelle?: string;
+  /** Variante v2 : identifiant du `<nav>` (cible d'un lien « Revenir au sommaire »). */
+  readonly id?: string;
+  /** Variante v2 : total affiché à droite du libellé (ex. durée de lecture). */
+  readonly total?: string;
 }
 
 /** Extrait les headings h2/h3 depuis un body HTML ou markdown brut. */
@@ -86,6 +94,8 @@ export function ArticleTOC({
   cibleTactile = false,
   niveauMax = 3,
   libelle,
+  id,
+  total,
 }: ArticleTOCProps) {
   const items = niveauMax === 3 ? tousLesItems : tousLesItems.filter((i) => i.level <= niveauMax);
   if (items.length < 2) return null;
@@ -118,8 +128,16 @@ export function ArticleTOC({
     const liste = (
       <ol>
         {groupes.map((g) => (
-          <li key={g.item.anchor}>
-            <a href={`#${g.item.anchor}`}>{g.item.title}</a>
+          <li
+            key={g.item.anchor}
+            {...(g.item.progression !== undefined
+              ? { style: { "--p": `${g.item.progression}%` } as React.CSSProperties }
+              : {})}
+          >
+            <a href={`#${g.item.anchor}`}>
+              {g.item.title}
+              {g.item.detail ? <span className="sommaire__duree">{g.item.detail}</span> : null}
+            </a>
             {g.enfants.length > 0 ? (
               <ol>
                 {g.enfants.map((e) => (
@@ -136,9 +154,12 @@ export function ArticleTOC({
     return (
       <>
         <JsonLd data={itemListJsonLd} />
-        <nav aria-label={label} className="sommaire not-prose">
+        <nav aria-label={label} className="sommaire not-prose" {...(id ? { id } : {})}>
           <details>
-            <summary>{label}</summary>
+            <summary>
+              {label}
+              {total ? <span className="sommaire__total">{total}</span> : null}
+            </summary>
             {liste}
           </details>
         </nav>

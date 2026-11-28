@@ -1,0 +1,38 @@
+{
+  "surtitre": "Guide pilier",
+  "categorie": "{nombre} chapitres",
+  "categorieSansChapitres": "Guide complet",
+  "signe": {
+    "legende": "chapitres, une étape à la fois"
+  },
+  "sommaire": {
+    "titre": "Les {nombre} chapitres du guide",
+    "total": "{minutes} min",
+    "detail": "≈ {minutes} min · chapitre {numero} sur {total}"
+  },
+  "chapitre": {
+    "position": "Chapitre {numero} sur {total}",
+    "duree": "≈ {minutes} min",
+    "reste": "≈ {minutes} min restantes",
+    "dernier": "Dernier chapitre",
+    "suivant": "Aller au chapitre suivant",
+    "suivantPrecision": " : chapitre {numero} sur {total}",
+    "retour": "Revenir au sommaire",
+    "numeroCourt": "Chapitre {numero}"
+  },
+  "ctaMilieu1": {
+    "titre": "Par où commencer chez vous ?",
+    "texte": "Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.",
+    "lien": "Le guide IA entreprise, {pages} pages"
+  },
+  "ctaMilieu2": {
+    "titre": "Tout ce guide, en une journée",
+    "texte": "Audit le matin, formation l’après-midi, puis rapport détaillé et plan à 90 jours sous 10 jours ouvrés.",
+    "lien": "Écrire un message"
+  },
+  "feuilleDeRoute": {
+    "surtitre": "À imprimer ou à partager",
+    "titreDebut": "Votre feuille",
+    "titreEm": "de route"
+  }
+}

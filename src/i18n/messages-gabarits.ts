@@ -15,6 +15,7 @@ export const CODES_MESSAGES_GABARITS = [
   "definition",
   "faq",
   "chiffres",
+  "guide-pilier",
 ] as const;
 
 export type CodeMessagesGabarits = (typeof CODES_MESSAGES_GABARITS)[number];
@@ -37,6 +38,7 @@ const CHARGEURS: Record<
     definition: () => import("../messages/gabarits/definition.fr.json"),
     faq: () => import("../messages/gabarits/faq.fr.json"),
     chiffres: () => import("../messages/gabarits/chiffres.fr.json"),
+    "guide-pilier": () => import("../messages/gabarits/guide-pilier.fr.json"),
   },
   en: {
     commun: () => import("../messages/gabarits/commun.en.json"),
@@ -48,6 +50,7 @@ const CHARGEURS: Record<
     definition: () => import("../messages/gabarits/definition.en.json"),
     faq: () => import("../messages/gabarits/faq.en.json"),
     chiffres: () => import("../messages/gabarits/chiffres.en.json"),
+    "guide-pilier": () => import("../messages/gabarits/guide-pilier.en.json"),
   },
 };
 

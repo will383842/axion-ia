@@ -1,0 +1,38 @@
+{
+  "surtitre": "Pillar guide",
+  "categorie": "{nombre} chapters",
+  "categorieSansChapitres": "Complete guide",
+  "signe": {
+    "legende": "chapters, one step at a time"
+  },
+  "sommaire": {
+    "titre": "The {nombre} chapters of the guide",
+    "total": "{minutes} min",
+    "detail": "≈ {minutes} min · chapter {numero} of {total}"
+  },
+  "chapitre": {
+    "position": "Chapter {numero} of {total}",
+    "duree": "≈ {minutes} min",
+    "reste": "≈ {minutes} min left",
+    "dernier": "Last chapter",
+    "suivant": "Go to the next chapter",
+    "suivantPrecision": ": chapter {numero} of {total}",
+    "retour": "Back to the contents",
+    "numeroCourt": "Chapter {numero}"
+  },
+  "ctaMilieu1": {
+    "titre": "Where to start in your company?",
+    "texte": "A few questions about your business, and you leave with concrete leads.",
+    "lien": "The enterprise AI guide, {pages} pages"
+  },
+  "ctaMilieu2": {
+    "titre": "This whole guide, in one day",
+    "texte": "Audit in the morning, training in the afternoon, then a detailed report and a 90-day plan within 10 working days.",
+    "lien": "Write a message"
+  },
+  "feuilleDeRoute": {
+    "surtitre": "To print or to share",
+    "titreDebut": "Your",
+    "titreEm": "roadmap"
+  }
+}

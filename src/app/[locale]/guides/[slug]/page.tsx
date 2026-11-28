@@ -53,6 +53,7 @@ import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransp
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { TermesGlossaireLies } from "@/components/marketing/TermesGlossaireLies";
 import { termesPourTexte } from "@/content/maillage-glossaire";
+import { gabaritsV2Actifs } from "@/lib/blog/gabarits-v2";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
 // pour rétablir le cache ISR (audit Web Vitals 2026-05-15).
@@ -192,6 +193,78 @@ export default async function GuidePiliersPage({ params }: Props) {
       }))
     : [];
   const pageUrl = `${SITE_URL}/fr/guides/${slug}`;
+
+  // Gabarits v2 (PR M-GU1) : habillage de la page derrière l'interrupteur BLOG_GABARITS_V2,
+  // éteint par défaut. Insertion unique : tout le calcul ci-dessus est conservé, le JSON-LD
+  // et les metadata restent ceux de la V1. Import dynamique : le JavaScript du gabarit n'est
+  // exécuté que derrière la garde ; en revanche webpack rattache sa feuille de style à la
+  // route même interrupteur coupé (CSS bornée à [data-gabarit]).
+  if (gabaritsV2Actifs()) {
+    const { GabaritGuidePilier } =
+      await import("@/components/article-v2/gabarits/GabaritGuidePilier");
+    const { decouperTitre } = await import("@/components/article-v2/decouper-titre");
+    const titreParts = decouperTitre(guide.title);
+    const dateLisible = (d: Date) =>
+      d.toLocaleDateString("fr-FR", {
+        timeZone: "UTC",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    const liees = await findRelatedArticles({
+      currentSlug: slug,
+      currentTitle: guide.title,
+      locale: "fr",
+      limit: 4,
+    });
+    return (
+      <GabaritGuidePilier
+        locale="fr"
+        slug={slug}
+        titreComplet={guide.title}
+        titre={{ lead: titreParts.lead, em: titreParts.em }}
+        tldr={guide.excerpt || null}
+        publieLe={{
+          iso: guide.publishedAt.toISOString(),
+          lisible: dateLisible(guide.publishedAt),
+        }}
+        misAJourLe={
+          guide.updatedAt.getTime() !== guide.publishedAt.getTime()
+            ? { iso: guide.updatedAt.toISOString(), lisible: dateLisible(guide.updatedAt) }
+            : null
+        }
+        etapes={guide.hasStructuredSteps ? guide.steps : []}
+        html={guideBodyHtmlPrefixe}
+        paragraphes={paragraphs}
+        tocItems={tocItems}
+        photo={{
+          src: guide.featuredImage,
+          alt: guide.featuredImageAlt,
+          photographerName: guide.photographerName,
+          photographerUrl: guide.photographerUrl,
+        }}
+        pointCle={guide.keyTakeaway}
+        expertQuote={guide.expertQuote}
+        faqItems={guide.faqItems}
+        citations={guide.citations}
+        pageUrl={pageUrl}
+        filAriane={breadcrumbItems}
+        bylineManon={manonByline}
+        questionsAssociees={peopleAlsoAsk}
+        suggestions={liees.map((r) => ({
+          href: `/blog/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+          ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
+        }))}
+        precedentSuivant={{ prev: adjacent.prev, next: adjacent.next }}
+        termesLies={termesPourTexte(`${guide.title}\n${guide.body}`)}
+        jsonLd={personJsonLd ? [jsonLd, personJsonLd] : [jsonLd]}
+      />
+    );
+  }
 
   return (
     <>

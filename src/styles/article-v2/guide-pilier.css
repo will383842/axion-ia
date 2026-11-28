@@ -1,1 +1,363 @@
-/* Guide pilier (GU1) : feuille créée d'avance, vide. */
+/*
+ * Gabarit « Guide pilier » (PR M-GU1) : sommaire de chapitres en grille avec progression,
+ * bandeaux « Chapitre n sur N » en alternance, feuille de route finale. Importée par
+ * GabaritGuidePilier seulement, jamais par globals.css (PLAN §15.7). Toutes les règles sont
+ * bornées à [data-gabarit="guide-pilier"] ; mobile d'abord ; jetons du site uniquement, aucun
+ * hexadécimal. Les règles `.v-*` de la maquette (dessins de substitution) ne sont pas reprises :
+ * la photo est une vraie photo.
+ */
+
+/* Mise en page ordinateur : le sommaire de chapitres reste DANS la colonne de lecture
+   (ligne 3, sous l'ouverture) ; la colonne droite ne porte que la carte d'action, visible dès le
+   premier écran puis collée en haut. */
+@media (min-width: 1024px) {
+  [data-gabarit="guide-pilier"] .mise-en-page {
+    grid-template-rows: auto auto auto 1fr;
+  }
+  [data-gabarit="guide-pilier"] .sommaire {
+    grid-column: 1;
+    grid-row: 3;
+    position: static;
+    max-height: none;
+    overflow: visible;
+    margin: 0 0 1rem;
+    background: none;
+    border: 0;
+  }
+  [data-gabarit="guide-pilier"] .sommaire ol::after {
+    content: none;
+  }
+  /* sommaire dans la colonne de lecture : jamais tronqué */
+  [data-gabarit="guide-pilier"] .article__corps {
+    grid-row: 4;
+  }
+  /* la carte (collante, socle) n'a pas de sommaire sous elle : aucune place à réserver en fin de grille */
+  [data-gabarit="guide-pilier"] .action {
+    margin-bottom: 0;
+  }
+}
+/* Sommaire de chapitres : grandes cartes numérotées avec barre de progression (décor) */
+[data-gabarit="guide-pilier"] .sommaire details {
+  border: 2px solid var(--color-mocha);
+}
+[data-gabarit="guide-pilier"] .sommaire summary {
+  font-size: 0.875rem;
+}
+[data-gabarit="guide-pilier"] .sommaire__total {
+  margin-left: auto;
+  white-space: nowrap;
+  font: 600 0.8125rem/1 var(--font-mono);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-fg-soft);
+}
+[data-gabarit="guide-pilier"] .sommaire ol {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.25rem 0.75rem 0.9rem;
+}
+[data-gabarit="guide-pilier"] .sommaire ol a {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.1rem 0.85rem;
+  align-items: center;
+  min-height: 76px;
+  padding: 0.8rem 1rem 1.1rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+[data-gabarit="guide-pilier"] .sommaire ol a::before {
+  grid-row: 1 / 3;
+  align-self: center;
+  min-width: 2.5rem;
+  font: 600 2rem/1 var(--font-serif);
+  color: var(--color-terracotta);
+}
+[data-gabarit="guide-pilier"] .sommaire ol a::after {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 0.55rem;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--color-terracotta) var(--p),
+    var(--color-sand-deep) var(--p)
+  );
+}
+[data-gabarit="guide-pilier"] .sommaire ol a:hover {
+  background: var(--color-sand);
+  border-color: var(--color-mocha);
+}
+[data-gabarit="guide-pilier"] .sommaire__duree {
+  font: 400 0.8125rem/1.3 var(--font-sans);
+  color: var(--color-fg-muted);
+}
+@media (min-width: 640px) {
+  [data-gabarit="guide-pilier"] .sommaire ol {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1024px) {
+  [data-gabarit="guide-pilier"] .sommaire details {
+    border-radius: var(--radius-xl);
+    background: var(--color-paper);
+  }
+  [data-gabarit="guide-pilier"] .sommaire summary {
+    padding: 1.1rem 1.25rem 0.6rem;
+  }
+  [data-gabarit="guide-pilier"] .sommaire ol {
+    padding: 0.25rem 1rem 1rem;
+  }
+  [data-gabarit="guide-pilier"] .sommaire ol a {
+    font-size: 0.9375rem;
+  }
+}
+/* Chapitre : bandeau plein (mocha / terracotta en alternance) */
+[data-gabarit="guide-pilier"] .chapitre {
+  margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 0;
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 0 0 1.75rem;
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  padding-right: clamp(4.5rem, 3rem + 8vw, 9rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+/* Chiffre du chapitre : ENTIER, centré verticalement (il était coupé en bas et passait pour une faute) */
+[data-gabarit="guide-pilier"] .chapitre__numero {
+  position: absolute;
+  z-index: -1;
+  right: clamp(0.75rem, 2vw, 1.75rem);
+  top: 50%;
+  translate: 0 -50%;
+  font: 600 clamp(5rem, 3.5rem + 6vw, 8rem) / 1 var(--font-serif);
+  letter-spacing: -0.05em;
+  color: var(--color-terracotta-on-mocha);
+}
+[data-gabarit="guide-pilier"] .chapitre__position {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.75rem;
+  margin: 0 0 0.8rem !important;
+  font: 600 0.8125rem/1.3 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[data-gabarit="guide-pilier"] .chapitre__duree {
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta-on-mocha);
+  color: var(--color-mocha);
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+  text-transform: none;
+}
+[data-gabarit="guide-pilier"] .chapitre__reste {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-mocha-fg-muted);
+}
+[data-gabarit="guide-pilier"] .chapitre__barre {
+  display: block;
+  height: 6px;
+  margin: 0 0 1.1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-mocha-soft);
+  max-width: 22rem;
+}
+[data-gabarit="guide-pilier"] .chapitre__barre::before {
+  content: "";
+  display: block;
+  height: 100%;
+  width: var(--p);
+  border-radius: inherit;
+  background: var(--color-terracotta-on-mocha);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau h2 {
+  margin: 0;
+  font: 600 clamp(1.625rem, 1.2rem + 1.6vw, 2.375rem) / 1.14 var(--font-serif);
+  letter-spacing: -0.02em;
+  color: var(--color-mocha-fg);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau .lien-fleche {
+  margin-top: 0.6rem;
+  font-size: 0.9375rem;
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau .ancre {
+  opacity: 0.85;
+  color: var(--color-mocha-fg);
+  margin: 0;
+}
+/* variante terracotta (chapitres pairs) : texte papier uniquement (5,81:1) */
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta {
+  background: var(--color-terracotta);
+  color: var(--color-paper);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta h2,
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta a:not(.btn),
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta .ancre {
+  color: var(--color-paper);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta a:not(.btn):hover {
+  color: var(--color-mocha-fg);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta .chapitre__numero {
+  color: var(--color-mocha);
+  opacity: 0.55;
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta .chapitre__duree {
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta .chapitre__reste {
+  color: var(--color-paper);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta .chapitre__barre {
+  background: var(--color-terracotta-deep);
+}
+[data-gabarit="guide-pilier"] .chapitre__bandeau--terracotta .chapitre__barre::before {
+  background: var(--color-paper);
+}
+[data-gabarit="guide-pilier"] .chapitre__corps > h3 {
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+/* Pied de chapitre : résumé + chapitre suivant + retour au sommaire */
+[data-gabarit="guide-pilier"] .chapitre__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1.25rem;
+  margin: 1.25rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--color-border-strong);
+  font-size: 0.9375rem;
+}
+[data-gabarit="guide-pilier"] .chapitre__pied .lien-fleche {
+  color: var(--color-terracotta-deep);
+}
+[data-gabarit="guide-pilier"] .chapitre__pied .lien-retour {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-fg-soft);
+  font-weight: 400;
+}
+/* Feuille de route finale (résumé visuel du guide) */
+[data-gabarit="guide-pilier"] .feuille-route {
+  margin: 4rem 0 1rem;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  border-radius: var(--radius-2xl);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  box-shadow: var(--ombre-bloc);
+}
+[data-gabarit="guide-pilier"] .feuille-route__surtitre {
+  margin: 0 0 0.5rem;
+}
+[data-gabarit="guide-pilier"] .feuille-route h2 {
+  margin: 0 0 1.25rem;
+  font: 600 clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem) / 1.1 var(--font-serif);
+  letter-spacing: -0.02em;
+}
+/* a11y : le h2 sans classe héritait de l'encre du socle (.prose > section > h2) = 1,25:1 sur mocha */
+[data-gabarit="guide-pilier"] .prose > section.feuille-route > h2 {
+  margin: 0 0 1.25rem;
+  color: var(--color-mocha-fg);
+}
+[data-gabarit="guide-pilier"] .feuille-route h2 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-on-mocha);
+}
+[data-gabarit="guide-pilier"] .feuille-route ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: f;
+  display: grid;
+}
+[data-gabarit="guide-pilier"] .feuille-route li {
+  counter-increment: f;
+  display: grid;
+  grid-template-columns: 2.75rem 1fr;
+  gap: 0.85rem;
+  align-items: center;
+  margin: 0;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border-on-mocha);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+[data-gabarit="guide-pilier"] .feuille-route li:last-child {
+  border-bottom: 0;
+}
+[data-gabarit="guide-pilier"] .feuille-route li::before {
+  content: counter(f);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-terracotta-on-mocha);
+  color: var(--color-mocha);
+  font: 600 1.125rem/1 var(--font-mono);
+}
+[data-gabarit="guide-pilier"] .feuille-route li:last-child::before {
+  background: var(--color-mocha-fg);
+}
+[data-gabarit="guide-pilier"] .feuille-route li span {
+  color: var(--color-mocha-fg-muted);
+  font-size: 0.875rem;
+  display: block;
+}
+@media (forced-colors: active) {
+  [data-gabarit="guide-pilier"] .visuel__cadre svg {
+    forced-color-adjust: auto;
+  }
+  [data-gabarit="guide-pilier"] .chapitre__bandeau,
+  [data-gabarit="guide-pilier"] .feuille-route,
+  [data-gabarit="guide-pilier"] .sommaire ol a {
+    border: 2px solid CanvasText;
+  }
+  [data-gabarit="guide-pilier"] .chapitre__numero,
+  [data-gabarit="guide-pilier"] .sommaire ol a::after {
+    display: none;
+  }
+  [data-gabarit="guide-pilier"] .chapitre__barre {
+    border: 1px solid CanvasText;
+  }
+  [data-gabarit="guide-pilier"] .chapitre__barre::before {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+  [data-gabarit="guide-pilier"] .feuille-route li::before,
+  [data-gabarit="guide-pilier"] .chapitre__duree {
+    border: 1px solid CanvasText;
+  }
+}
+@media print {
+  [data-gabarit="guide-pilier"] .chapitre__numero,
+  [data-gabarit="guide-pilier"] .chapitre__barre {
+    display: none;
+  }
+  [data-gabarit="guide-pilier"] .chapitre__bandeau,
+  [data-gabarit="guide-pilier"] .feuille-route {
+    background: none;
+    color: var(--color-ink);
+    border: 2px solid var(--color-ink);
+  }
+}

@@ -1,9 +1,9 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import type { GabaritArticle } from "@/server/content-gen/blog/gabarits";
+import type { GabaritPage } from "@/lib/blog/photos-repli";
 
 interface HerosArticleProps {
-  readonly gabarit: GabaritArticle;
+  readonly gabarit: GabaritPage;
   readonly categorie: string;
   readonly titre: { readonly lead: string; readonly em?: string | undefined };
   readonly chapo: string | null;
@@ -11,9 +11,20 @@ interface HerosArticleProps {
   readonly auteurHref: string;
   readonly publieLe: string;
   readonly misAJourLe: string | null;
-  readonly tempsLecture: string;
+  readonly tempsLecture: string | null;
   readonly pageUrl: string;
   readonly titreArticle: string;
+  /** Texte de la pastille « type » (défaut : celui du gabarit, dans `commun`). */
+  readonly surtitreType?: string;
+  /**
+   * Signe du gabarit (décor `aria-hidden`). Absent : celui de `commun` pour les huit gabarits
+   * du blog. `null` : aucun signe.
+   */
+  readonly signe?: { readonly grand: string; readonly legende: string } | null;
+  /** Date de publication déjà formatée (défaut : la valeur brute de `publieLe`). */
+  readonly publieLisible?: string;
+  /** Date de mise à jour déjà formatée (défaut : la valeur brute de `misAJourLe`). */
+  readonly misAJourLisible?: string;
 }
 
 /**
@@ -34,9 +45,17 @@ export function HerosArticle({
   tempsLecture,
   pageUrl,
   titreArticle,
+  surtitreType,
+  signe,
+  publieLisible,
+  misAJourLisible,
 }: HerosArticleProps) {
   const c = useTranslations("articleGabarits.commun");
   const modifie = misAJourLe && misAJourLe !== publieLe ? misAJourLe : null;
+  const signeAffiche =
+    signe !== undefined
+      ? signe
+      : { grand: c(`signe.${gabarit}.grand`), legende: c(`signe.${gabarit}.legende`) };
   const url = encodeURIComponent(pageUrl);
   const partages = [
     {
@@ -58,7 +77,7 @@ export function HerosArticle({
   return (
     <header className="heros sur-terracotta">
       <ul className="surtitre" aria-label={c("typeEtCategorie")}>
-        <li className="pastille pastille--pleine">{c(`surtitre.${gabarit}`)}</li>
+        <li className="pastille pastille--pleine">{surtitreType ?? c(`surtitre.${gabarit}`)}</li>
         <li className="pastille pastille--contour">{categorie}</li>
       </ul>
       <h1>
@@ -85,17 +104,17 @@ export function HerosArticle({
         </li>
         <li>
           <time dateTime={publieLe}>
-            {c("publieLe")} {publieLe}
+            {c("publieLe")} {publieLisible ?? publieLe}
           </time>
         </li>
         {modifie ? (
           <li data-aeo="freshness">
             <time dateTime={modifie}>
-              {c("misAJourLe")} {modifie}
+              {c("misAJourLe")} {misAJourLisible ?? modifie}
             </time>
           </li>
         ) : null}
-        <li className="meta__lecture">{tempsLecture}</li>
+        {tempsLecture ? <li className="meta__lecture">{tempsLecture}</li> : null}
       </ul>
       <div className="heros__pied">
         <ul className="partage-icones" aria-label={c("partager")}>
@@ -107,10 +126,12 @@ export function HerosArticle({
             </li>
           ))}
         </ul>
-        <div className={`heros__signe signe--${gabarit}`} aria-hidden="true">
-          <span className="signe__grand">{c(`signe.${gabarit}.grand`)}</span>
-          <span className="signe__legende">{c(`signe.${gabarit}.legende`)}</span>
-        </div>
+        {signeAffiche ? (
+          <div className={`heros__signe signe--${gabarit}`} aria-hidden="true">
+            <span className="signe__grand">{signeAffiche.grand}</span>
+            <span className="signe__legende">{signeAffiche.legende}</span>
+          </div>
+        ) : null}
       </div>
     </header>
   );
