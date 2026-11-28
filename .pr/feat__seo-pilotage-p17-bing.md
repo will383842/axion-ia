@@ -36,4 +36,4 @@ Le cron est posé au démarrage du worker (`bootRepeatableJobs`) ; un worker plu
 - Lignes sans position valide (≤ 0) écartées ; corps JSON illisible classé `reponse_invalide`.
 - À vérifier dans la documentation Microsoft avant d'allumer : granularité exacte des dates (jour ou semaine) et échelle de `AvgImpressionPosition`.
 
-VERDICT OPUS : (en attente du tour 2)
+VERDICT OPUS : BON (tour 2, aucun point bloquant ; remarques non bloquantes : un nom ajouté après coup n'est refiltré que si la requête revient dans la réponse Bing du jour)
