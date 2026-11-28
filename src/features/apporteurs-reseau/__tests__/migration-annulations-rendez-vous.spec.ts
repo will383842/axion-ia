@@ -21,7 +21,10 @@ describe("migration des annulations de rendez-vous", () => {
       // La rotation du RIB (PR P) est légitimement postérieure (157000) : on ne compare pas à elle.
       (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_apporteurs_rotation_rib"),
     );
-    const fautives = autres.filter((d) => horodatage(d) >= horodatage(nom));
+    // Les migrations d'autres chantiers, posées après, sont admises : liste fermée.
+    const fautives = autres.filter(
+      (d) => horodatage(d) >= horodatage(nom) && !d.endsWith("_porte_qualite_content_intentions"),
+    );
     expect(fautives).toEqual([]);
   });
 

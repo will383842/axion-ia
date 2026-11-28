@@ -15,7 +15,7 @@ export type Source<T> =
 export type EtatLien = "sain" | "mort" | "non_indexable";
 
 export type FamilleCritere =
-  "doctrine" | "faits" | "structure" | "completude" | "maillage" | "metadonnees";
+  "doctrine" | "faits" | "structure" | "completude" | "maillage" | "metadonnees" | "unicite";
 
 /** Classement unique des bloquants (§ 5). */
 export type ClasseBloquant = "dur" | "corrigeable" | "derogeable";
@@ -53,6 +53,17 @@ export interface PenalitesNote {
   readonly intention?: number;
 }
 
+/** Un contenu proche du brouillon (B06). `cosinus` vient de l'embedding du brouillon, calculé AVANT publication. */
+export interface VoisinSemantique {
+  readonly id: string;
+  /** Table ou index d'origine : article, page statique, service, offre, journée IA, ville, FAQ… */
+  readonly type: string;
+  readonly url: string | null;
+  /** `publie` ou `en_file` (deux brouillons du même jour ne doivent pas se doublonner, § 7.2). */
+  readonly etat: "publie" | "en_file";
+  readonly cosinus: number;
+}
+
 export interface ContextePorte {
   readonly reglages: ReglagesPorte;
   /** Horloge injectée (la porte ne lit jamais l'heure elle-même). */
@@ -67,6 +78,11 @@ export interface ContextePorte {
   readonly pageProprietaire: Source<string | null>;
   /** Corps actuellement publié (`null` = jamais publié). */
   readonly corpsDejaPublie: Source<string | null>;
+  /**
+   * B06 : voisins les plus proches du brouillon (publiés ET en file). Absent = non évalué
+   * (échec fermé). `ok` + liste vide = corpus vide, rien à doubler.
+   */
+  readonly voisinsSemantiques?: Source<ReadonlyArray<VoisinSemantique>> | undefined;
   /** Pénalités de la note issues de critères pas encore branchés (Q3 et suivants). */
   readonly penalites: PenalitesNote;
 }
