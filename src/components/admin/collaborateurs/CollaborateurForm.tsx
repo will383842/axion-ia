@@ -17,6 +17,11 @@ import {
   type LieuTrouve,
 } from "@/server/actions/equipe/collaborateurs";
 import { deposerPhotoAction, retirerPhotoAction } from "@/server/actions/equipe/photo";
+import {
+  enregistrerEnBrouillon,
+  refuserFiche,
+  validerEtPublier,
+} from "@/server/actions/equipe/a-valider";
 
 export interface FicheInitiale {
   id?: string;
@@ -51,13 +56,22 @@ export interface FicheInitiale {
   categoryAnswers: unknown;
 }
 
+const NOTE_REFUS_MIN = 10;
+
 const liste = (s: string): string[] =>
   s
     .split(",")
     .map((x) => x.trim())
     .filter(Boolean);
 
-export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
+export function CollaborateurForm({
+  initial,
+  modeValidation = false,
+}: {
+  initial: FicheInitiale;
+  /** Écran « À valider » : les trois décisions remplacent « Publier » (pas de consentement saisi ici). */
+  modeValidation?: boolean;
+}) {
   const router = useRouter();
   const [f, setF] = useState(initial);
   const [lieux, setLieux] = useState<LieuTrouve[]>([]);
@@ -65,6 +79,7 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
   const [erreur, setErreur] = useState<string | null>(null);
   const [champs, setChamps] = useState<Record<string, string>>({});
   const [info, setInfo] = useState<string | null>(null);
+  const [noteRefus, setNoteRefus] = useState("");
   const [enCours, demarrer] = useTransition();
   const maj = <K extends keyof FicheInitiale>(cle: K, valeur: FicheInitiale[K]) =>
     setF((p) => ({ ...p, [cle]: valeur }));
@@ -403,6 +418,7 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
             <input
               type="checkbox"
               checked={f.consentPublication}
+              disabled={modeValidation}
               onChange={(e) => maj("consentPublication", e.target.checked)}
             />
             Accord de publication de la page
@@ -411,6 +427,7 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
             <input
               type="checkbox"
               checked={f.consentLinkedin}
+              disabled={modeValidation}
               onChange={(e) => maj("consentLinkedin", e.target.checked)}
             />
             Accord d&apos;affichage du lien LinkedIn
@@ -431,7 +448,36 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
           <AdminButton type="submit" loading={enCours}>
             Enregistrer
           </AdminButton>
-          {f.id && f.status !== "publie" ? (
+          {modeValidation && f.id ? (
+            <>
+              <AdminButton
+                type="button"
+                variant="secondary"
+                disabled={enCours}
+                onClick={() =>
+                  executer(
+                    () => enregistrerEnBrouillon(f.id, payload(), f.version),
+                    "Fiche enregistrée en brouillon.",
+                  )
+                }
+              >
+                Enregistrer en brouillon
+              </AdminButton>
+              <AdminButton
+                type="button"
+                disabled={!peutPublier || enCours}
+                onClick={() =>
+                  executer(
+                    () => validerEtPublier(f.id, payload(), f.version),
+                    "Fiche validée et publiée.",
+                  )
+                }
+              >
+                Valider et publier
+              </AdminButton>
+            </>
+          ) : null}
+          {!modeValidation && f.id && f.status !== "publie" ? (
             <AdminButton
               type="button"
               variant="secondary"
@@ -452,6 +498,31 @@ export function CollaborateurForm({ initial }: { initial: FicheInitiale }) {
             </AdminButton>
           ) : null}
         </div>
+        {modeValidation && f.id ? (
+          <section aria-label="Refus" className="border-terracotta space-y-2 rounded border p-4">
+            <h2 className="text-lg font-semibold">Refuser cette fiche</h2>
+            <label className="flex flex-col gap-1">
+              Note de refus (obligatoire, {NOTE_REFUS_MIN} caractères au moins). La fiche repart en
+              brouillon, rien n&apos;est publié.
+              <textarea
+                rows={3}
+                value={noteRefus}
+                maxLength={2000}
+                onChange={(e) => setNoteRefus(e.target.value)}
+              />
+            </label>
+            <AdminButton
+              type="button"
+              variant="danger"
+              disabled={enCours || noteRefus.trim().length < NOTE_REFUS_MIN}
+              onClick={() =>
+                executer(() => refuserFiche(f.id, noteRefus, f.version), "Fiche refusée.")
+              }
+            >
+              Refuser
+            </AdminButton>
+          </section>
+        ) : null}
         {f.id && !f.consentPublication && f.status !== "publie" ? (
           <p>
             « Publier » reste grisé tant que l&apos;accord de publication n&apos;est pas enregistré.

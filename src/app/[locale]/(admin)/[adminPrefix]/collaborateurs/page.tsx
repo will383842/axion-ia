@@ -85,7 +85,9 @@ export default async function CollaborateursPage({ params, searchParams }: PageP
         invitations={invitations}
       />
       <p className="mb-4">
-        À valider : <strong>{aValider}</strong>
+        <Link className="underline" href={`${base}/a-valider`}>
+          À valider : <strong>{aValider}</strong>
+        </Link>
       </p>
       <form method="get" className="mb-4 flex flex-wrap gap-3">
         <select name="categorie" defaultValue={categorie ?? ""} aria-label="Catégorie">
