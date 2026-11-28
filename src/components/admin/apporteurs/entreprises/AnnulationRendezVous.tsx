@@ -29,7 +29,7 @@ export function QualifierAnnulation({ id }: { id: string }) {
       <input type="hidden" name="id" value={id} />
       <label className="text-[length:var(--text-admin-sm)]">
         Motif (obligatoire si l&apos;entreprise a annulé)
-        <textarea name="motif" rows={2} maxLength={2000} className="admin-input w-full" />
+        <textarea name="motif" rows={2} maxLength={2000} className="admin-input" />
       </label>
       <div className="flex flex-wrap gap-[var(--space-admin-2)]">
         <button
