@@ -56,9 +56,12 @@ describe("migration porte qualité Q5a : additive", () => {
   });
   it("le rollback ne supprime rien : mise de côté par RENAME", () => {
     expect(rollback).toMatch(/RENAME TO "content_intentions_retire_20261128"/);
-    expect(rollback.split("\n").filter((l) => !l.trim().startsWith("--")).join("\n")).not.toMatch(
-      /\bDROP\b/i,
-    );
+    expect(
+      rollback
+        .split("\n")
+        .filter((l) => !l.trim().startsWith("--"))
+        .join("\n"),
+    ).not.toMatch(/\bDROP\b/i);
   });
   it("le nom est postérieur à toutes les autres migrations", () => {
     const autres = readdirSync(join(process.cwd(), "prisma", "migrations")).filter(
