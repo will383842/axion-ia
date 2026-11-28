@@ -5,7 +5,6 @@
  * dans `mise-a-jour.ts`. Appelé seulement quand `CONTENT_EQUIPE_EDITORIALE=true`.
  */
 
-import { Prisma } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
 import { findNearestArticles } from "../dedup/nearest-articles";
@@ -23,6 +22,7 @@ import type { CarteRequetes } from "../strategie/carte-requetes";
 import { controlerConformite, type ResultatConformite } from "./conformite";
 import { decider as deciderGardien } from "./gardien";
 import { redacteurEnChef } from "./redacteur-en-chef";
+import { ecrireCorpsJournalise, type TxJournal } from "../../seo-pilotage/actions/journal";
 import { sansBalises, type DependancesMiseAJour } from "./mise-a-jour";
 
 /**
@@ -180,13 +180,17 @@ export async function dependancesReelles(
       return { decision: s.decision, coutUsd: s.coutJugeUsd };
     },
     enregistrer: async ({ articleId, html, dateModifiee }) => {
-      await prisma.$transaction([
-        prisma.articleTranslation.updateMany({
-          where: { articleId, locale: "fr" },
-          data: { body: html, bodyText: texteBrut(html), bodyJson: Prisma.DbNull },
-        }),
-        prisma.article.update({ where: { id: articleId }, data: { updatedAt: dateModifiee } }),
-      ]);
+      // Journal (« avant » et « après ») écrit dans la même transaction que le corps ; la date est posée
+      // sur ArticleTranslation.updatedAt, celle que le blog publie, et sur Article.updatedAt.
+      await prisma.$transaction(async (tx) => {
+        await ecrireCorpsJournalise(tx as unknown as TxJournal, {
+          articleId,
+          html,
+          texteBrut: texteBrut(html),
+          dateModifiee,
+          origine: "equipe_maj",
+        });
+      });
     },
   };
 }
