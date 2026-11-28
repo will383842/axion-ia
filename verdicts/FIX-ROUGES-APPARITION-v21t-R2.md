@@ -72,3 +72,55 @@ Conséquence : toute PR qui ajoute ou modifie un de ces fichiers sera **rouge en
 `apparition.test.ts` saute ses 6 cas de rendu quand les dépendances de `studio-rendu` manquent. J'ai forcé ces suites sans les dépendances (stub inerte du `vi.mock`) : **12/12 passent, empreinte `ff1dbf99…` comprise**. Le chemin de rendu de `Toile` n'utilise donc pas `remotion`, et le `skipIf` coupe sans nécessité 6 tests dans les deux jobs sans dépendances. Pour garder la couverture partout, on peut retirer `describeRendu`. Sinon, écrire dans le commentaire que c'est une prudence.
 
 Par ailleurs, `gv-tests-moteurs.yml` ne déclenche `tests/image-video` (avec les dépendances) que sur `src/moteurs/montage-image-video/`. Une PR qui ne toucherait que `studio-rendu/compositions/image-video/Toile.tsx` n'y relancerait donc pas l'empreinte. C'est un trou préexistant, hors du périmètre de la branche, mais à connaître.
+
+---
+
+## Second relecteur R2 (session indépendante, même tête 640f9f22) : A CORRIGER aussi, deuxième point bloquant
+
+**Constat ci-dessus reproduit** : `tests/numero-suivi-postgres-reel.test.ts` lancé sans base Postgres puis passé à `comparer()` donne `ok=false` sur la branche (« ROUGE : fichier sauté … ») et `ok=true` sur master (3 tests lancés).
+
+**Point bloquant supplémentaire** : tests/image-video/variete/apparition.test.ts:44. La mutation `skipIf(!DEPS_RENDU)` → `skipIf(DEPS_RENDU)` reste verte (6 passed, 6 skipped). Ajouter un test toujours lancé qui rougit si la condition de saut s'inverse.
+
+
+Relecteur R2 indépendant. Tête vérifiée : 640f9f22f514ce9b4c181ec3ef7af6d21ca6e08e (inchangée). Code du Studio non modifié (toutes les mutations restaurées, `git diff` propre).
+
+### Diff relu (`git diff origin/master...origin/video/FIX-ROUGES-APPARITION-v21t`)
+
+6 fichiers, +275/−16 : `scripts/comparer-echecs.mjs`, `tests/scripts/comparer-echecs.test.ts`, `tests/image-video/variete/apparition.test.ts`, plus `src/domaine/site-videos/bornes-site.ts`, `src/domaine/site-videos/controles.ts` et `tests/site-videos/encart-3-bornes-site.test.ts`.
+- Ces trois derniers viennent du commit `dcb6ebff` (#1786), un doublon de `50fec39a` déjà sur master. Le blob `bornes-site.ts` est identique (`c8296b97`), donc la fusion ne change rien net. C'est du bruit dans le diff à trois points, pas un écart de périmètre.
+- Rien sous `.github/**`, `deploiement/**`, `outils/gardes/**` ni `scripts/echecs-connus.json`, et aucun secret. Le diff est petit et cohérent avec le nom de la branche. La fusion dans `origin/master` (88a2dc52) se fait sans conflit.
+
+### Preuves
+
+- Install : `pnpm install --frozen-lockfile` à la racine, et `npm ci` dans `studio-rendu`.
+- Tests des fichiers touchés, sans les dépendances de `studio-rendu` : 3 fichiers, 38 passed, 6 skipped. Avec ces dépendances : 44/44 passed.
+- Branche fusionnée dans master : `vitest run tests/scripts/comparer-echecs.test.ts tests/site-videos/ tests/image-video/variete/apparition.test.ts` donne 41 fichiers et 363/363 passed. L'empreinte `ff1dbf99…` est bien celle de master courant.
+- `tsc --noEmit -p .` (avec `--max-old-space-size=10240`, le tas par défaut fait un OOM) : 43 erreurs sur la branche et 43 sur master, identiques ligne à ligne (`remotion` introuvable dans `docs/**/prototypes`). Aucune erreur neuve.
+- Chaque comportement ajouté dans `comparer-echecs` a un test nommé d'après sa promesse : fichier entièrement sauté = rouge, cas sauté non compté, fichier sans cas ≠ sauté.
+
+### Mutations (9 au total, chacune restaurée)
+
+| # | Mutation | Résultat |
+|---|----------|----------|
+| 1 | `comparer` : retrait de `&& sautes.length === 0` | 🔴 1 failed |
+| 2 | `compterLances` : retrait du filtre passed/failed | 🔴 2 failed |
+| 3 | `fichiersSautes` : `cas.length > 0` → `>= 0` | 🔴 1 failed |
+| 4 | `rapport` : ligne « fichier sauté » supprimée | 🔴 1 failed |
+| 5 | `fichiersSautes` : `!cas.some` → `cas.some` | 🔴 6 failed |
+| 6 | `EMPREINTE_TOILE_REFERENCE` modifiée d'un caractère | 🔴 2 failed |
+| 7 | **`apparition.test.ts:44` `skipIf(!DEPS_RENDU)` → `skipIf(DEPS_RENDU)`** | **🟢 6 passed, 6 skipped : TROU** |
+| 8 | `bornes-site.ts` `n < min` → `n <= min` | 🔴 2 failed |
+| 9 | `controles.ts` `dejaSignale` : `=== "titreWeb"` → `!==` | 🔴 1 failed |
+
+### Pourquoi la mutation 7 bloque
+
+La branche pose une règle : un fichier entièrement sauté est rouge (« un vert qui ne regarde rien »). Dans le même temps, elle rend `apparition.test.ts` **partiellement** sautable. La condition de saut peut alors s'inverser sans qu'aucun test ne rougisse.
+
+Avec la condition inversée, les deux suites qui portent la promesse de la branche sont sautées en silence partout où `remotion` est installé, y compris dans `gv-tests-moteurs`, qui installe `studio-rendu`. Ces deux suites sont « APP · référence inchangée » (l'empreinte `ff1dbf99`) et « APP · dessin » (« rouge sans le lot »). Les 6 tests moteur suffisent à garder `comparer-echecs` au vert.
+
+À corriger : ajouter dans une suite toujours lancée un test qui lie la condition de saut à la présence réelle de `remotion`. Par exemple, `const SAUTER_RENDU = !DEPS_RENDU; const describeRendu = decrire.skipIf(SAUTER_RENDU);` et `it("les suites de rendu ne sont sautées que si remotion manque", () => expect(SAUTER_RENDU).toBe(!existsSync(join(process.cwd(), "studio-rendu/node_modules/remotion/package.json"))))`. Ensuite, refaire la mutation 7 et vérifier qu'elle rougit.
+
+### Remarques non bloquantes
+
+- Hors des jobs qui installent `studio-rendu` (« tests des fichiers touchés », `tests-nouveau`), l'empreinte recalculée n'est jamais vérifiée. Elle ne l'est que dans `gv-tests-moteurs`, sur la zone `src/moteurs/montage-image-video/` ou `studio-rendu/`, et dans les passages complets. C'est cohérent avec le commentaire du fichier, mais il faut le savoir.
+- Le dernier commit (« correction ») ne dit pas ce qu'il corrige.
