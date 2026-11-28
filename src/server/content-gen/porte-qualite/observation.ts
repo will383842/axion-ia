@@ -111,6 +111,18 @@ export function contexteDepuisEnv(
   };
 }
 
+/** false si les clés stockées violent le schéma : `reglagesDepuisConfig` retombe alors sur les défauts en bloc. */
+export function reglagesStockesValides(valeur: unknown): boolean {
+  const fusion: Record<string, unknown> = { ...REGLAGES_PAR_DEFAUT };
+  if (typeof valeur === "object" && valeur !== null && !Array.isArray(valeur)) {
+    const brut = valeur as Record<string, unknown>;
+    for (const cle of Object.keys(REGLAGES_PAR_DEFAUT)) {
+      if (cle in brut && brut[cle] !== undefined) fusion[cle] = brut[cle];
+    }
+  }
+  return ReglagesPorteSchema.safeParse(fusion).success;
+}
+
 export interface LigneVerdictEcrite {
   readonly jobId: string;
   readonly contentKind: string;

@@ -38,8 +38,14 @@ describe("observation de la porte qualité", () => {
     expect(ACTION).toMatch(/await requireAdmin\(\)/);
     for (const src of [PAGE, ACTION]) {
       expect(src).not.toMatch(/\.(create|update|upsert|delete|deleteMany|updateMany)\(/);
-      expect(src).not.toMatch(/<form|<button|onClick|"use client"/);
+      expect(src).not.toMatch(/onClick|"use client"/);
     }
+    // Q14 : le seul formulaire est celui des réglages, et la seule écriture passe par le
+    // chokepoint audité ; l'écran ne touche jamais la liste des interdits.
+    expect(PAGE.match(/<form/g)).toHaveLength(1);
+    expect(PAGE).not.toMatch(/import[^;]*interdits-publication|MOTIFS_INTERDITS/);
+    expect(ACTION.match(/writeContentGenConfig\(/g)).toHaveLength(1);
+    expect(ACTION).not.toMatch(/import[^;]*interdits-publication|MOTIFS_INTERDITS/);
     // La seule écriture de l'accès base est la ligne de verdict.
     expect(IO.match(/\.(create|update|upsert|delete|deleteMany|updateMany)\(/g)).toEqual([
       ".create(",

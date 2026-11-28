@@ -120,3 +120,16 @@ describe("robustesse de la lecture", () => {
     expect(lu.criteres[0]?.raison).toBeNull();
   });
 });
+
+describe("réglages fiables (Q14, relecture)", () => {
+  it("config illisible ou invalide : réglages non fiables, jamais présentés comme saisis", () => {
+    const base = { interrupteurActif: false, lignes: { etat: "ok" as const, valeur: [] } };
+    expect(construireVue({ ...base, config: {} }).reglagesFiables).toBe(true);
+    expect(construireVue({ ...base, config: {}, configLisible: false }).reglagesFiables).toBe(
+      false,
+    );
+    expect(construireVue({ ...base, config: { seuilPublication: "x" } }).reglagesFiables).toBe(
+      false,
+    );
+  });
+});
