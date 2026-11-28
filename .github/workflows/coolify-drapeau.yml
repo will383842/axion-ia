@@ -116,6 +116,9 @@ on:
           # Challenges d'apporteurs (invitation libre). Cible : le site. Éteints par défaut.
           - "APPORTEUR_CHALLENGES_CONSOLE_ENABLED"
           - "APPORTEUR_CHALLENGES_ESPACE_ENABLED"
+          # Changement de RIB par l'apporteur (gel des virements tant qu'une demande est ouverte, #2453).
+          # Cible : site seulement (cf. `src/env.ts`). Valeurs : true | false. ÉTEINT par défaut.
+          - "APPORTEUR_CHANGEMENT_IBAN_ENABLED"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS, ORIGINES_SUIVANTES_DEPUIS en UTC « Z »), un identifiant de salon, une adresse d'essai, ou 1 à 5 adresses @axion-ia.com (GUIDES_RESEAU_ESSAI_ADRESSES ; vide pour retirer)"
         required: false
@@ -201,7 +204,7 @@ jobs:
           if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
-          if [[ "$CLE" =~ ^APPORTEUR_CHALLENGES_(CONSOLE|ESPACE)_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
+          if [[ "$CLE" =~ ^APPORTEUR_(CHALLENGES_(CONSOLE|ESPACE)|CHANGEMENT_IBAN)_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
           if [ "$CLE" = "GUIDES_RESEAU_FABRIQUE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
