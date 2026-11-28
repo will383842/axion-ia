@@ -19553,6 +19553,29 @@ model TeamMemberEvent {
   @@map("team_member_events")
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// PILOTAGE SEO & GEO — PR P10 (robots d'IA, agrégats Cloudflare)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Passages d'un robot d'IA sur le site, pour un jour : agrégat `{jour, robot, famille de chemins,
+/// nombre}` issu de l'API GraphQL Analytics de Cloudflare. Ni IP ni user-agent brut : `robot` est un
+/// identifiant d'une liste fermée (ex. `gptbot`), `famille` vaut recherche | entrainement | utilisateur
+/// (chaîne, pas d'énumération Postgres). Un passage de robot n'est pas une citation.
+/// rgpd: technique — compteurs de robots par jour et famille de pages ; aucune donnée sur une personne
+model RobotIaJour {
+  id            Int      @id @default(autoincrement())
+  date          DateTime @db.Date
+  robot         String   @db.VarChar(40)
+  famille       String   @db.VarChar(20)
+  familleChemin String   @map("famille_chemin") @db.VarChar(40)
+  nombre        Int      @default(0)
+  creeLe        DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@unique([date, robot, familleChemin], map: "robot_ia_jours_cle_key")
+  @@index([robot, date], map: "robot_ia_jours_robot_date_idx")
+  @@map("robot_ia_jours")
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Chaîne éditoriale IA (C3) : tables NOUVELLES, additives, non branchées.
 // Aucune énumération Postgres : statuts, intentions, rôles et codes de raison sont du TEXTE
