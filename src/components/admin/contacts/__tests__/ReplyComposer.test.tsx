@@ -8,7 +8,12 @@ const statusActionMock = vi
   .fn()
   .mockResolvedValue({ status: "sent", errorMsg: null, retryCount: 0 });
 const retryActionMock = vi.fn().mockResolvedValue({ ok: true });
+const apercuActionMock = vi.fn().mockResolvedValue({
+  ok: true,
+  apercu: { html: "<p>Bonjour <strong>gras</strong> et <em>italique</em></p>" },
+});
 vi.mock("@/features/admin-submissions/reply-actions", () => ({
+  apercuReponseDemandeAction: (...args: unknown[]) => apercuActionMock(...args),
   replyToSubmissionAction: (...args: unknown[]) => replyActionMock(...args),
   getReplyDeliveryStatusAction: (...args: unknown[]) => statusActionMock(...args),
   retryFailedReplyAction: (...args: unknown[]) => retryActionMock(...args),
@@ -42,18 +47,20 @@ describe("ReplyComposer", () => {
     expect(screen.getByText(/jean@example\.com/i)).toBeInTheDocument();
   });
 
-  it("affiche la preview markdown live (P1-3 audit)", () => {
+  // I2-1 : le second moteur de mise en forme du navigateur est supprimé ; le gras et l'italique
+  // se vérifient désormais dans l'aperçu EXACT rendu par le serveur (cadre isolé).
+  it("affiche l'aperçu exact rendu par le serveur (gras, italique)", async () => {
     render(<ReplyComposer {...baseProps} />);
     fireEvent.click(screen.getByRole("button", { name: /Répondre/i }));
     const bodyTextarea = document.getElementById("reply-body") as HTMLTextAreaElement;
     fireEvent.change(bodyTextarea, {
       target: { value: "Bonjour **gras** et *italique*" },
     });
-    // Le rendu live doit afficher le bold + italic en strong/em.
-    const preview = screen.getByLabelText("Aperçu du message");
-    expect(preview).toBeInTheDocument();
-    expect(preview.querySelector("strong")?.textContent).toBe("gras");
-    expect(preview.querySelector("em")?.textContent).toBe("italique");
+    fireEvent.click(screen.getByRole("button", { name: "Voir l'aperçu exact" }));
+    const cadre = await screen.findByTitle("Aperçu exact de la réponse");
+    const srcdoc = cadre.getAttribute("srcdoc") ?? "";
+    expect(srcdoc).toContain("<strong>gras</strong>");
+    expect(srcdoc).toContain("<em>italique</em>");
   });
 
   it("expose role=dialog + aria-modal + aria-labelledby", () => {
