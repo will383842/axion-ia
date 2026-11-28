@@ -16,6 +16,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { gscTopKeywordsForUrl } from "@/server/content-gen/seo/gsc-client";
+import { historiqueDisponible } from "@/server/seo-pilotage/recalcul";
 import type { SiteRouteGscJobData } from "../types";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -45,6 +46,13 @@ export function startSiteRouteGscWorker() {
     async (job) => {
       if (isStubBuild()) {
         console.log("[site-route-gsc] stub build detected, skipping.");
+        return;
+      }
+      // P6a — pilotage SEO allumé et historique ≥ 28 jours : le recalcul quotidien du robot
+      // (`seo-pilotage`, tâche `recalcul`) tient déjà ces champs à jour depuis la table, sur une
+      // fenêtre homogène et sans quota. Sinon : comportement d'avant (échantillon via l'API).
+      if (await historiqueDisponible(prisma)) {
+        console.log("[site-route-gsc] historique SEO suffisant : recalcul par le robot, skip.");
         return;
       }
       if (!hasGscCredentials()) {
