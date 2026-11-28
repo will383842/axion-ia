@@ -40,6 +40,6 @@ Habille la page autonome `/guides/[slug]` selon la fiche GU1 de `DECOUPAGE.md` (
 
 ## Relecture
 
-Relecture Opus : tour 1 « À CORRIGER » (4 P2 : deux-points du titre, date « mis à jour » au jour près, numéros de chapitre par rang, API partagées avec M-A1) → corrigés ; tour 2 : points confirmés, un nouveau P2 (deux « Mis à jour le » : carte auteur) → corrigé et testé ; tour 3 : voir la ligne de verdict.
+Relecture Opus : tour 1 « À CORRIGER » (4 P2 : deux-points du titre, date « mis à jour » au jour près, numéros de chapitre par rang, API partagées avec M-A1) → corrigés ; tour 2 : points confirmés, un nouveau P2 (deux « Mis à jour le » : carte auteur) → corrigé et testé ; tour 3 : BON (P3 restants : clés du sommaire v2 sur ancre répétée, cible du lien `#step-N` à vérifier visuellement en T1).
 
-VERDICT OPUS : EN ATTENTE (tour 3)
+VERDICT OPUS : BON (tour 3 sur 3 ; aucun P1 ni P2 ; P3 ci-dessus)
