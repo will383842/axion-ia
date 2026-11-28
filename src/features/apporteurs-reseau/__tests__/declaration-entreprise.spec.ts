@@ -22,6 +22,10 @@ const creerPresentation = vi.fn();
 const enqueueEmail = vi.fn();
 const envoyer = vi.fn();
 
+vi.mock("../file-attente", () => ({
+  consommerSiRedeclaration: vi.fn(async () => false),
+  lireIdsEnAttente: vi.fn(async () => new Set()),
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     apporteurReseau: { findUnique: (...a: unknown[]) => findUnique(...a) },

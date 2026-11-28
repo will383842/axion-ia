@@ -48,6 +48,10 @@ vi.mock("../envois", () => ({
     return "envoye";
   }),
 }));
+vi.mock("../file-attente", () => ({
+  mettreEnAttente: vi.fn(async () => "en_attente"),
+  fenetreOuverteParUnAutre: vi.fn(async () => false),
+}));
 vi.mock("@/lib/prisma", () => {
   const prisma = {
     $transaction: async (f: (t: unknown) => unknown) => f(prisma),

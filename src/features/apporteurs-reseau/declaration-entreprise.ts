@@ -29,6 +29,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
+import { consommerSiRedeclaration, lireIdsEnAttente } from "./file-attente";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
 import { versReservationProvisoire } from "./regle-attribution";
@@ -78,9 +79,12 @@ export async function lireDeclarationsDe(apporteurId: string): Promise<Declarati
     },
   });
   const commissions = await lireCommissionsDesPresentations(l.map((p) => p.id));
+  const enAttente = await lireIdsEnAttente(l.map((p) => p.id));
   const out: DeclarationVue[] = [];
   for (const p of l) {
-    const e = etatPourApporteur(p);
+    const e = enAttente.has(p.id)
+      ? ({ etat: "en_attente", jusquAu: null } as const)
+      : etatPourApporteur(p);
     if (e)
       out.push({
         id: p.id,
@@ -157,6 +161,14 @@ export async function declarerEntreprise(
   );
   if (!r.ok) return { ok: false, message: MESSAGE_NEUTRE };
 
+  // Art. 3.5 : si le déclarant était informé au premier rang, sa nouvelle déclaration consomme son délai.
+  await consommerSiRedeclaration({
+    id: r.id,
+    apporteurId,
+    siren: d.siret.slice(0, 9),
+    siret: d.siret,
+    recueAt: maintenant,
+  });
   await prevenirWilliams(r.id, d.denomination, nomComplet(apporteur.prenom, apporteur.nom));
   return { ok: true };
 }

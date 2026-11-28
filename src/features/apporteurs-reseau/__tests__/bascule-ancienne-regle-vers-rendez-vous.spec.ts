@@ -117,6 +117,7 @@ function ok(row: Ligne, where: Ligne): boolean {
 }
 const macrotache = () => new Promise((r) => setTimeout(r, 0));
 
+vi.mock("../file-attente", () => ({ passerFileAttente: vi.fn(async () => undefined) }));
 vi.mock("@/lib/prisma", () => {
   const fake: Ligne = {
     presentationEntreprise: {

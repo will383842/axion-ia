@@ -1,0 +1,8 @@
+-- Rollback de 20261128190000_apporteurs_file_attente.
+-- Seulement sur décision du fondateur : la table porte les déclarations conservées en attente (art. 3.5).
+-- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde.
+--   COPY "declarations_en_attente" TO '/root/travaux-claude/declarations_en_attente.csv' WITH CSV HEADER;
+-- Pour mettre de côté plutôt que supprimer :
+--   DROP TRIGGER "declarations_en_attente_transitions" ON "declarations_en_attente";
+--   DROP TRIGGER "declarations_en_attente_pas_de_suppression" ON "declarations_en_attente";
+--   ALTER TABLE "declarations_en_attente" RENAME TO "declarations_en_attente_retire_20261128";

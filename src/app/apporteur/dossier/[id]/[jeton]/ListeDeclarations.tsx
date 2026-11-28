@@ -14,6 +14,7 @@ const STYLE: Record<EtatDeclaration, string> = {
   reservee: "bg-sage-soft text-sage",
   confirmee: "bg-sage-soft text-sage",
   non_disponible: "bg-terracotta-soft text-terracotta-deep",
+  en_attente: "bg-sand text-fg",
   expiree: "bg-sand text-fg-soft",
 };
 

@@ -123,6 +123,8 @@ describe("déclaration d'entreprise — règles pures (art. 3.2)", () => {
       confirmee: "Confirmée",
       non_disponible: "Non disponible",
       expiree: "Expirée",
+      // Art. 3.5 (file d'attente) : ni rang, ni occupant, ni date.
+      en_attente: "En attente (l'entreprise n'est pas disponible pour le moment)",
     });
   });
 });
