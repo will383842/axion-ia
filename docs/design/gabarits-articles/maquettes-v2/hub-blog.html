@@ -1458,7 +1458,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 @media (min-width: 640px) { .grille-art { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1.5rem; } }
 @media (min-width: 768px) {
   .carte-art--une { flex-direction: row; }
-  .carte-art--une .carte-art__photo { flex: 0 0 52%; aspect-ratio: auto; min-height: 20rem; }
+  .carte-art--une .carte-art__photo { flex: 0 0 52%; aspect-ratio: 16 / 10; align-self: flex-start; }
   .carte-art--une .carte-art__corps { justify-content: center; padding: 2rem; gap: .9rem; }
 }
 @media (min-width: 1024px) { .grille-art--3 { grid-template-columns: repeat(3, minmax(0,1fr)); } }
@@ -1485,6 +1485,9 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
   background: var(--color-paper); border: 1.5px solid var(--color-border-strong); color: var(--color-ink); font: 600 .9375rem/1.2 var(--font-sans); text-decoration: none; }
 .puces a:hover { background: var(--color-mocha); color: var(--color-mocha-fg); border-color: var(--color-mocha); }
 .puces--types a { border-color: var(--color-terracotta); }
+.puces a[aria-current] { background: var(--color-terracotta); color: var(--color-paper); border-color: var(--color-terracotta); }
+.grille-art--1 { grid-template-columns: minmax(0,1fr); }
+.bloc__sous { margin: 2rem 0 1rem; font: 600 1.375rem/1.2 var(--font-serif); color: var(--color-ink); }
 @media (min-width: 1024px) { .acces { grid-template-columns: 1.6fr 1fr; align-items: start; } .acces__groupe--large { grid-row: span 2; } }
 
 /* --- Guides piliers + actualité --- */
@@ -1532,6 +1535,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 .lettre label { font-weight: 600; }
 .lettre input[type=email] { width: 100%; min-height: 48px; padding: .6rem .9rem; border: 2px solid var(--color-border-field); border-radius: var(--radius-lg); background: var(--color-paper); font: 400 1rem/1.3 var(--font-sans); color: var(--color-fg); }
 .lettre .btn { width: 100%; }
+.lettre__champ { min-height: 5.5rem; }
 .lettre__mention { font-size: .8125rem; line-height: 1.5; color: var(--color-fg-soft); }
 @media (min-width: 768px) { .lettre { grid-template-columns: 1fr 1fr; align-items: start; column-gap: 2.5rem; } .lettre__texte { display: grid; gap: .75rem; } }
 
@@ -1566,7 +1570,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 .note-maquette { margin-top: 2.5rem; padding: 1.1rem 1.25rem; border-radius: var(--radius-lg); background: var(--color-ochre-soft); color: var(--color-ochre-deep); font-size: .9375rem; }
 .note-maquette h2 { margin: 0 0 .4rem; font: 600 1.0625rem/1.3 var(--font-sans); }
 .note-maquette ul { margin: 0; padding-left: 1.1rem; }
-.pied-site { margin-top: 3rem; }
+.pied-site { margin-top: 3rem; padding: 2rem 0; background: var(--color-mocha); color: var(--color-mocha-fg-muted); font-size: .875rem; }
 .fil-ariane [aria-current] { max-width: 20em; }
 @media (forced-colors: active) { .carte-art, .question, .puces a, .barometre, .lettre, .appel-fin, .pilier-note { border: 2px solid CanvasText; } .carte-art__photo { border-bottom: 1px solid CanvasText; } }
 @media print { .site-entete, .appel-fin, .lettre { display: none; } }
@@ -1676,8 +1680,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
     <div class="bloc__tete"><p class="bloc__sur">À la une</p><h2 class="bloc__titre" id="une-titre">L’article à lire <em>en premier</em></h2></div>
     <article class="carte-art carte-art--une" data-type="analyse">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads.webp" alt="Visuel Axion-IA : « Investir en connaissance aujourd&#x27;hui, c&#x27;est récolter la liberté demain »" width="1600" height="1000" fetchpriority="high">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads.webp" alt="Visuel Axion-IA : « Investir en connaissance aujourd&#x27;hui, c&#x27;est récolter la liberté demain »" width="1536" height="1024" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Analyse</span><span class="carte-art__cat">Organisation &amp; IA</span></p>
@@ -1701,21 +1704,13 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 
     <div class="acces" id="acces">
       <div class="acces__groupe acces__groupe--large">
-        <h3>Par secteur</h3>
-        <ul class="puces "><li><a href="/fr/blog/secteur/industrie">Industrie</a></li><li><a href="/fr/blog/secteur/comptabilite">Comptabilité &amp; expertise</a></li><li><a href="/fr/blog/secteur/juridique">Juridique</a></li><li><a href="/fr/blog/secteur/banque-finance">Banque &amp; finance</a></li><li><a href="/fr/blog/secteur/conseil">Conseil</a></li><li><a href="/fr/blog/secteur/sante">Santé</a></li><li><a href="/fr/blog/secteur/retail">Retail</a></li><li><a href="/fr/blog/secteur/ecommerce">E-commerce</a></li><li><a href="/fr/blog/secteur/logistique">Logistique</a></li><li><a href="/fr/blog/secteur/agro-alimentaire">Agro-alimentaire</a></li><li><a href="/fr/blog/secteur/tech">Tech</a></li><li><a href="/fr/blog/secteur/saas">SaaS</a></li><li><a href="/fr/blog/secteur/tourisme">Tourisme</a></li><li><a href="/fr/blog/secteur/education">Éducation</a></li><li><a href="/fr/blog/secteur/immobilier">Immobilier</a></li></ul>
+        <h3>Par catégorie</h3>
+        <ul class="puces puces--types"><li><a href="/fr/blog/categorie/blog-formations-ia">Formations IA</a></li><li><a href="/fr/blog/categorie/blog-coaching-1-to-1">Coaching 1-to-1</a></li><li><a href="/fr/blog/categorie/blog-audits-ia">Audits IA</a></li><li><a href="/fr/blog/categorie/blog-implementations-ia">Implémentation &amp; automatisation IA</a></li><li><a href="/fr/blog/categorie/blog-sites-web-augmentes">Sites web &amp; SaaS IA</a></li></ul>
         <p class="bloc__intro"><a class="lien-fleche" href="/fr/blog/categorie">Toutes les catégories<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
       </div>
       <div class="acces__groupe">
-        <h3>Par service</h3>
-        <ul class="puces "><li><a href="/fr/blog/service/audit">Audit IA</a></li><li><a href="/fr/blog/service/interventions">Interventions IA</a></li><li><a href="/fr/blog/service/implementation">Implémentation IA</a></li></ul>
-      </div>
-      <div class="acces__groupe">
-        <h3>Par taille d’entreprise</h3>
-        <ul class="puces "><li><a href="/fr/blog/taille/tpe">TPE</a></li><li><a href="/fr/blog/taille/pme">PME</a></li><li><a href="/fr/blog/taille/eti">ETI</a></li><li><a href="/fr/blog/taille/grande-entreprise">Grande entreprise</a></li></ul>
-      </div>
-      <div class="acces__groupe acces__groupe--large">
-        <h3>Par catégorie</h3>
-        <ul class="puces puces--types"><li><a href="/fr/blog/categorie/blog-formations-ia">Formations IA</a></li><li><a href="/fr/blog/categorie/blog-coaching-1-to-1">Coaching 1-to-1</a></li><li><a href="/fr/blog/categorie/blog-audits-ia">Audits IA</a></li><li><a href="/fr/blog/categorie/blog-implementations-ia">Implémentation &amp; automatisation IA</a></li><li><a href="/fr/blog/categorie/blog-sites-web-augmentes">Sites web &amp; SaaS IA</a></li></ul>
+        <h3>Par parcours</h3>
+        <ul class="puces"><li><a href="/fr/guides">Les guides complets</a></li><li><a href="/fr/glossaire">Le glossaire</a></li><li><a href="/fr/actualites">Les actualités</a></li></ul>
       </div>
     </div>
   </section>
@@ -1725,8 +1720,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
     <ul class="grille-art grille-art--3">
       <li><article class="carte-art" data-type="guide">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere.webp" alt="Quatre collègues autour d&#x27;un ordinateur portable à la fin d&#x27;une réunion, avec la légende « La réunion est finie. Le CR était déjà écrit. »" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere.webp" alt="Quatre collègues autour d&#x27;un ordinateur portable à la fin d&#x27;une réunion, avec la légende « La réunion est finie. Le CR était déjà écrit. »" width="1920" height="1080" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Guide pratique</span><span class="carte-art__cat">Productivité &amp; IA</span></p>
@@ -1737,8 +1731,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 </article></li>
       <li><article class="carte-art" data-type="faq">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-audit-ia-entretien-dirigeant-recueil-besoins-analyse.webp" alt="Affiche « Audit en entreprise » : une loupe sur un engrenage, entourée d&#x27;icônes de gain de temps" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-audit-ia-entretien-dirigeant-recueil-besoins-analyse.webp" alt="Affiche « Audit en entreprise » : une loupe sur un engrenage, entourée d&#x27;icônes de gain de temps" width="1536" height="1024" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Questions-réponses</span><span class="carte-art__cat">Données &amp; RGPD</span></p>
@@ -1749,8 +1742,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 </article></li>
       <li><article class="carte-art" data-type="comparatif">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp" alt="Schéma en cases : les étapes d&#x27;un traitement par l&#x27;IA, de la fourniture des données à l&#x27;amélioration continue" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp" alt="Schéma en cases : les étapes d&#x27;un traitement par l&#x27;IA, de la fourniture des données à l&#x27;amélioration continue" width="1024" height="1536" loading="lazy" decoding="async" style="object-position:top">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Comparatif</span><span class="carte-art__cat">Outils d’IA</span></p>
@@ -1761,8 +1753,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 </article></li>
       <li><article class="carte-art" data-type="definition">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-connexion-outils-crm-erp-ia-automatisation-donnees.webp" alt="Schéma en triangle autour du logo Axion-IA : gagner du temps, réduire vos coûts, maximiser vos résultats" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-connexion-outils-crm-erp-ia-automatisation-donnees.webp" alt="Schéma en triangle autour du logo Axion-IA : gagner du temps, réduire vos coûts, maximiser vos résultats" width="1254" height="1254" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Définition</span><span class="carte-art__cat">Glossaire de l’IA</span></p>
@@ -1773,8 +1764,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 </article></li>
       <li><article class="carte-art" data-type="chiffres">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-automatisation-ia-avant-apres-tableau-bord-45-pourcent-photo-carre.webp" alt="Illustration : un tas de papiers qui se transforme en tableau de bord de résultats" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-automatisation-ia-avant-apres-tableau-bord-45-pourcent-photo-carre.webp" alt="Illustration : un tas de papiers qui se transforme en tableau de bord de résultats" width="1536" height="1024" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Chiffres</span><span class="carte-art__cat">Observatoire IA</span></p>
@@ -1785,8 +1775,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 </article></li>
       <li><article class="carte-art" data-type="selection">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-audit-ia-diagnostic-workflow-taches-repetitives-detection.webp" alt="Visuel Axion-IA : « L&#x27;avenir ne se prévoit pas, il se prépare aujourd&#x27;hui »" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-audit-ia-diagnostic-workflow-taches-repetitives-detection.webp" alt="Visuel Axion-IA : « L&#x27;avenir ne se prévoit pas, il se prépare aujourd&#x27;hui »" width="1536" height="1024" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Sélection</span><span class="carte-art__cat">Administratif &amp; IA</span></p>
@@ -1797,8 +1786,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
 </article></li>
       <li><article class="carte-art" data-type="cas">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-cas-concret-soirees-admin-devis-factures-automatiques-pme-carre.webp" alt="Frise d&#x27;une journée de 9 h à 22 h : devis, factures, e-mails et documents classés automatiquement" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-cas-concret-soirees-admin-devis-factures-automatiques-pme-carre.webp" alt="Frise d&#x27;une journée de 9 h à 22 h : devis, factures, e-mails et documents classés automatiquement" width="1200" height="1200" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Étude de cas</span><span class="carte-art__cat">Bâtiment &amp; artisanat</span></p>
@@ -1822,10 +1810,9 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
   <section class="bloc" id="piliers" aria-labelledby="piliers-titre">
     <div class="bloc__tete"><p class="bloc__sur">Guides piliers</p><h2 class="bloc__titre" id="piliers-titre">Les guides complets, <em>pas à pas</em></h2><p class="bloc__intro">Pour un sujet vu de bout en bout, en chapitres courts.</p></div>
     <div class="piliers">
-      <ul class="grille-art" style="grid-template-columns:minmax(0,1fr)"><li><article class="carte-art" data-type="pilier">
+      <ul class="grille-art grille-art--1"><li><article class="carte-art" data-type="pilier">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-audit-ia-feuille-de-route-implementation-phases-etapes.webp" alt="Visuel d&#x27;audit IA : du temps, de l&#x27;argent et des décisions mieux gérés" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-audit-ia-feuille-de-route-implementation-phases-etapes.webp" alt="Visuel d&#x27;audit IA : du temps, de l&#x27;argent et des décisions mieux gérés" width="1536" height="1024" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Guide pilier</span><span class="carte-art__cat">7 chapitres</span></p>
@@ -1844,11 +1831,10 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
         <a class="btn btn--clair" href="/fr/guides">Voir les guides<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
       </aside>
     </div>
-    <h3 class="bloc__titre" style="font-size:1.375rem;margin:2rem 0 1rem">Dernière actualité</h3>
-    <ul class="grille-art actu-une" style="grid-template-columns:minmax(0,1fr)"><li><article class="carte-art" data-type="actu">
+    <h3 class="bloc__sous">Dernière actualité</h3>
+    <ul class="grille-art grille-art--1 actu-une"><li><article class="carte-art" data-type="actu">
   <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-atelier-pratique-ia-equipe-exercices-mains-dans-la-masse.webp" alt="Affiche « Formation IA » : apprendre, expérimenter, innover" width="1600" height="1000" loading="lazy" decoding="async">
-    <figcaption class="visuellement-masque">Photo illustrant l’article</figcaption>
+    <img src="../../../../public/images/axion-ia-atelier-pratique-ia-equipe-exercices-mains-dans-la-masse.webp" alt="Affiche « Formation IA » : apprendre, expérimenter, innover" width="1536" height="1024" loading="lazy" decoding="async">
   </figure>
   <div class="carte-art__corps">
     <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Actualité</span><span class="carte-art__cat">Réglementation</span></p>
@@ -1877,16 +1863,16 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
       <h2 id="lettre-titre">Recevoir le guide et les nouveautés utiles</h2>
       <p>Laissez votre adresse : le guide de l’IA pour les PME arrive par e-mail d’ici quelques minutes.</p>
     </div>
-    <!-- FORMULAIRE INCHANGÉ : composant NewsletterForm du site (source « article », libellés de src/content/guide-ia-formulaire.ts :
+    <!-- FORMULAIRE INCHANGÉ (libellé « Votre e-mail », sans placeholder ; en production, zone d'alerte réservée en hauteur et Turnstile monté à la première interaction : la hauteur réelle est un peu supérieure à celle de cette maquette) : composant NewsletterForm du site (source « article », libellés de src/content/guide-ia-formulaire.ts :
          bouton « Recevoir le guide », case facultative et décochée pour une adresse personnelle, mention versionnée, Turnstile, leurre anti-spam).
          Seul l'habillage de la section change dans cette maquette ; aucun texte du formulaire n'est modifié. -->
     <form class="lettre__form" method="post" action="#" novalidate>
       <div class="lettre__champ">
-        <label for="lettre-email">Adresse e-mail</label>
-        <input id="lettre-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="vous@entreprise.fr" required>
+        <label for="lettre-email">Votre e-mail</label>
+        <input id="lettre-email" name="email" type="email" inputmode="email" autocomplete="email" required>
       </div>
       <button class="btn btn--terracotta" type="submit">Recevoir le guide</button>
-      <p class="lettre__mention">En recevant le guide, vous recevrez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l’e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Conservation : tant que la relation dure, puis le temps des délais légaux de réclamation. Pour exercer vos droits : contact@axion-ia.com. <a href="/fr/politique-confidentialite">Politique de confidentialité</a></p>
+      <p class="lettre__mention">En recevant le guide, vous recevrez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l’e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Conservation : tant que la relation dure, puis le temps des délais légaux de réclamation. Pour exercer vos droits : contact@axion-ia.com. <a href="/fr/politique-confidentialite">Politique de confidentialité</a>.</p>
     </form>
   </div>
 </section>
@@ -1914,8 +1900,9 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
       <li>Données de la maquette : les dix articles sont ceux des maquettes v3 (mêmes titres, mêmes photos de la banque d'images, mêmes étiquettes de type). Dates, durées et résumés sont ceux de ces maquettes. Aucun chiffre de comptage (nombre d'articles, de pages) n'est affiché.</li>
       <li>Blocs « chiffres » et « Page 1 sur N » : valeurs fictives, signalées « exemple ». En production : le dernier relevé de l’Observatoire (BarometerSnapshot) et le vrai nombre de pages.</li>
       <li>Catégorie sur les cartes : les maquettes v3 des articles affichent un thème (« Organisation &amp; IA »…), alors que le site range les articles dans 5 catégories de service (« Audits IA »…). À trancher par Will.</li>
-      <li>Photos : ce sont les fichiers de la banque d’images déjà utilisés par les maquettes v3, mais plusieurs sont des visuels illustrés, pas des photos, et les textes alternatifs des maquettes v3 (qui décrivaient des scènes absentes) ont été corrigés ici pour décrire ce qu’on voit. Trois visuels portent des chiffres ou des promesses dans l’image (« +45 % », « ROI garanti », « Zéro perte, 100 % gain ») : à remplacer avant publication.</li>
-      <li>Le blog n’a pas de taxonomie « métier » : l’accès par métier est remplacé par secteur, service et taille d’entreprise (pages qui existent déjà).</li>
+      <li>Photos : ce sont les fichiers de la banque d’images déjà utilisés par les maquettes v3, mais plusieurs sont des visuels illustrés, pas des photos, et les textes alternatifs des maquettes v3 (qui décrivaient des scènes absentes) ont été corrigés ici pour décrire ce qu’on voit. Un seul fichier est une vraie photo (la réunion) ; plusieurs visuels portent des chiffres ou des promesses dans l’image (« +45 % », « +32 % », « 98 % », « Devis 30 sec », « ROI garanti », « Zéro perte, 100 % gain ») : à remplacer par de vraies photos avant publication. Les dimensions déclarées sont les vraies ; en production, next/image fournit srcset et sizes.</li>
+      <li>Accès par secteur, service, taille et métier : retirés. Les routes /blog/secteur, /blog/service et /blog/taille existent mais ne génèrent aucune page (le tableau BLOG_POSTS est vide, dynamicParams = false) : les liens seraient en 404. À reconstruire depuis la base avant de les afficher. Restent les 5 catégories réelles, les guides, le glossaire et les actualités.</li>
+      <li>Le bouton « Diagnostic IA, 45 min » de l’appel de fin pointe vers /fr/appel, comme dans les maquettes v3 validées. Le brief exclut la réservation en ligne : à confirmer par Will.</li>
     </ul>
   </aside>
 </div>
@@ -1929,7 +1916,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
       "@type": "CollectionPage",
       "@id": "https://axion-ia.com/fr/blog#collection",
       "url": "https://axion-ia.com/fr/blog",
-      "name": "Blog Axion-IA · l'IA expliquée aux dirigeants de TPE et PME",
+      "name": "Le blog Axion-IA : l'IA expliquée aux dirigeants de PME",
       "inLanguage": "fr-FR",
       "dateModified": "2026-11-28",
       "isPartOf": { "@id": "https://axion-ia.com/#website" },
@@ -1947,7 +1934,11 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
         { "@type": "ListItem", "position": 1, "url": "https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai", "name": "Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai" },
         { "@type": "ListItem", "position": 2, "url": "https://axion-ia.com/fr/blog/compte-rendu-reunion-ia", "name": "Rédiger un compte rendu de réunion avec l'IA, en 6 étapes" },
         { "@type": "ListItem", "position": 3, "url": "https://axion-ia.com/fr/blog/ia-donnees-entreprise-questions", "name": "IA et données de l'entreprise : les questions que posent les dirigeants" },
-        "… un ListItem par carte visible de la page (articles à la une + derniers articles), position continue d'une page à l'autre (page 2 commence à 21) …"
+        { "@type": "ListItem", "position": 4, "url": "https://axion-ia.com/fr/blog/assistant-ia-generaliste-ou-outil-metier", "name": "Assistant d'IA généraliste ou outil métier : lequel choisir pour votre PME ?" },
+        { "@type": "ListItem", "position": 5, "url": "https://axion-ia.com/fr/blog/rag-explique-simplement", "name": "Le RAG, expliqué simplement aux dirigeants de PME" },
+        { "@type": "ListItem", "position": 6, "url": "https://axion-ia.com/fr/blog/ia-entreprise-chiffres-publics", "name": "IA en entreprise : ce que disent vraiment les chiffres publics" },
+        { "@type": "ListItem", "position": 7, "url": "https://axion-ia.com/fr/blog/taches-administratives-ia-pme", "name": "10 tâches administratives qu'une PME peut confier à l'IA dès ce mois-ci" },
+        { "@type": "ListItem", "position": 8, "url": "https://axion-ia.com/fr/blog/entreprise-batiment-devis-ia", "name": "Une entreprise du bâtiment prépare ses devis avec l'IA : récit d'un essai" }
       ]
     },
     {
@@ -1961,7 +1952,7 @@ body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub *
   ]
 }
 
-     Règles : le BreadcrumbList est émis UNE SEULE FOIS (par le composant Breadcrumbs, pas en double) ; la dernière entrée n'a pas de « item » ;
+     Règles : ItemList = À la une + grille « Derniers articles » uniquement (le guide pilier et l'actualité, hors /blog, n'y figurent pas) ; en production, position continue d'une page à l'autre (page 2 commence à 21) ; canonical d'une page N = sa propre URL ; le BreadcrumbList est émis UNE SEULE FOIS (par le composant Breadcrumbs, pas en double) ; la dernière entrée n'a pas de « item » ;
      pas de FAQPage ici (Google ne l'affiche plus hors sites officiels : le bloc de questions reste du contenu visible, sans balisage) ; pas de prix, pas d'avis.
      Cartes : <article> dans <li>, un seul lien par carte, <img> avec width/height et alt, <time datetime>. -->
 </main>
