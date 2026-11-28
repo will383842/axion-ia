@@ -98,6 +98,7 @@ export type WorkerName =
   | "site-route-gsc"
   // Pilotage SEO (P4) — collecte Search Console, rattrapage, purge
   | "seo-pilotage"
+  | "chaine-suivi"
   // Chatbot (T-05) — ingestion RAG chat_kb_chunks
   | "chatbot-ingest"
   // Sprint v7 Phase 9 — GSC HCU monitoring daily cron

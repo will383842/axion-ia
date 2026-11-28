@@ -22,7 +22,10 @@ describe("migration des annulations de rendez-vous", () => {
     );
     // Les migrations d'autres chantiers, posées après, sont admises : liste fermée.
     const fautives = autres.filter(
-      (d) => horodatage(d) >= horodatage(nom) && !d.endsWith("_porte_qualite_content_intentions"),
+      (d) =>
+        horodatage(d) >= horodatage(nom) &&
+        !d.endsWith("_porte_qualite_content_intentions") &&
+        !d.endsWith("_contenu_rendez_vous_origines"),
     );
     expect(fautives).toEqual([]);
   });

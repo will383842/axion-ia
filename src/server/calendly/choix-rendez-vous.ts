@@ -31,6 +31,7 @@
 
 import { canonicalPath, listerTypesEvenementCalendly } from "@/server/calendly/availability";
 import { estEchangeFormateurParNom } from "@/server/calendly/echange-formateur";
+import { normaliserPageOrigine } from "@/server/calendly/page-origine";
 import {
   classerParNom,
   estTypeRendezVous,
@@ -121,6 +122,8 @@ export const PARAMS_SUIVI = [
   "utm_content",
   "ref",
   "depuis",
+  // Page d'origine (article lu avant la réservation), lue côté serveur : voir `page-origine.ts`.
+  "po",
 ] as const;
 export type ParamSuivi = (typeof PARAMS_SUIVI)[number];
 export type SuiviArrivee = Partial<Record<ParamSuivi, string>>;
@@ -143,7 +146,10 @@ export function lireSuiviArrivee(source: Readonly<Record<string, unknown>>): Sui
   for (const cle of PARAMS_SUIVI) {
     const v = source[cle];
     if (typeof v !== "string" || v.length === 0) continue;
-    if (cle === "ref") {
+    if (cle === "po") {
+      const po = normaliserPageOrigine(v);
+      if (po) out[cle] = po;
+    } else if (cle === "ref") {
       if (v.length > SUIVI_MAX) continue;
       const propre = v.replace(/[^\w\s.\-/+]/g, "").trim();
       if (propre) out[cle] = propre;

@@ -3,6 +3,12 @@ import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import {
+  hotesDuSite,
+  pageOrigineDepuisReferer,
+  suiviOrigineActif,
+} from "@/server/calendly/page-origine";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
@@ -162,6 +168,13 @@ export default async function AppelPage({ params, searchParams }: Props) {
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
   // lien du parcours — sans quoi le premier clic effaçait l'attribution.
   const suivi = lireSuiviArrivee(sp);
+  // C12 : première page du parcours, l'article d'où vient le visiteur se lit côté serveur dans le
+  // `Referer`, puis voyage avec les autres paramètres de suivi (jamais en `utm_content`). Éteint
+  // par défaut : sans le drapeau, le `Referer` n'est même pas lu.
+  if (!suivi.po && suiviOrigineActif()) {
+    const po = pageOrigineDepuisReferer((await headers()).get("referer"), hotesDuSite(SITE_URL));
+    if (po) suivi.po = po;
+  }
   // Échange apporteur ouvert depuis l'e-mail « C'est noté » (`?j=<jeton>`) : le
   // jeton, s'il est VALIDE, est recopié dans chaque créneau pour que le formulaire
   // de réservation reconnaisse la personne (comme la page merci). Faux, expiré ou

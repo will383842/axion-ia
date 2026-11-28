@@ -75,6 +75,7 @@ describe("la migration du relevé mensuel est additive", () => {
             "_apporteurs_purge_rgpd",
             "_apporteurs_numeros_pieces_uniques",
             "_apporteurs_numeros_pieces_reservation",
+            "_contenu_rendez_vous_origines",
             "_porte_qualite_content_intentions",
           ].some((s) => d.endsWith(s)),
         ),

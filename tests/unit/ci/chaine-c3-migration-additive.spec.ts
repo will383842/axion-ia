@@ -63,7 +63,9 @@ describe("migration chaine_editoriale_tables : additive", () => {
   });
   it("aucune lecture ni écriture branchée : le code de production ne touche pas ces tables", () => {
     const sortie = execSync(
-      "grep -rlE '\\.contenu(Besoin|Brief|Refus|Resultat|Proposition|Fait)\\b' src || true",
+      // C12 : le suivi des résultats (`suivi/`) est le seul lecteur/écrivain branché, et il reste
+      // éteint par défaut (`CONTENT_CHAINE_SUIVI`). Aucune autre table de C3 n'est touchée.
+      `grep -rlE '\\.contenu(Besoin|Brief|Refus|Resultat|Proposition|Fait)\\b' src | grep -v '/${GEN}/suivi/' || true`,
       { encoding: "utf8" },
     ).trim();
     expect(sortie).toBe("");

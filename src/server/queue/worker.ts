@@ -79,6 +79,7 @@ import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 // Chantier visio (PR 4) — balayage du dossier client (sous DOSSIER_BALAYAGE_ENABLED) et de l'enregistreur (toujours).
 import { startVisioBalayageWorker } from "./workers/visio-balayage-worker";
 import { startSeoPilotageWorker } from "./workers/seo-pilotage-worker";
+import { startChaineSuiviWorker } from "./workers/content-suivi-worker";
 // Chantier visio (PR 6) — transcription et compte rendu par l'API OpenAI, file `visio`.
 import { startVisioWorker } from "./workers/visio-worker";
 // INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO), le 20 à 06:00 Paris.
@@ -207,6 +208,9 @@ async function main() {
     // Pilotage SEO (P4) — TOUJOURS démarré, ÉTEINT par défaut : sans `CONTENT_PILOTAGE_SEO="true"`
     // chaque tâche sort sans rien lire ni appeler ; une table absente (fenêtre app/worker) fait sauter.
     startSeoPilotageWorker(),
+    // Chaîne éditoriale (C12) — suivi des résultats. TOUJOURS démarré, ÉTEINT par défaut : sans
+    // `CONTENT_CHAINE_SUIVI="true"` la tâche sort sans rien lire ; table absente = tâche sautée.
+    startChaineSuiviWorker(),
     // Chantier visio (PR 6) — le circuit du compte rendu (concurrence 1). Inerte
     // tant qu'aucun enregistrement n'est déposé : le balayage ne trouve rien et
     // aucun appel à OpenAI n'est émis. Charges de job : identifiants seulement.

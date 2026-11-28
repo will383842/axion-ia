@@ -13,3 +13,5 @@ export const FUSEAU_SEO_PILOTAGE = "Europe/Paris";
 export const PATTERN_SEO_RECALCUL = "7 7 * * *";
 /** Robots d'IA (P10) : tous les jours à 07 h 07 à Paris, après la collecte Search Console de 06 h 37. */
 export const PATTERN_SEO_ROBOTS_IA = "7 7 * * *";
+/** Suivi des résultats de la chaîne éditoriale (C12) : 08 h 17 à Paris, après la collecte de 06 h 37 et le recalcul de 07 h 07. */
+export const PATTERN_CHAINE_SUIVI = "17 8 * * *";
