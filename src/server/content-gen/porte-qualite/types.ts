@@ -15,7 +15,15 @@ export type Source<T> =
 export type EtatLien = "sain" | "mort" | "non_indexable";
 
 export type FamilleCritere =
-  "doctrine" | "faits" | "structure" | "completude" | "maillage" | "metadonnees" | "unicite";
+  | "doctrine"
+  | "faits"
+  | "structure"
+  | "completude"
+  | "maillage"
+  | "metadonnees"
+  | "unicite"
+  | "intention"
+  | "apport";
 
 /** Classement unique des bloquants (§ 5). */
 export type ClasseBloquant = "dur" | "corrigeable" | "derogeable";
@@ -64,6 +72,16 @@ export interface VoisinSemantique {
   readonly cosinus: number;
 }
 
+/** Ligne du registre des intentions (§ 7.1) telle que la porte la lit. */
+export interface IntentionRegistre {
+  readonly requeteNormalisee: string;
+  /** `libre` | `reservee` | `couverte` | `a_fusionner` (texte libre en base : autre valeur = non évalué). */
+  readonly etat: string;
+  readonly pageProprietaire: string | null;
+  /** `true` si la réservation a été faite pour CE contenu (la tâche en cours la détient). */
+  readonly reserveePourCeContenu: boolean;
+}
+
 export interface ContextePorte {
   readonly reglages: ReglagesPorte;
   /** Horloge injectée (la porte ne lit jamais l'heure elle-même). */
@@ -83,6 +101,13 @@ export interface ContextePorte {
    * (échec fermé). `ok` + liste vide = corpus vide, rien à doubler.
    */
   readonly voisinsSemantiques?: Source<ReadonlyArray<VoisinSemantique>> | undefined;
+  /**
+   * B05 : l'intention du contenu au registre. `ok` + `null` = absente du registre ;
+   * champ absent ou `indisponible` = non évalué (échec fermé).
+   */
+  readonly intention?: Source<IntentionRegistre | null> | undefined;
+  /** B07 type D : `true` seulement s'il existe une donnée propre à Axion-IA réelle et agrégée. */
+  readonly donneeProprePresente?: boolean | undefined;
   /** Pénalités de la note issues de critères pas encore branchés (Q3 et suivants). */
   readonly penalites: PenalitesNote;
 }

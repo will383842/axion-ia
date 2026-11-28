@@ -3,7 +3,7 @@
 import { z } from "zod";
 
 /** Change quand un seuil ou une règle change : l'ancienne version reste lisible (§ 3, règle 4). */
-export const VERSION_PORTE = "2026-11-28.q4";
+export const VERSION_PORTE = "2026-11-28.q5q6";
 
 export const ReglagesPorteSchema = z
   .object({
@@ -32,6 +32,8 @@ export const ReglagesPorteSchema = z
     cosinusBloque: z.number().min(0).max(1),
     /** B06 : à partir de là, alerte « fusion à étudier » sans refus. */
     cosinusAlerte: z.number().min(0).max(1),
+    /** B07 : nombre minimal d'apports originaux distincts et vérifiés (§ 8). */
+    apportsMin: z.number().int().min(1).max(4),
     /** Note (§ 4.3) : cosinus sous lequel la pénalité de proximité est nulle. */
     cosinusProximiteMin: z.number().min(0).max(1),
   })
@@ -69,6 +71,7 @@ export const REGLAGES_PAR_DEFAUT: ReglagesPorte = Object.freeze({
   citationsMin: 2,
   motsMinPointCle: 5,
   liensInternesMin: 3,
+  apportsMin: 2,
   cosinusBloque: 0.85,
   cosinusAlerte: 0.8,
   cosinusProximiteMin: 0.7,
