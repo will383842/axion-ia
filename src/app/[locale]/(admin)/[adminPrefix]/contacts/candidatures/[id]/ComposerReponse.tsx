@@ -6,10 +6,12 @@
  *
  * ## Ce qu'il montre, et pourquoi ça compte
  *
- * L'aperçu à droite rend le texte avec la MÊME grammaire que l'e-mail qui
- * partira — la partie pure de `markdown-leger`, importée par les deux. Une
- * seconde implémentation « pour l'aperçu » finirait par montrer autre chose que
- * ce qui part, et c'est précisément ce dont un composeur doit protéger.
+ * L'aperçu est celui que le SERVEUR rend (`apercuReponseCandidatAction`), par la même
+ * fonction que l'envoi, dans le lecteur isolé (`LecteurEmail`). Il n'y a plus de seconde
+ * mise en forme dans le navigateur : elle finissait par montrer autre chose que ce qui
+ * part. « Envoyer » ne s'active qu'après l'aperçu du texte EN COURS ; toute modification
+ * de l'objet ou du message le désactive de nouveau (comparaison d'une clé locale de la
+ * saisie). Le navigateur ne reçoit qu'un HTML masqué (aucun jeton) et inerte (aucun lien).
  *
  * ## La machine d'états, et pourquoi elle n'a pas d'état « envoyé »
  *
@@ -22,10 +24,11 @@
  * pris à l'endroit où il se produit.
  */
 
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import {
+  apercuReponseCandidatAction,
   repondreAuCandidatAction,
   rejouerReponseEchoueeAction,
   etatLivraisonReponseAction,
@@ -39,7 +42,8 @@ import {
   remplirModele,
   type ModeleComposeurId,
 } from "@/content/recrutement/modeles-reponse";
-import { fragmenter, paragraphes } from "@/lib/email/markdown-leger";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { OBJET_MAX } from "@/lib/email/objet-email";
 import {
   LIBELLE_ENVOYE,
@@ -84,31 +88,9 @@ interface Props {
   readonly modelesFormateur?: boolean;
 }
 
-/** Rendu de l'aperçu — mêmes fragments que l'e-mail, apparence de la console. */
-function Apercu({ texte }: { texte: string }): React.ReactElement {
-  const blocs = useMemo(() => paragraphes(texte), [texte]);
-  if (blocs.length === 0) {
-    return <p className="admin-meta-small">L’aperçu s’affichera ici pendant que vous écrivez.</p>;
-  }
-  return (
-    <>
-      {blocs.map((bloc, i) => (
-        <p key={i} className="mb-[var(--space-admin-3)] text-sm leading-relaxed">
-          {fragmenter(bloc).map((f, j) => {
-            if (f.type === "gras") return <strong key={j}>{f.valeur}</strong>;
-            if (f.type === "italique") return <em key={j}>{f.valeur}</em>;
-            if (f.type === "lien")
-              return (
-                <a key={j} href={f.href} className="admin-link" rel="noopener">
-                  {f.valeur}
-                </a>
-              );
-            return <span key={j}>{f.valeur}</span>;
-          })}
-        </p>
-      ))}
-    </>
-  );
+/** Clé locale de la saisie : l'aperçu n'est valable que pour CE texte. */
+function cleSaisie(objet: string, corps: string): string {
+  return `${objet}\u0000${corps}`;
 }
 
 export function ComposerReponse({
@@ -126,6 +108,10 @@ export function ComposerReponse({
   const [corps, setCorps] = useState("");
   const [note, setNote] = useState("");
   const [phase, setPhase] = useState<Phase>({ nom: "repos" });
+  // Aperçu exact rendu par le serveur, avec la clé de la saisie pour laquelle il a été rendu.
+  const [apercu, setApercu] = useState<{ cle: string; donnees: ApercuLecteur } | null>(null);
+  const [apercuEnCours, setApercuEnCours] = useState(false);
+  const [erreurApercu, setErreurApercu] = useState<string | null>(null);
   // Message affiché quand le sondage s'arrête sans avoir tranché (worker lent).
   const [avisSondage, setAvisSondage] = useState<string | null>(null);
   const [, demarrer] = useTransition();
@@ -230,6 +216,32 @@ export function ComposerReponse({
     };
   }, [phase, router]);
 
+  function voirApercu(): void {
+    const cle = cleSaisie(objet, corps);
+    setApercuEnCours(true);
+    setErreurApercu(null);
+    demarrer(() => {
+      void apercuReponseCandidatAction({
+        applicationId,
+        subject: objet,
+        bodyMarkdown: corps,
+        modele,
+      })
+        .then((r) => {
+          if (r.ok) setApercu({ cle, donnees: r.apercu });
+          else {
+            setApercu(null);
+            setErreurApercu(LIBELLES_ERREUR_REPONSE[r.error] ?? `Aperçu impossible (${r.error}).`);
+          }
+        })
+        .catch(() => {
+          setApercu(null);
+          setErreurApercu("L’aperçu n’a pas pu être rendu. Réessayez.");
+        })
+        .finally(() => setApercuEnCours(false));
+    });
+  }
+
   function envoyer(): void {
     if (envoiVerrouille.current) return;
     envoiVerrouille.current = true;
@@ -300,9 +312,12 @@ export function ComposerReponse({
   const objetTropLong = objet.length > OBJET_MAX;
   // Verrouillé pendant l'envoi ET tant que le message est en file ou déjà parti :
   // un second clic créerait un second e-mail au candidat.
+  const apercuAJour = apercu !== null && apercu.cle === cleSaisie(objet, corps);
   const envoiPossible =
     objet.trim().length >= 2 &&
     corps.trim().length > 0 &&
+    // 🔑 Voir avant d'envoyer : l'aperçu doit être celui du texte en cours.
+    apercuAJour &&
     (phase.nom === "repos" || phase.nom === "echec" || phase.nom === "rebond");
 
   return (
@@ -396,12 +411,36 @@ export function ComposerReponse({
             paragraphes.
           </p>
         </div>
-        <div className="admin-field">
-          <span className="admin-label">Aperçu</span>
-          <div className="admin-card-inset">
-            <Apercu texte={corps} />
-          </div>
-        </div>
+      </div>
+
+      <div className="admin-field">
+        <button
+          type="button"
+          className="admin-button-ghost"
+          disabled={apercuEnCours || objet.trim().length < 2 || corps.trim().length === 0}
+          onClick={voirApercu}
+        >
+          {apercuEnCours ? "Rendu en cours…" : "Voir l’aperçu exact"}
+        </button>
+        <p className="admin-meta-small">
+          L’aperçu montre le message tel qu’il partira, avec son pied de page. « Envoyer » s’active
+          une fois l’aperçu vu, et se désactive si vous modifiez l’objet ou le message.
+        </p>
+        {erreurApercu ? (
+          <p role="alert" className="admin-alert admin-alert-error">
+            {erreurApercu}
+          </p>
+        ) : null}
+        {apercu ? (
+          <>
+            {apercuAJour ? null : (
+              <p role="status" className="admin-alert admin-alert-warning">
+                Le texte a changé depuis cet aperçu : revoyez-le avant d’envoyer.
+              </p>
+            )}
+            <LecteurEmail apercu={apercu.donnees} liensInertes titre="Aperçu exact de la réponse" />
+          </>
+        ) : null}
       </div>
 
       <div className="admin-field">
