@@ -137,13 +137,14 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
     identite.push({ terme: "Compétences", valeur: competences.join(", ") });
 
   const modele = CATEGORIES[fiche.categorie].modele;
-  const sectionsCategorie = sectionsDeCategorie(fiche.categorie, m.firstName, competences);
+  const prenomPublic = pub?.nom ?? m.firstName.trim();
+  const sectionsCategorie = sectionsDeCategorie(fiche.categorie, prenomPublic, competences);
   // Réponses propres à la personne d'abord (aucune à ce jour), puis les réponses modèles.
   const faqPersonne: ContenuFiche["faq"] = [];
   const faqModele: ContenuFiche["faq"] = modele.faq.map((q) => ({
     id: `modele-${q.id}`,
-    question: remplirPrenom(q.question, m.firstName),
-    answer: remplirPrenom(q.answer, m.firstName),
+    question: remplirPrenom(q.question, prenomPublic),
+    answer: remplirPrenom(q.answer, prenomPublic),
   }));
 
   const contenu: ContenuFiche = {
@@ -164,7 +165,10 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
     faq: [...faqPersonne, ...faqModele],
     appelFinal: {
       titre: "Parlons de votre projet",
-      texte: `Réservez un appel pour voir ensemble ce que l'IA peut faire concrètement dans votre entreprise.`,
+      texte:
+        modele.actions.length > 0 && !modele.actions.some((a) => a.href === "/appel")
+          ? "Décrivez votre besoin : l'équipe Axion-IA vous répond et organise la suite avec vous."
+          : `Réservez un appel pour voir ensemble ce que l'IA peut faire concrètement dans votre entreprise.`,
       bouton: "Réserver un appel",
       boutonSecondaire: "Nous écrire",
       ...(modele.actions.length > 0 ? { actions: modele.actions } : {}),

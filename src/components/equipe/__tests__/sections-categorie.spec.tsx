@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
 import { buildGrapheCollaborateur } from "@/lib/seo/collaborateur-jsonld";
-import { fichePublique, FORMULATIONS_INTERDITES, MODELES } from "@/lib/equipe";
+import { fichePublique, ficheDepuisWilliams, FORMULATIONS_INTERDITES, MODELES } from "@/lib/equipe";
 import { ficheDepuisMembre, type MembrePublic } from "@/lib/equipe/depuis-membre";
 import { ProfilCollaborateur } from "../ProfilCollaborateur";
 
@@ -148,19 +148,24 @@ describe("sections propres — apporteur d'affaires", () => {
     expect(r.container.querySelector('a[href="/devenir-commercial-ia"]')).not.toBeNull();
     verifierPlan(r.container);
   });
-  it("aucun montant, commission, pourcentage, prime ni vérification", () => {
-    const r = rendre(membre("apporteur"));
-    const texte = r.container.textContent ?? "";
-    const faq = jsonFaq(r.graphe);
-    for (const t of [texte, faq, JSON.stringify(MODELES.apporteur)]) {
-      expect(t).not.toMatch(/€|\d\s*%|%|\$/);
-      expect(t).not.toMatch(/commission|prime|challenge|palier|taux|tarif|freelance|vérifi/i);
-      for (const re of FORMULATIONS_INTERDITES) expect(t).not.toMatch(re);
-    }
-  });
+  it.each(["apporteur", "specialiste_ia", "developpeur", "autres"])(
+    "%s : aucun montant, commission, pourcentage, prime ni vérification",
+    (cat) => {
+      const r = rendre(membre(cat));
+      const texte = r.container.textContent ?? "";
+      const faq = jsonFaq(r.graphe);
+      for (const t of [texte, faq, JSON.stringify(Object.values(MODELES))]) {
+        expect(t).not.toMatch(/€|\d\s*%|%|\$/);
+        expect(t).not.toMatch(
+          /commission|prime|challenge|palier|taux|tarif|freelance|vérifi|nous vous confirmons/i,
+        );
+        for (const re of FORMULATIONS_INTERDITES) expect(t).not.toMatch(re);
+      }
+    },
+  );
   it("FAQ modèle : visible en HTML ET dans le JSON-LD", () => {
     const r = rendre(membre("apporteur"));
-    expect(r.container.textContent).toContain("Camille est-il salarié d'Axion-IA ?");
+    expect(r.container.textContent).toContain("Quel est le lien entre Camille et Axion-IA ?");
     expect(jsonFaq(r.graphe)).toContain("salarié");
   });
 });
@@ -195,5 +200,23 @@ describe("FAQ modèle et direction", () => {
     expect(contenu.sectionsCategorie).toBeUndefined();
     expect(contenu.faq).toEqual([]);
     expect(contenu.appelFinal.actions).toBeUndefined();
+  });
+});
+
+describe("Williams : boutons par défaut inchangés", () => {
+  it("data-cta et ordre historiques, aucune section de catégorie", () => {
+    const { fiche, contenu } = ficheDepuisWilliams();
+    const vue = render(<ProfilCollaborateur fiche={fichePublique(fiche)!} contenu={contenu} />);
+    const cta = Array.from(vue.container.querySelectorAll("a[data-cta]")).map((a) =>
+      a.getAttribute("data-cta"),
+    );
+    expect(cta).toEqual([
+      "equipe-williams-hero-appel",
+      "equipe-williams-hero-contact",
+      "equipe-journee-ia-appel",
+      "equipe-williams-cta-appel",
+      "equipe-williams-cta-contact",
+    ]);
+    expect(contenu.sectionsCategorie).toBeUndefined();
   });
 });

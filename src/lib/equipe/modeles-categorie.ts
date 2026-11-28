@@ -182,9 +182,9 @@ export const MODELES: Readonly<Record<Categorie, ModeleCategorie>> = {
     faq: [
       {
         id: "salarie",
-        question: "{prenom} est-il salarié d'Axion-IA ?",
+        question: "Quel est le lien entre {prenom} et Axion-IA ?",
         answer:
-          "{prenom} fait partie du réseau d'apporteurs d'affaires d'Axion-IA : mise en relation seulement. Le devis est établi par Axion-IA.",
+          "Mise en relation seulement : {prenom} fait partie du réseau d'apporteurs d'affaires d'Axion-IA et n'est pas salarié d'Axion-IA. Le devis est établi par Axion-IA.",
       },
       {
         id: "devis",
@@ -201,8 +201,7 @@ export const MODELES: Readonly<Record<Categorie, ModeleCategorie>> = {
       {
         id: "doute",
         question: "Un doute sur un message reçu : que faire ?",
-        answer:
-          "Contactez Axion-IA directement par la page contact. Nous vous confirmons si le message correspond bien à notre réseau.",
+        answer: "Contactez Axion-IA directement par la page contact : nous vous répondons.",
       },
     ],
   },

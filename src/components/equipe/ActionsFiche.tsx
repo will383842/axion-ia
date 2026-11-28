@@ -20,13 +20,13 @@ export function ActionsFiche({
   if (actions && actions.length > 0) {
     return (
       <>
-        {actions.map((a, i) => (
+        {actions.map((a) => (
           <Cta
             key={a.href + a.libelle}
             href={a.href}
             variant={a.variante === "primaire" ? "terracotta" : "outline"}
             size="lg"
-            track={suivi(`action-${i + 1}`)}
+            track={suivi(a.href.replace(/^\//, "").replace(/\//g, "-") || "accueil")}
           >
             {a.libelle}
             {a.variante === "primaire" ? (

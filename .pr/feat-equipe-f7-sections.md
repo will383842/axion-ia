@@ -26,4 +26,10 @@ La fiche d'un collaborateur affiche maintenant, selon sa catégorie, des section
 - Textes modèles (sécurité/RGPD du développeur, rôle du partenaire) à faire relire côté contenu.
 - Le JSON-LD FAQ n'est émis que pour une fiche indexable (règle existante).
 
-VERDICT OPUS : EN COURS
+## Relecture Opus (1 tour)
+
+Corrigé : FAQ apporteur sans accord masculin et sans promesse de vérification ; prénom public (`prenomSeul`) utilisé partout ; texte d'appel final neutre quand aucun bouton ne mène à `/appel` ; suivi `data-cta` stable (tiré de la cible) ; tests élargis (mots interdits sur les 4 catégories, boutons de Williams figés).
+
+Restes : le titre « Les métiers et secteurs que {prénom} connaît » est celui demandé, mais sa liste affiche les compétences saisies. FAQ modèle identique d'une fiche à l'autre d'une catégorie (acceptable). `pnpm bundle:check` non exécuté (aucun build local) ; l'ajout est du rendu serveur léger.
+
+VERDICT OPUS : BON
