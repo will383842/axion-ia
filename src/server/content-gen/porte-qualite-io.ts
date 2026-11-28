@@ -10,8 +10,14 @@ import { readContentGenConfigDirect } from "@/server/content-gen/config-store";
 import {
   CLE_CONFIG_PORTE,
   construireVue,
+  lireDerogations,
+  lireJournal,
+  listerInterdits,
   observationActive,
   observerSortie,
+  type DerogationAffichee,
+  type EntreeJournal,
+  type InterditAffiche,
   type IssueObservation,
   type LigneVerdictLue,
   type Source,
@@ -81,4 +87,45 @@ export async function lireVuePorte(): Promise<VuePorte> {
     dernierVerdictLe: lignes.etat === "ok" ? (lignes.valeur[0]?.createdAt ?? null) : null,
     lignes,
   });
+}
+
+export interface VueReglagesJournal {
+  readonly journal: Source<ReadonlyArray<EntreeJournal>>;
+  readonly derogations: Source<ReadonlyArray<DerogationAffichee>>;
+  /** Liste importée de `interdits-publication.ts`, jamais modifiable depuis l'écran. */
+  readonly interdits: ReadonlyArray<InterditAffiche>;
+}
+
+/** Onglet 4 (Q14), lecture seule : journal des changements de réglages et dérogations. */
+export async function lireVueReglagesJournal(): Promise<VueReglagesJournal> {
+  const indispo = (e: unknown, quoi: string): { etat: "indisponible"; raison: string } => ({
+    etat: "indisponible",
+    raison:
+      (e as { code?: string } | null)?.code === "P2021"
+        ? `La table ${quoi} n'existe pas encore.`
+        : "Lecture impossible.",
+  });
+  let journal: VueReglagesJournal["journal"];
+  try {
+    const rows = await prisma.contentGenAuditLog.findMany({
+      where: { settingKey: CLE_CONFIG_PORTE },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    });
+    journal = { etat: "ok", valeur: lireJournal(rows) };
+  } catch (e) {
+    journal = indispo(e, "du journal");
+  }
+  let derogations: VueReglagesJournal["derogations"];
+  try {
+    const rows = await prisma.contentQualityVerdict.findMany({
+      where: { decidePar: { not: null } },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    });
+    derogations = { etat: "ok", valeur: lireDerogations(rows) };
+  } catch (e) {
+    derogations = indispo(e, "des verdicts");
+  }
+  return { journal, derogations, interdits: listerInterdits() };
 }

@@ -13,3 +13,17 @@ export {
 export type { IssueObservation, LigneVerdictEcrite } from "./observation";
 export { construireVue, lireLigneVerdict } from "./vue";
 export type { LigneVerdictLue, VerdictAffiche, VuePorte } from "./vue";
+export {
+  fusionnerReglages,
+  lireDerogations,
+  lireJournal,
+  listerInterdits,
+} from "./onglet-reglages";
+export type {
+  DerogationAffichee,
+  EntreeJournal,
+  InterditAffiche,
+  LigneAuditLue,
+  LigneDerogationLue,
+  ResultatFusion,
+} from "./onglet-reglages";

@@ -1,6 +1,6 @@
 /**
- * Content Generator — Écran « Porte qualité » (Q8, lecture seule, onglets 1 et 2).
- * Aucune écriture, aucun JavaScript client : les onglets et le filtre sont des liens.
+ * Content Generator — Écran « Porte qualité » (Q8 onglets 1 et 2 en lecture ; Q14 onglet 4 :
+ * réglages, journal, dérogations, interdits en lecture seule). Aucun JavaScript client : les onglets et le filtre sont des liens.
  * L'écran n'a pas de vérité propre (conception § 12.1) : critères = registre, verdicts =
  * lignes de la table, rendus sans recalcul ; `null` s'affiche « indisponible », jamais 0.
  */
@@ -9,14 +9,19 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
-import { getVuePorteQualite } from "@/server/actions/content-gen/porte-qualite";
+import {
+  enregistrerReglagesPorte,
+  getVuePorteQualite,
+  getVueReglagesJournal,
+} from "@/server/actions/content-gen/porte-qualite";
+import type { VueReglagesJournal } from "@/server/content-gen/porte-qualite-io";
 import type { VuePorte } from "@/server/content-gen/porte-qualite";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<{ onglet?: string; verdict?: string }>;
+  searchParams: Promise<{ onglet?: string; verdict?: string; etat?: string; erreur?: string }>;
 }
 
 const LIBELLE_VERDICT: Record<string, string> = {
@@ -229,9 +234,159 @@ function Contenus({
   );
 }
 
+function ReglagesJournal({
+  vue,
+  extra,
+  etat,
+  erreur,
+}: {
+  vue: VuePorte;
+  extra: VueReglagesJournal;
+  etat: string | null;
+  erreur: string | null;
+}): React.ReactElement {
+  return (
+    <>
+      <AdminCard>
+        <h2 className="admin-h2">Réglages</h2>
+        <p className="admin-meta-block">
+          Version de la porte : <strong>{vue.versionPorte}</strong>. Ces seuils sont validés par le
+          schéma du back-end ; tant que le point final n’est pas allumé, ils n’agissent que sur la
+          notation en observation. Chaque changement est inscrit au journal ci-dessous.
+        </p>
+        {etat === "ok" ? <p role="status">Réglages enregistrés.</p> : null}
+        {erreur ? <p role="alert">Refusé : {erreur}</p> : null}
+        <form action={enregistrerReglagesPorte}>
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Réglage</th>
+                <th>Valeur</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(vue.reglagesPorte).map(([cle, valeur]) => (
+                <tr key={cle}>
+                  <td>
+                    <label htmlFor={`reglage-${cle}`}>{cle}</label>
+                  </td>
+                  <td>
+                    <input
+                      id={`reglage-${cle}`}
+                      name={cle}
+                      type="number"
+                      step={1}
+                      required
+                      defaultValue={valeur}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button type="submit" className="admin-btn">
+            Enregistrer les réglages
+          </button>
+        </form>
+      </AdminCard>
+      <AdminCard>
+        <h2 className="admin-h2">Journal des changements</h2>
+        {extra.journal.etat === "indisponible" ? (
+          <p className="admin-meta-block">Indisponible : {extra.journal.raison}</p>
+        ) : extra.journal.valeur.length === 0 ? (
+          <p className="admin-meta-block">Aucun changement enregistré.</p>
+        ) : (
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Quand</th>
+                <th>Qui</th>
+                <th>Avant → après</th>
+              </tr>
+            </thead>
+            <tbody>
+              {extra.journal.valeur.map((e) => (
+                <tr key={e.id}>
+                  <td>{dateLisible(e.quand)}</td>
+                  <td>{e.qui}</td>
+                  <td>
+                    <ul>
+                      {e.changements.map((c) => (
+                        <li key={c.cle}>
+                          {c.cle} : {c.avant} → {c.apres}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </AdminCard>
+      <AdminCard>
+        <h2 className="admin-h2">Dérogations</h2>
+        {extra.derogations.etat === "indisponible" ? (
+          <p className="admin-meta-block">Indisponible : {extra.derogations.raison}</p>
+        ) : extra.derogations.valeur.length === 0 ? (
+          <p className="admin-meta-block">Aucune dérogation enregistrée.</p>
+        ) : (
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Note</th>
+                <th>Décidée par</th>
+                <th>Motif</th>
+              </tr>
+            </thead>
+            <tbody>
+              {extra.derogations.valeur.map((d) => (
+                <tr key={d.id}>
+                  <td>{dateLisible(d.quand)}</td>
+                  <td>{d.type}</td>
+                  <td>{nombre(d.note)}</td>
+                  <td>{d.decidePar}</td>
+                  <td>{d.motif}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </AdminCard>
+      <AdminCard>
+        <h2 className="admin-h2">Liste des interdits (lecture seule)</h2>
+        <p className="admin-meta-block">
+          Importée de <code>interdits-publication.ts</code>. Aucune modification depuis l’écran :
+          toute évolution passe par une PR sur ce fichier.
+        </p>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Raison affichée au rédacteur</th>
+              <th>Exception</th>
+            </tr>
+          </thead>
+          <tbody>
+            {extra.interdits.map((i) => (
+              <tr key={i.code}>
+                <td>{i.code}</td>
+                <td>{i.raison}</td>
+                <td>{i.sauf ?? "aucune"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </AdminCard>
+    </>
+  );
+}
+
 export default async function PorteQualitePage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
-  const { onglet, verdict } = await searchParams;
+  const { onglet, verdict, etat, erreur } = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
@@ -243,6 +398,16 @@ export default async function PorteQualitePage({ params, searchParams }: PagePro
     redirect(`/fr/${adminPrefix}`);
   }
 
+  const surReglages = onglet === "reglages";
+  let extra: VueReglagesJournal | null = null;
+  if (surReglages) {
+    try {
+      extra = await getVueReglagesJournal();
+    } catch {
+      redirect(`/fr/${adminPrefix}`);
+    }
+  }
+
   const base = `/fr/${adminPrefix}/content-gen/porte-qualite`;
   const surContenus = onglet === "contenus";
   return (
@@ -252,7 +417,11 @@ export default async function PorteQualitePage({ params, searchParams }: PagePro
         description="La porte note les contenus générés. En observation, elle n’en bloque aucun."
       />
       <nav aria-label="Onglets">
-        <Link href={base} className="admin-link" aria-current={surContenus ? undefined : "page"}>
+        <Link
+          href={base}
+          className="admin-link"
+          aria-current={surContenus || surReglages ? undefined : "page"}
+        >
           Vue d’ensemble
         </Link>
         {" · "}
@@ -263,8 +432,18 @@ export default async function PorteQualitePage({ params, searchParams }: PagePro
         >
           Contenus
         </Link>
+        {" · "}
+        <Link
+          href={`${base}?onglet=reglages`}
+          className="admin-link"
+          aria-current={surReglages ? "page" : undefined}
+        >
+          Réglages et journal
+        </Link>
       </nav>
-      {surContenus ? (
+      {surReglages && extra ? (
+        <ReglagesJournal vue={vue} extra={extra} etat={etat ?? null} erreur={erreur ?? null} />
+      ) : surContenus ? (
         <Contenus
           vue={vue}
           adminPrefix={adminPrefix}
