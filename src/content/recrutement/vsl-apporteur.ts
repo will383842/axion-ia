@@ -53,7 +53,7 @@ export const VSL_HERO = {
 } as const;
 
 /**
- * Le film. Les fichiers sont posés par Will dans `public/videos/` ; le bloc
+ * Le film. Les fichiers sont posés par le fondateur dans `public/videos/` ; le bloc
  * n'apparaît QUE si le MP4 ET l'affiche existent (`videoDisponible`), donc la
  * page est livrable sans film. Les sous-titres (`.vtt`) et la transcription
  * sont facultatifs : la transcription est lue dans le `.vtt` quand il existe.
@@ -62,6 +62,11 @@ export const VSL_HERO = {
  * vidéo externe serait bloquée sans message (voir `content/lp/diagnostic.ts`).
  * 🔴 Nom de fichier VERSIONNÉ (`-v1`) : l'en-tête de cache de `/videos/*` est
  * long (un an, immuable) ; un film refait prend un nouveau nom.
+ * 🔴 Ce cache long ne vaut QUE pour un fichier posé à la racine de `/videos/` (un seul
+ * niveau) et portant l'une de ces extensions : mp4, webm, vtt, avif, webp, jpg, jpeg, png
+ * (`next.config.ts`, verrouillé par `tests/unit/ci/cache-public-fichiers-seulement.spec.ts`).
+ * 🔴 Une adresse demandée AVANT le dépôt du film répond 404, et ce 404 reste en cache un an
+ * (même règle) : demander une purge Cloudflare de l'adresse juste après le dépôt.
  */
 export const VSL_VIDEO_FICHIERS = {
   src: "/videos/vsl-apporteur-v1.mp4",
