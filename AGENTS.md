@@ -141,6 +141,10 @@ Source de vérité : `_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md`.
 - Gate B build avec `SKIP_NEXT_TYPECHECK=true` ; la vérification de types (y compris `.next/types` via `next typegen`) est faite par « Gate A · per-commit ».
 - ⚠️ Un « Re-run » d'un vieux run lancé en brouillon rejoue `draft: true` : les verdicts restent rouges. Ne relancer que le run de `ready_for_review`, ou pousser un commit.
 
+- **🔵 2026-11-27 (CI rapide, PR 1).** Le goulot est la file, pas la durée d'un run : ce qui compte est le nombre de minutes-machine par PR. Gate A rouge sur une PR **prête** ou en file de fusion ⇒ le job `coupe-circuit` annule le run (couverture et Gate B s'arrêtent, leurs verdicts rendent rouge) : les tests et l'E2E ne sont plus rendus dans la même passe que Gate A. Jamais sur `schedule`.
+- Gate A met en cache ESLint, Prettier et `tsconfig.tsbuildinfo` (clé = lockfile + configs, `--cache-strategy content`) ; le passage quotidien tourne **sans cache**. Une règle ESLint typée ferait sortir le cache ESLint.
+- Gate B : l'attente du nettoyage disque est après l'installation de Playwright, toujours avant `.next` et le build. Verrouillé par `tests/unit/ci/coupe-circuit-ne-rend-jamais-vert.spec.ts` et `gate-a-caches-surs.spec.ts`.
+
 ## Build externalisé GitHub Actions + stubs Prisma/Redis (ADR 0026)
 
 Depuis 2026-05-16 (recovery deploy), le build Docker est **externalisé sur GitHub Actions** (le VPS CPX42 ne suffisait plus, build SSG 17 629 routes saturait les 150 GB à ~117 GB peak). L'image est pushée sur GHCR public, et Coolify ne fait plus que `pull` via `Dockerfile.coolify-pull` (un-liner `FROM ghcr.io/will383842/axion-ia:latest`). Voir ADR 0026.
