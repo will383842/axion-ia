@@ -3112,6 +3112,17 @@ export async function eraseReseauApporteurForEmail(
   await prisma.apporteurMessageRecu.deleteMany({
     where: { OR: [{ apporteurId: a.id }, { fromEmailHash: empreinte }] },
   });
+  // Primes de challenge (lot I, #2464) : « on ne purge pas les personnes ». Une prime à valider ou refusée
+  // sans commission est mise à l'écart (jamais supprimée) ; validée, à reprendre ou reprise : pièce comptable, gardée.
+  try {
+    await prisma.challengePrime.updateMany({
+      where: { apporteurId: a.id, statut: { in: ["a_valider", "refusee"] }, commissionId: null },
+      data: { statut: "refusee", motif: "effacement RGPD", decideeAt: new Date() },
+    });
+  } catch (err) {
+    // Table pas encore migrée (fenêtre app/worker) : rien à mettre à l'écart.
+    if ((err as { code?: unknown } | null)?.code !== "P2021") throw err;
+  }
   await prisma.pieceApporteurContenu.deleteMany({ where: { piece: { apporteurId: a.id } } });
   await prisma.pieceApporteur.updateMany({
     where: { apporteurId: a.id },

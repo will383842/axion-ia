@@ -65,6 +65,7 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261128160000_porte_qualite_content_intentions",
       "20261128170000_pilotage_seo_geo_panel",
       "20261128180000_apporteurs_avenants",
+      "20261128192000_apporteurs_challenges_primes",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

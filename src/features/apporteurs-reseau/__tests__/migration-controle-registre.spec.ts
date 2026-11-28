@@ -24,10 +24,12 @@ describe("migration du contrôle du registre", () => {
         !d.endsWith("_apporteurs_annexes_versionnees") &&
         !d.endsWith("_apporteurs_annulations_rendez_vous") &&
         !d.endsWith("_apporteurs_purge_rgpd") &&
+        !d.endsWith("_apporteurs_annexes_versionnees") &&
         !d.endsWith("_apporteurs_numeros_pieces_uniques") &&
         !d.endsWith("_apporteurs_numeros_pieces_reservation") &&
         !d.endsWith("_porte_qualite_content_intentions") &&
         !d.endsWith("_pilotage_seo_geo_panel") &&
+        !d.endsWith("_apporteurs_challenges_primes") &&
         !d.endsWith("_apporteurs_avenants"),
     );
     expect((NOM ?? "").slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);

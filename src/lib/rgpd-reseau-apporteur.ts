@@ -68,6 +68,13 @@ export interface ExportReseauApporteur {
       readonly presenteeLe: Date;
       readonly statut: string;
     }>;
+    /** Primes de challenge qui le concernent (statut, jour où le seuil est atteint, nombre de Journées). */
+    readonly primesChallenge?: ReadonlyArray<{
+      readonly statut: string;
+      readonly atteintLe: Date;
+      readonly nbJournees: number;
+      readonly creeLe: Date;
+    }>;
     /** Messages reçus de lui (e-mails, demandes d'aide) : objet, date, extrait déchiffré. */
     readonly messagesRecus?: ReadonlyArray<{
       readonly recuLe: Date;
@@ -181,9 +188,28 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         throw e;
       })
     : [];
+  // Primes de challenge (lot I, #2464) : table pas encore migrée (fenêtre app/worker) : liste vide.
+  const primes = a
+    ? await Promise.resolve(
+        prisma.challengePrime.findMany({
+          where: { apporteurId: a.id },
+          orderBy: { creeAt: "asc" },
+          select: { statut: true, atteintLe: true, nbJournees: true, creeAt: true },
+        }),
+      ).catch((e: unknown) => {
+        if (estTableAbsente(e)) return [];
+        throw e;
+      })
+    : [];
   return {
     apporteur: a
       ? {
+          primesChallenge: primes.map((p) => ({
+            statut: p.statut,
+            atteintLe: p.atteintLe,
+            nbJournees: p.nbJournees,
+            creeLe: p.creeAt,
+          })),
           prenom: decryptPii(a.prenom) ?? "",
           nom: decryptPii(a.nom) ?? "",
           email: decryptPii(a.email) ?? "",

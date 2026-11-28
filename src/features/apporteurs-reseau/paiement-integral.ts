@@ -20,8 +20,23 @@ import { prisma } from "@/lib/prisma";
 export async function paiementsIntegrauxParFacture(
   factureIds: readonly string[],
 ): Promise<Map<string, Date | null>> {
-  const out = new Map<string, Date | null>();
   try {
+    return await lirePaiementsIntegrauxParFacture(factureIds);
+  } catch {
+    return new Map();
+  }
+}
+
+/**
+ * Même lecture, mais une requête échouée LÈVE : pour les appelants qui décident d'un fait à partir
+ * de la carte (constat des challenges) et ne doivent jamais confondre « lecture échouée » avec
+ * « pas de paiement ».
+ */
+export async function lirePaiementsIntegrauxParFacture(
+  factureIds: readonly string[],
+): Promise<Map<string, Date | null>> {
+  const out = new Map<string, Date | null>();
+  {
     const ids = [...new Set(factureIds)];
     if (ids.length === 0) return out;
     const cles = await prisma.factureFormation.findMany({
@@ -51,8 +66,6 @@ export async function paiementsIntegrauxParFacture(
       out.set(f.id, t ? new Date(Math.max(...t)) : null);
     }
     return out;
-  } catch {
-    return new Map();
   }
 }
 
