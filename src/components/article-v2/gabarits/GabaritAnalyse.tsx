@@ -40,6 +40,7 @@ import { PiedArticle } from "../PiedArticle";
 import { ColonneActionsConnectee } from "../ColonneActionsConnectee";
 import { CtaMilieu, type LienSecondaire, type PrincipalCta } from "../CtaMilieu";
 import { CtaFin } from "../CtaFin";
+import { envelopperTableaux } from "@/server/content-gen/blog/transformations";
 import type { ArticleGabaritProps } from "../types";
 
 interface MiseEnPageAnalyseProps {
@@ -124,7 +125,12 @@ export function MiseEnPageAnalyse({
         colonne={<ColonneActionsConnectee gabarit={p.gabarit} />}
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
-        <CorpsArticle html={p.html} blocs={p.blocs} />
+        {/* Les <table> du corps défilent dans un cadre focusable (`.table-scroll`) : sans lui, un tableau
+            large fait défiler toute la page sur téléphone (WCAG 1.4.10). */}
+        <CorpsArticle
+          html={p.html ? envelopperTableaux(p.html, "Tableau de données") : null}
+          blocs={p.blocs}
+        />
         <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq

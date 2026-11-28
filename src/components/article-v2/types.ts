@@ -13,6 +13,9 @@ import type { GabaritArticle } from "@/server/content-gen/blog/gabarits";
 import type { BlogArticleView } from "@/server/content-gen/blog/loader";
 import type { getManonByline } from "@/lib/seo/manon-person";
 
+/** Liste des codes de gabarit : le contrôle « téléphone » (tests/e2e) boucle dessus. */
+export { GABARITS_ARTICLE } from "@/server/content-gen/blog/gabarits";
+
 type ProprietesCommunes<T> = T extends (props: infer P) => unknown ? P : never;
 
 /** Bloc de corps d'un article en fichier (prose brute, hors HTML). */

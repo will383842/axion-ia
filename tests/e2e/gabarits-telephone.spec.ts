@@ -19,7 +19,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
-import { GABARITS_ARTICLE } from "../../src/server/content-gen/blog/gabarits";
+import { GABARITS_ARTICLE } from "../../src/components/article-v2/types";
 
 const LARGEURS = [320, 360, 390, 412, 768, 1280] as const;
 /** Hauteurs réalistes : un petit téléphone fait 568 px de haut, pas 800. */
