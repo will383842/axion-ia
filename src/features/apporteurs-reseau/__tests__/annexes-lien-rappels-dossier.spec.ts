@@ -9,6 +9,12 @@ const h = vi.hoisted(() => ({
   entete: vi.fn(),
   apporteurs: vi.fn(),
   logsLien: vi.fn(),
+  noter: vi.fn(),
+}));
+vi.mock("../annexes-versions", async (orig) => ({
+  ...(await orig<typeof import("../annexes-versions")>()),
+  versionCourante: async () => null,
+  noterDocumentsRemis: (...a: unknown[]) => h.noter(...a),
 }));
 
 vi.mock("../etablissement-presentation", async (orig) => {
@@ -129,5 +135,26 @@ describe("rappel du dossier : pièces jointes du lien du contrat", () => {
     expect(e?.["payload"]).not.toHaveProperty("annexesJointes");
     expect(e?.["payload"]).toMatchObject({ rappel: 1 });
     expect(bilan.rappelsDossier).toBe(1);
+  });
+
+  it("🔴 rappel envoyé : la remise des annexes est tracée (contexte lien_dossier, même jobId)", async () => {
+    await passerReseauApporteurs(MAINTENANT);
+    expect(h.noter).toHaveBeenCalledTimes(1);
+    const [id, pieces, contexte, jobId] = h.noter.mock.calls[0] as [
+      string,
+      { r2Key: string }[],
+      string,
+      string,
+    ];
+    expect(id).toBe("A1");
+    expect(pieces.map((p) => p.r2Key)).toEqual(DOCUMENTS_ANNEXES.map((d) => d.cleR2));
+    expect(contexte).toBe("lien_dossier");
+    expect(jobId).toBe("apporteur-dossier-rappel-A1-L1-j3");
+  });
+
+  it("🔴 rappel non mis en file (retenu, déjà parti…) : aucune trace", async () => {
+    h.envoyer.mockResolvedValue("retenu");
+    await passerReseauApporteurs(MAINTENANT);
+    expect(h.noter).not.toHaveBeenCalled();
   });
 });

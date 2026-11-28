@@ -20,6 +20,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { empreinte, texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
+import { mesCommissionsActive } from "@/features/apporteurs-reseau/interrupteur-mes-commissions";
 import { lireDossierParLien, vigilanceDemandeeA } from "@/features/apporteurs-reseau/donnees";
 import {
   AIDE_PIECE,
@@ -119,6 +120,46 @@ export default async function DossierApporteurPage({ params }: PageProps) {
   // MODE RESTREINT (2026-10-07) : retiré du réseau, avec de l'argent encore en jeu. Seul le
   // dépôt des attestations de vigilance reste ouvert — ni signature, ni déclaration, ni
   // dossier (les actions le refusent aussi).
+  // ARCHIVE (PR K, 2464) : résilié et payé. Lecture seule, aucun formulaire.
+  if (dossier.archive) {
+    const base = `/apporteur/dossier/${dossier.id}/${jeton}`;
+    // Interrupteur « Mes commissions » éteint : ces deux pages rendent 404, pas de lien mort.
+    const commissionsOuvertes = mesCommissionsActive();
+    const LIEN =
+      "border-terracotta-deep text-terracotta-deep flex min-h-[48px] items-center gap-2 rounded-2xl border-2 px-5 py-3 text-[17px] font-bold";
+    return (
+      <Coquille titre={TEXTES.bonjour(dossier.prenom)}>
+        <EcranEtat
+          pastilleTexte={TEXTES.archivePastille}
+          titre={TEXTES.archiveTitre}
+          ligne={TEXTES.archiveLigne}
+        />
+        <ul className="mt-5 grid gap-3">
+          {commissionsOuvertes ? (
+            <li>
+              <a href={`${base}/mes-commissions#pieces`} className={LIEN}>
+                {TEXTES.archiveAutofactures} →
+              </a>
+            </li>
+          ) : null}
+          {commissionsOuvertes ? (
+            <li>
+              <a href={`${base}/mes-commissions#releves`} className={LIEN}>
+                {TEXTES.archiveReleves} →
+              </a>
+            </li>
+          ) : null}
+          {dossier.aContratSigne ? (
+            <li>
+              <a href={`${base}/contrat?dl=1`} target="_blank" rel="noopener" className={LIEN}>
+                ↓ {TEXTES.archiveContrat}
+              </a>
+            </li>
+          ) : null}
+        </ul>
+      </Coquille>
+    );
+  }
   if (dossier.restreint) {
     return (
       <Coquille titre={TEXTES.bonjour(dossier.prenom)}>

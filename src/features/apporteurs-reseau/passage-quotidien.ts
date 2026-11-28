@@ -52,8 +52,11 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
+import { horsGesteCommercial } from "./geste-commercial";
+import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
+import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
 import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
 import {
@@ -81,6 +84,8 @@ import {
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
+import { controlerRegistreApporteurs } from "./controle-registre";
+import { commissionJourneeIaSelonGrille } from "./journee-ia-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import {
   commandeRenduePourLaLigne,
@@ -91,6 +96,7 @@ import {
 } from "./commandes";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
+import { verifierIntegriteContrats } from "./passage-integrite-contrats";
 import { urlDossier } from "./jeton";
 import { executerResiliationsEchues, renvoyerEmailsEffetManques } from "./resiliation";
 import { alerteSurveillance } from "./surveillance-passages";
@@ -105,7 +111,6 @@ import {
   grilleDeLaCommande,
   MESSAGE_GRILLE_INCONNUE,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
-  calculerCommissionJourneeIa,
   versionContratSignee,
   type CalculCommission,
   type RegleAppliquee,
@@ -328,8 +333,11 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "hors-grille"
   | "declarations-sans-reponse"
+  | "purge-rgpd"
   | "commandes-a-attribuer"
   | "resiliations-echues"
+  | "integrite-contrats"
+  | "controle-registre"
   | "emails-effet-resiliation"
   | "a-verifier-en-retard";
 
@@ -418,6 +426,12 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
+    // Point 12 (#2464) : le lundi, l'empreinte des contrats contresignés est revérifiée sur R2.
+    ["integrite-contrats", async () => void (await verifierIntegriteContrats(maintenant))],
+    // PR N (#2464 pt 6) : purge RGPD, le 1er du mois, ÉTEINTE par défaut (APPORTEURS_PURGE_RGPD).
+    ["purge-rgpd", async () => void (await etapePurgeRgpd(maintenant))],
+    // Point 20 : relecture du registre public pour les apporteurs sous contrat (alerte interne seule).
+    ["controle-registre", async () => void (await controlerRegistreApporteurs(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
@@ -1116,7 +1130,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     },
   });
   const avoirsLignes = await prisma.factureFormation.findMany({
-    where: { avoirDeId: { in: lignes.map((f) => f.id) } },
+    where: { avoirDeId: { in: lignes.map((f) => f.id) }, ...(await horsGesteCommercial()) },
     select: {
       id: true,
       devisId: true,
@@ -1324,15 +1338,21 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const baseAvantPlafond = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
     let regle: RegleAppliquee | null = null;
     let calc: CalculCommission;
+    let palierAQualifier: string | null = null;
     if (grille === null) {
       calc = { statut: "a_qualifier" };
     } else if (f.devis?.journeeIa === true) {
-      calc = calculerCommissionJourneeIa({
+      // Point 17 : la grille signée décide. En v2 la Journée IA est hors grille (A1.7) : « à
+      // qualifier », palier « hors-grille », circuit A1.7 (60 jours, alertes), jamais 500 € ni 0 €.
+      const ji = commissionJourneeIaSelonGrille({
+        grille,
         activite: (f.activite ?? null) as ActiviteCommission | null,
         lignes: f.devis.lignes,
         netHtCents: commande.baseApresAvoirsCents,
       });
-      regle = "journee_ia";
+      calc = ji.calcul;
+      palierAQualifier = ji.palierAQualifier;
+      regle = ji.palierAQualifier === null ? "journee_ia" : null;
     } else {
       const r = calculerCommissionSelonGrilleAvecRegle({
         activite: (f.activite ?? null) as ActiviteCommission | null,
@@ -1410,7 +1430,12 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           }
         } else {
           await prisma.commissionApporteur.create({
-            data: { ...base, apporteurId: p.apporteurId, statut: "a_qualifier" },
+            data: {
+              ...base,
+              apporteurId: p.apporteurId,
+              statut: "a_qualifier",
+              palier: palierAQualifier,
+            },
             select: { id: true },
           });
         }
@@ -2176,7 +2201,10 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
       jobId,
       ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     });
-    if (r === "envoye") bilan.rappelsDossier += 1;
+    if (r === "envoye") {
+      bilan.rappelsDossier += 1;
+      await noterDocumentsRemis(a.id, annexes.attachments, "lien_dossier", jobId);
+    }
   }
 }
 

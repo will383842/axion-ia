@@ -21,6 +21,7 @@ import {
   NomEtEntrepriseEnCours,
 } from "@/components/admin/apporteurs/fiche/NomEtEntreprise";
 import { MessagesRecus } from "@/components/admin/apporteurs/fiche/MessagesRecus";
+import { LienArchive } from "@/components/admin/apporteurs/fiche/LienArchive";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
 import {
@@ -337,6 +338,11 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
               />
             </div>
           ) : null}
+          {d.statut === "resilie" ? (
+            <div className="mt-[var(--space-admin-4)]">
+              <LienArchive apporteurId={d.id} />
+            </div>
+          ) : null}
         </AdminCard>
 
         <AdminCard as="section">
@@ -431,6 +437,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           base={`/fr/${adminPrefix}`}
           releves={releves}
           peutVoirPdf={peutEngager(acces.role, "facturer")}
+          peutRectifier={peutEngager(acces.role, "facturer")}
         />
       ) : null}
       {voitEmails ? <HistoriqueEmails emails={emails} base={`/fr/${adminPrefix}`} /> : null}

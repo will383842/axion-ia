@@ -99,6 +99,9 @@ export const env = createEnv({
     // étendue, cas d'usage), gelés par défaut : aucune page ne lit leurs tables.
     // Actif SEULEMENT si "true" (villes/generateurs-annexes-geles.ts).
     VILLES_GENERATEURS_ANNEXES_ACTIFS: z.enum(["true", "false"]).optional(),
+    // Porte qualité des contenus EN OBSERVATION (Q7) : le worker note chaque contenu généré et écrit
+    // son verdict, sans rien bloquer. Actif SEULEMENT si "true" ; absent = éteint. Lu par le WORKER.
+    CONTENT_PORTE_OBSERVATION: z.enum(["true", "false"]).optional(),
     // Fiche prospect créée toute seule à la réservation d'un rendez-vous Calendly
     // de la liste blanche (décision de Will, 24/10/2026). Lu par le WORKER (balayage).
     // Actif SEULEMENT si "true" (comme DOSSIER_BALAYAGE_ENABLED) ; "essai" = à blanc
@@ -163,6 +166,9 @@ export const env = createEnv({
     // restent lus par `process.env`, absents = éteints, seule « true » allume. Texte libre.
     // APPORTEURS_EMAIL_REFUS : site (à allumer APRÈS le worker, cf. `refus-annonce.ts`).
     APPORTEURS_EMAIL_REFUS: z.string().optional(),
+    // APPORTEURS_PURGE_RGPD : worker (`apporteurs-reseau/purge-rgpd.ts`). ABSENT = rien ne tourne ; « essai » = à blanc
+    // (une alerte récapitulative) ; « appliquer » = efface. Le 1er du mois, jour de Paris.
+    APPORTEURS_PURGE_RGPD: z.string().optional(),
     // APPORTEUR_CHANGEMENT_IBAN_ENABLED : site (cf. `interrupteur-changement-iban.ts`).
     APPORTEUR_CHANGEMENT_IBAN_ENABLED: z.string().optional(),
     // RESERVATION_DIRECTE_ACTIVE : site.
@@ -719,6 +725,17 @@ export const env = createEnv({
         }
       }),
 
+    /// Clés de DÉCHIFFREMENT SEUL pendant une rotation de PII_ENCRYPTION_KEY
+    /// (#2464 PR O) : 64 caractères hexadécimaux, séparées par des virgules.
+    /// À poser identique sur l'app ET le worker. Jamais utilisées pour chiffrer.
+    PII_ENCRYPTION_KEYS_LECTURE: z
+      .string()
+      .regex(
+        /^\s*[0-9a-fA-F]{64}\s*(,\s*[0-9a-fA-F]{64}\s*)*$/,
+        "PII_ENCRYPTION_KEYS_LECTURE must be a comma-separated list of 64-hex-char keys",
+      )
+      .optional(),
+
     // ─── Banque d'images — GEO-094 (audit GEO/AEO 2026-08-14) ────────────────
     //
     // 🔴 Ces deux variables étaient utilisées dans le code SANS être déclarées
@@ -824,6 +841,7 @@ export const env = createEnv({
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     BLOG_GABARITS_V2: process.env.BLOG_GABARITS_V2,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
+    CONTENT_PORTE_OBSERVATION: process.env.CONTENT_PORTE_OBSERVATION,
     EMAIL_MANUEL_ACTIF: process.env.EMAIL_MANUEL_ACTIF,
     EMAIL_MANUEL_NOM_EXPEDITEUR: process.env.EMAIL_MANUEL_NOM_EXPEDITEUR,
     EMAIL_MANUEL_SIGNATURE: process.env.EMAIL_MANUEL_SIGNATURE,
@@ -852,6 +870,7 @@ export const env = createEnv({
     APPORTEUR_CHALLENGES_CONSOLE_ENABLED: process.env.APPORTEUR_CHALLENGES_CONSOLE_ENABLED,
     APPORTEUR_CHALLENGES_ESPACE_ENABLED: process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED,
     APPORTEURS_EMAIL_REFUS: process.env.APPORTEURS_EMAIL_REFUS,
+    APPORTEURS_PURGE_RGPD: process.env.APPORTEURS_PURGE_RGPD,
     APPORTEUR_CHANGEMENT_IBAN_ENABLED: process.env.APPORTEUR_CHANGEMENT_IBAN_ENABLED,
     RESERVATION_DIRECTE_ACTIVE: process.env.RESERVATION_DIRECTE_ACTIVE,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
@@ -957,6 +976,7 @@ export const env = createEnv({
     IMAGE_AUTO_PUBLISH_SCORE: process.env.IMAGE_AUTO_PUBLISH_SCORE,
     // PII at-rest (Méta-cert 2026-05-15 AGENT 12 P0)
     PII_ENCRYPTION_KEY: process.env.PII_ENCRYPTION_KEY,
+    PII_ENCRYPTION_KEYS_LECTURE: process.env.PII_ENCRYPTION_KEYS_LECTURE,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,

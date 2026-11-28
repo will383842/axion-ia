@@ -368,6 +368,25 @@ propose un script manuel, rejouable sans risque, avec essai à blanc, qui inscri
 courant de chaque fiche signée dans l'historique (copie du chiffré, calcul de l'empreinte).
 Il ne modifie aucune fiche.
 
+**Exécution en production : depuis la console, pas par le script.** L'image Docker est en mode
+standalone (ni `scripts/` ni `tsx`) et la base de production n'est pas joignable depuis GitHub
+(on n'y met pas `DATABASE_URL`). La reprise se lance donc dans la console, page « Apporteurs ›
+Reprise des empreintes IBAN » (lien depuis « Changements de compte bancaire »), réservée au
+`super_admin` (contrôlé côté serveur dans l'action ; `admin` refusé). Chaque lancement est tracé au
+journal d'audit (qui, essai ou application, comptes ; jamais d'IBAN).
+
+**Ne jamais changer ni perdre `IBAN_EMPREINTE_SECRET` (même valeur site + worker, posée une fois par l'outil `coolify-poser-secret-empreinte-iban.yml`) : le changer rendrait toutes les empreintes fausses.**
+
+Procédure :
+
+1. Vérifier que le secret est posé (la page « Changements de compte bancaire » alerte s'il manque ; sans
+   secret, la reprise refuse et n'écrit rien).
+2. Cliquer « Essai à blanc » : la page affiche des comptes (fiches lues, déjà à jour, à calculer,
+   ignorées par motif). Rien n'est écrit.
+3. Si les comptes sont cohérents, cocher la confirmation puis cliquer « Appliquer ».
+4. Rejouable : un second passage ne crée rien (« déjà à jour »). Une écriture échouée est comptée
+   « ignorée : écriture échouée » ; relancer « Appliquer » la reprend.
+
 ### 3.4 Retour arrière
 
 Les tables peuvent rester en place si le code est retiré : rien d'ancien ne les lit. Aucun

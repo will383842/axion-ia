@@ -101,6 +101,7 @@ export function FactureFormationActions({
   // Avoir
   const [motif, setMotif] = useState<string>("");
   const [confirmerReprise, setConfirmerReprise] = useState<boolean>(false);
+  const [gesteCommercial, setGesteCommercial] = useState<boolean>(false);
   const [confirmationRequise, setConfirmationRequise] = useState<boolean>(false);
   const [avoirPartiel, setAvoirPartiel] = useState<boolean>(false);
   const [avoirMontantEur, setAvoirMontantEur] = useState<string>((montantHtCents / 100).toFixed(2));
@@ -179,7 +180,10 @@ export function FactureFormationActions({
       const res = await genererAvoirAction({
         factureId,
         motif: motif.trim(),
-        ...(afficherConfirmation && confirmerReprise ? { confirmerReprise: true } : {}),
+        ...(afficherConfirmation && confirmerReprise && !gesteCommercial
+          ? { confirmerReprise: true }
+          : {}),
+        ...(gesteCommercial ? { gesteCommercial: true } : {}),
         ...(montantPartielHtCents !== undefined ? { montantPartielHtCents } : {}),
       });
       if ("error" in res) {
@@ -447,15 +451,28 @@ export function FactureFormationActions({
             <div role="alert" className="text-[length:var(--text-admin-sm)]">
               <p>
                 Cette facture porte ou portera une commission d&apos;apporteur : un avoir la reprend
-                au prorata. S&apos;il s&apos;agit d&apos;un bon d&apos;achat offert, ne
-                l&apos;émettez pas comme avoir.
+                au prorata. Un bon d&apos;achat offert à titre exceptionnel (geste commercial) ne la
+                reprend pas : cochez-le ci-dessous.
               </p>
+              <label className="mt-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-2)]">
+                <input
+                  type="checkbox"
+                  checked={gesteCommercial}
+                  onChange={(e) => {
+                    setGesteCommercial(e.target.checked);
+                    if (e.target.checked) setConfirmerReprise(false);
+                  }}
+                  disabled={isPending}
+                />
+                Geste commercial (bon d&apos;achat offert) : la commission de l&apos;apporteur est
+                gardée
+              </label>
               <label className="mt-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-2)]">
                 <input
                   type="checkbox"
                   checked={confirmerReprise}
                   onChange={(e) => setConfirmerReprise(e.target.checked)}
-                  disabled={isPending}
+                  disabled={isPending || gesteCommercial}
                 />
                 Je confirme : c&apos;est un vrai remboursement
               </label>

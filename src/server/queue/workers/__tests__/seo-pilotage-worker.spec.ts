@@ -16,6 +16,13 @@ vi.mock("@/server/seo-pilotage/ingestion", () => ({
   tacheRattrapageGsc: tacheRattrapage,
   tachePurge,
 }));
+const tacheRobotsIa = vi.fn();
+vi.mock("@/server/seo-pilotage/geo", () => ({ tacheRobotsIa }));
+const tacheRecalcul = vi.fn();
+vi.mock("@/server/seo-pilotage/recalcul", () => ({ tacheRecalcul }));
+const tacheInspection = vi.fn();
+vi.mock("@/server/seo-pilotage/inspection/tache", () => ({ tacheInspection }));
+vi.mock("@/lib/redis", () => ({ redis: {} }));
 const lireMode = vi.fn(async () => "observation");
 vi.mock("@/server/seo-pilotage/interrupteur", async (orig) => ({
   ...(await orig<typeof import("@/server/seo-pilotage/interrupteur")>()),
@@ -34,6 +41,20 @@ describe("worker seo-pilotage", () => {
     process.env.DATABASE_URL = "postgresql://u:p@db:5432/x";
     tacheIngestion.mockResolvedValue({ tache: "ingestion-gsc", issue: "termine", motif: "ok" });
     tacheRattrapage.mockResolvedValue({ tache: "rattrapage-gsc", issue: "termine", motif: "ok" });
+    tacheRobotsIa.mockResolvedValue({
+      tache: "robots-ia",
+      issue: "fait",
+      lignes: 3,
+      incomplets: 0,
+    });
+    tacheRecalcul.mockResolvedValue({ issue: "fait", routesMisesAJour: 0, motsCles: 0 });
+    tacheInspection.mockResolvedValue({
+      inspectees: 0,
+      ecrites: 0,
+      inchangees: 0,
+      echecs: 0,
+      arret: "fini",
+    });
     tachePurge.mockResolvedValue({
       semainesCumulees: 0,
       semainesEnAttente: 0,
@@ -44,7 +65,14 @@ describe("worker seo-pilotage", () => {
   });
 
   it("éteint (par défaut) : aucune lecture de base, aucun appel, aucune écriture", async () => {
-    for (const t of ["ingestion-gsc", "rattrapage-gsc", "purge"]) {
+    for (const t of [
+      "ingestion-gsc",
+      "rattrapage-gsc",
+      "purge",
+      "recalcul",
+      "inspection",
+      "robots-ia",
+    ]) {
       expect(await runSeoPilotageJob(job(t))).toEqual({
         issue: "saute",
         motif: "interrupteur_eteint",
@@ -58,6 +86,8 @@ describe("worker seo-pilotage", () => {
     expect(tacheIngestion).not.toHaveBeenCalled();
     expect(tacheRattrapage).not.toHaveBeenCalled();
     expect(tachePurge).not.toHaveBeenCalled();
+    expect(tacheRecalcul).not.toHaveBeenCalled();
+    expect(tacheInspection).not.toHaveBeenCalled();
   });
 
   it("build stub : saut, base non touchée", async () => {
@@ -75,13 +105,41 @@ describe("worker seo-pilotage", () => {
       tacheIngestion.mockRejectedValueOnce(err);
       tacheRattrapage.mockRejectedValueOnce(err);
       tachePurge.mockRejectedValueOnce(err);
-      for (const t of ["ingestion-gsc", "rattrapage-gsc", "purge"]) {
+      tacheRecalcul.mockRejectedValueOnce(err);
+      tacheInspection.mockRejectedValueOnce(err);
+      tacheRobotsIa.mockRejectedValueOnce(err);
+      for (const t of [
+        "ingestion-gsc",
+        "rattrapage-gsc",
+        "purge",
+        "recalcul",
+        "inspection",
+        "robots-ia",
+      ]) {
         expect(await runSeoPilotageJob(job(t))).toEqual({
           issue: "saute",
           motif: "tables_absentes",
         });
       }
     }
+  });
+
+  it("inspection : un quota Google atteint se journalise sans faire échouer le job", async () => {
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    tacheInspection.mockResolvedValueOnce({
+      inspectees: 3,
+      ecrites: 1,
+      inchangees: 2,
+      echecs: 0,
+      arret: "quota_google",
+    });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    expect(await runSeoPilotageJob(job("inspection"))).toEqual({
+      issue: "fait",
+      tache: "inspection",
+    });
+    expect(warn.mock.calls.some((c) => String(c[0]).includes("quota_google"))).toBe(true);
+    warn.mockRestore();
   });
 
   it("une autre erreur de base remonte (la tâche échoue et se voit)", async () => {
@@ -95,18 +153,65 @@ describe("worker seo-pilotage", () => {
     await runSeoPilotageJob(job("ingestion-gsc"));
     await runSeoPilotageJob(job("rattrapage-gsc"));
     await runSeoPilotageJob(job("purge"));
+    expect(await runSeoPilotageJob(job("inspection"))).toEqual({
+      issue: "fait",
+      tache: "inspection",
+    });
+    expect(tacheInspection).toHaveBeenCalledTimes(1);
     expect(tacheIngestion).toHaveBeenCalledTimes(1);
     expect(tacheRattrapage).toHaveBeenCalledTimes(1);
     expect(tachePurge).toHaveBeenCalledTimes(1);
   });
 
+  it("recalcul (P6a) : aiguillé quand allumé ; historique insuffisant = saut sans échec", async () => {
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    expect(await runSeoPilotageJob(job("recalcul"))).toEqual({ issue: "fait", tache: "recalcul" });
+    tacheRecalcul.mockResolvedValueOnce({ issue: "saute", motif: "historique_insuffisant" });
+    expect(await runSeoPilotageJob(job("recalcul"))).toEqual({
+      issue: "saute",
+      motif: "historique_insuffisant",
+    });
+    expect(tacheRecalcul).toHaveBeenCalledTimes(2);
+  });
+
+  it("robots-ia : éteint, aucune lecture de base ni appel Cloudflare ; allumé, aiguillée ; indisponible : saute", async () => {
+    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+      issue: "saute",
+      motif: "interrupteur_eteint",
+    });
+    expect(accesBase).not.toHaveBeenCalled();
+    expect(tacheRobotsIa).not.toHaveBeenCalled();
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+      issue: "fait",
+      tache: "robots-ia",
+    });
+    tacheRobotsIa.mockResolvedValueOnce({
+      tache: "robots-ia",
+      issue: "saute",
+      motif: "Cloudflare ne répond pas.",
+      anormal: true,
+    });
+    expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+      issue: "saute",
+      motif: "Cloudflare ne répond pas.",
+    });
+    for (const code of ["P2021", "P2022"]) {
+      tacheRobotsIa.mockRejectedValueOnce(Object.assign(new Error("table"), { code }));
+      expect(await runSeoPilotageJob(job("robots-ia"))).toEqual({
+        issue: "saute",
+        motif: "tables_absentes",
+      });
+    }
+  });
+
   it("une tâche inconnue est journalisée et IGNORÉE, même allumé, sans rien lancer", async () => {
     process.env.CONTENT_PILOTAGE_SEO = "true";
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
-    for (const t of ["inspection", "opportunites", "", undefined, 42, "ingestion-gsc\nINJECTE"]) {
+    for (const t of ["opportunites", "", undefined, 42, "ingestion-gsc\nINJECTE"]) {
       expect(await runSeoPilotageJob(job(t))).toEqual({ issue: "ignoree" });
     }
-    expect(warn).toHaveBeenCalledTimes(6);
+    expect(warn).toHaveBeenCalledTimes(5);
     expect(warn.mock.calls.every((c) => String(c[0]).includes("tâche inconnue ignorée"))).toBe(
       true,
     );

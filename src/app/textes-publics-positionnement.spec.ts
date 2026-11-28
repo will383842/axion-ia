@@ -185,7 +185,7 @@ describe("textes publics : plus de siège à Grenoble, plus d'ETI (décisions n�
     "src/app/[locale]/contact/page.tsx",
     "src/app/[locale]/charte-editoriale/page.tsx",
     "src/content/equipe/williams.ts",
-    "src/components/sections/FounderProfile.tsx",
+    "src/components/equipe/ProfilCollaborateur.tsx",
     "src/lib/seo/williams-person.ts",
   ];
 

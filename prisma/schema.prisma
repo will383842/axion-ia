@@ -8715,6 +8715,8 @@ model FactureFormation {
   /// Avoir : facture d'origine rectifiée (montants de CETTE facture négatifs).
   avoirDeId                     String?                      @map("avoir_de_id") @db.Uuid
   avoirDe                       FactureFormation?            @relation("FactureFormationAvoir", fields: [avoirDeId], references: [id], onDelete: Restrict)
+  /// Avoir émis à titre de GESTE COMMERCIAL (bon d'achat offert, hors délai) : la commission de l'apporteur est GARDÉE (contrat 2.8, art. 4.5 ; #2464 pt 18). Faux pour un avoir normal.
+  gesteCommercial               Boolean                      @default(false) @map("geste_commercial")
   avoirs                        FactureFormation[]           @relation("FactureFormationAvoir")
   /// DocumentGenere (PDF) associé.
   documentId                    String?                      @map("document_id") @db.Uuid
@@ -16544,6 +16546,22 @@ model ApporteurReseauSiret {
   @@map("apporteur_reseau_siret")
 }
 
+/// Dernier contrôle du registre public pour un apporteur sous contrat. Sans clé étrangère.
+/// rgpd: technique — état au registre public d'une entreprise, dates ; aucun nom, e-mail ni téléphone
+model ApporteurControleRegistre {
+  apporteurId       String    @id @map("apporteur_id") @db.Uuid
+  dernierControleAt DateTime  @map("dernier_controle_at") @db.Timestamptz(3)
+  /// active | fermee | introuvable (CHECK) — « indisponible » ne s'écrit jamais
+  etat              String    @db.VarChar(16)
+  etatDepuis        DateTime  @map("etat_depuis") @db.Timestamptz(3)
+  /// Nombre de contrôles consécutifs dans l'état courant.
+  consecutifs       Int       @default(1)
+  alerteeAt         DateTime? @map("alertee_at") @db.Timestamptz(3)
+
+  @@index([dernierControleAt])
+  @@map("apporteur_controles_registre")
+}
+
 /// Contrat 2.6 (2026-10-09) : l'ÉTABLISSEMENT déclaré d'une présentation (SIRET), et son extension
 /// à toute l'entreprise, décidée par Williams seul (art. 3.1). Table séparée sans clé étrangère
 /// (fenêtre app/worker), comme `ApporteurReseauSiret`. Absente = présentation d'avant la 2.6, qui
@@ -16730,6 +16748,8 @@ model ApporteurChangementIban {
   motifRefus             String?   @map("motif_refus") @db.Text
   /// Les trois cases cochées et les alertes affichées. Jamais d'IBAN.
   controles              Json?
+  /// Posée par la purge RGPD avec `iban = 'purge'` (PR N, #2464 pt 6).
+  ibanPurgeAt            DateTime? @map("iban_purge_at") @db.Timestamptz(3)
 
   @@index([apporteurId, demandeeAt], map: "apporteur_changements_iban_apporteur_idx")
   @@index([statut, confirmeeAt], map: "apporteur_changements_iban_statut_idx")
@@ -16771,6 +16791,8 @@ model ApporteurIbanHistorique {
   demandeId       String?   @map("demande_id") @db.Uuid
   pieceRibId      String?   @map("piece_rib_id") @db.Uuid
   creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  /// Posée par la purge RGPD avec `iban = 'purge'` (PR N, #2464 pt 6) ; empreinte et quatre derniers caractères gardés.
+  ibanPurgeAt     DateTime? @map("iban_purge_at") @db.Timestamptz(3)
 
   @@index([apporteurId, creeAt], map: "apporteur_iban_historique_apporteur_idx")
   @@index([ibanEmpreinte], map: "apporteur_iban_historique_empreinte_idx")
@@ -16794,6 +16816,72 @@ model ApporteurVirementCompte {
   @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
   @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
   @@map("apporteur_virements_compte")
+}
+
+/// Réservation d'un numéro d'autofacture ou d'avoir : un numéro n'appartient qu'à UN apporteur, y compris en
+/// concurrence (clé primaire sur le numéro, remplie par le déclencheur de `commissions_apporteur`). Sans clé étrangère.
+/// rgpd: technique — numéro de pièce et identifiant d'apporteur ; aucun nom, e-mail ni téléphone
+model ApporteurNumeroReserve {
+  numero      String   @id @db.VarChar(40)
+  apporteurId String   @map("apporteur_id") @db.Uuid
+  reserveAt   DateTime @default(now()) @map("reserve_at") @db.Timestamptz(3)
+
+  @@index([apporteurId], map: "apporteur_numeros_reserves_apporteur_idx")
+  @@map("apporteur_numeros_reserves")
+}
+
+/// Ce que la purge RGPD a effacé, quand et selon quelle règle. Ajout seul (déclencheurs). La fiche de l'apporteur reste.
+/// Sans clé étrangère (fenêtre app/worker). `regle` et `elements` sont contraints par CHECK (migration.sql).
+/// rgpd: technique — identifiant d'apporteur, éléments effacés, règle et dates ; aucun nom, e-mail ni téléphone
+model ApporteurPurgeRgpd {
+  id          String   @id @default(uuid()) @db.Uuid
+  apporteurId String   @map("apporteur_id") @db.Uuid
+  /// contrat_termine_5ans | refuse_6mois | inactif_24mois | piece_6mois
+  regle       String   @db.VarChar(40)
+  /// pieces_identite | rib | iban_fiche | iban_historique | iban_demandes | rib_demandes
+  elements    String[]
+  echeanceAt  DateTime @map("echeance_at") @db.Timestamptz(3)
+  purgeeAt    DateTime @default(now()) @map("purgee_at") @db.Timestamptz(3)
+
+  @@index([apporteurId])
+  @@map("apporteur_purges_rgpd")
+}
+
+/// Une VERSION d'un document annexe (fiche des commissions, livret, guide), déposée UNE fois à une clé IMMUABLE dérivée
+/// de son empreinte. Jamais réécrite ; seule `retireeAt` passe de NULL à une date (déclencheurs : ni DELETE ni TRUNCATE).
+/// rgpd: technique — identifiant de document, empreinte, clé de stockage, taille, dates ; aucune donnée personnelle
+model DocumentAnnexeVersion {
+  id         String    @id @default(uuid()) @db.Uuid
+  /// fiche-commissions | livret | guide-demarrage (CHECK)
+  documentId String    @map("document_id") @db.VarChar(40)
+  sha256     String    @db.Char(64)
+  cleR2      String    @unique(map: "documents_annexes_versions_cle_r2_key") @map("cle_r2") @db.VarChar(300)
+  taille     Int
+  deposeAt   DateTime  @default(now()) @map("depose_at") @db.Timestamptz(3)
+  deposePar  String?   @map("depose_par") @db.VarChar(64)
+  retireeAt  DateTime? @map("retiree_at") @db.Timestamptz(3)
+
+  @@unique([documentId, sha256], map: "documents_annexes_versions_document_id_sha256_key")
+  @@index([documentId, deposeAt], map: "documents_annexes_versions_document_id_depose_at_idx")
+  @@map("documents_annexes_versions")
+}
+
+/// Ce qui a été REMIS à un apporteur : quelle version de quelle annexe, dans quel envoi. Ajout seul (déclencheurs).
+/// rgpd: technique — identifiant d'apporteur, de document, empreinte, contexte et dates ; aucun nom, e-mail ni téléphone
+model ApporteurDocumentRemis {
+  id            String   @id @default(uuid()) @db.Uuid
+  apporteurId   String   @map("apporteur_id") @db.Uuid
+  documentId    String   @map("document_id") @db.VarChar(40)
+  versionSha256 String   @map("version_sha256") @db.Char(64)
+  cleR2         String   @map("cle_r2") @db.VarChar(300)
+  /// contrat_signe | renvoi_contrat | lien_dossier (CHECK)
+  contexte      String   @db.VarChar(30)
+  emailJobId    String?  @map("email_job_id") @db.VarChar(120)
+  remisAt       DateTime @default(now()) @map("remis_at") @db.Timestamptz(3)
+
+  @@unique([apporteurId, documentId, versionSha256, contexte, emailJobId], map: "apporteur_documents_remis_apporteur_id_document_id_version__key")
+  @@index([apporteurId, remisAt], map: "apporteur_documents_remis_apporteur_id_remis_at_idx")
+  @@map("apporteur_documents_remis")
 }
 
 enum TypePieceApporteur {
@@ -19438,6 +19526,12 @@ model TeamQuestionnaireInvite {
   revokedAt            DateTime?   @map("revoked_at") @db.Timestamptz(3)
   failedAttempts       Int         @default(0) @map("failed_attempts")
   createdByAdminId     String      @map("created_by_admin_id") @db.VarChar(64)
+  /// Adresse chiffrée (`encryptPii`) : sert à « Renvoyer ». Jamais affichée en clair hors de l'envoi.
+  contactEmailEnc      String?     @map("contact_email_enc") @db.Text
+  firstName            String?     @map("first_name") @db.VarChar(80)
+  /// console | contrat_apporteur | …
+  source               String?     @db.VarChar(30)
+  sentAt               DateTime?   @map("sent_at") @db.Timestamptz(3)
   createdAt            DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
 
   submissions TeamQuestionnaireSubmission[]
@@ -19492,6 +19586,29 @@ model TeamMemberEvent {
   @@index([memberId, createdAt])
   @@index([action, createdAt])
   @@map("team_member_events")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PILOTAGE SEO & GEO — PR P10 (robots d'IA, agrégats Cloudflare)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Passages d'un robot d'IA sur le site, pour un jour : agrégat `{jour, robot, famille de chemins,
+/// nombre}` issu de l'API GraphQL Analytics de Cloudflare. Ni IP ni user-agent brut : `robot` est un
+/// identifiant d'une liste fermée (ex. `gptbot`), `famille` vaut recherche | entrainement | utilisateur
+/// (chaîne, pas d'énumération Postgres). Un passage de robot n'est pas une citation.
+/// rgpd: technique — compteurs de robots par jour et famille de pages ; aucune donnée sur une personne
+model RobotIaJour {
+  id            Int      @id @default(autoincrement())
+  date          DateTime @db.Date
+  robot         String   @db.VarChar(40)
+  famille       String   @db.VarChar(20)
+  familleChemin String   @map("famille_chemin") @db.VarChar(40)
+  nombre        Int      @default(0)
+  creeLe        DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@unique([date, robot, familleChemin], map: "robot_ia_jours_cle_key")
+  @@index([robot, date], map: "robot_ia_jours_robot_date_idx")
+  @@map("robot_ia_jours")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

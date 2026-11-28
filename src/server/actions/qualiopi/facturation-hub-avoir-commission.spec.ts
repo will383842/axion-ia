@@ -89,6 +89,31 @@ describe("genererAvoirAction — facture commissionnée", () => {
     expect(mockGenererAvoir).toHaveBeenCalledTimes(1);
   });
 
+  it("geste commercial (bon d'achat offert) : émis SANS confirmation de reprise, la pièce porte le marqueur", async () => {
+    mockCommissionCount.mockResolvedValue(1);
+    const r = await genererAvoirAction({ ...base, gesteCommercial: true });
+    expect("data" in r).toBe(true);
+    expect(mockGenererAvoir).toHaveBeenCalledWith(
+      expect.objectContaining({ factureId: FACTURE_ID, gesteCommercial: true }),
+    );
+    expect(mockLogActivity).toHaveBeenCalledWith(
+      expect.objectContaining({ changes: expect.objectContaining({ gesteCommercial: true }) }),
+    );
+  });
+
+  it("avoir normal : aucun marqueur n'est posé", async () => {
+    mockCommissionCount.mockResolvedValue(1);
+    await genererAvoirAction({ ...base, confirmerReprise: true });
+    expect(mockGenererAvoir.mock.calls[0]?.[0]).not.toHaveProperty("gesteCommercial");
+  });
+
+  it("geste commercial ET confirmation de reprise ensemble : refusé", async () => {
+    mockCommissionCount.mockResolvedValue(1);
+    const r = await genererAvoirAction({ ...base, gesteCommercial: true, confirmerReprise: true });
+    expect("error" in r).toBe(true);
+    expect(mockGenererAvoir).not.toHaveBeenCalled();
+  });
+
   it("inchangé sans commission", async () => {
     const r = await genererAvoirAction(base);
     expect("data" in r).toBe(true);
