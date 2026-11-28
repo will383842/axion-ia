@@ -30,6 +30,8 @@ interface FaqBlockProps {
   permalinkBase?: string;
   /** Pass-through to FaqAccordion — locale-aware label for the permalink. */
   permalinkLabel?: string;
+  /** Pass-through to FaqAccordion — `"h3"` : la question devient un titre de niveau 3 (fiches équipe). */
+  questionAs?: "h3";
   /**
    * Classes utilitaires additionnelles sur la `<section>`. Sert d'abord à
    * resserrer le rythme vertical sur les pages mobile-first : le défaut
@@ -57,6 +59,7 @@ export function FaqBlock({
   tone = "canvas",
   permalinkBase,
   permalinkLabel,
+  questionAs,
   className,
 }: FaqBlockProps) {
   return (
@@ -97,6 +100,7 @@ export function FaqBlock({
             {...(faqAuthorId !== undefined ? { faqAuthorId } : {})}
             {...(permalinkBase !== undefined ? { permalinkBase } : {})}
             {...(permalinkLabel !== undefined ? { permalinkLabel } : {})}
+            {...(questionAs !== undefined ? { questionAs } : {})}
           />
         </div>
       </Container>
