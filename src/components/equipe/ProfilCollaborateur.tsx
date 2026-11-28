@@ -99,7 +99,7 @@ export function ProfilCollaborateur({
       ? { surTitre: "Pour qui", question: pourQui.question }
       : {
           surTitre: "Pour qui",
-          question: `${fiche.nom} peut-il aider une entreprise comme la vôtre ?`,
+          question: `Votre entreprise ressemble-t-elle à celles qu'accompagne ${fiche.nom} ?`,
         });
   const presence = contenu.presence;
   const villes = blocsCommuns && presence ? villesPhares() : [];
@@ -148,6 +148,7 @@ export function ProfilCollaborateur({
           {...("reponse" in enteteVousEtes && enteteVousEtes.reponse
             ? { reponse: enteteVousEtes.reponse }
             : {})}
+          {...(fiche.estDirigeantPrincipal ? {} : { titreTailles: "Votre situation" })}
           tailles={cartesTailles.map((c) =>
             carteVue(c, jeton as TonCarte, fiche.estDirigeantPrincipal),
           )}

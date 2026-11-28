@@ -4,6 +4,10 @@ import {
   Building2,
   CalendarClock,
   Circle,
+  Clock,
+  Link2,
+  Network,
+  Wrench,
   Factory,
   Handshake,
   HardHat,
@@ -73,7 +77,13 @@ export const ICONES_NOMMEES: Readonly<Record<string, LucideIcon>> = {
   cabinet: Scale,
   immobilier: House,
   restauration: UtensilsCrossed,
-  services: Handshake,
+  // Cartes « Vous êtes » des collaborateurs (clés du registre de catégorie).
+  temps: Clock,
+  equipe: Users,
+  projet: ListChecks,
+  outils: Wrench,
+  lien: Link2,
+  reseau: Network,
 };
 
 const possede = (table: object, cle: string): boolean =>

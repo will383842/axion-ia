@@ -11,6 +11,7 @@ import { buildGrapheCollaborateur } from "@/lib/seo/collaborateur-jsonld";
 import { MODELES, ficheDepuisWilliams, fichePublique } from "@/lib/equipe";
 import { ficheDepuisMembre, type MembrePublic } from "@/lib/equipe/depuis-membre";
 import { ProfilCollaborateur } from "../ProfilCollaborateur";
+import { iconeDe } from "../visuels/icones";
 
 vi.mock("next/image", () => ({
   default: ({ fill: _f, priority: _p, unoptimized: _u, ...props }: Record<string, unknown>) => (
@@ -274,6 +275,14 @@ describe.each(CATEGORIES)("R2d — fiche de collaborateur fictive (%s)", (catego
     const t = texte(c.vue.container);
     expect(t).toContain("Camille travaille dans l'Isère et intervient partout en France.");
     expect(t).not.toMatch(/département\s*\d/i);
+  });
+});
+
+describe("R2d — icônes des cartes « Vous êtes » (toutes catégories)", () => {
+  it("chaque clé d'icône du registre est connue (aucun cercle neutre)", () => {
+    for (const m of Object.values(MODELES)) {
+      for (const carte of m.vousEtes) expect(iconeDe(carte.icone), carte.icone).not.toBe(iconeDe());
+    }
   });
 });
 
