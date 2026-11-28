@@ -90,7 +90,11 @@ describe("construireResultat", () => {
 });
 
 function fauxPrisma(
-  opts: { existantes?: Array<{ url: string; echeance: string }>; joursCollectes?: number } = {},
+  opts: {
+    existantes?: Array<{ url: string; echeance: string }>;
+    joursCollectes?: number;
+    joursAbandonnes?: number;
+  } = {},
 ) {
   return {
     siteRoute: {
@@ -108,11 +112,21 @@ function fauxPrisma(
         .mockResolvedValue({ _sum: { clics: 3, impressions: 60, positionSum: 60 * 9 } }),
       count: vi.fn().mockResolvedValue(5),
     },
-    gscImportRun: { count: vi.fn().mockResolvedValue(opts.joursCollectes ?? 99) },
+    // Jours réussis (statut "reussi") ou abandonnés (autre requête).
+    gscImportRun: {
+      count: vi
+        .fn()
+        .mockImplementation(async (a: { where: { statut: unknown } }) =>
+          a.where.statut === "reussi" ? (opts.joursCollectes ?? 99) : (opts.joursAbandonnes ?? 0),
+        ),
+    },
     gscInspection: {
       findFirst: vi.fn().mockResolvedValue({ verdict: "PASS", inspecteLe: d("2026-11-04") }),
     },
-    contenuRendezVousOrigine: { count: vi.fn().mockResolvedValue(1) },
+    contenuRendezVousOrigine: {
+      count: vi.fn().mockResolvedValue(1),
+      findFirst: vi.fn().mockResolvedValue({ createdAt: d("2026-10-15") }),
+    },
     contentGenConfig: {
       findUnique: vi.fn().mockResolvedValue({ value: { debut: "2026-10-01T00:00:00.000Z" } }),
       create: vi.fn().mockResolvedValue({}),
@@ -162,6 +176,7 @@ describe("tacheSuiviResultats", () => {
   it("0 rendez-vous n'est cru que si la capture a déjà écrit une origine", async () => {
     const p = fauxPrisma();
     p.contenuRendezVousOrigine.count.mockResolvedValue(0);
+    p.contenuRendezVousOrigine.findFirst.mockResolvedValue(null);
     await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
     expect(p.contenuResultat.create.mock.calls[0]![0].data.rendezVous).toBeNull();
   });
@@ -171,11 +186,40 @@ describe("tacheSuiviResultats", () => {
     await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
     expect(p.contentGenConfig.create).toHaveBeenCalledTimes(1);
   });
-  it("un jour abandonné (5 tentatives) compte comme réglé", async () => {
+  it("un jour abandonné (5 tentatives, repris plus jamais) compte comme réglé, même « en cours » mort", async () => {
     const p = fauxPrisma();
     await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
-    const where = p.gscImportRun.count.mock.calls[0]![0].where;
-    expect(where.OR).toContainEqual({ tentatives: { gte: 5 }, statut: { not: "en_cours" } });
+    const where = p.gscImportRun.count.mock.calls[1]![0].where;
+    expect(where.tentatives).toEqual({ gte: 5 });
+    expect(where.OR).toContainEqual({ statut: { not: "en_cours" } });
+    expect(where.OR).toContainEqual({ debutLe: { lt: expect.any(Date) } });
+  });
+  it("un jour abandonné rend la fenêtre indisponible (null), jamais un zéro ni un total partiel", async () => {
+    const p = fauxPrisma({ joursCollectes: 2, joursAbandonnes: 1 });
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-04") });
+    const data = p.contenuResultat.create.mock.calls[0]![0].data;
+    expect(data.echeance).toBe("j3");
+    expect(data.affichages).toBeNull();
+    expect(data.clics).toBeNull();
+    expect(data.position).toBeNull();
+    expect(data.details.joursAbandonnes).toBe(1);
+    expect(data.details.donneesInsuffisantes).toBe(true);
+    expect(p.gscPageJour.aggregate).not.toHaveBeenCalled();
+  });
+  it("un NON postérieur à l'échéance ne remplace pas un PASS en vigueur", async () => {
+    const p = fauxPrisma();
+    p.gscInspection.findFirst
+      .mockResolvedValueOnce({ verdict: "PASS", inspecteLe: d("2026-11-03") })
+      .mockResolvedValueOnce({ verdict: "NEUTRAL", inspecteLe: d("2026-11-05") });
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(p.contenuResultat.create.mock.calls[0]![0].data.indexe).toBe(true);
+  });
+  it("rendez-vous null si la première origine est postérieure au début de la fenêtre", async () => {
+    const p = fauxPrisma();
+    p.contenuRendezVousOrigine.findFirst.mockResolvedValue({ createdAt: d("2026-11-05") });
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(p.contenuResultat.create.mock.calls[0]![0].data.rendezVous).toBeNull();
+    expect(p.contenuRendezVousOrigine.count).not.toHaveBeenCalled();
   });
   it("ignore les pages d'index du blog", async () => {
     const p = fauxPrisma();

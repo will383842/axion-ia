@@ -16,7 +16,7 @@ import {
   TOLERANCE_INDEXATION_JOURS,
   type CodeEcheance,
 } from "./echeances";
-import { TENTATIVES_MAX } from "@/server/seo-pilotage/ingestion/jour";
+import { DELAI_PASSAGE_MORT_MS, TENTATIVES_MAX } from "@/server/seo-pilotage/ingestion/jour";
 import { construireResultat, type MesureGsc } from "./resultat";
 
 export const HOTE_SITE = "https://axion-ia.com";
@@ -174,55 +174,90 @@ async function mesurer(
   const joursFenetre = Math.round((finExclue.getTime() - debut.getTime()) / 86_400_000);
   // La disponibilité se lit dans le journal de collecte (un jour `reussi` par jour), pas dans les
   // lignes de la page : une page sans impression n'a pas de ligne, et ce n'est pas « indisponible ».
-  const joursCollectes = await prisma.gscImportRun.count({
-    // Un jour est « réglé » s'il a réussi OU s'il est abandonné (plafond de tentatives, jamais
-    // repris) : sinon une échéance resterait bloquée pour toujours.
-    where: {
-      typeRecherche: "web",
-      jour: { gte: debut, lt: finExclue },
-      OR: [
-        { statut: "reussi" },
-        // Abandonné = plafond atteint ET plus en cours (une 5e tentative en cours n'a rien écrit).
-        { tentatives: { gte: TENTATIVES_MAX }, statut: { not: "en_cours" } },
-      ],
-    },
-  });
-  if (joursCollectes < joursFenetre) return null;
-  const [agregat, inspection, rdv] = await Promise.all([
-    prisma.gscPageJour.aggregate({
-      where: { chemin, typeRecherche: "web", date: { gte: debut, lt: finExclue } },
-      _sum: { clics: true, impressions: true, positionSum: true },
+  const jourPasseMort = new Date(maintenant.getTime() - DELAI_PASSAGE_MORT_MS);
+  const [joursReussis, joursAbandonnes] = await Promise.all([
+    prisma.gscImportRun.count({
+      where: { typeRecherche: "web", jour: { gte: debut, lt: finExclue }, statut: "reussi" },
     }),
+    // Abandonné = plafond de tentatives atteint, et plus repris : soit plus « en cours », soit un
+    // « en cours » mort (un jour qui fait tomber le processus reste `en_cours` pour toujours).
+    prisma.gscImportRun.count({
+      where: {
+        typeRecherche: "web",
+        jour: { gte: debut, lt: finExclue },
+        statut: { not: "reussi" },
+        tentatives: { gte: TENTATIVES_MAX },
+        OR: [{ statut: { not: "en_cours" } }, { debutLe: { lt: jourPasseMort } }],
+      },
+    }),
+  ]);
+  // Un jour réglé (réussi ou abandonné) ne bloque plus l'échéance ; sinon on attend.
+  if (joursReussis + joursAbandonnes < joursFenetre) return null;
+  // Un jour abandonné n'a écrit aucune donnée : la fenêtre est partielle, donc INDISPONIBLE (null),
+  // jamais un total partiel présenté comme complet ni un zéro.
+  const fenetreComplete = joursReussis >= joursFenetre;
+  const finEcheance = ajouterJours(jourUtc(publieLe), joursDe(code) + 1);
+  const inspectionOuverte = { chemin, inspecteLe: { gte: jourUtc(publieLe), lt: finEcheance } };
+  const [agregat, avant, apres, rdv] = await Promise.all([
+    fenetreComplete
+      ? prisma.gscPageJour.aggregate({
+          where: { chemin, typeRecherche: "web", date: { gte: debut, lt: finExclue } },
+          _sum: { clics: true, impressions: true, positionSum: true },
+        })
+      : Promise.resolve(null),
+    // L'état EN VIGUEUR à l'échéance : la rotation n'écrit une ligne que quand un champ change.
     prisma.gscInspection.findFirst({
-      // L'état EN VIGUEUR à l'échéance : la rotation n'écrit une ligne que quand un champ change.
-      where: { chemin, inspecteLe: { gte: jourUtc(publieLe), lt: ajouterJours(finInspection, 1) } },
+      where: inspectionOuverte,
       orderBy: { inspecteLe: "desc" },
       select: { verdict: true, inspecteLe: true },
     }),
-    // Compté seulement si la capture tournait déjà au début de la fenêtre ; sinon null, jamais 0.
-    debutCapture !== null && debutCapture.getTime() <= debut.getTime()
-      ? prisma.contenuRendezVousOrigine
-          .count({ where: { pageOrigine: chemin, createdAt: { gte: debut, lt: finExclue } } })
-          .then(async (n) => {
-            // « 0 » n'est cru que si la capture a déjà prouvé qu'elle écrit (au moins une origine,
-            // quelle que soit la page) : un site qui n'écrit pas (drapeau, conteneur plus ancien)
-            // ne doit pas faire enregistrer des zéros définitifs.
-            if (n > 0) return n;
-            return (await prisma.contenuRendezVousOrigine.count()) > 0 ? 0 : null;
-          })
-      : Promise.resolve(null),
+    // Une ligne postérieure à l'échéance (dans la tolérance) ne sert qu'à défaut, ou pour PASS.
+    prisma.gscInspection.findFirst({
+      where: { chemin, inspecteLe: { gte: finEcheance, lt: ajouterJours(finInspection, 1) } },
+      orderBy: { inspecteLe: "desc" },
+      select: { verdict: true, inspecteLe: true },
+    }),
+    compterRendezVous(prisma, chemin, debut, finExclue, debutCapture),
   ]);
-  const gsc: MesureGsc = {
-    impressions: agregat._sum.impressions ?? 0,
-    clics: agregat._sum.clics ?? 0,
-    positionSum: agregat._sum.positionSum ?? 0,
-    joursAvecDonnees: joursCollectes,
-  };
-  return construireResultat({
-    code,
-    publieLe,
-    gsc,
-    inspection,
-    rendezVous: rdv,
+  const estPass = (i: { verdict: string | null } | null) => i?.verdict?.toUpperCase() === "PASS";
+  const inspection = estPass(avant) ? avant : estPass(apres) ? apres : (avant ?? apres);
+  const gsc: MesureGsc | null = agregat
+    ? {
+        impressions: agregat._sum.impressions ?? 0,
+        clics: agregat._sum.clics ?? 0,
+        positionSum: agregat._sum.positionSum ?? 0,
+        joursAvecDonnees: joursReussis,
+      }
+    : null;
+  const ligne = construireResultat({ code, publieLe, gsc, inspection, rendezVous: rdv });
+  return joursAbandonnes > 0 ? { ...ligne, details: { ...ligne.details, joursAbandonnes } } : ligne;
+}
+
+/**
+ * Compté seulement si la capture écrivait déjà au début de la fenêtre ; sinon null, jamais 0.
+ * Le début effectif est le plus tardif de l'allumage du worker et du lendemain de la PREMIÈRE
+ * origine réellement écrite (le site et le worker s'allument séparément) : une origine prouve que
+ * la capture écrit, et aucune ne prouve rien.
+ */
+async function compterRendezVous(
+  prisma: PrismaSuivi,
+  chemin: string,
+  debut: Date,
+  finExclue: Date,
+  debutCapture: Date | null,
+): Promise<number | null> {
+  if (debutCapture === null) return null;
+  const premiere = await prisma.contenuRendezVousOrigine.findFirst({
+    orderBy: { createdAt: "asc" },
+    select: { createdAt: true },
+  });
+  if (!premiere) return null;
+  const debutEffectif = Math.max(
+    debutCapture.getTime(),
+    ajouterJours(jourUtc(premiere.createdAt), 1).getTime(),
+  );
+  if (debutEffectif > debut.getTime()) return null;
+  return prisma.contenuRendezVousOrigine.count({
+    where: { pageOrigine: chemin, createdAt: { gte: debut, lt: finExclue } },
   });
 }
