@@ -103,6 +103,26 @@ const pairs: Pair[] = [
   { fg: palette.fgMuted, bg: palette.bg, label: "fg-muted on bg" },
   { fg: palette.primary, bg: palette.bg, label: "primary on bg" },
   { fg: palette.terracotta, bg: palette.bg, label: "terracotta on bg" },
+  // Héros d'article terracotta (gabarits d'articles S2) : le point le plus clair du dégradé
+  // est le terracotta plein ; tout décor qui passe sous du texte est plus foncé.
+  { fg: palette.paper, bg: palette.terracotta, label: "héros : papier (H1) on terracotta" },
+  { fg: palette.mochaFg, bg: palette.terracotta, label: "héros : ivoire (texte) on terracotta" },
+  {
+    fg: palette.terracottaSoft,
+    bg: palette.terracotta,
+    label: "héros : terracotta-soft (fin du titre) on terracotta",
+  },
+  { fg: palette.sand, bg: palette.terracotta, label: "héros : sable (méta) on terracotta" },
+  {
+    fg: palette.terracottaDeep,
+    bg: palette.paper,
+    label: "héros : pastille pleine, terracotta-deep on papier",
+  },
+  {
+    fg: palette.mochaFg,
+    bg: palette.terracottaDeep,
+    label: "héros : pastille contour, ivoire on terracotta-deep",
+  },
   // Text on paper (white)
   { fg: palette.fg, bg: palette.paper, label: "fg on paper" },
   { fg: palette.fgSoft, bg: palette.paper, label: "fg-soft on paper" },

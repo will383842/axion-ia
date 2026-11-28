@@ -99,6 +99,9 @@ export const env = createEnv({
     // étendue, cas d'usage), gelés par défaut : aucune page ne lit leurs tables.
     // Actif SEULEMENT si "true" (villes/generateurs-annexes-geles.ts).
     VILLES_GENERATEURS_ANNEXES_ACTIFS: z.enum(["true", "false"]).optional(),
+    // Porte qualité des contenus EN OBSERVATION (Q7) : le worker note chaque contenu généré et écrit
+    // son verdict, sans rien bloquer. Actif SEULEMENT si "true" ; absent = éteint. Lu par le WORKER.
+    CONTENT_PORTE_OBSERVATION: z.enum(["true", "false"]).optional(),
     // Fiche prospect créée toute seule à la réservation d'un rendez-vous Calendly
     // de la liste blanche (décision de Will, 24/10/2026). Lu par le WORKER (balayage).
     // Actif SEULEMENT si "true" (comme DOSSIER_BALAYAGE_ENABLED) ; "essai" = à blanc
@@ -835,6 +838,7 @@ export const env = createEnv({
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     BLOG_GABARITS_V2: process.env.BLOG_GABARITS_V2,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
+    CONTENT_PORTE_OBSERVATION: process.env.CONTENT_PORTE_OBSERVATION,
     EMAIL_MANUEL_ACTIF: process.env.EMAIL_MANUEL_ACTIF,
     EMAIL_MANUEL_NOM_EXPEDITEUR: process.env.EMAIL_MANUEL_NOM_EXPEDITEUR,
     EMAIL_MANUEL_SIGNATURE: process.env.EMAIL_MANUEL_SIGNATURE,

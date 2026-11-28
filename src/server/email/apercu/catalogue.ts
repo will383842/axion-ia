@@ -708,6 +708,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur dont le relevé du mois a été préparé et vérifié",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-file-attente-premier-rang": {
+    categorie: "recrutement",
+    quand:
+      "Pas encore émis (gabarit livré au worker avant son émetteur) : à terme, quand une entreprise déclarée par l'apporteur redevient disponible et qu'il est au premier rang de la file d'attente",
+    destinataire: "l'apporteur au premier rang de la file d'attente de l'article 3.5",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-virement-fait": {
     categorie: "recrutement",
     quand: "Console : bouton « Virement fait » sur une autofacture",
