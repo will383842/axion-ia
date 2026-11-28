@@ -1,7 +1,9 @@
 /**
  * Réseau d'apporteurs — FACTURATION DES COMMISSIONS DÈS QU'ELLES SONT DUES (décision de Will, 06/10).
  *
- * Plus de relevé mensuel ni de seuil de 50 € : dès qu'une commission est `due` (le client a payé sa
+ * Autofacture au fil de l'eau (contrat 5.1) ; le relevé MENSUEL d'information est dans
+ * `releve-mensuel/` (décision du 27/11) : il récapitule les autofactures, il ne les remplace pas.
+ * Pas de seuil de 50 € : dès qu'une commission est `due` (le client a payé sa
  * commande à 100 %, ou la vigilance vient d'être levée), le système :
  *
  *   1. établit l'autofacture PDF de l'apporteur (numéro de la série, R2) — UNE par apporteur et par
