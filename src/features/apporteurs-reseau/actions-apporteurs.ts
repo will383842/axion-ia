@@ -226,6 +226,10 @@ export async function lienArchiveAction(input: { apporteurId: string }): Promise
     });
     if (!a || a.statut !== "resilie")
       return { ok: false, message: "Ce contrat n'est pas résilié." };
+    // Classé (retiré du réseau) : page neutre, aucun lien d'accès aux pièces.
+    const { retraitDe } = await import("./retrait");
+    if (await retraitDe(a.id))
+      return { ok: false, message: "Ce dossier est classé : aucun lien d'accès." };
     const { urlDossier } = await import("./jeton");
     const url = urlDossier(a.id, a.versionLien);
     if (!url) return { ok: false, message: "Impossible de fabriquer le lien (secret absent)." };

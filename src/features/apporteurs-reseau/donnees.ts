@@ -309,6 +309,17 @@ export async function lireDossierParLien(
     select: { versionLien: true, statut: true },
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
+  // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
+  // recalculé sur la version courante n'ouvre pas un dossier retiré… sauf s'il reste de
+  // l'ARGENT en jeu : la page s'ouvre alors en MODE RESTREINT (dépôt des attestations de
+  // vigilance seulement), pour qu'aucune commission ne soit confisquée de fait.
+  // Contrôlé AVANT l'archive : un résilié classé sans argent reste neutre (PR K).
+  const retire = await retraitDe(id);
+  if (retire) {
+    if (!(await argentEnJeu(id))) return null;
+    const vue = await lireDossier(id);
+    return vue ? { ...vue, restreint: true } : null;
+  }
   // Résilié (lot L1b, B1 bis ; PR K) : toujours restreint (aucune écriture). Avec de l'argent
   // en jeu : dépôt des attestations ; sans argent : archive en lecture seule de ses pièces.
   if (a.statut === "resilie") {
@@ -316,15 +327,6 @@ export async function lireDossierParLien(
     if (!vue) return null;
     if (!(await argentEnJeu(id))) return { ...vue, restreint: true, archive: true };
     return { ...vue, restreint: true };
-  }
-  // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
-  // recalculé sur la version courante n'ouvre pas un dossier retiré… sauf s'il reste de
-  // l'ARGENT en jeu : la page s'ouvre alors en MODE RESTREINT (dépôt des attestations de
-  // vigilance seulement), pour qu'aucune commission ne soit confisquée de fait.
-  if (await retraitDe(id)) {
-    if (!(await argentEnJeu(id))) return null;
-    const vue = await lireDossier(id);
-    return vue ? { ...vue, restreint: true } : null;
   }
   return lireDossier(id);
 }

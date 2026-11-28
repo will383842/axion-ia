@@ -35,4 +35,10 @@ describe("retiré sans argent", () => {
     expect(await lireDossierParLien(ID, jetonDossier(ID, 3)!)).toBeNull();
     expect(h.retraitDe).toHaveBeenCalledWith(ID);
   });
+
+  it("résilié PUIS classé, sans argent → page neutre (null), pas d'archive", async () => {
+    h.findUnique.mockResolvedValue({ versionLien: 3, statut: "resilie" });
+    expect(await lireDossierParLien(ID, jetonDossier(ID, 3)!)).toBeNull();
+    expect(h.retraitDe).toHaveBeenCalledWith(ID);
+  });
 });
