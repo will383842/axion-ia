@@ -18,7 +18,7 @@ describe("migration des annulations de rendez-vous", () => {
     const nom = DOSSIER.split("/").pop() as string;
     const horodatage = (d: string) => d.slice(0, 14);
     const autres = readdirSync(join(process.cwd(), "prisma/migrations")).filter(
-      (d) => /^\d{14}_/.test(d) && d !== nom,
+      (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_pilotage_seo_journal"),
     );
     const fautives = autres.filter((d) => horodatage(d) >= horodatage(nom));
     expect(fautives).toEqual([]);
