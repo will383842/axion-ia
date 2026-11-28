@@ -1,1 +1,13 @@
-{}
+{
+  "grille": {
+    "titre": "Les {n} questions,",
+    "em": "d’un coup d’œil",
+    "aria": "Toutes les questions"
+  },
+  "encart": {
+    "surtitre": "Écrire un message",
+    "titre": "Votre question n’est pas là ?",
+    "texte": "Écrivez-nous : chaque message est lu par un consultant senior.",
+    "ou": "ou un"
+  }
+}
