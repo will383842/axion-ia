@@ -89,6 +89,15 @@ describe("outils sémantiques purs", () => {
     expect(Number.isNaN(r[0]!.cosinus)).toBe(true);
     expect(r[1]!.id).toBe("b");
   });
+  it("brouillon inutilisable : remonté en NaN même sans index ; n borné ; exclusion du brouillon", () => {
+    const r = voisinsLesPlusProches([0, 0], [], 5);
+    expect(Number.isNaN(r[0]!.cosinus)).toBe(true);
+    const idx = [
+      { id: "moi", type: "article", url: null, etat: "en_file" as const, embedding: [1, 0] },
+      { id: "x", type: "faq", url: null, etat: "publie" as const, embedding: [0, 1] },
+    ];
+    expect(voisinsLesPlusProches([1, 0], idx, 0, ["moi"]).map((v) => v.id)).toEqual(["x"]);
+  });
   it("l'index couvre pages statiques, services, offres, Journée IA, villes, FAQ", () => {
     expect(TYPES_INDEX_STATIQUE).toEqual(
       expect.arrayContaining(["page_statique", "service", "offre", "journee_ia", "ville", "faq"]),

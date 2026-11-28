@@ -51,8 +51,18 @@ export function voisinsLesPlusProches(
   brouillon: ReadonlyArray<number>,
   index: ReadonlyArray<EntreeIndex>,
   n = 5,
+  /** Identifiants à écarter : le brouillon lui-même s'il est déjà en file (sinon cosinus 1, refus systématique). */
+  exclure: ReadonlyArray<string> = [],
 ): ReadonlyArray<VoisinSemantique> {
+  // Vecteur du brouillon inutilisable : on le dit (NaN → « non évalué »), même si l'index est vide.
+  if (cosinus(brouillon, brouillon) === null) {
+    return [
+      { id: "brouillon", type: "brouillon", url: null, etat: "en_file", cosinus: Number.NaN },
+    ];
+  }
+  const nb = Math.max(1, Math.floor(Number.isFinite(n) ? n : 5));
   return index
+    .filter((e) => !exclure.includes(e.id))
     .map((e) => ({
       id: e.id,
       type: e.type,
@@ -60,10 +70,13 @@ export function voisinsLesPlusProches(
       etat: e.etat,
       cosinus: cosinus(brouillon, e.embedding) ?? Number.NaN,
     }))
-    .sort((a, b) =>
-      Number.isNaN(a.cosinus) ? -1 : Number.isNaN(b.cosinus) ? 1 : b.cosinus - a.cosinus,
-    )
-    .slice(0, n);
+    .sort((a, b) => {
+      const na = Number.isNaN(a.cosinus);
+      const nbb = Number.isNaN(b.cosinus);
+      if (na || nbb) return na && nbb ? 0 : na ? -1 : 1;
+      return b.cosinus - a.cosinus;
+    })
+    .slice(0, nb);
 }
 
 /** Pénalité de proximité de la note (§ 4.3) : 0 sous `cosinusProximiteMin`, 10 à `cosinusBloque`. */
@@ -123,7 +136,7 @@ export function calibrerSeuil(paires: ReadonlyArray<PaireCalibrage>): ResultatCa
     const precision = vp + fp === 0 ? 0 : vp / (vp + fp);
     const rappel = vp / (vp + fn);
     const f1 = precision + rappel === 0 ? 0 : (2 * precision * rappel) / (precision + rappel);
-    // Égalité de F1 : on garde le seuil le plus HAUT (moins de faux refus), donc `>` strict en montant.
+    // Égalité de F1 : on garde le seuil le plus HAUT (moins de faux refus) ; `>=` en montant l'écrase.
     if (!meilleur || f1 >= meilleur.f1) meilleur = { seuil: candidat, f1, p: precision, r: rappel };
   }
   return {
