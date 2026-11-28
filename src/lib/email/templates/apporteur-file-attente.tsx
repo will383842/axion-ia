@@ -26,13 +26,11 @@ interface Payload {
 
 const texte = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 
+/** Objet fixe et court (≤ 45 caractères, référentiel §3.4) : le nom de l'entreprise est dans le corps. */
 export const apporteurFileAttenteSubject = (
   _locale: Locale,
-  payload: Record<string, unknown> = {},
-): string => {
-  const e = texte(payload["entreprise"]);
-  return e ? `${e} est de nouveau disponible` : "Une entreprise déclarée est de nouveau disponible";
-};
+  _payload: Record<string, unknown> = {},
+): string => "Une entreprise est de nouveau disponible";
 
 export function ApporteurFileAttenteEmail({
   locale,
