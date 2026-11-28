@@ -53,6 +53,28 @@ describe("contrat/route.ts", () => {
     expect(r.headers.get("Content-Disposition")).toContain("signe");
   });
 
+  it("restreint mais résilié (PR K) : le contrat signé est servi, 200", async () => {
+    h.lireDossierParLien.mockResolvedValue({
+      id: ID,
+      statut: "resilie",
+      restreint: true,
+      archive: true,
+      aContratSigne: true,
+    });
+    expect((await appel("?dl=1")).status).toBe(200);
+  });
+
+  it("restreint et signé (retiré avec argent) : toujours 404", async () => {
+    h.lireDossierParLien.mockResolvedValue({
+      id: ID,
+      statut: "signe",
+      restreint: true,
+      aContratSigne: true,
+    });
+    expect((await appel()).status).toBe(404);
+    expect(h.lireContratPdf).not.toHaveBeenCalled();
+  });
+
   it("dossier signé mais pièce introuvable : 404 neutre", async () => {
     h.lireDossierParLien.mockResolvedValue({ id: ID, statut: "signe", aContratSigne: true });
     h.lireContratPdf.mockResolvedValue(null);

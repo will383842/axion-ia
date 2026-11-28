@@ -21,6 +21,7 @@ import {
   NomEtEntrepriseEnCours,
 } from "@/components/admin/apporteurs/fiche/NomEtEntreprise";
 import { MessagesRecus } from "@/components/admin/apporteurs/fiche/MessagesRecus";
+import { LienArchive } from "@/components/admin/apporteurs/fiche/LienArchive";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
 import {
@@ -335,6 +336,11 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
                 contratSigne={d.statut === "signe" && fiche.aContratSigne}
                 lienEspace={d.statut === "a_verifier" || d.statut === "signe"}
               />
+            </div>
+          ) : null}
+          {d.statut === "resilie" ? (
+            <div className="mt-[var(--space-admin-4)]">
+              <LienArchive apporteurId={d.id} />
             </div>
           ) : null}
         </AdminCard>

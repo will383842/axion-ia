@@ -135,6 +135,14 @@ export const TEXTES = {
   restreintTitre: "Vos commissions restent dues",
   restreintLigne:
     "Votre fiche n'est plus active dans le réseau. Les commissions qui vous sont dues vous seront versées dans les conditions de votre contrat. Si l'on vous les demande, déposez ici vos attestations.",
+  // Résilié, payé, rien en jeu (PR K) : lecture seule de ses pièces.
+  archivePastille: "Vos documents",
+  archiveTitre: "Votre contrat a pris fin",
+  archiveLigne:
+    "Votre contrat a pris fin. Vous pouvez consulter et enregistrer vos autofactures, vos relevés et votre contrat.",
+  archiveAutofactures: "Mes autofactures",
+  archiveReleves: "Mes relevés",
+  archiveContrat: "Mon contrat signé",
   exemplePastille: "Aperçu",
   exempleTitre: "Ceci est un lien d'exemple",
   exempleLigne:

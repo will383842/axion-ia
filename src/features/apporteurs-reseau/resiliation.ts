@@ -235,8 +235,7 @@ export async function executerResiliation(
   if (!a) return { ok: false, message: "Apporteur introuvable." };
   if (!(STATUTS_RESILIABLES as readonly string[]).includes(a.statut))
     return { ok: false, message: "Seul un contrat signé peut être résilié." };
-  // B1 bis : si de l'argent est en jeu, le lien n'est PAS révoqué (mode restreint après la fin).
-  const argent = await argentEnJeu(apporteurId);
+  // PR K : le lien n'est JAMAIS révoqué à la prise d'effet (mode restreint ou archive en lecture).
 
   // Lues AVANT la transaction (tolérant à la table absente : une erreur dans une transaction Postgres
   // l'aurait annulée). Aucune ligne : rien à ramener.
@@ -255,7 +254,6 @@ export async function executerResiliation(
         data: {
           statut: "resilie",
           resilieAt: effetLe,
-          ...(argent ? {} : { versionLien: { increment: 1 } }),
         },
       });
       if (r.count !== 1) return null;

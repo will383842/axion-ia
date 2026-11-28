@@ -4,10 +4,11 @@
 // ne calcule rien : elle relit les montants et les états déjà écrits en base, SANS total, compteur,
 // objectif ni classement. Composants SERVEUR (aucun JavaScript envoyé au navigateur).
 //
-//   · interrupteur éteint, lien faux ou révoqué, dossier non signé, mode restreint → 404 neutre ;
+//   · interrupteur éteint, lien faux ou révoqué, dossier ni signé ni résilié, mode restreint « retiré » → 404 neutre (un résilié lit en lecture seule, PR K) ;
 //   · le lien d'EXEMPLE de l'aperçu de la console → l'écran d'exemple, jamais un 404 ;
 //   · base en panne → `error.tsx` de l'espace, jamais « 0 € » par défaut.
 
+import { peutLireSesPieces } from "@/features/apporteurs-reseau/acces-pieces";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -21,7 +22,6 @@ import type {
 import { mesCommissionsActive } from "@/features/apporteurs-reseau/interrupteur-mes-commissions";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 import { relevesDeLEspace } from "@/features/apporteurs-reseau/releve-mensuel/espace";
-import { etatDeLaPage } from "@/features/apporteurs-reseau/signature";
 
 import { Coquille, EcranEtat } from "../Coquille";
 import { TEXTES } from "../textes";
@@ -120,7 +120,7 @@ export default async function MesCommissionsPage({
     );
   }
   const dossier = await lireDossierParLien(id, jeton);
-  if (!dossier || dossier.restreint || etatDeLaPage(dossier.statut) !== "signe") notFound();
+  if (!dossier || !peutLireSesPieces(dossier)) notFound();
 
   const base = `/apporteur/dossier/${dossier.id}/${jeton}`;
   const vue = await lireEspaceCommissions(

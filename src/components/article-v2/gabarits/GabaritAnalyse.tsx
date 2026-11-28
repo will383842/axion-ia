@@ -10,6 +10,7 @@
  * associées, articles liés, précédent/suivant, vidéo, newsletter, CTA.
  */
 import "@/styles/article-v2/analyse.css";
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { preparerCorpsAnalyse } from "@/lib/blog/analyse";
 import { Link } from "@/i18n/navigation";
@@ -38,7 +39,7 @@ import { MiseEnPageLecture } from "../MiseEnPageLecture";
 import { CorpsArticle } from "../CorpsArticle";
 import { PiedArticle } from "../PiedArticle";
 import { ColonneActionsConnectee } from "../ColonneActionsConnectee";
-import { CtaMilieu, type PrincipalCta } from "../CtaMilieu";
+import { CtaMilieu, type LienSecondaire, type PrincipalCta } from "../CtaMilieu";
 import { CtaFin } from "../CtaFin";
 import type { ArticleGabaritProps } from "../types";
 
@@ -46,12 +47,21 @@ interface MiseEnPageAnalyseProps {
   readonly p: ArticleGabaritProps;
   /** Bouton principal de l'encart du milieu, propre au gabarit (PLAN §15.3). */
   readonly cta: PrincipalCta;
+  /** Lien secondaire de l'encart du milieu (défaut : l'autre bouton). */
+  readonly ctaSecondaire?: LienSecondaire;
+  /** Blocs propres au gabarit, rendus dans l'ouverture juste après « En bref ». */
+  readonly ouvertureExtra?: ReactNode;
 }
 
 /** Cible des liens « Revenir au sommaire » (pastille vide posée avant le sommaire). */
 const ANCRE_SOMMAIRE = "sommaire-article";
 
-export function MiseEnPageAnalyse({ p, cta }: MiseEnPageAnalyseProps) {
+export function MiseEnPageAnalyse({
+  p,
+  cta,
+  ctaSecondaire,
+  ouvertureExtra,
+}: MiseEnPageAnalyseProps) {
   const t = useTranslations("articleV2");
   const c = useTranslations("articleGabarits.commun");
   const a = useTranslations("articleGabarits.analyse");
@@ -112,6 +122,7 @@ export function MiseEnPageAnalyse({ p, cta }: MiseEnPageAnalyseProps) {
             {p.tldr}
           </AnswerCard>
         ) : null}
+        {ouvertureExtra}
       </div>
     </>
   );
@@ -133,7 +144,7 @@ export function MiseEnPageAnalyse({ p, cta }: MiseEnPageAnalyseProps) {
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
         <CorpsArticle html={corps ? corps.avant : null} blocs={p.blocs} />
-        <CtaMilieu gabarit={p.gabarit} principal={cta} />
+        <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
         {corps?.apres ? <CorpsArticle html={corps.apres} blocs={null} /> : null}
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq
