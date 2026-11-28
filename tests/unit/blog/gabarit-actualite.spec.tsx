@@ -404,6 +404,12 @@ describe("page /actualites/[slug] : une seule insertion derrière l'interrupteur
     expect(bloc).not.toMatch(/build\w*JsonLd\(/);
   });
 
+  it("le « : » du titre reste dans le h1 du gabarit (splitTitleEm le supprime)", () => {
+    const bloc = src.slice(garde, retourV1);
+    expect(bloc).toContain('t.title.indexOf(" : ") > 0');
+    expect(bloc).toContain("`${titleParts.lead.trimEnd()} :`");
+  });
+
   it("interrupteur coupé : aucun module V2 chargé statiquement par la page", () => {
     // Import dynamique : le gabarit n'est chargé que derrière la garde.
     expect(src).not.toMatch(/^import .*article-v2/m);

@@ -415,7 +415,11 @@ export default async function NewsArticlePage({ params }: Props) {
       <GabaritActualite
         locale="fr"
         slug={slug}
-        titre={{ lead: titleParts.lead, em: titleParts.em }}
+        // `splitTitleEm` coupe « X : Y » avant les deux-points : le gabarit v2 le garde (le titre se lit en entier).
+        titre={{
+          lead: t.title.indexOf(" : ") > 0 ? `${titleParts.lead.trimEnd()} :` : titleParts.lead,
+          em: titleParts.em,
+        }}
         titreComplet={t.title}
         chapo={t.excerpt ?? null}
         categorie={article.newsCategory ?? "Actualité IA"}
