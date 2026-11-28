@@ -47,8 +47,8 @@ function nonVide(valeur: string | undefined | null): valeur is string {
 
 /**
  * Zones d'intervention : la France entière (outre-mer compris) puis les régions de France ;
- * pour un collaborateur, sa ville ou son département SEULEMENT s'ils sont connus. Jamais Grenoble
- * (`villeAffichable`), jamais de code inventé.
+ * pour un collaborateur, sa ville ou son département SEULEMENT s'ils sont connus. Le filtrage des villes écartées est fait
+ * en amont par `fichePublique` ; jamais de code inventé.
  */
 export function buildAreaServed(
   lieu: { ville?: string | null | undefined; departement?: string | null | undefined } = {},

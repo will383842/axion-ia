@@ -62,7 +62,7 @@ export interface PresenceModele {
   reponse: string;
 }
 
-/** Pour quelles entreprises : secteurs génériques seulement (jamais de chiffre ni de montant). */
+/** Pour quelles entreprises : secteurs génériques seulement (`icone` = nom d'icône lucide, à résoudre par le composant ; les cartes « Vous êtes » portent des clés, pas des noms) (jamais de chiffre ni de montant). */
 export interface PourQuiModele {
   question: string;
   secteurs: ReadonlyArray<{ libelle: string; icone: string }>;
@@ -292,8 +292,8 @@ export const MODELES: Readonly<Record<Categorie, ModeleCategorie>> = {
       {
         id: "contacte",
         titre: "Vous avez été contacté par {prenom} ?",
-        surTitre: "Vous êtes contacté",
-        question: "Que faire si {prenom} vous a contacté ?",
+        surTitre: "Un message reçu",
+        question: "Que faire après un message de {prenom} ?",
         reponse:
           "{prenom} fait partie du réseau d'Axion-IA et vous présente Axion-IA ; le devis est toujours établi par Axion-IA, que vous pouvez joindre directement.",
         paragraphes: [

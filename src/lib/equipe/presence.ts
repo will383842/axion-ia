@@ -19,7 +19,7 @@ export interface VillePresence {
   href: string;
 }
 
-/** Les régions de France (métropole), dans l'ordre de la source. */
+/** Les régions de France (métropole et outre-mer), dans l'ordre de la source. */
 export function regionsFrance(): ReadonlyArray<string> {
   return REGIONS.map((r) => r.nameFr);
 }
@@ -52,7 +52,7 @@ export function villeAffichable(brut: string | null | undefined): string | null 
 /** La phrase de lieu d'un collaborateur, ou `null` si ni ville ni département ne sont connus. */
 export function phraseLieu(
   prenom: string,
-  lieu: { ville?: string | null; departement?: string | null },
+  lieu: { ville?: string | null | undefined; departement?: string | null | undefined },
 ): string | null {
   const ville = villeAffichable(lieu.ville);
   if (ville) return `${prenom} travaille depuis ${ville} et intervient partout en France.`;

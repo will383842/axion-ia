@@ -23,7 +23,18 @@
 
 - `pnpm typecheck` (8 Go de mémoire) : OK
 - `eslint` sur les fichiers touchés : OK ; `prettier --check` : OK
-- `vitest` : `src/lib/equipe`, `src/components/equipe`, `collaborateur-jsonld.spec.ts` : 289 tests OK
+- `vitest` : `src/lib/equipe`, `src/components/equipe`, `collaborateur-jsonld.spec.ts` : 281 tests OK
 - grep des mots interdits dans `src/lib/equipe` hors tests : rien
 
-VERDICT OPUS : EN COURS
+## Relecture Opus : corrigé
+
+Département d'une ville écartée qui fuyait dans la phrase de lieu (désormais lu sur la fiche publique) ; titre calculé sur le prénom public et borné ; commentaires inexacts ; question du message reçu sans accord genré ; test sans le mot interdit écrit en clair.
+
+## Reste à traiter (R2d)
+
+- Les cartes « Vous êtes », la réponse de présence et les 12 villes sont communes à une catégorie : R2d ne devrait rendre ces blocs que sur les fiches indexables ayant une réponse personnelle (risque de pages satellites).
+- `pourQui.secteurs[].icone` porte des noms d'icônes lucide, les cartes « Vous êtes » des clés : R2d résout les deux.
+- Aucune table de noms de départements dans le dépôt : la phrase de lieu et `areaServed` écrivent le code (« département 38 »).
+- Après `git checkout`, `pnpm-lock.yaml` n'a pas été touché.
+
+VERDICT OPUS : À CORRIGER (points ci-dessus laissés à R2d, aucun bloquant pour ce lot)

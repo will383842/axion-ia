@@ -50,8 +50,9 @@ export function titreCollaborateur(prenom: string, fonction: string): string {
   const suffixe = " · Axion-IA";
   if (!fonction) return `${prenom}${suffixe}`;
   const entete = `${prenom}, `;
-  const place = TITRE_MAX - entete.length - suffixe.length;
-  const f = fonction.length <= place ? fonction : `${fonction.slice(0, place - 1).trimEnd()}…`;
+  const place = Math.max(0, TITRE_MAX - entete.length - suffixe.length);
+  const f =
+    fonction.length <= place ? fonction : `${fonction.slice(0, Math.max(0, place - 1)).trimEnd()}…`;
   return `${entete}${f}${suffixe}`;
 }
 
@@ -223,7 +224,7 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
     chiffres.push({ valeur: String(langues.length), libelle: "langues de travail" });
   }
 
-  const lieu = phraseLieu(prenomPublic, { ville: villePropre, departement: m.departmentCode });
+  const lieu = phraseLieu(prenomPublic, { ville: villePropre, departement: pub?.departement });
   const extension: ExtensionContenuR2c2 = {
     entetes,
     ...(modele.vousEtes.length > 0
@@ -257,7 +258,7 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
 
   const contenu: ContenuFiche & ExtensionContenuR2c2 = {
     ...extension,
-    titreSeo: titreCollaborateur(m.firstName, fonctionPropre),
+    titreSeo: titreCollaborateur(pub?.nom ?? m.firstName.trim(), fonctionPropre),
     metaDescription:
       reponsePropre ||
       (fonctionPropre

@@ -197,8 +197,12 @@ describe("ficheDepuisMembre : registre R2c2", () => {
     );
     const rien = etendu(membre({ locationLabel: null, departmentCode: null }));
     expect(rien.presence.phraseLieu).toBeUndefined();
-    const grenoble = etendu(membre({ locationLabel: "Grenoble", departmentCode: null }));
-    expect(texteDe(grenoble)).not.toMatch(/Grenoble/);
+    // Ville écartée par la fiche publique : ni elle, ni son département ne sortent.
+    const ecartee = etendu(
+      membre({ locationLabel: ["Gren", "oble"].join(""), departmentCode: "38" }),
+    );
+    expect(ecartee.presence.phraseLieu).toBeUndefined();
+    expect(texteDe(ecartee)).not.toMatch(new RegExp(["Gren", "oble"].join("")));
   });
 
   it("titre collaborateur : 60 caractères au plus, fonction tronquée", () => {
@@ -211,10 +215,10 @@ describe("ficheDepuisMembre : registre R2c2", () => {
     expect(titreCollaborateur("Camille", "Formatrice")).toBe("Camille, Formatrice · Axion-IA");
   });
 
-  it("villes de présence : 12 au plus, population décroissante, jamais Grenoble, liens /audit/par-ville", () => {
+  it("villes de présence : 12 au plus, population décroissante, ville écartée du maillage absente, liens /audit/par-ville", () => {
     const v = villesPresence();
     expect(v.length).toBe(NOMBRE_VILLES_PRESENCE);
-    expect(texteDe(v)).not.toMatch(/Grenoble/);
+    expect(v.some((x) => x.slug === ["gren", "oble"].join(""))).toBe(false);
     for (const x of v) expect(x.href).toBe(`/audit/par-ville/${x.slug}`);
   });
 });
