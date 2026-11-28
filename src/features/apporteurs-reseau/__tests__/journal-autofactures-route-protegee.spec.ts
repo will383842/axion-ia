@@ -38,6 +38,47 @@ describe("export du journal des autofactures : accès", () => {
     auth.mockResolvedValue({ user: { id: "u1", role: "super_admin" } });
     expect((await appeler("format=xml&du=2026-01-01&au=2026-12-31")).status).toBe(400);
     expect((await appeler("format=csv&du=hier&au=2026-12-31")).status).toBe(400);
+    expect(lireJournal).not.toHaveBeenCalled();
+  });
+
+  it("refuse du > au (400) sans rien lire", async () => {
+    auth.mockResolvedValue({ user: { id: "u1", role: "super_admin" } });
+    expect((await appeler("format=csv&du=2026-12-31&au=2026-01-01")).status).toBe(400);
+    expect(lireJournal).not.toHaveBeenCalled();
+  });
+
+  it("refuse une date de calendrier inexistante (400, pas 500)", async () => {
+    auth.mockResolvedValue({ user: { id: "u1", role: "super_admin" } });
+    expect((await appeler("format=csv&du=2026-13-01&au=2026-12-31")).status).toBe(400);
+    expect((await appeler("format=fec&du=2026-01-01&au=2026-02-30")).status).toBe(400);
+    expect(lireJournal).not.toHaveBeenCalled();
+  });
+
+  it("FEC : refuse (400) avec le numéro d'une pièce reprise aux totaux absents", async () => {
+    auth.mockResolvedValue({ user: { id: "u1", role: "super_admin" } });
+    lireJournal.mockResolvedValue({
+      lignes: [
+        {
+          numero: "AXI-APP-2025-0007",
+          genre: "facture",
+          emiseAt: new Date("2026-03-01T10:00:00Z"),
+          factureRectifiee: null,
+          denomination: "X",
+          siren: "123456789",
+          regimeTva: "assujetti",
+          numeroTva: null,
+          totalHtCents: null,
+          totalTvaCents: null,
+          totalTtcCents: null,
+          origine: "reprise_migration",
+          viree: [],
+        },
+      ],
+      trous: [],
+    });
+    const r = await appeler("format=fec&du=2026-01-01&au=2026-12-31");
+    expect(r.status).toBe(400);
+    expect(await r.text()).toContain("AXI-APP-2025-0007");
   });
 
   it("sert le CSV à un rôle autorisé", async () => {

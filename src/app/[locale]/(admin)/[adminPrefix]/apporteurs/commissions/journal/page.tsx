@@ -10,7 +10,7 @@ import {
   LIBELLE_TOTAUX_ABSENTS,
   montantFr,
 } from "@/features/apporteurs-reseau/journal-autofactures-csv";
-import { JOUR, totauxAbsents } from "@/features/apporteurs-reseau/journal-autofactures-types";
+import { jourValide, totauxAbsents } from "@/features/apporteurs-reseau/journal-autofactures-types";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 
@@ -28,8 +28,8 @@ export default async function JournalAutofacturesPage({ params, searchParams }: 
   const peutExporter = peutEngager(acces.role, "facturer");
   const sp = await searchParams;
   const aujourdhui = jourParis(new Date());
-  const au = sp.au && JOUR.test(sp.au) ? sp.au : aujourdhui;
-  const du = sp.du && JOUR.test(sp.du) ? sp.du : `${au.slice(0, 4)}-01-01`;
+  const au = sp.au && jourValide(sp.au) ? sp.au : aujourdhui;
+  const du = sp.du && jourValide(sp.du) ? sp.du : `${au.slice(0, 4)}-01-01`;
   const valide = du <= au;
   const { lignes, trous } = valide ? await lireJournal({ du, au }) : { lignes: [], trous: [] };
 

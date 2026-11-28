@@ -13,7 +13,7 @@ import { auth } from "@/auth";
 import { construireCsvJournal } from "@/features/apporteurs-reseau/journal-autofactures-csv";
 import { construireFec, ErreurFec } from "@/features/apporteurs-reseau/journal-autofactures-fec";
 import { lireJournal } from "@/features/apporteurs-reseau/journal-autofactures";
-import { JOUR } from "@/features/apporteurs-reseau/journal-autofactures-types";
+import { jourValide } from "@/features/apporteurs-reseau/journal-autofactures-types";
 import { peutEngager } from "@/server/auth/habilitations";
 import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
@@ -36,7 +36,7 @@ export async function GET(
   const au = q.get("au") ?? "";
   if (format !== "csv" && format !== "fec")
     return new NextResponse("Format invalide.", { status: 400 });
-  if (!JOUR.test(du) || !JOUR.test(au) || du > au)
+  if (!jourValide(du) || !jourValide(au) || du > au)
     return new NextResponse("Période invalide.", { status: 400 });
 
   const { lignes } = await lireJournal({ du, au });

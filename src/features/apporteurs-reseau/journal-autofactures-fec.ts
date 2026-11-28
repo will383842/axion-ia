@@ -68,6 +68,23 @@ export function construireFec(lignes: readonly LigneJournal[]): string {
   if (incoherents.length > 0)
     throw new ErreurFec("HT + TVA ≠ TTC : export FEC impossible pour ces pièces.", incoherents);
 
+  const negatifs = lignes
+    .filter((l) => l.totalHtCents! < 0 || l.totalTvaCents! < 0 || l.totalTtcCents! < 0)
+    .map((l) => l.numero);
+  if (negatifs.length > 0)
+    throw new ErreurFec("Total négatif : export FEC impossible pour ces pièces.", negatifs);
+  const franchiseTva = lignes
+    .filter((l) => l.regimeTva !== "assujetti" && l.totalTvaCents! !== 0)
+    .map((l) => l.numero);
+  if (franchiseTva.length > 0)
+    throw new ErreurFec(
+      "TVA non nulle en franchise : export FEC impossible pour ces pièces.",
+      franchiseTva,
+    );
+  const sansSiren = lignes.filter((l) => !l.siren).map((l) => l.numero);
+  if (sansSiren.length > 0)
+    throw new ErreurFec("SIREN absent : export FEC impossible pour ces pièces.", sansSiren);
+
   const sortie: string[] = [COLONNES_FEC.join("\t")];
   let n = 0;
   for (const l of lignes) {

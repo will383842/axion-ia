@@ -120,4 +120,35 @@ describe("journal des autofactures — FEC", () => {
   it("refuse une pièce dont HT + TVA ≠ TTC", () => {
     expect(() => construireFec([{ ...base, totalTtcCents: 119_999 }])).toThrow(ErreurFec);
   });
+
+  it("refuse un total négatif (jamais inversé en silence)", () => {
+    const neg = {
+      ...base,
+      totalHtCents: -100_000,
+      totalTvaCents: -20_000,
+      totalTtcCents: -120_000,
+    };
+    expect(() => construireFec([neg])).toThrow(ErreurFec);
+  });
+
+  it("refuse une TVA non nulle en franchise (écriture déséquilibrée)", () => {
+    const f: LigneJournal = {
+      ...base,
+      regimeTva: "franchise_293b",
+      totalHtCents: 100_000,
+      totalTvaCents: 20_000,
+      totalTtcCents: 120_000,
+    };
+    try {
+      construireFec([f]);
+      expect.unreachable();
+    } catch (e) {
+      expect(e).toBeInstanceOf(ErreurFec);
+      expect((e as ErreurFec).numeros).toEqual([f.numero]);
+    }
+  });
+
+  it("refuse une pièce sans SIREN (compte auxiliaire « APP » tout court)", () => {
+    expect(() => construireFec([{ ...base, siren: null }])).toThrow(ErreurFec);
+  });
 });

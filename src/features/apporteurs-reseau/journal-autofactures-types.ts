@@ -29,3 +29,10 @@ export function totauxAbsents(l: LigneJournal): boolean {
 
 /** « AAAA-MM-JJ » : un jour de Paris saisi dans un filtre. */
 export const JOUR = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Un jour de calendrier réel : la forme ET l'aller-retour (« 2026-13-01 » et « 2026-02-30 » sont refusés). */
+export function jourValide(s: string): boolean {
+  if (!JOUR.test(s)) return false;
+  const t = Date.parse(`${s}T00:00:00Z`);
+  return !Number.isNaN(t) && new Date(t).toISOString().slice(0, 10) === s;
+}

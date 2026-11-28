@@ -8,12 +8,21 @@ feat(apporteurs): PR M #2464 — Journal des autofactures et export pour l'exper
 - Une pièce aux totaux absents (pièce reprise) : le CSV écrit « Totaux absents (pièce reprise) » ; le FEC refuse (400) avec la liste des numéros. Il refuse aussi une pièce dont HT + TVA ≠ TTC. Jamais d'écriture inventée.
 - Lecture seule : aucune écriture en base. Même garde d'accès que l'export DAS2 (session + droit « facturer »).
 
+## Corrections de relecture
+
+- Route : 400 du FEC avec la liste des numéros, `du > au` et dates de calendrier inexistantes (`2026-13-01`, 400 et non 500 ; la page ne plante plus) testés.
+- `lireJournal` testé : jours de Paris, bornes incluses, virement propre à chaque pièce.
+- FEC : refus d'un total négatif, d'une TVA non nulle en franchise, d'un SIREN absent.
+- Libellé « Totaux absents (pièce reprise) » aussi vrai pour `rattrapage` : à signaler à l'expert-comptable. « Virée le » ne lit que `ApporteurVirementCompte` (depuis le lot 7 de #2453) : les virements plus anciens sont vides.
+
 ## Tests
 
 - `journal-autofactures-csv.spec.ts`
 - `journal-autofactures-fec.spec.ts`
 - `journal-autofactures-trous.spec.ts`
 - `journal-autofactures-route-protegee.spec.ts`
+- `journal-autofactures-lecture.spec.ts`
+- `journal-autofactures-jour-valide.spec.ts`
 
 ## Migration
 
@@ -30,7 +39,7 @@ Aucune.
 ## Points laissés ouverts
 
 - **Comptes à valider par l'expert-comptable avant la première utilisation** (point 25 du plan, section 4) : 6222, 44566 et 401/`APP<SIREN>`. Ils sont regroupés dans la constante unique `COMPTES_FEC` (`journal-autofactures-fec.ts`) ; le bouton de la page dit « comptes à confirmer ».
-- Le lien vers le journal depuis la page « Commissions » n'est PAS ajouté ici : il s'ajoutera après la fusion de #2453 (même page). Le journal reste joignable par son adresse.
+- Le lien vers le journal depuis la page « Commissions » n'est PAS ajouté ici : #2453 est fusionnée dans `main`, mais cette branche part d'avant sa fusion et toucher la même page ferait un conflit. Le lien s'ajoutera dans une PR suivante ; le journal reste joignable par son adresse.
 - Hypothèses à confirmer à la relecture : les avoirs sont numérotés dans la même série AXI-APP ; le signe des totaux d'un avoir est neutralisé (valeur absolue) dans le CSV et le FEC.
 - Fichier FEC en `.txt` séparé par tabulations.
 
