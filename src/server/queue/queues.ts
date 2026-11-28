@@ -12,8 +12,9 @@ import { redactEmail } from "@/lib/pii-redaction";
 import { Queue } from "bullmq";
 import {
   FUSEAU_SEO_PILOTAGE,
-  PATTERN_SEO_ROBOTS_IA,
   PATTERN_SEO_INGESTION,
+  PATTERN_SEO_INSPECTION,
+  PATTERN_SEO_ROBOTS_IA,
   PATTERN_SEO_PURGE,
   PATTERN_SEO_RATTRAPAGE,
 } from "@/server/seo-pilotage/planification";
@@ -683,7 +684,7 @@ export const siteRouteGscQueue: Queue<SiteRouteGscJobData> | null = connection
   : null;
 
 /**
- * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
+ * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly ; veille indexation : cron hebdomadaire dédié, P18).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
  *  - `alertSoft404Detected` (link-checker tier-1 HEAD samples)
@@ -1794,6 +1795,7 @@ export async function bootRepeatableJobs(): Promise<void> {
     const programmeSeo = [
       { tache: "ingestion-gsc", pattern: PATTERN_SEO_INGESTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "rattrapage-gsc", pattern: PATTERN_SEO_RATTRAPAGE, tz: undefined },
+      { tache: "inspection", pattern: PATTERN_SEO_INSPECTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "purge", pattern: PATTERN_SEO_PURGE, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "robots-ia", pattern: PATTERN_SEO_ROBOTS_IA, tz: FUSEAU_SEO_PILOTAGE },
     ] as const;
@@ -1987,7 +1989,8 @@ export async function bootRepeatableJobs(): Promise<void> {
   }
 
   // Méta-cert 2026-05-15 AGENT 19 — content-monitoring hourly @ xx:15.
-  // Câble alertQueueStuck + alertSoft404Detected + alertIndexationStagnant.
+  // Câble alertQueueStuck + alertSoft404Detected (+ anomalies). La veille indexation est
+  // hebdomadaire (P18, cron ci-dessous).
   if (contentMonitoringQueue) {
     await contentMonitoringQueue.removeRepeatable(
       "tick",
@@ -1998,6 +2001,21 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-hourly-xx15", tick: new Date().toISOString() },
       { repeat: { pattern: "15 * * * *" }, jobId: "content-monitoring-cron" },
+    );
+    // P18 — veille « indexation stagnante » : une fois par semaine (lundi 08:40 UTC), plus
+    // dans le tick horaire. Même file, déclencheur distinct.
+    await contentMonitoringQueue.removeRepeatable(
+      "tick",
+      { pattern: "40 8 * * 1" },
+      "content-monitoring-indexation-hebdo-cron",
+    );
+    await contentMonitoringQueue.add(
+      "tick",
+      { trigger: "cron-weekly-indexation", tick: new Date().toISOString() },
+      {
+        repeat: { pattern: "40 8 * * 1" },
+        jobId: "content-monitoring-indexation-hebdo-cron",
+      },
     );
   }
 

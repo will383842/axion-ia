@@ -15,21 +15,24 @@
  *     pas saturer). HEAD request → soft-404 = 200 avec body anormalement
  *     court (template vide / page de redirection silencieuse).
  *
- *  3. `alertIndexationStagnant(slugs, daysSincePublish)` — détecte Articles
- *     tier_1_indexable publiés ≥ 30 j sans `gscIndexedAt` set (signe
- *     d'absence d'indexation Google malgré ping IndexNow + sitemap).
+ *  3. `alertIndexationStagnant` — hebdomadaire (P18), chiffres réels de `GscPageJour`
+ *     (voir `monitoring/indexation-stagnante.ts`).
  *
- * Cron pattern : `15 * * * *` (xx:15 every hour). Décalé d'autres crons
- * pour ne pas concentrer la charge.
+ * Cron pattern : `15 * * * *` (xx:15 every hour), plus `40 8 * * 1` (lundi) réservé à la
+ * veille d'indexation (P18). Décalés d'autres crons pour ne pas concentrer la charge.
  *
  * Fail-soft : chaque check est dans son try/catch. Une erreur sur queueStuck
- * n'empêche pas soft404 + indexationStagnant de tourner.
+ * n'empêche pas soft404 + anomalies de tourner (la veille d'indexation a son propre passage).
  *
  * Note V1.5 — `alertProviderDown5min/30min` non câblé ici : nécessite un
  * compteur fail-counter dans le call provider lui-même (cost-tracker ou
  * IProvider wrapper), pas un cron périodique. Sprint dédié.
  */
 
+import {
+  plafondGenerationEffectif,
+  type PolitiquesRelecture,
+} from "@/server/content-gen/quality/relecture-obligatoire";
 import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
@@ -58,8 +61,17 @@ import {
   alertCityEquityImbalance,
 } from "@/server/content-gen/shared/content-gen-alerts";
 import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
+import { redis as sharedRedis } from "@/lib/redis";
+import {
+  ANTI_REPETITION_SECONDES,
+  detecterIndexationStagnante,
+} from "@/server/content-gen/monitoring/indexation-stagnante";
 
 const QUEUE_NAME = "content-monitoring";
+
+/** Déclencheur du passage hebdomadaire réservé à la veille d'indexation (P18). */
+export const INDEXATION_HEBDO_TRIGGER = "cron-weekly-indexation";
+const INDEXATION_ALERTE_PREFIX = "axion:monitoring:indexation-stagnante:";
 
 /** Queues critiques à monitorer (waiting count stable > 30 min = stuck). */
 const MONITORED_QUEUES: ReadonlyArray<string> = [
@@ -77,12 +89,6 @@ const SOFT404_SAMPLE_SIZE = 10;
 
 /** Body length threshold sous lequel on flagge soft-404 (HTML vide / template). */
 const SOFT404_BODY_MIN_BYTES = 2000;
-
-/** Seuil indexation stagnante : Article tier_1 publié ≥ 30 j sans gscIndexedAt. */
-const INDEXATION_STAGNANT_DAYS = 30;
-
-/** Cap nombre d'articles flag pour alerte (pour ne pas spammer). */
-const INDEXATION_STAGNANT_MAX_LIST = 5;
 
 interface QueueSnapshot {
   readonly count: number;
@@ -188,56 +194,78 @@ async function checkSoft404(): Promise<void> {
 }
 
 async function checkIndexationStagnant(): Promise<void> {
-  // ⛔ DÉSACTIVÉ PAR DÉFAUT 2026-07-11 : cette alerte tournait toutes les heures
-  // (cron `15 * * * *`) et re-notifiait Telegram sans anti-répétition pour les
-  // mêmes articles, avec des CTR/impressions PLACEHOLDER codés en dur à 0
-  // (l'intégration Search Console "V1.5" n'a jamais été faite). Résultat : spam
-  // horaire non actionnable ("CTR 0.00 % sur 0 impressions"). Détection conservée.
-  // POUR RÉACTIVER : brancher une vraie source GSC (ctrPct/impressions réels) +
-  // ajouter un cooldown par slug (Redis SETEX, ex. 30 j), PUIS poser l'env var
-  // INDEXATION_STAGNANT_ALERT_ENABLED=true côté Coolify.
+  // Réparée par P18 : chiffres réels de `GscPageJour`, anti-répétition Redis de 30 j par slug,
+  // silence si la source est indisponible, cron hebdomadaire dédié (cf. indexation-stagnante.ts
+  // pour le diagnostic de l'ancienne version). Reste éteinte tant que
+  // INDEXATION_STAGNANT_ALERT_ENABLED n'est pas posée à "true" (Coolify) : la mise en service
+  // est une décision de Will, après avoir constaté que la collecte P4 remplit `GscPageJour`.
   if (process.env.INDEXATION_STAGNANT_ALERT_ENABLED !== "true") return;
 
-  // Heuristique V1 sans field `gscIndexedAt` dédié : un Article tier_1
-  // publié ≥ 30 j sans AUCUN row `KeywordTracking` correspondant via articleId
-  // est suspect — soit non indexé Google, soit 0 impression.
-  // V1.5 ajoutera `Article.gscIndexedAt` pour un signal plus fin.
-  const threshold = new Date(Date.now() - INDEXATION_STAGNANT_DAYS * 86_400_000);
-  const candidates = await prisma.article.findMany({
-    where: {
-      status: "published",
-      indexationTier: "tier_1_indexable",
-      publishedAt: { lte: threshold },
+  await detecterIndexationStagnante({
+    maintenant: () => new Date(),
+    lireArticles: async (publieAvant) => {
+      const rows = await prisma.article.findMany({
+        where: {
+          status: "published",
+          indexationTier: "tier_1_indexable",
+          publishedAt: { lte: publieAvant },
+        },
+        select: {
+          publishedAt: true,
+          isNews: true,
+          templateVariant: true,
+          translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
+        },
+        orderBy: { publishedAt: "asc" },
+      });
+      return rows.flatMap((r) => {
+        const slug = r.translations[0]?.slug;
+        return slug && r.publishedAt
+          ? [
+              {
+                slug,
+                isNews: r.isNews,
+                templateVariant: r.templateVariant,
+                publishedAt: r.publishedAt,
+              },
+            ]
+          : [];
+      });
     },
-    select: {
-      id: true,
-      publishedAt: true,
-      translations: { where: { locale: "fr" }, select: { slug: true }, take: 1 },
+    lireJoursCouverts: async (depuis) => {
+      const jours = await prisma.gscPageJour.groupBy({
+        by: ["date"],
+        where: { date: { gte: depuis }, typeRecherche: "web" },
+      });
+      return jours.length;
     },
-    orderBy: { publishedAt: "asc" },
-    take: 50, // cap large puis filter local
+    lireMesures: async (chemins, depuis) => {
+      const rows = await prisma.gscPageJour.groupBy({
+        by: ["chemin"],
+        where: { date: { gte: depuis }, typeRecherche: "web", chemin: { in: chemins } },
+        _sum: { impressions: true, clics: true },
+      });
+      return new Map(
+        rows.map((r) => [
+          r.chemin,
+          { impressions: r._sum.impressions ?? 0, clics: r._sum.clics ?? 0 },
+        ]),
+      );
+    },
+    reserverAlerte: async (slug) =>
+      (await sharedRedis.set(
+        `${INDEXATION_ALERTE_PREFIX}${slug}`,
+        "1",
+        "EX",
+        ANTI_REPETITION_SECONDES,
+        "NX",
+      )) === "OK",
+    alerter: alertIndexationStagnant,
+    signalerSourceInsuffisante: (jours) =>
+      console.warn(
+        `[content-monitoring] indexationStagnant : GscPageJour couvre ${jours} jour(s) sur 28 — veille muette (robot P4 éteint ou récent ?)`,
+      ),
   });
-  if (candidates.length === 0) return;
-
-  const stagnant: Array<{ slug: string; publishedAt: Date }> = [];
-  for (const article of candidates) {
-    if (stagnant.length >= INDEXATION_STAGNANT_MAX_LIST) break;
-    const trackingCount = await prisma.keywordTracking.count({
-      where: { articleId: article.id },
-    });
-    const slug = article.translations[0]?.slug;
-    if (trackingCount === 0 && article.publishedAt && slug) {
-      stagnant.push({ slug, publishedAt: article.publishedAt });
-    }
-  }
-  if (stagnant.length === 0) return;
-  // `alertIndexationStagnant(slug, ctrPct, ageDays, impressions)` attend 1 slug
-  // par appel. CTR + impressions = 0 placeholder car GSC integration V1.5
-  // fournira les vrais chiffres. V1 = simple detection "tier-1 sans KeywordTracking".
-  for (const s of stagnant) {
-    const daysSince = Math.floor((Date.now() - s.publishedAt.getTime()) / 86_400_000);
-    await alertIndexationStagnant(s.slug, 0, daysSince, 0);
-  }
 }
 
 /**
@@ -441,7 +469,12 @@ async function checkAnomalies(): Promise<void> {
     readContentGenConfig<DailyGenerationCap>("daily_generation_cap", DEFAULT_DAILY_GENERATION_CAP),
     countConsumedToday(startOfDayUtc).catch(() => null),
   ]);
-  const capPerDay = resolveCapPerDay(dailyCap);
+  // C2 (2026-11) : même plafond que l'orchestrateur (3/jour tant que la relecture est obligatoire).
+  const politiquesRelecture = await readContentGenConfig<PolitiquesRelecture>("policies", {});
+  const capPerDay = plafondGenerationEffectif(
+    { maxPerDay: resolveCapPerDay(dailyCap) },
+    politiquesRelecture,
+  );
   const roomAt = (msSince: number) =>
     computeCampaignTickBudget({
       dailyTarget: capPerDay,
@@ -659,14 +692,17 @@ async function processJob(job: Job<{ readonly trigger: string }>): Promise<void>
   // se surveillait donc pas lui-même. On garde l'isolation (un check en échec
   // ne fait PAS échouer le tick — les autres checks ont tourné), mais chaque
   // rejet est désormais journalisé ET remonté à Sentry pour rougir quelque part.
-  const checks: ReadonlyArray<readonly [string, Promise<void>]> = [
-    ["queueStuck", checkQueueStuck()],
-    ["soft404", checkSoft404()],
-    ["indexationStagnant", checkIndexationStagnant()],
-    ["anomalies", checkAnomalies()],
-    ["cityEquity", checkCityEquity()],
-    ["costCapBannerStale", checkCostCapBannerStale()],
-  ];
+  // P18 : la veille d'indexation a son cron hebdomadaire ; le tick horaire ne la lance plus.
+  const checks: ReadonlyArray<readonly [string, Promise<void>]> =
+    job.data?.trigger === INDEXATION_HEBDO_TRIGGER
+      ? [["indexationStagnant", checkIndexationStagnant()]]
+      : [
+          ["queueStuck", checkQueueStuck()],
+          ["soft404", checkSoft404()],
+          ["anomalies", checkAnomalies()],
+          ["cityEquity", checkCityEquity()],
+          ["costCapBannerStale", checkCostCapBannerStale()],
+        ];
   const results = await Promise.allSettled(checks.map(([, p]) => p));
   results.forEach((result, i) => {
     if (result.status !== "rejected") return;

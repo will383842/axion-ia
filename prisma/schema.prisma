@@ -2764,6 +2764,58 @@ model ContentGenConfig {
   @@map("content_gen_config")
 }
 
+/// Porte qualité (CONCEPTION-PORTE-QUALITE.md § 13, PR Q1) — un verdict par évaluation
+/// d'un contenu. Table NOUVELLE, aucune lecture ni écriture branchée en Q1.
+/// Pas de clé étrangère volontaire : le verdict survit à la suppression du contenu (audit),
+/// et aucune table existante n'est touchée (fenêtre app/worker). `verdict` : publiable |
+/// a_corriger | bloque | reporte ; `mode` : ombre | reel | maj. Colonnes en texte libre,
+/// pas d'énumération (règle 6 du § 3).
+/// rgpd: technique — verdict de qualité d'un contenu éditorial ; aucune donnée sur une personne
+model ContentQualityVerdict {
+  id                String   @id @default(cuid())
+  jobId             String?  @map("job_id")
+  articleId         String?  @map("article_id") @db.Uuid
+  contentKind       String   @map("content_kind") @db.VarChar(40)
+  versionPorte      String   @map("version_porte") @db.VarChar(40)
+  mode              String   @db.VarChar(20)
+  verdict           String   @db.VarChar(20)
+  note              Int?
+  criteres          Json?
+  seuilsFiges       Json?    @map("seuils_figes")
+  embeddingVoisinId String?  @map("embedding_voisin_id")
+  cosinusMax        Float?   @map("cosinus_max")
+  decidePar         String?  @map("decide_par")
+  motifDerogation   String?  @map("motif_derogation")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([jobId])
+  @@index([articleId])
+  @@index([verdict, createdAt])
+  @@index([createdAt])
+  @@map("content_quality_verdicts")
+}
+
+/// Porte qualité (§ 13, PR Q1) — instantané hebdomadaire d'une cohorte (contenus publiés la
+/// même semaine). Écrit plus tard par le worker, lu par l'écran. Un nombre absent est NULL
+/// (« indisponible »), jamais 0.
+/// rgpd: technique — compteurs agrégés par semaine ; aucune donnée sur une personne
+model PorteCohorte {
+  id           String   @id @default(cuid())
+  semaine      DateTime @unique @db.Date
+  publies      Int?
+  indexes7j    Int?     @map("indexes_7j")
+  indexes14j   Int?     @map("indexes_14j")
+  indexes28j   Int?     @map("indexes_28j")
+  impressions  Int?
+  noteMoyenne  Float?   @map("note_moyenne")
+  derogations  Int?
+  versionPorte String?  @map("version_porte") @db.VarChar(40)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("porte_cohortes")
+}
+
 /// City Domination 2026-05-18 P1-9 (audit A10) — Audit trail SOC2 immuable
 /// pour toute modification de ContentGenConfig + autres settings admin
 /// content-gen. Append-only : pas d'UPDATE/DELETE exposés via le helper
@@ -3424,6 +3476,8 @@ model CostLedger {
   tokensOutput Int         @default(0)
   costUsd      Decimal     @db.Decimal(10, 4)
   timestamp    DateTime    @default(now())
+  /// Chaîne éditoriale (C3) : rôle R1…R8 qui a dépensé. Nullable, texte libre (aucune énumération).
+  role         String?     @db.VarChar(40)
 
   @@index([provider, timestamp])
   @@index([jobId])
@@ -19461,4 +19515,200 @@ model RobotIaJour {
   @@unique([date, robot, familleChemin], map: "robot_ia_jours_cle_key")
   @@index([robot, date], map: "robot_ia_jours_robot_date_idx")
   @@map("robot_ia_jours")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Chaîne éditoriale IA (C3) : tables NOUVELLES, additives, non branchées.
+// Aucune énumération Postgres : statuts, intentions, rôles et codes de raison sont du TEXTE
+// (listes fermées côté code : equipe/brief.ts, puis le module de codes de C4). Un worker plus
+// ancien ne lit ni n'écrit ces tables. Voir docs/pilotage-seo-geo/CONCEPTION-CHAINE-EDITORIALE-IA.md.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Réserve de besoins réels (R1). Une requête déjà couverte par une URL est refusée côté code.
+/// rgpd: technique — questions génériques de lecteurs et références de source ; aucune identité ni coordonnée d'une personne (à passer en dossier-client si une source nominative était un jour ingérée)
+model ContenuBesoin {
+  id           String    @id @default(cuid())
+  question     String    @db.VarChar(300)
+  /// information | comparaison | decision (INTENTIONS de equipe/brief.ts)
+  intention    String?   @db.VarChar(20)
+  /// search-console | demandes-agregees | page-lue | dirigeant-pme | manuel
+  source       String    @db.VarChar(40)
+  sourceRef    String?   @db.VarChar(500)
+  /// Force du signal (échelle définie par R1) ; null = inconnue, jamais 0.
+  forceSignal  Float?
+  /// nouveau | en_brief | couvert | ecarte (STATUTS_BESOIN)
+  statut       String    @default("nouveau") @db.VarChar(20)
+  urlCouverte  String?   @db.VarChar(500)
+  raisonEcarte String?   @db.VarChar(40)
+  observeLe    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  briefs ContenuBrief[]
+
+  @@index([statut, createdAt])
+  @@map("contenu_besoins")
+}
+
+/// Brief (R2) : le contrat de tout le reste. Étend le schéma de equipe/brief.ts (champ `brief`
+/// = briefSchema validé en JSON) ; les colonnes dédiées servent aux requêtes et à la console.
+/// rgpd: technique — briefs éditoriaux (plan, intention, longueur) et questions génériques de lecteurs reprises de la réserve de besoins ; aucune colonne ne nomme une personne
+model ContenuBrief {
+  id                 String   @id @default(cuid())
+  besoinId           String?
+  /// Job de génération porteur, si le contenu en a un (pas de clé étrangère : table existante).
+  jobId              String?
+  /// brouillon | valide | pas_d_angle | pas_de_matiere | abandonne (STATUTS_BRIEF)
+  statut             String   @default("brouillon") @db.VarChar(20)
+  motCle             String?  @db.VarChar(200)
+  /// Intention de recherche = `intention` du brief (INTENTIONS), recopiée pour les requêtes.
+  intentionRecherche String?  @db.VarChar(20)
+  angleUnique        String?  @db.VarChar(500)
+  /// Plan de titres H1/H2/H3 : [{ niveau: 1|2|3, titre }] (planTitresSchema).
+  planTitres         Json?
+  longueurMinMots    Int?
+  longueurMaxMots    Int?
+  /// Brief complet validé par briefSchema.
+  brief              Json?
+  /// Version du prompt du stratège employé (traçabilité des refus).
+  versionPrompt      String?  @db.VarChar(60)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  besoin    ContenuBesoin?    @relation(fields: [besoinId], references: [id], onDelete: SetNull)
+  faits     ContenuFait[]
+  refus     ContenuRefus[]
+  resultats ContenuResultat[]
+
+  @@index([besoinId])
+  @@index([jobId])
+  @@index([statut, createdAt])
+  @@map("contenu_briefs")
+}
+
+/// Dossier de preuves (R3) et faits vérifiés gouvernés (lus par C5 pour CHIFFRES_VERIFIES).
+/// rgpd: technique — données publiques sourcées (énoncé, extrait, URL, éditeur) ; une personnalité publique peut y être citée dans son rôle public, aucune donnée privée ni coordonnée ; seul nom interne : `verifiePar` (membre de l'équipe)
+model ContenuFait {
+  id              String    @id @default(cuid())
+  briefId         String?
+  enonce          String    @db.VarChar(1000)
+  /// Extrait EXACT de la source : sans lui, pas de fait.
+  extrait         String
+  url             String    @db.VarChar(1000)
+  editeur         String?   @db.VarChar(200)
+  datePublication DateTime?
+  dateLecture     DateTime
+  /// haute | moyenne | basse
+  confiance       String?   @db.VarChar(10)
+  /// Valeur chiffrée telle qu'affichée (« 12 % »), lue par C5 pour CHIFFRES_VERIFIES.
+  valeur          String?   @db.VarChar(100)
+  verifiePar      String?   @db.VarChar(120)
+  /// propose | verifie | retire : « verifie » seulement après relecture humaine.
+  statut          String    @default("propose") @db.VarChar(20)
+  verifieLe       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
+
+  @@index([briefId])
+  @@index([statut])
+  @@map("contenu_faits")
+}
+
+/// Refus enregistré (machine ou humain), un seul mécanisme (§ 7.1 et § 8 de la conception).
+/// rgpd: technique — codes et motifs de refus d'un contenu ; aucune donnée sur une personne, seul le nom de l'auteur (membre de l'équipe) d'un refus humain figure
+model ContenuRefus {
+  id             String   @id @default(cuid())
+  briefId        String?
+  jobId          String?
+  tentative      Int      @default(1)
+  /// R1…R8 ou « humain ».
+  role           String   @db.VarChar(40)
+  /// Liste fermée de codes de raison (module partagé, C4) ; texte ici.
+  code           String   @db.VarChar(40)
+  /// Critère exact de la porte (B01…B17, W01…W10) quand il existe.
+  critere        String?  @db.VarChar(10)
+  detail         String?
+  sectionEnCause String?  @db.VarChar(300)
+  /// Preuve du refus (§ 8 : critère, raison, preuve, tentative, version de la porte).
+  preuve         String?
+  /// Auteur d'un refus humain.
+  saisiPar       String?  @db.VarChar(120)
+  coutDepenseUsd Decimal? @db.Decimal(10, 4)
+  versionPrompt  String?  @db.VarChar(60)
+  versionBrief   String?  @db.VarChar(60)
+  versionPorte   String?  @db.VarChar(60)
+  createdAt      DateTime @default(now())
+
+  brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
+
+  @@index([briefId])
+  @@index([jobId])
+  @@index([code, createdAt])
+  @@index([role, createdAt])
+  @@map("contenu_refus")
+}
+
+/// Suivi d'un contenu publié : une ligne par contenu et par date de mesure.
+/// Toute mesure absente reste NULL (jamais 0) ; l'écran dit « indisponible ».
+/// rgpd: technique — mesures d'audience agrégées d'une URL publiée ; aucune donnée sur une personne
+model ContenuResultat {
+  id           String   @id @default(cuid())
+  /// URL canonique du contenu publié (pas de clé étrangère : le contenu vit dans plusieurs tables).
+  url          String   @db.VarChar(1000)
+  briefId      String?
+  jobId        String?
+  /// j3 | j7 | j28 | j90
+  echeance     String   @db.VarChar(10)
+  mesureLe     DateTime @db.Date
+  indexe       Boolean?
+  affichages   Int?
+  clics        Int?
+  position     Float?
+  affichagesIa Int?
+  citationsIa  Int?
+  visitesIa    Int?
+  rendezVous   Int?
+  /// Échantillon et intervalle des citations IA, source par mesure.
+  details      Json?
+  createdAt    DateTime @default(now())
+
+  brief ContenuBrief? @relation(fields: [briefId], references: [id], onDelete: SetNull)
+
+  @@unique([url, echeance, mesureLe])
+  @@index([briefId])
+  @@index([mesureLe])
+  @@map("contenu_resultats")
+}
+
+/// Proposition de l'analyste hebdomadaire : rien ne s'applique seul (§ 7.4).
+/// rgpd: technique — propositions de l'analyste hebdomadaire sur des contenus ; aucune donnée sur une personne, seul le nom du décideur de l'équipe figure
+model ContenuProposition {
+  id                 String    @id @default(cuid())
+  /// Semaine analysée (lundi, date seule).
+  semaine            DateTime  @db.Date
+  /// brief | prompt | sujet | regle-abandon
+  type               String    @db.VarChar(20)
+  role               String?   @db.VarChar(40)
+  constat            String
+  hypothese          String
+  /// Changement exact (diff du prompt ou du brief).
+  changement         String
+  effetAttendu       String?
+  risque             String?
+  critereEvaluation  String?   @db.VarChar(300)
+  /// a_relire | appliquee | refusee | reportee (STATUTS_PROPOSITION)
+  statut             String    @default("a_relire") @db.VarChar(20)
+  decidePar          String?   @db.VarChar(120)
+  decideLe           DateTime?
+  /// Version de gabarit créée à l'application (retour arrière via ContentTemplateHistory).
+  templateVersionRef String?   @db.VarChar(100)
+  resultatMesure     Json?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([semaine])
+  @@index([statut])
+  @@map("contenu_propositions")
 }
