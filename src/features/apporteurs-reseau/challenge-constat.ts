@@ -17,7 +17,7 @@ import { alerteInterne } from "./alerte-interne";
 import { fenetreDeConstat, journeeCompte, jourParisDe, seuilAtteint } from "./challenge-regles";
 import { netDeLaCommande } from "./commandes";
 import { ACTIVITE_PRIME_CHALLENGE } from "./prime-challenge";
-import { paiementsIntegrauxParFacture } from "./paiement-integral";
+import { lirePaiementsIntegrauxParFacture } from "./paiement-integral";
 import { analyserLignesJourneeIa } from "./regles";
 import { tableAbsente } from "./reservation-presentation";
 import { signalerErreurReseau } from "./signaler";
@@ -111,7 +111,9 @@ async function lireJournees(): Promise<JourneeLue[]> {
       emiseAt: true,
     },
   });
-  const paiements = await paiementsIntegrauxParFacture(cles);
+  // Lecture stricte : une source en échec ou incomplète interrompt le constat (jamais « pas payé »).
+  const paiements = await lirePaiementsIntegrauxParFacture(cles);
+  if (paiements.size < cles.length) throw new Error("paiements incomplets");
   const devisDeLaFacture = new Map(cle.map((f) => [f.id, f.devisId]));
   const lues: JourneeLue[] = [];
   const vues = new Set<string>();
@@ -167,7 +169,25 @@ export async function constaterChallenges(maintenant: Date): Promise<number> {
       ),
     );
     if (aConstater.length === 0) return 0;
-    const lues = await lireJournees();
+    let lues: JourneeLue[];
+    try {
+      lues = await lireJournees();
+    } catch (err) {
+      if (tableAbsente(err)) return creees;
+      signalerErreurReseau("constat challenge : source manquante", err);
+      await alerteInterne({
+        jobId: `challenge-constat-interrompu:${aujourdhui}`,
+        code: "challenge_constat_interrompu",
+        titre: "Constat des challenges interrompu",
+        message:
+          "Constat interrompu, source manquante : une lecture a échoué ou rendu une carte incomplète. Aucune prime n'a été modifiée ; le prochain passage recommence.",
+        cibleType: "challenge",
+        cibleId: aConstater[0]!.id,
+        niveau: "critique",
+        maintenant,
+      });
+      return creees;
+    }
     for (const c of aConstater) {
       const periode: Periode = {
         debutLe: jour(c.debutLe),

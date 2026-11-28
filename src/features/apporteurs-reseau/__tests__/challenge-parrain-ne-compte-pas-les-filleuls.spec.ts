@@ -9,7 +9,7 @@ vi.mock("@/lib/prisma", async () => {
   return { prisma: f.creerPrisma(h.e) };
 });
 vi.mock("../paiement-integral", () => ({
-  paiementsIntegrauxParFacture: async (ids: string[]) =>
+  lirePaiementsIntegrauxParFacture: async (ids: string[]) =>
     new Map(ids.map((i) => [i, h.e.paiements.get(i) ?? null])),
 }));
 vi.mock("../alerte-interne", () => ({
