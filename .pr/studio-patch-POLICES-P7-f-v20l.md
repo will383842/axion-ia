@@ -1,0 +1,4 @@
+Rouge : aucune PR ni check-run trouvés pour la branche (API GitHub vide) ; rejoué en local, les tests de la branche (controle-piece-neuve, p7-v4, segments-rendu) passent.
+Changé : aucun fichier — la branche n'avait rien à corriger ; commit vide (--allow-empty) pour fournir le commit normal exigé, donc aucune mutation à faire.
+Lancé : vitest sur les fichiers de la branche + garde-charte (3 rouges), tsc --noEmit (NODE_OPTIONS=--max-old-space-size=6144) : erreurs identiques à master ; pnpm install avec --store-dir /tmp (magasin par défaut en lecture seule).
+Rouges hérités non réparés (identiques sur origin/master, hors fichiers de la branche) : garde-charte moteurs (conformite-zone-sure.ts #000000), motion (fonds/fumee/lumiere/transitions/terminal-commande), cliquet compositions (ImageComposee, MacroInterface, PlancheEtiquettes, PlancheTraits, petits-objets/polices.ts) ; tsc docs/formats/image-video/variete/prototypes.
