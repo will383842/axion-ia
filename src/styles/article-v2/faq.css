@@ -1,2 +1,134 @@
-/* Gabarit « faq » (S2 : feuille créée d'avance, la PR du gabarit y écrit seule).
-   Règles bornées à [data-gabarit="faq"] ; jetons de couleur uniquement. */
+/* Gabarit « faq » (G7). Règles bornées à [data-gabarit="faq"] ; jetons de couleur uniquement.
+   Mobile d'abord. Questions en cartes `<details>` numérotées par compteur CSS (aucun JS) ;
+   les numéros sont du décor (texte de remplacement vide). */
+
+/* — Grille des questions : porte d'entrée (le sommaire reste le seul <nav>) — */
+[data-gabarit="faq"] .grille-q {
+  margin: 0 0 3rem;
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--ombre-bloc);
+}
+[data-gabarit="faq"] .grille-q .grille-q__titre {
+  margin: 0 0 1rem;
+  font: 600 clamp(1.375rem, 1.15rem + 1vw, 1.75rem) / 1.2 var(--font-serif);
+}
+[data-gabarit="faq"] .grille-q__titre em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-on-mocha);
+}
+[data-gabarit="faq"] .grille-q .grille-q__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  counter-reset: gq;
+}
+[data-gabarit="faq"] .grille-q__liste li {
+  counter-increment: gq;
+  margin: 0;
+}
+[data-gabarit="faq"] .grille-q__liste a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 52px;
+  height: 100%;
+  padding: 0.55rem 0.85rem;
+  background: var(--color-mocha-soft);
+  border: 1px solid var(--color-border-on-mocha);
+  border-left: 6px solid var(--color-terracotta);
+  border-radius: var(--radius-md);
+  color: var(--color-mocha-fg);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+[data-gabarit="faq"] .grille-q__liste a::before {
+  content: counter(gq, decimal-leading-zero);
+  content: counter(gq, decimal-leading-zero) / "";
+  flex: none;
+  font: 600 0.875rem/1 var(--font-mono);
+  color: var(--color-terracotta-on-mocha);
+}
+[data-gabarit="faq"] .grille-q.sur-sombre .grille-q__liste a:not(.btn):hover {
+  background: var(--color-mocha-fg);
+  color: var(--color-ink);
+}
+[data-gabarit="faq"] .grille-q.sur-sombre .grille-q__liste a:not(.btn):hover::before {
+  color: var(--color-terracotta-deep);
+}
+@media (min-width: 640px) {
+  [data-gabarit="faq"] .grille-q__liste {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* — Questions en cartes numérotées — */
+[data-gabarit="faq"] .faq {
+  counter-reset: qr;
+}
+[data-gabarit="faq"] .faq details {
+  counter-increment: qr;
+  border: 2px solid var(--color-border);
+  border-left: 8px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--ombre-douce);
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+[data-gabarit="faq"] .faq details[open] {
+  border-color: var(--color-terracotta);
+  box-shadow: var(--ombre-douce);
+}
+[data-gabarit="faq"] .faq summary {
+  justify-content: flex-start;
+  gap: 0.9rem;
+  min-height: 64px;
+  padding: 0.9rem 1rem 0.9rem 0.9rem;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+}
+[data-gabarit="faq"] .faq summary::before {
+  content: counter(qr, decimal-leading-zero);
+  content: counter(qr, decimal-leading-zero) / "";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-terracotta-deep);
+  color: var(--color-paper);
+  font: 600 1rem/1 var(--font-mono);
+}
+[data-gabarit="faq"] .faq summary::after {
+  margin-left: auto;
+}
+[data-gabarit="faq"] .faq details[open] summary {
+  border-bottom: 1px dashed var(--color-border-strong);
+}
+[data-gabarit="faq"] .faq summary:focus-visible {
+  outline-offset: -5px;
+}
+[data-gabarit="faq"] .faq .faq-answer {
+  padding: 1rem 1.25rem 1.25rem;
+}
+@media (min-width: 640px) {
+  [data-gabarit="faq"] .faq .faq-answer {
+    padding-left: 4.6rem;
+  }
+}
+/* L'encart du milieu, inséré dans la liste des questions : même rythme que les cartes */
+[data-gabarit="faq"] .faq .cta-milieu {
+  margin: 1.75rem 0;
+}
+
+@media (forced-colors: active) {
+  [data-gabarit="faq"] .grille-q,
+  [data-gabarit="faq"] .grille-q__liste a {
+    border: 2px solid CanvasText;
+  }
+}

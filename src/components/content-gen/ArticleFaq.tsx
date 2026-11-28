@@ -1,3 +1,4 @@
+import { Fragment, type ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -23,6 +24,39 @@ interface ArticleFaqProps {
   readonly niveauTitre?: 2 | 3;
   /** Titre déjà traduit (défaut : texte historique FR/EN). */
   readonly titre?: string;
+  /** V2 : pose `id="q-N"` sur chaque question (N = rang parmi les questions rendues). */
+  readonly ancres?: boolean;
+  /** V2 : insère un encart après la question de rang `apres` (1 = après la première). */
+  readonly inserer?: { readonly apres: number; readonly contenu: ReactNode };
+}
+
+interface QuestionPreparee {
+  readonly question: string;
+  readonly answerHtml: string;
+  readonly answerText: string;
+}
+
+/** Questions réellement rendues (réponses vides ou placeholder écartées), dans l'ordre. */
+function preparer(items: ReadonlyArray<ArticleFaqItem> | null | undefined): QuestionPreparee[] {
+  return (items ?? [])
+    .map((it) => {
+      const sanitized = sanitizeFaqAnswer(it.answer);
+      const question = it.question.trim();
+      if (sanitized.skip || question.length === 0) return null;
+      const answerText = it.answer
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      return { question, answerHtml: sanitized.html, answerText };
+    })
+    .filter((x): x is QuestionPreparee => x !== null);
+}
+
+/** Intitulés des questions que `ArticleFaq` rendra (même filtre) : pour une grille ou un sommaire. */
+export function questionsRendues(
+  items: ReadonlyArray<ArticleFaqItem> | null | undefined,
+): string[] {
+  return preparer(items).map((p) => p.question);
 }
 
 /**
@@ -47,6 +81,8 @@ export function ArticleFaq({
   premiereOuverte = false,
   niveauTitre = 2,
   titre,
+  ancres = false,
+  inserer,
 }: ArticleFaqProps) {
   if (!items || items.length === 0) return null;
   const isFr = locale === "fr";
@@ -54,18 +90,7 @@ export function ArticleFaq({
   // Sanitize chaque réponse (défense en profondeur — même si déjà sanitizé à
   // l'insert) + dérive le texte plain pour le JSON-LD. On skippe les réponses
   // vides / placeholder (sanitizeFaqAnswer.skip).
-  const prepared = items
-    .map((it) => {
-      const sanitized = sanitizeFaqAnswer(it.answer);
-      const question = it.question.trim();
-      if (sanitized.skip || question.length === 0) return null;
-      const answerText = it.answer
-        .replace(/<[^>]+>/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-      return { question, answerHtml: sanitized.html, answerText };
-    })
-    .filter((x): x is { question: string; answerHtml: string; answerText: string } => x !== null);
+  const prepared = preparer(items);
 
   if (prepared.length === 0) return null;
 
@@ -84,14 +109,17 @@ export function ArticleFaq({
           {titre ?? (isFr ? "Questions fréquentes" : "Frequently asked questions")}
         </Titre>
         {prepared.map((p, i) => (
-          <details key={i} open={premiereOuverte && i === 0}>
-            <summary data-faq-q>{p.question}</summary>
-            <div
-              data-faq-a
-              className="faq-answer"
-              dangerouslySetInnerHTML={{ __html: p.answerHtml }}
-            />
-          </details>
+          <Fragment key={i}>
+            <details {...(ancres ? { id: `q-${i + 1}` } : {})} open={premiereOuverte && i === 0}>
+              <summary data-faq-q>{p.question}</summary>
+              <div
+                data-faq-a
+                className="faq-answer"
+                dangerouslySetInnerHTML={{ __html: p.answerHtml }}
+              />
+            </details>
+            {inserer && inserer.apres === i + 1 ? inserer.contenu : null}
+          </Fragment>
         ))}
         <JsonLd data={faqJsonLd} />
       </section>
