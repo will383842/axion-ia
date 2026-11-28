@@ -1,10 +1,10 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const DOSSIER = join(
   process.cwd(),
-  "prisma/migrations/20261128120000_apporteurs_annulations_rendez_vous",
+  "prisma/migrations/20261128140000_apporteurs_annulations_rendez_vous",
 );
 const sql = readFileSync(join(DOSSIER, "migration.sql"), "utf8")
   .split("\n")
@@ -14,6 +14,16 @@ const retour = readFileSync(join(DOSSIER, "rollback.sql"), "utf8");
 const schema = readFileSync(join(process.cwd(), "prisma/schema.prisma"), "utf8");
 
 describe("migration des annulations de rendez-vous", () => {
+  it("porte un horodatage strictement supérieur à toutes les autres migrations", () => {
+    const nom = DOSSIER.split("/").pop() as string;
+    const horodatage = (d: string) => d.slice(0, 14);
+    const autres = readdirSync(join(process.cwd(), "prisma/migrations")).filter(
+      (d) => /^\d{14}_/.test(d) && d !== nom,
+    );
+    const fautives = autres.filter((d) => horodatage(d) >= horodatage(nom));
+    expect(fautives).toEqual([]);
+  });
+
   it("est additive : aucun DROP, aucune clé étrangère, aucune énumération", () => {
     expect(sql).not.toMatch(/\bDROP\b/i);
     expect(sql).not.toMatch(/REFERENCES|FOREIGN KEY/i);
