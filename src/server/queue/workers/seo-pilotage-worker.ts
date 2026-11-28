@@ -13,7 +13,9 @@
  * encore, elle ne doit rien exécuter par défaut.
  *
  * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (un jour d'historique par passage),
- * `purge` (dimanche), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé). Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
+ * `purge` (dimanche), `recalcul` (P6a, 07 h 07 : champs existants depuis l'historique, sans appel
+ * Google), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé). Des NOMBRES
+ * seulement dans les journaux : jamais une requête de recherche,
  * jamais un nom.
  *
  * ⚠️ `inspection` est longue (jusqu'à 1 400 appels espacés d'au moins 200 ms, soit 30 à 40 min) ; avec
@@ -39,6 +41,7 @@ export const TACHES_SEO_PILOTAGE = [
   "ingestion-gsc",
   "rattrapage-gsc",
   "purge",
+  "recalcul",
   "inspection",
 ] as const;
 export type TacheSeoPilotage = (typeof TACHES_SEO_PILOTAGE)[number];
@@ -72,11 +75,21 @@ export async function runSeoPilotageJob(
 
   try {
     // Imports paresseux : Prisma n'est chargé qu'une fois l'interrupteur vérifié.
-    const [{ prisma }, ingestion] = await Promise.all([
+    const [{ prisma }, ingestion, recalcul] = await Promise.all([
       import("@/lib/prisma"),
       import("@/server/seo-pilotage/ingestion"),
+      import("@/server/seo-pilotage/recalcul"),
     ]);
     const mode = await lireModePilotage(prisma);
+    if (tache === "recalcul") {
+      const r = await recalcul.tacheRecalcul({ prisma });
+      console.warn(
+        r.issue === "saute"
+          ? `[seo-pilotage-worker] recalcul (${mode}) sauté : ${r.motif}`
+          : `[seo-pilotage-worker] recalcul (${mode}) : ${r.routesMisesAJour} route(s), ${r.motsCles} mot(s)-clé(s)`,
+      );
+      return r.issue === "saute" ? { issue: "saute", motif: r.motif } : { issue: "fait", tache };
+    }
     if (tache === "inspection") {
       const [{ redis }, { tacheInspection }] = await Promise.all([
         import("@/lib/redis"),

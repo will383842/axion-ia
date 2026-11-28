@@ -16544,6 +16544,22 @@ model ApporteurReseauSiret {
   @@map("apporteur_reseau_siret")
 }
 
+/// Dernier contrôle du registre public pour un apporteur sous contrat. Sans clé étrangère.
+/// rgpd: technique — état au registre public d'une entreprise, dates ; aucun nom, e-mail ni téléphone
+model ApporteurControleRegistre {
+  apporteurId       String    @id @map("apporteur_id") @db.Uuid
+  dernierControleAt DateTime  @map("dernier_controle_at") @db.Timestamptz(3)
+  /// active | fermee | introuvable (CHECK) — « indisponible » ne s'écrit jamais
+  etat              String    @db.VarChar(16)
+  etatDepuis        DateTime  @map("etat_depuis") @db.Timestamptz(3)
+  /// Nombre de contrôles consécutifs dans l'état courant.
+  consecutifs       Int       @default(1)
+  alerteeAt         DateTime? @map("alertee_at") @db.Timestamptz(3)
+
+  @@index([dernierControleAt])
+  @@map("apporteur_controles_registre")
+}
+
 /// Contrat 2.6 (2026-10-09) : l'ÉTABLISSEMENT déclaré d'une présentation (SIRET), et son extension
 /// à toute l'entreprise, décidée par Williams seul (art. 3.1). Table séparée sans clé étrangère
 /// (fenêtre app/worker), comme `ApporteurReseauSiret`. Absente = présentation d'avant la 2.6, qui

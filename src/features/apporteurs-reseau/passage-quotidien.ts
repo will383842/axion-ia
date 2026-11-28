@@ -82,6 +82,7 @@ import {
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
+import { controlerRegistreApporteurs } from "./controle-registre";
 import { commissionJourneeIaSelonGrille } from "./journee-ia-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import {
@@ -332,6 +333,7 @@ type NomEtape =
   | "purge-rgpd"
   | "commandes-a-attribuer"
   | "resiliations-echues"
+  | "controle-registre"
   | "emails-effet-resiliation"
   | "a-verifier-en-retard";
 
@@ -422,6 +424,8 @@ async function passer(
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
     // PR N (#2464 pt 6) : purge RGPD, le 1er du mois, ÉTEINTE par défaut (APPORTEURS_PURGE_RGPD).
     ["purge-rgpd", async () => void (await etapePurgeRgpd(maintenant))],
+    // Point 20 : relecture du registre public pour les apporteurs sous contrat (alerte interne seule).
+    ["controle-registre", async () => void (await controlerRegistreApporteurs(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
