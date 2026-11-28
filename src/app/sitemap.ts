@@ -41,6 +41,8 @@ import {
 import { listFaqs, isFaqItemIndexable } from "@/lib/knowledge/readers";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
+import { listPublishedMembers } from "@/lib/equipe/collaborateurs";
+import { fichesSitemapEquipe } from "@/lib/equipe/hub";
 import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
 import {
@@ -608,7 +610,11 @@ export default async function sitemap(props: {
   switch (id) {
     case "pages":
       return filterEnIfDisabled(
-        buildPagesSitemap(editorialFor("pages"), await hubGuidesEstIndexable()),
+        buildPagesSitemap(
+          editorialFor("pages"),
+          await hubGuidesEstIndexable(),
+          fichesSitemapEquipe(await listPublishedMembers()),
+        ),
       );
     case "blog":
       // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
@@ -750,7 +756,11 @@ export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<strin
 
 // Static routes — declared in `routing.pathnames` minus excluded + slug templates.
 // Priority 1.0 (home) > 0.8 (depth 2) > 0.6 (depth ≥ 3). changefreq weekly.
-function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.Sitemap {
+function buildPagesSitemap(
+  now: Date,
+  hubGuidesIndexable = true,
+  fichesEquipe: ReadonlyArray<{ slug: string; lastModified: Date }> = [],
+): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
@@ -825,6 +835,16 @@ function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.
     changeFrequency: "monthly",
     priority: 0.6,
   });
+  // Fiches des collaborateurs publiés : SEULES les indexables (`evaluerIndexabilite`).
+  // Une fiche `noindex` reste visible sur le hub mais n'entre jamais ici. Base stub : liste vide.
+  for (const f of fichesEquipe) {
+    entries.push({
+      url: `${SITE_URL}/fr/equipe/${f.slug}`,
+      lastModified: f.lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    });
+  }
   /**
    * Catalogue des livres (2026-08-17) — SEULS les ouvrages réellement en vente.
    *

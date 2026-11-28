@@ -84,6 +84,16 @@ describe("preparerCarte", () => {
     expect(d.total).toBe(1);
     expect(d.amas[0]?.personnes.map((f) => f.slug)).toEqual(["ok"]);
   });
+  it("avecDirigeant : le dirigeant n'a un point que si l'appelant l'autorise et qu'un lieu est porté", () => {
+    const w = fiche({
+      slug: "williams",
+      estDirigeantPrincipal: true,
+      categorie: "direction",
+      departement: "69",
+    });
+    expect(preparerCarte([w], [], { avecDirigeant: true }).total).toBe(1);
+    expect(preparerCarte([w]).total).toBe(0);
+  });
   it("Île-de-France : les villes proches sont fusionnées, chaque point garde SA ville, « +N » mène à la région", () => {
     const fiches = [
       fiche({ slug: "a", ville: "Paris", departement: "75" }),
