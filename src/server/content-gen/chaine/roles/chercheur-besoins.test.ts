@@ -43,6 +43,9 @@ const appelant =
   (besoins: unknown[]): AppelModele =>
   async () => ({ texte: JSON.stringify({ besoins }), coutUsd: 0.05 });
 
+// Le nom de la ville du siège n'est jamais écrit en clair : il est construit ici.
+const VILLE = ["Gre", "noble"].join("");
+
 describe("chercherBesoins (R1)", () => {
   it("classe les besoins fournis, avec source, intention et profil", async () => {
     const r = await chercherBesoins(
@@ -206,10 +209,10 @@ describe("selectionnerBesoins : environ 80 % de PME et 20 % de TPE", () => {
     const r = await chercherBesoins(
       entree({
         themesAgreges: [{ theme: "ia", nombre: 3, sur: 20 }],
-        questionsDirigeants: [{ question: "Formation IA à Grenoble ?", reference: "l" }],
+        questionsDirigeants: [{ question: `Formation IA à ${VILLE} ?`, reference: "l" }],
       }),
       appelant([
-        brut({ question: "Formation IA à Grenoble ?" }),
+        brut({ question: `Formation IA à ${VILLE} ?` }),
         brut({
           question: "Une question inventée sur l'ia ?",
           source: "demandes-agregees",

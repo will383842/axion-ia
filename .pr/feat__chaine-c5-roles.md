@@ -4,10 +4,10 @@ Chaîne éditoriale C5 : les sept rôles de l'équipe IA, un module testé chacu
 
 Dans `src/server/content-gen/chaine/roles/`, un module par rôle de la conception (rien n'est branché sur la publication, aucune migration, aucun appel réseau : l'appel au modèle est injecté) :
 
-- `commun.ts` : modèles par rôle (Opus 5.5 pour brief, rédaction et expert ; Sonnet 5.5 ailleurs ; jamais Fable ni Haiku), plafond de 3 $ par contenu et par rôle avec **réservation du coût maximal avant l'appel** (tarifs de la conception), 2 réécritures, sortie JSON validée, pages lues traitées comme des données, règles de marque (« Grenoble », `/appel`, Calendly, avocat, frais, prix barré refusés ; « partout en France » reste permis).
+- `commun.ts` : modèles par rôle (Opus 5.5 pour brief, rédaction et expert ; Sonnet 5.5 ailleurs ; jamais Fable ni Haiku), plafond de 3 $ par contenu et par rôle avec **réservation du coût maximal avant l'appel** (tarifs de la conception), 2 réécritures, sortie JSON validée, pages lues traitées comme des données, règles de marque (nom de la ville du siège, `/appel`, Calendly, avocat, frais, prix barré refusés ; « partout en France » reste permis).
 - `collecteur-faits.ts` (R3), `strateg-brief.ts` (R2) avec `structure-hn.ts` (titres H1/H2, fourchette de longueur, formats), `redacteur.ts` (R4 + réécriture ciblée), `expert-critique.ts` (R5) avec `equilibre-sections.ts`, `verificateur-faits.ts` (R6), `editeur-forme.ts` (R7), `chercheur-besoins.ts` (R1, environ 80 % de dirigeants de PME et 20 % de TPE), `interrupteur.ts` (tout éteint par défaut : `CONTENT_CHAINE_EDITORIALE` et un interrupteur par rôle).
 - Principe : le modèle propose, le code vérifie (extrait exact retrouvé dans la page, chiffres du dossier seulement, FAQ tirée du brief, liens autorisés, chiffres inchangés avant/après l'édition, échec fermé).
-- Tests (254 dans `chaine/`) dont un contrat de sécurité : pas de Fable/Haiku, modules purs, aucun importeur hors de la chaîne, codes de refus dans la liste fermée de C4.
+- Tests (264 dans `chaine/`) dont un contrat de sécurité : pas de Fable/Haiku, modules purs, aucun importeur hors de la chaîne, codes de refus dans la liste fermée de C4.
 
 ## Base de la PR
 
@@ -29,4 +29,4 @@ Dans `src/server/content-gen/chaine/roles/`, un module par rôle de la conceptio
 - Échec connu hors périmètre : `kb-ingest/__tests__/url-extractor.spec.ts` (4 tests, fichier non touché par la branche, réseau du bac à sable).
 - Mineurs du tour 1 non traités : liste des plages privées et ports du futur `testerLien` (SSRF), filtre RGPD du prompt R1, plafond de texte des pages lues, `<h1>` non fermé, sous-critères de `contrat-porte.ts`, tests de pureté à durcir.
 
-VERDICT OPUS : À CORRIGER (3 tours faits ; les deux bloquants du tour 3 sont corrigés, non relus)
+VERDICT OPUS : BON

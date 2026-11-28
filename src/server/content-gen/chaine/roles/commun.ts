@@ -261,7 +261,7 @@ export const CONSIGNE_DONNEES =
 
 /** Règles de marque (§ 9) à inscrire dans le prompt de chaque rôle. */
 export const REGLES_MARQUE_PROMPT = [
-  "Jamais le nom « Grenoble » : aucun ancrage local d'Axion-IA (la formule « partout en France » est permise).",
+  "Aucune ville d'implantation citée : aucun ancrage local d'Axion-IA (la formule « partout en France » est permise).",
   "Aucun faux témoignage, aucun cas client inventé, aucun résultat chiffré attribué à Axion-IA, aucun client ni partenaire nommé.",
   "Aucun prix barré ni ancien prix ; aucune mention de frais de déplacement, d'hébergement ou de repas.",
   "Aucun avocat cité ni « relecture avocat ».",
@@ -270,7 +270,9 @@ export const REGLES_MARQUE_PROMPT = [
 ].join("\n- ");
 
 const MOTIFS_MARQUE: ReadonlyArray<readonly [string, RegExp]> = [
-  ["grenoble", /grenoble/i],
+  // Lettres séparées (espaces, points, tirets, insécables) ; pas de « e » final pour attraper le gentilé.
+  // Le nom de la ville du siège n'est jamais écrit en clair.
+  ["ville_siege", /g[\s._-]*r[\s._-]*e[\s._-]*n[\s._-]*o[\s._-]*b[\s._-]*l/i],
   ["lien_appel", /(?:^|[\s"'(=]|\.[a-z]{2,})\/(?:(?:fr|en)\/)?appel(?![\p{L}-])/iu],
   ["calendly", /calendly/i],
   ["reservation_en_ligne", /r[ée]servez\s+en\s+ligne/i],

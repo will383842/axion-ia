@@ -100,6 +100,9 @@ const rend =
     coutUsd: 0.1,
   });
 
+// Le nom de la ville du siège n'est jamais écrit en clair : il est construit ici.
+const VILLE = ["Gre", "noble"].join("");
+
 describe("editerForme (R7)", () => {
   it("accepte une correction de forme qui ne bouge aucun chiffre", async () => {
     const edite = corps().replace(
@@ -158,7 +161,7 @@ describe("editerForme (R7)", () => {
   });
 
   it("rejette une règle de marque violée par l'édition ; « partout en France » reste permis", async () => {
-    const mal = corps() + "<p>Notre équipe de Grenoble vient chez vous.</p>";
+    const mal = corps() + `<p>Notre équipe de ${VILLE} vient chez vous.</p>`;
     expect(await editerForme(entree(), rend({ bodyHtml: mal }), new CompteurCout())).toMatchObject({
       verdict: "inchange",
       motifRejet: "regle_de_marque",

@@ -21,6 +21,9 @@ const faux =
   (texte: string, coutUsd = 0.1): AppelModele =>
   async () => ({ texte, coutUsd });
 
+// Le nom de la ville du siège n'est jamais écrit en clair : il est construit ici.
+const VILLE = ["Gre", "noble"].join("");
+
 describe("modèles par rôle (conception § 6.1)", () => {
   it("Opus pour brief, rédaction, expert ; Sonnet ailleurs", () => {
     expect(MODELES_ROLES.strateg).toBe("claude-opus-5-5");
@@ -145,13 +148,23 @@ describe("encadrerDonnees : une page lue est une donnée, jamais une consigne", 
 });
 
 describe("règles de marque (§ 9)", () => {
-  it("refuse Grenoble, /appel, Calendly, avocat, frais de déplacement, prix barré", () => {
-    expect(verifierReglesMarque("Notre équipe à Grenoble")).toContain("grenoble");
+  it(`refuse ${VILLE}, /appel, Calendly, avocat, frais de déplacement, prix barré`, () => {
+    expect(verifierReglesMarque(`Notre équipe à ${VILLE}`)).toContain("ville_siege");
     expect(verifierReglesMarque("Réservez sur /appel")).toContain("lien_appel");
     expect(verifierReglesMarque("via Calendly")).toContain("calendly");
     expect(verifierReglesMarque("relu par un avocat")).toContain("avocat");
     expect(verifierReglesMarque("hors frais de déplacement")).toContain("frais_deplacement");
     expect(verifierReglesMarque("<s>990 €</s> 790 €")).toContain("prix_barre");
+  });
+  it("refuse la ville du siège en lettres séparées et son gentilé", () => {
+    const lettres = [...VILLE.toLowerCase()];
+    expect(verifierReglesMarque(`Notre équipe à ${lettres.join(" ")}`)).toContain("ville_siege");
+    expect(verifierReglesMarque(`Notre équipe à ${lettres.join(".")}`)).toContain("ville_siege");
+    expect(verifierReglesMarque(`Notre équipe à ${lettres.join("-")}`)).toContain("ville_siege");
+    expect(verifierReglesMarque(`Un cabinet ${VILLE.slice(0, -1).toLowerCase()}ois`)).toContain(
+      "ville_siege",
+    );
+    expect(verifierReglesMarque("Partout en France")).not.toContain("ville_siege");
   });
   it("détecte aussi un lien absolu vers /appel", () => {
     expect(verifierReglesMarque('<a href="https://axion-ia.com/fr/appel">x</a>')).toContain(
