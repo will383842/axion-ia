@@ -13,7 +13,7 @@
 
 Sept principes, non négociables :
 
-1. **Mesurer avant d'agir.** Le site est jeune : ~428 impressions par semaine sur 118 pages du top 10 en août. Le chantier démarre en **mode observation seule, pendant au moins 8 semaines**. Aucune décision n'est prise sous les planchers statistiques (§ 4.2) : l'écran l'affiche au lieu d'agir.
+1. **Mesurer avant d'agir.** Le site est jeune : ~428 impressions par semaine sur 118 pages du top 10 en août. Le chantier démarre en **mode observation seule**, jusqu'à ce que l'historique Search Console soit rattrapé (au moins 90 jours remplis, ou tout l'historique disponible, 16 mois chez Google) : décision de Will du 28/11/2026, qui remplace l'attente de 8 semaines. Aucune décision n'est prise sous les planchers statistiques (§ 4.2) : l'écran l'affiche au lieu d'agir.
 2. **Réutiliser plutôt qu'empiler.** Les deux workers GSC actuels (`site-route-gsc`, `content-keyword-sync`) sont **remplacés** par une ingestion unique, et non complétés par une troisième. L'équipe éditoriale est réutilisée : carte des requêtes, éditeur SEO, mode mise à jour, chargé de liens, conformité. Il n'y a **aucun nouveau client HTTP Google**, seulement une extension de `gsc-client.ts`.
 3. **Tout est éteint par défaut**, avec trois niveaux distincts : observation, propositions, automatique borné.
 4. **`null` ≠ 0.** Une source absente (identifiants, API, table pas encore migrée) s'affiche « indisponible ». Elle ne produit jamais de zéros ni d'alerte, pour éviter de répéter l'échec `checkIndexationStagnant`.
@@ -145,7 +145,7 @@ Le score sert à **prioriser le travail éditorial**, pas à agir automatiquemen
 
 ## 4. Couche analyse : le moteur d'opportunités
 
-Module pur `src/server/seo-pilotage/opportunites/*`. Les règles sont détaillées par l'expert « intentions ». Toutes les constantes sont exportées, puis **calibrées sur les 8 semaines d'observation**.
+Module pur `src/server/seo-pilotage/opportunites/*`. Les règles sont détaillées par l'expert « intentions ». Toutes les constantes sont exportées, puis **calibrées sur l'historique rattrapé** (et non plus sur 8 semaines d'observation).
 
 ### 4.1 Détecteurs
 
@@ -354,8 +354,8 @@ Dépendances entre interrupteurs :
 
 ## 11. Conditions de démarrage (avant d'allumer quoi que ce soit)
 
-| Mode                  | Conditions                                                                                                                                                                |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Observation**       | Sonde GSC verte. Migration vérifiée par `prisma migrate status` après l'atterrissage (l'entrypoint migre en best-effort). Écran « Santé des données » vert depuis 7 jours |
-| **Propositions**      | 8 semaines d'observation. Planchers calibrés sur les données réelles. Journal et retour arrière livrés **et testés**. Défauts AUDIT § 5 bis 1 à 3 corrigés                |
-| **Automatique borné** | 20 propositions validées sans retour arrière. Groupe témoin actif. Champ par champ, en commençant par `metaDescription` des articles                                      |
+| Mode                  | Conditions                                                                                                                                                                                                                                                                                                    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Observation**       | Sonde GSC verte. Migration vérifiée par `prisma migrate status` après l'atterrissage (l'entrypoint migre en best-effort). Écran « Santé des données » vert depuis 7 jours                                                                                                                                     |
+| **Propositions**      | Historique rattrapé (au moins 90 jours remplis, ou tout l'historique disponible). Planchers du § 4.2 **inchangés** (une page sous le plancher ne reçoit aucune proposition) et calibrés sur l'historique rattrapé. Journal et retour arrière livrés **et testés** (P13). Défauts AUDIT § 5 bis 1 à 3 corrigés |
+| **Automatique borné** | 20 propositions validées sans retour arrière. Groupe témoin actif. Champ par champ, en commençant par `metaDescription` des articles                                                                                                                                                                          |
