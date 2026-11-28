@@ -1,39 +1,29 @@
-# Pages équipe R2b2 : blocs « Vous êtes… » et « Partout en France »
+# Pages équipe R2b2 : schémas (vous êtes, partout en France, avant/après, sans chamboulement, Journée IA, services, citations)
 
 ## Résumé
 
-Deux nouveaux blocs visuels pour la fiche équipe, sans toucher aux fichiers des autres lots.
+Deuxième passe du lot. Les blocs visuels de la fiche équipe sont prêts ; le branchement final dans la fiche reste pour R2d.
 
-- **Vous êtes…** : le dirigeant se reconnaît. 3 cartes « par taille » (dirigeant seul, TPE, PME), puis une grille « par métier » (6 à 8 cartes). Chaque carte suit trois temps : Coût, Action, Gain, avec un chevron SVG entre eux ; le gain est en terracotta foncé et en gras. Un titre h3 par carte, listes `ul/li`. Le bloc est masqué sans donnée.
-- **Partout en France** : H2 en question, réponse directe, pastilles des régions (source `REGIONS`), 12 villes au plus, chacune avec le lien « Nous intervenons à … », carte de France SVG décorative (réutilise le contour déjà dans le dépôt), lien optionnel vers l'index des villes (`/implantations`, existant), phrase de lieu optionnelle pour un collaborateur.
-
-Les textes de Williams viennent du lot R2c1 : ici, uniquement des données de test. Aucun composant n'importe `ContenuFiche`.
+- **Villes** : chaque ville de « Partout en France » renvoie vers sa page indexée `/implantations/<région>/<ville>`. Ne restent que les villes qui ont une copie rédigée, qui sont dans la cohorte indexable et dont la région existe : aucun lien vers une page noindex (les pages `/audit/par-ville/*` ne sont plus utilisées).
+- **AvantApres** : vrai tableau (`caption` masquée, deux `th scope="col"`, rôles ARIA explicites), cellules « avant » en pointillés, « après » terracotta, flèche en pseudo-élément, survol sous `motion-safe:`.
+- **Rassurance** (« sans chamboulement ») : fond foncé avec halo terracotta seul, cinq tuiles à icône, un h3 par tuile.
+- **PorteEntree** (Journée IA) : frise de la journée (`FriseEtapes`, déjà fusionnée), étiquettes de moment et chiffres facultatifs (donnés en props, jamais inventés), `GARANTIE_PHRASE` importée, bouton avec `focus-visible:ring-terracotta`.
+- **MetiersCollaborateur** (services) : carte mise en avant en premier (fond foncé, halo terracotta), autres cartes à icône, flèche qui glisse sous `motion-safe:`.
+- **CitationsTerrain** : première citation en grand avec guillemet SVG décoratif, les autres en grille, `cite` sous chaque citation.
+- Chaque composant garde ses props d'origine (`donnees`) et accepte en plus `entete`, `id` (et `moments`, `chiffres`, `auteur` selon le cas) ; sans `entete`, le titre de la donnée sert de H2.
 
 ## Fichiers
 
-- `src/components/equipe/visuels/VousEtes.tsx` (remplace `PourQuiEntreprises`, non créé)
-- `src/components/equipe/visuels/Silhouettes.tsx`
-- `src/components/equipe/visuels/PartoutEnFrance.tsx`
-- `src/lib/equipe/villes-phares.ts`
-- `src/components/equipe/__tests__/r2b2-schemas.spec.tsx`
-
-## Point à trancher
-
-Les villes viennent de `getVillesCitablesMaillage()` (la source des pages « par ville », triée par population). Depuis la décision du 18/11/2026, les pages `/audit/par-ville/<slug>` sont en `noindex, follow` ; la page indexée d'une ville est `/implantations/<région>/<ville>`. Les liens suivent la consigne (`/audit/par-ville/<slug>`). Si l'on préfère lier la page indexée, il suffit de changer `href` dans `villes-phares.ts`.
-
-## Hors de ce lot (non fait ici)
-
-Les autres éléments du § 4.3 (`AvantApres`, `Rassurance`, `PorteEntree`, `MetiersCollaborateur`, `CitationsTerrain`) ne sont pas traités : la consigne limitait le lot aux deux blocs. Le branchement dans la fiche est pour R2d.
+- `src/lib/equipe/villes-phares.ts` (liens et filtre)
+- `src/components/equipe/BlocsTransformation.tsx`, `MetiersCollaborateur.tsx`, `CitationsTerrain.tsx`
+- `src/components/equipe/visuels/VousEtes.tsx`, `Silhouettes.tsx`, `PartoutEnFrance.tsx` (première passe)
+- `src/components/equipe/__tests__/r2b2-schemas.spec.tsx` (19 tests)
+- `src/components/equipe/__tests__/profil-williams.spec.tsx` : attentes des H3 mises à jour, car ces composants sont déjà utilisés par la fiche actuelle (cinq tuiles, cinq étapes de la Journée IA, puis les services). L'assemblage définitif est R2d.
 
 ## Vérifications
 
-- `vitest run r2b2-schemas.spec.tsx` : 13 tests verts
-- eslint et prettier : propres sur les fichiers du lot
-- grep des mots interdits sur les fichiers du lot : rien
-- typecheck : passe (sans erreur)
-
-`pnpm-lock.yaml` : non touché.
-
-Relecture Opus : corrigé le mouvement au survol (désormais sous `motion-safe:`) et le plafond de villes (constante). Reste le point ci-dessus : l'Opus recommande `/implantations/<région>/<ville>` (page indexée) ; la consigne demandait `/audit/par-ville/<slug>`, conservé.
-
-VERDICT OPUS : À CORRIGER (seulement le choix du lien ci-dessus, à trancher par le propriétaire)
+- `vitest run src/components/equipe src/lib/equipe` : tout vert (dont les 19 tests du lot)
+- eslint et prettier : propres sur `src/components/equipe` et `src/lib/equipe`
+- `tsc --noEmit` : passe sans erreur
+- grep des mots interdits dans `src/components/equipe`, `src/content/equipe`, `src/lib/equipe` : rien en dehors des tests de garde existants
+- `pnpm-lock.yaml` : non touché. La branche existante a été reconstruite sur `origin/main` sans réinstallation.

@@ -37,16 +37,18 @@ import { annoncerAttribution } from "./attribution-annonce";
 import { finDuNiemeJourParis } from "./regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
-import { presentationOccupe } from "./presentations";
 import { versReservationProvisoire } from "./regle-attribution";
 import {
   type MotifRendezVousRefuse,
   finDeProtectionRendezVous,
+  presentationOccupe,
   regleDe,
   rendezVousRecevable,
 } from "./regle-attribution";
 import { lireIdsEnGrace, tableAbsente } from "./reservation-presentation";
 import { heureConsole, lireSourceRendezVous, rendezVousNonTenu } from "./statut-rendez-vous";
+
+const UUID_ADMIN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export type SourceValidation = "calendly" | "rencontre" | "saisie" | "commande";
 
@@ -149,7 +151,7 @@ const MESSAGE_SANS_PROPOSITION = "Rendez-vous sans proposition : rien n'est vali
 const MESSAGE_CONCURRENCE =
   "Une autre validation est en cours sur cette entreprise : réessayez dans un instant.";
 
-const MESSAGE_DEJA_VALIDEE = "Cette entreprise est déjà validée : rien de plus à faire.";
+export const MESSAGE_DEJA_VALIDEE = "Cette entreprise est déjà validée : rien de plus à faire.";
 
 /** Sortie anticipée de la transaction : le refus voyage comme valeur, la transaction s'annule. */
 class Refus extends Error {
@@ -505,7 +507,9 @@ export async function validerParRendezVous(
         if (confirmee.count !== 1) throw new Refus(MESSAGE_DEJA_VALIDEE);
         await tx.activityLog.create({
           data: {
-            adminUserId: e.acteurId,
+            // `activity_logs.admin_user_id` est un UUID : un acteur système (« systeme:… ») n'y
+            // entre pas ; sa trace reste dans `valideeParId` et `changes.acteurId`.
+            adminUserId: UUID_ADMIN.test(e.acteurId) ? e.acteurId : null,
             action: "presentation.validee_par_rendez_vous",
             targetType: "presentation_entreprise",
             targetId: p.id,
@@ -514,6 +518,7 @@ export async function validerParRendezVous(
               source: e.source,
               rendezVousCle: e.rendezVousCle,
               canal: e.canal ?? null,
+              acteurId: e.acteurId,
               prisAt: prisAt.toISOString(),
               prisAtSaisi,
               tenuAt: tenuAt.toISOString(),

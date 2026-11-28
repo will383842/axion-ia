@@ -34,6 +34,7 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import { sanitizeFaqAnswer, sanitizeFaqQuestion } from "@/server/content-gen/shared/faq-sanitizer";
 import { slugify } from "@/lib/slug";
+import { controlerTexteHorsArticle } from "@/server/content-gen/porte-qualite";
 
 const QUEUE_NAME = "content-qa-extract";
 
@@ -121,6 +122,21 @@ async function processJob(job: Job<QaExtractJobPayload>): Promise<void> {
 
     const cleanQuestion = questionResult.html.slice(0, 500);
     const cleanAnswer = answerResult.html;
+
+    // Porte qualité, chemin 5 (§ 11) : B01 et B03 avant écriture. Drapeau éteint : inerte.
+    const porteFaq = controlerTexteHorsArticle(
+      { contentType: "faq", titre: cleanQuestion, corpsHtml: cleanAnswer },
+      process.env,
+    );
+    if (porteFaq.refuse) {
+      await logStepError(
+        contentGenJobId,
+        "qa_extract",
+        `FAQ skipped (porte qualité) slug=${slug} ${porteFaq.raison ?? ""}`,
+      );
+      skipped++;
+      continue;
+    }
 
     try {
       await prisma.fAQ.upsert({

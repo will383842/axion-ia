@@ -1,0 +1,7 @@
+-- Rollback de 20261128155000_apporteurs_annulations_rendez_vous.
+-- Seulement sur décision du fondateur : la table porte la qualification (Axion IA / entreprise) des rendez-vous annulés.
+-- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde.
+--   COPY "annulations_rendez_vous_presentation" TO '/root/travaux-claude/annulations_rendez_vous_presentation.csv' WITH CSV HEADER;
+-- Pour mettre de côté plutôt que supprimer :
+--   DROP TRIGGER "annulations_rdv_qualification_unique" ON "annulations_rendez_vous_presentation";
+--   ALTER TABLE "annulations_rendez_vous_presentation" RENAME TO "annulations_rendez_vous_presentation_retire_20261128";

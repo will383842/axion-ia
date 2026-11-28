@@ -7,17 +7,17 @@ import {
 } from "../constantes";
 import * as constantes from "../constantes";
 
-const AVANT = new Date("2026-11-30T23:59:00Z");
-const OUVERTURE = new Date("2026-12-01T00:00:00Z");
+const AVANT = new Date("2026-11-27T23:59:00Z");
+const OUVERTURE = new Date("2026-11-28T00:00:00Z");
 
 describe("constantes du questionnaire : collecte sans date de fin", () => {
   it("n'exporte plus DATE_FIN_COLLECTE", () => {
     expect("DATE_FIN_COLLECTE" in constantes).toBe(false);
-    expect(DATE_DEBUT_COLLECTE).toBe("2026-12-01");
+    expect(DATE_DEBUT_COLLECTE).toBe("2026-11-28");
   });
 
-  it("la mise en ligne reste éteinte tant que l'éditeur ne l'a pas décidé", () => {
-    expect(QUESTIONNAIRE_OUVERT).toBe(false);
+  it("l'interrupteur de mise en ligne est allumé (ouverture du 28 novembre 2026)", () => {
+    expect(QUESTIONNAIRE_OUVERT).toBe(true);
   });
 
   it("interrupteur éteint : fermé à toutes les dates", () => {
@@ -32,7 +32,7 @@ describe("constantes du questionnaire : collecte sans date de fin", () => {
     }
   });
 
-  it("interrupteur allumé : fermé avant le 1er décembre 2026, ouvert ensuite, sans fin", () => {
+  it("interrupteur allumé : fermé avant le 28 novembre 2026, ouvert ensuite, sans fin", () => {
     expect(estOuvert(AVANT, true)).toBe(false);
     expect(estOuvert(OUVERTURE, true)).toBe(true);
     expect(estOuvert(new Date("2030-06-01T00:00:00Z"), true)).toBe(true);

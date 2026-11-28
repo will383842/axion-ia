@@ -93,11 +93,29 @@ export function reglagesDepuisConfig(valeur: unknown): ReglagesPorte {
   return lus.success ? lus.data : REGLAGES_PAR_DEFAUT;
 }
 
+/** Contexte de la porte tel que le worker le connaît (sources de liens non branchées : « indisponible »). */
+export function contexteDepuisEnv(
+  reglages: ReglagesPorte,
+  maintenant: Date,
+  env: Readonly<Record<string, string | undefined>>,
+): ContextePorte {
+  return {
+    reglages,
+    maintenant,
+    financementPublicAutorise: env.OF_PUBLIC_DISCLOSURE_ENABLED === "true",
+    hotesInternes: ["axion-ia.com", "www.axion-ia.com"],
+    etatLiens: { etat: "indisponible", raison: "non branché en observation" },
+    pageProprietaire: { etat: "indisponible", raison: "non branché en observation" },
+    corpsDejaPublie: { etat: "ok", valeur: null },
+    penalites: {},
+  };
+}
+
 export interface LigneVerdictEcrite {
   readonly jobId: string;
   readonly contentKind: string;
   readonly versionPorte: string;
-  readonly mode: "ombre";
+  readonly mode: "ombre" | "reel";
   readonly verdict: string;
   readonly note: number;
   /** Enveloppe relue telle quelle par l'écran (titre, critères, motifs, critères absents). */
@@ -114,12 +132,13 @@ export function ligneDepuisVerdict(
   jobId: string,
   contenu: ContenuPorte,
   v: VerdictPorte,
+  mode: "ombre" | "reel" = "ombre",
 ): LigneVerdictEcrite {
   return {
     jobId,
     contentKind: contenu.contentType.slice(0, 40),
     versionPorte: v.versionPorte,
-    mode: "ombre",
+    mode,
     verdict: v.verdict,
     note: v.note,
     criteres: {
@@ -172,16 +191,7 @@ export async function observerSortie(
     } catch {
       // Config illisible : réglages par défaut ; ils sont figés dans la ligne écrite.
     }
-    const contexte: ContextePorte = {
-      reglages: reglagesDepuisConfig(config),
-      maintenant: deps.maintenant(),
-      financementPublicAutorise: env.OF_PUBLIC_DISCLOSURE_ENABLED === "true",
-      hotesInternes: ["axion-ia.com", "www.axion-ia.com"],
-      etatLiens: { etat: "indisponible", raison: "non branché en observation" },
-      pageProprietaire: { etat: "indisponible", raison: "non branché en observation" },
-      corpsDejaPublie: { etat: "ok", valeur: null },
-      penalites: {},
-    };
+    const contexte = contexteDepuisEnv(reglagesDepuisConfig(config), deps.maintenant(), env);
     const verdict = evaluerPorte(contenu, contexte);
     await deps.creer(ligneDepuisVerdict(entree.jobId, contenu, verdict));
     return "ecrit";

@@ -95,13 +95,16 @@ function rangRegion(cle: string): number {
 }
 
 /** Une personne n'a de point que si elle est publiée pour la carte, n'est ni le dirigeant ni une identité réservée. */
-export function estPlacable(f: FichePublique): boolean {
-  return f.afficherSurCarte && !f.estDirigeantPrincipal && !SLUGS_RESERVES.includes(f.slug);
+export function estPlacable(f: FichePublique, avecDirigeant = false): boolean {
+  if (!f.afficherSurCarte) return false;
+  if (f.estDirigeantPrincipal) return avecDirigeant;
+  return !SLUGS_RESERVES.includes(f.slug);
 }
 
 export function preparerCarte(
   fiches: ReadonlyArray<FichePublique>,
   villes: ReadonlyArray<VilleConnue> = [],
+  { avecDirigeant = false }: { avecDirigeant?: boolean } = {},
 ): DonneesCarte {
   type Place = {
     f: FichePublique;
@@ -111,7 +114,7 @@ export function preparerCarte(
     pos: PointCarte | null;
   };
   const places: Place[] = [];
-  for (const f of fiches.filter(estPlacable)) {
+  for (const f of fiches.filter((f) => estPlacable(f, avecDirigeant))) {
     const lieu = { ville: f.ville ?? null, departement: normalise(f.departement) || null };
     const dep = normalise(f.departement) || depDeLaVille(f.ville, villes);
     const coord = coordonneesDe(lieu, villes);
