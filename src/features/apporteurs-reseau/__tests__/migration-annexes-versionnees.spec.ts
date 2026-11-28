@@ -29,7 +29,8 @@ describe("migration apporteurs_annexes_versionnees", () => {
         !d.endsWith("_apporteurs_purge_rgpd") &&
         !d.endsWith("_apporteurs_numeros_pieces_uniques") &&
         !d.endsWith("_apporteurs_numeros_pieces_reservation") &&
-        !d.endsWith("_apporteurs_file_attente"),
+        !d.endsWith("_apporteurs_file_attente") &&
+        !d.endsWith("_porte_qualite_content_intentions"),
     );
     expect(DOSSIER.slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });

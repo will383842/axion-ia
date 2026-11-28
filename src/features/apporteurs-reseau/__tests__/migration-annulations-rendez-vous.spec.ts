@@ -21,7 +21,10 @@ describe("migration des annulations de rendez-vous", () => {
       // La file d'attente de l'article 3.5 (PR F) vient après : on ne compare qu'aux précédentes.
       (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_apporteurs_file_attente"),
     );
-    const fautives = autres.filter((d) => horodatage(d) >= horodatage(nom));
+    // Les migrations d'autres chantiers, posées après, sont admises : liste fermée.
+    const fautives = autres.filter(
+      (d) => horodatage(d) >= horodatage(nom) && !d.endsWith("_porte_qualite_content_intentions"),
+    );
     expect(fautives).toEqual([]);
   });
 

@@ -13,6 +13,15 @@ export {
 export type { IssueObservation, LigneVerdictEcrite } from "./observation";
 export { construireVue, lireLigneVerdict } from "./vue";
 export type { LigneVerdictLue, VerdictAffiche, VuePorte } from "./vue";
+export { evaluerB06 } from "./criteres/unicite";
+export {
+  PAIRES_CALIBRAGE_MIN,
+  TYPES_INDEX_STATIQUE,
+  calibrerSeuil,
+  cosinus,
+  penaliteProximite,
+  voisinsLesPlusProches,
+} from "./semantique";
 export {
   CLE_COUPE_CIRCUIT,
   DRAPEAU_POINT_FINAL,
@@ -29,3 +38,11 @@ export type {
   IssuePointFinal,
   ResultatB17,
 } from "./point-final";
+export {
+  CLE_PLAFOND_SECURITE,
+  PLAFOND_SECURITE_PAR_DEFAUT,
+  calculerPlafondSecurite,
+  plafondDepuisCapGeneration,
+  reglagePlafondDepuisConfig,
+} from "./plafond-securite";
+export type { DetailPlafond, ReglagePlafond } from "./plafond-securite";
