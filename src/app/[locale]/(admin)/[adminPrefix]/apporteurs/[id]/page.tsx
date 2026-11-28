@@ -431,6 +431,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           base={`/fr/${adminPrefix}`}
           releves={releves}
           peutVoirPdf={peutEngager(acces.role, "facturer")}
+          peutRectifier={peutEngager(acces.role, "facturer")}
         />
       ) : null}
       {voitEmails ? <HistoriqueEmails emails={emails} base={`/fr/${adminPrefix}`} /> : null}

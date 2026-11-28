@@ -35,6 +35,9 @@ export function PortraitCollaborateur({
           fill
           sizes={sizes}
           priority={priority}
+          // Photos servies par notre route (`/api/equipe/photo/…`) : jamais via l'optimiseur, dont
+          // le cache d'un an survivrait à un retrait de photo (cf. photo-publique.ts).
+          unoptimized={photo.src.startsWith("/api/equipe/photo/")}
           className="object-cover"
         />
       ) : (

@@ -9,7 +9,7 @@
  *  - chaque changement = une ligne de `TeamMemberEvent` (champs touchés, jamais de contenu personnel) ;
  *  - tout ce qui change ce que voit le public appelle `revalidatePath` (fiche et hub).
  */
-import { revalidatePath } from "next/cache";
+import { revaliderFicheEquipe } from "@/lib/equipe/revalider";
 
 import { prisma } from "@/lib/prisma";
 import { TEAM_CONSENT_VERSION_COURANTE } from "@/lib/equipe/donnees";
@@ -41,10 +41,7 @@ function arrondi2(n: number): number {
   return Math.round(n * 100) / 100;
 }
 
-function revalider(slug: string): void {
-  revalidatePath("/fr/equipe");
-  revalidatePath(`/fr/equipe/${slug}`);
-}
+const revalider = revaliderFicheEquipe;
 
 type Tx = Pick<typeof prisma, "teamMember" | "teamMemberEvent" | "city" | "authorProfile">;
 
