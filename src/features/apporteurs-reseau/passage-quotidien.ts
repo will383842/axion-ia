@@ -52,8 +52,10 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
+import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
+import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
 import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
 import {
@@ -330,6 +332,7 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "hors-grille"
   | "declarations-sans-reponse"
+  | "purge-rgpd"
   | "commandes-a-attribuer"
   | "resiliations-echues"
   | "integrite-contrats"
@@ -424,6 +427,8 @@ async function passer(
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
     // Point 12 (#2464) : le lundi, l'empreinte des contrats contresignés est revérifiée sur R2.
     ["integrite-contrats", async () => void (await verifierIntegriteContrats(maintenant))],
+    // PR N (#2464 pt 6) : purge RGPD, le 1er du mois, ÉTEINTE par défaut (APPORTEURS_PURGE_RGPD).
+    ["purge-rgpd", async () => void (await etapePurgeRgpd(maintenant))],
     // Point 20 : relecture du registre public pour les apporteurs sous contrat (alerte interne seule).
     ["controle-registre", async () => void (await controlerRegistreApporteurs(maintenant))],
   ];
@@ -2195,7 +2200,10 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
       jobId,
       ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     });
-    if (r === "envoye") bilan.rappelsDossier += 1;
+    if (r === "envoye") {
+      bilan.rappelsDossier += 1;
+      await noterDocumentsRemis(a.id, annexes.attachments, "lien_dossier", jobId);
+    }
   }
 }
 

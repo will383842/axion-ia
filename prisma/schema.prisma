@@ -16746,6 +16746,8 @@ model ApporteurChangementIban {
   motifRefus             String?   @map("motif_refus") @db.Text
   /// Les trois cases cochées et les alertes affichées. Jamais d'IBAN.
   controles              Json?
+  /// Posée par la purge RGPD avec `iban = 'purge'` (PR N, #2464 pt 6).
+  ibanPurgeAt            DateTime? @map("iban_purge_at") @db.Timestamptz(3)
 
   @@index([apporteurId, demandeeAt], map: "apporteur_changements_iban_apporteur_idx")
   @@index([statut, confirmeeAt], map: "apporteur_changements_iban_statut_idx")
@@ -16787,6 +16789,8 @@ model ApporteurIbanHistorique {
   demandeId       String?   @map("demande_id") @db.Uuid
   pieceRibId      String?   @map("piece_rib_id") @db.Uuid
   creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  /// Posée par la purge RGPD avec `iban = 'purge'` (PR N, #2464 pt 6) ; empreinte et quatre derniers caractères gardés.
+  ibanPurgeAt     DateTime? @map("iban_purge_at") @db.Timestamptz(3)
 
   @@index([apporteurId, creeAt], map: "apporteur_iban_historique_apporteur_idx")
   @@index([ibanEmpreinte], map: "apporteur_iban_historique_empreinte_idx")
@@ -16810,6 +16814,60 @@ model ApporteurVirementCompte {
   @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
   @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
   @@map("apporteur_virements_compte")
+}
+
+/// Ce que la purge RGPD a effacé, quand et selon quelle règle. Ajout seul (déclencheurs). La fiche de l'apporteur reste.
+/// Sans clé étrangère (fenêtre app/worker). `regle` et `elements` sont contraints par CHECK (migration.sql).
+/// rgpd: technique — identifiant d'apporteur, éléments effacés, règle et dates ; aucun nom, e-mail ni téléphone
+model ApporteurPurgeRgpd {
+  id          String   @id @default(uuid()) @db.Uuid
+  apporteurId String   @map("apporteur_id") @db.Uuid
+  /// contrat_termine_5ans | refuse_6mois | inactif_24mois | piece_6mois
+  regle       String   @db.VarChar(40)
+  /// pieces_identite | rib | iban_fiche | iban_historique | iban_demandes | rib_demandes
+  elements    String[]
+  echeanceAt  DateTime @map("echeance_at") @db.Timestamptz(3)
+  purgeeAt    DateTime @default(now()) @map("purgee_at") @db.Timestamptz(3)
+
+  @@index([apporteurId])
+  @@map("apporteur_purges_rgpd")
+}
+
+/// Une VERSION d'un document annexe (fiche des commissions, livret, guide), déposée UNE fois à une clé IMMUABLE dérivée
+/// de son empreinte. Jamais réécrite ; seule `retireeAt` passe de NULL à une date (déclencheurs : ni DELETE ni TRUNCATE).
+/// rgpd: technique — identifiant de document, empreinte, clé de stockage, taille, dates ; aucune donnée personnelle
+model DocumentAnnexeVersion {
+  id         String    @id @default(uuid()) @db.Uuid
+  /// fiche-commissions | livret | guide-demarrage (CHECK)
+  documentId String    @map("document_id") @db.VarChar(40)
+  sha256     String    @db.Char(64)
+  cleR2      String    @unique(map: "documents_annexes_versions_cle_r2_key") @map("cle_r2") @db.VarChar(300)
+  taille     Int
+  deposeAt   DateTime  @default(now()) @map("depose_at") @db.Timestamptz(3)
+  deposePar  String?   @map("depose_par") @db.VarChar(64)
+  retireeAt  DateTime? @map("retiree_at") @db.Timestamptz(3)
+
+  @@unique([documentId, sha256], map: "documents_annexes_versions_document_id_sha256_key")
+  @@index([documentId, deposeAt], map: "documents_annexes_versions_document_id_depose_at_idx")
+  @@map("documents_annexes_versions")
+}
+
+/// Ce qui a été REMIS à un apporteur : quelle version de quelle annexe, dans quel envoi. Ajout seul (déclencheurs).
+/// rgpd: technique — identifiant d'apporteur, de document, empreinte, contexte et dates ; aucun nom, e-mail ni téléphone
+model ApporteurDocumentRemis {
+  id            String   @id @default(uuid()) @db.Uuid
+  apporteurId   String   @map("apporteur_id") @db.Uuid
+  documentId    String   @map("document_id") @db.VarChar(40)
+  versionSha256 String   @map("version_sha256") @db.Char(64)
+  cleR2         String   @map("cle_r2") @db.VarChar(300)
+  /// contrat_signe | renvoi_contrat | lien_dossier (CHECK)
+  contexte      String   @db.VarChar(30)
+  emailJobId    String?  @map("email_job_id") @db.VarChar(120)
+  remisAt       DateTime @default(now()) @map("remis_at") @db.Timestamptz(3)
+
+  @@unique([apporteurId, documentId, versionSha256, contexte, emailJobId], map: "apporteur_documents_remis_apporteur_id_document_id_version__key")
+  @@index([apporteurId, remisAt], map: "apporteur_documents_remis_apporteur_id_remis_at_idx")
+  @@map("apporteur_documents_remis")
 }
 
 enum TypePieceApporteur {

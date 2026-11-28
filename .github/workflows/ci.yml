@@ -1677,6 +1677,12 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
+      # Purge RGPD des apporteurs (2026-11-28, PR N #2464) : l'IBAN chiffré ne devient 'purge' que sous le réglage
+      # local `axion.reecriture_pii = 'purge'`, sans autre colonne modifiée, sans retour ; journal en ajout seul. Cas ANNULÉS.
+      - name: Purge RGPD des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/apporteurs-purge-rgpd-comportement.sql
       # Relevé mensuel des apporteurs (migration 20261127200000) — les écritures de envoi.ts / preparation.ts /
       # rectificatif.ts rejouées face au déclencheur et aux CHECK (renvoi des échecs, déjà-envoyé, figement),
       # avec les refus qui DOIVENT avoir lieu. Cas ANNULÉS.
