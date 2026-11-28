@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { buildArticlePath } from "@/server/content-gen/indexing/url-builder";
 
 /**
  * Liens vers les derniers articles du blog, depuis l'accueil (composant serveur, aucun JS client).
@@ -31,26 +30,26 @@ export async function DerniersArticlesBlog({
         publishedAt: { not: null, lte: new Date() },
       },
       orderBy: { publishedAt: "desc" },
-      take: 3,
+      take: 6,
       select: {
         templateVariant: true,
         translations: { where: { locale: "fr" }, take: 1, select: { slug: true, title: true } },
       },
     });
-    articles = rows.flatMap((r) => {
-      const t = r.translations[0];
-      if (!t || t.slug.includes("/")) return [];
-      return [
-        {
-          titre: t.title,
-          href: buildArticlePath({
-            slug: t.slug,
-            isNews: false,
-            templateVariant: r.templateVariant,
-          }),
-        },
-      ];
-    });
+    articles = rows
+      .flatMap((r) => {
+        const t = r.translations[0];
+        // Les guides vivent sous /guides (autre hub) : ils n'ont pas leur place dans cette liste du blog.
+        if (!t || t.slug.includes("/") || t.slug.startsWith("guide-")) return [];
+        if (r.templateVariant?.toLowerCase().includes("guide")) return [];
+        return [
+          {
+            titre: t.title,
+            href: `/fr/blog/${t.slug}`,
+          },
+        ];
+      })
+      .slice(0, 3);
   } catch {
     articles = [];
   }
