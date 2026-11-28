@@ -180,7 +180,13 @@ export default async function ChaineEditorialePage({ params, searchParams }: Pag
 
   const onglet = ONGLETS.some(([k]) => k === sp.onglet) ? (sp.onglet as string) : "entonnoir";
   const jours = PERIODES.find((p) => String(p) === sp.jours) ?? 30;
-  const vue = await getVueChaineEditoriale(jours);
+  let vue: VueChaine;
+  try {
+    vue = await getVueChaineEditoriale(jours);
+  } catch {
+    // Non administrateur (ex. lecteur) : même repli que les autres pages console.
+    redirect(`/${locale}/${adminPrefix}`);
+  }
   const base = `/${locale}/${adminPrefix}/content-gen/chaine-editoriale`;
 
   return (

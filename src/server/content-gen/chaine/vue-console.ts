@@ -94,7 +94,12 @@ function entonnoir(e: EntreesVueChaine): Source<Entonnoir> {
     ["briefs", "Briefs", somme(briefs)],
     ["briefs_valides", "Briefs validés", briefs["valide"] ?? 0],
     ["dossiers_faits", "Dossiers de faits", e.briefsAvecFaits.valeur],
-    ["en_relecture", "En relecture humaine", jobs["needs_review"] ?? 0],
+    // Cumulatif : les jobs ayant atteint la relecture, y compris ceux qui l'ont déjà quittée.
+    [
+      "en_relecture",
+      "Arrivés en relecture humaine",
+      somme(jobs, ["needs_review", "approved", "publishing", "published"]),
+    ],
     ["publies", "Publiés", jobs["published"] ?? 0],
   ];
   const etapes = brutes.map(([cle, libelle, nombre], i) => {

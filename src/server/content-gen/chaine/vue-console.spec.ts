@@ -31,7 +31,7 @@ describe("vue console chaîne (C14)", () => {
       ["briefs", 6],
       ["briefs_valides", 3],
       ["dossiers_faits", 2],
-      ["en_relecture", 1],
+      ["en_relecture", 2],
       ["publies", 1],
     ]);
     expect(e.abandonnes).toBe(3);
@@ -106,5 +106,13 @@ describe("vue console chaîne (C14)", () => {
     const v2 = construireVueChaine(entrees({ nbResultats: ok(3), nbPropositions: ok(2) }));
     expect(v2.resultats.etat).toBe("ok");
     expect(v2.propositions.etat).toBe("ok");
+  });
+
+  it("entonnoir : « publiés » reste lisible quand plus aucun job n'attend en relecture", () => {
+    const v = construireVueChaine(entrees({ jobsLies: ok({ published: 5 }) }));
+    if (v.entonnoir.etat !== "ok") throw new Error("attendu ok");
+    const e = v.entonnoir.valeur.etapes;
+    expect(e.find((x) => x.cle === "en_relecture")?.nombre).toBe(5);
+    expect(e.find((x) => x.cle === "publies")?.tauxEtapePrecedente).toBe(1);
   });
 });
