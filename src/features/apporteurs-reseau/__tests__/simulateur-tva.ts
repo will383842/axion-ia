@@ -121,6 +121,7 @@ const ficheDe = (id: string) => ({
   adresse: "1 rue des Lilas, 69000 Lyon",
   regimeTva: "assujetti",
   numeroTva: "FR00123456782",
+  signeParApporteurAt: new Date("2026-06-01T08:00:00Z"),
   signeParSocieteAt: new Date("2026-06-01T09:00:00Z"),
   versionLien: 1,
   ...etat.apporteurs[id],

@@ -71,7 +71,20 @@ const { bd, tx } = vi.hoisted(() => {
         bd.retraits.find((r) => r.apporteurId === where.apporteurId) ?? null,
     },
     presentationEtablissement: { findMany: async () => bd.etablissements },
-    activityLog: { create: async ({ data }: any) => void bd.journal.push(data) },
+    activityLog: {
+      // Comme Postgres : `admin_user_id` est un UUID, une autre chaîne est refusée.
+      create: async ({ data }: any) => {
+        const id = data.adminUserId;
+        if (
+          id !== null &&
+          id !== undefined &&
+          data.action === "presentation.validee_par_rendez_vous" &&
+          !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+        )
+          throw new Error(`invalid input syntax for type uuid: "${id}"`);
+        bd.journal.push(data);
+      },
+    },
     calendlyEvent: {
       findUnique: async ({ where }: any) => bd.events.find((x) => x.id === where.id) ?? null,
     },
@@ -756,6 +769,38 @@ describe("canal de la saisie manuelle", () => {
     );
     expect(r.ok).toBe(true);
     expect(bd.journal[0]!["changes"]).toMatchObject({ source: "saisie", canal: "sur_place" });
+  });
+});
+
+describe("acteur système : le journal n'a que des UUID d'administrateurs", () => {
+  it("« systeme:annulation-axion » valide sans erreur, adminUserId vide, acteur gardé en trace", async () => {
+    entreprise("p1", A1);
+    const r = await validerParRendezVous(
+      saisie("p1", {
+        rendezVousCle: null,
+        source: "saisie",
+        canal: "annule_par_axion",
+        acteurId: "systeme:annulation-axion",
+        prisAt: TENU,
+      }),
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(true);
+    expect(bd.journal[0]!["adminUserId"]).toBeNull();
+    expect(bd.journal[0]!["changes"]).toMatchObject({
+      canal: "annule_par_axion",
+      acteurId: "systeme:annulation-axion",
+    });
+    expect(bd.reservations[0]!["valideeParId"]).toBe("systeme:annulation-axion");
+    expect(bd.presentations[0]!["statut"]).toBe("confirmee");
+  });
+
+  it("un administrateur (UUID) reste inscrit au journal", async () => {
+    entreprise("p1", A1);
+    const u = "0b9f6d1e-4c1a-4f3e-9a52-6f1a2b3c4d5e";
+    const r = await validerParRendezVous(saisie("p1", { acteurId: u }), MAINTENANT);
+    expect(r.ok).toBe(true);
+    expect(bd.journal[0]!["adminUserId"]).toBe(u);
   });
 });
 

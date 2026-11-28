@@ -2,13 +2,13 @@
 // il est importé par le formulaire, il ne doit tirer aucune dépendance.
 
 /**
- * Interrupteur de mise en ligne. Reste à `false` jusqu'au test par cinq personnes (décision de
+ * Interrupteur de mise en ligne. Allumé le 28 novembre 2026 (ouverture avancée du 1er décembre ; décision de
  * l'éditeur). Tant qu'il est faux : la page dit « fermé », l'action d'envoi refuse, rien n'est écrit.
  */
-export const QUESTIONNAIRE_OUVERT = false;
+export const QUESTIONNAIRE_OUVERT = true;
 
 /** Premier jour de collecte (inclus), UTC. La collecte n'a PAS de date de fin (décision du 27/11/2026). */
-export const DATE_DEBUT_COLLECTE = "2026-12-01";
+export const DATE_DEBUT_COLLECTE = "2026-11-28";
 
 /** Vrai si l'interrupteur est allumé ET si `now` est au plus tôt le premier jour de collecte. Aucune borne de fin. */
 export function estOuvert(now: Date, ouvert: boolean = QUESTIONNAIRE_OUVERT): boolean {

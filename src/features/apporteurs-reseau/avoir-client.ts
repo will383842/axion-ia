@@ -66,6 +66,7 @@ import { envoyer } from "./envois";
 import { retenir, type Piece } from "./manquement";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
+import { horsGesteCommercial } from "./geste-commercial";
 
 /**
  * DÉCISION DU 25/11 (règle unique) : la commission suit l'argent réellement GARDÉ par Axion IA,
@@ -329,7 +330,7 @@ async function facturesDeLaCommande(factureId: string): Promise<{
     select: CHAMPS,
   })) as FactureLue[];
   const avoirs = (await prisma.factureFormation.findMany({
-    where: { avoirDeId: { in: membres.map((m) => m.id) } },
+    where: { avoirDeId: { in: membres.map((m) => m.id) }, ...(await horsGesteCommercial()) },
     select: CHAMPS,
   })) as FactureLue[];
   const total = f.devis?.montantTotalHtCents;
@@ -742,7 +743,7 @@ export async function reprendreApresAvoirsClients(
 
   // Les factures d'origine qui portent un avoir (le statut de l'avoir est jugé plus bas).
   const avoirs = await prisma.factureFormation.findMany({
-    where: { avoirDeId: { not: null } },
+    where: { avoirDeId: { not: null }, ...(await horsGesteCommercial()) },
     select: { avoirDeId: true, devisId: true },
   });
   const origines = [...new Set(avoirs.map((a) => a.avoirDeId).filter((x): x is string => !!x))];

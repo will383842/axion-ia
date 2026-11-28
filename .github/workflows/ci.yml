@@ -1677,6 +1677,12 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
+      # Numéros de pièces d'autofacture des apporteurs (#2464 pt 13) : un numéro ne sert qu'à UN apporteur, y compris
+      # en concurrence (table de réservation à clé primaire) ; doublon historique accepté ; rejeu. Cas ANNULÉS.
+      - name: Numéros de pièces des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/apporteurs-numeros-pieces-comportement.sql
       # Purge RGPD des apporteurs (2026-11-28, PR N #2464) : l'IBAN chiffré ne devient 'purge' que sous le réglage
       # local `axion.reecriture_pii = 'purge'`, sans autre colonne modifiée, sans retour ; journal en ajout seul. Cas ANNULÉS.
       - name: Purge RGPD des apporteurs — comportement SQL
