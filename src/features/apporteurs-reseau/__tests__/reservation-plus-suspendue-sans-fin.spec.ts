@@ -106,9 +106,13 @@ describe("la réservation n'est plus suspendue sans fin (art. 3.2)", () => {
       "apporteur_annulation_non_qualifiee_critique",
     );
     // une alerte par fait : un second passage n'en ajoute pas
-    const avant = bd.alertes.length;
+    // (les alertes « étape en erreur » de la surveillance de main portent un jobId PAR JOUR et
+    // viennent des tables simulées absentes : hors sujet ici, on ne compte que l'annulation)
+    const annulation = () =>
+      bd.alertes.filter((a) => String(a.payload.code).startsWith("apporteur_annulation")).length;
+    const avant = annulation();
     await passerReseauApporteurs(apres(41));
-    expect(bd.alertes.length).toBe(avant);
+    expect(annulation()).toBe(avant);
   });
 
   it("report lié : suspendue même à J+40", async () => {
