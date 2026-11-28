@@ -160,7 +160,7 @@ vide). Le tableau ci-dessous donne l'ordre et le rythme des fonds ; le détail s
 | #   | Section                           | Fond                 | Hn  | Williams | Collaborateur              |
 | --- | --------------------------------- | -------------------- | --- | -------- | -------------------------- |
 | 1   | Héros                             | `bg-mocha` (foncé)   | H1  | oui      | oui                        |
-| 2   | Bandeau de chiffres clés          | `bg-terracotta-deep` | —   | oui      | si ≥ 2 chiffres réels      |
+| 2   | Chiffres clés (rangée du héros)   | (dans le héros)      | —   | oui      | si ≥ 2 chiffres réels      |
 | 3   | « En bref » (cartes à icônes)     | `bg-bg` ivoire       | H2  | oui      | oui                        |
 | 4   | Pour quelles entreprises          | `bg-sand` crème      | H2  | oui      | modèle de catégorie        |
 | 5   | Avant / après (schéma)            | `bg-bg` ivoire       | H2  | oui      | non (sauf texte fourni)    |
@@ -175,21 +175,30 @@ vide). Le tableau ci-dessous donne l'ordre et le rythme des fonds ; le détail s
 | 14  | Appel final                       | `bg-terracotta-deep` | H2  | oui      | oui (boutons de catégorie) |
 | 15  | Pied de fiche : « Mis à jour le » | `bg-bg`              | —   | oui      | oui                        |
 
-Rythme : clair → foncé (héros) → terracotta (chiffres) → clair → crème → clair → **foncé** →
+Rythme : foncé (héros + chiffres) → clair → crème → clair → **foncé** →
 clair → crème → clair → papier → **foncé** → clair → **terracotta**. Jamais deux sections
-foncées qui se touchent.
+foncées qui se touchent. `SectionFiche` pose `data-fond="clair|fonce|terracotta"` sur chaque
+`<section>` ; le test d'enchaînement lit cet attribut, jamais les classes (`bg-mocha` attraperait
+`bg-mocha-soft`).
+
+**Fiche collaborateur réelle, aujourd'hui** (constat de la relecture : `ficheDepuisMembre` ne
+remplit ni `parcours`, ni `publications`, ni `metiers`, ni `citations`, et aucune migration n'est
+permise) : héros, en bref, sections de catégorie, pour qui (si le registre le déclare), FAQ, appel
+final. C'est ce gabarit COURT qu'il faut soigner visuellement ; les autres sections restent
+prêtes pour le jour où les données existeront.
 
 ### 2.0 Brique commune : `EnteteQuestion` (H2 en question + réponse directe)
 
 Toute section de contenu (3 à 13) commence par la même brique, conçue pour l'extrait Google :
 
 - **Sur-titre** (`p`, 12 px, `uppercase tracking-[0.14em] font-semibold`, couleur `terracotta` sur
-  clair, `terracotta-on-mocha` sur foncé) : un mot-clé court (« En bref », « Méthode »).
+  clair, `mocha-fg` sur foncé : `terracotta-on-mocha` ne vaut que 4,56 à 4,75:1 à 12 px) : un mot-clé court (« En bref », « Méthode »).
 - **H2 formulé comme une vraie question de dirigeant** (« Comment Axion-IA transforme une PME
   sans tout chambouler ? »). Classes : `font-serif text-[clamp(1.75rem,3.2vw,2.5rem)]
 leading-tight tracking-tight text-fg` (sur foncé `text-mocha-fg`), `max-w-3xl`.
-- **Réponse directe de 40 à 60 mots** juste sous le H2, dans un `<p data-answer="">` (sélecteur
-  déjà couvert par `DEFAULT_SPEAKABLE_SELECTORS`) : `text-lg sm:text-xl leading-relaxed
+- **Réponse directe de 40 à 60 mots** juste sous le H2, dans un `<p data-reponse-section="">`
+  (volontairement **absent** de `DEFAULT_SPEAKABLE_SELECTORS` : seul le héros porte
+  `data-answer` et `.speakable`, sinon le `speakable` couvrirait ~1 500 mots) : `text-lg sm:text-xl leading-relaxed
 text-fg-soft` (sur foncé `text-mocha-fg`), `max-w-3xl mt-4`. Phrase définitionnelle autonome
   qui nomme l'entité (« Williams Jullin… », « Axion-IA… », « {prénom}… ») et reste vraie hors de
   la page (jamais « ici », « ci-dessous », « cette page »).
@@ -197,20 +206,27 @@ text-fg-soft` (sur foncé `text-mocha-fg`), `max-w-3xl mt-4`. Phrase définition
 - Props : `{ surTitre: string; question: string; reponse: string; id: string; ton?: "clair" |
 "fonce" }`. Le `id` sert d'ancre (`<section id={id} aria-labelledby={id + "-titre"}>`).
 - Un test vérifie que chaque `reponse` de Williams compte 40 à 60 mots (voir § 4, lot R2c).
+- **Collaborateur** : pas de réponse de registre identique d'une fiche à l'autre (risque de pages
+  satellites, cf. l'en-tête de `page.tsx`). Sous le premier H2 (« en bref »), la réponse est
+  `fiche.reponseQui` si elle fait 25 à 80 mots ; ailleurs, les réponses du registre font
+  30 mots au plus et ne citent aucun domaine que la personne n'a pas renseigné ; sinon H2 seul.
+  La fourchette 40-60 ne s'applique qu'à Williams.
 
 ### 2.1 Héros (H1)
 
 - **Rôle** : en 5 secondes, qui, pour qui, quel résultat ; deux boutons.
 - **Rendu** : fond `bg-mocha` + halo terracotta (`HALO_TERRACOTTA`, § 1.3), texte `text-mocha-fg`.
   Grille `lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-12`, `py-14 sm:py-18 lg:py-24`.
-  - Colonne texte : pastille de catégorie (`PastilleCategorie`, variante sur foncé : fond
-    `mocha-soft`, bordure `border-on-mocha`, texte `mocha-fg`) ; **H1** `display-editorial
+  - Colonne texte : pastille de catégorie (`PastilleCategorie` posée telle quelle dans une
+    capsule claire `rounded-full bg-bg px-3 py-1` : les couleurs de catégorie tombent sous 3:1 sur
+    `bg-mocha`, mesuré) ; **H1** `display-editorial
 text-mocha-fg` (nom de famille de Williams en `text-terracotta-on-mocha italic font-serif`,
     règle actuelle conservée) ; ligne de fonction `text-mocha-fg text-lg font-semibold` ;
     **phrase-réponse** (`p.speakable[data-answer][itemprop="text"]`, `text-xl sm:text-2xl
 leading-snug text-mocha-fg`, `max-w-2xl`) ; **3 à 4 preuves en pastilles** : `ul` en
     `flex flex-wrap gap-2.5`, chaque `li` = `rounded-full border border-on-mocha bg-mocha-soft/60
-px-3.5 py-1.5 text-sm text-mocha-fg` avec une icône lucide 16 px `text-terracotta-on-mocha` ;
+px-3.5 py-1.5 text-sm text-mocha-fg` avec une icône lucide 16 px `text-terracotta-on-mocha` (champ
+    `pastillesDetaillees`, § 3.1 ; à défaut `pastilles` avec l'icône `Check`) ;
     **2 boutons** (`ActionsFiche emplacement="hero"`) : primaire `Cta variant="terracotta"`,
     secondaire `outline` (pastille claire). `ActionsFiche` gagne une prop `fond?: "clair" |
 "fonce" | "terracotta"` qui choisit les variantes et l'anneau de focus du § 1.3 ; aucun
@@ -218,6 +234,8 @@ px-3.5 py-1.5 text-sm text-mocha-fg` avec une icône lucide 16 px `text-terracot
   - Colonne photo : portrait carré (`PortraitCollaborateur`, `priority`, conteneur
     `aspect-square`, `rounded-[2rem]`), anneau décoratif SVG en ligne derrière (deux arcs
     `stroke` terracotta, opacité 0,5, `aria-hidden`). `figcaption` en `text-mocha-fg text-sm`.
+    Bordure du portrait : `border-border-on-mocha` (au lieu de `border-border bg-paper`).
+  - Rangée de chiffres clés (§ 2.2) sous les deux colonnes.
   - « Mis à jour le » : déplacé dans le héros, sous les boutons, `text-sm text-mocha-fg`
     (avec `<time dateTime>`).
 - **Mobile** : une colonne, texte d'abord (la phrase-réponse reste l'élément LCP probable), photo
@@ -226,24 +244,26 @@ px-3.5 py-1.5 text-sm text-mocha-fg` avec une icône lucide 16 px `text-terracot
   - H1 : « Williams Jullin » ;
   - fonction : `WILLIAMS_FONCTION` (inchangée, = `Person.jobTitle`) ;
   - phrase-réponse : « Williams Jullin dirige Axion-IA, la startup française qui aide
-    les dirigeants de TPE et de PME à gagner du temps et de la marge grâce à l'IA, avec l'équipe
+    les dirigeants de TPE et de PME à gagner du temps et en rentabilité grâce à l'IA, avec l'équipe
     qu'ils ont déjà. L'équipe chiffre d'abord ce que chaque tâche coûte, puis installe tout, de
     A à Z, partout en France. » ;
-  - pastilles : « Plus de 30 ans de direction » (icône `BriefcaseBusiness`), « TPE et PME, tous
-    secteurs » (`Building2`), « Partout en France » (`MapPin`), « Données hébergées dans l'UE »
+  - pastilles (sans répéter les chiffres clés) : « TPE et PME, tous secteurs » (`Building2`),
+    « Chiffrer, Essayer, Trancher » (`ListChecks`), « Données hébergées dans l'UE »
     (`ShieldCheck`) ;
   - boutons : « Réserver mon Diagnostic IA » (`/appel`), « Écrire à Axion-IA » (`/contact`).
 - **Collaborateur** : pastille de sa catégorie (couleur de catégorie), H1 = prénom, phrase =
   `fiche.reponseQui`, pastilles = `contenu.pastilles` (compétences, 4 maximum), boutons du
   registre de catégorie.
 
-### 2.2 Bandeau de chiffres clés
+### 2.2 Chiffres clés (dernière rangée du héros)
 
 - **Rôle** : la preuve en un coup d'œil, en très gros.
-- **Rendu** : `<section aria-label="Chiffres clés">` (pas de H2 : bandeau de faits), fond
-  `bg-terracotta-deep`, texte `text-mocha-fg`, `py-10 sm:py-12`. `ul role="list"` en
+- **Rendu** : **pas une section** (sinon deux fonds foncés se touchent) : `ul role="list"
+aria-label="Chiffres clés"` posé en dernière rangée du héros, sous les deux colonnes,
+  `mt-12 border-t border-on-mocha pt-10`. Valeurs en `text-terracotta-on-mocha` (5,82:1, grande
+  taille), libellés en `text-mocha-fg`. `ul role="list"` en
   `grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8`, séparateurs verticaux `lg:divide-x
-lg:divide-mocha-fg/25`. Chaque `li` : valeur en `font-serif text-[clamp(2.5rem,5vw,4rem)]
+lg:divide-border-on-mocha`. Chaque `li` : valeur en `font-serif text-[clamp(2.5rem,5vw,4rem)]
 leading-none tracking-tight [font-feature-settings:'tnum']`, unité en `text-xl`, libellé en
   `text-base text-mocha-fg mt-2` (pas de muet : AAA). Petite icône lucide 20 px au-dessus,
   `aria-hidden`.
@@ -253,14 +273,17 @@ leading-none tracking-tight [font-feature-settings:'tnum']`, unité en `text-xl`
   - « 2023 » / « l'IA appliquée à l'entreprise, à plein temps » ;
   - « France » / « partout, outre-mer compris » ;
   - « 45 min » / « de Diagnostic IA pour commencer ».
-- **Collaborateur** : chiffres calculés UNIQUEMENT depuis les champs existants, dans cet ordre :
+- **Collaborateur** : aujourd'hui, seul le nombre de langues est réellement rempli : le bloc
+  n'apparaît donc pas (voulu). Règle prête pour plus tard, chiffres calculés UNIQUEMENT depuis
+  des champs remplis, dans cet ordre :
   `fiche.parcours?.chezAxionDepuis` (« 2025 » / « dans l'équipe Axion-IA depuis ») ;
   `fiche.publications` si ≥ 1 (« 12 » / « articles signés ») ; nombre de langues si ≥ 2
   (« 3 » / « langues de travail ») ; nombre de métiers renseignés si ≥ 2. **Section masquée s'il
   y a moins de 2 chiffres.** Jamais de chiffre inventé, jamais de nombre de clients ou de
   collaborateurs.
 - Remplace l'actuel bloc « Repères » (`contenu.faits`) : le champ `faits` est renommé en
-  `chiffresCles` (voir § 3.1) ; `WILLIAMS_PREUVES` est remplacé.
+  `chiffresCles` (voir § 3.1) ; `WILLIAMS_PREUVES` est remplacé par `WILLIAMS_CHIFFRES_CLES`
+  (retrait effectif en R2d).
 
 ### 2.3 « En bref » : grille de petites cartes à icônes
 
@@ -296,8 +319,8 @@ hover:-translate-y-0.5 hover:shadow-sm`.
 - **Rendu** : fond `bg-sand`. Deux blocs côte à côte (`lg:grid-cols-[1fr_2fr] gap-10`) :
   - **Tailles** : trois grandes cartes empilées (`ul`), chacune `rounded-2xl bg-paper border p-5`
     avec un pictogramme SVG en ligne de 1 à 3 silhouettes (taille croissante), titre H3
-    (`text-xl font-serif`) et une ligne : « TPE — moins de 10 salariés », « PME — de 10 à 249
-    salariés », « Dirigeant seul ou petite équipe ».
+    (`text-xl font-serif`) et une ligne : dans cet ordre (1, 2 puis 3 silhouettes) : « Dirigeant seul ou petite équipe », « TPE — moins
+    de 10 salariés », « PME — de 10 à 249 salariés ».
   - **Secteurs** : `ul` de pastilles `rounded-full bg-paper border border-border-strong px-4 py-2
 text-[15px] font-medium text-fg` avec icône lucide 16 px `text-terracotta` : BTP et artisanat
     (`HardHat`), Commerce et distribution (`Store`), Industrie (`Factory`), Transport et
@@ -318,7 +341,7 @@ text-[15px] font-medium text-fg` avec icône lucide 16 px `text-terracotta` : BT
 - **Rendu** : fond `bg-bg`. Un `<table>` sémantique (lisible par Google et les IA) habillé en
   schéma : `caption` visuellement masquée (`sr-only`) « Six situations avant et après l'IA »,
   `thead` avec deux `th scope="col"` : « Avant » et « Après ». À partir de `sm`, le tableau
-  garde sa mise en page native : `table-fixed w-full border-separate border-spacing-x-12
+  garde sa mise en page native : `table-fixed w-full border-separate border-spacing-x-12 -mx-12
 border-spacing-y-3` (l'espacement horizontal laisse la place de la flèche). Chaque `td` est
   une carte :
   - cellule « avant » : `relative rounded-2xl bg-sand/70 border border-dashed
@@ -330,7 +353,8 @@ sm:after:-translate-y-1/2 sm:after:text-3xl sm:after:text-terracotta` ; le conte
     (`content-['→'/'']`, syntaxe CSS supportée) ;
   - cellule « après » : `rounded-2xl bg-terracotta-soft border border-terracotta/30 p-5 text-fg
 font-medium` avec icône `CircleCheck` 18 px `text-terracotta-deep`.
-  - Survol de la rangée : la cellule « après » passe à `bg-terracotta-deep text-mocha-fg`
+  - Survol de la rangée (`group` sur `tr`) : la cellule « après » passe à `bg-terracotta-deep
+text-mocha-fg`, son icône à `group-hover:text-mocha-fg` (sinon elle disparaît)
     (`motion-safe:transition-colors`), contraste 7,45:1.
 - Sous le tableau, la phrase de synthèse en grand : `text-2xl font-serif text-fg max-w-3xl`.
 - **Mobile** (sous `sm`) : chaque rangée empilée (avant, flèche ↓ en pseudo-élément, après)
@@ -345,7 +369,7 @@ font-medium` avec icône `CircleCheck` 18 px `text-terracotta-deep`.
 
 - **H2** : « Comment transformer son entreprise avec l'IA sans tout chambouler ? ».
 - **Rendu** : fond `bg-mocha` + halo terracotta, texte `text-mocha-fg`. Cinq tuiles (fini la liste à coches) :
-  `ul grid gap-4 sm:grid-cols-2 lg:grid-cols-5`, chaque `li` = `rounded-2xl border
+  `ul grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5`, chaque `li` = `rounded-2xl border
 border-on-mocha bg-mocha-soft/50 p-6`, icône lucide 28 px `text-terracotta-on-mocha` en haut
   (`Wrench` outils, `Footprints` une étape à la fois, `Gavel` vous décidez, `Users` équipes
   embarquées, `Settings2` rien à piloter), **H3** court (`text-lg font-semibold text-mocha-fg`),
@@ -373,7 +397,8 @@ ring-8 ring-bg` (le numéro est dans le HTML : `<span aria-hidden>` + l'ordre de
 - **Rendu** : fond `bg-sand`, même `FriseEtapes`, 5 étapes, variante `horaire` : au-dessus de
   chaque disque, une étiquette de moment (`Matin`, `Après-midi`, `Ensuite`, `Engagement`,
   `Votre choix`) en `text-xs uppercase tracking-[0.14em] text-terracotta-deep font-semibold`.
-  Ordinateur : `lg:grid-cols-5` ; tablette `sm:grid-cols-2` ; mobile vertical.
+  Grille : `sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5` (`lg` vaut 992 px dans ce thème :
+  5 colonnes y seraient trop étroites pour des textes de 35 à 40 mots) ; mobile vertical.
 - Sous la frise, une rangée de 3 « chiffres de la journée » (petits `Stat` sobres, `text-fg`) :
   « 2 à 4 h » / « de diagnostic dans vos locaux », « 4 h » / « de formation pratique », « 15 » /
   « participants au maximum ». (Faits déjà publiés dans le texte actuel.)
@@ -391,8 +416,9 @@ ring-8 ring-bg` (le numéro est dans le HTML : `<span aria-hidden>` + l'ordre de
 
 - **H2** : « Que fait l'équipe d'Axion-IA après la Journée IA ? ».
 - **Rendu** : fond `bg-bg`. Grille `grid gap-5 sm:grid-cols-2 lg:grid-cols-3`. Le service
-  « Transformation de l'entreprise » est la **carte mise en avant** : `lg:col-span-3` (ou
-  `lg:col-span-2` si 5 cartes + 1), fond `bg-mocha text-mocha-fg` + halo terracotta, H3 plus grand. Les
+  « Transformation de l'entreprise » est la **carte mise en avant**, placée en premier :
+  `lg:col-span-full`, fond `bg-mocha text-mocha-fg` + `HALO_TERRACOTTA`, H3 plus grand. Puis les
+  4 autres cartes en `sm:grid-cols-2 lg:grid-cols-4` (aucune carte orpheline). Les
   autres : `rounded-2xl bg-paper border p-6 flex flex-col`, icône 44 × 44 `rounded-xl
 bg-terracotta-soft text-terracotta-deep` (`Wrench` mise en place, `Workflow` automatisation,
   `GraduationCap` formation, `Compass` coaching, `Sparkles` transformation), **H3** (nom du
@@ -428,11 +454,11 @@ border-terracotta-on-mocha`, texte `text-mocha-fg text-lg`. Attribution visible 
 - **H2** : « Questions fréquentes sur Williams Jullin » (collaborateur : « … sur {prénom} »).
   Réponse directe de 40 à 60 mots sous le H2 (résumé : qui, pour qui, comment commencer).
 - **Rendu** : `FaqAccordion` existant (`details/summary`, zéro JS), `emitJsonLd={false}` (le
-  `FAQPage` reste dans le `@graph` unique), option `ancres` activée (ancres `#faq-…`),
+  `FAQPage` reste dans le `@graph` unique), ancres activées (ancre = `id` de la question, ex. `#qui-est-williams-jullin`),
   questions en H3. Habillage : `details` en `rounded-2xl border bg-paper`, `summary` ≥ 44 px,
   icône `Plus` qui tourne de 45° à l'ouverture (`group-open:rotate-45`, sous `motion-safe:`).
-  Si `FaqBlock` ne permet pas l'habillage, créer `FaqFiche` (serveur) dans
-  `src/components/equipe/` qui reprend la structure de `FaqAccordion`.
+  Composant `FaqFiche` (nécessaire : `FaqBlock` force `id="axion-faq"` et ne transmet pas
+  `ancres`), créé en R2d à partir de la structure de `FaqAccordion`.
 - Le texte HTML de chaque réponse est **identique au caractère près** à `acceptedAnswer.text`
   du JSON-LD (test existant à conserver / ajouter).
 - **Fermé par défaut** : Google lit le contenu des `details` fermés ; ne rien rendre en
@@ -446,7 +472,8 @@ border-terracotta-on-mocha`, texte `text-mocha-fg text-lg`. Attribution visible 
   motif SVG en ligne discret (arcs concentriques, `stroke-mocha-fg/10`, `aria-hidden`) en coin.
   **H2** (`font-serif text-[clamp(2rem,4vw,3rem)]`), texte `text-lg text-mocha-fg`,
   boutons : primaire `Cta variant="secondary"` (`bg-fg text-bg`), secondaire `variant="outline"`
-  (§ 1.3). Une ligne de réassurance avec icônes : « 45 minutes », « Sans
+  (§ 1.3). Une ligne de réassurance avec icônes (seulement si une action pointe vers `/appel` ; les
+  fiches dont les boutons vont vers `/contact` n'en ont pas) : « 45 minutes », « Sans
   engagement », « En visio ou par téléphone ».
 - **Williams** : H2 « Parlons de votre entreprise » ; texte (§ 2.16).
 
@@ -463,15 +490,15 @@ Ton : expert qui parle à un dirigeant, phrases courtes, aucun jargon, aucune pr
 Les réponses directes ci-dessous font toutes entre 40 et 60 mots (comptées pour ce plan ; un test le revérifie).
 
 - **Titre SEO** (≤ 60 caractères) : « Williams Jullin, dirigeant d'Axion-IA · IA pour TPE et PME »
-  (57 caractères). Garder `title: { absolute }`.
+  (58 caractères). Garder `title: { absolute }`.
 - **Meta description** (≤ 155 caractères) : « Williams Jullin dirige Axion-IA : l'équipe aide les
-  TPE et PME à gagner du temps et de la marge grâce à l'IA, sans recruter, partout en France. »
+  TPE et PME à gagner du temps et en rentabilité grâce à l'IA, sans recruter, partout en France. »
 - **En bref — réponse** : « Williams Jullin est le fondateur et dirigeant d'Axion-IA, une
   startup française spécialisée dans l'IA pour les TPE et les PME. Dirigeant d'entreprises
   depuis plus de trente ans et consacré à l'IA depuis 2023, il pilote une équipe qui chiffre,
   teste puis installe l'IA dans les outils existants, partout en France. »
 - **En bref — cartes** : Nom : Williams Jullin · Fonction : `WILLIAMS_FONCTION` · Entreprise :
-  Axion-IA, startup française · Résultat visé : plus de marge et de temps, même équipe · Pour
+  Axion-IA, startup française · Résultat visé : plus de rentabilité et de temps, même équipe · Pour
   qui : dirigeants de TPE et PME · Ce que fait l'équipe : Journée IA, mise en place,
   automatisation, formation, coaching · Zone : partout en France, outre-mer compris ·
   Expérience : plus de 30 ans de direction · Méthode : Chiffrer, Essayer, Trancher · Données :
@@ -545,6 +572,15 @@ Les réponses directes ci-dessous font toutes entre 40 et 60 mots (comptées pou
   les TPE et PME à gagner en rentabilité grâce à l'IA. Le premier pas est un Diagnostic IA de
   45 minutes, sans engagement, en visio ou par téléphone. Les questions les plus posées portent
   sur la méthode, la Journée IA, les équipes et la mise en place. »
+- **FAQ — cohérence avec les H2** : deux réponses différentes à la même question sur une page
+  se contredisent pour un moteur génératif. Règle : une question posée en H2 de section ne
+  figure pas dans la FAQ, **sauf** si la réponse FAQ est la réponse de section au caractère
+  près. Application : « Qui est Williams Jullin ? » reste dans la FAQ avec, pour réponse, la
+  réponse « En bref » ; « Transformer son entreprise avec l'IA, est-ce que ça bouleverse
+  tout ? » sort de la FAQ (couverte par le H2 « sans chamboulement ») ; « Qui s'occupe de la
+  mise en place après la Journée IA ? » garde sa réponse actuelle, et le H2 des services est
+  formulé autrement (« Que fait l'équipe d'Axion-IA après la Journée IA ? » : question
+  différente, réponse différente, pas de contradiction).
 - **FAQ — ajouts** (en plus des 8 actuelles, mêmes règles ; financement toujours derrière les
   drapeaux) :
   - « Combien de temps faut-il pour voir les premiers effets de l'IA dans une PME ? » —
@@ -625,14 +661,15 @@ porteEntree?: { /* + */ moments?: ReadonlyArray<string>; chiffres?: ReadonlyArra
 parcours?: { titre: string; blocs: ReadonlyArray<PointTitre & { repere?: string;
   annee?: number }> };
 services?: { /* items + */ icone?: string; enAvant?: boolean };
+pastillesDetaillees?: ReadonlyArray<{ libelle: string; icone?: CleIcone }>;
 rassurance?: { /* points + */ icone?: string };
 liensInternes?: ReadonlyArray<LienFiche>;
 ```
 
 `IdSection` = `"en-bref" | "pour-qui" | "avant-apres" | "rassurance" | "methode" |
 "journee-ia" | "services" | "parcours" | "constats" | "faq"`. Les composants restent typés par
-**leurs propres interfaces de props** (§ 4) : ce typage structurel permet aux lots R2a, R2b et
-R2c de tourner en parallèle.
+**leurs propres interfaces de props** (§ 4) : ce typage structurel permet aux lots de tourner
+en parallèle.
 
 ### 3.2 JSON-LD (`src/lib/seo/collaborateur-jsonld.ts`)
 
@@ -641,11 +678,10 @@ Un seul `<script type="application/ld+json">` `@graph` (déjà le cas), contenan
 - **Person** : pour Williams, délégué à `williams-person.ts` (**`@id` et `sameAs` intouchés**) ;
   pour un collaborateur, `@id` existant (`idPersonne(slug)`), `name` = prénom, `jobTitle`,
   `worksFor: { "@id": SITE_URL + "/#organization" }`, `knowsAbout` = compétences (si
-  présentes), `image` (si photo consentie), `homeLocation` (ville, si présente).
+  présentes), `image` (si photo consentie), `workLocation` (existant, inchangé).
 - **ProfilePage** : `@id` `…#profilepage`, `mainEntity`/`about` = Person, `dateCreated` (si
   connue), `dateModified` = `contenu.dateMiseAJour`, `breadcrumb`, `speakable` (sélecteurs par
-  défaut, qui couvrent `[data-answer]`), `primaryImageOfPage`, **nouveau** : `hasPart` vers les
-  `WebPageElement` des sections ? → **non** (bruit sans gain) ; **nouveau** : `significantLink`
+  défaut : seul le héros porte `data-answer`, cf. § 2.0), `primaryImageOfPage`, **nouveau** : `significantLink`
   = liens internes du pied de fiche (Journée IA, implémentations, formations, hub équipe).
 - **Organization** : jamais redéfinie ; référencée par `@id` uniquement.
 - **FAQPage** : `@id` `…#faq`, `mainEntity` = mêmes questions et réponses que le HTML,
@@ -658,8 +694,8 @@ Un seul `<script type="application/ld+json">` `@graph` (déjà le cas), contenan
 
 ### 3.3 Registre de catégorie (`modeles-categorie.ts`)
 
-`SectionModele` gagne `surTitre?`, `question?` (le H2 en question) et `reponse?` (40 à 60 mots,
-avec `{prenom}`) ; `ModeleCategorie` gagne `pourQui?` et `chiffresAutorises?` (liste des
+`SectionModele` gagne `surTitre?`, `question?` (le H2 en question) et `reponse?` (30 mots au plus, avec
+`{prenom}`, sans domaine que la personne n'a pas renseigné ; cf. § 2.0) ; `ModeleCategorie` gagne `pourQui?` et `chiffresAutorises?` (liste des
 chiffres calculables pour la catégorie). Les textes de § 2.17 y sont placés.
 
 ### 3.4 Métadonnées (`page.tsx`)
@@ -688,9 +724,16 @@ chiffres calculables pour la catégorie). Les textes de § 2.17 y sont placés.
 
 ## 4. Lots d'exécution
 
-Quatre lots. R2a, R2b et R2c touchent des fichiers **disjoints** et tournent en parallèle.
-R2d assemble et passe après les trois. Durée cible : 45 minutes maximum par lot. Chaque lot :
-PR en brouillon, corps de PR dans `.pr/<branche>.md`, commit en français.
+Six lots. R2a, R2b1, R2b2, R2c1 et R2c2 touchent des fichiers **disjoints** et tournent en
+parallèle. R2d assemble et passe après les cinq. Durée cible : 45 minutes maximum par lot.
+Chaque lot : PR en brouillon, corps de PR dans `.pr/<branche>.md`, commit en français.
+
+**Règle de typage qui rend le parallèle possible** : aucun composant de R2a, R2b1 ou R2b2
+n'importe `ContenuFiche`. Chacun déclare sa propre interface de props, nouveaux champs en
+optionnel (ex. `{ titre: string; etapes: ReadonlyArray<{ numero: string; titre: string; texte:
+string; obtenu?: string }>; conclusion?: string }`). Les données actuelles de `ContenuFiche`
+sont compatibles avec ces interfaces (typage structurel) : `ProfilCollaborateur` compile avant
+et après R2c. R2d branche les nouveaux champs.
 
 **Vérifications communes à chaque lot** (dans cet ordre) :
 
@@ -699,183 +742,203 @@ pnpm typecheck
 pnpm lint
 pnpm format:check
 pnpm vitest run <fichiers de test du lot>
-grep -rnE "Grenoble|freelance|Aucun gain garanti|text-primary|bg-primary|halo-cool|accent-purple" \
+grep -rnE "Grenoble|freelance|Aucun gain garanti|text-primary|bg-primary|halo-cool|accent-purple|mocha-rich" \
   src/components/equipe src/content/equipe src/lib/equipe   # doit ne rien rendre
 grep -rn '"use client"' src/components/equipe                 # ne doit lister que questionnaire/
 ```
 
-R2d ajoute `pnpm bundle:check` et la mesure du First Load JS de `/fr/equipe/[slug]`
-(avant/après, § 4.4).
+Le crochet de pré-commit lance un typecheck complet : s'il manque de mémoire, relancer le commit
+avec `NODE_OPTIONS=--max-old-space-size=8192`.
+
+**Règles communes des tests de contenu** (pour ne pas écrire de tests qui échouent d'office) :
+
+- les recherches de mots interdits lisent le TEXTE rendu (`container.textContent` ou le
+  `renderToStaticMarkup` débarrassé des balises et attributs), jamais le HTML brut : les
+  attributs contiennent des `%` légitimes (`HALO_TERRACOTTA`, `inset-x-[16%]`) ;
+- les phrases contractuelles de la Journée IA (`GARANTIE_PHRASE`, `CONDITION_GARANTIE`,
+  `RAPPORT_COMPLET`) sont retirées du texte avant la recherche de « prix » : la phrase de
+  garantie existante mentionne le prix de la journée ; elle est conservée telle quelle (texte
+  contractuel injecté, jamais retapé). Point à faire confirmer par le dirigeant du site.
+- les mots courts se cherchent en mot entier : « ici » par
+  `/(^|[\s,;:.«»'’])ici([\s,;:.!?»]|$)/i` (sinon « artificielle » le contient).
 
 ### 4.1 Lot R2a — briques visuelles, héros, chiffres, en bref, appel final
 
 - **Branche** : `feat/equipe-r2a-briques-heros`.
 - **Fichiers à créer** :
   - `src/components/equipe/visuels/icones.ts` : `ICONES_FICHE: Record<CleIcone, LucideIcon>` et
-    `iconeDe(cle?: string): LucideIcon` (repli `Circle`). Pour tourner en parallèle de R2c,
-    R2a déclare l'union `CleIcone` localement dans `icones.ts` ; R2c déclare la même union dans
-    `contenu.ts` ; R2d supprime le doublon (import depuis `contenu.ts`).
-  - `src/components/equipe/visuels/EnteteQuestion.tsx` (§ 2.0). Props :
-    `{ id: string; surTitre: string; question: string; reponse: string; ton?: "clair" | "fonce";
-as?: "h2" }`.
-  - `src/components/equipe/visuels/SectionFiche.tsx` : enveloppe `<section id aria-labelledby>`
-    - `Container` + fond (`ton: "ivoire" | "creme" | "papier" | "fonce" | "terracotta"` →
-      `bg-bg` / `bg-sand` / `bg-paper` / `bg-mocha text-mocha-fg` + halo terracotta / `bg-terracotta-deep
-text-mocha-fg`), espacement `py-16 sm:py-20 lg:py-24`, et `EnteteQuestion` facultative.
-  - `src/components/equipe/visuels/BandeauChiffres.tsx` (§ 2.2). Props :
-    `{ chiffres: ReadonlyArray<{ valeur: string; libelle: string; icone?: string }> }`.
-    Ne rend rien si `chiffres.length < 2`.
-  - `src/components/equipe/visuels/GrilleEnBref.tsx` (§ 2.3). Props :
-    `{ lignes: ReadonlyArray<{ terme: string; valeur: string; icone?: string }>; couleur:
-{ forme: string; fort: string }; lien?: { href: string; libelle: string; rel: string } }`.
-  - `src/components/equipe/visuels/BandeauAppel.tsx` (§ 2.14). Props :
-    `{ titre: string; texte: string; reassurance?: ReadonlyArray<string>; children: ReactNode }`
-    (les boutons sont passés en enfants).
+    `iconeDe(cle?: string): LucideIcon` (repli `Circle`) ; `FOND_ICONE` (table fixe des fonds
+    clairs par jeton de catégorie : `{ terracotta: "terracotta-soft", ochre: "ochre-soft",
+sage: "sage-soft", plum: "plum-soft", mocha: "sand" }`, appliquée en `style` avec
+    `varCss`, jamais en classe construite). R2a déclare l'union `CleIcone` localement ; R2c1 la
+    déclare dans `contenu.ts` ; R2d supprime le doublon.
+  - `src/components/equipe/visuels/SectionFiche.tsx` : `<section id aria-labelledby
+data-fond>` + `Container` + fond (`ton: "ivoire" | "creme" | "papier" | "fonce" |
+"terracotta"` → `bg-bg` / `bg-sand` / `bg-paper` / `bg-mocha text-mocha-fg` +
+    `HALO_TERRACOTTA` / `bg-terracotta-deep text-mocha-fg`), espacement `py-16 sm:py-20
+lg:py-24`, `EnteteQuestion` facultative. Exporte `HALO_TERRACOTTA`.
+  - `src/components/equipe/visuels/EnteteQuestion.tsx` (§ 2.0). Props : `{ id: string;
+surTitre: string; question: string; reponse?: string; ton?: "clair" | "fonce" }`. Réponse
+    en `p[data-reponse-section]` (pas `data-answer`).
+  - `src/components/equipe/visuels/ChiffresCles.tsx` (§ 2.2, rangée du héros). Props :
+    `{ chiffres: ReadonlyArray<{ valeur: string; libelle: string; icone?: string }> }`. Ne rend
+    rien si `chiffres.length < 2`.
+  - `src/components/equipe/visuels/GrilleEnBref.tsx` (§ 2.3). Props : `{ lignes:
+ReadonlyArray<{ terme: string; valeur: string; icone?: string }>; jeton: string; lien?: {
+href: string; libelle: string; rel: string } }`.
+  - `src/components/equipe/visuels/BandeauAppel.tsx` (§ 2.14). Props : `{ titre: string;
+texte: string; reassurance?: ReadonlyArray<string>; children: ReactNode }`.
   - `src/components/equipe/__tests__/r2a-briques.spec.tsx`.
-  - `src/components/equipe/__tests__/contraste-gabarit.spec.ts` (paires du § 1.3, lues dans
-    `globals.css` ; seuils : 7 pour texte courant sur foncé, 4,5 sinon, 3 pour grands
-    chiffres).
-- **Fichiers à modifier** : `src/components/equipe/HeroCollaborateur.tsx` (§ 2.1, fond foncé,
-  pastilles à icônes, date), `src/components/equipe/ActionsFiche.tsx` (prop `surFonce?:
-boolean`), `src/components/equipe/PastilleCategorie.tsx` (prop `surFonce?: boolean`).
-- **Tests** (`r2a-briques.spec.tsx`, rendu `renderToStaticMarkup` comme `briques.spec.tsx`) :
-  - `EnteteQuestion` rend un seul `h2`, l'`id` du titre, `data-answer` sur la réponse ;
-  - `BandeauChiffres` ne rend rien avec 0 ou 1 chiffre ; rend un `ul role="list"` sinon ;
-  - `GrilleEnBref` rend un `dl` avec autant de `dt`/`dd` que de lignes ; icône inconnue → repli ;
-  - le héros rend un seul `h1`, `data-answer` et `.speakable` sur la phrase, aucune classe bleue
-    (`/primary|purple|cool/`), le portrait avec `priority` ;
-  - aucune sortie ne contient `"use client"` ni d'attribut `on…` (gestionnaire d'événement).
-  - `briques.spec.tsx` et `profil-williams.spec.tsx` existants : mettre à jour les attentes
-    touchées par le héros (pas les supprimer).
+  - `src/components/equipe/__tests__/contraste-gabarit.spec.ts` : paires du § 1.3 + `plum` /
+    `plum-soft` (5,55), `ochre-deep` / `ochre-soft` (6,04), `sage` / `sage-soft` (4,63),
+    `mocha` / `sand` (12,55), lues dans `globals.css` comme
+    `contraste-categories.spec.ts`. Seuils : 7 pour le texte courant sur foncé, 4,5 sinon,
+    3 pour les grands chiffres et les éléments graphiques.
+- **Fichiers à modifier** : `HeroCollaborateur.tsx` (§ 2.1 et 2.2 : fond foncé, capsule claire
+  de catégorie, pastilles à icônes, rangée de chiffres, date ; prop nouvelle facultative
+  `chiffres?` et `pastillesDetaillees?`), `ActionsFiche.tsx` (prop `fond?: "clair" | "fonce" |
+"terracotta"`, défaut `"clair"` : variantes et anneau de focus du § 1.3).
+  `PastilleCategorie.tsx` **n'est pas modifié** (capsule posée par le héros).
+- **Tests** (`r2a-briques.spec.tsx`, `renderToStaticMarkup` comme `briques.spec.tsx`) :
+  - `EnteteQuestion` rend un seul `h2` relié par `aria-labelledby`, la réponse en
+    `data-reponse-section`, aucun `data-answer` ;
+  - `ChiffresCles` ne rend rien avec 0 ou 1 chiffre ;
+  - `GrilleEnBref` rend un `dl` avec autant de `dt`/`dd` que de lignes ; icône inconnue →
+    repli ;
+  - le héros : un seul `h1`, `data-answer` et `.speakable` sur la phrase, portrait avec
+    `priority`, aucune classe bleue ni `mocha-rich` ;
+  - chaque `Cta` rendu porte `focus-visible:ring-terracotta` ou `focus-visible:ring-mocha-fg` ;
+  - mettre à jour (pas supprimer) les attentes touchées dans `briques.spec.tsx` et
+    `profil-williams.spec.tsx`.
 
-### 4.2 Lot R2b — schémas : avant/après, sans chamboulement, frises, services, pour qui, citations
+### 4.2 Lot R2b1 — frises (méthode, Journée IA, parcours)
 
-- **Branche** : `feat/equipe-r2b-schemas`.
-- **Fichiers à créer** :
-  - `src/components/equipe/visuels/FriseEtapes.tsx` (§ 2.7 et 2.8). Props :
-    `{ etapes: ReadonlyArray<{ numero: string; titre: string; texte: string; moment?: string;
-obtenu?: string }>; conclusion?: string; ton?: "ivoire" | "creme" }`. `ol` + `li`, H3 par
-    étape, frise horizontale `lg:` avec `lg:grid-cols-{n}` calculé depuis une table fixe
-    (`{3: "lg:grid-cols-3", 4: "lg:grid-cols-4", 5: "lg:grid-cols-5"}` : jamais de classe
-    construite par concaténation, Tailwind ne la verrait pas).
-  - `src/components/equipe/visuels/FriseParcours.tsx` (§ 2.11). Props : `{ reperes:
-ReadonlyArray<{ repere: string; annee?: number; titre: string; texte: string }> }`.
-  - `src/components/equipe/visuels/PourQuiEntreprises.tsx` (§ 2.4). Props = forme `pourQui`
-    du § 3.1 ; icônes des secteurs via une table locale `ICONES_SECTEURS` (imports nommés).
-  - `src/components/equipe/visuels/Silhouettes.tsx` : SVG en ligne 1 à 3 silhouettes,
-    `aria-hidden`, `focusable="false"`, `fill="currentColor"`.
-  - `src/components/equipe/__tests__/r2b-schemas.spec.tsx`.
-- **Fichiers à modifier** (corps réécrits, mêmes noms exportés) :
-  `src/components/equipe/BlocsTransformation.tsx` (`AvantApres` en `table` schéma § 2.5,
-  `Rassurance` en tuiles foncées § 2.6, `PorteEntree` = `FriseEtapes` + chiffres de journée
-  - boutons § 2.8), `MethodeCollaborateur.tsx` (§ 2.7, utilise `FriseEtapes`),
-    `MetiersCollaborateur.tsx` (§ 2.10), `ParcoursSection.tsx` (§ 2.11, utilise
-    `FriseParcours`), `CitationsTerrain.tsx` (§ 2.12). **Ces composants gardent leurs props
-    actuelles** (`donnees: NonNullable<ContenuFiche[K]>`) et lisent les nouveaux champs en
-    optionnel (`donnees.etapes[i].obtenu ?? null`) : ils compilent avant et après R2c.
-    En attendant R2a, ils posent leur propre `<Section>` existante ; R2d les bascule sur
-    `SectionFiche` + `EnteteQuestion`.
-- **Tests** (`r2b-schemas.spec.tsx`) :
-  - `AvantApres` rend un `table` avec `caption`, deux `th scope="col"` et une `tr` par ligne ;
-    les textes avant/après sont dans le HTML (pas dans un SVG) ;
-  - `FriseEtapes` rend un `ol` de n `li`, un `h3` par étape, la classe de grille attendue pour
-    3 et 5 étapes ; tout `svg` porte `aria-hidden="true"` ;
-  - `FriseParcours` met `<time dateTime="2023">` seulement quand `annee` est fourni ;
-  - `PorteEntree` contient la phrase `GARANTIE_PHRASE` importée (jamais retapée) ;
-  - aucune classe bleue, aucun `"use client"`, animations seulement sous `motion-safe:`
-    (`/(?<!motion-safe:)(transition|animate-)/` ne doit pas matcher hors `motion-safe:` —
-    test par expression régulière sur le HTML rendu).
+- **Branche** : `feat/equipe-r2b1-frises`.
+- **Fichiers à créer** : `src/components/equipe/visuels/FriseEtapes.tsx` (§ 2.7 et 2.8 ;
+  props `{ etapes: ReadonlyArray<{ numero: string; titre: string; texte: string; moment?:
+string; obtenu?: string }>; conclusion?: string; ton?: "ivoire" | "creme" }` ; anneau des
+  disques selon le fond : `ring-bg` ou `ring-sand` ; tables fixes de classes :
+  `GRILLE = { 3: "lg:grid-cols-3", 5: "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" }` et
+  `TRAIT = { 3: "lg:before:inset-x-[16%]", 5: "xl:before:inset-x-[10%]" }`, jamais de classe
+  construite par concaténation), `src/components/equipe/visuels/FriseParcours.tsx` (§ 2.11),
+  `src/components/equipe/__tests__/r2b1-frises.spec.tsx`.
+- **Fichiers à modifier** : `MethodeCollaborateur.tsx`, `ParcoursSection.tsx` (utilisent les
+  frises ; gardent leur `<Section>` actuelle jusqu'à R2d ; props déclarées localement).
+- **Tests** : `ol` de n `li`, un `h3` par étape, classes de grille attendues pour 3 et 5 ;
+  tout `svg` en `aria-hidden="true"` ; `<time dateTime="2023">` seulement si `annee` est fourni ;
+  toute classe `transition`/`animate-` des éléments du lot est préfixée `motion-safe:`.
 
-### 4.3 Lot R2c — textes, types, registre, JSON-LD, métadonnées
+### 4.3 Lot R2b2 — avant/après, sans chamboulement, Journée IA, services, pour qui, citations
 
-- **Branche** : `feat/equipe-r2c-textes-seo`.
+- **Branche** : `feat/equipe-r2b2-schemas`.
+- **Fichiers à créer** : `src/components/equipe/visuels/PourQuiEntreprises.tsx` (§ 2.4 ;
+  table locale `ICONES_SECTEURS`), `src/components/equipe/visuels/Silhouettes.tsx` (SVG en
+  ligne, 1 à 3 silhouettes, `aria-hidden`, `focusable="false"`, `fill="currentColor"`),
+  `src/components/equipe/__tests__/r2b2-schemas.spec.tsx`.
+- **Fichiers à modifier** : `BlocsTransformation.tsx` (`AvantApres` § 2.5, `Rassurance` § 2.6,
+  `PorteEntree` § 2.8 : il **importe `FriseEtapes` seulement après fusion de R2b1** ; s'il
+  tourne en parallèle, il rend ses étapes en `ol` simple et R2d le bascule ; son `Cta` reçoit
+  `className="focus-visible:ring-terracotta"`), `MetiersCollaborateur.tsx` (§ 2.10),
+  `CitationsTerrain.tsx` (§ 2.12).
+- **Tests** : `AvantApres` rend un `table` avec `caption`, deux `th scope="col"`, une `tr` par
+  ligne, rôles ARIA explicites, textes dans le HTML ; `PorteEntree` contient `GARANTIE_PHRASE`
+  importée ; services : la carte mise en avant est la première ; aucune classe bleue ni
+  `mocha-rich` ; animations du lot sous `motion-safe:` (le `Cta`, déjà neutralisé par la règle
+  `prefers-reduced-motion` de `globals.css`, et le contenu des `details` sont exclus de ce
+  test : filtrer les éléments portant `data-cta`).
+
+### 4.4 Lot R2c1 — textes de Williams et types
+
+- **Branche** : `feat/equipe-r2c1-textes-williams`.
 - **Fichiers à modifier** :
-  - `src/lib/equipe/contenu.ts` : champs du § 3.1 (tous optionnels sauf `identite`, déjà
-    obligatoire ; `icone` y est optionnel). `faits` gardé en alias déprécié.
-  - `src/content/equipe/williams.ts` : textes du § 2.16 ; nouvelles constantes
-    `WILLIAMS_CHIFFRES_CLES`, `WILLIAMS_ENTETES` (une `ReponseDirecte` par section),
-    `WILLIAMS_POUR_QUI`, `WILLIAMS_LIENS_INTERNES` ; `WILLIAMS_IDENTITE` avec `icone` ;
-    méthode avec `obtenu` et `conclusion` ; Journée IA avec `moments` et `chiffres` ;
-    parcours avec `repere`/`annee` ; services avec `icone`/`enAvant` (retirer la phrase sur la
-    vente en une fois ou en abonnement) ; FAQ : 3 questions ajoutées. **Ne pas** toucher à
-    `WILLIAMS_FONCTION`, `NATURE_AXION_IA`, aux imports de `journee-ia-commun.ts`.
-    `WILLIAMS_REVISION_DATE` : **ne pas** avancer ici (R2d le fait, à la mise en ligne).
-  - `src/lib/equipe/index.ts` → la fonction `ficheDepuisWilliams()` (fichier où elle vit) :
-    passer les nouveaux champs.
-  - `src/lib/equipe/depuis-membre.ts` : `chiffresCles` calculés (§ 2.2, règles strictes),
-    `icone` sur les lignes d'identité (`fonction`, `lieu`, `langues`, `competences`),
-    `entetes` depuis le registre, `pourQui` depuis le registre.
-  - `src/lib/equipe/modeles-categorie.ts` : § 3.3 et textes du § 2.17.
-  - `src/lib/seo/collaborateur-jsonld.ts` : `significantLink`, `knowsAbout` collaborateur.
-    **Aucune ligne de `williams-person.ts` modifiée.**
+  - `src/lib/equipe/contenu.ts` : champs du § 3.1 (optionnels ; `faits` gardé en alias
+    déprécié jusqu'à R2d).
+  - `src/content/equipe/williams.ts` : textes du § 2.16. `WILLIAMS_LEAD` devient la phrase du
+    héros (§ 2.1) et `WILLIAMS_DESCRIPTION_PERSON` est réécrite dans la même PR (même sens, à
+    la 3e personne, sans « nous ») : `equipe-williams.spec.ts` exige leur cohérence avec le
+    `ProfilePage`. Nouvelles constantes `WILLIAMS_CHIFFRES_CLES`, `WILLIAMS_ENTETES`,
+    `WILLIAMS_POUR_QUI`, `WILLIAMS_LIENS_INTERNES`, `WILLIAMS_PASTILLES_DETAILLEES`.
+    `WILLIAMS_PREUVES` **gardée** jusqu'à R2d (importée par
+    `src/app/textes-publics-positionnement.spec.ts`). Ne pas toucher `WILLIAMS_FONCTION`,
+    `NATURE_AXION_IA`, `WILLIAMS_REVISION_DATE`, ni les imports de `journee-ia-commun.ts`.
+    Retirer la phrase « vendus en une fois ou en mise en service avec abonnement ».
+  - `src/lib/equipe/adaptateurs.ts` (là où vit `ficheDepuisWilliams`, et où se pose l'`alt`
+    du portrait) : passer les nouveaux champs ; `alt` du § 3.5.
+- **Tests à étendre** : `src/content/__tests__/equipe-williams-textes.spec.ts` (nouveau
+  titre, nombre de questions FAQ, 40-60 mots par réponse de `WILLIAMS_ENTETES`, H2 finissant
+  par « ? », titre ≤ 60 caractères, meta ≤ 155, règles communes de recherche des mots
+  interdits) ; `src/content/__tests__/equipe-williams.spec.ts` ;
+  `src/app/textes-publics-positionnement.spec.ts` si une attente change.
+
+### 4.5 Lot R2c2 — registre de catégorie, fiche collaborateur, JSON-LD, métadonnées
+
+- **Branche** : `feat/equipe-r2c2-registre-seo`. Dépend de `contenu.ts` (R2c1) : si R2c1 n'est
+  pas fusionné, R2c2 déclare ses nouveaux champs en type local dans `depuis-membre.ts` et R2d
+  les rapatrie.
+- **Fichiers à modifier** :
+  - `src/lib/equipe/modeles-categorie.ts` : § 3.3 et textes du § 2.17 ;
+  - `src/lib/equipe/depuis-membre.ts` : `icone` sur les lignes d'identité, `entetes` et
+    `pourQui` depuis le registre, chiffres clés seulement depuis des champs réellement remplis
+    (aujourd'hui : nombre de langues ≥ 2 ; donc le bloc n'apparaît pas, ce qui est voulu) ;
+  - `src/lib/seo/collaborateur-jsonld.ts` : pour Williams,
+    `{ ...buildProfilePageWilliamsJsonLd(), significantLink: [...] }` (sans modifier
+    `williams-person.ts`) ; FAQ : `{ ...buildFaqJsonLd(...), "@id": url + "#faq", isPartOf: {
+"@id": url + "#profilepage" } }` ; collaborateur : `knowsAbout` = compétences ;
   - `src/app/[locale]/equipe/[slug]/page.tsx` : seulement `generateMetadata` (titre
-    collaborateur § 3.4).
-- **Tests** :
-  - `src/content/__tests__/equipe-williams-textes.spec.ts` (existant, étendre) : chaque
-    `reponse` de `WILLIAMS_ENTETES` compte 40 à 60 mots (`split(/\s+/)`) ; chaque H2 finit par
-    « ? » sauf FAQ ; titre SEO ≤ 60 caractères ; meta ≤ 155 ; aucune réponse ne contient
-    « ci-dessous », « cette page », « ici » ; liste interdite (« Grenoble », « freelance »,
-    « Aucun gain garanti », « €», « euros HT », « tarif », « prix ») absente de tout le fichier
-    rendu en texte ; `GARANTIE_PHRASE` présent une seule fois.
-  - `src/lib/equipe/__tests__/depuis-membre.spec.ts` (étendre) : aucun `chiffresCles` sans
-    donnée ; 1 seul chiffre → champ absent ; apporteur : aucun texte ne contient
-    « commission », « rémunér », « € », « % » ; prénom seul partout (nom de famille du jeu de
-    test absent du JSON sérialisé).
-  - `src/lib/seo/__tests__/collaborateur-jsonld.spec.ts` (créer si absent) : le `@id` Person
-    et les `sameAs` de Williams sont **strictement égaux** à ceux de `williams-person.ts` ;
-    un seul nœud `FAQPage` ; ses textes = la FAQ du contenu ; `Organization` jamais redéfinie
-    (référence par `@id` seulement).
-  - `src/lib/equipe/__tests__/categories.test.ts` : chaque modèle a ses questions H2 et ses
-    réponses dans la fourchette après remplacement de `{prenom}` par « Camille ».
+    collaborateur, § 3.4).
+- **Tests** : `src/lib/equipe/__tests__/depuis-membre.spec.ts` (aucun chiffre sans donnée ;
+  apporteur : ni « commission », ni « rémunér », ni « € », ni « % » dans le TEXTE ; prénom
+  seul : nom de famille du jeu de test absent du JSON sérialisé) ;
+  `src/lib/seo/__tests__/collaborateur-jsonld.spec.ts` (créer si absent : `@id` et `sameAs`
+  de Williams strictement égaux à ceux de `williams-person.ts`, un seul `FAQPage`, ses textes =
+  la FAQ du contenu, `Organization` jamais redéfinie) ; `categories.test.ts` (réponses du
+  registre ≤ 30 mots après remplacement de `{prenom}` par « Camille »).
 
-### 4.4 Lot R2d — assemblage, FAQ, pied de fiche, mesure
+### 4.6 Lot R2d — assemblage, FAQ, pied de fiche, sitemap, mesure
 
-- **Branche** : `feat/equipe-r2d-assemblage`, créée **après fusion de R2a, R2b et R2c**.
-- **Fichiers à modifier** : `src/components/equipe/ProfilCollaborateur.tsx` (ordre et fonds du
-  § 2, chaque section enveloppée dans `SectionFiche` avec son `EnteteQuestion` depuis
-  `contenu.entetes`), `SectionsCategorie.tsx` (§ 2.9), `FicheIdentite.tsx` (devient un
-  simple réexport de `GrilleEnBref` ou est supprimé si plus aucun import : vérifier avec
-  `git grep FicheIdentite`, le hub l'utilise peut-être), `visuels/icones.ts` (supprimer le
-  doublon `CleIcone`).
-- **Fichiers à créer** : `src/components/equipe/FaqFiche.tsx` (si `FaqBlock` ne suffit pas,
-  § 2.13), `src/components/equipe/PiedFiche.tsx` (§ 2.15),
-  `src/components/equipe/__tests__/r2d-gabarit.spec.tsx`.
-- `src/content/equipe/williams.ts` : avancer `WILLIAMS_REVISION_DATE` à la date de fusion de
-  R2d (seule ligne touchée dans ce fichier).
-- **Tests** (`r2d-gabarit.spec.tsx`, rendu complet de `ProfilCollaborateur` pour Williams et
-  pour une fiche de chaque catégorie) :
-  - exactement un `h1` ; aucun `h3` avant le premier `h2` ; aucun `h2` vide ;
-  - ordre des sections conforme au tableau du § 2 (lecture des `id`) ; deux sections foncées
-    ne se suivent jamais (lecture des classes `bg-mocha` / `bg-terracotta-deep`) ;
-  - chaque question FAQ visible a sa réponse identique dans le JSON-LD `FAQPage` ;
-  - aucun texte n'est présent seulement dans un `svg` (extraire le texte des `svg` : vide) ;
-  - fiche apporteur : ni « commission », ni « € », ni « % » ; nom de famille absent ;
-  - aucune classe bleue ; aucun `"use client"` dans `src/components/equipe` hors
-    `questionnaire/`.
-- **Mesures** (à écrire dans le corps de PR, chiffres réels) :
-  1. Avant (sur `origin/main`) et après (sur la branche) :
-     `SKIP_ENV_VALIDATION=true DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
-REDIS_URL=redis://stub.invalid:6379 BULLMQ_DISABLED=true pnpm next build
---experimental-build-mode compile`, puis lire la taille gz des fichiers
-     `.next/static/chunks/app/[locale]/equipe/[slug]/page-*.js` + chunks partagés listés par
-     `.next/app-build-manifest.json` pour cette route. Écart attendu : ≈ 0 (aucun JS client
-     ajouté). Plafond : 75 KB gz.
-  2. `pnpm bundle:check` vert (cliquet public 265 KB).
-  3. CLS / LCP / INP : **ne pas** conclure sur une seule passe locale (AGENTS.md : le temps se
-     lit en médiane sur plusieurs runs). Vérifier au `lhci` post-déploiement ; noter
-     `/fr/equipe/williams` comme URL à surveiller dans le corps de PR.
-  4. Vérification visuelle : capture de `/fr/equipe/williams` en 390 px et 1 440 px (via la
-     compétence « run » si disponible), jointe au corps de PR en description textuelle (pas
-     d'image dans le dépôt).
+- **Branche** : `feat/equipe-r2d-assemblage`, créée **après fusion des cinq lots**.
+- **Fichiers à modifier** : `ProfilCollaborateur.tsx` (ordre et fonds du § 2, chaque section
+  dans `SectionFiche` avec son `EnteteQuestion` depuis `contenu.entetes`), `SectionsCategorie.tsx`
+  (§ 2.9), `BlocsTransformation.tsx` (bascule de `PorteEntree` sur `FriseEtapes` si R2b2 ne l'a
+  pas fait), `FicheIdentite.tsx` (supprimé si `git grep FicheIdentite` ne montre plus d'usage,
+  sinon laissé), `visuels/icones.ts` (doublon `CleIcone` retiré), `src/lib/equipe/contenu.ts`
+  (retrait de `faits`), `src/content/equipe/williams.ts` (retrait de `WILLIAMS_PREUVES` et de
+  ses imports de test ; `WILLIAMS_REVISION_DATE` avancée à la date de fusion), `sitemap.ts`
+  (`lastModified: WILLIAMS_REVISION_DATE` pour `/fr/equipe/williams`, au lieu de `now`).
+- **Fichiers à créer** : `src/components/equipe/FaqFiche.tsx` (nécessaire : `FaqBlock` force
+  `id="axion-faq"` et ne transmet pas `ancres`) — structure reprise de `FaqAccordion`, garde
+  `data-faq-q` / `data-faq-a` (lus par le `speakable` du `FAQPage`), **pas** de `data-answer` ;
+  ancre = `id` de la question (`#qui-est-williams-jullin`) ; `src/components/equipe/PiedFiche.tsx`
+  (§ 2.15) ; `src/components/equipe/__tests__/r2d-gabarit.spec.tsx`.
+- **Tests** (`r2d-gabarit.spec.tsx`, rendu complet pour Williams et pour une fiche de chaque
+  catégorie) : un seul `h1` ; aucun `h3` avant le premier `h2` ; aucun `h2` vide ; ordre des
+  `id` conforme au § 2 ; deux `data-fond` foncés (`fonce`/`terracotta`) jamais consécutifs ;
+  chaque question FAQ visible a sa réponse identique dans le `FAQPage` ; aucune question de
+  H2 de section n'est reprise dans la FAQ ; texte des `svg` vide ; apporteur : ni
+  « commission », ni « € », ni « % » dans le texte ; nom de famille absent ; aucune classe
+  bleue ni `mocha-rich` ; aucun `"use client"` hors `questionnaire/`.
+- **Mesures** (chiffres réels dans le corps de PR) :
+  1. First Load JS de la route, avant (`origin/main`) et après :
+     `SKIP_ENV_VALIDATION=true BULLMQ_DISABLED=true
+DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
+REDIS_URL=redis://stub.invalid:6379 pnpm exec next build --webpack
+--experimental-build-mode compile`, puis lire les fichiers de `entryJSFiles` dans
+     `.next/server/app/[locale]/equipe/[slug]/page_client-reference-manifest.js` et sommer
+     leur taille gz (`gzip -c f | wc -c`). Écart attendu ≈ 0 (aucun JS client ajouté).
+     Plafond 75 KB gz. (`app-build-manifest.json` n'existe plus dans cette version de Next.)
+  2. `pnpm bundle:check` vert.
+  3. CLS / LCP / INP : ne pas conclure sur une passe locale (AGENTS.md) ; noter
+     `/fr/equipe/williams` comme URL à suivre au `lhci` post-déploiement.
+  4. Vérification visuelle en 390 px et 1 440 px (compétence « run » si disponible), décrite
+     dans le corps de PR.
 
-### 4.5 Ordre de fusion
+### 4.7 Ordre de fusion
 
-1. F7 (`feat/equipe-f7-sections`) si pas encore fusionnée.
-2. R2a, R2b, R2c en parallèle, dans n'importe quel ordre (fichiers disjoints ; seul point
-   commun : `ContenuFiche`, touché par R2c seul ; R2a et R2b n'en dépendent que par des champs
-   optionnels).
-3. R2d, après les trois.
-4. Mise en ligne au créneau suivant ; puis contrôle : `curl -sI https://axion-ia.com/fr/equipe/williams`
+1. F7 (`feat/equipe-f7-sections`) si elle n'est pas encore fusionnée.
+2. R2a, R2b1, R2b2, R2c1, R2c2 en parallèle, dans n'importe quel ordre. Préférer R2b1 avant
+   R2b2 et R2c1 avant R2c2 quand c'est possible (moins de doublons à résorber en R2d).
+3. R2d, après les cinq.
+4. Mise en ligne au créneau suivant ; contrôle : `curl -sI https://axion-ia.com/fr/equipe/williams`
    (`x-axion-build-sha`), test des résultats enrichis de Google sur l'URL, lecture du `lhci`
    post-déploiement.
 
@@ -886,4 +949,42 @@ REDIS_URL=redis://stub.invalid:6379 BULLMQ_DISABLED=true pnpm next build
 - Toute migration, tout job, tout enum, toute nouvelle dépendance.
 - La fiche persona éditoriale (branche `auteur` de la route) : inchangée.
 
-VERDICT OPUS : EN COURS
+## 6. Seconde lecture Opus (intégrée)
+
+Une seconde lecture indépendante (sous-agent Opus, lentille « manque-t-il quelque chose pour une
+page parfaite visuellement, SEO et GEO, dans les budgets ? ») a relu ce plan contre le code de
+F7. Ses 25 remarques (6 bloquantes, 13 importantes, 6 mineures) sont intégrées ci-dessus ;
+les principales :
+
+1. le bandeau de chiffres sur `terracotta-deep` collait au héros foncé : il devient la dernière
+   rangée du héros ; l'enchaînement des fonds se teste par `data-fond` ;
+2. typage : aucun composant de lot parallèle n'importe `ContenuFiche` (interfaces locales) ;
+3. tests de contenu : recherche sur le texte et non le HTML, mots courts en mot entier, phrases
+   contractuelles de la Journée IA exclues de la recherche de « prix » ;
+4. tests d'animation : le `Cta` (déjà neutralisé par `prefers-reduced-motion` dans
+   `globals.css`) et le contenu des `details` sont exclus ;
+5. mesure du First Load JS adaptée à cette version de Next (`--webpack`, manifeste de
+   références client) ;
+6. deux bleus cachés évités : `.bg-mocha-rich` et l'anneau de focus `ring-primary` de `Button` ;
+7. `speakable` limité au héros (`data-reponse-section` pour les réponses de section) ;
+8. JSON-LD de Williams enrichi par décomposition (`...buildProfilePageWilliamsJsonLd()`), sans
+   toucher `williams-person.ts` ;
+9. « marge » remplacé par « rentabilité » ; pastilles du héros sans répétition des chiffres ;
+10. fiche collaborateur réelle = gabarit court (aucune migration, donc pas de parcours, de
+    publications ni de citations aujourd'hui) ; réponses de registre courtes pour éviter des
+    pages identiques d'un collaborateur à l'autre ;
+11. pastille de catégorie dans une capsule claire sur fond foncé (contraste < 3:1 sinon) ;
+    fonds d'icônes par table fixe ;
+12. découpage en six lots (R2b et R2c scindés), fichiers exacts corrigés
+    (`adaptateurs.ts`, tests `textes-publics-positionnement.spec.ts` et
+    `equipe-williams*.spec.ts`) ;
+13. `sitemap.ts` : `lastModified` fixe pour la fiche de Williams ; Journée IA en 5 colonnes
+    seulement dès `xl` ; carte de service mise en avant en pleine largeur ; ancres FAQ
+    exactes ; `FaqFiche` nécessaire.
+
+Restent à décider hors du code, signalés aux lots concernés : la phrase contractuelle de
+garantie de la Journée IA mentionne le prix de la journée (conservée telle quelle, texte
+injecté) ; `llms.txt` ne cite pas encore `/fr/equipe/williams` et les fiches collaborateurs ne
+sont pas dans le sitemap (à traiter avec le hub, lot R3).
+
+VERDICT OPUS : PLAN PRÊT
