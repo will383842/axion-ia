@@ -121,11 +121,12 @@ describe("sitemap", () => {
       websiteUrl: "https://exemple.fr",
     });
     const pauvre = membre({ slug: "pauvre" });
+    const slugRefuse = membre({ ...riche, slug: "Slug Invalide" });
     const reserves = [
       membre({ slug: "questionnaire", photoKind: "reelle" }),
       membre({ slug: "retrait" }),
     ];
-    const s = fichesSitemapEquipe([riche, pauvre, ...reserves]);
+    const s = fichesSitemapEquipe([riche, pauvre, slugRefuse, ...reserves]);
     expect(s.map((x) => x.slug)).toEqual(["riche"]);
   });
 });

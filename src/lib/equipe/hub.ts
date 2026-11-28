@@ -94,10 +94,11 @@ export function construireHubEquipe(
     }))
     .filter((s) => s.fiches.length > 0);
   const fichesCarte = fichesCarteDepuisPoints(points);
+  const williamsSurCarte = fichesCarte.some((f) => f.estDirigeantPrincipal);
   return {
     sections,
     fichesCarte,
-    williamsSurCarte: fichesCarte.some((f) => f.estDirigeantPrincipal),
+    williamsSurCarte,
     indexables: [
       ...statiques.map((f) => ({ slug: f.slug, estDirigeantPrincipal: f.estDirigeantPrincipal })),
       ...deLaBase
@@ -118,7 +119,9 @@ export function fichesSitemapEquipe(
         m.slug !== SLUG_DIRIGEANT_PRINCIPAL &&
         m.slug !== "manon" &&
         !SLUGS_TECHNIQUES.includes(m.slug) &&
-        evaluerIndexabilite(m).indexable,
+        evaluerIndexabilite(m).indexable &&
+        // Même garde que le hub et la fiche : une fiche dont le slug est réécrit ou refusée y est en 404.
+        fichePublique(ficheDepuisMembre(m).fiche)?.slug === m.slug,
     )
     .map((m) => ({ slug: m.slug, lastModified: m.updatedAt }));
 }

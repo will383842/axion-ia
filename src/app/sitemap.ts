@@ -763,7 +763,8 @@ export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<strin
 async function fichesEquipeSitemap(): Promise<Array<{ slug: string; lastModified: Date }>> {
   try {
     return fichesSitemapEquipe(await listPublishedMembers());
-  } catch {
+  } catch (e) {
+    console.warn("[sitemap] fiches équipe indisponibles :", e instanceof Error ? e.message : e);
     return [];
   }
 }

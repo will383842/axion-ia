@@ -22,6 +22,7 @@ import { CarteCollaborateur } from "@/components/equipe/CarteCollaborateur";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildEquipeHubJsonLd } from "@/lib/seo/equipe-hub-jsonld";
 import { SLUG_PLUME_IA } from "@/lib/seo/plume-ia";
+import { preparerCarte } from "@/components/equipe/carte-donnees";
 import { CarteFrance } from "@/components/equipe/CarteFrance";
 import { construireHubEquipe } from "@/lib/equipe/hub";
 import { listMapPoints, listPublishedMembers } from "@/lib/equipe/collaborateurs";
@@ -77,6 +78,8 @@ export default async function HubEquipePage({ params }: Props) {
   const [membres, points] = await Promise.all([listPublishedMembers(), listMapPoints()]);
   const hub = construireHubEquipe(membres, points);
   const { sections, fichesCarte, indexables } = hub;
+  // Le titre de la carte n'est rendu que si au moins un point est réellement placé.
+  const pointsCarte = preparerCarte(fichesCarte, [], { avecDirigeant: hub.williamsSurCarte }).total;
 
   return (
     <>
@@ -100,7 +103,7 @@ export default async function HubEquipePage({ params }: Props) {
         </Container>
       </section>
 
-      {fichesCarte.length > 0 ? (
+      {pointsCarte > 0 ? (
         <section className="py-8 sm:py-10">
           <Container>
             <h2

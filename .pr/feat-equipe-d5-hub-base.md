@@ -24,4 +24,9 @@ Le hub n'affichait que Williams ; la carte et le sitemap n'étaient pas branché
 - First Load JS du hub : NON mesuré ici (pas de build complet dans le temps imparti) ; la carte est un composant serveur sans JS client, donc aucun JS ajouté attendu. `pnpm bundle:check` non lancé : à confirmer en CI.
 - `pnpm typecheck` plante en mémoire avec le tas par défaut du runner ; passé avec `--max-old-space-size=12000`.
 
-VERDICT OPUS : EN COURS
+## Relecture Opus (SEO / données / accessibilité)
+
+Corrigé après relecture : le sitemap écarte maintenant une fiche dont le slug serait réécrit ou refusé (même garde que le hub et la fiche) ; le titre de la carte n'est rendu que si un point est réellement placé ; l'échec de lecture du sitemap est journalisé.
+Reste (non bloquant) : le hub n'a pas de repli si la base échoue au runtime (l'ISR limite le risque).
+
+VERDICT OPUS : BON

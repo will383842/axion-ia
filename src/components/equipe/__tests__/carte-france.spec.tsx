@@ -84,6 +84,9 @@ describe("preparerCarte", () => {
     expect(d.total).toBe(1);
     expect(d.amas[0]?.personnes.map((f) => f.slug)).toEqual(["ok"]);
   });
+  it("un département inconnu ne donne aucun point placé", () => {
+    expect(preparerCarte([fiche({ slug: "x", departement: "99" })]).total).toBe(0);
+  });
   it("avecDirigeant : le dirigeant n'a un point que si l'appelant l'autorise et qu'un lieu est porté", () => {
     const w = fiche({
       slug: "williams",
