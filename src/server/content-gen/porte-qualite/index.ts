@@ -9,6 +9,7 @@ export {
   observationActive,
   observerSortie,
   reglagesDepuisConfig,
+  reglagesStockesValides,
 } from "./observation";
 export type { IssueObservation, LigneVerdictEcrite } from "./observation";
 export { construireVue, lireLigneVerdict } from "./vue";

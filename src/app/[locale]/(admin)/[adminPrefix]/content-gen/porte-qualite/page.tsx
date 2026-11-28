@@ -255,7 +255,16 @@ function ReglagesJournal({
           notation en observation. Chaque changement est inscrit au journal ci-dessous.
         </p>
         {etat === "ok" ? <p role="status">Réglages enregistrés.</p> : null}
-        {erreur ? <p role="alert">Refusé : {erreur}</p> : null}
+        {erreur && /^[A-Za-z0-9]+ : [^<>]{1,200}$/.test(erreur) ? (
+          <p role="alert">Refusé : {erreur}</p>
+        ) : null}
+        {!vue.reglagesFiables ? (
+          <p role="alert">
+            Les réglages stockés sont illisibles ou invalides : les valeurs ci-dessous sont les
+            défauts du back-end. Enregistrement désactivé pour ne pas écraser les vrais seuils ;
+            corrigez la clé <code>porte_qualite</code> ou réessayez plus tard.
+          </p>
+        ) : null}
         <form action={enregistrerReglagesPorte}>
           <table className="admin-table">
             <thead>
@@ -284,7 +293,7 @@ function ReglagesJournal({
               ))}
             </tbody>
           </table>
-          <button type="submit" className="admin-button">
+          <button type="submit" className="admin-button" disabled={!vue.reglagesFiables}>
             Enregistrer les réglages
           </button>
         </form>

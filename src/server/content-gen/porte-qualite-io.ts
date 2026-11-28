@@ -61,10 +61,12 @@ const MAX_LIGNES = 200;
 /** Lecture seule pour l'écran. Table absente (P2021) ou panne : « indisponible », jamais 0. */
 export async function lireVuePorte(): Promise<VuePorte> {
   let config: unknown = {};
+  let configLisible = true;
   try {
     config = await readContentGenConfigDirect<unknown>(CLE_CONFIG_PORTE, {});
   } catch {
-    // Config illisible : l'écran montre les défauts du back-end, pas une panne.
+    // Config illisible : l'écran montre les défauts du back-end, signalés comme tels.
+    configLisible = false;
   }
   let lignes: Source<ReadonlyArray<LigneVerdictLue>>;
   try {
@@ -83,6 +85,7 @@ export async function lireVuePorte(): Promise<VuePorte> {
   return construireVue({
     config,
     interrupteurActif: observationActive(process.env),
+    configLisible,
     // Dernier verdict écrit : seule preuve que le WORKER observe (le drapeau se lit ici côté application).
     dernierVerdictLe: lignes.etat === "ok" ? (lignes.valeur[0]?.createdAt ?? null) : null,
     lignes,
