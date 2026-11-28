@@ -209,8 +209,14 @@ async function main() {
     // Pilotage SEO (P4) — TOUJOURS démarré, ÉTEINT par défaut : sans `CONTENT_PILOTAGE_SEO="true"`
     // chaque tâche sort sans rien lire ni appeler ; une table absente (fenêtre app/worker) fait sauter.
     // Panel GEO (P11) injecté ici (zone du contenu automatisé) : éteint par défaut, trois verrous.
-    startSeoPilotageWorker(async (d) =>
-      (await import("@/server/content-gen/seo/panel-geo/panel")).tachePanelGeo(d),
+    startSeoPilotageWorker(
+      async (d) => (await import("@/server/content-gen/seo/panel-geo/panel")).tachePanelGeo(d),
+      async () => {
+        const l = await (
+          await import("@/server/content-gen/seo/bing-wmt-client")
+        ).bingWmtGetPageStats();
+        return l === null ? null : l.map(({ cle, ...r }) => ({ page: cle, ...r }));
+      },
     ),
     // Chantier visio (PR 6) — le circuit du compte rendu (concurrence 1). Inerte
     // tant qu'aucun enregistrement n'est déposé : le balayage ne trouve rien et

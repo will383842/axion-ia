@@ -33,7 +33,8 @@ vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
 
 const { runSeoPilotageJob: lancer } = await import("../seo-pilotage-worker");
-const runSeoPilotageJob = (j: never) => lancer(j, tachePanelGeo as never);
+const runSeoPilotageJob = (j: never) =>
+  lancer(j, tachePanelGeo as never, (async () => null) as never);
 const job = (tache: unknown) => ({ data: { tache } }) as never;
 
 describe("worker seo-pilotage", () => {
