@@ -1151,7 +1151,7 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
     {
       href: `${base}/content-gen/chaine-editoriale`,
       label: "Chaîne éditoriale (lecture seule)",
-      icon: "ShieldCheck",
+      icon: "Funnel",
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
