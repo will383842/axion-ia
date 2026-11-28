@@ -183,7 +183,7 @@ describe("GabaritFaq", () => {
 
   it("l'encart « Votre question n'est pas là ? » vient après la 4e question, bouton Écrire un message", () => {
     const h = rendre(props());
-    const encart = h.indexOf("Votre question n’est pas là ?");
+    const encart = h.indexOf("Votre question n’est pas là ?");
     expect(encart).toBeGreaterThan(h.indexOf('id="q-4"'));
     expect(encart).toBeLessThan(h.indexOf('id="q-5"'));
     const bloc = h.slice(h.indexOf("cta-milieu"), h.indexOf("</aside>", h.indexOf("cta-milieu")));
@@ -194,7 +194,7 @@ describe("GabaritFaq", () => {
 
   it("moins de 4 questions : l'encart suit la dernière question", () => {
     const h = rendre(props({ view: { ...props().view, faqItems: QUESTIONS.slice(0, 2) } }));
-    expect(h.indexOf("Votre question n’est pas là ?")).toBeGreaterThan(h.indexOf('id="q-2"'));
+    expect(h.indexOf("Votre question n’est pas là ?")).toBeGreaterThan(h.indexOf('id="q-2"'));
   });
 
   it("réponses vides écartées : la grille ne compte que les questions rendues", () => {
@@ -207,7 +207,7 @@ describe("GabaritFaq", () => {
   it("sans question : mise en page Analyse, ni grille ni encart", () => {
     const h = rendre(props({ view: { ...props().view, faqItems: [] } }));
     expect(h).not.toContain("grille-q");
-    expect(h).not.toContain("Votre question n’est pas là ?");
+    expect(h).not.toContain("Votre question n’est pas là ?");
     expect(h).toContain("<p>Corps</p>");
   });
 
