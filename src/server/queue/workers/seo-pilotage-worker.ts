@@ -15,7 +15,9 @@
  * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (jusqu'à 30 jours d'historique par passage),
  * `purge` (dimanche), `recalcul` (P6a, 07 h 07 : champs existants depuis l'historique, sans appel
  * Google), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé), `robots-ia` (P10 :
- * passages des robots d'IA, agrégats Cloudflare ; sans jeton Cloudflare la tâche saute, « indisponible »).
+ * passages des robots d'IA, agrégats Cloudflare ; sans jeton Cloudflare la tâche saute, « indisponible »),
+ * `bing-releve` (P17, lundi 08 h 37 : relevé Bing par page et par semaine ; éteint par `BING_RELEVE_ENABLED`,
+ * saute avec « clé Bing absente du worker » si `BING_WMT_API_KEY` n'est pas transmise au worker).
  * Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
  * jamais un nom.
  *
@@ -46,6 +48,7 @@ export const TACHES_SEO_PILOTAGE = [
   "inspection",
   "robots-ia",
   "panel-geo",
+  "bing-releve",
 ] as const;
 export type TacheSeoPilotage = (typeof TACHES_SEO_PILOTAGE)[number];
 
@@ -70,6 +73,18 @@ export type TachePanelGeoInjectee = (deps: {
     }
 >;
 
+/**
+ * Lecture Bing par page (P17), INJECTÉE par `worker.ts` pour la même raison : le client Bing vit
+ * dans la zone du contenu automatisé. Absente : la tâche saute.
+ */
+export type LirePagesBingInjectee = () => Promise<ReadonlyArray<{
+  readonly page: string;
+  readonly date: Date;
+  readonly clics: number;
+  readonly impressions: number;
+  readonly position: number;
+}> | null>;
+
 function estTacheConnue(t: unknown): t is TacheSeoPilotage {
   return (TACHES_SEO_PILOTAGE as ReadonlyArray<unknown>).includes(t);
 }
@@ -77,6 +92,7 @@ function estTacheConnue(t: unknown): t is TacheSeoPilotage {
 export async function runSeoPilotageJob(
   job: Pick<Job<SeoPilotageJobData>, "data">,
   panelGeo?: TachePanelGeoInjectee,
+  lirePagesBing?: LirePagesBingInjectee,
 ): Promise<IssueJob> {
   const tache: unknown = job.data?.tache;
   if (!estTacheConnue(tache)) {
@@ -149,6 +165,22 @@ export async function runSeoPilotageJob(
       }
       return b.issue === "saute" ? { issue: "saute", motif: b.motif } : { issue: "fait", tache };
     }
+    if (tache === "bing-releve") {
+      // Deux interrupteurs : `CONTENT_PILOTAGE_SEO` (déjà vérifié) et `BING_RELEVE_ENABLED`, lu dans
+      // la tâche AVANT la clé. Clé absente du conteneur worker : saut, motif fixe, sans appel.
+      if (!lirePagesBing) return { issue: "saute", motif: "lecture_bing_non_branchee" };
+      const { tacheBingReleve } = await import("@/server/seo-pilotage/bing");
+      const b = await tacheBingReleve({ prisma, lirePages: lirePagesBing });
+      // Des nombres et des motifs fixes seulement : jamais la clé, jamais une URL.
+      if (b.issue === "saute") {
+        console.log(`[seo-pilotage-worker] bing-releve sauté : ${b.motif}`);
+        return { issue: "saute", motif: b.motif };
+      }
+      console.log(
+        `[seo-pilotage-worker] bing-releve (${mode}) : ${b.pages} page(s), ${b.semaines} semaine(s)`,
+      );
+      return { issue: "fait", tache };
+    }
     if (tache === "panel-geo") {
       if (!panelGeo) return { issue: "saute", motif: "panel_non_branche" };
       const b = await panelGeo({ prisma });
@@ -213,6 +245,7 @@ let workerInstance: Worker<SeoPilotageJobData> | null = null;
 
 export function startSeoPilotageWorker(
   panelGeo?: TachePanelGeoInjectee,
+  lirePagesBing?: LirePagesBingInjectee,
 ): Worker<SeoPilotageJobData> {
   if (workerInstance) return workerInstance;
   const redisUrl = process.env.REDIS_URL;
@@ -220,7 +253,7 @@ export function startSeoPilotageWorker(
 
   workerInstance = new Worker<SeoPilotageJobData>(
     SEO_PILOTAGE_QUEUE_NAME,
-    (j) => runSeoPilotageJob(j, panelGeo),
+    (j) => runSeoPilotageJob(j, panelGeo, lirePagesBing),
     {
       connection: { url: redisUrl },
       // Un seul passage à la fois : l'ingestion et le rattrapage ne se chevauchent jamais.

@@ -27,6 +27,11 @@ import * as Sentry from "@sentry/nextjs";
 const BING_WMT_API = "https://ssl.bing.com/webmaster/api.svc/json";
 const DEFAULT_SITE_URL = "https://axion-ia.com";
 
+/** Jamais l'objet d'erreur entier : l'URL d'appel porte la clé. Le nom seul est journalisé. */
+function errName(err: unknown): string {
+  return err instanceof Error ? err.name : "erreur";
+}
+
 interface BingWmtCrawlStats {
   readonly date: string;
   readonly pagesCrawled: number;
@@ -84,7 +89,7 @@ export async function bingWmtGetCrawlStats(
       inIndex: typeof r.InIndex === "number" ? r.InIndex : 0,
     }));
   } catch (err) {
-    console.error("[bing-wmt-client] GetCrawlStats error:", err);
+    console.error(`[bing-wmt-client] GetCrawlStats error: ${errName(err)}`);
     return null;
   }
 }
@@ -119,7 +124,7 @@ export async function bingWmtGetUrlInfo(targetUrl: string): Promise<BingWmtUrlIn
       ...(typeof d.LastCrawled === "string" ? { lastCrawled: d.LastCrawled } : {}),
     };
   } catch (err) {
-    console.error(`[bing-wmt-client] GetUrlInfo error for ${targetUrl}:`, err);
+    console.error(`[bing-wmt-client] GetUrlInfo error: ${errName(err)}`);
     return null;
   }
 }
@@ -148,7 +153,7 @@ export async function bingWmtGetQuota(): Promise<BingWmtQuota | null> {
       monthlyQuota: typeof d.MonthlyQuota === "number" ? d.MonthlyQuota : 0,
     };
   } catch (err) {
-    console.error("[bing-wmt-client] GetUrlSubmissionQuota error:", err);
+    console.error(`[bing-wmt-client] GetUrlSubmissionQuota error: ${errName(err)}`);
     return null;
   }
 }
@@ -156,4 +161,67 @@ export async function bingWmtGetQuota(): Promise<BingWmtQuota | null> {
 /** True si BING_WMT_API_KEY env var est set. */
 export function isBingWmtReady(): boolean {
   return Boolean(process.env["BING_WMT_API_KEY"]);
+}
+
+// ─── P17 : lectures par page et par requête ──────────────────────────────────
+// Noms des méthodes : `GetPageStats` et `GetQueryStats` (API JSON Bing Webmaster, méthodes
+// GetPageStats / GetQueryStats de l'interface IWebmasterApi). La documentation officielle de
+// Microsoft n'a pas pu être relue depuis cet environnement : noms et champs de réponse
+// (`Query`, `Date` au format `/Date(ms)/`, `Clicks`, `Impressions`, `AvgImpressionPosition`)
+// à confirmer au premier relevé réel.
+
+export interface BingWmtStatLigne {
+  /** Pour `GetPageStats`, l'URL de la page ; pour `GetQueryStats`, la requête. */
+  readonly cle: string;
+  readonly date: Date;
+  readonly clics: number;
+  readonly impressions: number;
+  readonly position: number;
+}
+
+async function lireStats(
+  methode: "GetPageStats" | "GetQueryStats",
+): Promise<ReadonlyArray<BingWmtStatLigne> | null> {
+  const apiKey = process.env["BING_WMT_API_KEY"];
+  if (!apiKey) return null;
+  const siteUrl = process.env["NEXT_PUBLIC_SITE_URL"] ?? DEFAULT_SITE_URL;
+  const url = `${BING_WMT_API}/${methode}?apikey=${encodeURIComponent(apiKey)}&siteUrl=${encodeURIComponent(siteUrl)}`;
+  try {
+    const res = await fetch(url, { method: "GET" });
+    if (!res.ok) {
+      console.error(`[bing-wmt-client] ${methode} ${res.status}`);
+      return null;
+    }
+    const data = (await res.json()) as { d?: Array<Record<string, unknown>> };
+    const out: BingWmtStatLigne[] = [];
+    for (const r of data.d ?? []) {
+      const m =
+        typeof r["Date"] === "string"
+          ? /^\/Date\((-?\d{1,15})(?:[+-]\d{4})?\)\/$/.exec(r["Date"])
+          : null;
+      if (!m?.[1] || typeof r["Query"] !== "string") continue;
+      const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : 0);
+      out.push({
+        cle: r["Query"],
+        date: new Date(Number(m[1])),
+        clics: num(r["Clicks"]),
+        impressions: num(r["Impressions"]),
+        position: num(r["AvgImpressionPosition"]),
+      });
+    }
+    return out;
+  } catch (err) {
+    console.error(`[bing-wmt-client] ${methode} error: ${errName(err)}`);
+    return null;
+  }
+}
+
+/** Stats par page (une ligne par page et par jour). `null` si clé absente ou API en échec. */
+export function bingWmtGetPageStats() {
+  return lireStats("GetPageStats");
+}
+
+/** Stats par requête (une ligne par requête et par jour). `null` si clé absente ou API en échec. */
+export function bingWmtGetQueryStats() {
+  return lireStats("GetQueryStats");
 }

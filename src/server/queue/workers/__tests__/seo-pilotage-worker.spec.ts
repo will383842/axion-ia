@@ -33,7 +33,8 @@ vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
 
 const { runSeoPilotageJob: lancer } = await import("../seo-pilotage-worker");
-const runSeoPilotageJob = (j: never) => lancer(j, tachePanelGeo as never);
+const runSeoPilotageJob = (j: never) =>
+  lancer(j, tachePanelGeo as never, (async () => null) as never);
 const job = (tache: unknown) => ({ data: { tache } }) as never;
 
 describe("worker seo-pilotage", () => {
@@ -82,6 +83,7 @@ describe("worker seo-pilotage", () => {
       "inspection",
       "robots-ia",
       "panel-geo",
+      "bing-releve",
     ]) {
       expect(await runSeoPilotageJob(job(t))).toEqual({
         issue: "saute",
@@ -237,6 +239,22 @@ describe("worker seo-pilotage", () => {
         motif: "tables_absentes",
       });
     }
+  });
+
+  it("bing-releve : allumé sans réglage Bing ni clé, saute sans appel ni écriture", async () => {
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    delete process.env.BING_RELEVE_ENABLED;
+    delete process.env.BING_WMT_API_KEY;
+    expect(await runSeoPilotageJob(job("bing-releve"))).toEqual({
+      issue: "saute",
+      motif: "bing_releve_eteint",
+    });
+    process.env.BING_RELEVE_ENABLED = "true";
+    expect(await runSeoPilotageJob(job("bing-releve"))).toEqual({
+      issue: "saute",
+      motif: "clé Bing absente du worker",
+    });
+    delete process.env.BING_RELEVE_ENABLED;
   });
 
   it("panel-geo : éteint, rien ne part ; allumé, aiguillée ; une liste non validée saute", async () => {
