@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// PR K (#2464) — non-régression : un apporteur RETIRÉ du réseau, sans argent en jeu,
+// PR K (2464) — non-régression : un apporteur RETIRÉ du réseau, sans argent en jeu,
 // reste sur la page neutre (null), même avec un lien valide. L'archive ne vaut que
 // pour un contrat résilié.
 vi.mock("server-only", () => ({}));

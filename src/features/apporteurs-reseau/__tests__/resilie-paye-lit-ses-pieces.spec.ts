@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// PR K (#2464) : un apporteur RÉSILIÉ et payé garde la lecture de SES pièces.
+// PR K (2464) : un apporteur RÉSILIÉ et payé garde la lecture de SES pièces.
 vi.mock("server-only", () => ({}));
 
 const h = vi.hoisted(() => ({

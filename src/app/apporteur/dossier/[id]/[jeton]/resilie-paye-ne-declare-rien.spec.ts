@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// PR K (#2464) : en archive (résilié, payé), toute écriture est refusée côté serveur.
+// PR K (2464) : en archive (résilié, payé), toute écriture est refusée côté serveur.
 vi.mock("server-only", () => ({}));
 
 const h = vi.hoisted(() => ({

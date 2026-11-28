@@ -1,7 +1,7 @@
 "use client";
 // use-client: copie dans le presse-papiers (état local, Server Action)
 
-// Fiche d'un apporteur résilié : copier le lien d'accès à ses pièces (PR K, #2464).
+// Fiche d'un apporteur résilié : copier le lien d'accès à ses pièces (PR K, 2464).
 // Aucun e-mail n'est envoyé.
 
 import { useState, useTransition } from "react";

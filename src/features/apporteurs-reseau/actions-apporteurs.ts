@@ -211,7 +211,7 @@ export async function renvoyerContratSigneAction(input: { apporteurId: string })
 }
 
 /**
- * PR K (#2464) : l'URL d'accès en lecture aux pièces d'un apporteur RÉSILIÉ, calculée sur la
+ * PR K (2464) : l'URL d'accès en lecture aux pièces d'un apporteur RÉSILIÉ, calculée sur la
  * version courante du lien. Aucun e-mail, aucune écriture ; `message` porte l'URL.
  */
 export async function lienArchiveAction(input: { apporteurId: string }): Promise<Retour> {

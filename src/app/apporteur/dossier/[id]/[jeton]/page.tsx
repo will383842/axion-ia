@@ -119,7 +119,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
   // MODE RESTREINT (2026-10-07) : retiré du réseau, avec de l'argent encore en jeu. Seul le
   // dépôt des attestations de vigilance reste ouvert — ni signature, ni déclaration, ni
   // dossier (les actions le refusent aussi).
-  // ARCHIVE (PR K, #2464) : résilié et payé. Lecture seule, aucun formulaire.
+  // ARCHIVE (PR K, 2464) : résilié et payé. Lecture seule, aucun formulaire.
   if (dossier.archive) {
     const base = `/apporteur/dossier/${dossier.id}/${jeton}`;
     const LIEN =

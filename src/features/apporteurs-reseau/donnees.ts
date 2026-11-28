@@ -203,7 +203,7 @@ export interface DossierVue {
    */
   restreint?: true;
   /**
-   * Apporteur RÉSILIÉ, payé, sans argent en jeu (PR K, #2464) : la page n'offre que la
+   * Apporteur RÉSILIÉ, payé, sans argent en jeu (PR K, 2464) : la page n'offre que la
    * lecture de ses autofactures, relevés et contrat. Aucune écriture (`restreint` l'impose).
    */
   archive?: true;
