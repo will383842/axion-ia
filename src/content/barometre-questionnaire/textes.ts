@@ -2,6 +2,7 @@
 // Les valeurs d'options sont des slugs ASCII stables ; seuls les libellés sont lus par les personnes.
 
 import { STUDY_REGIONS } from "@/content/observatoire/study";
+import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import {
   CONSERVATION_MOIS,
   DATE_DEBUT_COLLECTE,
@@ -44,7 +45,7 @@ export const RGPD: ReadonlyArray<{ titre: string; texte: string }> = [
   {
     titre: "Responsable du traitement et contact",
     texte:
-      "Axion-IA OÜ, éditeur du site axion-ia.com. Pour toute question ou pour exercer vos droits, utilisez la page contact du site : axion-ia.com/contact.",
+      `${IDENTITE_LEGALE.legalName}, éditeur du site axion-ia.com. Pour toute question ou pour exercer vos droits, utilisez la page contact du site : axion-ia.com/contact.`,
   },
   {
     titre: "Finalité",
