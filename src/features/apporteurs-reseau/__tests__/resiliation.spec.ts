@@ -122,7 +122,7 @@ describe("résiliation : effets de l'article 12", () => {
     expect(passe!.protegeeJusquAt).toEqual(new Date("2026-09-01T00:00:00Z"));
   });
 
-  it("résilier : statut, date, lien révoqué (version +1), attributions terminées", async () => {
+  it("résilier : statut, date, lien NON révoqué (PR K), attributions terminées", async () => {
     etat.presentations = [
       { id: "r", statut: "reservee", protegeeJusquAt: null },
       { id: "c", statut: "confirmee", protegeeJusquAt: new Date("2027-01-01T00:00:00Z") },
@@ -132,8 +132,8 @@ describe("résiliation : effets de l'article 12", () => {
     expect(etat.majApporteur[0]).toMatchObject({
       statut: "resilie",
       resilieAt: MAINTENANT,
-      versionLien: { increment: 1 },
     });
+    expect(etat.majApporteur[0]).not.toHaveProperty("versionLien");
     expect(etat.majPresentations).toHaveLength(2);
     expect(etat.majPresentations[0]).toMatchObject({ data: { statut: "terminee" } });
   });
