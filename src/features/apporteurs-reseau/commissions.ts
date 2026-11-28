@@ -38,9 +38,12 @@ import { regimeFactureDepuisHonoraires } from "@/server/qualiopi/remuneration/au
 import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
+import { MESSAGE_JOURNEE_IA_GRILLE_V2 } from "./journee-ia-grille";
 import { signalerErreurReseau } from "./signaler";
 import {
-  calculerCommissionSelonGrille,
+  calculerCommissionSelonGrilleAvecRegle,
+  versionContratSignee,
+  type RegleAppliquee,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
   estPalierFormation,
   grilleDeLaCommande,
@@ -345,6 +348,15 @@ export async function grilleDeLaLigne(c: {
 
 // ── Qualifier une formation ──────────────────────────────────────────────
 
+/** Version du contrat signée par cet apporteur (`null` si illisible : rien n'est inventé). */
+async function versionSignee(apporteurId: string): Promise<string | null> {
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { signatureApporteur: true },
+  });
+  return versionContratSignee(a?.signatureApporteur);
+}
+
 export async function qualifierCommission(
   id: string,
   palier: string,
@@ -380,21 +392,30 @@ export async function qualifierCommission(
   // commande décide du forfait (avant le 26/11/2026) ou de 0 €.
   const { grille, signeeAt } = await grilleDeLaLigne(c);
   if (grille === null) return { ok: false, message: MESSAGE_GRILLE_INCONNUE };
-  const calc: CalculCommission = journeeIa
-    ? {
-        statut: "calculee",
-        montantCents: commissionJourneeIaCents(c.factureHtCents, q),
-        palier: PALIER_JOURNEE_IA,
-        prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
-      }
-    : calculerCommissionSelonGrille({
-        activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
-        factureHtCents: c.factureHtCents,
-        palier,
-        quantite,
-        signeeAt,
-        grille,
-      });
+  // Point 17 : la Journée IA n'est pas dans la grille v2 (A1.5, A1.7) ; ni 500 € ni 0 € ici.
+  if (journeeIa && grille === "v2") return { ok: false, message: MESSAGE_JOURNEE_IA_GRILLE_V2 };
+  let regle: RegleAppliquee | null = null;
+  let calc: CalculCommission;
+  if (journeeIa) {
+    calc = {
+      statut: "calculee",
+      montantCents: commissionJourneeIaCents(c.factureHtCents, q),
+      palier: PALIER_JOURNEE_IA,
+      prixPublicCents: PRIX_REFERENCE_JOURNEE_IA_CENTS * q,
+    };
+    regle = "journee_ia";
+  } else {
+    const r = calculerCommissionSelonGrilleAvecRegle({
+      activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
+      factureHtCents: c.factureHtCents,
+      palier,
+      quantite,
+      signeeAt,
+      grille,
+    });
+    calc = r.calcul;
+    regle = r.regle;
+  }
   if (calc.statut !== "calculee")
     return {
       ok: false,
@@ -415,6 +436,9 @@ export async function qualifierCommission(
       prixPublicHtCents: calc.prixPublicCents,
       montantCents: calc.montantCents,
       statut: v.statut,
+      // Règle et version posées au calcul, sous la garde `a_qualifier` : jamais rétroactif.
+      regleAppliquee: regle,
+      versionContrat: await versionSignee(c.apporteurId),
     },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être qualifiée." };
@@ -482,14 +506,15 @@ export async function classerActiviteCommission(
     grille === "v3" &&
     choisie === "site_web" &&
     (!signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS);
-  const calc: CalculCommission = venteAnterieure
-    ? { statut: "aucune" }
-    : calculerCommissionSelonGrille({
+  const avecRegle = venteAnterieure
+    ? null
+    : calculerCommissionSelonGrilleAvecRegle({
         activite: choisie,
         factureHtCents: c.factureHtCents,
         signeeAt,
         grille,
       });
+  const calc: CalculCommission = avecRegle ? avecRegle.calcul : { statut: "aucune" };
   if (calc.statut === "aucune") {
     // La vraie raison, jamais un message générique : une commande de développement web signée avant
     // la date d'effet n'est pas « sans commission », elle est antérieure au contrat 2.8.
@@ -523,6 +548,8 @@ export async function classerActiviteCommission(
       ...(calc.palier ? { palier: calc.palier } : {}),
       montantCents: calc.montantCents,
       statut: v.statut,
+      regleAppliquee: avecRegle?.regle ?? null,
+      versionContrat: await versionSignee(c.apporteurId),
     },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
@@ -576,7 +603,12 @@ async function qualifierPartParrainage(
   const v = await statutApresVigilance(part.apporteurId, montant, maintenant, part.id);
   await prisma.commissionApporteur.updateMany({
     where: { id: part.id, statut: "a_qualifier" },
-    data: { montantCents: montant, statut: v.statut },
+    data: {
+      montantCents: montant,
+      statut: v.statut,
+      regleAppliquee: "parrainage_10",
+      versionContrat: await versionSignee(part.apporteurId),
+    },
   });
   if (v.demander) await demanderVigilance(part.apporteurId, "premiere");
 }

@@ -197,6 +197,9 @@ beforeEach(() => {
     // fichier testent le RYTHME propre à la campagne. Le plafond global a son
     // propre scénario (P0ter), où il est ramené à sa valeur réelle.
     if (key === "daily_generation_cap") return { maxPerDay: 100_000 };
+    // C2 : relecture obligatoire plafonne la génération à 3/jour ; ces scénarios testent le
+    // rythme de la campagne, donc on lève le plafond C2 (retour arrière explicite).
+    if (key === "policies") return { publicationSansRelectureAutorisee: true };
     return {};
   });
   campaignUpdateMock.mockResolvedValue({ id: "campaign-1" });
@@ -271,6 +274,7 @@ describe("Orchestrator — per-campaign dailyArticles budget (Phase 4)", () => {
       if (key === "kill_switch") return { active: false };
       if (key === "batches") return { workersConcurrency: 3 };
       if (key === "daily_generation_cap") return { maxPerDay: 20 };
+      if (key === "policies") return { publicationSansRelectureAutorisee: true };
       return {};
     });
     // 20 jobs déjà consommés aujourd'hui = le plafond global entier. Le rythme

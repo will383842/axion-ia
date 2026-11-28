@@ -117,6 +117,17 @@ env:
 # Contrepartie assumée : quand A échoue, C et D auront tourné pour rien. En
 # échange, une PR cassée rend TOUS ses défauts en une seule passe, au lieu de les
 # révéler l'un après l'autre, un cycle de 49 min à la fois.
+#
+# 🔵 2026-11-27 (CI rapide, PR 1) — CONTREPARTIE REVUE : LE COUPE-CIRCUIT.
+# Le goulot est la file (jobs en attente), pas la durée d'un run : ce sont les
+# minutes-machine par PR qui comptent. Sur une PR PRÊTE (ou une file de fusion)
+# dont Gate A rougit, le job `coupe-circuit` annule le run : couverture et Gate B
+# s'arrêtent, leurs verdicts (`always()`) tournent quand même et rendent ROUGE.
+# Pas de `needs: gate-a` sur les jobs lourds : une PR verte ne perd aucune minute.
+# Ce que la doctrine ci-dessus perd, sur ce seul cas : les tests et l'E2E ne sont
+# plus rendus dans la même passe que Gate A ; ils le seront au push suivant. Le
+# passage quotidien (`schedule`) n'a PAS de coupe-circuit : il rend tous les
+# défauts. Verrouillé par `tests/unit/ci/coupe-circuit-ne-rend-jamais-vert.spec.ts`.
 # ─────────────────────────────────────────────────────────────────────────────
 
 jobs:
@@ -190,6 +201,23 @@ jobs:
       # typecheck de `next build` (Gate B) vérifiait. Gate B le saute désormais
       # (`SKIP_NEXT_TYPECHECK`) : c'est ici, sous un contexte EXIGÉ, qu'il est repris.
       # Coût mesuré : ~1,5 s. `SKIP_ENV_VALIDATION` : next.config est chargé, sans secrets.
+      # 2026-11-27 (CI rapide, PR 1) — caches ESLint, Prettier et tsc. Passage
+      # quotidien : SANS cache (contrôle à froid complet, filet de sécurité). La clé
+      # porte le hachage du lockfile ET des configs ; le préfixe de repli le garde,
+      # donc jamais de cache d'une autre config. `--cache-strategy content` est
+      # obligatoire : les dates de modification sont neuves après chaque checkout.
+      # Verrouillé par `tests/unit/ci/gate-a-caches-surs.spec.ts`.
+      - name: Caches lint / format / types
+        if: github.event_name != 'schedule'
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules/.cache/eslint
+            node_modules/.cache/prettier
+            tsconfig.tsbuildinfo
+          key: gate-a-v1-${{ hashFiles('pnpm-lock.yaml', 'eslint.config.mjs', '.prettierrc.json', '.prettierignore', 'tsconfig.json', 'package.json') }}-${{ github.sha }}
+          restore-keys: |
+            gate-a-v1-${{ hashFiles('pnpm-lock.yaml', 'eslint.config.mjs', '.prettierrc.json', '.prettierignore', 'tsconfig.json', 'package.json') }}-
       - name: Types de routes Next (next typegen)
         run: pnpm exec next typegen
         env:
@@ -206,9 +234,9 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=8192
       - name: ESLint
-        run: pnpm lint
+        run: pnpm lint --cache --cache-strategy content --cache-location node_modules/.cache/eslint/
       - name: Prettier
-        run: pnpm format:check
+        run: pnpm format:check --cache --cache-strategy content --cache-location node_modules/.cache/prettier/.prettier-cache
       # Pas de Vitest ici (2026-09-19) : la suite entière tourne dans les jobs
       # `gate-a-couverture-morceau` + `gate-a-couverture` ci-dessous. Voir le commentaire de tête du job.
       - name: i18n parity
@@ -315,6 +343,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_CONFIG: ${{ github.workspace }}/.gitleaks.toml
+
+  # Gate A rouge sur une PR prête ⇒ on annule le run : couverture et Gate B
+  # s'arrêtent, leurs verdicts (always()) tournent quand même et rendent ROUGE.
+  # N'est JAMAIS exigé ; ne peut que rendre un contexte non vert plus tôt.
+  # Job à part et pas dernière étape de Gate A : annuler depuis Gate A le ferait
+  # finir « cancelled » au lieu de « failure ». Pas sur `schedule` (le quotidien
+  # rend tous les défauts) ni en brouillon (rien de lourd n'y tourne).
+  coupe-circuit:
+    name: Coupe-circuit (Gate A rouge)
+    needs: gate-a
+    if: >-
+      failure() && (
+      (github.event_name == 'pull_request' && github.event.pull_request.draft == false) ||
+      github.event_name == 'merge_group')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run cancel "${{ github.run_id }}" -R "${{ github.repository }}"
 
   # 2026-09-19 — LA suite Vitest du dépôt : c'est la SEULE famille de jobs qui
   # la lance (voir le commentaire de tête de `gate-a`). Elle tourne avec
@@ -641,8 +691,8 @@ jobs:
       # n'a pas besoin de cet espace (le runner démarre à ~14 Go libres).
       #
       # Ici on LANCE le nettoyage en arrière-plan ; l'étape « Libérer le disque
-      # — ATTENDRE la fin » reprend à l'emplacement d'origine de l'ancienne
-      # étape (juste avant l'installation de Playwright, donc avant
+      # — ATTENDRE la fin » est placée APRÈS l'installation de
+      # Playwright (2026-11-27, CI rapide PR 1), donc avant
       # `.next`, le build et tout ce qui a besoin des Go libérés).
       #
       # ⚠️ Le `wait` est OBLIGATOIRE, et il est BLOQUANT : un nettoyage qui
@@ -692,7 +742,7 @@ jobs:
         run: pnpm prisma:generate
       # ORDRE DES ÉTAPES — RÉVISÉ LE 2026-08-21, ET L'ORDRE EST LA CORRECTION.
       #
-      #   1. Install Playwright browsers EN PREMIER (résout la dépendance chrome
+      #   1. Install Playwright browsers EN PREMIER, puis l'attente du disque (2026-11-27) (résout la dépendance chrome
       #      exigée par puppeteer-core de size-limit pour mesurer DevTools).
       #   2. Build — `next build --webpack`, sur les stubs DATABASE/REDIS du job.
       #   3. Bundle size (`size-limit` seul : il LIT `.next/static`, il n'y touche pas).
@@ -732,7 +782,20 @@ jobs:
       # `apt-get clean` reste APRÈS la suppression, comme avant — et surtout
       # avant l'installation de Playwright, qui prend le verrou apt : aucun
       # `apt` n'a tourné entre-temps, donc aucune course sur ce verrou.
-      - name: Libérer le disque — ATTENDRE la fin (obligatoire avant Playwright, .next et build)
+      # Panne du 2026-11-11 : les machines ne résolvaient plus l'archive Ubuntu,
+      # `--with-deps` (9 paquets de polices) échouait après 12 min sur toutes les PR.
+      # Le script bascule sur un miroir de secours, ou échoue en moins d'une minute.
+      - name: Paquets Ubuntu — miroir de secours si l'archive est injoignable
+        run: bash scripts/ci/apt-resistant.sh
+      - name: Install Playwright browsers (avant build pour chrome dep)
+        run: pnpm exec playwright install --with-deps chromium
+      # 🔵 2026-11-27 (CI rapide, PR 1) — l'ATTENTE du nettoyage est ICI, APRÈS
+      # l'installation de Playwright (qui la recouvre : −1 à −1,8 min de chemin
+      # critique) et AVANT « Relocate .next to /mnt », le build et le semis : rien de
+      # ce qui consomme beaucoup de disque ne démarre avant que le nettoyage soit
+      # fini (ENOSPC de juin). `apt-get clean` reste dans l'attente : Playwright a
+      # fini, donc plus aucune course sur le verrou apt.
+      - name: Libérer le disque — ATTENDRE la fin (obligatoire avant .next et build)
         run: |
           attente=0
           while [ ! -f /tmp/liberation-disque.fini ] && [ "$attente" -lt 600 ]; do
@@ -752,13 +815,6 @@ jobs:
           # « Bundle size ». Les suppressions du lancement libèrent déjà ~15 GB.
           sudo apt-get clean || true
           df -h /
-      # Panne du 2026-11-11 : les machines ne résolvaient plus l'archive Ubuntu,
-      # `--with-deps` (9 paquets de polices) échouait après 12 min sur toutes les PR.
-      # Le script bascule sur un miroir de secours, ou échoue en moins d'une minute.
-      - name: Paquets Ubuntu — miroir de secours si l'archive est injoignable
-        run: bash scripts/ci/apt-resistant.sh
-      - name: Install Playwright browsers (avant build pour chrome dep)
-        run: pnpm exec playwright install --with-deps chromium
       # ENOSPC fix 2026-06-21 : la sortie SSG (~18k pages) + la copie `.next/standalone`
       # (qui DUPLIQUE `.next/server`) dépassent les ~15 GB libérés sur `/` (cause du
       # « ENOSPC: no space left on device » à la copie standalone, build pourtant
