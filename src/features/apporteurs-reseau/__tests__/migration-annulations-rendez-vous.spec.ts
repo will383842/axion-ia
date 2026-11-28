@@ -18,10 +18,13 @@ describe("migration des annulations de rendez-vous", () => {
     const nom = DOSSIER.split("/").pop() as string;
     const horodatage = (d: string) => d.slice(0, 14);
     const autres = readdirSync(join(process.cwd(), "prisma/migrations")).filter(
-      // La file d'attente de l'article 3.5 (PR F) vient après : on ne compare qu'aux précédentes.
-      (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_apporteurs_file_attente"),
-      // Le panel GEO (pilotage SEO, P11) est légitimement postérieur : table nouvelle, sans lien.
-      (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_pilotage_seo_geo_panel"),
+      // La file d'attente de l'article 3.5 (PR F) vient après ; le panel GEO (pilotage SEO, P11) est
+      // légitimement postérieur (table nouvelle, sans lien) : on ne compare qu'aux précédentes.
+      (d) =>
+        /^\d{14}_/.test(d) &&
+        d !== nom &&
+        !d.endsWith("_apporteurs_file_attente") &&
+        !d.endsWith("_pilotage_seo_geo_panel"),
     );
     // Les migrations d'autres chantiers, posées après, sont admises : liste fermée.
     const fautives = autres.filter(
