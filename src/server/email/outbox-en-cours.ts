@@ -23,6 +23,13 @@ export function cleTacheOutbox(id: string): string {
   return `outbox-${id}`;
 }
 
+/** Réciproque de `cleTacheOutbox` : l'id de la ligne de corbeille, ou `null` (envoi direct). */
+export function idLigneDepuisCleTache(cle: string | undefined): string | null {
+  if (typeof cle !== "string" || !cle.startsWith("outbox-")) return null;
+  const id = cle.slice("outbox-".length);
+  return id === "" ? null : id;
+}
+
 /** La file n'a pas répondu à temps : AUCUNE commande n'a été émise, rien n'est en vol. */
 export class FileInjoignable extends Error {
   constructor() {

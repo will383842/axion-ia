@@ -121,6 +121,7 @@ const NUMERO_PIECE = "AXI-DOC-001";
 const PIECE_ID = "22222222-2222-4222-8222-222222222222";
 const UPDATED = new Date("2026-11-01T10:00:00.000Z");
 const ADRESSE = "dest@client.test";
+const PDF_CLE = "documents/2026/devis/AXI-DOC-001.pdf";
 
 const LIGNE = {
   id: "o-1",
@@ -128,6 +129,7 @@ const LIGNE = {
   recipient: ADRESSE,
   entityType: "Devis",
   entityId: DEVIS_ID,
+  pieceJointeCle: PDF_CLE,
 };
 const ACTEUR = { session: { userId: "adm-1", role: "super_admin" } } as never;
 
@@ -163,10 +165,12 @@ function devisRelu(over: Record<string, unknown> = {}) {
     replacesDevis: null,
     dateValidite: new Date("2026-12-15T00:00:00Z"),
     documentGenereId: PIECE_ID,
+    fichierPdfUrl: PDF_CLE,
     client: {
       raisonSociale: "ACME",
       contactNom: "Contact",
       contactFonction: "Gérant",
+      contactEmail: ADRESSE,
       type: "entreprise",
     },
     ...over,
@@ -735,6 +739,69 @@ describe("devis-renvoi", () => {
     expect(r.type).toBe("refus");
     expect(h.creerToken).not.toHaveBeenCalled();
     expect(enfiler).not.toHaveBeenCalled();
+  });
+
+  describe("Q5/Q6 — adresse et PDF recontrôlés sous le verrou, avant tout jeton", () => {
+    const refusSansJeton = async (
+      devis: Record<string, unknown>,
+      ligne: Record<string, unknown>,
+      message: string,
+    ) => {
+      h.txDevisFindUnique.mockResolvedValue(devisRelu({ statut: "envoye", ...devis }));
+      const enfiler = vi.fn(enfileOk);
+      const r = await envoyerAvecLienALEnvoi({
+        ligne: { ...LIGNE, ...ligne },
+        payload: payloadAvec(marqueurRenvoi()),
+        acteur: ACTEUR,
+        enfiler: enfiler as never,
+      });
+      expect(r).toMatchObject({ type: "refus" });
+      expect(JSON.stringify(r)).toContain(message);
+      expect(h.creerToken).not.toHaveBeenCalled();
+      expect(enfiler).not.toHaveBeenCalled();
+    };
+    const client = (contactEmail: string | null) => ({
+      raisonSociale: "ACME",
+      contactNom: "Contact",
+      contactFonction: "Gérant",
+      contactEmail,
+      type: "entreprise",
+    });
+    it("adresse du contact changée : refus, aucun jeton", async () => {
+      await refusSansJeton(
+        { client: client("autre@client.test") },
+        {},
+        "L'adresse du contact a changé depuis la préparation",
+      );
+    });
+    it("adresse du contact effacée : refus, aucun jeton", async () => {
+      await refusSansJeton({ client: client(null) }, {}, "L'adresse du contact a changé");
+    });
+    it("casse et espaces seulement : accepté", async () => {
+      h.txDevisFindUnique.mockResolvedValue(
+        devisRelu({ statut: "envoye", client: client("  DEST@Client.Test ") }),
+      );
+      const r = await lancer(vi.fn(enfileOk) as never);
+      expect(r.type).toBe("envoi");
+      expect(h.creerToken).toHaveBeenCalledTimes(1);
+    });
+    it("PDF joint de forme inattendue : refus, aucun jeton", async () => {
+      await refusSansJeton(
+        { fichierPdfUrl: "autre/chemin.pdf" },
+        { pieceJointeCle: "autre/chemin.pdf" },
+        "Le PDF de ce devis a changé",
+      );
+    });
+    it("PDF joint absent de la ligne : refus, aucun jeton", async () => {
+      await refusSansJeton({}, { pieceJointeCle: null }, "Le PDF de ce devis a changé");
+    });
+    it("PDF joint différent du PDF actuel du devis : refus, aucun jeton", async () => {
+      await refusSansJeton(
+        { fichierPdfUrl: "documents/2026/devis/AXI-DOC-002.pdf" },
+        {},
+        "Le PDF de ce devis a changé",
+      );
+    });
   });
 
   describe("règles commerciales D4/D6 à l'approbation (premier envoi)", () => {

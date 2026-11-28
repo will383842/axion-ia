@@ -144,6 +144,8 @@ const MARQUEUR_RENVOI = {
   devisId: "devis-1",
 };
 
+const PDF_CLE = "documents/2026/devis/AXI-DOC-001.pdf";
+
 const ligne = (over: Record<string, unknown> = {}) => ({
   id: ID,
   template: "devis-envoi",
@@ -155,7 +157,7 @@ const ligne = (over: Record<string, unknown> = {}) => ({
   clientId: null,
   entityType: "Devis",
   entityId: "devis-1",
-  attachments: null,
+  attachments: [{ filename: "d.pdf", r2Key: PDF_CLE, contentType: "application/pdf" }],
   ...over,
 });
 
@@ -165,7 +167,8 @@ const devisEnvoye = {
   offre: null,
   documentGenereId: "piece-1",
   dateValidite: null,
-  client: { raisonSociale: "ACME", contactNom: null, contactFonction: null },
+  fichierPdfUrl: PDF_CLE,
+  client: { raisonSociale: "ACME", contactNom: null, contactFonction: null, contactEmail: ADRESSE },
 };
 
 /** Tout ce qui sort vers les journaux, Sentry, Telegram et revalidation. */
@@ -346,7 +349,7 @@ describe("garde de sommeil", () => {
 describe("lignes anciennes et autres gabarits : inchangé", () => {
   it("ligne ancienne avec signatureUrl : mêmes arguments, aucun jeton créé", async () => {
     const lien = "https://exemple.test/portail/signer/ANCIEN";
-    h.ligne.v = ligne({ payload: { numero: "D-1", signatureUrl: lien } });
+    h.ligne.v = ligne({ payload: { numero: "D-1", signatureUrl: lien }, attachments: null });
     const r = await approuverEmailAction({ id: ID });
     expect(r).toEqual({ data: { id: ID, envoye: true } });
     expect(h.nbJetons.v).toBe(0);

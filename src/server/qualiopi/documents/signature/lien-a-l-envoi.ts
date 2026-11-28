@@ -37,6 +37,7 @@ import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { refusReglesFormules } from "@/server/qualiopi/devis/regles-commerciales";
 import { marquerDevisEnvoye } from "@/server/qualiopi/devis/marquer-devis-envoye";
 import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
+import { motifRelanceDevisSansObjet } from "@/server/qualiopi/devis/relance-devis-sans-objet";
 import {
   MSG_VERSION_REMPLACEE_ACCEPTEE,
   versionRemplaceeBloqueEmission,
@@ -48,6 +49,8 @@ import { creerTokenDocument, revoquerJetonPrecis, TokenDocumentError } from "./t
 export const CLE_MARQUEUR = "lienSignatureALEnvoi" as const;
 /** Gabarit du courriel d'envoi ET de renvoi d'un devis (même nom que `sendDevisAction`). */
 const GABARIT_DEVIS_ENVOI = "devis-envoi";
+/** Gabarit de la relance d'un devis (B3) : même voie « devis-renvoi », même verrou, mêmes gardes. */
+const GABARIT_RELANCE_DEVIS = "relance-devis-client";
 
 const MSG_INCOHERENT = "E-mail incohérent : refusez-le et renvoyez depuis le devis.";
 const MSG_MODIFIE = "Le devis a été modifié depuis : refusez cet e-mail et renvoyez le devis.";
@@ -63,6 +66,8 @@ const MSG_PIECE =
 const MSG_PIECE_DIFFERENTE =
   "La pièce du devis a changé : refusez cet e-mail et renvoyez depuis le devis.";
 const MSG_SIGNE = "Le client a déjà signé ce devis : refusez cet e-mail.";
+const MSG_RENVOI_PERIME =
+  "La validité du devis est dépassée : prolongez-la d'abord ou refusez cet e-mail (aucun lien n'est créé).";
 /** Clé R2 d'un PDF de devis : `documents/<année à 4 chiffres>/devis/<numéro de la pièce>.pdf`
  *  (même construction que `generateDocument` et `sendDevisAction`). */
 const FORME_CLE_PDF = /^documents\/\d{4}\/devis\/([^/]+)\.pdf$/;
@@ -72,6 +77,11 @@ const cleDevisValide = (cle: string, numeroPiece: unknown): boolean => {
     m !== null && typeof numeroPiece === "string" && numeroPiece !== "" && m[1] === numeroPiece
   );
 };
+
+const MSG_ADRESSE_CHANGEE =
+  "L'adresse du contact a changé depuis la préparation de cet e-mail. Refusez-le, puis préparez-en un nouveau.";
+const MSG_PDF_CHANGE =
+  "Le PDF de ce devis a changé depuis la préparation de cet e-mail. Refusez-le, puis préparez-en un nouveau.";
 
 const MSG_JETON = "Le lien de signature n'a pas pu être créé : refusez cet e-mail et réessayez.";
 
@@ -199,6 +209,8 @@ export interface LigneALEnvoi {
   recipient: string;
   entityType: string;
   entityId: string;
+  /** Clé R2 de la première pièce jointe de la ligne (le PDF du devis), recontrôlée au renvoi. */
+  pieceJointeCle?: string | null;
 }
 
 /** Le verrou d'envoi de ce devis est déjà pris (autre clic, remise en main propre…). */
@@ -273,16 +285,26 @@ export async function envoyerAvecLienALEnvoi<R extends VerdictEnfilage = Verdict
   const { ligne, payload, acteur, enfiler, sonder } = input;
   const marqueur = lireMarqueur(payload);
 
-  // Lignes anciennes et autres gabarits : INCHANGÉ.
+  const estRelanceDevis = ligne.template === GABARIT_RELANCE_DEVIS && ligne.entityType === "Devis";
+
+  // Lignes anciennes et autres gabarits : INCHANGÉ — sauf une relance de devis garée sans marqueur
+  // (devis classique, ancienne ligne) : elle ne part pas si elle est devenue sans objet.
   if (marqueur === null) {
+    if (estRelanceDevis) {
+      const motif = await motifRelanceDevisSansObjet(prisma, ligne.entityId, new Date());
+      if (motif !== null) return refus(motif);
+    }
     return { type: "envoi", res: sansLien(await enfiler(payload, ligne.recipient)) };
   }
 
   if (
     "invalide" in marqueur ||
-    ligne.template !== GABARIT_DEVIS_ENVOI ||
     ligne.entityType !== "Devis" ||
-    ligne.entityId !== marqueur.devisId
+    ligne.entityId !== marqueur.devisId ||
+    // Le premier envoi n'existe que pour `devis-envoi` ; le renvoi accepte aussi la relance.
+    (marqueur.nature === "devis-premier-envoi"
+      ? ligne.template !== GABARIT_DEVIS_ENVOI
+      : ligne.template !== GABARIT_DEVIS_ENVOI && ligne.template !== GABARIT_RELANCE_DEVIS)
   ) {
     return refus(MSG_INCOHERENT);
   }
@@ -358,9 +380,9 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           if (!devis) return refus(MSG_INTROUVABLE);
           etat.numero = devis.numero;
           // OUT-1 — envoi déjà fait ou en file : AUCUN jeton forgé (il révoquerait le lien que
-          // porte l'e-mail déjà en file). ⚠️ Le chemin « Relancer » de la pièce (`emettreLienSignature`)
-          // ne regarde pas `emailDevisEnAttente` et ne prend pas ce verrou : un autre jeton a pu
-          // être créé entre deux tentatives. Le devis n'est donc marqué envoyé que si le lien que
+          // porte l'e-mail déjà en file). Depuis #2224 le chemin « Relancer » de la pièce
+          // (`emettreLienSignature`) prend ce même verrou et lit `emailDevisEnAttente`, mais un
+          // autre jeton a pu être créé avant lui, entre deux tentatives. Le devis n'est donc marqué envoyé que si le lien que
           // porte la tâche est VÉRIFIÉ (cette pièce, partie client, non révoqué) ET si le devis est
           // resté tel que le marqueur le décrit ; sinon aucune écriture, alerte au numéro, refus.
           const deja = sonder ? await sonder() : null;
@@ -698,6 +720,13 @@ async function renvoi<R extends VerdictEnfilage>(a: {
           return { type: "envoi", res: etat.verdict };
         }
 
+        // Relance de devis : encore utile ? (signé, refusé, accepté, remplacé, périmé, remis en main
+        // propre → refus avec le motif du module, AVANT tout jeton et tout envoi.)
+        if (ligne.template === GABARIT_RELANCE_DEVIS) {
+          const motif = await motifRelanceDevisSansObjet(tx, marqueur.devisId, new Date());
+          if (motif !== null) return refus(motif);
+        }
+
         // (b) Relecture + gardes DANS le tx, APRÈS le verrou, AVANT tout jeton.
         const devis = await tx.devis.findUnique({
           where: { id: marqueur.devisId },
@@ -709,11 +738,24 @@ async function renvoi<R extends VerdictEnfilage>(a: {
             offre: true,
             documentGenereId: true,
             dateValidite: true,
-            client: { select: { raisonSociale: true, contactNom: true, contactFonction: true } },
+            fichierPdfUrl: true,
+            client: {
+              select: {
+                raisonSociale: true,
+                contactNom: true,
+                contactFonction: true,
+                contactEmail: true,
+              },
+            },
           },
         });
         if (!devis) return refus(MSG_INTROUVABLE);
         if (devis.statut !== "envoye") return refus(MSG_PAS_ENVOYE);
+        // Validité dépassée : `calculerExpirationDocument` poserait un plancher de 48 h sur un
+        // devis que le cron de 06:45 UTC n'a pas encore expiré. Aucun lien n'est créé.
+        if (devis.dateValidite instanceof Date && devis.dateValidite < new Date()) {
+          return refus(MSG_RENVOI_PERIME);
+        }
         if (devis.documentGenereId !== marqueur.documentGenereId) {
           return refus(MSG_PIECE_DIFFERENTE);
         }
@@ -727,6 +769,18 @@ async function renvoi<R extends VerdictEnfilage>(a: {
           !(await formulesActives(undefined, { clientId: devis.clientId, tx }))
         ) {
           return refus(MSG_FORMULES);
+        }
+
+        // L'adresse du contact a changé depuis la préparation : le jeton serait lié à une adresse
+        // qui n'est plus celle du contact. Refus AVANT tout jeton (comparaison sans casse ni espaces).
+        const adresseActuelle = (devis.client.contactEmail ?? "").trim().toLowerCase();
+        if (adresseActuelle !== ligne.recipient.trim().toLowerCase()) {
+          return refus(MSG_ADRESSE_CHANGEE);
+        }
+        // Le PDF joint est recontrôlé : forme attendue ET identique au PDF actuel du devis.
+        const cleJointe = ligne.pieceJointeCle ?? "";
+        if (!FORME_CLE_PDF.test(cleJointe) || cleJointe !== (devis.fichierPdfUrl ?? "")) {
+          return refus(MSG_PDF_CHANGE);
         }
 
         // (c) URL de base AVANT le jeton : créer le jeton révoque l'ancien lien.

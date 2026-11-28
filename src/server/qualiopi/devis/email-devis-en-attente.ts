@@ -17,7 +17,7 @@ import type { EmailOutboxStatus } from "../../../../prisma/generated/client";
 export const GABARIT_DEVIS_ENVOI = "devis-envoi" as const;
 
 export const MSG_EMAIL_EN_ATTENTE_MODIF =
-  "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.";
+  "Un e-mail de ce devis attend dans « E-mails à valider » ou est en cours d'envoi. S'il est encore à valider, approuvez-le ou refusez-le ; s'il est en cours d'envoi, patientez quelques minutes puis rechargez la page ; si rien ne change au bout d'une heure, voyez la page Ops & monitoring de la console.";
 
 const STATUTS_EN_ATTENTE: EmailOutboxStatus[] = ["a_valider", "approuve"];
 
