@@ -78,6 +78,7 @@ describe("la migration du relevé mensuel est additive", () => {
             "_apporteurs_file_attente",
             "_porte_qualite_content_intentions",
             "_pilotage_seo_geo_panel",
+            "_apporteurs_avenants",
           ].some((s) => d.endsWith(s)),
         ),
     );

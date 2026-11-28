@@ -16569,6 +16569,36 @@ model ApporteurReseauSiret {
   @@map("apporteur_reseau_siret")
 }
 
+/// Avenant 2.8 proposé à un apporteur déjà signé en 2.6 (#2512, lot S1). Table séparée SANS clé étrangère,
+/// comme `ApporteurReseauSiret` (fenêtre app/worker). Une seule ligne active par apporteur : index unique
+/// partiel SQL (statut IN propose, accepte, enregistre), non exprimable dans ce schéma.
+/// `statut` : chaîne contrôlée par CHECK (propose | accepte | enregistre | decline | retire), pas d'enum Postgres.
+/// `enregistreAt` = date d'effet de l'avenant, fixée une seule fois.
+/// rgpd: dossier-client
+model ApporteurAvenant {
+  id                 String    @id @default(uuid()) @db.Uuid
+  apporteurId        String    @map("apporteur_id") @db.Uuid
+  numero             Int
+  versionCible       String    @map("version_cible") @db.VarChar(16)
+  versionDepart      String    @map("version_depart") @db.VarChar(16)
+  texteAvenant       String    @map("texte_avenant")
+  texteAvenantSha256 String    @map("texte_avenant_sha256") @db.Char(64)
+  texteContratSha256 String    @map("texte_contrat_sha256") @db.Char(64)
+  statut             String    @default("propose") @db.VarChar(16)
+  proposeAt          DateTime  @default(now()) @map("propose_at") @db.Timestamptz(3)
+  relanceAt          DateTime? @map("relance_at") @db.Timestamptz(3)
+  accepteAt          DateTime? @map("accepte_at") @db.Timestamptz(3)
+  /// IP hachée, navigateur, cases cochées.
+  preuve             Json?
+  enregistreAt       DateTime? @map("enregistre_at") @db.Timestamptz(3)
+  pdfCle             String?   @map("pdf_cle")
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([apporteurId])
+  @@map("apporteur_avenants")
+}
+
 /// Dernier contrôle du registre public pour un apporteur sous contrat. Sans clé étrangère.
 /// rgpd: technique — état au registre public d'une entreprise, dates ; aucun nom, e-mail ni téléphone
 model ApporteurControleRegistre {
