@@ -142,13 +142,14 @@ describe("builders génériques — autre collaborateur", () => {
   };
   const publique = fichePublique(brute);
 
-  it("le nom de famille n'apparaît nulle part (ni name, ni familyName, ni givenName)", () => {
+  it("le nom de famille n'apparaît nulle part (ni name, ni familyName ; givenName = prénom seul)", () => {
     expect(publique).not.toBeNull();
     const g = buildGrapheCollaborateur(publique!, contenu, { indexable: true });
     const json = JSON.stringify(g);
-    expect(json).not.toMatch(/Durand|familyName|givenName/);
+    expect(json).not.toMatch(/Durand|familyName/);
     const p = g[0] as Record<string, unknown>;
     expect(p.name).toBe("Camille");
+    expect(p.givenName).toBe("Camille");
     expect(p["@id"]).toBe(`${SITE}/fr/equipe/camille#person`);
     expect(p.worksFor).toEqual({ "@id": `${SITE}/#organization` });
   });
