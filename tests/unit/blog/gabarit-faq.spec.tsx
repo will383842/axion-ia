@@ -255,11 +255,15 @@ describe("GabaritFaq — cas limites de relecture", () => {
     expect(h).toContain("<p>Suite</p>");
   });
 
+  it("6 questions : le sommaire est rendu (contrôle positif)", () => {
+    expect(rendre(props())).toContain('class="sommaire');
+  });
+
   it("une seule question : titre au singulier, pas de sommaire", () => {
     const h = rendre(props({ view: { ...props().view, faqItems: QUESTIONS.slice(0, 1) } }));
     expect(h).toContain("La question,");
     expect(h).not.toContain("Les 1 questions");
-    expect(h).not.toContain('class="sommaire"');
+    expect(h).not.toContain('class="sommaire');
   });
 
   it("espace fine insécable (U+202F) avant le « ? » de l'encart", () => {

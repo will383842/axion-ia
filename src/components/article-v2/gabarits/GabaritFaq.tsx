@@ -49,12 +49,12 @@ import { MiseEnPageAnalyse } from "./GabaritAnalyse";
 /** Rang (1 = première) après lequel s'insère l'encart « Votre question n'est pas là ? ». */
 const RANG_ENCART = 4;
 
-/** Retire tout `<script type="application/ld+json">` du corps : la FAQPage vient d'`ArticleFaq`. */
 /** Retire la section « questions associées » du corps (`qa_derived`) : les cartes la remplacent. */
 function sansQuestionsAssociees(html: string): string {
   return html.replace(/<section\b[^>]*related-qa[^>]*>[\s\S]*?<\/section\s*>/gi, "");
 }
 
+/** Retire tout `<script type="application/ld+json">` du corps : la FAQPage vient d'`ArticleFaq`. */
 function sansJsonLd(html: string): string {
   return html.replace(
     /<script\b[^>]*type\s*=\s*["']?application\/ld\+json["']?[^>]*>[\s\S]*?<\/script\s*>/gi,
