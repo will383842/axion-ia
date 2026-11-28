@@ -11,6 +11,7 @@ import {
   FUSEAU_SEO_PILOTAGE,
   PATTERN_SEO_INGESTION,
   PATTERN_SEO_PURGE,
+  PATTERN_SEO_RECALCUL,
   PATTERN_SEO_RATTRAPAGE,
 } from "../planification";
 
@@ -51,7 +52,12 @@ describe("interrupteur du pilotage SEO", () => {
 describe("cadences du robot", () => {
   it("ne tombent pas sur la minute 0 de site-route-gsc et keyword-sync (04:00 UTC)", () => {
     const minutes = (p: string) => (p.split(" ")[0] as string).split(",").map(Number);
-    for (const p of [PATTERN_SEO_INGESTION, PATTERN_SEO_RATTRAPAGE, PATTERN_SEO_PURGE]) {
+    for (const p of [
+      PATTERN_SEO_INGESTION,
+      PATTERN_SEO_RATTRAPAGE,
+      PATTERN_SEO_PURGE,
+      PATTERN_SEO_RECALCUL,
+    ]) {
       expect(minutes(p)).not.toContain(0);
     }
     expect(FUSEAU_SEO_PILOTAGE).toBe("Europe/Paris");

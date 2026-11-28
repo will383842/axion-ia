@@ -61,7 +61,7 @@ on:
   merge_group:
   # 2026-10-26 : un passage COMPLET par jour (10 h 15 Paris l'hiver, 11 h 15 l'été), car un push sur main ne relance plus
   # la couverture ×3 ni Gate C (doublon de la CI de PR, ~58 min-machine par push, voir plus bas).
-  # Depuis le 2026-11-08 (CI-LOT1), c'est le seul passage COMPLET (couverture, Gate B) sur `main` ; le push ne lance que Gate A et Gate D.
+  # Depuis le 2026-11-08 (CI-LOT1), c'est le seul passage COMPLET de la couverture sur `main` ; le push ne lance que Gate A et Gate D. Gate B ne tourne PAS sur `schedule` : seul le job `gate-b-cache-chauffe` y chauffe les caches (webpack, Playwright).
   schedule:
     - cron: "15 9 * * *"
   # 🔵 MESURE D'ACCESSIBILITÉ À LA DEMANDE (2026-09-12).
@@ -779,14 +779,25 @@ jobs:
       # consomme du disque (Playwright, `.next`, build, semis) ne démarre avant
       # que le nettoyage soit fini.
       #
-      # `apt-get clean` reste APRÈS la suppression, comme avant — et surtout
-      # avant l'installation de Playwright, qui prend le verrou apt : aucun
-      # `apt` n'a tourné entre-temps, donc aucune course sur ce verrou.
+      # Ordre réel des étapes (depuis la PR 1 du 2026-11-27) : miroir apt de secours,
+      # installation de Playwright, PUIS cette attente (qui porte `apt-get clean`).
+      # Playwright a donc fini et libéré le verrou apt avant `apt-get clean` : aucune
+      # course sur ce verrou.
       # Panne du 2026-11-11 : les machines ne résolvaient plus l'archive Ubuntu,
       # `--with-deps` (9 paquets de polices) échouait après 12 min sur toutes les PR.
       # Le script bascule sur un miroir de secours, ou échoue en moins d'une minute.
       - name: Paquets Ubuntu — miroir de secours si l'archive est injoignable
         run: bash scripts/ci/apt-resistant.sh
+      # 🔵 2026-11-27 (CI rapide, PR 2) — cache des navigateurs Playwright. Clé = lockfile
+      # (la version de Playwright en dépend). Restauration SEULE : l'écriture est faite par
+      # le job `gate-b-cache-chauffe` (jamais par une PR). L'installation ci-dessous reste lancée :
+      # avec cache chaud elle ne retélécharge pas le navigateur mais garde les
+      # dépendances système (`--with-deps`).
+      - name: Cache navigateurs Playwright — restauration
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install Playwright browsers (avant build pour chrome dep)
         run: pnpm exec playwright install --with-deps chromium
       # 🔵 2026-11-27 (CI rapide, PR 1) — l'ATTENTE du nettoyage est ICI, APRÈS
@@ -840,6 +851,17 @@ jobs:
       # sauvegarde : ce fichier n'était produit que par la vérification des types de
       # `next build`, qui ne tourne plus ici (`SKIP_NEXT_TYPECHECK`, cf. l'étape Build).
       # Il n'y a plus rien à mettre en cache.
+      # 🔵 2026-11-27 (CI rapide, PR 2) — cache webpack de `next build`. Restauré APRÈS la
+      # relocalisation (`.next` est alors le bind mount sur /mnt ; le chemin repo
+      # `.next/cache/webpack` y est écrit), jamais `.next` entier. AUCUNE
+      # écriture ici : le job `gate-b-cache-chauffe` (schedule / dispatch sur main) sauvegarde.
+      - name: Cache webpack — restauration
+        uses: actions/cache/restore@v4
+        with:
+          path: .next/cache/webpack
+          key: gate-b-webpack-v1-${{ hashFiles('pnpm-lock.yaml', 'next.config.*', 'tsconfig.json') }}-${{ github.sha }}
+          restore-keys: |
+            gate-b-webpack-v1-${{ hashFiles('pnpm-lock.yaml', 'next.config.*', 'tsconfig.json') }}-
       - name: Build
         # `next build` DIRECT (pas `pnpm build`) pour SKIPPER le `postbuild` :
         # `scripts/precompress-static.ts` (Brotli-11 sur ~18k fichiers SSG) fait
@@ -1313,6 +1335,77 @@ jobs:
           fi
           echo "Les deux tranches de Gate B sont vertes."
 
+  # 🔵 2026-11-28 (CI rapide, PR 2, relecture) — CHAUFFE DES CACHES DE GATE B.
+  # Gate B ne tourne PAS sur `schedule` : une sauvegarde placée dans `gate-b` serait
+  # inatteignable. Ce petit job ne fait que Build + sauvegarde des caches webpack et
+  # Playwright, depuis la branche par défaut (jamais depuis une PR ou une file de
+  # fusion : leur cache serait rangé sous une ref illisible pour les autres PR).
+  # N'est PAS exigé pour fusionner et n'entre pas dans `gate-b-verdict`.
+  gate-b-cache-chauffe:
+    name: Gate B · chauffe des caches
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      SKIP_ENV_VALIDATION: "true"
+      BULLMQ_DISABLED: "true"
+      DATABASE_URL: "postgresql://stub:stub@stub.invalid:5432/stub"
+      REDIS_URL: "redis://stub.invalid:6379"
+      AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
+      AUTH_TRUST_HOST: "true"
+      ADMIN_URL_PREFIX: "admin-ci-build"
+      STRIPE_SECRET_KEY: "sk_test_ci_dummy_not_used_in_build"
+      STRIPE_PUBLISHABLE_KEY: "pk_test_ci_dummy_not_used_in_build"
+      STRIPE_WEBHOOK_SECRET: "whsec_ci_dummy_not_used_in_build"
+      BACKUP_ENCRYPTION_PASSPHRASE: "ci-dummy-backup-pass-not-used-in-build"
+      IP_HASH_SALT: "ci-dummy-ip-hash-salt-not-used-in-build-32chars"
+      PII_ENCRYPTION_KEY: "ci-dummy-pii-encryption-key-not-used-in-build-32"
+      NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
+      NEXT_PUBLIC_APP_ENV: "production"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+      - name: Libérer le disque
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost /usr/local/share/powershell /usr/lib/jvm /usr/lib/google-cloud-sdk /usr/lib/firefox /opt/az /opt/microsoft /opt/pipx || true
+          df -h /
+      - name: Paquets Ubuntu — miroir de secours si l'archive est injoignable
+        run: bash scripts/ci/apt-resistant.sh
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Cache navigateurs Playwright — sauvegarde
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: Relocate .next to /mnt (bind mount, ENOSPC headroom)
+        run: |
+          sudo mkdir -p /mnt/axion-next
+          rm -rf .next && mkdir -p .next
+          sudo mount --bind /mnt/axion-next .next
+          sudo chown -R "$(id -u):$(id -g)" .next
+      - name: Build
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+          NEXT_PRIVATE_WORKER_THREADS: "1"
+          BUILD_SSG_VILLES_INDEXABLE_ONLY: "true"
+          SKIP_NEXT_TYPECHECK: "true"
+        run: pnpm exec next build --webpack
+      - name: Cache webpack — sauvegarde
+        uses: actions/cache/save@v4
+        with:
+          path: .next/cache/webpack
+          key: gate-b-webpack-v1-${{ hashFiles('pnpm-lock.yaml', 'next.config.*', 'tsconfig.json') }}-${{ github.sha }}
+
   gate-c-docker:
     # Boots the production Dockerfile end-to-end against ephemeral Redis +
     # Postgres and verifies /api/healthz returns 200. Catches issues that
@@ -1676,6 +1769,13 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
+      # Relevé mensuel des apporteurs (migration 20261127200000) — les écritures de envoi.ts / preparation.ts /
+      # rectificatif.ts rejouées face au déclencheur et aux CHECK (renvoi des échecs, déjà-envoyé, figement),
+      # avec les refus qui DOIVENT avoir lieu. Cas ANNULÉS.
+      - name: Relevé mensuel des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/releve-mensuel-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,

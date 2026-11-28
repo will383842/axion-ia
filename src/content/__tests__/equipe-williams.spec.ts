@@ -25,9 +25,11 @@ import { describe, it, expect } from "vitest";
 import { routing } from "@/i18n/routing";
 import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import {
-  WILLIAMS_EXPERTISES,
   WILLIAMS_IDENTITE,
+  WILLIAMS_JOURNEE_IA,
+  WILLIAMS_SERVICES,
   WILLIAMS_LEAD,
+  WILLIAMS_DESCRIPTION_PERSON,
   buildWilliamsFaq,
 } from "@/content/equipe/williams";
 import {
@@ -38,21 +40,27 @@ import {
 const CHEMINS_DECLARES = new Set(Object.keys(routing.pathnames));
 
 describe("fiche fondateur — liens internes", () => {
-  const cibles = WILLIAMS_EXPERTISES.flatMap((e) =>
-    [e.href, e.hrefSecondaire].filter((h): h is string => typeof h === "string"),
-  );
+  const cibles = [
+    ...WILLIAMS_SERVICES.items.flatMap((e) => e.liens.map((l) => l.href)),
+    WILLIAMS_JOURNEE_IA.lien.href,
+  ];
 
-  it("chaque carte métier pointe une route réellement déclarée", () => {
+  it("chaque lien de service pointe une route réellement déclarée", () => {
     expect(cibles.length).toBeGreaterThan(0);
     const orphelins = cibles.filter((href) => !CHEMINS_DECLARES.has(href));
     expect(orphelins, `chemins absents de routing.pathnames : ${orphelins.join(", ")}`).toEqual([]);
   });
 
-  it("chaque carte porte au moins un lien sortant libellé", () => {
-    for (const e of WILLIAMS_EXPERTISES) {
-      expect(e.href, `${e.id} sans href`).toBeTruthy();
-      expect(e.hrefLabel.length, `${e.id} sans libellé de lien`).toBeGreaterThan(0);
+  it("chaque service porte au moins un lien sortant libellé", () => {
+    for (const e of WILLIAMS_SERVICES.items) {
+      expect(e.liens.length, `${e.id} sans lien`).toBeGreaterThan(0);
+      for (const l of e.liens)
+        expect(l.libelle.length, `${e.id} : lien sans libellé`).toBeGreaterThan(0);
     }
+  });
+
+  it("aucun lien vers une page de tarifs", () => {
+    expect(cibles.filter((h) => /tarif|prix|pricing/i.test(h))).toEqual([]);
   });
 });
 
@@ -95,10 +103,9 @@ describe("fiche fondateur — graphe d'entité", () => {
     expect((person.mainEntityOfPage as { "@id": string })["@id"]).toBe(page["@id"]);
   });
 
-  it("la description structurée est la réponse-première affichée, pas une variante", () => {
-    // Deux textes pour la même question, l'un dans le HTML et l'autre dans le
-    // schema, c'est la divergence qui finit par se voir en SERP.
-    expect(buildPersonWilliamsJsonLd("fr").description).toBe(WILLIAMS_LEAD);
+  it("la description de Person reformule la réponse de tête à la 3e personne", () => {
+    expect(buildPersonWilliamsJsonLd("fr").description).toBe(WILLIAMS_DESCRIPTION_PERSON);
+    expect(WILLIAMS_DESCRIPTION_PERSON).not.toMatch(/\bnous\b/i);
     expect(buildProfilePageWilliamsJsonLd().description).toBe(WILLIAMS_LEAD);
   });
 });

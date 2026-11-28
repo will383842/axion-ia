@@ -20,6 +20,12 @@ import { destinataireRapportHebdo } from "@/lib/destinataires-internes";
 import { sendEmail } from "@/lib/email/client";
 import { cloturerJournal } from "@/server/email/email-log";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
+import { collecterSectionPilotage } from "@/server/seo-pilotage/rapport-donnees";
+import {
+  ajouterSectionAuCourriel,
+  construireSectionPilotage,
+  type SectionRapport,
+} from "@/server/seo-pilotage/rapport";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-weekly-report";
@@ -167,7 +173,18 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const weekLabel = `${since.toLocaleDateString("fr-FR")} → ${weekEnd.toLocaleDateString("fr-FR")}`;
 
   const stats = await collectWeeklyStats(since);
-  const { subject, html, text } = buildEmailHtml(stats, weekLabel);
+  // Section « Pilotage » (P9) : absente si le pilotage est éteint ; une panne ne bloque jamais
+  // le rapport (lecture seule des tables, aucun appel à Google).
+  let section: SectionRapport | null = null;
+  try {
+    section = construireSectionPilotage(await collecterSectionPilotage(prisma));
+  } catch (err) {
+    console.error("[content-weekly-report-worker] section pilotage ignorée:", err);
+  }
+  const { subject, html, text } = ajouterSectionAuCourriel(
+    buildEmailHtml(stats, weekLabel),
+    section,
+  );
 
   // 🔴 Audit du 2026-08-16 — LE SEUL ENVOI QUI ÉCHAPPAIT AU JOURNAL.
   //

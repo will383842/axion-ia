@@ -727,3 +727,60 @@ export async function gscPageMetricsForUrlDates(
   if (!valeurs.every((v) => typeof v === "number" && Number.isFinite(v))) return null;
   return { ctr: row.ctr, impressions: row.impressions, clicks: row.clicks, position: row.position };
 }
+
+// ════════════════════════════════════════════════════════════════════════════
+// Pilotage SEO/GEO — P5 : inspection d'URL avec ÉTAT (fonction nouvelle ; `gscInspectUrl`
+// garde sa signature). Distingue quota, identifiants absents et erreur, ce que `null` ne dit pas.
+// Aucun identifiant ni corps de réponse n'est jamais recopié dans un message.
+// ════════════════════════════════════════════════════════════════════════════
+
+export type GscInspectionEtat = "ok" | "quota" | "identifiants_absents" | "erreur";
+
+export interface GscInspectionDetail {
+  readonly etat: GscInspectionEtat;
+  readonly resultat?: GscUrlInspectionResult;
+}
+
+export async function gscInspecterUrlDetaille(
+  url: string,
+  deps: Pick<GscLotDeps, "fetchImpl"> = {},
+): Promise<GscInspectionDetail> {
+  if (!identifiantsPresents()) return { etat: "identifiants_absents" };
+  const fetchImpl = deps.fetchImpl ?? fetch;
+  let accessToken: string;
+  try {
+    accessToken = await getAccessToken(fetchImpl);
+  } catch {
+    return { etat: "erreur" };
+  }
+  let res: Response;
+  try {
+    res = await fetchImpl("https://searchconsole.googleapis.com/v1/urlInspection/index:inspect", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        inspectionUrl: url,
+        siteUrl: process.env["GSC_PROPERTY_URL"],
+        languageCode: "fr-FR",
+      }),
+    });
+  } catch {
+    return { etat: "erreur" };
+  }
+  if (res.status === 429) return { etat: "quota" };
+  if (!res.ok) {
+    if (res.status === 403) {
+      const raisons = await raisonsErreurGoogle(res);
+      if (raisons.some((r) => RAISONS_QUOTA.has(r))) return { etat: "quota" };
+    }
+    return { etat: "erreur" };
+  }
+  try {
+    const data = (await res.json()) as { inspectionResult?: GscUrlInspectionResult };
+    return data.inspectionResult
+      ? { etat: "ok", resultat: data.inspectionResult }
+      : { etat: "erreur" };
+  } catch {
+    return { etat: "erreur" };
+  }
+}

@@ -208,6 +208,8 @@ export type EmailJobName =
   | "apporteur-releve"
   // Relevé mensuel (lot 2, 2026-11-27) : gabarit DORMANT, sans émetteur avant le lot 4a.
   | "apporteur-releve-mensuel"
+  // File d'attente de l'article 3.5 (PR E #2464) : gabarit livré AVANT son émetteur (PR F).
+  | "apporteur-file-attente-premier-rang"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
@@ -309,7 +311,9 @@ export type ApporteurCronJobType =
   // 2026-10-05 — démarrage manuel du réseau : protections, commissions, vigilance.
   | "reseau-quotidien"
   // 2026-10-06 — facturation des commissions dès qu'elles sont dues : toutes les heures.
-  | "reseau-facturation";
+  | "reseau-facturation"
+  // 2026-11-27 — relevé mensuel des apporteurs : le passage PRÉPARE et alerte, il n'envoie JAMAIS.
+  | "releve-mensuel";
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;
