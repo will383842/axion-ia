@@ -67,6 +67,7 @@ import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envo
 import { etatVigilance, euros } from "./regles";
 import { horsLitige, litigeDisponible } from "./litige";
 import { paiementIntegralLe } from "./paiement-integral";
+import { facturesClientDesLignes } from "./prime-challenge";
 import {
   figerPiece,
   piecesFigees,
@@ -178,6 +179,7 @@ function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown
     select: {
       id: true,
       factureId: true,
+      activite: true,
       statut: true,
       montantCents: true,
       palier: true,
@@ -254,7 +256,8 @@ export async function facturerApporteur(
   let avant = await lireAFacturer(prisma, apporteurId, hors);
   let dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
-  const paiementIntegral = await paiementIntegralLe(dues.map((c) => c.factureId));
+  // Une prime de challenge n'a pas de facture client : son échéance part de l'émission (art. 5.3).
+  const paiementIntegral = await paiementIntegralLe(facturesClientDesLignes(dues));
   // Régime de l'autofacture à ÉMETTRE : celui applicable aujourd'hui (changement daté, sinon fiche).
   const regimeEmission = (await regimeApplicableAu(apporteurId, jourParis(maintenant))).regimeTva;
   // Art. 12.4 : les reprises dépassent les dues → COMPENSATION avec pièces. Les dues sont
@@ -1187,6 +1190,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
     select: {
       apporteurId: true,
       factureId: true,
+      activite: true,
       autofactureNumero: true,
       avoirNumero: true,
       montantCents: true,
@@ -1228,7 +1232,7 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
   );
   for (const [numero, ls] of parNumero) {
     const v = m.get(numero);
-    if (v) v.paiementIntegralAt = await paiementIntegralLe(ls.map((x) => x.factureId));
+    if (v) v.paiementIntegralAt = await paiementIntegralLe(facturesClientDesLignes(ls));
     const fiche = ls[0]!.apporteur.regimeTva;
     const regimeFacture = regimes.has(numero) ? regimes.get(numero)! : fiche;
     const p = aVirerPartielCents(

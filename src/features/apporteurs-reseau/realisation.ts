@@ -15,6 +15,7 @@
 // colonne, on ne peut pas savoir si la prestation est réalisée, donc RIEN n'est facturé ni versé.
 // Aucun `server-only`.
 
+import { ACTIVITE_PRIME_CHALLENGE } from "./prime-challenge";
 import { prisma } from "@/lib/prisma";
 
 import { jourParis } from "./autofacture-donnees";
@@ -186,6 +187,8 @@ export async function marquerRealiseesDepuisSessions(
       where: {
         prestationRealiseeAt: null,
         prestationRealiseePar: null,
+        // Une prime de challenge n'a pas de session : elle n'est jamais « réalisée » par ce passage.
+        activite: { not: ACTIVITE_PRIME_CHALLENGE },
         statut: { in: [...MARQUABLES] },
         ...(apres ? { id: { gt: apres } } : {}),
       },

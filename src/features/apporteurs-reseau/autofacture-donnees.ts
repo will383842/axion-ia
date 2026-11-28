@@ -9,6 +9,7 @@
 import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
 import { PALIERS_FORMATION, PALIERS_FORMATION_LONGUE } from "./regles";
 import { PREFIXE_PALIER_COMPLEMENT } from "./commandes";
+import { designationPrime, estPrimeChallenge } from "./prime-challenge";
 import { sirenValide } from "./regles-dossier";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -31,6 +32,8 @@ export interface CommissionPourAutofacture {
   readonly palier: string | null;
   readonly parrainage: boolean;
   readonly montantCents: number | null;
+  /** Prime d'un challenge : titre du challenge, lu par l'appelant (absent : « Prime exceptionnelle »). */
+  readonly titrePrime?: string | null;
   /** Art. 4.1 bis : prix public de la formation et prix réellement facturé (HT), s'ils sont connus. */
   readonly prixPublicHtCents?: number | null;
   readonly factureHtCents?: number | null;
@@ -123,6 +126,8 @@ export function designationCommission(c: CommissionPourAutofacture): string {
   // Art. 4.6 : aucun montant par filleul. Ni prix facturé, ni prix public, ni palier du filleul.
   // Art. 4.6 : une ligne unique, sans identité du filleul, sans commande, prix ni commission.
   if (c.parrainage) return LIBELLE_PARRAINAGE;
+  // Prime exceptionnelle d'un challenge : aucune commande, aucun palier ni prix à rappeler.
+  if (estPrimeChallenge(c)) return designationPrime(c.titrePrime);
   // Complément : le client a de nouveau payé la commande après une reprise ou une réduction.
   if (c.palier?.startsWith(PREFIXE_PALIER_COMPLEMENT))
     return `Commission d'apport (${c.activite}) — complément : le client a de nouveau payé la commande (art. 4.5)`;

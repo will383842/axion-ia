@@ -753,6 +753,7 @@ export const CODES_REGLE_APPLIQUEE = [
   "parrainage_10",
   "tarif_avant_date_effet",
   "journee_ia",
+  "prime_challenge",
 ] as const;
 export type RegleAppliquee = (typeof CODES_REGLE_APPLIQUEE)[number];
 

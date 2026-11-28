@@ -15,6 +15,14 @@
 
 import { paiementIntegralLe, paiementsIntegrauxParFacture } from "./paiement-integral";
 import {
+  ACTIVITE_PRIME_CHALLENGE,
+  LIBELLE_PRIME_PAR_DEFAUT,
+  challengeIdDuPalier,
+  estPrimeChallenge,
+  facturesClientDesLignes,
+  titresDesPrimes,
+} from "./prime-challenge";
+import {
   piecesFigees,
   piecesFigeesDisponible,
   regimeApplicableAu,
@@ -485,7 +493,12 @@ export async function classerActiviteCommission(
     },
   });
   if (!c) return { ok: false, message: "Commission introuvable." };
-  if (c.statut !== "a_qualifier" || c.parrainage || c.activite === "formation")
+  if (
+    c.statut !== "a_qualifier" ||
+    c.parrainage ||
+    c.activite === "formation" ||
+    c.activite === ACTIVITE_PRIME_CHALLENGE
+  )
     return { ok: false, message: "Cette commission n'est pas à classer." };
   const choisie = activite as ActiviteClassable;
   if (choisie === "formation") {
@@ -671,8 +684,9 @@ export async function lireCommissions(
       presentation: { select: { denomination: true } },
     },
   });
+  // Une prime de challenge n'a pas de facture client : sa jointure est absente, jamais une erreur.
   const factures = await prisma.factureFormation.findMany({
-    where: { id: { in: [...new Set(lignes.map((l) => l.factureId))] } },
+    where: { id: { in: [...new Set(facturesClientDesLignes(lignes))] } },
     select: { id: true, numero: true, paidAt: true },
   });
   const numero = new Map(factures.map((f) => [f.id, f.numero]));
@@ -680,6 +694,7 @@ export async function lireCommissions(
   // Une seule source pour l'échéance de 30 jours : le paiement intégral de la commande.
   const integral = new Map<string, Date | null>();
   for (const l of lignes) {
+    if (estPrimeChallenge(l)) continue;
     if (l.statut !== "due" || !l.autofactureNumero || integral.has(l.factureId)) continue;
     integral.set(l.factureId, await paiementIntegralLe([l.factureId]));
   }
@@ -689,7 +704,9 @@ export async function lireCommissions(
     apporteur: [decryptPii(l.apporteur.prenom), decryptPii(l.apporteur.nom)]
       .filter(Boolean)
       .join(" "),
-    entreprise: l.presentation?.denomination ?? null,
+    entreprise: estPrimeChallenge(l)
+      ? LIBELLE_PRIME_PAR_DEFAUT
+      : (l.presentation?.denomination ?? null),
     factureNumero: numero.get(l.factureId) ?? null,
     parrainage: l.parrainage,
     activite: l.activite,
@@ -941,7 +958,9 @@ export async function genererPdfAutofacture(e: {
     if (!apporteur) throw new Error("apporteur introuvable");
     const regime = e.regime ?? (await regimeDeLaPiece(e));
     const origines = await originesDesReprises(commissions);
-    const paiements = await paiementsIntegrauxParFacture(commissions.map((l) => l.factureId));
+    // Une prime de challenge n'a pas de facture client : ni date de paiement, ni échéance à en tirer.
+    const paiements = await paiementsIntegrauxParFacture(facturesClientDesLignes(commissions));
+    const titres = await titresDesPrimes(commissions);
     const dates = [...paiements.values()].filter((d): d is Date => d !== null);
     const [
       { getOrganismeIdentite },
@@ -972,7 +991,10 @@ export async function genererPdfAutofacture(e: {
       },
       commissions: commissions.map((l) => ({
         ...l,
-        paiementIntegralAt: paiements.get(l.factureId) ?? null,
+        ...(estPrimeChallenge(l)
+          ? { titrePrime: titres.get(challengeIdDuPalier(l.palier) ?? "") ?? null }
+          : {}),
+        paiementIntegralAt: estPrimeChallenge(l) ? null : (paiements.get(l.factureId) ?? null),
         origineNumero: origines.get(l.id)?.numero ?? null,
         origineMois: origines.get(l.id)?.mois ?? null,
       })),
