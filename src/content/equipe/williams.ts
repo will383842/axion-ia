@@ -30,7 +30,14 @@
  */
 
 import { FOUNDER } from "@/lib/brand";
-import type { CleIcone, ReponseDirecte, ChiffreCle, LienFiche } from "@/lib/equipe/contenu";
+import type {
+  CarteVousEtes,
+  ChiffreCle,
+  CleIcone,
+  IdSection,
+  LienFiche,
+  ReponseDirecte,
+} from "@/lib/equipe/contenu";
 import { CONDITION_GARANTIE, GARANTIE_PHRASE, RAPPORT_COMPLET } from "@/content/journee-ia-commun";
 
 /**
@@ -172,7 +179,7 @@ export const WILLIAMS_AVANT_APRES = {
       apres: "Devis prêts en quelques minutes ; vous relisez.",
     },
     {
-      avant: "Les mêmes informations ressaisies trois fois.",
+      avant: "Les mêmes informations ressaisies dans chaque outil.",
       apres: "Saisie une fois, partagée partout.",
     },
     {
@@ -409,14 +416,14 @@ export const WILLIAMS_ENTETES = {
   },
   "pour-qui": {
     surTitre: "Pour qui",
-    question: "Votre entreprise ressemble-t-elle à l'une de celles-ci ?",
+    question: "Votre entreprise ressemble-t-elle à l'une de celles que l'équipe accompagne ?",
     reponse: `L'équipe de ${FOUNDER.fullName} travaille avec des TPE et des PME de tous secteurs, de l'artisan du bâtiment au cabinet comptable. Le point commun n'est pas le métier : c'est une équipe qui perd des heures en ressaisies, devis, relances et comptes rendus, et un dirigeant qui veut récupérer ce temps sans recruter.`,
   },
   "avant-apres": {
     surTitre: "Avant et après",
     question: "Que change l'IA dans le quotidien d'une PME ?",
     reponse:
-      "Après l'arrivée de l'IA, une PME fait les mêmes métiers avec moins de tâches répétitives. Les devis se préparent en quelques minutes, la donnée n'est saisie qu'une fois, les relances partent au bon moment et le dirigeant sait ce que son équipe peut absorber avant de recruter. Les outils et les clients ne changent pas.",
+      "Avec Axion-IA, une PME fait les mêmes métiers avec moins de tâches répétitives. Les devis se préparent en quelques minutes, la donnée n'est saisie qu'une fois, les relances partent au bon moment et le dirigeant sait ce que son équipe peut absorber avant de recruter. Les outils et les clients ne changent pas.",
   },
   rassurance: {
     surTitre: "Sans chamboulement",
@@ -455,9 +462,9 @@ export const WILLIAMS_ENTETES = {
   faq: {
     surTitre: "Questions",
     question: `Questions fréquentes sur ${FOUNDER.fullName}`,
-    reponse: `${FOUNDER.fullName} dirige Axion-IA, startup française qui aide les TPE et PME à gagner en rentabilité grâce à l'IA. Le premier pas est un Diagnostic IA de 45 minutes, sans engagement, en visio ou par téléphone. Les questions les plus posées portent sur la méthode, la Journée IA, les équipes et la mise en place.`,
+    reponse: `${FOUNDER.fullName} dirige Axion-IA, ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité grâce à l'IA. Le premier pas est un Diagnostic IA de 45 minutes, sans engagement, en visio ou par téléphone. Les questions les plus posées portent sur la méthode, la Journée IA, les équipes et la mise en place.`,
   },
-} as const satisfies Record<string, ReponseDirecte>;
+} as const satisfies Record<IdSection, ReponseDirecte>;
 
 /**
  * Secteurs d'activité sous les cartes « Vous êtes… » : pastilles (icône lucide) ; la phrase
@@ -479,17 +486,6 @@ export const WILLIAMS_POUR_QUI = {
   phrase: "Et tous les autres secteurs : la méthode part de vos tâches, pas de votre code NAF.",
   lien: { href: "/formations/secteurs", libelle: "Les formations par secteur" },
 } as const;
-
-/** Carte « Vous êtes… » : trois temps courts (coût, action, gain qualitatif), sans chiffre. */
-export interface CarteVousEtes {
-  readonly cle: string;
-  readonly titre: string;
-  readonly cout: string;
-  readonly action: string;
-  readonly gain: string;
-  /** Nom d'une icône lucide (table de correspondance côté composant). */
-  readonly icone: string;
-}
 
 /**
  * Bloc « Vous êtes… » : le dirigeant se reconnaît par la taille de son entreprise, puis par son
@@ -567,7 +563,7 @@ export const WILLIAMS_VOUS_ETES: {
     },
     {
       cle: "cabinet",
-      titre: "Vous êtes cabinet comptable ou juridique",
+      titre: "Vous dirigez un cabinet comptable ou juridique",
       cout: "La collecte des pièces, la saisie, les relances de dossiers et les comptes rendus de rendez-vous prennent le temps du conseil.",
       action:
         "Nous classons les pièces, préparons les saisies, rédigeons les comptes rendus et relançons les clients à votre place.",
@@ -576,7 +572,7 @@ export const WILLIAMS_VOUS_ETES: {
     },
     {
       cle: "immobilier",
-      titre: "Vous êtes agence immobilière",
+      titre: "Vous dirigez une agence immobilière",
       cout: "Les annonces, les comptes rendus de visite et les relances d'acquéreurs se rédigent après les rendez-vous.",
       action:
         "Nous rédigeons les annonces à partir de vos notes, préparons les comptes rendus de visite et relançons les prospects.",
@@ -585,7 +581,7 @@ export const WILLIAMS_VOUS_ETES: {
     },
     {
       cle: "hotel-restaurant",
-      titre: "Vous êtes hôtel-restaurant",
+      titre: "Vous dirigez un hôtel-restaurant",
       cout: "Les demandes de réservation, les avis clients et les plannings du personnel arrivent par tous les canaux à la fois.",
       action:
         "Nous préparons les réponses aux demandes, rédigeons les réponses aux avis et simplifions les plannings du personnel.",
@@ -598,7 +594,7 @@ export const WILLIAMS_VOUS_ETES: {
       cout: "Les propositions commerciales, les comptes rendus de réunion et le suivi des prospects se refont à chaque fois.",
       action:
         "Nous préparons vos propositions à partir de vos modèles, rédigeons les comptes rendus et déclenchons les relances.",
-      gain: "Vos propositions partent plus vite, et aucun prospect n'est oublié.",
+      gain: "Vos propositions partent plus vite, et vos prospects sont relancés à temps.",
       icone: "Handshake",
     },
   ],

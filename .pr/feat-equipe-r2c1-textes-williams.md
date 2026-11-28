@@ -27,4 +27,10 @@
 - Tests ciblés (fiche Williams, composants équipe, JSON-LD, textes publics) : 359 réussis.
 - ESLint et Prettier sur les fichiers touchés ; grep des mots interdits : rien.
 
-VERDICT OPUS : EN COURS
+## Relecture Opus
+
+Onze remarques. Corrigées : « trois fois » (chiffre inventé), H2 « celles-ci » (ne tenait pas hors de la page), réponse « avant/après » qui ne nommait pas Axion-IA, « startup » en dur, typage strict des en-têtes (`Record<IdSection, …>`), doublon du type `CarteVousEtes`, titres « Vous dirigez une agence… », promesse absolue « aucun prospect oublié », intitulé de test. Non retenues, volontairement : la phrase de la FAQ « contact » (texte du plan) et le retrait de la Journée IA du héros (phrase prescrite par le plan).
+
+Après corrections : typecheck OK, 176 tests ciblés réussis.
+
+VERDICT OPUS : BON

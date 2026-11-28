@@ -192,7 +192,7 @@ describe("fiche Williams — bloc « Partout en France »", () => {
     expect(nbMots(bloc?.reponse ?? "")).toBeLessThanOrEqual(60);
   });
 
-  it("n'annonce ni bureau ni agence, et ne cite aucune ville", () => {
+  it("n'annonce ni bureau ni agence", () => {
     expect(bloc?.reponse).not.toMatch(/bureau|agence|notre siège/i);
     expect(bloc?.reponse).toMatch(/partout en France/);
   });
