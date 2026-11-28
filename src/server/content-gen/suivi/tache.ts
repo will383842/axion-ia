@@ -7,11 +7,22 @@
  * création : une approximation de la date de publication, assumée et affichée dans les détails.
  */
 import type { PrismaClient } from "../../../../prisma/generated/client";
-import { ajouterJours, echeancesDues, fenetreGsc, jourUtc, type CodeEcheance } from "./echeances";
+import {
+  ajouterJours,
+  echeancesDues,
+  fenetreGsc,
+  joursDe,
+  jourUtc,
+  TOLERANCE_INDEXATION_JOURS,
+  type CodeEcheance,
+} from "./echeances";
+import { TENTATIVES_MAX } from "@/server/seo-pilotage/ingestion/jour";
 import { construireResultat, type MesureGsc } from "./resultat";
 
 export const HOTE_SITE = "https://axion-ia.com";
-const FENETRE_SUIVI_JOURS = 100;
+// 90 jours + 30 de marge : une collecte arrêtée quelques semaines ne fait pas perdre J90.
+const FENETRE_SUIVI_JOURS = 120;
+export const CLE_DEBUT_CAPTURE = "chaine_suivi_debut";
 const MAX_LIGNES_PAR_PASSAGE = 200;
 
 type PrismaSuivi = Pick<
@@ -21,6 +32,7 @@ type PrismaSuivi = Pick<
   | "gscPageJour"
   | "gscInspection"
   | "gscImportRun"
+  | "contentGenConfig"
   | "contenuRendezVousOrigine"
 >;
 
@@ -57,12 +69,10 @@ export async function tacheSuiviResultats(deps: DepsSuivi): Promise<BilanSuivi> 
       ? [{ chemin: r.pathRendered, publieLe: r.createdAt }]
       : [],
   );
-  // Début de la capture de l'origine des réservations : sans lui, « 0 rendez-vous » ne veut rien dire.
-  const premiereOrigine = await deps.prisma.contenuRendezVousOrigine.findFirst({
-    orderBy: { createdAt: "asc" },
-    select: { createdAt: true },
-  });
-  const debutCapture = premiereOrigine?.createdAt ?? null;
+  // Début de la capture de l'origine des réservations : la date d'allumage du suivi, posée au
+  // premier passage. Sans elle, « 0 rendez-vous » ne veut rien dire (null, jamais 0). Le drapeau
+  // doit être allumé sur le site ET sur le worker : sinon le site n'écrit rien et le compte reste 0.
+  const debutCapture = await dateDebutCapture(deps.prisma, maintenant);
   const urls = contenus.map((c) => `${HOTE_SITE}${c.chemin}`);
   const existantes = await deps.prisma.contenuResultat.findMany({
     where: { url: { in: urls } },
@@ -120,6 +130,29 @@ export async function tacheSuiviResultats(deps: DepsSuivi): Promise<BilanSuivi> 
   return { contenus: contenus.length, ecrites, dejaEcrites };
 }
 
+async function dateDebutCapture(prisma: PrismaSuivi, maintenant: Date): Promise<Date> {
+  const ligne = await prisma.contentGenConfig.findUnique({ where: { key: CLE_DEBUT_CAPTURE } });
+  const brut =
+    typeof ligne?.value === "object" && ligne.value !== null && !Array.isArray(ligne.value)
+      ? (ligne.value as Record<string, unknown>)["debut"]
+      : undefined;
+  const date = typeof brut === "string" ? new Date(brut) : null;
+  if (date && !Number.isNaN(date.getTime())) return date;
+  const debut = jourUtc(maintenant);
+  try {
+    await prisma.contentGenConfig.create({
+      data: {
+        key: CLE_DEBUT_CAPTURE,
+        value: { debut: debut.toISOString() },
+        description: "Allumage du suivi des résultats (début de la capture de l'origine)",
+      },
+    });
+  } catch {
+    // Posée entre-temps par un autre passage : la prochaine lecture la trouvera.
+  }
+  return debut;
+}
+
 const SEGMENTS_INDEX = new Set(["categorie", "tag", "auteur", "secteur", "taille", "service"]);
 
 function estUnArticle(chemin: string): boolean {
@@ -136,11 +169,18 @@ async function mesurer(
   debutCapture: Date | null,
 ) {
   const { debut, finExclue } = fenetreGsc(code, publieLe);
+  const finInspection = ajouterJours(jourUtc(publieLe), joursDe(code) + TOLERANCE_INDEXATION_JOURS);
   const joursFenetre = Math.round((finExclue.getTime() - debut.getTime()) / 86_400_000);
   // La disponibilité se lit dans le journal de collecte (un jour `reussi` par jour), pas dans les
   // lignes de la page : une page sans impression n'a pas de ligne, et ce n'est pas « indisponible ».
   const joursCollectes = await prisma.gscImportRun.count({
-    where: { typeRecherche: "web", statut: "reussi", jour: { gte: debut, lt: finExclue } },
+    // Un jour est « réglé » s'il a réussi OU s'il est abandonné (plafond de tentatives, jamais
+    // repris) : sinon une échéance resterait bloquée pour toujours.
+    where: {
+      typeRecherche: "web",
+      jour: { gte: debut, lt: finExclue },
+      OR: [{ statut: "reussi" }, { tentatives: { gte: TENTATIVES_MAX } }],
+    },
   });
   if (joursCollectes < joursFenetre) return null;
   const [agregat, inspection, rdv] = await Promise.all([
@@ -149,7 +189,8 @@ async function mesurer(
       _sum: { clics: true, impressions: true, positionSum: true },
     }),
     prisma.gscInspection.findFirst({
-      where: { chemin, inspecteLe: { lte: maintenant } },
+      // L'état EN VIGUEUR à l'échéance : la rotation n'écrit une ligne que quand un champ change.
+      where: { chemin, inspecteLe: { lte: ajouterJours(finInspection, 1) } },
       orderBy: { inspecteLe: "desc" },
       select: { verdict: true, inspecteLe: true },
     }),

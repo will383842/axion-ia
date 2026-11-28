@@ -22,6 +22,8 @@ describe("échéances", () => {
   it("l'indexation ne se lit qu'à J3/J7, près de l'échéance", () => {
     expect(indexationMesurable("j3", d("2026-11-01"), d("2026-11-04"))).toBe(true);
     expect(indexationMesurable("j3", d("2026-11-01"), d("2026-11-20"))).toBe(false);
+    // Inspectée à J1 et inchangée depuis : c'est l'état en vigueur à J3.
+    expect(indexationMesurable("j3", d("2026-11-01"), d("2026-11-02"))).toBe(true);
     expect(indexationMesurable("j28", d("2026-11-01"), d("2026-11-29"))).toBe(false);
     expect(indexationMesurable("j7", d("2026-11-01"), null)).toBe(false);
   });
@@ -100,9 +102,10 @@ function fauxPrisma(
     gscInspection: {
       findFirst: vi.fn().mockResolvedValue({ verdict: "PASS", inspecteLe: d("2026-11-04") }),
     },
-    contenuRendezVousOrigine: {
-      count: vi.fn().mockResolvedValue(1),
-      findFirst: vi.fn().mockResolvedValue({ createdAt: d("2026-10-01") }),
+    contenuRendezVousOrigine: { count: vi.fn().mockResolvedValue(1) },
+    contentGenConfig: {
+      findUnique: vi.fn().mockResolvedValue({ value: { debut: "2026-10-01T00:00:00.000Z" } }),
+      create: vi.fn().mockResolvedValue({}),
     },
   };
 }
@@ -142,9 +145,21 @@ describe("tacheSuiviResultats", () => {
   });
   it("rendez-vous null tant que la capture n'avait pas commencé", async () => {
     const p = fauxPrisma();
-    p.contenuRendezVousOrigine.findFirst.mockResolvedValue(null);
+    p.contentGenConfig.findUnique.mockResolvedValue(null);
     await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
     expect(p.contenuResultat.create.mock.calls[0]![0].data.rendezVous).toBeNull();
+  });
+  it("pose la date d'allumage au premier passage", async () => {
+    const p = fauxPrisma();
+    p.contentGenConfig.findUnique.mockResolvedValue(null);
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(p.contentGenConfig.create).toHaveBeenCalledTimes(1);
+  });
+  it("un jour abandonné (5 tentatives) compte comme réglé", async () => {
+    const p = fauxPrisma();
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    const where = p.gscImportRun.count.mock.calls[0]![0].where;
+    expect(where.OR).toContainEqual({ tentatives: { gte: 5 } });
   });
   it("ignore les pages d'index du blog", async () => {
     const p = fauxPrisma();

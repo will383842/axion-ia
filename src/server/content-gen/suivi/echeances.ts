@@ -34,7 +34,8 @@ export function echeancesDues(
   ).map((e) => e.code);
 }
 
-const joursDe = (code: CodeEcheance): number => ECHEANCES.find((e) => e.code === code)?.jours ?? 0;
+export const joursDe = (code: CodeEcheance): number =>
+  ECHEANCES.find((e) => e.code === code)?.jours ?? 0;
 
 /**
  * Fenêtre Search Console d'une échéance : du jour de publication (inclus) à `publication + N`
@@ -47,8 +48,9 @@ export function fenetreGsc(code: CodeEcheance, publieLe: Date): { debut: Date; f
 }
 
 /**
- * L'indexation ne se lit qu'à J3 et J7, et seulement si l'inspection est assez proche : une
- * inspection faite longtemps après l'échéance dirait où en est la page AUJOURD'HUI, pas à J3.
+ * L'indexation ne se lit qu'à J3 et J7. La rotation n'écrit une ligne d'inspection que quand un
+ * champ change : la ligne la plus récente avant l'échéance (+ tolérance) donne l'état EN VIGUEUR à
+ * l'échéance, même si elle date de plusieurs jours avant. Une ligne postérieure ne dit rien de J3.
  */
 export function indexationMesurable(
   code: CodeEcheance,
@@ -58,5 +60,5 @@ export function indexationMesurable(
   if ((code !== "j3" && code !== "j7") || !inspecteLe) return false;
   const echeance = ajouterJours(jourUtc(publieLe), joursDe(code));
   const ecart = (jourUtc(inspecteLe).getTime() - echeance.getTime()) / JOUR_MS;
-  return ecart >= -1 && ecart <= TOLERANCE_INDEXATION_JOURS;
+  return ecart <= TOLERANCE_INDEXATION_JOURS;
 }
