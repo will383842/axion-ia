@@ -7,8 +7,8 @@
  *    redécrire ici ferait deux sources pour la même entité. `founderUrl()` et
  *    `FOUNDER_PERSON_ID` restent la source unique ;
  *  - tout autre collaborateur : nœud bâti depuis la fiche PUBLIQUE, jamais la
- *    brute. Le nom de famille n'y paraît nulle part (`name` = prénom, ni
- *    `familyName`, ni `givenName` redondant).
+ *    brute. Le nom de famille n'y paraît nulle part (`name` = `givenName` = prénom, ni
+ *    `familyName`).
  *
  * Aucun prix, aucune rue, aucun code postal.
  */
@@ -50,14 +50,16 @@ export function buildPersonCollaborateurJsonLd(fiche: FichePublique, contenu: Co
   const url = urlFiche(fiche.slug);
   const categorie = CATEGORIES[fiche.categorie];
   const lieu = fiche.ville ?? undefined;
-  // Une URL de profil contient souvent le nom de famille : jamais reprise pour un autre que le dirigeant.
-  const sameAs: string[] = [];
-  void contenu;
+  // LinkedIn : `contenu.liens.linkedin` n'est posé par l'adaptateur qu'avec le consentement LinkedIn
+  // daté de la personne. Sans consentement, aucun `sameAs`.
+  const sameAs: string[] = nonVide(contenu.liens.linkedin) ? [contenu.liens.linkedin] : [];
   const noeud: Noeud = {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": idPersonne(fiche.slug),
     name: fiche.nom,
+    // Prénom seul (jamais `familyName`).
+    givenName: fiche.nom,
     ...(nonVide(fiche.fonction) ? { jobTitle: fiche.fonction } : {}),
     ...(nonVide(fiche.reponseQui) ? { description: fiche.reponseQui } : {}),
     disambiguatingDescription: `${fiche.fonction || categorie.libelleSingulier} chez ${BRAND.name} (${categorie.libelleSingulier})`,

@@ -63,9 +63,12 @@ describe("la migration du relevé mensuel est additive", () => {
       toutes
         .slice(toutes.indexOf(NOM) + 1)
         .filter((d) =>
-          ["_pilotage_seo_mesure", "_chaine_editoriale_tables", "_porte_qualite_tables"].some((s) =>
-            d.endsWith(s),
-          ),
+          [
+            "_pilotage_seo_mesure",
+            "_chaine_editoriale_tables",
+            "_porte_qualite_tables",
+            "_team_invite_envoi",
+          ].some((s) => d.endsWith(s)),
         ),
     );
     expect(NOM.slice(0, 14) > "20261127160000").toBe(true);

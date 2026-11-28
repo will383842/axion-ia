@@ -38,6 +38,7 @@ import { regimeFactureDepuisHonoraires } from "@/server/qualiopi/remuneration/au
 import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
+import { MESSAGE_JOURNEE_IA_GRILLE_V2 } from "./journee-ia-grille";
 import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommissionSelonGrilleAvecRegle,
@@ -391,6 +392,8 @@ export async function qualifierCommission(
   // commande décide du forfait (avant le 26/11/2026) ou de 0 €.
   const { grille, signeeAt } = await grilleDeLaLigne(c);
   if (grille === null) return { ok: false, message: MESSAGE_GRILLE_INCONNUE };
+  // Point 17 : la Journée IA n'est pas dans la grille v2 (A1.5, A1.7) ; ni 500 € ni 0 € ici.
+  if (journeeIa && grille === "v2") return { ok: false, message: MESSAGE_JOURNEE_IA_GRILLE_V2 };
   let regle: RegleAppliquee | null = null;
   let calc: CalculCommission;
   if (journeeIa) {

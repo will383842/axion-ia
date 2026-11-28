@@ -8,6 +8,10 @@ vi.mock("next/link", () => ({
   ),
 }));
 
+vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-rectificatif", () => ({
+  etablirRectificatifAction: async () => ({ etat: "initial" }),
+}));
+
 import { RelevesMensuels, etatEnvoiReleve, type ReleveDeFiche } from "../RelevesMensuels";
 
 const releve = (over: Partial<ReleveDeFiche> = {}): ReleveDeFiche => ({
@@ -103,5 +107,38 @@ describe("RelevesMensuels", () => {
       <RelevesMensuels base="/fr/x" releves={[releve()]} peutVoirPdf={false} />,
     );
     expect(html).not.toContain("pdf?numero=");
+  });
+});
+
+describe("lot 4b : bouton « Établir un relevé rectificatif »", () => {
+  it("proposé sur un relevé ENVOYÉ et remis, à qui peut facturer", () => {
+    const html = renderToStaticMarkup(
+      <RelevesMensuels base="/fr/x" releves={[releve()]} peutVoirPdf peutRectifier />,
+    );
+    expect(html).toContain("Établir un relevé rectificatif");
+  });
+  it("absent sans le droit, sur un relevé préparé et sur un envoi en échec de remise", () => {
+    const sans = renderToStaticMarkup(
+      <RelevesMensuels base="/fr/x" releves={[releve()]} peutVoirPdf />,
+    );
+    expect(sans).not.toContain("Établir un relevé rectificatif");
+    const prepare = renderToStaticMarkup(
+      <RelevesMensuels
+        base="/fr/x"
+        releves={[releve({ statut: "prepare", statutEmail: null })]}
+        peutVoirPdf
+        peutRectifier
+      />,
+    );
+    expect(prepare).not.toContain("Établir un relevé rectificatif");
+    const remiseEchouee = renderToStaticMarkup(
+      <RelevesMensuels
+        base="/fr/x"
+        releves={[releve({ statutEmail: "bounced" })]}
+        peutVoirPdf
+        peutRectifier
+      />,
+    );
+    expect(remiseEchouee).not.toContain("Établir un relevé rectificatif");
   });
 });

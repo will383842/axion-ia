@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    teamMember: { findFirst: vi.fn(async () => null) },
     authorProfile: {
       findUnique: vi.fn(async ({ where }: { where: { slug: string } }) => ({
         slug: where.slug,
