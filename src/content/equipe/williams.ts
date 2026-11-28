@@ -5,9 +5,13 @@
  * une page d'ENTITÉ (E-E-A-T + AEO/GEO). Les mêmes phrases servent trois
  * consommateurs différents — le HTML visible, le JSON-LD `Person` /
  * `ProfilePage`, et la meta description. Les laisser recopiées dans le JSX
- * garantissait qu'elles divergent : c'est exactement ce qui s'était produit
- * entre `lib/seo.ts` et `williams-person.ts` avant la centralisation dans
- * `FOUNDER` (cf. commentaire d'en-tête de `lib/brand.ts`).
+ * garantissait qu'elles divergent.
+ *
+ * Angle de la page : la transformation de l'entreprise avec l'IA, simple et
+ * rassurante. Rien ne casse, l'équipe garde ses outils, on avance étape par
+ * étape, le dirigeant décide. Le résultat visé est celui du dirigeant (plus de
+ * chiffre d'affaires, de marge et de temps, sans recruter) ; l'IA n'est que le
+ * moyen.
  *
  * 🔴 DOCTRINE FINANCEMENT — les entrées OPCO / France Travail de ce fichier
  * ne sont JAMAIS émises telles quelles : elles passent par
@@ -15,256 +19,343 @@
  * `isQualiopiCertificationObtenue()`. Afficher « finançable OPCO » avant la
  * délivrance du certificat est illégal (cf. `server/qualiopi/config/flag.ts`).
  *
- * 🔴 VOCABULAIRE — Will, 2026-08-19 : sur cette page Axion-IA est une
- * « agence », pas un « cabinet ». Le reste du site emploie encore « cabinet »
- * (`BRAND.taglineFr`) ; l'alignement global est une décision distincte, non
- * prise ici.
+ * 🔴 RÈGLES DE LANGUE
+ *  - Axion-IA est une équipe : « nous », « l'équipe d'Axion-IA ». Williams en
+ *    est le dirigeant, jamais un indépendant.
+ *  - « startup » est le mot principal pour Axion-IA (`NATURE_AXION_IA`),
+ *    « entreprise » en alternance ; jamais « agence ».
+ *  - « aide à », jamais « garantit ». La seule garantie citée est celle de la
+ *    Journée IA, injectée depuis `journee-ia-commun.ts`, jamais retapée.
+ *  - Aucun prix, aucun gain chiffré promis, aucune ville, aucun mot de succès.
  */
 
 import { FOUNDER } from "@/lib/brand";
+import { CONDITION_GARANTIE, GARANTIE_PHRASE, RAPPORT_COMPLET } from "@/content/journee-ia-commun";
 
 /**
  * Date de dernière révision ÉDITORIALE de la fiche — `dateModified` du
- * `ProfilePage` et du `FAQPage`.
+ * `ProfilePage` et du `FAQPage`, et date visible « Mis à jour le ».
  *
- * Volontairement propre à cette page plutôt que `SITE_EDITORIAL_DATE` : la
- * date globale du site vaut le 2026-06-08 et décrirait cette refonte comme
- * antérieure de deux mois à sa propre écriture. Volontairement constante,
- * aussi : un timestamp de build avance à chaque déploiement et transforme un
- * signal de fraîcheur en bruit (retrait acté par l'audit fraîcheur
- * 2026-06-08, cf. `buildFaqJsonLd`).
+ * Volontairement constante : un timestamp de build avance à chaque déploiement
+ * et transforme un signal de fraîcheur en bruit.
  *
  * ⚠️ À BOUGER À LA MAIN quand le contenu de la fiche change réellement — et
  * seulement dans ce cas.
  */
-export const WILLIAMS_REVISION_DATE = "2026-08-19T00:00:00.000Z";
+export const WILLIAMS_REVISION_DATE = "2026-11-27T00:00:00.000Z";
 
-/** Qualification métier affichée sous le H1 (et reprise en `Person.description`). */
-export const WILLIAMS_TAGLINE =
-  "Spécialiste de l'intelligence artificielle en entreprise · transformations à gains rapides et mesurables";
+/** Mot principal pour désigner Axion-IA (une seule source pour les trois endroits clés). */
+export const NATURE_AXION_IA = "startup";
+
+/** Fonction affichée sous le H1 et dans la figcaption : exactement `Person.jobTitle` (JSON-LD). */
+export const WILLIAMS_FONCTION = FOUNDER.jobTitleFr;
+
+/** Ce que l'équipe apporte, en une ligne. */
+export const WILLIAMS_TAGLINE = "Rentabilité et productivité des TPE et PME grâce à l'IA";
+
+/** Ligne sous le H1. */
+export const WILLIAMS_SOUS_TITRE = `${WILLIAMS_FONCTION} · ${WILLIAMS_TAGLINE}`;
+
+/** Titre SEO (balise `<title>`, sans suffixe de marque). */
+export const WILLIAMS_TITRE_SEO = `${FOUNDER.fullName} · Plus de chiffre d'affaires, même équipe`;
+
+/** Meta description. */
+export const WILLIAMS_META_DESCRIPTION = `${FOUNDER.fullName} dirige Axion-IA : nous aidons les TPE et PME à gagner en rentabilité avec la même équipe, grâce à l'IA mise en place de A à Z, pas à pas.`;
 
 /**
- * Réponse-première (AEO). Ce paragraphe est la réponse que l'on veut voir
- * reprise telle quelle par Google AI Overviews, Perplexity ou Claude à la
- * question « Qui est Williams Jullin ? ». D'où sa forme : une seule phrase
- * auto-portante en tête (nom + fonction + entité + périmètre géographique),
- * puis l'étendue de l'offre. Aucun pronom en ouverture, aucune référence à
- * « cette page » : une citation extraite du contexte doit rester vraie.
+ * Réponse de tête (AEO). Phrase auto-portante : nom + fonction + entité +
+ * périmètre, puis la porte d'entrée. Aucune référence à « cette page » : une
+ * citation extraite du contexte doit rester vraie.
  */
-export const WILLIAMS_LEAD = `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle qui intervient partout en France. Il conçoit et pilote des transformations par l'IA à gains rapides et mesurables pour les TPE et PME, sur cinq métiers : audit IA, formation, coaching individuel de dirigeants, implémentation en code source dont l'entreprise reste propriétaire, et automatisation des processus.`;
+export const WILLIAMS_LEAD = `${FOUNDER.fullName} dirige Axion-IA, la ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité avec l'équipe qu'elles ont déjà : moins de ressaisies, des devis et des relances plus rapides, plus de temps pour vendre. Nous chiffrons d'abord, puis nous installons tout, sans que le dirigeant touche à la technique. La porte d'entrée est la Journée IA ; ensuite, l'équipe d'Axion-IA prend en charge tout le reste : mise en place, automatisations, formation des équipes et coaching du dirigeant, étape par étape.`;
 
 /**
- * Second paragraphe — la DOCTRINE, en propre. C'est le passage qui différencie
- * l'entité dans une réponse générative : sans lui, la fiche décrit un
- * prestataire IA de plus.
+ * Description de l'entité Person (JSON-LD) : même sens que la réponse de tête, mais à la 3e
+ * personne et sans « nous », pour rester vraie hors contexte.
  */
-export const WILLIAMS_DOCTRINE = `Sa ligne de conduite tient en une phrase : une intelligence artificielle qui passe en production et se mesure, pas une démonstration de plus. Chaque mission part des processus réels de l'entreprise, prouve la valeur sur ses données à elle, puis déploie — et l'entreprise repart propriétaire de ce qui a été installé, code source compris.`;
+export const WILLIAMS_DESCRIPTION_PERSON = `${FOUNDER.fullName} dirige Axion-IA, la ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité avec l'équipe qu'elles ont déjà : moins de ressaisies, des devis et des relances plus rapides, plus de temps pour vendre. Axion-IA chiffre d'abord, puis installe tout, sans que le dirigeant touche à la technique. La porte d'entrée est la Journée IA ; ensuite, l'équipe d'Axion-IA prend en charge tout le reste : mise en place, automatisations, formation des équipes et coaching du dirigeant, étape par étape.`;
 
 /**
- * Fiche d'identité structurée — rendue en `<dl>` et reprise en `Person` JSON-LD.
- *
- * Un tableau clé/valeur est la forme que les moteurs génératifs extraient le
- * plus fidèlement : chaque ligne est un fait isolé, non ambigu, sans syntaxe à
- * démêler. Les valeurs restent STRICTEMENT vérifiables — aucune mention de
- * SIREN, de RCS ou de capital tant que `content/legal.ts` ne les porte pas.
+ * Doctrine en une phrase — reprise en `abstract` du `ProfilePage`.
+ */
+export const WILLIAMS_DOCTRINE =
+  "Nous chiffrons ce que chaque tâche coûte, nous essayons à petite échelle sur de vrais dossiers, puis le dirigeant tranche : ce qui rapporte est installé de A à Z, le reste est abandonné.";
+
+/**
+ * Fiche d'identité — rendue en `<dl>` et reprise en `Person` JSON-LD.
+ * Un fait par ligne ; les valeurs restent STRICTEMENT vérifiables (aucun
+ * SIREN, RCS ou capital tant que `content/legal.ts` ne les porte pas).
  */
 export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }> = [
   { terme: "Nom", valeur: FOUNDER.fullName },
-  { terme: "Fonction", valeur: FOUNDER.jobTitleFr },
-  { terme: "Entreprise", valeur: "Axion-IA — agence d'intelligence artificielle opérationnelle" },
-  { terme: "Zone d'intervention", valeur: "France entière — sur site et à distance" },
-  { terme: "Clients", valeur: "TPE et PME, tous secteurs" },
+  { terme: "Fonction", valeur: WILLIAMS_FONCTION },
+  { terme: "Entreprise", valeur: `Axion-IA, ${NATURE_AXION_IA} française` },
   {
-    terme: "Domaines",
+    terme: "Ce que nous apportons",
+    valeur: "Plus de rentabilité et de temps avec la même équipe, grâce à l'IA",
+  },
+  { terme: "Pour qui", valeur: "Dirigeants de TPE et PME, tous secteurs" },
+  {
+    terme: "Ce que fait l'équipe",
     valeur:
-      "Audit IA, formation professionnelle, coaching 1-to-1, implémentation IA sur mesure, automatisation des processus",
+      "Journée IA, mise en place et solutions sur mesure, automatisation, formation des équipes, coaching des dirigeants",
   },
-  { terme: "Langues de travail", valeur: "Français, anglais" },
-  { terme: "Hébergement des données", valeur: "Union européenne" },
-  { terme: "Contact", valeur: "Formulaire du site ou Diagnostic IA" },
-];
-
-/**
- * Signaux de confiance repris de la home (`messages/fr.json` → `home.founderStat*`).
- * Recopiés ici avec leur source pour qu'une future divergence se voie.
- */
-export const WILLIAMS_PREUVES: ReadonlyArray<{ chiffre: string; libelle: string }> = [
-  // 2026-09-30 — « Top 1 % » retiré (ordre permanent du dirigeant : non étayé).
+  { terme: "Zone d'intervention de l'équipe", valeur: "Partout en France, outre-mer compris" },
+  { terme: "Expérience", valeur: "Plus de trente ans de direction d'entreprises" },
+  { terme: "Méthode", valeur: "Chiffrer, Essayer, Trancher" },
+  { terme: "Données", valeur: "Hébergées dans l'Union européenne" },
   {
-    chiffre: "Formateur & consultant",
-    libelle: "En IA générative, pour les équipes en entreprise",
+    terme: "Premier contact",
+    valeur: "Diagnostic IA de 45 minutes, en visio ou par téléphone",
   },
-  { chiffre: "0 intermédiaire", libelle: "Vous échangez directement avec l'équipe Axion-IA" },
-  // 2026-09-30 — « PME → CAC 40 » retiré (formulation interdite par le dirigeant).
-  { chiffre: "TPE et PME", libelle: "Tous secteurs d'activité" },
-  { chiffre: "France entière", libelle: "Interventions partout en France" },
 ];
 
+/** Pastilles du héros (faits, sans promesse). */
+export const WILLIAMS_PASTILLES: ReadonlyArray<string> = [
+  "Partout en France",
+  "TPE et PME",
+  "Plus de trente ans de direction",
+  "Données hébergées dans l'UE",
+];
+
+/** Bandeau de faits : uniquement des faits vérifiables, aucun chiffre de succès. */
+export const WILLIAMS_PREUVES: ReadonlyArray<{ chiffre: string; libelle: string }> = [
+  { chiffre: "TPE et PME", libelle: "Tous secteurs d'activité" },
+  { chiffre: "Partout en France", libelle: "Outre-mer compris" },
+  { chiffre: "Plus de 30 ans", libelle: "De direction d'entreprises" },
+  {
+    chiffre: "Chiffrer, Essayer, Trancher",
+    libelle: "Une seule méthode, pour toutes les missions",
+  },
+];
+
+/** « Votre entreprise avant et après l'IA » : des situations, aucun chiffre. */
+export const WILLIAMS_AVANT_APRES = {
+  titre: "Votre entreprise avant et après l'IA",
+  lignes: [
+    {
+      avant: "Le soir, vous refaites des devis à la main.",
+      apres: "Les devis sont préparés en quelques minutes ; vous les relisez et les envoyez.",
+    },
+    {
+      avant: "Vos équipes ressaisissent les mêmes informations dans plusieurs outils.",
+      apres: "La donnée est saisie une fois, puis passe seule d'un outil à l'autre.",
+    },
+    {
+      avant: "Les relances clients se font quand quelqu'un y pense.",
+      apres: "Les relances partent au bon moment ; votre équipe traite les réponses.",
+    },
+    {
+      avant: "Les e-mails et les comptes rendus prennent des heures chaque semaine.",
+      apres: "Les brouillons sont prêts ; vos équipes relisent et ajustent.",
+    },
+    {
+      avant: "Pour suivre la charge, vous pensez à recruter.",
+      apres: "Vous savez d'abord ce que votre équipe actuelle peut absorber, puis vous décidez.",
+    },
+    {
+      avant: "Vous entendez parler d'IA partout, sans savoir par où commencer.",
+      apres: "Vous avez un plan chiffré, et les premières tâches sont déjà allégées.",
+    },
+  ],
+  phrase:
+    "Vos équipes gardent leurs outils, leur métier et leurs clients. Elles passent simplement moins de temps sur ce qui ne rapporte rien.",
+} as const;
+
+/** « Une transformation sans chamboulement ». */
+export const WILLIAMS_RASSURANCE = {
+  titre: "Une transformation sans chamboulement",
+  accroche: "Transformer votre entreprise avec l'IA ne veut pas dire tout casser.",
+  points: [
+    {
+      titre: "Vos outils restent en place.",
+      texte: "Nous branchons l'IA sur ce que vous utilisez déjà ; personne ne réapprend tout.",
+    },
+    {
+      titre: "Une étape à la fois.",
+      texte:
+        "Nous commençons par les tâches qui rapportent le plus, le plus vite. La suivante ne démarre que si la précédente a fait ses preuves.",
+    },
+    {
+      titre: "Vous décidez à chaque étape.",
+      texte: "Vous savez ce que cela coûte et ce que cela rapporte avant de dire oui.",
+    },
+    {
+      titre: "Vos équipes sont embarquées, pas bousculées.",
+      texte: "Elles sont formées sur leurs propres dossiers et voient le gain par elles-mêmes.",
+    },
+    {
+      titre: "Vous n'avez rien à piloter côté technique.",
+      texte: "L'équipe d'Axion-IA s'en occupe, de A à Z.",
+    },
+  ],
+} as const;
+
 /**
- * Les cinq métiers, chacun renvoyé vers SA page de service.
- *
- * Le maillage interne est la moitié du travail SEO d'une fiche d'autorité :
- * une page d'entité qui ne pointe nulle part ne transmet aucune autorité aux
- * pages qui convertissent. Chaque `href` est déclaré dans `i18n/routing.ts` —
- * un chemin absent y casserait le typage `Link` au build, pas en production.
+ * « La Journée IA : la porte d'entrée » — sans prix. Le délai du rapport, la
+ * garantie et sa condition viennent de `journee-ia-commun.ts` : jamais tapés ici.
  */
-export interface ExpertiseWilliams {
+export const WILLIAMS_JOURNEE_IA = {
+  titre: "La Journée IA : la porte d'entrée",
+  accroche:
+    "En une journée, vous savez où votre entreprise perd du temps et de l'argent, ce qu'elle peut récupérer, et vos équipes ont déjà commencé.",
+  points: [
+    {
+      titre: "Le matin, dans vos locaux : nous trouvons où part votre argent.",
+      texte:
+        "De 2 à 4 heures, service par service, avec vous et les personnes prévues. Nous retenons les 3 à 5 tâches qui vous rapporteront le plus, le plus vite.",
+    },
+    {
+      titre: "L'après-midi : vos équipes deviennent plus productives.",
+      texte:
+        "Quatre heures de formation, jusqu'à 15 personnes, sur leurs propres dossiers. Chaque participant produit un résultat utilisable le jour même et repart avec son attestation. Cette formation pratique contribue à développer la maîtrise de l'IA de vos équipes, comme le demande l'article 4 du règlement européen sur l'IA.",
+    },
+    {
+      titre: "Ensuite : vous avez vos chiffres.",
+      // Le délai exact vient de RAPPORT_COMPLET (art. 47.1 c des CGV).
+      texte: RAPPORT_COMPLET,
+    },
+    {
+      titre: "Le risque est pour nous.",
+      texte: `${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
+    },
+    {
+      titre: "Ensuite, vous choisissez.",
+      texte:
+        "Vous repartez avec votre plan, ou nous le mettons en place pour vous. La journée n'oblige jamais à acheter la suite, et elle n'est pas obligatoire : si vous savez déjà où vous perdez du temps, nous pouvons commencer directement par la mise en place.",
+    },
+  ],
+  bouton: "Réserver mon Diagnostic IA de 45 minutes",
+  lien: { href: "/journee-ia", libelle: "Tout savoir sur la Journée IA" },
+} as const;
+
+/**
+ * « Après la Journée IA : l'équipe d'Axion-IA fait tout le reste ».
+ * Chaque `href` est déclaré dans `i18n/routing.ts` (vérifié par un test : le
+ * rendu passe par `as never`, qui désarme le typage des routes).
+ */
+export interface ServiceWilliams {
   readonly id: string;
-  readonly titre: string;
-  readonly promesse: string;
-  readonly corps: string;
-  readonly puces: ReadonlyArray<string>;
-  readonly href: string;
-  readonly hrefLabel: string;
-  readonly hrefSecondaire?: string;
-  readonly hrefSecondaireLabel?: string;
+  readonly nom: string;
+  readonly texte: string;
+  readonly liens: ReadonlyArray<{ href: string; libelle: string }>;
 }
 
-// R7 (ordre de Williams du 08/11/2026) : plus aucun prix plancher dans la présentation.
+export const WILLIAMS_SERVICES = {
+  titre: "Après la Journée IA : l'équipe d'Axion-IA fait tout le reste",
+  intro:
+    "La Journée IA vous dit quoi faire. L'équipe d'Axion-IA le fait pour vous, de A à Z. Chaque service peut aussi se prendre seul.",
+  items: [
+    {
+      id: "mise-en-place",
+      nom: "Mise en place et solutions IA sur mesure",
+      texte:
+        "Une aide pour préparer les devis plus vite, des réponses clients prêtes à relire, un assistant qui connaît vos documents. Conçus, installés et testés par l'équipe d'Axion-IA, dans vos outils. Vendus en une fois ou en mise en service avec abonnement, au choix.",
+      liens: [
+        { href: "/implementation", libelle: "Les implémentations IA" },
+        { href: "/implementation/ia-custom", libelle: "IA sur mesure" },
+      ],
+    },
+    {
+      id: "automatisation",
+      nom: "Automatisation des tâches répétitives",
+      texte:
+        "Les ressaisies, relances et classements tournent seuls ; ce temps repart vers vos clients.",
+      liens: [
+        { href: "/implementation/processus", libelle: "Automatiser un processus" },
+        { href: "/implementation/integrations", libelle: "Les intégrations" },
+      ],
+    },
+    {
+      id: "formation",
+      nom: "Formation des équipes à l'IA",
+      texte:
+        "Vos équipes apprennent à produire plus, dès les premiers jours, sur leurs propres devis, e-mails et comptes rendus.",
+      liens: [{ href: "/formations", libelle: "Les formations en entreprise" }],
+    },
+    {
+      id: "coaching",
+      nom: "Coaching IA du dirigeant",
+      texte:
+        "Vous décidez en connaissance de cause : quoi automatiser, quel budget, et ce qu'il ne faut surtout pas acheter.",
+      liens: [{ href: "/un-a-un", libelle: "Le coaching individuel" }],
+    },
+    {
+      id: "transformation",
+      nom: "Transformation de l'entreprise avec l'IA",
+      texte:
+        "C'est ce que produisent ensemble ces services, guidés par un plan d'ensemble : votre organisation s'adapte, tâche après tâche, pour que chacun passe plus de temps sur ce qui rapporte. Pas d'outils achetés brique par brique, pas de bouleversement : une entreprise qui travaille mieux avec la même équipe.",
+      liens: [{ href: "/journee-ia", libelle: "Commencer par la Journée IA" }],
+    },
+  ] satisfies ReadonlyArray<ServiceWilliams>,
+} as const;
 
-export const WILLIAMS_EXPERTISES: ReadonlyArray<ExpertiseWilliams> = [
-  {
-    id: "audit",
-    titre: "Audit IA",
-    promesse: "Voir ce que l'IA change chez vous, en quelques jours",
-    corps: `L'audit démarre par une journée complète sur site, sur devis : Williams remonte les processus réels service par service, repère les tâches où l'IA fait gagner du temps dès la semaine suivante, et chiffre ce qui est récupérable. La restitution est un plan d'action priorisé — quels usages, dans quel ordre, pour quel gain estimé — pas une note d'intention.`,
-    puces: [
-      "Cartographie des processus et des irritants, poste par poste",
-      "Usages IA classés par gain estimé et par difficulté de mise en œuvre",
-      "Chiffrage du temps et du coût récupérables, hypothèses écrites",
-      "Feuille de route à 90 jours, exploitable sans nous",
-    ],
-    href: "/audit",
-    hrefLabel: "Découvrir les audits IA",
-    hrefSecondaire: "/audit/tpe-1-jour",
-    hrefSecondaireLabel: "L'audit TPE en 1 jour",
-  },
-  {
-    id: "formations",
-    titre: "Formations IA en entreprise",
-    promesse: "Des équipes qui utilisent l'IA sur leurs propres dossiers",
-    corps: `Les formations sont construites sur les cas d'usage de l'entreprise, pas sur des exemples de démonstration : chaque participant travaille sur ses vrais fichiers, et repart avec des méthodes qu'il applique le lendemain. Formats de quatre heures à plusieurs jours, sur site partout en France ou à distance, sur devis.`,
-    puces: [
-      "Contenus adaptés au métier et au niveau réel des participants",
-      "Ateliers sur les documents et les outils de l'entreprise",
-      "Formats collectifs sur site, à distance, ou parcours mixtes",
-      "Livrables réutilisables : modèles de requêtes, fiches de méthode",
-    ],
-    href: "/formations",
-    hrefLabel: "Voir le catalogue de formations",
-    hrefSecondaire: "/interventions",
-    hrefSecondaireLabel: "Les formats d'intervention",
-  },
-  {
-    id: "coaching",
-    titre: "Coaching 1-to-1",
-    promesse: "Le dirigeant d'abord, parce que l'adoption descend de là",
-    corps:
-      "Accompagnement individuel des dirigeants, membres de comité de direction et cadres qui doivent décider vite sur l'IA sans avoir le temps d'apprendre en autodidacte. Séances courtes et rapprochées, sur les dossiers en cours : arbitrages d'outillage, cadrage d'un projet, prise en main personnelle, préparation d'une décision d'investissement.",
-    puces: [
-      "Séances individuelles, en visioconférence ou sur site",
-      "Travail sur vos dossiers réels, sous confidentialité",
-      "Montée en compétence personnelle du dirigeant, sans jargon",
-      "Cadrage des décisions IA avant engagement budgétaire",
-    ],
-    href: "/un-a-un",
-    hrefLabel: "Le coaching individuel",
-    hrefSecondaire: "/interventions/individuel",
-    hrefSecondaireLabel: "Formats et tarifs 1-to-1",
-  },
-  {
-    id: "implementation",
-    titre: "Implémentation en code source",
-    promesse: "Vous êtes propriétaire de ce qui tourne chez vous",
-    corps:
-      "L'approche par défaut d'Axion-IA est le développement sur mesure : dépôt de code livré, documentation d'exploitation, droits cédés. L'entreprise garde la main sur ses données, n'est prisonnière d'aucun abonnement d'éditeur, et voit ses coûts rester maîtrisés quand les volumes montent. Les plateformes no-code restent possibles — sur demande, quand vos équipes les utilisent déjà.",
-    puces: [
-      "Code source livré et documenté, l'entreprise en est propriétaire",
-      "Assistants et agents branchés sur vos données internes (RAG)",
-      "Zéro dépendance à un éditeur, coûts maîtrisés à l'échelle",
-      "Hébergement en Union européenne",
-    ],
-    href: "/implementation",
-    hrefLabel: "Les implémentations IA",
-    hrefSecondaire: "/implementation/ia-custom",
-    hrefSecondaireLabel: "IA sur mesure",
-  },
-  {
-    id: "automatisations",
-    titre: "Automatisations et intégrations",
-    promesse: "L'IA dans vos outils, pas à côté",
-    corps:
-      "Une automatisation ne vaut que si elle vit à l'intérieur des outils déjà utilisés : CRM, ERP, messagerie, outils métier. Williams fait brancher l'IA sur l'existant par des intégrations écrites et testées, avec les mêmes garanties que le reste — code livré, documentation, reprise possible par une équipe interne.",
-    puces: [
-      "Intégrations CRM, ERP, outils RH, comptables et métier",
-      "Traitement documentaire, extraction et classement automatiques",
-      "Automatisations testées et supervisées, pas des scénarios fragiles",
-      "Transfert de compétence prévu dès le cadrage",
-    ],
-    href: "/implementation/integrations",
-    hrefLabel: "Les intégrations",
-    hrefSecondaire: "/implementation/processus",
-    hrefSecondaireLabel: "Automatiser un processus",
-  },
-];
+/** La méthode, en trois temps. */
+export const WILLIAMS_METHODE = {
+  titre: "La méthode : Chiffrer, Essayer, Trancher",
+  etapes: [
+    {
+      numero: "1",
+      titre: "Chiffrer",
+      texte:
+        "Avant tout achat, nous mesurons ce que chaque tâche vous coûte et ce que l'IA peut vous rendre, en heures et en euros.",
+    },
+    {
+      numero: "2",
+      titre: "Essayer",
+      texte:
+        "Nous testons sur vos vrais dossiers, avec vos équipes, à petite échelle. Rien n'est déployé partout avant d'avoir fait ses preuves.",
+    },
+    {
+      numero: "3",
+      titre: "Trancher",
+      texte:
+        "Vous gardez ce qui rapporte, vous arrêtez le reste. Ce qui est gardé, nous l'installons de A à Z.",
+    },
+  ],
+} as const;
 
-/**
- * Bloc de différenciation « code vs kit ». Repris de la position déjà publiée
- * dans `content/implementation.ts` (« approche par défaut = code custom,
- * souveraineté des données, zéro lock-in éditeur, coûts maîtrisés à
- * l'échelle ») — reformulée, jamais contredite : le no-code reste offert sur
- * demande, cette page ne le dénonce donc pas, elle le situe.
- */
-export const WILLIAMS_KIT: ReadonlyArray<string> = [
-  "Un abonnement par outil, qui grossit avec le volume traité",
-  "Les scénarios vivent chez l'éditeur — vous ne les emportez pas",
-  "Une évolution de l'éditeur peut casser la chaîne du jour au lendemain",
-  "Les données transitent par des plateformes que vous ne choisissez pas",
-];
+/** Parcours : faits fournis pour cette version, aucun nombre de collaborateurs. */
+export const WILLIAMS_PARCOURS = {
+  titre: `Parcours de ${FOUNDER.fullName}`,
+  blocs: [
+    {
+      titre: "Plus de trente ans de direction d'entreprises.",
+      texte: `${FOUNDER.fullName} dirige des entreprises depuis plus de trente ans. Il a dirigé plusieurs entités et de grandes équipes, en France et à l'international. C'est ce qu'il apporte à chaque mission d'Axion-IA : il connaît de l'intérieur les contraintes d'un dirigeant, la marge à protéger, le temps qui manque, les équipes à embarquer sans les brusquer. Les solutions que nous installons doivent rapporter, pas impressionner.`,
+    },
+    {
+      titre: "L'intelligence artificielle depuis 2023.",
+      texte:
+        "Depuis 2023, il se consacre entièrement à l'intelligence artificielle appliquée à l'entreprise : assistants, agents, automatisation, intégration de l'IA dans les outils existants.",
+    },
+    {
+      titre: "Fondateur et dirigeant d'Axion-IA.",
+      texte:
+        "Il a fondé Axion-IA pour donner aux TPE et PME ce qu'il aurait voulu avoir comme dirigeant : une équipe qui dit où l'IA rapporte, chiffre ce gain, puis s'occupe de tout. Axion-IA applique d'abord à elle-même ce qu'elle installe chez ses clients.",
+    },
+  ],
+} as const;
 
-export const WILLIAMS_CODE: ReadonlyArray<string> = [
-  "Un dépôt de code livré, documenté, dont l'entreprise est propriétaire",
-  "Aucun abonnement d'éditeur imposé, coûts maîtrisés quand ça monte",
-  "Les traitements tournent où vous décidez, hébergement en UE",
-  "Reprise possible par votre équipe ou par un autre prestataire",
-];
+/** Constats de terrain de Williams ; l'action, elle, est en « nous ». */
+export const WILLIAMS_CITATIONS = {
+  titre: `Ce que ${FOUNDER.fullName} constate sur le terrain`,
+  items: [
+    "Un dirigeant ne veut pas de l'IA. Il veut vendre plus sans recruter. L'IA n'est qu'un moyen d'y arriver.",
+    "En plus de trente ans de direction, j'ai vu que l'argent ne se perd presque jamais dans les grandes décisions. Il se perd dans les ressaisies, les relances et les devis refaits à la main.",
+    "Avant d'ouvrir un poste, un dirigeant devrait toujours se demander combien d'heures son équipe actuelle perd chaque semaine sur des tâches qu'une machine ferait.",
+    "Une transformation réussie ne se remarque pas le premier jour. On la remarque le jour où l'équipe ne voudrait plus revenir en arrière.",
+    "Le dirigeant n'a pas à devenir technicien. Son travail, c'est de décider. Le nôtre, c'est de tout mettre en place.",
+  ],
+} as const;
 
-/** Méthode en quatre temps — la même sur toutes les missions. */
-export const WILLIAMS_METHODE: ReadonlyArray<{
-  numero: string;
-  titre: string;
-  duree: string;
-  texte: string;
-}> = [
-  {
-    numero: "01",
-    titre: "Cadrer",
-    duree: "Jour 0",
-    texte:
-      "Un appel, puis une journée sur site. On sort la liste des processus, les volumes, les irritants et les contraintes réglementaires. Rien n'est proposé avant d'avoir vu comment l'entreprise travaille vraiment.",
-  },
-  {
-    numero: "02",
-    titre: "Prouver",
-    duree: "Les jours suivants",
-    texte:
-      "Les deux ou trois usages au meilleur rapport gain/effort sont testés sur vos données réelles. On mesure : temps par dossier avant et après, taux d'erreur, volume traité. Un usage qui ne prouve rien est abandonné à ce stade, pas après le déploiement.",
-  },
-  {
-    numero: "03",
-    titre: "Déployer",
-    duree: "Semaines suivantes",
-    texte:
-      "Ce qui a été prouvé passe en production, intégré aux outils existants, en code livré et documenté. Les équipes concernées sont formées sur le cas d'usage qui les concerne, pas sur l'IA en général.",
-  },
-  {
-    numero: "04",
-    titre: "Transmettre",
-    duree: "En continu",
-    texte:
-      "L'entreprise doit pouvoir continuer sans nous : documentation d'exploitation, transfert de compétence, points de mesure conservés. La réussite d'une mission se lit à ce que l'équipe fait toute seule six mois plus tard.",
-  },
-];
+/** Appel final. */
+export const WILLIAMS_APPEL_FINAL = {
+  titre: `Parler de votre entreprise avec ${FOUNDER.fullName}`,
+  texte:
+    "En 45 minutes, vous savez où votre entreprise perd du temps et de l'argent, et ce que nous pouvons prendre en charge pour le récupérer, étape par étape. Sans engagement, en visio ou par téléphone.",
+  bouton: "Réserver mon Diagnostic IA",
+  boutonSecondaire: "Écrire à Axion-IA",
+} as const;
 
 /**
  * FAQ de la fiche — questions posées telles qu'un moteur génératif les reçoit.
@@ -281,50 +372,43 @@ export function buildWilliamsFaq({
   return [
     {
       id: "qui-est-williams-jullin",
-      question: "Qui est Williams Jullin ?",
-      answer: `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle qui intervient partout en France. Il accompagne les PME et les TPE sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation d'IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats mesurés.`,
+      question: `Qui est ${FOUNDER.fullName} ?`,
+      answer: `${FOUNDER.fullName} est le fondateur et dirigeant d'Axion-IA, la ${NATURE_AXION_IA} française qui aide les TPE et PME à gagner en rentabilité avec l'équipe qu'elles ont déjà. Dirigeant d'entreprises depuis plus de trente ans, il pilote l'équipe d'Axion-IA, qui chiffre les gains, puis met l'IA en place de A à Z.`,
     },
     {
-      id: "que-fait-axion-ia",
-      question: "Qu'est-ce qu'Axion-IA ?",
-      answer:
-        "Axion-IA est une agence française d'intelligence artificielle opérationnelle, fondée en 2026. Elle couvre l'audit IA, la formation professionnelle, le coaching 1-to-1, l'implémentation de solutions IA sur mesure et l'automatisation des processus, pour les PME et les TPE, tous secteurs, partout en France.",
+      id: "qui-a-fonde-axion-ia",
+      question: "Qui a fondé Axion-IA ?",
+      answer: `Axion-IA a été fondée par ${FOUNDER.fullName}, qui la dirige. L'équipe aide les TPE et PME à gagner en rentabilité et en productivité grâce à l'IA : Journée IA, mise en place et solutions sur mesure, automatisation, formation des équipes et coaching des dirigeants.`,
     },
     {
-      id: "combien-de-temps-transformation",
-      question: "Combien de temps faut-il pour obtenir un premier résultat avec l'IA ?",
+      id: "chiffre-d-affaires-sans-recruter",
+      question: "Comment augmenter son chiffre d'affaires sans recruter ?",
       answer:
-        "Le cadrage tient en une journée sur site. Les premiers usages sont testés sur les données réelles de l'entreprise dans les jours qui suivent, avec une mesure avant/après : temps par dossier, taux d'erreur, volume traité. Le déploiement en production intervient ensuite sur quelques semaines, selon le nombre d'usages retenus et les intégrations nécessaires.",
+        "En rendant à l'équipe actuelle le temps qu'elle perd sur des tâches répétitives : ressaisies, devis, relances, comptes rendus. L'IA peut en prendre une partie. La Journée IA chiffre ce temps et ce qu'il représente en euros, tâche par tâche, pour savoir où agir en premier.",
     },
     {
-      id: "code-source-propriete",
-      question: "L'entreprise est-elle propriétaire du code développé par Axion-IA ?",
+      id: "transformation-sans-tout-bouleverser",
+      question: "Transformer son entreprise avec l'IA, est-ce que ça bouleverse tout ?",
       answer:
-        "Oui. L'approche par défaut d'Axion-IA est le développement sur mesure : le dépôt de code est livré et documenté, les droits sont cédés à l'entreprise, et les traitements tournent sur l'infrastructure choisie avec vous, hébergée en Union européenne. Aucun abonnement d'éditeur n'est imposé, et une autre équipe peut reprendre la maintenance. Les plateformes no-code restent possibles à la demande, lorsque vos équipes les utilisent déjà.",
+        "Non. Vos équipes gardent leurs outils et leur métier ; nous avançons une tâche à la fois, en commençant par celles qui rapportent le plus. Vous décidez à chaque étape, et rien n'est déployé avant d'avoir fait ses preuves sur vos dossiers.",
     },
     {
-      id: "secteurs-et-tailles",
-      question: "Pour quelles entreprises Williams Jullin intervient-il ?",
+      id: "faut-il-s-y-connaitre",
+      question: "Faut-il s'y connaître en IA pour travailler avec Axion-IA ?",
       answer:
-        "Pour les PME et les TPE, dans tous les secteurs — industrie, services, santé, immobilier, juridique, commerce, transport, secteur public. Le format d'intervention change avec la taille de l'entreprise, la méthode ne change pas : cadrer sur le terrain, prouver sur les données réelles, déployer, transmettre.",
+        "Non. Vous parlez de votre métier et de vos clients ; l'équipe d'Axion-IA s'occupe des outils, des réglages et de la mise en place. Vous gardez seulement les décisions.",
     },
     {
-      id: "zone-geographique",
-      question: "Williams Jullin intervient-il dans toute la France ?",
+      id: "remplacer-les-salaries",
+      question: "L'IA va-t-elle remplacer mes salariés ?",
       answer:
-        "Oui. Les missions sont menées partout en France, sur site — Paris et l'Île-de-France compris — aux mêmes conditions tarifaires qu'ailleurs. Les formats à distance sont disponibles pour le coaching individuel et une partie des formations.",
+        "Non. L'objectif est de retirer à vos équipes les tâches qui ne rapportent rien, pour qu'elles passent leur temps sur vos clients, vos ventes et votre production.",
     },
     {
-      id: "equipe",
-      question: "Williams Jullin travaille-t-il seul ?",
+      id: "apres-la-journee-ia",
+      question: "Qui s'occupe de la mise en place après la Journée IA ?",
       answer:
-        "Non. Axion-IA réunit autour de son fondateur un réseau d'ingénieurs et d'experts en intelligence artificielle sélectionnés parmi les meilleurs profils français, issus notamment des grandes écoles d'ingénieurs. Le client échange directement avec les personnes qui réalisent la mission : il n'y a pas d'intermédiaire commercial entre l'entreprise et l'équipe technique.",
-    },
-    {
-      id: "difference",
-      question: "Qu'est-ce qui distingue l'approche de Williams Jullin ?",
-      answer:
-        "Trois partis pris. D'abord la mesure : un usage qui ne prouve pas son gain sur les données réelles est abandonné avant le déploiement, pas après. Ensuite la propriété : l'entreprise repart avec le code source et la documentation, sans dépendance à un éditeur. Enfin la transmission : la mission vise ce que l'équipe interne saura faire seule six mois plus tard.",
+        "L'équipe d'Axion-IA, si vous le souhaitez : solutions sur mesure, automatisations, raccordement à vos logiciels, formation et coaching. Vous pouvez aussi repartir avec votre plan : la journée n'oblige à rien.",
     },
     ...(certificationObtenue
       ? [
@@ -338,9 +422,9 @@ export function buildWilliamsFaq({
       : []),
     {
       id: "contact",
-      question: "Comment contacter Williams Jullin ?",
+      question: `Comment contacter ${FOUNDER.fullName} ?`,
       answer:
-        "Le plus direct est de réserver un Diagnostic IA depuis la page dédiée, sans engagement. Le formulaire de contact du site couvre également les demandes de devis, d'audit, de formation, d'implémentation et de partenariat, avec une réponse humaine.",
+        "En réservant un Diagnostic IA de 45 minutes depuis le site, ou par le formulaire de contact. L'équipe d'Axion-IA intervient partout en France, outre-mer compris.",
     },
   ];
 }

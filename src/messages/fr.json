@@ -228,6 +228,19 @@
     "retry": "Réessayer",
     "backHome": "Retour à l'accueil"
   },
+  "articleV2": {
+    "by": "Par",
+    "publishedOn": "Publié le",
+    "updatedOn": "Mis à jour le",
+    "relatedEyebrow": "Articles connexes",
+    "relatedTitle": "À lire aussi",
+    "ctaTitle": "Une journée pour passer à l’action",
+    "ctaDescription": "La Journée IA identifie, chez vous, les tâches à automatiser en priorité.",
+    "ctaButton": "Découvrir la Journée IA",
+    "cityPrefix": "Cet article concerne ",
+    "cityLink": "l'IA à {ville}",
+    "citySuffix": " — voir la page locale."
+  },
   "breadcrumb": {
     "home": "Accueil",
     "ariaLabel": "Fil d'Ariane"

@@ -12,6 +12,7 @@ import { prisma } from "@/lib/prisma";
 import { buildImageDetailGraph } from "@/server/image-bank/services/image-jsonld-graph.service";
 import { imageBankService } from "@/server/image-bank/services/image-bank.service";
 import { resolveCopyrightHolder } from "@/server/image-bank/constants";
+import { isGalleryPageIndexable } from "@/server/image-bank/indexabilite";
 import { GalleryGrid } from "@/components/galerie/GalleryGrid";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 
@@ -123,24 +124,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       // RÈGLE STRICTE : seul le FR est indexable. EN est désactivé (301→FR) ; on
       // force `noindex` sur toute locale ≠ fr en filet de sécurité (au cas où un
       // /en/* échapperait au 301 proxy). + garde anti-thin/doorway côté FR.
-      index: locale === "fr" && hasSubstantiveContent(tr),
+      index: isGalleryPageIndexable(locale, tr),
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
     },
   };
-}
-
-/**
- * Vrai si la traduction porte assez de contenu unique pour mériter l'indexation
- * (anti-doorway). Bar volontairement basse : toute image correctement enrichie
- * la franchit ; seules les images encore au stade placeholder sont exclues.
- */
-function hasSubstantiveContent(tr: {
-  description?: string | null;
-  aiSummary?: string | null;
-}): boolean {
-  return (tr.description?.trim().length ?? 0) >= 100 || (tr.aiSummary?.trim().length ?? 0) >= 100;
 }
 
 export default async function ImageDetailPublicPage({ params }: PageProps) {
