@@ -613,7 +613,7 @@ export default async function sitemap(props: {
         buildPagesSitemap(
           editorialFor("pages"),
           await hubGuidesEstIndexable(),
-          fichesSitemapEquipe(await listPublishedMembers()),
+          await fichesEquipeSitemap(),
         ),
       );
     case "blog":
@@ -756,6 +756,18 @@ export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<strin
 
 // Static routes — declared in `routing.pathnames` minus excluded + slug templates.
 // Priority 1.0 (home) > 0.8 (depth 2) > 0.6 (depth ≥ 3). changefreq weekly.
+/**
+ * Fiches équipe indexables. Une lecture en échec ne doit pas faire tomber tout `pages.xml` :
+ * sans ces fiches le plan reste valide (elles reviennent à la régénération suivante).
+ */
+async function fichesEquipeSitemap(): Promise<Array<{ slug: string; lastModified: Date }>> {
+  try {
+    return fichesSitemapEquipe(await listPublishedMembers());
+  } catch {
+    return [];
+  }
+}
+
 function buildPagesSitemap(
   now: Date,
   hubGuidesIndexable = true,
