@@ -52,6 +52,7 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
+import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
 import { noterDocumentsRemis } from "./annexes-versions";
@@ -331,6 +332,7 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "hors-grille"
   | "declarations-sans-reponse"
+  | "purge-rgpd"
   | "commandes-a-attribuer"
   | "resiliations-echues"
   | "integrite-contrats"
@@ -425,6 +427,8 @@ async function passer(
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
     // Point 12 (#2464) : le lundi, l'empreinte des contrats contresignés est revérifiée sur R2.
     ["integrite-contrats", async () => void (await verifierIntegriteContrats(maintenant))],
+    // PR N (#2464 pt 6) : purge RGPD, le 1er du mois, ÉTEINTE par défaut (APPORTEURS_PURGE_RGPD).
+    ["purge-rgpd", async () => void (await etapePurgeRgpd(maintenant))],
     // Point 20 : relecture du registre public pour les apporteurs sous contrat (alerte interne seule).
     ["controle-registre", async () => void (await controlerRegistreApporteurs(maintenant))],
   ];

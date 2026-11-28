@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { quatreDerniersCaracteres, seuilExpiration } from "./changement-iban-regles";
 import { etatSectionCompte, type EtatSection } from "./changement-iban-espace";
 import { changementIbanActif, secretEmpreinteDisponible } from "./interrupteur-changement-iban";
+import { lireIbanClair } from "./iban-purge";
 
 export interface SectionCompte {
   readonly etat: EtatSection;
@@ -34,7 +35,7 @@ export async function lireSectionCompte(
     select: { statut: true, iban: true, telephone: true },
   });
   if (!fiche) return vide({ etat: "absente" });
-  const iban = decryptPii(fiche.iban);
+  const iban = lireIbanClair(fiche.iban);
   const fin4 = iban ? quatreDerniersCaracteres(iban) : null;
   const interrupteur = changementIbanActif();
   const secret = secretEmpreinteDisponible();

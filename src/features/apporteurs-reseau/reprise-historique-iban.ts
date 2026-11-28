@@ -16,10 +16,11 @@
 import { randomUUID } from "node:crypto";
 
 import { empreinteIban, ibanNormalise } from "@/lib/iban-empreinte";
-import { decryptPii, encryptPii } from "@/lib/pii-crypto";
+import { encryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 
 import { quatreDerniersCaracteres } from "./changement-iban-regles";
+import { lireIbanClair } from "./iban-purge";
 
 export interface CompteRenduReprise {
   readonly appliquer: boolean;
@@ -75,7 +76,7 @@ export async function repriseEmpreintesIban(o: {
       vus += 1;
       let clair: string | null;
       try {
-        clair = decryptPii(f.iban);
+        clair = lireIbanClair(f.iban);
       } catch {
         ignores.illisible += 1;
         continue;
