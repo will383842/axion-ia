@@ -81,7 +81,9 @@ export function ProfilCollaborateur({
       {contenu.services ? <MetiersCollaborateur donnees={contenu.services} /> : null}
       {contenu.methode ? <MethodeCollaborateur donnees={contenu.methode} /> : null}
       {contenu.parcours ? <ParcoursSection donnees={contenu.parcours} /> : null}
-      {contenu.citations ? <CitationsTerrain donnees={contenu.citations} /> : null}
+      {contenu.citations ? (
+        <CitationsTerrain donnees={contenu.citations} auteur={fiche.nom} />
+      ) : null}
 
       {contenu.faq.length > 0 ? (
         <FaqBlock

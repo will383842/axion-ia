@@ -52,6 +52,9 @@ export type GabaritApporteur =
   | "apporteur-file-attente-premier-rang"
   | "apporteur-virement-fait"
   | "apporteur-lien-espace"
+  | "apporteur-avenant-propose"
+  | "apporteur-avenant-relance"
+  | "apporteur-avenant-enregistre"
   | "apporteur-compte-a-confirmer"
   | "apporteur-compte-demande-bloquee"
   | "apporteur-compte-change"
@@ -102,6 +105,10 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-releve-mensuel",
   "apporteur-file-attente-premier-rang",
   "apporteur-virement-fait",
+  // Avenant 2.8 (lot S4, #2512) : gabarits livrés au worker AVANT leur émetteur (lot S3).
+  "apporteur-avenant-propose",
+  "apporteur-avenant-relance",
+  "apporteur-avenant-enregistre",
   "apporteur-lien-espace",
   // Changement de compte bancaire (lot 4 du plan changement d'IBAN) : jamais de repli (`gabaritRepli`), voir §6.1.
   ...GABARITS_COMPTE_BANCAIRE_LISTE(),
@@ -159,6 +166,10 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-releve-mensuel",
   "apporteur-file-attente-premier-rang",
   "apporteur-virement-fait",
+  // Avenant 2.8 (lot S4, #2512) : gabarits livrés au worker AVANT leur émetteur (lot S3).
+  "apporteur-avenant-propose",
+  "apporteur-avenant-relance",
+  "apporteur-avenant-enregistre",
   // « apporteur-lien-espace » n'y est PAS (2026-10-09) : envoyé à SA demande depuis
   // « Retrouver mon espace », qui décide lui-même qui le reçoit (fiche retirée comprise,
   // pour qu'elle puisse encore déposer ses attestations).

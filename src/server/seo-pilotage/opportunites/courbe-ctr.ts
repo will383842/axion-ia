@@ -1,7 +1,7 @@
 import { estRequeteMarque } from "./intention";
 import type { LigneRequete } from "./types";
 
-/** Impressions minimales pour qu'une tranche de position compte. À calibrer sur 8 semaines. */
+/** Impressions minimales pour qu'une tranche de position compte. À calibrer sur l'historique rattrapé. */
 export const MIN_IMPRESSIONS_TRANCHE = 500;
 /** En dessous, le détecteur « CTR anormal » reste en veille. */
 export const MIN_TRANCHES_VALIDES = 3;

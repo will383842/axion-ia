@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`liste proposée (à valider par Will) > instantané figé : 30 questions, version non validée 1`] = `
+[
+  "Avec cinq salariés, l'IA vaut-elle vraiment le coup pour mon entreprise ?",
+  "Quelles tâches de dirigeant puis-je confier à l'IA dès cette semaine ?",
+  "Dans une PME de vingt personnes, à quoi ressemble une semaine de travail avec l'IA ?",
+  "Peut-on automatiser les notes de frais avec l'IA dans une petite entreprise ?",
+  "Faut-il changer nos ordinateurs pour utiliser l'IA ?",
+  "Combien de temps faut-il à un salarié pour être à l'aise avec l'IA ?",
+  "Combien d'heures par semaine l'IA peut-elle faire gagner à une PME ?",
+  "Comment rédiger une charte d'utilisation de l'IA pour mes salariés ?",
+  "Un salarié a collé un fichier clients dans ChatGPT : que faire tout de suite ?",
+  "Un salarié refuse d'utiliser l'IA : puis-je l'y obliger ?",
+  "Qui est responsable quand un document préparé avec l'IA contient une erreur ?",
+  "L'AI Act concerne-t-il une TPE qui utilise simplement ChatGPT ?",
+  "Que dit le RGPD sur l'usage de l'IA avec des données de clients ?",
+  "Quelles bases de sécurité informatique mettre en place avant de déployer l'IA ?",
+  "Un assistant IA généraliste ou un outil propre à mon métier : que choisir ?",
+  "Formation IA générique ou formation sur nos propres dossiers : quelle différence pour mes équipes ?",
+  "Comment répondre aux avis Google avec l'IA sans paraître automatique ?",
+  "L'IA peut-elle m'aider à préparer des devis plus vite quand je suis artisan ?",
+  "L'IA peut-elle m'aider à répondre à un appel d'offres public ?",
+  "Mes fichiers sont en désordre : est-ce que cela empêche d'utiliser l'IA ?",
+  "L'IA peut-elle construire un planning d'équipe plus juste et plus rapide ?",
+  "Comment l'IA peut-elle m'aider à repérer que je paie trop cher un fournisseur ?",
+  "Quelle formation à l'IA choisir pour mes salariés et comment la financer ?",
+  "Comment choisir un organisme de formation à l'IA sérieux pour une PME ?",
+  "Les TPE utilisent-elles moins l'IA que les PME ? Quels sont les chiffres ?",
+  "Comment l'IA peut-elle aider à rédiger une demande de subvention ?",
+  "Que peut faire l'IA pour le service client d'une petite entreprise sans perdre le contact humain ?",
+  "Comment former mes équipes à l'IA sans bloquer la production pendant une journée ?",
+  "Quels sont les risques de confidentialité à connaître avant de confier des documents à une IA ?",
+  "Par où commencer pour introduire l'IA dans mon entreprise de moins de cinquante salariés ?",
+]
+`;

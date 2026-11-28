@@ -383,6 +383,8 @@ const GABARITS_APRES_SIGNATURE: readonly string[] = [
   "apporteur-releve-mensuel.tsx",
   // PR E #2464 : file d'attente (art. 3.5) — apporteur SIGNÉ ; aucun barème ni montant.
   "apporteur-file-attente.tsx",
+  // Lot S4 #2512 : avenant 2.8 — apporteur SIGNÉ (version 2.6) ; aucun barème ni montant.
+  "apporteur-avenant.tsx",
 ];
 const CITE_UN_MONTANT =
   /commission\s*\(|€|\d\s?%|\}\s?%|COMMISSION_FORMATION|getCommissionById|COMMERCIAL_COMMISSIONS/;

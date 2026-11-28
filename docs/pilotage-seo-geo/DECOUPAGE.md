@@ -22,8 +22,8 @@
 Vague 0 (parallèle)  P0 porte de coût  ·  P0b plancher suivi  ·  P1 client GSC par lot  ·  P3 module pur données  ·  P7 moteur d'opportunités (pur)  ·  P12 score de citabilité (pur)
 Vague 1              P2 migration « mesure »  ──►  P4 worker seo-pilotage + ingestion
 Vague 2 (parallèle)  P5 inspection  ·  P6a recalcul SiteRoute/KeywordTracking  ·  P8 écran (observation)  ·  P9 rapport hebdo  ·  P10 GEO mesure  ·  P18 alerte indexation
-Vague 3              P6b retrait des deux anciens crons (≥ 2 semaines après P6a)  ·  P11 panel GEO (après P0 + P10)
-— 8 semaines d'observation minimum —
+Vague 3              P6b retrait des deux anciens crons (après rattrapage de l'historique + 7 jours de relevés concordants)  ·  P11 panel GEO (après P0 + P10)
+— historique Search Console rattrapé (≥ 90 jours remplis, ou tout l'historique) + P13 livrée et testée —
 Vague 4              P13 journal + retour arrière  ──►  P14 propositions + file de validation  ──►  P15 mesure d'effet + témoin  ──►  P16 automatique borné
 Facultatif           P17 Bing Webmaster (après P4)
 ```
@@ -117,7 +117,7 @@ Facultatif           P17 Bing Webmaster (après P4)
   - `src/server/queue/types.ts` ;
   - `src/server/seo-pilotage/interrupteur.ts`.
 - **Interrupteur** : `CONTENT_PILOTAGE_SEO="true"` exact. Mode lu dans `ContentGenConfig.pilotage_seo`, `observation` par défaut.
-- **Tâches** : `ingestion-gsc` (appels A, B et C, idempotents), `rattrapage-gsc` (un jour par passage), `purge` (par lots).
+- **Tâches** : `ingestion-gsc` (appels A, B et C, idempotents), `rattrapage-gsc` (jusqu'à `JOURS_PAR_PASSAGE` = 30 jours par passage, pause entre les jours, arrêt au premier échec dont le quota 429 ; 16 mois remplis en environ 6 heures de passages), `purge` (par lots).
 - **Tests** :
   - éteint : aucun appel et aucune écriture ;
   - stub : saut ;
@@ -149,7 +149,7 @@ Facultatif           P17 Bing Webmaster (après P4)
 ### P6b · Retrait de `site-route-gsc` et `content-keyword-sync` de la planification
 
 - **Fichiers** : `queues.ts` (crons retirés). Le code des workers est gardé une version, puis supprimé dans une PR ultérieure.
-- **Condition** : au moins 2 semaines après P6a, et écran « Santé des données » vert.
+- **Condition** : historique rattrapé (`rattrapage-gsc` terminé) **et** 7 jours de relevés concordants entre l'ancien et le nouveau chemin (mêmes clics, impressions et positions par page), écran « Santé des données » vert. Remplace « au moins 2 semaines après P6a » (décision de Will du 28/11/2026).
 - **Test** : verrou sur l'absence des deux `jobId` de cron.
 
 ### P7 · Moteur d'opportunités (pur) : `src/server/seo-pilotage/opportunites/`
@@ -303,12 +303,22 @@ Facultatif           P17 Bing Webmaster (après P4)
 
 ## 4. Estimation
 
-| Vague | PR                        | Taille        | Remarque                                      |
-| ----- | ------------------------- | ------------- | --------------------------------------------- |
-| 0     | P0, P0b, P1, P3, P7, P12  | S à M chacune | Indépendantes                                 |
-| 1     | P2, P4                    | M             | La seule migration « lourde »                 |
-| 2     | P5, P6a, P8, P9, P10, P18 | S à M         | Parallèles                                    |
-| 3     | P6b, P11                  | S             | —                                             |
-| 4     | P13 → P14 → P15 → P16     | M, M, S, S    | Séquentielles, après 8 semaines d'observation |
+| Vague | PR                        | Taille        | Remarque                                        |
+| ----- | ------------------------- | ------------- | ----------------------------------------------- |
+| 0     | P0, P0b, P1, P3, P7, P12  | S à M chacune | Indépendantes                                   |
+| 1     | P2, P4                    | M             | La seule migration « lourde »                   |
+| 2     | P5, P6a, P8, P9, P10, P18 | S à M         | Parallèles                                      |
+| 3     | P6b, P11                  | S             | —                                               |
+| 4     | P13 → P14 → P15 → P16     | M, M, S, S    | Séquentielles, après rattrapage de l'historique |
 
 Le mode observation est livrable en **vagues 0 à 2**. Aucune action sur le site n'est possible avant la vague 4.
+
+## 5. Étape « indexation rapide » (2026-11-28)
+
+Objectif : faire indexer un article publié le plus vite possible, dans les règles de Google et de Bing.
+
+- **Vérifié par test de bout en bout** (`content-gen/indexing/__tests__/indexation-rapide-chemin.spec.ts`) : le bouton « Publier » (`approveReview` → `content-publish-worker` → `enqueueIndexingForTier1`) envoie IndexNow avec l'URL canonique ; le sitemap des articles annonce la même URL avec `lastmod` = date de modification réelle ; l'article récent est suggéré par ≥ 2 articles proches (bloc « articles connexes »).
+- **API Indexing de Google : garde-fou, actif sans drapeau.** Permise officiellement pour `JobPosting` et `BroadcastEvent` seulement. `enqueueIndexingForTier1` et `enqueueIndexingForUrls` ne l'appellent plus jamais (le double opt-in `GOOGLE_INDEXING_ARTICLES` est supprimé) ; `enqueueGoogleIndexingForUrls` et le worker refusent toute URL hors `/<locale>/carrieres/<slug>` (`estUrlEligibleIndexingApiGoogle`).
+- **Voie permise : `sitemaps.submit`** (Search Console), éteinte par défaut (`GSC_SITEMAP_SUBMIT_ENABLED=true`). Un job retardé unique, au plus une soumission par heure. Portée requise : `https://www.googleapis.com/auth/webmasters` ; si elle manque, le worker journalise « ESCALADE portée Search Console » et ne fait rien d'autre.
+- **Mesure** : délai = première inspection d'URL P5 au verdict `PASS` moins la date de publication (aucune table nouvelle), affiché dans la console Équipe éditoriale avec la médiane 30 jours, éteint par défaut (`DELAI_INDEXATION_AFFICHE=true`). C'est une borne haute (précision = cadence de la rotation P5).
+- **Limite connue** : rien ne garantit qu'un article neuf soit lié depuis ≥ 2 articles proches dans tous les cas ; le test le vérifie sur un corpus de sujets voisins, le maillage entrant ne modifie pas les articles existants.

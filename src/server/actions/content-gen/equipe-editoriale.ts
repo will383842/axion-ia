@@ -38,6 +38,8 @@ import {
 } from "@/server/content-gen/equipe/journal";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 import { approveReview, requestEdits } from "./review";
+import { lireDelaisIndexation } from "@/server/content-gen/indexing/delais-indexation";
+import type { DelaisIndexation } from "@/server/content-gen/indexing/delais-indexation";
 
 const IdSchema = z.string().min(1).max(64);
 
@@ -62,6 +64,8 @@ export interface PilotageEquipe {
   readonly etat: EtatEquipe;
   readonly quotas: QuotasEquipe;
   readonly aRelire: ReadonlyArray<ArticleARelire>;
+  /** `null` tant que `DELAI_INDEXATION_AFFICHE` n'est pas « true » (éteint par défaut). */
+  readonly delaisIndexation: DelaisIndexation | null;
 }
 
 async function renvoisDepuisConsole(reviewId: string): Promise<number> {
@@ -107,7 +111,11 @@ export async function getPilotageEquipe(): Promise<PilotageEquipe> {
       };
     }),
   );
-  return { etat: etatEquipe(marche), quotas, aRelire };
+  const delaisIndexation =
+    process.env.DELAI_INDEXATION_AFFICHE === "true"
+      ? await lireDelaisIndexation().catch(() => null)
+      : null;
+  return { etat: etatEquipe(marche), quotas, aRelire, delaisIndexation };
 }
 
 export async function definirMarcheEquipe(marche: boolean): Promise<void> {
