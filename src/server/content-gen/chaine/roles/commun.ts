@@ -306,13 +306,40 @@ export function hrefInterdit(href: string): boolean {
 /** Tous les href d'un fragment HTML (guillemets doubles, simples ou absents). */
 export function hrefsDe(html: string): string[] {
   const sortie: string[] = [];
-  for (const balise of html.matchAll(/<a(?=[\s/>])((?:"[^"]*"|'[^']*'|[^>"'])*)>/gi)) {
-    // Lecture des attributs comme un navigateur : nom, puis valeur entre guillemets ou nue.
-    for (const a of (balise[1] ?? "").matchAll(
-      /([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g,
-    )) {
-      if (a[1]!.toLowerCase() === "href") sortie.push((a[2] ?? a[3] ?? a[4] ?? "").trim());
+  const blanc = /[\s]/;
+  for (const m of html.matchAll(/<a(?=[\s/>])/gi)) {
+    let i = (m.index ?? 0) + 2;
+    let fermee = false;
+    while (i < html.length) {
+      while (i < html.length && (blanc.test(html[i]!) || html[i] === "/")) i++;
+      if (html[i] === ">") {
+        fermee = true;
+        break;
+      }
+      // Nom d'attribut (HTML5 : jusqu'à un blanc, « / », « > » ou « = »).
+      let nom = "";
+      while (i < html.length && !blanc.test(html[i]!) && !"/>=".includes(html[i]!))
+        nom += html[i++];
+      while (i < html.length && blanc.test(html[i]!)) i++;
+      let valeur = "";
+      if (html[i] === "=") {
+        i++;
+        while (i < html.length && blanc.test(html[i]!)) i++;
+        const q = html[i];
+        if (q === '"' || q === "'") {
+          const fin = html.indexOf(q, i + 1);
+          if (fin < 0) break;
+          valeur = html.slice(i + 1, fin);
+          i = fin + 1;
+        } else {
+          // Sans guillemets : jusqu'à un blanc ou « > » ; « " ' = ` » font partie de la valeur.
+          while (i < html.length && !blanc.test(html[i]!) && html[i] !== ">") valeur += html[i++];
+        }
+      }
+      if (nom.toLowerCase() === "href") sortie.push(valeur.trim());
     }
+    // Balise jamais fermée : un navigateur la fermerait sur un « > » ultérieur. Échec fermé.
+    if (!fermee) sortie.push("#balise-illisible");
   }
   return sortie;
 }

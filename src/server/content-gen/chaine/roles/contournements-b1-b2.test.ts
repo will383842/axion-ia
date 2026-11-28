@@ -26,3 +26,27 @@ describe("nombresDe : nombres composés en lettres", () => {
     expect(cle("soixante-dix pour cent")).not.toEqual(cle("dix pour cent"));
   });
 });
+
+describe("tour 2 : guillemets non appariés, composés avec espace, entités", () => {
+  it("voit un lien dont la valeur sans guillemets contient une apostrophe", () => {
+    expect(hrefsDe("<p>L'outil</p><a href=https://evil.example/x'>g</a>")).toEqual([
+      "https://evil.example/x'",
+    ]);
+  });
+  it("échoue fermé sur une balise a jamais fermée", () => {
+    expect(hrefsDe("<a href=javascript:alert(1)//")).toContain("#balise-illisible");
+  });
+  it("lit un « = » dans une valeur sans guillemets", () => {
+    expect(hrefsDe("<a href=https://insee.fr=@evil.com>x</a>")).toEqual([
+      "https://insee.fr=@evil.com",
+    ]);
+  });
+  it("ne réduit pas « deux mille » ou « cent vingt » à leur dernier mot", () => {
+    const cle = (t: string) => nombresDe(t).map((n) => n.cle);
+    expect(cle("deux mille salariés")).not.toEqual(cle("mille salariés"));
+    expect(cle("cent vingt salariés")).not.toEqual(cle("vingt salariés"));
+    expect(cle("seize pour cent").length).toBeGreaterThan(0);
+    expect(cle("quatre-vingts pour cent").length).toBeGreaterThan(0);
+    expect(cle("soixante-dix %").length).toBeGreaterThan(0);
+  });
+});

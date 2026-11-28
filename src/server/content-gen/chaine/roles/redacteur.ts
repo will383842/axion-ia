@@ -266,7 +266,7 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
   const CACHE =
     /<details|\shidden[\s>=]|display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0|opacity\s*:\s*0|sr-only|aria-hidden|<!--/i;
   const INTERDIT =
-    /<(script|iframe|style|object|embed|form|input|base|img|svg|link|meta)\b|[\s"'/](?:on\w+|style|class|title|alt|data-(?!aeo\b)[\w-]*|srcset|src)\s*=/i;
+    /<(script|iframe|style|object|embed|form|input|base|img|svg|link|meta|math)\b|&#|&(?!nbsp;|amp;|lt;|gt;|quot;|apos;)[a-z]+;|[\s"'/](?:on\w+|style|class|title|alt|background|poster|data-(?!aeo\b)[\w-]*|srcset|src)\s*=/i;
   const RELU = /\brelu(?:e|s|es)?\s+par\b/i;
   const controlerForme = (html: string, texte: string, section: Correction["section"]) => {
     if (CACHE.test(html)) {
@@ -312,6 +312,7 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
   };
   controlerLiens(a.directAnswer, "directAnswer");
   controlerLiens(avant, "global");
+  controlerLiens(`${avant}${sections.join("")}`, "global");
   sections.forEach((s, i) => controlerLiens(s, i));
   for (const f of a.faq) controlerLiens(f.answer, "faq");
   // Titres H2 écrits (H-7, H-8, H-11) : longueur, générique, doublon, identique au H1.

@@ -51,12 +51,12 @@ export function nombresDe(texte: string): NombreTrouve[] {
 }
 
 const MOTS_NOMBRE =
-  "deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt|trente|quarante|cinquante|soixante|cent|mille";
+  "deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|vingts?|trente|quarante|cinquante|soixante|cents?|mille";
 const UNITES_STAT =
   "fois|heures?|jours?|semaines?|mois|ans|salari\\p{L}*|pme|tpe|entreprises?|clients?|collaborateurs?|millions?|milliards?|pour cent";
 // Nombre composé : « vingt-cinq », « soixante-dix », « vingt et un » : jamais réduit à son dernier mot.
-const NB_LETTRES = `(?:${MOTS_NOMBRE})(?:(?:-|\\s+et\\s+)(?:${MOTS_NOMBRE}|un|une))*`;
+const NB_LETTRES = `(?:${MOTS_NOMBRE})(?:(?:-|\\s+et\\s+|\\s+)(?:${MOTS_NOMBRE}|un|une))*`;
 const RE_LETTRES = new RegExp(
-  `(?<![\\p{L}-])(?:(?:un|une|${NB_LETTRES})\\s+[^.!?\\d]{0,40}?\\bsur\\s+(?:${NB_LETTRES}|\\d+)|(?:${NB_LETTRES})\\s+(?:${UNITES_STAT})|la moitié|un tiers|deux tiers|un quart|trois quarts|\\d+\\s*pour cent)(?![\\p{L}])`,
+  `(?<![\\p{L}-])(?:(?:un|une|${NB_LETTRES})\\s+[^.!?\\d]{0,40}?\\bsur\\s+(?:${NB_LETTRES}|\\d+)|(?:${NB_LETTRES})(?:\\s+(?:${UNITES_STAT})|\\s*%)|la moitié|un tiers|deux tiers|un quart|trois quarts|\\d+\\s*pour cent)(?![\\p{L}])`,
   "giu",
 );
