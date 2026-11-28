@@ -161,16 +161,11 @@ export function MiseEnPageAnalyse({
         {/* Les <table> du corps défilent dans un cadre focusable (`.table-scroll`) : sans lui, un tableau
             large fait défiler toute la page sur téléphone (WCAG 1.4.10). */}
         {(enveloppeCorps ?? ((c: ReactNode) => c))(
-          <CorpsArticle
-            html={corps ? corps.avant : htmlCorps}
-            blocs={p.blocs}
-          />,
+          <CorpsArticle html={corps ? corps.avant : htmlCorps} blocs={p.blocs} />,
         )}
         {apresCorps}
         <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
-        {corps?.apres ? (
-          <CorpsArticle html={corps.apres} blocs={null} />
-        ) : null}
+        {corps?.apres ? <CorpsArticle html={corps.apres} blocs={null} /> : null}
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq
           items={view.faqItems}
