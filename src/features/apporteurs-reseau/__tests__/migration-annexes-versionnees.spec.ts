@@ -22,7 +22,12 @@ describe("migration apporteurs_annexes_versionnees", () => {
     expect(existsSync(path.join(RACINE, "prisma/migrations", DOSSIER, "rollback.sql"))).toBe(true);
     const autres = readdirSync(path.join(RACINE, "prisma/migrations")).filter(
       // La purge RGPD (PR N) est légitimement postérieure : on ne compare qu'aux migrations d'avant.
-      (d) => /^\d{14}_/.test(d) && d !== DOSSIER && !d.endsWith("_apporteurs_purge_rgpd"),
+      (d) =>
+        /^\d{14}_/.test(d) &&
+        d !== DOSSIER &&
+        !d.endsWith("_apporteurs_purge_rgpd") &&
+        !d.endsWith("_apporteurs_numeros_pieces_uniques") &&
+        !d.endsWith("_apporteurs_numeros_pieces_reservation"),
     );
     expect(DOSSIER.slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });

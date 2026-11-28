@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const etat = vi.hoisted(() => ({
   autres: [] as Array<Record<string, unknown>>,
+  reservations: [] as Array<Record<string, unknown>>,
   maj: [] as Array<Record<string, unknown>>,
   envoyes: [] as Array<Record<string, unknown>>,
 }));
@@ -43,6 +44,7 @@ vi.mock("../envois", () => ({
 vi.mock("@/lib/prisma", () => {
   const prisma = {
     $transaction: async (f: (t: unknown) => unknown) => f(prisma),
+    presentationReservation: { findMany: vi.fn(async () => etat.reservations) },
     presentationEntreprise: {
       findUnique: vi.fn(async (a: { include?: unknown }) => {
         const base = {
@@ -81,6 +83,7 @@ import {
   existeDeclarationPlusAncienne,
   MESSAGE_DECLARATION_PLUS_ANCIENNE,
   MESSAGE_DEJA_ATTRIBUEE,
+  MESSAGE_EN_REPOS,
 } from "../presentations";
 
 const dejaBienRecue = {
@@ -92,6 +95,7 @@ const opts = { civilite: "" as const, nomFamille: "" };
 
 beforeEach(() => {
   etat.autres = [];
+  etat.reservations = [];
   etat.maj = [];
   etat.envoyes = [];
 });
@@ -114,6 +118,41 @@ describe("doublon « Bien reçu » : une entreprise déjà attribuée ne reçoit
     expect(dejaAttribueeAUnAutre([{ ...dejaBienRecue, contactEnvoyeAt: null }], "APP2")).toBe(
       false,
     );
+  });
+  it("« Bien reçu » refusé si une présentation `terminee` est encore dans ses 30 jours de repos", async () => {
+    vi.useFakeTimers({ now: new Date("2026-10-20T10:00:00Z"), toFake: ["Date"] });
+    try {
+      etat.autres = [
+        {
+          id: "P1",
+          apporteurId: "APP1",
+          statut: "terminee",
+          contactEnvoyeAt: null,
+          recueAt: new Date("2026-08-01T00:00:00Z"),
+          protegeeJusquAt: null,
+        },
+      ];
+      // Réservation échue le 10/10 : repos jusqu'à fin novembre.
+      etat.reservations = [
+        {
+          presentationId: "P1",
+          reserveeJusquAt: new Date("2026-10-10T00:00:00Z"),
+          echueAt: new Date("2026-10-10T00:00:00Z"),
+          rendezVousPrisAt: null,
+          valideeAt: null,
+        },
+      ];
+      const r = await appliquerReponse("P2", "bien_recu", opts);
+      expect(r).toEqual({ ok: false, message: MESSAGE_EN_REPOS });
+      expect(etat.maj).toEqual([]);
+      expect(etat.envoyes).toEqual([]);
+      // Repos écoulé (échue il y a plus de 30 jours) : plus de blocage.
+      etat.reservations = [{ ...etat.reservations[0], echueAt: new Date("2026-08-01T00:00:00Z") }];
+      const r2 = await appliquerReponse("P2", "bien_recu", opts);
+      expect(r2).not.toEqual({ ok: false, message: MESSAGE_EN_REPOS });
+    } finally {
+      vi.useRealTimers();
+    }
   });
   it("« Bien reçu » refusé avec un message clair, rien n'est écrit ni envoyé", async () => {
     etat.autres = [dejaBienRecue];

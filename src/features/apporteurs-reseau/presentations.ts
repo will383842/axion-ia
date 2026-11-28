@@ -513,6 +513,9 @@ export function dejaAttribueeAUnAutre(
   );
 }
 
+export const MESSAGE_EN_REPOS =
+  "Cette entreprise est encore dans ses 30 jours de repos après la réservation d'un autre apporteur : elle n'est pas disponible. Répondez « Pas disponible » à cet apporteur.";
+
 export const MESSAGE_DECLARATION_PLUS_ANCIENNE =
   "Une déclaration plus ancienne existe encore pour ce SIREN, déposée par un autre apporteur : elle passe en premier (contrat art. 3.5). Traitez d'abord la plus ancienne ; cette entreprise ne peut pas être contactée sur celle-ci tant que l'autre court.";
 
@@ -561,28 +564,58 @@ async function refusBienRecu(
     select: { siren: true, apporteurId: true, recueAt: true },
   });
   if (!p) return null;
-  const tous = await db.presentationEntreprise.findMany({
-    where: {
-      siren: p.siren,
-      id: { not: presentationId },
-      apporteurId: { not: p.apporteurId },
-      statut: { in: ["reservee", "confirmee"] },
-    },
-    select: {
-      id: true,
-      apporteurId: true,
-      statut: true,
-      contactEnvoyeAt: true,
-      recueAt: true,
-      protegeeJusquAt: true,
-    },
-    take: 20,
-  });
+  // Deux lectures : les présentations ACTIVES (réservée, confirmée) ne doivent jamais sortir de la
+  // fenêtre à cause d'un SIREN qui accumule des présentations terminées (#2464, point 2). Les
+  // terminées, bornées, ne servent qu'au repos de 30 jours : les plus récemment protégées d'abord.
+  const commun = {
+    siren: p.siren,
+    id: { not: presentationId },
+    apporteurId: { not: p.apporteurId },
+  };
+  const champs = {
+    id: true,
+    apporteurId: true,
+    statut: true,
+    contactEnvoyeAt: true,
+    recueAt: true,
+    protegeeJusquAt: true,
+  } as const;
+  const [actives, terminees20] = await Promise.all([
+    db.presentationEntreprise.findMany({
+      where: { ...commun, statut: { in: ["reservee", "confirmee"] } },
+      select: champs,
+      orderBy: { recueAt: "asc" },
+      take: 100,
+    }),
+    db.presentationEntreprise.findMany({
+      where: { ...commun, statut: "terminee" },
+      select: champs,
+      orderBy: { protegeeJusquAt: { sort: "desc", nulls: "first" } },
+      take: 20,
+    }),
+  ]);
+  const tous = [...actives, ...terminees20];
   // Contrat 2.6 : seuls comptent ceux qui visent le même périmètre (même établissement, ou
   // toute l'entreprise) ; un autre établissement de la même entreprise ne bloque rien.
   const etabs = await lireEtablissements([presentationId, ...tous.map((a) => a.id)]);
   const autres = tous.filter((a) => memePerimetre(etabs.get(presentationId)!, etabs.get(a.id)!));
   if (dejaAttribueeAUnAutre(autres, p.apporteurId)) return MESSAGE_DEJA_ATTRIBUEE;
+  // Contrat 2.8 (art. 3.2 / 3.5) : une présentation `terminee` encore dans ses 30 jours de repos
+  // occupe toujours l'entreprise (même garde que la saisie : `presentationOccupe`).
+  const terminees = autres.filter((a) => a.statut === "terminee");
+  if (terminees.length > 0) {
+    const reservations = await lireReservations(terminees.map((a) => a.id));
+    if (
+      terminees.some((a) =>
+        presentationOccupe(
+          { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
+          maintenant,
+          versReservationProvisoire(a.recueAt ?? p.recueAt, reservations.get(a.id)),
+        ),
+      )
+    )
+      return MESSAGE_EN_REPOS;
+  }
   if (
     existeDeclarationPlusAncienne(
       autres,
