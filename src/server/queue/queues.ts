@@ -13,6 +13,7 @@ import { Queue } from "bullmq";
 import {
   FUSEAU_SEO_PILOTAGE,
   PATTERN_SEO_INGESTION,
+  PATTERN_SEO_INSPECTION,
   PATTERN_SEO_PURGE,
   PATTERN_SEO_RATTRAPAGE,
 } from "@/server/seo-pilotage/planification";
@@ -275,6 +276,12 @@ export const PATTERN_RESEAU_QUOTIDIEN = "0 7 * * *";
  * le quotidien garde tout le reste.
  */
 export const PATTERN_RESEAU_FACTURATION = "10 * * * *";
+/**
+ * 2026-11-27 — relevé mensuel des apporteurs : tous les jours à 9 h 30, heure de Paris. Le passage
+ * ne fait quelque chose qu'à partir du 1ᵉʳ jour ouvré du mois ; les jours suivants sont le
+ * rattrapage. Il PRÉPARE, il n'envoie JAMAIS d'e-mail à un apporteur (décision du dirigeant).
+ */
+export const PATTERN_RELEVE_MENSUEL = "30 9 * * *";
 
 /**
  * 2026-11-15 — récap quotidien des demandes de clients (`alertes-clients/recap.ts`).
@@ -682,7 +689,7 @@ export const siteRouteGscQueue: Queue<SiteRouteGscJobData> | null = connection
   : null;
 
 /**
- * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
+ * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly ; veille indexation : cron hebdomadaire dédié, P18).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
  *  - `alertSoft404Detected` (link-checker tier-1 HEAD samples)
@@ -1724,7 +1731,12 @@ export async function bootRepeatableJobs(): Promise<void> {
   // deux passages le même jour ne doubleraient pas un rappel (jobId
   // déterministe), mais personne ne saurait plus lequel fait foi.
   if (apporteurCronsQueue) {
-    const programme = [
+    const programme: Array<{
+      type: ApporteurCronJobType;
+      pattern: string;
+      jobId: string;
+      tz?: string;
+    }> = [
       // 2026-10-26 (ordre de Will) : le passage quotidien des rappels J+3 / J+7 est
       // RETIRÉ du programme — la purge ci-dessous l'ôte de la file au démarrage du
       // worker. Plus aucun rappel d'invitation ne part, même après une mise en ligne.
@@ -1748,6 +1760,12 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: PATTERN_RESEAU_FACTURATION,
         jobId: "apporteur-reseau-facturation-cron",
       },
+      {
+        type: "releve-mensuel" as const,
+        pattern: PATTERN_RELEVE_MENSUEL,
+        jobId: "apporteur-releve-mensuel-cron",
+        tz: "Europe/Paris",
+      },
     ];
     const wanted = new Set(programme.map((s) => `${s.type}|${s.pattern}`));
     for (const existing of await apporteurCronsQueue.getRepeatableJobs()) {
@@ -1758,11 +1776,11 @@ export async function bootRepeatableJobs(): Promise<void> {
         );
       }
     }
-    for (const { type, pattern, jobId } of programme) {
+    for (const { type, pattern, jobId, tz } of programme) {
       await apporteurCronsQueue.add(
         type,
         { type, tick: new Date().toISOString() },
-        { repeat: { pattern }, jobId },
+        { repeat: { pattern, ...(tz ? { tz } : {}) }, jobId },
       );
     }
   }
@@ -1793,6 +1811,7 @@ export async function bootRepeatableJobs(): Promise<void> {
     const programmeSeo = [
       { tache: "ingestion-gsc", pattern: PATTERN_SEO_INGESTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "rattrapage-gsc", pattern: PATTERN_SEO_RATTRAPAGE, tz: undefined },
+      { tache: "inspection", pattern: PATTERN_SEO_INSPECTION, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "purge", pattern: PATTERN_SEO_PURGE, tz: FUSEAU_SEO_PILOTAGE },
     ] as const;
     for (const { tache, pattern, tz } of programmeSeo) {
@@ -1985,7 +2004,8 @@ export async function bootRepeatableJobs(): Promise<void> {
   }
 
   // Méta-cert 2026-05-15 AGENT 19 — content-monitoring hourly @ xx:15.
-  // Câble alertQueueStuck + alertSoft404Detected + alertIndexationStagnant.
+  // Câble alertQueueStuck + alertSoft404Detected (+ anomalies). La veille indexation est
+  // hebdomadaire (P18, cron ci-dessous).
   if (contentMonitoringQueue) {
     await contentMonitoringQueue.removeRepeatable(
       "tick",
@@ -1996,6 +2016,21 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-hourly-xx15", tick: new Date().toISOString() },
       { repeat: { pattern: "15 * * * *" }, jobId: "content-monitoring-cron" },
+    );
+    // P18 — veille « indexation stagnante » : une fois par semaine (lundi 08:40 UTC), plus
+    // dans le tick horaire. Même file, déclencheur distinct.
+    await contentMonitoringQueue.removeRepeatable(
+      "tick",
+      { pattern: "40 8 * * 1" },
+      "content-monitoring-indexation-hebdo-cron",
+    );
+    await contentMonitoringQueue.add(
+      "tick",
+      { trigger: "cron-weekly-indexation", tick: new Date().toISOString() },
+      {
+        repeat: { pattern: "40 8 * * 1" },
+        jobId: "content-monitoring-indexation-hebdo-cron",
+      },
     );
   }
 

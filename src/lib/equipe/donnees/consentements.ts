@@ -59,3 +59,20 @@ export function texteConsentementParVersion(kind: TeamConsentKind, version: stri
   for (const v of Object.values(versions)) if (v.version === version) return v.texte;
   return null;
 }
+
+/**
+ * Attestation de responsabilité, demandée en plus des trois consentements : la personne certifie
+ * l'exactitude de ce qu'elle a écrit. Même règle de versions : un texte proposé n'est jamais modifié,
+ * on ajoute `v2`. Tracée dans `ConsentEvent` (formRef « team-profile-attestation »).
+ */
+export const TEAM_ATTESTATION_FORM_REF = "team-profile-attestation";
+
+export const TEAM_ATTESTATION_VERSIONS = {
+  v1: {
+    version: "team-attestation-v1",
+    formRef: TEAM_ATTESTATION_FORM_REF,
+    texte: "Je certifie l'exactitude des informations fournies et j'en assume la responsabilité.",
+  },
+} as const satisfies Record<string, TeamConsentVersion>;
+
+export const TEAM_ATTESTATION_VERSION_COURANTE: TeamConsentVersion = TEAM_ATTESTATION_VERSIONS.v1;

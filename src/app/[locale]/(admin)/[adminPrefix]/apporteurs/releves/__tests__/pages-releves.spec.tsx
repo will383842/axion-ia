@@ -17,6 +17,11 @@ vi.mock("next/navigation", () => ({
     throw new Error("NEXT_NOT_FOUND");
   },
 }));
+vi.mock("@/features/apporteurs-reseau/releve-mensuel/actions-envoi", () => ({
+  envoyerATousAction: async () => ({ etat: "initial" }),
+  renvoyerEchecsAction: async () => ({ etat: "initial" }),
+  envoyerRectificatifAction: async () => ({ etat: "initial" }),
+}));
 vi.mock("next/link", () => ({
   default: ({ href, children }: { href: string; children: React.ReactNode }) => (
     <a href={href}>{children}</a>
@@ -105,7 +110,11 @@ describe("page releves/[periode]", () => {
     );
     expect(html).toContain("Camille Exemple");
     expect(html).toContain("pdf?numero=REL-2026-10-0001");
-    expect(html).not.toMatch(/<button|Envoyer les relevés/);
+    // Lots 3c et 4a : « Préparer », les gestes par ligne et le bouton d'envoi (clic du dirigeant).
+    expect(html).toContain("Préparer les relevés de octobre 2026");
+    expect(html).toContain("Recalculer");
+    expect(html).toContain("Envoyer les relevés à tout le monde");
+    expect(html).toContain("Déjà envoyés : 0 ; à envoyer : 1");
   });
   it("un compte de consultation ne lit pas l'identité et n'a pas le lien PDF", async () => {
     d.session = { user: { id: "u2", role: "reader" } };
@@ -114,5 +123,8 @@ describe("page releves/[periode]", () => {
     );
     expect(html).not.toContain("Camille Exemple");
     expect(html).not.toContain("pdf?numero=");
+    // Consultation seule : aucun bouton d'action (préparer, recalculer, écarter).
+    expect(html).not.toMatch(/<button/);
+    expect(html).not.toContain("Envoyer les relevés");
   });
 });
