@@ -185,7 +185,13 @@ describe("tour 2", () => {
     d.factures = [facture, avoir(-100)];
     d.lignes = [ligne({ activite: "un_a_un", montantCents: 100 })];
     await reprendreApresAvoirsClients(LE);
-    expect(d.reduire).toHaveBeenCalledWith("c1", 234, expect.any(String));
+    expect(d.reduire).toHaveBeenCalledWith(
+      "c1",
+      234,
+      expect.any(String),
+      null,
+      expect.any(Function),
+    );
     d.lignes = [ligne({ activite: "un_a_un", statut: "versee", verseeAt: LE, montantCents: 100 })];
     await reprendreApresAvoirsClients(LE);
     expect(d.reprise).toHaveBeenCalledTimes(1);
@@ -202,14 +208,25 @@ describe("tour 2", () => {
 describe("pas encore facturée : réduite ou annulée", () => {
   it("avoir total → annulée", async () => {
     const b = await reprendreApresAvoirsClients(LE);
-    expect(d.annuler).toHaveBeenCalledWith("c1", expect.stringContaining("Art. 4.5"));
+    expect(d.annuler).toHaveBeenCalledWith(
+      "c1",
+      expect.stringContaining("Art. 4.5"),
+      null,
+      expect.any(Function),
+    );
     expect(b).toMatchObject({ annulees: 1 });
   });
 
   it("avoir partiel → réduite au prix net ; déjà au prix net → rien", async () => {
     d.factures = [facture, avoir(-100)];
     await reprendreApresAvoirsClients(LE);
-    expect(d.reduire).toHaveBeenCalledWith("c1", 234, expect.any(String));
+    expect(d.reduire).toHaveBeenCalledWith(
+      "c1",
+      234,
+      expect.any(String),
+      null,
+      expect.any(Function),
+    );
     d.reduire.mockClear();
     d.lignes = [ligne({ factureHtCents: 234, montantCents: 70 })];
     await reprendreApresAvoirsClients(LE);
@@ -319,7 +336,13 @@ describe("défaut 2 (a1) : la part du parrain n'est jamais reprise deux fois", (
       ligne({ id: "filleul" }),
     ];
     await reprendreApresAvoirsClients(LE);
-    expect(d.reduire).toHaveBeenCalledWith("filleul", 234, expect.any(String));
+    expect(d.reduire).toHaveBeenCalledWith(
+      "filleul",
+      234,
+      expect.any(String),
+      null,
+      expect.any(Function),
+    );
     expect(d.reprise).not.toHaveBeenCalled();
   });
 
@@ -773,7 +796,13 @@ describe("défaut A : facture refaite émise mais IMPAYÉE → ni autofacture ni
     ];
     const b = await reprendreApresAvoirsClients(LE);
     expect(b.suspensionsLevees).toBe(1);
-    expect(d.reduire).toHaveBeenCalledWith("c1", 60_000, expect.any(String));
+    expect(d.reduire).toHaveBeenCalledWith(
+      "c1",
+      60_000,
+      expect.any(String),
+      null,
+      expect.any(Function),
+    );
   });
 });
 
@@ -831,7 +860,13 @@ describe("commande mixte : mise en service + maintenance", () => {
     d.factures = [fm, avm("payee", 10_000)];
     d.lignes = [lm()];
     await reprendreApresAvoirsClients(LE);
-    expect(d.reduire).toHaveBeenCalledWith("c1", 390_000, expect.any(String));
+    expect(d.reduire).toHaveBeenCalledWith(
+      "c1",
+      390_000,
+      expect.any(String),
+      null,
+      expect.any(Function),
+    );
     expect(ecritures()).not.toContainEqual(expect.objectContaining({ montantCents: 60_750 }));
   });
 

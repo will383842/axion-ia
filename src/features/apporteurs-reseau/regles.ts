@@ -740,6 +740,91 @@ export function calculerCommissionSelonGrille(
 }
 
 /**
+ * Codes de la « règle appliquée » (relevé mensuel, plan § 5.3) : liste FERMÉE, posée au calcul sur
+ * `CommissionApporteur.regleAppliquee`, jamais recalculée ensuite. `formation_3j_plus` est réservé
+ * et volontairement absent tant que la question Q7 n'est pas tranchée.
+ */
+export const CODES_REGLE_APPLIQUEE = [
+  "forfait_palier",
+  "prorata_remise",
+  "forfait_sessions",
+  "taux_ht",
+  "plafond_base",
+  "parrainage_10",
+  "tarif_avant_date_effet",
+  "journee_ia",
+] as const;
+export type RegleAppliquee = (typeof CODES_REGLE_APPLIQUEE)[number];
+
+/**
+ * `calculerCommission` + le code de la règle qui a produit le montant. Le calcul rendu est EXACTEMENT
+ * celui de `calculerCommission` (aucun montant ne change) ; `regle` vaut `null` quand rien n'est calculé.
+ */
+export function calculerCommissionAvecRegle(e: Parameters<typeof calculerCommission>[0]): {
+  calcul: CalculCommission;
+  regle: RegleAppliquee | null;
+} {
+  const calcul = calculerCommission(e);
+  if (calcul.statut !== "calculee") return { calcul, regle: null };
+  if (e.activite === "conference" || e.palier === PALIER_CONFERENCE)
+    return { calcul, regle: "tarif_avant_date_effet" };
+  if (e.activite !== "formation") return { calcul, regle: "taux_ht" };
+  const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
+  if (!p) return { calcul, regle: null };
+  const q = quantiteSessions(e.quantite);
+  if (Math.max(0, e.factureHtCents) < p.prixCents * q) return { calcul, regle: "prorata_remise" };
+  return { calcul, regle: q > 1 ? "forfait_sessions" : "forfait_palier" };
+}
+
+/**
+ * Code de règle après le plafond de base : `plafond_base` seulement si le montant vient d'un
+ * pourcentage de la base (`taux_ht`) ET que le plafond a réduit cette base. Un forfait (palier,
+ * conférence d'avant la date d'effet, remise au prorata…) garde son code : le plafond ne change pas
+ * son montant. `null` reste `null`. Pur.
+ */
+export function regleApresPlafond(
+  regle: RegleAppliquee | null,
+  baseAvantPlafond: number,
+  plafondBase: number,
+): RegleAppliquee | null {
+  if (regle === "taux_ht" && plafondBase < baseAvantPlafond) return "plafond_base";
+  return regle;
+}
+
+/**
+ * Version du contrat signée par l'apporteur (« 2.6 », « 2.8 »…), lue dans `signatureApporteur`.
+ * `null` si absente ou illisible : rien n'est inventé.
+ */
+export function versionContratSignee(signature: unknown): string | null {
+  if (!signature || typeof signature !== "object" || Array.isArray(signature)) return null;
+  const v = (signature as { version?: unknown }).version;
+  return typeof v === "string" && /^\d{1,3}\.\d{1,3}$/.test(v) ? v : null;
+}
+
+/**
+ * `calculerCommissionSelonGrille` + le code de la règle (relevé mensuel, lot R). Le calcul rendu est
+ * EXACTEMENT celui de `calculerCommissionSelonGrille` (aucun montant ne change). v3 : codes de
+ * `calculerCommissionAvecRegle` ; v2 : coaching au taux, conférence au forfait, formation longue au
+ * forfait ou au prorata, le reste comme la v3.
+ */
+export function calculerCommissionSelonGrilleAvecRegle(
+  e: Parameters<typeof calculerCommission>[0] & { grille: GrilleCommission },
+): { calcul: CalculCommission; regle: RegleAppliquee | null } {
+  if (e.grille === "v3") return calculerCommissionAvecRegle(e);
+  const calcul = calculerCommissionSelonGrille(e);
+  if (calcul.statut !== "calculee") return { calcul, regle: null };
+  if (e.activite === "un_a_un") return { calcul, regle: "taux_ht" };
+  if (e.activite === "conference" || (e.activite === "formation" && e.palier === PALIER_CONFERENCE))
+    return { calcul, regle: "tarif_avant_date_effet" };
+  const longue = PALIERS_FORMATION_LONGUE.find((x) => x.id === e.palier);
+  if (e.activite === "formation" && longue) {
+    const journees = typeof e.quantite === "number" ? e.quantite : 0;
+    const complet = Math.max(0, e.factureHtCents) >= longue.prixJourCents * journees;
+    return { calcul, regle: complet ? "forfait_palier" : "prorata_remise" };
+  }
+  return calculerCommissionAvecRegle({ ...e, signeeAt: null });
+}
+
  * Lignes d'abonnement, de maintenance, d'hébergement, de licence, de support, de TMA ou
  * d'infogérance portées par un devis (règle du 25/11 : rien dessus ; seule la mise en service
  * donne 15 %). Repère PRINCIPAL : le produit ou le type de ligne quand la ligne en porte un

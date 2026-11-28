@@ -210,6 +210,26 @@ export async function renvoyerContratSigneAction(input: { apporteurId: string })
   }
 }
 
+export async function revoquerEtRenvoyerLienAction(input: {
+  apporteurId: string;
+}): Promise<Retour> {
+  const refus = await exigerAdmin();
+  if (refus) return { ok: false, message: refus };
+  if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
+  try {
+    const session = await auth();
+    const { revoquerEtRenvoyerLien } = await import("./revocation-lien");
+    const r = await revoquerEtRenvoyerLien(input.apporteurId, session?.user?.id ?? "");
+    rafraichir(input.apporteurId);
+    return r;
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "apporteurs-decision", step: "revoquer-lien" },
+    });
+    return { ok: false, message: "Le lien n'a pas pu être révoqué." };
+  }
+}
+
 export type RetourNouvelApporteur =
   | { ok: true; apporteurId: string }
   | {
