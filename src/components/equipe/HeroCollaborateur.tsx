@@ -1,7 +1,7 @@
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Container } from "@/components/layout/Container";
-import { Cta } from "@/components/marketing/Cta";
 import type { ContenuFiche, FichePublique } from "@/lib/equipe";
+import { ActionsFiche } from "./ActionsFiche";
 import { PastilleCategorie } from "./PastilleCategorie";
 import { PortraitCollaborateur } from "./PortraitCollaborateur";
 
@@ -80,23 +80,7 @@ export function HeroCollaborateur({
               </ul>
             ) : null}
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Cta
-                href="/appel"
-                variant="terracotta"
-                size="lg"
-                track={`equipe-${fiche.slug}-hero-appel`}
-              >
-                {contenu.appelFinal.bouton}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Cta>
-              <Cta
-                href="/contact"
-                variant="outline"
-                size="lg"
-                track={`equipe-${fiche.slug}-hero-contact`}
-              >
-                {contenu.appelFinal.boutonSecondaire}
-              </Cta>
+              <ActionsFiche fiche={fiche} contenu={contenu} emplacement="hero" />
             </div>
             <p className="text-fg-muted mt-6 text-sm">
               Mis à jour le{" "}

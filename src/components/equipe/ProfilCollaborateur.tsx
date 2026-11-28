@@ -1,10 +1,10 @@
-import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
-import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import type { ContenuFiche, FichePublique } from "@/lib/equipe";
+import { ActionsFiche } from "./ActionsFiche";
+import { SectionsCategorie } from "./SectionsCategorie";
 import { AvantApres, PorteEntree, Rassurance } from "./BlocsTransformation";
 import { CitationsTerrain } from "./CitationsTerrain";
 import { FicheIdentite } from "./FicheIdentite";
@@ -72,6 +72,9 @@ export function ProfilCollaborateur({
         </div>
       </Section>
 
+      {contenu.sectionsCategorie ? (
+        <SectionsCategorie fiche={fiche} sections={contenu.sectionsCategorie} />
+      ) : null}
       {contenu.avantApres ? <AvantApres donnees={contenu.avantApres} /> : null}
       {contenu.rassurance ? <Rassurance donnees={contenu.rassurance} /> : null}
       {contenu.porteEntree ? <PorteEntree donnees={contenu.porteEntree} /> : null}
@@ -97,23 +100,7 @@ export function ProfilCollaborateur({
         description={contenu.appelFinal.texte}
         cta={
           <div className="flex flex-wrap items-center gap-4">
-            <Cta
-              href="/appel"
-              variant="terracotta"
-              size="lg"
-              track={`equipe-${fiche.slug}-cta-appel`}
-            >
-              {contenu.appelFinal.bouton}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Cta>
-            <Cta
-              href="/contact"
-              variant="outline"
-              size="lg"
-              track={`equipe-${fiche.slug}-cta-contact`}
-            >
-              {contenu.appelFinal.boutonSecondaire}
-            </Cta>
+            <ActionsFiche fiche={fiche} contenu={contenu} emplacement="cta" />
           </div>
         }
         tone="mocha"
