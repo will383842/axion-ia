@@ -54,6 +54,19 @@ export function normaliserDomaine(brut: string): string | null {
   return hote;
 }
 
+/** Décode jusqu'à 3 fois (%40, %2540…) ; s'arrête au premier échec de décodage. */
+function decoderTroisPasses(brut: string): string {
+  let decode = brut;
+  for (let i = 0; i < 3; i++) {
+    try {
+      decode = decodeURIComponent(decode);
+    } catch {
+      break;
+    }
+  }
+  return decode;
+}
+
 /** URL de la page qui porte le lien : http(s), sans fragment ni identifiants ; null si interne ou illisible. */
 export function normaliserPageSource(brut: string): string | null {
   const u = lireUrl(brut);
@@ -66,14 +79,7 @@ export function normaliserPageSource(brut: string): string | null {
   if (u.username || u.password || /^[^/]*@/.test(brut.trim())) return null;
   // Adresse e-mail dans la requête (?email=jean@x.fr) : aucune donnée personnelle gardée.
   // Aussi dans le chemin, et sous un encodage multiple (%40, %2540…).
-  let decode = `${u.pathname}${u.search}`;
-  for (let i = 0; i < 3; i++) {
-    try {
-      decode = decodeURIComponent(decode);
-    } catch {
-      break;
-    }
-  }
+  const decode = decoderTroisPasses(`${u.pathname}${u.search}`);
   if (/@|%40/i.test(u.search) || /[^\s/@]+@[^\s/@]+\.[a-z]{2,}/i.test(decode)) return null;
   if (estAdresseIp(hote) || !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(hote)) return null;
   if (estDomaineAxion(hote)) return null;
@@ -97,6 +103,8 @@ export function normaliserCible(brut: string): string | null {
     return null;
   }
   if (/[^\s/@]+(?:@|%40)[^\s/@]+\.[a-z]{2,}/i.test(s)) return null;
+  // Même décodage en 3 passes que `normaliserPageSource` (%2540 → %40 → @).
+  if (/[^\s/@]+@[^\s/@]+\.[a-z]{2,}/i.test(decoderTroisPasses(s))) return null;
   const chemin = normaliserChemin(s);
   // Plafond de la spec (§ 3.1) : refusé, jamais tronqué.
   return chemin !== null && chemin.length <= CHEMIN_CIBLE_MAX ? chemin : null;

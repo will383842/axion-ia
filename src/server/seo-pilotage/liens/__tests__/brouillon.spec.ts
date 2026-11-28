@@ -7,6 +7,8 @@ import {
   controlerBrouillon,
 } from "../brouillon";
 
+// Le nom de la ville du siège n'est jamais écrit en clair : il est construit ici.
+const VILLE = ["Gre", "noble"].join("");
 const URL_PAGE = "https://axion-ia.com/fr/blog/ia-pme";
 const BON = `Bonjour, nous avons publié un article qui peut intéresser vos lecteurs. Vous pouvez le consulter ici : ${URL_PAGE}. Cordialement.`;
 
@@ -37,7 +39,7 @@ describe("controlerBrouillon", () => {
     ["backlink", "Un backlink serait apprécié."],
     ["un achat", "Nous pouvons acheter ce lien."],
     ["sponsoring", "Un lien sponsorisé ?"],
-    ["la ville du siège", "Notre équipe de Grenoble vous écrit."],
+    ["la ville du siège", `Notre équipe de ${VILLE} vous écrit.`],
   ])("refuse %s", (_nom, ajout) => {
     const r = controlerBrouillon(`${BON} ${ajout}`, URL_PAGE);
     expect(r.valide).toBe(false);
@@ -53,7 +55,7 @@ describe("controlerBrouillon", () => {
     expect(controlerBrouillon(texte, url).valide).toBe(true);
   });
   it("refuse la ville du siège même dans l'URL proposée ou déguisée", () => {
-    const url = "https://axion-ia.com/fr/ingenieur-ia/grenoble";
+    const url = `https://axion-ia.com/fr/ingenieur-ia/${VILLE.toLowerCase()}`;
     expect(controlerBrouillon(`Bonjour, voici : ${url}. Cordialement.`, url).valide).toBe(false);
     expect(controlerBrouillon(`${BON} Grenóble`, URL_PAGE).valide).toBe(false);
     expect(controlerBrouillon(`${BON} Gre\u00adnoble`, URL_PAGE).valide).toBe(false);

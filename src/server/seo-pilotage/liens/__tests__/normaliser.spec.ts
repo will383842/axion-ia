@@ -62,6 +62,14 @@ describe("normaliserCible", () => {
     expect(normaliserCible("https://exemple.fr/fr/faq")).toBeNull();
     expect(normaliserCible("")).toBeNull();
   });
+  it.each([
+    "/fr/blog/x?e=jean@x.fr",
+    "/fr/blog/x?e=jean%40x.fr",
+    "/fr/blog/x?e=jean%2540x.fr",
+    "/fr/blog/jean%2540x.fr",
+  ])("refuse une adresse e-mail encodée : %s", (c) => {
+    expect(normaliserCible(c)).toBeNull();
+  });
 });
 
 describe("normaliserAncre et tronquerCellule", () => {
