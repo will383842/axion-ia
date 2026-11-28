@@ -326,6 +326,11 @@ export interface GenererAvoirInput {
    */
   montantTtcCents?: number;
   motif: string;
+  /**
+   * Geste commercial (bon d'achat offert à titre exceptionnel, hors délai) : marqueur POSÉ SUR LA PIÈCE
+   * d'avoir ; la commission de l'apporteur est gardée (#2464 pt 18). Absent = avoir normal (reprise).
+   */
+  gesteCommercial?: boolean;
 }
 
 export interface GenererAvoirResult {
@@ -554,6 +559,7 @@ export async function genererAvoirFacture(
             ...(origine.clientId !== null ? { clientId: origine.clientId } : {}),
             ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
             avoirDeId: origine.id,
+            ...(input.gesteCommercial === true ? { gesteCommercial: true } : {}),
             destinataire: origine.destinataire,
             destinataireNom: origine.destinataireNom,
             ...(origine.destinataireSiret !== null

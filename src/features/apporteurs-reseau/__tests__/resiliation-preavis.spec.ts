@@ -429,9 +429,9 @@ describe("effet immédiat (11.2, 12.5) et B1 bis", () => {
     expect(String(etat.envois[0]!.payload.lien)).toContain("APP1".toLowerCase());
   });
 
-  it("sans argent en jeu : lien révoqué (version +1), pas de lien dans l'e-mail", async () => {
+  it("sans argent en jeu : lien NON révoqué (PR K), pas de lien dans l'e-mail", async () => {
     await executerResiliation("APP1", J("2026-12-31"), J("2026-12-31"));
-    expect(etat.majApporteur[0]).toMatchObject({ versionLien: { increment: 1 } });
+    expect(etat.majApporteur[0]).not.toHaveProperty("versionLien");
     expect(etat.envois[0]!.payload).not.toHaveProperty("lien");
   });
 });

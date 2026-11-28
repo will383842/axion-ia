@@ -6,6 +6,7 @@
 // sans signature (`apporteur: null`, `societe: null`) ; le contrat contresigné part par
 // e-mail. Rendu à la demande, jamais au build (`lireDossierParLien` refuse la base factice).
 
+import { peutLireSesPieces } from "@/features/apporteurs-reseau/acces-pieces";
 import { NextResponse } from "next/server";
 
 import { getClientIp } from "@/lib/client-ip";
@@ -51,10 +52,13 @@ export async function GET(
 
   const dossier = await lireDossierParLien(id, jeton);
   // Mode restreint (retiré du réseau, 2026-10-07) : ni contrat ni dossier par ce lien.
-  if (!dossier || dossier.restreint) return introuvable();
+  // PR K : un résilié (payé ou non) relit son contrat signé ; le restreint « retiré » non.
+  if (!dossier) return introuvable();
+  const lectureDesPieces = peutLireSesPieces(dossier);
+  if (dossier.restreint && !lectureDesPieces) return introuvable();
 
   // Contrat signé des deux parties : l'apporteur peut le retélécharger depuis son lien.
-  if (etatDeLaPage(dossier.statut) === "signe") {
+  if (lectureDesPieces) {
     const signe = dossier.aContratSigne ? await lireContratPdf(dossier.id, "signe") : null;
     if (!signe) return introuvable();
     return new NextResponse(new Uint8Array(signe), {

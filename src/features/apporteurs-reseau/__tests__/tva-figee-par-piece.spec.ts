@@ -237,17 +237,14 @@ describe("le virement suit le PDF, pas la fiche", () => {
     expect(etat.sentry).toEqual([]);
   });
 
-  it("12. table absente : la facturation et le virement fonctionnent comme avant (repli sur la fiche), sans écriture", async () => {
+  it("12. table absente ou illisible (#2464, point 15) : l'émission est REFUSÉE, rien n'est émis ni écrit", async () => {
     etat.tables = false;
     etat.apporteurs["APP1"] = ASSUJETTI;
     etat.lignes = [ligne("c1", "due", 50_000)];
     const f = await facturerApporteur("APP1", MARDI);
-    expect(f).toMatchObject({ ok: true, totalCents: 60_000 });
+    expect(f).toMatchObject({ ok: false });
     expect(etat.pieces).toEqual([]);
-    expect((await lireVirementsAFaire()).map((v) => v.totalCents)).toEqual([60_000]);
-    const v = await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001");
-    expect(v).toMatchObject({ ok: true, totalCents: 60_000 });
-    expect(etat.pieces).toEqual([]);
+    expect(etat.lignes[0]).toMatchObject({ autofactureNumero: null });
     expect(await figerPiecesManquantes()).toBe(0);
   });
 });
