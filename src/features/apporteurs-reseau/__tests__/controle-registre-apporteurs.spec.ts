@@ -12,6 +12,7 @@ type Ligne = {
 };
 
 const etat = vi.hoisted(() => ({
+  erreurFindMany: null as unknown,
   apporteurs: [] as Array<Record<string, unknown>>,
   lignes: new Map<string, Record<string, unknown>>(),
   sirets: new Map<string, string>(),
@@ -34,7 +35,10 @@ vi.mock("@/lib/prisma", () => ({
       ),
     },
     apporteurControleRegistre: {
-      findMany: vi.fn(async () => [...etat.lignes.values()]),
+      findMany: vi.fn(async () => {
+        if (etat.erreurFindMany) throw etat.erreurFindMany;
+        return [...etat.lignes.values()];
+      }),
       upsert: vi.fn(
         async (a: {
           where: { apporteurId: string };
@@ -68,7 +72,11 @@ vi.mock("../alerte-interne", () => ({
 }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
 
-import { controlerRegistreApporteurs, PLAFOND_CONTROLES } from "../controle-registre";
+import {
+  controlerRegistreApporteurs,
+  listerRegistreEnDefaut,
+  PLAFOND_CONTROLES,
+} from "../controle-registre";
 
 const MAINT = new Date("2026-12-01T10:00:00Z");
 const jours = (n: number) => new Date(MAINT.getTime() - n * 86_400_000);
@@ -99,6 +107,7 @@ beforeEach(() => {
   etat.lectures = [];
   etat.alertes = [];
   etat.argent.clear();
+  etat.erreurFindMany = null;
 });
 
 describe("controle du registre des apporteurs", () => {
@@ -128,8 +137,7 @@ describe("controle du registre des apporteurs", () => {
     expect(etat.alertes[0]).toMatchObject({ code: "apporteur_registre_ferme", niveau: "critique" });
     ligne("a1", { ...(etat.lignes.get("a1") as Partial<Ligne>), dernierControleAt: jours(8) });
     await controlerRegistreApporteurs(MAINT);
-    const jobIds = new Set(etat.alertes.map((a) => a.jobId));
-    expect(jobIds.size).toBe(1);
+    expect(etat.alertes).toHaveLength(1);
     expect(etat.lignes.get("a1")?.consecutifs).toBe(3);
   });
 
@@ -199,5 +207,56 @@ describe("controle du registre des apporteurs", () => {
     etat.registre.set("12345678900011", ACTIVE);
     await controlerRegistreApporteurs(MAINT);
     expect(etat.lectures).toEqual(["siret:12345678900011"]);
+  });
+
+  it("un seul apporteur contrôlé il y a 2 jours : aucune lecture du registre", async () => {
+    ajouter("a1");
+    ligne("a1", { dernierControleAt: jours(2) });
+    etat.registre.set("123456789", FERMEE);
+    expect(await controlerRegistreApporteurs(MAINT)).toBe(0);
+    expect(etat.lectures).toHaveLength(0);
+    expect(etat.lignes.get("a1")?.dernierControleAt).toEqual(jours(2));
+  });
+
+  it("borne des 7 jours : à 7 jours pile il est contrôlé, à 6 jours non", async () => {
+    ajouter("a1");
+    ajouter("a2", "signe", "987654321");
+    ligne("a1", { dernierControleAt: jours(7) });
+    ligne("a2", { dernierControleAt: jours(6) });
+    etat.registre.set("123456789", ACTIVE);
+    etat.registre.set("987654321", ACTIVE);
+    await controlerRegistreApporteurs(MAINT);
+    expect(etat.lectures).toEqual(["siren:123456789"]);
+  });
+
+  it("fermée puis introuvable : défaut continu, alerte au 2e contrôle, pas de seconde", async () => {
+    ajouter("a1");
+    ligne("a1", { etat: "fermee", consecutifs: 1, dernierControleAt: jours(8) });
+    etat.registre.set("123456789", INTROUVABLE);
+    await controlerRegistreApporteurs(MAINT);
+    expect(etat.alertes).toHaveLength(1);
+    expect(etat.lignes.get("a1")).toMatchObject({ etat: "introuvable", consecutifs: 2 });
+    ligne("a1", { ...(etat.lignes.get("a1") as Partial<Ligne>), dernierControleAt: jours(8) });
+    etat.registre.set("123456789", FERMEE);
+    await controlerRegistreApporteurs(MAINT);
+    expect(etat.alertes).toHaveLength(1);
+  });
+
+  it("table absente (P2021) : le passage rend 0 sans lire le registre", async () => {
+    ajouter("a1");
+    etat.erreurFindMany = { code: "P2021" };
+    expect(await controlerRegistreApporteurs(MAINT)).toBe(0);
+    expect(etat.lectures).toHaveLength(0);
+  });
+
+  it("table absente (P2021) : la liste de la page est vide", async () => {
+    etat.erreurFindMany = { code: "P2021" };
+    expect(await listerRegistreEnDefaut()).toEqual([]);
+  });
+
+  it("une autre erreur de base est relevée, par le passage comme par la liste", async () => {
+    etat.erreurFindMany = { code: "P1001" };
+    await expect(controlerRegistreApporteurs(MAINT)).rejects.toMatchObject({ code: "P1001" });
+    await expect(listerRegistreEnDefaut()).rejects.toMatchObject({ code: "P1001" });
   });
 });

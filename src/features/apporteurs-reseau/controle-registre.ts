@@ -50,10 +50,12 @@ async function controlerUn(
   const r = a.siret ? await lireRegistre(a.siret) : await lireEntrepriseParSiren(a.siren);
   if (!r.ok && (r.raison === "indisponible" || r.raison === "siren_invalide")) return false;
   const nouvel: EtatRegistre = r.ok ? (r.entreprise.active ? "active" : "fermee") : "introuvable";
-  const memeEtat = avant?.etat === nouvel;
-  const consecutifs = memeEtat && avant ? avant.consecutifs + 1 : 1;
-  const etatDepuis = memeEtat && avant ? avant.etatDepuis : maintenant;
-  let alerteeAt: Date | null = memeEtat && avant ? avant.alerteeAt : null;
+  // « Fermée OU introuvable deux contrôles consécutifs » : passer de l'un à l'autre reste un défaut continu.
+  const suite =
+    !!avant && (avant.etat === nouvel || (avant.etat !== "active" && nouvel !== "active"));
+  const consecutifs = suite && avant ? avant.consecutifs + 1 : 1;
+  const etatDepuis = suite && avant ? avant.etatDepuis : maintenant;
+  let alerteeAt: Date | null = suite && avant ? avant.alerteeAt : null;
 
   if (nouvel !== "active" && consecutifs >= CONTROLES_AVANT_ALERTE && !alerteeAt) {
     const partie = await alerteInterne({

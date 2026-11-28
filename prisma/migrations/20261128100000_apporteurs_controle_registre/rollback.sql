@@ -1,6 +1,6 @@
 -- Rollback de 20261128100000_apporteurs_controle_registre.
 -- Seulement sur décision du fondateur : la table porte le dernier état au registre public de chaque apporteur.
--- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde.
---   COPY "apporteur_controles_registre" TO '/root/travaux-claude/apporteur_controles_registre_20261128.csv' CSV HEADER;
+-- Sauvegarder d'abord (\copy côté client psql : COPY ... TO écrirait dans le conteneur de la base, pas sur l'hôte) ; ne rien supprimer sans sauvegarde.
+--   \copy "apporteur_controles_registre" TO 'apporteur_controles_registre_20261128.csv' CSV HEADER
 -- Pour mettre de côté plutôt que supprimer :
 --   ALTER TABLE "apporteur_controles_registre" RENAME TO "apporteur_controles_registre_retire_20261128";

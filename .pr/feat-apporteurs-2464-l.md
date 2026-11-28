@@ -15,10 +15,10 @@ Fichiers : `controle-registre.ts` (nouveau), une étape `controle-registre` dans
 
 ## Tests
 
-- `controle-registre-apporteurs.spec.ts` : active → silence ; fermée une fois → pas d'alerte ; fermée deux fois → une alerte et pas de seconde au 3e contrôle ; introuvable ; indisponible → rien d'écrit ; retour à active ; plafond de 50 ; plus anciens d'abord ; non-signé ignoré ; résilié sans argent ignoré (avec argent : contrôlé) ; SIRET prioritaire sur SIREN.
+- `controle-registre-apporteurs.spec.ts` : active → silence ; fermée une fois → pas d'alerte ; fermée deux fois → une alerte et pas de seconde au 3e contrôle ; introuvable ; indisponible → rien d'écrit ; retour à active ; plafond de 50 ; plus anciens d'abord ; contrôle de moins de 7 jours laissé (borne comprise) ; passage fermée→introuvable continu ; table absente (P2021) tolérée ; non-signé ignoré ; résilié sans argent ignoré (avec argent : contrôlé) ; SIRET prioritaire sur SIREN.
 - `controle-registre-sans-email-apporteur.spec.ts` : aucun import d'envoi d'e-mail, aucune écriture sur le statut ou le contrat.
 - `migration-controle-registre.spec.ts` : table neuve, sans clé étrangère ni DROP ni énumération, CHECK sur l'état, `rollback.sql` en RENAME, horodatage supérieur aux autres.
-- Mis à jour : trois tests existants qui listent les migrations ou exécutent le passage complet (`migration-additive.spec.ts` du relevé mensuel, `contacts-guide-reseau-origine-optionnelle.spec.ts`, `passage-rendez-vous.spec.ts`, `bascule-ancienne-regle-vers-rendez-vous.spec.ts`) : ajout de la nouvelle migration à leur liste, et de l'étape à leurs mocks.
+- Mis à jour : quatre tests existants qui listent les migrations ou exécutent le passage complet (`migration-additive.spec.ts` du relevé mensuel, `contacts-guide-reseau-origine-optionnelle.spec.ts`, `passage-rendez-vous.spec.ts`, `bascule-ancienne-regle-vers-rendez-vous.spec.ts`) : ajout de la nouvelle migration à leur liste, et de l'étape à leurs mocks.
 - Passés : `pnpm vitest run src/features/apporteurs-reseau`, `tests/unit/ci`, `tests/unit/prisma` ; `tsc --noEmit` (avec `--max-old-space-size=8192`, le défaut manquait de mémoire) ; eslint sur les fichiers touchés ; `prisma validate`.
 
 ## Migration : oui
