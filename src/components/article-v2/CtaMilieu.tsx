@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CHEMIN_JOURNEE_IA, lienDiagnostic } from "@/content/journee-ia-commun";
@@ -15,6 +16,7 @@ interface CtaMilieuProps {
  * un `<h2>` : hors sommaire), un bouton et un lien. Sans prix.
  */
 export function CtaMilieu({ gabarit, principal = "diagnostic" }: CtaMilieuProps) {
+  const id = `${useId()}-titre`;
   const t = useTranslations("articleGabarits.commun");
   const a = useTranslations("articleGabarits.commun.actions");
   const hrefs = {
@@ -23,8 +25,8 @@ export function CtaMilieu({ gabarit, principal = "diagnostic" }: CtaMilieuProps)
   } as const;
   const autre: PrincipalCta = principal === "diagnostic" ? "journee" : "diagnostic";
   return (
-    <aside className="cta-milieu" aria-labelledby="cta-milieu-titre">
-      <p className="cta-milieu__titre" id="cta-milieu-titre">
+    <aside className="cta-milieu" aria-labelledby={id}>
+      <p className="cta-milieu__titre" id={id}>
         {t("ctaMilieu.titre")}
       </p>
       <p>{t("ctaMilieu.texte")}</p>

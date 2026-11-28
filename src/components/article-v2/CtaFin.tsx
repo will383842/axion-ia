@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CHEMIN_JOURNEE_IA, lienDiagnostic } from "@/content/journee-ia-commun";
@@ -8,14 +9,15 @@ import { ROUTES } from "@/lib/routes";
  * trois étapes, réassurance factuelle. Hors `<article>`. Sans prix.
  */
 export function CtaFin({ gabarit }: { readonly gabarit: string }) {
+  const id = `${useId()}-titre`;
   const t = useTranslations("articleGabarits.commun");
   const a = useTranslations("articleGabarits.commun.actions");
   const etapes = t.raw("ctaFin.etapes") as ReadonlyArray<string>;
   const rassurance = a.raw("rassurance") as ReadonlyArray<string>;
   return (
-    <section className="cta-fin sur-sombre" aria-labelledby="cta-fin-titre">
+    <section className="cta-fin sur-sombre" aria-labelledby={id}>
       <p className="pastille pastille--pleine cta-fin__surtitre">{t("ctaFin.surtitre")}</p>
-      <h2 className="cta-fin__titre" id="cta-fin-titre">
+      <h2 className="cta-fin__titre" id={id}>
         {t("ctaFin.titre")}
       </h2>
       <p className="cta-fin__phrase">{t("ctaFin.texte")}</p>

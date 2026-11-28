@@ -64,6 +64,7 @@ function EncartRendu({ video }: { video: VideoPubliee }) {
 function EncartArticleV2({ video }: { video: VideoPubliee }) {
   const idTitre = `${useId()}-titre`;
   const t = useTranslations("articleGabarits.commun.video");
+  const mention = mentionIa(video);
   const v = video.fichiers.vignette43;
   return (
     <section className="encart-video" aria-labelledby={idTitre} data-aeo="video-slot">
@@ -87,6 +88,7 @@ function EncartArticleV2({ video }: { video: VideoPubliee }) {
         <summary>{t("resume")}</summary>
         <p>{video.resume}</p>
       </details>
+      {mention ? <p className="encart-video__mention">{mention}</p> : null}
     </section>
   );
 }

@@ -95,7 +95,7 @@ export function AnswerCard({
         <div>{children}</div>
         {sourceLabel ? (
           <p className="en-bref__source">
-            Source :{" "}
+            {isFr ? "Source :" : "Source:"}{" "}
             {sourceUrl ? (
               <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
                 {sourceLabel}

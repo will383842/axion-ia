@@ -2674,6 +2674,9 @@ body:has([data-gabarit]) {
   [data-gabarit] .meta:has([data-aeo="freshness"]) li:has(time):not([data-aeo="freshness"]) {
     display: inline-flex;
   }
+}
+/* Écran seulement : le bloc d'impression garde son héros court (même spécificité, il vient avant) */
+@media screen and (min-width: 640px) {
   [data-gabarit] .heros {
     padding-bottom: clamp(5.5rem, 4rem + 7vw, 9rem);
   }

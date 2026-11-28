@@ -228,7 +228,7 @@ describe("photos de repli", () => {
     const { PHOTOS_REPLI } = await import("@/lib/blog/photos-repli");
     expect(Object.keys(PHOTOS_REPLI).sort()).toEqual([...GABARITS_ARTICLE].sort());
     for (const { src, alt } of Object.values(PHOTOS_REPLI)) {
-      expect(src).toMatch(/^\/images\/axion-ia-[a-z0-9-]+\.webp$/);
+      expect(src).toMatch(/^\/images\/axion-ia-photo-[a-z0-9-]+\.webp$/);
       expect(fs.existsSync(path.join(RACINE, "public", src))).toBe(true);
       expect(fs.existsSync(path.join(RACINE, "public", src.replace(/\.webp$/, ".avif")))).toBe(
         true,
@@ -252,5 +252,22 @@ describe("en-tête du site intact", () => {
     }
     const touches = diff.split("\n").filter(Boolean);
     expect(touches.filter((f) => !f.endsWith("Breadcrumbs.tsx"))).toEqual([]);
+  });
+});
+
+describe("exigences du chantier verrouillées", () => {
+  it("CSS mobile first : aucun @media (max-width) dans src/styles/article-v2/", () => {
+    for (const f of FEUILLES) expect(lire(f), f).not.toMatch(/@media[^{]*max-width/);
+  });
+
+  it("encart vidéo v2 : ni lecteur ni iframe, mention IA conservée", () => {
+    const src = lire("src/components/videos/EncartEnVideo.tsx");
+    const v2 = src.slice(src.indexOf("function EncartArticleV2"));
+    expect(v2).not.toMatch(/<iframe|<video|VideoObject/);
+    expect(v2).toContain("mentionIa(video)");
+  });
+
+  it("les H2 du corps rendu depuis le HTML de l'article ont un style", () => {
+    expect(lire("src/styles/article-v2/complements.css")).toMatch(/\.corps-html > h2/);
   });
 });

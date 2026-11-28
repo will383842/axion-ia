@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { useTranslations } from "next-intl";
 
 export interface LigneContexte {
@@ -15,12 +16,13 @@ interface FicheContexteProps {
  * Aucun chiffre n'est produit ici.
  */
 export function FicheContexte({ lignes }: FicheContexteProps) {
+  const id = `${useId()}-titre`;
   const t = useTranslations("articleGabarits.commun");
   const presentes = lignes.filter((l) => (l.valeur ?? "").trim().length > 0);
   if (presentes.length === 0) return null;
   return (
-    <section className="encadre encadre--saviez" aria-labelledby="fiche-contexte">
-      <p id="fiche-contexte" className="encadre__titre">
+    <section className="encadre encadre--saviez" aria-labelledby={id}>
+      <p id={id} className="encadre__titre">
         {t("contexte")}
       </p>
       <dl className="fiche">

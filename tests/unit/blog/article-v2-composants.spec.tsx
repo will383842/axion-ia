@@ -218,7 +218,7 @@ describe("composants communs (S2)", () => {
   it("CtaMilieu : titre en <p> (jamais un h2), un bouton et un lien, principal selon le gabarit", () => {
     const d = rendre(<CtaMilieu gabarit="analyse" />);
     expect(d).not.toMatch(/<h[1-6]/);
-    expect(d).toContain('<p class="cta-milieu__titre" id="cta-milieu-titre">');
+    expect(d).toMatch(/<p class="cta-milieu__titre" id="[^"]+-titre">/);
     expect(d).toContain("depuis=analyse-milieu");
     expect(d.match(/class="btn btn--terracotta"/g)).toHaveLength(1);
     const j = rendre(<CtaMilieu gabarit="guide" principal="journee" />);

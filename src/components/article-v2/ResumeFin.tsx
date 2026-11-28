@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 
@@ -9,11 +10,12 @@ interface ResumeFinProps {
 
 /** Résumé de fin « Ce qu'il faut retenir » (`.resume`) : numéros par compteur CSS. */
 export function ResumeFin({ points, titreEm }: ResumeFinProps) {
+  const id = `${useId()}-titre`;
   const t = useTranslations("articleGabarits.commun");
   if (points.length === 0) return null;
   return (
-    <section className="resume" aria-labelledby="resume-fin-titre">
-      <h2 className="resume__titre" id="resume-fin-titre">
+    <section className="resume" aria-labelledby={id}>
+      <h2 className="resume__titre" id={id}>
         {t("resumeTitre")}
         {titreEm ? <em> {titreEm}</em> : null}
       </h2>

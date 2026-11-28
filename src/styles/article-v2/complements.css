@@ -67,3 +67,21 @@
   letter-spacing: 0.02em;
   color: var(--color-terracotta-deep);
 }
+
+/* Titres du corps rendu depuis le HTML de l'article (`buildToc` pose des <h2 id> nus, sans <section>
+   ni classe) : mêmes réglages que `.prose > section > h2`, mobile first */
+[data-gabarit] .corps-html > h2 {
+  font: 600 clamp(1.625rem, 1.2rem + 1.6vw, 2.375rem) / 1.14 var(--font-serif);
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 1rem;
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+[data-gabarit] .corps-html > h2:first-child {
+  margin-top: 0;
+}
+[data-gabarit] .encart-video__mention {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
