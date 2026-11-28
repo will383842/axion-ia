@@ -41,26 +41,35 @@ describe("fiche Williams rendue — plan des titres", () => {
       "H2 Votre entreprise avant et après l'IA",
       "H2 Une transformation sans chamboulement",
       "H2 La Journée IA : la porte d'entrée",
-      "H2 Après la Journée IA : l'équipe d'Axion-IA fait tout le reste",
+      "H2 Que fait l'équipe d'Axion-IA après la Journée IA ?",
       "H2 La méthode : Chiffrer, Essayer, Trancher",
       "H2 Parcours de Williams Jullin",
       "H2 Ce que Williams Jullin constate sur le terrain",
       "H2 Questions fréquentes sur Williams Jullin",
-      "H2 Parler de votre entreprise avec Williams Jullin",
+      "H2 Parlons de votre entreprise",
     ]);
   });
 
-  it("les H3 sont les cinq services puis les huit questions ; aucun H4", () => {
+  it("les H3 sont les cinq services, les étapes, les jalons puis les dix questions ; aucun H4", () => {
     const { container } = rendre();
     const h3 = titres(container).filter((t) => t.startsWith("H3 "));
+    // Cinq tuiles « sans chamboulement », cinq étapes de la Journée IA, puis les services (la transformation, mise en avant, en premier).
     expect(h3.slice(0, 5)).toEqual([
+      "H3 Vos outils restent",
+      "H3 Une étape à la fois",
+      "H3 Vous décidez",
+      "H3 Équipes embarquées",
+      "H3 Zéro technique pour vous",
+    ]);
+    expect(h3.slice(10, 15)).toEqual([
+      "H3 Transformation de l'entreprise avec l'IA",
       "H3 Mise en place et solutions IA sur mesure",
       "H3 Automatisation des tâches répétitives",
       "H3 Formation des équipes à l'IA",
       "H3 Coaching IA du dirigeant",
-      "H3 Transformation de l'entreprise avec l'IA",
     ]);
-    expect(h3).toHaveLength(5 + 8);
+    // 5 tuiles + 5 étapes de la Journée IA + 5 services + 3 étapes de la méthode + 3 jalons du parcours + 10 questions.
+    expect(h3).toHaveLength(5 + 5 + 5 + 3 + 3 + 10);
     expect(titres(container).some((t) => /^H[4-6] /.test(t))).toBe(false);
   });
 
@@ -100,7 +109,7 @@ describe("fiche Williams rendue — accessibilité et contenu", () => {
   it("les réponses de la FAQ sont dans le HTML initial (<details> sans JavaScript)", () => {
     const { container } = rendre();
     const d = container.querySelectorAll("details");
-    expect(d).toHaveLength(8);
+    expect(d).toHaveLength(10);
     expect(d[0]?.querySelector("summary h3")).not.toBeNull();
     expect(d[0]?.textContent).toMatch(/startup française/);
   });
@@ -136,7 +145,7 @@ describe("section sans données", () => {
     const { container } = render(<ProfilCollaborateur fiche={publique} contenu={mini} />);
     expect(titres(container).filter((t) => t.startsWith("H2 "))).toEqual([
       "H2 Williams Jullin en bref",
-      "H2 Parler de votre entreprise avec Williams Jullin",
+      "H2 Parlons de votre entreprise",
     ]);
   });
 });

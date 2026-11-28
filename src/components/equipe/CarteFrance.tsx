@@ -99,13 +99,16 @@ export function CarteFrance({
   idTitre = "equipe-carte-titre",
   villes = [],
   hrefFiche = hrefParDefaut,
+  avecDirigeant = false,
 }: {
+  /** Vrai seulement si la ligne facultative du dirigeant porte un lieu (le dirigeant n'a sinon jamais de point). */
+  avecDirigeant?: boolean;
   fiches: ReadonlyArray<FichePublique>;
   idTitre?: string;
   villes?: ReadonlyArray<VilleConnue>;
   hrefFiche?: (slug: string) => string;
 }) {
-  const d = preparerCarte(fiches, villes);
+  const d = preparerCarte(fiches, villes, { avecDirigeant });
   if (d.total === 0) return null;
   const metropole = d.amas.filter((a) => a.outreMer === null);
   const outreMer = d.amas.filter((a) => a.outreMer !== null);

@@ -15,7 +15,15 @@ export type Source<T> =
 export type EtatLien = "sain" | "mort" | "non_indexable";
 
 export type FamilleCritere =
-  "doctrine" | "faits" | "structure" | "completude" | "maillage" | "metadonnees";
+  | "doctrine"
+  | "faits"
+  | "structure"
+  | "completude"
+  | "maillage"
+  | "metadonnees"
+  | "unicite"
+  | "intention"
+  | "apport";
 
 /** Classement unique des bloquants (§ 5). */
 export type ClasseBloquant = "dur" | "corrigeable" | "derogeable";
@@ -53,6 +61,27 @@ export interface PenalitesNote {
   readonly intention?: number;
 }
 
+/** Un contenu proche du brouillon (B06). `cosinus` vient de l'embedding du brouillon, calculé AVANT publication. */
+export interface VoisinSemantique {
+  readonly id: string;
+  /** Table ou index d'origine : article, page statique, service, offre, journée IA, ville, FAQ… */
+  readonly type: string;
+  readonly url: string | null;
+  /** `publie` ou `en_file` (deux brouillons du même jour ne doivent pas se doublonner, § 7.2). */
+  readonly etat: "publie" | "en_file";
+  readonly cosinus: number;
+}
+
+/** Ligne du registre des intentions (§ 7.1) telle que la porte la lit. */
+export interface IntentionRegistre {
+  readonly requeteNormalisee: string;
+  /** `libre` | `reservee` | `couverte` | `a_fusionner` (texte libre en base : autre valeur = non évalué). */
+  readonly etat: string;
+  readonly pageProprietaire: string | null;
+  /** `true` si la réservation a été faite pour CE contenu (la tâche en cours la détient). */
+  readonly reserveePourCeContenu: boolean;
+}
+
 export interface ContextePorte {
   readonly reglages: ReglagesPorte;
   /** Horloge injectée (la porte ne lit jamais l'heure elle-même). */
@@ -67,6 +96,20 @@ export interface ContextePorte {
   readonly pageProprietaire: Source<string | null>;
   /** Corps actuellement publié (`null` = jamais publié). */
   readonly corpsDejaPublie: Source<string | null>;
+  /**
+   * B06 : voisins les plus proches du brouillon (publiés ET en file). Absent = non évalué
+   * (échec fermé). `ok` + liste vide = corpus vide, rien à doubler.
+   */
+  readonly voisinsSemantiques?: Source<ReadonlyArray<VoisinSemantique>> | undefined;
+  /**
+   * B05 : l'intention du contenu au registre. `ok` + `null` = absente du registre ;
+   * champ absent ou `indisponible` = non évalué (échec fermé).
+   */
+  readonly intention?: Source<IntentionRegistre | null> | undefined;
+  /** B05 : `true` si le contenu est la MISE À JOUR de la page propriétaire de l'intention (§ 7.1). */
+  readonly miseAJourDeLaPageProprietaire?: boolean | undefined;
+  /** B07 type D : `true` seulement s'il existe une donnée propre à Axion-IA réelle et agrégée. */
+  readonly donneeProprePresente?: boolean | undefined;
   /** Pénalités de la note issues de critères pas encore branchés (Q3 et suivants). */
   readonly penalites: PenalitesNote;
 }

@@ -20,6 +20,7 @@ vi.mock("bullmq", () => ({
 import {
   enqueueIndexingForTier1,
   enqueueGoogleIndexingForUrls,
+  estUrlEligibleIndexingApiGoogle,
   _resetIndexingQueuesForTest,
 } from "../enqueue";
 
@@ -82,11 +83,9 @@ describe("enqueueIndexingForTier1", () => {
     );
   });
 
-  it("enqueues both indexnow + google when both flags set", async () => {
+  it("garde-fou : IndexNow seul, JAMAIS Google, même avec tous les drapeaux Google levés", async () => {
     process.env.INDEXNOW_KEY = "key123";
     process.env.GOOGLE_INDEXING_API_ENABLED = "true";
-    // Articles : opt-in explicite requis en plus du master (Google ignore les
-    // non-JobPosting → protège le quota 200/j réservé aux offres).
     process.env.GOOGLE_INDEXING_ARTICLES = "true";
 
     const result = await enqueueIndexingForTier1({
@@ -97,24 +96,17 @@ describe("enqueueIndexingForTier1", () => {
     });
 
     expect(result.indexnowEnqueued).toBe(true);
-    expect(result.googleEnqueued).toBe(true);
+    expect(result.googleEnqueued).toBe(false);
     expect(result.url).toBe("https://axion-ia.com/fr/actualites/news-item");
-    expect(addMock).toHaveBeenCalledTimes(2);
-    expect(addMock).toHaveBeenNthCalledWith(
-      1,
+    expect(addMock).toHaveBeenCalledTimes(1);
+    expect(addMock).toHaveBeenCalledWith(
       "ping",
       { urls: ["https://axion-ia.com/fr/actualites/news-item"], origin: "tier-promote" },
       { jobId: "indexnow-a-3-publish" },
     );
-    expect(addMock).toHaveBeenNthCalledWith(
-      2,
-      "ping",
-      { url: "https://axion-ia.com/fr/actualites/news-item", type: "URL_UPDATED" },
-      { jobId: "google-indexing-a-3-publish" },
-    );
   });
 
-  it("passes lifecycleEvent=delete → URL_DELETED + jobId suffix", async () => {
+  it("lifecycleEvent=delete : IndexNow avec suffixe, aucun job Google", async () => {
     process.env.INDEXNOW_KEY = "key123";
     process.env.GOOGLE_INDEXING_API_ENABLED = "true";
     process.env.GOOGLE_INDEXING_ARTICLES = "true";
@@ -127,17 +119,11 @@ describe("enqueueIndexingForTier1", () => {
       lifecycleEvent: "delete",
     });
 
-    expect(addMock).toHaveBeenNthCalledWith(
-      1,
+    expect(addMock).toHaveBeenCalledTimes(1);
+    expect(addMock).toHaveBeenCalledWith(
       "ping",
       expect.objectContaining({ urls: ["https://axion-ia.com/fr/blog/archived-post"] }),
       { jobId: "indexnow-a-7-delete" },
-    );
-    expect(addMock).toHaveBeenNthCalledWith(
-      2,
-      "ping",
-      { url: "https://axion-ia.com/fr/blog/archived-post", type: "URL_DELETED" },
-      { jobId: "google-indexing-a-7-delete" },
     );
   });
 
@@ -182,32 +168,6 @@ describe("enqueueIndexingForTier1", () => {
 
     expect(result.indexnowEnqueued).toBe(false);
   });
-
-  it("skips google for ARTICLES when master ON but GOOGLE_INDEXING_ARTICLES unset", async () => {
-    // Régression : le master seul (posé en prod pour Google for Jobs) ne doit
-    // PAS faire pinger les articles (Google ignore + gaspille le quota).
-    process.env.INDEXNOW_KEY = "key";
-    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
-    delete process.env.GOOGLE_INDEXING_ARTICLES;
-
-    const result = await enqueueIndexingForTier1({
-      articleId: "a-8",
-      slug: "post",
-      isNews: false,
-      origin: "content-gen",
-    });
-
-    expect(result.indexnowEnqueued).toBe(true);
-    expect(result.googleEnqueued).toBe(false);
-    // Un seul add (IndexNow), aucun add Google.
-    expect(addMock).toHaveBeenCalledOnce();
-  });
-
-  // ── Fix 2026-08-15 (D5 audit e2e) — re-ping après job complété ─────────────
-  // Symptôme corrigé : le jobId `indexnow-${articleId}-publish` est stable ; le
-  // chemin REFRESH repassait ici avec le même articleId + event publish, or le
-  // job COMPLÉTÉ précédent squattait la clé dans Redis (retention count 1000) →
-  // BullMQ ignorait silencieusement le `add` → article rafraîchi jamais re-pingé.
 
   it("D5 : job précédent complété → remove puis add (re-ping du refresh)", async () => {
     process.env.INDEXNOW_KEY = "key";
@@ -310,30 +270,36 @@ describe("enqueueIndexingForTier1", () => {
     );
   });
 
-  it("uses deterministic jobId for idempotency", async () => {
+  it("jobId IndexNow déterministe (idempotence)", async () => {
     process.env.INDEXNOW_KEY = "key";
-    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
-    process.env.GOOGLE_INDEXING_ARTICLES = "true";
-
     await enqueueIndexingForTier1({
       articleId: "stable-id",
       slug: "post",
       isNews: false,
       origin: "cron",
     });
-
-    expect(addMock).toHaveBeenNthCalledWith(
-      1,
+    expect(addMock).toHaveBeenCalledWith(
       expect.anything(),
       expect.anything(),
       expect.objectContaining({ jobId: "indexnow-stable-id-publish" }),
     );
-    expect(addMock).toHaveBeenNthCalledWith(
-      2,
-      expect.anything(),
-      expect.anything(),
-      expect.objectContaining({ jobId: "google-indexing-stable-id-publish" }),
-    );
+  });
+});
+
+describe("estUrlEligibleIndexingApiGoogle", () => {
+  it("accepte une offre d'emploi, refuse articles, guides, actualités, KB", () => {
+    expect(estUrlEligibleIndexingApiGoogle("https://axion-ia.com/fr/carrieres/dev-ia")).toBe(true);
+    for (const u of [
+      "https://axion-ia.com/fr/blog/post",
+      "https://axion-ia.com/fr/guides/guide-x",
+      "https://axion-ia.com/fr/actualites/n",
+      "https://axion-ia.com/fr/carrieres",
+      "https://axion-ia.com/fr/carrieres/a/b",
+      "pas une url",
+      "",
+    ]) {
+      expect(estUrlEligibleIndexingApiGoogle(u)).toBe(false);
+    }
   });
 });
 
@@ -352,6 +318,17 @@ describe("enqueueGoogleIndexingForUrls (google-only, offres d'emploi)", () => {
 
   afterEach(() => {
     process.env = originalEnv;
+  });
+
+  it("enqueueGoogleIndexingForUrls ignore un article même master ON", async () => {
+    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+    const r = await enqueueGoogleIndexingForUrls({
+      entityId: "x",
+      urls: ["https://axion-ia.com/fr/blog/post"],
+      origin: "manual",
+    });
+    expect(r.googleEnqueued).toBe(false);
+    expect(addMock).not.toHaveBeenCalled();
   });
 
   it("no-op complet quand GOOGLE_INDEXING_API_ENABLED !== 'true'", async () => {

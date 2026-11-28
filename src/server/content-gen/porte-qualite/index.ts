@@ -9,7 +9,65 @@ export {
   observationActive,
   observerSortie,
   reglagesDepuisConfig,
+  reglagesStockesValides,
 } from "./observation";
 export type { IssueObservation, LigneVerdictEcrite } from "./observation";
 export { construireVue, lireLigneVerdict } from "./vue";
 export type { LigneVerdictLue, VerdictAffiche, VuePorte } from "./vue";
+export { evaluerB06 } from "./criteres/unicite";
+export {
+  PAIRES_CALIBRAGE_MIN,
+  TYPES_INDEX_STATIQUE,
+  calibrerSeuil,
+  cosinus,
+  penaliteProximite,
+  voisinsLesPlusProches,
+} from "./semantique";
+export {
+  fusionnerReglages,
+  lireDerogations,
+  lireJournal,
+  listerInterdits,
+} from "./onglet-reglages";
+export type {
+  DerogationAffichee,
+  EntreeJournal,
+  InterditAffiche,
+  LigneAuditLue,
+  LigneDerogationLue,
+  ResultatFusion,
+} from "./onglet-reglages";
+export {
+  CLE_COUPE_CIRCUIT,
+  DRAPEAU_POINT_FINAL,
+  appliquerPointFinal,
+  controlerTexteHorsArticle,
+  evaluerB17,
+  lireCoupeCircuit,
+  pointFinalActif,
+} from "./point-final";
+export type {
+  ControleHorsArticle,
+  DepsPointFinal,
+  EntreeB17,
+  IssuePointFinal,
+  ResultatB17,
+} from "./point-final";
+export { evaluerB05 } from "./criteres/intention";
+export { evaluerB07 } from "./criteres/apport";
+export { cleIntention, lignesDepuisCarte } from "./intentions-registre";
+export {
+  TYPES_APPORT,
+  contientMarqueurApport,
+  extraireApports,
+  reserverApports,
+  retirerMarqueursApport,
+} from "./apports";
+export {
+  CLE_PLAFOND_SECURITE,
+  PLAFOND_SECURITE_PAR_DEFAUT,
+  calculerPlafondSecurite,
+  plafondDepuisCapGeneration,
+  reglagePlafondDepuisConfig,
+} from "./plafond-securite";
+export type { DetailPlafond, ReglagePlafond } from "./plafond-securite";

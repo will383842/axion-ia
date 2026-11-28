@@ -329,6 +329,8 @@ export const CONTENU = {
       guide: "Le guide gratuit pour bien démarrer avec l’IA",
       tarifs: "Tarifs",
       faq: "Toutes les questions",
+      derniersArticles: "Derniers articles du blog",
+      blog: "Tous les articles du blog",
     },
   },
 

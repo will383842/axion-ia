@@ -220,6 +220,14 @@ import {
   apporteurReleveMensuelSubject,
 } from "./apporteur-releve-mensuel";
 import { ApporteurFileAttenteEmail, apporteurFileAttenteSubject } from "./apporteur-file-attente";
+import {
+  ApporteurAvenantEnregistreEmail,
+  ApporteurAvenantProposeEmail,
+  ApporteurAvenantRelanceEmail,
+  apporteurAvenantEnregistreSubject,
+  apporteurAvenantProposeSubject,
+  apporteurAvenantRelanceSubject,
+} from "./apporteur-avenant";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
 import {
   ApporteurCompteAConfirmerEmail,
@@ -768,6 +776,19 @@ const TEMPLATES: TemplateMap = {
   "apporteur-virement-fait": {
     subject: apporteurVirementFaitSubject,
     component: ApporteurVirementFaitEmail,
+  },
+  // Lot S4 (#2512) : avenant 2.8, gabarits livrés au worker AVANT leur émetteur (lot S3).
+  "apporteur-avenant-propose": {
+    subject: apporteurAvenantProposeSubject,
+    component: ApporteurAvenantProposeEmail,
+  },
+  "apporteur-avenant-relance": {
+    subject: apporteurAvenantRelanceSubject,
+    component: ApporteurAvenantRelanceEmail,
+  },
+  "apporteur-avenant-enregistre": {
+    subject: apporteurAvenantEnregistreSubject,
+    component: ApporteurAvenantEnregistreEmail,
   },
   "apporteur-lien-espace": {
     subject: apporteurLienEspaceSubject,

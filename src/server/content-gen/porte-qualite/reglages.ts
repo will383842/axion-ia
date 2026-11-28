@@ -3,7 +3,7 @@
 import { z } from "zod";
 
 /** Change quand un seuil ou une règle change : l'ancienne version reste lisible (§ 3, règle 4). */
-export const VERSION_PORTE = "2026-11-27.q2";
+export const VERSION_PORTE = "2026-11-28.q5q6";
 
 export const ReglagesPorteSchema = z
   .object({
@@ -28,6 +28,14 @@ export const ReglagesPorteSchema = z
     motsMinPointCle: z.number().int().nonnegative(),
     /** B13 : liens internes sortants sains. */
     liensInternesMin: z.number().int().nonnegative(),
+    /** B06 : cosinus maximal à partir duquel le brouillon double un contenu existant (hypothèse, § 7.2). */
+    cosinusBloque: z.number().min(0).max(1),
+    /** B06 : à partir de là, alerte « fusion à étudier » sans refus. */
+    cosinusAlerte: z.number().min(0).max(1),
+    /** B07 : nombre minimal d'apports originaux distincts et vérifiés (§ 8). */
+    apportsMin: z.number().int().min(2).max(4),
+    /** Note (§ 4.3) : cosinus sous lequel la pénalité de proximité est nulle. */
+    cosinusProximiteMin: z.number().min(0).max(1),
   })
   .strict()
   .refine((r) => r.seuilBloque <= r.seuilPublication, {
@@ -37,6 +45,10 @@ export const ReglagesPorteSchema = z
   .refine((r) => r.motsMinReponseDirecte <= r.motsMaxReponseDirecte, {
     message: "motsMinReponseDirecte doit être inférieur ou égal à motsMaxReponseDirecte",
     path: ["motsMinReponseDirecte"],
+  })
+  .refine((r) => r.cosinusProximiteMin <= r.cosinusAlerte && r.cosinusAlerte <= r.cosinusBloque, {
+    message: "cosinusProximiteMin <= cosinusAlerte <= cosinusBloque attendu",
+    path: ["cosinusAlerte"],
   })
   .refine((r) => r.h2Min <= r.h2Max, {
     message: "h2Min doit être inférieur ou égal à h2Max",
@@ -59,4 +71,8 @@ export const REGLAGES_PAR_DEFAUT: ReglagesPorte = Object.freeze({
   citationsMin: 2,
   motsMinPointCle: 5,
   liensInternesMin: 3,
+  apportsMin: 2,
+  cosinusBloque: 0.85,
+  cosinusAlerte: 0.8,
+  cosinusProximiteMin: 0.7,
 });

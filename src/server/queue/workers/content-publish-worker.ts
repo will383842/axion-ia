@@ -29,6 +29,7 @@
 // tentait de COMPLÉTER un job dont il avait rendu le lock → erreurs « job not
 // in active state » (cf. bullmq/dist/esm/classes/worker.js : DelayedError est
 // intercepté et n'émet PAS l'event `failed`).
+import { appliquerPointFinalPorte } from "@/server/content-gen/porte-qualite-point-final-io";
 import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import { Queue, Worker, DelayedError, type Job } from "bullmq";
@@ -133,7 +134,8 @@ function getQaExtractQueue(): Queue {
 // heures ouvrées → signal humain, réduit risque HCU Google.
 //
 // Rampe progressive si env var non définie. Relevée 2026-07-02 (décision Will —
-// objectif ~100 contenus/jour) : plancher 150/jour dès le départ pour ne PAS
+// ancien objectif de volume, NEUTRALISÉ par la porte qualité Q11 : le plafond de sécurité
+// de la porte prend le minimum de ces limites et ce n'est qu'une LIMITE HAUTE, jamais une cible) : plancher 150/jour dès le départ pour ne PAS
 // bloquer la montée en charge, puis 300 puis 1000. L'ancien plancher à 30/jour
 // bottleneckait la publication (file « À relire » qui s'accumulait).
 // Paliers basés sur le volume d'articles publiés cumulés :
@@ -542,6 +544,48 @@ async function executePublishPipeline(
       JSON.stringify({ event: "publish_doctrine_hold", jobId: cgJob.id, faults: resume }),
     );
     return;
+  }
+
+  // Porte qualité, POINT FINAL (Q10, conception § 3 P3). Drapeau CONTENT_PORTE_QUALITE éteint
+  // par défaut : `appliquerPointFinalPorte` rend « inerte » sans rien lire ni écrire, donc la
+  // publication est strictement celle d'avant. Allumé : tout ce qui n'est pas « publiable »
+  // est retenu (échec fermé) ; un report B17 (coupe-circuit) laisse le contenu en attente.
+  // Un article déjà inséré pour ce job (retry après insertion) n'est jamais retenu ici.
+  if (!existingArticle) {
+    const porte = await appliquerPointFinalPorte(cgJob.id, cgJob.contentType, output);
+    if (porte.action === "reporter") {
+      console.log(
+        JSON.stringify({ event: "publish_porte_report", jobId: cgJob.id, raison: porte.raison }),
+      );
+      await job.moveToDelayed(msUntilDripStart(), job.token);
+      throw new DelayedError();
+    }
+    if (porte.action === "retenir") {
+      await logStepError(
+        cgJob.id,
+        "validation",
+        `Publication refusée par la porte qualité (${porte.code})`,
+        { raison: porte.raison },
+      );
+      await prisma.contentGenJob.update({
+        where: { id: cgJob.id },
+        data: { status: "needs_review", errorMessage: porte.code.slice(0, 500) },
+      });
+      await prisma.reviewQueue.update({
+        where: { id: reviewQueueId },
+        data: {
+          status: "pending",
+          reviewNotes: [
+            review.reviewNotes?.slice(0, 500),
+            `Retenu par la porte qualité : ${porte.raison.slice(0, 400)}`,
+          ]
+            .filter(Boolean)
+            .join("\n")
+            .slice(0, 1000),
+        },
+      });
+      return;
+    }
   }
 
   // Troncature défensive aux limites des colonnes DB (article_translations :
@@ -1359,10 +1403,9 @@ async function executePublishPipeline(
   // la découverte des articles concernés. Une incohérence pure : le sitemap
   // disait « indexe-moi », le ping disait « pas la peine ».
   //
-  // Les deux canaux restent gardés en aval par leurs propres verrous : IndexNow
-  // exige `INDEXNOW_KEY`, et l'API Google reste derrière son double opt-in
-  // (`GOOGLE_INDEXING_API_ENABLED` + `GOOGLE_INDEXING_ARTICLES`) avec son quota
-  // de 200/24 h. Aucun risque de dépense ni de dépassement ici.
+  // IndexNow exige `INDEXNOW_KEY`. L'API Indexing de Google n'est JAMAIS appelée pour un
+  // article (réservée à JobPosting / BroadcastEvent ; garde-fou dans `indexing/enqueue.ts`) :
+  // Google passe par le sitemap et `sitemaps.submit` (éteint par défaut).
   //
   // ⚠️ À savoir pour la suite : la protection anti-doorway que `promoteToTier1`
   // était censé porter (soft-404, score < 50, doctrine) n'existe plus depuis

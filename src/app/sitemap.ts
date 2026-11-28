@@ -1,3 +1,5 @@
+import { VILLES_PUBLIABLES_CAP } from "@/generated/villes-publiables";
+import { porteQualiteVilleActive, villeIndexableParPorte } from "@/lib/villes-porte-qualite";
 import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
@@ -41,6 +43,8 @@ import {
 import { listFaqs, isFaqItemIndexable } from "@/lib/knowledge/readers";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
+import { listPublishedMembers } from "@/lib/equipe/collaborateurs";
+import { fichesSitemapEquipe } from "@/lib/equipe/hub";
 import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
 import {
@@ -469,6 +473,19 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   // côté public) ; la divulgation Qualiopi légale reste une couche DB séparée.
   staticIds.push("formations");
 
+  // Porte de qualité des villes (28/11/2026) : drapeau ÉTEINT par défaut ⇒ aucun id ajouté,
+  // plan du site inchangé. Allumé ET au moins une ville publiable (jamais de sous-plan vide), les 5 sous-plans service × ville reparaissent, mais
+  // `buildServicesVillesSitemap` n'y émet que les villes qui ont passé la porte.
+  if (porteQualiteVilleActive(process.env) && VILLES_PUBLIABLES_CAP.length > 0) {
+    staticIds.push(
+      "services-villes-audit",
+      "services-villes-interventions",
+      "services-villes-implementation",
+      "services-villes-un-a-un",
+      "services-villes-sites-web-augmentes",
+    );
+  }
+
   // KB : plus de chunks `knowledge-N` ici. Le compte se faisait au build via
   // `countKnowledgePublicEntries()` qui retourne TOUJOURS 0 sous le build stub
   // (ADR 0026) → IDs jamais déclarés → `/sitemap/knowledge-N.xml` en 404.
@@ -608,7 +625,12 @@ export default async function sitemap(props: {
   switch (id) {
     case "pages":
       return filterEnIfDisabled(
-        buildPagesSitemap(editorialFor("pages"), await hubGuidesEstIndexable()),
+        buildPagesSitemap(
+          editorialFor("pages"),
+          await hubGuidesEstIndexable(),
+          await fichesEquipeSitemap(),
+          await dateDernierArticleBlog(),
+        ),
       );
     case "blog":
       // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
@@ -750,7 +772,56 @@ export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<strin
 
 // Static routes — declared in `routing.pathnames` minus excluded + slug templates.
 // Priority 1.0 (home) > 0.8 (depth 2) > 0.6 (depth ≥ 3). changefreq weekly.
-function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.Sitemap {
+/**
+ * Fiches équipe indexables. Une lecture en échec ne doit pas faire tomber tout `pages.xml` :
+ * sans ces fiches le plan reste valide (elles reviennent à la régénération suivante).
+ */
+async function fichesEquipeSitemap(): Promise<Array<{ slug: string; lastModified: Date }>> {
+  try {
+    return fichesSitemapEquipe(await listPublishedMembers());
+  } catch (e) {
+    console.warn("[sitemap] fiches équipe indisponibles :", e instanceof Error ? e.message : e);
+    return [];
+  }
+}
+
+/**
+ * Date du dernier article du blog publié (ou modifié). Sert au `lastmod` de l'accueil du blog
+ * (`/fr/blog`) : la liste change à chaque article publié, et Google se sert du lastmod pour
+ * décider de revenir (Search Console 28/11/2026 : pas de retour sur /fr/blog depuis le 11/09).
+ * `null` si la base ne répond pas (build stub, panne) : l'accueil du blog garde sa date éditoriale.
+ */
+async function dateDernierArticleBlog(): Promise<Date | null> {
+  const fs = getIndexableBlogPosts()
+    .map((p) => new Date(p.publishedAt).getTime())
+    .filter((t) => Number.isFinite(t) && t <= Date.now());
+  let db: Date | null = null;
+  try {
+    const row = await prisma.article.findFirst({
+      where: {
+        status: "published",
+        indexationTier: "tier_1_indexable",
+        isNews: false,
+        qualityScore: { gte: BLOG_SITEMAP_MIN_QUALITY_SCORE },
+        publishedAt: { not: null, lte: new Date() },
+      },
+      orderBy: { publishedAt: "desc" },
+      select: { publishedAt: true, updatedAt: true },
+    });
+    db = row?.publishedAt ?? row?.updatedAt ?? null;
+  } catch {
+    db = null;
+  }
+  const tous = [...fs, ...(db ? [db.getTime()] : [])];
+  return tous.length > 0 ? new Date(Math.max(...tous)) : null;
+}
+
+function buildPagesSitemap(
+  now: Date,
+  hubGuidesIndexable = true,
+  fichesEquipe: ReadonlyArray<{ slug: string; lastModified: Date }> = [],
+  dernierArticleBlog: Date | null = null,
+): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
@@ -780,7 +851,12 @@ function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.
     // lit aussi le `dateModified` JSON-LD de la page (`buildWebPageJsonLd`) ;
     // elle retombe sur la famille `pages` — donc sur `now` — si la route est
     // absente du manifeste.
-    const lastModified = new Date(dateRoute(key));
+    let lastModified = new Date(dateRoute(key));
+    // Accueil du blog : lastmod = dernier article publié (jamais « maintenant », jamais dans le futur).
+    if (key === "/blog" && dernierArticleBlog && dernierArticleBlog > lastModified) {
+      // (`now` est ici une date éditoriale figée : le garde-fou du futur lit l'horloge réelle.)
+      if (dernierArticleBlog.getTime() <= Date.now()) lastModified = dernierArticleBlog;
+    }
     for (const locale of effectiveLocales) {
       // Baromètre 2027 : FR seul, pas d'URL EN dans le sitemap.
       if (key === "/ressources/barometre-ia-tpe-pme-2027" && locale === "en") continue;
@@ -825,6 +901,16 @@ function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.
     changeFrequency: "monthly",
     priority: 0.6,
   });
+  // Fiches des collaborateurs publiés : SEULES les indexables (`evaluerIndexabilite`).
+  // Une fiche `noindex` reste visible sur le hub mais n'entre jamais ici. Base stub : liste vide.
+  for (const f of fichesEquipe) {
+    entries.push({
+      url: `${SITE_URL}/fr/equipe/${f.slug}`,
+      lastModified: f.lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    });
+  }
   /**
    * Catalogue des livres (2026-08-17) — SEULS les ouvrages réellement en vente.
    *
@@ -1640,7 +1726,7 @@ const SERVICE_VILLES_PATHS: Record<ServiceVillesKey, { pathFr: string; pathEn: s
 
 function buildServicesVillesSitemap(
   now: Date,
-  dripNow: Date,
+  _dripNow: Date,
   service: ServiceVillesKey,
 ): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
@@ -1656,9 +1742,10 @@ function buildServicesVillesSitemap(
           ? !!ville.copy?.services?.sitesWeb
           : !!ville.copy?.services?.[service];
     if (!hasCopy) continue;
-    // Drip indexation — n'émettre que si la ville est dans la cohorte du jour
-    // (`dripNow` = build time). `now` = lastmod éditorial figé (découplé 2026-06-08).
-    if (!isVilleIndexable(ville.slug, dripNow)) continue;
+    // Porte de qualité (28/11/2026) : seule une ville publiable entre au plan du site. Ce
+    // constructeur n'est appelé que drapeau allumé (ids déclarés ci-dessus) ; la garde reste
+    // pour qu'un appel direct éteint n'émette rien.
+    if (!villeIndexableParPorte(ville.slug)) continue;
     const frUrl = `${SITE_URL}/fr${pathFr}/${ville.slug}`;
     const enUrl = `${SITE_URL}/en${pathEn}/${ville.slug}`;
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
