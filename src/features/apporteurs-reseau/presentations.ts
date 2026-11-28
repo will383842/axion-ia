@@ -55,6 +55,8 @@ import {
 } from "./reservation-presentation";
 import { annoncerRefus } from "./refus-annonce";
 import { annoncerAttribution } from "./attribution-annonce";
+import { fenetreOuverteParUnAutre, mettreEnAttente } from "./file-attente";
+import { lireAutresOccupants } from "./occupation";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
 
@@ -516,6 +518,10 @@ export function dejaAttribueeAUnAutre(
 export const MESSAGE_EN_REPOS =
   "Cette entreprise est encore dans ses 30 jours de repos après la réservation d'un autre apporteur : elle n'est pas disponible. Répondez « Pas disponible » à cet apporteur.";
 
+/** Console seulement : ce message n'est jamais montré à l'apporteur. */
+export const MESSAGE_FENETRE_PREMIER_RANG =
+  "Un apporteur en attente au premier rang dispose encore de son délai de quinze jours (art. 3.5) : répondez « Pas disponible ».";
+
 export const MESSAGE_DECLARATION_PLUS_ANCIENNE =
   "Une déclaration plus ancienne existe encore pour ce SIREN, déposée par un autre apporteur : elle passe en premier (contrat art. 3.5). Traitez d'abord la plus ancienne ; cette entreprise ne peut pas être contactée sur celle-ci tant que l'autre court.";
 
@@ -564,58 +570,25 @@ async function refusBienRecu(
     select: { siren: true, apporteurId: true, recueAt: true },
   });
   if (!p) return null;
-  // Deux lectures : les présentations ACTIVES (réservée, confirmée) ne doivent jamais sortir de la
-  // fenêtre à cause d'un SIREN qui accumule des présentations terminées (#2464, point 2). Les
-  // terminées, bornées, ne servent qu'au repos de 30 jours : les plus récemment protégées d'abord.
-  const commun = {
+  const { autres, reservations } = await lireAutresOccupants(db, {
     siren: p.siren,
-    id: { not: presentationId },
-    apporteurId: { not: p.apporteurId },
-  };
-  const champs = {
-    id: true,
-    apporteurId: true,
-    statut: true,
-    contactEnvoyeAt: true,
-    recueAt: true,
-    protegeeJusquAt: true,
-  } as const;
-  const [actives, terminees20] = await Promise.all([
-    db.presentationEntreprise.findMany({
-      where: { ...commun, statut: { in: ["reservee", "confirmee"] } },
-      select: champs,
-      orderBy: { recueAt: "asc" },
-      take: 100,
-    }),
-    db.presentationEntreprise.findMany({
-      where: { ...commun, statut: "terminee" },
-      select: champs,
-      orderBy: { protegeeJusquAt: { sort: "desc", nulls: "first" } },
-      take: 20,
-    }),
-  ]);
-  const tous = [...actives, ...terminees20];
-  // Contrat 2.6 : seuls comptent ceux qui visent le même périmètre (même établissement, ou
-  // toute l'entreprise) ; un autre établissement de la même entreprise ne bloque rien.
-  const etabs = await lireEtablissements([presentationId, ...tous.map((a) => a.id)]);
-  const autres = tous.filter((a) => memePerimetre(etabs.get(presentationId)!, etabs.get(a.id)!));
+    presentationId,
+    saufApporteurId: p.apporteurId,
+  });
   if (dejaAttribueeAUnAutre(autres, p.apporteurId)) return MESSAGE_DEJA_ATTRIBUEE;
   // Contrat 2.8 (art. 3.2 / 3.5) : une présentation `terminee` encore dans ses 30 jours de repos
   // occupe toujours l'entreprise (même garde que la saisie : `presentationOccupe`).
   const terminees = autres.filter((a) => a.statut === "terminee");
-  if (terminees.length > 0) {
-    const reservations = await lireReservations(terminees.map((a) => a.id));
-    if (
-      terminees.some((a) =>
-        presentationOccupe(
-          { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
-          maintenant,
-          versReservationProvisoire(a.recueAt ?? p.recueAt, reservations.get(a.id)),
-        ),
-      )
+  if (
+    terminees.some((a) =>
+      presentationOccupe(
+        { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
+        maintenant,
+        versReservationProvisoire(a.recueAt ?? p.recueAt, reservations.get(a.id)),
+      ),
     )
-      return MESSAGE_EN_REPOS;
-  }
+  )
+    return MESSAGE_EN_REPOS;
   if (
     existeDeclarationPlusAncienne(
       autres,
@@ -624,6 +597,16 @@ async function refusBienRecu(
     )
   )
     return MESSAGE_DECLARATION_PLUS_ANCIENNE;
+  // Art. 3.5 : le premier rang de la file d'attente d'une AUTRE déclaration dispose encore de ses 15 jours.
+  const perimetre = (await lireEtablissements([presentationId])).get(presentationId)!;
+  if (
+    await fenetreOuverteParUnAutre(
+      { siren: p.siren, apporteurId: p.apporteurId },
+      perimetre,
+      maintenant,
+    )
+  )
+    return MESSAGE_FENETRE_PREMIER_RANG;
   return null;
 }
 
@@ -790,6 +773,8 @@ export async function apercuReponse(
   return { ok: true, emails };
 }
 
+const ATTENTE_PAYLOAD = { en_attente: "conservee", file_complete: "file_complete" } as const;
+
 const PARTI: ReadonlySet<ResultatEnvoi> = new Set(["envoye", "en-validation"]);
 
 export async function appliquerReponse(
@@ -818,13 +803,22 @@ export async function appliquerReponse(
             },
     });
   let prise: { count: number };
-  if (reponse === "bien_recu") {
-    // Vérification (déjà attribuée / déclaration plus ancienne) ET prise de la ligne dans une
+  // Art. 3.5 : « Pas disponible » conserve la déclaration en attente (2 au plus par entreprise).
+  let attente: "en_attente" | "file_complete" | null = null;
+  if (reponse === "bien_recu" || reponse === "pas_disponible") {
+    // « Bien reçu » : vérification (déjà attribuée / déclaration plus ancienne) ET prise de la ligne dans une
     // même transaction sérialisable : deux « Bien reçu » simultanés sur un même SIREN ne passent
     // pas tous les deux (l'un échoue et rend la main).
+    // « Pas disponible » : la prise de la ligne ET la mise en attente, dans la même transaction : deux
+    // réponses simultanées sur une même entreprise n'excèdent jamais deux déclarations en attente.
     try {
       const r = await prisma.$transaction(
         async (tx) => {
+          if (reponse === "pas_disponible") {
+            const p = await prendre(tx);
+            if (p.count === 1) attente = await mettreEnAttente(tx, id, maintenant);
+            return { prise: p } as const;
+          }
           const refus = await refusBienRecu(tx, id, maintenant);
           if (refus) return { refus } as const;
           return { prise: await prendre(tx) } as const;
@@ -869,7 +863,13 @@ export async function appliquerReponse(
         : `Entreprise contactée, mais l'accusé à l'apporteur n'est pas parti (${r2}).`,
     };
   }
-  const r = await envoyer(envois[0]!);
+  // Champ FACULTATIF de la charge : un worker plus ancien l'ignore.
+  const premier = envois[0]!;
+  const r = await envoyer(
+    attente
+      ? { ...premier, payload: { ...premier.payload, attente: ATTENTE_PAYLOAD[attente] } }
+      : premier,
+  );
   return {
     ok: true,
     message: PARTI.has(r)

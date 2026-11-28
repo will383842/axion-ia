@@ -77,6 +77,8 @@ interface Payload {
   personnePresentee?: string;
   /** Refus seulement. */
   motif?: MotifRefus;
+  /** Refus « pas-disponible » seulement (art. 3.5) : facultatif, un gabarit plus ancien l'ignore. */
+  attente?: "conservee" | "file_complete";
   /** A1.7 : motif de la constatation « produit non commissionné ». */
   motifNonCommissionne?: string;
   /** Lien du dossier seulement : 1 = rappel J+3, 2 = rappel J+7 (absent = premier envoi). */
@@ -235,6 +237,12 @@ export const COPY_DEMARRAGE = {
     } satisfies Record<MotifRefus, string>,
     contester: (j: number) =>
       `Si vous pensez qu'il y a une erreur, dites-le-nous en répondant à cet e-mail : nous vous répondrons dans les ${j} jours.`,
+    // Art. 3.5 (file d'attente) : phrase de plus, seulement si la charge porte `attente` (« pas-disponible »).
+    attente: {
+      conservee:
+        "Nous gardons votre déclaration en attente pendant douze mois. Si l'entreprise redevient disponible et que votre déclaration est la première en attente, nous vous écrirons.",
+      file_complete: "Nous ne pouvons pas garder votre déclaration en attente.",
+    },
     sansConsequence:
       "Cela n'a aucune conséquence pour vous, et vous pouvez nous présenter d'autres entreprises quand vous le souhaitez.",
   },
@@ -706,6 +714,9 @@ export function ApporteurPresentationRefuseeEmail({ locale, payload }: Props) {
             {t.merci(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
           </Text>
           <Text style={emailStyles.paragraphStyle}>{t.motif[lireMotif(p.motif)]}</Text>
+          {lireMotif(p.motif) === "pas-disponible" && p.attente && t.attente[p.attente] ? (
+            <Text style={emailStyles.paragraphStyle}>{t.attente[p.attente]}</Text>
+          ) : null}
           <Text style={emailStyles.paragraphStyle}>{t.contester(REPONSE_CONTESTATION_JOURS)}</Text>
           <Text style={emailStyles.paragraphStyle}>{t.sansConsequence}</Text>
         </>
@@ -1412,6 +1423,9 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
         mot,
         t.merci(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation)),
         t.motif[lireMotif(p.motif)],
+        ...(lireMotif(p.motif) === "pas-disponible" && p.attente && t.attente[p.attente]
+          ? [t.attente[p.attente]]
+          : []),
         t.contester(REPONSE_CONTESTATION_JOURS),
         t.sansConsequence,
       ]);

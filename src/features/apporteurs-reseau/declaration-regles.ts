@@ -109,7 +109,13 @@ export function validerDeclaration(
  *   · « Expirée » : période échue (ou attribution terminée), avec sa date de fin.
  */
 export type EtatDeclaration =
-  "a_l_etude" | "sans_reponse" | "reservee" | "confirmee" | "non_disponible" | "expiree";
+  | "a_l_etude"
+  | "sans_reponse"
+  | "reservee"
+  | "confirmee"
+  | "non_disponible"
+  | "expiree"
+  | "en_attente";
 
 export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
   a_l_etude: "À l'étude",
@@ -120,6 +126,8 @@ export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
   confirmee: "Confirmée",
   non_disponible: "Non disponible",
   expiree: "Expirée",
+  // Art. 3.5 : déclaration conservée en attente. Ne dit rien du rang ni de l'occupant.
+  en_attente: "En attente (l'entreprise n'est pas disponible pour le moment)",
 };
 
 /**

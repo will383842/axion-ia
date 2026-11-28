@@ -18,7 +18,8 @@ describe("migration des annulations de rendez-vous", () => {
     const nom = DOSSIER.split("/").pop() as string;
     const horodatage = (d: string) => d.slice(0, 14);
     const autres = readdirSync(join(process.cwd(), "prisma/migrations")).filter(
-      (d) => /^\d{14}_/.test(d) && d !== nom,
+      // La file d'attente de l'article 3.5 (PR F) vient après : on ne compare qu'aux précédentes.
+      (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_apporteurs_file_attente"),
     );
     const fautives = autres.filter((d) => horodatage(d) >= horodatage(nom));
     expect(fautives).toEqual([]);

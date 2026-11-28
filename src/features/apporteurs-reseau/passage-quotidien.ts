@@ -62,6 +62,7 @@ import { horsGesteCommercial } from "./geste-commercial";
 import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
+import { passerFileAttente } from "./file-attente";
 import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
 import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
@@ -215,6 +216,10 @@ export interface BilanPassageReseau {
   rappelsDossier: number;
   /** Règle par rendez-vous : réservations arrivées à échéance sans rendez-vous (lot 4). */
   reservationsEchues: number;
+  /** File d'attente (art. 3.5) : premiers rangs informés, déclarations effacées, éteintes (12 mois) à ce passage. */
+  fileAttenteInformes?: number;
+  fileAttenteEffacees?: number;
+  fileAttenteEteintes?: number;
   /** Alertes internes « réservation sans rendez-vous, terme proche » parties à ce passage. */
   reservationsBientotEchues: number;
   /** E5 : alertes internes « proposition en attente depuis plus de 5 jours ouvrés » parties. */
@@ -335,6 +340,7 @@ type NomEtape =
   | "annulations-rendez-vous"
   | "reservations-sans-rendez-vous"
   | "reservations-echues"
+  | "file-attente"
   | "rappels-dossier"
   | "chiffrement-pieces"
   | "avoirs-sans-piece"
@@ -372,6 +378,9 @@ function bilanVide(): BilanPassageReseau {
     commandesSigneesAnnoncees: 0,
     rappelsDossier: 0,
     reservationsEchues: 0,
+    fileAttenteInformes: 0,
+    fileAttenteEffacees: 0,
+    fileAttenteEteintes: 0,
     reservationsBientotEchues: 0,
     propositionsEnAttente: 0,
     echeancesSuspendues: 0,
@@ -420,6 +429,8 @@ async function passer(
     ["annulations-rendez-vous", () => etapeAnnulationsRendezVous(maintenant)],
     ["reservations-sans-rendez-vous", () => etapeReservationsSansRendezVous(maintenant, bilan)],
     ["reservations-echues", () => etapeReservationsEchues(maintenant, bilan)],
+    // Art. 3.5 : la file d'attente (PR F #2464), APRÈS les échéances : une réservation échue ce matin ouvre ses 30 jours de repos.
+    ["file-attente", () => passerFileAttente(maintenant, bilan)],
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
     // Rattrapage (07/10) : les pièces déposées avant le chiffrement au repos sont chiffrées.
     ["chiffrement-pieces", async () => void (await chiffrerPiecesEnClair())],

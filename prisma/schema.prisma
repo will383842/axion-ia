@@ -19838,3 +19838,32 @@ model AnnulationRendezVousPresentation {
   @@index([auteur, constateeAt], map: "annulations_rdv_auteur_constatee_idx")
   @@map("annulations_rendez_vous_presentation")
 }
+
+/// Une déclaration CONSERVÉE EN ATTENTE (contrat 2.8, art. 3.5 ; 3.3 bis c) : l'entreprise était prise.
+/// Une ligne par déclaration (la PresentationEntreprise reste ; rien n'est supprimé). Sans clé étrangère.
+/// rgpd: technique — identifiants de déclaration et d'apporteur, SIREN/SIRET de l'entreprise, horodatages et états ; aucun nom, e-mail ni téléphone
+model DeclarationEnAttente {
+  id                       String    @id @default(uuid()) @db.Uuid
+  presentationId           String    @unique @map("presentation_id") @db.Uuid
+  apporteurId              String    @map("apporteur_id") @db.Uuid
+  siren                    String    @db.Char(9)
+  siret                    String?   @db.Char(14)
+  /// Clé de file : SIRET, sinon SIREN (Q-F2).
+  cleFile                  String    @map("cle_file") @db.VarChar(14)
+  /// Horodatage de la déclaration (copie de recueAt) : il fixe le rang.
+  recueAt                  DateTime  @map("recue_at") @db.Timestamptz(3)
+  /// en_attente | informee | redeclaree | effacee | eteinte (CHECK)
+  statut                   String    @default("en_attente") @db.VarChar(16)
+  informeeAt               DateTime? @map("informee_at") @db.Timestamptz(3)
+  fenetreFinAt             DateTime? @map("fenetre_fin_at") @db.Timestamptz(3)
+  /// Prévue pour l'art. 3.7 (suspension) : nulle tant que la suspension n'existe pas dans le code.
+  fenetreSuspendueJours    Int?      @map("fenetre_suspendue_jours")
+  emailJobId               String?   @map("email_job_id") @db.VarChar(120)
+  redeclareePresentationId String?   @map("redeclaree_presentation_id") @db.Uuid
+  clotureeAt               DateTime? @map("cloturee_at") @db.Timestamptz(3)
+  creeAt                   DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+
+  @@index([cleFile, statut, recueAt])
+  @@index([statut, fenetreFinAt])
+  @@map("declarations_en_attente")
+}
