@@ -35,7 +35,7 @@ describe("script de dépôt des annexes : il enregistre une version", () => {
     const main = avant.slice(avant.indexOf("async function main"));
     const sansListe = main.slice(main.indexOf("const doc = DOCUMENTS_ANNEXES.find"));
     expect(sansListe).not.toMatch(
-      /enteteObjetR2|getObjectBufferR2|uploadToR2|isR2Configured|exigerR2/,
+      /enteteObjetR2|getObjectBufferR2|uploadToR2|isR2Configured|exigerR2|deposerVersionAnnexe|prisma/,
     );
   });
 

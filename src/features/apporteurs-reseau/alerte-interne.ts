@@ -21,6 +21,8 @@ export async function alerteInterne(a: {
   cibleType: string;
   cibleId: string;
   niveau?: "important" | "critique";
+  /** Page de la console à ouvrir (défaut : les entreprises) ; doit commencer par `apporteurs`. */
+  chemin?: string;
   maintenant: Date;
 }): Promise<boolean> {
   try {
@@ -37,7 +39,7 @@ export async function alerteInterne(a: {
         cibleType: a.cibleType,
         cibleId: a.cibleId,
         rubrique: "apporteurs",
-        chemin: "apporteurs/entreprises",
+        chemin: a.chemin ?? "apporteurs/entreprises",
         createdAt: a.maintenant.toLocaleDateString("fr-FR"),
       },
       { jobId: a.jobId, entityType: a.cibleType, entityId: a.cibleId },

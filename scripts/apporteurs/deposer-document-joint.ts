@@ -11,6 +11,8 @@
  * `documents_annexes_versions` (registre append-only), et l'ancienne clé fixe est aussi réécrite
  * (fenêtre app/worker). Redéposer le fichier actuellement en ligne est le moyen d'enregistrer sa
  * première version : rien n'est court-circuité sur « même sha256 », la fonction est idempotente.
+ * Attention : redéposer une ANCIENNE version déjà enregistrée (A, puis B, puis A) rend « déjà
+ * enregistrée » et la version courante reste B ; pour revenir à A, retirer B (`retiree_at`).
  * La version remplacée est d'abord copiée sous `documents-apporteurs/archives/` (clé datée).
  * Le journal de chaque e-mail « contrat signé » note les 16 premiers caractères du sha256 de
  * chaque annexe jointe, et la remise est tracée (`ApporteurDocumentRemis`).
@@ -140,7 +142,9 @@ async function main(): Promise<void> {
   });
   console.log(`Clé versionnée : ${depot.cleR2} (sha256 ${depot.sha256})`);
   if (depot.dejaDeposee) {
-    console.log("Cette version était déjà enregistrée : rien de nouveau n'a été écrit.");
+    console.log(
+      "Cette version était déjà enregistrée : rien de nouveau n'a été écrit (la version courante n'a pas changé ; pour revenir à une ancienne version, retirer la plus récente par retiree_at).",
+    );
     return;
   }
   console.log(

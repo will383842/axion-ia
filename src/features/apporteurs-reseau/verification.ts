@@ -28,6 +28,8 @@ import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from
 import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien, bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { inviterCollaborateur } from "@/server/equipe/questionnaire/inviter";
 import { alerterContresignature } from "./alerte-telegram";
 import { apercu } from "./apercu-envoi";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
@@ -517,6 +519,41 @@ export async function appliquerDecision(
       });
     } catch (err) {
       signalerErreurReseau("contresignature : alerte Telegram", err);
+    }
+    // Invitation au questionnaire « page équipe » : bloc SÉPARÉ, jamais bloquant (la contresignature
+    // est actée). Pas de seconde invitation si une est déjà active pour cette adresse.
+    try {
+      const qui = await lireDossier(apporteurId);
+      const email = qui?.email?.trim().toLowerCase() ?? "";
+      const empreinteMail = email ? hashEmailForLookup(email) : null;
+      if (empreinteMail) {
+        const active = await prisma.teamQuestionnaireInvite.findFirst({
+          where: {
+            emailHash: empreinteMail,
+            category: "apporteur",
+            usedAt: null,
+            revokedAt: null,
+            expiresAt: { gt: new Date() },
+          },
+          select: { id: true },
+        });
+        if (!active) {
+          const inv = await inviterCollaborateur({
+            categorie: "apporteur",
+            email: qui!.email,
+            prenom: qui!.prenom,
+            source: "contrat_apporteur",
+          });
+          if (!inv.ok) {
+            signalerErreurReseau(
+              `contresignature : invitation questionnaire équipe (${inv.raison})`,
+              new Error(inv.raison),
+            );
+          }
+        }
+      }
+    } catch (err) {
+      signalerErreurReseau("contresignature : invitation questionnaire équipe", err);
     }
     return {
       ok: true,
