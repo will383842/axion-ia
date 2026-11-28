@@ -1,0 +1,19 @@
+{
+  "surtitre": "News",
+  "dApres": "Source: ",
+  "tempsLecture": "{minutes} min read",
+  "triptyque": {
+    "titre": "Key point · the essentials",
+    "changement": "What changes",
+    "pourQui": "Who is concerned",
+    "queFaire": "What to do now"
+  },
+  "source": {
+    "bandeau": "Original source",
+    "lien": "Read the source"
+  },
+  "ctaMilieu": {
+    "titre": "What this means for you",
+    "texte": "45 minutes to talk it over with the Axion-IA team."
+  }
+}

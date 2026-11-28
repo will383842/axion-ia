@@ -1,0 +1,19 @@
+{
+  "surtitre": "Actualité",
+  "dApres": "D’après : ",
+  "tempsLecture": "{minutes} min de lecture",
+  "triptyque": {
+    "titre": "Point clé · l’essentiel",
+    "changement": "Ce qui change",
+    "pourQui": "Pour qui",
+    "queFaire": "Que faire maintenant"
+  },
+  "source": {
+    "bandeau": "Source d’origine",
+    "lien": "Lire la source"
+  },
+  "ctaMilieu": {
+    "titre": "Ce que ça change pour vous",
+    "texte": "45 minutes pour en parler avec l’équipe d’Axion-IA."
+  }
+}
