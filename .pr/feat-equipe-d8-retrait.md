@@ -29,4 +29,18 @@ Décision du propriétaire : l'effacement est réel sur demande, exception à la
 - Après un retrait partiel le jeton reste valable (pour pouvoir retirer le reste) ; il est consommé au retrait total.
 - Un job BullMQ en vol n'est pas concerné (aucun contrat app/worker touché).
 
-VERDICT OPUS : EN COURS
+## Relecture Opus (données/RGPD + sécurité) : corrigé
+
+- Effacement : invitations et preuves ne sont cherchées par l'adresse que si elles n'ont pas de fiche ; refus si une autre fiche porte la même adresse.
+- Alerte administrateur : plus aucune donnée personnelle (elle part aussi vers Sentry).
+- Effacement : verrou sur la version de la fiche, erreurs rendues en message (plus d'exception), date de demande tolérante d'un jour.
+- Formulaire : le widget Turnstile est remonté après chaque envoi.
+
+## Restes (non corrigés)
+
+- La preuve « retrait » n'est écrite que si la fiche a une empreinte d'e-mail ; sans e-mail, pas de ligne `optout`.
+- Un échec de suppression d'un fichier lors d'un retrait de photo (pas d'effacement) n'est pas remonté à l'administrateur.
+- Chaque publication renvoie un nouveau lien de retrait ; l'échec d'envoi n'est pas affiché à l'administrateur.
+- Fusion de `origin/main` non faite (fichier en lecture seule dans l'environnement du robot) : à fusionner avant la PR.
+
+VERDICT OPUS : À CORRIGER — restes ci-dessus (aucun bloquant)

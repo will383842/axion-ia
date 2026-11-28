@@ -33,6 +33,8 @@ export function FormulaireRetrait({
 }) {
   const [etat, soumettre, enCours] = useActionState(action, ETAT_INITIAL);
   const [token, setToken] = useState("");
+  // Le jeton Turnstile est à usage unique : on remonte le widget après chaque envoi.
+  const [essai, setEssai] = useState(0);
   const effacerToken = useCallback(() => setToken(""), []);
 
   if (etat.etat === "fait") {
@@ -60,6 +62,8 @@ export function FormulaireRetrait({
         e.preventDefault();
         const donnees = new FormData(e.currentTarget);
         startTransition(() => soumettre(donnees));
+        setToken("");
+        setEssai((n) => n + 1);
       }}
       className="flex flex-col gap-4"
     >
@@ -89,7 +93,12 @@ export function FormulaireRetrait({
           {etat.message}
         </p>
       )}
-      <TurnstileDiffere action="equipe-retrait" onToken={setToken} onExpire={effacerToken} />
+      <TurnstileDiffere
+        key={essai}
+        action="equipe-retrait"
+        onToken={setToken}
+        onExpire={effacerToken}
+      />
       <button type="submit" disabled={enCours} className={classeBouton}>
         {enCours ? "Envoi…" : "Retirer"}
       </button>

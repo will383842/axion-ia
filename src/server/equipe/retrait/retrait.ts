@@ -148,16 +148,14 @@ export type ResultatRetrait =
   | { readonly ok: true; readonly portee: PorteeRetrait }
   | { readonly ok: false; readonly motif: "neutre" | "limite" | "turnstile" | "invalide" };
 
-async function alerterAdministrateur(
-  m: { id: string; firstName: string },
-  portee: PorteeRetrait,
-): Promise<void> {
+async function alerterAdministrateur(portee: PorteeRetrait): Promise<void> {
   try {
     await notify({
       category: "SECURITY_ALERT",
       payload: {
         kind: "equipe_retrait_par_lien",
-        details: { portee, prenom: m.firstName, fiche: m.id },
+        // Aucune donnée personnelle : cette alerte part aussi vers Sentry, hors de portée de l'effacement.
+        details: { portee },
       },
       sync: true,
       force: true,
@@ -249,7 +247,7 @@ export async function retirerParLien(entree: EntreeRetrait): Promise<ResultatRet
   }
   await tracerRetraitConsentement(m, portee, maintenant);
   revaliderFicheEquipe(m.slug);
-  await alerterAdministrateur(m, portee);
+  await alerterAdministrateur(portee);
   return { ok: true, portee };
 }
 
@@ -372,12 +370,27 @@ export async function effacerDefinitivement(entree: {
   let demande = m.erasureRequestedAt ?? maintenant;
   if (entree.demandeLe) {
     const d = new Date(entree.demandeLe);
-    if (Number.isNaN(d.getTime()) || d.getTime() > maintenant.getTime()) {
+    if (Number.isNaN(d.getTime()) || d.getTime() > maintenant.getTime() + 24 * 3600 * 1000) {
       return { ok: false, erreur: "Date de la demande invalide." };
     }
     demande = d;
   }
 
+  // `contactEmailHash` n'est pas unique : si une autre fiche porte la même adresse, on n'efface pas
+  // à l'aveugle (ses invitations, réponses et preuves partageraient la même clé).
+  if (m.contactEmailHash) {
+    const autre = await prisma.teamMember.findFirst({
+      where: { contactEmailHash: m.contactEmailHash, id: { not: m.id } },
+      select: { id: true },
+    });
+    if (autre) {
+      return {
+        ok: false,
+        erreur:
+          "Une autre fiche porte la même adresse e-mail : effacement refusé, à traiter à la main.",
+      };
+    }
+  }
   const [invites, soumissions] = await Promise.all([
     prisma.teamQuestionnaireInvite.findMany({
       where: {
@@ -417,26 +430,39 @@ export async function effacerDefinitivement(entree: {
     cles.add(clePersonneInvitation(i.id));
     if (i.emailHash) cles.add(i.emailHash);
   }
-  await prisma.$transaction(async (tx) => {
-    await tx.consentEvent.deleteMany({
-      where: { personKey: { in: [...cles] }, formRef: { startsWith: FORM_REF_TEAM } },
+  try {
+    await prisma.$transaction(async (tx) => {
+      // Fiche modifiée depuis la lecture (photo déposée entre-temps) : on annule, fichiers à reprendre.
+      const verrou = await tx.teamMember.updateMany({
+        where: { id: m.id, updatedAt: m.updatedAt },
+        data: { erasureRequestedAt: demande },
+      });
+      if (verrou.count !== 1) throw new Error("fiche-modifiee");
+      await tx.consentEvent.deleteMany({
+        where: { personKey: { in: [...cles] }, formRef: { startsWith: FORM_REF_TEAM } },
+      });
+      await tx.teamQuestionnaireSubmission.deleteMany({ where: { memberId: m.id } });
+      await tx.teamQuestionnaireInvite.deleteMany({
+        where: { id: { in: invites.map((i) => i.id) } },
+      });
+      await tx.teamMemberEvent.deleteMany({ where: { memberId: m.id } });
+      await tx.teamMember.delete({ where: { id: m.id } });
+      // Trace minimale : aucune référence à la personne (ni prénom, ni slug, ni e-mail, ni identifiant).
+      await tx.teamMemberEvent.create({
+        data: {
+          memberId: null,
+          action: "effacement",
+          actor: entree.acteur,
+          details: { demandeLe: demande.toISOString(), traiteLe: maintenant.toISOString() },
+        },
+      });
     });
-    await tx.teamQuestionnaireSubmission.deleteMany({ where: { memberId: m.id } });
-    await tx.teamQuestionnaireInvite.deleteMany({
-      where: { id: { in: invites.map((i) => i.id) } },
-    });
-    await tx.teamMemberEvent.deleteMany({ where: { memberId: m.id } });
-    await tx.teamMember.delete({ where: { id: m.id } });
-    // Trace minimale : aucune référence à la personne (ni prénom, ni slug, ni e-mail, ni identifiant).
-    await tx.teamMemberEvent.create({
-      data: {
-        memberId: null,
-        action: "effacement",
-        actor: entree.acteur,
-        details: { demandeLe: demande.toISOString(), traiteLe: maintenant.toISOString() },
-      },
-    });
-  });
+  } catch {
+    return {
+      ok: false,
+      erreur: "Effacement non terminé (fiche modifiée ou déjà effacée) : rechargez et réessayez.",
+    };
+  }
   revaliderFicheEquipe(m.slug);
   return { ok: true };
 }

@@ -4,7 +4,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => ({
-  tm: { findUnique: vi.fn(), updateMany: vi.fn(), update: vi.fn(), delete: vi.fn() },
+  tm: {
+    findUnique: vi.fn(),
+    findFirst: vi.fn(),
+    updateMany: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
+  },
   ev: { create: vi.fn(), deleteMany: vi.fn() },
   ce: { createMany: vi.fn(), deleteMany: vi.fn() },
   inv: { findMany: vi.fn(), deleteMany: vi.fn() },
@@ -97,6 +103,7 @@ beforeEach(() => {
   m.sub.deleteMany.mockResolvedValue({ count: 0 });
   m.inv.deleteMany.mockResolvedValue({ count: 0 });
   m.tm.update.mockResolvedValue({});
+  m.tm.findFirst.mockResolvedValue(null);
   m.tm.delete.mockResolvedValue({});
   m.sendEmail.mockResolvedValue(undefined);
   m.notify.mockResolvedValue({ ok: true });
@@ -308,6 +315,23 @@ describe("effacement RÉEL", () => {
     expect(m.tm.delete).not.toHaveBeenCalled();
     expect(m.sub.deleteMany).not.toHaveBeenCalled();
     expect(m.ce.deleteMany).not.toHaveBeenCalled();
+  });
+
+  it("refuse d'effacer si une autre fiche partage la même adresse", async () => {
+    m.tm.findFirst.mockResolvedValue({ id: "autre" });
+    expect((await effacerDefinitivement(demande())).ok).toBe(false);
+    expect(m.tm.delete).not.toHaveBeenCalled();
+  });
+
+  it("une fiche modifiée pendant l'effacement annule tout (pas d'exception)", async () => {
+    m.tm.updateMany.mockResolvedValue({ count: 0 });
+    expect((await effacerDefinitivement(demande())).ok).toBe(false);
+    expect(m.tm.delete).not.toHaveBeenCalled();
+  });
+
+  it("l'alerte ne porte aucune donnée personnelle", async () => {
+    await retirerParLien(entree());
+    expect(JSON.stringify(m.notify.mock.calls[0]![0])).not.toMatch(/Manon|manon|11111111/);
   });
 
   it("refuse une date de demande dans le futur", async () => {
