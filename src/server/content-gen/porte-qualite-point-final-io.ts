@@ -10,6 +10,7 @@ import {
   CLE_PLAFOND_SECURITE,
   appliquerPointFinal,
   calculerPlafondSecurite,
+  plafondDepuisCapGeneration,
   reglagePlafondDepuisConfig,
   type IssuePointFinal,
 } from "@/server/content-gen/porte-qualite";
@@ -52,7 +53,11 @@ export async function appliquerPointFinalPorte(
           const dbCap = await readContentGenConfigDirect<unknown>("MAX_PUBLISH_PER_DAY", 0);
           const genCap = await readContentGenConfigDirect<unknown>("daily_generation_cap", 0);
           const num = (v: unknown) => (typeof v === "number" ? v : null);
-          return calculerPlafondSecurite(reglage, [envCap, num(dbCap), num(genCap)]).plafond;
+          return calculerPlafondSecurite(reglage, [
+            envCap,
+            num(dbCap),
+            plafondDepuisCapGeneration(genCap),
+          ]).plafond;
         },
         // Compteur Redis du pipeline (axion:pub:<jour>) : il contient déjà le slot de CE job, retiré ici.
         compterPublies: async () => {

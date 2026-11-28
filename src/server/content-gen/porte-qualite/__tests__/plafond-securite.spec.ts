@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   PLAFOND_SECURITE_PAR_DEFAUT,
   calculerPlafondSecurite,
+  plafondDepuisCapGeneration,
   reglagePlafondDepuisConfig,
 } from "../plafond-securite";
 import { appliquerPointFinal, DRAPEAU_POINT_FINAL } from "../point-final";

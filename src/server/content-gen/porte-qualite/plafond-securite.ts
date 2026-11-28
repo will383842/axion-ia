@@ -33,7 +33,11 @@ export function reglagePlafondDepuisConfig(brut: unknown): ReglagePlafond {
       ? (brut as Record<string, unknown>)
       : {};
   return {
-    plafondJour: entierPositifOuNul(o.plafondJour) ?? PLAFOND_SECURITE_PAR_DEFAUT,
+    // Absent = défaut bas. Présent mais illisible = 0 (pause) : échec fermé, jamais un relèvement.
+    plafondJour:
+      o.plafondJour === undefined || o.plafondJour === null
+        ? PLAFOND_SECURITE_PAR_DEFAUT
+        : (entierPositifOuNul(o.plafondJour) ?? 0),
     capaciteRelectureJour: entierPositifOuNul(o.capaciteRelectureJour),
     budgetJourUsd: positif(o.budgetJourUsd),
     coutParContenuUsd: positif(o.coutParContenuUsd),
@@ -66,4 +70,11 @@ export function calculerPlafondSecurite(
     if (typeof p === "number" && Number.isFinite(p) && p > 0) essayer(Math.floor(p), "existant");
   }
   return meilleur;
+}
+
+/** `daily_generation_cap` est `{ maxPerDay: N }` (anti-burst) ; un nombre nu est aussi accepté. Sinon : ignoré. */
+export function plafondDepuisCapGeneration(brut: unknown): number | null {
+  const v =
+    typeof brut === "object" && brut !== null ? (brut as { maxPerDay?: unknown }).maxPerDay : brut;
+  return typeof v === "number" && Number.isFinite(v) && v > 0 ? Math.floor(v) : null;
 }
