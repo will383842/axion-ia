@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const DOSSIER = join(
   process.cwd(),
-  "prisma/migrations/20261128140000_apporteurs_annulations_rendez_vous",
+  "prisma/migrations/20261128155000_apporteurs_annulations_rendez_vous",
 );
 const sql = readFileSync(join(DOSSIER, "migration.sql"), "utf8")
   .split("\n")

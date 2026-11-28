@@ -58,6 +58,7 @@ import {
   constaterAnnulations,
   validerAnnulationsAxion,
 } from "./annulations-rendez-vous";
+import { horsGesteCommercial } from "./geste-commercial";
 import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
@@ -1139,7 +1140,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     },
   });
   const avoirsLignes = await prisma.factureFormation.findMany({
-    where: { avoirDeId: { in: lignes.map((f) => f.id) } },
+    where: { avoirDeId: { in: lignes.map((f) => f.id) }, ...(await horsGesteCommercial()) },
     select: {
       id: true,
       devisId: true,

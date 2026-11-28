@@ -1,4 +1,4 @@
--- Rollback de 20261128140000_apporteurs_annulations_rendez_vous.
+-- Rollback de 20261128155000_apporteurs_annulations_rendez_vous.
 -- Seulement sur décision du fondateur : la table porte la qualification (Axion IA / entreprise) des rendez-vous annulés.
 -- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde.
 --   COPY "annulations_rendez_vous_presentation" TO '/root/travaux-claude/annulations_rendez_vous_presentation.csv' WITH CSV HEADER;

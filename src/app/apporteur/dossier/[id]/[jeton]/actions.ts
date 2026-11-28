@@ -270,9 +270,12 @@ export async function deposerPieceAction(fd: FormData): Promise<Resultat> {
   if (!dossier) return NEUTRE;
   const type = champ(fd, "type", 30) as TypePiece;
   // Mode restreint (retiré du réseau, argent en jeu) : SEULES les attestations de vigilance.
-  const deposables = dossier.restreint
-    ? PIECES_VIGILANCE
-    : piecesDeposables(etatDeLaPage(dossier.statut));
+  // Archive (résilié, payé, PR K) : aucun dépôt.
+  const deposables = dossier.archive
+    ? []
+    : dossier.restreint
+      ? PIECES_VIGILANCE
+      : piecesDeposables(etatDeLaPage(dossier.statut));
   if (!(deposables as readonly string[]).includes(type)) return NEUTRE;
 
   const fichier = fd.get("fichier");

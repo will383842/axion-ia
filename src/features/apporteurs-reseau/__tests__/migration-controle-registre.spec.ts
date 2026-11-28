@@ -23,7 +23,9 @@ describe("migration du contrôle du registre", () => {
         d !== NOM &&
         !d.endsWith("_apporteurs_annexes_versionnees") &&
         !d.endsWith("_apporteurs_annulations_rendez_vous") &&
-        !d.endsWith("_apporteurs_purge_rgpd"),
+        !d.endsWith("_apporteurs_purge_rgpd") &&
+        !d.endsWith("_apporteurs_numeros_pieces_uniques") &&
+        !d.endsWith("_apporteurs_numeros_pieces_reservation"),
     );
     expect((NOM ?? "").slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });
