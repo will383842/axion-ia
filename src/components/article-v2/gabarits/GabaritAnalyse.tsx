@@ -80,9 +80,12 @@ export function MiseEnPageAnalyse({
   // Repères posés sur le corps HTML (numéros, relance, retours) et coupe avant la 4e section :
   // l'encart du milieu s'insère après la 3e. Un article en fichier garde ses blocs tels quels.
   // Un gabarit qui enveloppe le corps ou pose des blocs après lui (Sélection) le garde entier.
+  // Tableaux enveloppés UNE seule fois sur le corps entier (avant la coupe) : les identifiants de
+  // légende (`cap-N`) restent uniques d'une moitié à l'autre.
+  const htmlCorps = avecTableauxDefilants(p.html);
   const corps =
-    p.html && !enveloppeCorps && !apresCorps
-      ? preparerCorpsAnalyse(p.html, {
+    htmlCorps && !enveloppeCorps && !apresCorps
+      ? preparerCorpsAnalyse(htmlCorps, {
           ancreLabel: (titre) => a("ancreLabel", { titre }),
           relanceLibelle: a("relance"),
           retourLibelle: p.tocItems.length >= 2 ? a("retourSommaire") : null,
@@ -159,14 +162,14 @@ export function MiseEnPageAnalyse({
             large fait défiler toute la page sur téléphone (WCAG 1.4.10). */}
         {(enveloppeCorps ?? ((c: ReactNode) => c))(
           <CorpsArticle
-            html={avecTableauxDefilants(corps ? corps.avant : p.html)}
+            html={corps ? corps.avant : htmlCorps}
             blocs={p.blocs}
           />,
         )}
         {apresCorps}
         <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
         {corps?.apres ? (
-          <CorpsArticle html={avecTableauxDefilants(corps.apres)} blocs={null} />
+          <CorpsArticle html={corps.apres} blocs={null} />
         ) : null}
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq

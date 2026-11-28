@@ -159,9 +159,12 @@
 [data-gabarit] :is(.cta-milieu__actions, .cta-fin__actions) > * {
   min-width: 0;
 }
-[data-gabarit] :is(.cta-milieu, .cta-fin) {
-  /* le remplissage suit la largeur de l'écran, pas la taille du texte : à 200 %, il ne mange pas la colonne */
-  padding-inline: min(clamp(1.5rem, 1rem + 2vw, 2.25rem), 6vw);
+@media (max-width: 760px) {
+  [data-gabarit] :is(.cta-milieu, .cta-fin) {
+    /* le remplissage suit la largeur de l'écran, pas la taille du texte : à 200 %, il ne mange pas la colonne.
+       Réservé au téléphone : sur ordinateur, les marges du socle (disque décoratif) restent intactes. */
+    padding-inline: min(clamp(1.5rem, 1rem + 2vw, 2.25rem), 6vw);
+  }
 }
 [data-gabarit] [data-aeo="ai-disclosure"] {
   padding-inline: min(1.5rem, 5vw);
