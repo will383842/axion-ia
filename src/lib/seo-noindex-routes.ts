@@ -13,6 +13,7 @@
 import type { Locale } from "@/i18n/routing";
 // Cap d'indexation villes généré depuis le SSOT (cf. scripts/gen-indexable-villes.ts).
 import { INDEXABLE_VILLE_SLUGS_CAP } from "@/generated/indexable-villes";
+import { villeIndexableParPorte } from "@/lib/villes-porte-qualite";
 
 const LOCALES: ReadonlyArray<Locale> = ["fr", "en"];
 
@@ -99,7 +100,10 @@ const IMPLANTATIONS_SEGMENTS: ReadonlySet<string> = new Set(["implantations", "l
  * Toute modification doit passer le test `seo-noindex-routes.test.ts` (sync vs
  * `getIndexableVilles()` / `getIndexableRegions()`).
  */
-export function isNoindexStubRoute(pathname: string): boolean {
+export function isNoindexStubRoute(
+  pathname: string,
+  env: Readonly<Record<string, string | undefined>> = {},
+): boolean {
   const parts = pathname.split("/").filter(Boolean);
   if (parts.length < 3) return false;
 
@@ -124,7 +128,12 @@ export function isNoindexStubRoute(pathname: string): boolean {
   if (NOINDEX_SERVICE_VILLE_SECTIONS.has(section) && rest.length >= 2) {
     const segment = rest[0];
     const ville = rest[1];
-    if (segment && SERVICE_VILLE_SEGMENTS.has(segment) && ville) return true;
+    // Porte de qualité (28/11/2026) : drapeau éteint par défaut ⇒ `env` vide ⇒ toujours noindex.
+    // Allumé, une ville qui a passé la porte n'est plus noindex par l'en-tête (le meta de la
+    // page décide alors seul).
+    if (segment && SERVICE_VILLE_SEGMENTS.has(segment) && ville) {
+      return !villeIndexableParPorte(ville, env);
+    }
   }
 
   return false;
