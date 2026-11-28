@@ -60,6 +60,7 @@ export function contexteValide(surcharge: Partial<ContextePorte> = {}): Contexte
     etatLiens: LIENS_SAINS,
     pageProprietaire: { etat: "ok", valeur: null },
     corpsDejaPublie: { etat: "ok", valeur: null },
+    voisinsSemantiques: { etat: "ok", valeur: [] },
     penalites: {},
     ...surcharge,
   };
