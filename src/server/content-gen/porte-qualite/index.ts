@@ -53,6 +53,16 @@ export type {
   IssuePointFinal,
   ResultatB17,
 } from "./point-final";
+export { evaluerB05 } from "./criteres/intention";
+export { evaluerB07 } from "./criteres/apport";
+export { cleIntention, lignesDepuisCarte } from "./intentions-registre";
+export {
+  TYPES_APPORT,
+  contientMarqueurApport,
+  extraireApports,
+  reserverApports,
+  retirerMarqueursApport,
+} from "./apports";
 export {
   CLE_PLAFOND_SECURITE,
   PLAFOND_SECURITE_PAR_DEFAUT,
