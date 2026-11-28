@@ -1,0 +1,123 @@
+{
+  "reponseDirecte": "En bref",
+  "sommaire": "Sommaire",
+  "surtitre": {
+    "analyse": "Analyse",
+    "guide": "Guide pratique",
+    "comparatif": "Comparatif",
+    "selection": "Sélection",
+    "cas": "Étude de cas",
+    "definition": "Définition",
+    "faq": "Questions-réponses",
+    "chiffres": "Chiffres"
+  },
+  "faqTitre": "Questions fréquentes",
+  "avantDeCommencer": "Avant de commencer",
+  "etape": "Étape {numero}",
+  "contexte": "Contexte",
+  "definition": "Définition",
+  "donneesAu": "Données au <dateBalise>{date}</dateBalise>",
+  "voirObservatoire": "Consulter l’Observatoire",
+  "nouvelleFenetre": "(nouvelle fenêtre)",
+  "enBref": "En bref",
+  "typeEtCategorie": "Type et catégorie",
+  "partager": "Partager l’article",
+  "partagerSur": "Partager sur {reseau}",
+  "partagerMail": "Partager par e-mail",
+  "publieLe": "Publié le",
+  "misAJourLe": "Mis à jour le",
+  "par": "Par",
+  "signe": {
+    "analyse": {
+      "grand": "4 sem.",
+      "legende": "d’essai, puis une décision"
+    },
+    "guide": {
+      "grand": "1 → 6",
+      "legende": "des étapes, une à la fois"
+    },
+    "comparatif": {
+      "grand": "A ou B",
+      "legende": "selon votre situation"
+    },
+    "selection": {
+      "grand": "10",
+      "legende": "options passées en revue"
+    },
+    "cas": {
+      "grand": "Cas",
+      "legende": "un exemple, pas une mesure"
+    },
+    "definition": {
+      "grand": "Déf.",
+      "legende": "le terme, simplement"
+    },
+    "faq": {
+      "grand": "?",
+      "legende": "des réponses directes"
+    },
+    "chiffres": {
+      "grand": "≈ 10 %",
+      "legende": "des chiffres sourcés"
+    }
+  },
+  "actions": {
+    "aria": "Passer à l’action",
+    "titreDebut": "Passer de la lecture",
+    "titreEm": "à l’action",
+    "sousTitre": "Pour votre PME, partout en France.",
+    "diagnostic": {
+      "long": "Diagnostic IA, 45 min",
+      "court": "Diagnostic IA",
+      "sous": "Gratuit · en visio ou par téléphone · sans engagement",
+      "aria": "Diagnostic IA, 45 min, gratuit",
+      "pastille": "45 min"
+    },
+    "journee": {
+      "long": "Découvrir la Journée IA",
+      "court": "Journée IA",
+      "sous": "Audit le matin, vos équipes formées l’après-midi, dans vos locaux.",
+      "aria": "Découvrir la Journée IA"
+    },
+    "message": {
+      "long": "Écrire un message",
+      "court": "Message",
+      "sous": "Lu par un consultant senior, jamais par un robot.",
+      "aria": "Écrire un message"
+    },
+    "rassurance": ["Confirmation immédiate", "Annulable en un clic", "Partout en France"],
+    "qualiopi": "Organisme de formation certifié Qualiopi"
+  },
+  "ctaMilieu": {
+    "titre": "Et chez vous, par où commencer ?",
+    "texte": "En 45 minutes, nous regardons votre situation et repérons la première tâche à confier à l’IA.",
+    "bouton": "Diagnostic IA, 45 min",
+    "lien": "Voir le déroulé de la Journée IA"
+  },
+  "ctaFin": {
+    "surtitre": "Passer à l’action",
+    "titre": "Transformer cette lecture en un premier essai",
+    "texte": "Choisissez la porte d’entrée qui vous convient.",
+    "diagnostic": "Diagnostic IA, 45 min",
+    "journee": "Découvrir la Journée IA",
+    "message": "Écrire un message",
+    "etapesTitre": "Le déroulé du diagnostic",
+    "etapes": [
+      "Vous choisissez un créneau de 45 minutes.",
+      "Nous regardons ensemble vos tâches répétitives.",
+      "Vous repartez avec une première piste, par écrit."
+    ]
+  },
+  "video": {
+    "repere": "En vidéo",
+    "resume": "Lire le résumé",
+    "lire": "Regarder la vidéo"
+  },
+  "progression": "Progression de la lecture",
+  "relance": "Pour aller plus loin :",
+  "relu": "Relu et validé par",
+  "historique": "Historique des mises à jour",
+  "resumeTitre": "Ce qu’il faut retenir",
+  "checklist": "Liste de contrôle",
+  "chiffreSource": "Source"
+}
