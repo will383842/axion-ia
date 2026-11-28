@@ -46,6 +46,7 @@ const NOMS_PAR_TYPE: Record<ApporteurCronJobType, true> = {
   "invitation-auto": true,
   "reseau-quotidien": true,
   "reseau-facturation": true,
+  "releve-mensuel": true,
 };
 export const NOMS_CONNUS = Object.keys(NOMS_PAR_TYPE) as readonly ApporteurCronJobType[];
 
@@ -68,6 +69,10 @@ async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
       : "relance-invitation";
   if (job.name === "reseau-facturation" || job.data?.type === "reseau-facturation") {
     await passerFacturation();
+    return;
+  }
+  if (est("releve-mensuel")) {
+    await passerReleves();
     return;
   }
   if (job.name === "reseau-quotidien" || job.data?.type === "reseau-quotidien") {
@@ -196,6 +201,16 @@ async function passerFacturation(): Promise<void> {
   if (erreurs === 0) await noterReussite("reseau-facturation");
   if (Object.values(faits).some((n) => n > 0) || erreurs > 0) {
     console.warn(`[apporteur-crons] réseau facturation : ${JSON.stringify(r)}`);
+  }
+}
+
+/** Relevé mensuel : PRÉPARE les relevés du mois précédent et alerte en interne ; n'envoie rien. */
+async function passerReleves(): Promise<void> {
+  const { passerReleveMensuel } =
+    await import("@/features/apporteurs-reseau/releve-mensuel/passage-mensuel");
+  const r = await passerReleveMensuel();
+  if (r.statut === "ok" && (r.crees > 0 || r.echecs > 0 || r.alerte)) {
+    console.warn(`[apporteur-crons] relevé mensuel : ${JSON.stringify(r)}`);
   }
 }
 
