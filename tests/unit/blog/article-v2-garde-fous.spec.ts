@@ -148,7 +148,8 @@ function aplatir(o: Json, prefixe = ""): string[] {
 
 describe("messages des gabarits", () => {
   it("un couple fr/en par code, mêmes clés", () => {
-    expect(CODES_MESSAGES_GABARITS).toEqual(["commun", ...GABARITS_ARTICLE]);
+    // commun + les huit gabarits du blog + l'actualité (PR M-A1, page autonome)
+    expect(CODES_MESSAGES_GABARITS).toEqual(["commun", ...GABARITS_ARTICLE, "actualite"]);
     for (const code of CODES_MESSAGES_GABARITS) {
       const fr = JSON.parse(lire(`src/messages/gabarits/${code}.fr.json`)) as Json;
       const en = JSON.parse(lire(`src/messages/gabarits/${code}.en.json`)) as Json;
@@ -226,7 +227,7 @@ describe("textes des gabarits : mots interdits et typographie", () => {
 describe("photos de repli", () => {
   it("chaque photo existe en .webp ET en .avif, sans infographie ni chiffre-vedette", async () => {
     const { PHOTOS_REPLI } = await import("@/lib/blog/photos-repli");
-    expect(Object.keys(PHOTOS_REPLI).sort()).toEqual([...GABARITS_ARTICLE].sort());
+    expect(Object.keys(PHOTOS_REPLI).sort()).toEqual([...GABARITS_ARTICLE, "actualite"].sort());
     for (const { src, alt } of Object.values(PHOTOS_REPLI)) {
       expect(src).toMatch(/^\/images\/axion-ia-photo-[a-z0-9-]+\.webp$/);
       expect(fs.existsSync(path.join(RACINE, "public", src))).toBe(true);

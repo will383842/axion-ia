@@ -13,12 +13,19 @@
  */
 import type { GabaritArticle } from "@/server/content-gen/blog/gabarits";
 
+/**
+ * Code de page des gabarits v2 : les huit gabarits du blog, plus l'actualité (PR M-A1) qui
+ * vit sur `/actualites/[slug]`. Ce n'est PAS un `GabaritArticle` : `gabaritPourType` et la
+ * table du PLAN §3 ne la connaissent pas.
+ */
+export type GabaritPage = GabaritArticle | "actualite";
+
 export interface PhotoRepli {
   readonly src: string;
   readonly alt: string;
 }
 
-export const PHOTOS_REPLI: Readonly<Record<GabaritArticle, PhotoRepli>> = {
+export const PHOTOS_REPLI: Readonly<Record<GabaritPage, PhotoRepli>> = {
   analyse: {
     src: "/images/axion-ia-photo-formation-ia-salle-conference-participants-eclairage.webp",
     alt: "",
@@ -49,6 +56,10 @@ export const PHOTOS_REPLI: Readonly<Record<GabaritArticle, PhotoRepli>> = {
   },
   chiffres: {
     src: "/images/axion-ia-photo-formation-ia-salle-conference-participants-eclairage.webp",
+    alt: "",
+  },
+  actualite: {
+    src: "/images/axion-ia-photo-formateur-ia-presentation-tableau-equipe-entreprise.webp",
     alt: "",
   },
 };

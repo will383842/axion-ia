@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
-import type { GabaritArticle } from "@/server/content-gen/blog/gabarits";
-import { PHOTOS_REPLI } from "@/lib/blog/photos-repli";
+import { PHOTOS_REPLI, type GabaritPage } from "@/lib/blog/photos-repli";
 
 interface PhotoArticleProps {
-  readonly gabarit: GabaritArticle;
+  readonly gabarit: GabaritPage;
   readonly src: string | null;
   readonly alt: string | null;
   readonly titre: string;

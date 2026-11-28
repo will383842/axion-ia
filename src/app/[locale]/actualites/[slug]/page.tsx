@@ -62,6 +62,7 @@ import { buildToc } from "@/lib/knowledge/article-enrich";
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
 import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
 import { prefixerLiensInternes } from "@/lib/content/liens-internes";
+import { gabaritsV2Actifs } from "@/lib/blog/gabarits-v2";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
 // hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
@@ -402,6 +403,96 @@ export default async function NewsArticlePage({ params }: Props) {
   const titleParts = splitTitleEm(t.title);
   // Un seul « Mis à jour le » visible : celui de l'en-tête (près du titre).
   // Pas de bannière ni de date dans AuthorByline (doublons retirés).
+
+  // Gabarits v2 (PR M-A1) : habillage de la page derrière l'interrupteur BLOG_GABARITS_V2,
+  // éteint par défaut. Insertion unique : tout le calcul ci-dessus est conservé, le JSON-LD
+  // et les metadata restent ceux de la V1. Import dynamique : le JavaScript du gabarit n'est
+  // exécuté que derrière la garde ; en revanche webpack rattache sa feuille de style à la
+  // route même interrupteur coupé (mesuré : ≈ +11 Ko gz de CSS, bornée à [data-gabarit]).
+  if (gabaritsV2Actifs()) {
+    const { GabaritActualite } = await import("@/components/article-v2/gabarits/GabaritActualite");
+    return (
+      <GabaritActualite
+        locale="fr"
+        slug={slug}
+        // `splitTitleEm` coupe « X : Y » avant les deux-points : le gabarit v2 le garde (le titre se lit en entier).
+        titre={{
+          lead: t.title.indexOf(" : ") > 0 ? `${titleParts.lead.trimEnd()} :` : titleParts.lead,
+          em: titleParts.em,
+        }}
+        titreComplet={t.title}
+        chapo={t.excerpt ?? null}
+        categorie={article.newsCategory ?? "Actualité IA"}
+        auteur={
+          article.author
+            ? {
+                nom: article.author.name,
+                slug: article.author.slug,
+                href: `/equipe/${article.author.slug}`,
+              }
+            : null
+        }
+        publieLe={
+          article.publishedAt
+            ? {
+                iso: article.publishedAt.toISOString(),
+                lisible: article.publishedAt.toLocaleDateString("fr-FR", {
+                  timeZone: "UTC",
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }),
+                jour: String(article.publishedAt.getUTCDate()),
+              }
+            : null
+        }
+        misAJourLe={
+          showUpdated && article.updatedAt
+            ? {
+                iso: article.updatedAt.toISOString(),
+                lisible: article.updatedAt.toLocaleDateString("fr-FR", {
+                  timeZone: "UTC",
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }),
+              }
+            : null
+        }
+        minutesLecture={wordCount > 0 ? Math.max(1, Math.round(wordCount / 220)) : null}
+        source={sourceName ? { nom: sourceName, url: sourceUrl ?? null } : null}
+        photo={{
+          src: article.featuredImage ?? null,
+          alt: article.featuredImageAltFr ?? null,
+          photographerName: article.featuredImagePhotographerName ?? null,
+          photographerUrl: article.featuredImagePhotographerUrl ?? null,
+        }}
+        tldr={tldrText}
+        pointCle={keyTakeaway}
+        html={bodyHtmlFallback}
+        paragraphes={paragraphs}
+        tocItems={tocItems}
+        pageUrl={pageUrl}
+        filAriane={breadcrumbItems}
+        faqItems={faqItems}
+        citations={citations.map((c) => ({ name: c.title, url: c.url }))}
+        expertQuote={expertQuote}
+        dateMiseAJourIso={updatedIso}
+        bylineManon={manonByline}
+        questionsAssociees={peopleAlsoAsk}
+        suggestions={related.map((r) => ({
+          href: `/${segmentForArticleType(r.type ?? "blog")}/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+          ...(r.imageUrl ? { imageUrl: r.imageUrl } : {}),
+        }))}
+        precedentSuivant={{ prev: adjacentNews.prev, next: adjacentNews.next }}
+        jsonLd={[...(newsJsonLd ? [newsJsonLd] : []), ...(personJsonLd ? [personJsonLd] : [])]}
+      />
+    );
+  }
 
   return (
     <>

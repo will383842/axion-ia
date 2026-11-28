@@ -51,3 +51,57 @@ export interface ArticleGabaritProps {
   /** Nœuds JSON-LD déjà calculés par la page (identiques à ceux de la V1). */
   readonly jsonLd: ReadonlyArray<object>;
 }
+
+/** Date d'actualité : ISO pour `<time datetime>`, texte lisible déjà formaté (fr-FR, UTC). */
+export interface DateActualite {
+  readonly iso: string;
+  readonly lisible: string;
+}
+
+/**
+ * Données du gabarit « Actualité » (PR M-A1), calculées par `/actualites/[slug]/page.tsx`
+ * (aucune requête ici). Le JSON-LD est celui de la V1, inchangé.
+ */
+export interface ArticleActualiteProps {
+  readonly locale: Locale;
+  readonly slug: string;
+  readonly titre: { readonly lead: string; readonly em?: string | undefined };
+  readonly titreComplet: string;
+  readonly chapo: string | null;
+  readonly categorie: string;
+  readonly auteur: { readonly nom: string; readonly slug: string; readonly href: string } | null;
+  readonly publieLe: (DateActualite & { readonly jour: string }) | null;
+  readonly misAJourLe: DateActualite | null;
+  /** Minutes de lecture estimées sur le corps ; absent si le corps est vide. */
+  readonly minutesLecture: number | null;
+  /** Source d'origine (`newsSourceName` / `newsSourceUrl`) ; absente si non tracée. */
+  readonly source: { readonly nom: string; readonly url: string | null } | null;
+  readonly photo: {
+    readonly src: string | null;
+    readonly alt: string | null;
+    readonly photographerName: string | null;
+    readonly photographerUrl: string | null;
+  };
+  readonly tldr: string | null;
+  /** « Point clé » existant (`Article.keyTakeaway`) : première carte du triptyque. */
+  readonly pointCle: string | null;
+  /** HTML du corps, sanitisé, ancres des H2 posées ; null → `paragraphes`. */
+  readonly html: string | null;
+  readonly paragraphes: ReadonlyArray<string>;
+  readonly tocItems: ReadonlyArray<TocItem>;
+  readonly pageUrl: string;
+  readonly filAriane: ReadonlyArray<{ readonly href: string; readonly label: string }>;
+  readonly faqItems: ReadonlyArray<{ readonly question: string; readonly answer: string }>;
+  readonly citations: ReadonlyArray<{ readonly name: string; readonly url: string }>;
+  readonly expertQuote: { name: string; title: string | null; text: string } | null;
+  readonly dateMiseAJourIso: string | null;
+  readonly bylineManon: Awaited<ReturnType<typeof getManonByline>>;
+  readonly questionsAssociees: ProprietesCommunes<typeof ArticlePeopleAlsoAsk>["items"];
+  readonly suggestions: ProprietesCommunes<typeof SuggestedContent> extends { items: infer I }
+    ? I
+    : never;
+  readonly precedentSuivant: ProprietesCommunes<typeof ArticlePrevNext>["prev"] extends infer P
+    ? { readonly prev: P; readonly next: P }
+    : never;
+  readonly jsonLd: ReadonlyArray<object>;
+}
