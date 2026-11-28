@@ -13,3 +13,19 @@ export {
 export type { IssueObservation, LigneVerdictEcrite } from "./observation";
 export { construireVue, lireLigneVerdict } from "./vue";
 export type { LigneVerdictLue, VerdictAffiche, VuePorte } from "./vue";
+export {
+  CLE_COUPE_CIRCUIT,
+  DRAPEAU_POINT_FINAL,
+  appliquerPointFinal,
+  controlerTexteHorsArticle,
+  evaluerB17,
+  lireCoupeCircuit,
+  pointFinalActif,
+} from "./point-final";
+export type {
+  ControleHorsArticle,
+  DepsPointFinal,
+  EntreeB17,
+  IssuePointFinal,
+  ResultatB17,
+} from "./point-final";

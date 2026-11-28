@@ -28,6 +28,14 @@ export interface ServiceFiche {
   liens: ReadonlyArray<LienFiche>;
 }
 
+export interface SectionFiche {
+  id: string;
+  titre: string;
+  paragraphes: ReadonlyArray<string>;
+  lien?: LienFiche;
+  liste?: ReadonlyArray<string>;
+}
+
 export interface QuestionFiche {
   id: string;
   question: string;
@@ -45,6 +53,10 @@ export interface ContenuFiche {
   pastilles: ReadonlyArray<string>;
   /** Bandeau de faits (2 à 4 faits vérifiables) ; absent sans faits. */
   faits?: ReadonlyArray<{ chiffre: string; libelle: string }>;
+  /** Compétences / technologies renseignées par la personne (sections propres à la catégorie). */
+  competences?: ReadonlyArray<string>;
+  /** Sections propres à la catégorie (déjà remplies du prénom) ; absentes : aucune. */
+  sectionsCategorie?: ReadonlyArray<SectionFiche>;
   /** Fiche d'identité (`<dl>`). */
   identite: ReadonlyArray<{ terme: string; valeur: string }>;
   avantApres?: { titre: string; lignes: ReadonlyArray<LigneAvantApres>; phrase: string };
@@ -64,7 +76,14 @@ export interface ContenuFiche {
   parcours?: { titre: string; blocs: ReadonlyArray<PointTitre> };
   citations?: { titre: string; items: ReadonlyArray<string> };
   faq: ReadonlyArray<QuestionFiche>;
-  appelFinal: { titre: string; texte: string; bouton: string; boutonSecondaire: string };
+  appelFinal: {
+    titre: string;
+    texte: string;
+    bouton: string;
+    boutonSecondaire: string;
+    /** Boutons propres à la catégorie ; absents : les deux boutons par défaut. */
+    actions?: ReadonlyArray<{ libelle: string; href: string; variante: "primaire" | "secondaire" }>;
+  };
   /** Profils vérifiables (`sameAs`) : LinkedIn, etc. */
   liens: { linkedin?: string };
 }

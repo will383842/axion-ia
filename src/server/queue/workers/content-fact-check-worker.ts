@@ -36,6 +36,7 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
+import { controlerTexteHorsArticle } from "@/server/content-gen/porte-qualite";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import {
   factCheckClaudeActif,
@@ -330,8 +331,15 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     });
     // Offre « Journée IA » : un texte réécrit par le LLM qui en parle n'est jamais mis en
     // ligne sans relecture ; l'article reste inchangé et signalé (branche « échec » ci-dessous).
+    // Porte qualité, chemin 6 (§ 11) : B01 et B03 sur le texte réécrit, sinon la réécriture est
+    // refusée (l'article reste inchangé). Drapeau CONTENT_PORTE_QUALITE éteint : inerte.
     const correctedHtml =
-      correctedBrut && exigeRelectureHumaine({ output: { bodyHtml: correctedBrut } })
+      correctedBrut &&
+      (exigeRelectureHumaine({ output: { bodyHtml: correctedBrut } }) ||
+        controlerTexteHorsArticle(
+          { contentType: "fact_check_rewrite", titre: "", corpsHtml: correctedBrut },
+          process.env,
+        ).refuse)
         ? null
         : correctedBrut;
     const listPath = article.isNews ? "/fr/actualites" : "/fr/blog";
