@@ -130,6 +130,10 @@ const pairs: Pair[] = [
   { fg: palette.primary, bg: palette.paper, label: "primary on paper" },
   { fg: palette.terracotta, bg: palette.paper, label: "terracotta on paper" },
   { fg: palette.sage, bg: palette.paper, label: "sage on paper" },
+  // Tableau du Comparatif : « Oui » (sage) et « Partiel » (ocre) sur les lignes paper et ivoire
+  { fg: palette.sage, bg: palette.bg, label: "sage on bg (comparatif, Oui)" },
+  { fg: "#7d4a0a", bg: palette.paper, label: "ochre-deep on paper (comparatif, Partiel)" },
+  { fg: "#7d4a0a", bg: palette.bg, label: "ochre-deep on bg (comparatif, Partiel)" },
   // Text on sand (intermissions)
   { fg: palette.fg, bg: palette.sand, label: "fg on sand" },
   { fg: palette.fgSoft, bg: palette.sand, label: "fg-soft on sand" },
