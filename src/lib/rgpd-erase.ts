@@ -45,6 +45,7 @@ import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/pro
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { decryptPii, encryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { deleteFromR2 } from "@/lib/r2-storage";
+import { prefixesStockageEmail } from "@/lib/email-manuel/pieces-jointes";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
 import {
@@ -1178,6 +1179,12 @@ export interface NeutralisationEmailsManuels {
    */
   readonly clesStockage: readonly string[];
   /**
+   * Dossiers à lister dans le stockage ; rien n'y est supprimé ici. Trois par e-mail (définitif,
+   * temporaire, refusées), triés et sans doublon : ils retrouvent aussi les copies qu'aucune ligne
+   * n'indexe (copie définitive orpheline après un échec d'envoi).
+   */
+  readonly prefixesStockage: readonly string[];
+  /**
    * E-mails écrits depuis la fiche de la personne mais envoyés à UNE AUTRE adresse (assistante,
    * collègue). Listés, jamais touchés sauf option `aussiRattachesAutreAdresse` (le fondateur décide).
    */
@@ -1354,6 +1361,9 @@ async function neutraliserLignesEmailsManuels(
  * Les e-mails écrits depuis la fiche de la personne mais envoyés à une AUTRE adresse sont LISTÉS
  * (`rattachesAutreAdresse`) et laissés intacts ; avec `aussiRattachesAutreAdresse: true`, leur contenu
  * est vidé (l'adresse du tiers est gardée) et le journal reçoit `<id>:contenu`.
+ *
+ * Rend aussi `prefixesStockage` : le fondateur liste les objets sous ces dossiers dans le stockage
+ * avant de décider ; rien n'est supprimé automatiquement.
  */
 export async function neutraliserEmailsManuelsPour(
   email: string,
@@ -1365,6 +1375,7 @@ export async function neutraliserEmailsManuelsPour(
       emailsNeutralises: 0,
       piecesJointesNeutralisees: 0,
       clesStockage: [],
+      prefixesStockage: [],
       rattachesAutreAdresse: [],
     };
   }
@@ -1440,10 +1451,20 @@ export async function neutraliserEmailsManuelsPour(
         }
       }
       const toutesPieces = [...pieces, ...piecesContenu];
+      // Dossiers de TOUS les e-mails touchés (déjà neutralisés ou non), pour que la seconde passe
+      // rende la même liste ; les « autres » seulement si l'option les efface.
+      const idsConcernes = [
+        ...ids,
+        ...(options.aussiRattachesAutreAdresse === true ? autres.map((l) => l.id) : []),
+      ];
+      const prefixesStockage = [
+        ...new Set(idsConcernes.flatMap((id) => prefixesStockageEmail(id))),
+      ].sort();
       return {
         emailsNeutralises: modifies.length,
         piecesJointesNeutralisees: toutesPieces.length,
         clesStockage: toutesPieces.map((x) => x.cleStockage),
+        prefixesStockage,
         rattachesAutreAdresse: autres.map((l) => l.id),
       };
     },
