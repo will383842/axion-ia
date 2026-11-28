@@ -162,6 +162,8 @@ export const env = createEnv({
     // Challenges d'apporteurs (invitation libre) : absents = éteints, valeur exacte "true".
     APPORTEUR_CHALLENGES_CONSOLE_ENABLED: z.string().optional(),
     APPORTEUR_CHALLENGES_ESPACE_ENABLED: z.string().optional(),
+    // Constat des primes de challenge (worker, étape « challenges-constat ») : absent = éteint, valeur exacte "true".
+    APPORTEUR_CHALLENGES_PRIMES_ENABLED: z.string().optional(),
     // Déclarés pour être documentés (#2464, point 26) ; leur COMPORTEMENT n'est pas changé : ils
     // restent lus par `process.env`, absents = éteints, seule « true » allume. Texte libre.
     // APPORTEURS_EMAIL_REFUS : site (à allumer APRÈS le worker, cf. `refus-annonce.ts`).
@@ -869,6 +871,7 @@ export const env = createEnv({
     APPORTEUR_MES_COMMISSIONS_ENABLED: process.env.APPORTEUR_MES_COMMISSIONS_ENABLED,
     APPORTEUR_CHALLENGES_CONSOLE_ENABLED: process.env.APPORTEUR_CHALLENGES_CONSOLE_ENABLED,
     APPORTEUR_CHALLENGES_ESPACE_ENABLED: process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED,
+    APPORTEUR_CHALLENGES_PRIMES_ENABLED: process.env.APPORTEUR_CHALLENGES_PRIMES_ENABLED,
     APPORTEURS_EMAIL_REFUS: process.env.APPORTEURS_EMAIL_REFUS,
     APPORTEURS_PURGE_RGPD: process.env.APPORTEURS_PURGE_RGPD,
     APPORTEUR_CHANGEMENT_IBAN_ENABLED: process.env.APPORTEUR_CHANGEMENT_IBAN_ENABLED,

@@ -72,6 +72,7 @@ describe("la migration du relevé mensuel est additive", () => {
             "_team_invite_envoi",
             "_pilotage_seo_robots_ia",
             "_apporteurs_purge_rgpd",
+            "_apporteurs_challenges_primes",
           ].some((s) => d.endsWith(s)),
         ),
     );

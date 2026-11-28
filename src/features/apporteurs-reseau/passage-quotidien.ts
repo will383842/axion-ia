@@ -52,6 +52,7 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
+import { etapeConstatPrimes } from "./constat-primes-etape";
 import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
@@ -320,6 +321,7 @@ type NomEtape =
   | "confirmation-tacite"
   | "terme"
   | "commissions"
+  | "constat-primes"
   | "avoirs-clients"
   | "autofacturation"
   | "vigilance"
@@ -392,6 +394,8 @@ async function passer(
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
+    // Lot I (#2464) : constat des primes, APRÈS les commissions (source unique des Journées).
+    ["constat-primes", async () => void (await etapeConstatPrimes(maintenant))],
     // Les commissions devenues dues (ci-dessus) sont facturées dans la foulée, puis celles que la
     // vigilance libère (ci-dessous) le sont au passage horaire suivant.
     // Art. 4.5 (essai réel du 09/10) : une facture client annulée ou réduite par un avoir réduit,

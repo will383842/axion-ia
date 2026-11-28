@@ -19225,6 +19225,32 @@ model ChallengeApporteur {
   @@map("challenges_apporteur")
 }
 
+/// La prime d'un challenge pour UN apporteur qui a atteint le seuil. Créée par le passage APRÈS la fin de la
+/// période, jamais pour un apporteur sous le seuil (aucun décompte n'est conservé pour les autres). Sans clé étrangère.
+/// rgpd: dossier-client
+model ChallengePrime {
+  id           String    @id @default(uuid()) @db.Uuid
+  challengeId  String    @map("challenge_id") @db.Uuid
+  apporteurId  String    @map("apporteur_id") @db.Uuid
+  /// a_valider | validee | refusee | a_reprendre | reprise (CHECK)
+  statut       String    @default("a_valider") @db.VarChar(20)
+  /// Jour de Paris de la facture de la Journée qui a fait atteindre le seuil.
+  atteintLe    DateTime  @map("atteint_le") @db.Date
+  nbJournees   Int       @map("nb_journees")
+  /// [{ factureId, numero, jourFacture, journees, payeeIntegralementLe }] — aucun nom.
+  preuves      Json
+  decideePar   String?   @map("decidee_par") @db.VarChar(64)
+  decideeAt    DateTime? @map("decidee_at") @db.Timestamptz(3)
+  motif        String?   @db.VarChar(300)
+  commissionId String?   @map("commission_id") @db.Uuid
+  creeAt       DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt        DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@unique([challengeId, apporteurId])
+  @@index([statut])
+  @@map("challenges_primes")
+}
+
 /// Questionnaire du Baromètre 2027 : une ligne par réponse, non nominative. Ni IP, ni e-mail, ni
 /// agent navigateur, ni horodatage précis (`jour` est tronqué au jour UTC). Effacement automatique
 /// 24 mois après le jour d'envoi de chaque réponse (exception déclarée dans le worker de purge).

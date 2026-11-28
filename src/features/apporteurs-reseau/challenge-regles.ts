@@ -300,3 +300,54 @@ export function phrasesDeLEncart(c: {
       "Rien n'est attendu de vous : ne pas l'obtenir ne change rien à votre contrat ni à vos commissions.",
   };
 }
+
+// ── Lot I (#2464) : quelles Journées comptent, et quand on constate ─────────────────────────────
+
+/** « AAAA-MM-JJ » du jour de Paris d'un instant (la date de facture compte au jour de Paris). */
+export function jourParisDe(d: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
+}
+
+/** Le lendemain d'un jour civil « AAAA-MM-JJ ». */
+export function lendemainDe(j: string): string {
+  const d = new Date(`${j}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * Une Journée compte pour le challenge si : sa date de facture (première facture, jour de Paris) tombe
+ * dans la période ; la commande est payée EN ENTIER (et au plus tard le `paiementJusquAu`, s'il existe) ;
+ * le net est > 0 (prix réduit : compte ; offerte ou remboursée : non).
+ */
+export function journeeCompte(e: {
+  jourFacture: string;
+  debutLe: string;
+  finLe: string;
+  payeeIntegralementLe: string | null;
+  paiementJusquAu: string | null;
+  netHtCents: number;
+}): boolean {
+  if (e.jourFacture < e.debutLe || e.jourFacture > e.finLe) return false;
+  if (e.payeeIntegralementLe === null) return false;
+  if (e.paiementJusquAu !== null && e.payeeIntegralementLe > e.paiementJusquAu) return false;
+  return e.netHtCents > 0;
+}
+
+/** Le constat n'a lieu qu'APRÈS la fin : `finLe < aujourdhui <= (paiementJusquAu ?? finLe) + 1 jour`. */
+export function fenetreDeConstat(
+  c: { finLe: string; paiementJusquAu: string | null },
+  aujourdhui: string,
+): boolean {
+  return aujourdhui > c.finLe && aujourdhui <= lendemainDe(c.paiementJusquAu ?? c.finLe);
+}
+
+/** Chaque apporteur qui atteint le seuil gagne : aucun palier, aucun classement. */
+export function seuilAtteint(n: number, seuil: number): boolean {
+  return n >= seuil;
+}
