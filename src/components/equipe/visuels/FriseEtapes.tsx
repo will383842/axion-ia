@@ -17,7 +17,13 @@ export interface EtapeFrise {
 
 const GRILLE = {
   3: "lg:grid-cols-3",
-  5: "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
+  5: "sm:grid-cols-2 sm:border-l-0 sm:pl-0 lg:grid-cols-3 xl:grid-cols-5",
+} as const;
+
+/** Décalage du disque sur le trait vertical (mobile) ; annulé quand la liste passe en colonnes. */
+const DECALAGE_DISQUE = {
+  3: "-ml-[61px] lg:ml-0",
+  5: "-ml-[61px] sm:ml-0",
 } as const;
 
 /** Trait de liaison horizontal : seulement quand toutes les étapes tiennent sur une ligne. */
@@ -49,24 +55,28 @@ export function FriseEtapes({
   // 3 étapes : trois colonnes ; au-delà : la disposition à cinq colonnes.
   const n: NombreEtapes = etapes.length <= 3 ? 3 : 5;
   const aMoment = etapes.some((e) => e.moment);
-  const hauteur = HAUTEUR_TRAIT[n][aMoment ? "horaire" : "simple"];
+  // Le trait ne se pose que si les étapes remplissent exactement la grille (pas de colonne vide).
+  const traitComplet = etapes.length === n;
+  const trait = traitComplet
+    ? `${TRAIT[n]} ${HAUTEUR_TRAIT[n][aMoment ? "horaire" : "simple"]}`
+    : "";
 
   return (
     <div>
       <ol
         role="list"
-        className={`border-terracotta/40 relative grid gap-10 border-l-2 pl-8 lg:gap-6 lg:border-l-0 lg:pl-0 ${GRILLE[n]} ${TRAIT[n]} ${hauteur}`}
+        className={`border-terracotta/40 relative grid gap-10 border-l-2 pl-8 lg:gap-6 lg:border-l-0 lg:pl-0 ${GRILLE[n]} ${trait}`}
       >
         {etapes.map((e) => (
           <li key={e.numero} className="flex flex-col lg:items-center lg:text-center">
             {aMoment ? (
-              <p className="text-terracotta-deep mb-1 h-4 text-xs leading-4 font-semibold tracking-[0.14em] uppercase lg:mb-1">
+              <p className="text-terracotta-deep mb-1 h-4 text-xs leading-4 font-semibold tracking-[0.14em] uppercase">
                 {e.moment}
               </p>
             ) : null}
             <span
               aria-hidden="true"
-              className={`bg-terracotta text-mocha-fg relative z-10 -ml-[61px] flex size-14 shrink-0 items-center justify-center rounded-full font-serif text-2xl ring-8 lg:ml-0 ${ANNEAU[ton]}`}
+              className={`bg-terracotta text-mocha-fg relative z-10 ${DECALAGE_DISQUE[n]} flex size-14 shrink-0 items-center justify-center rounded-full font-serif text-2xl ring-8 ${ANNEAU[ton]}`}
             >
               {e.numero}
             </span>
@@ -74,7 +84,7 @@ export function FriseEtapes({
             <p className="text-fg-soft mt-2 text-base leading-relaxed">{e.texte}</p>
             {e.obtenu ? (
               <p className="text-terracotta-deep mt-3 text-base font-bold">
-                <span className="sr-only">Ce que vous obtenez : </span>
+                <span className="font-semibold">Ce que vous obtenez : </span>
                 {e.obtenu}
               </p>
             ) : null}

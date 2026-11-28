@@ -36,7 +36,8 @@ describe("FriseEtapes", () => {
     );
     const ol = container.querySelector("ol");
     expect(ol?.children).toHaveLength(5);
-    expect(ol?.className).toContain("sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5");
+    expect(ol?.className).toContain("sm:grid-cols-2");
+    expect(ol?.className).toContain("lg:grid-cols-3 xl:grid-cols-5");
     expect(ol?.className).toContain("xl:before:inset-x-[10%]");
     expect(container.innerHTML).toContain("ring-sand");
     expect(container.textContent).toContain("Matin");
@@ -55,6 +56,13 @@ describe("FriseEtapes", () => {
     expect(container.textContent).toContain("Le reste est abandonné.");
     expect(container.innerHTML).not.toMatch(/text-primary|bg-primary|mocha-rich|ring-primary/);
     verifierMotionSafe(container.innerHTML);
+  });
+  it("5 étapes : colonnes dès sm, le disque n'est plus décalé ; pas de trait si grille incomplète", () => {
+    const { container } = render(<FriseEtapes etapes={etapes(5)} />);
+    expect(container.querySelector("ol")?.className).toContain("sm:border-l-0");
+    expect(container.innerHTML).toContain("sm:ml-0");
+    const peu = render(<FriseEtapes etapes={etapes(2)} />);
+    expect(peu.container.querySelector("ol")?.className).not.toContain("before:");
   });
   it("sans étape : rien", () => {
     expect(render(<FriseEtapes etapes={[]} />).container.innerHTML).toBe("");
@@ -79,6 +87,12 @@ describe("FriseParcours", () => {
     expect(container.querySelectorAll("h3")).toHaveLength(3);
     expect(container.querySelector("ol")?.className).toContain("lg:grid-cols-3");
     verifierMotionSafe(container.innerHTML);
+  });
+  it("pas de trait horizontal si un jalon n'a ni année ni repère", () => {
+    const { container } = render(
+      <FriseParcours jalons={[1, 2, 3].map((i) => ({ titre: `J${i}`, texte: "t" }))} />,
+    );
+    expect(container.querySelector("ol")?.className).not.toContain("before:");
   });
   it("sans année : aucun <time>", () => {
     const { container } = render(<FriseParcours jalons={[{ titre: "A", texte: "t" }]} />);

@@ -27,4 +27,10 @@ Aucune couleur bleue, aucune animation, aucun SVG porteur de sens (la flèche fi
 
 Note : un verrou `.git/config.lock` périmé empêchait le suivi amont ; la branche a été créée avec `--no-track`.
 
-VERDICT OPUS : EN COURS
+## Relecture Opus
+
+Quatre points relevés, corrigés dans ce lot : trait du parcours qui barrait les titres sans date (zone de date à hauteur fixe, trait seulement si tous les jalons sont datés) ; disques de la frise à 5 étapes qui débordaient entre `sm` et `lg` ; trait posé seulement si les étapes remplissent la grille ; intitulé « Ce que vous obtenez » rendu visible.
+
+À savoir : `ParcoursSection` passe en fond `paper` (plan § 2.11) ; `CitationsTerrain` est aussi en `paper`, donc deux sections claires se suivent jusqu'à l'assemblage R2d. Tests : 91 OK, typecheck et eslint OK.
+
+VERDICT OPUS : BON
