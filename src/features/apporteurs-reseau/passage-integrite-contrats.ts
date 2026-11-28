@@ -9,7 +9,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { getObjectBufferR2 } from "@/lib/r2-storage";
+import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
 
 import { alerteInterne } from "./alerte-interne";
 import { alerterContratAltere, empreinteConforme } from "./integrite-contrat";
@@ -34,6 +34,8 @@ export function estLundiAParis(maintenant: Date): boolean {
 export async function verifierIntegriteContrats(maintenant: Date): Promise<BilanIntegriteContrats> {
   const bilan: BilanIntegriteContrats = { verifies: 0, absents: 0, alteres: 0 };
   if (!estLundiAParis(maintenant)) return bilan;
+  // `getObjectBufferR2` rend null pour toute erreur : sans R2 configuré, tout paraîtrait « absent ».
+  if (!isR2Configured()) return bilan;
 
   const dossiers = await prisma.apporteurReseau.findMany({
     where: { contratSigneCle: { not: null } },

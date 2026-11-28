@@ -48,11 +48,11 @@ const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const PDF = Buffer.from("%PDF-1.7 contrat");
 const sha = (b: Buffer) => createHash("sha256").update(b).digest("hex");
 
-function dossier(sha256: string | null) {
+function dossier(sha256: string | null, shaTexte: string | null = sha256) {
   h.findUnique.mockResolvedValue({
     contratCle: "k/apporteur.pdf",
     contratSigneCle: `contrats-signes/apporteurs/${ID}/c.pdf`,
-    contratSha256: sha256,
+    contratSha256: shaTexte,
     contratSigneSha256: sha256,
   });
 }
@@ -89,6 +89,13 @@ describe("lireContratPdf : empreinte revérifiée", () => {
     expect(await lireContratPdf(ID, "signe")).toBeNull();
     expect(await lireContratPdf(ID, "signe")).toBeNull();
     expect(h.enqueue).toHaveBeenCalledTimes(1);
+  });
+
+  it("contrat signé par l'apporteur : contratSha256 est l'empreinte du TEXTE → PDF servi, aucune alerte", async () => {
+    dossier(sha(PDF), createHash("sha256").update("texte du contrat", "utf8").digest("hex"));
+    h.lireR2.mockResolvedValue(PDF);
+    expect(await lireContratPdf(ID, "apporteur")).toEqual(PDF);
+    expect(h.enqueue).not.toHaveBeenCalled();
   });
 
   it("empreinte absente en base → servi", async () => {

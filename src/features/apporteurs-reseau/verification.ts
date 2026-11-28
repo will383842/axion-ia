@@ -770,7 +770,6 @@ export async function lireContratPdf(
     select: {
       contratCle: true,
       contratSigneCle: true,
-      contratSha256: true,
       contratSigneSha256: true,
     },
   });
@@ -778,17 +777,18 @@ export async function lireContratPdf(
   if (!cle) return null;
   const octets = await getObjectBufferR2(cle);
   if (octets === null) return null;
-  // Point 12 : l'empreinte est REVÉRIFIÉE ; un fichier altéré n'est jamais servi.
-  const etat = empreinteConforme(
-    octets,
-    (quel === "signe" ? a?.contratSigneSha256 : a?.contratSha256) ?? null,
-  );
-  if (etat === "alteree") {
-    await alerterContratAltere(apporteurId, quel, new Date());
-    return null;
+  // Point 12 : l'empreinte du PDF contresigné est REVÉRIFIÉE ; un fichier altéré n'est jamais servi.
+  // ⚠️ `contratSha256` est l'empreinte du TEXTE du contrat (signature.ts), pas celle du PDF : le
+  // PDF signé par l'apporteur n'a aucune empreinte d'octets en base, il est servi tel quel.
+  if (quel === "signe") {
+    const etat = empreinteConforme(octets, a?.contratSigneSha256 ?? null);
+    if (etat === "alteree") {
+      await alerterContratAltere(apporteurId, quel, new Date());
+      return null;
+    }
+    if (etat === "sans_reference")
+      console.warn("[apporteurs] contrat servi sans empreinte de référence");
   }
-  if (etat === "sans_reference")
-    console.warn("[apporteurs] contrat servi sans empreinte de référence");
   return octets;
 }
 
