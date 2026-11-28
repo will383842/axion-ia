@@ -31,6 +31,7 @@ import {
   resolveArticleRoute,
 } from "@/server/content-gen/blog/resolve-article-route";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { magasinQuotaRedis, reserverSuivi } from "@/server/seo-pilotage/inspection/quota";
 import { gscInspectUrl, gscPageMetricsForUrl } from "@/server/content-gen/seo/gsc-client";
 import { equipeEditorialeActive } from "@/server/content-gen/equipe/maillage";
 import { equipeEnMarche } from "@/server/content-gen/equipe/pilotage";
@@ -98,19 +99,11 @@ const TTL_S = 200 * 24 * 3600;
 
 /** Mémoire des jalons faits, du quota du jour et des relevés : Redis, TTL borné. */
 function magasinRedis(maintenant: Date): MagasinSuivi {
-  const jour = maintenant.toISOString().slice(0, 10);
   return {
     dejaFait: async (c) => (await redis.exists(`suivi-pub:fait:${c}`)) === 1,
     marquer: async (c) => void (await redis.set(`suivi-pub:fait:${c}`, "1", "EX", TTL_S)),
-    reserverQuota: async (n, max) => {
-      const cle = `suivi-pub:quota:${jour}`;
-      const total = await redis.incrby(cle, n);
-      await redis.expire(cle, 2 * 24 * 3600);
-      if (total <= max) return n;
-      const accorde = Math.max(0, n - (total - max));
-      await redis.decrby(cle, n - accorde);
-      return accorde;
-    },
+    // Quota PARTAGÉ avec la rotation d'inspection (P5) : un seul compteur par jour du Pacifique.
+    reserverQuota: (n, max) => reserverSuivi(magasinQuotaRedis(redis), n, max, maintenant),
     compterEchec: async (c) => {
       const cle = `suivi-pub:essais:${c}`;
       const n = await redis.incr(cle);
