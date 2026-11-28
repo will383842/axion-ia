@@ -299,6 +299,13 @@ describe("GabaritGuidePilier : variantes de données", () => {
     expect(html.indexOf("cta-milieu")).toBeLessThan(html.indexOf('<h2 id="step-2"'));
   });
 
+  it("une seule mention « Mis à jour » : le héros ; la carte auteur ne reçoit aucune date de relecture", () => {
+    const src = readFileSync("src/components/article-v2/gabarits/GabaritGuidePilier.tsx", "utf8");
+    expect(src).not.toContain("lastReviewedAt");
+    const html = rendre(<GabaritGuidePilier {...base} />);
+    expect(html.match(/Mis à jour le/g)).toHaveLength(1);
+  });
+
   it("point clé existant rendu ; aucun texte inventé sans lui", () => {
     expect(rendre(<GabaritGuidePilier {...base} />)).toContain('data-brique="ArticleKeyTakeaway"');
   });
@@ -352,7 +359,7 @@ describe("ArticleTOC v2 : grille de chapitres", () => {
     );
     expect(html).toContain('id="sommaire"');
     expect(html).toContain(
-      '<li style="--p:50%"><a href="#step-1">Un ?<span class="sommaire__duree">≈ 2 min</span></a></li>',
+      '<li style="--p:50%"><a href="#step-1">Un ? <span class="sommaire__duree">≈ 2 min</span></a></li>',
     );
     expect(html).toContain('<span class="sommaire__total">4 min</span>');
     expect(html).toContain('"name":"Un ?"');

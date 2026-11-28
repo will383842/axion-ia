@@ -180,7 +180,7 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
           p.etapes.map((etape, i) => {
             const rang = i + 1;
             return (
-              <Fragment key={etape.position}>
+              <Fragment key={i}>
                 <section className="chapitre" aria-labelledby={`step-${etape.position}`}>
                   <BandeauChapitre
                     numero={rang}
@@ -241,7 +241,7 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
             </h2>
             <ol>
               {p.etapes.map((etape, i) => (
-                <li key={etape.position}>
+                <li key={i}>
                   <p>
                     {etape.name}
                     <span>{a("chapitre.numeroCourt", { numero: i + 1 })}</span>
@@ -269,7 +269,6 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
               ? { authorAvatarUrl: p.bylineManon.avatarUrl, authorBio: p.bylineManon.bio }
               : {})}
             publishedAt={new Date(p.publieLe.iso)}
-            lastReviewedAt={p.misAJourLe ? new Date(p.misAJourLe.iso) : null}
             emitJsonLd={false}
             locale={loc}
           />

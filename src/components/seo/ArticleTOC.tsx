@@ -136,7 +136,12 @@ export function ArticleTOC({
           >
             <a href={`#${g.item.anchor}`}>
               {g.item.title}
-              {g.item.detail ? <span className="sommaire__duree">{g.item.detail}</span> : null}
+              {g.item.detail ? (
+                <>
+                  {" "}
+                  <span className="sommaire__duree">{g.item.detail}</span>
+                </>
+              ) : null}
             </a>
             {g.enfants.length > 0 ? (
               <ol>

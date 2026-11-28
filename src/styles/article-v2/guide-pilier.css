@@ -361,3 +361,8 @@
     border: 2px solid var(--color-ink);
   }
 }
+
+/* Le titre du chapitre est dans un bandeau (div) : la règle du socle ne le cible pas. */
+[data-gabarit="guide-pilier"] .chapitre__bandeau h2 {
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
