@@ -135,8 +135,8 @@ function Contenu({ vue, onglet }: { vue: VueChaine; onglet: string }): React.Rea
     const n = "mesures" in s.valeur ? s.valeur.mesures : s.valeur.total;
     return (
       <p className="admin-meta-block">
-        {n} ligne(s) enregistrée(s). Le détail s&apos;affichera quand le suivi sera branché ; sous les
-        planchers statistiques du pilotage, aucune décision n&apos;est tirée.
+        {n} ligne(s) enregistrée(s). Le détail s&apos;affichera quand le suivi sera branché ; sous
+        les planchers statistiques du pilotage, aucune décision n&apos;est tirée.
       </p>
     );
   }
