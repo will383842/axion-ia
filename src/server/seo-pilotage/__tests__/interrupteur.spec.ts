@@ -11,6 +11,7 @@ import {
   FUSEAU_SEO_PILOTAGE,
   PATTERN_SEO_INGESTION,
   PATTERN_SEO_PURGE,
+  PATTERN_SEO_ROBOTS_IA,
   PATTERN_SEO_RECALCUL,
   PATTERN_SEO_RATTRAPAGE,
 } from "../planification";
@@ -56,6 +57,7 @@ describe("cadences du robot", () => {
       PATTERN_SEO_INGESTION,
       PATTERN_SEO_RATTRAPAGE,
       PATTERN_SEO_PURGE,
+      PATTERN_SEO_ROBOTS_IA,
       PATTERN_SEO_RECALCUL,
     ]) {
       expect(minutes(p)).not.toContain(0);
