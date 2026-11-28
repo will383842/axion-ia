@@ -94,6 +94,7 @@ describe("VousEtes", () => {
   it("animations sous motion-safe seulement", () => {
     const { container } = rendu();
     expect(container.innerHTML).not.toMatch(/(^|\s)transition(\s|")/);
+    expect(container.innerHTML).not.toMatch(/(^|\s)hover:-?translate/);
   });
 
   it("masqué sans donnée", () => {

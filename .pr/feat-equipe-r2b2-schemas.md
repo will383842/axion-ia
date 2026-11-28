@@ -34,4 +34,6 @@ Les autres éléments du § 4.3 (`AvantApres`, `Rassurance`, `PorteEntree`, `Met
 
 `pnpm-lock.yaml` : non touché.
 
-VERDICT OPUS : EN COURS
+Relecture Opus : corrigé le mouvement au survol (désormais sous `motion-safe:`) et le plafond de villes (constante). Reste le point ci-dessus : l'Opus recommande `/implantations/<région>/<ville>` (page indexée) ; la consigne demandait `/audit/par-ville/<slug>`, conservé.
+
+VERDICT OPUS : À CORRIGER (seulement le choix du lien ci-dessus, à trancher par le propriétaire)

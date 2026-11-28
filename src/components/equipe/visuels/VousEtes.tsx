@@ -103,7 +103,7 @@ function Carte({ carte }: { carte: CarteVousEtes }) {
   const Icone = carte.icone ? ICONES[carte.icone] : BriefcaseBusiness;
   const ton = TONS[carte.ton ?? "terracotta"];
   return (
-    <li className="border-border bg-paper flex flex-col rounded-2xl border p-5 hover:-translate-y-0.5 hover:shadow-sm motion-safe:transition">
+    <li className="border-border bg-paper flex flex-col rounded-2xl border p-5 hover:shadow-sm motion-safe:transition motion-safe:hover:-translate-y-0.5">
       <div className="flex items-center gap-3">
         <span
           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${ton}`}

@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { NOMBRE_VILLES_PHARES } from "@/lib/equipe/villes-phares";
 import { Container } from "@/components/layout/Container";
 import { FOND_FRANCE_PATH } from "../fond-france";
 import { HAUTEUR_CARTE, LARGEUR_CARTE } from "@/lib/equipe/geo";
@@ -41,7 +42,7 @@ export function PartoutEnFrance({
   lienIndex,
 }: PartoutEnFranceProps) {
   if (villes.length === 0 && regions.length === 0) return null;
-  const liste = villes.slice(0, 12);
+  const liste = villes.slice(0, NOMBRE_VILLES_PHARES);
   return (
     <section
       id={id}
