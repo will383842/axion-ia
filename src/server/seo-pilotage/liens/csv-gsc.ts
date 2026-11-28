@@ -162,7 +162,7 @@ export function lireExportGsc(contenu: string): ResultatLecture {
       erreurs.push({
         ligne,
         raison,
-        extrait: cle.replace(/\S*@\S*/g, "[adresse masquée]").slice(0, EXTRAIT_MAX),
+        extrait: cle.replace(/\S*(?:@|%40|%2540)\S*/gi, "[adresse masquée]").slice(0, EXTRAIT_MAX),
       });
     }
   };
@@ -172,6 +172,9 @@ export function lireExportGsc(contenu: string): ResultatLecture {
     const ligne = k + 1;
     // Deux fois le plafond, pour que la normalisation juge la longueur réelle : une URL trop longue est REFUSÉE, jamais tronquée en silence.
     const cellules = brutes.map((c) => c.slice(0, CELLULE_MAX * 2));
+    // Un saut de ligne interne serait « réparé » en silence par le parseur d'URL : cellule refusée.
+    if (cellules.some((c) => /[\r\n]/.test(c)))
+      return refuser(ligne, "saut de ligne dans une cellule", "");
     const cle = cellules[iCle] ?? "";
     const val = cellules[iVal];
     switch (type) {

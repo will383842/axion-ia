@@ -127,3 +127,11 @@ describe("tour 4 : aperçu d'erreur", () => {
     expect(r.erreurs[0]?.ligne).toBe(1);
   });
 });
+
+describe("tour 5", () => {
+  it("masque aussi un e-mail encodé", () => {
+    const r = lireExportGsc("Site,Linking pages\njean%40gmail.com,3\n");
+    if (!r.ok) throw new Error("attendu ok");
+    expect(r.erreurs[0]?.extrait).toBe("[adresse masquée]");
+  });
+});

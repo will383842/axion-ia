@@ -134,3 +134,29 @@ describe("tour 3 : adresses sans schéma, tout domaine", () => {
     },
   );
 });
+
+describe("tour 5 : faux refus et déguisements", () => {
+  it.each([
+    "Nous utilisons Node.js au quotidien.",
+    "Plus d'informations sur axion-ia.com.",
+    "Sur un ton neutre, suite à nos échanges.",
+    "Un projet prometteur, une formation garantie par Qualiopi n'est pas notre propos.",
+    "Will Dupont, will.dupont@exemple.fr",
+  ])("accepte : %s", (ajout) => {
+    const r = controlerBrouillon(`${BON} ${ajout}`, URL_PAGE);
+    expect(r.motifs).not.toContain("autre_url");
+    expect(r.motifs).not.toContain("tutoiement");
+    expect(r.motifs).not.toContain("echange");
+  });
+  it("accepte l'URL proposée suivie de ! ou entre guillemets", () => {
+    expect(controlerBrouillon(`Voici : ${URL_PAGE}! Cordialement.`, URL_PAGE).valide).toBe(true);
+    expect(controlerBrouillon(`Voici : "${URL_PAGE}" Cordialement.`, URL_PAGE).valide).toBe(true);
+  });
+  it.each(["G r e n o b l e", "gre-noble", "G.r.e.n.o.b.l.e"])("refuse la ville : %s", (v) => {
+    expect(controlerBrouillon(`${BON} ${v}`, URL_PAGE).valide).toBe(false);
+  });
+  it("refuse toujours un échange de liens et une garantie", () => {
+    expect(controlerBrouillon(`${BON} Un échange de liens ?`, URL_PAGE).valide).toBe(false);
+    expect(controlerBrouillon(`${BON} Résultat garanti.`, URL_PAGE).valide).toBe(false);
+  });
+});
