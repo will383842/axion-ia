@@ -601,6 +601,37 @@ export function analyserLignesJourneeIa(lignes: unknown): {
   return { journees, autresLignes, ambigue };
 }
 
+/** Une ligne de devis est une conférence : code d'offre ou palier « conference », sinon la désignation. */
+function estLigneConference(l: Record<string, unknown>): boolean {
+  const code = [l.offreCode, l.offreTierId].some(
+    (v) => typeof v === "string" && /conf[ée]rence/i.test(v),
+  );
+  const d = typeof l.designation === "string" ? l.designation : "";
+  return code || /conf[ée]rence/i.test(d);
+}
+
+/**
+ * Nombre de conférences d'un devis (A1.4 bis : 500 € par conférence). Même méthode que
+ * `analyserLignesJourneeIa` : somme des quantités entières positives des lignes de conférence.
+ * `quantite` vaut `null` si elle est illisible (pas de lignes, aucune ligne de conférence,
+ * quantité non entière, nulle ou négative, total hors de 1 à 99) : jamais 1 par défaut. Pur.
+ */
+export function analyserLignesConference(lignes: unknown): { quantite: number | null } {
+  if (!Array.isArray(lignes)) return { quantite: null };
+  let total = 0;
+  let trouvee = false;
+  for (const l of lignes) {
+    if (!l || typeof l !== "object") continue;
+    const o = l as Record<string, unknown>;
+    if (!estLigneConference(o)) continue;
+    trouvee = true;
+    if (typeof o.quantite === "number" && Number.isInteger(o.quantite) && o.quantite > 0)
+      total += o.quantite;
+    else return { quantite: null };
+  }
+  return { quantite: trouvee && total >= 1 && total <= 99 ? total : null };
+}
+
 /**
  * Commission d'une commande dont le devis est marqué Journée IA (A1.1). Elle ne se calcule seule
  * que si la commande est UNIQUEMENT des Journées IA, lisibles, d'une activité de facturation
