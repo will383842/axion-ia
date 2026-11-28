@@ -5,6 +5,7 @@
 // badges → <AdminBadge>. Le formulaire de filtres garde les classes
 // utilitaires admin.css (legit — pas de composant filtre dédié).
 
+import Link from "next/link";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -172,6 +173,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
       <AdminPageHeader
         title="Suivi des positions"
         description={`${rows.length} mot${rows.length > 1 ? "s" : ""}-clé${rows.length > 1 ? "s" : ""} suivi${rows.length > 1 ? "s" : ""} · Relevé hebdomadaire (lundi 4 h) depuis Google Search Console et SerpAPI — inactif tant que les accès ne sont pas fournis.`}
+        actions={<Link href="pilotage?onglet=requetes">Voir le Pilotage SEO &amp; IA</Link>}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">

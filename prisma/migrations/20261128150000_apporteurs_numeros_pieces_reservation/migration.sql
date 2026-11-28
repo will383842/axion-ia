@@ -1,4 +1,4 @@
--- Réseau d'apporteurs (#2464 points 13 et 18, suite de 20261128090000_apporteurs_numeros_pieces_uniques).
+-- Réseau d'apporteurs (#2464 points 13 et 18, suite de 20261128140000_apporteurs_numeros_pieces_uniques).
 -- Additif : une table de RÉSERVATION des numéros, une colonne booléenne à défaut false, un déclencheur réécrit.
 --
 -- 1. Point 13 — la garantie tient en CONCURRENCE. Le déclencheur d'avant contrôlait par un EXISTS : en

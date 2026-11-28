@@ -5,10 +5,8 @@ import { notFound } from "next/navigation";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import {
-  CollaborateurForm,
-  type FicheInitiale,
-} from "@/components/admin/collaborateurs/CollaborateurForm";
+import { CollaborateurForm } from "@/components/admin/collaborateurs/CollaborateurForm";
+import { ficheInitiale } from "@/components/admin/collaborateurs/fiche-initiale";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 import { idSchema } from "@/lib/equipe/console/schemas";
@@ -42,36 +40,7 @@ export default async function CollaborateurPage({
     take: 50,
     select: { id: true, action: true, actor: true, createdAt: true },
   });
-  const initial: FicheInitiale = {
-    id: m.id,
-    version: m.updatedAt.toISOString(),
-    status: m.status,
-    publishedAt: m.publishedAt !== null,
-    category: m.category,
-    firstName: m.firstName,
-    organizationName: m.organizationName ?? "",
-    jobTitle: m.jobTitle,
-    headline: m.headline ?? "",
-    bioMd: m.bioMd ?? "",
-    skills: m.skills.join(", "),
-    languages: m.languages.join(", "),
-    websiteUrl: m.websiteUrl ?? "",
-    linkedinUrl: m.linkedinUrl ?? "",
-    citySlug: m.citySlug ?? "",
-    departmentCode: m.citySlug ? "" : (m.departmentCode ?? ""),
-    locationLabel: m.locationLabel ?? "",
-    showOnMap: m.showOnMap,
-    slug: m.slug,
-    sortOrder: m.sortOrder,
-    consentPublication: m.publicationConsentAt !== null,
-    consentLinkedin: m.linkedinConsentAt !== null,
-    consentNote: "", // jamais pré-remplie : un nouvel accord exige une preuve nouvelle
-    photoKind: m.photoKind,
-    photoConsent: m.photoConsentAt !== null,
-    photoUrl256: m.photoUrl256,
-    questionnaireVersion: m.questionnaireVersion,
-    categoryAnswers: m.categoryAnswers,
-  };
+  const initial = ficheInitiale(m);
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader title={`Fiche : ${m.firstName}`} description={`Statut : ${m.status}`} />

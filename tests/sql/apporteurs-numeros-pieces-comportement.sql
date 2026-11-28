@@ -1,5 +1,5 @@
 -- COMPORTEMENT de l'unicité des numéros de pièces d'autofacture (#2464 point 13) :
--- migrations 20261128090000_apporteurs_numeros_pieces_uniques et 20261128130000_apporteurs_numeros_pieces_reservation.
+-- migrations 20261128140000_apporteurs_numeros_pieces_uniques et 20261128150000_apporteurs_numeros_pieces_reservation.
 -- Lance par ci.yml : psql -v ON_ERROR_STOP=1 -f tests/sql/apporteurs-numeros-pieces-comportement.sql
 -- Chaque cas vit dans SA transaction ANNULEE. Une attente decue remonte (AXT99), psql s arrete, Gate D rougit.
 -- Aucune donnee reelle : identifiants aleatoires, numeros fictifs.
@@ -93,7 +93,7 @@ ROLLBACK;
 
 -- 5. Rejeu : la migration de reservation se rejoue sans erreur (CREATE IF NOT EXISTS, OR REPLACE, ON CONFLICT).
 BEGIN;
-\i prisma/migrations/20261128130000_apporteurs_numeros_pieces_reservation/migration.sql
+\i prisma/migrations/20261128150000_apporteurs_numeros_pieces_reservation/migration.sql
 ROLLBACK;
 
 -- 6. Marqueur « geste commercial » : faux par defaut sur la piece d avoir.

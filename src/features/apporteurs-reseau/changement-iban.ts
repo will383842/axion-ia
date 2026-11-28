@@ -54,6 +54,7 @@ import { chiffrerContenuPiece, lireContenuPiece } from "./pieces-chiffrement";
 import { argentEnJeu, masquerCoordonnees, retraitDe } from "./retrait";
 import { envoyer } from "./envois";
 import { signalerErreurReseau } from "./signaler";
+import { lireIbanClair } from "./iban-purge";
 
 export type Refus = { readonly ok: false; readonly message: string };
 export type Succes<T = object> = { readonly ok: true } & T;
@@ -219,7 +220,7 @@ export async function demanderChangementIban(
   if (!decryptPii(fiche.telephone)?.trim()) {
     return refus("Votre fiche n'a pas de numéro de téléphone. Écrivez-nous.");
   }
-  const ancien = decryptPii(fiche.iban);
+  const ancien = lireIbanClair(fiche.iban);
   const ancienEmpreinte = ancien ? empreinteIban(ancien) : null;
   if (!ancien || !ancienEmpreinte)
     return refus("Cette demande n'est pas possible pour ce dossier.");
@@ -534,7 +535,7 @@ export async function validerDemande(e: {
   if (!decryptPii(fiche.telephone)?.trim()) {
     return refus("La fiche n'a plus de numéro de téléphone : le compléter avant de valider.");
   }
-  const ancien = decryptPii(fiche.iban);
+  const ancien = lireIbanClair(fiche.iban);
   if (!ancien || !memeEmpreinte(empreinteIban(ancien), d.ancienIbanEmpreinte)) {
     return refus(
       "Le compte de la fiche a changé depuis la demande. Refusez-la et refaites-en une.",
@@ -542,7 +543,7 @@ export async function validerDemande(e: {
   }
 
   try {
-    const nouveau = decryptPii(d.iban, { aad: `changement-iban:${d.id}`, cleExigee: true });
+    const nouveau = lireIbanClair(d.iban, { aad: `changement-iban:${d.id}`, cleExigee: true });
     if (!nouveau) throw new RefusValidation("Le nouvel IBAN de la demande est illisible.");
     await prisma.$transaction(async (tx) => {
       const rib = await tx.apporteurChangementIbanRib.findUnique({ where: { demandeId: d.id } });

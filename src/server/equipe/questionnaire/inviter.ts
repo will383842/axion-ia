@@ -3,10 +3,9 @@ import "server-only";
 /**
  * Point d'entrée serveur UNIQUE pour inviter une personne à remplir le questionnaire privé.
  *
- * Appelé aujourd'hui par la console (bouton « Envoyer le questionnaire »). À brancher PLUS TARD, au
- * même endroit et sans autre code, à la contresignature du contrat d'un apporteur :
- * `inviterCollaborateur({ categorie: "apporteur", email, prenom, source: "contrat_apporteur" })`.
- * Ce déclencheur n'est PAS branché ici.
+ * Appelé par la console (bouton « Envoyer le questionnaire ») et, depuis le chantier D10, à la
+ * contresignature du contrat d'un apporteur (`verification.ts`, source `contrat_apporteur`, bloc
+ * séparé, jamais bloquant, sans seconde invitation si une est déjà active).
  *
  * Règles :
  *  - le jeton (32 octets, base64url) n'est jamais stocké : seul son sha256 l'est ;

@@ -146,6 +146,9 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   montantHtLabel: "1 450,00 €",
   montantTvaLabel: "290,00 €",
   montantTtcLabel: "1 740,00 €",
+  // `apporteur-file-attente-premier-rang` (gabarit livré avant son émetteur) : exemple FICTIF.
+  entreprise: "Société Exemple",
+  jusquAu: "12 décembre 2026",
   // `apporteur-releve-mensuel` (gabarit dormant) : exemple FICTIF, tout est facultatif.
   mois: "octobre 2026",
   totalMois: "1 450,00 €",

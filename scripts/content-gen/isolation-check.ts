@@ -555,6 +555,15 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/seo-pilotage\/interrupteur\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/jour\.spec\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/taches\.spec\.ts$/,
+  // Exception 2026-11-27 (pilotage SEO, S10-1 liens reçus). CONSOMMATEUR en lecture seule :
+  // liens/brouillon.ts réutilise le contrôle de vouvoiement (content-gen/quality) ; son test
+  // compare ses motifs à ceux du chargé de liens (content-gen/equipe). Fichiers NOMMÉS.
+  /^src\/server\/seo-pilotage\/liens\/brouillon\.ts$/,
+  /^src\/server\/seo-pilotage\/liens\/__tests__\/brouillon\.spec\.ts$/,
+  // P6a : `recalcul.ts` lit `buildArticleUrl` (content-gen/indexing) pour retrouver l'URL
+  // d'un article ; son test. Fichiers NOMMÉS.
+  /^src\/server\/seo-pilotage\/recalcul\.ts$/,
+  /^src\/server\/seo-pilotage\/__tests__\/recalcul\.spec\.ts$/,
   // Inspection d'URL (P5) : consommateur du même client Search Console partagé. Nominatif.
   /^src\/server\/seo-pilotage\/inspection\/tache\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
@@ -689,8 +698,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // briques d'article déjà publiques (`@/components/content-gen/Article*`, `@/server/
   // content-gen/blog/*`) et ses tests les lisent. Le marqueur vient de ces seuls chemins
   // d'import ; aucun code du pipeline éditorial n'est exécuté ni modifié. Nominatif.
-  /^src\/components\/article-v2\/ArticleGabarit\.tsx$/,
-  /^tests\/unit\/blog\/gabarits-(socle|aiguillage-page|rendu-socle)\.spec\.tsx?$/,
+  /^src\/components\/article-v2\/(ArticleGabarit|HerosArticle|PhotoArticle|types|gabarits\/Gabarit[A-Za-z]+)\.tsx?$/,
+  // S2 : table des photos de repli, indexée par le type `GabaritArticle` (import de type seul).
+  /^src\/lib\/blog\/photos-repli\.ts$/,
+  /^tests\/unit\/blog\/(gabarits-(socle|aiguillage-page|rendu-socle)|article-v2-(composants|garde-fous))\.spec\.tsx?$/,
 ];
 
 /**

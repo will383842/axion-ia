@@ -52,6 +52,11 @@ export default async function ChangementsDeComptePage({
           Le service est éteint : les demandes déjà reçues restent visibles, aucune ne se valide.
         </p>
       ) : null}
+      <p>
+        <Link href={`/fr/${adminPrefix}/apporteurs/reprise-empreintes-iban`} className="underline">
+          Reprise des empreintes IBAN (super administrateur)
+        </Link>
+      </p>
       <AdminCard as="section">
         {lignes.length === 0 ? <p>Aucune demande.</p> : null}
         <ul className="flex flex-col gap-[var(--space-admin-3)]">

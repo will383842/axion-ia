@@ -1,9 +1,9 @@
--- Rollback de 20261128130000_apporteurs_numeros_pieces_reservation.
+-- Rollback de 20261128150000_apporteurs_numeros_pieces_reservation.
 -- Seulement sur décision du fondateur. Sauvegarder d'abord :
 --   COPY "apporteur_numeros_reserves" TO '/chemin/sauvegarde-apporteur_numeros_reserves.csv' CSV HEADER;
 -- Jamais de DROP : mise de côté par RENAME.
 
--- Déclencheur d'origine (20261128090000), recopié.
+-- Déclencheur d'origine (20261128140000), recopié.
 CREATE OR REPLACE FUNCTION "commissions_apporteur_numero_un_apporteur"() RETURNS trigger AS $$
 BEGIN
     IF NEW."autofacture_numero" IS NOT NULL AND EXISTS (

@@ -6,8 +6,8 @@
 import "server-only";
 
 import { empreinteIban } from "@/lib/iban-empreinte";
-import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
+import { lireIbanClair } from "./iban-purge";
 
 export async function apporteursAyantCeCompte(empreinte: string, sauf: string): Promise<string[]> {
   const fiches = await prisma.apporteurReseau.findMany({
@@ -17,7 +17,7 @@ export async function apporteursAyantCeCompte(empreinte: string, sauf: string): 
   });
   const trouves: string[] = [];
   for (const f of fiches) {
-    const clair = decryptPii(f.iban);
+    const clair = lireIbanClair(f.iban);
     if (clair && empreinteIban(clair) === empreinte) trouves.push(f.id);
   }
   return trouves;

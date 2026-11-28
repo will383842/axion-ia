@@ -36,6 +36,7 @@ import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./si
 import { argentEnJeu, retraitDe } from "./retrait";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { regleDe, versionAuMoins, type RegleAttribution } from "./regle-attribution";
+import { lireIbanClair } from "./iban-purge";
 
 // Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée
 // personnelle — la garde est celle du dépôt commun (FAC-6), le canal celui du réseau.
@@ -258,7 +259,7 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     },
   });
   if (!a) return null;
-  const iban = decryptPii(a.iban);
+  const iban = lireIbanClair(a.iban);
   return {
     id: a.id,
     statut: a.statut,
@@ -558,5 +559,5 @@ export async function lireIban(apporteurId: string): Promise<string | null> {
     where: { id: apporteurId },
     select: { iban: true },
   });
-  return decryptPii(a?.iban ?? null);
+  return lireIbanClair(a?.iban ?? null);
 }

@@ -672,11 +672,6 @@ async function etatAuRegistre(siren: string, maintenant: Date): Promise<Resultat
   return r;
 }
 
-/**
- * Fiche de l'apporteur incomplète pour l'autofacture : marque les commissions dues « en attente »
- * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
- * à afficher, ou `null` quand rien ne manque.
- */
 /** Alerte interne UNE fois par apporteur : autofacture demandée sans mandat signé. */
 async function signalerMandatNonSigne(
   apporteurId: string,
@@ -776,6 +771,11 @@ async function signalerSoldeNegatif(
   }
 }
 
+/**
+ * Fiche de l'apporteur incomplète pour l'autofacture : marque les commissions dues « en attente »
+ * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
+ * à afficher, ou `null` quand rien ne manque.
+ */
 async function mettreEnAttenteSiIncomplet(
   apporteurId: string,
   dues: ReadonlyArray<{ id: string; autofactureAttenteMotif: string | null }>,

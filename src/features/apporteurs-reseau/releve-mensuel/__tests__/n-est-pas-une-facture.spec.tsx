@@ -63,6 +63,16 @@ describe("PDF du relevé : n'est pas une facture", () => {
     expect(r).toContain("Rectifie le relevé n° REL-2026-10-0001 du 03/11/2026");
   });
 
+  it("rectificatif d'un relevé jamais reçu : dit que c'est le relevé du mois, sans « Rectifie »", () => {
+    const r = textesDuReleve(contenuExemple(), {
+      ...ENTETE,
+      rectifie: { numero: "REL-2026-10-0001", date: "2026-11-03", jamaisRecu: true },
+    }).join("\n");
+    expect(r).toContain("Ceci est votre relevé du mois");
+    expect(r).toContain("REL-2026-10-0001 du 03/11/2026 ne vous a pas été envoyé");
+    expect(r).not.toContain("Rectifie");
+  });
+
   it("le total du mois rend les sous-totaux facturées et versées", () => {
     const c = contenuExemple();
     const tout = textesDuReleve(c, ENTETE).join("\n");

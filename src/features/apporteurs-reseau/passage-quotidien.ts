@@ -53,8 +53,10 @@ import {
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
 import { horsGesteCommercial } from "./geste-commercial";
+import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
+import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
 import { enregistrerReservation, lireReservations, tableAbsente } from "./reservation-presentation";
 import {
@@ -82,6 +84,7 @@ import {
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
+import { controlerRegistreApporteurs } from "./controle-registre";
 import { commissionJourneeIaSelonGrille } from "./journee-ia-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import {
@@ -93,6 +96,7 @@ import {
 } from "./commandes";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { idsPriseDeContactRebondie } from "./rebonds";
+import { verifierIntegriteContrats } from "./passage-integrite-contrats";
 import { urlDossier } from "./jeton";
 import { executerResiliationsEchues, renvoyerEmailsEffetManques } from "./resiliation";
 import { alerteSurveillance } from "./surveillance-passages";
@@ -329,8 +333,11 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "hors-grille"
   | "declarations-sans-reponse"
+  | "purge-rgpd"
   | "commandes-a-attribuer"
   | "resiliations-echues"
+  | "integrite-contrats"
+  | "controle-registre"
   | "emails-effet-resiliation"
   | "a-verifier-en-retard";
 
@@ -419,6 +426,12 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
+    // Point 12 (#2464) : le lundi, l'empreinte des contrats contresignés est revérifiée sur R2.
+    ["integrite-contrats", async () => void (await verifierIntegriteContrats(maintenant))],
+    // PR N (#2464 pt 6) : purge RGPD, le 1er du mois, ÉTEINTE par défaut (APPORTEURS_PURGE_RGPD).
+    ["purge-rgpd", async () => void (await etapePurgeRgpd(maintenant))],
+    // Point 20 : relecture du registre public pour les apporteurs sous contrat (alerte interne seule).
+    ["controle-registre", async () => void (await controlerRegistreApporteurs(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
@@ -2188,7 +2201,10 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
       jobId,
       ...(annexes.attachments.length > 0 ? { attachments: annexes.attachments } : {}),
     });
-    if (r === "envoye") bilan.rappelsDossier += 1;
+    if (r === "envoye") {
+      bilan.rappelsDossier += 1;
+      await noterDocumentsRemis(a.id, annexes.attachments, "lien_dossier", jobId);
+    }
   }
 }
 
