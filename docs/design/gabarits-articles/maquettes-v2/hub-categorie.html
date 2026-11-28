@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<!-- PRODUCTION : robots = "index, follow, max-image-preview:large" (page 1) ; "index, follow" (pages N). Le noindex ci-dessus ne vaut que pour la maquette. -->
+<title>Implémentation IA : articles pour PME et TPE · Axion-IA</title>
+<meta name="description" content="Les articles du blog d’Axion-IA sur la mise en place de l’IA dans une TPE ou une PME : premières tâches, consignes, vérification, usage durable.">
+<link rel="canonical" href="https://axion-ia.com/fr/blog/categorie/blog-implementations-ia">
+<link rel="preload" as="image" fetchpriority="high" href="https://axion-ia.com/images/axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere.webp">
+<link rel="next" href="https://axion-ia.com/fr/blog/categorie/blog-implementations-ia/page/2">
+<!-- PRODUCTION title : « Implémentation IA : articles pour PME et TPE » ; canonical page N = https://axion-ia.com/fr/blog/categorie/blog-implementations-ia/page/N (autoréférent, jamais vers la page 1) -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://axion-ia.com/#organization",
+   "name": "Axion-IA",
+   "url": "https://axion-ia.com"
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://axion-ia.com/#website",
+   "url": "https://axion-ia.com",
+   "name": "Axion-IA",
+   "publisher": {
+    "@id": "https://axion-ia.com/#organization"
+   },
+   "inLanguage": "fr"
+  },
+  {
+   "@type": "CollectionPage",
+   "@id": "https://axion-ia.com/fr/blog/categorie/blog-implementations-ia#collectionpage",
+   "url": "https://axion-ia.com/fr/blog/categorie/blog-implementations-ia",
+   "name": "Implémentation IA : mettre l’IA en place dans une PME",
+   "inLanguage": "fr",
+   "abstract": "La catégorie Implémentation IA du blog d’Axion-IA réunit les articles consacrés à la mise en place concrète de l’intelligence artificielle dans une TPE ou une PME : choisir les premières tâches à confier, rédiger les consignes, vérifier les résultats et faire durer l’usage. Ils s’adressent aux dirigeants et à leurs équipes, partout en France, et sont classés du plus récent au plus ancien.",
+   "dateModified": "2026-11-28",
+   "isPartOf": {
+    "@id": "https://axion-ia.com/#website"
+   },
+   "publisher": {
+    "@id": "https://axion-ia.com/#organization"
+   },
+   "breadcrumb": {
+    "@id": "https://axion-ia.com/fr/blog/categorie/blog-implementations-ia#breadcrumb"
+   },
+   "mainEntity": {
+    "@id": "https://axion-ia.com/fr/blog/categorie/blog-implementations-ia#itemlist"
+   },
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     "#axion-direct-answer"
+    ]
+   }
+  },
+  {
+   "@type": "ItemList",
+   "@id": "https://axion-ia.com/fr/blog/categorie/blog-implementations-ia#itemlist",
+   "itemListOrder": "https://schema.org/ItemListOrderDescending",
+   "numberOfItems": 10,
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "url": "https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai",
+     "name": "Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "url": "https://axion-ia.com/fr/blog/compte-rendu-reunion-ia",
+     "name": "Rédiger un compte rendu de réunion avec l’IA, en 6 étapes"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "url": "https://axion-ia.com/fr/blog/taches-administratives-ia-pme",
+     "name": "10 tâches administratives qu’une PME peut confier à l’IA"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "url": "https://axion-ia.com/fr/blog/entreprise-batiment-devis-ia",
+     "name": "Une entreprise du bâtiment prépare ses devis avec l’IA : récit d’un essai"
+    },
+    {
+     "@type": "ListItem",
+     "position": 5,
+     "url": "https://axion-ia.com/fr/blog/consignes-ia-ecrire-prompt-pme",
+     "name": "Écrire de bonnes consignes à l’IA : le modèle en cinq lignes"
+    },
+    {
+     "@type": "ListItem",
+     "position": 6,
+     "url": "https://axion-ia.com/fr/blog/verifier-resultats-ia",
+     "name": "Vérifier ce que produit l’IA : la relecture en trois passes"
+    },
+    {
+     "@type": "ListItem",
+     "position": 7,
+     "url": "https://axion-ia.com/fr/blog/ia-emails-clients-pme",
+     "name": "Préparer les réponses aux e-mails clients avec l’IA"
+    },
+    {
+     "@type": "ListItem",
+     "position": 8,
+     "url": "https://axion-ia.com/fr/blog/faire-durer-usage-ia",
+     "name": "Faire durer l’usage de l’IA après les premières semaines"
+    },
+    {
+     "@type": "ListItem",
+     "position": 9,
+     "url": "https://axion-ia.com/fr/blog/ia-factures-relances-pme",
+     "name": "Relances et factures : ce qu’une PME a confié à l’IA, et ce qu’elle a gardé"
+    },
+    {
+     "@type": "ListItem",
+     "position": 10,
+     "url": "https://axion-ia.com/fr/blog/choisir-premieres-taches-ia",
+     "name": "Choisir les premières tâches à confier à l’IA : la grille en trois critères"
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://axion-ia.com/fr/blog/categorie/blog-implementations-ia#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Accueil",
+     "item": "https://axion-ia.com/fr"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Blog",
+     "item": "https://axion-ia.com/fr/blog"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Catégories",
+     "item": "https://axion-ia.com/fr/blog/categorie"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Implémentation IA",
+     "item": "https://axion-ia.com/fr/blog/categorie/blog-implementations-ia"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="Blog Axion-IA" href="/fr/blog/feed.xml">
+<link rel="alternate" hreflang="fr" href="https://axion-ia.com/fr/blog/categorie/blog-implementations-ia">
+<link rel="alternate" hreflang="x-default" href="https://axion-ia.com/fr/blog/categorie/blog-implementations-ia">
+<meta property="og:type" content="website"><meta property="og:title" content="Implémentation IA : articles pour PME et TPE · Axion-IA"><meta property="og:description" content="Les articles du blog d’Axion-IA sur la mise en place de l’IA dans une TPE ou une PME : premières tâches, consignes, vérification, usage durable."><meta property="og:url" content="https://axion-ia.com/fr/blog/categorie/blog-implementations-ia">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf8f3;--paper:#ffffff;--sand:#f0e9da;--sand-deep:#e6dcc4;--mocha:#2a2520;--mocha-fg:#f7f3ea;--fg:#1a1815;--fg-soft:#524b41;--fg-muted:#5a4f44;--terra:#b23f16;--terra-deep:#8c3010;--terra-soft:#f5e3d8;--primary:#1a4dd9;--primary-hover:#0f3aae;--border:#e5ddc8;--border-strong:#c8bda0;--champ:#8a7f6c;--on-mocha:#eb8560;
+--sh-subtle:rgba(42,37,32,.04) 0 1px 2px,rgba(42,37,32,.06) 0 4px 8px;--sh-card:rgba(42,37,32,.06) 0 2px 4px,rgba(42,37,32,.1) 0 12px 28px;
+--serif:"Fraunces","Fraunces Fallback",Georgia,"Times New Roman",serif;--sans:"Manrope","Manrope Fallback",Arial,"Liberation Sans",sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg-soft);font:400 16px/1.6 var(--sans)}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--fg);margin:0;font-weight:500}
+ul,ol{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+.evitement{position:absolute;left:-999px;top:0;background:var(--mocha);color:var(--mocha-fg);padding:12px 16px;z-index:100}.evitement:focus{left:8px;top:8px}
+.bandeau{margin:0;background:var(--sand);color:var(--fg-muted);font-size:12px;line-height:1.4;text-align:center;padding:6px 16px}
+.conteneur{max-width:1200px;margin:0 auto;padding:0 16px}
+@media(min-width:640px){.conteneur{padding:0 24px}}@media(min-width:992px){.conteneur{padding:0 40px}}
+/* En-tête : identique au site (barre terracotta 80 px, logo en badge ivoire) */
+.site-entete{position:sticky;top:0;z-index:40;background:var(--terra);color:var(--mocha-fg);border-bottom:1px solid var(--terra-deep);box-shadow:inset 0 -1px 0 rgba(42,37,32,.3)}
+.site-entete :focus-visible{outline-color:var(--mocha-fg)}
+.site-entete__rangee{display:flex;align-items:center;gap:12px;height:80px;max-width:1920px;margin:0 auto;padding:0 16px}
+@media(min-width:640px){.site-entete__rangee{padding:0 24px}}@media(min-width:992px){.site-entete__rangee{padding:0 40px;gap:24px}}
+.site-logo{display:inline-flex;flex-direction:column;justify-content:center;min-height:44px;background:var(--paper);color:var(--fg);border-radius:12px;padding:6px 12px;text-decoration:none;box-shadow:var(--sh-subtle);flex:none}
+.site-logo__nom{font:500 24px/1 var(--serif);letter-spacing:-.01em}.site-logo__tiret{margin:0 2px;opacity:.7}.site-logo__nom em{color:var(--terra);font-style:italic}
+.site-logo__devise{display:none;margin-top:4px;font-size:12px;line-height:1;font-weight:600;color:var(--fg-muted)}
+@media(min-width:1366px){.site-logo__devise{display:block}}
+.site-nav{display:none;align-items:center;gap:4px;margin-left:8px}
+.site-nav a,.site-nav button{position:relative;display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 12px;border:0;border-radius:8px;background:none;font:600 16px var(--sans);color:var(--mocha-fg);text-decoration:none;cursor:pointer}
+.site-nav a::after,.site-nav button::after{content:"";position:absolute;left:12px;right:12px;bottom:6px;height:2px;background:var(--mocha-fg);transform:scaleX(0);transition:transform .2s}
+.site-nav a:hover::after,.site-nav button:hover::after{transform:scaleX(1)}
+.site-nav__phare{border:1px solid var(--mocha-fg)!important;background:var(--mocha)!important;border-radius:9999px!important}
+.site-nav__phare::after{display:none}
+.site-nav__phare::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--on-mocha)}
+.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.site-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
+.pastille{display:none;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:9999px;background:var(--paper);color:var(--terra);font-weight:600;text-decoration:none;box-shadow:var(--sh-subtle)}
+.pastille--loupe{width:44px}.pastille--texte{padding:0 16px}
+.site-reserver{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:9999px;background:var(--primary);color:#fff;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;box-shadow:var(--sh-subtle)}
+.site-reserver:hover{background:var(--primary-hover)}.site-reserver .long{display:none}
+@media(max-width:379px){.site-reserver .ic{display:none}}
+.site-menu{position:relative}.site-menu summary{list-style:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--mocha-fg);color:var(--mocha-fg);cursor:pointer}.site-menu summary:hover{background:var(--terra-deep)}.site-menu summary::-webkit-details-marker{display:none}
+.site-menu__panneau{position:absolute;right:0;top:52px;width:260px;background:var(--paper);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-card);padding:8px;display:flex;flex-direction:column}
+.site-menu__panneau a{display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:10px;color:var(--fg);font-weight:600;text-decoration:none}.site-menu__panneau a:hover{background:var(--sand)}
+@media(min-width:1024px){.site-reserver .court{display:none}.site-reserver .long{display:inline}.site-reserver{font-size:16px;padding:0 20px}}
+@media(min-width:1280px){.site-nav{display:flex}.pastille{display:inline-flex}.site-menu{display:none}}
+/* Fil d'Ariane */
+.fil{max-width:1200px;margin:0 auto;padding:16px 16px 0;font-size:14px;color:var(--fg-muted)}
+@media(min-width:640px){.fil{padding:16px 24px 0}}@media(min-width:992px){.fil{padding:20px 40px 0}}
+.fil ol{display:flex;flex-wrap:wrap;align-items:center;gap:0}.fil li{display:flex;align-items:center;min-height:44px}.fil li+li::before{content:"›";margin:0 8px;color:var(--border-strong)}
+.fil a{text-decoration:none;color:var(--fg-muted);display:inline-flex;align-items:center;min-height:44px}.fil a:hover{color:var(--terra-deep);text-decoration:underline}.fil [aria-current]{color:var(--fg)}
+/* Haut de page : calme, sur fond de page */
+.haut{padding:32px 0 8px;max-width:820px}
+@media(min-width:992px){.haut{padding:48px 0 16px}}
+.surtitre{margin:0 0 12px;color:var(--terra);font-size:13px;font-weight:600;letter-spacing:.02em}
+h1{font-size:clamp(2.25rem,1.6rem + 2.6vw,3.5rem);line-height:1.1;letter-spacing:-.015em;max-width:28ch;text-wrap:balance}
+.intro{margin:20px 0 0;font-size:18px;line-height:1.62;max-width:66ch;color:var(--fg-soft)}
+@media(min-width:992px){.intro{font-size:20px;line-height:1.6}}
+.maj{margin:12px 0 0;font-size:14px;color:var(--fg-muted)}
+.recherche{margin-top:28px;max-width:640px}
+.recherche label{display:block;font-size:14px;font-weight:600;color:var(--fg);margin-bottom:8px}
+.recherche__ligne{display:flex;gap:8px}
+.recherche input{flex:1;min-width:0;height:48px;padding:0 16px;border:1px solid var(--champ);border-radius:12px;background:var(--paper);font:inherit;color:var(--fg)}
+.recherche input::placeholder{color:var(--fg-muted)}
+.recherche button,.btn{height:48px;padding:0 20px;border:0;border-radius:9999px;background:var(--mocha);color:var(--mocha-fg);font:600 16px var(--sans);cursor:pointer;display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+.recherche button:hover{background:var(--fg)}
+.filtres{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.filtre{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--border-strong);border-radius:9999px;background:var(--paper);color:var(--fg);font-weight:600;font-size:15px;text-decoration:none}
+.filtre:hover{border-color:var(--terra);color:var(--terra-deep)}
+.filtre[aria-current]{background:var(--mocha);color:var(--mocha-fg);border-color:var(--mocha)}
+/* Blocs */
+.bloc{margin-top:64px}@media(min-width:992px){.bloc{margin-top:96px}}
+.bloc>h2,.bande h2,.fin h2,.lettre h2{font-size:28px;line-height:1.2;letter-spacing:-.01em}
+@media(min-width:992px){.bloc>h2,.bande h2,.fin h2,.lettre h2{font-size:36px;line-height:1.17}}
+.bloc>h2{margin-bottom:28px}
+.lien{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:var(--terra);text-decoration:none}
+.lien:hover{color:var(--terra-deep);text-decoration:underline;text-underline-offset:4px}.lien--calme{color:var(--fg-soft)}
+.suite{margin:24px 0 0}
+/* Cartes */
+.grille{display:grid;gap:24px;grid-template-columns:1fr}
+@media(min-width:640px){.grille{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.grille{grid-template-columns:repeat(3,1fr);gap:32px}.grille--c{gap:24px}}
+.carte{position:relative;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--sh-subtle);transition:transform .25s,box-shadow .25s}
+.carte:hover,.carte:focus-within{transform:translateY(-2px);box-shadow:var(--sh-card)}
+.carte:focus-within{outline:2px solid var(--terra);outline-offset:3px}
+.carte__img{margin:0;aspect-ratio:16/10;background:var(--sand);overflow:hidden}
+.carte__img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.carte:hover .carte__img img{transform:scale(1.03)}
+.carte__corps{display:flex;flex-direction:column;gap:10px;padding:20px 20px 22px;flex:1}
+.carte__etiq{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:13px}
+.etiq{display:inline-block;padding:3px 10px;border-radius:9999px;background:var(--terra-soft);color:var(--terra-deep);font-weight:600;letter-spacing:.02em}
+.fmt{color:var(--fg-muted);font-weight:600}
+.carte__titre{font:600 20px/1.3 var(--serif);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media(min-width:992px){.carte__titre{font-size:22px;line-height:1.27}}
+.carte__titre a{text-decoration:none}.carte__titre a::after{content:"";position:absolute;inset:0}
+.carte__titre a:focus-visible{outline:0}
+.carte:hover .carte__titre a{color:var(--terra-deep);text-decoration:underline;text-underline-offset:4px}
+.carte__resume{margin:0;font-size:16px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{margin:auto 0 0;padding-top:4px;font-size:14px;line-height:1.43;color:var(--fg-muted)}
+.une{display:grid;gap:24px}
+@media(min-width:1024px){.une{grid-template-columns:7fr 5fr;gap:32px;align-items:stretch}}
+.carte--une .carte__titre{font-size:26px;line-height:1.23;-webkit-line-clamp:4}
+@media(min-width:992px){.carte--une .carte__titre{font-size:36px;line-height:1.17}}
+.carte--une .carte__corps{padding:24px}@media(min-width:992px){.carte--une .carte__corps{padding:32px}}
+.carte--une .carte__resume{font-size:18px;-webkit-line-clamp:3}
+.carte--seule{max-width:1000px}
+.une__cote{display:grid;gap:24px}
+@media(min-width:640px) and (max-width:1023px){.une__cote{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.une__cote{grid-template-rows:1fr 1fr}.carte--lat{flex-direction:row}.carte--lat .carte__img{width:40%;aspect-ratio:auto;flex:none}.carte--lat .carte__corps{padding:20px 22px;justify-content:center}.carte--lat .carte__titre{font-size:20px;-webkit-line-clamp:3}.carte--lat .carte__resume{display:none}.carte--lat .meta{margin-top:0}}
+/* Prestations */
+.prest{padding-top:40px;margin-top:40px;border-top:1px solid var(--border)}.prest:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.prest__tete{max-width:760px;margin-bottom:24px}
+.prest h3{font-size:26px;line-height:1.25}.prest__tete p{margin:8px 0 0}
+.prest__liens{display:flex;flex-wrap:wrap;gap:0 24px}
+.prest .carte__titre{font-size:19px}
+/* Bande sable : explorer */
+.bande{margin-top:64px;background:var(--sand);padding:48px 0}@media(min-width:992px){.bande{margin-top:96px;padding:64px 0}}
+.explorer{display:grid;gap:32px;margin-top:28px}@media(min-width:768px){.explorer{grid-template-columns:2fr 1fr}}
+.explorer h3{font:600 20px/1.3 var(--serif);margin-bottom:14px}
+.puces{display:flex;flex-wrap:wrap;gap:8px}
+.puces a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:9999px;background:var(--paper);border:1px solid var(--border-strong);color:var(--fg);font-weight:600;font-size:15px;text-decoration:none}
+.puces a:hover{border-color:var(--terra);color:var(--terra-deep)}
+.liste-liens{display:flex;flex-wrap:wrap;gap:0 32px}
+/* Lettre */
+.lettre__carte{display:grid;gap:24px;background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:var(--sh-subtle)}
+@media(min-width:992px){.lettre__carte{grid-template-columns:1.2fr 1fr;align-items:center;padding:40px}}
+.lettre p{margin:10px 0 0}.lettre label{display:block;font-size:14px;font-weight:600;color:var(--fg);margin-bottom:8px}
+.lettre .btn,.fin .btn:first-child{background:var(--terra);color:#fff}.lettre .btn:hover,.fin .btn:first-child:hover{background:var(--terra-deep)}
+.lettre .recherche__ligne{flex-direction:column}@media(min-width:480px){.lettre .recherche__ligne{flex-direction:row}}
+.lettre input{flex:1;min-width:0;height:48px;padding:0 16px;border:1px solid var(--champ);border-radius:12px;background:var(--bg);font:inherit}
+.lettre button{justify-content:center}
+/* FAQ */
+.faq h3{font:600 20px/1.3 var(--serif);margin:28px 0 8px}.faq p{margin:0;max-width:70ch}.faq a{color:var(--terra);text-underline-offset:3px}.faq a:hover{color:var(--terra-deep)}
+/* Prestation encart */
+.prestation{margin-top:32px;max-width:820px;background:var(--paper);border:1px solid var(--border);border-left:3px solid var(--terra);border-radius:12px;padding:16px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 24px}.prestation p{margin:0;flex:1 1 320px}
+/* Pagination */
+.pagination{margin-top:40px}.pagination ul{display:flex;flex-wrap:wrap;gap:8px}
+.pg{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 14px;border:1px solid var(--border-strong);border-radius:9999px;background:var(--paper);color:var(--fg);font-weight:600;text-decoration:none}
+.pg:hover{border-color:var(--terra);color:var(--terra-deep)}.pg[aria-current]{background:var(--mocha);color:var(--mocha-fg);border-color:var(--mocha)}.pg--off{color:var(--fg-muted);border-style:dashed}
+.autres{display:grid;gap:24px}@media(min-width:640px){.autres{grid-template-columns:repeat(2,1fr)}}@media(min-width:1024px){.autres{grid-template-columns:repeat(4,1fr)}}
+.autres li{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:20px}
+.autres h3{font:600 20px/1.3 var(--serif)}.autres h3 a{display:inline-flex;align-items:center;min-height:44px;text-decoration:none}.autres h3 a:hover{color:var(--terra-deep);text-decoration:underline}.autres p{margin:8px 0 4px;font-size:15px}
+/* Fin */
+.fin{margin-top:64px;background:var(--sand);padding:56px 0;text-align:center}@media(min-width:992px){.fin{margin-top:96px;padding:80px 0}}
+.fin p{margin:14px auto 0;max-width:56ch}.fin__btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:28px!important}
+.btn--contour{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1.5px var(--fg)}.btn--contour:hover{background:var(--paper)}
+/* Pied */
+.pied{background:var(--mocha);color:var(--mocha-fg);padding:40px 0}.pied__in{display:grid;gap:20px}
+.pied__logo{margin:0;font:500 24px var(--serif)}.pied__logo em{color:var(--on-mocha)}
+.pied ul{display:flex;flex-wrap:wrap;gap:0 24px}.pied :focus-visible{outline-color:var(--mocha-fg)}.pied a{display:inline-flex;min-height:44px;align-items:center;color:var(--mocha-fg);text-underline-offset:4px}
+.pied__note{margin:0;color:#b5aa9c;font-size:14px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.carte:hover{transform:none}.carte:hover .carte__img img{transform:none}}
+
+</style>
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+<p class="bandeau">Maquette v4 · catégorie du blog (/fr/blog/categorie/blog-implementations-ia) · document de travail, non publié</p>
+<header class="site-entete" data-tone="terracotta">
+  <div class="site-entete__rangee">
+    <a class="site-logo" href="/fr" aria-label="Axion-IA, accueil"><span class="site-logo__nom">Axion<span aria-hidden="true" class="site-logo__tiret">-</span><em>IA</em></span><span class="site-logo__devise">Partenaire IA des PME et TPE</span></a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a class="site-nav__lien" href="/fr">Accueil</a>
+      <a class="site-nav__phare" href="/fr/journee-ia">La Journée IA</a>
+      <button type="button" aria-expanded="false" aria-haspopup="true">Nos prestations <svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+      <a class="site-nav__lien" href="/fr/tarifs">Tarifs</a>
+    </nav>
+    <div class="site-actions">
+      <a class="pastille pastille--loupe" href="/fr/recherche" aria-label="Rechercher sur le site"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></a>
+      <a class="pastille pastille--texte" href="/fr/contact?depuis=entete-ecrire"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Nous écrire</a>
+      <a class="site-reserver" href="/fr/appel?depuis=entete" aria-label="Réserver un appel"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span class="court">Réserver</span><span class="long">Réserver un appel</span></a>
+      <details class="site-menu"><summary aria-label="Menu"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 12h16M4 6h16M4 18h16"/></svg></summary>
+        <nav class="site-menu__panneau" aria-label="Menu principal"><a href="/fr">Accueil</a><a href="/fr/journee-ia">La Journée IA</a><a href="/fr/audit">Nos prestations</a><a href="/fr/tarifs">Tarifs</a><a href="/fr/contact?depuis=entete-ecrire">Nous écrire</a><a href="/fr/recherche">Rechercher sur le site</a></nav></details>
+    </div>
+  </div>
+</header>
+
+<!-- NOTE DE MAQUETTE (disparaît en production) : articles de démonstration, sauf ceux qui existent déjà ; les visuels cassés seront réels en ligne. --><nav class="fil" aria-label="Fil d’Ariane"><ol><li><a href="/fr">Accueil</a></li><li><a href="/fr/blog">Blog</a></li><li><a href="/fr/blog/categorie">Catégories</a></li><li aria-current="page">Implémentation IA</li></ol></nav>
+<main id="contenu"><div class="conteneur">
+<header class="haut">
+  <p class="surtitre">Catégorie du blog</p>
+  <h1>Implémentation IA : mettre l’IA en place dans une PME</h1>
+  <p class="intro" id="axion-direct-answer" data-speakable>La catégorie Implémentation IA du blog d’Axion-IA réunit les articles consacrés à la mise en place concrète de l’intelligence artificielle dans une TPE ou une PME : choisir les premières tâches à confier, rédiger les consignes, vérifier les résultats et faire durer l’usage. Ils s’adressent aux dirigeants et à leurs équipes, partout en France, et sont classés du plus récent au plus ancien.</p>
+  <p class="maj">Mis à jour le <time datetime="2026-11-28">28 novembre 2026</time></p>
+  <form class="recherche" role="search" action="/fr/recherche" method="get">
+  <label for="q">Rechercher un article</label>
+  <div class="recherche__ligne"><input id="q" name="q" type="search" placeholder="Ex. : devis" autocomplete="off"><button type="submit">Rechercher</button></div>
+</form>
+  <nav aria-label="Filtrer par prestation"><ul class="filtres"><li><a class="filtre" href="/fr/blog">Tous les articles</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-audits-ia">Audit IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-formations-ia">Formations IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-implementations-ia" aria-current="page">Implémentation IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-coaching-1-to-1">Coaching IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-sites-web-augmentes">Sites web IA</a></li></ul></nav>
+</header>
+<aside class="prestation" aria-label="La prestation associée"><p><strong>Ces articles prolongent la prestation Implémentation IA</strong> : vos tâches répétitives préparées pour vous, chaque jour. Vous validez.</p><a class="lien" href="/fr/implementation">Découvrir l’implémentation IA<span aria-hidden="true"> →</span></a></aside>
+<section class="bloc" aria-labelledby="une-t"><h2 id="une-t">À la une dans cette catégorie</h2><article class="carte carte--une carte--seule">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/axion-ia-conference-ia-dirigeants-pme-transformation-numerique.webp" width="1024" height="640" alt="" fetchpriority="high" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Analyse</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/projets-ia-pme-premier-essai">Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai</a></h3>
+    <p class="carte__resume">Les vraies causes d’un essai d’IA qui s’éteint, et ce qui distingue ceux qui durent.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-28">28 novembre 2026</time> · 9 min de lecture</p>
+  </div>
+</article></section>
+<section class="bloc" aria-labelledby="tous-t"><h2 id="tous-t">Tous les articles Implémentation IA</h2><div class="grille"><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/compte-rendu-reunion-ia.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l’IA, en 6 étapes</a></h3>
+    <p class="carte__resume">Six étapes concrètes et une consigne à copier.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-23">23 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/taches-administratives-ia-pme.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Sélection</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu’une PME peut confier à l’IA</a></h3>
+    <p class="carte__resume">Dix tâches, choisies sur trois critères, avec pour chacune sa limite.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-22">22 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/entreprise-batiment-devis-ia.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Cas concret</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/entreprise-batiment-devis-ia">Une entreprise du bâtiment prépare ses devis avec l’IA : récit d’un essai</a></h3>
+    <p class="carte__resume">Étape par étape : ce qui a bloqué et ce qui a tenu.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-18">18 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/consignes-ia-ecrire-prompt-pme.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/consignes-ia-ecrire-prompt-pme">Écrire de bonnes consignes à l’IA : le modèle en cinq lignes</a></h3>
+    <p class="carte__resume">Un gabarit à copier, avec deux exemples de PME.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-17">17 novembre 2026</time> · 6 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/verifier-resultats-ia.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Méthode</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/verifier-resultats-ia">Vérifier ce que produit l’IA : la relecture en trois passes</a></h3>
+    <p class="carte__resume">Qui relit quoi, à quel moment, et ce qu’on ne délègue pas.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-16">16 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/ia-emails-clients-pme.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/ia-emails-clients-pme">Préparer les réponses aux e-mails clients avec l’IA</a></h3>
+    <p class="carte__resume">Un brouillon préparé, une validation humaine, un ton conservé.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-15">15 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/faire-durer-usage-ia.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Analyse</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/faire-durer-usage-ia">Faire durer l’usage de l’IA après les premières semaines</a></h3>
+    <p class="carte__resume">Ce qui entretient une habitude : routines, responsables, bilans courts.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-14">14 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/ia-factures-relances-pme.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Cas concret</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/ia-factures-relances-pme">Relances et factures : ce qu’une PME a confié à l’IA, et ce qu’elle a gardé</a></h3>
+    <p class="carte__resume">Un essai raconté, avec ses limites.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-13">13 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/choisir-premieres-taches-ia.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Méthode</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/choisir-premieres-taches-ia">Choisir les premières tâches à confier à l’IA : la grille en trois critères</a></h3>
+    <p class="carte__resume">Fréquence, risque, vérifiabilité : une façon de trier.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-12">12 novembre 2026</time> · 6 min de lecture</p>
+  </div>
+</article></div>
+<nav class="pagination" aria-label="Pagination des articles"><ul><li><span class="pg pg--off">← Précédent</span></li><li><a class="pg" href="/fr/blog/categorie/blog-implementations-ia" aria-current="page">1</a></li><li><a class="pg" href="/fr/blog/categorie/blog-implementations-ia/page/2">2</a></li><li><a class="pg" href="/fr/blog/categorie/blog-implementations-ia/page/3">3</a></li><li><a class="pg" href="/fr/blog/categorie/blog-implementations-ia/page/2" rel="next">Suivant →</a></li></ul></nav></section>
+<section class="bloc" aria-labelledby="aut-t"><h2 id="aut-t">Les autres catégories</h2><ul class="autres"><li><h3><a href="/fr/blog/categorie/blog-audits-ia">Audit IA</a></h3><p>Où l’IA peut aider votre entreprise, repérée avec vos équipes avant tout investissement.</p><a class="lien" href="/fr/blog/categorie/blog-audits-ia">Lire les articles<span aria-hidden="true"> →</span></a></li><li><h3><a href="/fr/blog/categorie/blog-formations-ia">Formations IA</a></h3><p>Former vos équipes à l’IA sur leurs propres dossiers : notions, bons réflexes et limites.</p><a class="lien" href="/fr/blog/categorie/blog-formations-ia">Lire les articles<span aria-hidden="true"> →</span></a></li><li><h3><a href="/fr/blog/categorie/blog-coaching-1-to-1">Coaching IA</a></h3><p>Un dirigeant ou un collaborateur suivi en tête-à-tête pour s’approprier l’IA.</p><a class="lien" href="/fr/blog/categorie/blog-coaching-1-to-1">Lire les articles<span aria-hidden="true"> →</span></a></li><li><h3><a href="/fr/blog/categorie/blog-sites-web-augmentes">Sites web IA</a></h3><p>Un site web qui s’appuie sur l’IA : contenus, recherche, conversion et maintenance.</p><a class="lien" href="/fr/blog/categorie/blog-sites-web-augmentes">Lire les articles<span aria-hidden="true"> →</span></a></li></ul></section>
+<section class="bloc faq" aria-labelledby="faq-t"><h2 id="faq-t">Questions fréquentes sur l’implémentation IA</h2>
+<h3>Que trouve-t-on dans cette catégorie ?</h3><p>Des guides, des méthodes et des récits d’essais pour mettre l’IA en place : tâches à confier, consignes, vérification des résultats, usage durable.</p>
+<h3>Par quelle tâche commencer ?</h3><p>Par une tâche fréquente, peu risquée et facile à vérifier. L’article <a href="/fr/blog/choisir-premieres-taches-ia">Choisir les premières tâches à confier à l’IA</a> propose une grille en trois critères.</p>
+<h3>Les articles sont-ils à jour ?</h3><p>Chaque article affiche sa date de mise à jour ; cette page est actualisée à chaque nouvelle publication.</p></section>
+<section class="bloc lettre" aria-labelledby="lettre-titre">
+  <div class="lettre__carte">
+    <div><h2 id="lettre-titre">Recevoir le guide et les nouveautés utiles</h2>
+    <p>Un e-mail quand un article utile paraît, et le guide pour démarrer avec l’IA. Désinscription en un clic.</p></div>
+    <form action="#lettre-titre" method="post"><!-- action réelle : route d’inscription existante (à brancher) --><label for="mel">Votre adresse e-mail</label>
+      <div class="recherche__ligne"><input id="mel" name="email" type="email" autocomplete="email" placeholder="vous@entreprise.fr" required><button class="btn" type="submit">Recevoir le guide</button></div></form>
+  </div>
+</section>
+</div>
+<section class="fin" aria-labelledby="fin-t"><div class="conteneur"><h2 id="fin-t">Mettre l’IA en place dans votre entreprise</h2><p>Vos tâches répétitives préparées pour vous, chaque jour. Vous validez.</p>
+<p class="fin__btns"><a class="btn" href="/fr/implementation">Découvrir l’implémentation IA</a><a class="btn btn--contour" href="/fr/contact">Nous écrire</a></p></div></section>
+</main>
+<footer class="pied"><div class="conteneur pied__in">
+  <p class="pied__logo">Axion<span>-</span><em>IA</em></p>
+  <nav aria-label="Pied de page"><ul>
+   <li><a href="/fr/audit">Audit IA</a></li><li><a href="/fr/formations">Formations IA</a></li><li><a href="/fr/implementation">Implémentation IA</a></li><li><a href="/fr/un-a-un">Coaching IA</a></li><li><a href="/fr/sites-web-augmentes">Sites web IA</a></li><li><a href="/fr/blog">Blog</a></li><li><a href="/fr/contact">Contact</a></li></ul></nav>
+  <p class="pied__note">Partenaire IA des PME et TPE, partout en France.</p>
+</div></footer>
+
+</body>
+</html>
