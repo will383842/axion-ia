@@ -60,7 +60,7 @@ export const WILLIAMS_SOUS_TITRE = `${WILLIAMS_FONCTION} · ${WILLIAMS_TAGLINE}`
 export const WILLIAMS_TITRE_SEO = `${FOUNDER.fullName}, fondateur d'Axion IA`;
 
 /** Meta description. */
-export const WILLIAMS_META_DESCRIPTION = `${FOUNDER.fullName}, fondateur d'Axion IA : son parcours et sa méthode pour aider les TPE et PME à mettre l'IA en place pas à pas, avec la même équipe, sans jargon.`;
+export const WILLIAMS_META_DESCRIPTION = `${FOUNDER.fullName} dirige Axion-IA : il aide les TPE et PME à mettre l'IA en place pas à pas, avec la même équipe, sans jargon. Son parcours et sa méthode.`;
 
 /**
  * Réponse de tête (AEO). Phrase auto-portante : nom + fonction + entité +

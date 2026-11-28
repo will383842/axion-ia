@@ -43,22 +43,24 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+const TITRE_FR = "À propos : équipe, méthode et engagements · Axion IA";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  return buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: "/a-propos",
-    title:
-      locale === "fr"
-        ? "À propos : équipe, méthode et engagements · Axion IA"
-        : "About · operational AI consultancy · Axion-IA",
+    title: locale === "fr" ? TITRE_FR : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
         ? "Axion IA aide les TPE et PME à mettre l'IA en place pas à pas, partout en France. Mission, équipe, méthode, engagements et réponse humaine à chaque demande."
         : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
+  // Titre ABSOLU en FR : « Axion IA » (sans tiret) ne déclenche pas la détection de marque de
+  // `buildProductMetadata`, et le gabarit racine ajouterait « · Axion-IA » une seconde fois.
+  return locale === "fr" ? { ...meta, title: { absolute: TITRE_FR } } : meta;
 }
 
 // ISR — la page consomme le layout partagé (bandeau + JSON-LD Qualiopi gated

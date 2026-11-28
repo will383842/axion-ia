@@ -661,11 +661,6 @@ export default async function Home({ params }: HomeProps) {
                 {faq.liens.faq}
               </Link>
             </p>
-            <DerniersArticlesBlog
-              titre={faq.liens.derniersArticles}
-              lienBlog={faq.liens.blog}
-              classeLien={LIEN}
-            />
             <p className="text-fg-muted mt-1 text-sm">
               {faq.source.debut}{" "}
               <a
@@ -678,6 +673,11 @@ export default async function Home({ params }: HomeProps) {
                 <span className="sr-only">{faq.source.nouvelOnglet}</span>
               </a>
             </p>
+            <DerniersArticlesBlog
+              titre={faq.liens.derniersArticles}
+              lienBlog={faq.liens.blog}
+              classeLien={LIEN}
+            />
           </div>
         </Container>
       </section>

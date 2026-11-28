@@ -779,11 +779,17 @@ async function fichesEquipeSitemap(): Promise<Array<{ slug: string; lastModified
 async function dateDernierArticleBlog(): Promise<Date | null> {
   const fs = getIndexableBlogPosts()
     .map((p) => new Date(p.publishedAt).getTime())
-    .filter((t) => Number.isFinite(t));
+    .filter((t) => Number.isFinite(t) && t <= Date.now());
   let db: Date | null = null;
   try {
     const row = await prisma.article.findFirst({
-      where: { status: "published", indexationTier: "tier_1_indexable", isNews: false },
+      where: {
+        status: "published",
+        indexationTier: "tier_1_indexable",
+        isNews: false,
+        qualityScore: { gte: BLOG_SITEMAP_MIN_QUALITY_SCORE },
+        publishedAt: { not: null, lte: new Date() },
+      },
       orderBy: { publishedAt: "desc" },
       select: { publishedAt: true, updatedAt: true },
     });

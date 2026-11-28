@@ -22,7 +22,14 @@ export async function DerniersArticlesBlog({
   let articles: Array<{ titre: string; href: string }> = [];
   try {
     const rows = await prisma.article.findMany({
-      where: { status: "published", indexationTier: "tier_1_indexable", isNews: false },
+      where: {
+        status: "published",
+        indexationTier: "tier_1_indexable",
+        isNews: false,
+        // Mêmes plancher et bornes que le sitemap du blog : jamais un article qu'il exclut.
+        qualityScore: { gte: 70 },
+        publishedAt: { not: null, lte: new Date() },
+      },
       orderBy: { publishedAt: "desc" },
       take: 3,
       select: {
