@@ -89,6 +89,7 @@ import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // sans adresse ni SIREN, en silence). Voir l'en-tête de `legal-footer.ts`.
 import { EMAIL_LEGAL, EMAIL_SIGNATURE } from "../legal-footer";
 import { COORDONNEES_PUBLIQUES } from "@/lib/identite-legale-ssot";
+import { salutation, type IdentiteSalutation } from "../salutation";
 
 /**
  * Stats avis injectées par `renderEmailTemplate` juste avant le rendu (valeurs
@@ -236,7 +237,6 @@ function avecUtm(url: string, famille: FamilleEmail, content: string, campagne?:
 // Le bloc « Déposer un avis » mène au FORMULAIRE, toujours ouvert — jamais au hub
 // /avis, qui rend 404 tant qu'aucun avis n'est publié (règle automatique).
 const REVIEW_URL = `${BASE_URL}/fr/avis/deposer`;
-const APPEL_URL = `${BASE_URL}/fr/appel?depuis=email`;
 const SITE_URL_PARTAGE = `${BASE_URL}/fr`;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -337,6 +337,73 @@ export const REGIME_FAMILLE = {
     budgetLiens: number;
   }
 >;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Destinataire, nature, ouverture (lot S2 — PLAN-STRUCTURE-ACCUSES §2.1)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** À qui l'e-mail est adressé. Décide de la salutation, de la politesse et de la signature. */
+export type DestinataireEmail =
+  | "client" // prospect, client, entreprise, demandeur
+  | "apporteur" // tutoyé
+  | "formateur"
+  | "stagiaire"
+  | "candidat"
+  | "interne"; // alertes et récaps envoyés à l'équipe
+
+/** Ce que l'e-mail EST. Décide du pied, de la mention « pas vous », de la soupape, de l'opposition. */
+export type NatureEmail =
+  | "accuse" // accusé de réception d'une demande
+  | "relation" // suivi, réponse, invitation, information
+  | "rappel" // rendez-vous, échéance
+  | "securite" // lien de connexion, code, accès, double opt-in
+  | "piece" // devis, convention, facture, reçu, pièce signée, attestation
+  | "recouvrement" // relance d'impayé, mise en demeure
+  | "droits" // réponses RGPD (export, effacement, demande reçue)
+  | "reclamation"
+  | "information-legale" // art. 14 (vivier)
+  | "alerte-interne"
+  | "marketing";
+
+export interface OuvertureEmail {
+  /** Lue par le châssis selon le destinataire ; ignorée pour « interne ». */
+  readonly identite: IdentiteSalutation;
+  /**
+   * La phrase d'information, rendue sur la MÊME ligne que la salutation. Commence par une
+   * minuscule, au moins 30 caractères, finit par un point. Texte seul : les gardes la lisent.
+   */
+  readonly information: string;
+}
+
+/** Natures qui n'ont jamais le lien d'opposition à la prospection (plan §2.2-8). */
+const NATURES_SANS_OPPOSITION: readonly NatureEmail[] = [
+  "droits",
+  "reclamation",
+  "recouvrement",
+  "alerte-interne",
+];
+
+/** Seuil de longueur de l'information d'une ouverture (plan §2.1). */
+const OUVERTURE_INFORMATION_MIN = 30;
+
+/**
+ * Refuse une ouverture mal formée, hors production seulement (même doctrine que
+ * `assertPreEnTeteDistinct` : une phrase maladroite ne vaut pas qu'une facture ne parte pas).
+ */
+export function assertOuvertureValide(information: string, ou: string): void {
+  if (process.env.NODE_ENV === "production") return;
+  const ok =
+    information.length >= OUVERTURE_INFORMATION_MIN &&
+    /^\p{Ll}/u.test(information) &&
+    information.endsWith(".");
+  if (!ok) {
+    console.error(
+      `[email/${ou}] ouverture mal formée (« ${information} ») : l'information suit la ` +
+        `salutation sur la même ligne ; minuscule initiale, ${OUVERTURE_INFORMATION_MIN} ` +
+        `caractères au moins, point final.`,
+    );
+  }
+}
 
 /**
  * Refuse un pré-en-tête qui répète l'objet ou le titre.
@@ -673,6 +740,21 @@ export interface EmailLayoutProps {
    */
   signature?: boolean | "fondateur" | "fondateur-court" | "equipe";
   /**
+   * À qui s'adresse l'e-mail (lot S2). Posé, il active le châssis par destinataire : salutation,
+   * politesse et signature sont rendues PAR LE CHÂSSIS, et `signature` / `apresCta` sont ignorées.
+   * Absent, le gabarit rend comme avant (migration gabarit par gabarit).
+   */
+  destinataire?: DestinataireEmail;
+  /** Nature de l'e-mail : décide du pied, de la soupape, de l'opposition, de la mention « pas vous ». */
+  nature?: NatureEmail;
+  /**
+   * Salutation + information sur UNE ligne. Avec elle, `title` devient le surtitre (il n'y a plus de
+   * grand titre) et le « Bonjour… » est la première phrase lue. Interdite pour « interne ».
+   */
+  ouverture?: OuvertureEmail;
+  /** Mention « Si vous n'êtes pas à l'origine… ». Vrai par défaut si `nature === "accuse"`. */
+  mentionPasVous?: boolean;
+  /**
    * Nom de campagne pour le `utm_campaign` des liens de partage (§5.5).
    * À renseigner sur les gabarits qui portent un bloc de partage — sans lui, le
    * traçage dit d'où vient le clic (famille, emplacement) mais pas de QUEL
@@ -756,7 +838,6 @@ const TXT = {
       "Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.",
     signatureServices:
       "Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1",
-    signatureRdv: "Prendre rendez-vous",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
     siren: "SIREN",
@@ -769,8 +850,19 @@ const TXT = {
     rights: "Tous droits réservés.",
     unsubscribe: "Se désabonner",
     opposition: "Ne plus recevoir de sollicitations commerciales d'Axion-IA",
-    /** Pied de page réduit famille A — §6.3. Remplace tout le reste. */
-    autoNotice: "Cet e-mail vous a été envoyé automatiquement suite à une action sur votre compte.",
+    /** Politesse rendue par le châssis après l'action (lot S2). */
+    politesse: "Bien cordialement,",
+    politesseTutoiement: "À bientôt,",
+    /** Mention « pas vous » des accusés (ordre du fondateur du 2026-11-06, texte inchangé). */
+    pasVous:
+      "Si vous n'êtes pas à l'origine de ce message, ignorez-le ou répondez-nous : nous effaçons vos données.",
+    /** Pieds par nature (lot S2) — la phrase « action sur votre compte » n'existe plus. */
+    piedSecurite:
+      "Cet e-mail fait suite à une demande faite avec votre adresse. Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
+    piedDocument:
+      "Ce document vous est adressé dans le cadre de votre dossier avec Axion-IA. Une question :",
+    piedDroits: "Cet e-mail répond à votre demande concernant vos données personnelles. Contact :",
+    /** Pied de page réduit famille A SANS nature déclarée (gabarit non migré). */
     autoNoticeAsk: "Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
   },
   en: {
@@ -791,7 +883,6 @@ const TXT = {
     signaturePositionnement:
       "Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.",
     signatureServices: "AI audit · Automated systems implementation · Training · 1-to-1 coaching",
-    signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,
     siren: "Reg. no.",
@@ -803,7 +894,14 @@ const TXT = {
     rights: "All rights reserved.",
     unsubscribe: "Unsubscribe",
     opposition: "Stop receiving commercial messages from Axion-IA",
-    autoNotice: "This email was sent automatically following an action on your account.",
+    politesse: "Kind regards,",
+    politesseTutoiement: "Speak soon,",
+    pasVous:
+      "If you did not send this message, please ignore it or reply to us: we will erase your data.",
+    piedSecurite:
+      "This email follows a request made with your address. Didn't make this request? Write to us:",
+    piedDocument: "This document is sent to you as part of your file with Axion-IA. A question:",
+    piedDroits: "This email answers your request about your personal data. Contact:",
     autoNoticeAsk: "Didn't request this? Write to us:",
   },
 } as const;
@@ -819,6 +917,10 @@ export function EmailLayout({
   trust,
   snowball,
   signature,
+  destinataire,
+  nature,
+  ouverture,
+  mentionPasVous,
   campagne,
   sansReseauxSociaux,
   unsubscribeHref,
@@ -847,14 +949,69 @@ export function EmailLayout({
   // fichiers. (Référentiel §5.1 règle 3 et §2.5.)
   const bandeau = regime.bandeauConfiance && trust === true;
   const partage = regime.partage && snowball !== undefined;
-  const signatureVisible =
-    (signature === true ||
-      signature === "fondateur" ||
-      signature === "fondateur-court" ||
-      signature === "equipe") &&
-    (famille === "B" || famille === "D");
-  const signatureEquipe = signature === "equipe";
-  const signatureCourte = signature === "fondateur-court";
+  // Châssis par destinataire (lot S2) : posé, il PRIME sur les props héritées `signature` et
+  // `apresCta`. Absent, le rendu est celui d'avant.
+  const migre = destinataire !== undefined;
+  const interne = destinataire === "interne";
+  const ouvertureVisible = migre && !interne && ouverture !== undefined;
+  if (ouverture !== undefined && interne) {
+    console.error(
+      `[email/${famille}] « interne » n'a pas d'ouverture : ni salutation ni information en tête.`,
+    );
+  }
+  if (ouvertureVisible) assertOuvertureValide(ouverture.information, famille);
+  const salutationRendue = ouvertureVisible
+    ? destinataire === "apporteur"
+      ? salutation({ prenom: ouverture.identite.prenom }, locale)
+      : salutation(ouverture.identite, locale)
+    : null;
+  const signatureVisible = migre
+    ? !interne
+    : (signature === true ||
+        signature === "fondateur" ||
+        signature === "fondateur-court" ||
+        signature === "equipe") &&
+      (famille === "B" || famille === "D");
+  const signatureEquipe = !migre && signature === "equipe";
+  const signatureCourte = !migre && signature === "fondateur-court";
+  // Dessin de la signature par destinataire (plan §2.2-5) : le lien de signature suit le budget
+  // de liens de la famille (B ou D = LinkedIn personnel ; A ou C = sobre, aucun lien).
+  const pleineFamille = famille === "B" || famille === "D";
+  const signatureSobre = migre
+    ? !pleineFamille || destinataire === "stagiaire" || destinataire === "candidat"
+    : false;
+  const signaturePositionnement =
+    migre && destinataire === "client" && pleineFamille && !signatureSobre;
+  const signatureLinkedin = migre ? pleineFamille && !signatureSobre : true;
+  const soupapeVisible =
+    regime.soupapeReponse && destinataire !== "interne" && nature !== "securite";
+  const pasVousVisible = !interne && (mentionPasVous ?? nature === "accuse");
+  // Audit de sécurité S2 (constat 2) : la famille D (campagne) et la nature « marketing » gardent
+  // TOUJOURS le lien d'opposition, quelle que soit la déclaration de `destinataire` et de `nature`.
+  // Une erreur de déclaration ne doit pas retirer le moyen de s'opposer.
+  const natureSansOpposition = nature !== undefined && NATURES_SANS_OPPOSITION.includes(nature);
+  const oppositionPermise =
+    famille === "D" || nature === "marketing" || (!interne && !natureSansOpposition);
+  if (famille === "D" && process.env.NODE_ENV !== "production") {
+    if (natureSansOpposition) {
+      console.error(
+        `[email/D] nature « ${nature} » déclarée sur une campagne : le lien d'opposition est conservé.`,
+      );
+    }
+    if (interne) {
+      console.error(
+        "[email/D] destinataire « interne » déclaré sur une campagne : le lien d'opposition est conservé.",
+      );
+    }
+  }
+  const piedNature: string | null =
+    nature === "securite"
+      ? t.piedSecurite
+      : nature === "piece" || nature === "recouvrement"
+        ? t.piedDocument
+        : nature === "droits"
+          ? t.piedDroits
+          : null;
 
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
   // Étoiles = moyenne RÉELLE arrondie (jamais cinq étoiles posées d'office).
@@ -873,7 +1030,13 @@ export function EmailLayout({
         <style dangerouslySetInnerHTML={{ __html: DARK_MODE_STYLE }} />
       </Head>
       <Preview>{preview}</Preview>
-      <Body style={main} className="ax-body" data-famille={famille}>
+      <Body
+        style={main}
+        className="ax-body"
+        data-famille={famille}
+        data-destinataire={destinataire}
+        data-nature={nature}
+      >
         {/* Bandeau accent haut — énergie de marque */}
         <Section style={topbar}>&nbsp;</Section>
 
@@ -908,14 +1071,29 @@ export function EmailLayout({
 
           {/* Carte de contenu */}
           <Container style={card} className="ax-card">
-            {eyebrow && (
-              <Text style={eyebrowStyle} data-bloc="surtitre">
-                {eyebrow}
-              </Text>
+            {ouvertureVisible ? (
+              <>
+                {/* Avec une ouverture, le titre devient le surtitre : le « Bonjour… » est la
+                    première phrase lue, et il n'y a pas de grand titre au-dessus. */}
+                <Text style={eyebrowStyle} data-bloc="surtitre">
+                  {title}
+                </Text>
+                <Text style={{ ...paragraphStyle, margin: "0 0 14px 0" }} data-bloc="ouverture">
+                  {salutationRendue} {ouverture.information}
+                </Text>
+              </>
+            ) : (
+              <>
+                {eyebrow && (
+                  <Text style={eyebrowStyle} data-bloc="surtitre">
+                    {eyebrow}
+                  </Text>
+                )}
+                <Heading style={headingStyle} className="ax-heading ax-title" data-bloc="titre">
+                  {title}
+                </Heading>
+              </>
             )}
-            <Heading style={headingStyle} className="ax-heading ax-title" data-bloc="titre">
-              {title}
-            </Heading>
             {/* Marqueurs de mesure (lot S1) : vides et sautés du rendu texte. Les gardes
                 de `__tests__/` lisent la tranche du corps entre ces deux repères. */}
             <span data-bloc="debut-corps" data-skip-in-text="true" />
@@ -952,7 +1130,7 @@ export function EmailLayout({
                 )}
               </Section>
             )}
-            {apresCta}
+            {!migre && apresCta}
             {lienEspace && cta?.href !== lienEspace && (
               <Section
                 style={{ textAlign: "center", margin: "22px 0 4px 0" }}
@@ -1022,9 +1200,23 @@ export function EmailLayout({
               lien et zéro distraction, parce qu'on apprend aux gens à s'en
               méfier autrement (formation anti-hameçonnage).
             */}
-            {regime.soupapeReponse && (
+            {pasVousVisible && (
+              <Text
+                style={{ ...soupapeStyle, borderTop: "none", paddingTop: 0 }}
+                className="ax-muted"
+                data-bloc="pas-vous"
+              >
+                {t.pasVous}
+              </Text>
+            )}
+            {soupapeVisible && (
               <Text style={soupapeStyle} className="ax-muted" data-bloc="soupape">
                 {t.soupape}
+              </Text>
+            )}
+            {migre && !interne && (
+              <Text style={{ ...paragraphStyle, margin: "22px 0 0 0" }} data-bloc="politesse">
+                {destinataire === "apporteur" ? t.politesseTutoiement : t.politesse}
               </Text>
             )}
             {signatureVisible && (
@@ -1032,36 +1224,33 @@ export function EmailLayout({
                 <span style={signatureNameStyle}>
                   {signatureEquipe ? t.signatureEquipe : EMAIL_SIGNATURE.fullName}
                 </span>
-                <br />
                 {!signatureEquipe && (
                   <>
-                    <span style={{ color: C.muted }}>{t.signatureRole}</span>
                     <br />
+                    <span style={{ color: C.muted }}>{t.signatureRole}</span>
                   </>
                 )}
-                {!signatureCourte && (
+                {(migre ? signaturePositionnement : !signatureCourte) && (
                   <>
+                    <br />
                     <span style={{ color: C.muted, fontStyle: "italic" }}>
                       {t.signaturePositionnement}
                     </span>
                     <br />
                     <span style={{ color: C.muted, fontSize: "13px" }}>{t.signatureServices}</span>
-                    <br />
-                    <Link
-                      href={avecUtm(APPEL_URL, famille, "signature", campagne)}
-                      style={{ color: C.orangeDeep, fontWeight: 600 }}
-                    >
-                      {t.signatureRdv}
-                    </Link>
-                    {" · "}
                   </>
                 )}
-                <Link
-                  href={signatureEquipe ? SOCIALS.linkedinCompany : SOCIALS.linkedinWilliams}
-                  style={{ color: C.orangeDeep, fontWeight: 600 }}
-                >
-                  {t.signatureLinkedin}
-                </Link>
+                {signatureLinkedin && (
+                  <>
+                    <br />
+                    <Link
+                      href={signatureEquipe ? SOCIALS.linkedinCompany : SOCIALS.linkedinWilliams}
+                      style={{ color: C.orangeDeep, fontWeight: 600 }}
+                    >
+                      {t.signatureLinkedin}
+                    </Link>
+                  </>
+                )}
               </Text>
             )}
           </Container>
@@ -1120,11 +1309,9 @@ export function EmailLayout({
                 </>
               )}
               <br />
-              {famille === "A" ? (
+              {piedNature !== null || (famille === "A" && !migre) ? (
                 <>
-                  {t.autoNotice}
-                  <br />
-                  {t.autoNoticeAsk}{" "}
+                  {piedNature ?? t.autoNoticeAsk}{" "}
                   <Link
                     href={`mailto:${CONTACT_EMAIL}`}
                     style={{ color: C.orangeDeep, fontWeight: 600 }}
@@ -1164,7 +1351,7 @@ export function EmailLayout({
                   destinataire est connu du rendu, pas du gabarit. Portée écrite
                   dans le libellé : les sollicitations COMMERCIALES. Un stagiaire
                   qui clique garde sa convocation, un client garde sa facture. */}
-              {famille !== "A" && !unsubscribeHref && oppositionHref && (
+              {famille !== "A" && !unsubscribeHref && oppositionHref && oppositionPermise && (
                 <>
                   <br />
                   <Link
