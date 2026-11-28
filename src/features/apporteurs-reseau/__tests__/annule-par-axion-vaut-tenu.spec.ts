@@ -13,7 +13,10 @@ vi.mock("../commissions", () => ({
     (await import("./aide/base-annulations")).bd.jobIds.has(jobId),
 }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
-vi.mock("../validation-rendez-vous", () => ({ validerParRendezVous: vi.fn() }));
+vi.mock("../validation-rendez-vous", () => ({
+  validerParRendezVous: vi.fn(),
+  MESSAGE_DEJA_VALIDEE: "Cette entreprise est déjà validée : rien de plus à faire.",
+}));
 
 import { validerAnnulationsAxion } from "../annulations-rendez-vous";
 import { validerParRendezVous } from "../validation-rendez-vous";

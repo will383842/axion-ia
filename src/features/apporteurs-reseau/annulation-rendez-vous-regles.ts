@@ -34,3 +34,48 @@ export function echeanceQualification(constateeAt: Date): { alerte: Date; critiq
     critique: ajouterJoursOuvres(constateeAt, 10),
   };
 }
+
+type LigneAnnulation = {
+  rendezVousCle: string;
+  auteur: "axion" | "entreprise" | null;
+  constateeAt: Date;
+  reportCle: string | null;
+};
+
+/**
+ * Les clés qui ne retiennent PLUS, chaîne des reports comprise : un report qui est lui-même un
+ * rendez-vous annulé NE REND PAS la retenue de l'annulation précédente éternelle. Si le report B
+ * ne retient plus (entreprise, sans report, 15 jours passés), l'annulation A qui renvoyait à B
+ * cesse de retenir à son tour. Point fixe, borné par le nombre de lignes.
+ */
+export function clesSansRetenue(lignes: LigneAnnulation[], maintenant: Date): Set<string> {
+  const libres = new Set<string>();
+  let change = true;
+  while (change) {
+    change = false;
+    for (const l of lignes) {
+      if (libres.has(l.rendezVousCle)) continue;
+      const reportEteint = l.reportCle !== null && libres.has(l.reportCle);
+      const retient = annulationRetientEncore({
+        auteur: l.auteur,
+        constateeAt: l.constateeAt,
+        // Un report éteint n'est plus un report convenu : la fenêtre de 15 jours décide.
+        reportCle: reportEteint ? null : l.reportCle,
+        maintenant,
+      });
+      if (!retient) {
+        libres.add(l.rendezVousCle);
+        change = true;
+      }
+    }
+  }
+  return libres;
+}
+
+/** Un report ne se convient que dans les 15 jours de l'annulation : prise du report ≤ fin du 15e jour. */
+export function reportDansLesDelais(constateeAt: Date, reportPrisAt: Date): boolean {
+  return (
+    reportPrisAt.getTime() <=
+    finDuNiemeJourParis(constateeAt, JOURS_REPORT_APRES_ANNULATION).getTime()
+  );
+}

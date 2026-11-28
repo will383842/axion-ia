@@ -34,7 +34,11 @@ export function ok(row: Ligne, where: Ligne): boolean {
   return Object.entries(where).every(([k, v]) => {
     if (k === "OR") return (v as Ligne[]).some((w) => ok(row, w));
     if (k === "AND") return (v as Ligne[]).every((w) => ok(row, w));
-    if (k === "NOT") return !ok(row, v as Ligne);
+    // Logique SQL : `NOT (col = x)` est INCONNU (donc exclu) quand `col` vaut NULL.
+    if (k === "NOT")
+      return Object.entries(v as Ligne).every(
+        ([c, w]) => row[c] !== null && row[c] !== undefined && !ok(row, { [c]: w }),
+      );
     const x = row[k];
     if (v === null) return x === null || x === undefined;
     if (v instanceof Date) return x instanceof Date && x.getTime() === v.getTime();

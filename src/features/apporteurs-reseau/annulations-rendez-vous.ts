@@ -14,7 +14,7 @@
 import { prisma } from "@/lib/prisma";
 
 import { alerteInterne } from "./alerte-interne";
-import { annulationRetientEncore, echeanceQualification } from "./annulation-rendez-vous-regles";
+import { clesSansRetenue, echeanceQualification } from "./annulation-rendez-vous-regles";
 import { tableAbsente } from "./reservation-presentation";
 import {
   type EtatSourceRendezVous,
@@ -23,7 +23,8 @@ import {
   lireSourceRendezVous,
   rendezVousNonTenu,
 } from "./statut-rendez-vous";
-import { validerParRendezVous } from "./validation-rendez-vous";
+import { signalerErreurReseau } from "./signaler";
+import { MESSAGE_DEJA_VALIDEE, validerParRendezVous } from "./validation-rendez-vous";
 
 const PAGE_MAX = 5000;
 
@@ -162,7 +163,11 @@ export async function constaterAnnulations(maintenant: Date): Promise<number> {
 
   // Report convenu détecté seul (rencontre qui remplace l'invité annulé).
   const sansReport = await prisma.annulationRendezVousPresentation.findMany({
-    where: { presentationId: { in: ids }, reportCle: null, NOT: { auteur: "axion" } },
+    where: {
+      presentationId: { in: ids },
+      reportCle: null,
+      OR: [{ auteur: null }, { auteur: "entreprise" }],
+    },
     select: { id: true, rendezVousCle: true },
   });
   for (const l of sansReport) {
@@ -247,25 +252,42 @@ export async function validerAnnulationsAxion(maintenant: Date): Promise<number>
   let validees = 0;
   for (const l of lignes) {
     if (!l.prevuAt) continue;
-    const r = await validerParRendezVous(
-      {
-        presentationId: l.presentationId,
-        rendezVousCle: null,
-        prisAt: l.prisAt,
-        tenuAt: l.prevuAt,
-        source: "saisie",
-        canal: "annule_par_axion",
-        acteurId: ACTEUR_ANNULATION_AXION,
-        motif: MOTIF_ANNULE_PAR_AXION,
-      },
-      maintenant,
-    );
-    if (r.ok) {
+    let r: Awaited<ReturnType<typeof validerParRendezVous>>;
+    try {
+      r = await validerParRendezVous(
+        {
+          presentationId: l.presentationId,
+          rendezVousCle: null,
+          prisAt: l.prisAt,
+          tenuAt: l.prevuAt,
+          source: "saisie",
+          canal: "annule_par_axion",
+          acteurId: ACTEUR_ANNULATION_AXION,
+          motif: MOTIF_ANNULE_PAR_AXION,
+        },
+        maintenant,
+      );
+    } catch (err) {
+      // Une ligne en erreur ne bloque pas les suivantes : alerte interne (identifiants seuls).
+      signalerErreurReseau("annulation-axion-validation", err);
+      await alerteInterne({
+        jobId: `apporteur-annulation-axion-erreur-${l.id}`,
+        code: "apporteur_annulation_axion_erreur",
+        titre: "Rendez-vous annulé par Axion IA : erreur de validation",
+        message:
+          "La validation « annulé par Axion IA, réputé tenu » a échoué sur une erreur technique. Elle sera retentée au prochain passage ; si l'alerte revient, regardez les journaux.",
+        cibleType: "PresentationEntreprise",
+        cibleId: l.presentationId,
+        maintenant,
+      });
+      continue;
+    }
+    if (r.ok || r.message === MESSAGE_DEJA_VALIDEE) {
       await prisma.annulationRendezVousPresentation.updateMany({
         where: { id: l.id, validationFaiteAt: null },
         data: { validationFaiteAt: maintenant },
       });
-      validees += 1;
+      if (r.ok) validees += 1;
     } else {
       await alerteInterne({
         jobId: `apporteur-annulation-axion-refus-${l.id}`,
@@ -291,18 +313,14 @@ export async function clesQuiNeRetiennentPlus(
       where: { presentationId },
       select: { rendezVousCle: true, auteur: true, constateeAt: true, reportCle: true },
     });
-    return new Set(
-      lignes
-        .filter(
-          (l) =>
-            !annulationRetientEncore({
-              auteur: l.auteur === "axion" || l.auteur === "entreprise" ? l.auteur : null,
-              constateeAt: l.constateeAt,
-              reportCle: l.reportCle,
-              maintenant,
-            }),
-        )
-        .map((l) => l.rendezVousCle),
+    return clesSansRetenue(
+      lignes.map((l) => ({
+        rendezVousCle: l.rendezVousCle,
+        auteur: l.auteur === "axion" || l.auteur === "entreprise" ? l.auteur : null,
+        constateeAt: l.constateeAt,
+        reportCle: l.reportCle,
+      })),
+      maintenant,
     );
   } catch (err) {
     if (!tableAbsente(err)) throw err;

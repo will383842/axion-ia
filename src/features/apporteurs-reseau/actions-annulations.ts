@@ -11,6 +11,7 @@ import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
+import { annulationRetientEncore, reportDansLesDelais } from "./annulation-rendez-vous-regles";
 import type { EtatAction } from "./actions-presentations";
 
 const ROLES = new Set(["super_admin", "admin"]);
@@ -100,7 +101,7 @@ export async function lierReportAction(_prev: EtatAction, fd: FormData): Promise
   try {
     const ligne = await prisma.annulationRendezVousPresentation.findUnique({
       where: { id },
-      select: { presentationId: true, rendezVousCle: true, auteur: true },
+      select: { presentationId: true, rendezVousCle: true, auteur: true, constateeAt: true },
     });
     if (!ligne) return { etat: "erreur", message: "Annulation introuvable." };
     if (ligne.auteur !== "entreprise")
@@ -110,14 +111,27 @@ export async function lierReportAction(_prev: EtatAction, fd: FormData): Promise
       };
     if (reportCle === ligne.rendezVousCle)
       return { etat: "erreur", message: "Le report doit être un autre rendez-vous." };
+    const maintenant = new Date();
+    if (
+      !annulationRetientEncore({
+        auteur: "entreprise",
+        constateeAt: ligne.constateeAt,
+        reportCle: null,
+        maintenant,
+      })
+    )
+      return {
+        etat: "erreur",
+        message: "Les 15 jours sont passés : un report ne peut plus être lié à cette annulation.",
+      };
     const [proposition, reservation] = await Promise.all([
       prisma.propositionRendezVousPresentation.findFirst({
         where: { presentationId: ligne.presentationId, rendezVousCle: reportCle },
-        select: { id: true },
+        select: { id: true, prisAt: true },
       }),
       prisma.presentationReservation.findFirst({
         where: { presentationId: ligne.presentationId, rendezVousCle: reportCle },
-        select: { presentationId: true },
+        select: { presentationId: true, rendezVousPrisAt: true },
       }),
     ]);
     if (!proposition && !reservation)
@@ -125,9 +139,16 @@ export async function lierReportAction(_prev: EtatAction, fd: FormData): Promise
         etat: "erreur",
         message: "Ce rendez-vous n'est pas connu pour cette présentation.",
       };
+    const reportPrisAt = proposition?.prisAt ?? reservation?.rendezVousPrisAt ?? null;
+    if (!reportPrisAt || !reportDansLesDelais(ligne.constateeAt, reportPrisAt))
+      return {
+        etat: "erreur",
+        message:
+          "Ce rendez-vous n'a pas été pris dans les 15 jours de l'annulation : ce n'est pas un report convenu.",
+      };
     const r = await prisma.annulationRendezVousPresentation.updateMany({
       where: { id, auteur: "entreprise" },
-      data: { reportCle, reportLieAt: new Date() },
+      data: { reportCle, reportLieAt: maintenant },
     });
     if (r.count !== 1) return { etat: "erreur", message: "Annulation introuvable." };
     await prisma.activityLog.create({
