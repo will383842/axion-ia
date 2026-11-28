@@ -23,6 +23,11 @@ import {
   slugSchema,
 } from "@/lib/equipe/console/schemas";
 import { exigerAdministrateur, type AdministrateurEquipe } from "@/server/equipe-garde";
+import {
+  effacerDefinitivement,
+  remettreLienRetrait,
+  retirerUnConsentement,
+} from "@/server/equipe/retrait/retrait";
 
 export type ResultatAction<T extends object = object> =
   ({ ok: true } & T) | { ok: false; erreur: string; champs?: Record<string, string> };
@@ -567,7 +572,11 @@ export async function publierCollaborateur(id: unknown): Promise<ResultatAction<
     aRevalider = m.slug;
     return { ok: true as const, slug: m.slug };
   });
-  if (res.ok && aRevalider) revalider(aRevalider);
+  if (res.ok && aRevalider) {
+    revalider(aRevalider);
+    // Le lien personnel de retrait est remis à la publication (sans adresse : rien n'est envoyé).
+    await remettreLienRetrait(idOk.data);
+  }
   return res;
 }
 
@@ -661,4 +670,48 @@ export async function basculerPointCarte(
   });
   if (res.ok && aRevalider) revalider(aRevalider);
   return res;
+}
+
+// ───────────────────────── Retrait d'un consentement, effacement réel ─────────────────────────
+
+/** Retire UN consentement : « photo » (retour à l'avatar), « linkedin », ou « total » (dépublication). */
+export async function retirerConsentementCollaborateur(
+  id: unknown,
+  consentement: unknown,
+): Promise<ResultatAction<{ slug: string }>> {
+  const admin = await adminOuRefus();
+  if (!admin) return { ok: false, erreur: ERREUR_ACCES };
+  const idOk = idSchema.safeParse(id);
+  if (!idOk.success) return { ok: false, erreur: "Identifiant invalide." };
+  if (consentement !== "photo" && consentement !== "linkedin" && consentement !== "total") {
+    return { ok: false, erreur: "Consentement inconnu." };
+  }
+  return retirerUnConsentement({
+    memberId: idOk.data,
+    consentement,
+    acteur: admin.userId,
+  });
+}
+
+/**
+ * EFFACEMENT RÉEL, sur demande de la personne (RGPD) : exception décidée par le propriétaire à la
+ * règle de non-suppression, pour les fiches collaborateurs seulement. Administrateur seulement,
+ * confirmation explicite (« EFFACER ») revérifiée ici.
+ */
+export async function effacerCollaborateurDefinitivement(
+  id: unknown,
+  confirmation: unknown,
+  demandeLe?: unknown,
+): Promise<ResultatAction> {
+  const admin = await adminOuRefus();
+  if (!admin) return { ok: false, erreur: ERREUR_ACCES };
+  const idOk = idSchema.safeParse(id);
+  if (!idOk.success) return { ok: false, erreur: "Identifiant invalide." };
+  if (typeof confirmation !== "string") return { ok: false, erreur: "Confirmation manquante." };
+  return effacerDefinitivement({
+    memberId: idOk.data,
+    confirmation,
+    acteur: admin.userId,
+    demandeLe: typeof demandeLe === "string" && demandeLe !== "" ? demandeLe : null,
+  });
 }

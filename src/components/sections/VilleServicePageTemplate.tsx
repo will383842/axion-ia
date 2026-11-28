@@ -7,6 +7,7 @@
 //   - Mise à jour 18/11/2026 : TOUTES ces pages sont en `noindex, follow`, hors
 //     sitemaps (une seule page indexée par ville, cf. villes-indexees.ts).
 
+import { villeIndexableParPorte } from "@/lib/villes-porte-qualite";
 import type { Metadata } from "next";
 import { ArrowUpRight, MapPin, Users } from "lucide-react";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -256,6 +257,10 @@ export async function buildPageMetadata(
   if (!hasCopy) {
     return { ...result, robots: { index: false, follow: true } };
   }
+  // Porte de qualité (28/11/2026), drapeau ÉTEINT par défaut : éteint, `villeIndexableParPorte`
+  // rend toujours false (noindex, follow, comme avant). Allumé, seule une ville qui a passé la
+  // porte (contenu propre, sourcé, sans doublon) devient indexable.
+  const indexableParPorte = villeIndexableParPorte(ville.slug);
   return {
     ...result,
     other: {
@@ -263,7 +268,7 @@ export async function buildPageMetadata(
         ? (serviceCopy?.fr.hero.slice(0, 155) ?? description)
         : (serviceCopy?.en.hero.slice(0, 155) ?? description),
     },
-    robots: { index: false, follow: true },
+    robots: { index: indexableParPorte, follow: true },
   };
 }
 

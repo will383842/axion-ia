@@ -6,6 +6,7 @@ const etat = vi.hoisted(() => ({
   signeeAt: new Date("2026-12-01T00:00:00Z") as Date | null,
   // Version signée par l'apporteur de la présentation (décision du 27/11 : elle choisit la grille).
   version: "2.8" as unknown,
+  lignes: [{ designation: "Conférence plénière", quantite: 1 }] as unknown,
   maj: [] as Array<{ where: Record<string, unknown>; data: Record<string, unknown> }>,
 }));
 
@@ -26,7 +27,11 @@ vi.mock("@/lib/prisma", () => ({
       aggregate: vi.fn(async () => ({ _sum: { montantCents: 0 } })),
     },
     factureFormation: {
-      findUnique: vi.fn(async () => ({ emiseAt: etat.signeeAt, devis: null })),
+      findUnique: vi.fn(async () => ({
+        emiseAt: etat.signeeAt,
+        devis: null,
+        lignes: etat.lignes,
+      })),
     },
     presentationEntreprise: {
       findUnique: vi.fn(async () => ({
@@ -62,6 +67,7 @@ beforeEach(() => {
   etat.maj = [];
   etat.signeeAt = new Date("2026-12-01T00:00:00Z");
   etat.version = "2.8";
+  etat.lignes = [{ designation: "Conférence plénière", quantite: 1 }];
 });
 
 describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou classée « aucune »", () => {
@@ -217,6 +223,40 @@ describe("décision du 27/11 : la grille du contrat SIGNÉ (signataire 2.6 sans 
       ok: true,
       montantCents: 50_000,
     });
+  });
+  it("classement en conférence, 3 conférences au devis, signataire 2.6 : 1 500 €", async () => {
+    etat.version = "2.6";
+    etat.lignes = [
+      { designation: "Conférence plénière", quantite: 3, prixUnitaireHtCents: 240_000 },
+    ];
+    etat.commission = { ...ligne, factureHtCents: 720_000 };
+    const r = await classerActiviteCommission("C1", "conference");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 150_000 });
+  });
+  it("qualifier une ligne de conférence au palier « conférence », quantité 3, signataire 2.6 : 1 500 €", async () => {
+    etat.version = "2.6";
+    etat.commission = { ...ligne, activite: "conference", factureHtCents: 720_000 };
+    expect(await qualifierCommission("C1", "conference", 3)).toEqual({
+      ok: true,
+      montantCents: 150_000,
+    });
+  });
+  it("la console propose le palier conférence sur une ligne de conférence à qualifier", async () => {
+    const { readFileSync } = await import("node:fs");
+    const src = readFileSync(
+      "src/app/[locale]/(admin)/[adminPrefix]/apporteurs/commissions/page.tsx",
+      "utf8",
+    );
+    expect(src).toMatch(/PALIERS_CONFERENCE\s*=\s*\[[\s\S]*id:\s*PALIER_CONFERENCE/);
+    expect(src).toMatch(/c\.activite === "conference" \? PALIERS_CONFERENCE/);
+  });
+  it("classement en conférence, quantité illisible, signataire 2.6 : refus, rien d'écrit", async () => {
+    etat.version = "2.6";
+    etat.lignes = [{ designation: "Conférence plénière", quantite: 1.5 }];
+    const r = await classerActiviteCommission("C1", "conference");
+    expect(r.ok).toBe(false);
+    expect(etat.maj).toEqual([]);
   });
   it("développement web : aucune commission (A1.5 de la 2.6), ligne close à 0 €", async () => {
     const r = await classerActiviteCommission("C1", "site_web");

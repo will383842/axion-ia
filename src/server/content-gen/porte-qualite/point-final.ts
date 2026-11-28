@@ -99,9 +99,16 @@ export interface DepsPointFinal {
   readonly ecrireVerdict: (ligne: LigneVerdictEcrite) => Promise<unknown>;
   readonly maintenant: () => Date;
   readonly journal: (message: string, detail?: Record<string, unknown>) => void;
-  /** Branché par Q11. Absent : pas de plafond de sécurité. */
-  readonly plafondSecurite?: (() => Promise<number | null>) | undefined;
-  readonly compterPublies?: (() => Promise<number>) | undefined;
+  /**
+   * Plafond de sécurité du jour (Q11), toujours fourni AVEC le compte des publications :
+   * un plafond sans compte reporterait tout, sans que rien ne le dise.
+   */
+  readonly plafond?:
+    | {
+        readonly plafondSecurite: () => Promise<number | null>;
+        readonly compterPublies: () => Promise<number>;
+      }
+    | undefined;
 }
 
 const estTableAbsente = (e: unknown): boolean =>
@@ -123,11 +130,11 @@ export async function appliquerPointFinal(
     }
     let plafond: number | null = null;
     let publie: Source<number> | null = null;
-    if (deps.plafondSecurite) {
+    if (deps.plafond) {
       try {
-        plafond = await deps.plafondSecurite();
-        if (plafond !== null && deps.compterPublies) {
-          publie = { etat: "ok", valeur: await deps.compterPublies() };
+        plafond = await deps.plafond.plafondSecurite();
+        if (plafond !== null) {
+          publie = { etat: "ok", valeur: await deps.plafond.compterPublies() };
         }
       } catch {
         plafond = plafond ?? 0;

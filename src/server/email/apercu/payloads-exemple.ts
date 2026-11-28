@@ -149,6 +149,9 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   // `apporteur-file-attente-premier-rang` (gabarit livré avant son émetteur) : exemple FICTIF.
   entreprise: "Société Exemple",
   jusquAu: "12 décembre 2026",
+  // `apporteur-avenant-*` (lot S4, sans émetteur) : exemple FICTIF.
+  versionSignee: "2.6",
+  dateEffet: "15 décembre 2026",
   // `apporteur-releve-mensuel` (gabarit dormant) : exemple FICTIF, tout est facultatif.
   mois: "octobre 2026",
   totalMois: "1 450,00 €",

@@ -17,9 +17,23 @@ interface Props {
   etat: { active: boolean; variable: boolean; console: boolean; raison?: string };
   quotas: { articlesMaxJour: number; majMaxJour: number };
   aRelire: ReadonlyArray<ArticleSerialise>;
+  delais?: {
+    medianeHeures30j: number | null;
+    articles: ReadonlyArray<{
+      id: string;
+      titre: string;
+      publieLe: string;
+      delaiHeures: number | null;
+    }>;
+  } | null;
 }
 
-export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire }: Props) {
+function libelleDelai(h: number | null): string {
+  if (h === null) return "pas encore vu indexé";
+  return h < 48 ? `${h} h` : `${Math.round(h / 24)} j`;
+}
+
+export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire, delais }: Props) {
   const [enCours, demarrer] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
   const [articles, setArticles] = useState(String(quotas.articlesMaxJour));
@@ -128,6 +142,29 @@ export function EquipeEditorialeClient({ adminPrefix, etat, quotas, aRelire }: P
           .
         </p>
       </section>
+
+      {delais && (
+        <section aria-labelledby="delais" className="space-y-2">
+          <h2 id="delais" className="text-lg font-medium">
+            Délai avant indexation (médiane 30 jours :{" "}
+            {delais.medianeHeures30j === null
+              ? "aucune mesure"
+              : libelleDelai(delais.medianeHeures30j)}
+            )
+          </h2>
+          <p className="text-sm">
+            Borne haute, lue sur le contrôle d&apos;indexation des pages : la précision est celle de
+            sa rotation.
+          </p>
+          <ul className="space-y-1 text-sm">
+            {delais.articles.map((a) => (
+              <li key={a.id}>
+                {a.titre} — publié le {a.publieLe.slice(0, 10)} : {libelleDelai(a.delaiHeures)}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section aria-labelledby="relire" className="space-y-3">
         <h2 id="relire" className="text-lg font-medium">

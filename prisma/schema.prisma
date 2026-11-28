@@ -19634,6 +19634,30 @@ model RobotIaJour {
   @@map("robot_ia_jours")
 }
 
+/// Panel GEO (P11) : une question posée à Claude + `web_search`, un jour donné. On garde les URL et
+/// domaines cités, la présence et le rang d'axion-ia.com ; JAMAIS le texte intégral de la réponse.
+/// `question_id` + `version` désignent la question de la liste validée par Will.
+/// rgpd: technique — questions génériques de dirigeants et URL publiques citées ; aucune donnée sur une personne
+model GeoPanelReponse {
+  id             Int      @id @default(autoincrement())
+  date           DateTime @db.Date
+  questionId     String   @map("question_id") @db.VarChar(20)
+  version        String   @db.VarChar(20)
+  moteur         String   @db.VarChar(40)
+  question       String   @db.VarChar(300)
+  urlsCitees     Json     @default("[]") @map("urls_citees")
+  domainesCites  Json     @default("[]") @map("domaines_cites")
+  presente       Boolean  @default(false)
+  rang           Int?
+  nbRecherches   Int      @default(0) @map("nb_recherches")
+  coutUsd        Float    @default(0) @map("cout_usd")
+  creeLe         DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@unique([date, questionId, version, moteur], map: "geo_panel_reponses_cle_key")
+  @@index([date], map: "geo_panel_reponses_date_idx")
+  @@map("geo_panel_reponses")
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Chaîne éditoriale IA (C3) : tables NOUVELLES, additives, non branchées.
 // Aucune énumération Postgres : statuts, intentions, rôles et codes de raison sont du TEXTE

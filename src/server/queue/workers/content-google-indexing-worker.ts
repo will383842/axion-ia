@@ -18,6 +18,7 @@
 import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { estUrlEligibleIndexingApiGoogle } from "@/server/content-gen/indexing/enqueue";
 import { indexingPublishUrl, isIndexingApiReady } from "@/server/content-gen/seo/indexing-client";
 
 const QUEUE_NAME = "content-google-indexing";
@@ -36,6 +37,12 @@ async function processJob(job: Job<GoogleIndexingJobPayload>): Promise<void> {
   });
   if (killSwitch.active) {
     console.log(`[google-indexing] kill switch active, skip ${url} type=${type}`);
+    return;
+  }
+
+  // Garde-fou (2026-11-28) : jamais d'article — JobPosting / BroadcastEvent seulement.
+  if (!estUrlEligibleIndexingApiGoogle(url)) {
+    console.warn(`[google-indexing] URL refusée (hors JobPosting/BroadcastEvent) : ${url}`);
     return;
   }
 
