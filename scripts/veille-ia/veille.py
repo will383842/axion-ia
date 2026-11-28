@@ -151,6 +151,10 @@ def main() -> None:
     etat = charger_etat(chemin)
     premier_passage = not etat
     vus: dict[str, list[str]] = etat.get("vus", {})
+    # Sources déjà connues AVANT ce passage : une source vue pour la première
+    # fois (ou en panne au premier passage) est enregistrée sans notifier,
+    # sinon tout son flux (~1 400 articles chez OpenAI) passerait pour nouveau.
+    connues = set(vus)
     lignes: list[str] = []
     erreurs: list[str] = []
 
@@ -181,12 +185,11 @@ def main() -> None:
             continue
         deja = set(vus.get(nom, []))
         nouveaux = [(l, t) for l, t in items if l not in deja]
-        # Garde les 400 derniers liens connus par source (le fichier reste petit).
         # Garde tout le flux courant + 400 anciens liens (OpenAI publie ~1 400
         # articles dans son flux : couper en dessous ferait revenir les anciens).
         courants = [l for l, _ in items]
         vus[nom] = courants + [l for l in deja if l not in set(courants)][:400]
-        if premier_passage or not nouveaux:
+        if premier_passage or nom not in connues or not nouveaux:
             continue
         lignes.append(f"<b>{html.escape(nom)}</b>")
         for lien, titre in nouveaux[:MAX_PAR_SOURCE]:
@@ -199,8 +202,6 @@ def main() -> None:
         lignes.append("")
 
     etat["vus"] = vus
-    with open(chemin, "w", encoding="utf-8") as f:
-        json.dump(etat, f, ensure_ascii=False)
 
     if premier_passage:
         statut = etat.get("startups", "inconnu")
@@ -210,14 +211,24 @@ def main() -> None:
             "🔥 = à regarder en priorité (prix, crédits, nouveaux modèles, Claude Code, startups…).",
             f"Programme Claude for Startups : {'fermé' if statut == 'ferme' else statut} pour l'instant, je te préviens dès qu'il rouvre.",
         ]
-    if erreurs:
-        lignes.append("⚠️ Sources illisibles aujourd'hui : " + ", ".join(erreurs))
-    if not lignes:
+    # Une panne d'un jour arrive (flux momentanément vide ou en HTML) : on ne
+    # signale une source qu'à partir du 2e passage consécutif en échec.
+    pannes_avant: dict[str, int] = etat.get("pannes", {})
+    pannes = {e.split(" (")[0]: pannes_avant.get(e.split(" (")[0], 0) + 1 for e in erreurs}
+    etat["pannes"] = pannes
+    durables = [e for e in erreurs if pannes[e.split(" (")[0]] >= 2]
+    if durables:
+        lignes.append("⚠️ Sources illisibles depuis 2 jours ou plus : " + ", ".join(durables))
+    if lignes:
+        entete = "🤖 <b>Veille IA du jour</b>\n" if not premier_passage else ""
+        for i, morceau in enumerate(decouper(lignes)):
+            envoyer((entete if i == 0 else "") + morceau)
+    else:
         print("Rien de nouveau : aucun message envoyé.")
-        return
-    entete = "🤖 <b>Veille IA du jour</b>\n" if not premier_passage else ""
-    for i, morceau in enumerate(decouper(lignes)):
-        envoyer((entete if i == 0 else "") + morceau)
+    # L'état n'est écrit qu'APRÈS un envoi réussi (envoyer() quitte en erreur
+    # sinon) : un message perdu, surtout l'alerte « rouvert », repart demain.
+    with open(chemin, "w", encoding="utf-8") as f:
+        json.dump(etat, f, ensure_ascii=False)
     if len(erreurs) == len(SOURCES) + 1:
         sys.exit(1)  # tout est illisible : on veut voir le passage en rouge
 
