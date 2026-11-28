@@ -4,1961 +4,609 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Maquette v3 · Accueil du blog · Axion-IA</title>
-<meta name="description" content="Maquette v3 de la page d’accueil du blog Axion-IA (/fr/blog) : article à la une, accès par question, par secteur et par service, derniers articles, guides piliers, chiffres, lettre d’information, pagination.">
-<style>
-/* ===== DÉBUT SOCLE (copie de _socle.css) ===== */
-/* =============================================================================
-   SOCLE VISUEL v2 — modèles de pages d'articles Axion-IA
-   -----------------------------------------------------------------------------
-   Fichier de RÉFÉRENCE : chaque maquette recopie ce bloc INLINE dans son <style>,
-   puis ajoute à la suite ses quelques règles propres au modèle.
-
-   Règles du socle
-   - Hexadécimaux : UNIQUEMENT dans :root (mêmes noms que src/app/globals.css).
-     Ailleurs : var(--…) ou color-mix() d'un jeton avec transparent.
-   - Graisses : Manrope 400/600, Fraunces 500/600 (+ italique). Jamais 700/800.
-   - Zéro JavaScript. Mobile d'abord ; mise en page ordinateur à partir de 1024 px.
-   - Surfaces sombres : ajouter .sur-sombre (mocha) ou .sur-terracotta pour que liens
-     et anneaux de focus prennent une couleur lisible sur ce fond.
-   - Encadré = fonction fixe pour tout le site (couleur + icône SVG + libellé TEXTE
-     dans le DOM ; ::before/::after ne portent QUE du décor) :
-       sage-soft « À retenir » · ochre-soft « Attention » · plum-soft « Exemple concret »
-       primary-soft « Modèle à reprendre » · terracotta-soft « Chiffre clé » / citation
-       sable « Le saviez-vous ? » · papier pointillé « Bon à savoir » · mocha = temps forts.
-
-   Structure HTML attendue (ordre du DOM = ordre de lecture)
-     .bande-ariane > nav[aria-label="Fil d'Ariane"]
-     main > .mise-en-page
-       article.article
-         header.heros            (h1, chapô, méta)       → ligne 1, pleine largeur
-         div.article__ouverture  (figure.visuel + aside.en-bref)        → ligne 2
-         nav.sommaire > details > summary + ol   → colonne droite, collant (ordinateur)
-         div.article__corps      (sections, FAQ, sources, auteur)       → ligne 3
-       aside.action[aria-label="Passer à l'action"]   → carte collante / barre fixe
-       (puis hors article : à lire aussi, guide gratuit, appel de fin)
-
-   Sections : 01 Jetons · 02 Base · 03 Typographie · 04 Utilitaires & focus
-   05 Progression · 06 Bandeau maquette, en-tête du site, fil d'Ariane · 07 Héros
-   08 Visuel · 09 Grille · 10 Sommaire · 11 Boutons · 12 Carte d'action / barre mobile
-   13 Encadrés · 14 Citation · 15 Cartes, schéma, chiffres, frise · 16 Tableau
-   17 Checklist, relance, séparateurs · 18 Résumé de fin · 19 Encarts d'action
-   20 FAQ, sources, auteur, partage, liens · 21 Préférences utilisateur
-   ========================================================================== */
-
-/* 00 — POLICES : les fichiers de production eux-mêmes (chemin relatif, aucun réseau).
-   Sans eux la maquette s'affichait en Georgia/Times : ce n'était pas la typographie du site. */
-@font-face {
-  font-family: "Manrope";
-  src: url("../../../../src/fonts/manrope-latin-var.woff2") format("woff2");
-  font-weight: 200 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Fraunces";
-  src: url("../../../../src/fonts/fraunces-latin-var.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Fraunces";
-  src: url("../../../../src/fonts/fraunces-latin-var-italic.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Inconsolata";
-  src: url("../../../../src/fonts/inconsolata-latin-var.woff2") format("woff2");
-  font-weight: 200 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Replis métriques de PRODUCTION (copie de src/app/globals.css) : au swap des polices le texte ne reflue pas (CLS) */
-@font-face {
-  font-family: "Manrope Fallback";
-  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
-  font-weight: 400 500;
-  font-style: normal;
-  size-adjust: 103.76%;
-  ascent-override: 102.74%;
-  descent-override: 28.91%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Manrope Fallback";
-  src:
-    local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"),
-    local("LiberationSans-Bold");
-  font-weight: 600 800;
-  font-style: normal;
-  size-adjust: 99.27%;
-  ascent-override: 107.38%;
-  descent-override: 30.22%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
-    local("LiberationSerif");
-  font-weight: 400;
-  font-style: normal;
-  size-adjust: 115.46%;
-  ascent-override: 84.71%;
-  descent-override: 22.09%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
-    local("LiberationSerif");
-  font-weight: 500;
-  font-style: normal;
-  size-adjust: 117.37%;
-  ascent-override: 83.33%;
-  descent-override: 21.73%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"),
-    local("LiberationSerif-Bold");
-  font-weight: 600 900;
-  font-style: normal;
-  size-adjust: 112.22%;
-  ascent-override: 87.15%;
-  descent-override: 22.72%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
-    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
-  font-weight: 400;
-  font-style: italic;
-  size-adjust: 111.67%;
-  ascent-override: 87.58%;
-  descent-override: 22.84%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
-    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
-  font-weight: 500;
-  font-style: italic;
-  size-adjust: 114.32%;
-  ascent-override: 85.55%;
-  descent-override: 22.3%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"),
-    local("Liberation Serif Bold Italic"), local("LiberationSerif-BoldItalic");
-  font-weight: 600 900;
-  font-style: italic;
-  size-adjust: 114.07%;
-  ascent-override: 85.74%;
-  descent-override: 22.35%;
-  line-gap-override: 0%;
-}
-
-/* 01 — JETONS (seul endroit avec des hexadécimaux) ------------------------- */
-:root {
-  --color-bg: #faf8f3;
-  --color-paper: #ffffff;
-  --color-sand: #f0e9da;
-  --color-sand-deep: #e6dcc4;
-  --color-mocha: #2a2520;
-  --color-mocha-soft: #3d362f;
-  --color-ink: #14100e;
-  --color-mocha-fg: #f7f3ea;
-  --color-mocha-fg-muted: #b5aa9c;
-  --color-terracotta-on-mocha: #eb8560;
-  --color-fg: #1a1815;
-  --color-fg-soft: #524b41;
-  --color-fg-muted: #5a4f44;
-  --color-primary: #1a4dd9;
-  --color-primary-hover: #0f3aae;
-  --color-primary-fg: #ffffff;
-  --color-primary-soft: #e8efff;
-  --color-terracotta: #b23f16;
-  --color-terracotta-soft: #f5e3d8;
-  --color-terracotta-deep: #8c3010;
-  --color-sage: #5e6c54;
-  --color-sage-soft: #e6ebe2;
-  --color-ochre: #b06a12;
-  --color-ochre-soft: #f6e7cf;
-  --color-ochre-deep: #7d4a0a;
-  --color-plum: #7c4a63;
-  --color-plum-soft: #efe2ea;
-  --color-plum-deep: #5a3348;
-  --color-border: #e5ddc8;
-  --color-border-strong: #c8bda0;
-  --color-border-field: #8a7f6c;
-  --color-border-on-mocha: #4a4239;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 20px;
-  --radius-2xl: 28px;
-  --radius-full: 9999px;
-  --header-h: 5rem;
-
-  /* Dérivés : aucune couleur nouvelle, seulement des jetons */
-  --font-sans:
-    "Manrope", "Manrope Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
-    sans-serif;
-  --font-serif:
-    "Fraunces", "Fraunces Fallback", "Iowan Old Style", "Palatino Linotype", Palatino,
-    "URW Palladio L", P052, serif;
-  --font-mono: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --ombre-douce:
-    0 1px 2px color-mix(in srgb, var(--color-mocha) 8%, transparent),
-    0 14px 34px -14px color-mix(in srgb, var(--color-mocha) 28%, transparent);
-  --ombre-bloc: 6px 6px 0 var(--color-terracotta);
-  --ombre-legere:
-    0 1px 2px color-mix(in srgb, var(--color-mocha) 4%, transparent),
-    0 4px 8px color-mix(in srgb, var(--color-mocha) 6%, transparent);
-  --gouttiere: 16px;
-  /* Largeurs en em, jamais en ch : ch dépend de la police (Manrope 0,610 em, repli Arial 0,577 em ;
-     Fraunces 600 0,675 em, repli Times 0,561 em) et ferait refluer le texte au swap = CLS. */
-  --largeur-lecture: 41.5em; /* = 68ch Manrope */
-  --largeur-page: 80rem;
-  --hauteur-barre-mobile: 4.75rem;
-  /* Hauteur RÉSERVÉE à la carte d'action sur ordinateur : la carte a cette hauteur au minimum
-     (min-height), et le sommaire collant se pose juste dessous. Recalée par hauteur d'écran (section 12). */
-  --hauteur-carte: 33.5rem;
-  /* Sommaire collant sous la carte : place restante de l'écran */
-  --sommaire-haut: calc(var(--header-h) + 1rem + var(--hauteur-carte) + 1rem);
-  --sommaire-max: max(10rem, calc(100dvh - var(--sommaire-haut) - 1rem));
-  --focus-clair: var(--color-primary);
-  /* Anneau sur fond sombre : ivoire, lisible à la fois sur mocha (14,3:1) et sur les aplats
-     terracotta décoratifs qui passent sous les liens (5,2:1) ; terracotta-on-mocha y tombait à 2,2:1 */
-  --focus-sombre: var(--color-mocha-fg);
-}
-
-/* 02 — BASE ---------------------------------------------------------------- */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-html {
-  color-scheme: light;
-  scroll-padding-top: calc(var(--header-h) + 1rem);
-  /* téléphone : un élément qui reçoit le focus ne passe jamais sous la barre d'action fixe (2.4.11) */
-  scroll-padding-bottom: calc(var(--hauteur-barre-mobile) + env(safe-area-inset-bottom) + 1rem);
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-/* le fond plein écran du héros déborde de la colonne : on le rogne au niveau de la page (clip ne casse pas position: sticky) */
-html {
-  overflow-x: clip;
-}
-body {
-  margin: 0;
-  background: var(--color-bg);
-  color: var(--color-fg);
-  font: 400 clamp(1.0625rem, 1rem + 0.25vw, 1.125rem) / 1.68 var(--font-sans);
-  overflow-wrap: break-word;
-  /* place réservée à la barre d'action fixe du téléphone (rien n'est masqué) */
-  padding-bottom: calc(var(--hauteur-barre-mobile) + env(safe-area-inset-bottom));
-}
-img,
-svg {
-  display: block;
-  max-width: 100%;
-}
-a {
-  color: var(--color-primary);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
-a:hover {
-  color: var(--color-primary-hover);
-  text-decoration-thickness: 2px;
-}
-.icone {
-  width: 1.25em;
-  height: 1.25em;
-  flex: none;
-  display: inline-block;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* 03 — TYPOGRAPHIE (fluide, hiérarchie forte) ------------------------------ */
-h1,
-h2,
-h3,
-h4 {
-  margin: 0;
-  text-wrap: balance;
-}
-p,
-li,
-dd,
-figcaption,
-blockquote {
-  text-wrap: pretty;
-}
-.prose,
-.prose p {
-  font-kerning: normal;
-  font-variant-ligatures: common-ligatures;
-}
-.prose {
-  max-width: var(--largeur-lecture);
-}
-.prose > section > h2:not([class]),
-.prose h2.titre-section {
-  font: 600 clamp(1.625rem, 1.2rem + 1.6vw, 2.375rem) / 1.14 var(--font-serif);
-  letter-spacing: -0.02em;
-  color: var(--color-ink);
-  margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 1rem;
-  scroll-margin-top: calc(var(--header-h) + 1rem);
-}
-/* Repère de section (numéro décoratif + ancre partageable), AVANT le h2 :
-   le texte du titre reste propre pour les extracteurs */
-.num-section {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: clamp(3rem, 2.4rem + 2.4vw, 4.5rem) 0 0.5rem;
-  font: 600 0.875rem/1 var(--font-mono);
-  color: var(--color-terracotta-deep);
-  letter-spacing: 0.06em;
-}
-.num-section::before {
-  content: "";
-  order: 1;
-  flex: 0 1 5rem;
-  height: 2px;
-  background: linear-gradient(90deg, var(--color-terracotta), transparent);
-}
-.num-section + h2 {
-  margin-top: 0 !important;
-}
-.ancre {
-  order: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  margin: -0.75rem 0;
-  border-radius: var(--radius-md);
-  color: var(--color-terracotta-deep);
-  text-decoration: none;
-  font: 600 1rem/1 var(--font-mono);
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-section:hover .ancre,
-.ancre:focus-visible {
-  opacity: 1;
-}
-@media (hover: none) {
-  .ancre {
-    opacity: 1;
-  }
-} /* à 0,6 le « # » tombait à 3,1:1 */
-.prose h3 {
-  font: 600 clamp(1.25rem, 1.12rem + 0.55vw, 1.5rem) / 1.3 var(--font-sans);
-  letter-spacing: -0.01em;
-  margin: 2.25rem 0 0.5rem;
-  color: var(--color-ink);
-}
-.prose p,
-.prose ul,
-.prose ol {
-  margin: 0 0 1.1em;
-}
-.prose li {
-  margin: 0.35em 0;
-}
-.prose strong {
-  font-weight: 600;
-  color: var(--color-ink);
-}
-/* Surlignage : 1 par section, la phrase qu'on veut voir citée */
-.prose mark {
-  background: linear-gradient(transparent 55%, var(--color-ochre-soft) 55%);
-  color: inherit;
-  padding: 0 0.1em;
-}
-/* Colonne de TEXTE étroite (≈ 70 caractères par ligne) ; tableaux, schémas et figures gardent toute la largeur */
-@media (min-width: 1024px) {
-  body {
-    font-size: 1.1875rem;
-  }
-  .prose > section > :is(p, ul, ol, h2, h3, h4, .num-section, .reponse-courte) {
-    max-width: 35em;
-  }
-}
-/* h4 : défini une fois pour tous les modèles */
-.prose h4 {
-  font: 600 clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem) / 1.35 var(--font-sans);
-  margin: 1.5rem 0 0.4rem;
-  color: var(--color-ink);
-}
-/* Micro-réponse : la 1re phrase sous chaque H2 répond seule */
-.reponse-courte {
-  font-size: clamp(1.1875rem, 1.1rem + 0.45vw, 1.3125rem);
-  line-height: 1.55;
-  color: var(--color-ink);
-}
-.reponse-courte strong {
-  box-shadow: inset 0 -0.45em 0 var(--color-terracotta-soft);
-}
-.terme-glossaire {
-  text-decoration-style: dotted;
-  text-decoration-thickness: 2px;
-}
-/* Liens dans le texte : padding vertical d'un élément en ligne = zone cliquable ≥ 24 px (2.5.8)
-   sans toucher à la hauteur de ligne ; :where() garde la spécificité au plus bas */
-:where(main, .pied-site) a:where(:not([class])),
-.prose a.terme-glossaire {
-  padding-block: 0.25em;
-}
-.chiffre-mono {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-/* 04 — UTILITAIRES & FOCUS ------------------------------------------------- */
-.visuellement-masque {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.lien-evitement {
-  position: absolute;
-  left: 1rem;
-  top: -10rem;
-  z-index: 100;
-  padding: 0.75rem 1rem;
-  background: var(--color-paper);
-  color: var(--color-fg);
-  border-radius: var(--radius-md);
-}
-.lien-evitement:focus {
-  top: 1rem;
-}
-/* posé sur l'en-tête mocha : l'anneau est tracé DANS le lien, sur fond papier */
-.lien-evitement:focus-visible {
-  outline-offset: -6px;
-  box-shadow: 0 0 0 3px var(--color-mocha-fg);
-}
-.conteneur {
-  width: 100%;
-  max-width: var(--largeur-page);
-  margin-inline: auto;
-  padding-inline: var(--gouttiere);
-}
-@media (min-width: 640px) {
-  :root {
-    --gouttiere: 24px;
-  }
-}
-@media (min-width: 1280px) {
-  :root {
-    --gouttiere: 40px;
-  }
-}
-
-:focus-visible {
-  outline: 3px solid var(--focus-clair);
-  outline-offset: 3px;
-  border-radius: var(--radius-sm);
-}
-.sur-sombre :focus-visible {
-  outline-color: var(--focus-sombre);
-}
-.sur-terracotta :focus-visible {
-  outline-color: var(--color-mocha-fg);
-}
-.sur-sombre a:not(.btn) {
-  color: var(--color-mocha-fg);
-}
-.sur-sombre a:not(.btn):hover {
-  color: var(--color-terracotta-on-mocha);
-}
-.sur-terracotta a:not(.btn) {
-  color: var(--color-mocha-fg);
-}
-.sur-terracotta a:not(.btn):hover {
-  color: var(--color-paper);
-  text-decoration-thickness: 2px;
-}
-
-/* 05 — BARRE DE PROGRESSION DE LECTURE (CSS pur, invisible sans support) --- */
-.progression {
-  display: none;
-}
-@supports (animation-timeline: scroll()) {
-  .progression {
-    display: block;
-    position: fixed;
-    inset: calc(var(--header-h) + 1px) 0 auto 0;
-    height: 4px;
-    z-index: 55;
-    background: var(--color-mocha-fg);
-    box-shadow: 0 1px 0 var(--color-terracotta-deep);
-    transform-origin: 0 50%;
-    transform: scaleX(0);
-    animation: progression-lecture linear both;
-    animation-timeline: scroll(root block);
-  }
-  @keyframes progression-lecture {
-    to {
-      transform: scaleX(1);
+<!-- PRODUCTION : robots = "index, follow, max-image-preview:large" (page 1) ; "index, follow" (pages N). Le noindex ci-dessus ne vaut que pour la maquette. -->
+<title>Blog IA pour PME et TPE : guides et analyses · Axion-IA</title>
+<meta name="description" content="Guides, analyses et définitions pour aider les dirigeants de PME et de TPE à comprendre l’IA et à décider. Articles datés, classés par prestation.">
+<link rel="canonical" href="https://axion-ia.com/fr/blog">
+<link rel="preload" as="image" fetchpriority="high" href="https://axion-ia.com/images/axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads.webp">
+<link rel="next" href="https://axion-ia.com/fr/blog/page/2">
+<!-- PRODUCTION title : « Blog IA pour PME et TPE : guides et analyses » (le gabarit ajoute « · Axion-IA ») -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://axion-ia.com/#organization",
+   "name": "Axion-IA",
+   "url": "https://axion-ia.com"
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://axion-ia.com/#website",
+   "url": "https://axion-ia.com",
+   "name": "Axion-IA",
+   "publisher": {
+    "@id": "https://axion-ia.com/#organization"
+   },
+   "inLanguage": "fr"
+  },
+  {
+   "@type": "CollectionPage",
+   "@id": "https://axion-ia.com/fr/blog#collectionpage",
+   "url": "https://axion-ia.com/fr/blog",
+   "name": "L’IA expliquée aux dirigeants de PME et de TPE",
+   "inLanguage": "fr",
+   "abstract": "Le blog d’Axion-IA publie des guides, des analyses et des définitions pour aider les dirigeants de TPE et de PME, partout en France, à comprendre l’intelligence artificielle et à décider quoi en faire dans leur entreprise. Les articles sont classés selon les cinq prestations d’Axion-IA : audit, formation, implémentation, coaching et sites web. Chaque article indique son auteur, son temps de lecture et sa date de mise à jour.",
+   "dateModified": "2026-11-28",
+   "isPartOf": {
+    "@id": "https://axion-ia.com/#website"
+   },
+   "publisher": {
+    "@id": "https://axion-ia.com/#organization"
+   },
+   "breadcrumb": {
+    "@id": "https://axion-ia.com/fr/blog#breadcrumb"
+   },
+   "mainEntity": {
+    "@id": "https://axion-ia.com/fr/blog#itemlist"
+   },
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     "#axion-direct-answer"
+    ]
+   }
+  },
+  {
+   "@type": "ItemList",
+   "@id": "https://axion-ia.com/fr/blog#itemlist",
+   "itemListOrder": "https://schema.org/ItemListOrderDescending",
+   "numberOfItems": 20,
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "url": "https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai",
+     "name": "Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "url": "https://axion-ia.com/fr/blog/ia-donnees-entreprise-questions",
+     "name": "IA et données de l’entreprise : les questions que posent les dirigeants"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "url": "https://axion-ia.com/fr/blog/rag-explique-simplement",
+     "name": "Le RAG, expliqué simplement aux dirigeants de PME"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "url": "https://axion-ia.com/fr/blog/coaching-dirigeant-ia-premiers-mois",
+     "name": "Se faire accompagner sur l’IA : à quoi ressemblent les premiers mois"
+    },
+    {
+     "@type": "ListItem",
+     "position": 5,
+     "url": "https://axion-ia.com/fr/blog/site-web-pme-ia-contenus",
+     "name": "Un site web de PME qui s’appuie sur l’IA : par quoi commencer"
+    },
+    {
+     "@type": "ListItem",
+     "position": 6,
+     "url": "https://axion-ia.com/fr/blog/ia-entreprise-chiffres-publics",
+     "name": "IA en entreprise : ce que disent vraiment les chiffres publics"
+    },
+    {
+     "@type": "ListItem",
+     "position": 7,
+     "url": "https://axion-ia.com/fr/blog/assistant-ia-generaliste-ou-outil-metier",
+     "name": "Assistant d’IA généraliste ou outil métier : lequel choisir pour votre PME ?"
+    },
+    {
+     "@type": "ListItem",
+     "position": 8,
+     "url": "https://axion-ia.com/fr/blog/coaching-collaborateur-ia-habitudes",
+     "name": "Un collaborateur et l’IA : comment s’installent de bonnes habitudes"
+    },
+    {
+     "@type": "ListItem",
+     "position": 9,
+     "url": "https://axion-ia.com/fr/blog/site-web-ia-recherche-interne",
+     "name": "La recherche interne d’un site, expliquée aux dirigeants"
+    },
+    {
+     "@type": "ListItem",
+     "position": 10,
+     "url": "https://axion-ia.com/fr/blog/audit-ia-pme-par-ou-commencer",
+     "name": "Auditer l’usage de l’IA dans sa PME : par où commencer"
+    },
+    {
+     "@type": "ListItem",
+     "position": 11,
+     "url": "https://axion-ia.com/fr/blog/audit-ia-risques-conformite",
+     "name": "Données, règles, habitudes : les trois risques à regarder en premier"
+    },
+    {
+     "@type": "ListItem",
+     "position": 12,
+     "url": "https://axion-ia.com/fr/blog/former-equipe-ia-premiere-journee",
+     "name": "Former une équipe à l’IA : ce qu’une première journée peut couvrir"
+    },
+    {
+     "@type": "ListItem",
+     "position": 13,
+     "url": "https://axion-ia.com/fr/blog/formation-ia-erreurs-frequentes",
+     "name": "Formation à l’IA : les erreurs fréquentes des dirigeants"
+    },
+    {
+     "@type": "ListItem",
+     "position": 14,
+     "url": "https://axion-ia.com/fr/blog/compte-rendu-reunion-ia",
+     "name": "Rédiger un compte rendu de réunion avec l’IA, en 6 étapes"
+    },
+    {
+     "@type": "ListItem",
+     "position": 15,
+     "url": "https://axion-ia.com/fr/blog/taches-administratives-ia-pme",
+     "name": "10 tâches administratives qu’une PME peut confier à l’IA"
+    },
+    {
+     "@type": "ListItem",
+     "position": 16,
+     "url": "https://axion-ia.com/fr/blog/entreprise-batiment-devis-ia",
+     "name": "Une entreprise du bâtiment prépare ses devis avec l’IA : récit d’un essai"
+    },
+    {
+     "@type": "ListItem",
+     "position": 17,
+     "url": "https://axion-ia.com/fr/blog/coaching-dirigeant-ia-decisions",
+     "name": "Décider avec l’IA : ce qu’un dirigeant peut lui déléguer, et ce qu’il garde"
+    },
+    {
+     "@type": "ListItem",
+     "position": 18,
+     "url": "https://axion-ia.com/fr/blog/coaching-ia-preparer-rendez-vous",
+     "name": "Préparer un rendez-vous important avec l’IA, étape par étape"
+    },
+    {
+     "@type": "ListItem",
+     "position": 19,
+     "url": "https://axion-ia.com/fr/blog/site-web-ia-maintenance",
+     "name": "Maintenir un site web avec l’IA : ce qui se délègue sans risque"
+    },
+    {
+     "@type": "ListItem",
+     "position": 20,
+     "url": "https://axion-ia.com/fr/blog/site-web-ia-contenus-relecture",
+     "name": "Contenus de site rédigés avec l’IA : comment les relire"
     }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://axion-ia.com/fr/blog#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Accueil",
+     "item": "https://axion-ia.com/fr"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Blog",
+     "item": "https://axion-ia.com/fr/blog"
+    }
+   ]
   }
-}
-
-/* 06 — BANDEAU MAQUETTE, EN-TÊTE DU SITE, FIL D'ARIANE --------------------- */
-.bandeau-maquette {
-  background: var(--color-ochre-soft);
-  color: var(--color-ochre-deep);
-  text-align: center;
-  font: 600 0.8125rem/1.4 var(--font-sans);
-  padding: 0.4rem 1rem;
-}
-/* EN-TÊTE DU SITE — copie fidèle de src/components/nav/Header.tsx + NavLink.tsx (refonte 2026-11-11) :
-   barre TERRACOTTA (bg-terracotta, 95 % + flou si supporté), filet bas mocha/30, logo dans un badge blanc
-   arrondi, onglets ivoire, « La Journée IA » en pastille mocha cerclée ivoire, loupe et « Nous écrire » en
-   pastilles blanches, « Réserver un appel » en bleu plein. Hauteur 5 rem à toutes les tailles (--header-h).
-   Contrastes mesurés : ivoire sur terracotta 5,24:1 ; blanc 5,81:1 ; terracotta sur blanc 5,81:1 ;
-   ivoire sur mocha 13,70:1 ; blanc sur bleu 6,76:1. */
-.site-entete {
-  position: sticky;
-  top: 0;
-  z-index: 60;
-  background: var(--color-terracotta);
-  color: var(--color-mocha-fg);
-  border-bottom: 1px solid var(--color-terracotta-deep);
-}
-@supports (backdrop-filter: blur(1px)) {
-  .site-entete {
-    background: color-mix(in srgb, var(--color-terracotta) 95%, transparent);
-    backdrop-filter: blur(12px);
-  }
-}
-.site-entete::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 1px;
-  pointer-events: none;
-  background: color-mix(in srgb, var(--color-mocha) 30%, transparent);
-}
-.site-entete__rangee {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  height: var(--header-h);
-  width: 100%;
-  max-width: 120rem;
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-@media (min-width: 640px) {
-  .site-entete__rangee {
-    padding-inline: 1.5rem;
-  }
-}
-@media (min-width: 992px) {
-  .site-entete__rangee {
-    padding-inline: 2.5rem;
-  }
-}
-:where(.site-entete) :focus-visible {
-  outline: 2px solid var(--color-mocha-fg);
-  outline-offset: 2px;
-}
-.site-logo {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: none;
-  min-height: 44px;
-  padding: 0.375rem 0.75rem;
-  border-radius: var(--radius-xl);
-  background: var(--color-paper);
-  color: var(--color-fg);
-  text-decoration: none;
-  box-shadow: var(--ombre-legere);
-  transition: box-shadow 0.15s;
-}
-.site-logo:hover {
-  color: var(--color-fg);
-  box-shadow: var(--ombre-douce);
-}
-.site-logo__nom {
-  font: 500 1.625rem/1 var(--font-serif);
-  letter-spacing: -0.025em;
-}
-.site-logo__tiret {
-  margin-inline: 0.125rem;
-  color: color-mix(in srgb, var(--color-fg) 70%, transparent);
-}
-.site-logo em {
-  font-style: italic;
-  color: var(--color-terracotta);
-}
-.site-logo__devise {
-  display: none;
-  margin-top: 0.25rem;
-  font: 600 0.75rem/1 var(--font-sans);
-  color: var(--color-fg-muted);
-}
-@media (min-width: 1366px) {
-  .site-logo__devise {
-    display: block;
-  }
-}
-.site-nav {
-  display: none;
-  align-items: center;
-  gap: 0.25rem;
-  margin-left: 0.5rem;
-}
-.site-nav__lien {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  min-height: 44px;
-  padding-inline: 0.75rem;
-  border-radius: var(--radius-lg);
-  white-space: nowrap;
-  font: 600 1.125rem/1 var(--font-sans);
-  letter-spacing: -0.025em;
-  color: var(--color-mocha-fg);
-  text-decoration: none;
-}
-.site-nav__lien::after {
-  content: "";
-  position: absolute;
-  inset: auto 0.75rem 0.375rem;
-  height: 2px;
-  background: var(--color-mocha-fg);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.15s;
-}
-.site-nav__lien:hover {
-  color: var(--color-mocha-fg);
-}
-.site-nav__lien:hover::after {
-  transform: scaleX(1);
-}
-.site-nav__lien .icone {
-  width: 1rem;
-  height: 1rem;
-}
-.site-nav__phare {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding-inline: 1rem;
-  border: 1px solid var(--color-mocha-fg);
-  border-radius: var(--radius-full);
-  background: var(--color-mocha);
-  white-space: nowrap;
-  font: 600 1.125rem/1 var(--font-sans);
-  letter-spacing: -0.025em;
-  color: var(--color-mocha-fg);
-  text-decoration: none;
-}
-.site-nav__phare:hover {
-  background: var(--color-mocha-soft);
-  color: var(--color-mocha-fg);
-}
-.site-nav__phare::before {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--color-terracotta-on-mocha);
-}
-.site-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
-}
-.site-pastille {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  border-radius: var(--radius-full);
-  background: var(--color-paper);
-  color: var(--color-terracotta);
-  box-shadow: var(--ombre-legere);
-  white-space: nowrap;
-  font: 600 1.125rem/1 var(--font-sans);
-  text-decoration: none;
-  transition: box-shadow 0.15s;
-}
-.site-pastille:hover {
-  color: var(--color-terracotta);
-  box-shadow: var(--ombre-douce);
-}
-.site-pastille--loupe {
-  width: 44px;
-  padding: 0;
-}
-.site-pastille--texte {
-  padding-inline: 1rem;
-}
-.site-pastille .icone,
-.site-reserver .icone {
-  width: 1.1rem;
-  height: 1.1rem;
-}
-.site-reserver {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding-inline: 1rem;
-  border-radius: var(--radius-full);
-  background: var(--color-primary);
-  color: var(--color-primary-fg);
-  white-space: nowrap;
-  font: 600 0.9375rem/1 var(--font-sans);
-  text-decoration: none;
-  box-shadow: var(--ombre-legere);
-  transition: background-color 0.15s;
-}
-.site-reserver:hover {
-  background: var(--color-primary-hover);
-  color: var(--color-primary-fg);
-}
-.site-reserver__long {
-  display: none;
-}
-@media (max-width: 379px) {
-  .site-reserver .icone {
-    display: none;
-  }
-}
-@media (min-width: 992px) {
-  .site-reserver__court {
-    display: none;
-  }
-  .site-reserver__long {
-    display: inline;
-  }
-}
-@media (min-width: 1280px) {
-  .site-reserver {
-    padding-inline: 1.25rem;
-    font-size: 1.125rem;
-  }
-}
-/* Tiroir de téléphone : <details> natif, zéro JavaScript */
-.site-menu {
-  position: relative;
-}
-.site-menu summary {
-  display: inline-grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--color-mocha-fg);
-  border-radius: var(--radius-full);
-  color: var(--color-mocha-fg);
-  cursor: pointer;
-  list-style: none;
-}
-.site-menu summary::-webkit-details-marker {
-  display: none;
-}
-.site-menu summary:hover,
-.site-menu[open] summary {
-  background: var(--color-terracotta-deep);
-}
-.site-menu__panneau {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 0.75rem);
-  z-index: 50;
-  width: min(20rem, calc(100vw - 2rem));
-  padding: 0.5rem;
-  border-radius: var(--radius-xl);
-  background: var(--color-bg);
-  color: var(--color-fg);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--ombre-douce);
-  max-height: calc(100dvh - var(--header-h) - 2rem);
-  overflow-y: auto;
-}
-.site-menu__panneau a {
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-md);
-  font: 600 1.0625rem/1.2 var(--font-sans);
-  letter-spacing: -0.01em;
-  color: var(--color-fg);
-  text-decoration: none;
-}
-.site-menu__panneau a:hover {
-  background: var(--color-sand);
-  color: var(--color-fg);
-}
-.site-menu__panneau :focus-visible {
-  outline-color: var(--color-primary);
-}
-@media (min-width: 1280px) {
-  .site-nav {
-    display: flex;
-  }
-  .site-pastille {
-    display: inline-flex;
-  }
-  .site-pastille--texte {
-    height: 44px;
-  }
-  .site-menu {
-    display: none;
-  }
-  .site-entete__rangee {
-    gap: 1.5rem;
-  }
-  .site-actions {
-    gap: 0.75rem;
-  }
-}
-@media (min-width: 1366px) {
-  .site-entete__rangee {
-    gap: 2rem;
-  }
-}
-
-.bande-ariane {
-  background: var(--color-bg);
-  color: var(--color-fg-muted);
-  border-bottom: 1px solid var(--color-border);
-}
-.fil-ariane ol {
-  list-style: none;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 0 0.5rem;
-  margin: 0;
-  padding: 0;
-  font-size: 0.875rem;
-}
-.fil-ariane li {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 0;
-}
-.fil-ariane li + li::before {
-  content: "/";
-  color: var(--color-border-strong);
-}
-.fil-ariane a {
-  color: var(--color-fg-muted);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-}
-/* Toujours sur une ligne : la page courante se tronque (…) au lieu de passer à la ligne,
-   sinon la hauteur du fil dépend de la police et le swap décale tout l'article. */
-.fil-ariane [aria-current] {
-  display: block;
-  flex: 0 1 auto;
-  max-width: 16em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.fil-ariane a:hover {
-  color: var(--color-fg);
-  text-decoration: underline;
-}
-.fil-ariane [aria-current] {
-  color: var(--color-fg);
-  font-weight: 600;
-}
-.fil-ariane [aria-current]::before {
-  margin-right: 0.5rem;
-}
-
-/* 07 — HÉROS D'ARTICLE : aplat TERRACOTTA de la charte (retour demandé par Will) ----
-   Contrastes MESURÉS (formule WCAG, scripts de la session) sur le terracotta #b23f16, le point le plus
-   clair du fond : ivoire #f7f3ea 5,24:1 · blanc 5,81:1 · terracotta-soft 4,66:1 · sable 4,81:1.
-   Sur le bas du fond (mélange terracotta → terracotta-deep) tout est PLUS contrasté. Règle de décor :
-   tout ce qui passe sous du texte est plus FONCÉ que le terracotta, jamais plus clair.
-   Le mocha-fg-muted (#b5aa9c) donnerait 2,6:1 ici : il n'est pas utilisé dans le héros. */
-.heros {
-  position: relative;
-  isolation: isolate;
-  color: var(--color-mocha-fg);
-  padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(5.5rem, 4rem + 7vw, 9rem);
-}
-/* Fond plein écran sans débordement : un pseudo-élément qui déborde, rogné par clip-path.
-   Dégradé vertical (donc indépendant de la largeur) : terracotta franc sur les 60 % du haut,
-   puis un fondu vers le terracotta-deep qui accueille le visuel qui chevauche. */
-.heros {
-  clip-path: inset(0 -100vmax);
-}
-.heros::before {
-  content: "";
-  position: absolute;
-  z-index: -2;
-  inset: 0 -100vmax;
-  background: linear-gradient(
-    180deg,
-    var(--color-terracotta) 0%,
-    var(--color-terracotta) 58%,
-    color-mix(in srgb, var(--color-terracotta) 55%, var(--color-terracotta-deep)) 100%
-  );
-}
-/* Rayures terracotta-deep en haut à droite (décor plus sombre que le fond). */
-.heros::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  right: 0;
-  top: 0;
-  width: clamp(8rem, 22vw, 18rem);
-  height: 1.5rem;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--color-terracotta-deep) 0 6px,
-    transparent 6px 14px
-  );
-}
-.heros > * {
-  max-width: 56rem;
-}
-.surtitre {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0 0 1.25rem;
-  padding: 0;
-  list-style: none;
-}
-.pastille {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 2rem;
-  padding: 0.3rem 0.85rem;
-  border-radius: var(--radius-full);
-  font: 600 0.8125rem/1.2 var(--font-sans);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-/* Téléphone : pastilles resserrées. Mesuré à 360 px : trois pastilles tenaient sur deux rangées
-   à 18 px près en Manrope, et le repli (MAJUSCULES ~7 % plus larges) en faisait trois ; au swap,
-   tout le héros remontait (CLS 0,097). Cette marge rend le nombre de rangées identique. */
-@media (max-width: 479px) {
-  .pastille {
-    padding: 0.3rem 0.7rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-  }
-}
-/* Pastille de type : blanc, texte terracotta-deep (8,25:1 mesuré) ; pastille de catégorie : terracotta-deep + texte ivoire (7,45:1) */
-.pastille--pleine {
-  background: var(--color-paper);
-  color: var(--color-terracotta-deep);
-}
-.pastille--contour {
-  background: var(--color-terracotta-deep);
-  color: var(--color-mocha-fg);
-  border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 45%, transparent);
-}
-.pastille--claire {
-  background: var(--color-terracotta-soft);
-  color: var(--color-terracotta-deep);
-}
-.heros h1 {
-  font: 500 clamp(2.25rem, 1.3rem + 4vw, 4.5rem) / 1.07 var(--font-serif);
-  letter-spacing: -0.028em;
-  color: var(--color-paper);
-  max-width: 14.6em; /* ≈ 19,5ch Fraunces ; en em : stable au swap (19ch = 12.8em laissait le H1 de « définition » à 5 px du bord) */
-}
-/* Ordinateur : le titre partage la largeur avec la carte d'action → corps un peu plus serré */
-/* Taille choisie pour que le titre garde le même nombre de lignes avec la police et son repli
-   métrique (vérifié de 1024 à 1920 px sur les 10 modèles) : pas de saut au chargement des polices */
-@media (min-width: 1024px) {
-  .heros h1 {
-    font-size: clamp(2.75rem, 1rem + 3vw, 3.75rem);
-  }
-}
-/* Mots en italique : sable très clair (sable #f0e9da : 4,81:1 sur terracotta, 6,83:1 sur terracotta-deep) ;
-   le soulignement dessiné en dégradé (décor) les fait ressortir sans dépendre de la couleur seule. */
-.heros h1 em {
-  font-style: italic;
-  font-weight: 500;
-  color: var(--color-terracotta-soft);
-  background: linear-gradient(var(--color-terracotta-deep), var(--color-terracotta-deep)) 0 92% /
-    100% 0.09em no-repeat;
-}
-.chapo {
-  margin: clamp(1rem, 0.8rem + 1vw, 1.75rem) 0 0;
-  max-width: 44rem;
-  padding-left: 1rem;
-  border-left: 4px solid var(--color-terracotta-soft);
-  font: 400 clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem) / 1.5 var(--font-sans);
-  color: var(--color-paper);
-}
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1.25rem;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.9375rem;
-  color: var(--color-mocha-fg);
-}
-.meta li {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-.meta .icone {
-  color: var(--color-terracotta-soft);
-}
-.meta a {
-  font-weight: 600;
-}
-.avatar {
-  display: inline-grid;
-  place-items: center;
-  flex: none;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  background: var(--color-paper);
-  color: var(--color-terracotta-deep);
-  font: 600 1.0625rem/1 var(--font-serif);
-}
-.meta__lecture {
-  padding: 0.4rem 0.95rem;
-  border-radius: var(--radius-full);
-  font-weight: 600;
-  background: var(--color-paper);
-  color: var(--color-terracotta-deep);
-}
-.meta .meta__lecture .icone {
-  color: var(--color-terracotta-deep);
-}
-/* Pied du héros : partage compact à gauche, signe du modèle à droite */
-.heros__pied {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1rem;
-  margin: 1.25rem 0 0;
-}
-.heros__pied .partage-icones {
-  margin: 0;
-  flex: none;
-}
-/* Signe du modèle : décor typographique aria-hidden (ex. « RAG. », « ≈ 10 % », « A ou B »).
-   Boîte de taille fixe : la police qui arrive en retard ne change ni sa largeur ni sa hauteur. */
-.heros__signe {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  flex: 0 1 auto;
-  min-width: 0;
-  height: 44px;
-  overflow: hidden;
-  color: var(--color-terracotta-soft);
-  font: 600 1.75rem/1 var(--font-serif);
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
-.signe__legende {
-  display: none;
-  font: 600 0.75rem/1.3 var(--font-sans);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-mocha-fg);
-  white-space: normal;
-  text-align: left;
-}
-@media (min-width: 640px) {
-  .heros__signe {
-    height: 5.5rem;
-    padding: 0 1.25rem;
-    border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 40%, transparent);
-    border-radius: var(--radius-xl);
-    background: var(--color-terracotta-deep);
-    font-size: 2.75rem;
-  }
-  .signe__legende {
-    display: block;
-    width: 8.5rem;
-  }
-}
-/* Partage compact (icônes) sous la méta */
-.partage-icones {
-  display: flex;
-  gap: 0.5rem;
-  margin: 1.25rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-.partage-icones a {
-  display: inline-grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1.5px solid color-mix(in srgb, var(--color-mocha-fg) 60%, transparent);
-  color: var(--color-mocha-fg);
-}
-.partage-icones a:hover {
-  background: var(--color-mocha-fg);
-  color: var(--color-terracotta-deep);
-}
-
-/* 11 — BOUTONS ------------------------------------------------------------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  min-height: 48px;
-  padding: 0.7rem 1.3rem;
-  border: 2px solid transparent;
-  border-radius: var(--radius-full);
-  font: 600 1rem/1.2 var(--font-sans);
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    background-color 0.15s,
-    color 0.15s,
-    border-color 0.15s,
-    transform 0.15s;
-}
-.btn:hover {
-  transform: translateY(-1px);
-  text-decoration: none;
-}
-.btn--bleu {
-  background: var(--color-primary);
-  color: var(--color-primary-fg);
-}
-.btn--bleu:hover {
-  background: var(--color-primary-hover);
-  color: var(--color-primary-fg);
-}
-.btn--terracotta {
-  background: var(--color-terracotta);
-  color: var(--color-paper);
-}
-.btn--terracotta:hover {
-  background: var(--color-terracotta-deep);
-  color: var(--color-paper);
-}
-.btn--contour {
-  background: transparent;
-  color: var(--color-fg);
-  border-color: var(--color-fg);
-}
-.btn--contour:hover {
-  background: var(--color-fg);
-  color: var(--color-paper);
-}
-.btn--contour-clair {
-  background: transparent;
-  color: var(--color-mocha-fg);
-  border-color: var(--color-mocha-fg-muted);
-}
-.btn--contour-clair:hover {
-  background: var(--color-mocha-fg);
-  color: var(--color-ink);
-  border-color: var(--color-mocha-fg);
-}
-.btn__texte {
-  display: grid;
-  gap: 0.1rem;
-  text-align: left;
-}
-.btn__sous {
-  font-weight: 400;
-  font-size: 0.8125rem;
-  line-height: 1.35;
-}
-.fleche {
-  margin-left: auto;
-  transition: transform 0.15s;
-}
-.btn:hover .fleche,
-.lien-fleche:hover .fleche {
-  transform: translateX(3px);
-}
-.lien-fleche {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 44px;
-  font-weight: 600;
-}
-.lien-fleche .fleche {
-  margin-left: 0;
-  flex: none;
-}
-
-/* 21 — PRÉFÉRENCES : mouvement réduit, couleurs forcées, impression ------- */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .progression {
-    display: none !important;
-    animation: none !important;
-  }
-  *,
-  *::before,
-  *::after {
-    transition: none !important;
-    animation: none !important;
-  }
-  .btn:hover,
-  .lie:hover {
-    transform: none;
-  }
-  /* l'indication « suite du sommaire » n'est pas un mouvement : on la garde */
-  .sommaire ol::after {
-    animation: sommaire-suite linear both !important;
-    animation-timeline: --sommaire !important;
-  }
-}
-@media (forced-colors: active) {
-  .site-logo,
-  .site-pastille,
-  .site-reserver {
-    border: 1px solid ButtonText;
-  }
-  .progression,
-  .heros::after,
-  .cta-milieu::after,
-  .cta-fin::before,
-  .lie__visuel::after {
-    display: none;
-  }
-  .encadre,
-  .en-bref,
-  .chiffre-cle,
-  .chiffres,
-  .carte,
-  .schema__etape,
-  .resume,
-  .resume__liste li,
-  .cta-milieu,
-  .cta-fin,
-  .citation,
-  .carte-action,
-  .sommaire details,
-  .faq details,
-  .sources,
-  .auteur,
-  .lie,
-  .tableau__defilant,
-  .guide-gratuit,
-  .plus-loin a {
-    border: 2px solid CanvasText;
-  }
-  .btn,
-  .partage a,
-  .partage-icones a {
-    border: 2px solid ButtonText;
-  }
-  .pastille,
-  .meta__lecture,
-  .avatar,
-  .encadre__icone,
-  .act__pastille,
-  .etapes li::before {
-    border: 1px solid CanvasText;
-  }
-  .checklist li::before {
-    background: Canvas;
-    box-shadow: inset 0 0 0 2px CanvasText;
-  }
-  .checklist li::after {
-    border-color: CanvasText;
-  }
-  .schema__etape + .schema__etape::before {
-    border-color: CanvasText;
-  }
-  .verdict .icone {
-    border: 1px solid CanvasText;
-  }
-  :focus-visible {
-    outline-color: Highlight;
-  }
-}
-@media print {
-  * {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-  .progression,
-  .action,
-  .bandeau-maquette,
-  .site-entete,
-  .partage,
-  .partage-icones,
-  .cta-milieu,
-  .guide-gratuit {
-    display: none !important;
-  }
-  body {
-    padding: 0;
-    background: none;
-  }
-  .heros {
-    border-image: none;
-    color: var(--color-ink);
-    padding-bottom: 1rem;
-  }
-  .heros .meta a,
-  .heros .meta time,
-  .heros h1,
-  .chapo,
-  .meta,
-  .meta a,
-  .heros h1 em,
-  .heros .pastille {
-    color: var(--color-ink);
-  }
-  .heros h1 em {
-    background: none;
-  }
-  .heros::before,
-  .heros::after,
-  .heros__signe,
-  .bande-ariane,
-  .cta-fin,
-  .lies,
-  .sommaire,
-  .progression {
-    display: none !important;
-  }
-  .visuel {
-    margin-top: 0;
-  }
-  .visuel__cadre {
-    border: 0;
-    background: none;
-    box-shadow: none;
-  }
-  .sources a::after {
-    content: " (" attr(href) ")";
-    font-size: 0.8em;
-  }
-  h2,
-  h3 {
-    break-after: avoid;
-  }
-  .encadre,
-  .tableau,
-  figure {
-    break-inside: avoid;
-  }
-}
-
-
-/* ===== Règles propres à l'accueil du blog (v3) — MOBILE D'ABORD : tout ce qui suit est écrit pour le
-   téléphone ; chaque @media (min-width) ne fait qu'AJOUTER. Aucune police, aucun JavaScript. ===== */
-body { padding-bottom: 0; }           /* pas de barre d'action fixe sur le hub */
-.heros { padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(2.5rem, 2rem + 3vw, 4.5rem); }
-.heros h1 { max-width: 15em; }
-.heros .chapo { max-width: 40rem; }
-.hero-liens { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
-.hero-liens a.btn--clair { background: var(--color-paper); color: var(--color-terracotta-deep); border-color: var(--color-paper); }
-.hero-liens a.btn--clair:hover { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
-.hero-liens a.btn--contour-clair { color: var(--color-mocha-fg); border-color: var(--color-mocha-fg); }
-.hero-liens a.btn--contour-clair:hover { color: var(--color-ink); }
-.bloc { padding-block: clamp(2.25rem, 1.75rem + 2.5vw, 4rem) 0; }
-.bloc__tete { margin: 0 0 1.25rem; }
-.bloc__sur { margin: 0 0 .35rem; font: 600 .8125rem/1.3 var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--color-terracotta-deep); }
-.bloc__titre { margin: 0; font: 500 clamp(1.625rem, 1.3rem + 1.4vw, 2.5rem)/1.12 var(--font-serif); letter-spacing: -.02em; color: var(--color-ink); }
-.bloc__titre em { font-style: italic; color: var(--color-terracotta); }
-.bloc__intro { margin: .6rem 0 0; max-width: 40rem; color: var(--color-fg-soft); }
-
-/* --- Carte d'article : photo à ratio FIXE (16/10 réservé : CLS = 0), un seul lien (étendu à la carte) --- */
-.grille-art { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: minmax(0,1fr); }
-.carte-art { position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden;
-  background: var(--color-paper); border: 1px solid var(--color-border); border-radius: var(--radius-xl);
-  transition: box-shadow .15s, transform .15s; }
-.carte-art:hover { box-shadow: var(--ombre-douce); transform: translateY(-2px); }
-.carte-art:focus-within { outline: 3px solid var(--focus-clair); outline-offset: 3px; }
-.carte-art__photo { margin: 0; aspect-ratio: 16 / 10; background: var(--color-sand); overflow: hidden; }
-.carte-art__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.carte-art__corps { display: flex; flex-direction: column; gap: .6rem; flex: 1; padding: 1.1rem 1.15rem 1.25rem; }
-.carte-art__etiquettes { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .65rem; margin: 0; }
-.carte-art__etiquettes .pastille { min-height: 1.75rem; padding: .2rem .7rem; font-size: .75rem; border: 1.5px solid var(--color-terracotta); }
-.carte-art__cat { font: 600 .8125rem/1.3 var(--font-sans); color: var(--color-fg-soft); }
-.carte-art__titre { margin: 0; font: 600 1.25rem/1.25 var(--font-serif); letter-spacing: -.012em; }
-.carte-art__titre a { color: var(--color-ink); text-decoration: none; }
-.carte-art__titre a::after { content: ""; position: absolute; inset: 0; }   /* lien étendu : toute la carte se touche, 44 px garantis */
-.carte-art__titre a:hover { color: var(--color-terracotta-deep); text-decoration: underline; text-decoration-thickness: 2px; }
-.carte-art__titre a:focus-visible { outline: none; }                            /* l'anneau est sur la carte (:focus-within) */
-.carte-art__resume { margin: 0; font-size: .9375rem; line-height: 1.5; color: var(--color-fg-soft); }
-.carte-art__meta { display: flex; flex-wrap: wrap; gap: .3rem 1rem; margin: auto 0 0; padding-top: .35rem; font-size: .8125rem; color: var(--color-fg-muted); }
-.carte-art__meta span { display: inline-flex; align-items: center; gap: .4rem; }
-.carte-art__meta .icone { width: 1rem; height: 1rem; color: var(--color-terracotta-deep); }
-/* À la une : photo pleine largeur, texte plus grand */
-.carte-art--une .carte-art__titre { font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem); line-height: 1.15; }
-.carte-art--une .carte-art__resume { font-size: 1.0625rem; }
-.carte-art--une { border: 2px solid var(--color-mocha); box-shadow: 6px 6px 0 var(--color-terracotta); }
-.carte-art--une:hover { transform: none; box-shadow: 6px 6px 0 var(--color-terracotta-deep); }
-@media (min-width: 640px) { .grille-art { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1.5rem; } }
-@media (min-width: 768px) {
-  .carte-art--une { flex-direction: row; }
-  .carte-art--une .carte-art__photo { flex: 0 0 52%; aspect-ratio: 16 / 10; align-self: flex-start; }
-  .carte-art--une .carte-art__corps { justify-content: center; padding: 2rem; gap: .9rem; }
-}
-@media (min-width: 1024px) { .grille-art--3 { grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-/* --- Accès par question / secteur / service --- */
-.questions { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; grid-template-columns: minmax(0,1fr); counter-reset: q; }
-.questions li { counter-increment: q; }
-.question { position: relative; display: grid; grid-template-columns: auto minmax(0,1fr); gap: .25rem 1rem; align-items: start; height: 100%;
-  min-height: 44px; padding: 1rem 1.1rem; background: var(--color-paper); border: 1px solid var(--color-border);
-  border-left: 6px solid var(--color-terracotta); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-ink); }
-.question::before { content: counter(q); grid-row: span 2; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-md);
-  background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); font: 600 1.125rem/1 var(--font-serif); }
-.question:hover { background: var(--color-terracotta-soft); color: var(--color-ink); }
-.question__q { font: 600 1.0625rem/1.3 var(--font-serif); }
-.question__type { font-size: .8125rem; color: var(--color-fg-soft); }
-.question__type b { font-weight: 600; color: var(--color-terracotta-deep); }
-@media (min-width: 768px) { .questions { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-@media (min-width: 1024px) { .questions { grid-template-columns: repeat(3, minmax(0,1fr)); } }
-.acces { display: grid; gap: 1.5rem; margin-top: 2rem; }
-.acces__groupe { padding: 1.25rem; border-radius: var(--radius-xl); background: var(--color-sand); }
-.acces__groupe h3 { margin: 0 0 .75rem; font: 600 1.125rem/1.3 var(--font-serif); color: var(--color-ink); }
-.puces { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
-.puces a { display: inline-flex; align-items: center; min-height: 44px; padding: .45rem 1rem; border-radius: var(--radius-full);
-  background: var(--color-paper); border: 1.5px solid var(--color-border-strong); color: var(--color-ink); font: 600 .9375rem/1.2 var(--font-sans); text-decoration: none; }
-.puces a:hover { background: var(--color-mocha); color: var(--color-mocha-fg); border-color: var(--color-mocha); }
-.puces--types a { border-color: var(--color-terracotta); }
-.puces a[aria-current] { background: var(--color-terracotta); color: var(--color-paper); border-color: var(--color-terracotta); }
-.grille-art--1 { grid-template-columns: minmax(0,1fr); }
-.bloc__sous { margin: 2rem 0 1rem; font: 600 1.375rem/1.2 var(--font-serif); color: var(--color-ink); }
-@media (min-width: 1024px) { .acces { grid-template-columns: 1.6fr 1fr; align-items: start; } .acces__groupe--large { grid-row: span 2; } }
-
-/* --- Guides piliers + actualité --- */
-.piliers { display: grid; gap: 1.25rem; }
-.pilier-note { margin: 0; padding: 1.25rem; border-radius: var(--radius-xl); background: var(--color-mocha); color: var(--color-mocha-fg); }
-.pilier-note h3 { margin: 0 0 .5rem; font: 600 1.25rem/1.25 var(--font-serif); }
-.pilier-note p { margin: 0 0 1rem; color: var(--color-mocha-fg); font-size: .9375rem; }
-.pilier-note ul { margin: 0 0 1rem; padding-left: 1.1rem; font-size: .9375rem; }
-/* Carte « large » : photo à gauche (ratio fixe conservé par la colonne), texte à droite, dès 768 px */
-@media (min-width: 768px) {
-  .piliers .carte-art, .actu-une .carte-art { flex-direction: row; }
-  .piliers .carte-art__photo, .actu-une .carte-art__photo { flex: 0 0 42%; aspect-ratio: 16 / 10; align-self: flex-start; }
-  .piliers .carte-art__corps, .actu-une .carte-art__corps { justify-content: center; padding: 1.5rem 2rem; }
-  .piliers .carte-art__titre, .actu-une .carte-art__titre { font-size: 1.5rem; }
-}
-@media (min-width: 1024px) {
-  .grille-art--3 > li:last-child:nth-child(3n+1) { grid-column: 1 / -1; }
-  .grille-art--3 > li:last-child:nth-child(3n+1) .carte-art { flex-direction: row; }
-  .grille-art--3 > li:last-child:nth-child(3n+1) .carte-art__photo { flex: 0 0 33%; aspect-ratio: 16 / 10; align-self: flex-start; }
-  .grille-art--3 > li:last-child:nth-child(3n+1) .carte-art__corps { justify-content: center; padding: 1.5rem 2rem; }
-}
-.btn--clair { background: var(--color-paper); color: var(--color-terracotta-deep); border-color: var(--color-paper); }
-.btn--clair:hover { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
-
-/* --- Chiffres et baromètre (mocha = temps fort) --- */
-.barometre { margin-top: clamp(2.25rem, 1.75rem + 2.5vw, 4rem); padding: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem); border-radius: var(--radius-2xl); background: var(--color-mocha); color: var(--color-mocha-fg); }
-.barometre h2 { margin: 0; font: 500 clamp(1.625rem, 1.3rem + 1.4vw, 2.5rem)/1.12 var(--font-serif); color: var(--color-paper); }
-.barometre h2 em { color: var(--color-terracotta-on-mocha); font-style: italic; }
-.barometre__intro { margin: .6rem 0 1.5rem; max-width: 40rem; }
-.barometre__chiffres { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
-.barometre__chiffres li { padding: 1rem 1.1rem; border-radius: var(--radius-lg); background: var(--color-mocha-soft); border-top: 4px solid var(--color-terracotta-on-mocha); }
-.barometre__valeur { display: block; font: 600 2.5rem/1 var(--font-serif); color: var(--color-terracotta-on-mocha); font-variant-numeric: lining-nums tabular-nums; }
-.barometre__texte { display: block; margin-top: .4rem; font-size: .9375rem; }
-.barometre__source { display: block; margin-top: .25rem; font-size: .8125rem; color: var(--color-mocha-fg-muted); }
-.exemple { display: inline-block; margin-top: .5rem; padding: .1rem .55rem; border-radius: var(--radius-full); background: var(--color-ochre-soft); color: var(--color-ochre-deep); font: 600 .75rem/1.5 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; }
-.barometre__pied { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; margin: 1.5rem 0 0; }
-.barometre__pied a:not(.btn) { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-mocha-fg); font-weight: 600; }
-@media (min-width: 768px) { .barometre__chiffres { grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-/* --- Lettre d'information : le formulaire du site, inchangé --- */
-.lettre { display: grid; gap: 1rem; padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); border-radius: var(--radius-2xl); background: var(--color-terracotta-soft); border: 2px solid var(--color-terracotta); }
-.lettre h2 { margin: 0; font: 600 clamp(1.5rem, 1.25rem + 1vw, 2rem)/1.15 var(--font-serif); color: var(--color-ink); }
-.lettre p { margin: 0; }
-.lettre__champ { display: grid; gap: .4rem; }
-.lettre label { font-weight: 600; }
-.lettre input[type=email] { width: 100%; min-height: 48px; padding: .6rem .9rem; border: 2px solid var(--color-border-field); border-radius: var(--radius-lg); background: var(--color-paper); font: 400 1rem/1.3 var(--font-sans); color: var(--color-fg); }
-.lettre .btn { width: 100%; }
-.lettre__champ { min-height: 5.5rem; }
-.lettre__mention { font-size: .8125rem; line-height: 1.5; color: var(--color-fg-soft); }
-@media (min-width: 768px) { .lettre { grid-template-columns: 1fr 1fr; align-items: start; column-gap: 2.5rem; } .lettre__texte { display: grid; gap: .75rem; } }
-
-/* --- Pagination indexable : de vrais liens <a href>, jamais de défilement infini --- */
-.pagination { margin-top: 2.5rem; }
-.pagination ul { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem; margin: 0; padding: 0; list-style: none; }
-.pagination a, .pagination span[aria-current] { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-width: 44px; min-height: 44px; padding: 0 .9rem; border-radius: var(--radius-full);
-  border: 2px solid var(--color-fg); color: var(--color-fg); font-weight: 600; text-decoration: none; background: transparent; }
-.pagination a:hover { background: var(--color-fg); color: var(--color-paper); }
-.pagination span[aria-current] { background: var(--color-terracotta); border-color: var(--color-terracotta); color: var(--color-paper); }
-.pagination__etat { margin: .75rem 0 0; text-align: center; font-size: .875rem; color: var(--color-fg-muted); }
-
-/* --- FAQ (même motif que le reste du site) --- */
-.faq details { border-bottom: 1px solid var(--color-border); }
-.faq summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 56px; padding: .75rem 0; cursor: pointer; font: 600 1.0625rem/1.35 var(--font-serif); list-style: none; }
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; font: 600 1.5rem/1 var(--font-sans); color: var(--color-terracotta-deep); }
-.faq details[open] summary::after { content: "−"; }
-.faq details p { margin: 0 0 1rem; max-width: 44rem; color: var(--color-fg-soft); }
-
-/* --- Appel de fin : mêmes trois actions que les modèles d'articles --- */
-.appel-fin { margin-top: clamp(2.25rem, 1.75rem + 2.5vw, 4rem); padding: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem); border-radius: var(--radius-2xl); background: var(--color-terracotta); color: var(--color-mocha-fg); }
-.appel-fin h2 { margin: 0 0 .5rem; font: 500 clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem)/1.15 var(--font-serif); color: var(--color-paper); }
-.appel-fin p { margin: 0 0 1.25rem; max-width: 38rem; }
-.appel-fin__actions { display: flex; flex-direction: column; gap: .75rem; }
-.appel-fin .btn--bleu { box-shadow: 0 0 0 2px var(--color-paper); }
-.appel-fin .btn--clair { background: var(--color-paper); color: var(--color-terracotta-deep); border-color: var(--color-paper); }
-.appel-fin .btn--clair:hover { background: var(--color-terracotta-soft); color: var(--color-terracotta-deep); }
-@media (min-width: 640px) { .appel-fin__actions { flex-direction: row; flex-wrap: wrap; } }
-
-/* Note de maquette (aide à la relecture ; n'existe pas en production) */
-.note-maquette { margin-top: 2.5rem; padding: 1.1rem 1.25rem; border-radius: var(--radius-lg); background: var(--color-ochre-soft); color: var(--color-ochre-deep); font-size: .9375rem; }
-.note-maquette h2 { margin: 0 0 .4rem; font: 600 1.0625rem/1.3 var(--font-sans); }
-.note-maquette ul { margin: 0; padding-left: 1.1rem; }
-.pied-site { margin-top: 3rem; padding: 2rem 0; background: var(--color-mocha); color: var(--color-mocha-fg-muted); font-size: .875rem; }
-.fil-ariane [aria-current] { max-width: 20em; }
-@media (forced-colors: active) { .carte-art, .question, .puces a, .barometre, .lettre, .appel-fin, .pilier-note { border: 2px solid CanvasText; } .carte-art__photo { border-bottom: 1px solid CanvasText; } }
-@media print { .site-entete, .appel-fin, .lettre { display: none; } }
+ ]
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="Blog Axion-IA" href="/fr/blog/feed.xml">
+<link rel="alternate" hreflang="fr" href="https://axion-ia.com/fr/blog">
+<link rel="alternate" hreflang="x-default" href="https://axion-ia.com/fr/blog">
+<meta property="og:type" content="website"><meta property="og:title" content="Blog IA pour PME et TPE : guides et analyses · Axion-IA"><meta property="og:description" content="Guides, analyses et définitions pour aider les dirigeants de PME et de TPE à comprendre l’IA et à décider. Articles datés, classés par prestation."><meta property="og:url" content="https://axion-ia.com/fr/blog">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf8f3;--paper:#ffffff;--sand:#f0e9da;--sand-deep:#e6dcc4;--mocha:#2a2520;--mocha-fg:#f7f3ea;--fg:#1a1815;--fg-soft:#524b41;--fg-muted:#5a4f44;--terra:#b23f16;--terra-deep:#8c3010;--terra-soft:#f5e3d8;--primary:#1a4dd9;--primary-hover:#0f3aae;--border:#e5ddc8;--border-strong:#c8bda0;--champ:#8a7f6c;--on-mocha:#eb8560;
+--sh-subtle:rgba(42,37,32,.04) 0 1px 2px,rgba(42,37,32,.06) 0 4px 8px;--sh-card:rgba(42,37,32,.06) 0 2px 4px,rgba(42,37,32,.1) 0 12px 28px;
+--serif:"Fraunces","Fraunces Fallback",Georgia,"Times New Roman",serif;--sans:"Manrope","Manrope Fallback",Arial,"Liberation Sans",sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg-soft);font:400 16px/1.6 var(--sans)}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--fg);margin:0;font-weight:500}
+ul,ol{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+.evitement{position:absolute;left:-999px;top:0;background:var(--mocha);color:var(--mocha-fg);padding:12px 16px;z-index:100}.evitement:focus{left:8px;top:8px}
+.bandeau{margin:0;background:var(--sand);color:var(--fg-muted);font-size:12px;line-height:1.4;text-align:center;padding:6px 16px}
+.conteneur{max-width:1200px;margin:0 auto;padding:0 16px}
+@media(min-width:640px){.conteneur{padding:0 24px}}@media(min-width:992px){.conteneur{padding:0 40px}}
+/* En-tête : identique au site (barre terracotta 80 px, logo en badge ivoire) */
+.site-entete{position:sticky;top:0;z-index:40;background:var(--terra);color:var(--mocha-fg);border-bottom:1px solid var(--terra-deep)}
+.site-entete :focus-visible{outline-color:var(--mocha-fg)}
+.site-entete__rangee{display:flex;align-items:center;gap:12px;height:80px;max-width:1920px;margin:0 auto;padding:0 16px}
+@media(min-width:640px){.site-entete__rangee{padding:0 24px}}@media(min-width:992px){.site-entete__rangee{padding:0 40px;gap:24px}}
+.site-logo{display:inline-flex;flex-direction:column;justify-content:center;min-height:44px;background:var(--paper);color:var(--fg);border-radius:12px;padding:6px 12px;text-decoration:none;box-shadow:var(--sh-subtle);flex:none}
+.site-logo__nom{font:500 24px/1 var(--serif);letter-spacing:-.01em}.site-logo__tiret{margin:0 2px;opacity:.7}.site-logo__nom em{color:var(--terra);font-style:italic}
+.site-logo__devise{display:none;margin-top:4px;font-size:12px;line-height:1;font-weight:600;color:var(--fg-muted)}
+@media(min-width:1366px){.site-logo__devise{display:block}}
+.site-nav{display:none;align-items:center;gap:4px;margin-left:8px}
+.site-nav a{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 14px;border-radius:9999px;color:var(--mocha-fg);font-weight:600;text-decoration:none}
+.site-nav a:hover{background:rgba(42,37,32,.18)}
+.site-nav__phare{border:1.5px solid var(--mocha-fg);background:var(--mocha)}
+.site-nav__phare::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--on-mocha)}
+.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.site-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
+.pastille{display:none;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:9999px;background:var(--paper);color:var(--terra);font-weight:600;text-decoration:none;box-shadow:var(--sh-subtle)}
+.pastille--loupe{width:44px}.pastille--texte{padding:0 16px}
+.site-reserver{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:9999px;background:var(--primary);color:#fff;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;box-shadow:var(--sh-subtle)}
+.site-reserver:hover{background:var(--primary-hover)}.site-reserver .long{display:none}
+@media(max-width:379px){.site-reserver .ic{display:none}}
+.site-menu{position:relative}.site-menu summary{list-style:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9999px;background:var(--paper);color:var(--fg);cursor:pointer}.site-menu summary::-webkit-details-marker{display:none}
+.site-menu__panneau{position:absolute;right:0;top:52px;width:260px;background:var(--paper);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-card);padding:8px;display:flex;flex-direction:column}
+.site-menu__panneau a{display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:10px;color:var(--fg);font-weight:600;text-decoration:none}.site-menu__panneau a:hover{background:var(--sand)}
+@media(min-width:992px){.site-nav{display:flex}.pastille{display:inline-flex}.site-menu{display:none}.site-reserver .court{display:none}.site-reserver .long{display:inline}.site-reserver{font-size:16px;padding:0 20px}}
+@media(min-width:992px) and (max-width:1199px){.pastille--texte span,.pastille--texte{font-size:0;gap:0;padding:0;width:44px}.pastille--texte .ic{font-size:16px}}
+/* Fil d'Ariane */
+.fil{max-width:1200px;margin:0 auto;padding:16px 16px 0;font-size:14px;color:var(--fg-muted)}
+@media(min-width:640px){.fil{padding:16px 24px 0}}@media(min-width:992px){.fil{padding:20px 40px 0}}
+.fil ol{display:flex;flex-wrap:wrap;align-items:center;gap:0}.fil li{display:flex;align-items:center;min-height:44px}.fil li+li::before{content:"›";margin:0 8px;color:var(--border-strong)}
+.fil a{text-decoration:none;color:var(--fg-muted);display:inline-block;padding:10px 0}.fil a:hover{color:var(--terra-deep);text-decoration:underline}.fil [aria-current]{color:var(--fg)}
+/* Haut de page : calme, sur fond de page */
+.haut{padding:32px 0 8px;max-width:820px}
+@media(min-width:992px){.haut{padding:48px 0 16px}}
+.surtitre{margin:0 0 12px;color:var(--terra);font-size:13px;font-weight:600;letter-spacing:.02em}
+h1{font-size:clamp(2.25rem,1.6rem + 2.6vw,3.5rem);line-height:1.1;letter-spacing:-.015em;max-width:22ch;text-wrap:balance}
+.intro{margin:20px 0 0;font-size:18px;line-height:1.62;max-width:66ch;color:var(--fg-soft)}
+@media(min-width:992px){.intro{font-size:20px;line-height:1.6}}
+.maj{margin:12px 0 0;font-size:14px;color:var(--fg-muted)}
+.recherche{margin-top:28px;max-width:640px}
+.recherche label{display:block;font-size:14px;font-weight:600;color:var(--fg);margin-bottom:8px}
+.recherche__ligne{display:flex;gap:8px}
+.recherche input{flex:1;min-width:0;height:48px;padding:0 16px;border:1px solid var(--champ);border-radius:12px;background:var(--paper);font:inherit;color:var(--fg)}
+.recherche input::placeholder{color:var(--fg-muted)}
+.recherche button,.btn{height:48px;padding:0 20px;border:0;border-radius:9999px;background:var(--mocha);color:var(--mocha-fg);font:600 16px var(--sans);cursor:pointer;display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+.recherche button:hover{background:var(--fg)}
+.filtres{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.filtre{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--border-strong);border-radius:9999px;background:var(--paper);color:var(--fg);font-weight:600;font-size:15px;text-decoration:none}
+.filtre:hover{border-color:var(--terra);color:var(--terra-deep)}
+.filtre[aria-current]{background:var(--mocha);color:var(--mocha-fg);border-color:var(--mocha)}
+/* Blocs */
+.bloc{margin-top:64px}@media(min-width:992px){.bloc{margin-top:96px}}
+.bloc>h2,.bande h2,.fin h2,.lettre h2{font-size:28px;line-height:1.2;letter-spacing:-.01em}
+@media(min-width:992px){.bloc>h2,.bande h2,.fin h2,.lettre h2{font-size:36px;line-height:1.17}}
+.bloc>h2{margin-bottom:28px}
+.lien{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:var(--terra);text-decoration:none}
+.lien:hover{color:var(--terra-deep);text-decoration:underline;text-underline-offset:4px}.lien--calme{color:var(--fg-soft)}
+.suite{margin:24px 0 0}
+/* Cartes */
+.grille{display:grid;gap:24px;grid-template-columns:1fr}
+@media(min-width:640px){.grille{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.grille{grid-template-columns:repeat(3,1fr);gap:32px}.grille--c{gap:24px}}
+.carte{position:relative;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--sh-subtle);transition:transform .25s,box-shadow .25s}
+.carte:hover,.carte:focus-within{transform:translateY(-2px);box-shadow:var(--sh-card)}
+.carte:focus-within{outline:2px solid var(--terra);outline-offset:3px}
+.carte__img{margin:0;aspect-ratio:16/10;background:var(--sand);overflow:hidden}
+.carte__img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.carte:hover .carte__img img{transform:scale(1.03)}
+.carte__corps{display:flex;flex-direction:column;gap:10px;padding:20px 20px 22px;flex:1}
+.carte__etiq{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:13px}
+.etiq{display:inline-block;padding:3px 10px;border-radius:9999px;background:var(--terra-soft);color:var(--terra-deep);font-weight:600;letter-spacing:.02em}
+.fmt{color:var(--fg-muted);font-weight:600}
+.carte__titre{font:600 20px/1.3 var(--serif);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media(min-width:992px){.carte__titre{font-size:22px;line-height:1.27}}
+.carte__titre a{text-decoration:none}.carte__titre a::after{content:"";position:absolute;inset:0}
+.carte__titre a:focus-visible{outline:0}
+.carte:hover .carte__titre a{color:var(--terra-deep);text-decoration:underline;text-underline-offset:4px}
+.carte__resume{margin:0;font-size:16px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{margin:auto 0 0;padding-top:4px;font-size:14px;line-height:1.43;color:var(--fg-muted)}
+.une{display:grid;gap:24px}
+@media(min-width:1024px){.une{grid-template-columns:7fr 5fr;gap:32px;align-items:stretch}}
+.carte--une .carte__titre{font-size:26px;line-height:1.23;-webkit-line-clamp:4}
+@media(min-width:992px){.carte--une .carte__titre{font-size:36px;line-height:1.17}}
+.carte--une .carte__corps{padding:24px}@media(min-width:992px){.carte--une .carte__corps{padding:32px}}
+.carte--une .carte__resume{font-size:18px;-webkit-line-clamp:3}
+.carte--seule{max-width:1000px}
+.une__cote{display:grid;gap:24px}
+@media(min-width:640px) and (max-width:1023px){.une__cote{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.une__cote{grid-template-rows:1fr 1fr}.carte--lat{flex-direction:row}.carte--lat .carte__img{width:40%;aspect-ratio:auto;flex:none}.carte--lat .carte__corps{padding:20px 22px;justify-content:center}.carte--lat .carte__titre{font-size:20px;-webkit-line-clamp:3}.carte--lat .carte__resume{display:none}.carte--lat .meta{margin-top:0}}
+/* Prestations */
+.prest{padding-top:40px;margin-top:40px;border-top:1px solid var(--border)}.prest:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.prest__tete{max-width:760px;margin-bottom:24px}
+.prest h3{font-size:26px;line-height:1.25}.prest__tete p{margin:8px 0 0}
+.prest__liens{display:flex;flex-wrap:wrap;gap:0 24px}
+.prest .carte__titre{font-size:19px}
+/* Bande sable : explorer */
+.bande{margin-top:64px;background:var(--sand);padding:48px 0}@media(min-width:992px){.bande{margin-top:96px;padding:64px 0}}
+.explorer{display:grid;gap:32px;margin-top:28px}@media(min-width:768px){.explorer{grid-template-columns:2fr 1fr}}
+.explorer h3{font:600 20px/1.3 var(--serif);margin-bottom:14px}
+.puces{display:flex;flex-wrap:wrap;gap:8px}
+.puces a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:9999px;background:var(--paper);border:1px solid var(--border-strong);color:var(--fg);font-weight:600;font-size:15px;text-decoration:none}
+.puces a:hover{border-color:var(--terra);color:var(--terra-deep)}
+.liste-liens{display:flex;flex-wrap:wrap;gap:0 32px}
+/* Lettre */
+.lettre__carte{display:grid;gap:24px;background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:var(--sh-subtle)}
+@media(min-width:992px){.lettre__carte{grid-template-columns:1.2fr 1fr;align-items:center;padding:40px}}
+.lettre p{margin:10px 0 0}.lettre label{display:block;font-size:14px;font-weight:600;color:var(--fg);margin-bottom:8px}
+.lettre .btn,.fin .btn:first-child{background:var(--terra);color:#fff}.lettre .btn:hover,.fin .btn:first-child:hover{background:var(--terra-deep)}
+.lettre .recherche__ligne{flex-direction:column}@media(min-width:480px){.lettre .recherche__ligne{flex-direction:row}}
+.lettre input{flex:1;min-width:0;height:48px;padding:0 16px;border:1px solid var(--champ);border-radius:12px;background:var(--bg);font:inherit}
+.lettre button{justify-content:center}
+/* FAQ */
+.faq h3{font:600 20px/1.3 var(--serif);margin:28px 0 8px}.faq p{margin:0;max-width:70ch}.faq a{color:var(--terra);text-underline-offset:3px}.faq a:hover{color:var(--terra-deep)}
+/* Prestation encart */
+.prestation{margin-top:32px;max-width:820px;background:var(--paper);border:1px solid var(--border);border-left:3px solid var(--terra);border-radius:12px;padding:16px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 24px}.prestation p{margin:0;flex:1 1 320px}
+/* Pagination */
+.pagination{margin-top:40px}.pagination ul{display:flex;flex-wrap:wrap;gap:8px}
+.pg{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 14px;border:1px solid var(--border-strong);border-radius:9999px;background:var(--paper);color:var(--fg);font-weight:600;text-decoration:none}
+.pg:hover{border-color:var(--terra);color:var(--terra-deep)}.pg[aria-current]{background:var(--mocha);color:var(--mocha-fg);border-color:var(--mocha)}.pg--off{color:var(--fg-muted);border-style:dashed}
+.autres{display:grid;gap:24px}@media(min-width:640px){.autres{grid-template-columns:repeat(2,1fr)}}@media(min-width:1024px){.autres{grid-template-columns:repeat(4,1fr)}}
+.autres li{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:20px}
+.autres h3{font:600 20px/1.3 var(--serif)}.autres h3 a{text-decoration:none}.autres h3 a:hover{color:var(--terra-deep);text-decoration:underline}.autres p{margin:8px 0 4px;font-size:15px}
+/* Fin */
+.fin{margin-top:64px;background:var(--sand);padding:56px 0;text-align:center}@media(min-width:992px){.fin{margin-top:96px;padding:80px 0}}
+.fin p{margin:14px auto 0;max-width:56ch}.fin__btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:28px!important}
+.btn--contour{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1.5px var(--fg)}.btn--contour:hover{background:var(--paper)}
+/* Pied */
+.pied{background:var(--mocha);color:var(--mocha-fg);padding:40px 0}.pied__in{display:grid;gap:20px}
+.pied__logo{margin:0;font:500 24px var(--serif)}.pied__logo em{color:var(--on-mocha)}
+.pied ul{display:flex;flex-wrap:wrap;gap:0 24px}.pied a{display:inline-flex;min-height:44px;align-items:center;color:var(--mocha-fg);text-underline-offset:4px}
+.pied__note{margin:0;color:#b5aa9c;font-size:14px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.carte:hover{transform:none}.carte:hover .carte__img img{transform:none}}
 
 </style>
 </head>
 <body>
-<a class="lien-evitement" href="#contenu">Aller au contenu</a>
-<!-- Pictogrammes (sprite inline, décoratifs) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="i-calendrier" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/></symbol>
-  <symbol id="i-soleil" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></symbol>
-  <symbol id="i-enveloppe" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></symbol>
-  <symbol id="i-horloge" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
-  <symbol id="i-maj" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
-  <symbol id="i-publie" viewBox="0 0 24 24"><path d="M5 3.5h10l4 4v13H5z"/><path d="M15 3.5v4h4M8.5 12h7M8.5 16h7"/></symbol>
-  <symbol id="i-eclair" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H12l-1 8 8.5-11H12z"/></symbol>
-  <symbol id="i-coche" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
-  <symbol id="i-croix" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
-  <symbol id="i-moins" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
-  <symbol id="i-ampoule" viewBox="0 0 24 24"><path d="M9 18h6M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.6.5.8 1.1.8 1.8V16h6v-.1c0-.7.3-1.3.8-1.8A6.5 6.5 0 0 0 12 2.5z"/></symbol>
-  <symbol id="i-attention" viewBox="0 0 24 24"><path d="M12 3 1.8 20.5h20.4z"/><path d="M12 9.5v5M12 17.5v.5"/></symbol>
-  <symbol id="i-mallette" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8.5 7V4.5h7V7M2.5 12.5h19"/></symbol>
-  <symbol id="i-epingle" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 6 4 3.5H6l4-3.5z"/><path d="M12 13v8"/></symbol>
-  <symbol id="i-graphe" viewBox="0 0 24 24"><path d="M3.5 20.5h17M6.5 17v-5M11.5 17V7M16.5 17v-8"/></symbol>
-  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
-  <symbol id="i-fleche" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
-  <symbol id="i-livre" viewBox="0 0 24 24"><path d="M4 4.5h6.5A2.5 2.5 0 0 1 13 7v13a2 2 0 0 0-2-2H4zM20 4.5h-4.5A2.5 2.5 0 0 0 13 7"/><path d="M20 4.5V18h-7"/></symbol>
-  <symbol id="i-ia" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 3.5V7M9.5 12v1.5M14.5 12v1.5M2.5 12.5H5M19 12.5h2.5"/></symbol>
-  <symbol id="i-lien" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></symbol>
-  <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.5v.5M12 17v-6.5M12 13.5c0-2 1.2-3 2.6-3s2.4 1 2.4 3V17"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24"><path d="M4.5 4h4l11 16h-4zM19.5 4l-6.2 7M10.7 13 4.5 20"/></symbol>
-  <symbol id="i-cible" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
-  <symbol id="i-equipe" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5c2.4 0 4 1.5 4.5 4"/></symbol>
-  <symbol id="i-boussole" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
-  <symbol id="i-bouclier" viewBox="0 0 24 24"><path d="M12 2.5 4.5 5.5v6c0 4.5 3.2 8.2 7.5 10 4.3-1.8 7.5-5.5 7.5-10v-6z"/><path d="m8.5 12 2.5 2.5 4.5-4.5"/></symbol>
-  <symbol id="i-carte" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.2-7-11.5a7 7 0 0 1 14 0c0 5.3-7 11.5-7 11.5z"/><circle cx="12" cy="10" r="2.5"/></symbol>
-</svg>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="i-micro" viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4M8.5 21.5h7"/></symbol>
-  <symbol id="i-niveau" viewBox="0 0 24 24"><path d="M4 20v-5M10 20v-9M16 20V6"/><path d="M20 20V3" opacity=".35"/></symbol>
-  <symbol id="i-calcul" viewBox="0 0 24 24"><rect x="4.5" y="2.5" width="15" height="19" rx="2.5"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></symbol>
-  <symbol id="i-copier" viewBox="0 0 24 24"><rect x="8" y="8" width="12.5" height="12.5" rx="2.5"/><path d="M16 8V5.5A2 2 0 0 0 14 3.5H5.5a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2H8"/></symbol>
-</svg>
-
-
-<p class="bandeau-maquette">Maquette v3 — accueil du blog (/fr/blog) · document de travail, non publié</p>
-
-<header class="site-entete">
+<a class="evitement" href="#contenu">Aller au contenu</a>
+<p class="bandeau">Maquette v4 · accueil du blog (/fr/blog) · document de travail, non publié</p>
+<header class="site-entete" data-tone="terracotta">
   <div class="site-entete__rangee">
-    <a class="site-logo" href="/fr" aria-label="Axion-IA, accueil">
-      <span class="site-logo__nom">Axion<span class="site-logo__tiret" aria-hidden="true">-</span><em>IA</em></span>
-      <span class="site-logo__devise">Partenaire IA des PME et TPE</span>
-    </a>
+    <a class="site-logo" href="/fr" aria-label="Axion-IA, accueil"><span class="site-logo__nom">Axion<span aria-hidden="true" class="site-logo__tiret">-</span><em>IA</em></span><span class="site-logo__devise">Partenaire IA des PME et TPE</span></a>
     <nav class="site-nav" aria-label="Navigation principale">
       <a class="site-nav__lien" href="/fr">Accueil</a>
       <a class="site-nav__phare" href="/fr/journee-ia">La Journée IA</a>
-      <a class="site-nav__lien" href="/fr/prestations">Nos prestations<svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></a>
+      <a class="site-nav__lien" href="/fr/prestations">Nos prestations <svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></a>
       <a class="site-nav__lien" href="/fr/tarifs">Tarifs</a>
     </nav>
     <div class="site-actions">
-      <a class="site-pastille site-pastille--loupe" href="/fr/recherche" aria-label="Rechercher sur le site"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></a>
-      <a class="site-pastille site-pastille--texte" href="/fr/contact?depuis=blog-hub-ecrire"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Nous écrire</a>
-      <a class="site-reserver" href="/fr/appel?rdv=diagnostic&amp;depuis=blog-hub-entete" aria-label="Réserver un appel" data-cta="diagnostic"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span class="site-reserver__court">Réserver</span><span class="site-reserver__long">Réserver un appel</span></a>
-      <details class="site-menu">
-        <summary aria-label="Menu"><svg class="icone" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h16"/></svg></summary>
-        <nav class="site-menu__panneau" aria-label="Menu principal">
-          <a href="/fr">Accueil</a>
-          <a href="/fr/journee-ia">La Journée IA</a>
-          <a href="/fr/prestations">Nos prestations</a>
-          <a href="/fr/tarifs">Tarifs</a>
-          <a href="/fr/contact?depuis=blog-hub-ecrire">Nous écrire</a>
-          <a href="/fr/recherche">Rechercher sur le site</a>
-        </nav>
-      </details>
+      <a class="pastille pastille--loupe" href="/fr/recherche" aria-label="Rechercher sur le site"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></a>
+      <a class="pastille pastille--texte" href="/fr/contact?depuis=entete-ecrire"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Nous écrire</a>
+      <a class="site-reserver" href="/fr/appel?depuis=entete" aria-label="Réserver un appel"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span class="court">Réserver</span><span class="long">Réserver un appel</span></a>
+      <details class="site-menu"><summary aria-label="Menu"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 12h16M4 6h16M4 18h16"/></svg></summary>
+        <nav class="site-menu__panneau" aria-label="Menu principal"><a href="/fr">Accueil</a><a href="/fr/journee-ia">La Journée IA</a><a href="/fr/prestations">Nos prestations</a><a href="/fr/tarifs">Tarifs</a><a href="/fr/contact?depuis=entete-ecrire">Nous écrire</a><a href="/fr/recherche">Rechercher sur le site</a></nav></details>
     </div>
   </div>
 </header>
 
-<div class="bande-ariane">
-  <div class="conteneur">
-    <nav class="fil-ariane" aria-label="Fil d'Ariane">
-      <ol>
-        <li><a href="/fr">Accueil</a></li>
-        <li aria-current="page">Blog</li>
-      </ol>
-    </nav>
-  </div>
-</div>
-
-<main id="contenu">
-<header class="heros sur-terracotta">
-  <div class="conteneur">
-    <ul class="surtitre" aria-label="Rubrique">
-      <li class="pastille pastille--pleine">Blog</li>
-      <li class="pastille pastille--contour">Guides · analyses · définitions · chiffres</li>
-    </ul>
-    <h1>Le blog Axion-IA : l’IA expliquée <em>aux dirigeants de PME</em></h1>
-    <p class="chapo">Le blog d’Axion-IA aide les dirigeants de TPE et de PME, partout en France, à comprendre l’IA et à décider : guides pratiques, analyses, définitions, comparatifs et chiffres sourcés. Chaque article indique à qui il s’adresse, son temps de lecture et sa date de mise à jour.</p>
-    <ul class="meta"><li data-aeo="freshness"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg><time datetime="2026-11-28">Mis à jour le 28 novembre 2026</time></li></ul>
-    <ul class="hero-liens"><li><a class="btn btn--clair" href="#une">Lire l’article à la une<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></li><li><a class="btn btn--contour-clair" href="/fr/recherche">Rechercher un article</a></li><li><a class="btn btn--contour-clair" href="/fr/blog/feed.xml">S’abonner (RSS)</a></li></ul>
-  </div>
+<!-- NOTE DE MAQUETTE (disparaît en production) : articles de démonstration, sauf ceux qui existent déjà ; les visuels cassés seront réels en ligne. --><nav class="fil" aria-label="Fil d’Ariane"><ol><li><a href="/fr">Accueil</a></li><li aria-current="page">Blog</li></ol></nav>
+<main id="contenu"><div class="conteneur">
+<header class="haut">
+  <p class="surtitre">Blog</p>
+  <h1>L’IA expliquée aux dirigeants de PME et de TPE</h1>
+  <p class="intro" id="axion-direct-answer" data-speakable>Le blog d’Axion-IA publie des guides, des analyses et des définitions pour aider les dirigeants de TPE et de PME, partout en France, à comprendre l’intelligence artificielle et à décider quoi en faire dans leur entreprise. Les articles sont classés selon les cinq prestations d’Axion-IA : audit, formation, implémentation, coaching et sites web. Chaque article indique son auteur, son temps de lecture et sa date de mise à jour.</p>
+  <p class="maj">Mis à jour le <time datetime="2026-11-28">28 novembre 2026</time></p>
+  <form class="recherche" role="search" action="/fr/recherche" method="get">
+  <label for="q">Rechercher un article</label>
+  <div class="recherche__ligne"><input id="q" name="q" type="search" placeholder="Ex. : compte rendu, devis" autocomplete="off"><button type="submit">Rechercher</button></div>
+</form>
+  <nav aria-label="Filtrer par prestation"><ul class="filtres"><li><a class="filtre" href="/fr/blog" aria-current="page">Tous les articles</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-audits-ia">Audit IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-formations-ia">Formations IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-implementations-ia">Implémentation IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-coaching-1-to-1">Coaching IA</a></li><li><a class="filtre" href="/fr/blog/categorie/blog-sites-web-augmentes">Sites web IA</a></li></ul></nav>
 </header>
+<section class="bloc" aria-labelledby="une-t"><h2 id="une-t">À la une</h2><div class="une"><article class="carte carte--une">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads.webp" width="1024" height="640" alt="" fetchpriority="high" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Implémentation IA</span><span class="fmt">Analyse</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/projets-ia-pme-premier-essai">Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai</a></h3>
+    <p class="carte__resume">Les vraies causes d’un essai d’IA qui s’éteint, et ce qui distingue ceux qui durent.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-28">28 novembre 2026</time> · 9 min de lecture</p>
+  </div>
+</article><div class="une__cote"><article class="carte carte--lat">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/ia-donnees-entreprise-questions.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Audit IA</span><span class="fmt">Questions-réponses</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/ia-donnees-entreprise-questions">IA et données de l’entreprise : les questions que posent les dirigeants</a></h3>
+    <p class="carte__resume">Dix questions, des réponses courtes d’abord, le détail ensuite.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-27">27 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte carte--lat">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/axion-ia-conference-ia-dirigeants-pme-transformation-numerique.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Formations IA</span><span class="fmt">Définition</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/rag-explique-simplement">Le RAG, expliqué simplement aux dirigeants de PME</a></h3>
+    <p class="carte__resume">Ce que recouvre le mot, à quoi il sert et ce qu’il ne fait pas.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-27">27 novembre 2026</time> · 6 min de lecture</p>
+  </div>
+</article></div></div></section>
+<section class="bloc" aria-labelledby="der-t"><h2 id="der-t">Derniers articles</h2><div class="grille"><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/axion-ia-accompagnement-personnalise-dirigeant-decisions-ia.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Coaching IA</span><span class="fmt">Guide pratique</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/coaching-dirigeant-ia-premiers-mois">Se faire accompagner sur l’IA : à quoi ressemblent les premiers mois</a></h3>
+    <p class="carte__resume">Le rythme d’un suivi en tête-à-tête, ce que l’on travaille et ce que l’on laisse de côté.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-26">26 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/site-web-pme-ia-contenus.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Sites web IA</span><span class="fmt">Guide pratique</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/site-web-pme-ia-contenus">Un site web de PME qui s’appuie sur l’IA : par quoi commencer</a></h3>
+    <p class="carte__resume">Les contenus, la recherche interne et la maintenance : trois usages, leurs limites.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-26">26 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/ia-entreprise-chiffres-publics.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Audit IA</span><span class="fmt">Chiffres</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/ia-entreprise-chiffres-publics">IA en entreprise : ce que disent vraiment les chiffres publics</a></h3>
+    <p class="carte__resume">Chaque chiffre est daté, sourcé, et accompagné de ce qu’il ne dit pas.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-25">25 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/assistant-ia-generaliste-ou-outil-metier.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Formations IA</span><span class="fmt">Comparatif</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d’IA généraliste ou outil métier : lequel choisir pour votre PME ?</a></h3>
+    <p class="carte__resume">Sept critères, deux profils et trois questions pour trancher chez vous.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-25">25 novembre 2026</time> · 9 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/coaching-collaborateur-ia-habitudes.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Coaching IA</span><span class="fmt">Analyse</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/coaching-collaborateur-ia-habitudes">Un collaborateur et l’IA : comment s’installent de bonnes habitudes</a></h3>
+    <p class="carte__resume">Ce que l’on observe quand une personne apprend à travailler avec l’IA au quotidien.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-24">24 novembre 2026</time> · 6 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/site-web-ia-recherche-interne.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="etiq">Sites web IA</span><span class="fmt">Définition</span></p>
+    <h3 class="carte__titre"><a href="/fr/blog/site-web-ia-recherche-interne">La recherche interne d’un site, expliquée aux dirigeants</a></h3>
+    <p class="carte__resume">À quoi sert une recherche qui comprend les questions, et ce qu’elle ne remplace pas.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-24">24 novembre 2026</time> · 5 min de lecture</p>
+  </div>
+</article></div><p class="suite"><a class="lien" href="/fr/blog/page/2">Voir les articles plus anciens<span aria-hidden="true"> →</span></a></p></section>
+<section class="bloc" aria-labelledby="pre-t"><h2 id="pre-t">Les articles par prestation</h2>
+<div class="prest" id="blog-audits-ia"><div class="prest__tete"><h3>Audit IA</h3><p>Où l’IA peut vous faire gagner du temps, repérée avec vos équipes avant tout investissement.</p>
+<p class="prest__liens"><a class="lien" href="/fr/blog/categorie/blog-audits-ia">Tous les articles Audit IA<span aria-hidden="true"> →</span></a><a class="lien lien--calme" href="/fr/audit">Découvrir la prestation Audit IA</a></p></div>
+<div class="grille grille--c"><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/audit-ia-pme-par-ou-commencer.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/audit-ia-pme-par-ou-commencer">Auditer l’usage de l’IA dans sa PME : par où commencer</a></h4>
+    <p class="carte__resume">Les questions à poser à vos équipes avant de choisir un outil.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-21">21 novembre 2026</time> · 9 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/audit-ia-risques-conformite.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Analyse</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/audit-ia-risques-conformite">Données, règles, habitudes : les trois risques à regarder en premier</a></h4>
+    <p class="carte__resume">Un tour d’horizon des points de vigilance d’un premier audit.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-17">17 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article></div></div>
+<div class="prest" id="blog-formations-ia"><div class="prest__tete"><h3>Formations IA</h3><p>Former vos équipes à l’IA sur leurs propres dossiers : notions, bons réflexes et limites.</p>
+<p class="prest__liens"><a class="lien" href="/fr/blog/categorie/blog-formations-ia">Tous les articles Formations IA<span aria-hidden="true"> →</span></a><a class="lien lien--calme" href="/fr/formations">Découvrir la prestation Formations IA</a></p></div>
+<div class="grille grille--c"><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/former-equipe-ia-premiere-journee.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/former-equipe-ia-premiere-journee">Former une équipe à l’IA : ce qu’une première journée peut couvrir</a></h4>
+    <p class="carte__resume">Le programme type, les exercices sur dossiers réels et les limites d’une journée.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-20">20 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/formation-ia-erreurs-frequentes.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Questions-réponses</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/formation-ia-erreurs-frequentes">Formation à l’IA : les erreurs fréquentes des dirigeants</a></h4>
+    <p class="carte__resume">Cinq idées reçues et ce que l’on constate sur le terrain.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-16">16 novembre 2026</time> · 6 min de lecture</p>
+  </div>
+</article></div></div>
+<div class="prest" id="blog-implementations-ia"><div class="prest__tete"><h3>Implémentation IA</h3><p>Mettre l’IA en place pour de vrai : tâches à confier, consignes, vérification, usage durable.</p>
+<p class="prest__liens"><a class="lien" href="/fr/blog/categorie/blog-implementations-ia">Tous les articles Implémentation IA<span aria-hidden="true"> →</span></a><a class="lien lien--calme" href="/fr/implementation">Découvrir la prestation Implémentation IA</a></p></div>
+<div class="grille grille--c"><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l’IA, en 6 étapes</a></h4>
+    <p class="carte__resume">Six étapes concrètes et une consigne à copier.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-23">23 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/taches-administratives-ia-pme.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Sélection</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu’une PME peut confier à l’IA</a></h4>
+    <p class="carte__resume">Dix tâches, choisies sur trois critères, avec pour chacune sa limite.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-22">22 novembre 2026</time> · 8 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/entreprise-batiment-devis-ia.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Cas concret</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/entreprise-batiment-devis-ia">Une entreprise du bâtiment prépare ses devis avec l’IA : récit d’un essai</a></h4>
+    <p class="carte__resume">Étape par étape : ce qui a bloqué et ce qui a tenu.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-18">18 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article></div></div>
+<div class="prest" id="blog-coaching-1-to-1"><div class="prest__tete"><h3>Coaching IA</h3><p>Un dirigeant ou un collaborateur suivi en tête-à-tête pour s’approprier l’IA.</p>
+<p class="prest__liens"><a class="lien" href="/fr/blog/categorie/blog-coaching-1-to-1">Tous les articles Coaching IA<span aria-hidden="true"> →</span></a><a class="lien lien--calme" href="/fr/un-a-un">Découvrir la prestation Coaching IA</a></p></div>
+<div class="grille grille--c"><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/coaching-dirigeant-ia-decisions.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Analyse</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/coaching-dirigeant-ia-decisions">Décider avec l’IA : ce qu’un dirigeant peut lui déléguer, et ce qu’il garde</a></h4>
+    <p class="carte__resume">Une grille simple pour trier les décisions.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-19">19 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/coaching-ia-preparer-rendez-vous.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/coaching-ia-preparer-rendez-vous">Préparer un rendez-vous important avec l’IA, étape par étape</a></h4>
+    <p class="carte__resume">De la recherche d’informations à la liste de questions.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-15">15 novembre 2026</time> · 6 min de lecture</p>
+  </div>
+</article></div></div>
+<div class="prest" id="blog-sites-web-augmentes"><div class="prest__tete"><h3>Sites web IA</h3><p>Un site web qui s’appuie sur l’IA : contenus, recherche, conversion et maintenance.</p>
+<p class="prest__liens"><a class="lien" href="/fr/blog/categorie/blog-sites-web-augmentes">Tous les articles Sites web IA<span aria-hidden="true"> →</span></a><a class="lien lien--calme" href="/fr/sites-web-augmentes">Découvrir la prestation Sites web IA</a></p></div>
+<div class="grille grille--c"><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/site-web-ia-maintenance.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Guide pratique</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/site-web-ia-maintenance">Maintenir un site web avec l’IA : ce qui se délègue sans risque</a></h4>
+    <p class="carte__resume">Mises à jour, relecture, accessibilité : trois tâches, leurs garde-fous.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-14">14 novembre 2026</time> · 7 min de lecture</p>
+  </div>
+</article><article class="carte">
+  <figure class="carte__img"><img src="https://axion-ia.com/images/blog/site-web-ia-contenus-relecture.webp" width="640" height="400" alt="" loading="lazy" decoding="async"></figure>
+  <div class="carte__corps">
+    <p class="carte__etiq"><span class="fmt">Analyse</span></p>
+    <h4 class="carte__titre"><a href="/fr/blog/site-web-ia-contenus-relecture">Contenus de site rédigés avec l’IA : comment les relire</a></h4>
+    <p class="carte__resume">Les erreurs qui passent, et la relecture qui les attrape.</p>
+    <p class="meta">Manon, Plume IA · Mis à jour le <time datetime="2026-11-13">13 novembre 2026</time> · 6 min de lecture</p>
+  </div>
+</article></div></div>
+</section>
+</div>
+<section class="bande" aria-labelledby="exp-t"><div class="conteneur"><h2 id="exp-t">Explorer par secteur et par taille d’entreprise</h2>
+<div class="explorer"><div><h3>Par secteur</h3><ul class="puces"><li><a href="/fr/blog/secteur/industrie">Industrie</a></li><li><a href="/fr/blog/secteur/comptabilite">Comptabilité &amp; expertise</a></li><li><a href="/fr/blog/secteur/juridique">Juridique</a></li><li><a href="/fr/blog/secteur/sante">Santé</a></li><li><a href="/fr/blog/secteur/conseil">Conseil</a></li><li><a href="/fr/blog/secteur/logistique">Logistique</a></li><li><a href="/fr/blog/secteur/immobilier">Immobilier</a></li><li><a href="/fr/blog/secteur/agro-alimentaire">Agro-alimentaire</a></li><li><a href="/fr/blog/secteur/tourisme">Tourisme</a></li><li><a href="/fr/blog/secteur/education">Éducation</a></li></ul></div>
+<div><h3>Par taille d’entreprise</h3><ul class="puces"><li><a href="/fr/blog/taille/tpe">TPE</a></li><li><a href="/fr/blog/taille/pme">PME</a></li><li><a href="/fr/blog/taille/eti">ETI</a></li></ul></div></div></div></section>
 <div class="conteneur">
-
-  <section class="bloc" id="une" aria-labelledby="une-titre">
-    <div class="bloc__tete"><p class="bloc__sur">À la une</p><h2 class="bloc__titre" id="une-titre">L’article à lire <em>en premier</em></h2></div>
-    <article class="carte-art carte-art--une" data-type="analyse">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-atelier-ia-equipe-commerciale-crm-automatisation-leads.webp" alt="Visuel Axion-IA : « Investir en connaissance aujourd&#x27;hui, c&#x27;est récolter la liberté demain »" width="1536" height="1024" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Analyse</span><span class="carte-art__cat">Organisation &amp; IA</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/projets-ia-pme-premier-essai">Pourquoi tant de projets d’IA en PME s’arrêtent au premier essai</a></h3>
-    <p class="carte-art__resume">Les vraies causes d’un essai d’IA qui s’éteint, et ce qui distingue ceux qui durent.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>9 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-26">26 novembre 2026</time></span></p>
-  </div>
-</article>
-  </section>
-
-  <section class="bloc" id="questions" aria-labelledby="questions-titre">
-    <div class="bloc__tete"><p class="bloc__sur">Par question</p><h2 class="bloc__titre" id="questions-titre">Quelle est votre <em>question&#8239;?</em></h2><p class="bloc__intro">Choisissez celle qui ressemble à la vôtre : chaque lien mène à l’article qui y répond.</p></div>
-    <ul class="questions">
-      <li><a class="question" href="/fr/blog/taches-administratives-ia-pme"><span class="question__q">Par où commencer avec l’IA dans ma PME&#8239;?</span><span class="question__type"><b>Sélection</b> · 8 min de lecture</span></a></li>
-      <li><a class="question" href="/fr/blog/projets-ia-pme-premier-essai"><span class="question__q">Pourquoi mes essais d’IA s’arrêtent-ils au bout de quelques semaines&#8239;?</span><span class="question__type"><b>Analyse</b> · 9 min de lecture</span></a></li>
-      <li><a class="question" href="/fr/blog/assistant-ia-generaliste-ou-outil-metier"><span class="question__q">Assistant généraliste ou outil métier&nbsp;: lequel choisir&#8239;?</span><span class="question__type"><b>Comparatif</b> · 9 min de lecture</span></a></li>
-      <li><a class="question" href="/fr/blog/ia-donnees-entreprise-questions"><span class="question__q">Que deviennent les données de mon entreprise quand j’utilise l’IA&#8239;?</span><span class="question__type"><b>Questions-réponses</b> · 7 min de lecture</span></a></li>
-      <li><a class="question" href="/fr/blog/rag-explique-simplement"><span class="question__q">Que veut dire « RAG » dans les offres d’IA que je reçois&#8239;?</span><span class="question__type"><b>Définition</b> · 6 min de lecture</span></a></li>
-      <li><a class="question" href="/fr/blog/compte-rendu-reunion-ia"><span class="question__q">Comment gagner du temps sur mes comptes rendus de réunion&#8239;?</span><span class="question__type"><b>Guide pratique</b> · 8 min de lecture</span></a></li>
-    </ul>
-
-    <div class="acces" id="acces">
-      <div class="acces__groupe acces__groupe--large">
-        <h3>Par catégorie</h3>
-        <ul class="puces puces--types"><li><a href="/fr/blog/categorie/blog-formations-ia">Formations IA</a></li><li><a href="/fr/blog/categorie/blog-coaching-1-to-1">Coaching 1-to-1</a></li><li><a href="/fr/blog/categorie/blog-audits-ia">Audits IA</a></li><li><a href="/fr/blog/categorie/blog-implementations-ia">Implémentation &amp; automatisation IA</a></li><li><a href="/fr/blog/categorie/blog-sites-web-augmentes">Sites web &amp; SaaS IA</a></li></ul>
-        <p class="bloc__intro"><a class="lien-fleche" href="/fr/blog/categorie">Toutes les catégories<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
-      </div>
-      <div class="acces__groupe">
-        <h3>Par parcours</h3>
-        <ul class="puces"><li><a href="/fr/guides">Les guides complets</a></li><li><a href="/fr/glossaire">Le glossaire</a></li><li><a href="/fr/actualites">Les actualités</a></li></ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="bloc" id="derniers" aria-labelledby="derniers-titre">
-    <div class="bloc__tete"><p class="bloc__sur">Derniers articles</p><h2 class="bloc__titre" id="derniers-titre">Les derniers articles <em>mis à jour</em></h2><p class="bloc__intro">Du plus récent au plus ancien, avec le type de chaque article sur sa carte.</p></div>
-    <ul class="grille-art grille-art--3">
-      <li><article class="carte-art" data-type="guide">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere.webp" alt="Quatre collègues autour d&#x27;un ordinateur portable à la fin d&#x27;une réunion, avec la légende « La réunion est finie. Le CR était déjà écrit. »" width="1920" height="1080" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Guide pratique</span><span class="carte-art__cat">Productivité &amp; IA</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/compte-rendu-reunion-ia">Rédiger un compte rendu de réunion avec l’IA, en 6 étapes</a></h3>
-    <p class="carte-art__resume">Six étapes concrètes, une consigne à copier et de quoi calculer le temps gagné.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>8 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-25">25 novembre 2026</time></span></p>
-  </div>
-</article></li>
-      <li><article class="carte-art" data-type="faq">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-audit-ia-entretien-dirigeant-recueil-besoins-analyse.webp" alt="Affiche « Audit en entreprise » : une loupe sur un engrenage, entourée d&#x27;icônes de gain de temps" width="1536" height="1024" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Questions-réponses</span><span class="carte-art__cat">Données &amp; RGPD</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/ia-donnees-entreprise-questions">IA et données de l’entreprise&nbsp;: les questions que posent les dirigeants</a></h3>
-    <p class="carte-art__resume">Dix questions, des réponses courtes d’abord, le détail ensuite.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>7 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-25">25 novembre 2026</time></span></p>
-  </div>
-</article></li>
-      <li><article class="carte-art" data-type="comparatif">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp" alt="Schéma en cases : les étapes d&#x27;un traitement par l&#x27;IA, de la fourniture des données à l&#x27;amélioration continue" width="1024" height="1536" loading="lazy" decoding="async" style="object-position:top">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Comparatif</span><span class="carte-art__cat">Outils d’IA</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/assistant-ia-generaliste-ou-outil-metier">Assistant d’IA généraliste ou outil métier&nbsp;: lequel choisir pour votre PME&#8239;?</a></h3>
-    <p class="carte-art__resume">Sept critères, deux profils et trois questions pour trancher chez vous.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>9 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-24">24 novembre 2026</time></span></p>
-  </div>
-</article></li>
-      <li><article class="carte-art" data-type="definition">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-connexion-outils-crm-erp-ia-automatisation-donnees.webp" alt="Schéma en triangle autour du logo Axion-IA : gagner du temps, réduire vos coûts, maximiser vos résultats" width="1254" height="1254" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Définition</span><span class="carte-art__cat">Glossaire de l’IA</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/rag-explique-simplement">Le RAG, expliqué simplement aux dirigeants de PME</a></h3>
-    <p class="carte-art__resume">Ce que recouvre le mot, à quoi il sert et ce qu’il ne fait pas.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>6 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-24">24 novembre 2026</time></span></p>
-  </div>
-</article></li>
-      <li><article class="carte-art" data-type="chiffres">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-automatisation-ia-avant-apres-tableau-bord-45-pourcent-photo-carre.webp" alt="Illustration : un tas de papiers qui se transforme en tableau de bord de résultats" width="1536" height="1024" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Chiffres</span><span class="carte-art__cat">Observatoire IA</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/ia-entreprise-chiffres-publics">IA en entreprise&nbsp;: ce que disent vraiment les chiffres publics</a></h3>
-    <p class="carte-art__resume">Chaque chiffre est daté, sourcé, et accompagné de ce qu’il ne dit pas.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>8 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-24">24 novembre 2026</time></span></p>
-  </div>
-</article></li>
-      <li><article class="carte-art" data-type="selection">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-audit-ia-diagnostic-workflow-taches-repetitives-detection.webp" alt="Visuel Axion-IA : « L&#x27;avenir ne se prévoit pas, il se prépare aujourd&#x27;hui »" width="1536" height="1024" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Sélection</span><span class="carte-art__cat">Administratif &amp; IA</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/taches-administratives-ia-pme">10 tâches administratives qu’une PME peut confier à l’IA dès ce mois-ci</a></h3>
-    <p class="carte-art__resume">Dix tâches, choisies sur trois critères, avec pour chacune sa limite.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>8 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-23">23 novembre 2026</time></span></p>
-  </div>
-</article></li>
-      <li><article class="carte-art" data-type="cas">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-cas-concret-soirees-admin-devis-factures-automatiques-pme-carre.webp" alt="Frise d&#x27;une journée de 9 h à 22 h : devis, factures, e-mails et documents classés automatiquement" width="1200" height="1200" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Étude de cas</span><span class="carte-art__cat">Bâtiment &amp; artisanat</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/blog/entreprise-batiment-devis-ia">Une entreprise du bâtiment prépare ses devis avec l’IA&nbsp;: récit d’un essai</a></h3>
-    <p class="carte-art__resume">Le récit, étape par étape, d’un essai mené dans une entreprise type&nbsp;: ce qui a bloqué et ce qui a tenu.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>7 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-18">18 novembre 2026</time></span></p>
-  </div>
-</article></li>
-    </ul>
-    <nav class="pagination" aria-label="Pagination des articles">
-  <ul>
-    <li><span aria-current="page" aria-label="Page 1, page actuelle">1</span></li>
-    <li><a href="/fr/blog/page/2" aria-label="Page 2">2</a></li>
-    <li><a href="/fr/blog/page/3" aria-label="Page 3">3</a></li>
-    <li><a href="/fr/blog/page/2" rel="next">Suivant <span aria-hidden="true">→</span></a></li>
-  </ul>
-  <p class="pagination__etat">Page 1 sur N <span class="exemple">exemple</span></p>
-</nav>
-  </section>
-
-  <section class="bloc" id="piliers" aria-labelledby="piliers-titre">
-    <div class="bloc__tete"><p class="bloc__sur">Guides piliers</p><h2 class="bloc__titre" id="piliers-titre">Les guides complets, <em>pas à pas</em></h2><p class="bloc__intro">Pour un sujet vu de bout en bout, en chapitres courts.</p></div>
-    <div class="piliers">
-      <ul class="grille-art grille-art--1"><li><article class="carte-art" data-type="pilier">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-audit-ia-feuille-de-route-implementation-phases-etapes.webp" alt="Visuel d&#x27;audit IA : du temps, de l&#x27;argent et des décisions mieux gérés" width="1536" height="1024" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Guide pilier</span><span class="carte-art__cat">7 chapitres</span></p>
-    <h3 class="carte-art__titre"><a href="/fr/guides/mettre-en-place-ia-pme">Mettre en place l’IA dans une PME&nbsp;: le guide complet, étape par étape</a></h3>
-    <p class="carte-art__resume">Du premier essai à l’usage quotidien&nbsp;: sept chapitres courts, chacun avec une action à mener.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>14 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-25">25 novembre 2026</time></span></p>
-  </div>
-</article></li></ul>
-      <aside class="pilier-note sur-sombre" aria-labelledby="pn-titre">
-        <h3 id="pn-titre">Pour aller plus loin</h3>
-        <p>Les guides rassemblent plusieurs articles en un parcours. À côté, deux repères pour les termes et la réglementation.</p>
-        <ul>
-          <li><a href="/fr/guides">Tous les guides</a></li>
-          <li><a href="/fr/glossaire">Le glossaire de l’IA</a></li>
-        </ul>
-        <a class="btn btn--clair" href="/fr/guides">Voir les guides<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
-      </aside>
-    </div>
-    <h3 class="bloc__sous">Dernière actualité</h3>
-    <ul class="grille-art grille-art--1 actu-une"><li><article class="carte-art" data-type="actu">
-  <figure class="carte-art__photo">
-    <img src="../../../../public/images/axion-ia-atelier-pratique-ia-equipe-exercices-mains-dans-la-masse.webp" alt="Affiche « Formation IA » : apprendre, expérimenter, innover" width="1536" height="1024" loading="lazy" decoding="async">
-  </figure>
-  <div class="carte-art__corps">
-    <p class="carte-art__etiquettes"><span class="pastille pastille--claire">Actualité</span><span class="carte-art__cat">Réglementation</span></p>
-    <h4 class="carte-art__titre"><a href="/fr/actualites/ai-act-article-4-maitrise-ia">AI Act&nbsp;: former vos équipes à l’IA est déjà une obligation</a></h4>
-    <p class="carte-art__resume">Ce que demande le texte, qui est concerné, et quoi faire cette semaine.</p>
-    <p class="carte-art__meta"><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-horloge"/></svg>4 min de lecture</span><span><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-maj"/></svg>Mis à jour le <time datetime="2026-11-27">27 novembre 2026</time></span></p>
-  </div>
-</article></li></ul>
-    <p><a class="lien-fleche" href="/fr/actualites">Toutes les actualités<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a></p>
-  </section>
-
-  <section class="barometre sur-sombre" id="chiffres" aria-labelledby="chiffres-titre">
-    <h2 id="chiffres-titre">Chiffres et <em>baromètre</em></h2>
-    <p class="barometre__intro">Chaque chiffre publié est daté, sourcé, et accompagné de ce qu’il ne dit pas. Ils viennent de l’Observatoire IA d’Axion-IA et de sources publiques.</p>
-    <ul class="barometre__chiffres">
-      <li><span class="barometre__valeur">00&nbsp;%</span><span class="barometre__texte">Libellé du chiffre, en une phrase</span><span class="barometre__source">Source, millésime</span><span class="exemple">exemple</span></li>
-      <li><span class="barometre__valeur">00&nbsp;%</span><span class="barometre__texte">Libellé du chiffre, en une phrase</span><span class="barometre__source">Source, millésime</span><span class="exemple">exemple</span></li>
-      <li><span class="barometre__valeur">00&nbsp;%</span><span class="barometre__texte">Libellé du chiffre, en une phrase</span><span class="barometre__source">Source, millésime</span><span class="exemple">exemple</span></li>
-    </ul>
-    <p class="barometre__pied"><a class="btn btn--clair" href="/fr/observatoire-ia">Voir l’Observatoire<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a><a href="/fr/blog/ia-entreprise-chiffres-publics">Lire : IA en entreprise&nbsp;: ce que disent vraiment les chiffres publics</a></p>
-  </section>
-
-  <section class="bloc" aria-labelledby="lettre-titre">
-  <div class="lettre">
-    <div class="lettre__texte">
-      <h2 id="lettre-titre">Recevoir le guide et les nouveautés utiles</h2>
-      <p>Laissez votre adresse : le guide de l’IA pour les PME arrive par e-mail d’ici quelques minutes.</p>
-    </div>
-    <!-- FORMULAIRE INCHANGÉ (libellé « Votre e-mail », sans placeholder ; en production, zone d'alerte réservée en hauteur et Turnstile monté à la première interaction : la hauteur réelle est un peu supérieure à celle de cette maquette) : composant NewsletterForm du site (source « article », libellés de src/content/guide-ia-formulaire.ts :
-         bouton « Recevoir le guide », case facultative et décochée pour une adresse personnelle, mention versionnée, Turnstile, leurre anti-spam).
-         Seul l'habillage de la section change dans cette maquette ; aucun texte du formulaire n'est modifié. -->
-    <form class="lettre__form" method="post" action="#" novalidate>
-      <div class="lettre__champ">
-        <label for="lettre-email">Votre e-mail</label>
-        <input id="lettre-email" name="email" type="email" inputmode="email" autocomplete="email" required>
-      </div>
-      <button class="btn btn--terracotta" type="submit">Recevoir le guide</button>
-      <p class="lettre__mention">En recevant le guide, vous recevrez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l’e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Conservation : tant que la relation dure, puis le temps des délais légaux de réclamation. Pour exercer vos droits : contact@axion-ia.com. <a href="/fr/politique-confidentialite">Politique de confidentialité</a>.</p>
-    </form>
+<section class="bloc" aria-labelledby="loin-t"><h2 id="loin-t">Pour aller plus loin</h2>
+<ul class="liste-liens"><li><a class="lien" href="/fr/guides">Les guides complets<span aria-hidden="true"> →</span></a></li><li><a class="lien" href="/fr/glossaire">Le glossaire de l’IA<span aria-hidden="true"> →</span></a></li></ul></section>
+<section class="bloc lettre" aria-labelledby="lettre-titre">
+  <div class="lettre__carte">
+    <div><h2 id="lettre-titre">Recevoir le guide et les nouveautés utiles</h2>
+    <p>Un e-mail quand un article utile paraît, et le guide pour démarrer avec l’IA. Désinscription en un clic.</p></div>
+    <form action="/fr/lettre" method="post"><label for="mel">Votre adresse e-mail</label>
+      <div class="recherche__ligne"><input id="mel" name="email" type="email" autocomplete="email" placeholder="vous@entreprise.fr" required><button class="btn" type="submit">Recevoir le guide</button></div></form>
   </div>
 </section>
-
-  <section class="bloc faq" id="questions-frequentes" aria-labelledby="faq-titre">
-    <div class="bloc__tete"><p class="bloc__sur">Questions fréquentes</p><h2 class="bloc__titre" id="faq-titre">À propos <em>du blog</em></h2></div>
-    <details open><summary>À qui s’adresse le blog d’Axion-IA&#8239;?</summary><p data-speakable="true">Aux dirigeants et aux équipes de TPE et de PME, partout en France, qui veulent comprendre ce que l’IA peut faire pour leur activité, sans jargon.</p></details>
-    <details><summary>Comment sont rédigés les articles&#8239;?</summary><p>Chaque article annonce à qui il s’adresse, son temps de lecture et sa date de mise à jour, et cite ses sources quand il s’appuie sur des chiffres.</p></details>
-    <details><summary>Comment poser une question sur un sujet&#8239;?</summary><p>Utilisez la recherche du site, ou écrivez-nous un message : nous répondons aux questions des dirigeants.</p></details>
-  </section>
-
-  <section class="appel-fin sur-terracotta" aria-labelledby="appel-titre">
-  <h2 id="appel-titre">Passer de la lecture à votre cas</h2>
-  <p>Trois façons de poursuivre, selon là où vous en êtes.</p>
-  <div class="appel-fin__actions">
-    <a class="btn btn--bleu" href="/fr/appel?rdv=diagnostic&amp;depuis=blog-hub-fin" data-cta="diagnostic">Diagnostic IA, 45 min<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
-    <a class="btn btn--clair" href="/fr/journee-ia?depuis=blog-hub-fin">Découvrir la Journée IA<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
-    <a class="btn btn--contour-clair" href="/fr/contact?depuis=blog-hub-fin">Écrire un message<svg class="icone fleche" aria-hidden="true" focusable="false"><use href="#i-fleche"/></svg></a>
-  </div>
-</section>
-
-  <aside class="note-maquette" aria-labelledby="nm-titre">
-    <h2 id="nm-titre">Note de maquette (disparaît en production)</h2>
-    <ul>
-      <li>Données de la maquette : les dix articles sont ceux des maquettes v3 (mêmes titres, mêmes photos de la banque d'images, mêmes étiquettes de type). Dates, durées et résumés sont ceux de ces maquettes. Aucun chiffre de comptage (nombre d'articles, de pages) n'est affiché.</li>
-      <li>Blocs « chiffres » et « Page 1 sur N » : valeurs fictives, signalées « exemple ». En production : le dernier relevé de l’Observatoire (BarometerSnapshot) et le vrai nombre de pages.</li>
-      <li>Catégorie sur les cartes : les maquettes v3 des articles affichent un thème (« Organisation &amp; IA »…), alors que le site range les articles dans 5 catégories de service (« Audits IA »…). À trancher par Will.</li>
-      <li>Photos : ce sont les fichiers de la banque d’images déjà utilisés par les maquettes v3, mais plusieurs sont des visuels illustrés, pas des photos, et les textes alternatifs des maquettes v3 (qui décrivaient des scènes absentes) ont été corrigés ici pour décrire ce qu’on voit. Un seul fichier est une vraie photo (la réunion) ; plusieurs visuels portent des chiffres ou des promesses dans l’image (« +45 % », « +32 % », « 98 % », « Devis 30 sec », « ROI garanti », « Zéro perte, 100 % gain ») : à remplacer par de vraies photos avant publication. Les dimensions déclarées sont les vraies ; en production, next/image fournit srcset et sizes.</li>
-      <li>Accès par secteur, service, taille et métier : retirés. Les routes /blog/secteur, /blog/service et /blog/taille existent mais ne génèrent aucune page (le tableau BLOG_POSTS est vide, dynamicParams = false) : les liens seraient en 404. À reconstruire depuis la base avant de les afficher. Restent les 5 catégories réelles, les guides, le glossaire et les actualités.</li>
-      <li>Le bouton « Diagnostic IA, 45 min » de l’appel de fin pointe vers /fr/appel, comme dans les maquettes v3 validées. Le brief exclut la réservation en ligne : à confirmer par Will.</li>
-    </ul>
-  </aside>
+<section class="bloc faq" aria-labelledby="faq-t"><h2 id="faq-t">Questions fréquentes sur le blog</h2>
+<h3>À qui s’adresse le blog d’Axion-IA ?</h3><p>Aux dirigeants et aux équipes de TPE et de PME, partout en France, qui veulent comprendre l’IA avant de décider.</p>
+<h3>Qui écrit les articles ?</h3><p>Manon, Plume IA d’Axion-IA : une IA, présentée comme telle sur chaque article.</p>
+<h3>Comment trouver un article sur mon métier ?</h3><p>Avec la recherche en haut de page, les filtres par prestation, ou les listes par secteur et par taille d’entreprise.</p></section>
 </div>
-<!-- JSON-LD PRÉVU (émis par la page en production, jamais en dehors du <head>/<body> rendu ; ici en commentaire).
-     Trois objets, @id stables par page (page 1 = /fr/blog, page N = /fr/blog/page/N) ; ItemList = les cartes VISIBLES de la page courante, dans l'ordre.
-
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "CollectionPage",
-      "@id": "https://axion-ia.com/fr/blog#collection",
-      "url": "https://axion-ia.com/fr/blog",
-      "name": "Le blog Axion-IA : l'IA expliquée aux dirigeants de PME",
-      "inLanguage": "fr-FR",
-      "dateModified": "2026-11-28",
-      "isPartOf": { "@id": "https://axion-ia.com/#website" },
-      "publisher": { "@id": "https://axion-ia.com/#organization" },
-      "breadcrumb": { "@id": "https://axion-ia.com/fr/blog#fil" },
-      "mainEntity": { "@id": "https://axion-ia.com/fr/blog#itemlist" },
-      "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".chapo", "[data-speakable]"] }
-    },
-    {
-      "@type": "ItemList",
-      "@id": "https://axion-ia.com/fr/blog#itemlist",
-      "name": "Articles du blog Axion-IA",
-      "itemListOrder": "https://schema.org/ItemListOrderDescending",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "url": "https://axion-ia.com/fr/blog/projets-ia-pme-premier-essai", "name": "Pourquoi tant de projets d'IA en PME s'arrêtent au premier essai" },
-        { "@type": "ListItem", "position": 2, "url": "https://axion-ia.com/fr/blog/compte-rendu-reunion-ia", "name": "Rédiger un compte rendu de réunion avec l'IA, en 6 étapes" },
-        { "@type": "ListItem", "position": 3, "url": "https://axion-ia.com/fr/blog/ia-donnees-entreprise-questions", "name": "IA et données de l'entreprise : les questions que posent les dirigeants" },
-        { "@type": "ListItem", "position": 4, "url": "https://axion-ia.com/fr/blog/assistant-ia-generaliste-ou-outil-metier", "name": "Assistant d'IA généraliste ou outil métier : lequel choisir pour votre PME ?" },
-        { "@type": "ListItem", "position": 5, "url": "https://axion-ia.com/fr/blog/rag-explique-simplement", "name": "Le RAG, expliqué simplement aux dirigeants de PME" },
-        { "@type": "ListItem", "position": 6, "url": "https://axion-ia.com/fr/blog/ia-entreprise-chiffres-publics", "name": "IA en entreprise : ce que disent vraiment les chiffres publics" },
-        { "@type": "ListItem", "position": 7, "url": "https://axion-ia.com/fr/blog/taches-administratives-ia-pme", "name": "10 tâches administratives qu'une PME peut confier à l'IA dès ce mois-ci" },
-        { "@type": "ListItem", "position": 8, "url": "https://axion-ia.com/fr/blog/entreprise-batiment-devis-ia", "name": "Une entreprise du bâtiment prépare ses devis avec l'IA : récit d'un essai" }
-      ]
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://axion-ia.com/fr/blog#fil",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://axion-ia.com/fr" },
-        { "@type": "ListItem", "position": 2, "name": "Blog" }
-      ]
-    }
-  ]
-}
-
-     Règles : ItemList = À la une + grille « Derniers articles » uniquement (le guide pilier et l'actualité, hors /blog, n'y figurent pas) ; en production, position continue d'une page à l'autre (page 2 commence à 21) ; canonical d'une page N = sa propre URL ; le BreadcrumbList est émis UNE SEULE FOIS (par le composant Breadcrumbs, pas en double) ; la dernière entrée n'a pas de « item » ;
-     pas de FAQPage ici (Google ne l'affiche plus hors sites officiels : le bloc de questions reste du contenu visible, sans balisage) ; pas de prix, pas d'avis.
-     Cartes : <article> dans <li>, un seul lien par carte, <img> avec width/height et alt, <time datetime>. -->
+<section class="fin" aria-labelledby="fin-t"><div class="conteneur"><h2 id="fin-t">Passer de la lecture à votre entreprise</h2><p>Une journée sur place pour repérer ce que l’IA peut faire chez vous, et former vos équipes.</p>
+<p class="fin__btns"><a class="btn" href="/fr/journee-ia">Découvrir la Journée IA</a><a class="btn btn--contour" href="/fr/contact">Nous écrire</a></p></div></section>
 </main>
+<footer class="pied"><div class="conteneur pied__in">
+  <p class="pied__logo">Axion<span>-</span><em>IA</em></p>
+  <nav aria-label="Pied de page"><ul>
+   <li><a href="/fr/audit">Audit IA</a></li><li><a href="/fr/formations">Formations IA</a></li><li><a href="/fr/implementation">Implémentation IA</a></li><li><a href="/fr/un-a-un">Coaching IA</a></li><li><a href="/fr/sites-web-augmentes">Sites web IA</a></li><li><a href="/fr/blog">Blog</a></li><li><a href="/fr/contact">Contact</a></li></ul></nav>
+  <p class="pied__note">Partenaire IA des PME et TPE, partout en France.</p>
+</div></footer>
 
-<footer class="pied-site sur-sombre">
-  <div class="conteneur">© Axion-IA · <a href="/fr/mentions-legales">Mentions légales</a></div>
-</footer>
 </body>
 </html>
