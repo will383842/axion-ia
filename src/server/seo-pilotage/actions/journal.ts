@@ -20,6 +20,42 @@ export class VerrouModificationError extends Error {
   }
 }
 
+export class ConflitEcritureError extends Error {
+  constructor(readonly cibleId: string) {
+    super(`Le corps de ${cibleId} a changé pendant l'écriture`);
+    this.name = "ConflitEcritureError";
+  }
+}
+
+/** Lecteur minimal pour le pré-contrôle du verrou (sans écriture). */
+export interface LecteurVerrou {
+  seoModification: {
+    findFirst(a: unknown): Promise<{ etat: string; appliqueeLe: Date | null } | null>;
+  };
+}
+
+/**
+ * Pré-contrôle BON MARCHÉ du verrou, à appeler AVANT toute dépense (quota, appels au modèle) :
+ * une proposition ouverte, ou une application de moins de 28 jours, verrouille la cible.
+ */
+export async function cibleVerrouillee(
+  lecteur: LecteurVerrou,
+  articleId: string,
+  maintenant: Date,
+): Promise<boolean> {
+  const l = await lecteur.seoModification.findFirst({
+    where: {
+      cibleType: TYPE_CIBLE_ARTICLE,
+      cibleId: articleId,
+      etat: { in: ["proposee", "appliquee"] },
+    },
+    orderBy: { proposeeLe: "desc" },
+    select: { etat: true, appliqueeLe: true },
+  });
+  if (!l) return false;
+  return l.etat === "proposee" || verrou28Jours(l.appliqueeLe, maintenant);
+}
+
 export const hashTexte = (t: string): string => createHash("sha256").update(t).digest("hex");
 
 /** Vrai tant que la dernière application date de moins de 28 jours. */
@@ -115,8 +151,9 @@ export async function ecrireCorpsJournalise(
     bodyJson: traduction.bodyJson ?? null,
     articleUpdatedAt: article?.updatedAt.toISOString() ?? null,
   };
-  await tx.articleTranslation.updateMany({
-    where: { articleId: e.articleId, locale: "fr" },
+  // Écriture CONDITIONNELLE : si le corps lu plus haut a changé entre-temps, rien n'est écrasé.
+  const ecrit = await tx.articleTranslation.updateMany({
+    where: { articleId: e.articleId, locale: "fr", body: traduction.body },
     data: {
       body: e.html,
       bodyText: e.texteBrut,
@@ -124,6 +161,7 @@ export async function ecrireCorpsJournalise(
       updatedAt: e.dateModifiee,
     },
   });
+  if (ecrit.count !== 1) throw new ConflitEcritureError(e.articleId);
   await tx.article.update({ where: { id: e.articleId }, data: { updatedAt: e.dateModifiee } });
   return tx.seoModification.create({
     data: {

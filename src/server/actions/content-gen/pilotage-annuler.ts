@@ -6,6 +6,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "./_auth";
+import { ConflitEcritureError } from "@/server/seo-pilotage/actions/journal";
 import {
   annulerModification,
   type ResultatAnnulation,
@@ -22,7 +23,12 @@ export async function annulerModificationSeo(modificationId: string): Promise<Re
     return { ok: false, motif: "introuvable" };
   }
   const decidePar = session.userId.slice(0, 80);
-  return prisma.$transaction((tx) =>
-    annulerModification(tx as unknown as TxAnnulation, modificationId, decidePar),
-  );
+  try {
+    return await prisma.$transaction((tx) =>
+      annulerModification(tx as unknown as TxAnnulation, modificationId, decidePar),
+    );
+  } catch (e) {
+    if (e instanceof ConflitEcritureError) return { ok: false, motif: "conflit" };
+    throw e;
+  }
 }

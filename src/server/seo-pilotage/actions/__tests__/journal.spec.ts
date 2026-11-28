@@ -8,6 +8,7 @@ import {
   verrou28Jours,
   type TxJournal,
 } from "../journal";
+import { cibleVerrouillee, ConflitEcritureError } from "../journal";
 import { annulerModification, type TxAnnulation } from "../annuler";
 
 const T0 = new Date("2026-11-28T10:00:00Z");
@@ -95,7 +96,7 @@ describe("journal des modifications (P13)", () => {
   });
 });
 
-function fauxAnnulation(corpsActuel: string, etat = "appliquee") {
+function fauxAnnulation(corpsActuel: string, etat = "appliquee", concurrent = false) {
   const maj: Array<{ data: Record<string, unknown> }> = [];
   const journal: Array<{ data: Record<string, unknown> }> = [];
   const artMaj: Array<{ data: Record<string, unknown> }> = [];
@@ -116,15 +117,16 @@ function fauxAnnulation(corpsActuel: string, etat = "appliquee") {
         hashApres: hashTexte("<p>nouveau</p>"),
         dateAvant: ORIG,
       }),
-      update: async (a: unknown) => {
+      updateMany: async (a: unknown) => {
         journal.push(a as { data: Record<string, unknown> });
+        return { count: etat === "appliquee" || etat === "mesuree" ? 1 : 0 };
       },
     },
     articleTranslation: {
       findFirst: async () => ({ body: corpsActuel }),
       updateMany: async (a: unknown) => {
         maj.push(a as { data: Record<string, unknown> });
-        return { count: 1 };
+        return { count: concurrent ? 0 : 1 };
       },
     },
     article: {
@@ -143,7 +145,8 @@ describe("annulation (P13)", () => {
     expect(maj[0]!.data["body"]).toBe("<p>ancien</p>");
     expect(maj[0]!.data["updatedAt"]).toEqual(ORIG);
     expect(artMaj[0]!.data["updatedAt"]).toEqual(ORIG);
-    expect(journal[0]!.data).toMatchObject({ etat: "annulee", decidePar: "admin-1" });
+    expect(journal[0]!.data).toMatchObject({ etat: "annulee", annulePar: "admin-1" });
+    expect(journal[0]!.data).not.toHaveProperty("decidePar");
   });
 
   it("refuse en cas de conflit de hachage, sans rien écrire", async () => {
@@ -157,5 +160,44 @@ describe("annulation (P13)", () => {
     const { tx, maj } = fauxAnnulation("<p>nouveau</p>", "annulee");
     expect(await annulerModification(tx, "m1", "a")).toEqual({ ok: false, motif: "deja_traitee" });
     expect(maj).toHaveLength(0);
+  });
+});
+
+describe("corrections de relecture (P13)", () => {
+  it("l'annulation ne s'écrase pas sur une écriture concurrente : la transaction est annulée", async () => {
+    const { tx } = fauxAnnulation("<p>nouveau</p>", "appliquee", true);
+    await expect(annulerModification(tx, "m1", "a")).rejects.toBeInstanceOf(ConflitEcritureError);
+  });
+
+  it("pré-contrôle du verrou avant toute dépense", async () => {
+    const lecteur = (l: { etat: string; appliqueeLe: Date | null } | null) => ({
+      seoModification: { findFirst: async () => l },
+    });
+    const j = (n: number) => new Date(T0.getTime() - n * 24 * 3600 * 1000);
+    expect(await cibleVerrouillee(lecteur(null), "a1", T0)).toBe(false);
+    expect(await cibleVerrouillee(lecteur({ etat: "proposee", appliqueeLe: null }), "a1", T0)).toBe(
+      true,
+    );
+    expect(
+      await cibleVerrouillee(lecteur({ etat: "appliquee", appliqueeLe: j(5) }), "a1", T0),
+    ).toBe(true);
+    expect(
+      await cibleVerrouillee(lecteur({ etat: "appliquee", appliqueeLe: j(40) }), "a1", T0),
+    ).toBe(false);
+  });
+
+  it("l'écriture du corps est conditionnelle au corps lu", async () => {
+    const { tx, brut } = fauxTx();
+    brut.articleTranslation.updateMany.mockResolvedValueOnce({ count: 0 });
+    await expect(
+      ecrireCorpsJournalise(tx, {
+        articleId: "a1",
+        html: "x",
+        texteBrut: "x",
+        dateModifiee: T0,
+        origine: "equipe_maj",
+      }),
+    ).rejects.toBeInstanceOf(ConflitEcritureError);
+    expect(brut.seoModification.create).not.toHaveBeenCalled();
   });
 });

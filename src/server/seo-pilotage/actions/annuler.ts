@@ -4,7 +4,7 @@
  * Restaure le corps ET les dates d'origine. Aucun fichier écrit.
  */
 import { Prisma } from "../../../../prisma/generated/client";
-import { CHAMP_CORPS, hashTexte, type AvantCorps } from "./journal";
+import { CHAMP_CORPS, ConflitEcritureError, hashTexte, type AvantCorps } from "./journal";
 
 export type ResultatAnnulation =
   | { readonly ok: true }
@@ -26,7 +26,7 @@ export interface TxAnnulation {
       hashApres: string | null;
       dateAvant: Date | null;
     } | null>;
-    update(a: unknown): Promise<unknown>;
+    updateMany(a: unknown): Promise<{ count: number }>;
   };
   articleTranslation: {
     findFirst(a: unknown): Promise<{ body: string } | null>;
@@ -61,8 +61,15 @@ export async function annulerModification(
   }
 
   const avant = m.avant;
-  const restaure = await tx.articleTranslation.updateMany({
-    // Conditionné au corps vérifié : une écriture concurrente n'est jamais écrasée.
+  // 1. Prise de l'annulation, conditionnelle à l'état : deux clics ne passent pas ensemble.
+  const prise = await tx.seoModification.updateMany({
+    where: { id: m.id, etat: { in: ["appliquee", "mesuree"] } },
+    data: { etat: "annulee", annulePar: decidePar, annuleeLe: new Date() },
+  });
+  if (prise.count !== 1) return { ok: false, motif: "deja_traitee" };
+  // 2. Restauration CONDITIONNELLE au corps dont le hachage vient d'être vérifié : une écriture
+  //    arrivée entre-temps n'est jamais écrasée (la transaction est alors annulée).
+  const rendu = await tx.articleTranslation.updateMany({
     where: { articleId: m.cibleId, locale: "fr", body: actuel.body },
     data: {
       body: avant.body,
@@ -74,19 +81,12 @@ export async function annulerModification(
       ...(m.dateAvant ? { updatedAt: m.dateAvant } : {}),
     },
   });
-  if (restaure.count !== 1) {
-    // Rien n'a été écrit : le corps a changé entre la lecture et l'écriture.
-    return { ok: false, motif: "conflit" };
-  }
+  if (rendu.count !== 1) throw new ConflitEcritureError(m.cibleId);
   if (avant.articleUpdatedAt) {
     await tx.article.update({
       where: { id: m.cibleId },
       data: { updatedAt: new Date(avant.articleUpdatedAt) },
     });
   }
-  await tx.seoModification.update({
-    where: { id: m.id },
-    data: { etat: "annulee", decidePar },
-  });
   return { ok: true };
 }
