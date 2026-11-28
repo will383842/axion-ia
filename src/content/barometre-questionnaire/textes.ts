@@ -44,8 +44,7 @@ export function texteFerme(now: Date): string {
 export const RGPD: ReadonlyArray<{ titre: string; texte: string }> = [
   {
     titre: "Responsable du traitement et contact",
-    texte:
-      `${IDENTITE_LEGALE.legalName}, éditeur du site axion-ia.com. Pour toute question ou pour exercer vos droits, utilisez la page contact du site : axion-ia.com/contact.`,
+    texte: `${IDENTITE_LEGALE.legalName}, éditeur du site axion-ia.com. Pour toute question ou pour exercer vos droits, utilisez la page contact du site : axion-ia.com/contact.`,
   },
   {
     titre: "Finalité",
