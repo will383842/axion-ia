@@ -10,6 +10,7 @@
  * associées, articles liés, précédent/suivant, vidéo, newsletter, CTA.
  */
 import "@/styles/article-v2/analyse.css";
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
@@ -37,7 +38,7 @@ import { MiseEnPageLecture } from "../MiseEnPageLecture";
 import { CorpsArticle } from "../CorpsArticle";
 import { PiedArticle } from "../PiedArticle";
 import { ColonneActionsConnectee } from "../ColonneActionsConnectee";
-import { CtaMilieu, type PrincipalCta } from "../CtaMilieu";
+import { CtaMilieu, type LienSecondaire, type PrincipalCta } from "../CtaMilieu";
 import { CtaFin } from "../CtaFin";
 import type { ArticleGabaritProps } from "../types";
 
@@ -45,9 +46,24 @@ interface MiseEnPageAnalyseProps {
   readonly p: ArticleGabaritProps;
   /** Bouton principal de l'encart du milieu, propre au gabarit (PLAN §15.3). */
   readonly cta: PrincipalCta;
+  /** Lien secondaire de l'encart du milieu (défaut : l'autre bouton). */
+  readonly ctaSecondaire?: LienSecondaire;
+  /** Blocs propres au gabarit, rendus dans l'ouverture juste après « En bref ». */
+  readonly ouvertureExtra?: ReactNode;
+  /** Enveloppe du corps (ex. variable CSS d'un compteur) ; défaut : le corps tel quel. */
+  readonly enveloppeCorps?: (corps: ReactNode) => ReactNode;
+  /** Blocs rendus juste après le corps, avant l'encart du milieu. */
+  readonly apresCorps?: ReactNode;
 }
 
-export function MiseEnPageAnalyse({ p, cta }: MiseEnPageAnalyseProps) {
+export function MiseEnPageAnalyse({
+  p,
+  cta,
+  ctaSecondaire,
+  ouvertureExtra,
+  enveloppeCorps,
+  apresCorps,
+}: MiseEnPageAnalyseProps) {
   const t = useTranslations("articleV2");
   const c = useTranslations("articleGabarits.commun");
   const { view, locale: loc } = p;
@@ -93,6 +109,7 @@ export function MiseEnPageAnalyse({ p, cta }: MiseEnPageAnalyseProps) {
             {p.tldr}
           </AnswerCard>
         ) : null}
+        {ouvertureExtra}
       </div>
     </>
   );
@@ -113,8 +130,9 @@ export function MiseEnPageAnalyse({ p, cta }: MiseEnPageAnalyseProps) {
         colonne={<ColonneActionsConnectee gabarit={p.gabarit} />}
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
-        <CorpsArticle html={p.html} blocs={p.blocs} />
-        <CtaMilieu gabarit={p.gabarit} principal={cta} />
+        {(enveloppeCorps ?? ((c: ReactNode) => c))(<CorpsArticle html={p.html} blocs={p.blocs} />)}
+        {apresCorps}
+        <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq
           items={view.faqItems}

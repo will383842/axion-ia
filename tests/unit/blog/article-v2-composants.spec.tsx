@@ -525,11 +525,13 @@ describe("aiguillage vers les huit gabarits (S2)", () => {
       const html = rendre(<ArticleGabarit {...props(code)} />);
       expect(html).toContain(`data-gabarit="${code}"`);
       expect(html.match(/<h1\b/g)).toHaveLength(1);
+      // « definition » masque le sommaire sous 4 entrées (G6) : 3 entrées ici.
+      const sommaire = code === "definition" ? 0 : 1;
       for (const ancre of ["a", "b", "c"]) {
-        expect(html).toContain(`href="#${ancre}"`);
+        if (sommaire) expect(html).toContain(`href="#${ancre}"`);
         expect(html).toContain(`id='${ancre}'`);
       }
-      expect(html.match(/<nav aria-label="Sommaire"/g)).toHaveLength(1);
+      expect(html.match(/<nav aria-label="Sommaire"/g) ?? []).toHaveLength(sommaire);
       expect(html).toContain('<header class="heros sur-terracotta">');
       expect(html.match(/<aside class="action"/g)).toHaveLength(1);
       expect(html).not.toContain("<main");

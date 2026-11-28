@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const dir = join(process.cwd(), "prisma/migrations/20261128130000_apporteurs_rotation_rib");
+const dir = join(process.cwd(), "prisma/migrations/20261128157000_apporteurs_rotation_rib");
 const sql = readFileSync(join(dir, "migration.sql"), "utf8");
 const retour = readFileSync(join(dir, "rollback.sql"), "utf8");
 

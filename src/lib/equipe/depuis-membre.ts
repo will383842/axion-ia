@@ -8,7 +8,9 @@
  *  - LinkedIn seulement avec consentement LinkedIn daté et URL https ;
  *  - aucun e-mail : la ligne publique n'en porte pas.
  */
-import type { ContenuFiche } from "./contenu";
+import { CATEGORIES } from "./categories";
+import type { ContenuFiche, SectionFiche } from "./contenu";
+import { remplirPrenom } from "./modeles-categorie";
 import { categoriePublique } from "./depuis-membre-categorie";
 import { estTextePropre, fichePublique } from "./regles";
 import type { FicheCollaborateur } from "./types";
@@ -63,6 +65,26 @@ function premierParagraphe(md: string | null): string {
   return p.length > 450 ? `${p.slice(0, 447).trimEnd()}…` : p;
 }
 
+/** Sections propres à la catégorie : une section sans contenu n'est jamais produite. */
+function sectionsDeCategorie(
+  categorie: FicheCollaborateur["categorie"],
+  prenom: string,
+  competences: ReadonlyArray<string>,
+): SectionFiche[] {
+  const sections: SectionFiche[] = [];
+  for (const s of CATEGORIES[categorie].modele.sections) {
+    if (s.exigeDonnees === "competences" && competences.length === 0) continue;
+    sections.push({
+      id: s.id,
+      titre: remplirPrenom(s.titre, prenom),
+      paragraphes: s.paragraphes.map((p) => remplirPrenom(p, prenom)),
+      ...(s.lien ? { lien: s.lien } : {}),
+      ...(s.exigeDonnees === "competences" ? { liste: competences } : {}),
+    });
+  }
+  return sections;
+}
+
 export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
   const photoOk =
     m.photoKind === "reelle" &&
@@ -114,6 +136,17 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
   if (competences.length > 0)
     identite.push({ terme: "Compétences", valeur: competences.join(", ") });
 
+  const modele = CATEGORIES[fiche.categorie].modele;
+  const prenomPublic = pub?.nom ?? m.firstName.trim();
+  const sectionsCategorie = sectionsDeCategorie(fiche.categorie, prenomPublic, competences);
+  // Réponses propres à la personne d'abord (aucune à ce jour), puis les réponses modèles.
+  const faqPersonne: ContenuFiche["faq"] = [];
+  const faqModele: ContenuFiche["faq"] = modele.faq.map((q) => ({
+    id: `modele-${q.id}`,
+    question: remplirPrenom(q.question, prenomPublic),
+    answer: remplirPrenom(q.answer, prenomPublic),
+  }));
+
   const contenu: ContenuFiche = {
     titreSeo: fonctionPropre
       ? `${m.firstName}, ${fonctionPropre} chez Axion-IA`
@@ -127,12 +160,18 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
     dateMiseAJour: m.updatedAt.toISOString(),
     pastilles: competences.slice(0, 4),
     identite,
-    faq: [],
+    ...(competences.length > 0 ? { competences } : {}),
+    ...(sectionsCategorie.length > 0 ? { sectionsCategorie } : {}),
+    faq: [...faqPersonne, ...faqModele],
     appelFinal: {
       titre: "Parlons de votre projet",
-      texte: `Réservez un appel pour voir ensemble ce que l'IA peut faire concrètement dans votre entreprise.`,
+      texte:
+        modele.actions.length > 0 && !modele.actions.some((a) => a.href === "/appel")
+          ? "Décrivez votre besoin : l'équipe Axion-IA vous répond et organise la suite avec vous."
+          : `Réservez un appel pour voir ensemble ce que l'IA peut faire concrètement dans votre entreprise.`,
       bouton: "Réserver un appel",
       boutonSecondaire: "Nous écrire",
+      ...(modele.actions.length > 0 ? { actions: modele.actions } : {}),
     },
     liens: linkedinOk ? { linkedin: (m.linkedinUrl as string).trim() } : {},
   };

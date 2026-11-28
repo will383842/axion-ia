@@ -1,5 +1,6 @@
 import type { Categorie, FormePoint } from "./types";
 import { CATEGORIES_IDS } from "./types";
+import { MODELES, type ModeleCategorie } from "./modeles-categorie";
 
 export interface DefinitionCategorie {
   id: Categorie;
@@ -13,6 +14,8 @@ export interface DefinitionCategorie {
   ordreHub: number;
   /** Métiers « de base » de la catégorie : ne comptent pas comme élément distinctif. */
   metiersCommuns: ReadonlyArray<string>;
+  /** Sections propres, boutons d'action et FAQ modèle de la catégorie. */
+  modele: ModeleCategorie;
 }
 
 export const CATEGORIES: Readonly<Record<Categorie, DefinitionCategorie>> = {
@@ -24,6 +27,7 @@ export const CATEGORIES: Readonly<Record<Categorie, DefinitionCategorie>> = {
     forme: "rond",
     ordreHub: 1,
     metiersCommuns: [],
+    modele: MODELES["direction"],
   },
   "specialiste-ia": {
     id: "specialiste-ia",
@@ -33,6 +37,7 @@ export const CATEGORIES: Readonly<Record<Categorie, DefinitionCategorie>> = {
     forme: "carre",
     ordreHub: 2,
     metiersCommuns: ["formation-ia", "audit-ia"],
+    modele: MODELES["specialiste-ia"],
   },
   developpeur: {
     id: "developpeur",
@@ -42,6 +47,7 @@ export const CATEGORIES: Readonly<Record<Categorie, DefinitionCategorie>> = {
     forme: "triangle",
     ordreHub: 3,
     metiersCommuns: ["developpement", "implementation"],
+    modele: MODELES["developpeur"],
   },
   apporteur: {
     id: "apporteur",
@@ -51,6 +57,7 @@ export const CATEGORIES: Readonly<Record<Categorie, DefinitionCategorie>> = {
     forme: "losange",
     ordreHub: 4,
     metiersCommuns: ["mise-en-relation"],
+    modele: MODELES["apporteur"],
   },
   partenaire: {
     id: "partenaire",
@@ -60,6 +67,7 @@ export const CATEGORIES: Readonly<Record<Categorie, DefinitionCategorie>> = {
     forme: "hexagone",
     ordreHub: 5,
     metiersCommuns: [],
+    modele: MODELES["partenaire"],
   },
 };
 

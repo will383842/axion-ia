@@ -1,4 +1,4 @@
--- ROLLBACK de 20261128130000_apporteurs_rotation_rib — seulement sur décision du fondateur.
+-- ROLLBACK de 20261128157000_apporteurs_rotation_rib — seulement sur décision du fondateur.
 -- Aucune donnée à sauvegarder : la migration ne touche qu'une fonction. On restaure le corps de 20261126150000.
 CREATE OR REPLACE FUNCTION "apporteur_changements_iban_rib_garde_update"() RETURNS trigger AS $$
 BEGIN
