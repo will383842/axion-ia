@@ -1,0 +1,110 @@
+From 94f3b952790a400f6024ac67ba425f0a55210473 Mon Sep 17 00:00:00 2001
+From: robot-credit-api <robot@example.invalid>
+Date: Sat, 28 Nov 2026 11:07:14 +0000
+Subject: [PATCH] =?UTF-8?q?FIX-ROUGES-APPARITION-v21t=20:=20un=20fichier?=
+ =?UTF-8?q?=20enti=C3=A8rement=20saut=C3=A9=20est=20rouge=20dans=20compare?=
+ =?UTF-8?q?r-echecs=20(robot=20cr=C3=A9dits=20API)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ scripts/comparer-echecs.mjs           | 21 ++++++++++++++++++---
+ tests/scripts/comparer-echecs.test.ts | 21 +++++++++++++++++++--
+ 2 files changed, 37 insertions(+), 5 deletions(-)
+
+diff --git a/scripts/comparer-echecs.mjs b/scripts/comparer-echecs.mjs
+index 642e8232..11d6907e 100644
+--- a/scripts/comparer-echecs.mjs
++++ b/scripts/comparer-echecs.mjs
+@@ -1,6 +1,6 @@
+ #!/usr/bin/env node
+ // Compare un rapport vitest (--reporter=json) à scripts/echecs-connus.json.
+-// Rouge (code 1) si un échec n'est pas dans la liste, ou si aucun test n'a été lancé.
++// Rouge (code 1) si un échec n'est pas dans la liste, ou si aucun test n'a été lancé, ou si un fichier est entièrement sauté.
+ // Usage : node scripts/comparer-echecs.mjs <rapport.json> [echecs-connus.json]
+ import { readFileSync } from "node:fs";
+ import { fileURLToPath } from "node:url";
+@@ -38,12 +38,25 @@ export function selectionnerTests(chemins) {
+ 
+ export function compterLances(rapportVitest) {
+   verifierRapport(rapportVitest);
++  // Un cas sauté n'a rien vérifié : il n'est pas « lancé ».
+   return rapportVitest.testResults.reduce(
+-    (n, f) => n + (Array.isArray(f.assertionResults) ? f.assertionResults.length : 0),
++    (n, f) =>
++      n + (Array.isArray(f.assertionResults) ? f.assertionResults.filter((c) => c.status === "passed" || c.status === "failed").length : 0),
+     0,
+   );
+ }
+ 
++// Fichiers dont AUCUN cas n'a tourné (tous sautés) : un vert qui ne regarde rien.
++export function fichiersSautes(rapportVitest) {
++  verifierRapport(rapportVitest);
++  return rapportVitest.testResults
++    .filter((f) => {
++      const cas = Array.isArray(f.assertionResults) ? f.assertionResults : [];
++      return cas.length > 0 && !cas.some((c) => c.status === "passed" || c.status === "failed");
++    })
++    .map((f) => relatif(f.name));
++}
++
+ export function comparer(rapportVitest, connus) {
+   if (!connus || !Array.isArray(connus.echecs)) throw new Error("echecs-connus.json illisible (echecs absent)");
+   const echecs = extraireEchecs(rapportVitest);
+@@ -56,12 +69,14 @@ export function comparer(rapportVitest, connus) {
+   // « corrigé » seulement si le fichier a tourné et que le cas est passé : un fichier non lancé n'est pas jugé.
+   const fichiersLances = new Set(rapportVitest.testResults.map((f) => relatif(f.name)));
+   const corriges = connus.echecs.filter((e) => fichiersLances.has(e.fichier) && !vus.has(cle(e)));
+-  return { ok: nouveaux.length === 0 && lances > 0, lances, nouveaux, connus: connusVus, corriges };
++  const sautes = fichiersSautes(rapportVitest);
++  return { ok: nouveaux.length === 0 && lances > 0 && sautes.length === 0, lances, sautes, nouveaux, connus: connusVus, corriges };
+ }
+ 
+ export function rapport(res) {
+   const l = [`${res.lances} tests lancés`];
+   if (res.lances === 0) l.push("ROUGE : aucun test lancé.");
++  for (const f of res.sautes) l.push(`ROUGE : fichier sauté, aucun test n'a tourné : ${f}`);
+   for (const e of res.nouveaux) l.push(`ROUGE : échec absent de echecs-connus.json : ${e.fichier} › ${e.nom}`);
+   for (const e of res.connus) l.push(`connu : ${e.fichier} › ${e.nom}`);
+   for (const e of res.corriges) l.push(`corrigé (à retirer de la liste) : ${e.fichier} › ${e.nom}`);
+diff --git a/tests/scripts/comparer-echecs.test.ts b/tests/scripts/comparer-echecs.test.ts
+index d91a3c0d..70dbdf38 100644
+--- a/tests/scripts/comparer-echecs.test.ts
++++ b/tests/scripts/comparer-echecs.test.ts
+@@ -1,8 +1,8 @@
+ import { describe, expect, it } from "vitest";
+ // @ts-expect-error module .mjs sans types
+-import { extraireEchecs, comparer, compterLances, rapport, selectionnerTests } from "../../scripts/comparer-echecs.mjs";
++import { extraireEchecs, comparer, compterLances, fichiersSautes, rapport, selectionnerTests } from "../../scripts/comparer-echecs.mjs";
+ 
+-const rapportVitest = (fichiers: Record<string, [string, "passed" | "failed"][]>) => ({
++const rapportVitest = (fichiers: Record<string, [string, "passed" | "failed" | "skipped"][]>) => ({
+   testResults: Object.entries(fichiers).map(([name, cas]) => ({
+     name: `/depot/${name}`,
+     status: cas.some(([, s]) => s === "failed") ? "failed" : "passed",
+@@ -109,4 +109,21 @@ describe("workflow tests-nouveau", () => {
+     });
+     expect(sortie.trim()).toBe("");
+   });
++
++  it("un fichier dont les 12 cas sont sautés n'est pas vert et n'est pas compté comme lancé", () => {
++    const r = rapportVitest({ "tests/image-video/variete/apparition.test.ts": Array.from({ length: 12 }, (_, i) => [`cas ${i}`, "skipped"] as [string, "skipped"]) });
++    const res = comparer(r, { echecs: [] });
++    expect(compterLances(r)).toBe(0);
++    expect(fichiersSautes(r)).toEqual(["tests/image-video/variete/apparition.test.ts"]);
++    expect(res.ok).toBe(false);
++    expect(rapport(res)).toContain("ROUGE : fichier sauté, aucun test n'a tourné : tests/image-video/variete/apparition.test.ts");
++  });
++
++  it("un fichier sauté parmi des fichiers lancés reste rouge ; un cas sauté dans un fichier lancé reste vert", () => {
++    const mixte = rapportVitest({ "tests/a.test.ts": [["un", "passed"]], "tests/b.test.ts": [["x", "skipped"]] });
++    expect(comparer(mixte, { echecs: [] }).ok).toBe(false);
++    const partiel = rapportVitest({ "tests/a.test.ts": [["un", "passed"], ["deux", "skipped"]] });
++    expect(compterLances(partiel)).toBe(1);
++    expect(comparer(partiel, { echecs: [] }).ok).toBe(true);
++  });
+ });
+-- 
+2.56.1
+
