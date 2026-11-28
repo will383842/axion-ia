@@ -1,2 +1,55 @@
-/* Gabarit « selection » (S2 : feuille créée d'avance, la PR du gabarit y écrit seule).
-   Règles bornées à [data-gabarit="selection"] ; jetons de couleur uniquement. */
+/* Gabarit « selection » (M-G4). Règles bornées à [data-gabarit="selection"] ; jetons de
+   couleur uniquement ; mobile first (que des min-width). Numéros : compteur CSS, aucun JS. */
+
+[data-gabarit="selection"] .options {
+  counter-reset: option 0 total var(--total-options, 0);
+}
+
+/* Chaque option : numéro géant « n sur N » avant le titre ; décoratif, texte alternatif vide */
+[data-gabarit="selection"] .options h2[data-option="auto"] {
+  counter-increment: option;
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 4px solid var(--color-terracotta);
+}
+[data-gabarit="selection"] .options h2[data-option="auto"]::before {
+  content: counter(option, decimal-leading-zero) " " attr(data-sur) " " counter(total) / "";
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-terracotta-deep);
+  font: 500 1rem/1 var(--font-mono);
+  letter-spacing: 0.04em;
+}
+[data-gabarit="selection"] .options h2[data-option="texte"] {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 4px solid var(--color-terracotta);
+}
+
+/* Bandeau « Par où commencer ? » à mi-liste */
+[data-gabarit="selection"] .par-ou {
+  margin: 3rem 0 0;
+  padding: 1.5rem 1.25rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-mocha);
+  color: var(--color-mocha-fg);
+}
+[data-gabarit="selection"] .par-ou__titre {
+  margin: 0 0 0.5rem;
+  font: 600 1.375rem/1.2 var(--font-serif);
+  color: var(--color-mocha-fg);
+}
+[data-gabarit="selection"] .par-ou p:last-child {
+  margin: 0;
+}
+
+/* Tableau de synthèse en fin de liste */
+[data-gabarit="selection"] .synthese {
+  margin-top: 3rem;
+}
+
+@media (forced-colors: active) {
+  [data-gabarit="selection"] .par-ou {
+    border: 2px solid CanvasText;
+  }
+}
