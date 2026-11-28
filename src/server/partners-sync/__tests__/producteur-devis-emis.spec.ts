@@ -1,4 +1,5 @@
 // @vitest-environment node
+// @req REQ-INT-003
 // @req REQ-INT-006
 // @req REQ-INT-007
 /**
@@ -15,9 +16,10 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { identifiantEvenement } from "@/server/partners/enveloppe";
 import type { PayloadDevisEmis } from "@/server/partners/payloads";
-import { fautes, resoudre } from "@/server/partners/__tests__/contrat-schema";
+import { fautes, RACINE, resoudre } from "@/server/partners/__tests__/contrat-schema";
 
 import type { Prisma } from "../../../../prisma/generated/client";
+import { finaliserCorps } from "../outbox";
 import { DEVIS_EMIS, emettreDevisEmis } from "../producteurs/devis";
 
 const SCHEMA_CHARGE = resoudre("#/$defs/payload_devis_emis");
@@ -125,6 +127,45 @@ describe("REQ-INT-006 — la charge de devis.emis est celle du contrat publié (
     const charge = chargeEmise(outbox);
     expect(charge.siren).toBeNull();
     expect(fautes(SCHEMA_CHARGE, charge)).toEqual([]);
+  });
+});
+
+describe("REQ-INT-003 — l'enveloppe de devis.emis est celle du schéma publié (v3)", () => {
+  const NEUF_CHAMPS = [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "occurred_at",
+    "emitted_at",
+    "producer",
+    "subject_ref",
+    "sequence",
+    "payload",
+  ];
+
+  /** L'enveloppe telle que le relais la stocke : `sequence` et `emitted_at` posés par la vraie fonction. */
+  async function enveloppeStockee(): Promise<Record<string, unknown>> {
+    const { tx, outbox } = fauxTx([devisEnvoye()]);
+    await emettreDevisEmis(tx, DEVIS_ID);
+    const [ligne] = [...outbox.values()];
+    if (!ligne) throw new Error("aucune ligne dans la file");
+    const corps = finaliserCorps(ligne.corps, 1n, new Date("2026-02-10T09:31:00.000Z"));
+    return JSON.parse(corps) as Record<string, unknown>;
+  }
+
+  it("REQ-INT-003 : TÉMOIN — l'enveloppe finalisée de devis.emis porte les neuf champs et passe le schéma racine du contrat", async () => {
+    const env = await enveloppeStockee();
+    expect(Object.keys(env).sort()).toEqual([...NEUF_CHAMPS].sort());
+    expect(env["event_type"]).toBe(DEVIS_EMIS);
+    expect(env["event_id"]).toBe(identifiantEvenement(DEVIS_EMIS, `${DEVIS_EMIS}:${DEVIS_ID}`));
+    expect(fautes(RACINE, env)).toEqual([]);
+  });
+
+  it("REQ-INT-003 : le même schéma REFUSE une enveloppe de devis.emis hors schéma (champ en trop, charge altérée)", async () => {
+    const env = await enveloppeStockee();
+    expect(fautes(RACINE, { ...env, extra: 1 })).not.toEqual([]);
+    const charge = env["payload"] as Record<string, unknown>;
+    expect(fautes(RACINE, { ...env, payload: { ...charge, siren: 123456789 } })).not.toEqual([]);
   });
 });
 
