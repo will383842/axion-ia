@@ -51,6 +51,10 @@ interface MiseEnPageAnalyseProps {
   readonly ctaSecondaire?: LienSecondaire;
   /** Blocs propres au gabarit, rendus dans l'ouverture juste après « En bref ». */
   readonly ouvertureExtra?: ReactNode;
+  /** Enveloppe du corps (ex. variable CSS d'un compteur) ; défaut : le corps tel quel. */
+  readonly enveloppeCorps?: (corps: ReactNode) => ReactNode;
+  /** Blocs rendus juste après le corps, avant l'encart du milieu. */
+  readonly apresCorps?: ReactNode;
 }
 
 /** Cible des liens « Revenir au sommaire » (pastille vide posée avant le sommaire). */
@@ -61,6 +65,8 @@ export function MiseEnPageAnalyse({
   cta,
   ctaSecondaire,
   ouvertureExtra,
+  enveloppeCorps,
+  apresCorps,
 }: MiseEnPageAnalyseProps) {
   const t = useTranslations("articleV2");
   const c = useTranslations("articleGabarits.commun");
@@ -69,14 +75,16 @@ export function MiseEnPageAnalyse({
 
   // Repères posés sur le corps HTML (numéros, relance, retours) et coupe avant la 4e section :
   // l'encart du milieu s'insère après la 3e. Un article en fichier garde ses blocs tels quels.
-  const corps = p.html
-    ? preparerCorpsAnalyse(p.html, {
-        ancreLabel: (titre) => a("ancreLabel", { titre }),
-        relanceLibelle: a("relance"),
-        retourLibelle: p.tocItems.length >= 2 ? a("retourSommaire") : null,
-        ancreSommaire: ANCRE_SOMMAIRE,
-      })
-    : null;
+  // Un gabarit qui enveloppe le corps ou pose des blocs après lui (Sélection) le garde entier.
+  const corps =
+    p.html && !enveloppeCorps && !apresCorps
+      ? preparerCorpsAnalyse(p.html, {
+          ancreLabel: (titre) => a("ancreLabel", { titre }),
+          relanceLibelle: a("relance"),
+          retourLibelle: p.tocItems.length >= 2 ? a("retourSommaire") : null,
+          ancreSommaire: ANCRE_SOMMAIRE,
+        })
+      : null;
 
   const sommaire =
     p.tocItems.length >= 2 ? (
@@ -143,7 +151,10 @@ export function MiseEnPageAnalyse({
         colonne={<ColonneActionsConnectee gabarit={p.gabarit} />}
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
-        <CorpsArticle html={corps ? corps.avant : null} blocs={p.blocs} />
+        {(enveloppeCorps ?? ((c: ReactNode) => c))(
+          <CorpsArticle html={corps ? corps.avant : p.html} blocs={p.blocs} />,
+        )}
+        {apresCorps}
         <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
         {corps?.apres ? <CorpsArticle html={corps.apres} blocs={null} /> : null}
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />

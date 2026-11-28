@@ -1,1 +1,14 @@
-{}
+{
+  "neutralite": {
+    "methode": "Our method, in one sentence:",
+    "texte": "this selection ranks no Axion-IA offer and is funded by no vendor."
+  },
+  "sur": "of",
+  "bandeau": {
+    "titre": "Where to start?",
+    "texte": "No need to try everything: pick one option, test it on a real task for your team, then decide."
+  },
+  "tableau": {
+    "titre": "Summary table"
+  }
+}

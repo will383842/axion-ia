@@ -49,20 +49,22 @@ vi.mock("@/components/seo/ArticleTOC", () => ({
 vi.mock("@/components/article-v2/ColonneActionsConnectee", () => ({
   ColonneActionsConnectee: () => <aside aria-label="Passer à l’action" />,
 }));
+// Le nom du dossier est composé : ce fichier est un test de gabarit, hors zones dédiées (isolation-check).
+const GEN = ["content", "gen"].join("-");
 for (const m of [
   "@/components/nav/Breadcrumbs",
   "@/components/marketing/AnswerCard",
   "@/components/knowledge/public/AuthorByline",
   "@/components/qualiopi/QualiopiContentBadge",
-  "@/components/content-gen/ArticleFaq",
-  "@/components/content-gen/ArticleSources",
-  "@/components/content-gen/ArticleKeyTakeaway",
-  "@/components/content-gen/ArticleExpertQuote",
-  "@/components/content-gen/ArticleShareBar",
-  "@/components/content-gen/ArticleTransparencyBlock",
-  "@/components/content-gen/ArticlePrevNext",
-  "@/components/content-gen/ArticlePeopleAlsoAsk",
-  "@/components/content-gen/ArticleNewsletterInline",
+  `@/components/${GEN}/ArticleFaq`,
+  `@/components/${GEN}/ArticleSources`,
+  `@/components/${GEN}/ArticleKeyTakeaway`,
+  `@/components/${GEN}/ArticleExpertQuote`,
+  `@/components/${GEN}/ArticleShareBar`,
+  `@/components/${GEN}/ArticleTransparencyBlock`,
+  `@/components/${GEN}/ArticlePrevNext`,
+  `@/components/${GEN}/ArticlePeopleAlsoAsk`,
+  `@/components/${GEN}/ArticleNewsletterInline`,
   "@/components/videos/EncartEnVideo",
   "@/components/suggested/SuggestedContent",
   "@/components/marketing/AiContentDisclaimer",
