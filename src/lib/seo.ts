@@ -1341,7 +1341,10 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
     "@context": "https://schema.org",
     "@id": `${SITE_URL}/#website`,
     "@type": "WebSite",
-    name: "Axion-IA",
+    name: BRAND.name,
+    // Nom de site Google : « Axion IA », « AxionIA » et le domaine sont reliés au même site
+    // (Search Console 28/11/2026 : « axion-ia.com » en position 32,7).
+    alternateName: [...BRAND.alternateName],
     url: `${SITE_URL}/${locale}`,
     inLanguage: locale,
     description: isFr ? DESCRIPTION_SITE_FR : DESCRIPTION_SITE_EN,

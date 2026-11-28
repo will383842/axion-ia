@@ -57,10 +57,10 @@ export const WILLIAMS_TAGLINE = "Rentabilité et productivité des TPE et PME gr
 export const WILLIAMS_SOUS_TITRE = `${WILLIAMS_FONCTION} · ${WILLIAMS_TAGLINE}`;
 
 /** Titre SEO (balise `<title>`, sans suffixe de marque). */
-export const WILLIAMS_TITRE_SEO = `${FOUNDER.fullName} · Plus de chiffre d'affaires, même équipe`;
+export const WILLIAMS_TITRE_SEO = `${FOUNDER.fullName}, fondateur d'Axion IA`;
 
 /** Meta description. */
-export const WILLIAMS_META_DESCRIPTION = `${FOUNDER.fullName} dirige Axion-IA : nous aidons les TPE et PME à gagner en rentabilité avec la même équipe, grâce à l'IA mise en place de A à Z, pas à pas.`;
+export const WILLIAMS_META_DESCRIPTION = `${FOUNDER.fullName} dirige Axion-IA : il aide les TPE et PME à mettre l'IA en place pas à pas, avec la même équipe, sans jargon. Son parcours et sa méthode.`;
 
 /**
  * Réponse de tête (AEO). Phrase auto-portante : nom + fonction + entité +

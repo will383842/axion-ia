@@ -11,10 +11,12 @@ import { TEAM_CATEGORIES, evaluerIndexabilite } from "@/lib/equipe/donnees";
 import {
   creerCollaborateur,
   depublierCollaborateur,
+  effacerCollaborateurDefinitivement,
   modifierCollaborateur,
   proposerSlugCollaborateur,
   publierCollaborateur,
   rechercherLieux,
+  retirerConsentementCollaborateur,
   type LieuTrouve,
 } from "@/server/actions/equipe/collaborateurs";
 import { deposerPhotoAction, retirerPhotoAction } from "@/server/actions/equipe/photo";
@@ -79,6 +81,8 @@ export function CollaborateurForm({
   const [champs, setChamps] = useState<Record<string, string>>({});
   const [info, setInfo] = useState<string | null>(null);
   const [noteRefus, setNoteRefus] = useState("");
+  const [confirmationEffacement, setConfirmationEffacement] = useState("");
+  const [demandeLe, setDemandeLe] = useState("");
   const [enCours, demarrer] = useTransition();
   const maj = <K extends keyof FicheInitiale>(cle: K, valeur: FicheInitiale[K]) =>
     setF((p) => ({ ...p, [cle]: valeur }));
@@ -522,6 +526,89 @@ export function CollaborateurForm({
             >
               Refuser
             </AdminButton>
+          </section>
+        ) : null}
+        {f.id && !modeValidation ? (
+          <section aria-label="Retrait et effacement" className="space-y-3 rounded border p-4">
+            <h2 className="text-lg font-semibold">Retrait et effacement</h2>
+            <div className="flex flex-wrap gap-2">
+              {f.photoConsent ? (
+                <AdminButton
+                  type="button"
+                  variant="secondary"
+                  disabled={enCours}
+                  onClick={() =>
+                    executer(
+                      () => retirerConsentementCollaborateur(f.id, "photo"),
+                      "Photo retirée (avatar).",
+                    )
+                  }
+                >
+                  Retirer la photo
+                </AdminButton>
+              ) : null}
+              {f.consentLinkedin ? (
+                <AdminButton
+                  type="button"
+                  variant="secondary"
+                  disabled={enCours}
+                  onClick={() =>
+                    executer(
+                      () => retirerConsentementCollaborateur(f.id, "linkedin"),
+                      "Lien LinkedIn retiré.",
+                    )
+                  }
+                >
+                  Retirer LinkedIn
+                </AdminButton>
+              ) : null}
+            </div>
+            <div className="border-terracotta space-y-2 rounded border p-3">
+              <p>
+                <strong>Effacer définitivement</strong> : supprime la fiche, ses réponses, ses
+                photos et ses invitations. Irréversible. Seule une trace sans donnée personnelle
+                (date de la demande, date du traitement) est conservée.
+              </p>
+              <label className="flex flex-col gap-1">
+                Date de réception de la demande (facultatif)
+                <input
+                  type="date"
+                  value={demandeLe}
+                  onChange={(e) => setDemandeLe(e.target.value)}
+                />
+              </label>
+              <label className="flex flex-col gap-1">
+                Tapez EFFACER pour confirmer
+                <input
+                  type="text"
+                  value={confirmationEffacement}
+                  autoComplete="off"
+                  onChange={(e) => setConfirmationEffacement(e.target.value)}
+                />
+              </label>
+              <AdminButton
+                type="button"
+                variant="danger"
+                disabled={enCours || confirmationEffacement !== "EFFACER"}
+                onClick={() =>
+                  demarrer(async () => {
+                    setErreur(null);
+                    const r = await effacerCollaborateurDefinitivement(
+                      f.id,
+                      confirmationEffacement,
+                      demandeLe,
+                    );
+                    if (!r.ok) {
+                      setErreur(r.erreur);
+                      return;
+                    }
+                    router.push("./");
+                  })
+                }
+              >
+                Effacer définitivement
+              </AdminButton>
+            </div>
           </section>
         ) : null}
         {f.id && !f.consentPublication && f.status !== "publie" ? (

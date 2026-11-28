@@ -9,6 +9,7 @@ export {
   observationActive,
   observerSortie,
   reglagesDepuisConfig,
+  reglagesStockesValides,
 } from "./observation";
 export type { IssueObservation, LigneVerdictEcrite } from "./observation";
 export { construireVue, lireLigneVerdict } from "./vue";
@@ -22,6 +23,20 @@ export {
   penaliteProximite,
   voisinsLesPlusProches,
 } from "./semantique";
+export {
+  fusionnerReglages,
+  lireDerogations,
+  lireJournal,
+  listerInterdits,
+} from "./onglet-reglages";
+export type {
+  DerogationAffichee,
+  EntreeJournal,
+  InterditAffiche,
+  LigneAuditLue,
+  LigneDerogationLue,
+  ResultatFusion,
+} from "./onglet-reglages";
 export {
   CLE_COUPE_CIRCUIT,
   DRAPEAU_POINT_FINAL,
@@ -38,3 +53,11 @@ export type {
   IssuePointFinal,
   ResultatB17,
 } from "./point-final";
+export {
+  CLE_PLAFOND_SECURITE,
+  PLAFOND_SECURITE_PAR_DEFAUT,
+  calculerPlafondSecurite,
+  plafondDepuisCapGeneration,
+  reglagePlafondDepuisConfig,
+} from "./plafond-securite";
+export type { DetailPlafond, ReglagePlafond } from "./plafond-securite";
