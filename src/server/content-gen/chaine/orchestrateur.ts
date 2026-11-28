@@ -456,7 +456,14 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
       };
       // La porte a un coût (juge, sources) : il compte dans le plafond du contenu, et l'appel
       // n'est pas lancé si le plafond est déjà atteint.
-      if (total() + (ports.coutMaxPorteUsd ?? COUT_MAX_PORTE_DEFAUT_USD) > PLAFOND_COUT_USD) {
+      // Réserve : une valeur de port aberrante (NaN, négative, infinie) retombe sur le défaut.
+      const reservePorte =
+        typeof ports.coutMaxPorteUsd === "number" &&
+        Number.isFinite(ports.coutMaxPorteUsd) &&
+        ports.coutMaxPorteUsd >= 0
+          ? ports.coutMaxPorteUsd
+          : COUT_MAX_PORTE_DEFAUT_USD;
+      if (total() + reservePorte > PLAFOND_COUT_USD) {
         throw new Abandon("plafond_atteint", "Plafond de coût atteint avant la porte", "porte");
       }
       let appelPorte: ResultatAppelPorte;
@@ -466,6 +473,11 @@ export async function lancerContenu(besoin: Besoin, ports: PortsChaine): Promise
         appelPorte = { etat: "erreur", message: e instanceof Error ? e.message : "erreur" };
       }
       if (typeof appelPorte.coutUsd === "number") compteur.ajouterExterne(appelPorte.coutUsd);
+      // Le coût réel de la porte peut dépasser la réserve : le plafond atteint = abandon, quel que
+      // soit le verdict (un contenu « publiable » à 3 $ ou plus n'entre pas en relecture).
+      if (total() >= PLAFOND_COUT_USD) {
+        throw new Abandon("plafond_atteint", "Plafond de coût atteint par la porte", "porte");
+      }
       if (appelPorte.etat !== "ok") {
         await journal("porte", `en attente : ${appelPorte.message}`);
         return { issue: "en_attente", raison: appelPorte.message, coutUsd: total() };

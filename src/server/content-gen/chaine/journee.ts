@@ -30,7 +30,7 @@ export type ReglageChaine = z.infer<typeof reglageSchema>;
 
 export const REGLAGE_CHAINE_DEFAUT: ReglageChaine = { actif: false, sujetsParJour: 3 };
 
-/** Valeur stockée → réglage ; absente, partielle ou invalide = éteint (échec fermé). */
+/** Valeur stockée → réglage ; absente ou invalide = éteint (échec fermé). Un réglage partiel est complété par les défauts : seul un `actif: true` littéral allume. */
 export function lireReglageChaine(brut: unknown): ReglageChaine {
   const lu = reglageSchema.safeParse({ ...REGLAGE_CHAINE_DEFAUT, ...(isObjet(brut) ? brut : {}) });
   return lu.success ? lu.data : { ...REGLAGE_CHAINE_DEFAUT, actif: false };

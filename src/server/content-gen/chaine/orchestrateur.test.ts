@@ -448,6 +448,30 @@ describe("lancerContenu : défauts relevés en relecture", () => {
     });
   });
 
+  it("verdict publiable mais coût réel de la porte au plafond : abandon, jamais en relecture", async () => {
+    const { p, deposes } = ports(async () => ({
+      etat: "ok",
+      sortie: sortie("publiable", 95),
+      coutUsd: 3.5,
+    }));
+    expect(await lancerContenu(besoin, p)).toMatchObject({
+      issue: "abandonne",
+      code: "plafond_atteint",
+    });
+    expect(deposes).toHaveLength(0);
+  });
+
+  it("réserve de porte aberrante (NaN) : retombe sur le défaut, pas de contournement", async () => {
+    const { p, deposes } = ports(async () => ({
+      etat: "ok",
+      sortie: sortie("publiable", 95),
+      coutUsd: 3.5,
+    }));
+    const r = await lancerContenu(besoin, { ...p, coutMaxPorteUsd: Number.NaN });
+    expect(r).toMatchObject({ issue: "abandonne", code: "plafond_atteint" });
+    expect(deposes).toHaveLength(0);
+  });
+
   it("coût de la porte vu par les rôles suivants : pas de réécriture au-delà de 3 $", async () => {
     const corr: ResultatCritere = {
       id: "B08",
