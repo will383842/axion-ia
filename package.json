@@ -68,6 +68,7 @@
     "content-gen:map-intents": "tsx prisma/seeds/content-gen/map-keywords-intents.ts",
     "content-gen:backfill-embeddings": "tsx src/scripts/backfill-embeddings.ts",
     "content-gen:isolation-check": "tsx scripts/content-gen/isolation-check.ts",
+    "villes:rapport": "tsx scripts/content-gen/villes-rapport.ts",
     "content-gen:check-prod-env": "bash scripts/content-gen/check-prod-env.sh",
     "image-bank:seed": "tsx prisma/seeds/image-bank/index.ts",
     "image-bank:isolation-check": "tsx scripts/image-bank/isolation-check.ts",
