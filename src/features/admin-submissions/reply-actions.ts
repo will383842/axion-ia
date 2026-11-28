@@ -28,6 +28,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { appliquerTransition, marquerPretASigner, type ResultatPretASigner } from "./transitions";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
+import { marquerReponseEnvoyeeALaMain } from "@/server/email/marquer-reponse-envoyee";
 import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 
@@ -632,4 +633,45 @@ export async function getReplyDeliveryStatusAction(replyId: string): Promise<{
     errorMsg: reply.errorMsg,
     retryCount: reply.retryCount,
   };
+}
+
+// ============================================================
+// marquerReponseEnvoyeeAction
+// ============================================================
+
+/**
+ * Le fondateur a retrouvé l'e-mail dans ZeptoMail : on clôt une réponse « issue inconnue »
+ * en `sent`, sans rien renvoyer. Même rôle que « Réessayer », qui peut déjà envoyer.
+ */
+export async function marquerReponseEnvoyeeAction(
+  replyId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  let session: { userId: string };
+  try {
+    session = await requireAdminWriteSession();
+  } catch {
+    return { ok: false, error: "unauthorized" };
+  }
+  const parsed = z.string().min(1).max(64).safeParse(replyId);
+  if (!parsed.success) return { ok: false, error: "invalid_id" };
+
+  let r: Awaited<ReturnType<typeof marquerReponseEnvoyeeALaMain>>;
+  try {
+    r = await marquerReponseEnvoyeeALaMain({
+      gabarit: "submission-reply",
+      replyId: parsed.data,
+      adminUserId: session.userId,
+    });
+  } catch (e) {
+    Sentry.captureException(e);
+    return { ok: false, error: "echec" };
+  }
+  if (!r.ok) return r;
+
+  const ligne = await prisma.submissionReply.findUnique({
+    where: { id: parsed.data },
+    select: { submissionId: true },
+  });
+  if (ligne) revalidatePath(adminPath("fr", `contacts/messages/${ligne.submissionId}`));
+  return { ok: true };
 }

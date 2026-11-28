@@ -12,6 +12,8 @@ import { enveloppeExpedition } from "@/lib/email/enveloppe";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { LIBELLE_REBOND } from "@/features/admin-job-applications/etat-envoi";
 import { RetryFailedReplyButton } from "./RetryFailedReplyButton";
+import { MarquerEnvoyeeButton } from "./MarquerEnvoyeeButton";
+import { estIssueInconnue } from "@/lib/email/reponse-manuelle-etat";
 
 interface Props {
   submissionId: string;
@@ -142,6 +144,9 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
               </details>
 
               {isRetryable && <RetryFailedReplyButton replyId={r.id} />}
+              {r.deliveryStatus === "failed" && estIssueInconnue(r.errorMsg) && (
+                <MarquerEnvoyeeButton replyId={r.id} gabarit="submission-reply" />
+              )}
             </li>
           );
         })}
