@@ -5,7 +5,7 @@
  * - Sous les planchers du pilotage (PLAN § 4.2), la ligne porte `donneesInsuffisantes: true` et
  *   l'écran affiche « données insuffisantes » : aucune décision n'en est tirée.
  */
-import { indexationMesurable, type CodeEcheance } from "./echeances";
+import { indexationMesurable, inspectionFraiche, type CodeEcheance } from "./echeances";
 
 /** ≥ 300 impressions sur 28 j pour attribuer un effet à une page (PLAN § 4.2). */
 export const PLANCHER_ATTRIBUTION = 300;
@@ -53,8 +53,14 @@ export function construireResultat(e: EntreeResultat): LigneResultat {
   const plancher = plancherDe(e.code);
   const indexeMesurable = indexationMesurable(e.code, e.publieLe, e.inspection?.inspecteLe ?? null);
   const verdict = e.inspection?.verdict ?? null;
+  const indexe = (): boolean | null => {
+    if (!indexeMesurable || verdict === null || !e.inspection) return null;
+    if (verdict.toUpperCase() === "PASS") return true;
+    // Un NON ne s'affirme que sur une inspection proche de l'échéance.
+    return inspectionFraiche(e.code, e.publieLe, e.inspection.inspecteLe) ? false : null;
+  };
   return {
-    indexe: indexeMesurable && verdict !== null ? verdict.toUpperCase() === "PASS" : null,
+    indexe: indexe(),
     affichages: gsc ? gsc.impressions : null,
     clics: gsc ? gsc.clics : null,
     position:

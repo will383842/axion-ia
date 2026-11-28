@@ -138,7 +138,8 @@ async function dateDebutCapture(prisma: PrismaSuivi, maintenant: Date): Promise<
       : undefined;
   const date = typeof brut === "string" ? new Date(brut) : null;
   if (date && !Number.isNaN(date.getTime())) return date;
-  const debut = jourUtc(maintenant);
+  // Lendemain minuit : les réservations d'avant le premier passage n'ont pas pu être capturées.
+  const debut = ajouterJours(jourUtc(maintenant), 1);
   try {
     await prisma.contentGenConfig.create({
       data: {
@@ -179,7 +180,11 @@ async function mesurer(
     where: {
       typeRecherche: "web",
       jour: { gte: debut, lt: finExclue },
-      OR: [{ statut: "reussi" }, { tentatives: { gte: TENTATIVES_MAX } }],
+      OR: [
+        { statut: "reussi" },
+        // Abandonné = plafond atteint ET plus en cours (une 5e tentative en cours n'a rien écrit).
+        { tentatives: { gte: TENTATIVES_MAX }, statut: { not: "en_cours" } },
+      ],
     },
   });
   if (joursCollectes < joursFenetre) return null;
@@ -190,15 +195,21 @@ async function mesurer(
     }),
     prisma.gscInspection.findFirst({
       // L'état EN VIGUEUR à l'échéance : la rotation n'écrit une ligne que quand un champ change.
-      where: { chemin, inspecteLe: { lte: ajouterJours(finInspection, 1) } },
+      where: { chemin, inspecteLe: { gte: jourUtc(publieLe), lt: ajouterJours(finInspection, 1) } },
       orderBy: { inspecteLe: "desc" },
       select: { verdict: true, inspecteLe: true },
     }),
     // Compté seulement si la capture tournait déjà au début de la fenêtre ; sinon null, jamais 0.
     debutCapture !== null && debutCapture.getTime() <= debut.getTime()
-      ? prisma.contenuRendezVousOrigine.count({
-          where: { pageOrigine: chemin, createdAt: { gte: debut, lt: finExclue } },
-        })
+      ? prisma.contenuRendezVousOrigine
+          .count({ where: { pageOrigine: chemin, createdAt: { gte: debut, lt: finExclue } } })
+          .then(async (n) => {
+            // « 0 » n'est cru que si la capture a déjà prouvé qu'elle écrit (au moins une origine,
+            // quelle que soit la page) : un site qui n'écrit pas (drapeau, conteneur plus ancien)
+            // ne doit pas faire enregistrer des zéros définitifs.
+            if (n > 0) return n;
+            return (await prisma.contenuRendezVousOrigine.count()) > 0 ? 0 : null;
+          })
       : Promise.resolve(null),
   ]);
   const gsc: MesureGsc = {

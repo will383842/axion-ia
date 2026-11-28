@@ -62,3 +62,13 @@ export function indexationMesurable(
   const ecart = (jourUtc(inspecteLe).getTime() - echeance.getTime()) / JOUR_MS;
   return ecart <= TOLERANCE_INDEXATION_JOURS;
 }
+
+/**
+ * Une ligne d'inspection n'est « fraîche » (assez proche de l'échéance pour affirmer un NON) que
+ * dans la tolérance. Plus ancienne, elle peut seulement confirmer un PASS (qui ne se perd pas).
+ */
+export function inspectionFraiche(code: CodeEcheance, publieLe: Date, inspecteLe: Date): boolean {
+  const echeance = ajouterJours(jourUtc(publieLe), joursDe(code));
+  const ecart = Math.abs(jourUtc(inspecteLe).getTime() - echeance.getTime()) / JOUR_MS;
+  return ecart <= TOLERANCE_INDEXATION_JOURS;
+}

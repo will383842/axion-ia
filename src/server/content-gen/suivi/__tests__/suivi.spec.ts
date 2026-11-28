@@ -67,6 +67,16 @@ describe("construireResultat", () => {
     expect(r.details["donneesInsuffisantes"]).toBe(false);
     expect(r.indexe).toBe(true);
   });
+  it("une ancienne inspection non-PASS n'affirme pas « non indexé » à J3", () => {
+    const r = construireResultat({
+      code: "j3",
+      publieLe: d("2026-11-10"),
+      gsc: null,
+      inspection: { verdict: "NEUTRAL", inspecteLe: d("2026-11-10") },
+      rendezVous: null,
+    });
+    expect(r.indexe).toBeNull();
+  });
   it("une inspection trop tardive ne dit rien de J3", () => {
     const r = construireResultat({
       code: "j3",
@@ -149,6 +159,12 @@ describe("tacheSuiviResultats", () => {
     await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
     expect(p.contenuResultat.create.mock.calls[0]![0].data.rendezVous).toBeNull();
   });
+  it("0 rendez-vous n'est cru que si la capture a déjà écrit une origine", async () => {
+    const p = fauxPrisma();
+    p.contenuRendezVousOrigine.count.mockResolvedValue(0);
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(p.contenuResultat.create.mock.calls[0]![0].data.rendezVous).toBeNull();
+  });
   it("pose la date d'allumage au premier passage", async () => {
     const p = fauxPrisma();
     p.contentGenConfig.findUnique.mockResolvedValue(null);
@@ -159,7 +175,7 @@ describe("tacheSuiviResultats", () => {
     const p = fauxPrisma();
     await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
     const where = p.gscImportRun.count.mock.calls[0]![0].where;
-    expect(where.OR).toContainEqual({ tentatives: { gte: 5 } });
+    expect(where.OR).toContainEqual({ tentatives: { gte: 5 }, statut: { not: "en_cours" } });
   });
   it("ignore les pages d'index du blog", async () => {
     const p = fauxPrisma();
