@@ -284,7 +284,7 @@ function ReglagesJournal({
               ))}
             </tbody>
           </table>
-          <button type="submit" className="admin-btn">
+          <button type="submit" className="admin-button">
             Enregistrer les réglages
           </button>
         </form>
