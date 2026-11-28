@@ -28,7 +28,7 @@ Vérifié : `pnpm typecheck` vert, eslint sans erreur, vitest vert sur `src/feat
 
 ## Migration : oui
 
-`20261128110000_apporteurs_annulations_rendez_vous` (postérieure à `20261128000000_chaine_editoriale_tables`, dernière sur `origin/main` à l'écriture). Additive : une table neuve, sans clé étrangère, sans énumération Postgres, sans DROP ; états en `VARCHAR` + `CHECK`. Lecteurs tolérants à la table absente (P2021). `rollback.sql` fourni (sauvegarde `COPY` d'abord, `RENAME` plutôt que `DROP`). Les noms d'index sont fixés par `map:` (les noms par défaut dépassaient 63 caractères).
+`20261128120000_apporteurs_annulations_rendez_vous` (postérieure à `20261128000000_chaine_editoriale_tables`, dernière sur `origin/main` à l'écriture). Additive : une table neuve, sans clé étrangère, sans énumération Postgres, sans DROP ; états en `VARCHAR` + `CHECK`. Lecteurs tolérants à la table absente (P2021). `rollback.sql` fourni (sauvegarde `COPY` d'abord, `RENAME` plutôt que `DROP`). Les noms d'index sont fixés par `map:` (les noms par défaut dépassaient 63 caractères).
 
 ## Audit argent : oui
 
