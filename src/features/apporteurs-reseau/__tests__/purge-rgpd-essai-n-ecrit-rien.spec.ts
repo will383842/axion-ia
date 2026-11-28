@@ -128,3 +128,25 @@ describe("garde-fous métier", () => {
     expect(b.purgees).toBe(20);
   });
 });
+
+describe("RIB remplacé (preuve du compte payé)", () => {
+  it("mode appliquer : les octets d'un RIB remplacé ne sont jamais effacés", async () => {
+    process.env.APPORTEURS_PURGE_RGPD = "appliquer";
+    etat.prisma = fauxPrisma({
+      "pieceApporteur.findMany": [
+        {
+          id: "p-ancien",
+          apporteurId: "a3",
+          type: "rib",
+          statut: "deposee",
+          remplaceeAt: new Date("2029-12-01T00:00:00Z"),
+          deposeeAt: new Date("2024-01-01T00:00:00Z"),
+        },
+      ],
+    });
+    const b = await purgerDonneesApporteurs(maintenant, "appliquer");
+    const p = etat.prisma as ReturnType<typeof fauxPrisma>;
+    expect(ecritures(p.appels)).toEqual([]);
+    expect(b.parRegle.piece_6mois).toBe(0);
+  });
+});

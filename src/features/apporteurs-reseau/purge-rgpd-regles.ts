@@ -97,7 +97,10 @@ export interface PiecePurge {
 /** Pièce d'identité ou RIB à retransmettre ou remplacée : 6 mois après le dépôt. */
 export function echeancePiece(p: PiecePurge): EcheancePurge | null {
   if (p.type !== "identite" && p.type !== "rib") return null;
-  if (p.statut !== "a_retransmettre" && !p.remplaceeAt) return null;
+  // Une pièce REMPLACÉE n'est jamais purgée par cette règle : l'ancien RIB est la preuve du compte payé
+  // jusque-là (changement-iban.ts, validerDemande). Seule une pièce à retransmettre, jamais remplacée, l'est.
+  if (p.remplaceeAt) return null;
+  if (p.statut !== "a_retransmettre") return null;
   return {
     regle: "piece_6mois",
     echeanceAt: ajouterMois(p.deposeeAt, DUREE_PIECE_RETRANSMISE_MOIS),

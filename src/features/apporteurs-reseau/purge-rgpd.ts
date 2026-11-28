@@ -251,7 +251,7 @@ export async function purgerDonneesApporteurs(
   return bilan;
 }
 
-/** Pièces d'identité ou de RIB à retransmettre ou remplacées, 6 mois après le dépôt : octets seulement. */
+/** Pièces d'identité ou de RIB à retransmettre (jamais remplacées : l'ancien RIB reste la preuve du compte payé), 6 mois après le dépôt : octets seulement. */
 async function purgerPiecesRetransmises(
   maintenant: Date,
   mode: ModePurge,
@@ -263,7 +263,8 @@ async function purgerPiecesRetransmises(
       purgeeAt: null,
       contenu: { isNot: null },
       deposeeAt: { lte: ajouterMois(maintenant, -DUREE_PIECE_RETRANSMISE_MOIS) },
-      OR: [{ statut: "a_retransmettre" }, { remplaceeAt: { not: null } }],
+      statut: "a_retransmettre",
+      remplaceeAt: null,
     },
     select: {
       id: true,

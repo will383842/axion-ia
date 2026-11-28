@@ -82,6 +82,7 @@ import {
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
+import { commissionJourneeIaSelonGrille } from "./journee-ia-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import {
   commandeRenduePourLaLigne,
@@ -106,7 +107,6 @@ import {
   grilleDeLaCommande,
   MESSAGE_GRILLE_INCONNUE,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
-  calculerCommissionJourneeIa,
   versionContratSignee,
   type CalculCommission,
   type RegleAppliquee,
@@ -1328,15 +1328,21 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const baseAvantPlafond = Math.max(0, commande.baseApresAvoirsCents - recurrentCents);
     let regle: RegleAppliquee | null = null;
     let calc: CalculCommission;
+    let palierAQualifier: string | null = null;
     if (grille === null) {
       calc = { statut: "a_qualifier" };
     } else if (f.devis?.journeeIa === true) {
-      calc = calculerCommissionJourneeIa({
+      // Point 17 : la grille signée décide. En v2 la Journée IA est hors grille (A1.7) : « à
+      // qualifier », palier « hors-grille », circuit A1.7 (60 jours, alertes), jamais 500 € ni 0 €.
+      const ji = commissionJourneeIaSelonGrille({
+        grille,
         activite: (f.activite ?? null) as ActiviteCommission | null,
         lignes: f.devis.lignes,
         netHtCents: commande.baseApresAvoirsCents,
       });
-      regle = "journee_ia";
+      calc = ji.calcul;
+      palierAQualifier = ji.palierAQualifier;
+      regle = ji.palierAQualifier === null ? "journee_ia" : null;
     } else {
       const r = calculerCommissionSelonGrilleAvecRegle({
         activite: (f.activite ?? null) as ActiviteCommission | null,
@@ -1414,7 +1420,12 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
           }
         } else {
           await prisma.commissionApporteur.create({
-            data: { ...base, apporteurId: p.apporteurId, statut: "a_qualifier" },
+            data: {
+              ...base,
+              apporteurId: p.apporteurId,
+              statut: "a_qualifier",
+              palier: palierAQualifier,
+            },
             select: { id: true },
           });
         }

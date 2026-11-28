@@ -118,7 +118,7 @@ describe("pièce à retransmettre ou remplacée : 6 mois après le dépôt", () 
     expect(r?.regle).toBe("piece_6mois");
     expect(r?.echeanceAt.toISOString()).toBe("2026-07-10T00:00:00.000Z");
   });
-  it("remplacée", () => {
+  it("remplacée : jamais (l'ancien RIB est la preuve du compte payé)", () => {
     expect(
       echeancePiece({
         type: "identite",
@@ -126,7 +126,15 @@ describe("pièce à retransmettre ou remplacée : 6 mois après le dépôt", () 
         remplaceeAt: new Date(),
         deposeeAt: dep,
       }),
-    ).not.toBeNull();
+    ).toBeNull();
+    expect(
+      echeancePiece({
+        type: "rib",
+        statut: "a_retransmettre",
+        remplaceeAt: new Date(),
+        deposeeAt: dep,
+      }),
+    ).toBeNull();
   });
   it("pièce courante : jamais", () => {
     expect(
