@@ -8,7 +8,7 @@ import { contenuListeGeneree } from "../liste-generee";
 import { rapportVilles } from "../verdicts-villes";
 
 describe("liste générée des villes publiables", () => {
-  it("est à jour (sinon : pnpm tsx scripts/content-gen/gen-villes-publiables.ts)", () => {
+  it("est à jour (sinon : pnpm villes:publiables)", () => {
     const publiables = rapportVilles()
       .filter((l) => l.publiable)
       .map((l) => l.slug);

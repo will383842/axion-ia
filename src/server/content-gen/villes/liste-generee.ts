@@ -3,8 +3,8 @@ export function contenuListeGeneree(slugsPubliables: ReadonlyArray<string>): str
   const triés = [...slugsPubliables].sort();
   const corps = triés.map((s) => `  ${JSON.stringify(s)},`).join("\n");
   return `// ⚠️ FICHIER GÉNÉRÉ — ne pas éditer à la main.
-// Source : \`scripts/content-gen/gen-villes-publiables.ts\` (verdict \`evaluerPageVille\`).
-// Régénérer : pnpm tsx scripts/content-gen/gen-villes-publiables.ts
+// Source : le script \`gen-villes-publiables\` (verdict \`evaluerPageVille\`).
+// Régénérer : pnpm villes:publiables
 // Le test \`porte-qualite-ville-liste.spec.ts\` échoue si ce fichier est périmé.
 //
 // Villes dont la page par-ville passe la porte de qualité. Sans effet tant que le drapeau

@@ -5,7 +5,7 @@
 // (absente, vide, « false », « 1 ») le laisse éteint. Éteint : aucune page par-ville n'est
 // indexable, aucune n'entre au plan du site (règle du 18/11/2026). Allumé : seules les villes de
 // `VILLES_PUBLIABLES_CAP` (verdict de `evaluerPageVille`, liste générée par
-// `pnpm tsx scripts/content-gen/gen-villes-publiables.ts`) deviennent indexables.
+// le script `gen-villes-publiables` (voir `pnpm villes:rapport`)) deviennent indexables.
 import { VILLES_PUBLIABLES_CAP } from "@/generated/villes-publiables";
 
 const PUBLIABLES: ReadonlySet<string> = new Set(VILLES_PUBLIABLES_CAP);
