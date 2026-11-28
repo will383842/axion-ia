@@ -81,6 +81,7 @@ import {
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
+import { controlerRegistreApporteurs } from "./controle-registre";
 import { commissionJourneeIaSelonGrille } from "./journee-ia-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import {
@@ -330,6 +331,7 @@ type NomEtape =
   | "declarations-sans-reponse"
   | "commandes-a-attribuer"
   | "resiliations-echues"
+  | "controle-registre"
   | "emails-effet-resiliation"
   | "a-verifier-en-retard";
 
@@ -418,6 +420,8 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
+    // Point 20 : relecture du registre public pour les apporteurs sous contrat (alerte interne seule).
+    ["controle-registre", async () => void (await controlerRegistreApporteurs(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;

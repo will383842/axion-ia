@@ -13,7 +13,8 @@
  * encore, elle ne doit rien exécuter par défaut.
  *
  * Tâches : `ingestion-gsc` (06 h 37, Paris), `rattrapage-gsc` (un jour d'historique par passage),
- * `purge` (dimanche), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé), `robots-ia` (P10 :
+ * `purge` (dimanche), `recalcul` (P6a, 07 h 07 : champs existants depuis l'historique, sans appel
+ * Google), `inspection` (07 h, rotation d'inspection d'URL sous quota partagé), `robots-ia` (P10 :
  * passages des robots d'IA, agrégats Cloudflare ; sans jeton Cloudflare la tâche saute, « indisponible »).
  * Des NOMBRES seulement dans les journaux : jamais une requête de recherche,
  * jamais un nom.
@@ -41,6 +42,7 @@ export const TACHES_SEO_PILOTAGE = [
   "ingestion-gsc",
   "rattrapage-gsc",
   "purge",
+  "recalcul",
   "inspection",
   "robots-ia",
 ] as const;
@@ -75,12 +77,22 @@ export async function runSeoPilotageJob(
 
   try {
     // Imports paresseux : Prisma n'est chargé qu'une fois l'interrupteur vérifié.
-    const [{ prisma }, ingestion, geo] = await Promise.all([
+    const [{ prisma }, ingestion, recalcul, geo] = await Promise.all([
       import("@/lib/prisma"),
       import("@/server/seo-pilotage/ingestion"),
+      import("@/server/seo-pilotage/recalcul"),
       import("@/server/seo-pilotage/geo"),
     ]);
     const mode = await lireModePilotage(prisma);
+    if (tache === "recalcul") {
+      const r = await recalcul.tacheRecalcul({ prisma });
+      console.warn(
+        r.issue === "saute"
+          ? `[seo-pilotage-worker] recalcul (${mode}) sauté : ${r.motif}`
+          : `[seo-pilotage-worker] recalcul (${mode}) : ${r.routesMisesAJour} route(s), ${r.motsCles} mot(s)-clé(s)`,
+      );
+      return r.issue === "saute" ? { issue: "saute", motif: r.motif } : { issue: "fait", tache };
+    }
     if (tache === "inspection") {
       const [{ redis }, { tacheInspection }] = await Promise.all([
         import("@/lib/redis"),

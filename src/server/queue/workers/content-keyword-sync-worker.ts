@@ -22,6 +22,7 @@ import { prisma } from "@/lib/prisma";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { gscTopKeywordsForUrl } from "@/server/content-gen/seo/gsc-client";
+import { historiqueDisponible } from "@/server/seo-pilotage/recalcul";
 import {
   chargerCarteRequetes,
   equipeEditorialeActive,
@@ -75,16 +76,28 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const stats: SyncStats = { articlesScanned: 0, keywordsUpserted: 0, apiSkipped: 0 };
   const recentThreshold = new Date(Date.now() - RECENT_DAYS_MIN * 86_400_000);
 
-  const articles = await prisma.article.findMany({
-    where: {
-      status: "published",
-      publishedAt: { lte: recentThreshold },
-      indexationTier: { in: ["tier_1_indexable", "tier_2_noindex_follow"] },
-    },
-    include: { translations: { where: { locale: "fr" } } },
-    take: 500,
-    orderBy: { publishedAt: "desc" },
-  });
+  // P6a — pilotage SEO allumé et historique ≥ 28 jours : le recalcul quotidien du robot
+  // (`seo-pilotage`, tâche `recalcul`) alimente déjà KeywordTracking depuis la table, sans
+  // appel Google. On ne refait pas les ~500 appels API. Sinon : comportement d'avant.
+  const recalculParLeRobot = await historiqueDisponible(prisma);
+  if (recalculParLeRobot) {
+    console.log(
+      "[keyword-sync] historique SEO suffisant : recalcul par le robot, API non appelée.",
+    );
+  }
+
+  const articles = recalculParLeRobot
+    ? []
+    : await prisma.article.findMany({
+        where: {
+          status: "published",
+          publishedAt: { lte: recentThreshold },
+          indexationTier: { in: ["tier_1_indexable", "tier_2_noindex_follow"] },
+        },
+        include: { translations: { where: { locale: "fr" } } },
+        take: 500,
+        orderBy: { publishedAt: "desc" },
+      });
 
   stats.articlesScanned = articles.length;
 
