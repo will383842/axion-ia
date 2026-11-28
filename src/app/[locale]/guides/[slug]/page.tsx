@@ -229,10 +229,11 @@ export default async function GuidePiliersPage({ params }: Props) {
           lisible: dateLisible(guide.publishedAt),
         }}
         misAJourLe={
-          guide.updatedAt.getTime() !== guide.publishedAt.getTime()
+          guide.updatedAt.toISOString().slice(0, 10) > guide.publishedAt.toISOString().slice(0, 10)
             ? { iso: guide.updatedAt.toISOString(), lisible: dateLisible(guide.updatedAt) }
             : null
         }
+        dateMiseAJourIso={guide.updatedAt.toISOString().slice(0, 10)}
         etapes={guide.hasStructuredSteps ? guide.steps : []}
         html={guideBodyHtmlPrefixe}
         paragraphes={paragraphs}

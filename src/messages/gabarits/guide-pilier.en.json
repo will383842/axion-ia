@@ -6,7 +6,6 @@
     "legende": "chapters, one step at a time"
   },
   "sommaire": {
-    "titre": "The {nombre} chapters of the guide",
     "total": "{minutes} min",
     "detail": "≈ {minutes} min · chapter {numero} of {total}"
   },
@@ -27,8 +26,7 @@
   },
   "ctaMilieu2": {
     "titre": "This whole guide, in one day",
-    "texte": "Audit in the morning, training in the afternoon, then a detailed report and a 90-day plan within 10 working days.",
-    "lien": "Write a message"
+    "texte": "Audit in the morning, training in the afternoon, then a detailed report and a 90-day plan within 10 working days."
   },
   "feuilleDeRoute": {
     "surtitre": "To print or to share",

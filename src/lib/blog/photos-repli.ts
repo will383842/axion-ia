@@ -14,11 +14,11 @@
 import type { GabaritArticle } from "@/server/content-gen/blog/gabarits";
 
 /**
- * Code de page des gabarits v2 : les huit gabarits du blog, plus le guide pilier (PR M-GU1)
- * qui vit sur `/guides/[slug]`. Ce n'est PAS un `GabaritArticle` : `gabaritPourType` et la
+ * Code de page des gabarits v2 : les huit gabarits du blog, plus l'actualité (PR M-A1) et le
+ * guide pilier (PR M-GU1), qui vivent sur `/actualites/[slug]` et `/guides/[slug]`. Ce n'est PAS un `GabaritArticle` : `gabaritPourType` et la
  * table du PLAN §3 ne le connaissent pas.
  */
-export type GabaritPage = GabaritArticle | "guide-pilier";
+export type GabaritPage = GabaritArticle | "actualite" | "guide-pilier";
 
 export interface PhotoRepli {
   readonly src: string;
@@ -56,6 +56,10 @@ export const PHOTOS_REPLI: Readonly<Record<GabaritPage, PhotoRepli>> = {
   },
   chiffres: {
     src: "/images/axion-ia-photo-formation-ia-salle-conference-participants-eclairage.webp",
+    alt: "",
+  },
+  actualite: {
+    src: "/images/axion-ia-photo-formateur-ia-presentation-tableau-equipe-entreprise.webp",
     alt: "",
   },
   "guide-pilier": {

@@ -119,7 +119,7 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
         principal="journee"
         titre={a("ctaMilieu2.titre")}
         texte={a("ctaMilieu2.texte")}
-        lienSecondaire={{ label: a("ctaMilieu2.lien"), href: ROUTES.contact }}
+        secondaire="message"
       />
     );
 
@@ -183,7 +183,8 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
               <Fragment key={etape.position}>
                 <section className="chapitre" aria-labelledby={`step-${etape.position}`}>
                   <BandeauChapitre
-                    numero={etape.position}
+                    numero={rang}
+                    ancre={etape.position}
                     total={n}
                     minutes={minutes[i] ?? 1}
                     minutesRestantes={restantes[i] ?? 1}
@@ -198,10 +199,10 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
                       {rang < n ? (
                         <a className="lien-fleche" href={`#step-${p.etapes[i + 1]!.position}`}>
                           {a("chapitre.suivant")}
-                          <span className="sr-only">
+                          <span className="visuellement-masque">
                             {a("chapitre.suivantPrecision", { numero: rang + 1, total: n })}
                           </span>{" "}
-                          →
+                          <span aria-hidden="true">→</span>
                         </a>
                       ) : (
                         <span />
@@ -239,11 +240,11 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
               {a("feuilleDeRoute.titreDebut")} <em>{a("feuilleDeRoute.titreEm")}</em>
             </h2>
             <ol>
-              {p.etapes.map((etape) => (
+              {p.etapes.map((etape, i) => (
                 <li key={etape.position}>
                   <p>
                     {etape.name}
-                    <span>{a("chapitre.numeroCourt", { numero: etape.position })}</span>
+                    <span>{a("chapitre.numeroCourt", { numero: i + 1 })}</span>
                   </p>
                 </li>
               ))}
@@ -254,7 +255,7 @@ export function GabaritGuidePilier(p: ArticleGuidePilierProps) {
         <ArticleFaq
           items={p.faqItems}
           locale={loc}
-          dateModified={(p.misAJourLe ?? p.publieLe).iso.slice(0, 10)}
+          dateModified={p.dateMiseAJourIso}
           variante="v2"
           titre={c("faqTitre")}
         />

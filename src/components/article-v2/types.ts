@@ -72,7 +72,10 @@ export interface ArticleGuidePilierProps {
   /** Réponse rapide (`excerpt`), rendue en « En bref » ; jamais doublée en chapô. */
   readonly tldr: string | null;
   readonly publieLe: { readonly iso: string; readonly lisible: string };
+  /** Seulement si le jour de mise à jour est postérieur au jour de publication. */
   readonly misAJourLe: { readonly iso: string; readonly lisible: string } | null;
+  /** Dernière écriture de la traduction (jour ISO), pour le `dateModified` de la FAQ (V1). */
+  readonly dateMiseAJourIso: string;
   /** Étapes structurées (≥ 2) = chapitres ; vide : corps libre. */
   readonly etapes: ReadonlyArray<EtapeGuide>;
   readonly html: string | null;

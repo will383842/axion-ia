@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { GabaritPage } from "@/lib/blog/photos-repli";
@@ -9,7 +10,7 @@ interface HerosArticleProps {
   readonly chapo: string | null;
   readonly auteur: string;
   readonly auteurHref: string;
-  readonly publieLe: string;
+  readonly publieLe: string | null;
   readonly misAJourLe: string | null;
   readonly tempsLecture: string | null;
   readonly pageUrl: string;
@@ -18,9 +19,13 @@ interface HerosArticleProps {
   readonly surtitreType?: string;
   /**
    * Signe du gabarit (décor `aria-hidden`). Absent : celui de `commun` pour les huit gabarits
-   * du blog. `null` : aucun signe.
+   * du blog, aucun pour l'actualité. `null` : aucun signe.
    */
   readonly signe?: { readonly grand: string; readonly legende: string } | null;
+  /** Date du jour en évidence (actualités) : remplace « Publié le » de la méta. */
+  readonly dateUne?: { readonly jour: string; readonly iso: string; readonly lisible: string };
+  /** Pastille de source d'origine (actualités), déjà construite et traduite. */
+  readonly pastilleSource?: ReactNode;
   /** Date de publication déjà formatée (défaut : la valeur brute de `publieLe`). */
   readonly publieLisible?: string;
   /** Date de mise à jour déjà formatée (défaut : la valeur brute de `misAJourLe`). */
@@ -47,6 +52,8 @@ export function HerosArticle({
   titreArticle,
   surtitreType,
   signe,
+  dateUne,
+  pastilleSource,
   publieLisible,
   misAJourLisible,
 }: HerosArticleProps) {
@@ -55,7 +62,9 @@ export function HerosArticle({
   const signeAffiche =
     signe !== undefined
       ? signe
-      : { grand: c(`signe.${gabarit}.grand`), legende: c(`signe.${gabarit}.legende`) };
+      : gabarit === "actualite"
+        ? null
+        : { grand: c(`signe.${gabarit}.grand`), legende: c(`signe.${gabarit}.legende`) };
   const url = encodeURIComponent(pageUrl);
   const partages = [
     {
@@ -76,9 +85,20 @@ export function HerosArticle({
   ];
   return (
     <header className="heros sur-terracotta">
+      {dateUne ? (
+        <p className="date-une">
+          <span className="date-une__jour" aria-hidden="true">
+            {dateUne.jour}
+          </span>
+          <time dateTime={dateUne.iso}>
+            {c("publieLe")} {dateUne.lisible}
+          </time>
+        </p>
+      ) : null}
       <ul className="surtitre" aria-label={c("typeEtCategorie")}>
         <li className="pastille pastille--pleine">{surtitreType ?? c(`surtitre.${gabarit}`)}</li>
         <li className="pastille pastille--contour">{categorie}</li>
+        {pastilleSource}
       </ul>
       <h1>
         {titre.lead}
@@ -102,11 +122,13 @@ export function HerosArticle({
             </Link>
           </span>
         </li>
-        <li>
-          <time dateTime={publieLe}>
-            {c("publieLe")} {publieLisible ?? publieLe}
-          </time>
-        </li>
+        {dateUne || !publieLe ? null : (
+          <li>
+            <time dateTime={publieLe}>
+              {c("publieLe")} {publieLisible ?? publieLe}
+            </time>
+          </li>
+        )}
         {modifie ? (
           <li data-aeo="freshness">
             <time dateTime={modifie}>

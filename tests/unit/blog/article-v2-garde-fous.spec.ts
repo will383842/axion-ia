@@ -227,7 +227,9 @@ describe("textes des gabarits : mots interdits et typographie", () => {
 describe("photos de repli", () => {
   it("chaque photo existe en .webp ET en .avif, sans infographie ni chiffre-vedette", async () => {
     const { PHOTOS_REPLI } = await import("@/lib/blog/photos-repli");
-    expect(Object.keys(PHOTOS_REPLI).sort()).toEqual([...GABARITS_ARTICLE, "guide-pilier"].sort());
+    expect(Object.keys(PHOTOS_REPLI).sort()).toEqual(
+      [...GABARITS_ARTICLE, "actualite", "guide-pilier"].sort(),
+    );
     for (const { src, alt } of Object.values(PHOTOS_REPLI)) {
       expect(src).toMatch(/^\/images\/axion-ia-photo-[a-z0-9-]+\.webp$/);
       expect(fs.existsSync(path.join(RACINE, "public", src))).toBe(true);

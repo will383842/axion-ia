@@ -2,14 +2,18 @@ import { useId } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CHEMIN_JOURNEE_IA, lienDiagnostic } from "@/content/journee-ia-commun";
+import { ROUTES } from "@/lib/routes";
 
 export type PrincipalCta = "diagnostic" | "journee";
+export type SecondaireCta = PrincipalCta | "message";
 
 interface CtaMilieuProps {
   readonly gabarit: string;
   /** Bouton principal selon le gabarit (PLAN §15.3) ; l'autre devient le lien. */
   readonly principal?: PrincipalCta;
-  /** Lien secondaire propre au gabarit (défaut : l'autre bouton principal), déjà traduit. */
+  /** Lien secondaire (défaut : l'autre bouton principal). */
+  readonly secondaire?: SecondaireCta;
+  /** Lien secondaire libre propre au gabarit (prime sur `secondaire`), déjà traduit. */
   readonly lienSecondaire?: { readonly label: string; readonly href: string };
   /** Titre et texte propres au gabarit, déjà traduits (défaut : ceux de `commun`). */
   readonly titre?: string;
@@ -23,6 +27,7 @@ interface CtaMilieuProps {
 export function CtaMilieu({
   gabarit,
   principal = "diagnostic",
+  secondaire,
   lienSecondaire,
   titre,
   texte,
@@ -33,8 +38,10 @@ export function CtaMilieu({
   const hrefs = {
     diagnostic: lienDiagnostic(`${gabarit}-milieu`),
     journee: CHEMIN_JOURNEE_IA,
+    message: ROUTES.contact,
   } as const;
-  const autre: PrincipalCta = principal === "diagnostic" ? "journee" : "diagnostic";
+  const autre: SecondaireCta =
+    secondaire ?? (principal === "diagnostic" ? "journee" : "diagnostic");
   return (
     <aside className="cta-milieu" aria-labelledby={id}>
       <p className="cta-milieu__titre" id={id}>

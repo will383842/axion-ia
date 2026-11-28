@@ -95,6 +95,7 @@ import type { ArticleGuidePilierProps } from "@/components/article-v2/types";
 
 const { GabaritGuidePilier } = await import("@/components/article-v2/gabarits/GabaritGuidePilier");
 const { ArticleTOC } = await import("@/components/seo/ArticleTOC");
+const { decouperTitre } = await import("@/components/article-v2/decouper-titre");
 
 const rendre = (el: React.ReactElement) => renderToStaticMarkup(el);
 
@@ -109,10 +110,11 @@ const base: ArticleGuidePilierProps = {
   locale: "fr",
   slug: "mettre-en-place-ia-pme",
   titreComplet: "Mettre en place l’IA : le guide complet",
-  titre: { lead: "Mettre en place l’IA :", em: "le guide complet" },
+  titre: decouperTitre("Mettre en place l’IA : le guide complet"),
   tldr: "Sept temps pour démarrer.",
   publieLe: { iso: "2026-10-08", lisible: "8 octobre 2026" },
   misAJourLe: { iso: "2026-11-26", lisible: "26 novembre 2026" },
+  dateMiseAJourIso: "2026-11-26",
   etapes: etapes(7),
   html: null,
   paragraphes: [],
@@ -186,7 +188,7 @@ describe("GabaritGuidePilier : structure", () => {
   it("« Aller au chapitre suivant » (numéro masqué visuellement) sauf au dernier ; retour au sommaire", () => {
     expect(html.match(/href="#step-2"[^>]*>Aller au chapitre suivant/g)).toHaveLength(1);
     expect(html.match(/Aller au chapitre suivant/g)).toHaveLength(6);
-    expect(html).toContain('class="sr-only"');
+    expect(html).toContain('class="visuellement-masque"');
     expect(html.match(/href="#sommaire"/g)).toHaveLength(7);
   });
 
@@ -302,6 +304,37 @@ describe("GabaritGuidePilier : variantes de données", () => {
   });
 });
 
+describe("titre et numérotation", () => {
+  it("le « : » reste dans le h1 (titre lu en entier)", () => {
+    const html = rendre(<GabaritGuidePilier {...base} />);
+    expect(html).toContain("<h1>Mettre en place l’IA : <em>le guide complet</em></h1>");
+    expect(decouperTitre("A : B").lead).toBe("A :");
+    expect(decouperTitre("Un titre sans séparateur ici")).toEqual({
+      lead: "Un titre sans",
+      em: "séparateur ici",
+    });
+  });
+
+  it("positions non contiguës ou répétées : numéros affichés par rang, ancres inchangées", () => {
+    const bizarres = [3, 3, 7, 2].map((position, i) => ({
+      position,
+      name: `Étape ${i}`,
+      text: "Un texte.",
+    }));
+    const html = rendre(<GabaritGuidePilier {...base} etapes={bizarres} tocItems={[]} />);
+    for (let rang = 1; rang <= 4; rang++) expect(html).toContain(`Chapitre ${rang} sur 4`);
+    expect(html).not.toMatch(/Chapitre [5-9] sur 4/);
+    expect(html).toContain('<h2 id="step-7"');
+    expect(html).toContain('href="#step-7"');
+    expect(html.match(/chapitre__bandeau chapitre__bandeau--terracotta/g)).toHaveLength(2);
+  });
+
+  it("trois chapitres : un seul encart du milieu (Diagnostic)", () => {
+    const html = rendre(<GabaritGuidePilier {...base} etapes={etapes(3)} tocItems={[]} />);
+    expect(html.match(/<aside class="cta-milieu"/g)).toHaveLength(1);
+  });
+});
+
 describe("ArticleTOC v2 : grille de chapitres", () => {
   it("détail, progression, total et id du sommaire ; ItemList inchangée", () => {
     const html = rendre(
@@ -375,6 +408,12 @@ describe("page /guides/[slug] : une seule insertion derrière l'interrupteur", (
     expect(bloc).toContain("jsonLd");
     expect(bloc).toContain("personJsonLd");
     expect(bloc).not.toMatch(/build\w*JsonLd\(/);
+  });
+
+  it("« mis à jour » seulement si le jour est postérieur à la publication ; FAQ sur la dernière écriture", () => {
+    const bloc = src.slice(garde, retourV1);
+    expect(bloc).toMatch(/updatedAt\.toISOString\(\)\.slice\(0, 10\) > guide\.publishedAt/);
+    expect(bloc).toContain("dateMiseAJourIso={guide.updatedAt.toISOString().slice(0, 10)}");
   });
 
   it("les ids step-N du sommaire sont ceux des chapitres (même source)", () => {

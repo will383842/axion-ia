@@ -1,8 +1,10 @@
 import { useTranslations } from "next-intl";
 
 interface BandeauChapitreProps {
-  /** Position du chapitre (1, 2…), identique à `step.position`. */
+  /** Rang du chapitre dans le guide (1, 2…) : numéro affiché, alternance, avancement. */
   readonly numero: number;
+  /** Ancre du titre (`step.position` de la V1, conservée même si elle saute ou se répète). */
+  readonly ancre: number;
   readonly total: number;
   /** Minutes estimées du chapitre, et minutes restantes (ce chapitre compris). */
   readonly minutes: number;
@@ -20,6 +22,7 @@ interface BandeauChapitreProps {
  */
 export function BandeauChapitre({
   numero,
+  ancre,
   total,
   minutes,
   minutesRestantes,
@@ -51,7 +54,7 @@ export function BandeauChapitre({
         style={{ "--p": `${progression}%` } as React.CSSProperties}
         aria-hidden="true"
       />
-      <h2 id={`step-${numero}`} data-speakable="true">
+      <h2 id={`step-${ancre}`} data-speakable="true">
         {titre}
       </h2>
     </div>

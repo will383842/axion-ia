@@ -1,11 +1,11 @@
 /**
  * Découpe un titre en `lead` + `em` (la fin en italique du héros), comme `splitTitleEm` de
  * `blog/[slug]` : au séparateur « : » s'il existe, sinon les deux derniers mots (titre de
- * quatre mots ou plus), sinon le dernier.
+ * quatre mots ou plus), sinon le dernier. Le « : » reste dans `lead` (le titre se lit en entier).
  */
 export function decouperTitre(title: string): { lead: string; em: string } {
   const colonFr = title.indexOf(" : ");
-  if (colonFr > 0) return { lead: title.slice(0, colonFr + 1), em: title.slice(colonFr + 3) };
+  if (colonFr > 0) return { lead: title.slice(0, colonFr + 2), em: title.slice(colonFr + 3) };
   const colonEn = title.indexOf(": ");
   if (colonEn > 0) return { lead: title.slice(0, colonEn + 1), em: title.slice(colonEn + 2) };
   const words = title.trim().split(/\s+/);

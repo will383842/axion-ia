@@ -6,7 +6,6 @@
     "legende": "chapitres, une étape à la fois"
   },
   "sommaire": {
-    "titre": "Les {nombre} chapitres du guide",
     "total": "{minutes} min",
     "detail": "≈ {minutes} min · chapitre {numero} sur {total}"
   },
@@ -27,8 +26,7 @@
   },
   "ctaMilieu2": {
     "titre": "Tout ce guide, en une journée",
-    "texte": "Audit le matin, formation l’après-midi, puis rapport détaillé et plan à 90 jours sous 10 jours ouvrés.",
-    "lien": "Écrire un message"
+    "texte": "Audit le matin, formation l’après-midi, puis rapport détaillé et plan à 90 jours sous 10 jours ouvrés."
   },
   "feuilleDeRoute": {
     "surtitre": "À imprimer ou à partager",
