@@ -406,8 +406,9 @@ export default async function NewsArticlePage({ params }: Props) {
 
   // Gabarits v2 (PR M-A1) : habillage de la page derrière l'interrupteur BLOG_GABARITS_V2,
   // éteint par défaut. Insertion unique : tout le calcul ci-dessus est conservé, le JSON-LD
-  // et les metadata restent ceux de la V1. Import dynamique : interrupteur coupé, aucun
-  // module (ni feuille de style) du gabarit n'est chargé.
+  // et les metadata restent ceux de la V1. Import dynamique : le JavaScript du gabarit n'est
+  // exécuté que derrière la garde ; en revanche webpack rattache sa feuille de style à la
+  // route même interrupteur coupé (mesuré : ≈ +11 Ko gz de CSS, bornée à [data-gabarit]).
   if (gabaritsV2Actifs()) {
     const { GabaritActualite } = await import("@/components/article-v2/gabarits/GabaritActualite");
     return (

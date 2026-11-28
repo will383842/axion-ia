@@ -155,7 +155,7 @@ describe("GabaritActualite : structure", () => {
     expect(html).toContain(
       '<p class="date-une"><span class="date-une__jour" aria-hidden="true">26</span><time dateTime="2026-11-26">',
     );
-    // une seule date de publication visible (la date du jour du héros)
+    // une seule date de publication dans le héros (la carte auteur, simulée ici, est hors sujet)
     expect(html.match(/Publié le/g)).toHaveLength(1);
     expect(html).toContain('data-aeo="freshness"');
   });
