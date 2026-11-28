@@ -132,7 +132,7 @@ export async function ecrireCorpsJournalise(
       cibleType: TYPE_CIBLE_ARTICLE,
       cibleId: e.articleId,
       etat: "appliquee",
-      appliqueeLe: { lt: new Date(e.dateModifiee.getTime() - JOURS_VERROU * MS_JOUR) },
+      appliqueeLe: { lte: new Date(e.dateModifiee.getTime() - JOURS_VERROU * MS_JOUR) },
     },
     data: { etat: "mesuree" },
   });

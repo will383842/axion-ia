@@ -96,16 +96,8 @@ export async function dependancesReelles(
       await redis.incr(cleQuota);
       await redis.expire(cleQuota, 2 * 24 * 3600);
     },
-    gardien: async (brief) => {
-      // Verrou du journal (28 jours / proposition ouverte) contrôlé AVANT toute dépense : sinon le
-      // circuit payant s'exécuterait pour une écriture qui sera refusée à l'enregistrement.
-      if (await cibleVerrouillee(prisma, c.articleId, c.maintenant)) {
-        return {
-          decision: "ecarter" as const,
-          raison: "Article déjà modifié depuis moins de 28 jours (journal SEO).",
-        };
-      }
-      return deciderGardien(brief, {
+    gardien: (brief) =>
+      deciderGardien(brief, {
         carte: c.carte,
         voisins: async () => {
           const proches = await findNearestArticles(prisma, { articleId: c.articleId, limit: 5 });
@@ -116,8 +108,7 @@ export async function dependancesReelles(
             }),
           );
         },
-      });
-    },
+      }),
     verifier: async (html, motCle) => {
       const { jobId, contentType } = await obtenirPorteur();
       const dossier = await constituerDossierPreuves({
@@ -192,6 +183,8 @@ export async function dependancesReelles(
       });
       return { decision: s.decision, coutUsd: s.coutJugeUsd };
     },
+    // Pré-contrôle du verrou du journal (28 jours / proposition ouverte), avant toute dépense.
+    verrouActif: (articleId) => cibleVerrouillee(prisma, articleId, c.maintenant),
     enregistrer: async ({ articleId, html, dateModifiee }) => {
       // Journal (« avant » et « après ») écrit dans la même transaction que le corps ; la date est posée
       // sur ArticleTranslation.updatedAt, celle que le blog publie, et sur Article.updatedAt.
