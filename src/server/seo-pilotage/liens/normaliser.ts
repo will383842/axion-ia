@@ -54,15 +54,17 @@ export function normaliserDomaine(brut: string): string | null {
   return hote;
 }
 
-/** Décode jusqu'à 3 fois (%40, %2540…) ; s'arrête au premier échec de décodage. */
+/**
+ * Décode 3 fois (%40, %2540…) les seules séquences ASCII (%00 à %7F). Ne lève jamais : une
+ * séquence invalide ailleurs (« %FF ») ne doit pas bloquer le décodage de « %2540 », sinon
+ * l'adresse e-mail passerait (`decodeURIComponent` échoue sur la chaîne entière).
+ */
 function decoderTroisPasses(brut: string): string {
   let decode = brut;
   for (let i = 0; i < 3; i++) {
-    try {
-      decode = decodeURIComponent(decode);
-    } catch {
-      break;
-    }
+    decode = decode.replace(/%([0-7][0-9a-f])/gi, (_, h: string) =>
+      String.fromCharCode(parseInt(h, 16)),
+    );
   }
   return decode;
 }

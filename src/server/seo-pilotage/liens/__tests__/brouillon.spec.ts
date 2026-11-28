@@ -57,7 +57,7 @@ describe("controlerBrouillon", () => {
   it("refuse la ville du siège même dans l'URL proposée ou déguisée", () => {
     const url = `https://axion-ia.com/fr/ingenieur-ia/${VILLE.toLowerCase()}`;
     expect(controlerBrouillon(`Bonjour, voici : ${url}. Cordialement.`, url).valide).toBe(false);
-    expect(controlerBrouillon(`${BON} Grenóble`, URL_PAGE).valide).toBe(false);
+    expect(controlerBrouillon(`${BON} ${VILLE.replace("o", "ó")}`, URL_PAGE).valide).toBe(false);
     expect(controlerBrouillon(`${BON} Gre\u00adnoble`, URL_PAGE).valide).toBe(false);
     expect(controlerBrouillon(`${BON} \uff27renoble`, URL_PAGE).valide).toBe(false);
   });
@@ -165,7 +165,10 @@ describe("tour 5 : faux refus et déguisements", () => {
 
 describe("tour 6", () => {
   it("refuse le gentilé et les faux domaines d'Axion IA", () => {
-    expect(controlerBrouillon(`${BON} Entreprises grenobloises.`, URL_PAGE).valide).toBe(false);
+    expect(
+      controlerBrouillon(`${BON} Entreprises ${VILLE.toLowerCase().slice(0, -1)}oises.`, URL_PAGE)
+        .valide,
+    ).toBe(false);
     for (const u of ["axion-ia.com.evil.fr/x", "monsite-axion-ia.com", "café.fr"]) {
       expect(controlerBrouillon(`${BON} Voir ${u}`, URL_PAGE).motifs).toContain("autre_url");
     }

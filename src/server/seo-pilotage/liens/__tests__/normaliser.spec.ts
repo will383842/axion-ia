@@ -67,6 +67,9 @@ describe("normaliserCible", () => {
     "/fr/blog/x?e=jean%40x.fr",
     "/fr/blog/x?e=jean%2540x.fr",
     "/fr/blog/jean%2540x.fr",
+    // Une séquence invalide (%FF) ne doit pas bloquer le décodage de %2540.
+    "/fr/blog%FF/jean%2540x.fr",
+    "/fr/blog/x%FF?e=jean%2540x.fr",
   ])("refuse une adresse e-mail encodée : %s", (c) => {
     expect(normaliserCible(c)).toBeNull();
   });
@@ -135,6 +138,7 @@ describe("tour 4 : adresse e-mail dans le chemin, erreurs sans donnée personnel
     "https://site.fr/profil/jean@x.fr",
     "https://site.fr/u/jean%40x.fr",
     "https://site.fr/p?e=jean%2540x.fr",
+    "https://site.fr/a%FF/jean%2540x.fr",
   ])("refuse %s", (u) => {
     expect(normaliserPageSource(u)).toBeNull();
   });
