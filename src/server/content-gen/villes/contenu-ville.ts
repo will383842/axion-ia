@@ -12,11 +12,11 @@ import type { BlocFait, ContenuVille } from "./porte-qualite-ville";
 export interface EntreeVille {
   readonly slug: string;
   readonly nameFr: string;
-  readonly copy?: { readonly pitchFr?: string; readonly directAnswerFr?: string };
-  readonly economicData?: VilleEconomicData;
-  readonly fiche?: FicheLocale;
+  readonly copy?: { readonly pitchFr?: string; readonly directAnswerFr?: string } | undefined;
+  readonly economicData?: VilleEconomicData | undefined;
+  readonly fiche?: FicheLocale | undefined;
   /** Exemple concret d'usage de l'IA propre à la ville. Aucune source de données aujourd'hui. */
-  readonly exempleIa?: string;
+  readonly exempleIa?: string | undefined;
 }
 
 interface Sourced {

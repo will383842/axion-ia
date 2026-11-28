@@ -53,7 +53,7 @@ export interface ContenuVille {
   /** Tout le texte propre à la ville que la page montrerait. */
   readonly texteVisible: string;
   /** Exemple concret d'usage de l'IA pour une entreprise des secteurs dominants. */
-  readonly exempleIa?: string;
+  readonly exempleIa?: string | undefined;
 }
 
 export interface VerdictVille {
