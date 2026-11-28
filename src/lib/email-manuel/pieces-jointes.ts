@@ -37,7 +37,8 @@ export function prefixesStockageEmail(emailManuelId: string): readonly [string, 
 }
 
 /**
- * Formats sortants. L'`odt` est exclu jusqu'à la fiche F7-S2 (macros cachées dans un sous-document).
+ * Formats sortants. L'`odt` est accepté : la lecture du répertoire de l'archive refuse les macros,
+ * y compris cachées dans un sous-document (`Object 1/Basic/…`).
  * Le `zip` et les formats Office anciens (`doc`, `xls`, `ppt`) sont exclus : souvent
  * bloqués chez le destinataire, porteurs possibles de macros.
  */
@@ -46,6 +47,7 @@ export const FORMATS_SORTANTS = [
   "docx",
   "xlsx",
   "pptx",
+  "odt",
   "txt",
   "csv",
   "png",
@@ -73,7 +75,7 @@ export const MESSAGES_PIECES_EMAIL = {
     `« ${nom} » dépasse 10 Mo. Pour un fichier plus lourd, mettez un lien de partage dans le message.`,
   total: "Les pièces jointes dépassent 10 Mo au total. Pour plus lourd, mettez un lien de partage.",
   format: (nom: string) =>
-    `« ${nom} » : format non accepté. Formats acceptés : PDF, DOCX, XLSX, PPTX, TXT, CSV, PNG, JPG.`,
+    `« ${nom} » : format non accepté. Formats acceptés : PDF, DOCX, XLSX, PPTX, ODT, TXT, CSV, PNG, JPG.`,
   macros: (nom: string) =>
     `« ${nom} » peut contenir des macros : enregistrez-le sans macros (.docx, .xlsx, .pptx) puis réessayez.`,
   contenu: (nom: string) =>

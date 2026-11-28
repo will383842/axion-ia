@@ -52,6 +52,21 @@ const ODT_MACROS = fabriquerZip([
   ["mimetype", "application/vnd.oasis.opendocument.text"],
   ["Basic/Standard/Module1.xml", "Sub Main"],
 ]);
+const ODT_SOUS_DOC_BASIC = fabriquerZip([
+  ["mimetype", "application/vnd.oasis.opendocument.text"],
+  ["content.xml", "<office:document-content/>"],
+  ["Object 1/Basic/Standard/Module1.xml", "Sub Main"],
+]);
+const ODT_SOUS_DOC_SCRIPTS = fabriquerZip([
+  ["mimetype", "application/vnd.oasis.opendocument.text"],
+  ["content.xml", "<office:document-content/>"],
+  ["Object 1/Scripts/python/x.py", "print(1)"],
+]);
+const ODT_IMAGE_BASIC = fabriquerZip([
+  ["mimetype", "application/vnd.oasis.opendocument.text"],
+  ["Object 1/content.xml", "<office:document-content/>"],
+  ["Pictures/basic-chart.png", "PNG"],
+]);
 const ZIP_PLANS = fabriquerZip([
   ["plans/rdc.pdf", "%PDF-1.7"],
   ["photos/facade.jpg", "JFIF"],
@@ -130,6 +145,27 @@ describe("contrôle des octets — le type réel, pas l'extension", () => {
 
   it("un ODT qui porte des macros (Basic/) est refusé", () => {
     expect(analyserOctetsPieceJointe("note.odt", ODT_MACROS)).toMatchObject({ motif: "macros" });
+  });
+
+  it("un ODT qui cache des macros dans un sous-document (Object 1/Basic/) est refusé", () => {
+    expect(analyserOctetsPieceJointe("note.odt", ODT_SOUS_DOC_BASIC)).toMatchObject({
+      ok: false,
+      motif: "macros",
+    });
+  });
+
+  it("un ODT qui cache des scripts dans un sous-document (Object 1/Scripts/) est refusé", () => {
+    expect(analyserOctetsPieceJointe("note.odt", ODT_SOUS_DOC_SCRIPTS)).toMatchObject({
+      ok: false,
+      motif: "macros",
+    });
+  });
+
+  it("un ODT dont un nom ressemble seulement (Pictures/basic-chart.png) est accepté", () => {
+    expect(analyserOctetsPieceJointe("note.odt", ODT_IMAGE_BASIC)).toMatchObject({
+      ok: true,
+      format: "odt",
+    });
   });
 
   it("le nom « vbaProject.bin » cité DANS le contenu d'une entrée ne compte pas : seul le répertoire fait foi", () => {
