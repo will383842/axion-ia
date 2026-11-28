@@ -11,6 +11,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../../prisma/generated/client";
 
 export const CLE_APPRECIATIONS_HORS_PREUVE = "qualiopi_marquage.appreciations_hors_preuve";
 export const MOTIF_MIN_CARACTERES = 10;
@@ -28,6 +29,9 @@ function lireMarques(value: unknown): MarqueHorsPreuve[] {
   const p = marquesSchema.safeParse(value);
   return p.success ? p.data : [];
 }
+
+/** Verrou consultatif : deux marquages simultanés se suivent au lieu de s'écraser. */
+const VERROU_MARQUAGE = "qualiopi.appreciations_hors_preuve";
 
 /** Marques lues, avec leur motif (pour la console). Vide si absent ou invalide. */
 export async function lireMarquesHorsPreuve(): Promise<MarqueHorsPreuve[]> {
@@ -59,6 +63,12 @@ export async function marquerHorsPreuve(
   appreciationId: string,
   motif: string,
   adminId: string,
+  /**
+   * Écrit le journal DANS la transaction du marquage : une marque ne naît jamais
+   * sans sa trace (si le journal lève, tout est annulé). Appelé seulement quand
+   * une marque est réellement ajoutée.
+   */
+  journaliser?: (tx: Prisma.TransactionClient) => Promise<void>,
 ): Promise<ResultatMarquage> {
   const motifNet = motif.trim();
   if (motifNet.length < MOTIF_MIN_CARACTERES) {
@@ -68,6 +78,7 @@ export async function marquerHorsPreuve(
     };
   }
   return prisma.$transaction(async (tx): Promise<ResultatMarquage> => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${VERROU_MARQUAGE}))`;
     const existe = await tx.appreciation.findUnique({
       where: { id: appreciationId },
       select: { id: true },
@@ -78,7 +89,16 @@ export async function marquerHorsPreuve(
       where: { key: CLE_APPRECIATIONS_HORS_PREUVE },
       select: { value: true },
     });
-    const marques = row ? lireMarques(row.value) : [];
+    // Valeur existante illisible : on n'écrase JAMAIS l'historique en repartant de [].
+    const lue = row ? marquesSchema.safeParse(row.value) : null;
+    if (lue !== null && !lue.success) {
+      return {
+        ok: false,
+        raison:
+          "Le registre des marques « hors preuve » est illisible : rien n'a été écrit. À corriger avant tout nouveau marquage.",
+      };
+    }
+    const marques = lue?.data ?? [];
     if (marques.some((m) => m.appreciationId === appreciationId)) {
       return { ok: true, dejaMarquee: true };
     }
@@ -97,11 +117,15 @@ export async function marquerHorsPreuve(
         key: CLE_APPRECIATIONS_HORS_PREUVE,
         value: suivantes,
         description: "Appréciations d'essai écartées de la preuve (ajout seul, ind. 30).",
-        category: "qualiopi",
+        // `general`, pas `qualiopi` : le compteur `configKeysSet` du seed ne compte que
+        // `qualiopi`, et cette clé n'est pas une clé du registre. (`SiteSettingCategory` est une
+        // énumération : une catégorie dédiée demanderait une migration.)
+        category: "general",
         updatedByAdminId: adminId,
       },
       update: { value: suivantes, updatedByAdminId: adminId },
     });
+    if (journaliser) await journaliser(tx);
     return { ok: true, dejaMarquee: false };
   });
 }

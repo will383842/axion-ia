@@ -81,6 +81,12 @@ export default async function PresencePage({ params, searchParams }: PageProps) 
           Trop de tentatives. Patientez une minute avant de réessayer.
         </p>
       ) : null}
+      {sp.e === "aucune_demande" ? (
+        <p role="alert" className="mt-3 text-sm text-red-700">
+          Votre réponse n&apos;a pas pu être enregistrée : la demande de confirmation n&apos;est pas
+          retrouvée. Réessayez dans quelques minutes, ou contactez votre organisme de formation.
+        </p>
+      ) : null}
       {etat.derniereReponse !== null ? (
         <p role="status" className="mt-3 text-sm font-medium text-gray-900">
           {etat.derniereReponse === "oui"
