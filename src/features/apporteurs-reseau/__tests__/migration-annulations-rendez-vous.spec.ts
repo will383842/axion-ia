@@ -19,7 +19,11 @@ describe("migration des annulations de rendez-vous", () => {
     const horodatage = (d: string) => d.slice(0, 14);
     const autres = readdirSync(join(process.cwd(), "prisma/migrations")).filter(
       // Le panel GEO (pilotage SEO, P11) est légitimement postérieur : table nouvelle, sans lien.
-      (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_pilotage_seo_geo_panel"),
+      (d) =>
+        /^\d{14}_/.test(d) &&
+        d !== nom &&
+        !d.endsWith("_pilotage_seo_geo_panel") &&
+        !d.endsWith("_apporteurs_avenants"),
     );
     // Les migrations d'autres chantiers, posées après, sont admises : liste fermée.
     const fautives = autres.filter(
