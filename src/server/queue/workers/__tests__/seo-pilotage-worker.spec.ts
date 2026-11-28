@@ -16,6 +16,8 @@ vi.mock("@/server/seo-pilotage/ingestion", () => ({
   tacheRattrapageGsc: tacheRattrapage,
   tachePurge,
 }));
+const tacheRecalcul = vi.fn();
+vi.mock("@/server/seo-pilotage/recalcul", () => ({ tacheRecalcul }));
 const tacheInspection = vi.fn();
 vi.mock("@/server/seo-pilotage/inspection/tache", () => ({ tacheInspection }));
 vi.mock("@/lib/redis", () => ({ redis: {} }));
@@ -37,6 +39,7 @@ describe("worker seo-pilotage", () => {
     process.env.DATABASE_URL = "postgresql://u:p@db:5432/x";
     tacheIngestion.mockResolvedValue({ tache: "ingestion-gsc", issue: "termine", motif: "ok" });
     tacheRattrapage.mockResolvedValue({ tache: "rattrapage-gsc", issue: "termine", motif: "ok" });
+    tacheRecalcul.mockResolvedValue({ issue: "fait", routesMisesAJour: 0, motsCles: 0 });
     tacheInspection.mockResolvedValue({
       inspectees: 0,
       ecrites: 0,
@@ -54,7 +57,7 @@ describe("worker seo-pilotage", () => {
   });
 
   it("éteint (par défaut) : aucune lecture de base, aucun appel, aucune écriture", async () => {
-    for (const t of ["ingestion-gsc", "rattrapage-gsc", "purge", "inspection"]) {
+    for (const t of ["ingestion-gsc", "rattrapage-gsc", "purge", "recalcul", "inspection"]) {
       expect(await runSeoPilotageJob(job(t))).toEqual({
         issue: "saute",
         motif: "interrupteur_eteint",
@@ -68,6 +71,7 @@ describe("worker seo-pilotage", () => {
     expect(tacheIngestion).not.toHaveBeenCalled();
     expect(tacheRattrapage).not.toHaveBeenCalled();
     expect(tachePurge).not.toHaveBeenCalled();
+    expect(tacheRecalcul).not.toHaveBeenCalled();
     expect(tacheInspection).not.toHaveBeenCalled();
   });
 
@@ -86,8 +90,9 @@ describe("worker seo-pilotage", () => {
       tacheIngestion.mockRejectedValueOnce(err);
       tacheRattrapage.mockRejectedValueOnce(err);
       tachePurge.mockRejectedValueOnce(err);
+      tacheRecalcul.mockRejectedValueOnce(err);
       tacheInspection.mockRejectedValueOnce(err);
-      for (const t of ["ingestion-gsc", "rattrapage-gsc", "purge", "inspection"]) {
+      for (const t of ["ingestion-gsc", "rattrapage-gsc", "purge", "recalcul", "inspection"]) {
         expect(await runSeoPilotageJob(job(t))).toEqual({
           issue: "saute",
           motif: "tables_absentes",
@@ -133,6 +138,17 @@ describe("worker seo-pilotage", () => {
     expect(tacheIngestion).toHaveBeenCalledTimes(1);
     expect(tacheRattrapage).toHaveBeenCalledTimes(1);
     expect(tachePurge).toHaveBeenCalledTimes(1);
+  });
+
+  it("recalcul (P6a) : aiguillé quand allumé ; historique insuffisant = saut sans échec", async () => {
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    expect(await runSeoPilotageJob(job("recalcul"))).toEqual({ issue: "fait", tache: "recalcul" });
+    tacheRecalcul.mockResolvedValueOnce({ issue: "saute", motif: "historique_insuffisant" });
+    expect(await runSeoPilotageJob(job("recalcul"))).toEqual({
+      issue: "saute",
+      motif: "historique_insuffisant",
+    });
+    expect(tacheRecalcul).toHaveBeenCalledTimes(2);
   });
 
   it("une tâche inconnue est journalisée et IGNORÉE, même allumé, sans rien lancer", async () => {

@@ -555,6 +555,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/seo-pilotage\/interrupteur\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/jour\.spec\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/taches\.spec\.ts$/,
+  // P6a : `recalcul.ts` lit `buildArticleUrl` (content-gen/indexing) pour retrouver l'URL
+  // d'un article ; son test. Fichiers NOMMÉS.
+  /^src\/server\/seo-pilotage\/recalcul\.ts$/,
+  /^src\/server\/seo-pilotage\/__tests__\/recalcul\.spec\.ts$/,
   // Inspection d'URL (P5) : consommateur du même client Search Console partagé. Nominatif.
   /^src\/server\/seo-pilotage\/inspection\/tache\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
