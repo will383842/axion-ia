@@ -17,8 +17,8 @@ import { redis } from "@/lib/redis";
 export const SITEMAP_SUBMIT_QUEUE = "content-sitemap-submit";
 export const SITEMAP_SUBMIT_DERNIERE_CLE = "gsc:sitemap-submit:derniere";
 export const SITEMAP_SUBMIT_INTERVALLE_MS = 60 * 60 * 1000;
-/** Petit délai pour regrouper une rafale de publications. */
-export const SITEMAP_SUBMIT_REGROUPEMENT_MS = 2 * 60 * 1000;
+/** Regroupe une rafale de publications et laisse expirer le cache CDN du sitemap (s-maxage=600). */
+export const SITEMAP_SUBMIT_REGROUPEMENT_MS = 10 * 60 * 1000;
 const JOB_ID = "gsc-sitemap-submit-en-attente";
 
 export function soumissionSitemapActive(): boolean {
