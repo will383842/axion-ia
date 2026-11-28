@@ -1025,6 +1025,58 @@ export async function genererPdfAutofacture(e: {
   }
 }
 
+/**
+ * Publie, sous leur clé définitive, les PDF déposés sous une clé de tentative (APRÈS le commit).
+ * Un échec (deux essais) est signalé à Sentry : la pièce est émise, son PDF reste sous la clé de
+ * tentative (rendue ici pour la pièce jointe de l'e-mail). ⚠️ Les routes de la console et de l'espace
+ * ne lisent QUE la clé définitive et ne régénèrent rien : tant que le PDF n'est pas republié à la
+ * main sous la clé définitive (l'alerte Sentry porte les deux clés), ces routes répondent 404 pour
+ * cette pièce. Rend, par clé définitive, la clé à utiliser.
+ */
+export async function publierPdfApresCommit(
+  pdfs: ReadonlyArray<{ r2Key: string; cleDefinitive: string; buffer: Buffer }>,
+  numero: string,
+): Promise<Map<string, string>> {
+  const cles = new Map<string, string>();
+  const [{ storeAndSignPdf }, { deleteFromR2 }] = await Promise.all([
+    import("@/server/qualiopi/documents/render"),
+    import("@/lib/r2-storage"),
+  ]);
+  for (const x of pdfs) {
+    if (x.r2Key === x.cleDefinitive) continue;
+    let ok = false;
+    for (let essai = 0; essai < 2 && !ok; essai++) {
+      try {
+        ok = (await storeAndSignPdf(x.buffer, x.cleDefinitive)) !== null;
+      } catch (err) {
+        if (essai === 1) signalerErreurReseau("autofacture : PDF non publié après commit", err);
+      }
+    }
+    if (ok) {
+      cles.set(x.cleDefinitive, x.cleDefinitive);
+      await deleteFromR2(x.r2Key).catch(() => undefined);
+    } else {
+      cles.set(x.cleDefinitive, x.r2Key);
+      signalerErreurReseau(
+        "autofacture : PDF non publié après commit",
+        new Error(
+          `autofacture ${numero} émise, PDF resté sous ${x.r2Key}, à republier sous ${x.cleDefinitive}`,
+        ),
+      );
+    }
+  }
+  return cles;
+}
+
+/** Supprime les PDF de TENTATIVE qui ne seront pas publiés (refus, échec, job perdant). */
+export async function supprimerPdfTentatives(
+  pdfs: ReadonlyArray<{ r2Key: string; cleDefinitive: string } | null>,
+): Promise<void> {
+  const { deleteFromR2 } = await import("@/lib/r2-storage");
+  for (const x of pdfs)
+    if (x && x.r2Key !== x.cleDefinitive) await deleteFromR2(x.r2Key).catch(() => undefined);
+}
+
 // ── Export annuel (DAS2) ─────────────────────────────────────────────────
 
 function champCsv(v: string | number | null): string {
