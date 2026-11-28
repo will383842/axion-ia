@@ -1,2 +1,96 @@
-/* Gabarit « chiffres » (S2 : feuille créée d'avance, la PR du gabarit y écrit seule).
-   Règles bornées à [data-gabarit="chiffres"] ; jetons de couleur uniquement. */
+/* Gabarit « chiffres » (G8). Règles bornées à [data-gabarit="chiffres"] ; jetons uniquement.
+   Barres horizontales en CSS pur : la valeur est TOUJOURS écrite en texte, la piste est un
+   décor (`aria-hidden`). Largeur = pourcentage du relevé, jamais calculée autrement. */
+[data-gabarit="chiffres"] .barres {
+  margin: 2.5rem 0;
+  padding: clamp(1.25rem, 1rem + 1.5vw, 1.75rem);
+  background: var(--color-paper);
+  border: 2px solid var(--color-mocha);
+  border-radius: var(--radius-xl);
+  box-shadow: 6px 6px 0 var(--color-sand-deep);
+}
+[data-gabarit="chiffres"] .barres__titre {
+  margin: 0 0 0.3rem;
+  font: 600 1.1875rem/1.35 var(--font-sans);
+  color: var(--color-ink);
+}
+[data-gabarit="chiffres"] .barres__echelle {
+  margin: 0 0 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+[data-gabarit="chiffres"] .barres__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+[data-gabarit="chiffres"] .barres__ligne {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0.4rem 0.75rem;
+  margin: 0;
+}
+[data-gabarit="chiffres"] .barres__libelle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-fg);
+}
+[data-gabarit="chiffres"] .barres__valeur {
+  font: 600 1.375rem/1 var(--font-mono);
+  color: var(--color-terracotta-deep);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+[data-gabarit="chiffres"] .barres__piste {
+  grid-column: 1 / -1;
+  display: block;
+  height: 1.35rem;
+  border-radius: var(--radius-full);
+  background: var(--color-sand);
+  overflow: hidden;
+}
+[data-gabarit="chiffres"] .barres__remplissage {
+  display: block;
+  height: 100%;
+  width: var(--v);
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--color-terracotta-deep), var(--color-terracotta));
+}
+[data-gabarit="chiffres"] .barres .source {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--color-border-strong);
+}
+
+/* « Comment lire ces chiffres » : champ, période, échantillon */
+[data-gabarit="chiffres"] .lire {
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+[data-gabarit="chiffres"] .lire > div {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+[data-gabarit="chiffres"] .lire dt {
+  font-weight: 600;
+}
+[data-gabarit="chiffres"] .lire dd {
+  margin: 0;
+}
+
+@media (forced-colors: active) {
+  [data-gabarit="chiffres"] .barres__piste {
+    border: 1px solid CanvasText;
+    background: Canvas;
+  }
+  [data-gabarit="chiffres"] .barres__remplissage {
+    background: CanvasText;
+  }
+}

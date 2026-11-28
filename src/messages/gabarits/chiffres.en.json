@@ -1,1 +1,30 @@
-{}
+{
+  "constats": {
+    "titre": "The figures from the survey",
+    "competitors_use_ai": "think their competitors already use AI",
+    "no_formal_strategy": "have no formal AI strategy",
+    "rgpd_concern": "are concerned about the sovereignty of their data",
+    "investment_intent": "plan to increase their AI budget"
+  },
+  "maturite": {
+    "titre": "Where companies stand on AI adoption",
+    "echelle": "Share of respondents, in percent.",
+    "aria": "Breakdown by adoption level",
+    "valeurs": {
+      "none": "No initiative",
+      "exploration": "Watching or exploring",
+      "poc": "First trials",
+      "production": "In production",
+      "scaled": "Deployed at scale"
+    }
+  },
+  "lecture": {
+    "titre": "How to read these figures",
+    "champ": "Scope",
+    "champTexte": "French companies that answered the Observatory.",
+    "periode": "Period",
+    "periodeTexte": "survey as of {date}.",
+    "echantillon": "Sample",
+    "echantillonTexte": "{n} respondents."
+  }
+}

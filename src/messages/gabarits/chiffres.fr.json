@@ -1,1 +1,30 @@
-{}
+{
+  "constats": {
+    "titre": "Les chiffres du relevé",
+    "competitors_use_ai": "pensent que leurs concurrents utilisent déjà l’IA",
+    "no_formal_strategy": "n’ont pas de stratégie IA formalisée",
+    "rgpd_concern": "sont préoccupées par la souveraineté de leurs données",
+    "investment_intent": "prévoient d’augmenter leur budget IA"
+  },
+  "maturite": {
+    "titre": "Où en sont les entreprises dans l’adoption de l’IA",
+    "echelle": "Part des répondants, en pourcentage.",
+    "aria": "Répartition par niveau d’adoption",
+    "valeurs": {
+      "none": "Aucune démarche",
+      "exploration": "Veille ou exploration",
+      "poc": "Premiers tests",
+      "production": "En production",
+      "scaled": "Déployée à l’échelle"
+    }
+  },
+  "lecture": {
+    "titre": "Comment lire ces chiffres",
+    "champ": "Champ",
+    "champTexte": "les entreprises françaises ayant répondu à l’Observatoire.",
+    "periode": "Période",
+    "periodeTexte": "relevé arrêté au {date}.",
+    "echantillon": "Échantillon",
+    "echantillonTexte": "{n} répondants."
+  }
+}
