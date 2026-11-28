@@ -11,7 +11,8 @@ import {
 import { LISTE_PROPOSEE, listeValidee, NB_QUESTIONS_ATTENDUES } from "../panel-questions";
 
 describe("liste proposée (à valider par Will)", () => {
-  it("instantané figé : 30 questions, version non validée", () => {
+  it("instantané figé : 30 questions v1, non validée", () => {
+    expect(LISTE_PROPOSEE.version).toBe("v1");
     expect(LISTE_PROPOSEE.questions).toHaveLength(NB_QUESTIONS_ATTENDUES);
     expect(LISTE_PROPOSEE.validee).toBe(false);
     expect(LISTE_PROPOSEE.questions.map((q) => q.texte)).toMatchSnapshot();
@@ -20,8 +21,12 @@ describe("liste proposée (à valider par Will)", () => {
   it("aucune « Grenoble », aucun nom de personne, ids uniques, longueur bornée", () => {
     const textes = LISTE_PROPOSEE.questions.map((q) => q.texte);
     expect(textes.some((t) => /grenoble/i.test(t))).toBe(false);
+    // Sans marque ni année.
+    expect(
+      textes.some((t) => /chatgpt|openai|google|copilot|gemini|mistral|\b20\d\d\b/i.test(t)),
+    ).toBe(false);
     // Un prénom ou nom propre au milieu d'une phrase : aucune majuscule hors début et sigles connus.
-    const sigles = new Set(["IA", "AI", "Act", "RGPD", "PME", "TPE", "ChatGPT", "Google", "Quels"]);
+    const sigles = new Set(["IA", "AI", "Act", "RGPD", "PME", "TPE", "OPCO"]);
     for (const t of textes) {
       const mots = t.split(/[\s']+/).slice(1);
       const propres = mots.filter((m) => /^[A-ZÉ]/.test(m)).map((m) => m.replace(/[^\p{L}]/gu, ""));
