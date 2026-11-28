@@ -36,6 +36,10 @@ Habille la page autonome `/actualites/[slug]` selon la fiche A1 de `DECOUPAGE.md
 5. Temps de lecture estimé à 220 mots/min (le blog utilise `estimateReadingTimeFromBody`).
 6. Dates en « 1 novembre » (pas « 1er »).
 
+## Après la relecture
+
+Le gabarit garde le « : » des titres français dans le h1 (`splitTitleEm` le supprime) : corrigé dans le bloc v2 de la page, testé ; exception nominative d'isolation `content-gen` pour le fichier de test.
+
 ## Relecture
 
 Relecture Opus : tour 1 « À CORRIGER » (P1 : feuilles du socle non importées par la route ; P2 : date de publication vide) → corrigés et testés ; tour 2 : tous les points vérifiés, aucune régression, P3 restants ci-dessus.
