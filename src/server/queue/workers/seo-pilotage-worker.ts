@@ -45,6 +45,7 @@ export const TACHES_SEO_PILOTAGE = [
   "recalcul",
   "inspection",
   "robots-ia",
+  "panel-geo",
 ] as const;
 export type TacheSeoPilotage = (typeof TACHES_SEO_PILOTAGE)[number];
 
@@ -130,6 +131,20 @@ export async function runSeoPilotageJob(
         );
       }
       return b.issue === "saute" ? { issue: "saute", motif: b.motif } : { issue: "fait", tache };
+    }
+    if (tache === "panel-geo") {
+      const b = await geo.tachePanelGeo({ prisma });
+      if (b.issue === "saute") {
+        (b.anormal ? console.warn : console.log)(
+          `[seo-pilotage-worker] panel-geo sauté : ${b.motif}`,
+        );
+        return { issue: "saute", motif: b.motif };
+      }
+      // Des nombres et un motif fixe seulement : jamais une question, une URL ni une réponse.
+      (b.arret ? console.warn : console.log)(
+        `[seo-pilotage-worker] panel-geo (${mode}) : ${b.posees} question(s) posée(s), ${b.dejaFaites} déjà faite(s)${b.arret ? `, arrêt ${b.arret}` : ""}`,
+      );
+      return { issue: "fait", tache };
     }
     const r =
       tache === "ingestion-gsc"

@@ -17,7 +17,8 @@ vi.mock("@/server/seo-pilotage/ingestion", () => ({
   tachePurge,
 }));
 const tacheRobotsIa = vi.fn();
-vi.mock("@/server/seo-pilotage/geo", () => ({ tacheRobotsIa }));
+const tachePanelGeo = vi.fn();
+vi.mock("@/server/seo-pilotage/geo", () => ({ tacheRobotsIa, tachePanelGeo }));
 const tacheRecalcul = vi.fn();
 vi.mock("@/server/seo-pilotage/recalcul", () => ({ tacheRecalcul }));
 const tacheInspection = vi.fn();
@@ -47,6 +48,13 @@ describe("worker seo-pilotage", () => {
       lignes: 3,
       incomplets: 0,
     });
+    tachePanelGeo.mockResolvedValue({
+      tache: "panel-geo",
+      issue: "fait",
+      posees: 3,
+      dejaFaites: 0,
+      arret: null,
+    });
     tacheRecalcul.mockResolvedValue({ issue: "fait", routesMisesAJour: 0, motsCles: 0 });
     tacheInspection.mockResolvedValue({
       inspectees: 0,
@@ -72,6 +80,7 @@ describe("worker seo-pilotage", () => {
       "recalcul",
       "inspection",
       "robots-ia",
+      "panel-geo",
     ]) {
       expect(await runSeoPilotageJob(job(t))).toEqual({
         issue: "saute",
@@ -108,6 +117,7 @@ describe("worker seo-pilotage", () => {
       tacheRecalcul.mockRejectedValueOnce(err);
       tacheInspection.mockRejectedValueOnce(err);
       tacheRobotsIa.mockRejectedValueOnce(err);
+      tachePanelGeo.mockRejectedValueOnce(err);
       for (const t of [
         "ingestion-gsc",
         "rattrapage-gsc",
@@ -115,6 +125,7 @@ describe("worker seo-pilotage", () => {
         "recalcul",
         "inspection",
         "robots-ia",
+        "panel-geo",
       ]) {
         expect(await runSeoPilotageJob(job(t))).toEqual({
           issue: "saute",
@@ -203,6 +214,29 @@ describe("worker seo-pilotage", () => {
         motif: "tables_absentes",
       });
     }
+  });
+
+  it("panel-geo : éteint, rien ne part ; allumé, aiguillée ; une liste non validée saute", async () => {
+    expect(await runSeoPilotageJob(job("panel-geo"))).toEqual({
+      issue: "saute",
+      motif: "interrupteur_eteint",
+    });
+    expect(tachePanelGeo).not.toHaveBeenCalled();
+    process.env.CONTENT_PILOTAGE_SEO = "true";
+    expect(await runSeoPilotageJob(job("panel-geo"))).toEqual({
+      issue: "fait",
+      tache: "panel-geo",
+    });
+    tachePanelGeo.mockResolvedValueOnce({
+      tache: "panel-geo",
+      issue: "saute",
+      motif: "liste_non_validee",
+      anormal: false,
+    });
+    expect(await runSeoPilotageJob(job("panel-geo"))).toEqual({
+      issue: "saute",
+      motif: "liste_non_validee",
+    });
   });
 
   it("une tâche inconnue est journalisée et IGNORÉE, même allumé, sans rien lancer", async () => {
