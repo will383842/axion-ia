@@ -38,7 +38,7 @@ import { MiseEnPageLecture } from "../MiseEnPageLecture";
 import { CorpsArticle } from "../CorpsArticle";
 import { PiedArticle } from "../PiedArticle";
 import { ColonneActionsConnectee } from "../ColonneActionsConnectee";
-import { CtaMilieu, type PrincipalCta } from "../CtaMilieu";
+import { CtaMilieu, type LienSecondaire, type PrincipalCta } from "../CtaMilieu";
 import { CtaFin } from "../CtaFin";
 import type { ArticleGabaritProps } from "../types";
 
@@ -46,11 +46,18 @@ interface MiseEnPageAnalyseProps {
   readonly p: ArticleGabaritProps;
   /** Bouton principal de l'encart du milieu, propre au gabarit (PLAN §15.3). */
   readonly cta: PrincipalCta;
+  /** Lien secondaire de l'encart du milieu (défaut : l'autre bouton). */
+  readonly ctaSecondaire?: LienSecondaire;
   /** Blocs propres au gabarit, rendus dans l'ouverture juste après « En bref ». */
   readonly ouvertureExtra?: ReactNode;
 }
 
-export function MiseEnPageAnalyse({ p, cta, ouvertureExtra }: MiseEnPageAnalyseProps) {
+export function MiseEnPageAnalyse({
+  p,
+  cta,
+  ctaSecondaire,
+  ouvertureExtra,
+}: MiseEnPageAnalyseProps) {
   const t = useTranslations("articleV2");
   const c = useTranslations("articleGabarits.commun");
   const { view, locale: loc } = p;
@@ -118,7 +125,7 @@ export function MiseEnPageAnalyse({ p, cta, ouvertureExtra }: MiseEnPageAnalyseP
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
         <CorpsArticle html={p.html} blocs={p.blocs} />
-        <CtaMilieu gabarit={p.gabarit} principal={cta} />
+        <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq
           items={view.faqItems}

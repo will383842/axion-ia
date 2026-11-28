@@ -22,3 +22,19 @@ export {
   penaliteProximite,
   voisinsLesPlusProches,
 } from "./semantique";
+export {
+  CLE_COUPE_CIRCUIT,
+  DRAPEAU_POINT_FINAL,
+  appliquerPointFinal,
+  controlerTexteHorsArticle,
+  evaluerB17,
+  lireCoupeCircuit,
+  pointFinalActif,
+} from "./point-final";
+export type {
+  ControleHorsArticle,
+  DepsPointFinal,
+  EntreeB17,
+  IssuePointFinal,
+  ResultatB17,
+} from "./point-final";
