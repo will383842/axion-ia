@@ -451,6 +451,11 @@ const GenererAvoirSchema = z.object({
   motif: z.string().min(5).max(500),
   /** Case cochée : vrai remboursement sur une facture commissionnée (la commission sera reprise). */
   confirmerReprise: z.boolean().optional(),
+  /**
+   * Geste commercial : bon d'achat offert à titre exceptionnel, hors délai. Marqueur posé sur la pièce
+   * d'avoir ; la commission de l'apporteur est GARDÉE (aucune reprise). Exclusif de `confirmerReprise`.
+   */
+  gesteCommercial: z.boolean().optional(),
 });
 
 export async function genererAvoirAction(
@@ -467,7 +472,13 @@ export async function genererAvoirAction(
   if (!parsed.success) return { error: "Entrée invalide (motif : 5 caractères minimum)." };
 
   try {
+    if (parsed.data.gesteCommercial === true && parsed.data.confirmerReprise === true) {
+      return {
+        error: "Un geste commercial ne reprend pas la commission : ne cochez pas les deux.",
+      };
+    }
     if (
+      parsed.data.gesteCommercial !== true &&
       parsed.data.confirmerReprise !== true &&
       (await factureCommissionneeParApporteur(parsed.data.factureId))
     ) {
@@ -479,6 +490,7 @@ export async function genererAvoirAction(
       ...(parsed.data.montantPartielHtCents !== undefined
         ? { montantPartielHtCents: parsed.data.montantPartielHtCents }
         : {}),
+      ...(parsed.data.gesteCommercial === true ? { gesteCommercial: true } : {}),
     });
     await logQualiopiActivity({
       action: "facturation.avoir.emettre",
@@ -489,6 +501,7 @@ export async function genererAvoirAction(
         motif: parsed.data.motif,
         montantPartielHtCents: parsed.data.montantPartielHtCents ?? null,
         confirmerReprise: parsed.data.confirmerReprise === true,
+        gesteCommercial: parsed.data.gesteCommercial === true,
       },
       session,
     });

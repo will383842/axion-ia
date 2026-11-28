@@ -36,6 +36,7 @@ import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./si
 import { argentEnJeu, retraitDe } from "./retrait";
 import { validationParRendezVousActive } from "./interrupteur-rendez-vous";
 import { regleDe, versionAuMoins, type RegleAttribution } from "./regle-attribution";
+import { lireIbanClair } from "./iban-purge";
 
 // Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée
 // personnelle — la garde est celle du dépôt commun (FAC-6), le canal celui du réseau.
@@ -202,6 +203,11 @@ export interface DossierVue {
    * dossier sont refusés (page ET actions).
    */
   restreint?: true;
+  /**
+   * Apporteur RÉSILIÉ, payé, sans argent en jeu (PR K, 2464) : la page n'offre que la
+   * lecture de ses autofactures, relevés et contrat. Aucune écriture (`restreint` l'impose).
+   */
+  archive?: true;
   id: string;
   statut: ApporteurReseauStatut;
   versionLien: number;
@@ -258,7 +264,7 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     },
   });
   if (!a) return null;
-  const iban = decryptPii(a.iban);
+  const iban = lireIbanClair(a.iban);
   return {
     id: a.id,
     statut: a.statut,
@@ -303,21 +309,24 @@ export async function lireDossierParLien(
     select: { versionLien: true, statut: true },
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
-  // Résilié (lot L1b, B1 bis) : mode restreint seulement si de l'argent est encore en jeu
-  // (le lien n'a alors pas été révoqué à la prise d'effet) ; sinon page neutre.
-  if (a.statut === "resilie") {
-    if (!(await argentEnJeu(id))) return null;
-    const vue = await lireDossier(id);
-    return vue ? { ...vue, restreint: true } : null;
-  }
   // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
   // recalculé sur la version courante n'ouvre pas un dossier retiré… sauf s'il reste de
   // l'ARGENT en jeu : la page s'ouvre alors en MODE RESTREINT (dépôt des attestations de
   // vigilance seulement), pour qu'aucune commission ne soit confisquée de fait.
-  if (await retraitDe(id)) {
+  // Contrôlé AVANT l'archive : un résilié classé sans argent reste neutre (PR K).
+  const retire = await retraitDe(id);
+  if (retire) {
     if (!(await argentEnJeu(id))) return null;
     const vue = await lireDossier(id);
     return vue ? { ...vue, restreint: true } : null;
+  }
+  // Résilié (lot L1b, B1 bis ; PR K) : toujours restreint (aucune écriture). Avec de l'argent
+  // en jeu : dépôt des attestations ; sans argent : archive en lecture seule de ses pièces.
+  if (a.statut === "resilie") {
+    const vue = await lireDossier(id);
+    if (!vue) return null;
+    if (!(await argentEnJeu(id))) return { ...vue, restreint: true, archive: true };
+    return { ...vue, restreint: true };
   }
   return lireDossier(id);
 }
@@ -558,5 +567,5 @@ export async function lireIban(apporteurId: string): Promise<string | null> {
     where: { id: apporteurId },
     select: { iban: true },
   });
-  return decryptPii(a?.iban ?? null);
+  return lireIbanClair(a?.iban ?? null);
 }

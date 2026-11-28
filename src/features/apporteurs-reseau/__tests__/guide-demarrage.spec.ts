@@ -8,6 +8,11 @@ vi.mock("@/lib/r2-storage", () => ({
   isR2Configured: () => h.configure,
   getObjectBufferR2: (...a: unknown[]) => h.r2(...a),
 }));
+// Point 11 : le registre des versions n'est pas l'objet de ce fichier (annexes-versionnees-lecteurs.spec.ts).
+vi.mock("../annexes-versions", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../annexes-versions")>()),
+  versionCourante: async () => null,
+}));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
 import { CLE_R2_GUIDE, CLE_R2_LIVRET, lireLivret } from "../documents-prives";

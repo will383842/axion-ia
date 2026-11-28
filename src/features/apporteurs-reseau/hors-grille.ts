@@ -17,6 +17,7 @@
 // fois dix jours avant et une fois le jour du dépassement, et porte ses deux gestes.
 // Aucun `server-only` : le passage quotidien (worker) l'appelle.
 
+import { ACTIVITE_PRIME_CHALLENGE } from "./prime-challenge";
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
@@ -80,6 +81,8 @@ export async function alerterHorsGrille(maintenant: Date = new Date()): Promise<
     where: {
       statut: "a_qualifier",
       parrainage: false,
+      // Une prime de challenge n'a ni commande ni palier à choisir.
+      activite: { not: ACTIVITE_PRIME_CHALLENGE },
       // Une ligne suspendue (contestation écrite du client, art. 4.2 bis) attend l'issue.
       ...((await litigeDisponible()) ? { litigeDepuis: null } : {}),
     },

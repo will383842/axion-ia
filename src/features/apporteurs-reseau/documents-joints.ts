@@ -31,6 +31,7 @@
 
 import { enteteObjetR2, isR2Configured } from "@/lib/r2-storage";
 
+import { lireCleVersionnee, versionCourante } from "./annexes-versions";
 import {
   CLE_R2_FICHE_COMMISSIONS,
   CLE_R2_GUIDE,
@@ -164,7 +165,9 @@ export async function documentsAnnexesAJoindre(octetsDejaPris = 0): Promise<Piec
   let cumul = octetsDejaPris;
   for (const doc of DOCUMENTS_ANNEXES) {
     const libelle = `document « ${doc.id} »`;
-    const taille = await tailleSiJoignable(doc.cleR2, libelle, true);
+    // Point 11 : la version courante (clé immuable) ; à défaut, l'ancienne clé fixe.
+    const cle = (await versionCourante(doc.id))?.cleR2 ?? doc.cleR2;
+    const taille = await tailleSiJoignable(cle, libelle, true);
     if (taille === null) continue;
     if (cumul + taille > TAILLE_MAX_PIECES_OCTETS) {
       console.warn(`[apporteurs-documents] ${libelle} : trop lourd pour cet e-mail, non joint`);
@@ -173,7 +176,7 @@ export async function documentsAnnexesAJoindre(octetsDejaPris = 0): Promise<Piec
     cumul += taille;
     pieces.push({
       filename: doc.nomFichier,
-      r2Key: doc.cleR2,
+      r2Key: cle,
       contentType: PDF,
       facultative: true,
     });
@@ -224,8 +227,14 @@ export async function annexesDeLEnvoiDuLien(): Promise<{
 
 /** Identifiants (dans l'ordre de `DOCUMENTS_ANNEXES`) des annexes présentes dans ces pièces. */
 export function idsAnnexesJointes(pieces: readonly PieceJointe[]): string[] {
-  const cles = new Set(pieces.map((p) => p.r2Key));
-  return DOCUMENTS_ANNEXES.filter((d) => cles.has(d.cleR2)).map((d) => d.id);
+  return DOCUMENTS_ANNEXES.filter((d) => pieces.some((p) => estPieceDe(d, p.r2Key))).map(
+    (d) => d.id,
+  );
+}
+
+/** Une pièce est celle d'une annexe si elle porte sa clé fixe OU l'une de ses clés versionnées. */
+function estPieceDe(doc: DocumentAnnexe, cle: string): boolean {
+  return cle === doc.cleR2 || lireCleVersionnee(cle)?.documentId === doc.id;
 }
 
 const enListe = (noms: readonly string[]): string =>
@@ -238,9 +247,9 @@ const enListe = (noms: readonly string[]): string =>
  * réellement parti se relit ensuite dans « E-mails envoyés » (noms et empreintes des pièces).
  */
 export function bilanDesPieces(pieces: readonly PieceJointe[]): string {
-  const cles = new Set(pieces.map((p) => p.r2Key));
-  const jointes = DOCUMENTS_ANNEXES.filter((d) => cles.has(d.cleR2)).map((d) => d.libelleConsole);
-  const absentes = DOCUMENTS_ANNEXES.filter((d) => !cles.has(d.cleR2)).map((d) => d.libelleConsole);
+  const jointe = (d: DocumentAnnexe) => pieces.some((p) => estPieceDe(d, p.r2Key));
+  const jointes = DOCUMENTS_ANNEXES.filter(jointe).map((d) => d.libelleConsole);
+  const absentes = DOCUMENTS_ANNEXES.filter((d) => !jointe(d)).map((d) => d.libelleConsole);
   const debut =
     jointes.length === 0
       ? "Pièce jointe : le contrat seul."

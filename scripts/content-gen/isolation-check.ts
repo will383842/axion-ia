@@ -543,6 +543,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/seo-pilotage\/opportunites\/analyser\.ts$/,
   /^src\/server\/seo-pilotage\/opportunites\/detecteurs\.ts$/,
   /^src\/server\/seo-pilotage\/opportunites\/garde-fous\.ts$/,
+  // S5 : carte des mots-clés (module pur), fichier NOMMÉ.
+  /^src\/server\/seo-pilotage\/carte-mots-cles\/carte\.ts$/,
   // Exceptions 2026-11-27 (pilotage SEO, P4 « robot »). CONSOMMATEURS en lecture seule :
   // - ingestion/jour.ts, ingestion/taches.ts : client Search Console partagé
   //   (content-gen/seo/gsc-client) ;
@@ -553,6 +555,17 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/seo-pilotage\/interrupteur\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/jour\.spec\.ts$/,
   /^src\/server\/seo-pilotage\/ingestion\/__tests__\/taches\.spec\.ts$/,
+  // Exception 2026-11-27 (pilotage SEO, S10-1 liens reçus). CONSOMMATEUR en lecture seule :
+  // liens/brouillon.ts réutilise le contrôle de vouvoiement (content-gen/quality) ; son test
+  // compare ses motifs à ceux du chargé de liens (content-gen/equipe). Fichiers NOMMÉS.
+  /^src\/server\/seo-pilotage\/liens\/brouillon\.ts$/,
+  /^src\/server\/seo-pilotage\/liens\/__tests__\/brouillon\.spec\.ts$/,
+  // P6a : `recalcul.ts` lit `buildArticleUrl` (content-gen/indexing) pour retrouver l'URL
+  // d'un article ; son test. Fichiers NOMMÉS.
+  /^src\/server\/seo-pilotage\/recalcul\.ts$/,
+  /^src\/server\/seo-pilotage\/__tests__\/recalcul\.spec\.ts$/,
+  // Inspection d'URL (P5) : consommateur du même client Search Console partagé. Nominatif.
+  /^src\/server\/seo-pilotage\/inspection\/tache\.ts$/,
   // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
   // secteurs). CONSOMMATEURS LÉGITIMES de la pain-matrix / KB content-gen (lecture
   // seule data) ou refs en commentaires — PAS du code content-gen core :
@@ -688,7 +701,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/components\/article-v2\/(ArticleGabarit|HerosArticle|PhotoArticle|types|gabarits\/Gabarit[A-Za-z]+)\.tsx?$/,
   // S2 : table des photos de repli, indexée par le type `GabaritArticle` (import de type seul).
   /^src\/lib\/blog\/photos-repli\.ts$/,
-  /^tests\/unit\/blog\/(gabarits-(socle|aiguillage-page|rendu-socle)|article-v2-(composants|garde-fous)|gabarit-selection)\.spec\.tsx?$/,
+  /^tests\/unit\/blog\/(gabarits-(socle|aiguillage-page|rendu-socle)|article-v2-(composants|garde-fous)|gabarit-(cas|definition|selection))\.spec\.tsx?$/,
 ];
 
 /**

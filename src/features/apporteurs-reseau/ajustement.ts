@@ -16,6 +16,7 @@
 // Rien ne disparaît : la ligne reste en base (statut « annulee » ou montant réduit) et chaque geste
 // est tracé au journal d'audit (qui, quand, avant, après, motif).
 
+import { estPrimeChallenge } from "./prime-challenge";
 import { prisma } from "@/lib/prisma";
 
 import { grilleDeLaLigne } from "./commissions";
@@ -338,7 +339,10 @@ export async function reduireCommission(
     prixConserveHtCents,
     motif: m,
   });
-  const av = await suivreParrain(avant.factureId, nouveau, m, acteurId, id, surEcritureParrain);
+  // Aucune part de parrainage sur une prime de challenge.
+  const av = estPrimeChallenge(avant)
+    ? []
+    : await suivreParrain(avant.factureId, nouveau, m, acteurId, id, surEcritureParrain);
   return { ok: true, montantCents: nouveau, ...(av.length ? { avertissement: av.join(" ") } : {}) };
 }
 
@@ -366,8 +370,9 @@ export async function annulerCommission(
     montantAvantCents: avant.montantCents,
     motif: m,
   });
-  const av = avant.parrainage
-    ? []
-    : await suivreParrain(avant.factureId, null, m, acteurId, id, surEcritureParrain);
+  const av =
+    avant.parrainage || estPrimeChallenge(avant)
+      ? []
+      : await suivreParrain(avant.factureId, null, m, acteurId, id, surEcritureParrain);
   return { ok: true, ...(av.length ? { avertissement: av.join(" ") } : {}) };
 }

@@ -1,5 +1,5 @@
-// Relevé mensuel : vérification d'une période avant tout envoi (lot 3e). LECTURE SEULE.
-// Tableau par apporteur, anomalies bloquantes, aperçu du PDF STOCKÉ. Aucun bouton d'action.
+// Relevé mensuel : vérification d'une période avant tout envoi (lots 3e et 3c).
+// Tableau par apporteur, anomalies bloquantes, aperçu du PDF STOCKÉ ; boutons Préparer / Recalculer / Écarter (rien ne part).
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -7,9 +7,14 @@ import { notFound } from "next/navigation";
 import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { BandeauAnomalies } from "@/components/admin/apporteurs/releves/BandeauAnomalies";
-import { moisLisible } from "@/components/admin/apporteurs/releves/format";
+import { BoutonPreparer } from "@/components/admin/apporteurs/releves/ActionsPreparation";
+import { BoutonEnvoyerATous } from "@/components/admin/apporteurs/releves/BoutonEnvoyerATous";
+import { dateHeureParis, moisLisible } from "@/components/admin/apporteurs/releves/format";
 import { TableauReleves } from "@/components/admin/apporteurs/releves/TableauReleves";
-import { periodeValide } from "@/features/apporteurs-reseau/releve-mensuel/periode";
+import {
+  periodeEstClose,
+  periodeValide,
+} from "@/features/apporteurs-reseau/releve-mensuel/periode";
 import {
   anomaliesDePeriode,
   lireVuePeriode,
@@ -34,27 +39,57 @@ export default async function VerificationRelevesPage({ params }: PageProps) {
   // pièce financière : droit de facturation.
   const voitIdentite = peutOuvrirDossierApporteur(acces.role);
   const peutVoirPdf = peutEngager(acces.role, "facturer");
+  const peutAgir = peutEngager(acces.role, "facturer") && periodeEstClose(periode, new Date());
   const vue = await lireVuePeriode(periode, voitIdentite);
   const anomalies = anomaliesDePeriode(vue);
+  // Relevés d'ORIGINE seulement : le bouton global ne vise jamais un rectificatif.
+  const origines = vue.releves.filter((r) => r.rang === 0 && r.statut !== "ecarte");
+  const toutEnvoyeLe =
+    origines.length > 0 &&
+    origines.every((r) => r.statut === "envoye") &&
+    !anomalies.some((a) => a.code === "completude")
+      ? dateHeureParis(
+          new Date(Math.max(...origines.map((r) => (r.envoyeAt ? r.envoyeAt.getTime() : 0)))),
+        )
+      : null;
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-5)]">
       <AdminPageHeader
         title={`Relevés de ${moisLisible(periode)}`}
-        description="Vérification avant envoi. Lecture seule : le PDF affiché est celui qui sera envoyé."
+        description="Vérification avant envoi : le PDF affiché est celui qui sera envoyé. Préparer, recalculer ou écarter n'envoie rien."
         actions={
-          <Link href={`${base}/apporteurs/releves`} className="underline">
-            Toutes les périodes
-          </Link>
+          <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+            {peutAgir ? (
+              <BoutonPreparer periode={periode} libelleMois={moisLisible(periode)} />
+            ) : null}
+            <Link href={`${base}/apporteurs/releves`} className="underline">
+              Toutes les périodes
+            </Link>
+          </div>
         }
       />
       <BandeauAnomalies anomalies={anomalies} />
+      {peutAgir ? (
+        <AdminCard as="section">
+          <BoutonEnvoyerATous
+            periode={periode}
+            libelleMois={moisLisible(periode)}
+            aEnvoyer={origines.filter((r) => r.statut === "prepare").length}
+            dejaEnvoyes={origines.filter((r) => r.statut === "envoye").length}
+            echecs={origines.filter((r) => r.statut === "echec").length}
+            bloque={anomalies.some((a) => a.code === "completude")}
+            toutEnvoyeLe={toutEnvoyeLe}
+          />
+        </AdminCard>
+      ) : null}
       <AdminCard as="section">
         <TableauReleves
           base={base}
           periode={periode}
           releves={vue.releves}
           peutVoirPdf={peutVoirPdf}
+          peutAgir={peutAgir}
         />
       </AdminCard>
     </div>

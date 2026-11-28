@@ -12,7 +12,11 @@
 
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { normaliserNaf } from "@/lib/siret";
-import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
+import {
+  COMMISSION_CONFERENCE_EUR,
+  PRICING_CATEGORIES,
+  UN_A_UN_RECURRING_TIER,
+} from "@/content/pricing";
 import { etatSeuilVigilance } from "@/lib/vigilance";
 
 import {
@@ -753,6 +757,7 @@ export const CODES_REGLE_APPLIQUEE = [
   "parrainage_10",
   "tarif_avant_date_effet",
   "journee_ia",
+  "prime_challenge",
 ] as const;
 export type RegleAppliquee = (typeof CODES_REGLE_APPLIQUEE)[number];
 
@@ -826,10 +831,36 @@ export function calculerCommissionSelonGrilleAvecRegle(
 }
 
 /**
- * Lignes d'abonnement, de maintenance, d'hébergement ou de licence portées par un devis (règle du
- * 25/11 : rien dessus ; seule la mise en service donne 15 %). Repère : désignation. Pur.
+ * Lignes d'abonnement, de maintenance, d'hébergement, de licence, de support, de TMA ou
+ * d'infogérance portées par un devis (règle de Will : aucune commission sur les abonnements, la
+ * maintenance ni le coaching ; seule la mise en service donne 15 %). Pur (#2464, point 16).
+ *
+ * Repère PRINCIPAL : le CATALOGUE des offres. Les seuls champs produit qu'une ligne de devis
+ * stocke sont `offreCode` et `offreTierId` (`devis-edition-lignes.ts`, `vers-payload.ts`) ; la
+ * colonne est MIXTE (d'anciennes lignes rangent le code dans `offreTierId`). Une ligne dont l'un
+ * des deux désigne un palier récurrent du catalogue (`recurrenceFr` : maintenance, coaching
+ * régulier) est récurrente, quelle que soit sa désignation (« Forfait mensuel »). La désignation
+ * (regex) n'est qu'un FILET en dernier recours : elle ne retire jamais un palier du catalogue.
  */
-const LIGNE_RECURRENTE = /maintenance|abonnement|h[ée]bergement|licence/i;
+const MOTS_RECURRENTS =
+  "maintenance|abonnement|h[ée]bergement|licence|support\\s+(?:mensuel|r[ée]current|annuel)|tma(?![\\p{L}\\d])|infog[ée]rance|tierce\\s+maintenance";
+const LIGNE_RECURRENTE = new RegExp(`(?<![\\p{L}\\d])(?:${MOTS_RECURRENTS})`, "iu");
+
+/** Les identifiants de palier du catalogue (`pricing.ts`) qui se facturent à la période. */
+export const TIERS_RECURRENTS: ReadonlySet<string> = new Set(
+  [...Object.values(PRICING_CATEGORIES).flat(), UN_A_UN_RECURRING_TIER]
+    .filter((t) => !!t.recurrenceFr)
+    .map((t) => t.id.toLowerCase()),
+);
+
+function ligneRecurrente(o: Record<string, unknown>): boolean {
+  for (const champ of ["offreTierId", "offreCode"]) {
+    const v = o[champ];
+    if (typeof v === "string" && TIERS_RECURRENTS.has(v.trim().toLowerCase())) return true;
+  }
+  const d = typeof o.designation === "string" ? o.designation : "";
+  return LIGNE_RECURRENTE.test(d);
+}
 
 export function htLignesRecurrentesCents(lignes: unknown): number {
   if (!Array.isArray(lignes)) return 0;
@@ -837,8 +868,7 @@ export function htLignesRecurrentesCents(lignes: unknown): number {
   for (const l of lignes) {
     if (!l || typeof l !== "object") continue;
     const o = l as Record<string, unknown>;
-    const d = typeof o.designation === "string" ? o.designation : "";
-    if (!LIGNE_RECURRENTE.test(d)) continue;
+    if (!ligneRecurrente(o)) continue;
     // Quantité 0 ou négative (option non retenue) : la ligne ne pèse rien ; illisible : 1.
     const q = typeof o.quantite === "number" ? Math.max(0, o.quantite) : 1;
     const pu = typeof o.prixUnitaireHtCents === "number" ? o.prixUnitaireHtCents : 0;

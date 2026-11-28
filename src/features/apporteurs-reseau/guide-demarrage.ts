@@ -12,11 +12,13 @@
  * ⚠️ Aucun `server-only` : le script de dépôt (tsx, hors Next) importe ce module.
  */
 
+import { versionCourante } from "./annexes-versions";
 import { CLE_R2_GUIDE, lirePdfPrive } from "./documents-prives";
 
 export const NOM_FICHIER_GUIDE = "Guide-de-demarrage-apporteur-Axion-IA.pdf";
 
 /** Le PDF du guide, ou `null` s'il est absent de R2, vide ou n'est pas un PDF. Ne lève jamais. */
-export function lireGuideDemarrage(): Promise<Buffer | null> {
-  return lirePdfPrive(CLE_R2_GUIDE, "guide de démarrage");
+export async function lireGuideDemarrage(): Promise<Buffer | null> {
+  const v = await versionCourante("guide-demarrage");
+  return lirePdfPrive(v?.cleR2 ?? CLE_R2_GUIDE, "guide de démarrage");
 }

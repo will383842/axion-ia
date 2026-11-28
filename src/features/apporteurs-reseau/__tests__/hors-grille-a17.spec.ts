@@ -50,9 +50,13 @@ vi.mock("../ajustement", () => ({
 }));
 
 function vrai(l: Record<string, unknown>, w: Record<string, unknown>): boolean {
-  return Object.entries(w).every(([k, c]) =>
-    c === null ? l[k] === null || l[k] === undefined : l[k] === c,
-  );
+  return Object.entries(w).every(([k, c]) => {
+    if (c === null) return l[k] === null || l[k] === undefined;
+    // `{ not: x }` : la requête écarte les primes de challenge (PR H, #2464).
+    if (typeof c === "object" && c !== null && "not" in c)
+      return l[k] !== (c as { not: unknown }).not;
+    return l[k] === c;
+  });
 }
 
 vi.mock("@/lib/prisma", () => ({
@@ -160,6 +164,13 @@ describe("prestation hors grille (A1.7)", () => {
     expect(String(etat.alertes[1]!["message"])).toContain(
       "une fois la prestation réalisée et payée",
     );
+  });
+
+  it("une Journée IA v2 (palier hors-grille, créée par le passage) est alertée à J-10 sous « Prestation hors grille »", async () => {
+    etat.lignes = [ligne("c1", { activite: "formation", palier: PALIER_HORS_GRILLE })];
+    etat.factures = { "F-c1": PAYEE };
+    expect(await alerterHorsGrille(new Date("2026-09-21T10:00:00Z"))).toBe(1);
+    expect(String(etat.alertes[0]!["titre"])).toContain(LIBELLE_HORS_GRILLE);
   });
 
   it("une ligne suspendue (contestation, art. 4.2 bis) n'est pas alertée", async () => {

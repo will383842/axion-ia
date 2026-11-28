@@ -4,7 +4,7 @@
  * Elles naissent dans le passage (`passage-quotidien.ts`) ; la console les qualifie
  * (formation : choix du palier). Dès qu'une commission est DUE, `facturation.ts` établit
  * l'autofacture et l'envoie ; « Virement fait » la marque versée. Montants en centimes,
- * arrondis au centime inférieur (`regles.ts`).
+ * arrondis au centime le plus proche (`regles.ts`, contrat 4.5).
  *
  * Autofacture : numéro de série `AXI-APP-AAAA-NNNN`, UN numéro par apporteur et par passe
  * (toutes les lignes facturées ensemble le partagent). Le PDF est généré par
@@ -14,6 +14,14 @@
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
 import { paiementIntegralLe, paiementsIntegrauxParFacture } from "./paiement-integral";
+import {
+  ACTIVITE_PRIME_CHALLENGE,
+  LIBELLE_PRIME_PAR_DEFAUT,
+  challengeIdDuPalier,
+  estPrimeChallenge,
+  facturesClientDesLignes,
+  titresDesPrimes,
+} from "./prime-challenge";
 import {
   piecesFigees,
   piecesFigeesDisponible,
@@ -38,6 +46,7 @@ import { regimeFactureDepuisHonoraires } from "@/server/qualiopi/remuneration/au
 import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
+import { MESSAGE_JOURNEE_IA_GRILLE_V2 } from "./journee-ia-grille";
 import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommissionSelonGrilleAvecRegle,
@@ -391,6 +400,8 @@ export async function qualifierCommission(
   // commande décide du forfait (avant le 26/11/2026) ou de 0 €.
   const { grille, signeeAt } = await grilleDeLaLigne(c);
   if (grille === null) return { ok: false, message: MESSAGE_GRILLE_INCONNUE };
+  // Point 17 : la Journée IA n'est pas dans la grille v2 (A1.5, A1.7) ; ni 500 € ni 0 € ici.
+  if (journeeIa && grille === "v2") return { ok: false, message: MESSAGE_JOURNEE_IA_GRILLE_V2 };
   let regle: RegleAppliquee | null = null;
   let calc: CalculCommission;
   if (journeeIa) {
@@ -482,7 +493,12 @@ export async function classerActiviteCommission(
     },
   });
   if (!c) return { ok: false, message: "Commission introuvable." };
-  if (c.statut !== "a_qualifier" || c.parrainage || c.activite === "formation")
+  if (
+    c.statut !== "a_qualifier" ||
+    c.parrainage ||
+    c.activite === "formation" ||
+    c.activite === ACTIVITE_PRIME_CHALLENGE
+  )
     return { ok: false, message: "Cette commission n'est pas à classer." };
   const choisie = activite as ActiviteClassable;
   if (choisie === "formation") {
@@ -668,8 +684,9 @@ export async function lireCommissions(
       presentation: { select: { denomination: true } },
     },
   });
+  // Une prime de challenge n'a pas de facture client : sa jointure est absente, jamais une erreur.
   const factures = await prisma.factureFormation.findMany({
-    where: { id: { in: [...new Set(lignes.map((l) => l.factureId))] } },
+    where: { id: { in: [...new Set(facturesClientDesLignes(lignes))] } },
     select: { id: true, numero: true, paidAt: true },
   });
   const numero = new Map(factures.map((f) => [f.id, f.numero]));
@@ -677,6 +694,7 @@ export async function lireCommissions(
   // Une seule source pour l'échéance de 30 jours : le paiement intégral de la commande.
   const integral = new Map<string, Date | null>();
   for (const l of lignes) {
+    if (estPrimeChallenge(l)) continue;
     if (l.statut !== "due" || !l.autofactureNumero || integral.has(l.factureId)) continue;
     integral.set(l.factureId, await paiementIntegralLe([l.factureId]));
   }
@@ -686,7 +704,9 @@ export async function lireCommissions(
     apporteur: [decryptPii(l.apporteur.prenom), decryptPii(l.apporteur.nom)]
       .filter(Boolean)
       .join(" "),
-    entreprise: l.presentation?.denomination ?? null,
+    entreprise: estPrimeChallenge(l)
+      ? LIBELLE_PRIME_PAR_DEFAUT
+      : (l.presentation?.denomination ?? null),
     factureNumero: numero.get(l.factureId) ?? null,
     parrainage: l.parrainage,
     activite: l.activite,
@@ -894,8 +914,19 @@ export async function genererPdfAutofacture(e: {
    * d'émission (changement daté ou fiche).
    */
   regime?: RegimeFige;
+  /**
+   * Identifiant de TENTATIVE (émission : `facturation.ts`). Présent, le PDF est déposé sous une clé
+   * PROPRE à la tentative (`…/<numero>.<tentative>.pdf`) et `cleDefinitive` dit où le publier une
+   * fois la transaction validée : un job relancé pendant qu'un premier tourne n'écrase jamais le
+   * PDF du vainqueur (#2464, point 14). Absent : dépôt direct sous la clé définitive (régénération).
+   */
+  tentative?: string;
 }): Promise<{
   r2Key: string;
+  /** Clé définitive (celle que lisent la console et l'espace). Égale à `r2Key` sans `tentative`. */
+  cleDefinitive: string;
+  /** Le PDF, pour le publier après le commit. */
+  buffer: Buffer;
   filename: string;
   totalTtcCents: number;
   /** Ce que le PDF a imprimé : à FIGER sur la pièce (régime, n° de TVA, totaux). */
@@ -938,7 +969,9 @@ export async function genererPdfAutofacture(e: {
     if (!apporteur) throw new Error("apporteur introuvable");
     const regime = e.regime ?? (await regimeDeLaPiece(e));
     const origines = await originesDesReprises(commissions);
-    const paiements = await paiementsIntegrauxParFacture(commissions.map((l) => l.factureId));
+    // Une prime de challenge n'a pas de facture client : ni date de paiement, ni échéance à en tirer.
+    const paiements = await paiementsIntegrauxParFacture(facturesClientDesLignes(commissions));
+    const titres = await titresDesPrimes(commissions);
     const dates = [...paiements.values()].filter((d): d is Date => d !== null);
     const [
       { getOrganismeIdentite },
@@ -969,7 +1002,10 @@ export async function genererPdfAutofacture(e: {
       },
       commissions: commissions.map((l) => ({
         ...l,
-        paiementIntegralAt: paiements.get(l.factureId) ?? null,
+        ...(estPrimeChallenge(l)
+          ? { titrePrime: titres.get(challengeIdDuPalier(l.palier) ?? "") ?? null }
+          : {}),
+        paiementIntegralAt: estPrimeChallenge(l) ? null : (paiements.get(l.factureId) ?? null),
         origineNumero: origines.get(l.id)?.numero ?? null,
         origineMois: origines.get(l.id)?.mois ?? null,
       })),
@@ -981,7 +1017,10 @@ export async function genererPdfAutofacture(e: {
     const { buffer } = await renderPdfToBuffer(
       React.createElement(AutofactureHonorairesPdf, { data: construit.data }),
     );
-    const r2Key = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
+    const cleDefinitive = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
+    const r2Key = e.tentative
+      ? `apporteurs/autofactures/${e.apporteurId}/${e.numero}.${e.tentative}.pdf`
+      : cleDefinitive;
     if ((await storeAndSignPdf(buffer, r2Key)) === null) throw new Error("R2 non configuré");
     // Totaux : la MÊME fonction que le gabarit, pour que la pièce figée retombe sur le PDF.
     const honoraires = regimeHonorairesApporteur(regime.regimeTva)!;
@@ -992,6 +1031,8 @@ export async function genererPdfAutofacture(e: {
     );
     return {
       r2Key,
+      cleDefinitive,
+      buffer,
       filename: `${e.numero}.pdf`,
       totalTtcCents: totaux.totalTtcCents,
       regimeTva: regime.regimeTva as "assujetti" | "franchise_293b",
@@ -1004,6 +1045,58 @@ export async function genererPdfAutofacture(e: {
     signalerErreurReseau("autofacture pdf", err);
     return null;
   }
+}
+
+/**
+ * Publie, sous leur clé définitive, les PDF déposés sous une clé de tentative (APRÈS le commit).
+ * Un échec (deux essais) est signalé à Sentry : la pièce est émise, son PDF reste sous la clé de
+ * tentative (rendue ici pour la pièce jointe de l'e-mail). ⚠️ Les routes de la console et de l'espace
+ * ne lisent QUE la clé définitive et ne régénèrent rien : tant que le PDF n'est pas republié à la
+ * main sous la clé définitive (l'alerte Sentry porte les deux clés), ces routes répondent 404 pour
+ * cette pièce. Rend, par clé définitive, la clé à utiliser.
+ */
+export async function publierPdfApresCommit(
+  pdfs: ReadonlyArray<{ r2Key: string; cleDefinitive: string; buffer: Buffer }>,
+  numero: string,
+): Promise<Map<string, string>> {
+  const cles = new Map<string, string>();
+  const [{ storeAndSignPdf }, { deleteFromR2 }] = await Promise.all([
+    import("@/server/qualiopi/documents/render"),
+    import("@/lib/r2-storage"),
+  ]);
+  for (const x of pdfs) {
+    if (x.r2Key === x.cleDefinitive) continue;
+    let ok = false;
+    for (let essai = 0; essai < 2 && !ok; essai++) {
+      try {
+        ok = (await storeAndSignPdf(x.buffer, x.cleDefinitive)) !== null;
+      } catch (err) {
+        if (essai === 1) signalerErreurReseau("autofacture : PDF non publié après commit", err);
+      }
+    }
+    if (ok) {
+      cles.set(x.cleDefinitive, x.cleDefinitive);
+      await deleteFromR2(x.r2Key).catch(() => undefined);
+    } else {
+      cles.set(x.cleDefinitive, x.r2Key);
+      signalerErreurReseau(
+        "autofacture : PDF non publié après commit",
+        new Error(
+          `autofacture ${numero} émise, PDF resté sous ${x.r2Key}, à republier sous ${x.cleDefinitive}`,
+        ),
+      );
+    }
+  }
+  return cles;
+}
+
+/** Supprime les PDF de TENTATIVE qui ne seront pas publiés (refus, échec, job perdant). */
+export async function supprimerPdfTentatives(
+  pdfs: ReadonlyArray<{ r2Key: string; cleDefinitive: string } | null>,
+): Promise<void> {
+  const { deleteFromR2 } = await import("@/lib/r2-storage");
+  for (const x of pdfs)
+    if (x && x.r2Key !== x.cleDefinitive) await deleteFromR2(x.r2Key).catch(() => undefined);
 }
 
 // ── Export annuel (DAS2) ─────────────────────────────────────────────────

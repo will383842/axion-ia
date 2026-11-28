@@ -4,10 +4,11 @@
 // ne calcule rien : elle relit les montants et les états déjà écrits en base, SANS total, compteur,
 // objectif ni classement. Composants SERVEUR (aucun JavaScript envoyé au navigateur).
 //
-//   · interrupteur éteint, lien faux ou révoqué, dossier non signé, mode restreint → 404 neutre ;
+//   · interrupteur éteint, lien faux ou révoqué, dossier ni signé ni résilié, mode restreint « retiré » → 404 neutre (un résilié lit en lecture seule, PR K) ;
 //   · le lien d'EXEMPLE de l'aperçu de la console → l'écran d'exemple, jamais un 404 ;
 //   · base en panne → `error.tsx` de l'espace, jamais « 0 € » par défaut.
 
+import { peutLireSesPieces } from "@/features/apporteurs-reseau/acces-pieces";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -20,10 +21,11 @@ import type {
 } from "@/features/apporteurs-reseau/espace-commissions-assemblage";
 import { mesCommissionsActive } from "@/features/apporteurs-reseau/interrupteur-mes-commissions";
 import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
-import { etatDeLaPage } from "@/features/apporteurs-reseau/signature";
+import { relevesDeLEspace } from "@/features/apporteurs-reseau/releve-mensuel/espace";
 
 import { Coquille, EcranEtat } from "../Coquille";
 import { TEXTES } from "../textes";
+import { SectionReleves } from "./SectionReleves";
 import { TEXTES_COMMISSIONS as T, texteEtat } from "./textes";
 
 export const dynamic = "force-dynamic";
@@ -118,13 +120,15 @@ export default async function MesCommissionsPage({
     );
   }
   const dossier = await lireDossierParLien(id, jeton);
-  if (!dossier || dossier.restreint || etatDeLaPage(dossier.statut) !== "signe") notFound();
+  if (!dossier || !peutLireSesPieces(dossier)) notFound();
 
   const base = `/apporteur/dossier/${dossier.id}/${jeton}`;
   const vue = await lireEspaceCommissions(
     { id: dossier.id, regimeTva: dossier.regimeTva },
     new Date(),
   );
+  // Seuls les relevés ENVOYÉS apparaissent ; la phrase d'annonce attend un premier relevé reçu.
+  const releves = await relevesDeLEspace(dossier.id);
 
   return (
     <Coquille titre={T.titre}>
@@ -229,6 +233,8 @@ export default async function MesCommissionsPage({
         {vue.tronque ? <p className="text-fg-soft mt-2 text-[16px]">{T.borne}</p> : null}
       </section>
 
+      <SectionReleves base={base} releves={releves} />
+
       <section className="mt-6" aria-labelledby="comment">
         <h2 id="comment" className="font-serif text-[22px] font-medium">
           {T.commentTitre}
@@ -238,6 +244,7 @@ export default async function MesCommissionsPage({
             {l}
           </p>
         ))}
+        {releves.length > 0 ? <p className="mt-1 text-[16px]">{T.relevesPhrase}</p> : null}
         <a href={`${base}/commissions`} className={`${LIEN} mt-2`}>
           {T.grille} →
         </a>
