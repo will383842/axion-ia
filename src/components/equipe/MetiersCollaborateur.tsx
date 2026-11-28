@@ -49,7 +49,9 @@ function Liens({ liens, clair }: { liens: Service["liens"]; clair?: boolean }) {
           key={l.href}
           href={l.href as never}
           className={`group inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-4 ${
-            clair ? "text-mocha-fg" : "text-terracotta hover:text-terracotta-deep"
+            clair
+              ? "text-mocha-fg focus-visible:outline-mocha-fg focus-visible:outline-2 focus-visible:outline-offset-2"
+              : "text-terracotta hover:text-terracotta-deep focus-visible:outline-terracotta focus-visible:outline-2 focus-visible:outline-offset-2"
           }`}
         >
           {l.libelle}
@@ -74,9 +76,11 @@ export function MetiersCollaborateur({
   id?: string;
 }) {
   const items = [...(donnees.items as ReadonlyArray<Service>)];
-  const rang = items.findIndex((s) => s.enAvant);
-  if (rang > 0) items.unshift(...items.splice(rang, 1));
-  const [vedette, ...autres] = items;
+  // Carte mise en avant : celle qui la demande (`enAvant`) ou la « transformation » ;
+  // aucune des deux : aucune carte n'est mise en avant.
+  const rang = items.findIndex((s) => s.enAvant || s.id === "transformation");
+  const vedette = rang >= 0 ? items.splice(rang, 1)[0] : undefined;
+  const autres = items;
   const grille =
     autres.length >= 4
       ? "sm:grid-cols-2 lg:grid-cols-4"

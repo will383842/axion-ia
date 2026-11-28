@@ -27,3 +27,11 @@ Deuxième passe du lot. Les blocs visuels de la fiche équipe sont prêts ; le b
 - `tsc --noEmit` : passe sans erreur
 - grep des mots interdits dans `src/components/equipe`, `src/content/equipe`, `src/lib/equipe` : rien en dehors des tests de garde existants
 - `pnpm-lock.yaml` : non touché. La branche existante a été reconstruite sur `origin/main` sans réinstallation.
+
+## Relecture Opus (cette passe)
+
+Corrigé : carte « Transformation » désormais mise en avant chez Williams (avant, c'était « Mise en place ») ; aucune carte mise en avant si aucune n'est désignée ; garantie affichée une seule fois (elle est déjà dans l'étape de la frise, avec sa condition) ; `CitationsTerrain` exige `auteur` (prénom du collaborateur, passé par la fiche) ; focus visible sur les liens des services et de la Journée IA.
+
+Écart signalé, non modifié : le plan (§ 4.3) nommait `PourQuiEntreprises` (3 tailles, 10 secteurs, lien `/formations/secteurs`) ; la première passe a livré `VousEtes` (cartes Coût / Action / Gain) et `PartoutEnFrance`. À valider ou aligner avant R2d.
+
+VERDICT OPUS : À CORRIGER — seul reste l'écart `VousEtes` / `PourQuiEntreprises` ci-dessus, à trancher avant l'assemblage (R2d).

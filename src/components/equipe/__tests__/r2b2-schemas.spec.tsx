@@ -8,6 +8,7 @@ import { AvantApres, PorteEntree, Rassurance } from "../BlocsTransformation";
 import { MetiersCollaborateur } from "../MetiersCollaborateur";
 import { CitationsTerrain } from "../CitationsTerrain";
 import { GARANTIE_PHRASE } from "@/content/journee-ia-commun";
+import { WILLIAMS_SERVICES } from "@/content/equipe/williams";
 import { getVille } from "@/content/villes";
 import { hasVilleCopy, isVilleIndexable } from "@/content/villes/core";
 import { getRegion } from "@/content/regions";
@@ -206,7 +207,10 @@ describe("AvantApres, Rassurance, PorteEntree, MetiersCollaborateur, CitationsTe
     porteEntree: {
       titre: "La Journée IA ?",
       accroche: "Accroche.",
-      points: [1, 2, 3].map((x) => ({ titre: `Étape ${x}`, texte: `Texte ${x}` })),
+      points: [1, 2, 3].map((x) => ({
+        titre: `Étape ${x}`,
+        texte: x === 3 ? `Texte ${x} ${GARANTIE_PHRASE}` : `Texte ${x}`,
+      })),
       bouton: "Réserver",
       lien: { href: "/journee-ia", libelle: "Tout savoir" },
     },
@@ -271,6 +275,21 @@ describe("AvantApres, Rassurance, PorteEntree, MetiersCollaborateur, CitationsTe
     expect(container.querySelectorAll("h3")).toHaveLength(3);
   });
 
+  it("services de Williams : la transformation est la carte mise en avant, sans doublon", () => {
+    const { container } = render(<MetiersCollaborateur donnees={WILLIAMS_SERVICES} />);
+    const cartes = container.querySelectorAll("article");
+    expect(cartes[0]!.getAttribute("id")).toBe("transformation");
+    expect(container.querySelectorAll("[data-service-vedette]")).toHaveLength(1);
+  });
+
+  it("services sans carte désignée : aucune mise en avant", () => {
+    const items = fiche.services.items.map(({ enAvant: _e, ...s }: Record<string, unknown>) => s);
+    const { container } = render(
+      <MetiersCollaborateur donnees={{ ...fiche.services, items: items as never }} />,
+    );
+    expect(container.querySelectorAll("[data-service-vedette]")).toHaveLength(0);
+  });
+
   it("CitationsTerrain : une grande citation, les autres en grille, attribution", () => {
     const { container } = render(<CitationsTerrain donnees={fiche.citations} auteur="Marie" />);
     expect(container.querySelectorAll("blockquote")).toHaveLength(3);
@@ -285,7 +304,7 @@ describe("AvantApres, Rassurance, PorteEntree, MetiersCollaborateur, CitationsTe
       render(<Rassurance donnees={fiche.rassurance} />).container,
       render(<PorteEntree donnees={fiche.porteEntree} />).container,
       render(<MetiersCollaborateur donnees={fiche.services} />).container,
-      render(<CitationsTerrain donnees={fiche.citations} />).container,
+      render(<CitationsTerrain donnees={fiche.citations} auteur="Marie" />).container,
     ];
     const html = racines.map((r) => r.innerHTML).join(" ");
     expect(html).not.toMatch(

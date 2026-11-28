@@ -53,7 +53,7 @@ describe("fiche Williams rendue — plan des titres", () => {
   it("les H3 sont les cinq services, les étapes, les jalons puis les huit questions ; aucun H4", () => {
     const { container } = rendre();
     const h3 = titres(container).filter((t) => t.startsWith("H3 "));
-    // Cinq tuiles « sans chamboulement », cinq étapes de la Journée IA, puis les services.
+    // Cinq tuiles « sans chamboulement », cinq étapes de la Journée IA, puis les services (la transformation, mise en avant, en premier).
     expect(h3.slice(0, 5)).toEqual([
       "H3 Vos outils restent en place.",
       "H3 Une étape à la fois.",
@@ -62,11 +62,11 @@ describe("fiche Williams rendue — plan des titres", () => {
       "H3 Vous n'avez rien à piloter côté technique.",
     ]);
     expect(h3.slice(10, 15)).toEqual([
+      "H3 Transformation de l'entreprise avec l'IA",
       "H3 Mise en place et solutions IA sur mesure",
       "H3 Automatisation des tâches répétitives",
       "H3 Formation des équipes à l'IA",
       "H3 Coaching IA du dirigeant",
-      "H3 Transformation de l'entreprise avec l'IA",
     ]);
     // 5 tuiles + 5 étapes de la Journée IA + 5 services + 3 étapes de la méthode + 3 jalons du parcours + 8 questions.
     expect(h3).toHaveLength(5 + 5 + 5 + 3 + 3 + 8);

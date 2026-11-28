@@ -6,13 +6,13 @@ import type { EnteteProp } from "./BlocsTransformation";
 export function CitationsTerrain({
   donnees,
   entete,
-  auteur = "Williams Jullin",
+  auteur,
   id = "constats",
 }: {
   donnees: NonNullable<ContenuFiche["citations"]>;
   entete?: EnteteProp;
   /** Prénom seul pour un collaborateur ; nom complet pour Williams Jullin. */
-  auteur?: string;
+  auteur: string;
   id?: string;
 }) {
   const [premiere, ...autres] = donnees.items;

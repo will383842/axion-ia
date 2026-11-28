@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { Cta } from "@/components/marketing/Cta";
 import { Link } from "@/i18n/navigation";
-import { GARANTIE_PHRASE } from "@/content/journee-ia-commun";
 import type { ContenuFiche } from "@/lib/equipe";
 import { SectionFiche } from "./visuels/SectionFiche";
 import { FriseEtapes } from "./visuels/FriseEtapes";
@@ -187,9 +186,6 @@ export function PorteEntree({
       }
     >
       <FriseEtapes etapes={etapes} ton="creme" />
-      <p data-garantie="" className="text-fg mt-8 max-w-3xl text-lg leading-relaxed font-medium">
-        {GARANTIE_PHRASE}
-      </p>
       {chiffres && chiffres.length > 0 ? (
         <dl className="mt-10 grid max-w-3xl gap-6 sm:grid-cols-3">
           {chiffres.map((c) => (
@@ -213,7 +209,7 @@ export function PorteEntree({
         </Cta>
         <Link
           href={donnees.lien.href as never}
-          className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-4"
+          className="text-terracotta hover:text-terracotta-deep focus-visible:outline-terracotta inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           {donnees.lien.libelle}
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
