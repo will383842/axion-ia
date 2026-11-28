@@ -5,7 +5,6 @@
  * synthèse est celui de l'article, déplacé en fin de corps.
  */
 
-/** Titres de section qui ne sont PAS une option de la liste. */
 /**
  * Sections qui ne sont PAS une option, reconnues par le DÉBUT du titre (après un article
  * éventuel). Deux familles :
@@ -88,7 +87,8 @@ function estHorsOption(titre: string): boolean {
 }
 
 /** Titre déjà numéroté en texte (« 1. Zapier », « 2) Make ») : la CSS ne le numérote pas. */
-const DEJA_NUMEROTE = /^\s*\d{1,2}\s*[.)\-–:]/;
+const DEJA_NUMEROTE =
+  /^\s*(?:\d{1,2}\s*[.)\-–:]|(?:option\s*|n\s?°\s*|no\.?\s*|num[ée]ro\s*|#\s*)\d{1,2}(?!\d))/iu;
 const H2 = /<h2((?:\s[^>]*)?)>([\s\S]*?)<\/h2>/gi;
 const MIN_OPTIONS = 2;
 const MIN_OPTIONS_BANDEAU = 4;
@@ -147,9 +147,9 @@ export function marquerOptions(
   return { html: sortie, total: choisis.length };
 }
 
-/** Titre « Tableau récapitulatif », « Tableau de synthèse »… (et rien d'autre), nu. */
+/** Titre « Tableau récapitulatif », « Tableau comparatif des 10 outils », « Comparatif »… (avec ou sans complément court). */
 const TEXTE_TITRE_TABLEAU =
-  /^\s*(?:notre |le |ce )?(?:tableau|r[ée]capitulatif|synth[èe]se)(?:\s+(?:r[ée]capitulatif|de\s+(?:synth[èe]se|comparaison)|comparatif))?\s*[?!.:]?\s*$/iu;
+  /^\s*(?:notre |le |ce )?(?:tableau|r[ée]capitulatif|synth[èe]se|comparatif)(?![\p{L}\d])[^?!()]{0,80}$/iu;
 /** `<h2>` court + au plus un `<p>` d'introduction, juste avant le tableau (longueurs bornées). */
 const TITRE_AVANT_TABLEAU =
   /<h2((?:\s[^>]*)?)>([^<]{1,160})<\/h2>\s*(?:<p>(?:(?!<\/p>)[\s\S]){0,600}<\/p>\s*)?$/i;

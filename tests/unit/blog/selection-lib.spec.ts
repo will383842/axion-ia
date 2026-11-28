@@ -123,6 +123,16 @@ describe("marquerOptions", () => {
     expect(r.html).not.toContain('data-option="auto"');
   });
 
+  it("« Option 1 : Zapier », « #1 Zapier », « N°1 Make » sont déjà numérotés en texte", () => {
+    const r = marquerOptions(`${h2("Option 1 : Zapier")}${h2("#2 Make")}${h2("N°3 Airtable")}`, {
+      libelleSur: "sur",
+      bandeau: "",
+    });
+    expect(r.total).toBe(3);
+    expect(r.html.match(/data-option="texte"/g)).toHaveLength(3);
+    expect(r.html).not.toContain('data-option="auto"');
+  });
+
   it("moins de deux options : rien n'est marqué", () => {
     const html = `${h2("Conclusion")}${h2("Seule option")}`;
     expect(marquerOptions(html, { libelleSur: "sur", bandeau: "" })).toEqual({ html, total: 0 });
@@ -177,6 +187,20 @@ describe("extrairePremierTableau / ancreLibre / echapper", () => {
     }
     const marque = `<h2 id="o" data-option="auto">Tableau</h2><p>x</p>${t}`;
     expect(extrairePremierTableau(marque)?.titreRetire).toBeNull();
+  });
+  it("retire aussi les titres de tableau avec complément (formule du générateur de comparatifs)", () => {
+    for (const titre of [
+      "Tableau comparatif récapitulatif",
+      "Tableau comparatif des 10 outils",
+      "Tableau récapitulatif des outils IA",
+      "Comparatif",
+    ]) {
+      const r = extrairePremierTableau(
+        `<p>a</p><h2 id="x">${titre}</h2><p>Ce tableau résume.</p>${t}`,
+      );
+      expect(r?.reste).toBe("<p>a</p>");
+      expect(r?.titreRetire).toBe("x");
+    }
   });
   it("garde un titre qui n'est pas celui d'un tableau", () => {
     const r = extrairePremierTableau(`<h2 id="x">Zapier</h2><p>Texte.</p>${t}`);
