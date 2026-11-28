@@ -50,3 +50,15 @@ describe("tour 2 : guillemets non appariés, composés avec espace, entités", (
     expect(cle("soixante-dix %").length).toBeGreaterThan(0);
   });
 });
+
+describe("tour 3 : blancs ASCII et chiffres non ASCII", () => {
+  it("ne coupe pas une valeur sans guillemets sur une espace insécable", () => {
+    expect(hrefsDe("<a href=/fr/contact\u00a0/../appel>x</a>")).toEqual([
+      "/fr/contact\u00a0/../appel",
+    ]);
+  });
+  it("relève les chiffres pleine chasse et arabes-indiens", () => {
+    expect(nombresDe("８０ % des PME").length).toBeGreaterThan(0);
+    expect(nombresDe("٨٠ % des PME").length).toBeGreaterThan(0);
+  });
+});

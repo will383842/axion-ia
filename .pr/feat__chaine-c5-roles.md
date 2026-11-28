@@ -25,4 +25,8 @@ Dans `src/server/content-gen/chaine/roles/`, un module par rôle de la conceptio
 - Reconnaissance des chiffres en lettres incomplète (formes rares), tournures « faire seul » partielles : le modèle R5 et la porte restent les filets.
 - Trois tours de relecture Opus faits ; le troisième a relevé deux défauts (chiffres en lettres avec unités, attribut `href` leurré) et quelques points mineurs, corrigés ensuite. Le code final n'a pas été relu une 4e fois (limite de 3 tours).
 
-VERDICT OPUS : À CORRIGER (points du dernier tour corrigés, non relus)
+- Relecture Opus du 2026-11-28 (3 tours, après fusion de `origin/main`) : tour 1 → liens contournables par regex (`hrefsDe` réécrit en tokenizer HTML5 fail-closed, `INTERDIT` élargi) et nombres composés en lettres ; tour 2 → guillemets non appariés, composés avec espace, entités masquant des chiffres ; tour 3 → blancs non ASCII dans `hrefsDe` et chiffres non ASCII (`８０`, `٨٠`, `&frac12;`), corrigés ensuite (NFKC + échec fermé, blancs ASCII seulement). Tests : 263 verts dans `chaine/` (dont `roles/contournements-b1-b2.test.ts`).
+- Échec connu hors périmètre : `kb-ingest/__tests__/url-extractor.spec.ts` (4 tests, fichier non touché par la branche, réseau du bac à sable).
+- Mineurs du tour 1 non traités : liste des plages privées et ports du futur `testerLien` (SSRF), filtre RGPD du prompt R1, plafond de texte des pages lues, `<h1>` non fermé, sous-critères de `contrat-porte.ts`, tests de pureté à durcir.
+
+VERDICT OPUS : À CORRIGER (3 tours faits ; les deux bloquants du tour 3 sont corrigés, non relus)

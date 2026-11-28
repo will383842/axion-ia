@@ -266,7 +266,7 @@ export function analyserArticle(e: EntreeRedaction, a: ArticleRedige): Correctio
   const CACHE =
     /<details|\shidden[\s>=]|display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0|opacity\s*:\s*0|sr-only|aria-hidden|<!--/i;
   const INTERDIT =
-    /<(script|iframe|style|object|embed|form|input|base|img|svg|link|meta|math)\b|&#|&(?!nbsp;|amp;|lt;|gt;|quot;|apos;)[a-z]+;|[\s"'/](?:on\w+|style|class|title|alt|background|poster|data-(?!aeo\b)[\w-]*|srcset|src)\s*=/i;
+    /<(script|iframe|style|object|embed|form|input|base|img|svg|link|meta|math)\b|&#|&frac\d|&(?!nbsp;|amp;|lt;|gt;|quot;|apos;)[a-z][a-z0-9]*;|[\s"'/](?:on\w+|style|class|title|alt|background|poster|data-(?!aeo\b)[\w-]*|srcset|src)\s*=/i;
   const RELU = /\brelu(?:e|s|es)?\s+par\b/i;
   const controlerForme = (html: string, texte: string, section: Correction["section"]) => {
     if (CACHE.test(html)) {

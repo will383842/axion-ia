@@ -13,6 +13,9 @@ export interface NombreTrouve {
 
 export function nombresDe(texte: string): NombreTrouve[] {
   const sortie: NombreTrouve[] = [];
+  // Chiffres non ASCII (pleine chasse, arabes-indiens, fractions) : NFKC, puis tout \p{Nd} restant
+  // devient un nombre inconnu du dossier (échec fermé), jamais un chiffre ignoré.
+  texte = texte.normalize("NFKC").replace(/(?![0-9])\p{Nd}/gu, "9");
   for (const m of texte.matchAll(RE_NOMBRE)) {
     const entier = (m[1] ?? "").replace(/[  .]/g, "");
     const dec = m[2];

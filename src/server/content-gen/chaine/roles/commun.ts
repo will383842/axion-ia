@@ -306,7 +306,7 @@ export function hrefInterdit(href: string): boolean {
 /** Tous les href d'un fragment HTML (guillemets doubles, simples ou absents). */
 export function hrefsDe(html: string): string[] {
   const sortie: string[] = [];
-  const blanc = /[\s]/;
+  const blanc = /[\t\n\f\r ]/;
   for (const m of html.matchAll(/<a(?=[\s/>])/gi)) {
     let i = (m.index ?? 0) + 2;
     let fermee = false;
