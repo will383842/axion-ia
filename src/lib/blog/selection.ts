@@ -7,26 +7,22 @@
 
 /** Titres de section qui ne sont PAS une option de la liste. */
 /**
- * Sections qui ne sont PAS une option : le titre COMMENCE par l'un de ces motifs (après un
- * article éventuel) et reste court. Un nom d'outil qui contient « résumé » ou « sources »
- * plus loin (« ChatGPT : résumé de réunions ») reste donc une option.
+ * Sections qui ne sont PAS une option, reconnues par le DÉBUT du titre (après un article
+ * éventuel). Deux familles :
+ *  - formules sans ambiguïté (FAQ, conclusion, « comment choisir »…) : exclues quelle que
+ *    soit la longueur du titre ;
+ *  - noms courants qui peuvent aussi ouvrir un nom d'outil (« Sources de… », « Résumé de… »,
+ *    « Tableau (Salesforce) ») : exclus seulement si le titre reste court (≤ 5 mots).
+ * Jamais sur un titre déjà numéroté à la main.
  */
-const DEBUT_HORS_OPTION = [
+const FORMULES_SANS_AMBIGUITE = [
   "faq",
+  "foire aux questions",
   "questions?",
-  "sources?",
-  "m[ée]thod\\p{L}*",
+  "introduction",
   "conclu\\p{L}*",
   "pour conclure",
   "en bref",
-  "r[ée]sum\\p{L}*",
-  "r[ée]cap\\p{L}*",
-  "bilan",
-  "verdict",
-  "tableau(?=\\s+(?:r[ée]capitulatif|de\\s+(?:synth|compar)|comparatif)|\\s*[?!.:]?\\s*$)",
-  "synth[èe]se",
-  "comparatif",
-  "crit[èe]res?",
   "par o[ùu] commencer",
   "pour aller plus loin",
   "pour finir",
@@ -36,17 +32,59 @@ const DEBUT_HORS_OPTION = [
   "ce qu[’']il faut retenir",
   "[àa] retenir",
   "notre s[ée]lection",
+  "tableau(?=\\s+(?:r[ée]capitulatif|de\\s+(?:synth|compar)|comparatif)|\\s*[?!.:]?\\s*$)",
 ];
-const ARTICLE = "(?:(?:notre|nos|la|le|les|en|une?)\\s+)?";
-const HORS_OPTION = new RegExp(
-  `^\\s*${ARTICLE}(?:${DEBUT_HORS_OPTION.join("|")})(?![\\p{L}])`,
-  "iu",
-);
-const MOTS_MAX_HORS_OPTION = 5;
+const NOMS_AMBIGUS = [
+  "sources?",
+  "m[ée]thod\\p{L}*",
+  "r[ée]sum\\p{L}*",
+  "r[ée]cap\\p{L}*",
+  "bilan",
+  "verdict",
+  "synth[èe]se",
+  "comparatif",
+  "crit[èe]res?",
+];
+const ARTICLE = "(?:(?:notre|nos|la|le|les|ce|en|une?)\\s+)?";
+const debut = (motifs: ReadonlyArray<string>) =>
+  new RegExp(`^\\s*${ARTICLE}(?:${motifs.join("|")})(?![\\p{L}])`, "iu");
+const SANS_AMBIGUITE = debut(FORMULES_SANS_AMBIGUITE);
+const AMBIGUS = debut(NOMS_AMBIGUS);
+const MOTS_MAX_NOM_AMBIGU = 5;
+
+const ENTITES: Record<string, string> = {
+  nbsp: " ",
+  rsquo: "’",
+  apos: "'",
+  eacute: "é",
+  egrave: "è",
+  ecirc: "ê",
+  agrave: "à",
+  ugrave: "ù",
+  ocirc: "ô",
+  ccedil: "ç",
+  amp: "&",
+};
+/** Texte d'un titre, balises retirées et entités courantes décodées (DOMPurify écrit &nbsp;). */
+function texteDuTitre(brut: string): string {
+  return brut
+    .replace(/<[^>]*>/g, "")
+    .replace(/&(?:#(\d+)|#x([0-9a-f]+)|([a-z]+));/gi, (m, dec, hex, nom) => {
+      if (dec) return String.fromCodePoint(Number(dec));
+      if (hex) return String.fromCodePoint(parseInt(hex, 16));
+      return ENTITES[String(nom).toLowerCase()] ?? m;
+    })
+    .replace(/[\u00a0\u202f]/g, " ")
+    .trim();
+}
 
 function estHorsOption(titre: string): boolean {
   if (DEJA_NUMEROTE.test(titre)) return false;
-  return HORS_OPTION.test(titre) && titre.split(/\s+/).length <= MOTS_MAX_HORS_OPTION;
+  if (SANS_AMBIGUITE.test(titre)) return true;
+  return (
+    AMBIGUS.test(titre) &&
+    titre.split(/\s+/).filter((m) => /\p{L}|\d/u.test(m)).length <= MOTS_MAX_NOM_AMBIGU
+  );
 }
 
 /** Titre déjà numéroté en texte (« 1. Zapier », « 2) Make ») : la CSS ne le numérote pas. */
@@ -85,18 +123,19 @@ export function marquerOptions(
     debut: m.index ?? 0,
     fin: (m.index ?? 0) + m[0].length,
     attrs: m[1] ?? "",
-    texte: (m[2] ?? "").replace(/<[^>]*>/g, "").trim(),
+    texte: texteDuTitre(m[2] ?? ""),
   }));
   const choisis = titres.filter((t) => !estHorsOption(t.texte));
   if (choisis.length < MIN_OPTIONS) return { html, total: 0 };
 
+  const numerotesAMain = choisis.some((t) => DEJA_NUMEROTE.test(t.texte));
   const milieu = choisis.length >= MIN_OPTIONS_BANDEAU ? Math.floor(choisis.length / 2) : -1;
   let sortie = "";
   let curseur = 0;
   choisis.forEach((t, i) => {
     sortie += html.slice(curseur, t.debut);
     if (i === milieu && params.bandeau) sortie += params.bandeau;
-    const mode = DEJA_NUMEROTE.test(t.texte) ? "texte" : "auto";
+    const mode = numerotesAMain ? "texte" : "auto";
     const sur = mode === "auto" ? ` data-sur="${echapper(params.libelleSur)}"` : "";
     sortie += `<h2${t.attrs} data-option="${mode}"${sur}>${html
       .slice(t.debut, t.fin)
@@ -113,7 +152,7 @@ const TEXTE_TITRE_TABLEAU =
   /^\s*(?:notre |le |ce )?(?:tableau|r[ée]capitulatif|synth[èe]se)(?:\s+(?:r[ée]capitulatif|de\s+(?:synth[èe]se|comparaison)|comparatif))?\s*[?!.:]?\s*$/iu;
 /** `<h2>` court + au plus un `<p>` d'introduction, juste avant le tableau (longueurs bornées). */
 const TITRE_AVANT_TABLEAU =
-  /<h2((?:\s[^>]*)?)>([^<]{1,120})<\/h2>\s*(?:<p>(?:(?!<\/p>)[\s\S]){0,600}<\/p>\s*)?$/i;
+  /<h2((?:\s[^>]*)?)>([^<]{1,160})<\/h2>\s*(?:<p>(?:(?!<\/p>)[\s\S]){0,600}<\/p>\s*)?$/i;
 const BALISE_TABLE = /<(\/?)table(?=[\s>/])[^>]*>/gi;
 const ENVELOPPE_OUVRANTE =
   /<div\b[^>]*\bclass\s*=\s*["'][^"']*\btable-scroll\b[^"']*["'][^>]*>\s*$/i;
@@ -155,7 +194,9 @@ export function extrairePremierTableau(
   // d'introduction) part avec lui : ni section vide ni doublon au sommaire.
   const trouve = TITRE_AVANT_TABLEAU.exec(avant);
   const titre =
-    trouve && TEXTE_TITRE_TABLEAU.test(trouve[2] ?? "") && !/\bdata-option\b/.test(trouve[1] ?? "")
+    trouve &&
+    TEXTE_TITRE_TABLEAU.test(texteDuTitre(trouve[2] ?? "")) &&
+    !/\bdata-option\b/.test(trouve[1] ?? "")
       ? trouve
       : null;
   let titreRetire: string | null = null;

@@ -69,14 +69,58 @@ describe("marquerOptions", () => {
     expect(r.total).toBe(2);
   });
 
+  it("exclut les formules sans ambiguïté quelle que soit la longueur du titre", () => {
+    const hors = [
+      "Conclusion : quel outil pour votre PME ?",
+      "FAQ sur les outils IA à Lyon",
+      "Questions fréquentes sur les agences IA",
+      "Comment choisir le bon outil IA ?",
+      "Comment choisir son agence IA à Lyon ?",
+      "Quelle solution choisir pour votre PME ?",
+      "Pour aller plus loin avec l’IA à Lyon",
+      "Comment nous avons sélectionné ces outils",
+      "Pourquoi faire appel à une agence IA à Lyon ?",
+      "Introduction",
+      "Foire aux questions",
+      "Ce tableau récapitulatif",
+    ];
+    const r = marquerOptions(`${hors.map((t) => h2(t)).join("")}${options(2)}`, {
+      libelleSur: "sur",
+      bandeau: "",
+    });
+    expect(r.total).toBe(2);
+  });
+
+  it("décode les entités avant de comparer (&nbsp;, &eacute;, &#39;)", () => {
+    const hors = [
+      "Tableau r&eacute;capitulatif&nbsp;:",
+      "Ce qu&#39;il faut retenir",
+      "Conclusion&nbsp;: et apr&egrave;s",
+    ];
+    const r = marquerOptions(`${hors.map((t) => h2(t)).join("")}${options(2)}`, {
+      libelleSur: "sur",
+      bandeau: "",
+    });
+    expect(r.total).toBe(2);
+  });
+
+  it("liste mêlant titres numérotés à la main et autres : aucun numéro CSS (compteur cohérent)", () => {
+    const r = marquerOptions(`${h2("1. Zapier")}${h2("Make")}${h2("Airtable")}`, {
+      libelleSur: "sur",
+      bandeau: "",
+    });
+    expect(r.html).not.toContain('data-option="auto"');
+    expect(r.html.match(/data-option="texte"/g)).toHaveLength(3);
+  });
+
   it("un titre déjà numéroté en texte n'est pas numéroté par la CSS (pas de doublon)", () => {
     const r = marquerOptions(`${h2("1. Zapier")}${h2("2) Make")}${h2("Airtable")}`, {
       libelleSur: "sur",
       bandeau: "",
     });
     expect(r.total).toBe(3);
-    expect(r.html.match(/data-option="texte"/g)).toHaveLength(2);
-    expect(r.html.match(/data-option="auto"/g)).toHaveLength(1);
+    expect(r.html.match(/data-option="texte"/g)).toHaveLength(3);
+    expect(r.html).not.toContain('data-option="auto"');
   });
 
   it("moins de deux options : rien n'est marqué", () => {
