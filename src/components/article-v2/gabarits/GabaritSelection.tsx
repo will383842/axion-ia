@@ -29,9 +29,16 @@ export function GabaritSelection(p: ArticleGabaritProps) {
     ...p,
     html: synthese ? synthese.reste : options.html,
     tocItems: synthese
-      ? [...p.tocItems, { anchor: ancre, title: t("tableau.titre"), level: 2 }]
+      ? [
+          ...p.tocItems.filter((i) => i.anchor !== synthese.titreRetire),
+          { anchor: ancre, title: t("tableau.titre"), level: 2 },
+        ]
       : p.tocItems,
   };
+
+  // La phrase promet « aucune offre d'Axion-IA classée » : on ne l'affiche pas si le corps
+  // présente Axion-IA comme une option de la liste (le prompt d'origine le permet).
+  const parleDAxion = /axion[-\s\u00a0]?ia/i.test(p.html ?? "");
 
   const style = { "--total-options": options.total } as CSSProperties;
   const apresCorps = (
@@ -58,15 +65,17 @@ export function GabaritSelection(p: ArticleGabaritProps) {
       p={adapte}
       cta="journee"
       ouvertureExtra={
-        <p className="neutralite" data-aeo="neutrality">
-          <span>
-            <strong>{t("neutralite.methode")}</strong> {t("neutralite.texte")}
-          </span>
-        </p>
+        parleDAxion ? null : (
+          <p className="neutralite" data-aeo="neutrality">
+            <span>
+              <strong>{t("neutralite.methode")}</strong> {t("neutralite.texte")}
+            </span>
+          </p>
+        )
       }
-      enveloppeCorps={(corps) => (
+      enveloppeCorps={(contenu) => (
         <div className="options" style={style}>
-          {corps}
+          {contenu}
         </div>
       )}
       apresCorps={apresCorps}

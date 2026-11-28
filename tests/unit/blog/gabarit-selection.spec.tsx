@@ -188,6 +188,28 @@ describe("GabaritSelection", () => {
     expect(h).not.toMatch(/\/\s?5|★|étoile|note de/i);
   });
 
+  it("le titre d'origine du tableau part avec lui : ni section vide ni doublon au sommaire", () => {
+    const html = `${opt("Outil A", "outil-a")}<h2 id="tableau-recapitulatif">Tableau récapitulatif</h2>${TAB}${opt("Outil B", "outil-b")}`;
+    const h = rendre(
+      props({
+        html,
+        tocItems: [
+          { anchor: "outil-a", title: "Outil A", level: 2 },
+          { anchor: "tableau-recapitulatif", title: "Tableau récapitulatif", level: 2 },
+          { anchor: "outil-b", title: "Outil B", level: 2 },
+        ],
+      }),
+    );
+    expect(h.match(/Tableau récapitulatif/g) ?? []).toHaveLength(0);
+    expect(h).toContain("outil-a|Outil A;outil-b|Outil B;tableau-de-synthese|Tableau de synthèse");
+  });
+
+  it("la phrase de neutralité n'est pas affichée si le corps parle d'Axion-IA comme option", () => {
+    expect(rendre(props({ html: `${dix}<p>Axion-IA propose…</p>` }))).not.toContain("neutralite");
+    expect(rendre(props({ html: `${dix}<p>Axion IA</p>` }))).not.toContain("neutralite");
+    expect(rendre(props())).toContain("neutralite");
+  });
+
   it("sans tableau : pas de bloc de synthèse ; article en fichier : rend sans erreur", () => {
     expect(rendre(props())).not.toContain("tableau-de-synthese");
     const h = rendre(props({ html: null, blocs: [{ kind: "p", text: "Texte" }] }));

@@ -18,6 +18,22 @@ describe("marquerOptions", () => {
     expect(r.html).not.toMatch(/<h2 id="conclusion"[^>]*data-option/);
   });
 
+  it("exclut aussi résumé, bilan, verdict, « comment choisir », « ce qu'il faut retenir »", () => {
+    const hors = [
+      "En résumé",
+      "Résumé",
+      "Bilan",
+      "Notre verdict",
+      "Comment choisir un outil ?",
+      "Ce qu’il faut retenir",
+      "Récap",
+    ];
+    const html = `${hors.map((t) => h2(t)).join("")}${options(2)}`;
+    const r = marquerOptions(html, { libelleSur: "sur", bandeau: "" });
+    expect(r.total).toBe(2);
+    expect(r.html.match(/data-option=/g)).toHaveLength(2);
+  });
+
   it("un titre déjà numéroté en texte n'est pas numéroté par la CSS (pas de doublon)", () => {
     const r = marquerOptions(`${h2("1. Zapier")}${h2("2) Make")}${h2("Airtable")}`, {
       libelleSur: "sur",
@@ -62,8 +78,21 @@ describe("extrairePremierTableau / ancreLibre / echapper", () => {
     expect(extrairePremierTableau(`<p>a</p>${env}<p>b</p>`)).toEqual({
       tableau: t,
       reste: "<p>a</p><p>b</p>",
+      titreRetire: null,
     });
     expect(extrairePremierTableau("<p>rien</p>")).toBeNull();
+    expect(extrairePremierTableau(`<p>a</p>${env}<p>b</p>`)?.titreRetire).toBeNull();
+  });
+  it("retire avec le tableau son titre « Tableau récapitulatif » et son introduction, et rend son ancre", () => {
+    const h = `<p>a</p><h2 id="tableau-recapitulatif">Tableau récapitulatif</h2><p>Ci-dessous.</p>${t}<h2 id="z">Zapier</h2>`;
+    const r = extrairePremierTableau(h);
+    expect(r?.reste).toBe('<p>a</p><h2 id="z">Zapier</h2>');
+    expect(r?.titreRetire).toBe("tableau-recapitulatif");
+  });
+  it("garde un titre qui n'est pas celui d'un tableau", () => {
+    const r = extrairePremierTableau(`<h2 id="x">Zapier</h2><p>Texte.</p>${t}`);
+    expect(r?.reste).toBe('<h2 id="x">Zapier</h2><p>Texte.</p>');
+    expect(r?.titreRetire).toBeNull();
   });
   it("ancreLibre saute les ancres prises (sommaire ou corps)", () => {
     expect(ancreLibre("a", null, [])).toBe("a");

@@ -13,6 +13,7 @@
   border-top: 4px solid var(--color-terracotta);
 }
 [data-gabarit="selection"] .options h2[data-option="auto"]::before {
+  content: counter(option, decimal-leading-zero) " " attr(data-sur) " " counter(total);
   content: counter(option, decimal-leading-zero) " " attr(data-sur) " " counter(total) / "";
   display: block;
   margin-bottom: 0.5rem;

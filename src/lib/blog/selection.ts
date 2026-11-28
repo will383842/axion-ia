@@ -6,8 +6,31 @@
  */
 
 /** Titres de section qui ne sont PAS une option de la liste. */
-const HORS_OPTION =
-  /\b(?:faq|questions?|sources?|m[ée]thode|conclusion|en bref|r[ée]sum[ée]|tableau|crit[èe]res?|par o[ùu] commencer|pour aller plus loin|pour finir|pourquoi|comment (?:nous|on)|notre (?:m[ée]thode|lecture))\b/i;
+const MOTS_HORS_OPTION = [
+  "faq",
+  "questions?",
+  "sources?",
+  "m[ée]thode",
+  "conclusion",
+  "en bref",
+  "r[ée]sum[ée]",
+  "r[ée]cap(?:itulatif)?",
+  "bilan",
+  "verdict",
+  "tableau",
+  "synth[èe]se",
+  "crit[èe]res?",
+  "par o[ùu] commencer",
+  "pour aller plus loin",
+  "pour finir",
+  "pourquoi",
+  "comment (?:nous|on|choisir)",
+  "ce qu[’']il faut retenir",
+  "[àa] retenir",
+  "notre (?:m[ée]thode|lecture)",
+];
+/** Bornes explicites (lettre ou non) : `\b` ne voit pas la fin d'un mot qui finit par « é ». */
+const HORS_OPTION = new RegExp(`(?<![\\p{L}])(?:${MOTS_HORS_OPTION.join("|")})(?![\\p{L}])`, "iu");
 /** Titre déjà numéroté en texte (« 1. Zapier », « 2) Make ») : la CSS ne le numérote pas. */
 const DEJA_NUMEROTE = /^\s*\d{1,2}\s*[.)\-–:]/;
 const H2 = /<h2((?:\s[^>]*)?)>([\s\S]*?)<\/h2>/gi;
@@ -67,6 +90,8 @@ export function marquerOptions(
   return { html: sortie, total: choisis.length };
 }
 
+const TITRE_DE_TABLEAU =
+  /<h2((?:\s[^>]*)?)>[^<]*(?:tableau|r[ée]capitulatif|synth[èe]se)[^<]*<\/h2>\s*(?:<p>(?:(?!<\/p>)[\s\S])*<\/p>\s*)?$/i;
 const BALISE_TABLE = /<(\/?)table(?=[\s>/])[^>]*>/gi;
 const ENVELOPPE_OUVRANTE =
   /<div\b[^>]*\bclass\s*=\s*["'][^"']*\btable-scroll\b[^"']*["'][^>]*>\s*$/i;
@@ -76,7 +101,9 @@ const ENVELOPPE_FERMANTE = /^\s*<\/div>/i;
  * Sépare le premier `<table>` (tableaux imbriqués compris) du reste ; l'enveloppe défilante
  * `.table-scroll` qui l'entoure exactement part avec lui (le gabarit pose la sienne).
  */
-export function extrairePremierTableau(html: string): { tableau: string; reste: string } | null {
+export function extrairePremierTableau(
+  html: string,
+): { tableau: string; reste: string; titreRetire: string | null } | null {
   if (!html) return null;
   let profondeur = 0;
   let debut = -1;
@@ -102,7 +129,19 @@ export function extrairePremierTableau(html: string): { tableau: string; reste: 
     avant = avant.slice(0, ouv.index);
     apres = apres.slice(fer[0].length);
   }
-  return { tableau: html.slice(debut, fin), reste: avant + apres };
+  // Le titre d'origine du tableau (« Tableau récapitulatif », avec son éventuelle phrase
+  // d'introduction) part avec lui : ni section vide ni doublon au sommaire.
+  const titre = TITRE_DE_TABLEAU.exec(avant);
+  let titreRetire: string | null = null;
+  if (titre) {
+    avant = avant.slice(0, titre.index);
+    titreRetire =
+      /\bid\s*=\s*(?:"([^"]*)"|'([^']*)')/i
+        .exec(titre[1] ?? "")
+        ?.slice(1, 3)
+        .find(Boolean) ?? null;
+  }
+  return { tableau: html.slice(debut, fin), reste: avant + apres, titreRetire };
 }
 
 /** Première ancre libre : ni dans le sommaire, ni en `id` du corps (celui du titre `-titre` compris). */
