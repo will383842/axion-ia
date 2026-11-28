@@ -29,6 +29,7 @@
 // tentait de COMPLÉTER un job dont il avait rendu le lock → erreurs « job not
 // in active state » (cf. bullmq/dist/esm/classes/worker.js : DelayedError est
 // intercepté et n'émet PAS l'event `failed`).
+import { appliquerPointFinalPorte } from "@/server/content-gen/porte-qualite-point-final-io";
 import { exigeRelectureHumaine } from "@/server/content-gen/quality/relecture-journee-ia";
 import { publicationSansPreuveFactCheck } from "@/server/content-gen/fact-check/fact-check-claude-drapeau";
 import { Queue, Worker, DelayedError, type Job } from "bullmq";
@@ -542,6 +543,48 @@ async function executePublishPipeline(
       JSON.stringify({ event: "publish_doctrine_hold", jobId: cgJob.id, faults: resume }),
     );
     return;
+  }
+
+  // Porte qualité, POINT FINAL (Q10, conception § 3 P3). Drapeau CONTENT_PORTE_QUALITE éteint
+  // par défaut : `appliquerPointFinalPorte` rend « inerte » sans rien lire ni écrire, donc la
+  // publication est strictement celle d'avant. Allumé : tout ce qui n'est pas « publiable »
+  // est retenu (échec fermé) ; un report B17 (coupe-circuit) laisse le contenu en attente.
+  // Un article déjà inséré pour ce job (retry après insertion) n'est jamais retenu ici.
+  if (!existingArticle) {
+    const porte = await appliquerPointFinalPorte(cgJob.id, cgJob.contentType, output);
+    if (porte.action === "reporter") {
+      console.log(
+        JSON.stringify({ event: "publish_porte_report", jobId: cgJob.id, raison: porte.raison }),
+      );
+      await job.moveToDelayed(msUntilDripStart(), job.token);
+      throw new DelayedError();
+    }
+    if (porte.action === "retenir") {
+      await logStepError(
+        cgJob.id,
+        "validation",
+        `Publication refusée par la porte qualité (${porte.code})`,
+        { raison: porte.raison },
+      );
+      await prisma.contentGenJob.update({
+        where: { id: cgJob.id },
+        data: { status: "needs_review", errorMessage: porte.code.slice(0, 500) },
+      });
+      await prisma.reviewQueue.update({
+        where: { id: reviewQueueId },
+        data: {
+          status: "pending",
+          reviewNotes: [
+            review.reviewNotes?.slice(0, 500),
+            `Retenu par la porte qualité : ${porte.raison.slice(0, 400)}`,
+          ]
+            .filter(Boolean)
+            .join("\n")
+            .slice(0, 1000),
+        },
+      });
+      return;
+    }
   }
 
   // Troncature défensive aux limites des colonnes DB (article_translations :

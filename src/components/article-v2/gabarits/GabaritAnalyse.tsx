@@ -50,6 +50,10 @@ interface MiseEnPageAnalyseProps {
   readonly ctaSecondaire?: LienSecondaire;
   /** Blocs propres au gabarit, rendus dans l'ouverture juste après « En bref ». */
   readonly ouvertureExtra?: ReactNode;
+  /** Enveloppe du corps (ex. variable CSS d'un compteur) ; défaut : le corps tel quel. */
+  readonly enveloppeCorps?: (corps: ReactNode) => ReactNode;
+  /** Blocs rendus juste après le corps, avant l'encart du milieu. */
+  readonly apresCorps?: ReactNode;
 }
 
 export function MiseEnPageAnalyse({
@@ -57,6 +61,8 @@ export function MiseEnPageAnalyse({
   cta,
   ctaSecondaire,
   ouvertureExtra,
+  enveloppeCorps,
+  apresCorps,
 }: MiseEnPageAnalyseProps) {
   const t = useTranslations("articleV2");
   const c = useTranslations("articleGabarits.commun");
@@ -124,7 +130,8 @@ export function MiseEnPageAnalyse({
         colonne={<ColonneActionsConnectee gabarit={p.gabarit} />}
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
-        <CorpsArticle html={p.html} blocs={p.blocs} />
+        {(enveloppeCorps ?? ((c: ReactNode) => c))(<CorpsArticle html={p.html} blocs={p.blocs} />)}
+        {apresCorps}
         <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq

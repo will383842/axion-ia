@@ -47,7 +47,7 @@ describe("câblage (sources) du sitemap et de la page", () => {
     const src = lire("src/app/sitemap.ts");
     expect(src).toMatch(/key === "\/guides" && !hubGuidesIndexable\) continue/);
     expect(src).toMatch(
-      /buildPagesSitemap\(editorialFor\("pages"\), await hubGuidesEstIndexable\(\)\)/,
+      /buildPagesSitemap\(\s*editorialFor\("pages"\),\s*await hubGuidesEstIndexable\(\)[,)]/,
     );
   });
 

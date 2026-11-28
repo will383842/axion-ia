@@ -61,6 +61,7 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261128120000_apporteurs_purge_rgpd",
       "20261128140000_apporteurs_numeros_pieces_uniques",
       "20261128150000_apporteurs_numeros_pieces_reservation",
+      "20261128155000_apporteurs_annulations_rendez_vous",
       "20261128160000_pilotage_seo_geo_panel",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(

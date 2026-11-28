@@ -1,1 +1,14 @@
-{}
+{
+  "neutralite": {
+    "methode": "Notre méthode, en une phrase :",
+    "texte": "cette sélection ne classe aucune offre d’Axion-IA et n’est financée par aucun éditeur."
+  },
+  "sur": "sur",
+  "bandeau": {
+    "titre": "Par où commencer ?",
+    "texte": "Inutile de tout essayer : choisissez une option, testez-la sur une tâche réelle de votre équipe, puis décidez."
+  },
+  "tableau": {
+    "titre": "Tableau de synthèse"
+  }
+}
