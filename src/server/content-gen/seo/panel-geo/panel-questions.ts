@@ -1,5 +1,7 @@
 /**
- * Panel GEO (P11) : liste PROPOSÉE de 30 questions de dirigeants de TPE et PME françaises.
+ * Panel GEO (P11) : liste PROPOSÉE (v1) de 30 questions de dirigeants de TPE et PME françaises.
+ * Questions 1 à 24 : intention prestataire (dont 8 par secteur) ; 25 à 30 : informatives.
+ * Sans marque, sans année, sans promesse. Identifiants Q01 à Q30 : une fois en ligne, ne jamais en réutiliser un.
  *
  * ⛔ À VALIDER PAR WILL. Cette liste n'est PAS utilisée tant qu'elle n'est pas validée : le panel ne
  * lit que la liste posée dans la console (clé `geo_panel_questions` de `la table de réglages du contenu`, avec
@@ -23,39 +25,39 @@ export interface ListeQuestionsPanel {
 }
 
 export const LISTE_PROPOSEE: ListeQuestionsPanel = {
-  version: "v0-proposee",
+  version: "v1",
   validee: false, // « à valider par Will »
   questions: [
-    "Avec cinq salariés, l'IA vaut-elle vraiment le coup pour mon entreprise ?",
-    "Quelles tâches de dirigeant puis-je confier à l'IA dès cette semaine ?",
-    "Dans une PME de vingt personnes, à quoi ressemble une semaine de travail avec l'IA ?",
-    "Peut-on automatiser les notes de frais avec l'IA dans une petite entreprise ?",
-    "Faut-il changer nos ordinateurs pour utiliser l'IA ?",
-    "Combien de temps faut-il à un salarié pour être à l'aise avec l'IA ?",
-    "Combien d'heures par semaine l'IA peut-elle faire gagner à une PME ?",
-    "Comment rédiger une charte d'utilisation de l'IA pour mes salariés ?",
-    "Un salarié a collé un fichier clients dans ChatGPT : que faire tout de suite ?",
-    "Un salarié refuse d'utiliser l'IA : puis-je l'y obliger ?",
-    "Qui est responsable quand un document préparé avec l'IA contient une erreur ?",
-    "L'AI Act concerne-t-il une TPE qui utilise simplement ChatGPT ?",
-    "Que dit le RGPD sur l'usage de l'IA avec des données de clients ?",
-    "Quelles bases de sécurité informatique mettre en place avant de déployer l'IA ?",
-    "Un assistant IA généraliste ou un outil propre à mon métier : que choisir ?",
-    "Formation IA générique ou formation sur nos propres dossiers : quelle différence pour mes équipes ?",
-    "Comment répondre aux avis Google avec l'IA sans paraître automatique ?",
-    "L'IA peut-elle m'aider à préparer des devis plus vite quand je suis artisan ?",
-    "L'IA peut-elle m'aider à répondre à un appel d'offres public ?",
-    "Mes fichiers sont en désordre : est-ce que cela empêche d'utiliser l'IA ?",
-    "L'IA peut-elle construire un planning d'équipe plus juste et plus rapide ?",
-    "Comment l'IA peut-elle m'aider à repérer que je paie trop cher un fournisseur ?",
-    "Quelle formation à l'IA choisir pour mes salariés et comment la financer ?",
+    "Par où commencer pour introduire l'IA dans une entreprise de moins de cinquante salariés ?",
+    "Quel prestataire peut réaliser un audit IA dans une PME française ?",
+    "Combien coûte un audit IA pour une petite entreprise et que doit-il contenir ?",
+    "Quel organisme propose des formations à l'IA en intra-entreprise pour les PME ?",
     "Comment choisir un organisme de formation à l'IA sérieux pour une PME ?",
-    "Les TPE utilisent-elles moins l'IA que les PME ? Quels sont les chiffres ?",
-    "Comment l'IA peut-elle aider à rédiger une demande de subvention ?",
-    "Que peut faire l'IA pour le service client d'une petite entreprise sans perdre le contact humain ?",
-    "Comment former mes équipes à l'IA sans bloquer la production pendant une journée ?",
-    "Quels sont les risques de confidentialité à connaître avant de confier des documents à une IA ?",
-    "Par où commencer pour introduire l'IA dans mon entreprise de moins de cinquante salariés ?",
+    "Quelle formation à l'IA choisir pour des salariés qui n'y connaissent rien ?",
+    "Une formation à l'IA pour mes salariés peut-elle être prise en charge par mon OPCO ?",
+    "Existe-t-il une formation à l'IA d'une journée, sur place, pour un dirigeant et son équipe ?",
+    "Qui peut accompagner un dirigeant de PME, en individuel, pour utiliser l'IA dans son propre travail ?",
+    "Formation à l'IA d'une journée dans nos locaux ou formation en ligne : que choisir pour une PME ?",
+    "Quel prestataire peut mettre en place des outils d'IA dans une PME et former l'équipe à s'en servir ?",
+    "Cabinet de conseil, entreprise de services numériques ou organisme de formation : à qui confier le lancement de l'IA dans une PME ?",
+    "Où trouver une formation à l'IA adaptée aux artisans du bâtiment ?",
+    "Quelle formation à l'IA pour l'équipe d'un cabinet d'expertise comptable ?",
+    "Qui peut installer un assistant IA pour le service client d'une petite entreprise sans perdre le contact humain ?",
+    "Qui peut aider une PME à apparaître dans les réponses des assistants IA ?",
+    "Formation IA générique ou formation sur nos propres dossiers : quelle différence pour mes équipes ?",
+    "Comment former mes équipes à l'IA sans désorganiser la production ?",
+    "Quelle formation à l'IA pour un cabinet médical, une pharmacie ou une clinique, dans le respect du secret médical ?",
+    "Qui peut former un cabinet d'avocats ou une étude de notaire à l'IA en gardant les dossiers confidentiels ?",
+    "Comment un restaurant ou un hôtel peut-il utiliser l'IA, et qui peut former l'équipe ?",
+    "Quelle formation à l'IA pour une agence immobilière ?",
+    "Qui peut accompagner une PME industrielle ou une entreprise de transport pour utiliser l'IA dans son organisation ?",
+    "Quelle formation à l'IA pour un commerce de proximité ou une boutique en ligne ?",
+    "Avec cinq salariés, l'IA vaut-elle vraiment le coup pour mon entreprise ?",
+    "Comment rédiger une charte d'utilisation de l'IA pour mes salariés ?",
+    "Un salarié a collé un fichier clients dans un outil d'IA grand public : que faire tout de suite ?",
+    "L'AI Act concerne-t-il une TPE qui se sert simplement d'un assistant IA grand public ?",
+    "Que dit le RGPD sur l'usage de l'IA avec des données de clients ?",
+    "L'IA peut-elle m'aider à préparer des devis plus vite quand je suis artisan ?",
   ].map((texte, i) => ({ id: `Q${String(i + 1).padStart(2, "0")}`, texte })),
 };
 
