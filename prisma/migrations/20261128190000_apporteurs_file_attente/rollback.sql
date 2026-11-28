@@ -1,4 +1,4 @@
--- Rollback de 20261128170000_apporteurs_file_attente.
+-- Rollback de 20261128190000_apporteurs_file_attente.
 -- Seulement sur décision du fondateur : la table porte les déclarations conservées en attente (art. 3.5).
 -- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde.
 --   COPY "declarations_en_attente" TO '/root/travaux-claude/declarations_en_attente.csv' WITH CSV HEADER;

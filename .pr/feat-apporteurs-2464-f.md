@@ -23,7 +23,7 @@ Fichiers :
 - Console : page de lecture seule `apporteurs/entreprises/file-attente` (rangs 1 et 2, tri par horodatage seulement).
 - Aucun e-mail sur la bascule des présentations. `contrat-v2.ts` et `CONTRAT_VERSION` ne sont pas touchés.
 
-### Migration : oui — `20261128170000_apporteurs_file_attente`
+### Migration : oui — `20261128190000_apporteurs_file_attente`
 
 Additive, avec `rollback.sql` (sauvegarde `COPY` d'abord, `RENAME … _retire_20261128`). Table neuve `declarations_en_attente`, sans clé étrangère, états en `VARCHAR` + 3 `CHECK`, index unique partiel `(cle_file) WHERE statut = 'informee'`, déclencheur `BEFORE UPDATE` (transitions permises, colonnes d'identité figées) et `BEFORE DELETE` (aucune suppression). Tout lecteur tolère la table absente (`P2021`). L'écriture « Pas disponible » ne la tolère pas (une transaction Postgres ne survit pas à une table absente) ; l'entrypoint migre avant de servir.
 
