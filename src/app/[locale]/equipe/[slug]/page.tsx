@@ -5,11 +5,13 @@
  *
  *  - `slug === "williams"` → fiche d'AUTORITÉ D'ENTITÉ du fondateur, servie
  *    depuis des définitions statiques (`content/equipe/williams.ts` +
- *    `lib/seo/williams-person.ts`), rendue par `<FounderProfile>`. Elle ne
+ *    `lib/seo/williams-person.ts`), rendue par le gabarit unique
+ *    `<ProfilCollaborateur>` (via `ficheDepuisWilliams()`). Elle ne
  *    dépend d'aucun seed : la page et l'entité `Person` fonctionnent dès le
  *    déploiement, y compris quand le build tourne sur la base stub.
- *  - tout autre slug → `AuthorProfile` en DB (ex. Manon, persona éditoriale IA),
- *    rendu par le gabarit minimal historique.
+ *  - sinon, ordre de résolution (`resoudreFicheEquipe`) : `TeamMember` publié (gabarit
+ *    `<ProfilCollaborateur>`, prénom seul, consentements respectés), puis `AuthorProfile`
+ *    actif (ex. Manon, persona éditoriale IA, gabarit minimal historique). Sinon 404.
  *
  * Anti-doorway HCU 2024 : la page n'agrège pas de listes — chaque slug = page
  * dédiée avec contenu unique.
@@ -23,22 +25,23 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
-import { prisma } from "@/lib/prisma";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildFaqJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { SITE_URL, buildProductMetadata } from "@/lib/seo";
+import { FOUNDER } from "@/lib/brand";
+import { WILLIAMS_FONCTION } from "@/content/equipe/williams";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
-import {
-  buildPersonWilliamsJsonLd,
-  buildProfilePageWilliamsJsonLd,
-} from "@/lib/seo/williams-person";
-import { FounderProfile } from "@/components/sections/FounderProfile";
-import { buildWilliamsFaq, WILLIAMS_REVISION_DATE } from "@/content/equipe/williams";
-import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
+import { buildGrapheCollaborateur } from "@/lib/seo/collaborateur-jsonld";
+import { ProfilCollaborateur } from "@/components/equipe/ProfilCollaborateur";
+import { estIndexable, fichePublique, ficheDepuisWilliams } from "@/lib/equipe";
 import { LIBELLE_PLUME_IA, SLUG_PLUME_IA } from "@/lib/seo/plume-ia";
+import { cache } from "react";
+import { resoudreFicheEquipe as resoudreSansCache } from "@/lib/equipe/collaborateurs";
+import { ficheDepuisMembre } from "@/lib/equipe/depuis-membre";
+import { evaluerIndexabilite } from "@/lib/equipe/donnees/indexabilite";
 // Doctrine financement : les Q/R OPCO / France Travail ne sont émises que si la
 // certification Qualiopi est RÉELLEMENT obtenue. Le drapeau est la garde
 // primaire — cf. `server/qualiopi/config/flag.ts`.
@@ -46,6 +49,9 @@ import {
   isQualiopiCertificationObtenue,
   isQualiopiPublicDisclosureEnabled,
 } from "@/server/qualiopi/config/flag";
+
+// Une seule lecture par rendu (métadonnées + page).
+const resoudreFicheEquipe = cache(resoudreSansCache);
 
 // ISR 24h : la fiche fondateur est statique et la bio Manon ne change quasiment
 // jamais (édition via admin /content-gen/author/manon) → cache CDN agressif
@@ -65,24 +71,56 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Williams = fiche fondateur statique (vraie personne, pas une persona DB).
   if (slug === "williams") {
-    return buildProductMetadata({
+    const { contenu } = ficheDepuisWilliams();
+    const meta = await buildProductMetadata({
       locale,
       path: `/equipe/williams`,
-      // Le titre porte la marque : `buildProductMetadata` bascule alors en
-      // `{ absolute }` et n'appose pas une seconde fois « · Axion-IA ».
-      title: `${FOUNDER.fullName} — fondateur d'Axion-IA, expert IA en entreprise`,
-      // Audit GEO 2026-11-11 : la description d'entité reprend le slogan déjà publié
-      // (« partenaire IA des PME et des TPE », cf. llms.txt / `EN_BREF_ACCUEIL`), sans
-      // ville ni « agence ». ≤ 155 caractères, verrouillé par le test de la page.
-      description: `${FOUNDER.fullName}, fondateur et CEO d'Axion-IA, partenaire IA des PME et des TPE : audit, formation et mise en place de l'IA, partout en France.`,
+      title: contenu.titreSeo,
+      description: contenu.metaDescription,
       alternates: { fr: `/equipe/williams` },
-      ogEyebrow: "Fondateur & CEO",
+      ogEyebrow: WILLIAMS_FONCTION,
     });
+    // 🔑 Titre ABSOLU : le titre SEO est écrit tel quel, sans le suffixe « · Axion-IA » du
+    // gabarit racine. Image de partage : le portrait (`/api/og/equipe-williams`), pour ce
+    // slug seulement ; les autres fiches gardent la carte générique `/api/og`.
+    const imageWilliams = {
+      url: `${SITE_URL}/api/og/equipe-williams`,
+      width: 1200,
+      height: 630,
+      alt: `${FOUNDER.fullName}, ${WILLIAMS_FONCTION}`,
+    };
+    return {
+      ...meta,
+      title: { absolute: contenu.titreSeo },
+      openGraph: { ...meta.openGraph, images: [imageWilliams] },
+      twitter: { ...meta.twitter, images: [imageWilliams] } as Metadata["twitter"],
+    };
   }
 
-  const profile = await prisma.authorProfile.findUnique({ where: { slug } });
-  if (!profile || !profile.isActive) return { robots: "noindex, nofollow" };
+  const resolu = await resoudreFicheEquipe(slug);
+  if (!resolu || resolu.type === "williams") return { robots: "noindex, nofollow" };
 
+  if (resolu.type === "membre") {
+    const { fiche, contenu } = ficheDepuisMembre(resolu.membre);
+    const publique = fichePublique(fiche);
+    if (!publique || publique.slug !== fiche.slug) return { robots: "noindex, nofollow" };
+    const meta = await buildProductMetadata({
+      locale,
+      path: `/equipe/${publique.slug}`,
+      title: contenu.titreSeo,
+      description: contenu.metaDescription,
+      alternates: { fr: `/equipe/${publique.slug}` },
+    });
+    // Indexée seulement si la règle d'indexation est satisfaite ; sinon visible mais `noindex, follow`.
+    return {
+      ...meta,
+      robots: evaluerIndexabilite(resolu.membre).indexable
+        ? meta.robots
+        : { index: false, follow: true },
+    };
+  }
+
+  const profile = resolu.profil;
   const libelleAuteur = profile.slug === SLUG_PLUME_IA ? LIBELLE_PLUME_IA : profile.jobTitle;
   return buildProductMetadata({
     locale,
@@ -116,7 +154,7 @@ export default async function PublicAuthorPage({ params }: Props) {
   // ── Fiche fondateur ────────────────────────────────────────────────────
   //
   // Séparée du chemin DB dès le début : elle n'a aucune requête à faire, et
-  // mélanger les deux gabarits obligeait à traiter `WILLIAMS_PROFILE` comme un
+  // mélanger les deux gabarits obligeait à le traiter comme un
   // `AuthorProfile` dégradé — c'est ce qui avait fini par lui donner la même
   // page pauvre qu'une persona.
   if (slug === "williams") {
@@ -124,55 +162,65 @@ export default async function PublicAuthorPage({ params }: Props) {
     // certification réelle conditionnent les Q/R de financement de la FAQ.
     const financementPublic =
       isQualiopiPublicDisclosureEnabled() && isQualiopiCertificationObtenue();
-    const faq = buildWilliamsFaq({ certificationObtenue: financementPublic });
+    const { fiche, contenu } = ficheDepuisWilliams({ financementPublic });
+    const publique = fichePublique(fiche);
+    if (!publique) notFound();
 
     return (
       <>
         {/*
-          Un seul `<script>` `@graph` plutôt que quatre balises : Person
-          (l'entité), ProfilePage (le type qui dit « cette URL EST la page de
-          cette personne »), FAQPage et BreadcrumbList — `<Breadcrumbs>` reçoit
-          donc `emitJsonLd={false}` plus bas. Rendu `inline` volontairement :
-          les crawlers de LLM n'exécutent pas tous le JS, et c'est précisément
-          eux qu'on vise ici.
+          Un seul `<script>` `@graph` : Person (l'entité, déléguée à
+          `williams-person.ts`), ProfilePage, BreadcrumbList (Accueil > Équipe >
+          Williams Jullin) et FAQPage. `<Breadcrumbs>` reçoit donc
+          `emitJsonLd={false}`. Rendu `inline` : les crawlers de LLM
+          n'exécutent pas tous le JS, et c'est eux qu'on vise.
         */}
         <JsonLdGraph
-          schemas={[
-            buildPersonWilliamsJsonLd(locale),
-            buildProfilePageWilliamsJsonLd(),
-            buildFaqJsonLd({
-              items: faq.map((item) => ({ question: item.question, answer: item.answer })),
-              // La FAQ d'une fiche fondateur est signée du fondateur — pas de
-              // la persona éditoriale IA, qui est le défaut du helper.
-              authorId: FOUNDER_PERSON_ID,
-              dateModified: WILLIAMS_REVISION_DATE,
-            }) as unknown as Record<string, unknown>,
-            buildBreadcrumbJsonLd({
-              locale: "fr",
-              items: [
-                { name: "Accueil", href: "/" },
-                { name: FOUNDER.fullName, href: FOUNDER.pagePath },
-              ],
-            }) as unknown as Record<string, unknown>,
-          ]}
+          schemas={buildGrapheCollaborateur(publique, contenu, { indexable: estIndexable(fiche) })}
         />
         <Container className="border-border border-b py-3">
-          {/* `emitJsonLd={false}` : le BreadcrumbList est déjà dans le `@graph`
-              unique ci-dessus — deux fois le même fil d'Ariane ne le rend pas
-              plus vrai, seulement plus lourd à parser. */}
           <Breadcrumbs
             emitJsonLd={false}
-            items={[{ href: `/equipe/williams`, label: FOUNDER.fullName }]}
+            items={[
+              { href: "/equipe", label: "Équipe" },
+              { href: `/equipe/williams`, label: publique.nom },
+            ]}
           />
         </Container>
-        <FounderProfile faq={faq} />
+        <ProfilCollaborateur fiche={publique} contenu={contenu} />
+      </>
+    );
+  }
+
+  const resolu = await resoudreFicheEquipe(slug);
+  if (!resolu) notFound();
+
+  // ── Collaborateur publié en base ───────────────────────────────────────
+  if (resolu.type === "membre") {
+    const { fiche, contenu } = ficheDepuisMembre(resolu.membre);
+    const publique = fichePublique(fiche);
+    if (!publique || publique.slug !== fiche.slug) notFound();
+    const { indexable } = evaluerIndexabilite(resolu.membre);
+    return (
+      <>
+        <JsonLdGraph schemas={buildGrapheCollaborateur(publique, contenu, { indexable })} />
+        <Container className="border-border border-b py-3">
+          <Breadcrumbs
+            emitJsonLd={false}
+            items={[
+              { href: "/equipe", label: "Équipe" },
+              { href: `/equipe/${publique.slug}`, label: publique.nom },
+            ]}
+          />
+        </Container>
+        <ProfilCollaborateur fiche={publique} contenu={contenu} />
       </>
     );
   }
 
   // ── Fiches persona / auteurs en base ───────────────────────────────────
-  const profile = await prisma.authorProfile.findUnique({ where: { slug } });
-  if (!profile || !profile.isActive) notFound();
+  if (resolu.type !== "auteur") notFound();
+  const profile = resolu.profil;
 
   const personJsonLd = profile.slug === "manon" ? buildPersonManonJsonLd(profile) : null;
 
