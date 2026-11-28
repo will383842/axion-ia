@@ -45,11 +45,21 @@ describe("plafond de sécurité = minimum de toutes les limites", () => {
     expect(
       calculerPlafondSecurite(reglagePlafondDepuisConfig({ plafondJour: 0 }), []).plafond,
     ).toBe(0);
-    for (const v of ["99", -1, NaN, Infinity, null]) {
-      expect(reglagePlafondDepuisConfig({ plafondJour: v }).plafondJour).toBe(
-        PLAFOND_SECURITE_PAR_DEFAUT,
-      );
+    expect(reglagePlafondDepuisConfig({ plafondJour: null }).plafondJour).toBe(
+      PLAFOND_SECURITE_PAR_DEFAUT,
+    );
+    for (const v of ["0", "99", -1, NaN, Infinity]) {
+      expect(reglagePlafondDepuisConfig({ plafondJour: v }).plafondJour).toBe(0);
     }
+  });
+  it("daily_generation_cap { maxPerDay } entre dans le min()", () => {
+    expect(plafondDepuisCapGeneration({ maxPerDay: 15 })).toBe(15);
+    expect(plafondDepuisCapGeneration({ maxPerDay: "x" })).toBeNull();
+    expect(plafondDepuisCapGeneration(null)).toBeNull();
+    const r = reglagePlafondDepuisConfig({ plafondJour: 50 });
+    expect(
+      calculerPlafondSecurite(r, [plafondDepuisCapGeneration({ maxPerDay: 15 })]).plafond,
+    ).toBe(15);
   });
 });
 
