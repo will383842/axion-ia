@@ -134,3 +134,11 @@ describe("tour 4 : adresse e-mail dans le chemin, erreurs sans donnée personnel
     expect(normaliserPageSource("https://site.fr/profil/jean")).not.toBeNull();
   });
 });
+
+describe("tour 6 : e-mail dans une ancre ou un chemin cible", () => {
+  it("refuse", () => {
+    expect(normaliserAncre("écrivez à jean.dupont@gmail.com")).toBeNull();
+    expect(normaliserCible("/fr/contact/jean@x.fr")).toBeNull();
+    expect(normaliserAncre("guide IA")).toBe("guide IA");
+  });
+});

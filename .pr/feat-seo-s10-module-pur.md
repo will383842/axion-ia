@@ -23,12 +23,18 @@ Dans `src/server/seo-pilotage/liens/` :
 
 ## Vérifications
 
-`pnpm typecheck`, `vitest` ciblé (102 tests) et `prettier --check` passent.
+`pnpm install`, `prisma generate`, `pnpm typecheck`, `vitest` ciblé (126 tests du dossier), `content-gen:isolation-check` (deux fichiers nommés exemptés dans `scripts/content-gen/isolation-check.ts`), `image-bank:isolation-check`, `pnpm lint` (0 erreur) et `prettier --check` passent. `origin/main` intégré par merge.
 
-Relecture par un sous-agent opus : trois tours. Le dernier tour a relevé des défauts (domaines sans schéma dans les brouillons, plafond du chemin cible, e-mail dans la requête, imports relatifs du verrou) que j'ai corrigés ensuite ; ces corrections n'ont pas été relues.
+Relecture par un sous-agent opus : trois tours dans cette session.
 
-VERDICT OPUS : À CORRIGER
+- Tour 1 : ville du siège dans l'URL du brouillon, contournements « une seule URL », e-mail dans le chemin, e-mail brut dans l'aperçu d'erreur CSV, numéros de ligne, verrou Telegram → corrigés.
+- Tour 2 : e-mail encodé dans l'aperçu, faux refus (Node.js, notre domaine, « ton », « échanges », ponctuation après l'URL), ville déguisée, cellule multi-lignes → corrigés.
+- Tour 3 : gentilé « grenoblois », faux domaines d'Axion IA (`axion-ia.com.evil.fr`), e-mail dans une ancre ou un chemin cible → corrigés ensuite, mais ces dernières corrections n'ont pas été relues (limite de trois tours atteinte).
+
+Les numéros de ligne des erreurs CSV sont des rangs de lignes de données (hors en-tête et lignes vides).
+
+VERDICT OPUS : À CORRIGER (le tour 3 a rendu « À CORRIGER » ; ses trois points sont corrigés et testés, non relus)
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
-https://claude.ai/code/session_01E7vxGeXF9Sc8jf4e41EFHM
+https://claude.ai/code/session_01E7vxGbfMTwWQVT8JULujyJ

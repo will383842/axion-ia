@@ -19,7 +19,7 @@ export const MENTION_INFORMATION =
 
 const TUTOIEMENT = /(?<![\p{L}])(?:tu|toi|tes)(?![\p{L}])/iu;
 /** Ville du siège : jugée sur le texte COMPLET (URL comprise), après retrait des accents, des caractères invisibles et de la pleine chasse. */
-const MOTIF_VILLE = /g[\s._-]*r[\s._-]*e[\s._-]*n[\s._-]*o[\s._-]*b[\s._-]*l[\s._-]*e/i;
+const MOTIF_VILLE = /g[\s._-]*r[\s._-]*e[\s._-]*n[\s._-]*o[\s._-]*b[\s._-]*l/i;
 function sansDecor(t: string): string {
   return t.normalize("NFKD").replace(/[\u0300-\u036f\u00ad\u200b-\u200f\u2060\ufeff]/g, "");
 }
@@ -65,10 +65,10 @@ export function controlerBrouillon(
   // Adresse sans schéma (« www.autre-site.fr ») : aussi une URL.
   // Toute adresse sans schéma (« voir bit.ly/abc », « www.site.de », « exemple.dev ») compte comme une URL.
   // Adresses e-mail (signature) et domaine d'Axion IA : pas des « autres URL ».
-  const reste = sansLien
+  const reste = sansDecor(sansLien)
     .replace(/https?:\/\/\S+/gi, " ")
     .replace(/\S+@\S+/g, " ")
-    .replace(/(?:www\.)?axion-ia\.com\S*/gi, " ");
+    .replace(/(?<![\w.-])(?:www\.)?axion-ia\.com(?![\w-]|\.[a-z])(?:[/?#]\S*)?/gi, " ");
   const sansSchema =
     // tout autre schéma (ftp://…), ou adresse relative au protocole (//hote/…)
     /[a-z][a-z0-9+.-]*:\/\//i.test(reste) ||

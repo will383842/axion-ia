@@ -96,6 +96,7 @@ export function normaliserCible(brut: string): string | null {
   )) {
     return null;
   }
+  if (/[^\s/@]+(?:@|%40)[^\s/@]+\.[a-z]{2,}/i.test(s)) return null;
   const chemin = normaliserChemin(s);
   // Plafond de la spec (§ 3.1) : refusé, jamais tronqué.
   return chemin !== null && chemin.length <= CHEMIN_CIBLE_MAX ? chemin : null;
@@ -103,6 +104,8 @@ export function normaliserCible(brut: string): string | null {
 
 export function normaliserAncre(brut: string | null | undefined): string | null {
   const s = (brut ?? "").replace(/\s+/g, " ").trim().slice(0, ANCRE_MAX);
+  // Une adresse e-mail n'est jamais gardée (donnée personnelle) : ancre refusée.
+  if (/[^\s@]+@[^\s@]+\.[a-z]{2,}/i.test(s)) return null;
   return s || null;
 }
 

@@ -160,3 +160,12 @@ describe("tour 5 : faux refus et déguisements", () => {
     expect(controlerBrouillon(`${BON} Résultat garanti.`, URL_PAGE).valide).toBe(false);
   });
 });
+
+describe("tour 6", () => {
+  it("refuse le gentilé et les faux domaines d'Axion IA", () => {
+    expect(controlerBrouillon(`${BON} Entreprises grenobloises.`, URL_PAGE).valide).toBe(false);
+    for (const u of ["axion-ia.com.evil.fr/x", "monsite-axion-ia.com", "café.fr"]) {
+      expect(controlerBrouillon(`${BON} Voir ${u}`, URL_PAGE).motifs).toContain("autre_url");
+    }
+  });
+});
