@@ -1,14 +1,37 @@
 // @vitest-environment node
 // Registre des sources de la lecture plein écran (lot I0b-3) : un registre, pas des `if`.
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const h = vi.hoisted(() => ({
+  auth: vi.fn(),
+  subFindUnique: vi.fn(),
+  jobFindUnique: vi.fn(),
+}));
+vi.mock("@/auth", () => ({ auth: h.auth }));
+vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.9" }));
+vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    submissionReply: { findUnique: h.subFindUnique },
+    jobApplicationReply: { findUnique: h.jobFindUnique },
+    emailLogContent: { findUnique: vi.fn() },
+    activityLog: { create: vi.fn() },
+  },
+}));
 import { VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import type { EmailJobName } from "@/server/queue/types";
 import { CATALOGUE } from "@/server/email/apercu/catalogue";
 import { SOURCES_LECTURE, corpsServi, enTetesLecturePleinEcran } from "../lecture-plein-ecran";
+import { GET } from "@/app/[locale]/(admin)/[adminPrefix]/emails/lecture/[source]/[id]/route";
 
 describe("registre des sources", () => {
-  it("contient envoye et gabarit, chacun avec sa garde de rôle et de forme d'identifiant", () => {
-    expect(Object.keys(SOURCES_LECTURE).sort()).toEqual(["envoye", "gabarit"]);
+  it("contient envoye, gabarit et les deux réponses écrites à la main, chacun avec sa garde de rôle et de forme d'identifiant", () => {
+    expect(Object.keys(SOURCES_LECTURE).sort()).toEqual([
+      "envoye",
+      "gabarit",
+      "reponse-candidature",
+      "reponse-demande",
+    ]);
     for (const s of Object.values(SOURCES_LECTURE)) {
       expect(typeof s.habilite).toBe("function");
       expect(typeof s.idValide).toBe("function");
@@ -160,3 +183,84 @@ async function gabaritCharger(): Promise<{ testes: [string, string][]; ignores: 
   }
   return { testes, ignores };
 }
+
+// ─── I3-1 : sources `reponse-demande` et `reponse-candidature` ──────────────────────────────
+describe("I3-1 : réponses écrites à la main au registre", () => {
+  const ID = "cm0abcdefghijklmnopqrstuv";
+  const JETON = "Zq7rT9xWm2LpV4nB8cD6fH1jK3sA5gYe0uIoPlMkNb";
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.stubEnv("DATABASE_URL", "postgresql://u:p@db.example:5432/x");
+    vi.stubEnv("ADMIN_URL_PREFIX", "pfx-test");
+  });
+
+  it("droits : reader lit une réponse de demande, jamais une réponse de candidat", () => {
+    expect(SOURCES_LECTURE["reponse-demande"]!.habilite("reader")).toBe(true);
+    expect(SOURCES_LECTURE["reponse-candidature"]!.habilite("reader")).toBe(false);
+    expect(SOURCES_LECTURE["reponse-candidature"]!.habilite("admin")).toBe(true);
+    for (const n of ["reponse-demande", "reponse-candidature"]) {
+      expect(SOURCES_LECTURE[n]!.habilite(undefined)).toBe(false);
+      expect(SOURCES_LECTURE[n]!.habilite(null)).toBe(false);
+    }
+  });
+
+  it("forme d'identifiant : un cuid, rien d'autre", () => {
+    for (const n of ["reponse-demande", "reponse-candidature"]) {
+      expect(SOURCES_LECTURE[n]!.idValide(ID)).toBe(true);
+      expect(SOURCES_LECTURE[n]!.idValide("../x")).toBe(false);
+      expect(SOURCES_LECTURE[n]!.idValide("")).toBe(false);
+      expect(SOURCES_LECTURE[n]!.idValide("a b")).toBe(false);
+    }
+  });
+
+  it("le corps servi est MASQUÉ : le jeton d'opposition stocké n'en sort jamais", async () => {
+    h.subFindUnique.mockResolvedValue({
+      subject: "Objet",
+      bodyHtml: `<p>Salut</p><a href="https://axion-ia.com/opposition?t=${JETON}">Se désinscrire</a>`,
+      bodyText: `Salut https://axion-ia.com/opposition?t=${JETON}`,
+    });
+    const r = await SOURCES_LECTURE["reponse-demande"]!.charger(ID, {});
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.html).not.toContain(JETON);
+      expect(r.html).not.toMatch(/href\s*=/i);
+      expect(r.html).toContain("Se désinscrire");
+    }
+  });
+
+  it("identifiant inconnu : phrase d'échec, pas d'exception", async () => {
+    h.jobFindUnique.mockResolvedValue(null);
+    const r = await SOURCES_LECTURE["reponse-candidature"]!.charger(ID, {});
+    expect(r.ok).toBe(false);
+  });
+
+  const appel = (source: string) =>
+    GET(new Request(`https://exemple.invalid/fr/pfx-test/emails/lecture/${source}/${ID}`), {
+      params: Promise.resolve({
+        locale: "fr",
+        adminPrefix: "pfx-test",
+        source,
+        id: ID,
+      }),
+    });
+
+  it("7) route plein écran : reponse-candidature avec reader → 403, base jamais lue", async () => {
+    h.auth.mockResolvedValue({ user: { id: "u1", role: "reader" } });
+    const r = await appel("reponse-candidature");
+    expect(r.status).toBe(403);
+    expect(h.jobFindUnique).not.toHaveBeenCalled();
+  });
+
+  it("route plein écran : reponse-demande avec reader → 200, corps masqué", async () => {
+    h.auth.mockResolvedValue({ user: { id: "u1", role: "reader" } });
+    h.subFindUnique.mockResolvedValue({
+      subject: "Objet",
+      bodyHtml: `<p>Salut</p><a href="https://axion-ia.com/opposition?t=${JETON}">x</a>`,
+      bodyText: "Salut",
+    });
+    const r = await appel("reponse-demande");
+    expect(r.status).toBe(200);
+    expect(await r.text()).not.toContain(JETON);
+  });
+});
