@@ -15,6 +15,7 @@ import {
   PATTERN_SEO_INGESTION,
   PATTERN_SEO_INSPECTION,
   PATTERN_SEO_ROBOTS_IA,
+  PATTERN_SEO_PANEL_GEO,
   PATTERN_SEO_PURGE,
   PATTERN_SEO_RECALCUL,
   PATTERN_SEO_RATTRAPAGE,
@@ -1817,6 +1818,7 @@ export async function bootRepeatableJobs(): Promise<void> {
       { tache: "purge", pattern: PATTERN_SEO_PURGE, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "robots-ia", pattern: PATTERN_SEO_ROBOTS_IA, tz: FUSEAU_SEO_PILOTAGE },
       { tache: "recalcul", pattern: PATTERN_SEO_RECALCUL, tz: FUSEAU_SEO_PILOTAGE },
+      { tache: "panel-geo", pattern: PATTERN_SEO_PANEL_GEO, tz: FUSEAU_SEO_PILOTAGE },
     ] as const;
     for (const { tache, pattern, tz } of programmeSeo) {
       await seoPilotageQueue.add(
