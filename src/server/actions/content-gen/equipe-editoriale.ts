@@ -38,6 +38,13 @@ import {
 } from "@/server/content-gen/equipe/journal";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 import { approveReview, requestEdits } from "./review";
+import { buildArticlePath } from "@/server/content-gen/indexing/url-builder";
+import { normaliserChemin } from "@/server/seo-pilotage/donnees/chemins";
+import {
+  calculerDelais,
+  medianeDelaiHeures,
+  type DelaiArticle,
+} from "@/server/seo-pilotage/delai-indexation/calcul";
 
 const IdSchema = z.string().min(1).max(64);
 
@@ -58,10 +65,52 @@ export interface ArticleARelire {
   readonly creeLe: Date;
 }
 
+export interface DelaisIndexation {
+  readonly articles: ReadonlyArray<DelaiArticle>;
+  /** Médiane des délais (heures) des articles publiés depuis 30 jours ; `null` = aucune mesure. */
+  readonly medianeHeures30j: number | null;
+}
+
 export interface PilotageEquipe {
   readonly etat: EtatEquipe;
   readonly quotas: QuotasEquipe;
   readonly aRelire: ReadonlyArray<ArticleARelire>;
+  /** `null` tant que `DELAI_INDEXATION_AFFICHE` n'est pas « true » (éteint par défaut). */
+  readonly delaisIndexation: DelaisIndexation | null;
+}
+
+export async function lireDelaisIndexation(
+  maintenant: Date = new Date(),
+): Promise<DelaisIndexation> {
+  const depuis = new Date(maintenant.getTime() - 30 * 86_400_000);
+  const rows = await prisma.article.findMany({
+    where: { status: "published", publishedAt: { gte: depuis } },
+    orderBy: { publishedAt: "desc" },
+    take: 100,
+    select: {
+      id: true,
+      publishedAt: true,
+      isNews: true,
+      templateVariant: true,
+      translations: { where: { locale: "fr" }, take: 1, select: { slug: true, title: true } },
+    },
+  });
+  const articles = rows.flatMap((r) => {
+    const t = r.translations[0];
+    if (!t || !r.publishedAt) return [];
+    const chemin = normaliserChemin(
+      buildArticlePath({ slug: t.slug, isNews: r.isNews, templateVariant: r.templateVariant }),
+    );
+    return chemin ? [{ id: r.id, titre: t.title, chemin, publieLe: r.publishedAt }] : [];
+  });
+  const inspections = articles.length
+    ? await prisma.gscInspection.findMany({
+        where: { chemin: { in: articles.map((a) => a.chemin) } },
+        select: { chemin: true, inspecteLe: true, verdict: true },
+      })
+    : [];
+  const delais = calculerDelais(articles, inspections);
+  return { articles: delais, medianeHeures30j: medianeDelaiHeures(delais, maintenant, 30) };
 }
 
 async function renvoisDepuisConsole(reviewId: string): Promise<number> {
@@ -107,7 +156,11 @@ export async function getPilotageEquipe(): Promise<PilotageEquipe> {
       };
     }),
   );
-  return { etat: etatEquipe(marche), quotas, aRelire };
+  const delaisIndexation =
+    process.env.DELAI_INDEXATION_AFFICHE === "true"
+      ? await lireDelaisIndexation().catch(() => null)
+      : null;
+  return { etat: etatEquipe(marche), quotas, aRelire, delaisIndexation };
 }
 
 export async function definirMarcheEquipe(marche: boolean): Promise<void> {
