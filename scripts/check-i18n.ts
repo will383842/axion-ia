@@ -2,6 +2,7 @@
 // in either side. Required by CLAUDE.md v6 §3 (FR canonical, EN mirrors).
 import fs from "node:fs";
 import path from "node:path";
+import { CODES_MESSAGES_GABARITS } from "../src/i18n/messages-gabarits";
 
 type Json = Record<string, unknown>;
 
@@ -29,6 +30,19 @@ function flatten(obj: Json, prefix = ""): string[] {
 
 const fr = new Set(flatten(loadJson(FR_PATH)));
 const en = new Set(flatten(loadJson(EN_PATH)));
+
+// Gabarits d'articles (S2) : src/messages/gabarits/<code>.{fr,en}.json, un couple par code.
+const GABARITS_DIR = path.resolve("src/messages/gabarits");
+for (const code of CODES_MESSAGES_GABARITS) {
+  const frPath = path.join(GABARITS_DIR, `${code}.fr.json`);
+  const enPath = path.join(GABARITS_DIR, `${code}.en.json`);
+  if (!fs.existsSync(frPath) || !fs.existsSync(enPath)) {
+    console.error(`[i18n:check] gabarits/${code} : fichier .fr.json ou .en.json manquant`);
+    process.exit(1);
+  }
+  for (const k of flatten(loadJson(frPath))) fr.add(`articleGabarits.${code}.${k}`);
+  for (const k of flatten(loadJson(enPath))) en.add(`articleGabarits.${code}.${k}`);
+}
 
 const missingInEn = [...fr].filter((k) => !en.has(k));
 const missingInFr = [...en].filter((k) => !fr.has(k));

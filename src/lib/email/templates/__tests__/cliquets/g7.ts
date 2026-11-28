@@ -9,6 +9,7 @@
  */
 export const GROUPE_G7 = {
   gabarits: [
+    "apporteur-file-attente-premier-rang",
     "apporteur-echange-confirme",
     "apporteur-echange-rappel-j1",
     "apporteur-echange-rappel",
@@ -55,6 +56,7 @@ export const GROUPE_G7 = {
   ] as const,
   dettes: {
     nonMigre: [
+      "apporteur-file-attente-premier-rang",
       "apporteur-echange-confirme",
       "apporteur-echange-rappel-j1",
       "apporteur-echange-rappel",
@@ -100,6 +102,7 @@ export const GROUPE_G7 = {
       "vivier-information",
     ],
     salutationHorsOuverture: [
+      "apporteur-file-attente-premier-rang",
       "apporteur-echange-confirme",
       "apporteur-echange-rappel-j1",
       "apporteur-echange-rappel",
