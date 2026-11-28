@@ -146,6 +146,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Campagne de tests par l'interface des apporteurs (27/11/2026) — l'outillage du bac à sable LOCAL pose
+  // une identité d'organisme FICTIVE (SIRET, adresse du siège) par `setQualiopiConfig`, seule voie qui
+  // chiffre le SIRET comme la production ; sans elle l'émission d'un avoir est refusée par la conformité.
+  // Jamais joué par la CI (garde `APPORTEUR_BAC_A_SABLE`, base locale exigée). N'importe que ce module. Nommé seul.
+  "tests/e2e/apporteurs-ui/outillage/monde.ts",
   // Garantie Journée IA : remboursement de la garantie, avoirs via `genererAvoirFacture` (voie unique) —
   // `lecture.ts` consomme donc vraiment la facturation qualiopi. Nommé seul.
   "src/server/garanties-journee-ia/lecture.ts",

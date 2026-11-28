@@ -2,7 +2,7 @@
 //
 // Server component statique, zéro JS client, aucune image. Tous les chiffres
 // viennent de `src/content/barometre-2027/donnees.ts` (fichier unique).
-// Avant BAROMETRE_DATE_OUVERTURE (constante du code, 1er décembre 2026) : noindex, et hors sitemap
+// Avant BAROMETRE_DATE_OUVERTURE (constante du code, 28 novembre 2026) : noindex, et hors sitemap
 // (cf. `src/app/sitemap.ts`).
 
 import type { Metadata } from "next";

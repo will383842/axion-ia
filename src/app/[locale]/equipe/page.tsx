@@ -1,9 +1,9 @@
 /**
  * Hub `/fr/equipe` — « L'équipe d'Axion-IA ».
  *
- * Liste les personnes par catégorie (une catégorie vide n'a pas de section). Aujourd'hui :
- * Williams seul, en Direction, depuis les données statiques. La carte de France viendra
- * dans un lot à part : sa place (le H2 « Où sont les collaborateurs ») reste libre.
+ * Liste les personnes par catégorie (une catégorie vide n'a pas de section) : Williams
+ * (statique, toujours en tête de Direction) puis les collaborateurs publiés en base. La carte
+ * de France reçoit les points `listMapPoints()` ; sur la base stub : Williams seul, sans carte.
  *
  * FR uniquement, comme les fiches qu'il liste. Server Component, aucun JS client.
  */
@@ -22,9 +22,11 @@ import { CarteCollaborateur } from "@/components/equipe/CarteCollaborateur";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildEquipeHubJsonLd } from "@/lib/seo/equipe-hub-jsonld";
 import { SLUG_PLUME_IA } from "@/lib/seo/plume-ia";
-import { categoriesOrdonnees, fichePublique, type FichePublique } from "@/lib/equipe";
+import { preparerCarte } from "@/components/equipe/carte-donnees";
+import { CarteFrance } from "@/components/equipe/CarteFrance";
+import { construireHubEquipe } from "@/lib/equipe/hub";
+import { listMapPoints, listPublishedMembers } from "@/lib/equipe/collaborateurs";
 import {
-  FICHES_HUB_STATIQUES,
   HUB_APPORTEURS_LIEN,
   HUB_DATE_MAJ,
   HUB_FAQ,
@@ -72,21 +74,12 @@ export default async function HubEquipePage({ params }: Props) {
   if (!hasLocale(routing.locales, locale) || locale !== "fr") notFound();
   setRequestLocale(locale as Locale);
 
-  const fiches = FICHES_HUB_STATIQUES.map((f) => fichePublique(f)).filter(
-    (f): f is FichePublique => f !== null,
-  );
-  const sections = categoriesOrdonnees()
-    .map((categorie) => ({
-      categorie,
-      fiches: fiches.filter((f) => f.categorie === categorie.id),
-    }))
-    .filter((s) => s.fiches.length > 0);
-
-  // Williams est toujours indexable ; les autres fiches le deviendront avec le régime base.
-  const indexables = fiches.map((f) => ({
-    slug: f.slug,
-    estDirigeantPrincipal: f.estDirigeantPrincipal,
-  }));
+  // Lectures stub-aware : sur la base stub, `[]` sans appeler Prisma (Williams reste présent).
+  const [membres, points] = await Promise.all([listPublishedMembers(), listMapPoints()]);
+  const hub = construireHubEquipe(membres, points);
+  const { sections, fichesCarte, indexables } = hub;
+  // Le titre de la carte n'est rendu que si au moins un point est réellement placé.
+  const pointsCarte = preparerCarte(fichesCarte, [], { avecDirigeant: hub.williamsSurCarte }).total;
 
   return (
     <>
@@ -110,8 +103,26 @@ export default async function HubEquipePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* Place du H2 de la carte de France (« Où sont les collaborateurs d'Axion-IA ») :
-          absente tant que la carte n'est pas livrée. */}
+      {pointsCarte > 0 ? (
+        <section className="py-8 sm:py-10">
+          <Container>
+            <h2
+              id="equipe-carte-titre"
+              className="text-fg mx-auto max-w-3xl text-2xl font-semibold tracking-tight"
+            >
+              Où sont les collaborateurs d&apos;Axion-IA
+            </h2>
+            <div className="mt-5">
+              <CarteFrance
+                fiches={fichesCarte}
+                idTitre="equipe-carte-titre"
+                avecDirigeant={hub.williamsSurCarte}
+                hrefFiche={(slug) => `/${locale}/equipe/${slug}`}
+              />
+            </div>
+          </Container>
+        </section>
+      ) : null}
 
       {sections.map(({ categorie, fiches: groupe }) => (
         <section key={categorie.id} className="py-8 sm:py-10">
