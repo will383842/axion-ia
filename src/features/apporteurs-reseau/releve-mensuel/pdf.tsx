@@ -42,7 +42,12 @@ const styles = StyleSheet.create({
 export interface EnteteReleve {
   readonly numero: string;
   readonly destinataire: string;
-  readonly rectifie?: { readonly numero: string; readonly date: string };
+  readonly rectifie?: {
+    readonly numero: string;
+    readonly date: string;
+    /** Le relevé d'origine n'est jamais parti (statut `echec`) : ce document EST le relevé du mois. */
+    readonly jamaisRecu?: boolean;
+  };
 }
 
 // ── Formats (purs, sur des centimes entiers et des dates « AAAA-MM-JJ » déjà figées) ──────────
@@ -202,7 +207,9 @@ export function ReleveMensuelPdf({
         {enteteReleve.rectifie && (
           <Text style={styles.ligne}>
             {txt(
-              `Rectifie le relevé n° ${enteteReleve.rectifie.numero} du ${jour(enteteReleve.rectifie.date)}`,
+              enteteReleve.rectifie.jamaisRecu
+                ? `Ceci est votre relevé du mois. Le relevé n° ${enteteReleve.rectifie.numero} du ${jour(enteteReleve.rectifie.date)} ne vous a pas été envoyé : il est remplacé par celui-ci.`
+                : `Rectifie le relevé n° ${enteteReleve.rectifie.numero} du ${jour(enteteReleve.rectifie.date)}`,
             )}
           </Text>
         )}

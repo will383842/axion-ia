@@ -94,6 +94,7 @@ describe("lot R — calculerCommissionAvecRegle", () => {
         "journee_ia",
         "parrainage_10",
         "plafond_base",
+        "prime_challenge",
         "prorata_remise",
         "tarif_avant_date_effet",
         "taux_ht",

@@ -25,10 +25,14 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
+import { noterDocumentsRemis } from "./annexes-versions";
 import { annexesDeLEnvoiDuLien, bilanDesPieces, piecesDuContratSigne } from "./documents-joints";
 import { lireDossier, purgerContenuPieces } from "./donnees";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { inviterCollaborateur } from "@/server/equipe/questionnaire/inviter";
 import { alerterContresignature } from "./alerte-telegram";
 import { apercu } from "./apercu-envoi";
+import { alerterContratAltere, empreinteConforme } from "./integrite-contrat";
 import { avecTexteLibre, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -420,7 +424,7 @@ export async function appliquerDecision(
     const sha = createHash("sha256").update(pdf).digest("hex");
     // Clé PROPRE à cette tentative (suffixée par sa réservation) : une tentative n'efface
     // jamais le PDF d'une autre.
-    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}-${randomBytes(4).toString("hex")}.pdf`;
+    const cle = `${PREFIXE_CONTRATS_SIGNES}/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}-${randomBytes(4).toString("hex")}.pdf`;
     try {
       await uploadToR2(cle, pdf, "application/pdf");
     } catch (err) {
@@ -498,11 +502,13 @@ export async function appliquerDecision(
     }
     // Le contrat, toujours ; la fiche des commissions, le livret et le guide de démarrage s'ils sont sur R2 (le guide y est déposé tout seul s'il manque).
     const pieces = await piecesDuContratSigne(cle);
+    const jobIdContrat = `apporteur-contrat-signe-${apporteurId}`;
     const r = await envoyer({
       ...prep.envoi,
-      jobId: `apporteur-contrat-signe-${apporteurId}`,
+      jobId: jobIdContrat,
       attachments: pieces,
     });
+    if (r === "envoye") await tracerRemise(apporteurId, pieces, "contrat_signe", jobIdContrat);
     // Salon Telegram « Apporteurs » : jamais bloquant, la contresignature est actée.
     try {
       const qui = await lireDossier(apporteurId);
@@ -514,6 +520,41 @@ export async function appliquerDecision(
       });
     } catch (err) {
       signalerErreurReseau("contresignature : alerte Telegram", err);
+    }
+    // Invitation au questionnaire « page équipe » : bloc SÉPARÉ, jamais bloquant (la contresignature
+    // est actée). Pas de seconde invitation si une est déjà active pour cette adresse.
+    try {
+      const qui = await lireDossier(apporteurId);
+      const email = qui?.email?.trim().toLowerCase() ?? "";
+      const empreinteMail = email ? hashEmailForLookup(email) : null;
+      if (empreinteMail) {
+        const active = await prisma.teamQuestionnaireInvite.findFirst({
+          where: {
+            emailHash: empreinteMail,
+            category: "apporteur",
+            usedAt: null,
+            revokedAt: null,
+            expiresAt: { gt: new Date() },
+          },
+          select: { id: true },
+        });
+        if (!active) {
+          const inv = await inviterCollaborateur({
+            categorie: "apporteur",
+            email: qui!.email,
+            prenom: qui!.prenom,
+            source: "contrat_apporteur",
+          });
+          if (!inv.ok) {
+            signalerErreurReseau(
+              `contresignature : invitation questionnaire équipe (${inv.raison})`,
+              new Error(inv.raison),
+            );
+          }
+        }
+      }
+    } catch (err) {
+      signalerErreurReseau("contresignature : invitation questionnaire équipe", err);
     }
     return {
       ok: true,
@@ -586,6 +627,7 @@ export async function renvoyerContratSigne(
   });
   if (!a?.contratSigneCle) return { ok: false, message: "Le contrat signé est introuvable." };
   const pieces = await piecesDuContratSigne(a.contratSigneCle);
+  const jobIdRenvoi = `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`;
   const r = await envoyer({
     destinataire: d.email,
     entityType: "ApporteurReseau",
@@ -596,9 +638,10 @@ export async function renvoyerContratSigne(
       ...dossierUrlSi(urlDossier(d.id, d.versionLien)),
       ...regleRendezVousSi(d.regleAttribution),
     },
-    jobId: `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`,
+    jobId: jobIdRenvoi,
     attachments: pieces,
   });
+  if (r === "envoye") await tracerRemise(apporteurId, pieces, "renvoi_contrat", jobIdRenvoi);
   return {
     ok: true,
     message:
@@ -729,6 +772,20 @@ export async function dernierLienEnvoyeLe(
     : null;
 }
 
+/** Note les annexes remises (point 11). Jamais bloquant : l'e-mail est déjà en file. */
+async function tracerRemise<P extends { r2Key: string }>(
+  apporteurId: string,
+  pieces: readonly P[],
+  contexte: "contrat_signe" | "renvoi_contrat" | "lien_dossier",
+  jobId: string,
+): Promise<void> {
+  try {
+    await noterDocumentsRemis(apporteurId, pieces, contexte, jobId);
+  } catch (err) {
+    signalerErreurReseau("annexes remises : trace", err);
+  }
+}
+
 export async function envoyerLien(
   apporteurId: string,
   mot: string | null,
@@ -745,15 +802,18 @@ export async function envoyerLien(
       message: `Lien déjà envoyé le ${prep.dejaEnvoyeLe} : ouvrez l'aperçu et confirmez pour le renvoyer.`,
     };
   }
-  const r = await envoyer({
-    ...prep.envoi,
-    jobId: jobId ?? `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`,
-  });
+  const jobIdLien = jobId ?? `${prep.envoi.gabarit}-${apporteurId}-${Date.now()}`;
+  const r = await envoyer({ ...prep.envoi, jobId: jobIdLien });
+  if (r === "envoye" && prep.envoi.attachments)
+    await tracerRemise(apporteurId, prep.envoi.attachments, "lien_dossier", jobIdLien);
   return {
     ok: true as const,
     message: r === "envoye" ? "Lien envoyé." : `Lien préparé (e-mail : ${r}).`,
   };
 }
+
+/** Préfixe R2 des contrats contresignés à venir : permet une règle de verrou par préfixe (10 ans). */
+export const PREFIXE_CONTRATS_SIGNES = "contrats-signes/apporteurs";
 
 // ── Documents pour la console ────────────────────────────────────────────
 
@@ -763,11 +823,29 @@ export async function lireContratPdf(
 ): Promise<Buffer | null> {
   const a = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { contratCle: true, contratSigneCle: true },
+    select: {
+      contratCle: true,
+      contratSigneCle: true,
+      contratSigneSha256: true,
+    },
   });
   const cle = quel === "signe" ? a?.contratSigneCle : a?.contratCle;
   if (!cle) return null;
-  return getObjectBufferR2(cle);
+  const octets = await getObjectBufferR2(cle);
+  if (octets === null) return null;
+  // Point 12 : l'empreinte du PDF contresigné est REVÉRIFIÉE ; un fichier altéré n'est jamais servi.
+  // ⚠️ `contratSha256` est l'empreinte du TEXTE du contrat (signature.ts), pas celle du PDF : le
+  // PDF signé par l'apporteur n'a aucune empreinte d'octets en base, il est servi tel quel.
+  if (quel === "signe") {
+    const etat = empreinteConforme(octets, a?.contratSigneSha256 ?? null);
+    if (etat === "alteree") {
+      await alerterContratAltere(apporteurId, quel, new Date());
+      return null;
+    }
+    if (etat === "sans_reference")
+      console.warn("[apporteurs] contrat servi sans empreinte de référence");
+  }
+  return octets;
 }
 
 /** Nom affiché d'un apporteur (console). */

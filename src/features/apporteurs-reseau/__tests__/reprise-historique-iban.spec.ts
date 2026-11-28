@@ -22,7 +22,7 @@ const m = vi.hoisted(() => {
 vi.mock("@/lib/prisma", () => ({ prisma: m.prisma }));
 
 import { encryptPii } from "@/lib/pii-crypto";
-import { reprendreHistoriqueIban } from "../reprise-historique-iban";
+import { repriseEmpreintesIban } from "../reprise-historique-iban";
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -34,15 +34,21 @@ beforeEach(() => {
   m.prisma.apporteurIbanHistorique.create.mockResolvedValue({});
 });
 
-describe("reprendreHistoriqueIban", () => {
+describe("repriseEmpreintesIban", () => {
   it("essai à blanc : compte, n'écrit rien", async () => {
-    const r = await reprendreHistoriqueIban({ appliquer: false });
-    expect(r).toMatchObject({ aCreer: 1, crees: 0, dejaPresents: 0, sansIban: 1 });
+    const r = await repriseEmpreintesIban({ appliquer: false });
+    expect(r).toMatchObject({
+      vus: 2,
+      aCalculer: 1,
+      calcules: 0,
+      dejaAJour: 0,
+      ignores: { sansIban: 1 },
+    });
     expect(m.prisma.apporteurIbanHistorique.create).not.toHaveBeenCalled();
   });
   it("appliquer : une ligne `dossier_initial` par fiche, IBAN rechiffré en v2, aucune fiche modifiée", async () => {
-    const r = await reprendreHistoriqueIban({ appliquer: true });
-    expect(r.crees).toBe(1);
+    const r = await repriseEmpreintesIban({ appliquer: true });
+    expect(r.calcules).toBe(1);
     const data = m.prisma.apporteurIbanHistorique.create.mock.calls[0]?.[0].data;
     expect(data.origine).toBe("dossier_initial");
     expect(data.ibanFin4).toBe("2606");
@@ -56,12 +62,58 @@ describe("reprendreHistoriqueIban", () => {
     m.prisma.apporteurIbanHistorique.findMany.mockResolvedValue([
       { apporteurId: ID1, ibanEmpreinte: empreinteIban(IBAN) },
     ]);
-    const r = await reprendreHistoriqueIban({ appliquer: true });
-    expect(r).toMatchObject({ crees: 0, dejaPresents: 1 });
+    const r = await repriseEmpreintesIban({ appliquer: true });
+    expect(r).toMatchObject({ calcules: 0, dejaAJour: 1 });
     expect(m.prisma.apporteurIbanHistorique.create).not.toHaveBeenCalled();
   });
   it("le compte rendu ne contient jamais l'IBAN entier", async () => {
-    const r = await reprendreHistoriqueIban({ appliquer: true });
+    const r = await repriseEmpreintesIban({ appliquer: true });
     expect(JSON.stringify(r)).not.toContain(IBAN);
+  });
+  it("secret absent : refus clair, rien n'est lu ni écrit", async () => {
+    const secret = process.env["IBAN_EMPREINTE_SECRET"];
+    delete process.env["IBAN_EMPREINTE_SECRET"];
+    try {
+      const r = await repriseEmpreintesIban({ appliquer: true });
+      expect(r.refus).toBe("secret_absent");
+      expect(r.calcules).toBe(0);
+      expect(m.prisma.apporteurReseau.findMany).not.toHaveBeenCalled();
+      expect(m.prisma.apporteurIbanHistorique.create).not.toHaveBeenCalled();
+    } finally {
+      process.env["IBAN_EMPREINTE_SECRET"] = secret;
+    }
+  });
+  it("idempotence : un second passage, une fois l'historique rempli, ne crée plus rien", async () => {
+    const { empreinteIban } = await import("@/lib/iban-empreinte");
+    const premier = await repriseEmpreintesIban({ appliquer: true });
+    expect(premier.calcules).toBe(1);
+    m.prisma.apporteurIbanHistorique.findMany.mockResolvedValue([
+      { apporteurId: ID1, ibanEmpreinte: empreinteIban(IBAN) },
+    ]);
+    m.prisma.apporteurIbanHistorique.create.mockClear();
+    const second = await repriseEmpreintesIban({ appliquer: true });
+    expect(second).toMatchObject({ calcules: 0, aCalculer: 0, dejaAJour: 1 });
+    expect(m.prisma.apporteurIbanHistorique.create).not.toHaveBeenCalled();
+  });
+  it("une écriture qui échoue est comptée par motif, sans message ni IBAN, et n'arrête pas le lot", async () => {
+    m.prisma.apporteurReseau.findMany.mockResolvedValue([
+      { id: ID1, iban: encryptPii(IBAN) },
+      { id: ID2, iban: encryptPii("FR7630006000011234567890189") },
+    ]);
+    m.prisma.apporteurIbanHistorique.create
+      .mockRejectedValueOnce(new Error(`boom ${IBAN}`))
+      .mockResolvedValueOnce({});
+    const r = await repriseEmpreintesIban({ appliquer: true });
+    expect(r).toMatchObject({ calcules: 1, ignores: { ecritureEchouee: 1 } });
+    expect(JSON.stringify(r)).not.toContain(IBAN);
+  });
+  it("une valeur illisible est comptée « illisible » et le lot continue", async () => {
+    m.prisma.apporteurReseau.findMany.mockResolvedValue([
+      { id: ID1, iban: "enc:v2:n-importe-quoi" },
+      { id: ID2, iban: encryptPii(IBAN) },
+    ]);
+    const r = await repriseEmpreintesIban({ appliquer: false });
+    expect(r.ignores.illisible + r.ignores.sansIban).toBeGreaterThanOrEqual(1);
+    expect(r.aCalculer).toBe(1);
   });
 });

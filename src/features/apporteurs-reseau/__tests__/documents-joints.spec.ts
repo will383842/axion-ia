@@ -16,6 +16,12 @@ vi.mock("@/lib/r2-storage", () => ({
   enteteObjetR2: (...a: unknown[]) => h.entete(...a),
   isR2Configured: () => h.configure,
 }));
+// Point 11 : le registre des versions n'est pas l'objet de ce fichier (voir annexes-versionnees.spec.ts) ; sans
+// table, la clé fixe sert. Le simuler garde le test du délai (minuteries factices) indépendant de la base.
+vi.mock("../annexes-versions", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../annexes-versions")>()),
+  versionCourante: async () => null,
+}));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => h.signaler(...a) }));
 
 import {
@@ -301,6 +307,8 @@ describe("🔴 les clés des annexes ne sont servies par aucune route", () => {
     // + l'envoi du lien (« Retenu », relances) : il JOINT les annexes à l'e-mail, il ne les sert pas.
     expect(lecteurs.sort()).toEqual([
       "src/features/admin-rendezvous/issue-apporteur-envoi.ts",
+      // + `annexes-versions` (point 11) : il DÉRIVE les clés immuables des versions et les note ; il ne sert rien.
+      "src/features/apporteurs-reseau/annexes-versions.ts",
       "src/features/apporteurs-reseau/documents-joints.ts",
       "src/features/apporteurs-reseau/documents-prives.ts",
       "src/features/apporteurs-reseau/passage-quotidien.ts",

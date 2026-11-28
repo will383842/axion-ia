@@ -9,8 +9,9 @@
  *    `<ProfilCollaborateur>` (via `ficheDepuisWilliams()`). Elle ne
  *    dépend d'aucun seed : la page et l'entité `Person` fonctionnent dès le
  *    déploiement, y compris quand le build tourne sur la base stub.
- *  - tout autre slug → `AuthorProfile` en DB (ex. Manon, persona éditoriale IA),
- *    rendu par le gabarit minimal historique.
+ *  - sinon, ordre de résolution (`resoudreFicheEquipe`) : `TeamMember` publié (gabarit
+ *    `<ProfilCollaborateur>`, prénom seul, consentements respectés), puis `AuthorProfile`
+ *    actif (ex. Manon, persona éditoriale IA, gabarit minimal historique). Sinon 404.
  *
  * Anti-doorway HCU 2024 : la page n'agrège pas de listes — chaque slug = page
  * dédiée avec contenu unique.
@@ -24,7 +25,6 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
-import { prisma } from "@/lib/prisma";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -38,6 +38,10 @@ import { buildGrapheCollaborateur } from "@/lib/seo/collaborateur-jsonld";
 import { ProfilCollaborateur } from "@/components/equipe/ProfilCollaborateur";
 import { estIndexable, fichePublique, ficheDepuisWilliams } from "@/lib/equipe";
 import { LIBELLE_PLUME_IA, SLUG_PLUME_IA } from "@/lib/seo/plume-ia";
+import { cache } from "react";
+import { resoudreFicheEquipe as resoudreSansCache } from "@/lib/equipe/collaborateurs";
+import { ficheDepuisMembre } from "@/lib/equipe/depuis-membre";
+import { evaluerIndexabilite } from "@/lib/equipe/donnees/indexabilite";
 // Doctrine financement : les Q/R OPCO / France Travail ne sont émises que si la
 // certification Qualiopi est RÉELLEMENT obtenue. Le drapeau est la garde
 // primaire — cf. `server/qualiopi/config/flag.ts`.
@@ -45,6 +49,9 @@ import {
   isQualiopiCertificationObtenue,
   isQualiopiPublicDisclosureEnabled,
 } from "@/server/qualiopi/config/flag";
+
+// Une seule lecture par rendu (métadonnées + page).
+const resoudreFicheEquipe = cache(resoudreSansCache);
 
 // ISR 24h : la fiche fondateur est statique et la bio Manon ne change quasiment
 // jamais (édition via admin /content-gen/author/manon) → cache CDN agressif
@@ -90,9 +97,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const profile = await prisma.authorProfile.findUnique({ where: { slug } });
-  if (!profile || !profile.isActive) return { robots: "noindex, nofollow" };
+  const resolu = await resoudreFicheEquipe(slug);
+  if (!resolu || resolu.type === "williams") return { robots: "noindex, nofollow" };
 
+  if (resolu.type === "membre") {
+    const { fiche, contenu } = ficheDepuisMembre(resolu.membre);
+    const publique = fichePublique(fiche);
+    if (!publique || publique.slug !== fiche.slug) return { robots: "noindex, nofollow" };
+    const meta = await buildProductMetadata({
+      locale,
+      path: `/equipe/${publique.slug}`,
+      title: contenu.titreSeo,
+      description: contenu.metaDescription,
+      alternates: { fr: `/equipe/${publique.slug}` },
+    });
+    // Indexée seulement si la règle d'indexation est satisfaite ; sinon visible mais `noindex, follow`.
+    return {
+      ...meta,
+      robots: evaluerIndexabilite(resolu.membre).indexable
+        ? meta.robots
+        : { index: false, follow: true },
+    };
+  }
+
+  const profile = resolu.profil;
   const libelleAuteur = profile.slug === SLUG_PLUME_IA ? LIBELLE_PLUME_IA : profile.jobTitle;
   return buildProductMetadata({
     locale,
@@ -164,9 +192,35 @@ export default async function PublicAuthorPage({ params }: Props) {
     );
   }
 
+  const resolu = await resoudreFicheEquipe(slug);
+  if (!resolu) notFound();
+
+  // ── Collaborateur publié en base ───────────────────────────────────────
+  if (resolu.type === "membre") {
+    const { fiche, contenu } = ficheDepuisMembre(resolu.membre);
+    const publique = fichePublique(fiche);
+    if (!publique || publique.slug !== fiche.slug) notFound();
+    const { indexable } = evaluerIndexabilite(resolu.membre);
+    return (
+      <>
+        <JsonLdGraph schemas={buildGrapheCollaborateur(publique, contenu, { indexable })} />
+        <Container className="border-border border-b py-3">
+          <Breadcrumbs
+            emitJsonLd={false}
+            items={[
+              { href: "/equipe", label: "Équipe" },
+              { href: `/equipe/${publique.slug}`, label: publique.nom },
+            ]}
+          />
+        </Container>
+        <ProfilCollaborateur fiche={publique} contenu={contenu} />
+      </>
+    );
+  }
+
   // ── Fiches persona / auteurs en base ───────────────────────────────────
-  const profile = await prisma.authorProfile.findUnique({ where: { slug } });
-  if (!profile || !profile.isActive) notFound();
+  if (resolu.type !== "auteur") notFound();
+  const profile = resolu.profil;
 
   const personJsonLd = profile.slug === "manon" ? buildPersonManonJsonLd(profile) : null;
 

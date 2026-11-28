@@ -779,9 +779,10 @@ jobs:
       # consomme du disque (Playwright, `.next`, build, semis) ne démarre avant
       # que le nettoyage soit fini.
       #
-      # `apt-get clean` reste APRÈS la suppression, comme avant — et surtout
-      # avant l'installation de Playwright, qui prend le verrou apt : aucun
-      # `apt` n'a tourné entre-temps, donc aucune course sur ce verrou.
+      # Ordre réel des étapes (depuis la PR 1 du 2026-11-27) : miroir apt de secours,
+      # installation de Playwright, PUIS cette attente (qui porte `apt-get clean`).
+      # Playwright a donc fini et libéré le verrou apt avant `apt-get clean` : aucune
+      # course sur ce verrou.
       # Panne du 2026-11-11 : les machines ne résolvaient plus l'archive Ubuntu,
       # `--with-deps` (9 paquets de polices) échouait après 12 min sur toutes les PR.
       # Le script bascule sur un miroir de secours, ou échoue en moins d'une minute.
@@ -1676,6 +1677,19 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/apporteur-changement-iban-comportement.sql
+      # Purge RGPD des apporteurs (2026-11-28, PR N #2464) : l'IBAN chiffré ne devient 'purge' que sous le réglage
+      # local `axion.reecriture_pii = 'purge'`, sans autre colonne modifiée, sans retour ; journal en ajout seul. Cas ANNULÉS.
+      - name: Purge RGPD des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/apporteurs-purge-rgpd-comportement.sql
+      # Relevé mensuel des apporteurs (migration 20261127200000) — les écritures de envoi.ts / preparation.ts /
+      # rectificatif.ts rejouées face au déclencheur et aux CHECK (renvoi des échecs, déjà-envoyé, figement),
+      # avec les refus qui DOIVENT avoir lieu. Cas ANNULÉS.
+      - name: Relevé mensuel des apporteurs — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/releve-mensuel-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,
