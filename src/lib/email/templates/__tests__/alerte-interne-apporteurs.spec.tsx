@@ -95,7 +95,7 @@ describe("qualiopi-alerte-interne — rubrique apporteurs", () => {
 describe("les émetteurs d'alertes d'argent des apporteurs posent la rubrique", () => {
   const racine = join(process.cwd(), "src/features/apporteurs-reseau");
   const comptes: Array<[string, number]> = [
-    ["facturation.ts", 3],
+    ["facturation.ts", 4], // + mandat d'autofacturation non signé (#2464, point 34)
     ["alerte-vigilance.ts", 1],
     ["attribution-annonce.ts", 1],
   ];
