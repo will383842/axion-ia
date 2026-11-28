@@ -7,6 +7,8 @@ import {
   hotesAutorises,
   validerAdresse,
   validerTitre,
+  retirerSelecteurVariante,
+  contientSelecteurVariante,
   normaliserMot,
   validerCheminPdf,
 } from "../cibles-reseau";
@@ -89,6 +91,19 @@ describe("code et titre", () => {
     expect(validerTitre("ab")).toBeNull();
     expect(validerTitre("a".repeat(121))).toBeNull();
     expect(validerTitre(7)).toBeNull();
+  });
+  it("(d) un titre contenant U+FE0F est REFUSÉ, jamais réécrit (❤️, 1️⃣, drapeaux sont légitimes)", () => {
+    expect(validerTitre("Offre\uFE0F pro")).toBeNull();
+    expect(validerTitre("\uFE0F\uFE0FOffre\uFE0F")).toBeNull();
+    expect(validerTitre("Offre \u2764\uFE0F pro")).toBeNull();
+    expect(validerTitre("Étape 1\uFE0F\u20E3")).toBeNull();
+    expect(validerTitre("ab\uFE0F")).toBeNull();
+    expect(contientSelecteurVariante("Offre \u2764\uFE0F")).toBe(true);
+    expect(contientSelecteurVariante("Offre pro")).toBe(false);
+  });
+  it("(d) retirerSelecteurVariante ne touche à rien d'autre", () => {
+    expect(retirerSelecteurVariante("gde-ia\uFE0F2026")).toBe("gde-ia2026");
+    expect(retirerSelecteurVariante("é – ok")).toBe("é – ok");
   });
 });
 
