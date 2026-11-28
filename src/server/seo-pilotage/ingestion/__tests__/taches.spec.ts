@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { GscLotResultat } from "@/server/content-gen/seo/gsc-client";
+import type { IssueJour } from "../jour";
+import type { IssueTache } from "../taches";
 import { creerFauxPrisma } from "./faux-prisma";
 
 const dernierJourFinal = vi.fn();
@@ -9,7 +11,13 @@ vi.mock("@/server/content-gen/seo/gsc-client", async (orig) => ({
   gscDernierJourFinal: dernierJourFinal,
 }));
 
-const { tacheIngestionGsc, tacheRattrapageGsc } = await import("../taches");
+const {
+  BUDGET_PASSAGE_MS,
+  JOURS_PAR_PASSAGE,
+  PAUSE_ENTRE_JOURS_MS,
+  tacheIngestionGsc,
+  tacheRattrapageGsc,
+} = await import("../taches");
 
 const ok = (rows: never[] = []): GscLotResultat => ({ etat: "ok", rows, complet: true });
 const date = (j: string) => new Date(`${j}T00:00:00Z`);
@@ -42,14 +50,69 @@ describe("tâches de collecte", () => {
     expect(base.gscImportRun.lignes).toHaveLength(0);
   });
 
-  it("rattrapage : UN jour par passage, du plus récent au plus ancien", async () => {
+  const lot = (r: IssueTache): ReadonlyArray<IssueJour> => {
+    if (r.issue !== "lot") throw new Error(`attendu « lot », reçu « ${r.issue} »`);
+    return r.jours;
+  };
+  const sansPause = { pause: async () => undefined };
+
+  it("rattrapage : jusqu'à JOURS_PAR_PASSAGE jours par passage, du plus récent au plus ancien", async () => {
     const { prisma, base } = creerFauxPrisma();
     const recherche = vi.fn(async () => ok());
-    const j1 = await tacheRattrapageGsc({ prisma, recherche });
-    expect(j1).toMatchObject({ issue: "fait", jour: { jour: "2026-11-23" } });
-    const j2 = await tacheRattrapageGsc({ prisma, recherche });
-    expect(j2).toMatchObject({ issue: "fait", jour: { jour: "2026-11-22" } });
-    expect(base.gscImportRun.lignes).toHaveLength(2);
+    const r1 = await tacheRattrapageGsc({ prisma, recherche, ...sansPause });
+    expect(r1).toMatchObject({ issue: "lot", arret: "plafond" });
+    const jours1 = lot(r1).map((j) => j.jour);
+    expect(jours1).toHaveLength(JOURS_PAR_PASSAGE);
+    expect(jours1[0]).toBe("2026-11-23");
+    expect(jours1[1]).toBe("2026-11-22");
+    const r2 = await tacheRattrapageGsc({ prisma, recherche, ...sansPause });
+    const jours2 = lot(r2).map((j) => j.jour);
+    expect(jours2).toHaveLength(JOURS_PAR_PASSAGE);
+    // idempotent : aucun jour rejoué
+    expect(new Set([...jours1, ...jours2]).size).toBe(2 * JOURS_PAR_PASSAGE);
+    expect(base.gscImportRun.lignes).toHaveLength(2 * JOURS_PAR_PASSAGE);
+  });
+
+  it("rattrapage : pause entre deux jours, jamais avant le premier", async () => {
+    const { prisma } = creerFauxPrisma();
+    const pause = vi.fn(async () => undefined);
+    await tacheRattrapageGsc({
+      prisma,
+      recherche: vi.fn(async () => ok()),
+      pause,
+      joursParPassage: 3,
+    });
+    expect(pause).toHaveBeenCalledTimes(2);
+    expect(pause).toHaveBeenCalledWith(PAUSE_ENTRE_JOURS_MS);
+  });
+
+  it("rattrapage : s'arrête net au premier quota, sans toucher aux jours suivants", async () => {
+    const { prisma, base } = creerFauxPrisma();
+    let n = 0;
+    const recherche = vi.fn(async () =>
+      ++n > 3 ? ({ etat: "quota", rows: [], complet: false } as never) : ok(),
+    );
+    const r = await tacheRattrapageGsc({ prisma, recherche, ...sansPause });
+    expect(r).toMatchObject({ issue: "lot", arret: "echec" });
+    const jours = lot(r);
+    expect(jours.map((j) => j.issue)).toEqual(["reussi", "echec"]);
+    expect((jours[1] as { code?: string }).code).toBe("quota");
+    // le quota ne compte pas comme une tentative
+    expect(base.gscImportRun.lignes.find((l) => l.statut === "echec")?.tentatives).toBe(0);
+  });
+
+  it("rattrapage : s'arrête quand le budget de temps est dépassé", async () => {
+    const { prisma } = creerFauxPrisma();
+    let t = 0;
+    const r = await tacheRattrapageGsc({
+      prisma,
+      recherche: vi.fn(async () => ok()),
+      pause: async () => undefined,
+      horloge: () => (t += BUDGET_PASSAGE_MS / 2),
+    });
+    expect(r).toMatchObject({ issue: "lot", arret: "temps" });
+    expect(lot(r).length).toBeGreaterThanOrEqual(1);
+    expect(lot(r).length).toBeLessThan(JOURS_PAR_PASSAGE);
   });
 
   it("rattrapage : saute les jours réussis, reprend un échec, abandonne après 5 tentatives", async () => {
@@ -68,8 +131,8 @@ describe("tâches de collecte", () => {
     await mk("2026-11-23", "reussi");
     await mk("2026-11-22", "echec", 5); // abandonné
     await mk("2026-11-21", "echec", 2); // à reprendre
-    const r = await tacheRattrapageGsc({ prisma, recherche });
-    expect(r).toMatchObject({ issue: "fait", jour: { jour: "2026-11-21", issue: "reussi" } });
+    const r = await tacheRattrapageGsc({ prisma, recherche, ...sansPause, joursParPassage: 1 });
+    expect(r).toMatchObject({ issue: "lot", jours: [{ jour: "2026-11-21", issue: "reussi" }] });
   });
 
   it("rattrapage : s'arrête à 16 mois et dit « historique complet »", async () => {
