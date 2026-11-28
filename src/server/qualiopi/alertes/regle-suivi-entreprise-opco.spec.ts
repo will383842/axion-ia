@@ -6,6 +6,7 @@
 
 import { describe, expect, it } from "vitest";
 import type { ContexteSuivi } from "@/server/qualiopi/financements/suivi-entreprise/lecture";
+import { NOM_OPCO_A_PRECISER } from "@/server/qualiopi/financements/opco-referentiel";
 import { candidatsSuiviEntreprise } from "./regle-suivi-entreprise-opco";
 import { segmentsAvecTelephone } from "./telephone-message";
 
@@ -130,6 +131,21 @@ describe("alertes « à appeler »", () => {
       expect(a).toBeDefined();
       expect(a!.message).not.toMatch(mots);
       expect(a!.message).toContain("organisme tiers");
+    }
+  });
+});
+
+describe("repli « à préciser » (L11-S2)", () => {
+  it("🔴 le message ne montre ni le mot interne ni « à préciser »", () => {
+    const base = contexte("06 12 34 56 78", 3);
+    const alertes = candidatsSuiviEntreprise(
+      [{ ...base, nomOpco: NOM_OPCO_A_PRECISER }],
+      midi("2026-10-14"),
+    );
+    expect(alertes.length).toBeGreaterThan(0);
+    for (const a of alertes) {
+      expect(a.message).not.toMatch(/opco|à préciser/i);
+      expect(a.message).toContain("l'organisme tiers (non renseigné sur la fiche client)");
     }
   });
 });

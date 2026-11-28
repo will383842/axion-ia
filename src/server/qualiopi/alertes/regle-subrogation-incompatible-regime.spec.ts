@@ -60,6 +60,11 @@ describe("candidatsSubrogationIncompatibleRegime", () => {
     expect(a?.message).toContain("50 salariés ou plus");
   });
 
+  it("🔴 la phrase finale nomme l'organisme de formation, pas « l'organisme » seul", () => {
+    const [a] = candidatsSubrogationIncompatibleRegime([GRANDE], NOW);
+    expect(a?.message.endsWith("le paiement direct à l'organisme de formation.")).toBe(true);
+  });
+
   it("vise la subrogation posée avant le 1/10/2026 sans dossier (Constructys, transitoire)", () => {
     const ancienne = {
       id: "s-2",
