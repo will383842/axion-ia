@@ -137,7 +137,11 @@ export function poserEnTetesDeSecurite(req: NextRequest, response: Response, non
   // hubs. Whitelist edge-safe : `lib/seo-noindex-routes.ts` (superset sûr,
   // sync test `seo-noindex-routes.test.ts` — jamais de noindex sur une page
   // indexable). Header statique par URL → aucun impact cache CDN.
-  if (isNoindexStubRoute(req.nextUrl.pathname)) {
+  if (
+    isNoindexStubRoute(req.nextUrl.pathname, {
+      VILLES_PORTE_QUALITE_ACTIVE: process.env.VILLES_PORTE_QUALITE_ACTIVE,
+    })
+  ) {
     response.headers.set("X-Robots-Tag", "noindex, follow");
   }
 

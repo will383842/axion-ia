@@ -124,6 +124,22 @@ async function addPingWithReenqueue(
  * `archiveArticle/deleteArticle/demoteArticle/rollbackArticle` de signaler
  * proprement une désindexation au lieu de hardcoder `URL_UPDATED`.
  */
+/**
+ * Seules les pages portant un balisage `JobPosting` (offres d'emploi, sous
+ * `/<locale>/carrieres/<slug>`) ou `BroadcastEvent` (aucune page aujourd'hui)
+ * peuvent être soumises à l'API Indexing de Google. Tout le reste est refusé.
+ */
+export function estUrlEligibleIndexingApiGoogle(url: unknown): boolean {
+  if (typeof url !== "string" || url.length === 0) return false;
+  let chemin: string;
+  try {
+    chemin = new URL(url).pathname;
+  } catch {
+    return false;
+  }
+  return /^\/(fr|en)\/carrieres\/[^/]+\/?$/.test(chemin);
+}
+
 export type IndexingLifecycleEvent = "publish" | "update" | "delete";
 
 function eventToGoogleType(event: IndexingLifecycleEvent): "URL_UPDATED" | "URL_DELETED" {
@@ -175,7 +191,7 @@ export async function enqueueIndexingForTier1(
   const event: IndexingLifecycleEvent = input.lifecycleEvent ?? "publish";
 
   let indexnowEnqueued = false;
-  let googleEnqueued = false;
+  const googleEnqueued = false;
 
   // IndexNow — toujours actif si key présent (ignore le type d'event, ping unique)
   if (process.env.INDEXNOW_KEY) {
@@ -200,31 +216,19 @@ export async function enqueueIndexingForTier1(
     }
   }
 
-  // Google Indexing API — l'API n'honore officiellement QUE JobPosting /
-  // BroadcastEvent. Pour un ARTICLE, Google accepte le ping (200) mais
-  // n'indexe rien → quota 200/j gaspillé (les offres en ont besoin) + hors ToS
-  // (risque de révocation). On exige donc un opt-in EXPLICITE distinct
-  // `GOOGLE_INDEXING_ARTICLES=true` (default off), EN PLUS du master
-  // `GOOGLE_INDEXING_API_ENABLED`. Conséquence : activer le master (pour Google
-  // for Jobs, cf. `enqueueGoogleIndexingForUrls`) ne fait PAS pinger les articles.
-  const googleEnabled =
-    process.env.GOOGLE_INDEXING_API_ENABLED === "true" &&
-    process.env.GOOGLE_INDEXING_ARTICLES === "true";
-  if (googleEnabled) {
-    const queue = getGoogleIndexingQueue();
-    if (queue) {
-      try {
-        googleEnqueued = await addPingWithReenqueue(
-          queue,
-          { url, type: eventToGoogleType(event) },
-          `google-indexing-${input.articleId}-${event}`,
-        );
-      } catch (err) {
-        console.warn(
-          `[indexing-enqueue] google-indexing add failed for article ${input.articleId}:`,
-          err instanceof Error ? err.message : String(err),
-        );
-      }
+  // Google Indexing API : JAMAIS pour un article (garde-fou 2026-11-28). L'API
+  // n'est officiellement permise que pour JobPosting et BroadcastEvent ; un
+  // article n'y a pas droit (hors règles Google, quota des offres gaspillé).
+  // Google découvre les articles par le sitemap + sa soumission Search Console
+  // (`gsc-sitemap-submit`). Plus aucun opt-in d'environnement n'ouvre ce chemin.
+
+  // Voie Google PERMISE : soumission groupée du sitemap (≤ 1/h), éteinte par défaut.
+  if (process.env.GSC_SITEMAP_SUBMIT_ENABLED === "true") {
+    try {
+      const { planifierSoumissionSitemap } = await import("./sitemap-submit");
+      await planifierSoumissionSitemap();
+    } catch {
+      // best-effort
     }
   }
 
@@ -258,7 +262,7 @@ export async function enqueueIndexingForUrls(
   const event: IndexingLifecycleEvent = input.lifecycleEvent ?? "publish";
 
   let indexnowEnqueued = false;
-  let googleEnqueued = false;
+  const googleEnqueued = false;
 
   // IndexNow — batch unique avec toutes les URLs (le worker gère MAX 10K par batch)
   if (process.env.INDEXNOW_KEY) {
@@ -280,36 +284,8 @@ export async function enqueueIndexingForUrls(
     }
   }
 
-  // Google Indexing API — chemin CONTENU (articles/KB). Même garde que
-  // `enqueueIndexingForTier1` : opt-in explicite `GOOGLE_INDEXING_ARTICLES=true`
-  // en plus du master (Google ignore les non-JobPosting → ne pas brûler le
-  // quota). 1 job par URL (quota 200/jour réparti par appel).
-  const googleEnabled =
-    process.env.GOOGLE_INDEXING_API_ENABLED === "true" &&
-    process.env.GOOGLE_INDEXING_ARTICLES === "true";
-  if (googleEnabled) {
-    const queue = getGoogleIndexingQueue();
-    if (queue) {
-      const type = eventToGoogleType(event);
-      for (let i = 0; i < validUrls.length; i++) {
-        const url = validUrls[i];
-        if (typeof url !== "string") continue;
-        try {
-          const added = await addPingWithReenqueue(
-            queue,
-            { url, type },
-            `google-indexing-${input.entityId}-${i}-${event}`,
-          );
-          googleEnqueued = googleEnqueued || added;
-        } catch (err) {
-          console.warn(
-            `[indexing-enqueue] google-indexing add failed for ${input.entityId} url ${url}:`,
-            err instanceof Error ? err.message : String(err),
-          );
-        }
-      }
-    }
-  }
+  // Google Indexing API : jamais pour le contenu (articles, KB), cf. ci-dessus.
+  // Les offres d'emploi passent par `enqueueGoogleIndexingForUrls`.
 
   return { indexnowEnqueued, googleEnqueued };
 }
@@ -333,7 +309,8 @@ export async function enqueueGoogleIndexingForUrls(
   if (process.env.GOOGLE_INDEXING_API_ENABLED !== "true") {
     return { googleEnqueued: false };
   }
-  const validUrls = input.urls.filter((u) => typeof u === "string" && u.length > 0);
+  // Garde-fou : seules les URLs éligibles à l'API (offres d'emploi) passent.
+  const validUrls = input.urls.filter(estUrlEligibleIndexingApiGoogle);
   if (validUrls.length === 0) return { googleEnqueued: false };
 
   const event: IndexingLifecycleEvent = input.lifecycleEvent ?? "publish";

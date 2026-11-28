@@ -784,3 +784,45 @@ export async function gscInspecterUrlDetaille(
     return { etat: "erreur" };
   }
 }
+
+// ════════════════════════════════════════════════════════════════════════════
+// Soumission d'un sitemap (sitemaps.submit) — étape « indexation rapide »
+// ════════════════════════════════════════════════════════════════════════════
+// PUT webmasters/v3/sites/{site}/sitemaps/{feedpath}. Exige la portée
+// `https://www.googleapis.com/auth/webmasters` (écriture) : avec la seule
+// portée `webmasters.readonly`, Google répond 403 → `portee_insuffisante`.
+
+export type GscSoumissionSitemapEtat =
+  "ok" | "identifiants_absents" | "portee_insuffisante" | "quota" | "erreur";
+
+export async function gscSoumettreSitemap(
+  urlSitemap: string,
+  deps: Pick<GscLotDeps, "fetchImpl"> = {},
+): Promise<{ etat: GscSoumissionSitemapEtat }> {
+  if (!identifiantsPresents()) return { etat: "identifiants_absents" };
+  const fetchImpl = deps.fetchImpl ?? fetch;
+  let accessToken: string;
+  try {
+    accessToken = await getAccessToken(fetchImpl);
+  } catch {
+    return { etat: "erreur" };
+  }
+  const site = process.env["GSC_PROPERTY_URL"] as string;
+  let res: Response;
+  try {
+    res = await fetchImpl(
+      `${WEBMASTERS_API}/sites/${encodeURIComponent(site)}/sitemaps/${encodeURIComponent(urlSitemap)}`,
+      { method: "PUT", headers: { Authorization: `Bearer ${accessToken}`, "Content-Length": "0" } },
+    );
+  } catch {
+    return { etat: "erreur" };
+  }
+  if (res.ok) return { etat: "ok" };
+  if (res.status === 429) return { etat: "quota" };
+  if (res.status === 403) {
+    const raisons = await raisonsErreurGoogle(res);
+    if (raisons.some((r) => RAISONS_QUOTA.has(r))) return { etat: "quota" };
+    return { etat: "portee_insuffisante" };
+  }
+  return { etat: "erreur" };
+}

@@ -1,3 +1,5 @@
+import { VILLES_PUBLIABLES_CAP } from "@/generated/villes-publiables";
+import { porteQualiteVilleActive, villeIndexableParPorte } from "@/lib/villes-porte-qualite";
 import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
@@ -470,6 +472,19 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   // déclaré. Les pages sont des pages marketing publiques (ZÉRO mention Qualiopi
   // côté public) ; la divulgation Qualiopi légale reste une couche DB séparée.
   staticIds.push("formations");
+
+  // Porte de qualité des villes (28/11/2026) : drapeau ÉTEINT par défaut ⇒ aucun id ajouté,
+  // plan du site inchangé. Allumé ET au moins une ville publiable (jamais de sous-plan vide), les 5 sous-plans service × ville reparaissent, mais
+  // `buildServicesVillesSitemap` n'y émet que les villes qui ont passé la porte.
+  if (porteQualiteVilleActive(process.env) && VILLES_PUBLIABLES_CAP.length > 0) {
+    staticIds.push(
+      "services-villes-audit",
+      "services-villes-interventions",
+      "services-villes-implementation",
+      "services-villes-un-a-un",
+      "services-villes-sites-web-augmentes",
+    );
+  }
 
   // KB : plus de chunks `knowledge-N` ici. Le compte se faisait au build via
   // `countKnowledgePublicEntries()` qui retourne TOUJOURS 0 sous le build stub
@@ -1711,7 +1726,7 @@ const SERVICE_VILLES_PATHS: Record<ServiceVillesKey, { pathFr: string; pathEn: s
 
 function buildServicesVillesSitemap(
   now: Date,
-  dripNow: Date,
+  _dripNow: Date,
   service: ServiceVillesKey,
 ): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
@@ -1727,9 +1742,10 @@ function buildServicesVillesSitemap(
           ? !!ville.copy?.services?.sitesWeb
           : !!ville.copy?.services?.[service];
     if (!hasCopy) continue;
-    // Drip indexation — n'émettre que si la ville est dans la cohorte du jour
-    // (`dripNow` = build time). `now` = lastmod éditorial figé (découplé 2026-06-08).
-    if (!isVilleIndexable(ville.slug, dripNow)) continue;
+    // Porte de qualité (28/11/2026) : seule une ville publiable entre au plan du site. Ce
+    // constructeur n'est appelé que drapeau allumé (ids déclarés ci-dessus) ; la garde reste
+    // pour qu'un appel direct éteint n'émette rien.
+    if (!villeIndexableParPorte(ville.slug)) continue;
     const frUrl = `${SITE_URL}/fr${pathFr}/${ville.slug}`;
     const enUrl = `${SITE_URL}/en${pathEn}/${ville.slug}`;
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
