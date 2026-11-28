@@ -689,8 +689,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // briques d'article déjà publiques (`@/components/content-gen/Article*`, `@/server/
   // content-gen/blog/*`) et ses tests les lisent. Le marqueur vient de ces seuls chemins
   // d'import ; aucun code du pipeline éditorial n'est exécuté ni modifié. Nominatif.
-  /^src\/components\/article-v2\/ArticleGabarit\.tsx$/,
-  /^tests\/unit\/blog\/gabarits-(socle|aiguillage-page|rendu-socle)\.spec\.tsx?$/,
+  /^src\/components\/article-v2\/(ArticleGabarit|HerosArticle|PhotoArticle|types|gabarits\/Gabarit[A-Za-z]+)\.tsx?$/,
+  // S2 : table des photos de repli, indexée par le type `GabaritArticle` (import de type seul).
+  /^src\/lib\/blog\/photos-repli\.ts$/,
+  /^tests\/unit\/blog\/(gabarits-(socle|aiguillage-page|rendu-socle)|article-v2-(composants|garde-fous))\.spec\.tsx?$/,
 ];
 
 /**
