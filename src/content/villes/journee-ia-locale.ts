@@ -166,6 +166,7 @@ export function titreRegion(r: RegionLocale): string {
       `La Journée IA ${en} : audit et formation IA${MARQUE}`,
       `Journée IA ${en} : audit et formation IA${MARQUE}`,
       `Journée IA ${en} : audit et formation${MARQUE}`,
+      `Audit et formation IA ${en}${MARQUE}`,
       `La Journée IA ${en}${MARQUE}`,
       `Journée IA ${en}`,
     ],

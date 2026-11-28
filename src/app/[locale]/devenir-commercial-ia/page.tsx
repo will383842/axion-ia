@@ -51,13 +51,13 @@ function textesMeta() {
   const p = chiffresApporteurs();
   return p.commissionPublique
     ? {
-        title: `Apporteur d'affaires IA · ${p.commission} HT indicatifs · Axion-IA`,
+        title: `Devenir apporteur d'affaires IA · ${p.commission} HT · Axion IA`,
         description: `Vous connaissez des dirigeants de PME ? Présentez-leur la Journée IA, nous faisons le reste. ${p.commission} HT indicatifs par journée payée. Sans CV, sans frais.`,
       }
     : {
-        title: "Apporteur d'affaires IA indépendant · Journée IA · Axion-IA",
+        title: "Devenir apporteur d'affaires IA, sans CV · Axion IA",
         description:
-          "Vous connaissez des dirigeants de PME ? Présentez-leur la Journée IA, nous faisons le reste. Une commission sur chaque journée payée. Sans CV, sans frais.",
+          "Vous connaissez des dirigeants de PME ? Présentez-leur la Journée IA : nous faisons le reste et vous touchez une commission sur chaque journée payée. Sans CV.",
       };
 }
 

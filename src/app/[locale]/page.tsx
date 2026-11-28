@@ -26,6 +26,7 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { UnsplashCreditList } from "@/components/media/UnsplashCreditList";
 import { WhyDifferentiators } from "@/components/home/WhyDifferentiators";
 import { AudienceSegments } from "@/components/home/AudienceSegments";
+import { DerniersArticlesBlog } from "@/components/home/DerniersArticlesBlog";
 import { DATE_MISE_A_JOUR_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
 import { getIndexableRegions } from "@/content/regions";
 import { SECTOR_PHOTO_CREDITS } from "@/content/secteurs/sector-photos";
@@ -660,6 +661,11 @@ export default async function Home({ params }: HomeProps) {
                 {faq.liens.faq}
               </Link>
             </p>
+            <DerniersArticlesBlog
+              titre={faq.liens.derniersArticles}
+              lienBlog={faq.liens.blog}
+              classeLien={LIEN}
+            />
             <p className="text-fg-muted mt-1 text-sm">
               {faq.source.debut}{" "}
               <a

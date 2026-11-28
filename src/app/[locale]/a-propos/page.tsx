@@ -51,11 +51,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/a-propos",
     title:
       locale === "fr"
-        ? "À propos · cabinet IA opérationnel · Axion-IA"
+        ? "À propos : équipe, méthode et engagements · Axion IA"
         : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "Axion-IA, cabinet IA opérationnel pour les PME, partout en France : mission, équipe, valeurs, hébergement UE et réponse humaine."
+        ? "Axion IA aide les TPE et PME à mettre l'IA en place pas à pas, partout en France. Mission, équipe, méthode, engagements et réponse humaine à chaque demande."
         : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });

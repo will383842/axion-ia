@@ -58,6 +58,20 @@ const STATIC_LEGACY_REDIRECTS: ReadonlyMap<string, string> = new Map([
   ["/interventions/conference-pleniere", "/formations"],
   ["/interventions/conference-keynote", "/formations"],
   ["/interventions/atelier-ia-cible", "/formations"],
+  // Blog — slugs fusionnés (miroir des redirections `/:locale/blog/<slug>` de next.config).
+  // Search Console 28/11/2026 : des adresses /blog/<slug> SANS /fr reçoivent encore des
+  // impressions ; sans cette carte elles faisaient 2 sauts (/blog/x → /fr/blog/x → /fr/blog/y).
+  ["/blog/cours-ia-grenoble-entreprise", "/blog/cours-ia-grenoble-entreprise-faq"],
+  ["/blog/chatbot-ia-grenoble-entreprise", "/blog/chatbot-ia-grenoble-entreprise-guide"],
+  ["/blog/coaching-ia-dirigeants-grenoble", "/blog/coaching-ia-dirigeant-grenoble"],
+  ["/blog/formation-intelligence-artificielle-grenoble-pme", "/blog/formation-intelligence-artificielle-entreprise-grenoble"],
+  ["/blog/formation-prompt-engineering-grenoble", "/blog/formation-intelligence-artificielle-entreprise-grenoble"],
+  ["/blog/audit-ia-grenoble-guide", "/blog/cabinet-audit-ia-grenoble-faq"],
+  ["/blog/audit-intelligence-artificielle-grenoble-entreprise", "/blog/cabinet-audit-ia-grenoble-faq"],
+  ["/blog/audit-intelligence-artificielle-grenoble-entreprise-faq", "/blog/cabinet-audit-ia-grenoble-faq"],
+  ["/blog/mentor-ia-dirigeant-grenoble", "/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble"],
+  ["/blog/mentor-ia-dirigeant-auvergne-rhone-alpes", "/blog/mentor-ia-dirigeant-auvergne-rhone-alpes-grenoble"],
+  ["/blog/glossaire/formation-ia-colombes", "/blog/formation-ia-colombes"],
   // Formats Claude 1-to-1 retirés → prestation équivalente.
   ["/interventions/claude-dirigeant", "/interventions/dirigeant-vision-strategique"],
   ["/interventions/claude-implementation-individuel", "/interventions/coaching-decouverte"],

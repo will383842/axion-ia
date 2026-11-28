@@ -71,11 +71,12 @@ describe("fiche Williams — vocabulaire interdit", () => {
 describe("fiche Williams — contenu v4", () => {
   const { contenu } = ficheDepuisWilliams();
 
-  it("titre SEO de 57 caractères, meta description ≤ 160", () => {
-    expect(contenu.titreSeo).toBe("Williams Jullin · Plus de chiffre d'affaires, même équipe");
-    expect(contenu.titreSeo).toHaveLength(57);
+  it("titre SEO court (marque en fin), meta description 150 à 160, meta description ≤ 160", () => {
+    expect(contenu.titreSeo).toBe("Williams Jullin, fondateur d'Axion IA");
+    expect(contenu.titreSeo).toHaveLength(37);
     expect(contenu.metaDescription.length).toBeLessThanOrEqual(160);
-    expect(contenu.metaDescription).toMatch(/^Williams Jullin dirige Axion-IA/);
+    expect(contenu.metaDescription).toMatch(/^Williams Jullin, fondateur d'Axion IA/);
+    expect(contenu.metaDescription.length).toBeGreaterThanOrEqual(150);
   });
 
   it("le délai du rapport, la garantie et sa condition sont injectés, jamais retapés", () => {
