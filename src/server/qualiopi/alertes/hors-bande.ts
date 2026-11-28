@@ -59,6 +59,10 @@ export const CODES_HORS_BANDE: readonly string[] = [
   "emails_envoi_incertain",
   "emails_rebonds",
   "emails_rebonds_non_detectes",
+  // W1-S2 : veille des réponses écrites à la main et configuration Redis (même sonde).
+  "reponses_envoi_bloque",
+  "reponses_envoi_interrompu",
+  "redis_config_risque",
 ] as const;
 
 /** Vrai si ce code ne doit pas emprunter la chaîne d'e-mails pour se signaler. */

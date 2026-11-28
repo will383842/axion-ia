@@ -62,6 +62,13 @@ vi.mock("@/server/notifications", () => ({
   notify: (...a: unknown[]) => notifyMock(...a),
 }));
 
+const veilleMock = vi.fn();
+// La veille des réponses (W1-S2) est importée dynamiquement par la sonde : on la double, son
+// propre fichier de tests la mesure.
+vi.mock("./veille-reponses-en-cours", () => ({
+  veillerReponsesEnCours: (...a: unknown[]) => veilleMock(...a),
+}));
+
 import {
   verifierSanteEmails,
   SEUIL_ECHECS,
@@ -116,6 +123,12 @@ beforeEach(() => {
   process.env["ZEPTOMAIL_WEBHOOK_KEY"] = "cle-de-test";
   alerteMock.mockResolvedValue(null);
   notifyMock.mockResolvedValue({ ok: true, channels: {} });
+  veilleMock.mockResolvedValue({
+    enFileDepuisTrop: 0,
+    perduesCloses: 0,
+    mesureImpossible: false,
+    redis: { politique: "noeviction", aof: true },
+  });
 });
 
 describe("verifierSanteEmails — quand tout va bien", () => {
@@ -343,8 +356,8 @@ describe("verifierSanteEmails — la série d'échecs consécutifs", () => {
 
     const r = await verifierSanteEmails(T);
 
-    expect(resoudreParCodeMock).not.toHaveBeenCalled();
-    expect(r.alertesResolues).toEqual([]);
+    expect(resoudreParCodeMock).not.toHaveBeenCalledWith(["emails_echecs_consecutifs"]);
+    expect(r.alertesResolues).not.toContain("emails_echecs_consecutifs");
   });
 
   it("🔑 CONTRE-TÉMOIN : ne referme rien tant que la série dure", async () => {
@@ -353,8 +366,8 @@ describe("verifierSanteEmails — la série d'échecs consécutifs", () => {
 
     const r = await verifierSanteEmails(T);
 
-    expect(resoudreParCodeMock).not.toHaveBeenCalled();
-    expect(r.alertesResolues).toEqual([]);
+    expect(resoudreParCodeMock).not.toHaveBeenCalledWith(["emails_echecs_consecutifs"]);
+    expect(r.alertesResolues).not.toContain("emails_echecs_consecutifs");
   });
 });
 
@@ -652,5 +665,82 @@ describe("whereEnvoisBloques — un envoi différé n'est pas un envoi bloqué",
     const ancienneCondition = (l: { createdAt: Date }): boolean => l.createdAt < avant;
     expect(ancienneCondition(relanceJ7NonEchue)).toBe(true);
     expect(retenue(relanceJ7NonEchue)).toBe(false);
+  });
+});
+
+describe("verifierSanteEmails — veille des réponses écrites à la main (W1-S2)", () => {
+  it("H1 — une réponse interrompue et refermée lève « reponses_envoi_interrompu »", async () => {
+    compteurs(0, 0);
+    veilleMock.mockResolvedValue({
+      enFileDepuisTrop: 0,
+      perduesCloses: 1,
+      mesureImpossible: false,
+      redis: { politique: "noeviction", aof: true },
+    });
+    const r = await verifierSanteEmails();
+    expect(r.alertesLevees).toContain("reponses_envoi_interrompu");
+    expect(r.reponsesPerduesCloses).toBe(1);
+  });
+
+  it("une réponse en file depuis trop longtemps lève « reponses_envoi_bloque »", async () => {
+    compteurs(0, 0);
+    veilleMock.mockResolvedValue({
+      enFileDepuisTrop: 2,
+      perduesCloses: 0,
+      mesureImpossible: false,
+      redis: null,
+    });
+    const r = await verifierSanteEmails();
+    expect(r.alertesLevees).toContain("reponses_envoi_bloque");
+  });
+
+  it("compte revenu à 0 : « reponses_envoi_bloque » est refermée ; mesure impossible : non", async () => {
+    compteurs(0, 0);
+    await verifierSanteEmails();
+    expect(resoudreParCodeMock).toHaveBeenCalledWith(["reponses_envoi_bloque"]);
+    resoudreParCodeMock.mockClear();
+    compteurs(0, 0);
+    veilleMock.mockResolvedValue({
+      enFileDepuisTrop: 0,
+      perduesCloses: 0,
+      mesureImpossible: true,
+      redis: null,
+    });
+    await verifierSanteEmails();
+    expect(resoudreParCodeMock).not.toHaveBeenCalledWith(["reponses_envoi_bloque"]);
+  });
+
+  it("Redis en allkeys-lru ou sans AOF lève « redis_config_risque » ; conforme : rien", async () => {
+    compteurs(0, 0);
+    veilleMock.mockResolvedValue({
+      enFileDepuisTrop: 0,
+      perduesCloses: 0,
+      mesureImpossible: false,
+      redis: { politique: "allkeys-lru", aof: true },
+    });
+    expect((await verifierSanteEmails()).alertesLevees).toContain("redis_config_risque");
+    compteurs(0, 0);
+    veilleMock.mockResolvedValue({
+      enFileDepuisTrop: 0,
+      perduesCloses: 0,
+      mesureImpossible: false,
+      redis: { politique: "noeviction", aof: false },
+    });
+    expect((await verifierSanteEmails()).alertesLevees).toContain("redis_config_risque");
+    compteurs(0, 0);
+    veilleMock.mockResolvedValue({
+      enFileDepuisTrop: 0,
+      perduesCloses: 0,
+      mesureImpossible: false,
+      redis: { politique: "noeviction", aof: true },
+    });
+    expect((await verifierSanteEmails()).alertesLevees).not.toContain("redis_config_risque");
+  });
+
+  it("H2 — la veille lève : la sonde se résout quand même, et garde ses autres alertes", async () => {
+    compteurs(0, 3);
+    veilleMock.mockRejectedValue(new Error("veille cassée"));
+    const r = await verifierSanteEmails();
+    expect(r.alertesLevees).toContain("emails_bloques_en_file");
   });
 });
