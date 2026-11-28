@@ -31,7 +31,7 @@ describe("page financement retirée", () => {
   it.each([
     "src/components/nav/Footer.tsx",
     "src/components/formations/FormationDetailPage.tsx",
-    "src/components/sections/FounderProfile.tsx",
+    "src/content/equipe/williams.ts",
     "src/i18n/routing.ts",
     "src/app/sitemap.ts",
     "src/lib/seo/page-images.ts",

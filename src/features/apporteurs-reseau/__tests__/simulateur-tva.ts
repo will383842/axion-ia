@@ -132,6 +132,10 @@ const tableAbsente = () => {
 };
 
 export const prisma = {
+  // Lot 7 : tables du changement de compte, vides dans ces scénarios (aucune demande, aucun historique).
+  apporteurChangementIban: { findMany: async () => [] },
+  apporteurIbanHistorique: { findMany: async () => [] },
+  apporteurVirementCompte: { count: async () => 0, create: async () => ({}) },
   apporteurReseauSiret: { findUnique: async () => null },
   apporteurReseau: {
     findUnique: async (a: { where: { id: string } }) => ficheDe(a.where.id),

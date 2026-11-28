@@ -624,6 +624,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/scripts\/backfill-hero-images\.ts$/,
   /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
   /^src\/server\/queue\/workers\/keyword-opportunity-detector\.ts$/,
+  // - src/server/videos/__tests__/encarts.spec.ts (2026-11-27, #2457) : le test des
+  //   encarts vidéo vérifie les catégories de blog RÉELLES en important
+  //   `BLOG_CATEGORY_SLUGS` depuis `@/server/content-gen/lib/category-mapper`
+  //   (catalogue en lecture seule, source de vérité des slugs). Consommateur
+  //   légitime d'une constante, aucun code de pipeline : le test échouerait si le
+  //   catalogue des catégories dérivait de la liste des encarts.
+  /^src\/server\/videos\/__tests__\/encarts\.spec\.ts$/,
   // a11y-admin.spec.ts (2026-09-13) — la gate d'accessibilité de la console.
   // Elle est passée de 18 écrans à 216 après que les 223 routes admin ont été
   // MESURÉES une par une (198 sans violation serious/critical ; les 25 en faute
@@ -678,6 +685,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // ArticleTransparencyBlock.tsx`), lu en texte pour compter ses étiquettes. Aucun import,
   // aucun code du pipeline : même cas que `services-ssot.spec.ts` ci-dessus. Nominatif.
   /^tests\/unit\/seo\/un-seul-mis-a-jour-par-article\.spec\.ts$/,
+  // Gabarits d'articles, socle S1 (2026-11) : le squelette `ArticleGabarit` CONSOMME les
+  // briques d'article déjà publiques (`@/components/content-gen/Article*`, `@/server/
+  // content-gen/blog/*`) et ses tests les lisent. Le marqueur vient de ces seuls chemins
+  // d'import ; aucun code du pipeline éditorial n'est exécuté ni modifié. Nominatif.
+  /^src\/components\/article-v2\/ArticleGabarit\.tsx$/,
+  /^tests\/unit\/blog\/gabarits-(socle|aiguillage-page|rendu-socle)\.spec\.tsx?$/,
 ];
 
 /**

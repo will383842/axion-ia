@@ -15,6 +15,7 @@ import {
   rattacherParrainAction,
   rechercherCandidatsApporteursAction,
   renvoyerContratSigneAction,
+  revoquerEtRenvoyerLienAction,
   type CandidatTrouve,
 } from "@/features/apporteurs-reseau/actions-apporteurs";
 
@@ -150,6 +151,26 @@ export function EnvoiLienDossier({
             }
           >
             Renvoyer le contrat signé
+          </button>
+        </div>
+      ) : null}
+      {lienEspace ? (
+        <div>
+          <button
+            type="button"
+            className="admin-button-secondary"
+            disabled={enCours}
+            onClick={() => {
+              if (
+                !window.confirm(
+                  "L'ancien lien cessera de fonctionner immédiatement et un nouveau lien sera envoyé à l'apporteur. Continuer ?",
+                )
+              )
+                return;
+              demarrer(async () => setRetour(await revoquerEtRenvoyerLienAction({ apporteurId })));
+            }}
+          >
+            Révoquer et renvoyer le lien
           </button>
         </div>
       ) : null}
