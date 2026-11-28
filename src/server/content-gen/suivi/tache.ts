@@ -16,7 +16,12 @@ const MAX_LIGNES_PAR_PASSAGE = 200;
 
 type PrismaSuivi = Pick<
   PrismaClient,
-  "siteRoute" | "contenuResultat" | "gscPageJour" | "gscInspection" | "contenuRendezVousOrigine"
+  | "siteRoute"
+  | "contenuResultat"
+  | "gscPageJour"
+  | "gscInspection"
+  | "gscImportRun"
+  | "contenuRendezVousOrigine"
 >;
 
 export interface DepsSuivi {
@@ -46,9 +51,18 @@ export async function tacheSuiviResultats(deps: DepsSuivi): Promise<BilanSuivi> 
     select: { pathRendered: true, createdAt: true },
   });
 
+  // Un article = UN segment après `/fr/blog/`, hors pages d'index (catégorie, étiquette, auteur…).
   const contenus = routes.flatMap((r) =>
-    r.pathRendered ? [{ chemin: r.pathRendered, publieLe: r.createdAt }] : [],
+    r.pathRendered && estUnArticle(r.pathRendered)
+      ? [{ chemin: r.pathRendered, publieLe: r.createdAt }]
+      : [],
   );
+  // Début de la capture de l'origine des réservations : sans lui, « 0 rendez-vous » ne veut rien dire.
+  const premiereOrigine = await deps.prisma.contenuRendezVousOrigine.findFirst({
+    orderBy: { createdAt: "asc" },
+    select: { createdAt: true },
+  });
+  const debutCapture = premiereOrigine?.createdAt ?? null;
   const urls = contenus.map((c) => `${HOTE_SITE}${c.chemin}`);
   const existantes = await deps.prisma.contenuResultat.findMany({
     where: { url: { in: urls } },
@@ -68,7 +82,16 @@ export async function tacheSuiviResultats(deps: DepsSuivi): Promise<BilanSuivi> 
     const url = `${HOTE_SITE}${c.chemin}`;
     const dues = echeancesDues(c.publieLe, faites.get(url) ?? new Set(), maintenant);
     for (const code of dues) {
-      const ligne = await mesurer(deps.prisma, c.chemin, c.publieLe, code, maintenant);
+      const ligne = await mesurer(
+        deps.prisma,
+        c.chemin,
+        c.publieLe,
+        code,
+        maintenant,
+        debutCapture,
+      );
+      // Fenêtre Search Console pas encore entièrement collectée : on attend le passage suivant.
+      if (ligne === null) continue;
       try {
         await deps.prisma.contenuResultat.create({
           data: {
@@ -97,40 +120,52 @@ export async function tacheSuiviResultats(deps: DepsSuivi): Promise<BilanSuivi> 
   return { contenus: contenus.length, ecrites, dejaEcrites };
 }
 
+const SEGMENTS_INDEX = new Set(["categorie", "tag", "auteur", "secteur", "taille", "service"]);
+
+function estUnArticle(chemin: string): boolean {
+  const m = /^\/fr\/blog\/([a-z0-9][a-z0-9-]*)$/.exec(chemin);
+  return m !== null && !SEGMENTS_INDEX.has(m[1] ?? "");
+}
+
 async function mesurer(
   prisma: PrismaSuivi,
   chemin: string,
   publieLe: Date,
   code: CodeEcheance,
   maintenant: Date,
+  debutCapture: Date | null,
 ) {
   const { debut, finExclue } = fenetreGsc(code, publieLe);
-  const [agregat, jours, inspection, rdv] = await Promise.all([
+  const joursFenetre = Math.round((finExclue.getTime() - debut.getTime()) / 86_400_000);
+  // La disponibilité se lit dans le journal de collecte (un jour `reussi` par jour), pas dans les
+  // lignes de la page : une page sans impression n'a pas de ligne, et ce n'est pas « indisponible ».
+  const joursCollectes = await prisma.gscImportRun.count({
+    where: { typeRecherche: "web", statut: "reussi", jour: { gte: debut, lt: finExclue } },
+  });
+  if (joursCollectes < joursFenetre) return null;
+  const [agregat, inspection, rdv] = await Promise.all([
     prisma.gscPageJour.aggregate({
       where: { chemin, typeRecherche: "web", date: { gte: debut, lt: finExclue } },
       _sum: { clics: true, impressions: true, positionSum: true },
-    }),
-    prisma.gscPageJour.count({
-      where: { chemin, typeRecherche: "web", date: { gte: debut, lt: finExclue } },
     }),
     prisma.gscInspection.findFirst({
       where: { chemin, inspecteLe: { lte: maintenant } },
       orderBy: { inspecteLe: "desc" },
       select: { verdict: true, inspecteLe: true },
     }),
-    prisma.contenuRendezVousOrigine.count({
-      where: { pageOrigine: chemin, createdAt: { gte: debut, lt: finExclue } },
-    }),
+    // Compté seulement si la capture tournait déjà au début de la fenêtre ; sinon null, jamais 0.
+    debutCapture !== null && debutCapture.getTime() <= debut.getTime()
+      ? prisma.contenuRendezVousOrigine.count({
+          where: { pageOrigine: chemin, createdAt: { gte: debut, lt: finExclue } },
+        })
+      : Promise.resolve(null),
   ]);
-  const gsc: MesureGsc | null =
-    jours > 0
-      ? {
-          impressions: agregat._sum.impressions ?? 0,
-          clics: agregat._sum.clics ?? 0,
-          positionSum: agregat._sum.positionSum ?? 0,
-          joursAvecDonnees: jours,
-        }
-      : null;
+  const gsc: MesureGsc = {
+    impressions: agregat._sum.impressions ?? 0,
+    clics: agregat._sum.clics ?? 0,
+    positionSum: agregat._sum.positionSum ?? 0,
+    joursAvecDonnees: joursCollectes,
+  };
   return construireResultat({
     code,
     publieLe,

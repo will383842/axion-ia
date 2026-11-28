@@ -38,8 +38,8 @@ const joursDe = (code: CodeEcheance): number => ECHEANCES.find((e) => e.code ===
 
 /**
  * Fenêtre Search Console d'une échéance : du jour de publication (inclus) à `publication + N`
- * (exclu). Elle ne dépend pas du jour où la mesure tourne : un retard de mesure ne change pas
- * le chiffre, seulement la date de la ligne.
+ * (exclu). La tâche n'écrit la ligne qu'une fois TOUS les jours de la fenêtre collectés
+ * (journal `gsc_import_runs`) : Search Console a ~3 jours de retard, la mesure attend donc.
  */
 export function fenetreGsc(code: CodeEcheance, publieLe: Date): { debut: Date; finExclue: Date } {
   const debut = jourUtc(publieLe);

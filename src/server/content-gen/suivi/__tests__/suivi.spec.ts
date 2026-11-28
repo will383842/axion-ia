@@ -77,7 +77,9 @@ describe("construireResultat", () => {
   });
 });
 
-function fauxPrisma(opts: { existantes?: Array<{ url: string; echeance: string }> } = {}) {
+function fauxPrisma(
+  opts: { existantes?: Array<{ url: string; echeance: string }>; joursCollectes?: number } = {},
+) {
   return {
     siteRoute: {
       findMany: vi
@@ -94,10 +96,14 @@ function fauxPrisma(opts: { existantes?: Array<{ url: string; echeance: string }
         .mockResolvedValue({ _sum: { clics: 3, impressions: 60, positionSum: 60 * 9 } }),
       count: vi.fn().mockResolvedValue(5),
     },
+    gscImportRun: { count: vi.fn().mockResolvedValue(opts.joursCollectes ?? 99) },
     gscInspection: {
       findFirst: vi.fn().mockResolvedValue({ verdict: "PASS", inspecteLe: d("2026-11-04") }),
     },
-    contenuRendezVousOrigine: { count: vi.fn().mockResolvedValue(1) },
+    contenuRendezVousOrigine: {
+      count: vi.fn().mockResolvedValue(1),
+      findFirst: vi.fn().mockResolvedValue({ createdAt: d("2026-10-01") }),
+    },
   };
 }
 
@@ -119,6 +125,36 @@ describe("tacheSuiviResultats", () => {
     });
     const b = await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
     expect(b.ecrites).toBe(1);
+  });
+  it("attend que toute la fenêtre Search Console soit collectée", async () => {
+    const p = fauxPrisma({ joursCollectes: 2 });
+    const b = await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(b.ecrites).toBe(0);
+    expect(p.contenuResultat.create).not.toHaveBeenCalled();
+  });
+  it("zéro impression sur une fenêtre collectée = 0, pas « indisponible »", async () => {
+    const p = fauxPrisma();
+    p.gscPageJour.aggregate.mockResolvedValue({
+      _sum: { clics: null, impressions: null, positionSum: null },
+    });
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(p.contenuResultat.create.mock.calls[0]![0].data.affichages).toBe(0);
+  });
+  it("rendez-vous null tant que la capture n'avait pas commencé", async () => {
+    const p = fauxPrisma();
+    p.contenuRendezVousOrigine.findFirst.mockResolvedValue(null);
+    await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(p.contenuResultat.create.mock.calls[0]![0].data.rendezVous).toBeNull();
+  });
+  it("ignore les pages d'index du blog", async () => {
+    const p = fauxPrisma();
+    p.siteRoute.findMany.mockResolvedValue([
+      { pathRendered: "/fr/blog/categorie/ia", createdAt: d("2026-11-01") },
+      { pathRendered: "/fr/blog/categorie", createdAt: d("2026-11-01") },
+      { pathRendered: "/fr/blog/tag", createdAt: d("2026-11-01") },
+    ]);
+    const b = await tacheSuiviResultats({ prisma: p as never, maintenant: () => d("2026-11-09") });
+    expect(b.contenus).toBe(0);
   });
   it("un doublon concurrent (P2002) n'est pas une erreur", async () => {
     const p = fauxPrisma();
