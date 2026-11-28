@@ -76,6 +76,8 @@ export interface DependancesMiseAJour {
     html: string,
     coutDepenseUsd: number,
   ) => Promise<{ readonly decision: DecisionEnChef; readonly coutUsd: number }>;
+  /** Vrai si l'article a déjà été modifié depuis moins de 28 jours (journal P13). Optionnel. */
+  readonly verrouActif?: (articleId: string) => Promise<boolean>;
   /** Écrit le corps ET `dateModifiee`. Jamais appelée si le contenu est identique. */
   readonly enregistrer: (a: {
     readonly articleId: string;
@@ -176,6 +178,17 @@ export async function executerMiseAJour(
     }
   } catch (e) {
     return fin("relecture-humaine", slug, 0, `Gardien en erreur : ${(e as Error).message}`);
+  }
+
+  // Verrou de 28 jours lu AVANT de dépenser quota et appels : refus attendu, pas une erreur.
+  if (deps.verrouActif) {
+    try {
+      if (await deps.verrouActif(article.id)) {
+        return fin("refuse", slug, 0, "Article déjà modifié depuis moins de 28 jours.");
+      }
+    } catch {
+      return fin("relecture-humaine", slug, 0, "Verrou de 28 jours illisible.");
+    }
   }
 
   await deps.consommerQuota();

@@ -22,7 +22,7 @@ import type { CarteRequetes } from "../strategie/carte-requetes";
 import { controlerConformite, type ResultatConformite } from "./conformite";
 import { decider as deciderGardien } from "./gardien";
 import { redacteurEnChef } from "./redacteur-en-chef";
-import { ecrireCorpsJournalise, type TxJournal } from "../../seo-pilotage/actions/journal";
+import { ecrireCorpsJournalise, verrou28Jours, type TxJournal } from "../../seo-pilotage/actions/journal";
 import { sansBalises, type DependancesMiseAJour } from "./mise-a-jour";
 
 /**
@@ -178,6 +178,14 @@ export async function dependancesReelles(
         journeeIA: { output: { title: c.titre, bodyHtml: html } },
       });
       return { decision: s.decision, coutUsd: s.coutJugeUsd };
+    },
+    verrouActif: async (articleId) => {
+      const derniere = await prisma.seoModification.findFirst({
+        where: { cibleType: "article", cibleId: articleId, etat: "appliquee" },
+        orderBy: { appliqueeLe: "desc" },
+        select: { appliqueeLe: true },
+      });
+      return verrou28Jours(derniere?.appliqueeLe, c.maintenant);
     },
     enregistrer: async ({ articleId, html, dateModifiee }) => {
       // Journal (« avant » et « après ») écrit dans la même transaction que le corps ; la date est posée

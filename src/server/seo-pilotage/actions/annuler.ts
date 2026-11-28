@@ -61,8 +61,9 @@ export async function annulerModification(
   }
 
   const avant = m.avant;
-  await tx.articleTranslation.updateMany({
-    where: { articleId: m.cibleId, locale: "fr" },
+  const restaure = await tx.articleTranslation.updateMany({
+    // Conditionné au corps vérifié : une écriture concurrente n'est jamais écrasée.
+    where: { articleId: m.cibleId, locale: "fr", body: actuel.body },
     data: {
       body: avant.body,
       bodyText: avant.bodyText,
@@ -73,6 +74,10 @@ export async function annulerModification(
       ...(m.dateAvant ? { updatedAt: m.dateAvant } : {}),
     },
   });
+  if (restaure.count !== 1) {
+    // Rien n'a été écrit : le corps a changé entre la lecture et l'écriture.
+    return { ok: false, motif: "conflit" };
+  }
   if (avant.articleUpdatedAt) {
     await tx.article.update({
       where: { id: m.cibleId },
