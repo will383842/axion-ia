@@ -61,6 +61,7 @@ import {
   lienDuCalendrier,
 } from "@/server/calendly/choix-rendez-vous";
 import { formatsProposes } from "@/server/calendly/types-reservables";
+import { enregistrerPageOrigine } from "@/server/calendly/page-origine-ecriture";
 
 /**
  * ## 🔴 DEUX QUOTAS, ET C'EST LA LEÇON D'UN DÉFAUT DÉJÀ PAYÉ
@@ -307,6 +308,9 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   const r = await reserverCreneau(validation.demande);
 
   if (r.ok) {
+    // C12 : l'article lu avant la réservation (attribution « au dernier article lu »). Éteint par
+    // défaut, jamais bloquant : la réservation est faite, une mesure manquée se tait.
+    await enregistrerPageOrigine({ eventUri: r.eventUri, po: suivi.po, choix });
     if (!r.numeroTransmis) {
       // 🔴 LE CHAMP OBLIGATOIRE N'A SERVI À RIEN, ET C'EST LE GENRE DE PANNE
       // QUI NE SE VOIT PAS.

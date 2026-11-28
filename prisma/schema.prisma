@@ -19776,6 +19776,23 @@ model ContenuResultat {
   @@map("contenu_resultats")
 }
 
+/// Page d'origine (article lu avant la réservation) d'une réservation directe du Diagnostic IA :
+/// attribution « au dernier article lu », jamais « causé par » (conception § 7.2). Écrite par
+/// l'action de réservation seulement quand le suivi est allumé ; une ligne par rendez-vous.
+/// rgpd: technique — chemin d'un article public et URI d'événement Calendly ; aucune donnée sur une personne (ni nom, ni e-mail)
+model ContenuRendezVousOrigine {
+  id          String   @id @default(cuid())
+  /// URI de l'événement Calendly réservé (clé d'unicité : un rendez-vous, une origine).
+  eventUri    String   @unique @map("event_uri") @db.VarChar(255)
+  /// Chemin d'article normalisé (`/fr/blog/<slug>`), jamais une URL complète.
+  pageOrigine String   @map("page_origine") @db.VarChar(300)
+  choix       String?  @db.VarChar(20)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([pageOrigine, createdAt])
+  @@map("contenu_rendez_vous_origines")
+}
+
 /// Proposition de l'analyste hebdomadaire : rien ne s'applique seul (§ 7.4).
 /// rgpd: technique — propositions de l'analyste hebdomadaire sur des contenus ; aucune donnée sur une personne, seul le nom du décideur de l'équipe figure
 model ContenuProposition {

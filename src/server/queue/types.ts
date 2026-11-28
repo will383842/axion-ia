@@ -346,6 +346,12 @@ export interface SeoPilotageJobData {
   readonly tick?: string;
 }
 
+/** Suivi des résultats de la chaîne éditoriale (C12) : jamais de donnée de contenu dans la charge. */
+export interface ChaineSuiviJobData {
+  readonly tache: string;
+  readonly tick?: string;
+}
+
 /**
  * INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO). La charge ne porte
  * qu'un horodatage : la ressource du mois se retrouve par l'API au passage.

@@ -12,6 +12,7 @@ import { redactEmail } from "@/lib/pii-redaction";
 import { Queue } from "bullmq";
 import {
   FUSEAU_SEO_PILOTAGE,
+  PATTERN_CHAINE_SUIVI,
   PATTERN_SEO_INGESTION,
   PATTERN_SEO_INSPECTION,
   PATTERN_SEO_ROBOTS_IA,
@@ -58,6 +59,7 @@ import type {
   AlertesClientsCronJobData,
   VisioBalayageJobData,
   SeoPilotageJobData,
+  ChaineSuiviJobData,
   OpcoSiroImportJobData,
   VisioJobData,
   VisioJobName,
@@ -316,6 +318,22 @@ export const FUSEAU_RECAP_CLIENTS = "Europe/Paris";
  */
 export const visioBalayageQueue: Queue<VisioBalayageJobData> | null = connection
   ? new Queue<VisioBalayageJobData>("visio-balayage", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 24 * 3600, count: 50 },
+        removeOnFail: { age: 7 * 24 * 3600, count: 100 },
+      },
+    })
+  : null;
+
+/**
+ * Suivi des résultats de la chaîne éditoriale (C12) — file `chaine-suivi`, une tâche par jour.
+ * Cron posé TOUJOURS ; l'interrupteur `CONTENT_CHAINE_SUIVI` est lu par le worker (éteint : rien).
+ */
+export const chaineSuiviQueue: Queue<ChaineSuiviJobData> | null = connection
+  ? new Queue<ChaineSuiviJobData>("chaine-suivi", {
       connection,
       defaultJobOptions: {
         ...defaultJobOptions,
@@ -1828,6 +1846,21 @@ export async function bootRepeatableJobs(): Promise<void> {
         },
       );
     }
+  }
+
+  // ── Chaîne éditoriale C12 — suivi des résultats (08 h 17 à Paris, après l'ingestion de 06 h 37).
+  if (chaineSuiviQueue) {
+    for (const existing of await chaineSuiviQueue.getRepeatableJobs()) {
+      await chaineSuiviQueue.removeRepeatableByKey(existing.key);
+    }
+    await chaineSuiviQueue.add(
+      "suivi-resultats",
+      { tache: "suivi-resultats", tick: new Date().toISOString() },
+      {
+        repeat: { pattern: PATTERN_CHAINE_SUIVI, tz: FUSEAU_SEO_PILOTAGE },
+        jobId: "chaine-suivi-suivi-resultats-cron",
+      },
+    );
   }
 
   // ── INT-T60-A — import mensuel de la table IDCC → OPCO ────────────────
