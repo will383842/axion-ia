@@ -19465,6 +19465,44 @@ model SeoOpportunite {
   @@map("seo_opportunites")
 }
 
+/// Journal des modifications du pilotage SEO (P13) : l'« avant » et l'« après » de chaque écriture,
+/// pour le retour arrière. `etat` : proposee | appliquee | annulee | refusee | expiree | mesuree
+/// (chaîne, pas d'énumération Postgres : deux versions du code coexistent). `cibleId` sans clé
+/// étrangère. Index unique PARTIEL hors schéma (migration.sql) :
+/// seo_modifications_une_en_cours_key (cible_type, cible_id) WHERE etat IN ('proposee','appliquee').
+/// rgpd: technique — texte public d'un article et mesures ; `decidePar` = identifiant admin seulement
+model SeoModification {
+  id          String    @id @default(cuid())
+  cibleType   String    @map("cible_type") @db.VarChar(40)
+  cibleId     String    @map("cible_id") @db.VarChar(120)
+  url         String?   @db.VarChar(1000)
+  champ       String    @db.VarChar(60)
+  avant       Json?
+  apres       Json?
+  hashAvant   String?   @map("hash_avant") @db.VarChar(64)
+  hashApres   String?   @map("hash_apres") @db.VarChar(64)
+  etat        String    @default("proposee") @db.VarChar(20)
+  origine     String    @db.VarChar(40)
+  raison      String?   @db.VarChar(500)
+  coutUsd     Float     @default(0) @map("cout_usd")
+  proposeeLe  DateTime  @default(now()) @map("proposee_le") @db.Timestamptz(3)
+  appliqueeLe DateTime? @map("appliquee_le") @db.Timestamptz(3)
+  /// Date réellement publiée avant l'écriture (ArticleTranslation.updatedAt), à restaurer à l'annulation.
+  dateAvant   DateTime? @map("date_avant") @db.Timestamptz(3)
+  decidePar   String?   @map("decide_par") @db.VarChar(80)
+  /// Administrateur qui a annulé (distinct de `decidePar`, qui garde celui qui a appliqué).
+  annulePar   String?   @map("annule_par") @db.VarChar(80)
+  annuleeLe   DateTime? @map("annulee_le") @db.Timestamptz(3)
+  mesureAvant Json?     @map("mesure_avant")
+  mesureApres Json?     @map("mesure_apres")
+  /// traite | temoin
+  groupe      String?   @db.VarChar(20)
+
+  @@index([cibleType, cibleId, appliqueeLe], map: "seo_modifications_cible_appliquee_idx")
+  @@index([etat, proposeeLe], map: "seo_modifications_etat_proposee_idx")
+  @@map("seo_modifications")
+}
+
 /// Collaborateur affiché sur /fr/equipe/{slug} (personnes réelles uniquement). La plume IA reste dans
 /// AuthorProfile ; le fondateur reste servi en statique. Identité publique : PRÉNOM seul, aucun nom
 /// de famille, aucune adresse. Catégorie et statut sont des chaînes validées côté TypeScript

@@ -1,0 +1,92 @@
+/**
+ * Retour arrière d'une modification journalisée (P13). Refusé si le corps actuel n'est plus
+ * celui que la modification a écrit (retouche entre-temps) : le conflit est rendu, rien n'est écrit.
+ * Restaure le corps ET les dates d'origine. Aucun fichier écrit.
+ */
+import { Prisma } from "../../../../prisma/generated/client";
+import { CHAMP_CORPS, ConflitEcritureError, hashTexte, type AvantCorps } from "./journal";
+
+export type ResultatAnnulation =
+  | { readonly ok: true }
+  | {
+      readonly ok: false;
+      readonly motif:
+        "introuvable" | "deja_traitee" | "champ_non_gere" | "conflit" | "avant_absent";
+    };
+
+export interface TxAnnulation {
+  seoModification: {
+    findUnique(a: unknown): Promise<{
+      id: string;
+      cibleType: string;
+      cibleId: string;
+      champ: string;
+      etat: string;
+      avant: unknown;
+      hashApres: string | null;
+      dateAvant: Date | null;
+    } | null>;
+    updateMany(a: unknown): Promise<{ count: number }>;
+  };
+  articleTranslation: {
+    findFirst(a: unknown): Promise<{ body: string } | null>;
+    updateMany(a: unknown): Promise<{ count: number }>;
+  };
+  article: { update(a: unknown): Promise<unknown> };
+}
+
+function avantValide(v: unknown): v is AvantCorps {
+  return typeof v === "object" && v !== null && typeof (v as { body?: unknown }).body === "string";
+}
+
+export async function annulerModification(
+  tx: TxAnnulation,
+  modificationId: string,
+  decidePar: string,
+): Promise<ResultatAnnulation> {
+  const m = await tx.seoModification.findUnique({ where: { id: modificationId } });
+  if (!m) return { ok: false, motif: "introuvable" };
+  if (m.etat !== "appliquee" && m.etat !== "mesuree") return { ok: false, motif: "deja_traitee" };
+  if (m.champ !== CHAMP_CORPS || m.cibleType !== "article") {
+    return { ok: false, motif: "champ_non_gere" };
+  }
+  if (!avantValide(m.avant)) return { ok: false, motif: "avant_absent" };
+
+  const actuel = await tx.articleTranslation.findFirst({
+    where: { articleId: m.cibleId, locale: "fr" },
+    select: { body: true },
+  });
+  if (!actuel || !m.hashApres || hashTexte(actuel.body) !== m.hashApres) {
+    return { ok: false, motif: "conflit" };
+  }
+
+  const avant = m.avant;
+  // 1. Prise de l'annulation, conditionnelle à l'état : deux clics ne passent pas ensemble.
+  const prise = await tx.seoModification.updateMany({
+    where: { id: m.id, etat: { in: ["appliquee", "mesuree"] } },
+    data: { etat: "annulee", annulePar: decidePar, annuleeLe: new Date() },
+  });
+  if (prise.count !== 1) return { ok: false, motif: "deja_traitee" };
+  // 2. Restauration CONDITIONNELLE au corps dont le hachage vient d'être vérifié : une écriture
+  //    arrivée entre-temps n'est jamais écrasée (la transaction est alors annulée).
+  const rendu = await tx.articleTranslation.updateMany({
+    where: { articleId: m.cibleId, locale: "fr", body: actuel.body },
+    data: {
+      body: avant.body,
+      bodyText: avant.bodyText,
+      bodyJson:
+        avant.bodyJson === null || avant.bodyJson === undefined
+          ? Prisma.DbNull
+          : (avant.bodyJson as Prisma.InputJsonValue),
+      ...(m.dateAvant ? { updatedAt: m.dateAvant } : {}),
+    },
+  });
+  if (rendu.count !== 1) throw new ConflitEcritureError(m.cibleId);
+  if (avant.articleUpdatedAt) {
+    await tx.article.update({
+      where: { id: m.cibleId },
+      data: { updatedAt: new Date(avant.articleUpdatedAt) },
+    });
+  }
+  return { ok: true };
+}
