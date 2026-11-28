@@ -50,9 +50,13 @@ vi.mock("../ajustement", () => ({
 }));
 
 function vrai(l: Record<string, unknown>, w: Record<string, unknown>): boolean {
-  return Object.entries(w).every(([k, c]) =>
-    c === null ? l[k] === null || l[k] === undefined : l[k] === c,
-  );
+  return Object.entries(w).every(([k, c]) => {
+    if (c === null) return l[k] === null || l[k] === undefined;
+    // `{ not: x }` : la requête écarte les primes de challenge (PR H, #2464).
+    if (typeof c === "object" && c !== null && "not" in c)
+      return l[k] !== (c as { not: unknown }).not;
+    return l[k] === c;
+  });
 }
 
 vi.mock("@/lib/prisma", () => ({

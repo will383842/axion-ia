@@ -29,6 +29,7 @@ export const CODES_REGLE_AFFICHABLES = [
   "parrainage_10",
   "tarif_avant_date_effet",
   "journee_ia",
+  "prime_challenge",
 ] as const;
 export type CodeRegleAffichable = (typeof CODES_REGLE_AFFICHABLES)[number];
 export const CODE_REGLE_RESERVE = "formation_3j_plus";

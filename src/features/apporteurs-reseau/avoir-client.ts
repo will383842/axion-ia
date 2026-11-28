@@ -20,6 +20,7 @@
 //
 // ⚠️ Atteint par le WORKER (job horaire `reseau-facturation`, tsx hors Next) : aucun `server-only`.
 
+import { ACTIVITE_PRIME_CHALLENGE } from "./prime-challenge";
 import { randomUUID } from "node:crypto";
 
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
@@ -445,6 +446,8 @@ async function remplaceeParUneAutreLigne(
     (await prisma.commissionApporteur.findMany({
       where: {
         factureId: { in: ids },
+        // Une prime de challenge n'est jamais reprise par un avoir client.
+        activite: { not: ACTIVITE_PRIME_CHALLENGE },
         parrainage: l.parrainage,
         statut: { in: [...MODIFIABLES, "versee"] },
         montantCents: { gt: 0 },
@@ -769,6 +772,8 @@ export async function reprendreApresAvoirsClients(
   const lignes = await prisma.commissionApporteur.findMany({
     where: {
       factureId: { in: factureIds },
+      // Une prime de challenge n'est jamais reprise par un avoir client.
+      activite: { not: ACTIVITE_PRIME_CHALLENGE },
       statut: { in: [...MODIFIABLES, "versee"] },
       montantCents: { gt: 0 },
     },

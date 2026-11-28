@@ -9,6 +9,7 @@
  * autofacture lue (le virement d'une autofacture se calcule sur TOUTES ses lignes). Sans `server-only`
  * (le worker l'atteint par `tsx`).
  */
+import { facturesClientDesLignes } from "../prime-challenge";
 import { prisma } from "@/lib/prisma";
 
 import { paiementsIntegrauxParFacture } from "../paiement-integral";
@@ -137,7 +138,8 @@ export async function lireEntreeReleve(
   }
   const brutes = [...premieres, ...freres];
 
-  const factureIds = [...new Set(brutes.map((c) => c.factureId))];
+  // Une prime de challenge n'a pas de facture client : ni jointure ni paiement intégral à lire.
+  const factureIds = [...new Set(facturesClientDesLignes(brutes))];
   const [factures, paiements] = await Promise.all([
     factureIds.length
       ? prisma.factureFormation.findMany({
