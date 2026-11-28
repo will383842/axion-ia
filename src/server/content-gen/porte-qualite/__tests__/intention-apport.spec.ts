@@ -178,6 +178,22 @@ describe("B07 : durcissements de la relecture", () => {
       expect(r("B07", { corpsHtml: "<h1>T</h1>" + a + b }).statut).toBe("echec");
     }
   });
+  it("B : dates en chiffres, nombre caché en commentaire, hôte avec point final ne comptent pas", () => {
+    const lien = '<a href="https://www.insee.fr/x">INSEE</a>';
+    const cas = [
+      `<!--apport:B--><p>Le 12/03/2024, ${lien}.</p><!--/apport-->`,
+      `<!--apport:B--><p>Le 2024-03-12, ${lien}.</p><!--/apport-->`,
+      `<!--apport:B--><p>Le 1er mars 2024, ${lien}.</p><!--/apport-->`,
+      `<!--apport:B--><p><!-- a > 42 --> en 2024, ${lien}.</p><!--/apport-->`,
+      '<!--apport:B--><p>18 % des PME (2025), <a href="https://axion-ia.com./x">nous</a>.</p><!--/apport-->',
+    ];
+    for (const b of cas)
+      expect(r("B07", { corpsHtml: "<h1>T</h1>" + a + b }).statut, b).toBe("echec");
+  });
+  it("C : fin de mot exigée", () => {
+    const c = "<!--apport:C--><p>La fiscalitéx des PME.</p><!--/apport-->";
+    expect(r("B07", { corpsHtml: "<h1>T</h1>" + a + c }).statut).toBe("echec");
+  });
   it("une clé d'intention trop longue n'est jamais tronquée", () => {
     expect(
       cleIntention(

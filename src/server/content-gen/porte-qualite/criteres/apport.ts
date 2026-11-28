@@ -17,11 +17,11 @@ const RE_RESULTAT = /\d+(?:[.,]\d+)?\s*(?:%|heures?|h\b|jours?|€|euros?|minute
 const RE_ANNEE = /\b20[12]\d\b/;
 const RE_ANNEE_G = /\b20[12]\d\b/g;
 const RE_ANGLE =
-  /\b(?:ai\s*act|r[èe]glement\s+europ[ée]en|obligations?\s+de\s+l['’]employeur|droit\s+du\s+travail|cse\b|fiscalit[ée]|code\s+du\s+travail|calendrier\s+fran[çc]ais)/i;
+  /(?<![\p{L}\d])(?:ai\s*act|r[èe]glement\s+europ[ée]en|obligations?\s+de\s+l['’]employeur|droit\s+du\s+travail|cse|fiscalit[ée]|code\s+du\s+travail|calendrier\s+fran[çc]ais)(?![\p{L}\d])/iu;
 
 function hoteInterneOuSousDomaine(href: string, hotes: ReadonlyArray<string>): boolean {
   try {
-    const h = new URL(href).hostname.toLowerCase();
+    const h = new URL(href).hostname.toLowerCase().replace(/\.+$/, "");
     return hotes.some(
       (i) => h === i.toLowerCase() || h.endsWith(`.${i.toLowerCase().replace(/^www\./, "")}`),
     );
@@ -35,7 +35,8 @@ function verifier(
   donneePropre: boolean,
   hotes: ReadonlyArray<string>,
 ): string | null {
-  const t = texteDe(a.html);
+  // Texte lu HORS commentaires, comme les liens : un nombre caché dans un commentaire ne compte pas.
+  const t = texteDe(nettoyer(a.html));
   switch (a.type) {
     case "A":
       if (!RE_EFFECTIF.test(t)) return "exemple sans effectif de l'entreprise";
@@ -48,6 +49,12 @@ function verifier(
       const sansDates = t
         .replace(
           /\b\d{1,2}\s+(?:janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|d[ée]cembre)\s+20[12]\d\b/gi,
+          " ",
+        )
+        .replace(/\b\d{1,2}\/\d{1,2}\/20[12]\d\b/g, " ")
+        .replace(/\b20[12]\d-\d{1,2}-\d{1,2}\b/g, " ")
+        .replace(
+          /\b(?:1er|premier)\s+(?:janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|d[ée]cembre)\s+20[12]\d\b/gi,
           " ",
         )
         .replace(RE_ANNEE_G, " ");
