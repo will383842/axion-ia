@@ -117,3 +117,52 @@ export function checkHubVsVerticalesDuplicate(
 
   return { maxSimilarity: maxSim, issues, retryFeedback };
 }
+
+// ---------------------------------------------------------------------------
+// Comparaison VILLE ↔ VILLE (porte de qualité des pages de villes, 28/11/2026)
+// ---------------------------------------------------------------------------
+// Deux pages de villes qui ne diffèrent que par le nom sont du contenu dupliqué.
+// On retire donc le nom de la ville (et ses mots) avant de découper en shingles de
+// 5 mots, puis on compare par Jaccard. Fonctions pures, sans dépendance.
+
+/** Taille des shingles pour la comparaison entre villes (mots consécutifs). */
+export const TAILLE_SHINGLE_VILLES = 5;
+
+const sansAccent = (t: string): string => t.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+
+/**
+ * Shingles d'un texte de ville, nom de la ville retiré. Les mots du nom (accents ignorés) sont
+ * supprimés de la suite de mots AVANT le découpage : « à Lyon on trouve » et « à Nice on trouve »
+ * donnent alors les mêmes shingles.
+ */
+export function shinglesVille(
+  texte: string,
+  nomVille: string,
+  n: number = TAILLE_SHINGLE_VILLES,
+): Set<string> {
+  // Coupe sur tiret et apostrophes (droite ou typographique) AVANT le filtrage : « saint-etienne »
+  // et « d’angers » doivent redevenir des mots simples, sinon le nom reste dans le texte.
+  const decoupe = (t: string): string[] =>
+    tokenize(sansAccent(t).replace(/[-\u2019\u2018']/g, " "));
+  const motsDuNom = new Set(decoupe(nomVille));
+  const mots = decoupe(texte).filter((m) => !motsDuNom.has(m));
+  return shingles(mots, n);
+}
+
+/** Jaccard entre deux ensembles de shingles déjà calculés. */
+export function jaccardEnsembles(a: ReadonlySet<string>, b: ReadonlySet<string>): number {
+  if (a.size === 0 || b.size === 0) return 0;
+  let inter = 0;
+  const [petit, grand] = a.size <= b.size ? [a, b] : [b, a];
+  for (const x of petit) if (grand.has(x)) inter++;
+  return inter / (a.size + b.size - inter);
+}
+
+/** Similarité entre deux villes, nom de chacune retiré de son propre texte. */
+export function similariteEntreVilles(
+  a: { readonly nom: string; readonly texte: string },
+  b: { readonly nom: string; readonly texte: string },
+  n: number = TAILLE_SHINGLE_VILLES,
+): number {
+  return jaccardEnsembles(shinglesVille(a.texte, a.nom, n), shinglesVille(b.texte, b.nom, n));
+}

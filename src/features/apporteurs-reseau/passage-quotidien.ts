@@ -114,6 +114,7 @@ import {
   htLignesRecurrentesRestantesCents,
   plafondBaseCommissionnableCents,
   calculerCommissionSelonGrilleAvecRegle,
+  analyserLignesConference,
   regleApresPlafond,
   grilleDeLaCommande,
   MESSAGE_GRILLE_INCONNUE,
@@ -1375,15 +1376,27 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       palierAQualifier = ji.palierAQualifier;
       regle = ji.palierAQualifier === null ? "journee_ia" : null;
     } else {
+      // Conférences (A1.4 bis, 500 € chacune) : le nombre vient des lignes du devis. Illisible →
+      // « à qualifier », jamais 500 € ni 0 € en silence (si la grille ne paie rien, le nombre est sans objet).
+      const activiteCommission = (f.activite ?? null) as ActiviteCommission | null;
+      const conference = activiteCommission === "conference";
+      const quantiteConf = conference
+        ? analyserLignesConference(f.devis ? f.devis.lignes : f.lignes).quantite
+        : null;
       const r = calculerCommissionSelonGrilleAvecRegle({
-        activite: (f.activite ?? null) as ActiviteCommission | null,
+        activite: activiteCommission,
         factureHtCents: baseCommissionnable,
         palier: null,
+        ...(quantiteConf !== null ? { quantite: quantiteConf } : {}),
         signeeAt,
         grille,
       });
-      calc = r.calcul;
-      regle = regleApresPlafond(r.regle, baseAvantPlafond, plafondBase);
+      if (conference && quantiteConf === null && r.calcul.statut === "calculee") {
+        calc = { statut: "a_qualifier" };
+      } else {
+        calc = r.calcul;
+        regle = regleApresPlafond(r.regle, baseAvantPlafond, plafondBase);
+      }
     }
     const versionContrat = versionContratSignee(p.apporteur.signatureApporteur);
     if (calc.statut === "aucune") continue;

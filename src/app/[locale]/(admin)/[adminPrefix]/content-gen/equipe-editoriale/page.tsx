@@ -32,6 +32,17 @@ export default async function EquipeEditorialePage({ params }: PageProps) {
       adminPrefix={adminPrefix}
       etat={pilotage.etat}
       quotas={pilotage.quotas}
+      delais={
+        pilotage.delaisIndexation && {
+          medianeHeures30j: pilotage.delaisIndexation.medianeHeures30j,
+          articles: pilotage.delaisIndexation.articles.map((a) => ({
+            id: a.id,
+            titre: a.titre,
+            publieLe: a.publieLe.toISOString(),
+            delaiHeures: a.delaiHeures,
+          })),
+        }
+      }
       aRelire={pilotage.aRelire.map((a) => ({ ...a, creeLe: a.creeLe.toISOString() }))}
     />
   );
