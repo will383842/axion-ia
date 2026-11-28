@@ -712,7 +712,7 @@ export async function genererDossierSessionZip(
   // porter le chapeau au stockage enverrait chercher une panne qui n'existe pas.
   if (documents.length - vierges > 0 && joints === 0) {
     avertissements.push(
-      `⚠️ ${documents.length} document${documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
+      `⚠️ ${documents.length - vierges} document${documents.length - vierges > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
     );
   }
 
