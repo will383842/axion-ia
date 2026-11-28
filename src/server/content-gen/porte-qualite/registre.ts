@@ -6,6 +6,8 @@
 import { evaluerB08, evaluerB11 } from "./criteres/completude";
 import { evaluerB01, evaluerB03 } from "./criteres/doctrine";
 import { evaluerB13 } from "./criteres/maillage";
+import { evaluerB07 } from "./criteres/apport";
+import { evaluerB05 } from "./criteres/intention";
 import { evaluerB14 } from "./criteres/metadonnees";
 import { evaluerB06 } from "./criteres/unicite";
 import { evaluerB11a, evaluerB11b, evaluerB11c } from "./criteres/structure";
@@ -65,11 +67,26 @@ export const CRITERES: ReadonlyArray<Critere> = Object.freeze([
     evaluer: (c) => evaluerB03(c),
   }),
   critere({
+    id: "B05",
+    libelle: "Intention déclarée et libre",
+    famille: "intention",
+    seuil: () => "1 intention = 1 page",
+    evaluer: (c, x) => evaluerB05(c, x),
+  }),
+  critere({
     id: "B06",
     libelle: "Unicité sémantique",
     famille: "unicite",
     seuil: (r) => `cosinus maximal < ${r.cosinusBloque} (alerte dès ${r.cosinusAlerte})`,
     evaluer: (c, x, r) => evaluerB06(c, x, r),
+  }),
+  critere({
+    id: "B07",
+    libelle: "Apport original",
+    famille: "apport",
+    seuil: (r) =>
+      `${r.apportsMin} apports distincts vérifiés (A exemple, B chiffre sourcé, C angle PME française, D donnée propre)`,
+    evaluer: (c, x, r) => evaluerB07(c, x, r),
   }),
   critere({
     id: "B08",

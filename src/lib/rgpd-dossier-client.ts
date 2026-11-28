@@ -77,6 +77,11 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "le RIB joint à une demande de changement de compte : il peut porter les coordonnées d'un tiers ; sa copie vous est rendue sur demande écrite sous un mois (contact@axion-ia.com), tiers occultés.",
   },
   {
+    modele: "ApporteurAvenant",
+    motif:
+      "avenant au contrat proposé à l'apporteur (#2512, lot S1) : table créée vide, aucun écran ne l'alimente encore ; son export (art. 15) est livré avec la page d'acceptation et le bloc « Mes documents » (lots S2 et S6).",
+  },
+  {
     modele: "ApporteurIbanHistorique",
     motif:
       "l'historique de vos comptes bancaires successifs : les comptes validés vous sont rendus sur demande écrite sous un mois (contact@axion-ia.com).",

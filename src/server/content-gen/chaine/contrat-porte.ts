@@ -136,8 +136,8 @@ export interface SortiePorte {
 
 /** L'appel peut échouer : la chaîne ne publie alors jamais (échec fermé). */
 export type ResultatAppelPorte =
-  | { readonly etat: "ok"; readonly sortie: SortiePorte }
-  | { readonly etat: "erreur"; readonly message: string };
+  | { readonly etat: "ok"; readonly sortie: SortiePorte; readonly coutUsd?: number }
+  | { readonly etat: "erreur"; readonly message: string; readonly coutUsd?: number };
 
 /** Une note valide est un nombre fini de 0 à 100. */
 export function noteValide(note: number): boolean {

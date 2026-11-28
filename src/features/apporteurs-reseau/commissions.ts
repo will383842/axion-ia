@@ -50,6 +50,7 @@ import { MESSAGE_JOURNEE_IA_GRILLE_V2 } from "./journee-ia-grille";
 import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommissionSelonGrilleAvecRegle,
+  analyserLignesConference,
   versionContratSignee,
   type RegleAppliquee,
   DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS,
@@ -519,11 +520,27 @@ export async function classerActiviteCommission(
     grille === "v3" &&
     choisie === "site_web" &&
     (!signeeAt || signeeAt < DEVELOPPEMENT_WEB_COMMISSIONNE_DEPUIS);
+  // Conférences (A1.4 bis, 500 € chacune) : le nombre se lit sur les lignes du devis, jamais 1 par défaut.
+  let quantiteConf: number | null = null;
+  if (choisie === "conference") {
+    const fac = await prisma.factureFormation.findUnique({
+      where: { id: c.factureId },
+      select: { lignes: true, devis: { select: { lignes: true } } },
+    });
+    quantiteConf = analyserLignesConference(fac?.devis?.lignes ?? fac?.lignes).quantite;
+    if (quantiteConf === null && grille === "v2")
+      return {
+        ok: false,
+        message:
+          "Nombre de conférences illisible sur le devis : qualifiez la ligne avec le palier « Conférence » et la quantité.",
+      };
+  }
   const avecRegle = venteAnterieure
     ? null
     : calculerCommissionSelonGrilleAvecRegle({
         activite: choisie,
         factureHtCents: c.factureHtCents,
+        ...(quantiteConf !== null ? { quantite: quantiteConf } : {}),
         signeeAt,
         grille,
       });

@@ -13,3 +13,5 @@ export const FUSEAU_SEO_PILOTAGE = "Europe/Paris";
 export const PATTERN_SEO_RECALCUL = "7 7 * * *";
 /** Robots d'IA (P10) : tous les jours à 07 h 07 à Paris, après la collecte Search Console de 06 h 37. */
 export const PATTERN_SEO_ROBOTS_IA = "7 7 * * *";
+/** Panel GEO (P11) : jours ouvrés, 08 h 17 à Paris (3 questions par passage) ; jamais sur la minute 0. */
+export const PATTERN_SEO_PANEL_GEO = "17 8 * * 1-5";

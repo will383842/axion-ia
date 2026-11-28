@@ -134,7 +134,8 @@ function getQaExtractQueue(): Queue {
 // heures ouvrées → signal humain, réduit risque HCU Google.
 //
 // Rampe progressive si env var non définie. Relevée 2026-07-02 (décision Will —
-// objectif ~100 contenus/jour) : plancher 150/jour dès le départ pour ne PAS
+// ancien objectif de volume, NEUTRALISÉ par la porte qualité Q11 : le plafond de sécurité
+// de la porte prend le minimum de ces limites et ce n'est qu'une LIMITE HAUTE, jamais une cible) : plancher 150/jour dès le départ pour ne PAS
 // bloquer la montée en charge, puis 300 puis 1000. L'ancien plancher à 30/jour
 // bottleneckait la publication (file « À relire » qui s'accumulait).
 // Paliers basés sur le volume d'articles publiés cumulés :
@@ -1402,10 +1403,9 @@ async function executePublishPipeline(
   // la découverte des articles concernés. Une incohérence pure : le sitemap
   // disait « indexe-moi », le ping disait « pas la peine ».
   //
-  // Les deux canaux restent gardés en aval par leurs propres verrous : IndexNow
-  // exige `INDEXNOW_KEY`, et l'API Google reste derrière son double opt-in
-  // (`GOOGLE_INDEXING_API_ENABLED` + `GOOGLE_INDEXING_ARTICLES`) avec son quota
-  // de 200/24 h. Aucun risque de dépense ni de dépassement ici.
+  // IndexNow exige `INDEXNOW_KEY`. L'API Indexing de Google n'est JAMAIS appelée pour un
+  // article (réservée à JobPosting / BroadcastEvent ; garde-fou dans `indexing/enqueue.ts`) :
+  // Google passe par le sitemap et `sitemaps.submit` (éteint par défaut).
   //
   // ⚠️ À savoir pour la suite : la protection anti-doorway que `promoteToTier1`
   // était censé porter (soft-404, score < 50, doctrine) n'existe plus depuis

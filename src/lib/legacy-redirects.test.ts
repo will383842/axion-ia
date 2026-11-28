@@ -60,3 +60,22 @@ describe("resolveLegacyRedirect — aplatissement des chaînes (audit indexation
     expect(resolveLegacyRedirect("/")).toBeNull();
   });
 });
+
+describe("blog sans préfixe locale : un seul saut vers la cible finale", () => {
+  it("chaque redirection /:locale/blog/<slug> de next.config est aplatie", async () => {
+    const { readFileSync } = await import("node:fs");
+    const cfg = readFileSync("next.config.ts", "utf8");
+    const paires = [
+      ...cfg.matchAll(
+        /source: "\/:locale\(fr\|en\)\/blog\/([a-z0-9/-]+)",\s*destination: "\/:locale\/blog\/([a-z0-9-]+)"/g,
+      ),
+    ];
+    expect(paires.length).toBeGreaterThanOrEqual(10);
+    for (const [, source, destination] of paires) {
+      expect(resolveLegacyRedirect(`/blog/${source}`)).toBe(`/blog/${destination}`);
+    }
+  });
+  it("un article courant sans redirection reste au 301 simple (préfixage /fr par le proxy)", () => {
+    expect(resolveLegacyRedirect("/blog/un-article")).toBeNull();
+  });
+});

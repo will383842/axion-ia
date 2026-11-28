@@ -18,8 +18,13 @@ describe("migration des annulations de rendez-vous", () => {
     const nom = DOSSIER.split("/").pop() as string;
     const horodatage = (d: string) => d.slice(0, 14);
     const autres = readdirSync(join(process.cwd(), "prisma/migrations")).filter(
-      // La rotation du RIB (PR P) est légitimement postérieure (157000) : on ne compare pas à elle.
-      (d) => /^\d{14}_/.test(d) && d !== nom && !d.endsWith("_apporteurs_rotation_rib"),
+      // Le panel GEO (pilotage SEO, P11) est légitimement postérieur : table nouvelle, sans lien.
+      (d) =>
+        /^\d{14}_/.test(d) &&
+        d !== nom &&
+        !d.endsWith("_pilotage_seo_geo_panel") &&
+        !d.endsWith("_apporteurs_rotation_rib") &&
+        !d.endsWith("_apporteurs_avenants"),
     );
     // Les migrations d'autres chantiers, posées après, sont admises : liste fermée.
     const fautives = autres.filter(

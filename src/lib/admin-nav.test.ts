@@ -218,8 +218,8 @@ describe("buildAdminNav SSOT", () => {
     // +1 Collaborateurs (fiches publiques de l'équipe, 2026-11-27, groupe content) : 183 + 1 = 184.
     // +1 Pilotage SEO & IA (P8, 2026-11-27, groupe content_gen) : 184 + 1 = 185.
     // +1 Porte qualité (observation, 2026-11-28, groupe content_gen).
-    // Deux ajouts fusionnés : 184 + 2 = 186.
-    expect(items.length).toBe(186);
+    // Deux ajouts fusionnés : 184 + 2 = 186 ; + « Chaîne éditoriale » (C14) = 187.
+    expect(items.length).toBe(187);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -884,6 +884,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/content-gen/geo",
   "/content-gen/geo/coverage-table",
   "/content-gen/quality",
+  "/content-gen/chaine-editoriale",
   "/content-gen/porte-qualite",
   "/content-gen/costs",
   "/content-gen/similarity-monitor",
