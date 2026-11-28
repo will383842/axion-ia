@@ -1,0 +1,58 @@
+name: Veille IA → Telegram
+
+# Demande de Will du 28/11/2026 : être prévenu sur Telegram SEULEMENT (pas
+# d'e-mail) des nouveautés Claude/Anthropic, OpenAI et Google, et dès que le
+# programme Claude for Startups rouvre ses candidatures.
+#
+# - Un passage par jour (8 h 30 Paris l'hiver). Aucun modèle d'IA appelé :
+#   zéro jeton, zéro crédit API, seulement quelques secondes de runner.
+# - Un seul message par jour, et seulement s'il y a du nouveau.
+# - L'état (liens déjà vus) est gardé par actions/cache. Si le cache disparaît,
+#   le passage suivant renvoie simplement « Veille IA activée » sans inonder.
+# - Script : scripts/veille-ia/veille.py (bibliothèque standard Python).
+#
+# SECRETS REQUIS : TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (déjà présents, les
+# mêmes que kill-switch-vers-telegram.yml).
+
+on:
+  schedule:
+    - cron: "30 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: veille-ia-telegram
+  cancel-in-progress: false
+
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          sparse-checkout: scripts/veille-ia
+          persist-credentials: false
+
+      - name: Reprendre l'état du passage précédent
+        uses: actions/cache/restore@v6
+        with:
+          path: etat-veille.json
+          key: veille-ia-${{ github.run_id }}
+          restore-keys: veille-ia-
+
+      - name: Lire les sources et prévenir sur Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ETAT: etat-veille.json
+        run: python3 -I -X utf8 scripts/veille-ia/veille.py
+
+      - name: Garder l'état pour demain
+        if: always() && hashFiles('etat-veille.json') != ''
+        uses: actions/cache/save@v6
+        with:
+          path: etat-veille.json
+          key: veille-ia-${{ github.run_id }}
