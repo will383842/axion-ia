@@ -67,6 +67,7 @@ describe("la migration du relevé mensuel est additive", () => {
             "_pilotage_seo_mesure",
             "_chaine_editoriale_tables",
             "_porte_qualite_tables",
+            "_team_invite_envoi",
             "_apporteurs_annulations_rendez_vous",
           ].some((s) => d.endsWith(s)),
         ),

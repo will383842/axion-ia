@@ -12,6 +12,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { FOUNDER } from "@/lib/brand";
 import { PRESS_SPOKESPERSONS } from "@/content/press";
+import { WILLIAMS_META_DESCRIPTION } from "@/content/equipe/williams";
 
 const ROOT = path.resolve(__dirname, "../../..");
 const lire = (rel: string) => readFileSync(path.join(ROOT, rel), "utf8");
@@ -42,12 +43,14 @@ describe("/presse — une seule entité fondateur", () => {
 });
 
 describe("/equipe/williams — meta description", () => {
+  // La description vient du contenu de la fiche (`content/equipe/williams.ts`), pas de la route.
   const source = lire("src/app/[locale]/equipe/[slug]/page.tsx");
-  const brut = source.match(/description: `(\$\{FOUNDER\.fullName\}[^`]*)`/)?.[1] ?? "";
-  const description = brut.replace("${FOUNDER.fullName}", FOUNDER.fullName);
+  const description = WILLIAMS_META_DESCRIPTION;
 
-  it("reprend la description d'entité, sans ville ni « agence »", () => {
-    expect(description).toContain("partenaire IA des PME et des TPE");
+  it("reprend la description d'entité (Axion-IA, TPE et PME), sans ville ni « agence »", () => {
+    expect(source).toContain("contenu.metaDescription");
+    expect(description).toMatch(/^Williams Jullin dirige Axion-IA/);
+    expect(description).toContain("TPE et PME");
     expect(description).not.toMatch(/Grenoble|agence/i);
     expect(sansCommentaires(source)).not.toMatch(/Grenoble|agence IA/i);
   });
