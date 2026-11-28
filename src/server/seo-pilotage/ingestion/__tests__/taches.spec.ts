@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { GscLotResultat } from "@/server/content-gen/seo/gsc-client";
+import type { IssueJour } from "../jour";
+import type { IssueTache } from "../taches";
 import { creerFauxPrisma } from "./faux-prisma";
 
 const dernierJourFinal = vi.fn();
@@ -48,6 +50,10 @@ describe("tâches de collecte", () => {
     expect(base.gscImportRun.lignes).toHaveLength(0);
   });
 
+  const lot = (r: IssueTache): ReadonlyArray<IssueJour> => {
+    if (r.issue !== "lot") throw new Error(`attendu « lot », reçu « ${r.issue} »`);
+    return r.jours;
+  };
   const sansPause = { pause: async () => undefined };
 
   it("rattrapage : jusqu'à JOURS_PAR_PASSAGE jours par passage, du plus récent au plus ancien", async () => {
@@ -55,12 +61,12 @@ describe("tâches de collecte", () => {
     const recherche = vi.fn(async () => ok());
     const r1 = await tacheRattrapageGsc({ prisma, recherche, ...sansPause });
     expect(r1).toMatchObject({ issue: "lot", arret: "plafond" });
-    const jours1 = (r1 as { jours: Array<{ jour: string }> }).jours.map((j) => j.jour);
+    const jours1 = lot(r1).map((j) => j.jour);
     expect(jours1).toHaveLength(JOURS_PAR_PASSAGE);
     expect(jours1[0]).toBe("2026-11-23");
     expect(jours1[1]).toBe("2026-11-22");
     const r2 = await tacheRattrapageGsc({ prisma, recherche, ...sansPause });
-    const jours2 = (r2 as { jours: Array<{ jour: string }> }).jours.map((j) => j.jour);
+    const jours2 = lot(r2).map((j) => j.jour);
     expect(jours2).toHaveLength(JOURS_PAR_PASSAGE);
     // idempotent : aucun jour rejoué
     expect(new Set([...jours1, ...jours2]).size).toBe(2 * JOURS_PAR_PASSAGE);
@@ -88,9 +94,9 @@ describe("tâches de collecte", () => {
     );
     const r = await tacheRattrapageGsc({ prisma, recherche, ...sansPause });
     expect(r).toMatchObject({ issue: "lot", arret: "echec" });
-    const jours = (r as { jours: Array<{ issue: string; code?: string }> }).jours;
+    const jours = lot(r);
     expect(jours.map((j) => j.issue)).toEqual(["reussi", "echec"]);
-    expect(jours[1]?.code).toBe("quota");
+    expect((jours[1] as { code?: string }).code).toBe("quota");
     // le quota ne compte pas comme une tentative
     expect(base.gscImportRun.lignes.find((l) => l.statut === "echec")?.tentatives).toBe(0);
   });
@@ -105,8 +111,8 @@ describe("tâches de collecte", () => {
       horloge: () => (t += BUDGET_PASSAGE_MS / 2),
     });
     expect(r).toMatchObject({ issue: "lot", arret: "temps" });
-    expect((r as { jours: unknown[] }).jours.length).toBeGreaterThanOrEqual(1);
-    expect((r as { jours: unknown[] }).jours.length).toBeLessThan(JOURS_PAR_PASSAGE);
+    expect(lot(r).length).toBeGreaterThanOrEqual(1);
+    expect(lot(r).length).toBeLessThan(JOURS_PAR_PASSAGE);
   });
 
   it("rattrapage : saute les jours réussis, reprend un échec, abandonne après 5 tentatives", async () => {
