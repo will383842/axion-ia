@@ -33,4 +33,6 @@ Critères de sélection en grandes pastilles ; `CarteSelection` avec rubriques p
 
 Aucun JavaScript client ajouté (aucun `"use client"`, composants serveur, fonctions pures) : **JS +0** par construction. CSS du gabarit ≈ 1 Ko gz, chargée avec la route. Build de mesure non relancé ici (mémoire) : le seuil de 75 Ko gz n'est mesuré par aucune gate ; à relire sur un build avant mise en ligne.
 
-VERDICT OPUS : À CORRIGER (tour 1 sur 3 ; exclusions de titres, titre d'origine du tableau, neutralité conditionnelle : corrigés ; second tour en cours)
+Remarque : la doctrine des générateurs rend Axion-IA très présent dans les corps ; la phrase de neutralité ne s'affichera donc que rarement tant que ce n'est pas changé côté génération (masquage volontaire, sens sûr). Exclusions de titres : ancrées en tête de titre (≤ 5 mots), jamais sur un titre déjà numéroté ; un titre d'option commençant par « Sources de… » ou « Résumé de… » de ≤ 5 mots serait exclu à tort (rare, à relire sur de vrais articles).
+
+VERDICT OPUS : À CORRIGER (tour 2 sur 3 ; exclusions trop larges ou trop étroites, titre d'option retiré avant un tableau : corrigés ; troisième tour en cours)

@@ -6,31 +6,49 @@
  */
 
 /** Titres de section qui ne sont PAS une option de la liste. */
-const MOTS_HORS_OPTION = [
+/**
+ * Sections qui ne sont PAS une option : le titre COMMENCE par l'un de ces motifs (après un
+ * article éventuel) et reste court. Un nom d'outil qui contient « résumé » ou « sources »
+ * plus loin (« ChatGPT : résumé de réunions ») reste donc une option.
+ */
+const DEBUT_HORS_OPTION = [
   "faq",
   "questions?",
   "sources?",
-  "m[ée]thode",
-  "conclusion",
+  "m[ée]thod\\p{L}*",
+  "conclu\\p{L}*",
+  "pour conclure",
   "en bref",
-  "r[ée]sum[ée]",
-  "r[ée]cap(?:itulatif)?",
+  "r[ée]sum\\p{L}*",
+  "r[ée]cap\\p{L}*",
   "bilan",
   "verdict",
-  "tableau",
+  "tableau(?=\\s+(?:r[ée]capitulatif|de\\s+(?:synth|compar)|comparatif)|\\s*[?!.:]?\\s*$)",
   "synth[èe]se",
+  "comparatif",
   "crit[èe]res?",
   "par o[ùu] commencer",
   "pour aller plus loin",
   "pour finir",
   "pourquoi",
   "comment (?:nous|on|choisir)",
+  "quel(?:le)?s?\\s+(?:\\p{L}+\\s+){0,3}choisir",
   "ce qu[’']il faut retenir",
   "[àa] retenir",
-  "notre (?:m[ée]thode|lecture)",
+  "notre s[ée]lection",
 ];
-/** Bornes explicites (lettre ou non) : `\b` ne voit pas la fin d'un mot qui finit par « é ». */
-const HORS_OPTION = new RegExp(`(?<![\\p{L}])(?:${MOTS_HORS_OPTION.join("|")})(?![\\p{L}])`, "iu");
+const ARTICLE = "(?:(?:notre|nos|la|le|les|en|une?)\\s+)?";
+const HORS_OPTION = new RegExp(
+  `^\\s*${ARTICLE}(?:${DEBUT_HORS_OPTION.join("|")})(?![\\p{L}])`,
+  "iu",
+);
+const MOTS_MAX_HORS_OPTION = 5;
+
+function estHorsOption(titre: string): boolean {
+  if (DEJA_NUMEROTE.test(titre)) return false;
+  return HORS_OPTION.test(titre) && titre.split(/\s+/).length <= MOTS_MAX_HORS_OPTION;
+}
+
 /** Titre déjà numéroté en texte (« 1. Zapier », « 2) Make ») : la CSS ne le numérote pas. */
 const DEJA_NUMEROTE = /^\s*\d{1,2}\s*[.)\-–:]/;
 const H2 = /<h2((?:\s[^>]*)?)>([\s\S]*?)<\/h2>/gi;
@@ -69,7 +87,7 @@ export function marquerOptions(
     attrs: m[1] ?? "",
     texte: (m[2] ?? "").replace(/<[^>]*>/g, "").trim(),
   }));
-  const choisis = titres.filter((t) => !HORS_OPTION.test(t.texte));
+  const choisis = titres.filter((t) => !estHorsOption(t.texte));
   if (choisis.length < MIN_OPTIONS) return { html, total: 0 };
 
   const milieu = choisis.length >= MIN_OPTIONS_BANDEAU ? Math.floor(choisis.length / 2) : -1;
@@ -90,8 +108,12 @@ export function marquerOptions(
   return { html: sortie, total: choisis.length };
 }
 
-const TITRE_DE_TABLEAU =
-  /<h2((?:\s[^>]*)?)>[^<]*(?:tableau|r[ée]capitulatif|synth[èe]se)[^<]*<\/h2>\s*(?:<p>(?:(?!<\/p>)[\s\S])*<\/p>\s*)?$/i;
+/** Titre « Tableau récapitulatif », « Tableau de synthèse »… (et rien d'autre), nu. */
+const TEXTE_TITRE_TABLEAU =
+  /^\s*(?:notre |le |ce )?(?:tableau|r[ée]capitulatif|synth[èe]se)(?:\s+(?:r[ée]capitulatif|de\s+(?:synth[èe]se|comparaison)|comparatif))?\s*[?!.:]?\s*$/iu;
+/** `<h2>` court + au plus un `<p>` d'introduction, juste avant le tableau (longueurs bornées). */
+const TITRE_AVANT_TABLEAU =
+  /<h2((?:\s[^>]*)?)>([^<]{1,120})<\/h2>\s*(?:<p>(?:(?!<\/p>)[\s\S]){0,600}<\/p>\s*)?$/i;
 const BALISE_TABLE = /<(\/?)table(?=[\s>/])[^>]*>/gi;
 const ENVELOPPE_OUVRANTE =
   /<div\b[^>]*\bclass\s*=\s*["'][^"']*\btable-scroll\b[^"']*["'][^>]*>\s*$/i;
@@ -131,7 +153,11 @@ export function extrairePremierTableau(
   }
   // Le titre d'origine du tableau (« Tableau récapitulatif », avec son éventuelle phrase
   // d'introduction) part avec lui : ni section vide ni doublon au sommaire.
-  const titre = TITRE_DE_TABLEAU.exec(avant);
+  const trouve = TITRE_AVANT_TABLEAU.exec(avant);
+  const titre =
+    trouve && TEXTE_TITRE_TABLEAU.test(trouve[2] ?? "") && !/\bdata-option\b/.test(trouve[1] ?? "")
+      ? trouve
+      : null;
   let titreRetire: string | null = null;
   if (titre) {
     avant = avant.slice(0, titre.index);

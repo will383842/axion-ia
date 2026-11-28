@@ -34,6 +34,41 @@ describe("marquerOptions", () => {
     expect(r.html.match(/data-option=/g)).toHaveLength(2);
   });
 
+  it("ne confond pas un nom d'outil contenant un de ces mots avec une section hors liste", () => {
+    const vrais = [
+      "Mistral AI, l’alternative open source",
+      "ChatGPT : résumé de réunions",
+      "Claude : pourquoi les juristes l’adorent",
+      "Notion AI pour la synthèse de notes",
+      "Perplexity : recherche avec sources",
+      "Fireflies, le récap automatique",
+      "Make : la méthode no-code",
+      "Tableau (Salesforce)",
+      "3. Otter : résumé de réunions",
+    ];
+    const r = marquerOptions(vrais.map((t) => h2(t)).join(""), { libelleSur: "sur", bandeau: "" });
+    expect(r.total).toBe(vrais.length);
+  });
+
+  it("exclut les variantes courantes : méthodologie, conclusions, pour conclure, récapitulons, quel outil choisir, comparatif", () => {
+    const hors = [
+      "Méthodologie",
+      "Notre méthodologie",
+      "Conclusions",
+      "Pour conclure",
+      "Récapitulons",
+      "Quel outil choisir ?",
+      "Comparatif",
+      "Tableau récapitulatif",
+      "Tableau de synthèse",
+    ];
+    const r = marquerOptions(`${hors.map((t) => h2(t)).join("")}${options(2)}`, {
+      libelleSur: "sur",
+      bandeau: "",
+    });
+    expect(r.total).toBe(2);
+  });
+
   it("un titre déjà numéroté en texte n'est pas numéroté par la CSS (pas de doublon)", () => {
     const r = marquerOptions(`${h2("1. Zapier")}${h2("2) Make")}${h2("Airtable")}`, {
       libelleSur: "sur",
@@ -88,6 +123,16 @@ describe("extrairePremierTableau / ancreLibre / echapper", () => {
     const r = extrairePremierTableau(h);
     expect(r?.reste).toBe('<p>a</p><h2 id="z">Zapier</h2>');
     expect(r?.titreRetire).toBe("tableau-recapitulatif");
+  });
+  it("ne retire jamais le titre d'une vraie option qui précède un tableau", () => {
+    for (const titre of ["Tableau (Salesforce)", "Notion AI pour la synthèse de notes"]) {
+      const h = `<h2 id="o">${titre}</h2><p>Outil BI.</p>${t}`;
+      const r = extrairePremierTableau(h);
+      expect(r?.reste).toBe(`<h2 id="o">${titre}</h2><p>Outil BI.</p>`);
+      expect(r?.titreRetire).toBeNull();
+    }
+    const marque = `<h2 id="o" data-option="auto">Tableau</h2><p>x</p>${t}`;
+    expect(extrairePremierTableau(marque)?.titreRetire).toBeNull();
   });
   it("garde un titre qui n'est pas celui d'un tableau", () => {
     const r = extrairePremierTableau(`<h2 id="x">Zapier</h2><p>Texte.</p>${t}`);
