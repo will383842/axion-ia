@@ -1,4 +1,4 @@
--- Rollback de 20261128165000_apporteurs_challenges_primes.
+-- Rollback de 20261128192000_apporteurs_challenges_primes.
 -- Seulement sur décision du fondateur : la table porte les primes de challenge (pièces comptables).
 -- Sauvegarder d'abord (\copy côté client psql) ; ne rien supprimer sans sauvegarde.
 --   \copy "challenges_primes" TO 'challenges_primes_20261128.csv' CSV HEADER
