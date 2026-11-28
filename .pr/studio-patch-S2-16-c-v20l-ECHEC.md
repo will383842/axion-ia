@@ -1,0 +1,6 @@
+# S2-16-c-v20l : aucune correction possible dans le périmètre de la fiche (ECHEC)
+
+- **Rouge de la PR #1763 (cf4dda8b)** : « tests des fichiers touchés » et « tests des nouveaux fichiers de test » (les annotations GitHub ne donnent que « exit code 1 », sans le détail).
+- **Rejoué en local (vitest 5.0.3, lockfile du Studio)** : `tests/tableau/prononciations-branchees-v20l.test.ts` passe ; `tests/usine/inventaire/tableau.test.ts` : 23/24, le seul échec est `tests/usine/interrupteurs-inventaire.test.ts:567` « recensement » → `services/site-videos.ts:885 : clé « site.repriseValidees » ni en table ni exclue`.
+- **Cause** : rouge HÉRITÉ de master (88a2dc52 l'a à l'identique ; `site-videos.ts` n'est pas dans le diff de la fiche, la clé n'est dans aucune table `tests/usine/inventaire/*`). La corriger demande d'éditer une table d'inventaire hors des 4 fichiers de la fiche (par ex. `site-et-visuels.test.ts`) : interdit par la consigne, donc aucun commit ni patch produit.
+- **Aussi** : `tsc --noEmit` ne signale aucune erreur dans les 4 fichiers de la fiche (les autres erreurs viennent d'un install sans scripts). Aucune mutation faite : aucun code changé. À faire : inventorier `site.repriseValidees` sur master, puis relancer la CI de la PR.
