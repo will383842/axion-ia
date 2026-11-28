@@ -16746,6 +16746,8 @@ model ApporteurChangementIban {
   motifRefus             String?   @map("motif_refus") @db.Text
   /// Les trois cases cochées et les alertes affichées. Jamais d'IBAN.
   controles              Json?
+  /// Posée par la purge RGPD avec `iban = 'purge'` (PR N, #2464 pt 6).
+  ibanPurgeAt            DateTime? @map("iban_purge_at") @db.Timestamptz(3)
 
   @@index([apporteurId, demandeeAt], map: "apporteur_changements_iban_apporteur_idx")
   @@index([statut, confirmeeAt], map: "apporteur_changements_iban_statut_idx")
@@ -16787,6 +16789,8 @@ model ApporteurIbanHistorique {
   demandeId       String?   @map("demande_id") @db.Uuid
   pieceRibId      String?   @map("piece_rib_id") @db.Uuid
   creeAt          DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  /// Posée par la purge RGPD avec `iban = 'purge'` (PR N, #2464 pt 6) ; empreinte et quatre derniers caractères gardés.
+  ibanPurgeAt     DateTime? @map("iban_purge_at") @db.Timestamptz(3)
 
   @@index([apporteurId, creeAt], map: "apporteur_iban_historique_apporteur_idx")
   @@index([ibanEmpreinte], map: "apporteur_iban_historique_empreinte_idx")
@@ -16810,6 +16814,23 @@ model ApporteurVirementCompte {
   @@unique([autofactureNumero, verseAt], map: "apporteur_virements_compte_numero_verse_key")
   @@index([apporteurId, declareAt], map: "apporteur_virements_compte_apporteur_idx")
   @@map("apporteur_virements_compte")
+}
+
+/// Ce que la purge RGPD a effacé, quand et selon quelle règle. Ajout seul (déclencheurs). La fiche de l'apporteur reste.
+/// Sans clé étrangère (fenêtre app/worker). `regle` et `elements` sont contraints par CHECK (migration.sql).
+/// rgpd: technique — identifiant d'apporteur, éléments effacés, règle et dates ; aucun nom, e-mail ni téléphone
+model ApporteurPurgeRgpd {
+  id          String   @id @default(uuid()) @db.Uuid
+  apporteurId String   @map("apporteur_id") @db.Uuid
+  /// contrat_termine_5ans | refuse_6mois | inactif_24mois | piece_6mois
+  regle       String   @db.VarChar(40)
+  /// pieces_identite | rib | iban_fiche | iban_historique | iban_demandes | rib_demandes
+  elements    String[]
+  echeanceAt  DateTime @map("echeance_at") @db.Timestamptz(3)
+  purgeeAt    DateTime @default(now()) @map("purgee_at") @db.Timestamptz(3)
+
+  @@index([apporteurId])
+  @@map("apporteur_purges_rgpd")
 }
 
 /// Une VERSION d'un document annexe (fiche des commissions, livret, guide), déposée UNE fois à une clé IMMUABLE dérivée

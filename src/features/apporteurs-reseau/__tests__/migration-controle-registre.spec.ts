@@ -17,12 +17,13 @@ describe("migration du contrôle du registre", () => {
       true,
     );
     const autres = readdirSync(path.join(RACINE, "prisma/migrations")).filter(
-      // Les migrations postérieures (ex. annexes versionnées, annulations de rendez-vous) viennent après : on ne compare qu'aux précédentes.
+      // Les migrations postérieures (annexes versionnées, annulations de rendez-vous, purge RGPD) viennent après : on ne compare qu'aux précédentes.
       (d) =>
         /^\d{14}_/.test(d) &&
         d !== NOM &&
         !d.endsWith("_apporteurs_annexes_versionnees") &&
-        !d.endsWith("_apporteurs_annulations_rendez_vous"),
+        !d.endsWith("_apporteurs_annulations_rendez_vous") &&
+        !d.endsWith("_apporteurs_purge_rgpd"),
     );
     expect((NOM ?? "").slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });

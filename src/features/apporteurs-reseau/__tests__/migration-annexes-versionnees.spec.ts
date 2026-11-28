@@ -21,9 +21,12 @@ describe("migration apporteurs_annexes_versionnees", () => {
     expect(DOSSIER).toBeTruthy();
     expect(existsSync(path.join(RACINE, "prisma/migrations", DOSSIER, "rollback.sql"))).toBe(true);
     const autres = readdirSync(path.join(RACINE, "prisma/migrations")).filter(
-      // Les migrations postérieures (annulations de rendez-vous, PR D) viennent après : on ne compare qu'aux précédentes.
+      // Les migrations postérieures (annulations de rendez-vous PR D, purge RGPD PR N) viennent après : on ne compare qu'aux précédentes.
       (d) =>
-        /^\d{14}_/.test(d) && d !== DOSSIER && !d.endsWith("_apporteurs_annulations_rendez_vous"),
+        /^\d{14}_/.test(d) &&
+        d !== DOSSIER &&
+        !d.endsWith("_apporteurs_annulations_rendez_vous") &&
+        !d.endsWith("_apporteurs_purge_rgpd"),
     );
     expect(DOSSIER.slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });

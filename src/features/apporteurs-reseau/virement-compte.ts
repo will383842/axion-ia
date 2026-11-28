@@ -8,7 +8,6 @@
  * en cas de panne on ne vire jamais « par défaut ».
  */
 
-import { decryptPii } from "@/lib/pii-crypto";
 import { ibanNormalise, empreinteIban } from "@/lib/iban-empreinte";
 import { prisma } from "@/lib/prisma";
 
@@ -19,6 +18,7 @@ import {
   type StatutChangementIban,
 } from "./changement-iban-regles";
 import { etatGelDesLignes, MESSAGE_GEL, type EtatGel } from "./gel-virements-regles";
+import { lireIbanClair } from "./iban-purge";
 
 export { MESSAGE_GEL };
 
@@ -80,7 +80,7 @@ export interface ComptesVirement {
 
 export function compteDeLaFiche(ibanChiffre: string | null | undefined): CompteLu | null {
   if (!ibanChiffre) return null;
-  const clair = decryptPii(ibanChiffre);
+  const clair = lireIbanClair(ibanChiffre);
   if (!clair) return null;
   const fin4 = quatreDerniersCaracteres(clair);
   if (!fin4) return null;

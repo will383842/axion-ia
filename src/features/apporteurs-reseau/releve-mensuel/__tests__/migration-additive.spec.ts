@@ -58,7 +58,7 @@ describe("la migration du relevé mensuel est additive", () => {
       .filter((d) => /^\d{14}_/.test(d))
       .sort();
     expect(toutes).toContain(NOM);
-    // Seules les migrations additives de pilotage SEO, de robots d'IA, de chaîne éditoriale, de la porte qualité Q1, du contrôle du registre des apporteurs, des annexes versionnées, de l'invitation d'équipe et des annulations de rendez-vous (nouvelles tables) peuvent la suivre.
+    // Seules les migrations additives de pilotage SEO, de robots d'IA, de chaîne éditoriale, de la porte qualité Q1, du contrôle du registre des apporteurs, des annexes versionnées, de l'invitation d'équipe, des annulations de rendez-vous et de la purge RGPD (nouvelles tables) peuvent la suivre.
     expect(toutes.slice(toutes.indexOf(NOM) + 1)).toEqual(
       toutes
         .slice(toutes.indexOf(NOM) + 1)
@@ -72,6 +72,7 @@ describe("la migration du relevé mensuel est additive", () => {
             "_team_invite_envoi",
             "_apporteurs_annulations_rendez_vous",
             "_pilotage_seo_robots_ia",
+            "_apporteurs_purge_rgpd",
           ].some((s) => d.endsWith(s)),
         ),
     );
