@@ -1,7 +1,7 @@
 {
   "surtitre": "Actualité",
   "dApres": "D’après : ",
-  "tempsLecture": "{minutes} min de lecture",
+  "tempsLecture": "{minutes}\u00a0min de lecture",
   "triptyque": {
     "titre": "Point clé · l’essentiel",
     "changement": "Ce qui change",

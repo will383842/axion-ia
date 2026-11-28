@@ -253,7 +253,30 @@ describe("GabaritActualite : photo", () => {
   });
 });
 
+describe("GabaritActualite : feuilles de style", () => {
+  it("importe socle, compléments puis actualite, dans cet ordre (la route charge elle-même ses styles)", () => {
+    const src = readFileSync("src/components/article-v2/gabarits/GabaritActualite.tsx", "utf8");
+    const i = ["socle.css", "complements.css", "actualite.css"].map((f) =>
+      src.indexOf(`import "@/styles/article-v2/${f}"`),
+    );
+    expect(i.every((x) => x > 0)).toBe(true);
+    expect(i).toEqual([...i].sort((a, b) => a - b));
+  });
+});
+
 describe("GabaritActualite : variantes de données", () => {
+  it("sans date de publication : aucune ligne « Publié le », aucun datetime vide", () => {
+    const html = rendre(<GabaritActualite {...base} publieLe={null} />);
+    expect(html).not.toContain("Publié le");
+    expect(html).not.toContain('dateTime=""');
+    expect(html).not.toContain("date-une");
+  });
+
+  it("sans date de publication ni de mise à jour : aucune date du tout", () => {
+    const html = rendre(<GabaritActualite {...base} publieLe={null} misAJourLe={null} />);
+    expect(html).not.toMatch(/<time/);
+  });
+
   it("sans source : ni pastille de source ni encadré « Source d'origine »", () => {
     const html = rendre(<GabaritActualite {...base} source={null} />);
     expect(html).not.toContain("pastille--source");

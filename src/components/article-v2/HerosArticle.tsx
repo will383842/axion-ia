@@ -10,7 +10,7 @@ interface HerosArticleProps {
   readonly chapo: string | null;
   readonly auteur: string;
   readonly auteurHref: string;
-  readonly publieLe: string;
+  readonly publieLe: string | null;
   readonly misAJourLe: string | null;
   readonly tempsLecture: string | null;
   readonly pageUrl: string;
@@ -119,7 +119,7 @@ export function HerosArticle({
             </Link>
           </span>
         </li>
-        {dateUne ? null : (
+        {dateUne || !publieLe ? null : (
           <li>
             <time dateTime={publieLe}>
               {c("publieLe")} {publieLe}

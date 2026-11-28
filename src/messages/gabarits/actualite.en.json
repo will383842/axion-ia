@@ -1,7 +1,7 @@
 {
   "surtitre": "News",
   "dApres": "Source: ",
-  "tempsLecture": "{minutes} min read",
+  "tempsLecture": "{minutes}\u00a0min read",
   "triptyque": {
     "titre": "Key point · the essentials",
     "changement": "What changes",

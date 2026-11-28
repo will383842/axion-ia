@@ -11,6 +11,11 @@
  * tiré des métadonnées, aucun signe ; la frise des dates n'existe pas faute de donnée ;
  * l'encart vidéo attend que `/actualites` soit page hôte (PR E6 de la conception vidéo).
  */
+// Les routes d'article importent elles-mêmes leurs feuilles (PLAN §15.7). Ordre voulu : le socle
+// et les compléments d'abord, la feuille propre au gabarit en dernier (elle l'emporte à
+// spécificité égale).
+import "@/styles/article-v2/socle.css";
+import "@/styles/article-v2/complements.css";
 import "@/styles/article-v2/actualite.css";
 import { useTranslations } from "next-intl";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
@@ -81,8 +86,6 @@ export function GabaritActualite(p: ArticleActualiteProps) {
 
   const auteurNom = p.auteur?.nom ?? "Manon";
   const auteurHref = p.auteur?.href ?? "/equipe/manon";
-  // Publication : la date du jour du héros ; à défaut, la mise à jour seule.
-  const publieIso = p.publieLe?.iso ?? p.misAJourLe?.iso ?? "";
 
   const ouverture = (
     <>
@@ -94,7 +97,7 @@ export function GabaritActualite(p: ArticleActualiteProps) {
         chapo={p.chapo}
         auteur={auteurNom}
         auteurHref={auteurHref}
-        publieLe={publieIso}
+        publieLe={p.publieLe?.iso ?? null}
         misAJourLe={p.misAJourLe?.iso ?? null}
         {...(p.misAJourLe ? { misAJourLisible: p.misAJourLe.lisible } : {})}
         {...(p.publieLe

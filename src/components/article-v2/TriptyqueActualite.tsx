@@ -44,8 +44,8 @@ export function TriptyqueActualite({ ceQuiChange, pourQui, queFaire }: Triptyque
           <li className="triptyque__carte triptyque__carte--faire">
             <p className="triptyque__libelle">{t("queFaire")}</p>
             <ol>
-              {etapes.map((e) => (
-                <li key={e}>{e}</li>
+              {etapes.map((e, i) => (
+                <li key={`${i}-${e}`}>{e}</li>
               ))}
             </ol>
           </li>
