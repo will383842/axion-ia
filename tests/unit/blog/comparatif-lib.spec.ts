@@ -19,6 +19,14 @@ describe("extraireDuel", () => {
     expect(extraireDuel("A ou B ou C")).toBeNull();
     expect(extraireDuel("")).toBeNull();
   });
+  it("rejette les titres en prose et les questions", () => {
+    expect(extraireDuel("Pourquoi choisir ou pas l’IA générative en PME")).toBeNull();
+    expect(extraireDuel("Faut-il choisir ChatGPT ou Copilot pour une PME ?")).toBeNull();
+    expect(extraireDuel("Comment arbitrer entre le cloud ou le local")).toBeNull();
+  });
+  it("accepte « or » (titre anglais)", () => {
+    expect(extraireDuel("Zapier or Make")).toEqual({ a: "Zapier", b: "Make" });
+  });
   it("rend null si un camp est vide ou démesuré", () => {
     expect(extraireDuel("ou Copilot")).toBeNull();
     expect(extraireDuel(`${"x".repeat(90)} ou B`)).toBeNull();
@@ -63,6 +71,18 @@ describe("marquerCellules", () => {
     expect(h).toContain('<td class="cellule cellule--non"> non. </td>');
     expect(h).toContain('<td class="cellule cellule--partiel">Partiel</td>');
     expect(h).toContain("<td>Autre</td>");
+  });
+  it("n'interprète jamais $' $& $` d'une valeur class (pas d'injection d'attribut)", () => {
+    const h = marquerCellules(`<td class="$'" title="onmouseover=alert(1) x=">Oui</td>`);
+    expect(h).toBe(`<td class="$' cellule cellule--oui" title="onmouseover=alert(1) x=">Oui</td>`);
+    expect(marquerCellules('<td class="$&$`">Non</td>')).toBe(
+      '<td class="$&$` cellule cellule--non">Non</td>',
+    );
+  });
+  it("gère une classe entre apostrophes sans doubler l'attribut", () => {
+    expect(marquerCellules("<td class='z'>Oui</td>")).toBe(
+      '<td class="z cellule cellule--oui">Oui</td>',
+    );
   });
   it("conserve les autres attributs de la cellule", () => {
     expect(marquerCellules('<td data-col="A" class="z">Oui</td>')).toContain(

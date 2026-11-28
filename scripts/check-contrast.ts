@@ -88,6 +88,7 @@ const palette = {
   // connectés). Le terracotta de marque n'y donne que 2,61:1.
   terracottaOnMocha: "#eb8560",
   sage: "#5e6c54",
+  ochreDeep: "#7d4a0a",
   // Compat v1 (legacy bg-accent-* tokens still emitted by Badge etc.)
   accentOrange: "#ff6b00",
   accentPurple: "#7a3dff",
@@ -132,8 +133,8 @@ const pairs: Pair[] = [
   { fg: palette.sage, bg: palette.paper, label: "sage on paper" },
   // Tableau du Comparatif : « Oui » (sage) et « Partiel » (ocre) sur les lignes paper et ivoire
   { fg: palette.sage, bg: palette.bg, label: "sage on bg (comparatif, Oui)" },
-  { fg: "#7d4a0a", bg: palette.paper, label: "ochre-deep on paper (comparatif, Partiel)" },
-  { fg: "#7d4a0a", bg: palette.bg, label: "ochre-deep on bg (comparatif, Partiel)" },
+  { fg: palette.ochreDeep, bg: palette.paper, label: "ochre-deep on paper (comparatif, Partiel)" },
+  { fg: palette.ochreDeep, bg: palette.bg, label: "ochre-deep on bg (comparatif, Partiel)" },
   // Text on sand (intermissions)
   { fg: palette.fg, bg: palette.sand, label: "fg on sand" },
   { fg: palette.fgSoft, bg: palette.sand, label: "fg-soft on sand" },
@@ -311,6 +312,7 @@ const MIRROR_TO_CSS: Record<keyof typeof palette, string> = {
   terracottaDeep: "terracotta-deep",
   terracottaOnMocha: "terracotta-on-mocha",
   sage: "sage",
+  ochreDeep: "ochre-deep",
   accentOrange: "accent-orange",
   accentPurple: "accent-purple",
   accentGreen: "accent-green",

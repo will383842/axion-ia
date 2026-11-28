@@ -1,7 +1,7 @@
 {
   "neutralite": {
     "methode": "Our method, in one sentence:",
-    "texte": "this comparison ranks no Axion-IA offer and is funded by no vendor; it names no winner and gives no score."
+    "texte": "this comparison ranks no Axion-IA offer and is funded by no vendor."
   },
   "duel": {
     "aria": "The two options at a glance",
@@ -9,7 +9,6 @@
   },
   "tableau": {
     "titre": "Summary table",
-    "region": "Summary table, scrollable",
     "note": "Editorial reading grid: check it against the tool you are considering."
   }
 }

@@ -1,7 +1,7 @@
 {
   "neutralite": {
     "methode": "Notre méthode, en une phrase :",
-    "texte": "ce comparatif ne classe aucune offre d’Axion-IA et n’est financé par aucun éditeur ; il ne désigne ni gagnant ni note."
+    "texte": "ce comparatif ne classe aucune offre d’Axion-IA et n’est financé par aucun éditeur."
   },
   "duel": {
     "aria": "Les deux options en un coup d’œil",
@@ -9,7 +9,6 @@
   },
   "tableau": {
     "titre": "Tableau récapitulatif",
-    "region": "Tableau récapitulatif, défilant",
     "note": "Grille de lecture éditoriale : à vérifier sur l’outil que vous envisagez."
   }
 }

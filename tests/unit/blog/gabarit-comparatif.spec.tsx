@@ -157,7 +157,7 @@ describe("GabaritComparatif", () => {
     expect(h).toContain("ChatGPT");
     expect(h).toContain("Copilot");
     expect(h).toContain('class="duel__ou" aria-hidden="true"');
-    const duel = h.slice(h.indexOf('class="duel"'), h.indexOf("</section>"));
+    const duel = h.slice(h.indexOf('class="duel"'), h.indexOf('id="tableau-recapitulatif"'));
     expect(duel).not.toMatch(/gagnant|meilleur|note\s*:/i);
   });
 
@@ -184,6 +184,32 @@ describe("GabaritComparatif", () => {
   it("ajoute « Tableau récapitulatif » en tête du sommaire", () => {
     const h = rendre(props());
     expect(h).toContain("tableau-recapitulatif|Tableau récapitulatif;un|Un;deux|Deux");
+  });
+
+  it("ancre unique : si le corps porte déjà #tableau-recapitulatif, une autre ancre est choisie", () => {
+    const h = rendre(
+      props({
+        html: `<h2 id="tableau-recapitulatif">Tableau récapitulatif</h2>${T1}`,
+        tocItems: [{ anchor: "tableau-recapitulatif", title: "Tableau récapitulatif", level: 2 }],
+      }),
+    );
+    expect(h.match(/id="tableau-recapitulatif"/g)).toHaveLength(1);
+    expect(h).toContain('id="tableau-recapitulatif-2"');
+  });
+
+  it("une seule région nommée par le titre du tableau (pas de région imbriquée)", () => {
+    const h = rendre(props());
+    expect(h.match(/role="region"/g)).toHaveLength(1);
+    expect(h).toMatch(/role="region" tabindex="0" aria-labelledby="tableau-recapitulatif-titre"/);
+  });
+
+  it("la phrase de neutralité s'en tient à ce que le gabarit sait : aucune offre classée, aucun éditeur", () => {
+    const h = rendre(props());
+    const n = h.slice(
+      h.indexOf('class="neutralite"'),
+      h.indexOf("</p>", h.indexOf('class="neutralite"')),
+    );
+    expect(n).not.toMatch(/gagnant|note/i);
   });
 
   it("sans tableau : ni bloc récapitulatif ni entrée de sommaire, corps intact", () => {

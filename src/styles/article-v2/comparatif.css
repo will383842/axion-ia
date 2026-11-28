@@ -96,19 +96,19 @@
   color: var(--color-sage);
 }
 [data-gabarit="comparatif"] .comparo .cellule--oui::before {
-  content: "✓";
+  content: "✓" / "";
 }
 [data-gabarit="comparatif"] .comparo .cellule--non {
   color: var(--color-fg-soft);
 }
 [data-gabarit="comparatif"] .comparo .cellule--non::before {
-  content: "✗";
+  content: "✗" / "";
 }
 [data-gabarit="comparatif"] .comparo .cellule--partiel {
   color: var(--color-ochre-deep);
 }
 [data-gabarit="comparatif"] .comparo .cellule--partiel::before {
-  content: "◐";
+  content: "◐" / "";
 }
 @media (forced-colors: active) {
   [data-gabarit="comparatif"] .duel__cote,

@@ -6,7 +6,11 @@
  */
 
 const LONGUEUR_MAX_CAMP = 60;
-const SEPARATEUR = /\s+(?:ou|vs\.?|contre|versus)\s+/i;
+const SEPARATEUR = /\s+(?:ou|or|vs\.?|contre|versus)\s+/i;
+const MOTS_MAX_CAMP = 4;
+/** Un premier camp qui commence ainsi est une question ou une phrase, pas un nom d'option. */
+const DEBUT_DE_PHRASE =
+  /^(?:pourquoi|comment|quel(?:le)?s?|quand|combien|lequel|laquelle|faut-il|peut-on|doit-on|est-ce|que|qu['’]|why|how|what|which|should|can)\b/i;
 
 /** Les deux camps d'un titre « A ou B » (jusqu'au premier « : » ou « ? »), sinon `null`. */
 export function extraireDuel(titre: string): { a: string; b: string } | null {
@@ -15,6 +19,8 @@ export function extraireDuel(titre: string): { a: string; b: string } | null {
   if (camps.length !== 2) return null;
   const [a, b] = camps.map((c) => c.trim());
   if (!a || !b || a.length > LONGUEUR_MAX_CAMP || b.length > LONGUEUR_MAX_CAMP) return null;
+  if (DEBUT_DE_PHRASE.test(a)) return null;
+  for (const camp of [a, b]) if (camp.split(/\s+/).length > MOTS_MAX_CAMP) return null;
   return { a, b };
 }
 
@@ -75,9 +81,14 @@ export function marquerCellules(tableau: string): string {
     const valeur = (VALEURS as Record<string, string>)[mot];
     if (!valeur) return tout;
     const classe = `cellule cellule--${valeur}`;
-    const avecClasse = /\sclass\s*=\s*"([^"]*)"/i.exec(attrs);
+    const avecClasse = /\sclass\s*=\s*(?:"([^"]*)"|'([^']*)')/i.exec(attrs);
+    // Fonction de remplacement : une valeur `class` contenant $' $& $` ne doit jamais être
+    // interprétée par String.replace (sinon une partie des attributs se retrouve recopiée).
     const nouveaux = avecClasse
-      ? attrs.replace(avecClasse[0], ` class="${avecClasse[1]} ${classe}"`)
+      ? attrs.replace(
+          avecClasse[0],
+          () => ` class="${avecClasse[1] ?? avecClasse[2] ?? ""} ${classe}"`,
+        )
       : ` class="${classe}"${attrs}`;
     return `<td${nouveaux}>${texte}</td>`;
   });
