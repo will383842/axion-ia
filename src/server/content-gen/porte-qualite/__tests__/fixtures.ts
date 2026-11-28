@@ -25,6 +25,8 @@ export function corpsValide(options: { h2?: number; motsParSection?: number } = 
     "<h1>Comment démarrer avec l'IA dans une PME</h1>",
     `<p>${REPONSE_DIRECTE}</p>`,
     sections,
+    "<!--apport:A--><p>Exemple type : une PME de 40 salariés gagne 6 heures par semaine en rangeant ses tâches.</p><!--/apport-->",
+    "<!--apport:C--><p>En France, l'AI Act demande à l'employeur de former les équipes qui utilisent l'IA.</p><!--/apport-->",
     `<p>Pour aller plus loin, voyez <a href="/fr/contact">le Diagnostic IA</a>, <a href="/fr/blog/a">un guide</a>, <a href="/fr/blog/b">un autre guide</a> et <a href="https://www.insee.fr/fr/statistiques/1">l'Insee</a> ainsi que <a href="https://www.economie.gouv.fr/dge">la DGE</a>.</p>`,
   ].join("\n");
 }
@@ -61,6 +63,15 @@ export function contexteValide(surcharge: Partial<ContextePorte> = {}): Contexte
     pageProprietaire: { etat: "ok", valeur: null },
     corpsDejaPublie: { etat: "ok", valeur: null },
     voisinsSemantiques: { etat: "ok", valeur: [] },
+    intention: {
+      etat: "ok",
+      valeur: {
+        requeteNormalisee: "demarrer ia pme",
+        etat: "libre",
+        pageProprietaire: null,
+        reserveePourCeContenu: false,
+      },
+    },
     penalites: {},
     ...surcharge,
   };
