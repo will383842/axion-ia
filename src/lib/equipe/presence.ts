@@ -8,6 +8,7 @@
  */
 import { REGIONS } from "@/content/regions";
 import { getVillesCitablesMaillage } from "@/content/villes/core";
+import { localiserDansDepartement } from "./departements";
 
 /** Nombre maximal de villes affichées (pas de liste géante). */
 export const NOMBRE_VILLES_PRESENCE = 12;
@@ -56,8 +57,8 @@ export function phraseLieu(
 ): string | null {
   const ville = villeAffichable(lieu.ville);
   if (ville) return `${prenom} travaille depuis ${ville} et intervient partout en France.`;
-  const dep = codeDepartementConnu(lieu.departement);
-  if (dep)
-    return `${prenom} travaille depuis le département ${dep} et intervient partout en France.`;
+  // Le NOM du département, jamais son numéro ; un code inconnu n'est pas deviné.
+  const endroit = localiserDansDepartement(codeDepartementConnu(lieu.departement));
+  if (endroit) return `${prenom} travaille ${endroit} et intervient partout en France.`;
   return null;
 }

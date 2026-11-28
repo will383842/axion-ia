@@ -5,7 +5,6 @@ import { CATEGORIES, CATEGORIES_IDS } from "@/lib/equipe";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { AvatarInitiales } from "../AvatarInitiales";
 import { CarteCollaborateur } from "../CarteCollaborateur";
-import { FicheIdentite } from "../FicheIdentite";
 import { PastilleCategorie } from "../PastilleCategorie";
 import { PortraitCollaborateur } from "../PortraitCollaborateur";
 
@@ -97,17 +96,6 @@ describe("PortraitCollaborateur", () => {
     const { container } = render(<PortraitCollaborateur fiche={fiche} />);
     expect(container.querySelector("img")?.getAttribute("alt")).toBe("Portrait de Camille");
     expect(container.firstElementChild?.className).toContain("aspect-square");
-  });
-});
-
-const { ville: _ville, ...sansVille } = base;
-
-describe("FicheIdentite", () => {
-  it("liste de définitions, sans ligne vide", () => {
-    const { container } = render(<FicheIdentite fiche={sansVille} />);
-    const termes = Array.from(container.querySelectorAll("dt")).map((e) => e.textContent);
-    expect(termes).toEqual(["Nom", "Catégorie", "Fonction"]);
-    expect(container.querySelectorAll("dd")).toHaveLength(3);
   });
 });
 

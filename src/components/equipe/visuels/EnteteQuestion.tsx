@@ -19,14 +19,16 @@ export function EnteteQuestion({
   const fonce = ton === "fonce";
   return (
     <div>
-      <p
-        className={`text-xs font-semibold tracking-[0.14em] uppercase ${fonce ? "text-mocha-fg" : "text-terracotta"}`}
-      >
-        {surTitre}
-      </p>
+      {surTitre ? (
+        <p
+          className={`text-xs font-semibold tracking-[0.14em] uppercase ${fonce ? "text-mocha-fg" : "text-terracotta"}`}
+        >
+          {surTitre}
+        </p>
+      ) : null}
       <h2
         id={`${id}-titre`}
-        className={`mt-3 max-w-3xl font-serif text-[clamp(1.75rem,3.2vw,2.5rem)] leading-tight tracking-tight ${fonce ? "text-mocha-fg" : "text-fg"}`}
+        className={`${surTitre ? "mt-3" : ""} max-w-3xl font-serif text-[clamp(1.75rem,3.2vw,2.5rem)] leading-tight tracking-tight ${fonce ? "text-mocha-fg" : "text-fg"}`}
       >
         {question}
       </h2>

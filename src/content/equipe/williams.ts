@@ -50,7 +50,7 @@ import { CONDITION_GARANTIE, GARANTIE_PHRASE, RAPPORT_COMPLET } from "@/content/
  * ⚠️ À BOUGER À LA MAIN quand le contenu de la fiche change réellement — et
  * seulement dans ce cas.
  */
-export const WILLIAMS_REVISION_DATE = "2026-11-27T00:00:00.000Z";
+export const WILLIAMS_REVISION_DATE = "2026-11-28T00:00:00.000Z";
 
 /** Mot principal pour désigner Axion-IA (une seule source pour les trois endroits clés). */
 export const NATURE_AXION_IA = "startup";
@@ -159,17 +159,6 @@ export const WILLIAMS_LIENS_INTERNES: ReadonlyArray<LienFiche> = [
   { href: "/contact", libelle: "Écrire à Axion-IA" },
 ];
 
-/** @deprecated Remplacée par `WILLIAMS_CHIFFRES_CLES` (retrait en R2d). */
-export const WILLIAMS_PREUVES: ReadonlyArray<{ chiffre: string; libelle: string }> = [
-  { chiffre: "TPE et PME", libelle: "Tous secteurs d'activité" },
-  { chiffre: "Partout en France", libelle: "Outre-mer compris" },
-  { chiffre: "Plus de 30 ans", libelle: "De direction d'entreprises" },
-  {
-    chiffre: "Chiffrer, Essayer, Trancher",
-    libelle: "Une seule méthode, pour toutes les missions",
-  },
-];
-
 /** « Votre entreprise avant et après l'IA » : des situations, aucun chiffre. */
 export const WILLIAMS_AVANT_APRES = {
   titre: "Votre entreprise avant et après l'IA",
@@ -266,6 +255,12 @@ export const WILLIAMS_JOURNEE_IA = {
   ],
   bouton: "Réserver mon Diagnostic IA de 45 minutes",
   lien: { href: "/journee-ia", libelle: "Tout savoir sur la Journée IA" },
+  moments: ["Matin", "Après-midi", "Ensuite", "Engagement", "Votre choix"],
+  chiffres: [
+    { valeur: "2 à 4 h", libelle: "de diagnostic dans vos locaux" },
+    { valeur: "4 h", libelle: "de formation pratique" },
+    { valeur: "15", libelle: "participants au maximum" },
+  ],
 } as const;
 
 /**

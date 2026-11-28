@@ -1,16 +1,7 @@
-import {
-  BriefcaseBusiness,
-  Factory,
-  Handshake,
-  HardHat,
-  House,
-  Scale,
-  Store,
-  Truck,
-  UtensilsCrossed,
-  type LucideIcon,
-} from "lucide-react";
+import { createElement } from "react";
 import { Container } from "@/components/layout/Container";
+import { Link } from "@/i18n/navigation";
+import { iconeDe } from "./icones";
 import { Silhouettes } from "./Silhouettes";
 
 /**
@@ -37,7 +28,7 @@ export interface CarteVousEtes {
   action: string;
   gain: string;
   /** Métiers : icône lucide. */
-  icone?: IconeMetier;
+  icone?: IconeMetier | string;
   /** Tailles : nombre de silhouettes. */
   silhouettes?: 1 | 2 | 3;
   ton?: TonCarte;
@@ -48,7 +39,7 @@ export interface VousEtesProps {
   surTitre: string;
   question: string;
   /** Réponse directe de 40 à 60 mots. */
-  reponse: string;
+  reponse?: string;
   titreTailles?: string;
   titreMetiers?: string;
   tailles: ReadonlyArray<CarteVousEtes>;
@@ -56,18 +47,9 @@ export interface VousEtesProps {
   /** Pastilles « Et tous les autres secteurs… » (texte seul). */
   autresSecteurs?: ReadonlyArray<string>;
   phraseAutres?: string;
+  /** Lien sous les pastilles (ex. « Les formations par secteur »). */
+  lien?: { href: string; libelle: string };
 }
-
-const ICONES: Record<IconeMetier, LucideIcon> = {
-  btp: HardHat,
-  commerce: Store,
-  industrie: Factory,
-  transport: Truck,
-  cabinet: Scale,
-  immobilier: House,
-  restauration: UtensilsCrossed,
-  services: Handshake,
-};
 
 /** Classes statiques (Tailwind) : jetons existants, tons chauds, jamais de bleu. */
 const TONS: Record<TonCarte, string> = {
@@ -100,7 +82,6 @@ function Chevron() {
 }
 
 function Carte({ carte }: { carte: CarteVousEtes }) {
-  const Icone = carte.icone ? ICONES[carte.icone] : BriefcaseBusiness;
   const ton = TONS[carte.ton ?? "terracotta"];
   return (
     <li className="border-border bg-paper flex flex-col rounded-2xl border p-5 hover:shadow-sm motion-safe:transition motion-safe:hover:-translate-y-0.5">
@@ -112,7 +93,11 @@ function Carte({ carte }: { carte: CarteVousEtes }) {
           {carte.silhouettes ? (
             <Silhouettes nombre={carte.silhouettes} className="h-6 w-8" />
           ) : (
-            <Icone className="h-5 w-5" aria-hidden="true" focusable="false" />
+            createElement(iconeDe(carte.icone ?? "BriefcaseBusiness"), {
+              className: "h-5 w-5",
+              "aria-hidden": true,
+              focusable: "false",
+            })
           )}
         </span>
         <h3 className="text-fg font-serif text-xl leading-snug">{carte.titre}</h3>
@@ -179,6 +164,7 @@ export function VousEtes({
   metiers,
   autresSecteurs,
   phraseAutres,
+  lien,
 }: VousEtesProps) {
   // Masqué s'il n'y a aucune donnée (jamais de titre vide).
   if (tailles.length === 0 && metiers.length === 0) return null;
@@ -199,12 +185,14 @@ export function VousEtes({
         >
           {question}
         </h2>
-        <p
-          data-reponse-section=""
-          className="text-fg-soft mt-4 max-w-3xl text-lg leading-relaxed sm:text-xl"
-        >
-          {reponse}
-        </p>
+        {reponse ? (
+          <p
+            data-reponse-section=""
+            className="text-fg-soft mt-4 max-w-3xl text-lg leading-relaxed sm:text-xl"
+          >
+            {reponse}
+          </p>
+        ) : null}
         <div className="mt-10 lg:mt-14">
           <Grille
             cartes={tailles}
@@ -232,6 +220,16 @@ export function VousEtes({
               ))}
             </ul>
             {phraseAutres ? <p className="text-fg-soft mt-4 max-w-3xl">{phraseAutres}</p> : null}
+            {lien ? (
+              <p className="mt-2">
+                <Link
+                  href={lien.href as never}
+                  className="text-terracotta-deep focus-visible:outline-terracotta inline-flex min-h-11 items-center font-semibold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  {lien.libelle}
+                </Link>
+              </p>
+            ) : null}
           </div>
         ) : null}
       </Container>

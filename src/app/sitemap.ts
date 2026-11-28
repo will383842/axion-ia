@@ -76,6 +76,7 @@ import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
 import { barometreEstPublic } from "@/content/barometre-2027/donnees";
 import { communiqueIndexable } from "@/server/press/indexabilite";
+import { WILLIAMS_REVISION_DATE } from "@/content/equipe/williams";
 import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
@@ -867,7 +868,9 @@ function buildPagesSitemap(
   // rattachée à l'entité de marque dans le Knowledge Graph.
   entries.push({
     url: `${SITE_URL}/fr/equipe/williams`,
-    lastModified: now,
+    // Date de révision éditoriale (celle de la fiche et du JSON-LD), pas « maintenant » : un
+    // `lastModified` qui avance à chaque génération n'est plus un signal de fraîcheur.
+    lastModified: new Date(WILLIAMS_REVISION_DATE),
     changeFrequency: "monthly",
     priority: 0.8,
   });

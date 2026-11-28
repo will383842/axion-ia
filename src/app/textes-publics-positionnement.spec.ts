@@ -33,7 +33,11 @@ import {
   remplacerJetons,
 } from "@/content/journee-ia-commun";
 import { buildPersonWilliamsJsonLd } from "@/lib/seo/williams-person";
-import { WILLIAMS_LEAD, WILLIAMS_IDENTITE, WILLIAMS_PREUVES } from "@/content/equipe/williams";
+import {
+  WILLIAMS_LEAD,
+  WILLIAMS_IDENTITE,
+  WILLIAMS_CHIFFRES_CLES,
+} from "@/content/equipe/williams";
 
 const POSITIONNEMENT =
   "Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.";
@@ -200,7 +204,7 @@ describe("textes publics : plus de siège à Grenoble, plus d'ETI (décisions n�
     const textes = [
       WILLIAMS_LEAD,
       ...WILLIAMS_IDENTITE.map((l) => `${l.terme} ${l.valeur}`),
-      ...WILLIAMS_PREUVES.map((p) => `${p.chiffre} ${p.libelle}`),
+      ...WILLIAMS_CHIFFRES_CLES.map((p) => `${p.valeur} ${p.libelle}`),
     ].join("\n");
     expect(textes).not.toMatch(/siège|Grenoble|ETI|grands groupes/i);
     expect(WILLIAMS_IDENTITE.map((l) => l.terme)).not.toContain("Siège");

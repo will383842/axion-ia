@@ -9,7 +9,7 @@
  *  - aucun e-mail : la ligne publique n'en porte pas.
  */
 import { CATEGORIES } from "./categories";
-import type { ContenuFiche, EnteteSection, SectionFiche } from "./contenu";
+import type { CleIcone, ContenuFiche, EnteteSection, SectionFiche } from "./contenu";
 import { remplirPrenom } from "./modeles-categorie";
 import { phraseLieu, villeAffichable } from "./presence";
 import { categoriePublique } from "./depuis-membre-categorie";
@@ -158,10 +158,10 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
   const villePropre = villeAffichable(pub?.ville) ?? "";
   const propre = (t: string): boolean => estTextePropre(t);
 
-  const identite: Array<{ terme: string; valeur: string }> = [];
+  const identite: Array<{ terme: string; valeur: string; icone?: CleIcone }> = [];
   const iconesIdentite: string[] = [];
-  const ligne = (terme: string, valeur: string, icone: string) => {
-    identite.push({ terme, valeur });
+  const ligne = (terme: string, valeur: string, icone: CleIcone) => {
+    identite.push({ terme, valeur, icone });
     iconesIdentite.push(icone);
   };
   if (fonctionPropre) ligne("Fonction", fonctionPropre, "fonction");

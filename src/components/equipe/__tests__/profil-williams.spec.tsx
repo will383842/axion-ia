@@ -37,39 +37,48 @@ describe("fiche Williams rendue — plan des titres", () => {
     expect(h.filter((t) => t.startsWith("H1 "))).toEqual(["H1 Williams Jullin"]);
     const h2 = h.filter((t) => t.startsWith("H2 "));
     expect(h2).toEqual([
-      "H2 Williams Jullin en bref",
-      "H2 Votre entreprise avant et après l'IA",
-      "H2 Une transformation sans chamboulement",
-      "H2 La Journée IA : la porte d'entrée",
+      "H2 Qui est Williams Jullin, en bref ?",
+      "H2 Votre entreprise ressemble-t-elle à l'une de celles que l'équipe accompagne ?",
+      "H2 Que change l'IA dans le quotidien d'une PME ?",
+      "H2 Comment Axion-IA transforme-t-elle une PME sans tout chambouler ?",
+      "H2 Quelle méthode suit Axion-IA pour installer l'IA ?",
+      "H2 Que se passe-t-il pendant une Journée IA ?",
       "H2 Que fait l'équipe d'Axion-IA après la Journée IA ?",
-      "H2 La méthode : Chiffrer, Essayer, Trancher",
-      "H2 Parcours de Williams Jullin",
-      "H2 Ce que Williams Jullin constate sur le terrain",
+      "H2 Quel est le parcours de Williams Jullin ?",
+      "H2 Que constate Williams Jullin sur le terrain ?",
+      "H2 Williams Jullin intervient-il dans ma ville ?",
       "H2 Questions fréquentes sur Williams Jullin",
       "H2 Parlons de votre entreprise",
     ]);
   });
 
-  it("les H3 sont les cinq services, les étapes, les jalons puis les dix questions ; aucun H4", () => {
+  it("les H3 suivent les sections ; aucun H4", () => {
     const { container } = rendre();
     const h3 = titres(container).filter((t) => t.startsWith("H3 "));
-    // Cinq tuiles « sans chamboulement », cinq étapes de la Journée IA, puis les services (la transformation, mise en avant, en premier).
-    expect(h3.slice(0, 5)).toEqual([
+    // 3 tailles + 8 métiers « Vous êtes », puis 5 tuiles « sans chamboulement ».
+    expect(h3.slice(0, 3)).toEqual([
+      "H3 Dirigeant seul ou petite équipe",
+      "H3 TPE, moins de 10 salariés",
+      "H3 PME, de 10 à 249 salariés",
+    ]);
+    expect(h3.slice(11, 16)).toEqual([
       "H3 Vos outils restent",
       "H3 Une étape à la fois",
       "H3 Vous décidez",
       "H3 Équipes embarquées",
       "H3 Zéro technique pour vous",
     ]);
-    expect(h3.slice(10, 15)).toEqual([
+    // Méthode (3), Journée IA (5), puis les services, la transformation, mise en avant, en premier.
+    expect(h3.slice(16, 19)).toEqual(["H3 Chiffrer", "H3 Essayer", "H3 Trancher"]);
+    expect(h3.slice(24, 29)).toEqual([
       "H3 Transformation de l'entreprise avec l'IA",
       "H3 Mise en place et solutions IA sur mesure",
       "H3 Automatisation des tâches répétitives",
       "H3 Formation des équipes à l'IA",
       "H3 Coaching IA du dirigeant",
     ]);
-    // 5 tuiles + 5 étapes de la Journée IA + 5 services + 3 étapes de la méthode + 3 jalons du parcours + 10 questions.
-    expect(h3).toHaveLength(5 + 5 + 5 + 3 + 3 + 10);
+    // 11 cartes + 5 tuiles + 3 étapes + 5 temps + 5 services + 3 jalons + 1 (villes) + 10 questions.
+    expect(h3).toHaveLength(11 + 5 + 3 + 5 + 5 + 3 + 1 + 10);
     expect(titres(container).some((t) => /^H[4-6] /.test(t))).toBe(false);
   });
 
@@ -95,8 +104,8 @@ describe("fiche Williams rendue — accessibilité et contenu", () => {
   it("date visible dans une balise <time> égale à la date de révision", () => {
     const { container } = rendre();
     const t = container.querySelector("time");
-    expect(t?.getAttribute("datetime")).toBe("2026-11-27T00:00:00.000Z");
-    expect(t?.textContent).toBe("27 novembre 2026");
+    expect(t?.getAttribute("datetime")).toBe("2026-11-28T00:00:00.000Z");
+    expect(t?.textContent).toBe("28 novembre 2026");
   });
 
   it("le portrait a un alt et une légende ; la pastille de catégorie porte un libellé", () => {
@@ -116,7 +125,9 @@ describe("fiche Williams rendue — accessibilité et contenu", () => {
 
   it("aucun mot interdit dans le HTML", () => {
     const { container } = rendre();
-    expect(container.textContent).not.toMatch(/Grenoble|freelance|agence|€|restructuration/i);
+    expect(container.textContent).not.toMatch(
+      /Grenoble|freelance|agence(?! immobilière)|€|restructuration/i,
+    );
   });
 
   it("les liens internes de la page ne mènent pas vers une page de tarifs", () => {
@@ -138,13 +149,14 @@ describe("section sans données", () => {
       methode: _m,
       parcours: _pa,
       citations: _c,
-      faits: _f,
       ...reste
     } = contenu;
     const mini = { ...reste, faq: [] };
     const { container } = render(<ProfilCollaborateur fiche={publique} contenu={mini} />);
     expect(titres(container).filter((t) => t.startsWith("H2 "))).toEqual([
-      "H2 Williams Jullin en bref",
+      "H2 Qui est Williams Jullin, en bref ?",
+      "H2 Votre entreprise ressemble-t-elle à l'une de celles que l'équipe accompagne ?",
+      "H2 Williams Jullin intervient-il dans ma ville ?",
       "H2 Parlons de votre entreprise",
     ]);
   });

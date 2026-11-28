@@ -94,8 +94,8 @@ describe("sections propres — spécialiste IA", () => {
     const r = rendre(membre("specialiste_ia", { skills: ["Droit", "Santé"] }));
     expect(r.h2).toEqual(
       expect.arrayContaining([
-        "Les formations et accompagnements animés par Camille",
-        "Les métiers et secteurs que Camille connaît",
+        "Quelles formations anime Camille ?",
+        "Quels métiers et secteurs connaît Camille ?",
       ]),
     );
     expect(r.boutons.map((b) => b.texte)).toEqual(
@@ -106,7 +106,7 @@ describe("sections propres — spécialiste IA", () => {
   });
   it("sans données : pas de section « métiers et secteurs »", () => {
     const r = rendre(membre("specialiste_ia"));
-    expect(r.h2.some((t) => t.startsWith("Les métiers et secteurs"))).toBe(false);
+    expect(r.h2.some((t) => t.startsWith("Quels métiers et secteurs"))).toBe(false);
     verifierPlan(r.container);
   });
 });
@@ -116,14 +116,14 @@ describe("sections propres — développeur", () => {
     const sans = rendre(membre("developpeur"));
     expect(sans.h2).toEqual(
       expect.arrayContaining([
-        "Ce que Camille construit pour les entreprises",
-        "Sécurité et confidentialité des données",
+        "Que construit Camille pour les entreprises ?",
+        "Comment les données sont-elles protégées pendant un projet ?",
       ]),
     );
-    expect(sans.h2.some((t) => t.startsWith("Technologies et méthodes"))).toBe(false);
+    expect(sans.h2.some((t) => t.startsWith("Avec quelles technologies"))).toBe(false);
     verifierPlan(sans.container);
     const avec = rendre(membre("developpeur", { skills: ["TypeScript"] }));
-    expect(avec.h2).toContain("Technologies et méthodes de Camille");
+    expect(avec.h2).toContain("Avec quelles technologies travaille Camille ?");
     expect(avec.container.textContent).toContain("TypeScript");
     expect(avec.boutons.map((b) => b.texte)).toEqual(["Parler d'un projet", "Parler d'un projet"]);
     expect(avec.boutons[0]?.href).toBe("/contact");
@@ -136,9 +136,9 @@ describe("sections propres — apporteur d'affaires", () => {
     const r = rendre(membre("apporteur"));
     expect(r.h2).toEqual(
       expect.arrayContaining([
-        "Le rôle de Camille : mettre en relation, pas vendre",
-        "Vous avez été contacté par Camille ?",
-        "Devenir apporteur d'affaires",
+        "Quel est le rôle de Camille auprès des entreprises ?",
+        "Que faire après un message de Camille ?",
+        "Comment devenir apporteur d'affaires d'Axion-IA ?",
       ]),
     );
     expect(r.boutons.map((b) => b.texte)).toEqual(
@@ -175,8 +175,8 @@ describe("sections propres — partenaire", () => {
     const r = rendre(membre("autres"));
     expect(r.h2).toEqual(
       expect.arrayContaining([
-        "Ce que Camille apporte aux missions Axion-IA",
-        "Comment Camille travaille avec l'équipe",
+        "Que propose Camille avec Axion-IA ?",
+        "Comment travailler avec Camille et l'équipe d'Axion-IA ?",
       ]),
     );
     expect(r.boutons.map((b) => b.texte)).toContain("Contact");

@@ -117,8 +117,6 @@ export interface ContenuFiche {
   /** Date de dernière révision éditoriale (ISO) : date visible ET `dateModified`. */
   dateMiseAJour: string;
   pastilles: ReadonlyArray<string>;
-  /** Bandeau de faits (2 à 4 faits vérifiables) ; absent sans faits. */
-  faits?: ReadonlyArray<{ chiffre: string; libelle: string }>;
   /** Compétences / technologies renseignées par la personne (sections propres à la catégorie). */
   competences?: ReadonlyArray<string>;
   /** Sections propres à la catégorie (déjà remplies du prénom) ; absentes : aucune. */
@@ -154,6 +152,10 @@ export interface ContenuFiche {
     points: ReadonlyArray<PointTitre>;
     bouton: string;
     lien: LienFiche;
+    /** Étiquette de moment de chaque étape (« Matin », « Après-midi »…), dans l'ordre des points. */
+    moments?: ReadonlyArray<string>;
+    /** Chiffres de la journée (faits déjà publiés dans le texte). */
+    chiffres?: ReadonlyArray<{ valeur: string; libelle: string }>;
   };
   services?: { titre: string; intro: string; items: ReadonlyArray<ServiceFiche> };
   methode?: {

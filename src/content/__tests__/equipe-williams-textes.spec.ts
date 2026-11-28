@@ -111,7 +111,7 @@ describe("fiche Williams — contenu v4", () => {
   });
 
   it("la date visible est la date de révision", () => {
-    expect(contenu.dateMiseAJour).toBe("2026-11-27T00:00:00.000Z");
+    expect(contenu.dateMiseAJour).toBe("2026-11-28T00:00:00.000Z");
   });
 });
 

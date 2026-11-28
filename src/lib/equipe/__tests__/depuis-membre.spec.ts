@@ -193,7 +193,7 @@ describe("ficheDepuisMembre : registre R2c2", () => {
   it("phrase de lieu : département seul s'il n'y a pas de ville, rien s'il n'y a ni l'un ni l'autre", () => {
     const sansVille = etendu(membre({ locationLabel: null, departmentCode: "38" }));
     expect(sansVille.presence.phraseLieu).toBe(
-      "Camille travaille depuis le département 38 et intervient partout en France.",
+      "Camille travaille dans l'Isère et intervient partout en France.",
     );
     const rien = etendu(membre({ locationLabel: null, departmentCode: null }));
     expect(rien.presence.phraseLieu).toBeUndefined();

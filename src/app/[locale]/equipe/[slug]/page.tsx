@@ -189,7 +189,7 @@ export default async function PublicAuthorPage({ params }: Props) {
             ]}
           />
         </Container>
-        <ProfilCollaborateur fiche={publique} contenu={contenu} />
+        <ProfilCollaborateur fiche={publique} contenu={contenu} indexable={estIndexable(fiche)} />
       </>
     );
   }
@@ -215,7 +215,7 @@ export default async function PublicAuthorPage({ params }: Props) {
             ]}
           />
         </Container>
-        <ProfilCollaborateur fiche={publique} contenu={contenu} />
+        <ProfilCollaborateur fiche={publique} contenu={contenu} indexable={indexable} />
       </>
     );
   }
