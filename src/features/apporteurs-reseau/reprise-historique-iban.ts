@@ -11,10 +11,11 @@
 import { randomUUID } from "node:crypto";
 
 import { empreinteIban, ibanNormalise } from "@/lib/iban-empreinte";
-import { decryptPii, encryptPii } from "@/lib/pii-crypto";
+import { encryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 
 import { quatreDerniersCaracteres } from "./changement-iban-regles";
+import { lireIbanClair } from "./iban-purge";
 
 export interface CompteRenduReprise {
   readonly appliquer: boolean;
@@ -41,7 +42,7 @@ export async function reprendreHistoriqueIban(o: {
   let dejaPresents = 0;
   let sansIban = 0;
   for (const f of fiches) {
-    const clair = decryptPii(f.iban);
+    const clair = lireIbanClair(f.iban);
     const empreinte = clair ? empreinteIban(clair) : null;
     const fin4 = clair ? quatreDerniersCaracteres(clair) : null;
     if (!clair || !empreinte || !fin4) {

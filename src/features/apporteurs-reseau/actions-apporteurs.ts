@@ -10,6 +10,7 @@
  */
 
 import { revalidatePath } from "next/cache";
+import { lireIbanClair } from "./iban-purge";
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
@@ -417,7 +418,7 @@ export async function rattacherParrainAction(input: {
       siren: a.siren,
       email: decryptPii(a.email) ?? null,
       telephone: decryptPii(a.telephone) ?? null,
-      iban: decryptPii(a.iban) ?? null,
+      iban: lireIbanClair(a.iban),
     });
     const refusParrain = filleul
       ? refusRattachement({

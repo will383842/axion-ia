@@ -163,6 +163,9 @@ export const env = createEnv({
     // restent lus par `process.env`, absents = éteints, seule « true » allume. Texte libre.
     // APPORTEURS_EMAIL_REFUS : site (à allumer APRÈS le worker, cf. `refus-annonce.ts`).
     APPORTEURS_EMAIL_REFUS: z.string().optional(),
+    // APPORTEURS_PURGE_RGPD : worker (`apporteurs-reseau/purge-rgpd.ts`). ABSENT = rien ne tourne ; « essai » = à blanc
+    // (une alerte récapitulative) ; « appliquer » = efface. Le 1er du mois, jour de Paris.
+    APPORTEURS_PURGE_RGPD: z.string().optional(),
     // APPORTEUR_CHANGEMENT_IBAN_ENABLED : site (cf. `interrupteur-changement-iban.ts`).
     APPORTEUR_CHANGEMENT_IBAN_ENABLED: z.string().optional(),
     // RESERVATION_DIRECTE_ACTIVE : site.
@@ -852,6 +855,7 @@ export const env = createEnv({
     APPORTEUR_CHALLENGES_CONSOLE_ENABLED: process.env.APPORTEUR_CHALLENGES_CONSOLE_ENABLED,
     APPORTEUR_CHALLENGES_ESPACE_ENABLED: process.env.APPORTEUR_CHALLENGES_ESPACE_ENABLED,
     APPORTEURS_EMAIL_REFUS: process.env.APPORTEURS_EMAIL_REFUS,
+    APPORTEURS_PURGE_RGPD: process.env.APPORTEURS_PURGE_RGPD,
     APPORTEUR_CHANGEMENT_IBAN_ENABLED: process.env.APPORTEUR_CHANGEMENT_IBAN_ENABLED,
     RESERVATION_DIRECTE_ACTIVE: process.env.RESERVATION_DIRECTE_ACTIVE,
     QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,

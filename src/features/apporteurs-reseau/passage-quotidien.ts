@@ -52,6 +52,7 @@ import {
   dateEnClair,
 } from "./attribution-annonce";
 import { alerteInterne } from "./alerte-interne";
+import { etapePurgeRgpd } from "./purge-rgpd-etape";
 import { alerterConflitRattrapage, rattrapageEnConflit } from "./conflit-rattrapage";
 import { envoyer } from "./envois";
 import { annexesDeLEnvoiDuLien } from "./documents-joints";
@@ -328,6 +329,7 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "hors-grille"
   | "declarations-sans-reponse"
+  | "purge-rgpd"
   | "commandes-a-attribuer"
   | "resiliations-echues"
   | "emails-effet-resiliation"
@@ -418,6 +420,8 @@ async function passer(
     // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
     // puis à J+15 (délai dépassé).
     ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
+    // PR N (#2464 pt 6) : purge RGPD, le 1er du mois, ÉTEINTE par défaut (APPORTEURS_PURGE_RGPD).
+    ["purge-rgpd", async () => void (await etapePurgeRgpd(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
