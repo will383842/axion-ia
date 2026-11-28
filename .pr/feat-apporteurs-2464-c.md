@@ -23,7 +23,7 @@ Fichiers : `annexes-versions.ts` (nouveau), `documents-joints.ts`, `documents-pr
 
 ## Migration : oui
 
-`20261128100000_apporteurs_annexes_versionnees` (plus récente que `20261128000000_chaine_editoriale_tables`). Deux tables neuves, **sans clé étrangère**, états en `VARCHAR` + `CHECK`, aucune énumération Postgres, aucune table existante touchée. Déclencheurs : ni DELETE ni TRUNCATE ; `documents_annexes_versions` n'accepte que `retiree_at` de NULL à une date ; `apporteur_documents_remis` refuse tout UPDATE. `rollback.sql` : sauvegarde `COPY` puis `RENAME … _retire_20261128`, jamais de `DROP TABLE`, « seulement sur décision du fondateur ». `prisma validate` OK.
+`20261128110000_apporteurs_annexes_versionnees` (plus récente que `20261128000000_chaine_editoriale_tables`). Deux tables neuves, **sans clé étrangère**, états en `VARCHAR` + `CHECK`, aucune énumération Postgres, aucune table existante touchée. Déclencheurs : ni DELETE ni TRUNCATE ; `documents_annexes_versions` n'accepte que `retiree_at` de NULL à une date ; `apporteur_documents_remis` refuse tout UPDATE. `rollback.sql` : sauvegarde `COPY` puis `RENAME … _retire_20261128`, jamais de `DROP TABLE`, « seulement sur décision du fondateur ». `prisma validate` OK.
 
 Fenêtre app/worker : tout lecteur tolère la table absente, et l'ancienne clé fixe reste écrite à chaque dépôt (« à retirer après une version »).
 

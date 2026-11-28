@@ -55,7 +55,8 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261127235000_porte_qualite_tables",
       "20261128000000_chaine_editoriale_tables",
       "20261128010000_team_invite_envoi",
-      "20261128100000_apporteurs_annexes_versionnees",
+      "20261128100000_apporteurs_controle_registre",
+      "20261128110000_apporteurs_annexes_versionnees",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

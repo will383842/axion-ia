@@ -1,4 +1,4 @@
--- Rollback de 20261128100000_apporteurs_annexes_versionnees.
+-- Rollback de 20261128110000_apporteurs_annexes_versionnees.
 -- Seulement sur décision du fondateur : ces tables sont la preuve de ce qui a été remis aux apporteurs.
 -- Sauvegarder d'abord (COPY ... TO) ; ne rien supprimer sans sauvegarde :
 --   COPY "documents_annexes_versions" TO '/chemin/sauvegarde/documents_annexes_versions.csv' CSV HEADER;

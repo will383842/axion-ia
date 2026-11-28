@@ -20,7 +20,10 @@ describe("migration apporteurs_annexes_versionnees", () => {
   it("existe, avec un rollback.sql, et son horodatage dépasse celui de la dernière migration de main", () => {
     expect(DOSSIER).toBeTruthy();
     expect(existsSync(path.join(RACINE, "prisma/migrations", DOSSIER, "rollback.sql"))).toBe(true);
-    expect(DOSSIER.slice(0, 14) > "20261128000000").toBe(true);
+    const autres = readdirSync(path.join(RACINE, "prisma/migrations")).filter(
+      (d) => /^\d{14}_/.test(d) && d !== DOSSIER,
+    );
+    expect(DOSSIER.slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });
 
   const sql = () => sansCommentaires(lire("migration.sql"));

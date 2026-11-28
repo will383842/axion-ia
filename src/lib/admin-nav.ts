@@ -1149,6 +1149,14 @@ function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
       tier: "advanced",
     },
     {
+      href: `${base}/content-gen/porte-qualite`,
+      label: "Porte qualité (observation)",
+      icon: "ShieldCheck",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
       href: `${base}/content-gen/costs`,
       label: "Coûts",
       icon: "Coins",

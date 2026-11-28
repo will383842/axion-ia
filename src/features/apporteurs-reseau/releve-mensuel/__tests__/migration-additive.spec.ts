@@ -58,7 +58,7 @@ describe("la migration du relevé mensuel est additive", () => {
       .filter((d) => /^\d{14}_/.test(d))
       .sort();
     expect(toutes).toContain(NOM);
-    // Seules les migrations additives de pilotage SEO et de chaîne éditoriale , de la porte qualité Q1 et des annexes versionnées (nouvelles tables) peuvent la suivre.
+    // Seules les migrations additives de pilotage SEO et de chaîne éditoriale, de la porte qualité Q1, du contrôle du registre des apporteurs et des annexes versionnées (nouvelles tables) peuvent la suivre.
     expect(toutes.slice(toutes.indexOf(NOM) + 1)).toEqual(
       toutes
         .slice(toutes.indexOf(NOM) + 1)
@@ -67,6 +67,7 @@ describe("la migration du relevé mensuel est additive", () => {
             "_pilotage_seo_mesure",
             "_chaine_editoriale_tables",
             "_porte_qualite_tables",
+            "_apporteurs_controle_registre",
             "_apporteurs_annexes_versionnees",
             "_team_invite_envoi",
           ].some((s) => d.endsWith(s)),
