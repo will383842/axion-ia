@@ -10,11 +10,54 @@
  */
 import { CATEGORIES } from "./categories";
 import type { ContenuFiche, SectionFiche } from "./contenu";
+import type { CarteVousEtes, PourQuiModele } from "./modeles-categorie";
 import { remplirPrenom } from "./modeles-categorie";
+import { phraseLieu, villeAffichable } from "./presence";
 import { categoriePublique } from "./depuis-membre-categorie";
 import { estTextePropre, fichePublique } from "./regles";
 import type { FicheCollaborateur } from "./types";
 import type { FicheComplete } from "./adaptateurs";
+
+/** Sur-titre, H2 en question et réponse directe d'une section (la réponse est facultative). */
+export interface EnteteSection {
+  surTitre: string;
+  question: string;
+  reponse?: string;
+}
+
+/**
+ * Champs ajoutés au contenu par le lot R2c2. Déclarés ici tant que `contenu.ts` ne les porte pas
+ * (R2d les y rapatrie). Tous optionnels : une fiche sans donnée n'en porte aucun.
+ */
+export interface ExtensionContenuR2c2 {
+  /** Par id de section (`en-bref` + sections de catégorie). */
+  entetes?: Readonly<Record<string, EnteteSection>>;
+  /** 3 cartes « Vous êtes… » au plus, `{prenom}` remplacé. */
+  vousEtes?: ReadonlyArray<CarteVousEtes>;
+  /** Bloc « Partout en France » : question, réponse, et phrase de lieu si le lieu est connu. */
+  presence: { surTitre: string; question: string; reponse: string; phraseLieu?: string };
+  pourQui?: Omit<PourQuiModele, "question"> & { question: string };
+  /** Chiffres clés : 2 au moins (sinon absents), seulement depuis des champs réellement remplis. */
+  chiffresCles?: ReadonlyArray<{ valeur: string; libelle: string }>;
+  /** Clé d'icône de chaque ligne d'identité (même ordre que `identite`). */
+  iconesIdentite?: ReadonlyArray<string>;
+}
+
+const TITRE_MAX = 60;
+
+/** « {prénom}, {fonction} · Axion-IA », 60 caractères au plus (fonction tronquée au besoin). */
+export function titreCollaborateur(prenom: string, fonction: string): string {
+  const suffixe = " · Axion-IA";
+  if (!fonction) return `${prenom}${suffixe}`;
+  const entete = `${prenom}, `;
+  const place = TITRE_MAX - entete.length - suffixe.length;
+  const f = fonction.length <= place ? fonction : `${fonction.slice(0, place - 1).trimEnd()}…`;
+  return `${entete}${f}${suffixe}`;
+}
+
+function nombreDeMots(t: string): number {
+  return t.trim().split(/\s+/).filter(Boolean).length;
+}
 
 /** Les seuls champs lus en base pour une fiche publique (cf. `SELECT_PUBLIC`). */
 export interface MembrePublic {
@@ -124,17 +167,21 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
   const pub = fichePublique(fiche);
   const fonctionPropre = pub?.fonction ?? "";
   const reponsePropre = pub?.reponseQui ?? "";
-  const villePropre = pub?.ville ?? "";
+  const villePropre = villeAffichable(pub?.ville) ?? "";
   const propre = (t: string): boolean => estTextePropre(t);
 
   const identite: Array<{ terme: string; valeur: string }> = [];
-  if (fonctionPropre) identite.push({ terme: "Fonction", valeur: fonctionPropre });
-  if (villePropre) identite.push({ terme: "Lieu", valeur: villePropre });
+  const iconesIdentite: string[] = [];
+  const ligne = (terme: string, valeur: string, icone: string) => {
+    identite.push({ terme, valeur });
+    iconesIdentite.push(icone);
+  };
+  if (fonctionPropre) ligne("Fonction", fonctionPropre, "fonction");
+  if (villePropre) ligne("Lieu", villePropre, "lieu");
   const langues = m.languages.map((l) => l.trim()).filter((l) => l !== "" && propre(l));
-  if (langues.length > 0) identite.push({ terme: "Langues", valeur: langues.join(", ") });
+  if (langues.length > 0) ligne("Langues", langues.join(", "), "langues");
   const competences = m.skills.map((s) => s.trim()).filter((c) => c !== "" && propre(c));
-  if (competences.length > 0)
-    identite.push({ terme: "Compétences", valeur: competences.join(", ") });
+  if (competences.length > 0) ligne("Compétences", competences.join(", "), "competences");
 
   const modele = CATEGORIES[fiche.categorie].modele;
   const prenomPublic = pub?.nom ?? m.firstName.trim();
@@ -147,10 +194,70 @@ export function ficheDepuisMembre(m: MembrePublic): FicheComplete {
     answer: remplirPrenom(q.answer, prenomPublic),
   }));
 
-  const contenu: ContenuFiche = {
-    titreSeo: fonctionPropre
-      ? `${m.firstName}, ${fonctionPropre} chez Axion-IA`
-      : `${m.firstName} chez Axion-IA`,
+  // En-têtes en question : une réponse de la fiche (25 à 80 mots) sous « en bref », jamais une
+  // réponse de registre identique d'une fiche à l'autre ; ailleurs, la réponse du registre (30 mots
+  // au plus). Sans réponse : H2 seul.
+  const entetes: Record<string, EnteteSection> = {
+    "en-bref": {
+      surTitre: "En bref",
+      question: `Qui est ${prenomPublic}, en bref ?`,
+      ...(reponsePropre && nombreDeMots(reponsePropre) >= 25 && nombreDeMots(reponsePropre) <= 80
+        ? { reponse: reponsePropre }
+        : {}),
+    },
+  };
+  for (const s of modele.sections) {
+    if (!s.question) continue;
+    if (s.exigeDonnees === "competences" && competences.length === 0) continue;
+    entetes[s.id] = {
+      surTitre: s.surTitre ?? "",
+      question: remplirPrenom(s.question, prenomPublic),
+      ...(s.reponse ? { reponse: remplirPrenom(s.reponse, prenomPublic) } : {}),
+    };
+  }
+
+  // Chiffres clés : seulement des champs réellement remplis et autorisés par la catégorie ; moins
+  // de deux chiffres : aucun bloc.
+  const chiffres: Array<{ valeur: string; libelle: string }> = [];
+  if ((modele.chiffresAutorises ?? []).includes("langues") && langues.length >= 2) {
+    chiffres.push({ valeur: String(langues.length), libelle: "langues de travail" });
+  }
+
+  const lieu = phraseLieu(prenomPublic, { ville: villePropre, departement: m.departmentCode });
+  const extension: ExtensionContenuR2c2 = {
+    entetes,
+    ...(modele.vousEtes.length > 0
+      ? {
+          vousEtes: modele.vousEtes.slice(0, 3).map((c) => ({
+            ...c,
+            titre: remplirPrenom(c.titre, prenomPublic),
+            cout: remplirPrenom(c.cout, prenomPublic),
+            action: remplirPrenom(c.action, prenomPublic),
+            gain: remplirPrenom(c.gain, prenomPublic),
+          })),
+        }
+      : {}),
+    presence: {
+      surTitre: "Partout en France",
+      question: remplirPrenom(modele.presence.question, prenomPublic),
+      reponse: remplirPrenom(modele.presence.reponse, prenomPublic),
+      ...(lieu ? { phraseLieu: lieu } : {}),
+    },
+    ...(modele.pourQui
+      ? {
+          pourQui: {
+            ...modele.pourQui,
+            question: remplirPrenom(modele.pourQui.question, prenomPublic),
+          },
+        }
+      : {}),
+    ...(chiffres.length >= 2 ? { chiffresCles: chiffres } : {}),
+    iconesIdentite,
+  };
+
+  const contenu: ContenuFiche & ExtensionContenuR2c2 = {
+    ...extension,
+    titreSeo: titreCollaborateur(m.firstName, fonctionPropre),
     metaDescription:
       reponsePropre ||
       (fonctionPropre
