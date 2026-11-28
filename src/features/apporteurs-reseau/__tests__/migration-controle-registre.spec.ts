@@ -17,15 +17,17 @@ describe("migration du contrôle du registre", () => {
       true,
     );
     const autres = readdirSync(path.join(RACINE, "prisma/migrations")).filter(
-      // La purge RGPD (PR N) et les annexes versionnées (lot C) sont légitimement postérieures : on ne compare qu'aux migrations d'avant.
+      // Les migrations postérieures (annexes versionnées, annulations de rendez-vous, purge RGPD) viennent après : on ne compare qu'aux précédentes.
       (d) =>
         /^\d{14}_/.test(d) &&
         d !== NOM &&
-        !d.endsWith("_apporteurs_purge_rgpd") &&
         !d.endsWith("_apporteurs_annexes_versionnees") &&
+        !d.endsWith("_apporteurs_annulations_rendez_vous") &&
+        !d.endsWith("_apporteurs_purge_rgpd") &&
         !d.endsWith("_apporteurs_numeros_pieces_uniques") &&
         !d.endsWith("_apporteurs_numeros_pieces_reservation") &&
-        !d.endsWith("_contenu_rendez_vous_origines"),
+        !d.endsWith("_contenu_rendez_vous_origines") &&
+        !d.endsWith("_porte_qualite_content_intentions"),
     );
     expect((NOM ?? "").slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });
