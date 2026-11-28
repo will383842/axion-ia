@@ -8,6 +8,7 @@
  * contrôle chez une personne ; les réponses propres à la personne passent avant ces réponses modèles.
  */
 import type { Categorie } from "./types";
+import type { CarteVousEtes } from "./contenu";
 
 export interface ActionModele {
   libelle: string;
@@ -40,21 +41,7 @@ export interface QuestionModele {
   answer: string;
 }
 
-/**
- * Carte « Vous êtes… » : le visiteur se reconnaît (tutoiement exclu, « vous »), gains qualitatifs
- * seulement : aucun chiffre, aucun montant. `icone` est une clé résolue par le composant.
- */
-export interface CarteVousEtes {
-  cle: string;
-  titre: string;
-  /** Ce que la situation coûte aujourd'hui (en mots, jamais en euros). */
-  cout: string;
-  /** Ce que l'on peut faire. */
-  action: string;
-  /** Ce que l'on y gagne (qualitatif). */
-  gain: string;
-  icone: string;
-}
+export type { CarteVousEtes };
 
 /** « Axion-IA et {prenom} interviennent-ils près de chez moi ? » : réponse directe de 40 à 60 mots. */
 export interface PresenceModele {

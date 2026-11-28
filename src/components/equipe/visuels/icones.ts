@@ -16,22 +16,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-/** Clés d'icône des lignes d'identité et des chiffres (déclarée ici par le lot R2a ; reprise en R2c1/R2d). */
-export type CleIcone =
-  | "personne"
-  | "fonction"
-  | "entreprise"
-  | "resultat"
-  | "cible"
-  | "services"
-  | "zone"
-  | "experience"
-  | "methode"
-  | "donnees"
-  | "contact"
-  | "langues"
-  | "competences"
-  | "lieu";
+import type { CleIcone } from "@/lib/equipe/contenu";
+
+export type { CleIcone };
 
 export const ICONES_FICHE: Record<CleIcone, LucideIcon> = {
   personne: UserRound,
