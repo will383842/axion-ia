@@ -140,12 +140,17 @@ jobs:
         id: run1
         continue-on-error: true
         env:
-          ANTHROPIC_API_KEY: ${{ inputs.compte == 'B' && secrets.ANTHROPIC_API_KEY_COMPTE_B || secrets.ANTHROPIC_API_KEY_COMPTE_A }}
+          ANTHROPIC_API_KEY: ${{ inputs.compte == 'B' && secrets.ANTHROPIC_API_KEY_COMPTE_B || inputs.compte != 'B' && secrets.ANTHROPIC_API_KEY_COMPTE_A || '' }}
+          COMPTE_DEMANDE: ${{ inputs.compte == 'B' && 'B' || 'A' }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "1"
           MODELE: ${{ inputs.modele }}
           TOURS: ${{ inputs.tours_max }}
         run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::Clé du compte $COMPTE_DEMANDE absente du dépôt axion-ia : secret ANTHROPIC_API_KEY_COMPTE_$COMPTE_DEMANDE à créer"
+            echo "conclusion=failure" >> "$GITHUB_OUTPUT"; exit 1
+          fi
           f="$RUNNER_TEMP/execution-run1.json"
           source "$RUNNER_TEMP/diagnostic.sh"
           diagnostic_cle
@@ -171,13 +176,21 @@ jobs:
         env:
           FICHIER: ${{ steps.run1.outputs.execution_file }}
           COMPTE: ${{ inputs.compte }}
+          CLE_A_PRESENTE: ${{ secrets.ANTHROPIC_API_KEY_COMPTE_A != '' }}
+          CLE_B_PRESENTE: ${{ secrets.ANTHROPIC_API_KEY_COMPTE_B != '' }}
         run: |
           suivant=""
           if [ -n "$FICHIER" ] && [ -f "$FICHIER" ] && jq -e '
                any(.[]; .type == "result" and .is_error == true
                         and ((.result // "") | test("credit balance|usage limit|spend limit"; "i")))' "$FICHIER" >/dev/null 2>&1; then
             case "$COMPTE" in A) suivant=B ;; B) suivant=A ;; esac
-            echo "Crédit épuisé ou plafond atteint sur le compte $COMPTE : bascule vers $suivant."
+            presente="CLE_${suivant}_PRESENTE"
+            if [ "${!presente}" = "true" ]; then
+              echo "Crédit épuisé ou plafond atteint sur le compte $COMPTE : bascule vers $suivant."
+            else
+              echo "::error::Crédit épuisé sur le compte $COMPTE, mais la clé du compte $suivant est absente du dépôt axion-ia : secret ANTHROPIC_API_KEY_COMPTE_$suivant à créer. Pas de bascule."
+              suivant=""
+            fi
           fi
           echo "suivant=$suivant" >> "$GITHUB_OUTPUT"
 
@@ -186,12 +199,17 @@ jobs:
         if: steps.bascule.outputs.suivant != ''
         continue-on-error: true
         env:
-          ANTHROPIC_API_KEY: ${{ steps.bascule.outputs.suivant == 'B' && secrets.ANTHROPIC_API_KEY_COMPTE_B || secrets.ANTHROPIC_API_KEY_COMPTE_A }}
+          ANTHROPIC_API_KEY: ${{ steps.bascule.outputs.suivant == 'B' && secrets.ANTHROPIC_API_KEY_COMPTE_B || steps.bascule.outputs.suivant == 'A' && secrets.ANTHROPIC_API_KEY_COMPTE_A || '' }}
+          COMPTE_DEMANDE: ${{ steps.bascule.outputs.suivant }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "1"
           MODELE: ${{ inputs.modele }}
           TOURS: ${{ inputs.tours_max }}
         run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::Clé du compte $COMPTE_DEMANDE absente du dépôt axion-ia : secret ANTHROPIC_API_KEY_COMPTE_$COMPTE_DEMANDE à créer"
+            echo "conclusion=failure" >> "$GITHUB_OUTPUT"; exit 1
+          fi
           f="$RUNNER_TEMP/execution-run2.json"
           source "$RUNNER_TEMP/diagnostic.sh"
           diagnostic_cle

@@ -5,6 +5,7 @@
 // apporteur → la MÊME 404 neutre. La clé R2 vient de la ligne relue en base (statut `envoye`),
 // jamais de l'adresse seule. Aucun lien public.
 
+import { peutLireSesPieces } from "@/features/apporteurs-reseau/acces-pieces";
 import { NextResponse } from "next/server";
 
 import { getClientIp } from "@/lib/client-ip";
@@ -19,7 +20,6 @@ import {
   NUMERO_RELEVE_MAX,
   cleDuReleveDeLApporteur,
 } from "@/features/apporteurs-reseau/releve-mensuel/espace";
-import { etatDeLaPage } from "@/features/apporteurs-reseau/signature";
 import { signalerErreurReseau } from "@/features/apporteurs-reseau/signaler";
 
 export const dynamic = "force-dynamic";
@@ -60,7 +60,7 @@ export async function GET(
   if (numero.length > NUMERO_RELEVE_MAX || !NUMERO_RELEVE.test(numero)) return introuvable();
 
   const dossier = await lireDossierParLien(id, jeton);
-  if (!dossier || dossier.restreint || etatDeLaPage(dossier.statut) !== "signe") {
+  if (!dossier || !peutLireSesPieces(dossier)) {
     return introuvable();
   }
 

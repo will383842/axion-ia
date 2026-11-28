@@ -70,4 +70,4 @@ async function presentationCouvreLaCommande(facture: {
 }
 
 export const MESSAGE_AVOIR_COMMISSION =
-  "Cette facture porte ou portera une commission d'apporteur : un avoir la reprend au prorata. S'il s'agit d'un bon d'achat offert, ne l'émettez pas comme avoir. Cochez la confirmation pour un vrai remboursement.";
+  "Cette facture porte ou portera une commission d'apporteur : un avoir la reprend au prorata. Un bon d'achat offert à titre exceptionnel (geste commercial) ne la reprend pas : cochez « Geste commercial ». Sinon, cochez la confirmation pour un vrai remboursement.";
