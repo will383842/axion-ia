@@ -4,9 +4,13 @@
  * (`getPilotageEquipe`) vérifie l'administrateur et le drapeau.
  */
 import { prisma } from "@/lib/prisma";
-import { buildArticlePath } from "@/server/content-gen/indexing/url-builder";
+import { buildArticlePath } from "./url-builder";
 import { normaliserChemin } from "@/server/seo-pilotage/donnees/chemins";
-import { calculerDelais, medianeDelaiHeures, type DelaiArticle } from "./calcul";
+import {
+  calculerDelais,
+  medianeDelaiHeures,
+  type DelaiArticle,
+} from "@/server/seo-pilotage/delai-indexation/calcul";
 
 export interface DelaisIndexation {
   readonly articles: ReadonlyArray<DelaiArticle>;

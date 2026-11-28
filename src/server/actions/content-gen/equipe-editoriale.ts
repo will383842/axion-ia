@@ -38,8 +38,8 @@ import {
 } from "@/server/content-gen/equipe/journal";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 import { approveReview, requestEdits } from "./review";
-import { lireDelaisIndexation } from "@/server/seo-pilotage/delai-indexation/lecture";
-import type { DelaisIndexation } from "@/server/seo-pilotage/delai-indexation/lecture";
+import { lireDelaisIndexation } from "@/server/content-gen/indexing/delais-indexation";
+import type { DelaisIndexation } from "@/server/content-gen/indexing/delais-indexation";
 
 const IdSchema = z.string().min(1).max(64);
 
