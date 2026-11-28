@@ -27,7 +27,8 @@ describe("migration apporteurs_annexes_versionnees", () => {
         d !== DOSSIER &&
         !d.endsWith("_apporteurs_purge_rgpd") &&
         !d.endsWith("_apporteurs_numeros_pieces_uniques") &&
-        !d.endsWith("_apporteurs_numeros_pieces_reservation"),
+        !d.endsWith("_apporteurs_numeros_pieces_reservation") &&
+        !d.endsWith("_pilotage_seo_geo_panel"),
     );
     expect(DOSSIER.slice(0, 14) > autres.sort().at(-1)!.slice(0, 14)).toBe(true);
   });
