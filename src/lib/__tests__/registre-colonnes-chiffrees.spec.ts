@@ -27,8 +27,53 @@ function champsChiffres(): Array<{ fichier: string; champ: string }> {
   return trouves;
 }
 
+/**
+ * Attribution explicite « fichier:champ » -> modèles écrits. Un champ chiffré nouveau, ou un fichier nouveau, fait échouer
+ * le test tant qu'il n'est pas attribué ICI et inscrit au registre pour CE modèle (pas seulement un champ homonyme).
+ */
+const ATTRIBUTION: Record<string, readonly string[]> = {
+  "/changement-iban.ts:iban": [
+    "apporteurChangementIban",
+    "apporteurIbanHistorique",
+    "apporteurReseau",
+  ],
+  "/changement-iban.ts:octets": ["apporteurChangementIbanRib"],
+  "/correction-nom.ts:nom": ["apporteurReseau"],
+  "/correction-nom.ts:prenom": ["apporteurReseau"],
+  "/donnees.ts:prenom": ["apporteurReseau"],
+  "/donnees.ts:nom": ["apporteurReseau"],
+  "/donnees.ts:email": ["apporteurReseau"],
+  "/donnees.ts:telephone": ["apporteurReseau"],
+  "/messages-recus.ts:excerpt": ["apporteurMessageRecu"],
+  "/verification.ts:telephone": ["apporteurReseau"],
+  "/donnees.ts:iban": ["apporteurReseau"],
+  "/donnees.ts:octets": ["pieceApporteurContenu"],
+  "/presentations.ts:personneNom": ["presentationEntreprise"],
+  "/presentations.ts:personneEmail": ["presentationEntreprise"],
+  "/reprise-historique-iban.ts:iban": ["apporteurIbanHistorique"],
+  "/verification.ts:prenom": ["apporteurReseau"],
+  "/verification.ts:nom": ["apporteurReseau"],
+  "/verification.ts:email": ["apporteurReseau"],
+};
+
 describe("registre des colonnes chiffrées", () => {
   const connus = new Set(COLONNES_CHIFFREES.map((c) => c.champ));
+  const couples = new Set(COLONNES_CHIFFREES.map((c) => `${c.modele}.${c.champ}`));
+
+  it("chaque couple (fichier, champ) chiffré est attribué à un modèle, et (modèle, champ) figure au registre", () => {
+    const sansAttribution: string[] = [];
+    const absents: string[] = [];
+    for (const t of champsChiffres()) {
+      const modeles = ATTRIBUTION[`${t.fichier}:${t.champ}`];
+      if (!modeles) {
+        sansAttribution.push(`${t.fichier}:${t.champ}`);
+        continue;
+      }
+      for (const m of modeles) if (!couples.has(`${m}.${t.champ}`)) absents.push(`${m}.${t.champ}`);
+    }
+    expect(sansAttribution).toEqual([]);
+    expect(absents).toEqual([]);
+  });
 
   it("chaque champ chiffré par le module apporteurs figure au registre", () => {
     const trouves = champsChiffres();

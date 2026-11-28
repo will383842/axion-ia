@@ -136,11 +136,21 @@ export async function rotationPii(opts: {
     };
     rapport.colonnes.push(r);
     const delegat = opts.client[col.modele] as Delegat;
-    const select = { [col.cle]: true, [col.champ]: true };
+    const select = {
+      [col.cle]: true,
+      [col.champ]: true,
+      ...(col.majAt ? { [col.majAt]: true } : {}),
+    };
 
-    const ecrire = async (id: string, ancien: unknown, neuf: unknown): Promise<number> => {
+    const ecrire = async (
+      id: string,
+      ancien: unknown,
+      neuf: unknown,
+      maj: unknown,
+    ): Promise<number> => {
       const where = { [col.cle]: id, [col.champ]: ancien };
-      const data = { [col.champ]: neuf };
+      // `majAt` remis tel quel : une valeur explicite l'emporte sur `@updatedAt` (sinon l'inactivité repartirait à zéro).
+      const data = { [col.champ]: neuf, ...(col.majAt ? { [col.majAt]: maj } : {}) };
       if (!col.declencheur) return (await delegat.updateMany({ where, data })).count;
       return opts.client.$transaction(async (tx) => {
         await tx.$executeRawUnsafe("SET LOCAL axion.reecriture_pii = 'rotation'");
@@ -178,7 +188,14 @@ export async function rotationPii(opts: {
           }
           if (classe !== "lecture" || mode === "essai") break;
           const ancien = courant[col.champ];
-          if ((await ecrire(id, ancien, rechiffrer(col, ancien, id))) === 1) {
+          if (
+            (await ecrire(
+              id,
+              ancien,
+              rechiffrer(col, ancien, id),
+              col.majAt ? courant[col.majAt] : undefined,
+            )) === 1
+          ) {
             r.reecrites += 1;
             break;
           }
@@ -234,7 +251,12 @@ if (process.argv[1]?.endsWith("rotation-cle-pii.ts")) {
   principal().then(
     () => process.exit(0),
     (e: unknown) => {
-      console.error("rotation-cle-pii : échec :", e instanceof Error ? e.message : "erreur");
+      // Ni `e.message` (une erreur de validation Prisma peut citer des arguments) : le nom ou le code seulement.
+      const code = (e as { code?: unknown } | null)?.code;
+      console.error(
+        "rotation-cle-pii : échec :",
+        typeof code === "string" ? code : e instanceof Error ? e.name : "erreur",
+      );
       process.exit(1);
     },
   );

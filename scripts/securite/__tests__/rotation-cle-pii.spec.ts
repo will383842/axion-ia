@@ -43,7 +43,11 @@ function fauxClient(tables: Record<string, Ligne[]>, hook?: () => void) {
           Buffer.isBuffer(v) ? Buffer.isBuffer(l[k]) && (l[k] as Buffer).equals(v) : l[k] === v,
         ),
       );
-      for (const l of trouve) Object.assign(l, a.data);
+      // Comme Prisma : un champ `@updatedAt` (ici `majAt`) passe à « maintenant » sauf valeur explicite dans `data`.
+      for (const l of trouve) {
+        Object.assign(l, a.data);
+        if ("majAt" in l && !("majAt" in a.data)) l.majAt = new Date();
+      }
       traces.ecritures += trouve.length;
       return { count: trouve.length };
     },
@@ -233,6 +237,36 @@ describe("rotationPii", () => {
     });
     expect(r.colonnes).toHaveLength(1);
     expect(traces.ecritures).toBe(1);
+  });
+
+  it("majAt (@updatedAt) identique avant/après pour apporteurReseau et presentationEntreprise", async () => {
+    const MAJ = new Date("2026-01-15T10:00:00.000Z");
+    const colA: ColonneChiffree = { ...COL_V1, majAt: "majAt" };
+    const colP: ColonneChiffree = {
+      modele: "presentationEntreprise",
+      cle: "id",
+      champ: "personneNom",
+      format: "v1",
+      majAt: "majAt",
+    };
+    const tables = {
+      apporteurReseau: [{ id: "a1", prenom: ancien.v1, majAt: MAJ }],
+      presentationEntreprise: [{ id: "p1", personneNom: ancien.v1, majAt: MAJ }],
+    };
+    const { client } = fauxClient(tables);
+    const r = await rotationPii({ client, colonnes: [colA, colP], mode: "appliquer" });
+    expect(r.colonnes.map((c) => c.reecrites)).toEqual([1, 1]);
+    expect(tables.apporteurReseau[0]!.majAt).toEqual(MAJ);
+    expect(tables.presentationEntreprise[0]!.majAt).toEqual(MAJ);
+    expect(cleQuiDechiffre(tables.apporteurReseau[0]!.prenom as string)).toBe("courante");
+  });
+
+  it("le registre déclare majAt pour apporteurReseau et presentationEntreprise", async () => {
+    const { COLONNES_CHIFFREES } = await import("@/lib/pii-colonnes-chiffrees");
+    for (const c of COLONNES_CHIFFREES.filter((x) =>
+      ["apporteurReseau", "presentationEntreprise"].includes(x.modele),
+    ))
+      expect(c.majAt).toBe("majAt");
   });
 });
 

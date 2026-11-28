@@ -22,11 +22,22 @@ export interface ColonneChiffree {
   readonly aad?: (ligne: { id: string }) => string;
   /** La table porte un déclencheur qui n'ouvre la réécriture que sous `SET LOCAL axion.reecriture_pii = 'rotation'`. */
   readonly declencheur?: boolean;
+  /**
+   * Champ `@updatedAt` de la table, à REMETTRE tel quel à chaque écriture : une rotation n'est pas une activité de la
+   * personne, et `majAt` alimente le compteur d'inactivité de la purge RGPD (`purge-rgpd.ts`).
+   */
+  readonly majAt?: string;
 }
 
 export const COLONNES_CHIFFREES: readonly ColonneChiffree[] = [
   ...(["prenom", "nom", "email", "telephone", "adresse", "iban"] as const).map(
-    (champ): ColonneChiffree => ({ modele: "apporteurReseau", cle: "id", champ, format: "v1" }),
+    (champ): ColonneChiffree => ({
+      modele: "apporteurReseau",
+      cle: "id",
+      champ,
+      format: "v1",
+      majAt: "majAt",
+    }),
   ),
   ...(["personneNom", "personneEmail", "personneTelephone"] as const).map(
     (champ): ColonneChiffree => ({
@@ -34,6 +45,7 @@ export const COLONNES_CHIFFREES: readonly ColonneChiffree[] = [
       cle: "id",
       champ,
       format: "v1",
+      majAt: "majAt",
     }),
   ),
   { modele: "apporteurMessageRecu", cle: "id", champ: "excerpt", format: "v1" },

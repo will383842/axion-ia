@@ -49,6 +49,8 @@ Depuis un clone du dépôt, avec `DATABASE_URL` de production, `PII_ENCRYPTION_K
 4. Les tables à déclencheur (`apporteur_changements_iban`, `apporteur_changements_iban_rib`, `apporteur_iban_historique`)
    passent par `SET LOCAL axion.reecriture_pii = 'rotation'` posé par le script dans la transaction ; la migration
    `20261128130000_apporteurs_rotation_rib` doit être en ligne (sortie du garde des RIB joints).
+   Le script remet `majAt` (`@updatedAt`) tel quel sur `apporteur_reseau` et `presentation_entreprise` : la rotation
+   n'est pas une activité de la personne et ne doit pas remettre à zéro le compteur d'inactivité de la purge RGPD.
 5. Rejouer l'essai : il doit afficher **0 `lecture` et 0 `illisibles`** pour chaque table du registre.
 
 ## Phase D — Retirer l'ancienne clé (SEULEMENT si tout le registre global est à 0)
