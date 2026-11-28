@@ -22,7 +22,11 @@ import type { CarteRequetes } from "../strategie/carte-requetes";
 import { controlerConformite, type ResultatConformite } from "./conformite";
 import { decider as deciderGardien } from "./gardien";
 import { redacteurEnChef } from "./redacteur-en-chef";
-import { ecrireCorpsJournalise, verrou28Jours, type TxJournal } from "../../seo-pilotage/actions/journal";
+import {
+  ecrireCorpsJournalise,
+  verrou28Jours,
+  type TxJournal,
+} from "../../seo-pilotage/actions/journal";
 import { sansBalises, type DependancesMiseAJour } from "./mise-a-jour";
 
 /**
