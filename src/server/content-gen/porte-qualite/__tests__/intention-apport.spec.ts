@@ -57,6 +57,17 @@ describe("B05 intention déclarée et libre", () => {
       expect(x.preuves.join(" ")).toContain("/fr/blog/financer");
     }
   });
+  it("couverte mais contenu = mise à jour de la page propriétaire : ok", () => {
+    const x = r(
+      "B05",
+      {},
+      {
+        intention: intention({ etat: "couverte", pageProprietaire: "/fr/blog/financer" }),
+        miseAJourDeLaPageProprietaire: true,
+      },
+    );
+    expect(x.statut).toBe("ok");
+  });
   it("réservée : ok seulement pour le contenu qui la détient", () => {
     expect(r("B05", {}, { intention: intention({ etat: "reservee" }) }).statut).toBe("echec");
     expect(
@@ -93,7 +104,7 @@ describe("B07 apport original", () => {
     const corps = corpsValide().replace(/<!--apport:C-->[\s\S]*?<!--\/apport-->/, "");
     const x = r("B07", { corpsHtml: corps });
     expect(x.statut).toBe("echec");
-    expect(x.raison).toContain("1 apport");
+    expect(x.raison).toContain("A et D ne suffisent pas");
   });
   it("deux marqueurs du MÊME type ne comptent qu'une fois", () => {
     const m =
@@ -119,8 +130,13 @@ describe("B07 apport original", () => {
     const a = "<!--apport:A--><p>Exemple type : une PME de 40 salariés.</p><!--/apport-->";
     const d = "<!--apport:D--><p>Nos diagnostics montrent 70 % de gain.</p><!--/apport-->";
     expect(r("B07", { corpsHtml: "<h1>T</h1>" + a + d }).statut).toBe("echec");
+    // D est un apport SUPPLÉMENTAIRE : A + D ne suffit pas, même avec une donnée réelle (§ 8).
     expect(
       r("B07", { corpsHtml: "<h1>T</h1>" + a + d }, { donneeProprePresente: true }).statut,
+    ).toBe("echec");
+    const c = "<!--apport:C--><p>L'AI Act concerne les PME françaises.</p><!--/apport-->";
+    expect(
+      r("B07", { corpsHtml: "<h1>T</h1>" + a + c + d }, { donneeProprePresente: true }).statut,
     ).toBe("ok");
   });
   it("un contenu sans apport est dérogeable : a_corriger, pas publiable", () => {
@@ -134,6 +150,29 @@ describe("B07 apport original", () => {
   });
 });
 
+describe("B07 : durcissements de la relecture", () => {
+  const a =
+    "<!--apport:A--><p>Exemple type : une PME de 1 salarié gagne 6 heures.</p><!--/apport-->";
+  it("B : une année seule n'est pas un chiffre ; un lien interne n'est pas une source", () => {
+    const sansChiffre =
+      '<!--apport:B--><p>Selon l\'<a href="https://www.insee.fr/x">Insee</a> (2025), la majorité.</p><!--/apport-->';
+    const interne =
+      '<!--apport:B--><p>Selon <a href="https://axion-ia.com/fr/blog/x">nous</a> (2025), 18 % des PME.</p><!--/apport-->';
+    expect(r("B07", { corpsHtml: "<h1>T</h1>" + a + sansChiffre }).statut).toBe("echec");
+    expect(r("B07", { corpsHtml: "<h1>T</h1>" + a + interne }).statut).toBe("echec");
+  });
+  it("A : « 1 salarié » (singulier accentué) est reconnu ; C : « employeur » seul ne suffit pas", () => {
+    const c = "<!--apport:C--><p>L'employeur choisit un outil.</p><!--/apport-->";
+    const x = r("B07", { corpsHtml: "<h1>T</h1>" + a + c });
+    expect(x.statut).toBe("echec");
+    expect(x.preuves.join(" ")).toContain("A : vérifié");
+  });
+  it("un marqueur non fermé invalide son bloc (pas de contenu de C compté pour A)", () => {
+    const h = "<!--apport:A--><p>x</p><!--apport:C--><p>c</p><!--/apport-->";
+    expect(extraireApports(h)).toEqual([]);
+  });
+});
+
 describe("marqueurs : retrait au rendu et réservation par le brief", () => {
   it("retirerMarqueursApport garde le contenu, retire les balises, même orphelines", () => {
     const h = "<p>a</p><!--apport:A--><p>b</p><!--/apport--><!-- apport:B -->";
@@ -142,6 +181,17 @@ describe("marqueurs : retrait au rendu et réservation par le brief", () => {
     expect(contientMarqueurApport(sortie)).toBe(false);
     expect(contientMarqueurApport(h)).toBe(true);
   });
+  it("retrait : casse, espaces, type inconnu et fermant espacé", () => {
+    for (const m of [
+      "<!--apport:a-->",
+      "<!--APPORT:A-->",
+      "<!-- apport : A -->",
+      "<!--apport:E-->",
+      "<!--/ apport-->",
+    ]) {
+      expect(contientMarqueurApport(retirerMarqueursApport(`<p>x</p>${m}`)), m).toBe(false);
+    }
+  });
   it("extraireApports lit type et contenu", () => {
     const l = extraireApports("<!--apport:C--><p>x</p><!--/apport-->");
     expect(l).toEqual([{ type: "C", html: "<p>x</p>" }]);
@@ -149,6 +199,16 @@ describe("marqueurs : retrait au rendu et réservation par le brief", () => {
   it("réservation : sans B ni C, non générable ; D seulement avec donnée réelle", () => {
     expect(
       reserverApports({ chiffresSources: 0, anglesFrance: 0, donneePropre: true }).generable,
+    ).toBe(false);
+    expect(
+      reserverApports({
+        chiffresSources: Number.NaN,
+        anglesFrance: Number.NaN,
+        donneePropre: false,
+      }).generable,
+    ).toBe(false);
+    expect(
+      reserverApports({ chiffresSources: 2, anglesFrance: 0, donneePropre: false }, 3).generable,
     ).toBe(false);
     const p = reserverApports({ chiffresSources: 2, anglesFrance: 0, donneePropre: false });
     expect(p.generable).toBe(true);

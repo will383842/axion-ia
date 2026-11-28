@@ -33,7 +33,7 @@ export const ReglagesPorteSchema = z
     /** B06 : à partir de là, alerte « fusion à étudier » sans refus. */
     cosinusAlerte: z.number().min(0).max(1),
     /** B07 : nombre minimal d'apports originaux distincts et vérifiés (§ 8). */
-    apportsMin: z.number().int().min(1).max(4),
+    apportsMin: z.number().int().min(2).max(4),
     /** Note (§ 4.3) : cosinus sous lequel la pénalité de proximité est nulle. */
     cosinusProximiteMin: z.number().min(0).max(1),
   })

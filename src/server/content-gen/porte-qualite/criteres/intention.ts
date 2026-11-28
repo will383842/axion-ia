@@ -48,6 +48,13 @@ export function evaluerB05(_c: ContenuPorte, x: ContextePorte): ResultatBrut {
         preuves: page,
       };
     case "couverte":
+      if (x.miseAJourDeLaPageProprietaire === true) {
+        return {
+          statut: "ok",
+          raison: null,
+          preuves: [i.requeteNormalisee, "mise à jour de la page propriétaire", ...page],
+        };
+      }
       return {
         statut: "echec",
         raison: `Intention « ${i.requeteNormalisee} » déjà couverte par une page publiée : mise à jour de cette page, ou fusion.`,

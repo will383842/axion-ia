@@ -14,21 +14,26 @@ export interface ApportMarque {
   readonly html: string;
 }
 
-const RE_PAIRE = /<!--\s*apport:([A-D])\s*-->([\s\S]*?)<!--\s*\/apport\s*-->/g;
+const RE_PAIRE = /<!--\s*apport\s*:\s*([A-D])\s*-->([\s\S]*?)<!--\s*\/\s*apport\s*-->/gi;
+const RE_OUVRANT = /<!--\s*apport\b/i;
 
+/**
+ * Marqueurs bien formés seulement (casse et espaces tolérés). Un ouvrant trouvé À L'INTÉRIEUR
+ * d'un bloc (marqueur non fermé) invalide ce bloc : il ne compte pas.
+ */
 export function extraireApports(html: string): ApportMarque[] {
-  return [...html.matchAll(RE_PAIRE)].map((m) => ({
-    type: m[1] as TypeApport,
-    html: m[2] ?? "",
-  }));
+  return [...html.matchAll(RE_PAIRE)]
+    .filter((m) => !RE_OUVRANT.test(m[2] ?? ""))
+    .map((m) => ({ type: (m[1] ?? "").toUpperCase() as TypeApport, html: m[2] ?? "" }));
 }
 
-/** Retire TOUS les marqueurs (ouvrants, fermants, orphelins) en gardant le contenu. */
+/** Retire TOUT commentaire « apport » (ouvrant, fermant, orphelin, type inconnu, casse libre), en gardant le contenu. */
 export function retirerMarqueursApport(html: string): string {
-  return html.replace(/<!--\s*\/?apport(?::[A-D])?\s*-->/g, "");
+  return html.replace(/<!--\s*\/?\s*apport\b[\s\S]*?-->/gi, "");
 }
 
-export const contientMarqueurApport = (html: string): boolean => /<!--\s*\/?apport\b/i.test(html);
+export const contientMarqueurApport = (html: string): boolean =>
+  /<!--\s*\/?\s*apport\b/i.test(html);
 
 export interface MatiereOfferte {
   /** Chiffres sourcés (type B) disponibles pour l'intention. */
@@ -49,16 +54,25 @@ export interface PlanApports {
  * Le brief réserve les apports AVANT l'écriture. Sans B ni C, l'intention reste `libre` mais
  * n'est pas générable (pas assez de matière). A (exemple type étiqueté) est toujours rédigeable.
  */
-export function reserverApports(m: MatiereOfferte): PlanApports {
+export function reserverApports(m: MatiereOfferte, apportsMin = 2): PlanApports {
+  const positif = (n: number): boolean => Number.isFinite(n) && n > 0;
   const reserves: TypeApport[] = ["A"];
-  if (m.chiffresSources > 0) reserves.push("B");
-  if (m.anglesFrance > 0) reserves.push("C");
-  if (m.donneePropre) reserves.push("D");
-  if (m.chiffresSources <= 0 && m.anglesFrance <= 0) {
+  if (positif(m.chiffresSources)) reserves.push("B");
+  if (positif(m.anglesFrance)) reserves.push("C");
+  if (m.donneePropre === true) reserves.push("D");
+  // Générable seulement avec B ou C ET assez de types distincts pour atteindre `apportsMin`.
+  if (!reserves.includes("B") && !reserves.includes("C")) {
     return {
       generable: false,
       apportsReserves: reserves,
       raison: "Aucun chiffre sourcé ni angle PME française disponible : pas assez de matière.",
+    };
+  }
+  if (reserves.length < apportsMin) {
+    return {
+      generable: false,
+      apportsReserves: reserves,
+      raison: `${reserves.length} type(s) d'apport réservable(s), ${apportsMin} exigés.`,
     };
   }
   return { generable: true, apportsReserves: reserves, raison: null };

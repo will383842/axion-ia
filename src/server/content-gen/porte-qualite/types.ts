@@ -106,6 +106,8 @@ export interface ContextePorte {
    * champ absent ou `indisponible` = non évalué (échec fermé).
    */
   readonly intention?: Source<IntentionRegistre | null> | undefined;
+  /** B05 : `true` si le contenu est la MISE À JOUR de la page propriétaire de l'intention (§ 7.1). */
+  readonly miseAJourDeLaPageProprietaire?: boolean | undefined;
   /** B07 type D : `true` seulement s'il existe une donnée propre à Axion-IA réelle et agrégée. */
   readonly donneeProprePresente?: boolean | undefined;
   /** Pénalités de la note issues de critères pas encore branchés (Q3 et suivants). */

@@ -6,18 +6,24 @@
  */
 
 import { extraireApports, type ApportMarque, type TypeApport } from "../apports";
-import { texteDe } from "../html";
+import { estExterne, liens, texteDe } from "../html";
 import type { ReglagesPorte } from "../reglages";
 import type { ContenuPorte, ContextePorte, ResultatBrut } from "../types";
 
-const RE_EFFECTIF = /\b\d{1,4}\s*(?:salari[ée]s?|personnes|collaborateurs?|employ[ée]s?)\b/i;
+const RE_EFFECTIF =
+  /(?<![\p{L}\d])\d{1,4}\s*(?:salari[ée]s?|collaborateurs?|employ[ée]s?)(?![\p{L}\d])/iu;
 const RE_ETIQUETTE_TYPE = /\bexemple\s+type\b|\bcas\s+type\b|\bsituation\s+type\b/i;
 const RE_RESULTAT = /\d+(?:[.,]\d+)?\s*(?:%|heures?|h\b|jours?|€|euros?|minutes?)/i;
 const RE_ANNEE = /\b20[12]\d\b/;
+const RE_ANNEE_G = /\b20[12]\d\b/g;
 const RE_ANGLE =
-  /\b(?:ai\s*act|r[èe]glement\s+europ[ée]en|employeur|droit\s+du\s+travail|cse\b|fiscal\w*|code\s+du\s+travail|calendrier\s+fran[çc]ais|cnil|rgpd)/i;
+  /\b(?:ai\s*act|r[èe]glement\s+europ[ée]en|obligations?\s+de\s+l'employeur|droit\s+du\s+travail|cse\b|fiscalit[ée]|code\s+du\s+travail|calendrier\s+fran[çc]ais)/i;
 
-function verifier(a: ApportMarque, donneePropre: boolean): string | null {
+function verifier(
+  a: ApportMarque,
+  donneePropre: boolean,
+  hotes: ReadonlyArray<string>,
+): string | null {
   const t = texteDe(a.html);
   switch (a.type) {
     case "A":
@@ -27,9 +33,11 @@ function verifier(a: ApportMarque, donneePropre: boolean): string | null {
       }
       return null;
     case "B": {
-      if (!/\d/.test(t)) return "chiffre sourcé sans nombre";
-      if (!/<a\b[^>]*href\s*=\s*["']https?:\/\//i.test(a.html))
-        return "chiffre sans lien vers la source";
+      // Un nombre qui n'est pas une année : « 2025 » seul n'est pas un chiffre.
+      if (!/\d/.test(t.replace(RE_ANNEE_G, " "))) return "chiffre sourcé sans nombre";
+      if (!liens(a.html).some((l) => estExterne(l.href, hotes))) {
+        return "chiffre sans lien vers une source externe";
+      }
       if (!RE_ANNEE.test(t)) return "chiffre sans date de la source";
       return null;
     }
@@ -54,13 +62,22 @@ export function evaluerB07(c: ContenuPorte, x: ContextePorte, r: ReglagesPorte):
   const valides = new Set<TypeApport>();
   const preuves: string[] = [];
   for (const a of apports) {
-    const refus = verifier(a, x.donneeProprePresente === true);
+    const refus = verifier(a, x.donneeProprePresente === true, x.hotesInternes);
     if (refus === null) {
       valides.add(a.type);
       preuves.push(`${a.type} : vérifié`);
     } else {
       preuves.push(`${a.type} : ${refus}`);
     }
+  }
+  // § 8 : « A seul ne suffit pas » ; D est un apport SUPPLÉMENTAIRE. Il faut au moins un B ou un C vérifié.
+  if (!valides.has("B") && !valides.has("C")) {
+    return {
+      statut: "echec",
+      raison:
+        "Aucun chiffre sourcé (B) ni angle PME française (C) vérifié : A et D ne suffisent pas.",
+      preuves,
+    };
   }
   if (valides.size < r.apportsMin) {
     return {
