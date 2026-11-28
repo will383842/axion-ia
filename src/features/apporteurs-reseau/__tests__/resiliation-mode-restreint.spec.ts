@@ -29,7 +29,7 @@ beforeEach(() => {
 });
 
 describe("lireDossierParLien : dossier résilié", () => {
-  it("sans argent en jeu : page neutre", async () => {
-    expect(await donnees.lireDossierParLien("a".repeat(8), "j")).toBeNull();
+  it("sans argent en jeu : plus de page neutre, l'archive en lecture (PR K) — voir resilie-paye-lit-ses-pieces.spec.ts", () => {
+    expect(typeof donnees.lireDossierParLien).toBe("function");
   });
 });

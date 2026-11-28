@@ -202,6 +202,11 @@ export interface DossierVue {
    * dossier sont refusés (page ET actions).
    */
   restreint?: true;
+  /**
+   * Apporteur RÉSILIÉ, payé, sans argent en jeu (PR K, #2464) : la page n'offre que la
+   * lecture de ses autofactures, relevés et contrat. Aucune écriture (`restreint` l'impose).
+   */
+  archive?: true;
   id: string;
   statut: ApporteurReseauStatut;
   versionLien: number;
@@ -303,12 +308,13 @@ export async function lireDossierParLien(
     select: { versionLien: true, statut: true },
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
-  // Résilié (lot L1b, B1 bis) : mode restreint seulement si de l'argent est encore en jeu
-  // (le lien n'a alors pas été révoqué à la prise d'effet) ; sinon page neutre.
+  // Résilié (lot L1b, B1 bis ; PR K) : toujours restreint (aucune écriture). Avec de l'argent
+  // en jeu : dépôt des attestations ; sans argent : archive en lecture seule de ses pièces.
   if (a.statut === "resilie") {
-    if (!(await argentEnJeu(id))) return null;
     const vue = await lireDossier(id);
-    return vue ? { ...vue, restreint: true } : null;
+    if (!vue) return null;
+    if (!(await argentEnJeu(id))) return { ...vue, restreint: true, archive: true };
+    return { ...vue, restreint: true };
   }
   // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
   // recalculé sur la version courante n'ouvre pas un dossier retiré… sauf s'il reste de

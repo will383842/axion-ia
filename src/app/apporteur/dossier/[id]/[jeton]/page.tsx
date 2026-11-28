@@ -119,6 +119,40 @@ export default async function DossierApporteurPage({ params }: PageProps) {
   // MODE RESTREINT (2026-10-07) : retiré du réseau, avec de l'argent encore en jeu. Seul le
   // dépôt des attestations de vigilance reste ouvert — ni signature, ni déclaration, ni
   // dossier (les actions le refusent aussi).
+  // ARCHIVE (PR K, #2464) : résilié et payé. Lecture seule, aucun formulaire.
+  if (dossier.archive) {
+    const base = `/apporteur/dossier/${dossier.id}/${jeton}`;
+    const LIEN =
+      "border-terracotta-deep text-terracotta-deep flex min-h-[48px] items-center gap-2 rounded-2xl border-2 px-5 py-3 text-[17px] font-bold";
+    return (
+      <Coquille titre={TEXTES.bonjour(dossier.prenom)}>
+        <EcranEtat
+          pastilleTexte={TEXTES.archivePastille}
+          titre={TEXTES.archiveTitre}
+          ligne={TEXTES.archiveLigne}
+        />
+        <ul className="mt-5 grid gap-3">
+          <li>
+            <a href={`${base}/mes-commissions#pieces`} className={LIEN}>
+              {TEXTES.archiveAutofactures} →
+            </a>
+          </li>
+          <li>
+            <a href={`${base}/mes-commissions#releves`} className={LIEN}>
+              {TEXTES.archiveReleves} →
+            </a>
+          </li>
+          {dossier.aContratSigne ? (
+            <li>
+              <a href={`${base}/contrat?dl=1`} target="_blank" rel="noopener" className={LIEN}>
+                ↓ {TEXTES.archiveContrat}
+              </a>
+            </li>
+          ) : null}
+        </ul>
+      </Coquille>
+    );
+  }
   if (dossier.restreint) {
     return (
       <Coquille titre={TEXTES.bonjour(dossier.prenom)}>

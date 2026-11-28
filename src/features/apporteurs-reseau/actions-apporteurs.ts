@@ -210,6 +210,31 @@ export async function renvoyerContratSigneAction(input: { apporteurId: string })
   }
 }
 
+/**
+ * PR K (#2464) : l'URL d'accès en lecture aux pièces d'un apporteur RÉSILIÉ, calculée sur la
+ * version courante du lien. Aucun e-mail, aucune écriture ; `message` porte l'URL.
+ */
+export async function lienArchiveAction(input: { apporteurId: string }): Promise<Retour> {
+  const refus = await exigerAdmin();
+  if (refus) return { ok: false, message: refus };
+  if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
+  try {
+    const a = await prisma.apporteurReseau.findUnique({
+      where: { id: input.apporteurId.toLowerCase() },
+      select: { id: true, statut: true, versionLien: true },
+    });
+    if (!a || a.statut !== "resilie")
+      return { ok: false, message: "Ce contrat n'est pas résilié." };
+    const { urlDossier } = await import("./jeton");
+    const url = urlDossier(a.id, a.versionLien);
+    if (!url) return { ok: false, message: "Impossible de fabriquer le lien (secret absent)." };
+    return { ok: true, message: url };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-decision", step: "lien-archive" } });
+    return { ok: false, message: "Le lien n'a pas pu être préparé." };
+  }
+}
+
 export async function revoquerEtRenvoyerLienAction(input: {
   apporteurId: string;
 }): Promise<Retour> {

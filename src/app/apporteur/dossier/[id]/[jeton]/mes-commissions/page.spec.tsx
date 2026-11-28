@@ -123,6 +123,14 @@ describe("accès", () => {
     expect(h.lire).not.toHaveBeenCalled();
   });
 
+  it("résilié en archive (PR K) : 200, lecture seule, aucun bouton ni formulaire", async () => {
+    h.dossier = { id: ID, statut: "resilie", restreint: true, archive: true, regimeTva: null };
+    h.vue = riche;
+    const html = await rendre();
+    expect(html).not.toMatch(/<button|<form|<input/);
+    expect(h.lire).toHaveBeenCalled();
+  });
+
   it("lit l'identifiant du dossier, pas celui de l'adresse", async () => {
     h.dossier = { id: ID, statut: "signe", regimeTva: "assujetti" };
     await rendre("AUTRE-ID-DANS-L-ADRESSE");
