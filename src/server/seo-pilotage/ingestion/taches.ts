@@ -19,7 +19,11 @@ import {
 export const JOURS_PAR_PASSAGE = 30;
 /** Pause entre deux jours : chaque jour fait 3 appels, donc ≈ 3 appels par 1,5 s, très sous le quota. */
 export const PAUSE_ENTRE_JOURS_MS = 1500;
-/** Un passage s'arrête de lui-même bien avant `lockDuration` du worker (10 min). */
+/**
+ * Budget indicatif d'un passage : reste sous l'intervalle de 20 min entre deux passages et limite ce
+ * qu'un redémarrage interrompt. Pas une limite de verrou (BullMQ le renouvelle) ni stricte : un jour
+ * commencé juste avant peut durer plus longtemps (429 avec `Retry-After`).
+ */
 export const BUDGET_PASSAGE_MS = 8 * 60_000;
 
 /** Réglages de test pour le rattrapage (pause et horloge injectables). */

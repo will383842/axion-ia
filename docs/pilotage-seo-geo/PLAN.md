@@ -145,7 +145,7 @@ Le score sert à **prioriser le travail éditorial**, pas à agir automatiquemen
 
 ## 4. Couche analyse : le moteur d'opportunités
 
-Module pur `src/server/seo-pilotage/opportunites/*`. Les règles sont détaillées par l'expert « intentions ». Toutes les constantes sont exportées, puis **calibrées sur l'historique rattrapé** (et non plus sur 8 semaines d'observation).
+Module pur `src/server/seo-pilotage/opportunites/*`. Les règles sont détaillées par l'expert « intentions ». Toutes les constantes sont exportées, puis **calibrées sur l'historique rattrapé** (et non plus sur 8 semaines d'observation), à l'exception des planchers du § 4.2, qui restent inchangés.
 
 ### 4.1 Détecteurs
 
@@ -354,8 +354,8 @@ Dépendances entre interrupteurs :
 
 ## 11. Conditions de démarrage (avant d'allumer quoi que ce soit)
 
-| Mode                  | Conditions                                                                                                                                                                                                                                                                                                    |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Observation**       | Sonde GSC verte. Migration vérifiée par `prisma migrate status` après l'atterrissage (l'entrypoint migre en best-effort). Écran « Santé des données » vert depuis 7 jours                                                                                                                                     |
-| **Propositions**      | Historique rattrapé (au moins 90 jours remplis, ou tout l'historique disponible). Planchers du § 4.2 **inchangés** (une page sous le plancher ne reçoit aucune proposition) et calibrés sur l'historique rattrapé. Journal et retour arrière livrés **et testés** (P13). Défauts AUDIT § 5 bis 1 à 3 corrigés |
-| **Automatique borné** | 20 propositions validées sans retour arrière. Groupe témoin actif. Champ par champ, en commençant par `metaDescription` des articles                                                                                                                                                                          |
+| Mode                  | Conditions                                                                                                                                                                                                                                                                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Observation**       | Sonde GSC verte. Migration vérifiée par `prisma migrate status` après l'atterrissage (l'entrypoint migre en best-effort). Écran « Santé des données » vert depuis 7 jours                                                                                                                                                                                |
+| **Propositions**      | Historique rattrapé (au moins 90 jours remplis, ou tout l'historique disponible). Planchers du § 4.2 **inchangés** (une requête ou une page sous son plancher ne reçoit aucune proposition ; les autres constantes sont calibrées sur l'historique rattrapé). Journal et retour arrière livrés **et testés** (P13). Défauts AUDIT § 5 bis 1 à 3 corrigés |
+| **Automatique borné** | 20 propositions validées sans retour arrière. Groupe témoin actif. Champ par champ, en commençant par `metaDescription` des articles                                                                                                                                                                                                                     |

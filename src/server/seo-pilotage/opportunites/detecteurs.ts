@@ -17,7 +17,7 @@ import type {
 } from "./types";
 import { borneHauteWilson } from "./wilson";
 
-/** Toutes les constantes sont exportées : à calibrer sur les 8 semaines d'observation. */
+/** Toutes les constantes sont exportées : à calibrer sur l'historique rattrapé, sauf les planchers (§ 4.2 du plan), qui restent inchangés. */
 export const SEUILS = {
   /** Planchers par requête. */
   requeteImpressionsMin: 30,
