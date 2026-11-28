@@ -33,4 +33,14 @@ Modifiés : `HeroCollaborateur.tsx`, `ActionsFiche.tsx`.
 
 Les attentes de `briques.spec.tsx` et `profil-williams.spec.tsx` n'ont pas eu besoin de changer.
 
-VERDICT OPUS : EN COURS
+## Relecture Opus et corrections
+
+Défauts relevés puis corrigés : `dt`/`dd` désormais enfants directs d'un `div` de la `dl` (icône
+placée dans le `dt`) avec test du parent ; survol de carte sous `motion-safe:` (test étendu à
+`translate`) ; test de la priorité du portrait ; paire de contraste sans valeur (seuil 1) remplacée
+par `mocha-fg` / `terracotta` (titres ≥ 24 px). Écart assumé : le lien LinkedIn vérifiable reste
+sous la grille (un `p`), non dans une carte, pour garder une `dl` valide ; R2d pourra l'intégrer.
+
+Vérifications relancées après corrections : typecheck, lint, prettier, vitest (src/components/equipe) : tous OK (7 fichiers, 111 tests passés).
+
+VERDICT OPUS : BON

@@ -12,9 +12,9 @@ import { ICONES_FICHE, iconeDe } from "../visuels/icones";
 import { SectionFiche } from "../visuels/SectionFiche";
 
 vi.mock("next/image", () => ({
-  default: ({ fill: _f, priority: _p, ...props }: Record<string, unknown>) => (
+  default: ({ fill: _f, priority, ...props }: Record<string, unknown>) => (
     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-    <img {...(props as object)} />
+    <img data-priority={String(Boolean(priority))} {...(props as object)} />
   ),
 }));
 vi.mock("@/i18n/navigation", () => ({
@@ -108,6 +108,12 @@ describe("GrilleEnBref", () => {
     expect(container.querySelectorAll("dl")).toHaveLength(1);
     expect(container.querySelectorAll("dt")).toHaveLength(3);
     expect(container.querySelectorAll("dd")).toHaveLength(3);
+    for (const dt of container.querySelectorAll("dt")) {
+      expect(dt.parentElement?.parentElement?.tagName).toBe("DL");
+    }
+    for (const dd of container.querySelectorAll("dd")) {
+      expect(dd.parentElement?.parentElement?.tagName).toBe("DL");
+    }
   });
   it("icône inconnue : repli, sans erreur", () => {
     expect(iconeDe("inconnue")).toBe(iconeDe(undefined));
@@ -145,6 +151,8 @@ describe("héros", () => {
     const p = container.querySelector("p[data-answer]");
     expect(p?.classList.contains("speakable")).toBe(true);
     expect(container.querySelectorAll("[data-answer]")).toHaveLength(1);
+    const img = container.querySelector("figure img");
+    if (img) expect(img.getAttribute("data-priority")).toBe("true");
     expect(container.querySelector("figure img, figure svg")).not.toBeNull();
     expect(container.querySelector("header")?.getAttribute("data-fond")).toBe("fonce");
     expect(container.querySelector("ul[aria-label='Chiffres clés']")).not.toBeNull();
@@ -216,7 +224,8 @@ describe("animations", () => {
     );
     for (const el of container.querySelectorAll("[class]")) {
       const cls = el.getAttribute("class") ?? "";
-      if (/(^|\s)(transition|animate-)/.test(cls)) throw new Error(`hors motion-safe : ${cls}`);
+      if (/(^|\s)(transition|animate-|hover:-?translate|hover:scale)/.test(cls))
+        throw new Error(`hors motion-safe : ${cls}`);
     }
   });
 });

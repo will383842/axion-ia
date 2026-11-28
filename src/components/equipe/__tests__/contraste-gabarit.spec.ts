@@ -39,7 +39,7 @@ const PAIRES: ReadonlyArray<[string, string, string, number]> = [
   ["icône partenaire", "mocha", "sand", 4.5],
   ["texte sur crème", "fg", "sand", 4.5],
   ["légende de carte sur papier", "fg-muted", "paper", 4.5],
-  ["bordure de pastille sur foncé (graphique)", "border-on-mocha", "mocha", 1],
+  ["titres ≥ 24 px sur terracotta", "mocha-fg", "terracotta", 4.5],
 ];
 
 describe("contraste du gabarit de fiche", () => {
