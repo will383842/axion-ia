@@ -52,6 +52,9 @@ export const GROUPE_G7 = {
     "apporteur-releve-mensuel",
     "apporteur-virement-fait",
     "apporteur-lien-espace",
+    "apporteur-avenant-propose",
+    "apporteur-avenant-relance",
+    "apporteur-avenant-enregistre",
     "vivier-information",
   ] as const,
   dettes: {
@@ -100,6 +103,9 @@ export const GROUPE_G7 = {
       "apporteur-virement-fait",
       "apporteur-lien-espace",
       "vivier-information",
+      "apporteur-avenant-propose",
+      "apporteur-avenant-relance",
+      "apporteur-avenant-enregistre",
     ],
     salutationHorsOuverture: [
       "apporteur-file-attente-premier-rang",
@@ -145,6 +151,9 @@ export const GROUPE_G7 = {
       "apporteur-virement-fait",
       "apporteur-lien-espace",
       "vivier-information",
+      "apporteur-avenant-propose",
+      "apporteur-avenant-relance",
+      "apporteur-avenant-enregistre",
     ],
     salutationNomComplet: [],
     signatureDansLeCorps: [

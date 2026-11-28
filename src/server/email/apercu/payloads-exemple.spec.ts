@@ -191,7 +191,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // émetteur). Champs tous facultatifs.
     // RELEVÉ À 96 : `apporteur-file-attente` (PR E #2464, sans émetteur avant la PR F). Ses trois
     // champs sont déclarés dans `payloads-exemple.ts`.
-    expect(tous.length).toBe(96);
+    // RELEVÉ À 97 : `apporteur-avenant` (lot S4 #2512, un fichier, trois gabarits, sans émetteur
+    // avant le lot S3). Champs déclarés dans `payloads-exemple.ts`.
+    expect(tous.length).toBe(97);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
