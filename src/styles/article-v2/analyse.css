@@ -1,2 +1,51 @@
-/* Gabarit « analyse » (S2 : feuille créée d'avance ; elle porte aussi le rendu de repli).
-   La PR G1 y écrit seule : numéros de chapitre, « Revenir au sommaire ». */
+/* Gabarit « analyse » (G1) : elle porte aussi le rendu de repli des autres gabarits.
+   Règles bornées à [data-gabarit] ; jetons uniquement ; mobile d'abord (min-width seulement).
+   Les numéros de section (.num-section), l'ancre (.ancre) et la relance (.relance) viennent
+   du socle ; seul « Revenir au sommaire » est propre au gabarit. */
+
+/* Pastille d'ancre posée avant le sommaire : cible du lien, aucun encombrement. */
+[data-gabarit] #sommaire-article {
+  display: block;
+  height: 0;
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+/* « Revenir au sommaire » : lien discret en fin de section, aligné à droite. */
+[data-gabarit] .retour-sommaire {
+  margin: 1.5rem 0 0;
+  text-align: right;
+  font: 600 0.875rem/1.4 var(--font-sans);
+}
+[data-gabarit] .retour-sommaire a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 0.25rem;
+  color: var(--color-terracotta-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+[data-gabarit] .retour-sommaire a::before {
+  content: "↑" / "";
+  margin-right: 0.4rem;
+  text-decoration: none;
+}
+[data-gabarit] .retour-sommaire a:hover {
+  color: var(--color-ink);
+}
+
+/* Sur ordinateur, le sommaire collant est toujours visible : le lien de retour est inutile. */
+@media (min-width: 1024px) {
+  [data-gabarit] .retour-sommaire {
+    display: none;
+  }
+}
+
+/* Corps HTML : le numéro précède le H2, il prend la place du premier enfant. */
+[data-gabarit] .corps-html > .num-section:first-child {
+  margin-top: 0;
+}
+/* Pas de <section> dans le corps HTML : l'ancre « # » se révèle au survol du repère. */
+[data-gabarit] .corps-html .num-section:hover .ancre {
+  opacity: 1;
+}
