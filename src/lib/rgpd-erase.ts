@@ -2180,17 +2180,17 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
   {
     modele: "TeamMember",
     motif:
-      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+      "fiche collaborateur publiée sur le site. Effacement RÉEL sur demande, à la console (src/server/equipe/retrait/retrait.ts, effacerDefinitivement) : suppression de la fiche, de ses réponses, de ses invitations (y compris celles sans fiche, retrouvées par l'empreinte d'e-mail), de ses photos (original privé et variantes publiques), de son journal et des preuves ConsentEvent « team-profile-* » liées, en une transaction ; seule reste une ligne d'effacement sans donnée personnelle (dates de demande et de traitement). Exception décidée par le propriétaire à la règle de non-suppression ; aucun effacement automatique.",
   },
   {
     modele: "TeamQuestionnaireInvite",
     motif:
-      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+      "fiche collaborateur publiée sur le site. Effacement RÉEL sur demande, à la console (src/server/equipe/retrait/retrait.ts, effacerDefinitivement) : suppression de la fiche, de ses réponses, de ses invitations (y compris celles sans fiche, retrouvées par l'empreinte d'e-mail), de ses photos (original privé et variantes publiques), de son journal et des preuves ConsentEvent « team-profile-* » liées, en une transaction ; seule reste une ligne d'effacement sans donnée personnelle (dates de demande et de traitement). Exception décidée par le propriétaire à la règle de non-suppression ; aucun effacement automatique.",
   },
   {
     modele: "TeamQuestionnaireSubmission",
     motif:
-      "fiche collaborateur publiée sur le site : table créée vide, aucun écran ne l'alimente encore. L'effacement réel (suppression de la ligne, en cascade de ses invitations et réponses, du fichier photo, ainsi que des invitations sans fiche retrouvées par leur empreinte d'e-mail et de toute fiche liée à un apporteur effacé ; la preuve de consentement du registre ConsentEvent reste à trancher) est livré avec le lot retrait et effacement, avant toute première fiche.",
+      "fiche collaborateur publiée sur le site. Effacement RÉEL sur demande, à la console (src/server/equipe/retrait/retrait.ts, effacerDefinitivement) : suppression de la fiche, de ses réponses, de ses invitations (y compris celles sans fiche, retrouvées par l'empreinte d'e-mail), de ses photos (original privé et variantes publiques), de son journal et des preuves ConsentEvent « team-profile-* » liées, en une transaction ; seule reste une ligne d'effacement sans donnée personnelle (dates de demande et de traitement). Exception décidée par le propriétaire à la règle de non-suppression ; aucun effacement automatique.",
   },
   {
     // Assistant de devis, fiche S17 — requalifié `dossier-client` AVANT l'allumage de S06.
@@ -2265,6 +2265,13 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
     modele: "ApporteurVirementCompte",
     motif:
       "compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement a été déclaré : preuve du paiement, conservée comme les autofactures (art. L.123-22 du code de commerce), en ajout seul.",
+  },
+  {
+    // 2026-11-28 — avenant 2.8 (#2512, lot S1) : table créée vide, aucun écrivain encore.
+    modele: "ApporteurAvenant",
+    motif:
+      "avenant au contrat et preuve de son acceptation (date, case cochée, empreinte du texte) : pièce contractuelle conservée comme le contrat signé " +
+      "(art. 17(3)(b) et (e) RGPD, art. L.123-22 du code de commerce), en ajout et changement de statut seulement.",
   },
   {
     // 2026-10-08 — SIRET de l'établissement d'un apporteur : comme son SIREN (gardé sur la fiche).

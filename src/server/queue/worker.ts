@@ -34,6 +34,7 @@ import { startNewsLifecycleWorker } from "./workers/content-news-lifecycle-worke
 import { startPublishWorker } from "./workers/content-publish-worker";
 import { startIndexNowWorker } from "./workers/content-indexnow-worker";
 import { startGoogleIndexingWorker } from "./workers/content-google-indexing-worker";
+import { startSitemapSubmitWorker } from "./workers/content-sitemap-submit-worker";
 import { startContentQaExtractWorker } from "./workers/content-qa-extract-worker";
 import { startTierLifecycleWorker } from "./workers/content-tier-lifecycle-worker";
 import { startFactCheckWorker } from "./workers/content-fact-check-worker";
@@ -144,6 +145,7 @@ async function main() {
     startPublishWorker(),
     startIndexNowWorker(),
     startGoogleIndexingWorker(),
+    startSitemapSubmitWorker(), // indexation rapide : sitemaps.submit GSC (éteint par défaut)
     startContentQaExtractWorker(), // Pass B fix P0-7 — Q/R post-process § 29
     startTierLifecycleWorker(), // Sprint 10 V2 — mensuel 15 06:00 UTC
     startFactCheckWorker(), // Sprint 12.5 V2 — post-publish Perplexity claims
@@ -206,7 +208,10 @@ async function main() {
     startVisioBalayageWorker(),
     // Pilotage SEO (P4) — TOUJOURS démarré, ÉTEINT par défaut : sans `CONTENT_PILOTAGE_SEO="true"`
     // chaque tâche sort sans rien lire ni appeler ; une table absente (fenêtre app/worker) fait sauter.
-    startSeoPilotageWorker(),
+    // Panel GEO (P11) injecté ici (zone du contenu automatisé) : éteint par défaut, trois verrous.
+    startSeoPilotageWorker(async (d) =>
+      (await import("@/server/content-gen/seo/panel-geo/panel")).tachePanelGeo(d),
+    ),
     // Chantier visio (PR 6) — le circuit du compte rendu (concurrence 1). Inerte
     // tant qu'aucun enregistrement n'est déposé : le balayage ne trouve rien et
     // aucun appel à OpenAI n'est émis. Charges de job : identifiants seulement.

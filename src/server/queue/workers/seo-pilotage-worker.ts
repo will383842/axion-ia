@@ -45,6 +45,7 @@ export const TACHES_SEO_PILOTAGE = [
   "recalcul",
   "inspection",
   "robots-ia",
+  "panel-geo",
 ] as const;
 export type TacheSeoPilotage = (typeof TACHES_SEO_PILOTAGE)[number];
 
@@ -53,12 +54,29 @@ export type IssueJob =
   | { readonly issue: "saute"; readonly motif: string }
   | { readonly issue: "fait"; readonly tache: TacheSeoPilotage };
 
+/**
+ * Tâche du panel GEO (P11), INJECTÉE par `worker.ts` : l'appel à Claude et la porte de coût vivent
+ * dans la zone du contenu automatisé ; ce fichier ne les importe pas. Absente : la tâche saute.
+ */
+export type TachePanelGeoInjectee = (deps: {
+  readonly prisma: (typeof import("@/lib/prisma"))["prisma"];
+}) => Promise<
+  | { readonly issue: "saute"; readonly motif: string; readonly anormal: boolean }
+  | {
+      readonly issue: "fait";
+      readonly posees: number;
+      readonly dejaFaites: number;
+      readonly arret: string | null;
+    }
+>;
+
 function estTacheConnue(t: unknown): t is TacheSeoPilotage {
   return (TACHES_SEO_PILOTAGE as ReadonlyArray<unknown>).includes(t);
 }
 
 export async function runSeoPilotageJob(
   job: Pick<Job<SeoPilotageJobData>, "data">,
+  panelGeo?: TachePanelGeoInjectee,
 ): Promise<IssueJob> {
   const tache: unknown = job.data?.tache;
   if (!estTacheConnue(tache)) {
@@ -131,6 +149,21 @@ export async function runSeoPilotageJob(
       }
       return b.issue === "saute" ? { issue: "saute", motif: b.motif } : { issue: "fait", tache };
     }
+    if (tache === "panel-geo") {
+      if (!panelGeo) return { issue: "saute", motif: "panel_non_branche" };
+      const b = await panelGeo({ prisma });
+      if (b.issue === "saute") {
+        (b.anormal ? console.warn : console.log)(
+          `[seo-pilotage-worker] panel-geo sauté : ${b.motif}`,
+        );
+        return { issue: "saute", motif: b.motif };
+      }
+      // Des nombres et un motif fixe seulement : jamais une question, une URL ni une réponse.
+      (b.arret ? console.warn : console.log)(
+        `[seo-pilotage-worker] panel-geo (${mode}) : ${b.posees} question(s) posée(s), ${b.dejaFaites} déjà faite(s)${b.arret ? `, arrêt ${b.arret}` : ""}`,
+      );
+      return { issue: "fait", tache };
+    }
     const r =
       tache === "ingestion-gsc"
         ? await ingestion.tacheIngestionGsc({ prisma })
@@ -178,19 +211,25 @@ export async function runSeoPilotageJob(
 
 let workerInstance: Worker<SeoPilotageJobData> | null = null;
 
-export function startSeoPilotageWorker(): Worker<SeoPilotageJobData> {
+export function startSeoPilotageWorker(
+  panelGeo?: TachePanelGeoInjectee,
+): Worker<SeoPilotageJobData> {
   if (workerInstance) return workerInstance;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) throw new Error("REDIS_URL not set — seo-pilotage-worker cannot start");
 
-  workerInstance = new Worker<SeoPilotageJobData>(SEO_PILOTAGE_QUEUE_NAME, runSeoPilotageJob, {
-    connection: { url: redisUrl },
-    // Un seul passage à la fois : l'ingestion et le rattrapage ne se chevauchent jamais.
-    concurrency: 1,
-    lockDuration: 600_000,
-    removeOnComplete: { count: 50 },
-    removeOnFail: { count: 100 },
-  });
+  workerInstance = new Worker<SeoPilotageJobData>(
+    SEO_PILOTAGE_QUEUE_NAME,
+    (j) => runSeoPilotageJob(j, panelGeo),
+    {
+      connection: { url: redisUrl },
+      // Un seul passage à la fois : l'ingestion et le rattrapage ne se chevauchent jamais.
+      concurrency: 1,
+      lockDuration: 600_000,
+      removeOnComplete: { count: 50 },
+      removeOnFail: { count: 100 },
+    },
+  );
   workerInstance.on("failed", (job, err) => {
     console.error(`[seo-pilotage-worker] job ${job?.id} failed: ${err.name}`);
     captureWorkerError("seo-pilotage", SEO_PILOTAGE_QUEUE_NAME, job, err);

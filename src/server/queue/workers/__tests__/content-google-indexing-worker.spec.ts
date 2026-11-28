@@ -73,13 +73,13 @@ describe("content-google-indexing-worker — Sub-agent D Sprint S+5 P2-10", () =
   it("happy path : URL_UPDATED publiée → indexingPublishUrl appelé avec bons args", async () => {
     // 4 verticales — exemple un-a-un (1-to-1)
     await loadAndRun({
-      url: "https://axion-ia.com/fr/un-a-un/coaching-dirigeant-ia",
+      url: "https://axion-ia.com/fr/carrieres/offre-test",
       type: "URL_UPDATED",
     });
 
     expect(publishUrlMock).toHaveBeenCalledTimes(1);
     expect(publishUrlMock).toHaveBeenCalledWith(
-      "https://axion-ia.com/fr/un-a-un/coaching-dirigeant-ia",
+      "https://axion-ia.com/fr/carrieres/offre-test",
       "URL_UPDATED",
     );
   });
@@ -90,7 +90,7 @@ describe("content-google-indexing-worker — Sub-agent D Sprint S+5 P2-10", () =
 
     // verticale audit
     await loadAndRun({
-      url: "https://axion-ia.com/fr/audit/conformite-ai-act",
+      url: "https://axion-ia.com/fr/carrieres/offre-test",
       type: "URL_UPDATED",
     });
 
@@ -107,7 +107,7 @@ describe("content-google-indexing-worker — Sub-agent D Sprint S+5 P2-10", () =
 
     // verticale implementation
     await loadAndRun({
-      url: "https://axion-ia.com/fr/implementation/integration-ia-erp",
+      url: "https://axion-ia.com/fr/carrieres/offre-test",
       type: "URL_DELETED",
     });
 
@@ -123,11 +123,16 @@ describe("content-google-indexing-worker — Sub-agent D Sprint S+5 P2-10", () =
 
     // verticale interventions/formations
     await loadAndRun({
-      url: "https://axion-ia.com/fr/interventions/formation-prompt-engineering",
+      url: "https://axion-ia.com/fr/carrieres/offre-test",
       type: "URL_UPDATED",
     });
 
     expect(isReadyMock).not.toHaveBeenCalled();
+    expect(publishUrlMock).not.toHaveBeenCalled();
+  });
+
+  it("garde-fou : une URL d'article n'atteint jamais l'API Indexing", async () => {
+    await loadAndRun({ url: "https://axion-ia.com/fr/blog/un-article", type: "URL_UPDATED" });
     expect(publishUrlMock).not.toHaveBeenCalled();
   });
 });

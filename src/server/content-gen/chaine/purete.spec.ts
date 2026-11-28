@@ -16,3 +16,16 @@ describe("pureté du module chaîne (C4)", () => {
     });
   }
 });
+
+/** C10 : l'orchestration est injectée ; aucune entrée-sortie, aucune base, aucun réseau. */
+describe("pureté de l'orchestration (C10)", () => {
+  for (const fichier of ["orchestrateur.ts", "journee.ts"]) {
+    it(`${fichier} n'a ni base, ni Redis, ni réseau, ni lecture d'environnement`, () => {
+      const source = readFileSync(join(__dirname, fichier), "utf8");
+      expect(source).not.toMatch(/process\.env|\bfetch\(|@\/lib\/(prisma|redis)|@prisma|ioredis/);
+      expect(source).not.toMatch(/\brequire\(|\bimport\(/);
+      const imports = [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
+      for (const i of imports) expect(i, i).toMatch(/^(\.\/[a-z-]+(\/[a-z-]+)?|zod)$/);
+    });
+  }
+});

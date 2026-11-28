@@ -12,6 +12,7 @@
 import "@/styles/article-v2/analyse.css";
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import { preparerCorpsAnalyse } from "@/lib/blog/analyse";
 import { Link } from "@/i18n/navigation";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
@@ -56,6 +57,9 @@ interface MiseEnPageAnalyseProps {
   readonly apresCorps?: ReactNode;
 }
 
+/** Cible des liens « Revenir au sommaire » (pastille vide posée avant le sommaire). */
+const ANCRE_SOMMAIRE = "sommaire-article";
+
 export function MiseEnPageAnalyse({
   p,
   cta,
@@ -66,18 +70,35 @@ export function MiseEnPageAnalyse({
 }: MiseEnPageAnalyseProps) {
   const t = useTranslations("articleV2");
   const c = useTranslations("articleGabarits.commun");
+  const a = useTranslations("articleGabarits.analyse");
   const { view, locale: loc } = p;
+
+  // Repères posés sur le corps HTML (numéros, relance, retours) et coupe avant la 4e section :
+  // l'encart du milieu s'insère après la 3e. Un article en fichier garde ses blocs tels quels.
+  // Un gabarit qui enveloppe le corps ou pose des blocs après lui (Sélection) le garde entier.
+  const corps =
+    p.html && !enveloppeCorps && !apresCorps
+      ? preparerCorpsAnalyse(p.html, {
+          ancreLabel: (titre) => a("ancreLabel", { titre }),
+          relanceLibelle: a("relance"),
+          retourLibelle: p.tocItems.length >= 2 ? a("retourSommaire") : null,
+          ancreSommaire: ANCRE_SOMMAIRE,
+        })
+      : null;
 
   const sommaire =
     p.tocItems.length >= 2 ? (
-      <ArticleTOC
-        items={[...p.tocItems]}
-        pageUrl={p.pageUrl}
-        locale={loc}
-        variante="v2"
-        cibleTactile
-        libelle={c("sommaire")}
-      />
+      <>
+        <span id={ANCRE_SOMMAIRE} />
+        <ArticleTOC
+          items={[...p.tocItems]}
+          pageUrl={p.pageUrl}
+          locale={loc}
+          variante="v2"
+          cibleTactile
+          libelle={c("sommaire")}
+        />
+      </>
     ) : null;
 
   const ouverture = (
@@ -130,9 +151,12 @@ export function MiseEnPageAnalyse({
         colonne={<ColonneActionsConnectee gabarit={p.gabarit} />}
       >
         <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
-        {(enveloppeCorps ?? ((c: ReactNode) => c))(<CorpsArticle html={p.html} blocs={p.blocs} />)}
+        {(enveloppeCorps ?? ((c: ReactNode) => c))(
+          <CorpsArticle html={corps ? corps.avant : p.html} blocs={p.blocs} />,
+        )}
         {apresCorps}
         <CtaMilieu gabarit={p.gabarit} principal={cta} secondaire={ctaSecondaire} />
+        {corps?.apres ? <CorpsArticle html={corps.apres} blocs={null} /> : null}
         <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
         <ArticleFaq
           items={view.faqItems}

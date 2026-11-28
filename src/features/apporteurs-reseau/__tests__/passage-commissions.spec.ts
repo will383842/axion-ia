@@ -101,6 +101,10 @@ const protegee = {
     signatureApporteur: { version: "2.8" } as unknown,
   },
 };
+const UNE_CONF = [
+  { designation: "Conférence plénière", quantite: 1, prixUnitaireHtCents: 300_000 },
+];
+
 const fac = (o: Record<string, unknown>) => ({
   id: "F",
   devisId: "D1",
@@ -389,14 +393,18 @@ describe("passage quotidien : commission par commande soldée", () => {
   });
 
   it("conférence signée AVANT le 26/11/2026 : forfait de l'ancien contrat ; APRÈS : aucune commission", async () => {
-    unePayee({ activite: "conference", montantHtCents: 300_000 });
+    unePayee({
+      activite: "conference",
+      montantHtCents: 300_000,
+      devis: { acceptedAt: new Date("2026-08-20T00:00:00Z"), lignes: UNE_CONF },
+    });
     await passerReseauApporteurs(MAINTENANT);
     expect(etat.crees[0]).toMatchObject({ montantCents: 50_000 });
     etat.crees = [];
     unePayee({
       activite: "conference",
       montantHtCents: 300_000,
-      devis: { acceptedAt: new Date("2026-11-26T09:00:00Z") },
+      devis: { acceptedAt: new Date("2026-11-26T09:00:00Z"), lignes: UNE_CONF },
     });
     await passerReseauApporteurs(MAINTENANT);
     expect(etat.crees).toEqual([]);
@@ -770,9 +778,116 @@ describe("décision du 27/11 : grille du contrat SIGNÉ au passage quotidien", (
   });
   it("signataire 2.6, conférence 2 400 € HT signée après le 26/11 : 500 €", async () => {
     signataire("2.6");
-    unePayee({ activite: "conference", montantHtCents: 240_000 });
+    unePayee({
+      activite: "conference",
+      montantHtCents: 240_000,
+      devis: { acceptedAt: new Date("2026-12-10T00:00:00Z"), lignes: UNE_CONF },
+    });
     await passerReseauApporteurs(MAINTENANT);
     expect(etat.crees[0]).toMatchObject({ montantCents: 50_000, palier: "conference" });
+  });
+  describe("plusieurs conférences (grille 2.6, 500 € chacune)", () => {
+    const apres = new Date("2026-12-10T00:00:00Z");
+    const conf = (quantite: unknown, ht: number) => ({
+      acceptedAt: apres,
+      lignes: [{ designation: "Conférence plénière", quantite, prixUnitaireHtCents: ht }],
+    });
+    it("3 × 2 400 € HT : 1 500 €", async () => {
+      signataire("2.6");
+      unePayee({
+        activite: "conference",
+        montantHtCents: 720_000,
+        devis: { ...conf(3, 240_000), montantTotalHtCents: 720_000 },
+      });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 150_000, palier: "conference" });
+    });
+    it("3 conférences + une ligne de frais « pour la conférence » : 1 500 €, pas 2 000 €", async () => {
+      signataire("2.6");
+      unePayee({
+        activite: "conference",
+        montantHtCents: 730_000,
+        devis: {
+          acceptedAt: apres,
+          montantTotalHtCents: 730_000,
+          lignes: [
+            {
+              designation: "Conférence plénière",
+              offreCode: "intervention-conference",
+              quantite: 3,
+              prixUnitaireHtCents: 240_000,
+            },
+            {
+              designation: "Frais de déplacement pour la conférence",
+              quantite: 1,
+              prixUnitaireHtCents: 10_000,
+            },
+          ],
+        },
+      });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 150_000 });
+    });
+    it("sans code catalogue, une ligne de frais ne compte pas non plus", async () => {
+      signataire("2.6");
+      unePayee({
+        activite: "conference",
+        montantHtCents: 730_000,
+        devis: {
+          acceptedAt: apres,
+          montantTotalHtCents: 730_000,
+          lignes: [
+            { designation: "Conférence plénière", quantite: 3, prixUnitaireHtCents: 240_000 },
+            {
+              designation: "Frais de déplacement pour la conférence",
+              quantite: 1,
+              prixUnitaireHtCents: 10_000,
+            },
+          ],
+        },
+      });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 150_000 });
+    });
+    it("3 conférences à 1 000 € HT au total : 1 000 € (plafonné au HT)", async () => {
+      signataire("2.6");
+      unePayee({
+        activite: "conference",
+        montantHtCents: 100_000,
+        devis: { ...conf(3, 33_333), montantTotalHtCents: 100_000 },
+      });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 100_000 });
+    });
+    it("1 conférence : 500 €", async () => {
+      signataire("2.6");
+      unePayee({ activite: "conference", montantHtCents: 240_000, devis: conf(1, 240_000) });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 50_000 });
+    });
+    it.each([[1.5], ["3"], [0], [undefined]])(
+      "quantité illisible (%s) : à qualifier, ni 500 € ni 0 €",
+      async (q) => {
+        signataire("2.6");
+        unePayee({ activite: "conference", montantHtCents: 720_000, devis: conf(q, 240_000) });
+        await passerReseauApporteurs(MAINTENANT);
+        expect(etat.crees).toHaveLength(1);
+        expect(etat.crees[0]).toMatchObject({ statut: "a_qualifier" });
+        expect(etat.crees[0]).not.toHaveProperty("montantCents");
+      },
+    );
+    it("aucune ligne de conférence lisible : à qualifier", async () => {
+      signataire("2.6");
+      unePayee({ activite: "conference", montantHtCents: 240_000, devis: { acceptedAt: apres } });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ statut: "a_qualifier" });
+    });
+    it("grille v3 (2.8), signée après le 26/11 : 0 €, aucune ligne, même pour 3 conférences", async () => {
+      signataire("2.8");
+      unePayee({ activite: "conference", montantHtCents: 720_000, devis: conf(3, 240_000) });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees).toEqual([]);
+    });
   });
   it("signataire 2.6, développement web : aucune commission", async () => {
     signataire("2.6");

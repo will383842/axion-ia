@@ -4,7 +4,7 @@
  * verdicts = lignes de `content_quality_verdicts` relues telles quelles (§ 12.1).
  */
 
-import { reglagesDepuisConfig } from "./observation";
+import { reglagesDepuisConfig, reglagesStockesValides } from "./observation";
 import { CRITERES } from "./registre";
 import { VERSION_PORTE, type ReglagesPorte } from "./reglages";
 import type { ResultatCritere, Source } from "./types";
@@ -102,6 +102,8 @@ export interface VuePorte {
   /** Limite haute, jamais un objectif. `null` = indisponible. */
   readonly plafondSecuriteParJour: number | null;
   readonly reglagesPorte: ReglagesPorte;
+  /** false = config illisible ou invalide : `reglagesPorte` vaut les défauts, le formulaire ne doit pas les réenregistrer. */
+  readonly reglagesFiables: boolean;
   readonly criteres: ReadonlyArray<{
     id: string;
     libelle: string;
@@ -118,6 +120,7 @@ const chaine = (v: unknown): string | null => (typeof v === "string" && v ? v : 
 export function construireVue(entree: {
   config: unknown;
   interrupteurActif: boolean;
+  configLisible?: boolean;
   dernierVerdictLe?: Date | null;
   lignes: Source<ReadonlyArray<LigneVerdictLue>>;
 }): VuePorte {
@@ -156,6 +159,7 @@ export function construireVue(entree: {
     plafondSecuriteParJour:
       typeof cfg.plafondSecuriteParJour === "number" ? cfg.plafondSecuriteParJour : null,
     reglagesPorte,
+    reglagesFiables: entree.configLisible !== false && reglagesStockesValides(entree.config),
     criteres: CRITERES.map((c) => ({
       id: c.id,
       libelle: c.libelle,
