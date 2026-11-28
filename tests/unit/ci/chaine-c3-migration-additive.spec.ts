@@ -62,7 +62,7 @@ describe("migration chaine_editoriale_tables : additive", () => {
     expect(BRUT).toMatch(/--\s+ALTER TABLE "cost_ledger" DROP COLUMN "role"/);
   });
   // C14 : seul `vue-console-io.ts` (écran de console, LECTURE SEULE) touche ces tables.
-  const LECTURE_SEULE = "src/server/content-gen/chaine/vue-console-io.ts";
+  const LECTURE_SEULE = `src/server/${GEN}/chaine/vue-console-io.ts`;
   it("aucune écriture branchée : seul le fichier de lecture de la console touche ces tables", () => {
     const sortie = execSync(
       "grep -rlE '\\.contenu(Besoin|Brief|Refus|Resultat|Proposition|Fait)\\b' src || true",
