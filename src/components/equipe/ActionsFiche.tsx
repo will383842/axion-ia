@@ -10,11 +10,21 @@ export function ActionsFiche({
   fiche,
   contenu,
   emplacement,
+  fond = "clair",
 }: {
   fiche: FichePublique;
   contenu: ContenuFiche;
   emplacement: "hero" | "cta";
+  /** Fond sous les boutons : choisit les variantes et l'anneau de focus (jamais le bleu de `Button`). */
+  fond?: "clair" | "fonce" | "terracotta";
 }) {
+  const primaire = fond === "terracotta" ? "secondary" : "terracotta";
+  const anneau =
+    fond === "clair"
+      ? "focus-visible:ring-terracotta"
+      : fond === "fonce"
+        ? "focus-visible:ring-mocha-fg focus-visible:ring-offset-mocha"
+        : "focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta-deep";
   const { actions, bouton, boutonSecondaire } = contenu.appelFinal;
   const suivi = (suffixe: string) => `equipe-${fiche.slug}-${emplacement}-${suffixe}`;
   if (actions && actions.length > 0) {
@@ -24,8 +34,9 @@ export function ActionsFiche({
           <Cta
             key={a.href + a.libelle}
             href={a.href}
-            variant={a.variante === "primaire" ? "terracotta" : "outline"}
+            variant={a.variante === "primaire" ? primaire : "outline"}
             size="lg"
+            className={anneau}
             track={suivi(a.href.replace(/^\//, "").replace(/\//g, "-") || "accueil")}
           >
             {a.libelle}
@@ -39,11 +50,11 @@ export function ActionsFiche({
   }
   return (
     <>
-      <Cta href="/appel" variant="terracotta" size="lg" track={suivi("appel")}>
+      <Cta href="/appel" variant={primaire} size="lg" className={anneau} track={suivi("appel")}>
         {bouton}
         <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Cta>
-      <Cta href="/contact" variant="outline" size="lg" track={suivi("contact")}>
+      <Cta href="/contact" variant="outline" size="lg" className={anneau} track={suivi("contact")}>
         {boutonSecondaire}
       </Cta>
     </>
