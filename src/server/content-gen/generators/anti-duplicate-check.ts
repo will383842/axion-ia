@@ -140,14 +140,12 @@ export function shinglesVille(
   nomVille: string,
   n: number = TAILLE_SHINGLE_VILLES,
 ): Set<string> {
-  const motsDuNom = new Set(
-    tokenize(sansAccent(nomVille).replace(/-/g, " ")).concat(
-      sansAccent(nomVille)
-        .split(/[^a-z0-9]+/)
-        .filter((m) => m.length > 0),
-    ),
-  );
-  const mots = tokenize(sansAccent(texte)).filter((m) => !motsDuNom.has(m));
+  // Coupe sur tiret et apostrophes (droite ou typographique) AVANT le filtrage : « saint-etienne »
+  // et « d’angers » doivent redevenir des mots simples, sinon le nom reste dans le texte.
+  const decoupe = (t: string): string[] =>
+    tokenize(sansAccent(t).replace(/[-\u2019\u2018']/g, " "));
+  const motsDuNom = new Set(decoupe(nomVille));
+  const mots = decoupe(texte).filter((m) => !motsDuNom.has(m));
   return shingles(mots, n);
 }
 

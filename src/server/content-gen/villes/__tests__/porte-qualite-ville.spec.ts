@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { similariteEntreVilles } from "../../generators/anti-duplicate-check";
 import {
   BLOCS_FAITS_MIN,
   SEUIL_SIMILARITE_VILLES,
@@ -150,5 +151,20 @@ describe("porteQualiteVilleActive", () => {
   });
   it("ne s'allume que sur « true »", () => {
     expect(porteQualiteVilleActive({ VILLES_PORTE_QUALITE_ACTIVE: "true" })).toBe(true);
+  });
+});
+
+describe("retrait du nom de ville", () => {
+  it("retire les noms composés et les apostrophes typographiques", () => {
+    const gabarit = (n: string, d: string) => ({
+      nom: n,
+      texte: `${d}${n} accueille des entreprises. À ${n}, on forme les équipes de ${n} sur place avec méthode chaque jour et ${n} reste une ville active`,
+    });
+    expect(
+      similariteEntreVilles(gabarit("Saint-Étienne", ""), gabarit("Nice", "")),
+    ).toBeGreaterThan(0.9);
+    expect(
+      similariteEntreVilles(gabarit("Angers", "d\u2019"), gabarit("Orléans", "d\u2019")),
+    ).toBeGreaterThan(0.9);
   });
 });

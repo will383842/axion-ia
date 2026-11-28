@@ -1,3 +1,4 @@
+import { VILLES_PUBLIABLES_CAP } from "@/generated/villes-publiables";
 import { porteQualiteVilleActive, villeIndexableParPorte } from "@/lib/villes-porte-qualite";
 import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { MetadataRoute } from "next";
@@ -471,9 +472,9 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   staticIds.push("formations");
 
   // Porte de qualité des villes (28/11/2026) : drapeau ÉTEINT par défaut ⇒ aucun id ajouté,
-  // plan du site inchangé. Allumé, les 5 sous-plans service × ville reparaissent, mais
+  // plan du site inchangé. Allumé ET au moins une ville publiable (jamais de sous-plan vide), les 5 sous-plans service × ville reparaissent, mais
   // `buildServicesVillesSitemap` n'y émet que les villes qui ont passé la porte.
-  if (porteQualiteVilleActive(process.env)) {
+  if (porteQualiteVilleActive(process.env) && VILLES_PUBLIABLES_CAP.length > 0) {
     staticIds.push(
       "services-villes-audit",
       "services-villes-interventions",
