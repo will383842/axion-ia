@@ -22,8 +22,8 @@
 Vague 0 (parallèle)  P0 porte de coût  ·  P0b plancher suivi  ·  P1 client GSC par lot  ·  P3 module pur données  ·  P7 moteur d'opportunités (pur)  ·  P12 score de citabilité (pur)
 Vague 1              P2 migration « mesure »  ──►  P4 worker seo-pilotage + ingestion
 Vague 2 (parallèle)  P5 inspection  ·  P6a recalcul SiteRoute/KeywordTracking  ·  P8 écran (observation)  ·  P9 rapport hebdo  ·  P10 GEO mesure  ·  P18 alerte indexation
-Vague 3              P6b retrait des deux anciens crons (≥ 2 semaines après P6a)  ·  P11 panel GEO (après P0 + P10)
-— 8 semaines d'observation minimum —
+Vague 3              P6b retrait des deux anciens crons (après rattrapage de l'historique + 7 jours de relevés concordants)  ·  P11 panel GEO (après P0 + P10)
+— historique Search Console rattrapé (≥ 90 jours remplis, ou tout l'historique) + P13 livrée et testée —
 Vague 4              P13 journal + retour arrière  ──►  P14 propositions + file de validation  ──►  P15 mesure d'effet + témoin  ──►  P16 automatique borné
 Facultatif           P17 Bing Webmaster (après P4)
 ```
@@ -117,7 +117,7 @@ Facultatif           P17 Bing Webmaster (après P4)
   - `src/server/queue/types.ts` ;
   - `src/server/seo-pilotage/interrupteur.ts`.
 - **Interrupteur** : `CONTENT_PILOTAGE_SEO="true"` exact. Mode lu dans `ContentGenConfig.pilotage_seo`, `observation` par défaut.
-- **Tâches** : `ingestion-gsc` (appels A, B et C, idempotents), `rattrapage-gsc` (un jour par passage), `purge` (par lots).
+- **Tâches** : `ingestion-gsc` (appels A, B et C, idempotents), `rattrapage-gsc` (jusqu'à `JOURS_PAR_PASSAGE` = 30 jours par passage, pause entre les jours, arrêt au premier échec dont le quota 429 ; 16 mois remplis en environ 6 heures de passages), `purge` (par lots).
 - **Tests** :
   - éteint : aucun appel et aucune écriture ;
   - stub : saut ;
@@ -149,7 +149,7 @@ Facultatif           P17 Bing Webmaster (après P4)
 ### P6b · Retrait de `site-route-gsc` et `content-keyword-sync` de la planification
 
 - **Fichiers** : `queues.ts` (crons retirés). Le code des workers est gardé une version, puis supprimé dans une PR ultérieure.
-- **Condition** : au moins 2 semaines après P6a, et écran « Santé des données » vert.
+- **Condition** : historique rattrapé (`rattrapage-gsc` terminé) **et** 7 jours de relevés concordants entre l'ancien et le nouveau chemin (mêmes clics, impressions et positions par page), écran « Santé des données » vert. Remplace « au moins 2 semaines après P6a » (décision de Will du 28/11/2026).
 - **Test** : verrou sur l'absence des deux `jobId` de cron.
 
 ### P7 · Moteur d'opportunités (pur) : `src/server/seo-pilotage/opportunites/`
@@ -303,12 +303,12 @@ Facultatif           P17 Bing Webmaster (après P4)
 
 ## 4. Estimation
 
-| Vague | PR                        | Taille        | Remarque                                      |
-| ----- | ------------------------- | ------------- | --------------------------------------------- |
-| 0     | P0, P0b, P1, P3, P7, P12  | S à M chacune | Indépendantes                                 |
-| 1     | P2, P4                    | M             | La seule migration « lourde »                 |
-| 2     | P5, P6a, P8, P9, P10, P18 | S à M         | Parallèles                                    |
-| 3     | P6b, P11                  | S             | —                                             |
-| 4     | P13 → P14 → P15 → P16     | M, M, S, S    | Séquentielles, après 8 semaines d'observation |
+| Vague | PR                        | Taille        | Remarque                                        |
+| ----- | ------------------------- | ------------- | ----------------------------------------------- |
+| 0     | P0, P0b, P1, P3, P7, P12  | S à M chacune | Indépendantes                                   |
+| 1     | P2, P4                    | M             | La seule migration « lourde »                   |
+| 2     | P5, P6a, P8, P9, P10, P18 | S à M         | Parallèles                                      |
+| 3     | P6b, P11                  | S             | —                                               |
+| 4     | P13 → P14 → P15 → P16     | M, M, S, S    | Séquentielles, après rattrapage de l'historique |
 
 Le mode observation est livrable en **vagues 0 à 2**. Aucune action sur le site n'est possible avant la vague 4.

@@ -57,9 +57,13 @@ describe("garde d'entité — Williams Jullin", () => {
 
   it("le builder générique DÉLÈGUE à williams-person.ts (même objet, pas une copie)", () => {
     const { publique, contenu } = williams();
-    expect(buildPersonCollaborateurJsonLd(publique, contenu)).toEqual(
-      buildPersonWilliamsJsonLd("fr"),
-    );
+    // Seul `areaServed` est ajouté par le builder générique (williams-person.ts n'est pas modifié).
+    const { areaServed, ...reste } = buildPersonCollaborateurJsonLd(publique, contenu);
+    expect(areaServed).toBeDefined();
+    const williamsSeul = buildPersonWilliamsJsonLd("fr") as Record<string, unknown>;
+    const { areaServed: dejaLa, ...attendu } = williamsSeul;
+    void dejaLa;
+    expect(reste).toEqual(attendu);
     expect(buildPersonCollaborateurJsonLd(publique, contenu)["@id"]).toBe(FOUNDER_PERSON_ID);
   });
 
@@ -69,6 +73,19 @@ describe("garde d'entité — Williams Jullin", () => {
     expect(json).not.toMatch(
       /homeLocation|addressLocality|addressRegion|postalCode|streetAddress|Grenoble/,
     );
+  });
+
+  it("areaServed : France puis régions de France, sans Grenoble ; @id et sameAs inchangés", () => {
+    const { publique, contenu } = williams();
+    const p = buildPersonCollaborateurJsonLd(publique, contenu) as Record<string, unknown>;
+    const zones = p.areaServed as Array<{ "@type": string; name: string }>;
+    expect(zones[0]).toEqual({ "@type": "Country", name: "France" });
+    expect(zones.length).toBeGreaterThan(5);
+    expect(zones.slice(1).every((z) => z["@type"] === "AdministrativeArea")).toBe(true);
+    expect(JSON.stringify(zones)).not.toMatch(/Grenoble/);
+    const ref = buildPersonWilliamsJsonLd("fr") as Record<string, unknown>;
+    expect(p["@id"]).toBe(ref["@id"]);
+    expect(p.sameAs).toEqual(ref.sameAs);
   });
 
   it("la description de Person est à la 3e personne, sans « nous »", () => {
@@ -161,6 +178,52 @@ describe("builders génériques — autre collaborateur", () => {
     const p = buildPersonCollaborateurJsonLd(partenaire, contenu);
     expect(p.affiliation).toEqual({ "@id": `${SITE}/#organization` });
     expect(p.worksFor).toBeUndefined();
+  });
+
+  it("areaServed : département et ville présents quand ils sont connus, jamais Grenoble", () => {
+    const p = buildPersonCollaborateurJsonLd(publique!, contenu) as Record<string, unknown>;
+    const json = JSON.stringify(p.areaServed);
+    expect(json).toContain('"name":"Département 69"');
+    expect(json).toContain('"@type":"City","name":"Lyon"');
+    const grenoble = fichePublique({ ...brute, ville: "Grenoble", departement: "38" })!;
+    const g = JSON.stringify(buildPersonCollaborateurJsonLd(grenoble, contenu).areaServed);
+    // La fiche publique écarte déjà cette ville (et son département) : rien n'en sort.
+    expect(g).not.toMatch(/Grenoble|"City"/);
+  });
+
+  it("areaServed : ni ville ni département quand ils ne sont pas renseignés", () => {
+    const { ville: _v, departement: _d, ...sansVilleBrute } = brute;
+    void _v;
+    void _d;
+    const sansLieu = fichePublique(sansVilleBrute)!;
+    const zones = buildPersonCollaborateurJsonLd(sansLieu, contenu).areaServed as Array<
+      Record<string, string>
+    >;
+    expect(zones.some((z) => z["@type"] === "City")).toBe(false);
+    expect(JSON.stringify(zones)).not.toMatch(/Département/);
+    expect(zones[0]).toEqual({ "@type": "Country", name: "France" });
+  });
+
+  it("un seul FAQPage, @id propre, rattaché à la ProfilePage, textes = FAQ du contenu", () => {
+    const g = buildGrapheCollaborateur(publique!, contenu, { indexable: true });
+    const faqs = g.filter((n) => n["@type"] === "FAQPage");
+    expect(faqs).toHaveLength(1);
+    const faq = faqs[0] as Record<string, unknown>;
+    expect(faq["@id"]).toBe(`${SITE}/fr/equipe/camille#faq`);
+    expect(faq.isPartOf).toEqual({ "@id": `${SITE}/fr/equipe/camille#profilepage` });
+    const q = (faq.mainEntity as Array<{ name: string; acceptedAnswer: { text: string } }>)[0];
+    expect(q?.name).toBe(contenu.faq[0]?.question);
+    expect(q?.acceptedAnswer.text).toBe(contenu.faq[0]?.answer);
+    expect(g.filter((n) => n["@type"] === "Organization")).toHaveLength(0);
+  });
+
+  it("knowsAbout reprend les compétences renseignées, et seulement elles", () => {
+    expect(buildPersonCollaborateurJsonLd(publique!, contenu).knowsAbout).toBeUndefined();
+    const avec = buildPersonCollaborateurJsonLd(publique!, {
+      ...contenu,
+      competences: ["Rédaction", "Devis"],
+    });
+    expect(avec.knowsAbout).toEqual(["Rédaction", "Devis"]);
   });
 
   it("le FAQPage n'est émis que si la fiche est indexable", () => {

@@ -1,3 +1,4 @@
+import { MODELES, remplirPrenom } from "../modeles-categorie";
 import { describe, expect, it } from "vitest";
 import { CATEGORIES, CATEGORIES_IDS, categoriesOrdonnees, estCategorie } from "..";
 
@@ -40,5 +41,24 @@ describe("registre des catégories", () => {
     expect(estCategorie("apporteur")).toBe(true);
     expect(estCategorie("persona-ia")).toBe(false);
     expect(estCategorie(3)).toBe(false);
+  });
+});
+
+describe("registre de catégorie : réponses directes", () => {
+  it("chaque réponse de section compte 30 mots au plus, après remplacement par « Camille »", () => {
+    for (const [id, modele] of Object.entries(MODELES)) {
+      for (const s of modele.sections) {
+        if (!s.reponse) continue;
+        const mots = remplirPrenom(s.reponse, "Camille").trim().split(/\s+/).length;
+        expect(mots, `${id}/${s.id}`).toBeLessThanOrEqual(30);
+      }
+    }
+  });
+  it("aucune question de section n'utilise « il » ni « elle » (accord inconnu)", () => {
+    for (const modele of Object.values(MODELES)) {
+      for (const s of modele.sections) {
+        expect(s.question ?? "").not.toMatch(/-(il|elle)\b/);
+      }
+    }
   });
 });
