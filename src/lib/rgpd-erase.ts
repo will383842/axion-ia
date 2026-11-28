@@ -2267,6 +2267,13 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "compte (empreinte et quatre derniers caractères, jamais l'IBAN) sur lequel chaque virement a été déclaré : preuve du paiement, conservée comme les autofactures (art. L.123-22 du code de commerce), en ajout seul.",
   },
   {
+    // 2026-11-28 — avenant 2.8 (#2512, lot S1) : table créée vide, aucun écrivain encore.
+    modele: "ApporteurAvenant",
+    motif:
+      "avenant au contrat et preuve de son acceptation (date, case cochée, empreinte du texte) : pièce contractuelle conservée comme le contrat signé " +
+      "(art. 17(3)(b) et (e) RGPD, art. L.123-22 du code de commerce), en ajout et changement de statut seulement.",
+  },
+  {
     // 2026-10-08 — SIRET de l'établissement d'un apporteur : comme son SIREN (gardé sur la fiche).
     modele: "ApporteurReseauSiret",
     motif:
