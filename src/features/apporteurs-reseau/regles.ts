@@ -601,29 +601,39 @@ export function analyserLignesJourneeIa(lignes: unknown): {
   return { journees, autresLignes, ambigue };
 }
 
-/** Une ligne de devis est une conférence : code d'offre ou palier « conference », sinon la désignation. */
-function estLigneConference(l: Record<string, unknown>): boolean {
-  const code = [l.offreCode, l.offreTierId].some(
+/** Code catalogue de la ligne (`offreCode` ou `offreTierId`) : désigne une conférence. */
+function codeConference(l: Record<string, unknown>): boolean {
+  return [l.offreCode, l.offreTierId].some(
     (v) => typeof v === "string" && /conf[ée]rence/i.test(v),
   );
+}
+
+/** Désignation d'une conférence, hors frais annexes (déplacement, hébergement, support…). */
+function designationConference(l: Record<string, unknown>): boolean {
   const d = typeof l.designation === "string" ? l.designation : "";
-  return code || /conf[ée]rence/i.test(d);
+  return (
+    /conf[ée]rence/i.test(d) &&
+    !/frais|d[ée]placement|h[ée]bergement|transport|repas|support|mat[ée]riel|location/i.test(d)
+  );
 }
 
 /**
  * Nombre de conférences d'un devis (A1.4 bis : 500 € par conférence). Même méthode que
  * `analyserLignesJourneeIa` : somme des quantités entières positives des lignes de conférence.
  * `quantite` vaut `null` si elle est illisible (pas de lignes, aucune ligne de conférence,
- * quantité non entière, nulle ou négative, total hors de 1 à 99) : jamais 1 par défaut. Pur.
+ * quantité non entière, nulle ou négative, total hors de 1 à 99). Les lignes de frais
+ * annexes ne comptent pas : jamais 1 par défaut. Pur.
  */
 export function analyserLignesConference(lignes: unknown): { quantite: number | null } {
   if (!Array.isArray(lignes)) return { quantite: null };
   let total = 0;
   let trouvee = false;
-  for (const l of lignes) {
-    if (!l || typeof l !== "object") continue;
-    const o = l as Record<string, unknown>;
-    if (!estLigneConference(o)) continue;
+  const objets = lignes.filter((l): l is Record<string, unknown> => !!l && typeof l === "object");
+  // Le code catalogue fait foi : dès qu'une ligne en porte un, seules ces lignes comptent. La
+  // désignation ne sert qu'en l'absence de tout code (« Frais pour la conférence » n'en est pas une).
+  const parCode = objets.some(codeConference);
+  for (const o of objets) {
+    if (!(parCode ? codeConference(o) : designationConference(o))) continue;
     trouvee = true;
     if (typeof o.quantite === "number" && Number.isInteger(o.quantite) && o.quantite > 0)
       total += o.quantite;

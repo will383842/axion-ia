@@ -40,6 +40,7 @@ import { dateFr, etatEcheances } from "@/features/apporteurs-reseau/autofacture-
 import {
   euros,
   PALIER_CONFERENCE,
+  FORFAIT_CONFERENCE_CENTS,
   PALIER_JOURNEE_IA,
   FORFAIT_JOURNEE_IA_CENTS,
   PALIERS_FORMATION,
@@ -148,6 +149,15 @@ const PALIERS = [
   },
 ];
 const PALIERS_JOURNEE_IA = PALIERS.filter((p) => p.id === PALIER_JOURNEE_IA);
+// Ligne de conférence « à qualifier » (nombre illisible au devis) : le palier conférence, sinon Journée IA.
+const PALIERS_CONFERENCE = [
+  {
+    id: PALIER_CONFERENCE,
+    libelle: "Conférence, forfait par conférence",
+    detail: `${euros(FORFAIT_CONFERENCE_CENTS)} par conférence (contrats 2.3 à 2.6, ou commande signée avant le 26/11/2026), jamais plus que le HT (quantité = nombre de conférences)`,
+  },
+  ...PALIERS_JOURNEE_IA,
+];
 
 export default async function CommissionsApporteursPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -644,7 +654,10 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                 !c.parrainage &&
                 c.activite !== "formation" &&
                 peutPayer ? (
-                  <QualifierForm id={c.id} paliers={PALIERS_JOURNEE_IA} />
+                  <QualifierForm
+                    id={c.id}
+                    paliers={c.activite === "conference" ? PALIERS_CONFERENCE : PALIERS_JOURNEE_IA}
+                  />
                 ) : null}
                 {c.statut === "a_qualifier" && c.parrainage ? (
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -670,7 +683,9 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                         <option value="un_a_un">1-to-1 (aucune commission)</option>
                         <option value="audit">Audit (30 %)</option>
                         <option value="implementation">Intégration (15 %)</option>
-                        <option value="conference">Conférence (aucune commission)</option>
+                        <option value="conference">
+                          Conférence (500 € par conférence en 2.6, aucune en 2.8)
+                        </option>
                         <option value="site_web">Site web (15 %)</option>
                       </select>
                     </label>

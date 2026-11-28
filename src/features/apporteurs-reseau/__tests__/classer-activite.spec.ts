@@ -234,6 +234,23 @@ describe("décision du 27/11 : la grille du contrat SIGNÉ (signataire 2.6 sans 
     expect(r.ok).toBe(true);
     expect(etat.maj[0]!.data).toMatchObject({ montantCents: 150_000 });
   });
+  it("qualifier une ligne de conférence au palier « conférence », quantité 3, signataire 2.6 : 1 500 €", async () => {
+    etat.version = "2.6";
+    etat.commission = { ...ligne, activite: "conference", factureHtCents: 720_000 };
+    expect(await qualifierCommission("C1", "conference", 3)).toEqual({
+      ok: true,
+      montantCents: 150_000,
+    });
+  });
+  it("la console propose le palier conférence sur une ligne de conférence à qualifier", async () => {
+    const { readFileSync } = await import("node:fs");
+    const src = readFileSync(
+      "src/app/[locale]/(admin)/[adminPrefix]/apporteurs/commissions/page.tsx",
+      "utf8",
+    );
+    expect(src).toMatch(/PALIERS_CONFERENCE\s*=\s*\[[\s\S]*id:\s*PALIER_CONFERENCE/);
+    expect(src).toMatch(/c\.activite === "conference" \? PALIERS_CONFERENCE/);
+  });
   it("classement en conférence, quantité illisible, signataire 2.6 : refus, rien d'écrit", async () => {
     etat.version = "2.6";
     etat.lignes = [{ designation: "Conférence plénière", quantite: 1.5 }];

@@ -802,6 +802,53 @@ describe("décision du 27/11 : grille du contrat SIGNÉ au passage quotidien", (
       await passerReseauApporteurs(MAINTENANT);
       expect(etat.crees[0]).toMatchObject({ montantCents: 150_000, palier: "conference" });
     });
+    it("3 conférences + une ligne de frais « pour la conférence » : 1 500 €, pas 2 000 €", async () => {
+      signataire("2.6");
+      unePayee({
+        activite: "conference",
+        montantHtCents: 730_000,
+        devis: {
+          acceptedAt: apres,
+          montantTotalHtCents: 730_000,
+          lignes: [
+            {
+              designation: "Conférence plénière",
+              offreCode: "intervention-conference",
+              quantite: 3,
+              prixUnitaireHtCents: 240_000,
+            },
+            {
+              designation: "Frais de déplacement pour la conférence",
+              quantite: 1,
+              prixUnitaireHtCents: 10_000,
+            },
+          ],
+        },
+      });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 150_000 });
+    });
+    it("sans code catalogue, une ligne de frais ne compte pas non plus", async () => {
+      signataire("2.6");
+      unePayee({
+        activite: "conference",
+        montantHtCents: 730_000,
+        devis: {
+          acceptedAt: apres,
+          montantTotalHtCents: 730_000,
+          lignes: [
+            { designation: "Conférence plénière", quantite: 3, prixUnitaireHtCents: 240_000 },
+            {
+              designation: "Frais de déplacement pour la conférence",
+              quantite: 1,
+              prixUnitaireHtCents: 10_000,
+            },
+          ],
+        },
+      });
+      await passerReseauApporteurs(MAINTENANT);
+      expect(etat.crees[0]).toMatchObject({ montantCents: 150_000 });
+    });
     it("3 conférences à 1 000 € HT au total : 1 000 € (plafonné au HT)", async () => {
       signataire("2.6");
       unePayee({

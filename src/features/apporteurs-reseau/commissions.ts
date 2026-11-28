@@ -532,7 +532,7 @@ export async function classerActiviteCommission(
       return {
         ok: false,
         message:
-          "Nombre de conférences illisible sur le devis : qualifiez la ligne avec le palier « conférence » et la quantité.",
+          "Nombre de conférences illisible sur le devis : qualifiez la ligne avec le palier « Conférence » et la quantité.",
       };
   }
   const avecRegle = venteAnterieure
